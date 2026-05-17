@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class ProductStrategistAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'product-strategist',
-    name: 'Product Strategist',
-    category: 'product-strategy',
+    id: "product-strategist",
+    name: "Product Strategist",
+    category: "product-strategy",
     description:
-      'Looks at your features and asks the hard questions. Tells you what to build next and what to kill.',
-    tagline: 'Strategic product direction and feature prioritization',
-    capabilities: ['analysis', 'strategy'],
-    tags: ['product', 'strategy', 'roadmap', 'features', 'prioritization'],
-    difficulty: 'intermediate',
-    estimatedTime: '30-60 minutes',
+      "Looks at your features and asks the hard questions. Tells you what to build next and what to kill.",
+    tagline: "Strategic product direction and feature prioritization",
+    capabilities: ["analysis", "strategy"],
+    tags: ["product", "strategy", "roadmap", "features", "prioritization"],
+    difficulty: "intermediate",
+    estimatedTime: "30-60 minutes",
   };
 
   prompt: AgentPromptTemplate = {
@@ -46,19 +46,19 @@ Focus on:
 - Resource allocation
 - Market timing`,
 
-    userPromptPrefix: 'Analyze the following product and provide strategic recommendations:',
+    userPromptPrefix: "Analyze the following product and provide strategic recommendations:",
 
     context: [
-      'Current features and functionality',
-      'Product roadmap or backlog',
-      'User feedback and analytics',
-      'Competitive landscape',
-      'Business goals and constraints',
+      "Current features and functionality",
+      "Product roadmap or backlog",
+      "User feedback and analytics",
+      "Competitive landscape",
+      "Business goals and constraints",
     ],
 
     examples: [
       {
-        input: 'We have 15 features planned for next quarter',
+        input: "We have 15 features planned for next quarter",
         output: `Let me analyze your roadmap systematically:
 
 STRATEGIC ASSESSMENT:
@@ -87,67 +87,67 @@ Next Steps:
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Grep'],
-    optional: ['WebFetch', 'WebSearch', 'Bash'],
+    required: ["Glob", "Read", "Grep"],
+    optional: ["WebFetch", "WebSearch", "Bash"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Discovery',
-        description: 'Scan codebase for features, components, and product structure',
-        action: 'Use Glob and Grep to identify features, routes, components, and documentation',
-        validation: 'Ensure comprehensive understanding of current product scope',
+        name: "Discovery",
+        description: "Scan codebase for features, components, and product structure",
+        action: "Use Glob and Grep to identify features, routes, components, and documentation",
+        validation: "Ensure comprehensive understanding of current product scope",
       },
       {
-        name: 'Feature Analysis',
-        description: 'Analyze each feature for complexity, usage, and strategic value',
-        action: 'Review code complexity, dependencies, and potential user impact',
-        validation: 'Create feature inventory with strategic assessment',
+        name: "Feature Analysis",
+        description: "Analyze each feature for complexity, usage, and strategic value",
+        action: "Review code complexity, dependencies, and potential user impact",
+        validation: "Create feature inventory with strategic assessment",
       },
       {
-        name: 'Strategic Assessment',
-        description: 'Evaluate product direction and identify strategic gaps',
-        action: 'Assess product-market fit, competitive positioning, and focus areas',
-        validation: 'Generate strategic insights and recommendations',
+        name: "Strategic Assessment",
+        description: "Evaluate product direction and identify strategic gaps",
+        action: "Assess product-market fit, competitive positioning, and focus areas",
+        validation: "Generate strategic insights and recommendations",
       },
       {
-        name: 'Prioritization Framework',
-        description: 'Create actionable prioritization of features',
-        action: 'Score features on impact, effort, strategic value, and user value',
-        validation: 'Provide clear BUILD/KILL/DEFER recommendations',
+        name: "Prioritization Framework",
+        description: "Create actionable prioritization of features",
+        action: "Score features on impact, effort, strategic value, and user value",
+        validation: "Provide clear BUILD/KILL/DEFER recommendations",
       },
       {
-        name: 'Recommendations',
-        description: 'Generate strategic recommendations and action items',
-        action: 'Create specific, actionable next steps for product evolution',
-        validation: 'Ensure recommendations are practical and measurable',
+        name: "Recommendations",
+        description: "Generate strategic recommendations and action items",
+        action: "Create specific, actionable next steps for product evolution",
+        validation: "Ensure recommendations are practical and measurable",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     // Implementation would use Claude Agent SDK to execute the step
     // This is a placeholder for the actual implementation
     switch (step.name) {
-      case 'Discovery':
-        result.recommendations?.push('Scan codebase for feature inventory');
+      case "Discovery":
+        result.recommendations?.push("Scan codebase for feature inventory");
         break;
-      case 'Feature Analysis':
-        result.recommendations?.push('Analyze feature complexity and usage patterns');
+      case "Feature Analysis":
+        result.recommendations?.push("Analyze feature complexity and usage patterns");
         break;
-      case 'Strategic Assessment':
-        result.recommendations?.push('Evaluate product-market fit and positioning');
+      case "Strategic Assessment":
+        result.recommendations?.push("Evaluate product-market fit and positioning");
         break;
-      case 'Prioritization Framework':
-        result.recommendations?.push('Score and prioritize features');
+      case "Prioritization Framework":
+        result.recommendations?.push("Score and prioritize features");
         break;
-      case 'Recommendations':
-        result.recommendations?.push('Generate actionable strategic recommendations');
+      case "Recommendations":
+        result.recommendations?.push("Generate actionable strategic recommendations");
         break;
     }
   }

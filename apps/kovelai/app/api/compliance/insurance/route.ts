@@ -6,8 +6,8 @@
  *
  * Nag Protocol #14: Insurance compliance verification API
  */
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 const InsuranceVerifySchema = z.object({
   firmId: z.string().uuid(),
@@ -17,10 +17,10 @@ const InsuranceVerifySchema = z.object({
   deductible: z.number().min(0),
   expiryDate: z.string().datetime(),
   coverageType: z.enum([
-    'PROFESSIONAL_LIABILITY',
-    'ERRORS_OMISSIONS',
-    'CYBER_LIABILITY',
-    'GENERAL_LIABILITY',
+    "PROFESSIONAL_LIABILITY",
+    "ERRORS_OMISSIONS",
+    "CYBER_LIABILITY",
+    "GENERAL_LIABILITY",
   ]),
   stateBarNumber: z.string().min(1),
   jurisdiction: z.string().min(2).max(10),
@@ -35,19 +35,19 @@ const TIER_REQUIREMENTS = {
 
 // Approved carriers (subset — full list from insurance alliance)
 const APPROVED_CARRIERS = new Set([
-  'CNA',
-  'Travelers',
-  'AIG',
-  'Swiss Re',
-  'Hartford',
-  'Zurich',
-  'Chubb',
-  'Berkshire Hathaway',
+  "CNA",
+  "Travelers",
+  "AIG",
+  "Swiss Re",
+  "Hartford",
+  "Zurich",
+  "Chubb",
+  "Berkshire Hathaway",
   "Lloyd's",
-  'Hiscox',
-  'ALPS',
-  'Lawyers Mutual',
-  'Minnesota Lawyers Mutual',
+  "Hiscox",
+  "ALPS",
+  "Lawyers Mutual",
+  "Minnesota Lawyers Mutual",
 ]);
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     // Check minimum coverage (default to solo tier)
-    const tier = 'solo'; // Could be resolved from firm profile
+    const tier = "solo"; // Could be resolved from firm profile
     const requirements = TIER_REQUIREMENTS[tier];
 
     if (parsed.coverageAmount < requirements.minCoverage) {
@@ -97,15 +97,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     // Check coverage type
     if (
-      parsed.coverageType !== 'PROFESSIONAL_LIABILITY' &&
-      parsed.coverageType !== 'ERRORS_OMISSIONS'
+      parsed.coverageType !== "PROFESSIONAL_LIABILITY" &&
+      parsed.coverageType !== "ERRORS_OMISSIONS"
     ) {
       warnings.push(
         `Coverage type "${parsed.coverageType}" may not satisfy malpractice requirements — verify with bar`,
       );
     }
 
-    const status = issues.length > 0 ? 'FAILED' : warnings.length > 0 ? 'CONDITIONAL' : 'VERIFIED';
+    const status = issues.length > 0 ? "FAILED" : warnings.length > 0 ? "CONDITIONAL" : "VERIFIED";
 
     return NextResponse.json({
       status,
@@ -119,17 +119,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       warnings,
       verifiedAt: new Date().toISOString(),
       nextReviewDate:
-        status === 'VERIFIED'
+        status === "VERIFIED"
           ? new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString()
           : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request', details: error.errors },
+        { error: "Invalid request", details: error.errors },
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: 'Insurance verification failed' }, { status: 500 });
+    return NextResponse.json({ error: "Insurance verification failed" }, { status: 500 });
   }
 }

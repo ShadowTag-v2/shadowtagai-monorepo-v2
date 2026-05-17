@@ -13,7 +13,7 @@
  * @see Cor.30 Pillar 1 — Identity & Session
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -24,14 +24,14 @@ export const SEUTokenSchema = z.object({
   ipHash: z.string(), // SHA-256 hash of client IP — never store raw IP
   issuedAt: z.string().datetime(),
   expiresAt: z.string().datetime(),
-  tier: z.enum(['solo', 'practice', 'enterprise']),
+  tier: z.enum(["solo", "practice", "enterprise"]),
   scope: z.array(
     z.enum([
-      'privileged_search',
-      'murder_board',
-      'anxiety_radar',
-      'oracle_memo',
-      'byok_management',
+      "privileged_search",
+      "murder_board",
+      "anxiety_radar",
+      "oracle_memo",
+      "byok_management",
     ]),
   ),
   usageTokens: z.number().int().default(0),
@@ -42,21 +42,21 @@ export type SEUToken = z.infer<typeof SEUTokenSchema>;
 
 // ─── TTL Configuration ──────────────────────────────────────────────
 
-const TTL_BY_TIER: Record<SEUToken['tier'], number> = {
+const TTL_BY_TIER: Record<SEUToken["tier"], number> = {
   solo: 24 * 60 * 60 * 1000, // 24 hours
   practice: 12 * 60 * 60 * 1000, // 12 hours
   enterprise: 8 * 60 * 60 * 1000, // 8 hours (tighter for compliance)
 };
 
-const DEFAULT_SCOPES: Record<SEUToken['tier'], SEUToken['scope']> = {
-  solo: ['privileged_search', 'anxiety_radar'],
-  practice: ['privileged_search', 'murder_board', 'anxiety_radar', 'oracle_memo'],
+const DEFAULT_SCOPES: Record<SEUToken["tier"], SEUToken["scope"]> = {
+  solo: ["privileged_search", "anxiety_radar"],
+  practice: ["privileged_search", "murder_board", "anxiety_radar", "oracle_memo"],
   enterprise: [
-    'privileged_search',
-    'murder_board',
-    'anxiety_radar',
-    'oracle_memo',
-    'byok_management',
+    "privileged_search",
+    "murder_board",
+    "anxiety_radar",
+    "oracle_memo",
+    "byok_management",
   ],
 };
 
@@ -66,8 +66,8 @@ export interface MintTokenRequest {
   firmId: string;
   clientId: string;
   clientIp: string;
-  tier: SEUToken['tier'];
-  customScopes?: SEUToken['scope'];
+  tier: SEUToken["tier"];
+  customScopes?: SEUToken["scope"];
   customTtlMs?: number;
 }
 
@@ -125,34 +125,34 @@ export interface ValidationResult {
 export async function validateSEUToken(
   tokenId: string,
   clientIp: string,
-  requiredScope: SEUToken['scope'][number],
+  requiredScope: SEUToken["scope"][number],
   lookupFn: (tokenId: string) => Promise<SEUToken | null>,
 ): Promise<ValidationResult> {
   // 1. Existence
   const token = await lookupFn(tokenId);
   if (!token) {
-    return { valid: false, reason: 'TOKEN_NOT_FOUND' };
+    return { valid: false, reason: "TOKEN_NOT_FOUND" };
   }
 
   // 2. Revocation
   if (token.revoked) {
-    return { valid: false, reason: 'TOKEN_REVOKED' };
+    return { valid: false, reason: "TOKEN_REVOKED" };
   }
 
   // 3. Expiry
   if (new Date(token.expiresAt) < new Date()) {
-    return { valid: false, reason: 'TOKEN_EXPIRED' };
+    return { valid: false, reason: "TOKEN_EXPIRED" };
   }
 
   // 4. IP binding
   const currentIpHash = await hashIP(clientIp);
   if (token.ipHash !== currentIpHash) {
-    return { valid: false, reason: 'IP_MISMATCH' };
+    return { valid: false, reason: "IP_MISMATCH" };
   }
 
   // 5. Scope
   if (!token.scope.includes(requiredScope)) {
-    return { valid: false, reason: 'SCOPE_UNAUTHORIZED' };
+    return { valid: false, reason: "SCOPE_UNAUTHORIZED" };
   }
 
   return { valid: true, token };
@@ -209,7 +209,7 @@ export async function trackTokenUsage(
 async function hashIP(ip: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(ip);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }

@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class InfrastructureBuilderAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'infrastructure-builder',
-    name: 'Infrastructure Builder',
-    category: 'operations',
+    id: "infrastructure-builder",
+    name: "Infrastructure Builder",
+    category: "operations",
     description:
       "Designs cloud architecture that scales and doesn't bankrupt you. Terraform included.",
-    tagline: 'Cloud infrastructure and IaC',
-    capabilities: ['implementation', 'design'],
-    tags: ['infrastructure', 'terraform', 'aws', 'gcp', 'azure', 'iac'],
-    difficulty: 'expert',
-    estimatedTime: '4-8 hours',
+    tagline: "Cloud infrastructure and IaC",
+    capabilities: ["implementation", "design"],
+    tags: ["infrastructure", "terraform", "aws", "gcp", "azure", "iac"],
+    difficulty: "expert",
+    estimatedTime: "4-8 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -49,42 +49,42 @@ Build infrastructure that's reliable, secure, and cost-effective.`,
   };
 
   tools: AgentTools = {
-    required: ['Read', 'Write', 'Glob'],
-    optional: ['Bash', 'WebFetch'],
+    required: ["Read", "Write", "Glob"],
+    optional: ["Bash", "WebFetch"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Architecture Design',
-        description: 'Design cloud architecture',
-        action: 'Define services, networking, security',
+        name: "Architecture Design",
+        description: "Design cloud architecture",
+        action: "Define services, networking, security",
       },
       {
-        name: 'Terraform Setup',
-        description: 'Create Terraform configuration',
-        action: 'Write IaC for infrastructure',
+        name: "Terraform Setup",
+        description: "Create Terraform configuration",
+        action: "Write IaC for infrastructure",
       },
       {
-        name: 'Security',
-        description: 'Implement security best practices',
-        action: 'Configure IAM, VPC, encryption',
+        name: "Security",
+        description: "Implement security best practices",
+        action: "Configure IAM, VPC, encryption",
       },
       {
-        name: 'Scalability',
-        description: 'Add auto-scaling and load balancing',
-        action: 'Configure ASG, ALB, etc.',
+        name: "Scalability",
+        description: "Add auto-scaling and load balancing",
+        action: "Configure ASG, ALB, etc.",
       },
       {
-        name: 'Cost Optimization',
-        description: 'Optimize for cost',
-        action: 'Right-size resources, use spot instances',
+        name: "Cost Optimization",
+        description: "Optimize for cost",
+        action: "Right-size resources, use spot instances",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

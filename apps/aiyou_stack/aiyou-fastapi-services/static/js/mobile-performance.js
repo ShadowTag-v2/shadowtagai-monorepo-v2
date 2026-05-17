@@ -367,8 +367,8 @@ const MobilePerformance = {
 };
 
 // Auto-initialize on load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
     MobilePerformance.init();
   });
 } else {
@@ -376,6 +376,6 @@ if (document.readyState === 'loading') {
 }
 
 // Export for use in modules
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = MobilePerformance;
 }

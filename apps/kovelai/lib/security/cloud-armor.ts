@@ -30,7 +30,7 @@ export interface CloudArmorRule {
     config?: { srcIpRanges: string[] };
     expr?: { expression: string };
   };
-  action: 'allow' | 'deny(403)' | 'deny(404)' | 'deny(502)' | 'throttle' | 'rate_based_ban';
+  action: "allow" | "deny(403)" | "deny(404)" | "deny(502)" | "throttle" | "rate_based_ban";
   rateLimitOptions?: {
     rateLimitThreshold: { count: number; intervalSec: number };
     conformAction: string;
@@ -45,44 +45,44 @@ export interface CloudArmorRule {
 
 export function generateCloudArmorPolicy(): CloudArmorPolicy {
   return {
-    name: 'kovelai-waf',
-    description: 'KovelAI Web Application Firewall — Cloud Armor Security Policy',
+    name: "kovelai-waf",
+    description: "KovelAI Web Application Firewall — Cloud Armor Security Policy",
     rules: [
       // ── Rule 1000: Block known bad IPs ──────────────────────
       {
-        description: 'Block known malicious IP ranges',
+        description: "Block known malicious IP ranges",
         priority: 1000,
         match: {
-          versionedExpr: 'SRC_IPS_V1',
+          versionedExpr: "SRC_IPS_V1",
           config: {
             srcIpRanges: [
               // Add known bad ranges here
-              '0.0.0.0/32', // Placeholder
+              "0.0.0.0/32", // Placeholder
             ],
           },
         },
-        action: 'deny(403)',
+        action: "deny(403)",
       },
 
       // ── Rule 2000: Rate limit all API endpoints ────────────
       {
-        description: 'Global API rate limiting — 60 req/min per IP',
+        description: "Global API rate limiting — 60 req/min per IP",
         priority: 2000,
         match: {
           expr: { expression: "request.path.matches('/api/.*')" },
         },
-        action: 'throttle',
+        action: "throttle",
         rateLimitOptions: {
           rateLimitThreshold: { count: 60, intervalSec: 60 },
-          conformAction: 'allow',
-          exceedAction: 'deny(429)',
-          enforceOnKey: 'IP',
+          conformAction: "allow",
+          exceedAction: "deny(429)",
+          enforceOnKey: "IP",
         },
       },
 
       // ── Rule 2100: Strict rate limit for auth endpoints ────
       {
-        description: 'Auth endpoint rate limiting — 10 req/min per IP',
+        description: "Auth endpoint rate limiting — 10 req/min per IP",
         priority: 2100,
         match: {
           expr: {
@@ -90,131 +90,131 @@ export function generateCloudArmorPolicy(): CloudArmorPolicy {
               "request.path.matches('/api/tokens/.*') || request.path.matches('/api/auth/.*')",
           },
         },
-        action: 'rate_based_ban',
+        action: "rate_based_ban",
         rateLimitOptions: {
           rateLimitThreshold: { count: 10, intervalSec: 60 },
-          conformAction: 'allow',
-          exceedAction: 'deny(429)',
+          conformAction: "allow",
+          exceedAction: "deny(429)",
           banDurationSec: 300, // 5-minute ban on exceeding
-          enforceOnKey: 'IP',
+          enforceOnKey: "IP",
         },
       },
 
       // ── Rule 2200: Privileged search rate limit ────────────
       {
-        description: 'Privileged search rate limiting — 10 req/min per IP',
+        description: "Privileged search rate limiting — 10 req/min per IP",
         priority: 2200,
         match: {
           expr: { expression: "request.path.matches('/api/privileged-search')" },
         },
-        action: 'throttle',
+        action: "throttle",
         rateLimitOptions: {
           rateLimitThreshold: { count: 10, intervalSec: 60 },
-          conformAction: 'allow',
-          exceedAction: 'deny(429)',
-          enforceOnKey: 'IP',
+          conformAction: "allow",
+          exceedAction: "deny(429)",
+          enforceOnKey: "IP",
         },
       },
 
       // ── Rule 3000: OWASP CRS — SQL Injection ──────────────
       {
-        description: 'OWASP CRS — Block SQL injection attempts',
+        description: "OWASP CRS — Block SQL injection attempts",
         priority: 3000,
         match: {
           expr: {
             expression: "evaluatePreconfiguredExpr('sqli-v33-stable')",
           },
         },
-        action: 'deny(403)',
+        action: "deny(403)",
       },
 
       // ── Rule 3100: OWASP CRS — XSS ────────────────────────
       {
-        description: 'OWASP CRS — Block cross-site scripting',
+        description: "OWASP CRS — Block cross-site scripting",
         priority: 3100,
         match: {
           expr: {
             expression: "evaluatePreconfiguredExpr('xss-v33-stable')",
           },
         },
-        action: 'deny(403)',
+        action: "deny(403)",
       },
 
       // ── Rule 3200: OWASP CRS — RFI ────────────────────────
       {
-        description: 'OWASP CRS — Block remote file inclusion',
+        description: "OWASP CRS — Block remote file inclusion",
         priority: 3200,
         match: {
           expr: {
             expression: "evaluatePreconfiguredExpr('rfi-v33-stable')",
           },
         },
-        action: 'deny(403)',
+        action: "deny(403)",
       },
 
       // ── Rule 3300: OWASP CRS — Scanner Detection ──────────
       {
-        description: 'OWASP CRS — Block vulnerability scanners',
+        description: "OWASP CRS — Block vulnerability scanners",
         priority: 3300,
         match: {
           expr: {
             expression: "evaluatePreconfiguredExpr('scannerdetection-v33-stable')",
           },
         },
-        action: 'deny(403)',
+        action: "deny(403)",
       },
 
       // ── Rule 4000: Block large request bodies ──────────────
       {
-        description: 'Block oversized request bodies (>1MB)',
+        description: "Block oversized request bodies (>1MB)",
         priority: 4000,
         match: {
           expr: {
             expression: "int(request.headers['content-length']) > 1048576",
           },
         },
-        action: 'deny(413)',
+        action: "deny(413)",
       },
 
       // ── Rule 5000: Geographic restrictions ─────────────────
       {
-        description: 'Allow only US, UK, CA, AU traffic (Phase 1)',
+        description: "Allow only US, UK, CA, AU traffic (Phase 1)",
         priority: 5000,
         match: {
           expr: {
             expression: "!origin.region_code.matches('US|GB|CA|AU')",
           },
         },
-        action: 'deny(403)',
+        action: "deny(403)",
         preview: true, // Preview mode for Phase 1 — monitor before enforcing
       },
 
       // ── Rule 9000: Ban repeat offenders ────────────────────
       {
-        description: 'Auto-ban IPs with 100+ blocks in 10 minutes',
+        description: "Auto-ban IPs with 100+ blocks in 10 minutes",
         priority: 9000,
         match: {
           expr: { expression: "request.path.matches('.*')" },
         },
-        action: 'rate_based_ban',
+        action: "rate_based_ban",
         rateLimitOptions: {
           rateLimitThreshold: { count: 100, intervalSec: 600 },
-          conformAction: 'allow',
-          exceedAction: 'deny(403)',
+          conformAction: "allow",
+          exceedAction: "deny(403)",
           banDurationSec: 3600, // 1-hour ban
-          enforceOnKey: 'IP',
+          enforceOnKey: "IP",
         },
       },
 
       // ── Rule 2147483647: Default allow ─────────────────────
       {
-        description: 'Default allow — all non-matching traffic passes',
+        description: "Default allow — all non-matching traffic passes",
         priority: 2147483647,
         match: {
-          versionedExpr: 'SRC_IPS_V1',
-          config: { srcIpRanges: ['*'] },
+          versionedExpr: "SRC_IPS_V1",
+          config: { srcIpRanges: ["*"] },
         },
-        action: 'allow',
+        action: "allow",
       },
     ],
   };
@@ -238,19 +238,19 @@ export function validatePolicy(policy: CloudArmorPolicy): {
   const priorities = policy.rules.map((r) => r.priority);
   const duplicates = priorities.filter((p, i) => priorities.indexOf(p) !== i);
   if (duplicates.length > 0) {
-    errors.push(`Duplicate rule priorities: ${duplicates.join(', ')}`);
+    errors.push(`Duplicate rule priorities: ${duplicates.join(", ")}`);
   }
 
   // Check for default rule
   const hasDefault = policy.rules.some((r) => r.priority === 2147483647);
   if (!hasDefault) {
-    errors.push('Missing default rule (priority 2147483647)');
+    errors.push("Missing default rule (priority 2147483647)");
   }
 
   // Check priority ordering
   const sorted = [...priorities].sort((a, b) => a - b);
   if (JSON.stringify(priorities) !== JSON.stringify(sorted)) {
-    errors.push('Rules are not sorted by priority');
+    errors.push("Rules are not sorted by priority");
   }
 
   return { valid: errors.length === 0, errors };

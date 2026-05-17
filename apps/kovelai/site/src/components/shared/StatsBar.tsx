@@ -1,9 +1,9 @@
 export default function StatsBar() {
   const stats = [
-    { value: '3x+', label: 'Intake Revenue' },
-    { value: '0', label: 'Data Retained' },
-    { value: '24/7', label: 'Client Capture' },
-    { value: '↑ ACV', label: 'Revenue per Matter', accent: true },
+    { value: "3x+", label: "Intake Revenue" },
+    { value: "0", label: "Data Retained" },
+    { value: "24/7", label: "Client Capture" },
+    { value: "↑ ACV", label: "Revenue per Matter", accent: true },
   ];
 
   return (
@@ -14,7 +14,7 @@ export default function StatsBar() {
             <div key={s.label}>
               <div
                 className={`text-2xl md:text-3xl font-extrabold tracking-tight mb-1 ${
-                  s.accent ? 'text-secondary-text' : 'text-gold'
+                  s.accent ? "text-secondary-text" : "text-gold"
                 }`}
               >
                 {s.value}

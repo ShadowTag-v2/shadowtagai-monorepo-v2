@@ -15,12 +15,12 @@ export function trackEvent(
   eventName: string,
   params?: Record<string, string | number | boolean>,
 ): void {
-  if (typeof window === 'undefined' || !GA_ID) return;
+  if (typeof window === "undefined" || !GA_ID) return;
 
   // gtag is injected by the GA4 script tag in layout.tsx
   const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
   if (gtag) {
-    gtag('event', eventName, params);
+    gtag("event", eventName, params);
   }
 }
 
@@ -29,5 +29,5 @@ export function trackEvent(
  * when GA4 is configured.
  */
 export function trackPageView(url: string): void {
-  trackEvent('page_view', { page_path: url });
+  trackEvent("page_view", { page_path: url });
 }

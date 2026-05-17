@@ -1,15 +1,15 @@
-(globalThis['TURBOPACK'] || (globalThis['TURBOPACK'] = [])).push([
-  typeof document === 'object' ? document.currentScript : undefined,
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [client] (ecmascript)',
+(globalThis["TURBOPACK"] || (globalThis["TURBOPACK"] = [])).push([
+  typeof document === "object" ? document.currentScript : undefined,
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -33,7 +33,7 @@
       getDeploymentIdQuery: () => getDeploymentIdQuery,
     });
     let deploymentId;
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       deploymentId = document.documentElement.dataset.dplId;
       // Immediately remove the attribute to prevent hydration errors (the dplId was inserted into the
       // HTML only), React isn't aware of it at all.
@@ -41,7 +41,7 @@
     } else {
       // Client side: replaced with globalThis.NEXT_DEPLOYMENT_ID
       // Server side: left as is or replaced with a string or replaced with false
-      deploymentId = ('TURBOPACK compile-time value', false) || undefined;
+      deploymentId = ("TURBOPACK compile-time value", false) || undefined;
     }
     function getDeploymentId() {
       return deploymentId;
@@ -49,53 +49,53 @@
     function getDeploymentIdQuery(ampersand = false) {
       const id = getDeploymentId();
       if (id) {
-        return `${ampersand ? '&' : '?'}dpl=${id}`;
+        return `${ampersand ? "&" : "?"}dpl=${id}`;
       }
-      return '';
+      return "";
     }
     function getAssetToken() {
-      return ('TURBOPACK compile-time value', '') || ('TURBOPACK compile-time value', false);
+      return ("TURBOPACK compile-time value", "") || ("TURBOPACK compile-time value", false);
     }
     function getAssetTokenQuery(ampersand = false) {
       const id = getAssetToken();
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
-      return '';
+      return "";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'HeadManagerContext', {
+    Object.defineProperty(exports, "HeadManagerContext", {
       enumerable: true,
       get: () => HeadManagerContext,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const HeadManagerContext = _react.default.createContext({});
-    if (('TURBOPACK compile-time truthy', 1)) {
-      HeadManagerContext.displayName = 'HeadManagerContext';
+    if (("TURBOPACK compile-time truthy", 1)) {
+      HeadManagerContext.displayName = "HeadManagerContext";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/mitt.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/mitt.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /*
 MIT License
@@ -110,10 +110,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */ // This file is based on https://github.com/developit/mitt/blob/v1.1.3/src/index.js
     // It's been edited for the needs of this script
     // See the LICENSE at the top of the file
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => mitt,
     });
@@ -137,53 +137,53 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router-context.shared-runtime.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router-context.shared-runtime.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'RouterContext', {
+    Object.defineProperty(exports, "RouterContext", {
       enumerable: true,
       get: () => RouterContext,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const RouterContext = _react.default.createContext(null);
-    if (('TURBOPACK compile-time truthy', 1)) {
-      RouterContext.displayName = 'RouterContext';
+    if (("TURBOPACK compile-time truthy", 1)) {
+      RouterContext.displayName = "RouterContext";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/warn-once.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/warn-once.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'warnOnce', {
+    Object.defineProperty(exports, "warnOnce", {
       enumerable: true,
       get: () => warnOnce,
     });
     let warnOnce = (_) => {};
-    if (('TURBOPACK compile-time truthy', 1)) {
+    if (("TURBOPACK compile-time truthy", 1)) {
       const warnings = new Set();
       warnOnce = (msg) => {
         if (!warnings.has(msg)) {
@@ -193,24 +193,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'disableSmoothScrollDuringRouteTransition', {
+    Object.defineProperty(exports, "disableSmoothScrollDuringRouteTransition", {
       enumerable: true,
       get: () => disableSmoothScrollDuringRouteTransition,
     });
     const _warnonce = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/warn-once.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/warn-once.js [client] (ecmascript)",
     );
     function disableSmoothScrollDuringRouteTransition(fn, options = {}) {
       // if only the hash is changed, we don't need to disable smooth scrolling
@@ -220,17 +220,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return;
       }
       const htmlElement = document.documentElement;
-      const hasDataAttribute = htmlElement.dataset.scrollBehavior === 'smooth';
+      const hasDataAttribute = htmlElement.dataset.scrollBehavior === "smooth";
       if (!hasDataAttribute) {
         // Warn if smooth scrolling is detected but no data attribute is present
         if (
-          ('TURBOPACK compile-time value', 'development') === 'development' &&
-          getComputedStyle(htmlElement).scrollBehavior === 'smooth'
+          ("TURBOPACK compile-time value", "development") === "development" &&
+          getComputedStyle(htmlElement).scrollBehavior === "smooth"
         ) {
           (0, _warnonce.warnOnce)(
-            'Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, ' +
+            "Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, " +
               'add `data-scroll-behavior="smooth"` to your <html> element. ' +
-              'Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior',
+              "Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior",
           );
         }
         // No smooth scrolling configured, run directly without style manipulation
@@ -239,7 +239,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
       // Proceed with temporarily disabling smooth scrolling
       const existing = htmlElement.style.scrollBehavior;
-      htmlElement.style.scrollBehavior = 'auto';
+      htmlElement.style.scrollBehavior = "auto";
       if (!options.dontForceLayout) {
         // In Chrome-based browsers we need to force reflow before calling `scrollTo`.
         // Otherwise it will not pickup the change in scrollBehavior
@@ -250,29 +250,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       htmlElement.style.scrollBehavior = existing;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * For a given page path, this function ensures that there is a leading slash.
      * If there is not a leading slash, one is added, otherwise it is noop.
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'ensureLeadingSlash', {
+    Object.defineProperty(exports, "ensureLeadingSlash", {
       enumerable: true,
       get: () => ensureLeadingSlash,
     });
     function ensureLeadingSlash(path) {
-      return path.startsWith('/') ? path : `/${path}`;
+      return path.startsWith("/") ? path : `/${path}`;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -310,17 +310,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     function isGroupSegment(segment) {
       // Use array[0] for performant purpose
-      return segment[0] === '(' && segment.endsWith(')');
+      return segment[0] === "(" && segment.endsWith(")");
     }
     function isParallelRouteSegment(segment) {
-      return segment.startsWith('@') && segment !== '@children';
+      return segment.startsWith("@") && segment !== "@children";
     }
     function addSearchParamsIfPageSegment(segment, searchParams) {
       const isPageSegment = segment.includes(PAGE_SEGMENT_KEY);
       if (isPageSegment) {
         const stringifiedQuery = JSON.stringify(searchParams);
-        return stringifiedQuery !== '{}'
-          ? PAGE_SEGMENT_KEY + '?' + stringifiedQuery
+        return stringifiedQuery !== "{}"
+          ? PAGE_SEGMENT_KEY + "?" + stringifiedQuery
           : PAGE_SEGMENT_KEY;
       }
       return segment;
@@ -331,7 +331,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
       // For 'children', use first segment; for other parallel routes, use last segment
       const rawSegment =
-        parallelRouteKey === 'children' ? segments[0] : segments[segments.length - 1];
+        parallelRouteKey === "children" ? segments[0] : segments[segments.length - 1];
       // If the default slot is showing, return null since it's not technically "selected" (it's a fallback)
       // Returning an internal value like `__DEFAULT__` would be confusing
       return rawSegment === DEFAULT_SEGMENT_KEY ? null : rawSegment;
@@ -355,15 +355,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       segmentPath.push(segmentValue);
       return getSelectedLayoutSegmentPath(node, parallelRouteKey, false, segmentPath);
     }
-    const PAGE_SEGMENT_KEY = '__PAGE__';
-    const DEFAULT_SEGMENT_KEY = '__DEFAULT__';
-    const NOT_FOUND_SEGMENT_KEY = '/_not-found';
+    const PAGE_SEGMENT_KEY = "__PAGE__";
+    const DEFAULT_SEGMENT_KEY = "__DEFAULT__";
+    const NOT_FOUND_SEGMENT_KEY = "/_not-found";
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -385,14 +385,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       normalizeRscURL: () => normalizeRscURL,
     });
     const _ensureleadingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [client] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [client] (ecmascript)",
     );
     function normalizeAppPath(route) {
       return (0, _ensureleadingslash.ensureLeadingSlash)(
-        route.split('/').reduce((pathname, segment, index, segments) => {
+        route.split("/").reduce((pathname, segment, index, segments) => {
           // Empty segments are ignored.
           if (!segment) {
             return pathname;
@@ -402,33 +402,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             return pathname;
           }
           // Parallel segments are ignored.
-          if (segment[0] === '@') {
+          if (segment[0] === "@") {
             return pathname;
           }
           // The last segment (if it's a leaf) should be ignored.
-          if ((segment === 'page' || segment === 'route') && index === segments.length - 1) {
+          if ((segment === "page" || segment === "route") && index === segments.length - 1) {
             return pathname;
           }
           return `${pathname}/${segment}`;
-        }, ''),
+        }, ""),
       );
     }
     function compareAppPaths(a, b) {
-      const aHasSlot = a.includes('/@');
-      const bHasSlot = b.includes('/@');
+      const aHasSlot = a.includes("/@");
+      const bHasSlot = b.includes("/@");
       if (aHasSlot && !bHasSlot) return -1;
       if (!aHasSlot && bHasSlot) return 1;
       return a.localeCompare(b);
     }
     function normalizeRscURL(url) {
-      return url.replace(/\.rsc($|\?)/, '$1');
+      return url.replace(/\.rsc($|\?)/, "$1");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -450,14 +450,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       isInterceptionRouteAppPath: () => isInterceptionRouteAppPath,
     });
     const _apppaths = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [client] (ecmascript)",
     );
-    const INTERCEPTION_ROUTE_MARKERS = ['(..)(..)', '(.)', '(..)', '(...)'];
+    const INTERCEPTION_ROUTE_MARKERS = ["(..)(..)", "(.)", "(..)", "(...)"];
     function isInterceptionRouteAppPath(path) {
       // TODO-APP: add more serious validation
       return (
         path
-          .split('/')
+          .split("/")
           .find((segment) => INTERCEPTION_ROUTE_MARKERS.find((m) => segment.startsWith(m))) !==
         undefined
       );
@@ -466,7 +466,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       let interceptingRoute;
       let marker;
       let interceptedRoute;
-      for (const segment of path.split('/')) {
+      for (const segment of path.split("/")) {
         marker = INTERCEPTION_ROUTE_MARKERS.find((m) => segment.startsWith(m));
         if (marker) {
           [interceptingRoute, interceptedRoute] = path.split(marker, 2);
@@ -478,9 +478,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           new Error(
             `Invalid interception route: ${path}. Must be in the format /<intercepting route>/(..|...|..)(..)/<intercepted route>`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E269',
+            value: "E269",
             enumerable: false,
             configurable: true,
           },
@@ -488,64 +488,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
       interceptingRoute = (0, _apppaths.normalizeAppPath)(interceptingRoute); // normalize the path, e.g. /(blog)/feed -> /feed
       switch (marker) {
-        case '(.)':
+        case "(.)":
           // (.) indicates that we should match with sibling routes, so we just need to append the intercepted route to the intercepting route
-          if (interceptingRoute === '/') {
+          if (interceptingRoute === "/") {
             interceptedRoute = `/${interceptedRoute}`;
           } else {
-            interceptedRoute = interceptingRoute + '/' + interceptedRoute;
+            interceptedRoute = interceptingRoute + "/" + interceptedRoute;
           }
           break;
-        case '(..)':
+        case "(..)":
           // (..) indicates that we should match at one level up, so we need to remove the last segment of the intercepting route
-          if (interceptingRoute === '/') {
+          if (interceptingRoute === "/") {
             throw Object.defineProperty(
               new Error(
                 `Invalid interception route: ${path}. Cannot use (..) marker at the root level, use (.) instead.`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E207',
+                value: "E207",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
           interceptedRoute = interceptingRoute
-            .split('/')
+            .split("/")
             .slice(0, -1)
             .concat(interceptedRoute)
-            .join('/');
+            .join("/");
           break;
-        case '(...)':
+        case "(...)":
           // (...) will match the route segment in the root directory, so we need to use the root directory to prepend the intercepted route
-          interceptedRoute = '/' + interceptedRoute;
+          interceptedRoute = "/" + interceptedRoute;
           break;
-        case '(..)(..)': {
+        case "(..)(..)": {
           // (..)(..) indicates that we should match at two levels up, so we need to remove the last two segments of the intercepting route
-          const splitInterceptingRoute = interceptingRoute.split('/');
+          const splitInterceptingRoute = interceptingRoute.split("/");
           if (splitInterceptingRoute.length <= 2) {
             throw Object.defineProperty(
               new Error(
                 `Invalid interception route: ${path}. Cannot use (..)(..) marker at the root level or one level up.`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E486',
+                value: "E486",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
-          interceptedRoute = splitInterceptingRoute.slice(0, -2).concat(interceptedRoute).join('/');
+          interceptedRoute = splitInterceptingRoute.slice(0, -2).concat(interceptedRoute).join("/");
           break;
         }
         default:
           throw Object.defineProperty(
-            new Error('Invariant: unexpected marker'),
-            '__NEXT_ERROR_CODE',
+            new Error("Invariant: unexpected marker"),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E112',
+              value: "E112",
               enumerable: false,
               configurable: true,
             },
@@ -557,19 +557,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isDynamicRoute', {
+    Object.defineProperty(exports, "isDynamicRoute", {
       enumerable: true,
       get: () => isDynamicRoute,
     });
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)",
     );
     // Identify /.*[param].*/ in route string
     const TEST_ROUTE = /\/[^/]*\[[^/]+\][^/]*(?=\/|$)/;
@@ -587,11 +587,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return TEST_ROUTE.test(route);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -616,7 +616,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const query = {};
       for (const [key, value] of searchParams.entries()) {
         const existing = query[key];
-        if (typeof existing === 'undefined') {
+        if (typeof existing === "undefined") {
           query[key] = value;
         } else if (Array.isArray(existing)) {
           existing.push(value);
@@ -627,13 +627,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return query;
     }
     function stringifyUrlQueryParam(param) {
-      if (typeof param === 'string') {
+      if (typeof param === "string") {
         return param;
       }
-      if ((typeof param === 'number' && !isNaN(param)) || typeof param === 'boolean') {
+      if ((typeof param === "number" && !isNaN(param)) || typeof param === "boolean") {
         return String(param);
       } else {
-        return '';
+        return "";
       }
     }
     function urlQueryToSearchParams(query) {
@@ -661,16 +661,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return target;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -719,7 +719,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       normalizeRepeatedSlashes: () => normalizeRepeatedSlashes,
       stringifyError: () => stringifyError,
     });
-    const WEB_VITALS = ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB'];
+    const WEB_VITALS = ["CLS", "FCP", "FID", "INP", "LCP", "TTFB"];
     function execOnce(fn) {
       let used = false;
       let result;
@@ -737,7 +737,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     const isAbsoluteUrl = (url) => ABSOLUTE_URL_REGEX.test(url);
     function getLocationOrigin() {
       const { protocol, hostname, port } = window.location;
-      return `${protocol}//${hostname}${port ? ':' + port : ''}`;
+      return `${protocol}//${hostname}${port ? ":" + port : ""}`;
     }
     function getURL() {
       const { href } = window.location;
@@ -745,29 +745,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return href.substring(origin.length);
     }
     function getDisplayName(Component) {
-      return typeof Component === 'string'
+      return typeof Component === "string"
         ? Component
-        : Component.displayName || Component.name || 'Unknown';
+        : Component.displayName || Component.name || "Unknown";
     }
     function isResSent(res) {
       return res.finished || res.headersSent;
     }
     function normalizeRepeatedSlashes(url) {
-      const urlParts = url.split('?');
+      const urlParts = url.split("?");
       const urlNoQuery = urlParts[0];
       return (
         urlNoQuery // first we replace any non-encoded backslashes with forward
           // then normalize repeated forward slashes
-          .replace(/\\/g, '/')
-          .replace(/\/\/+/g, '/') + (urlParts[1] ? `?${urlParts.slice(1).join('?')}` : '')
+          .replace(/\\/g, "/")
+          .replace(/\/\/+/g, "/") + (urlParts[1] ? `?${urlParts.slice(1).join("?")}` : "")
       );
     }
     async function loadGetInitialProps(App, ctx) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (App.prototype?.getInitialProps) {
           const message = `"${getDisplayName(App)}.getInitialProps()" is defined as an instance method - visit https://nextjs.org/docs/messages/get-initial-props-as-an-instance-method for more information.`;
-          throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-            value: 'E1035',
+          throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+            value: "E1035",
             enumerable: false,
             configurable: true,
           });
@@ -790,13 +790,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
       if (!props) {
         const message = `"${getDisplayName(App)}.getInitialProps()" should resolve to an object. But found "${props}" instead.`;
-        throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-          value: 'E1025',
+        throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+          value: "E1025",
           enumerable: false,
           configurable: true,
         });
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (Object.keys(props).length === 0 && !ctx.ctx) {
           console.warn(
             `${getDisplayName(App)} returned an empty object from \`getInitialProps\`. This de-optimizes and prevents automatic static optimization. https://nextjs.org/docs/messages/empty-object-getInitialProps`,
@@ -805,19 +805,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
       return props;
     }
-    const SP = typeof performance !== 'undefined';
+    const SP = typeof performance !== "undefined";
     const ST =
       SP &&
-      ['mark', 'measure', 'getEntriesByName'].every(
-        (method) => typeof performance[method] === 'function',
+      ["mark", "measure", "getEntriesByName"].every(
+        (method) => typeof performance[method] === "function",
       );
     class DecodeError extends Error {}
     class NormalizeError extends Error {}
     class PageNotFoundError extends Error {
       constructor(page) {
         super();
-        this.code = 'ENOENT';
-        this.name = 'PageNotFoundError';
+        this.code = "ENOENT";
+        this.name = "PageNotFoundError";
         this.message = `Cannot find module for page: ${page}`;
       }
     }
@@ -830,7 +830,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     class MiddlewareNotFoundError extends Error {
       constructor() {
         super();
-        this.code = 'ENOENT';
+        this.code = "ENOENT";
         this.message = `Cannot find the middleware module`;
       }
     }
@@ -841,64 +841,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       });
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Given a path this function will find the pathname, query and hash and return
      * them. This is useful to parse full paths on the client side.
      * @param path A path to parse e.g. /foo/bar?id=1#hash
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'parsePath', {
+    Object.defineProperty(exports, "parsePath", {
       enumerable: true,
       get: () => parsePath,
     });
     function parsePath(path) {
-      const hashIndex = path.indexOf('#');
-      const queryIndex = path.indexOf('?');
+      const hashIndex = path.indexOf("#");
+      const queryIndex = path.indexOf("?");
       const hasQuery = queryIndex > -1 && (hashIndex < 0 || queryIndex < hashIndex);
       if (hasQuery || hashIndex > -1) {
         return {
           pathname: path.substring(0, hasQuery ? queryIndex : hashIndex),
-          query: hasQuery ? path.substring(queryIndex, hashIndex > -1 ? hashIndex : undefined) : '',
-          hash: hashIndex > -1 ? path.slice(hashIndex) : '',
+          query: hasQuery ? path.substring(queryIndex, hashIndex > -1 ? hashIndex : undefined) : "",
+          hash: hashIndex > -1 ? path.slice(hashIndex) : "",
         };
       }
       return {
         pathname: path,
-        query: '',
-        hash: '',
+        query: "",
+        hash: "",
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'addPathPrefix', {
+    Object.defineProperty(exports, "addPathPrefix", {
       enumerable: true,
       get: () => addPathPrefix,
     });
     const _parsepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)",
     );
     function addPathPrefix(path, prefix) {
-      if (!path.startsWith('/') || !prefix) {
+      if (!path.startsWith("/") || !prefix) {
         return path;
       }
       const { pathname, query, hash } = (0, _parsepath.parsePath)(path);
       return `${prefix}${pathname}${query}${hash}`;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Removes the trailing slash for a given route or page path. Preserves the
@@ -906,25 +906,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      *   - `/foo/bar/` -> `/foo/bar`
      *   - `/foo/bar` -> `/foo/bar`
      *   - `/` -> `/`
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'removeTrailingSlash', {
+    Object.defineProperty(exports, "removeTrailingSlash", {
       enumerable: true,
       get: () => removeTrailingSlash,
     });
     function removeTrailingSlash(route) {
-      return route.replace(/\/$/, '') || '/';
+      return route.replace(/\/$/, "") || "/";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Client-safe utilities for route matching that don't import server-side
      * utilities to avoid bundling issues with Turbopack
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -948,13 +948,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       safeRouteMatcher: () => safeRouteMatcher,
     });
     const _pathtoregexp = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp/index.js [client] (ecmascript)",
     );
     const _routepatternnormalizer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/route-pattern-normalizer.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/route-pattern-normalizer.js [client] (ecmascript)",
     );
     function safePathToRegexp(route, keys, options) {
-      if (typeof route !== 'string') {
+      if (typeof route !== "string") {
         return (0, _pathtoregexp.pathToRegexp)(route, keys, options);
       }
       // Check if normalization is needed and cache the result
@@ -1034,22 +1034,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getRouteMatcher', {
+    Object.defineProperty(exports, "getRouteMatcher", {
       enumerable: true,
       get: () => getRouteMatcher,
     });
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)",
     );
     const _routematchutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [client] (ecmascript)",
     );
     function getRouteMatcher({ re, groups }) {
       const rawMatcher = (pathname) => {
@@ -1060,10 +1060,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             return decodeURIComponent(param);
           } catch {
             throw Object.defineProperty(
-              new _utils.DecodeError('failed to decode param'),
-              '__NEXT_ERROR_CODE',
+              new _utils.DecodeError("failed to decode param"),
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E528',
+                value: "E528",
                 enumerable: false,
                 configurable: true,
               },
@@ -1075,7 +1075,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           const match = routeMatch[group.pos];
           if (match !== undefined) {
             if (group.repeat) {
-              params[key] = match.split('/').map((entry) => decode(entry));
+              params[key] = match.split("/").map((entry) => decode(entry));
             } else {
               params[key] = decode(match);
             }
@@ -1087,15 +1087,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return (0, _routematchutils.safeRouteMatcher)(rawMatcher);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // regexp is based on https://github.com/sindresorhus/escape-string-regexp
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'escapeStringRegexp', {
+    Object.defineProperty(exports, "escapeStringRegexp", {
       enumerable: true,
       get: () => escapeStringRegexp,
     });
@@ -1104,45 +1104,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     function escapeStringRegexp(str) {
       // see also: https://github.com/lodash/lodash/blob/2da024c3b4f9947a48517639de7560457cd4ec6c/escapeRegExp.js#L23
       if (reHasRegExp.test(str)) {
-        return str.replace(reReplaceRegExp, '\\$&');
+        return str.replace(reReplaceRegExp, "\\$&");
       }
       return str;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'InvariantError', {
+    Object.defineProperty(exports, "InvariantError", {
       enumerable: true,
       get: () => InvariantError,
     });
     class InvariantError extends Error {
       constructor(message, options) {
         super(
-          `Invariant: ${message.endsWith('.') ? message : message + '.'} This is a bug in Next.js.`,
+          `Invariant: ${message.endsWith(".") ? message : message + "."} This is a bug in Next.js.`,
           options,
         );
-        this.name = 'InvariantError';
+        this.name = "InvariantError";
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-loader-tree.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-loader-tree.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'parseLoaderTree', {
+    Object.defineProperty(exports, "parseLoaderTree", {
       enumerable: true,
       get: () => parseLoaderTree,
     });
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [client] (ecmascript)",
     );
     function parseLoaderTree(tree) {
       const [segment, parallelRoutes, modules, staticSiblings] = tree;
@@ -1162,11 +1162,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1188,7 +1188,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       isCatchAll: () => isCatchAll,
     });
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)",
     );
     function getSegmentParam(segment) {
       const interceptionMarker = _interceptionroutes.INTERCEPTION_ROUTE_MARKERS.find((marker) =>
@@ -1199,23 +1199,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if (interceptionMarker) {
         segment = segment.slice(interceptionMarker.length);
       }
-      if (segment.startsWith('[[...') && segment.endsWith(']]')) {
+      if (segment.startsWith("[[...") && segment.endsWith("]]")) {
         return {
           // TODO-APP: Optional catchall does not currently work with parallel routes,
           // so for now aren't handling a potential interception marker.
-          paramType: 'optional-catchall',
+          paramType: "optional-catchall",
           paramName: segment.slice(5, -2),
         };
       }
-      if (segment.startsWith('[...') && segment.endsWith(']')) {
+      if (segment.startsWith("[...") && segment.endsWith("]")) {
         return {
-          paramType: interceptionMarker ? `catchall-intercepted-${interceptionMarker}` : 'catchall',
+          paramType: interceptionMarker ? `catchall-intercepted-${interceptionMarker}` : "catchall",
           paramName: segment.slice(4, -1),
         };
       }
-      if (segment.startsWith('[') && segment.endsWith(']')) {
+      if (segment.startsWith("[") && segment.endsWith("]")) {
         return {
-          paramType: interceptionMarker ? `dynamic-intercepted-${interceptionMarker}` : 'dynamic',
+          paramType: interceptionMarker ? `dynamic-intercepted-${interceptionMarker}` : "dynamic",
           paramName: segment.slice(1, -1),
         };
       }
@@ -1223,34 +1223,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     function isCatchAll(type) {
       return (
-        type === 'catchall' ||
-        type === 'catchall-intercepted-(..)(..)' ||
-        type === 'catchall-intercepted-(.)' ||
-        type === 'catchall-intercepted-(..)' ||
-        type === 'catchall-intercepted-(...)' ||
-        type === 'optional-catchall'
+        type === "catchall" ||
+        type === "catchall-intercepted-(..)(..)" ||
+        type === "catchall-intercepted-(.)" ||
+        type === "catchall-intercepted-(..)" ||
+        type === "catchall-intercepted-(...)" ||
+        type === "optional-catchall"
       );
     }
     function getParamProperties(paramType) {
       let repeat = false;
       let optional = false;
       switch (paramType) {
-        case 'catchall':
-        case 'catchall-intercepted-(..)(..)':
-        case 'catchall-intercepted-(.)':
-        case 'catchall-intercepted-(..)':
-        case 'catchall-intercepted-(...)':
+        case "catchall":
+        case "catchall-intercepted-(..)(..)":
+        case "catchall-intercepted-(.)":
+        case "catchall-intercepted-(..)":
+        case "catchall-intercepted-(...)":
           repeat = true;
           break;
-        case 'optional-catchall':
+        case "optional-catchall":
           repeat = true;
           optional = true;
           break;
-        case 'dynamic':
-        case 'dynamic-intercepted-(..)(..)':
-        case 'dynamic-intercepted-(.)':
-        case 'dynamic-intercepted-(..)':
-        case 'dynamic-intercepted-(...)':
+        case "dynamic":
+        case "dynamic-intercepted-(..)(..)":
+        case "dynamic-intercepted-(.)":
+        case "dynamic-intercepted-(..)":
+        case "dynamic-intercepted-(...)":
           break;
         default:
           paramType;
@@ -1261,11 +1261,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/routes/app.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/routes/app.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1289,16 +1289,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       parseAppRouteSegment: () => parseAppRouteSegment,
     });
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [client] (ecmascript)",
     );
     const _getsegmentparam = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [client] (ecmascript)",
     );
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)",
     );
     function parseAppRouteSegment(segment) {
-      if (segment === '') {
+      if (segment === "") {
         return null;
       }
       // Check if the segment starts with an interception marker
@@ -1308,26 +1308,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const param = (0, _getsegmentparam.getSegmentParam)(segment);
       if (param) {
         return {
-          type: 'dynamic',
+          type: "dynamic",
           name: segment,
           param,
           interceptionMarker,
         };
-      } else if (segment.startsWith('(') && segment.endsWith(')')) {
+      } else if (segment.startsWith("(") && segment.endsWith(")")) {
         return {
-          type: 'route-group',
+          type: "route-group",
           name: segment,
           interceptionMarker,
         };
-      } else if (segment.startsWith('@')) {
+      } else if (segment.startsWith("@")) {
         return {
-          type: 'parallel-route',
+          type: "parallel-route",
           name: segment,
           interceptionMarker,
         };
       } else {
         return {
-          type: 'static',
+          type: "static",
           name: segment,
           interceptionMarker,
         };
@@ -1344,7 +1344,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       );
     }
     function parseAppRoute(pathname, normalized) {
-      const pathnameSegments = pathname.split('/').filter(Boolean);
+      const pathnameSegments = pathname.split("/").filter(Boolean);
       // Build segments array with static and dynamic segments
       const segments = [];
       // Parse if this is an interception route.
@@ -1359,15 +1359,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
         if (
           normalized &&
-          (appSegment.type === 'route-group' || appSegment.type === 'parallel-route')
+          (appSegment.type === "route-group" || appSegment.type === "parallel-route")
         ) {
           throw Object.defineProperty(
             new _invarianterror.InvariantError(
               `${pathname} is being parsed as a normalized route, but it has a route group or parallel route segment.`,
             ),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E923',
+              value: "E923",
               enumerable: false,
               configurable: true,
             },
@@ -1379,9 +1379,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           if (parts.length !== 2) {
             throw Object.defineProperty(
               new Error(`Invalid interception route: ${pathname}`),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E924',
+                value: "E924",
                 enumerable: false,
                 configurable: true,
               },
@@ -1396,7 +1396,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           interceptionMarker = appSegment.interceptionMarker;
         }
       }
-      const dynamicSegments = segments.filter((segment) => segment.type === 'dynamic');
+      const dynamicSegments = segments.filter((segment) => segment.type === "dynamic");
       return {
         normalized,
         pathname,
@@ -1408,55 +1408,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-prefix-from-param-type.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-prefix-from-param-type.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'interceptionPrefixFromParamType', {
+    Object.defineProperty(exports, "interceptionPrefixFromParamType", {
       enumerable: true,
       get: () => interceptionPrefixFromParamType,
     });
     function interceptionPrefixFromParamType(paramType) {
       switch (paramType) {
-        case 'catchall-intercepted-(..)(..)':
-        case 'dynamic-intercepted-(..)(..)':
-          return '(..)(..)';
-        case 'catchall-intercepted-(.)':
-        case 'dynamic-intercepted-(.)':
-          return '(.)';
-        case 'catchall-intercepted-(..)':
-        case 'dynamic-intercepted-(..)':
-          return '(..)';
-        case 'catchall-intercepted-(...)':
-        case 'dynamic-intercepted-(...)':
-          return '(...)';
-        case 'catchall':
-        case 'dynamic':
-        case 'optional-catchall':
+        case "catchall-intercepted-(..)(..)":
+        case "dynamic-intercepted-(..)(..)":
+          return "(..)(..)";
+        case "catchall-intercepted-(.)":
+        case "dynamic-intercepted-(.)":
+          return "(.)";
+        case "catchall-intercepted-(..)":
+        case "dynamic-intercepted-(..)":
+          return "(..)";
+        case "catchall-intercepted-(...)":
+        case "dynamic-intercepted-(...)":
+          return "(...)";
+        case "catchall":
+        case "dynamic":
+        case "optional-catchall":
         default:
           return null;
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/resolve-param-value.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/resolve-param-value.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'resolveParamValue', {
+    Object.defineProperty(exports, "resolveParamValue", {
       enumerable: true,
       get: () => resolveParamValue,
     });
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [client] (ecmascript)",
     );
     const _interceptionprefixfromparamtype = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-prefix-from-param-type.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-prefix-from-param-type.js [client] (ecmascript)",
     );
     /**
      * Extracts the param value from a path segment, handling interception markers
@@ -1468,7 +1468,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      * @returns The extracted param value
      */ function getParamValueFromSegment(pathSegment, params, paramType) {
       // If the segment is dynamic, resolve it from the params object
-      if (pathSegment.type === 'dynamic') {
+      if (pathSegment.type === "dynamic") {
         return params[pathSegment.param.paramName];
       }
       // If the paramType indicates this is an intercepted param, strip the marker
@@ -1476,26 +1476,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const interceptionPrefix = (0,
       _interceptionprefixfromparamtype.interceptionPrefixFromParamType)(paramType);
       if (interceptionPrefix === pathSegment.interceptionMarker) {
-        return pathSegment.name.replace(pathSegment.interceptionMarker, '');
+        return pathSegment.name.replace(pathSegment.interceptionMarker, "");
       }
       // For static segments, use the name
       return pathSegment.name;
     }
     function resolveParamValue(paramName, paramType, depth, route, params) {
       switch (paramType) {
-        case 'catchall':
-        case 'optional-catchall':
-        case 'catchall-intercepted-(..)(..)':
-        case 'catchall-intercepted-(.)':
-        case 'catchall-intercepted-(..)':
-        case 'catchall-intercepted-(...)': {
+        case "catchall":
+        case "optional-catchall":
+        case "catchall-intercepted-(..)(..)":
+        case "catchall-intercepted-(.)":
+        case "catchall-intercepted-(..)":
+        case "catchall-intercepted-(...)": {
           // For catchall routes, derive from pathname using depth to determine
           // which segments to use
           const processedSegments = [];
           // Process segments to handle any embedded dynamic params
           for (let index = depth; index < route.segments.length; index++) {
             const pathSegment = route.segments[index];
-            if (pathSegment.type === 'static') {
+            if (pathSegment.type === "static") {
               let value = pathSegment.name;
               // For intercepted catch-all params, strip the marker from the first segment
               const interceptionPrefix = (0,
@@ -1506,7 +1506,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 interceptionPrefix === pathSegment.interceptionMarker
               ) {
                 // Strip the interception marker from the value
-                value = value.replace(pathSegment.interceptionMarker, '');
+                value = value.replace(pathSegment.interceptionMarker, "");
               }
               processedSegments.push(value);
             } else {
@@ -1514,7 +1514,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               if (!Object.hasOwn(params, pathSegment.param.paramName)) {
                 // If the segment is an optional catchall, we can break out of the
                 // loop because it's optional!
-                if (pathSegment.param.paramType === 'optional-catchall') {
+                if (pathSegment.param.paramType === "optional-catchall") {
                   break;
                 }
                 // Unknown param placeholder in pathname - can't derive full value
@@ -1532,7 +1532,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           }
           if (processedSegments.length > 0) {
             return processedSegments;
-          } else if (paramType === 'optional-catchall') {
+          } else if (paramType === "optional-catchall") {
             return undefined;
           } else {
             // We shouldn't be able to match a catchall segment without any path
@@ -1541,26 +1541,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               new _invarianterror.InvariantError(
                 `Unexpected empty path segments match for a route "${route.pathname}" with param "${paramName}" of type "${paramType}"`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E931',
+                value: "E931",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
         }
-        case 'dynamic':
-        case 'dynamic-intercepted-(..)(..)':
-        case 'dynamic-intercepted-(.)':
-        case 'dynamic-intercepted-(..)':
-        case 'dynamic-intercepted-(...)':
+        case "dynamic":
+        case "dynamic-intercepted-(..)(..)":
+        case "dynamic-intercepted-(.)":
+        case "dynamic-intercepted-(..)":
+        case "dynamic-intercepted-(...)":
           // For regular dynamic parameters, take the segment at this depth
           if (depth < route.segments.length) {
             const pathSegment = route.segments[depth];
             // Check if the segment at this depth is a placeholder for an unknown param
             if (
-              pathSegment.type === 'dynamic' &&
+              pathSegment.type === "dynamic" &&
               !Object.hasOwn(params, pathSegment.param.paramName)
             ) {
               // The segment is a placeholder like [category] and we don't have the value
@@ -1577,11 +1577,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-dynamic-param.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-dynamic-param.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1607,16 +1607,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       parseParameter: () => parseParameter,
     });
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [client] (ecmascript)",
     );
     const _parseloadertree = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-loader-tree.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-loader-tree.js [client] (ecmascript)",
     );
     const _app = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/routes/app.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/routes/app.js [client] (ecmascript)",
     );
     const _resolveparamvalue = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/resolve-param-value.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/resolve-param-value.js [client] (ecmascript)",
     );
     /**
      * Gets the value of a param from the params object. This correctly handles the
@@ -1636,7 +1636,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         value = searchValue;
       } else if (Array.isArray(value)) {
         value = value.map((i) => encodeURIComponent(i));
-      } else if (typeof value === 'string') {
+      } else if (typeof value === "string") {
         value = encodeURIComponent(value);
       }
       return value;
@@ -1657,7 +1657,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         const { segment, parallelRoutes } = (0, _parseloadertree.parseLoaderTree)(tree);
         const appSegment = (0, _app.parseAppRouteSegment)(segment);
         if (
-          appSegment?.type === 'dynamic' &&
+          appSegment?.type === "dynamic" &&
           !Object.hasOwn(interpolated, appSegment.param.paramName) && // If the param is in the fallback route params, we don't need to
           // interpolate it because it's already marked as being unknown.
           !fallbackRouteParams?.has(appSegment.param.paramName)
@@ -1672,14 +1672,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           );
           if (paramValue !== undefined) {
             interpolated[paramName] = paramValue;
-          } else if (paramType !== 'optional-catchall') {
+          } else if (paramType !== "optional-catchall") {
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
                 `Could not resolve param value for segment: ${paramName}`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E932',
+                value: "E932",
                 enumerable: false,
                 configurable: true,
               },
@@ -1690,8 +1690,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         let nextDepth = depth;
         if (
           appSegment &&
-          appSegment.type !== 'route-group' &&
-          appSegment.type !== 'parallel-route'
+          appSegment.type !== "route-group" &&
+          appSegment.type !== "parallel-route"
         ) {
           nextDepth++;
         }
@@ -1716,27 +1716,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       // handle the case where an optional catchall does not have a value,
       // e.g. `/dashboard/[[...slug]]` when requesting `/dashboard`
       if (!value || value.length === 0) {
-        if (dynamicParamType === 'oc') {
+        if (dynamicParamType === "oc") {
           return {
             param: segmentKey,
             value: null,
             type: dynamicParamType,
-            treeSegment: [segmentKey, '', dynamicParamType, staticSiblings],
+            treeSegment: [segmentKey, "", dynamicParamType, staticSiblings],
           };
         }
         throw Object.defineProperty(
           new _invarianterror.InvariantError(
             `Missing value for segment key: "${segmentKey}" with dynamic param type: ${dynamicParamType}`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E864',
+            value: "E864",
             enumerable: false,
             configurable: true,
           },
         );
       }
-      const paramCacheKey = Array.isArray(value) ? value.join('/') : value;
+      const paramCacheKey = Array.isArray(value) ? value.join("/") : value;
       return {
         param: segmentKey,
         // The value that is passed to user code.
@@ -1759,11 +1759,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return parseMatchedParameter(match[2]);
     }
     function parseMatchedParameter(param) {
-      const optional = param.startsWith('[') && param.endsWith(']');
+      const optional = param.startsWith("[") && param.endsWith("]");
       if (optional) {
         param = param.slice(1, -1);
       }
-      const repeat = param.startsWith('...');
+      const repeat = param.startsWith("...");
       if (repeat) {
         param = param.slice(3);
       }
@@ -1774,11 +1774,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1800,19 +1800,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       getRouteRegex: () => getRouteRegex,
     });
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [client] (ecmascript)",
     );
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [client] (ecmascript)",
     );
     const _escaperegexp = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [client] (ecmascript)",
     );
     const _removetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)",
     );
     const _getdynamicparam = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-dynamic-param.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-dynamic-param.js [client] (ecmascript)",
     );
     function getParametrizedRoute(route, includeSuffix, includePrefix) {
       const groups = {};
@@ -1820,7 +1820,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const segments = [];
       for (const segment of (0, _removetrailingslash.removeTrailingSlash)(route)
         .slice(1)
-        .split('/')) {
+        .split("/")) {
         const markerMatch = _interceptionroutes.INTERCEPTION_ROUTE_MARKERS.find((m) =>
           segment.startsWith(m),
         );
@@ -1847,7 +1847,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           if (includePrefix && paramMatches[1]) {
             segments.push(`/${(0, _escaperegexp.escapeStringRegexp)(paramMatches[1])}`);
           }
-          let s = repeat ? (optional ? '(?:/(.+?))?' : '/(.+?)') : '/([^/]+?)';
+          let s = repeat ? (optional ? "(?:/(.+?))?" : "/(.+?)") : "/([^/]+?)";
           // Remove the leading slash if includePrefix already added it.
           if (includePrefix && paramMatches[1]) {
             s = s.substring(1);
@@ -1862,7 +1862,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       }
       return {
-        parameterizedRoute: segments.join(''),
+        parameterizedRoute: segments.join(""),
         groups,
       };
     }
@@ -1877,7 +1877,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       );
       let re = parameterizedRoute;
       if (!excludeOptionalTrailingSlash) {
-        re += '(?:/)?';
+        re += "(?:/)?";
       }
       return {
         re: new RegExp(`^${re}$`),
@@ -1890,7 +1890,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      */ function buildGetSafeRouteKey() {
       let i = 0;
       return () => {
-        let routeKey = '';
+        let routeKey = "";
         let j = ++i;
         while (j > 0) {
           routeKey += String.fromCharCode(97 + ((j - 1) % 26));
@@ -1910,7 +1910,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const { key, optional, repeat } = (0, _getdynamicparam.parseMatchedParameter)(segment);
       // replace any non-word characters since they can break
       // the named regex
-      let cleanedKey = key.replace(/\W/g, '');
+      let cleanedKey = key.replace(/\W/g, "");
       if (keyPrefix) {
         cleanedKey = `${keyPrefix}${cleanedKey}`;
       }
@@ -1937,7 +1937,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       // the non-intercepted route (ie /app/(.)[username] should not match /app/[username])
       const interceptionPrefix = interceptionMarker
         ? (0, _escaperegexp.escapeStringRegexp)(interceptionMarker)
-        : '';
+        : "";
       let pattern;
       if (duplicateKey && backreferenceDuplicateKeys) {
         // Use a backreference to the key to ensure that the key is the same value
@@ -1977,7 +1977,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       reference = structuredClone(reference);
       for (const segment of (0, _removetrailingslash.removeTrailingSlash)(route)
         .slice(1)
-        .split('/')) {
+        .split("/")) {
         const hasInterceptionMarker = _interceptionroutes.INTERCEPTION_ROUTE_MARKERS.some((m) =>
           segment.startsWith(m),
         );
@@ -2004,7 +2004,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           });
           segments.push(pattern);
           inverseParts.push(
-            `/${paramMatches[1]}:${reference.names[key] ?? cleanedKey}${repeat ? (optional ? '*' : '+') : ''}`,
+            `/${paramMatches[1]}:${reference.names[key] ?? cleanedKey}${repeat ? (optional ? "*" : "+") : ""}`,
           );
           reference.names[key] ??= cleanedKey;
         } else if (paramMatches && paramMatches[2]) {
@@ -2027,7 +2027,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           }
           segments.push(s);
           inverseParts.push(
-            `/:${reference.names[key] ?? cleanedKey}${repeat ? (optional ? '*' : '+') : ''}`,
+            `/:${reference.names[key] ?? cleanedKey}${repeat ? (optional ? "*" : "+") : ""}`,
           );
           reference.names[key] ??= cleanedKey;
         } else {
@@ -2041,9 +2041,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       }
       return {
-        namedParameterizedRoute: segments.join(''),
+        namedParameterizedRoute: segments.join(""),
         routeKeys,
-        pathToRegexpPattern: inverseParts.join(''),
+        pathToRegexpPattern: inverseParts.join(""),
         reference,
       };
     }
@@ -2058,7 +2058,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       );
       let namedRegex = result.namedParameterizedRoute;
       if (!options.excludeOptionalTrailingSlash) {
-        namedRegex += '(?:/)?';
+        namedRegex += "(?:/)?";
       }
       return {
         ...getRouteRegex(normalizedRoute, options),
@@ -2071,8 +2071,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     function getNamedMiddlewareRegex(normalizedRoute, options) {
       const { parameterizedRoute } = getParametrizedRoute(normalizedRoute, false, false);
       const { catchAll = true } = options;
-      if (parameterizedRoute === '/') {
-        const catchAllRegex = catchAll ? '.*' : '';
+      if (parameterizedRoute === "/") {
+        const catchAllRegex = catchAll ? ".*" : "";
         return {
           namedRegex: `^/${catchAllRegex}$`,
         };
@@ -2085,50 +2085,50 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         false,
         undefined,
       );
-      const catchAllGroupedRegex = catchAll ? '(?:(/.*)?)' : '';
+      const catchAllGroupedRegex = catchAll ? "(?:(/.*)?)" : "";
       return {
         namedRegex: `^${namedParameterizedRoute}${catchAllGroupedRegex}$`,
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interpolate-as.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interpolate-as.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'interpolateAs', {
+    Object.defineProperty(exports, "interpolateAs", {
       enumerable: true,
       get: () => interpolateAs,
     });
     const _routematcher = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [client] (ecmascript)",
     );
     const _routeregex = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)",
     );
     function interpolateAs(route, asPathname, query) {
-      let interpolatedRoute = '';
+      let interpolatedRoute = "";
       const dynamicRegex = (0, _routeregex.getRouteRegex)(route);
       const dynamicGroups = dynamicRegex.groups;
       const dynamicMatches =
         (asPathname !== route
           ? (0, _routematcher.getRouteMatcher)(dynamicRegex)(asPathname)
-          : '') || // Fall back to reading the values from the href
+          : "") || // Fall back to reading the values from the href
         // TODO: should this take priority; also need to change in the router.
         query;
       interpolatedRoute = route;
       const params = Object.keys(dynamicGroups);
       if (
         !params.every((param) => {
-          let value = dynamicMatches[param] || '';
+          let value = dynamicMatches[param] || "";
           const { repeat, optional } = dynamicGroups[param];
           // support single-level catch-all
           // TODO: more robust handling for user-error (passing `/`)
-          let replaced = `[${repeat ? '...' : ''}${param}]`;
+          let replaced = `[${repeat ? "..." : ""}${param}]`;
           if (optional) {
-            replaced = `${!value ? '/' : ''}[${replaced}]`;
+            replaced = `${!value ? "/" : ""}[${replaced}]`;
           }
           if (repeat && !Array.isArray(value)) value = [value];
           return (
@@ -2144,13 +2144,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                         // when parsing dynamic route params
                         (segment) => encodeURIComponent(segment),
                       )
-                      .join('/')
+                      .join("/")
                   : encodeURIComponent(value),
-              ) || '/')
+              ) || "/")
           );
         })
       ) {
-        interpolatedRoute = ''; // did not satisfy all requirements
+        interpolatedRoute = ""; // did not satisfy all requirements
         // n.b. We ignore this error because we handle warning for this case in
         // development in the `<Link>` component directly.
       }
@@ -2160,61 +2160,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-asset-path-from-route.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-asset-path-from-route.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // Translates a logical route into its pages asset path (relative from a common prefix)
     // "asset path" being its javascript file, data file, prerendered html,...
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => getAssetPathFromRoute,
     });
-    function getAssetPathFromRoute(route, ext = '') {
+    function getAssetPathFromRoute(route, ext = "") {
       const path =
-        route === '/' ? '/index' : /^\/index(\/|$)/.test(route) ? `/index${route}` : route;
+        route === "/" ? "/index" : /^\/index(\/|$)/.test(route) ? `/index${route}` : route;
       return path + ext;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'parseRelativeUrl', {
+    Object.defineProperty(exports, "parseRelativeUrl", {
       enumerable: true,
       get: () => parseRelativeUrl,
     });
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)",
     );
     const _querystring = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)",
     );
     function parseRelativeUrl(url, base, parseQuery = true) {
       const globalBase = new URL(
-        typeof window === 'undefined' ? 'http://n' : (0, _utils.getLocationOrigin)(),
+        typeof window === "undefined" ? "http://n" : (0, _utils.getLocationOrigin)(),
       );
       const resolvedBase = base
         ? new URL(base, globalBase)
-        : url.startsWith('.')
-          ? new URL(typeof window === 'undefined' ? 'http://n' : window.location.href)
+        : url.startsWith(".")
+          ? new URL(typeof window === "undefined" ? "http://n" : window.location.href)
           : globalBase;
-      const { pathname, searchParams, search, hash, href, origin } = url.startsWith('/')
+      const { pathname, searchParams, search, hash, href, origin } = url.startsWith("/")
         ? // Not using `origin` to support other protocols
           new URL(`${resolvedBase.protocol}//${resolvedBase.host}${url}`)
         : new URL(url, resolvedBase);
       if (origin !== globalBase.origin) {
         throw Object.defineProperty(
           new Error(`invariant: invalid relative URL, router received ${url}`),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E159',
+            value: "E159",
             enumerable: false,
             configurable: true,
           },
@@ -2237,41 +2237,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/encode-uri-path.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/encode-uri-path.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'encodeURIPath', {
+    Object.defineProperty(exports, "encodeURIPath", {
       enumerable: true,
       get: () => encodeURIPath,
     });
     function encodeURIPath(file) {
       return file
-        .split('/')
+        .split("/")
         .map((p) => encodeURIComponent(p))
-        .join('/');
+        .join("/");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/modern-browserslist-target.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/modern-browserslist-target.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // Note: This file is JS because it's used by the taskfile-swc.js file, which is JS.
     // Keep file changes in sync with the corresponding `.d.ts` files.
     /**
      * These are the minimum browser versions that we consider "modern" and thus compile for by default.
      * This list was generated using `pnpm browserslist "baseline widely available"` on 2025-10-01.
-     */ const MODERN_BROWSERSLIST_TARGET = ['chrome 111', 'edge 111', 'firefox 111', 'safari 16.4'];
+     */ const MODERN_BROWSERSLIST_TARGET = ["chrome 111", "edge 111", "firefox 111", "safari 16.4"];
     module.exports = MODERN_BROWSERSLIST_TARGET;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/entry-constants.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/entry-constants.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2294,21 +2294,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       UNDERSCORE_NOT_FOUND_ROUTE: () => UNDERSCORE_NOT_FOUND_ROUTE,
       UNDERSCORE_NOT_FOUND_ROUTE_ENTRY: () => UNDERSCORE_NOT_FOUND_ROUTE_ENTRY,
     });
-    const UNDERSCORE_NOT_FOUND_ROUTE = '/_not-found';
+    const UNDERSCORE_NOT_FOUND_ROUTE = "/_not-found";
     const UNDERSCORE_NOT_FOUND_ROUTE_ENTRY = `${UNDERSCORE_NOT_FOUND_ROUTE}/page`;
-    const UNDERSCORE_GLOBAL_ERROR_ROUTE = '/_global-error';
+    const UNDERSCORE_GLOBAL_ERROR_ROUTE = "/_global-error";
     const UNDERSCORE_GLOBAL_ERROR_ROUTE_ENTRY = `${UNDERSCORE_GLOBAL_ERROR_ROUTE}/page`;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/constants.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/constants.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2464,20 +2464,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       UNDERSCORE_NOT_FOUND_ROUTE_ENTRY: () => _entryconstants.UNDERSCORE_NOT_FOUND_ROUTE_ENTRY,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _modernbrowserslisttarget = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/modern-browserslist-target.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/modern-browserslist-target.js [client] (ecmascript)",
       ),
     );
     const _entryconstants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/entry-constants.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/entry-constants.js [client] (ecmascript)",
     );
     const COMPILER_NAMES = {
-      client: 'client',
-      server: 'server',
-      edgeServer: 'edge-server',
+      client: "client",
+      server: "server",
+      edgeServer: "edge-server",
     };
     const COMPILER_INDEXES = {
       [COMPILER_NAMES.client]: 0,
@@ -2487,132 +2487,132 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     var AdapterOutputType = /*#__PURE__*/ ((AdapterOutputType) => {
       /**
        * `PAGES` represents all the React pages that are under `pages/`.
-       */ AdapterOutputType['PAGES'] = 'PAGES';
+       */ AdapterOutputType["PAGES"] = "PAGES";
       /**
        * `PAGES_API` represents all the API routes under `pages/api/`.
-       */ AdapterOutputType['PAGES_API'] = 'PAGES_API';
+       */ AdapterOutputType["PAGES_API"] = "PAGES_API";
       /**
        * `APP_PAGE` represents all the React pages that are under `app/` with the
        * filename of `page.{j,t}s{,x}`.
-       */ AdapterOutputType['APP_PAGE'] = 'APP_PAGE';
+       */ AdapterOutputType["APP_PAGE"] = "APP_PAGE";
       /**
        * `APP_ROUTE` represents all the API routes and metadata routes that are under `app/` with the
        * filename of `route.{j,t}s{,x}`.
-       */ AdapterOutputType['APP_ROUTE'] = 'APP_ROUTE';
+       */ AdapterOutputType["APP_ROUTE"] = "APP_ROUTE";
       /**
        * `PRERENDER` represents an ISR enabled route that might
        * have a seeded cache entry or fallback generated during build
-       */ AdapterOutputType['PRERENDER'] = 'PRERENDER';
+       */ AdapterOutputType["PRERENDER"] = "PRERENDER";
       /**
        * `STATIC_FILE` represents a static file (ie /_next/static)
-       */ AdapterOutputType['STATIC_FILE'] = 'STATIC_FILE';
+       */ AdapterOutputType["STATIC_FILE"] = "STATIC_FILE";
       /**
        * `MIDDLEWARE` represents the middleware output if present
-       */ AdapterOutputType['MIDDLEWARE'] = 'MIDDLEWARE';
+       */ AdapterOutputType["MIDDLEWARE"] = "MIDDLEWARE";
       return AdapterOutputType;
     })({});
-    const PHASE_EXPORT = 'phase-export';
-    const PHASE_ANALYZE = 'phase-analyze';
-    const PHASE_PRODUCTION_BUILD = 'phase-production-build';
-    const PHASE_PRODUCTION_SERVER = 'phase-production-server';
-    const PHASE_DEVELOPMENT_SERVER = 'phase-development-server';
-    const PHASE_TEST = 'phase-test';
-    const PHASE_INFO = 'phase-info';
-    const PAGES_MANIFEST = 'pages-manifest.json';
-    const APP_PATHS_MANIFEST = 'app-paths-manifest.json';
-    const APP_PATH_ROUTES_MANIFEST = 'app-path-routes-manifest.json';
-    const BUILD_MANIFEST = 'build-manifest.json';
-    const FUNCTIONS_CONFIG_MANIFEST = 'functions-config-manifest.json';
-    const SUBRESOURCE_INTEGRITY_MANIFEST = 'subresource-integrity-manifest';
-    const NEXT_FONT_MANIFEST = 'next-font-manifest';
-    const EXPORT_MARKER = 'export-marker.json';
-    const EXPORT_DETAIL = 'export-detail.json';
-    const PRERENDER_MANIFEST = 'prerender-manifest.json';
-    const PREFETCH_HINTS = 'prefetch-hints.json';
-    const ROUTES_MANIFEST = 'routes-manifest.json';
-    const IMAGES_MANIFEST = 'images-manifest.json';
-    const SERVER_FILES_MANIFEST = 'required-server-files';
-    const DEV_CLIENT_PAGES_MANIFEST = '_devPagesManifest.json';
-    const MIDDLEWARE_MANIFEST = 'middleware-manifest.json';
-    const TURBOPACK_CLIENT_MIDDLEWARE_MANIFEST = '_clientMiddlewareManifest.js';
-    const TURBOPACK_CLIENT_BUILD_MANIFEST = 'client-build-manifest.json';
-    const DEV_CLIENT_MIDDLEWARE_MANIFEST = '_devMiddlewareManifest.json';
-    const REACT_LOADABLE_MANIFEST = 'react-loadable-manifest.json';
-    const SERVER_DIRECTORY = 'server';
+    const PHASE_EXPORT = "phase-export";
+    const PHASE_ANALYZE = "phase-analyze";
+    const PHASE_PRODUCTION_BUILD = "phase-production-build";
+    const PHASE_PRODUCTION_SERVER = "phase-production-server";
+    const PHASE_DEVELOPMENT_SERVER = "phase-development-server";
+    const PHASE_TEST = "phase-test";
+    const PHASE_INFO = "phase-info";
+    const PAGES_MANIFEST = "pages-manifest.json";
+    const APP_PATHS_MANIFEST = "app-paths-manifest.json";
+    const APP_PATH_ROUTES_MANIFEST = "app-path-routes-manifest.json";
+    const BUILD_MANIFEST = "build-manifest.json";
+    const FUNCTIONS_CONFIG_MANIFEST = "functions-config-manifest.json";
+    const SUBRESOURCE_INTEGRITY_MANIFEST = "subresource-integrity-manifest";
+    const NEXT_FONT_MANIFEST = "next-font-manifest";
+    const EXPORT_MARKER = "export-marker.json";
+    const EXPORT_DETAIL = "export-detail.json";
+    const PRERENDER_MANIFEST = "prerender-manifest.json";
+    const PREFETCH_HINTS = "prefetch-hints.json";
+    const ROUTES_MANIFEST = "routes-manifest.json";
+    const IMAGES_MANIFEST = "images-manifest.json";
+    const SERVER_FILES_MANIFEST = "required-server-files";
+    const DEV_CLIENT_PAGES_MANIFEST = "_devPagesManifest.json";
+    const MIDDLEWARE_MANIFEST = "middleware-manifest.json";
+    const TURBOPACK_CLIENT_MIDDLEWARE_MANIFEST = "_clientMiddlewareManifest.js";
+    const TURBOPACK_CLIENT_BUILD_MANIFEST = "client-build-manifest.json";
+    const DEV_CLIENT_MIDDLEWARE_MANIFEST = "_devMiddlewareManifest.json";
+    const REACT_LOADABLE_MANIFEST = "react-loadable-manifest.json";
+    const SERVER_DIRECTORY = "server";
     const CONFIG_FILES = [
-      'next.config.js',
-      'next.config.mjs',
-      'next.config.ts',
+      "next.config.js",
+      "next.config.mjs",
+      "next.config.ts",
       // process.features can be undefined on Edge runtime
       // TODO: Remove `as any` once we bump @types/node to v22.10.0+
       ...(__TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__[
-        'default'
+        "default"
       ]?.features?.typescript
-        ? ['next.config.mts']
+        ? ["next.config.mts"]
         : []),
     ];
-    const BUILD_ID_FILE = 'BUILD_ID';
-    const BLOCKED_PAGES = ['/_document', '/_app', '/_error'];
-    const CLIENT_PUBLIC_FILES_PATH = 'public';
-    const CLIENT_STATIC_FILES_PATH = 'static';
-    const STRING_LITERAL_DROP_BUNDLE = '__NEXT_DROP_CLIENT_FILE__';
-    const NEXT_BUILTIN_DOCUMENT = '__NEXT_BUILTIN_DOCUMENT__';
-    const BARREL_OPTIMIZATION_PREFIX = '__barrel_optimize__';
-    const CLIENT_REFERENCE_MANIFEST = 'client-reference-manifest';
-    const SERVER_REFERENCE_MANIFEST = 'server-reference-manifest';
-    const MIDDLEWARE_BUILD_MANIFEST = 'middleware-build-manifest';
-    const MIDDLEWARE_REACT_LOADABLE_MANIFEST = 'middleware-react-loadable-manifest';
-    const INTERCEPTION_ROUTE_REWRITE_MANIFEST = 'interception-route-rewrite-manifest';
-    const DYNAMIC_CSS_MANIFEST = 'dynamic-css-manifest';
+    const BUILD_ID_FILE = "BUILD_ID";
+    const BLOCKED_PAGES = ["/_document", "/_app", "/_error"];
+    const CLIENT_PUBLIC_FILES_PATH = "public";
+    const CLIENT_STATIC_FILES_PATH = "static";
+    const STRING_LITERAL_DROP_BUNDLE = "__NEXT_DROP_CLIENT_FILE__";
+    const NEXT_BUILTIN_DOCUMENT = "__NEXT_BUILTIN_DOCUMENT__";
+    const BARREL_OPTIMIZATION_PREFIX = "__barrel_optimize__";
+    const CLIENT_REFERENCE_MANIFEST = "client-reference-manifest";
+    const SERVER_REFERENCE_MANIFEST = "server-reference-manifest";
+    const MIDDLEWARE_BUILD_MANIFEST = "middleware-build-manifest";
+    const MIDDLEWARE_REACT_LOADABLE_MANIFEST = "middleware-react-loadable-manifest";
+    const INTERCEPTION_ROUTE_REWRITE_MANIFEST = "interception-route-rewrite-manifest";
+    const DYNAMIC_CSS_MANIFEST = "dynamic-css-manifest";
     const CLIENT_STATIC_FILES_RUNTIME_MAIN = `main`;
     const CLIENT_STATIC_FILES_RUNTIME_MAIN_APP = `${CLIENT_STATIC_FILES_RUNTIME_MAIN}-app`;
-    const APP_CLIENT_INTERNALS = 'app-pages-internals';
+    const APP_CLIENT_INTERNALS = "app-pages-internals";
     const CLIENT_STATIC_FILES_RUNTIME_REACT_REFRESH = `react-refresh`;
     const CLIENT_STATIC_FILES_RUNTIME_WEBPACK = `webpack`;
-    const CLIENT_STATIC_FILES_RUNTIME_POLYFILLS = 'polyfills';
+    const CLIENT_STATIC_FILES_RUNTIME_POLYFILLS = "polyfills";
     const CLIENT_STATIC_FILES_RUNTIME_POLYFILLS_SYMBOL = Symbol(
       CLIENT_STATIC_FILES_RUNTIME_POLYFILLS,
     );
-    const DEFAULT_RUNTIME_WEBPACK = 'webpack-runtime';
-    const EDGE_RUNTIME_WEBPACK = 'edge-runtime-webpack';
-    const STATIC_PROPS_ID = '__N_SSG';
-    const SERVER_PROPS_ID = '__N_SSP';
+    const DEFAULT_RUNTIME_WEBPACK = "webpack-runtime";
+    const EDGE_RUNTIME_WEBPACK = "edge-runtime-webpack";
+    const STATIC_PROPS_ID = "__N_SSG";
+    const SERVER_PROPS_ID = "__N_SSP";
     const DEFAULT_SERIF_FONT = {
-      name: 'Times New Roman',
+      name: "Times New Roman",
       xAvgCharWidth: 821,
       azAvgWidth: 854.3953488372093,
       unitsPerEm: 2048,
     };
     const DEFAULT_SANS_SERIF_FONT = {
-      name: 'Arial',
+      name: "Arial",
       xAvgCharWidth: 904,
       azAvgWidth: 934.5116279069767,
       unitsPerEm: 2048,
     };
-    const STATIC_STATUS_PAGES = ['/500'];
+    const STATIC_STATUS_PAGES = ["/500"];
     const TRACE_OUTPUT_VERSION = 1;
     const TURBO_TRACE_DEFAULT_MEMORY_LIMIT = 6000;
     const RSC_MODULE_TYPES = {
-      client: 'client',
-      server: 'server',
+      client: "client",
+      server: "server",
     };
     const EDGE_UNSUPPORTED_NODE_APIS = [
-      'clearImmediate',
-      'setImmediate',
-      'BroadcastChannel',
-      'ByteLengthQueuingStrategy',
-      'CompressionStream',
-      'CountQueuingStrategy',
-      'DecompressionStream',
-      'DomException',
-      'MessageChannel',
-      'MessageEvent',
-      'MessagePort',
-      'ReadableByteStreamController',
-      'ReadableStreamBYOBRequest',
-      'ReadableStreamDefaultController',
-      'TransformStreamDefaultController',
-      'WritableStreamDefaultController',
+      "clearImmediate",
+      "setImmediate",
+      "BroadcastChannel",
+      "ByteLengthQueuingStrategy",
+      "CompressionStream",
+      "CountQueuingStrategy",
+      "DecompressionStream",
+      "DomException",
+      "MessageChannel",
+      "MessageEvent",
+      "MessagePort",
+      "ReadableByteStreamController",
+      "ReadableStreamBYOBRequest",
+      "ReadableStreamDefaultController",
+      "TransformStreamDefaultController",
+      "WritableStreamDefaultController",
     ];
     const SYSTEM_ENTRYPOINTS = new Set([
       CLIENT_STATIC_FILES_RUNTIME_MAIN,
@@ -2620,31 +2620,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       CLIENT_STATIC_FILES_RUNTIME_MAIN_APP,
     ]);
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/bloom-filter.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/bloom-filter.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
     // minimal implementation MurmurHash2 hash function
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'BloomFilter', {
+    Object.defineProperty(exports, "BloomFilter", {
       enumerable: true,
       get: () => BloomFilter,
     });
@@ -2684,7 +2684,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           bitArray: this.bitArray,
         };
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         return data;
       }
@@ -2715,11 +2715,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-plain-object.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-plain-object.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2742,7 +2742,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return Object.prototype.toString.call(value);
     }
     function isPlainObject(value) {
-      if (getObjectClassLabel(value) !== '[object Object]') {
+      if (getObjectClassLabel(value) !== "[object Object]") {
         return false;
       }
       const prototype = Object.getPrototypeOf(value);
@@ -2754,14 +2754,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        * but Edge Runtime expose Object from vm, being that kind of type-checking wrongly fail.
        *
        * It was changed to the current implementation since it's resilient to serialization.
-       */ return prototype === null || Object.hasOwn(prototype, 'isPrototypeOf');
+       */ return prototype === null || Object.hasOwn(prototype, "isPrototypeOf");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/sorted-routes.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/sorted-routes.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2782,38 +2782,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     });
     class UrlNode {
       insert(urlPath) {
-        this._insert(urlPath.split('/').filter(Boolean), [], false);
+        this._insert(urlPath.split("/").filter(Boolean), [], false);
       }
       smoosh() {
         return this._smoosh();
       }
-      _smoosh(prefix = '/') {
+      _smoosh(prefix = "/") {
         const childrenPaths = [...this.children.keys()].sort();
         if (this.slugName !== null) {
-          childrenPaths.splice(childrenPaths.indexOf('[]'), 1);
+          childrenPaths.splice(childrenPaths.indexOf("[]"), 1);
         }
         if (this.restSlugName !== null) {
-          childrenPaths.splice(childrenPaths.indexOf('[...]'), 1);
+          childrenPaths.splice(childrenPaths.indexOf("[...]"), 1);
         }
         if (this.optionalRestSlugName !== null) {
-          childrenPaths.splice(childrenPaths.indexOf('[[...]]'), 1);
+          childrenPaths.splice(childrenPaths.indexOf("[[...]]"), 1);
         }
         const routes = childrenPaths
           .map((c) => this.children.get(c)._smoosh(`${prefix}${c}/`))
           .reduce((prev, curr) => [...prev, ...curr], []);
         if (this.slugName !== null) {
-          routes.push(...this.children.get('[]')._smoosh(`${prefix}[${this.slugName}]/`));
+          routes.push(...this.children.get("[]")._smoosh(`${prefix}[${this.slugName}]/`));
         }
         if (!this.placeholder) {
-          const r = prefix === '/' ? '/' : prefix.slice(0, -1);
+          const r = prefix === "/" ? "/" : prefix.slice(0, -1);
           if (this.optionalRestSlugName != null) {
             throw Object.defineProperty(
               new Error(
                 `You cannot define a route with the same specificity as a optional catch-all route ("${r}" and "${r}[[...${this.optionalRestSlugName}]]").`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E458',
+                value: "E458",
                 enumerable: false,
                 configurable: true,
               },
@@ -2822,12 +2822,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           routes.unshift(r);
         }
         if (this.restSlugName !== null) {
-          routes.push(...this.children.get('[...]')._smoosh(`${prefix}[...${this.restSlugName}]/`));
+          routes.push(...this.children.get("[...]")._smoosh(`${prefix}[...${this.restSlugName}]/`));
         }
         if (this.optionalRestSlugName !== null) {
           routes.push(
             ...this.children
-              .get('[[...]]')
+              .get("[[...]]")
               ._smoosh(`${prefix}[[...${this.optionalRestSlugName}]]/`),
           );
         }
@@ -2841,9 +2841,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (isCatchAll) {
           throw Object.defineProperty(
             new Error(`Catch-all must be the last part of the URL.`),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E392',
+              value: "E392",
               enumerable: false,
               configurable: true,
             },
@@ -2852,52 +2852,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         // The next segment in the urlPaths list
         let nextSegment = urlPaths[0];
         // Check if the segment matches `[something]`
-        if (nextSegment.startsWith('[') && nextSegment.endsWith(']')) {
+        if (nextSegment.startsWith("[") && nextSegment.endsWith("]")) {
           // Strip `[` and `]`, leaving only `something`
           let segmentName = nextSegment.slice(1, -1);
           let isOptional = false;
-          if (segmentName.startsWith('[') && segmentName.endsWith(']')) {
+          if (segmentName.startsWith("[") && segmentName.endsWith("]")) {
             // Strip optional `[` and `]`, leaving only `something`
             segmentName = segmentName.slice(1, -1);
             isOptional = true;
           }
-          if (segmentName.startsWith('…')) {
+          if (segmentName.startsWith("…")) {
             throw Object.defineProperty(
               new Error(
                 `Detected a three-dot character ('…') at ('${segmentName}'). Did you mean ('...')?`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E147',
+                value: "E147",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
-          if (segmentName.startsWith('...')) {
+          if (segmentName.startsWith("...")) {
             // Strip `...`, leaving only `something`
             segmentName = segmentName.substring(3);
             isCatchAll = true;
           }
-          if (segmentName.startsWith('[') || segmentName.endsWith(']')) {
+          if (segmentName.startsWith("[") || segmentName.endsWith("]")) {
             throw Object.defineProperty(
               new Error(
                 `Segment names may not start or end with extra brackets ('${segmentName}').`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E421',
+                value: "E421",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
-          if (segmentName.startsWith('.')) {
+          if (segmentName.startsWith(".")) {
             throw Object.defineProperty(
               new Error(`Segment names may not start with erroneous periods ('${segmentName}').`),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E288',
+                value: "E288",
                 enumerable: false,
                 configurable: true,
               },
@@ -2916,9 +2916,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                   new Error(
                     `You cannot use different slug names for the same dynamic path ('${previousSlug}' !== '${nextSlug}').`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E337',
+                    value: "E337",
                     enumerable: false,
                     configurable: true,
                   },
@@ -2931,22 +2931,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                   new Error(
                     `You cannot have the same slug name "${nextSlug}" repeat within a single dynamic path`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E247',
+                    value: "E247",
                     enumerable: false,
                     configurable: true,
                   },
                 );
               }
-              if (slug.replace(/\W/g, '') === nextSegment.replace(/\W/g, '')) {
+              if (slug.replace(/\W/g, "") === nextSegment.replace(/\W/g, "")) {
                 throw Object.defineProperty(
                   new Error(
                     `You cannot have the slug names "${slug}" and "${nextSlug}" differ only by non-word symbols within a single dynamic path`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E499',
+                    value: "E499",
                     enumerable: false,
                     configurable: true,
                   },
@@ -2962,9 +2962,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                   new Error(
                     `You cannot use both an required and optional catch-all route at the same level ("[...${this.restSlugName}]" and "${urlPaths[0]}" ).`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E299',
+                    value: "E299",
                     enumerable: false,
                     configurable: true,
                   },
@@ -2974,16 +2974,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               // slugName is kept as it can only be one particular slugName
               this.optionalRestSlugName = segmentName;
               // nextSegment is overwritten to [[...]] so that it can later be sorted specifically
-              nextSegment = '[[...]]';
+              nextSegment = "[[...]]";
             } else {
               if (this.optionalRestSlugName != null) {
                 throw Object.defineProperty(
                   new Error(
                     `You cannot use both an optional and required catch-all route at the same level ("[[...${this.optionalRestSlugName}]]" and "${urlPaths[0]}").`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E300',
+                    value: "E300",
                     enumerable: false,
                     configurable: true,
                   },
@@ -2993,15 +2993,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               // slugName is kept as it can only be one particular slugName
               this.restSlugName = segmentName;
               // nextSegment is overwritten to [...] so that it can later be sorted specifically
-              nextSegment = '[...]';
+              nextSegment = "[...]";
             }
           } else {
             if (isOptional) {
               throw Object.defineProperty(
                 new Error(`Optional route parameters are not yet supported ("${urlPaths[0]}").`),
-                '__NEXT_ERROR_CODE',
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E435',
+                  value: "E435",
                   enumerable: false,
                   configurable: true,
                 },
@@ -3011,7 +3011,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             // slugName is kept as it can only be one particular slugName
             this.slugName = segmentName;
             // nextSegment is overwritten to [] so that it can later be sorted specifically
-            nextSegment = '[]';
+            nextSegment = "[]";
           }
         }
         // If this UrlNode doesn't have the nextSegment yet we create a new child UrlNode
@@ -3062,11 +3062,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return sorted.map((pathname) => objects[indexes[pathname]]);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3088,65 +3088,65 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       isDynamicRoute: () => _isdynamic.isDynamicRoute,
     });
     const _sortedroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/sorted-routes.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/sorted-routes.js [client] (ecmascript)",
     );
     const _isdynamic = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)",
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * For a given page path, this function ensures that there is no backslash
      * escaping slashes in the path. Example:
      *  - `foo\/bar\/baz` -> `foo/bar/baz`
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'normalizePathSep', {
+    Object.defineProperty(exports, "normalizePathSep", {
       enumerable: true,
       get: () => normalizePathSep,
     });
     function normalizePathSep(path) {
-      return path.replace(/\\/g, '/');
+      return path.replace(/\\/g, "/");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/denormalize-page-path.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/denormalize-page-path.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'denormalizePagePath', {
+    Object.defineProperty(exports, "denormalizePagePath", {
       enumerable: true,
       get: () => denormalizePagePath,
     });
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [client] (ecmascript)",
     );
     const _normalizepathsep = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [client] (ecmascript)",
     );
     function denormalizePagePath(page) {
       const _page = (0, _normalizepathsep.normalizePathSep)(page);
-      return _page.startsWith('/index/') && !(0, _utils.isDynamicRoute)(_page)
+      return _page.startsWith("/index/") && !(0, _utils.isDynamicRoute)(_page)
         ? _page.slice(6)
-        : _page !== '/index'
+        : _page !== "/index"
           ? _page
-          : '/';
+          : "/";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'normalizeLocalePath', {
+    Object.defineProperty(exports, "normalizeLocalePath", {
       enumerable: true,
       get: () => normalizeLocalePath,
     });
@@ -3170,7 +3170,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       let detectedLocale;
       // The first segment will be empty, because it has a leading `/`. If
       // there is no further segment, there is no locale (or it's the default).
-      const segments = pathname.split('/', 2);
+      const segments = pathname.split("/", 2);
       // If there's no second segment (ie, the pathname is just `/`), there's no
       // locale.
       if (!segments[1])
@@ -3189,20 +3189,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       // Return the case-sensitive locale.
       detectedLocale = locales[index];
       // Remove the `/${locale}` part of the pathname.
-      pathname = pathname.slice(detectedLocale.length + 1) || '/';
+      pathname = pathname.slice(detectedLocale.length + 1) || "/";
       return {
         pathname,
         detectedLocale,
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
     // Format function modified from nodejs
     // Copyright Joyent, Inc. and other Node contributors.
@@ -3225,8 +3225,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
     // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
     // USE OR OTHER DEALINGS IN THE SOFTWARE.
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3248,64 +3248,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       urlObjectKeys: () => urlObjectKeys,
     });
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [client] (ecmascript)",
     );
     const _querystring = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)",
       ),
     );
     const slashedProtocols = /https?|ftp|gopher|file/;
     function formatUrl(urlObj) {
       let { auth, hostname } = urlObj;
-      let protocol = urlObj.protocol || '';
-      let pathname = urlObj.pathname || '';
-      let hash = urlObj.hash || '';
-      let query = urlObj.query || '';
+      let protocol = urlObj.protocol || "";
+      let pathname = urlObj.pathname || "";
+      let hash = urlObj.hash || "";
+      let query = urlObj.query || "";
       let host = false;
-      auth = auth ? encodeURIComponent(auth).replace(/%3A/i, ':') + '@' : '';
+      auth = auth ? encodeURIComponent(auth).replace(/%3A/i, ":") + "@" : "";
       if (urlObj.host) {
         host = auth + urlObj.host;
       } else if (hostname) {
-        host = auth + (~hostname.indexOf(':') ? `[${hostname}]` : hostname);
+        host = auth + (~hostname.indexOf(":") ? `[${hostname}]` : hostname);
         if (urlObj.port) {
-          host += ':' + urlObj.port;
+          host += ":" + urlObj.port;
         }
       }
-      if (query && typeof query === 'object') {
+      if (query && typeof query === "object") {
         query = String(_querystring.urlQueryToSearchParams(query));
       }
-      let search = urlObj.search || (query && `?${query}`) || '';
-      if (protocol && !protocol.endsWith(':')) protocol += ':';
+      let search = urlObj.search || (query && `?${query}`) || "";
+      if (protocol && !protocol.endsWith(":")) protocol += ":";
       if (urlObj.slashes || ((!protocol || slashedProtocols.test(protocol)) && host !== false)) {
-        host = '//' + (host || '');
-        if (pathname && pathname[0] !== '/') pathname = '/' + pathname;
+        host = "//" + (host || "");
+        if (pathname && pathname[0] !== "/") pathname = "/" + pathname;
       } else if (!host) {
-        host = '';
+        host = "";
       }
-      if (hash && hash[0] !== '#') hash = '#' + hash;
-      if (search && search[0] !== '?') search = '?' + search;
+      if (hash && hash[0] !== "#") hash = "#" + hash;
+      if (search && search[0] !== "?") search = "?" + search;
       pathname = pathname.replace(/[?#]/g, encodeURIComponent);
-      search = search.replace('#', '%23');
+      search = search.replace("#", "%23");
       return `${protocol}${host}${pathname}${search}${hash}`;
     }
     const urlObjectKeys = [
-      'auth',
-      'hash',
-      'host',
-      'hostname',
-      'href',
-      'path',
-      'pathname',
-      'port',
-      'protocol',
-      'query',
-      'search',
-      'slashes',
+      "auth",
+      "hash",
+      "host",
+      "hostname",
+      "href",
+      "path",
+      "pathname",
+      "port",
+      "protocol",
+      "query",
+      "search",
+      "slashes",
     ];
     function formatWithValidation(url) {
-      if (('TURBOPACK compile-time truthy', 1)) {
-        if (url !== null && typeof url === 'object') {
+      if (("TURBOPACK compile-time truthy", 1)) {
+        if (url !== null && typeof url === "object") {
           Object.keys(url).forEach((key) => {
             if (!urlObjectKeys.includes(key)) {
               console.warn(`Unknown key passed via urlObject into url.format: ${key}`);
@@ -3316,36 +3316,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return formatUrl(url);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'pathHasPrefix', {
+    Object.defineProperty(exports, "pathHasPrefix", {
       enumerable: true,
       get: () => pathHasPrefix,
     });
     const _parsepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)",
     );
     function pathHasPrefix(path, prefix) {
-      if (typeof path !== 'string') {
+      if (typeof path !== "string") {
         return false;
       }
       const { pathname } = (0, _parsepath.parsePath)(path);
-      return pathname === prefix || pathname.startsWith(prefix + '/');
+      return pathname === prefix || pathname.startsWith(prefix + "/");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/omit.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/omit.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'omit', {
+    Object.defineProperty(exports, "omit", {
       enumerable: true,
       get: () => omit,
     });
@@ -3359,22 +3359,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return omitted;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-local-url.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-local-url.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isLocalURL', {
+    Object.defineProperty(exports, "isLocalURL", {
       enumerable: true,
       get: () => isLocalURL,
     });
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)",
     );
     const _hasbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)",
     );
     function isLocalURL(url) {
       // prevent a hydration mismatch on href for url with anchor refs
@@ -3391,19 +3391,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-path-prefix.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-path-prefix.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'removePathPrefix', {
+    Object.defineProperty(exports, "removePathPrefix", {
       enumerable: true,
       get: () => removePathPrefix,
     });
     const _pathhasprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)",
     );
     function removePathPrefix(path, prefix) {
       // If the path doesn't start with the prefix we can return it as is. This
@@ -3424,7 +3424,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       // Remove the prefix from the path via slicing.
       const withoutPrefix = path.slice(prefix.length);
       // If the path without the prefix starts with a `/` we can return it as is.
-      if (withoutPrefix.startsWith('/')) {
+      if (withoutPrefix.startsWith("/")) {
         return withoutPrefix;
       }
       // If the path without the prefix doesn't start with a `/` we need to add it
@@ -3432,45 +3432,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return `/${withoutPrefix}`;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-next-pathname-info.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-next-pathname-info.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getNextPathnameInfo', {
+    Object.defineProperty(exports, "getNextPathnameInfo", {
       enumerable: true,
       get: () => getNextPathnameInfo,
     });
     const _normalizelocalepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [client] (ecmascript)",
     );
     const _removepathprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-path-prefix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-path-prefix.js [client] (ecmascript)",
     );
     const _pathhasprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)",
     );
     function getNextPathnameInfo(pathname, options) {
       const { basePath, i18n, trailingSlash } = options.nextConfig ?? {};
       const info = {
         pathname,
-        trailingSlash: pathname !== '/' ? pathname.endsWith('/') : trailingSlash,
+        trailingSlash: pathname !== "/" ? pathname.endsWith("/") : trailingSlash,
       };
       if (basePath && (0, _pathhasprefix.pathHasPrefix)(info.pathname, basePath)) {
         info.pathname = (0, _removepathprefix.removePathPrefix)(info.pathname, basePath);
         info.basePath = basePath;
       }
       let pathnameNoDataPrefix = info.pathname;
-      if (info.pathname.startsWith('/_next/data/') && info.pathname.endsWith('.json')) {
+      if (info.pathname.startsWith("/_next/data/") && info.pathname.endsWith(".json")) {
         const paths = info.pathname
-          .replace(/^\/_next\/data\//, '')
-          .replace(/\.json$/, '')
-          .split('/');
+          .replace(/^\/_next\/data\//, "")
+          .replace(/\.json$/, "")
+          .split("/");
         const buildId = paths[0];
         info.buildId = buildId;
-        pathnameNoDataPrefix = paths[1] !== 'index' ? `/${paths.slice(1).join('/')}` : '/';
+        pathnameNoDataPrefix = paths[1] !== "index" ? `/${paths.slice(1).join("/")}` : "/";
         // update pathname with normalized if enabled although
         // we use normalized to populate locale info still
         if (options.parseData === true) {
@@ -3497,44 +3497,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return info;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-suffix.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-suffix.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'addPathSuffix', {
+    Object.defineProperty(exports, "addPathSuffix", {
       enumerable: true,
       get: () => addPathSuffix,
     });
     const _parsepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)",
     );
     function addPathSuffix(path, suffix) {
-      if (!path.startsWith('/') || !suffix) {
+      if (!path.startsWith("/") || !suffix) {
         return path;
       }
       const { pathname, query, hash } = (0, _parsepath.parsePath)(path);
       return `${pathname}${suffix}${query}${hash}`;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-locale.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-locale.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'addLocale', {
+    Object.defineProperty(exports, "addLocale", {
       enumerable: true,
       get: () => addLocale,
     });
     const _addpathprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [client] (ecmascript)",
     );
     const _pathhasprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)",
     );
     function addLocale(path, locale, defaultLocale, ignorePrefix) {
       // If no locale was given or the locale is the default locale, we don't need
@@ -3544,35 +3544,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       // If the path is an API path or the path already has the locale prefix, we
       // don't need to prefix the path.
       if (!ignorePrefix) {
-        if ((0, _pathhasprefix.pathHasPrefix)(lower, '/api')) return path;
+        if ((0, _pathhasprefix.pathHasPrefix)(lower, "/api")) return path;
         if ((0, _pathhasprefix.pathHasPrefix)(lower, `/${locale.toLowerCase()}`)) return path;
       }
       // Add the locale prefix to the path.
       return (0, _addpathprefix.addPathPrefix)(path, `/${locale}`);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-next-pathname-info.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-next-pathname-info.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'formatNextPathnameInfo', {
+    Object.defineProperty(exports, "formatNextPathnameInfo", {
       enumerable: true,
       get: () => formatNextPathnameInfo,
     });
     const _removetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)",
     );
     const _addpathprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [client] (ecmascript)",
     );
     const _addpathsuffix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-suffix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-suffix.js [client] (ecmascript)",
     );
     const _addlocale = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-locale.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-locale.js [client] (ecmascript)",
     );
     function formatNextPathnameInfo(info) {
       let pathname = (0, _addlocale.addLocale)(
@@ -3587,25 +3587,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if (info.buildId) {
         pathname = (0, _addpathsuffix.addPathSuffix)(
           (0, _addpathprefix.addPathPrefix)(pathname, `/_next/data/${info.buildId}`),
-          info.pathname === '/' ? 'index.json' : '.json',
+          info.pathname === "/" ? "index.json" : ".json",
         );
       }
       pathname = (0, _addpathprefix.addPathPrefix)(pathname, info.basePath);
       return !info.buildId && info.trailingSlash
-        ? !pathname.endsWith('/')
-          ? (0, _addpathsuffix.addPathSuffix)(pathname, '/')
+        ? !pathname.endsWith("/")
+          ? (0, _addpathsuffix.addPathSuffix)(pathname, "/")
           : pathname
         : (0, _removetrailingslash.removeTrailingSlash)(pathname);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/compare-states.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/compare-states.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'compareRouterStates', {
+    Object.defineProperty(exports, "compareRouterStates", {
       enumerable: true,
       get: () => compareRouterStates,
     });
@@ -3614,7 +3614,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if (stateKeys.length !== Object.keys(b).length) return false;
       for (let i = stateKeys.length; i--; ) {
         const key = stateKeys[i];
-        if (key === 'query') {
+        if (key === "query") {
           const queryKeys = Object.keys(a.query);
           if (queryKeys.length !== Object.keys(b.query).length) {
             return false;
@@ -3632,29 +3632,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return true;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/html-bots.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/html-bots.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // This regex contains the bots that we need to do a blocking render for and can't safely stream the response
     // due to how they parse the DOM. For example, they might explicitly check for metadata in the `head` tag, so we can't stream metadata tags after the `head` was sent.
     // Note: The pattern [\w-]+-Google captures all Google crawlers with "-Google" suffix (e.g., Mediapartners-Google, AdsBot-Google, Storebot-Google)
     // as well as crawlers starting with "Google-" (e.g., Google-PageRenderer, Google-InspectionTool)
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'HTML_LIMITED_BOT_UA_RE', {
+    Object.defineProperty(exports, "HTML_LIMITED_BOT_UA_RE", {
       enumerable: true,
       get: () => HTML_LIMITED_BOT_UA_RE,
     });
     const HTML_LIMITED_BOT_UA_RE =
       /[\w-]+-Google|Google-[\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight/i;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3678,7 +3678,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       isBot: () => isBot,
     });
     const _htmlbots = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/html-bots.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/html-bots.js [client] (ecmascript)",
     );
     // Bot crawler that will spin up a headless browser and execute JS.
     // Only the main Googlebot search crawler executes JavaScript, not other Google crawlers.
@@ -3697,24 +3697,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     function getBotType(userAgent) {
       if (isDomBotUA(userAgent)) {
-        return 'dom';
+        return "dom";
       }
       if (isHtmlLimitedBotUA(userAgent)) {
-        return 'html';
+        return "html";
       }
       return undefined;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/router.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/router.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3736,122 +3736,122 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       matchesMiddleware: () => matchesMiddleware,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [client] (ecmascript)",
     );
     const _removetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)",
     );
     const _routeloader = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-loader.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-loader.js [client] (ecmascript)",
     );
     const _script = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [client] (ecmascript)",
     );
     const _iserror = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [client] (ecmascript)",
       ),
     );
     const _denormalizepagepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/denormalize-page-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/denormalize-page-path.js [client] (ecmascript)",
     );
     const _normalizelocalepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [client] (ecmascript)",
     );
     const _mitt = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/mitt.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/mitt.js [client] (ecmascript)",
       ),
     );
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)",
     );
     const _isdynamic = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)",
     );
     const _parserelativeurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [client] (ecmascript)",
     );
     const _routematcher = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [client] (ecmascript)",
     );
     const _routeregex = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)",
     );
     const _formaturl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [client] (ecmascript)",
     );
     const _detectdomainlocale = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/detect-domain-locale.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/detect-domain-locale.js [client] (ecmascript)",
     );
     const _parsepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)",
     );
     const _addlocale = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-locale.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-locale.js [client] (ecmascript)",
     );
     const _removelocale = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-locale.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-locale.js [client] (ecmascript)",
     );
     const _removebasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [client] (ecmascript)",
     );
     const _addbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [client] (ecmascript)",
     );
     const _hasbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)",
     );
     const _resolvehref = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/resolve-href.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/resolve-href.js [client] (ecmascript)",
     );
     const _isapiroute = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-api-route.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-api-route.js [client] (ecmascript)",
     );
     const _getnextpathnameinfo = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-next-pathname-info.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-next-pathname-info.js [client] (ecmascript)",
     );
     const _formatnextpathnameinfo = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-next-pathname-info.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-next-pathname-info.js [client] (ecmascript)",
     );
     const _comparestates = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/compare-states.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/compare-states.js [client] (ecmascript)",
     );
     const _islocalurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-local-url.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-local-url.js [client] (ecmascript)",
     );
     const _isbot = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [client] (ecmascript)",
     );
     const _omit = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/omit.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/omit.js [client] (ecmascript)",
     );
     const _interpolateas = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interpolate-as.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interpolate-as.js [client] (ecmascript)",
     );
     const _disablesmoothscroll = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [client] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [client] (ecmascript)",
     );
     const _deploymentid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [client] (ecmascript)",
     );
     const _javascripturl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [client] (ecmascript)",
     );
     let resolveRewrites;
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     function buildCancellationError() {
       return Object.assign(
-        Object.defineProperty(new Error('Route Cancelled'), '__NEXT_ERROR_CODE', {
-          value: 'E315',
+        Object.defineProperty(new Error("Route Cancelled"), "__NEXT_ERROR_CODE", {
+          value: "E315",
           enumerable: false,
           configurable: true,
         }),
@@ -3903,7 +3903,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const cleanPathname = (0, _removetrailingslash.removeTrailingSlash)(
         (0, _denormalizepagepath.denormalizePagePath)(pathname),
       );
-      if (cleanPathname === '/404' || cleanPathname === '/_error') {
+      if (cleanPathname === "/404" || cleanPathname === "/_error") {
         return pathname;
       }
       // handle resolving href for dynamic routes
@@ -3927,23 +3927,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         i18n: {
           locales: options.router.locales,
         },
-        trailingSlash: Boolean(('TURBOPACK compile-time value', false)),
+        trailingSlash: Boolean(("TURBOPACK compile-time value", false)),
       };
-      const rewriteHeader = response.headers.get('x-nextjs-rewrite');
-      let rewriteTarget = rewriteHeader || response.headers.get('x-nextjs-matched-path');
+      const rewriteHeader = response.headers.get("x-nextjs-rewrite");
+      let rewriteTarget = rewriteHeader || response.headers.get("x-nextjs-matched-path");
       const matchedPath = response.headers.get(_constants.MATCHED_PATH_HEADER);
       if (
         matchedPath &&
         !rewriteTarget &&
-        !matchedPath.includes('__next_data_catchall') &&
-        !matchedPath.includes('/_error') &&
-        !matchedPath.includes('/404')
+        !matchedPath.includes("__next_data_catchall") &&
+        !matchedPath.includes("/_error") &&
+        !matchedPath.includes("/404")
       ) {
         // leverage x-matched-path to detect next.config.js rewrites
         rewriteTarget = matchedPath;
       }
       if (rewriteTarget) {
-        if (rewriteTarget.startsWith('/') || ('TURBOPACK compile-time value', false)) {
+        if (rewriteTarget.startsWith("/") || ("TURBOPACK compile-time value", false)) {
           const parsedRewriteTarget = (0, _parserelativeurl.parseRelativeUrl)(rewriteTarget);
           const pathnameInfo = (0, _getnextpathnameinfo.getNextPathnameInfo)(
             parsedRewriteTarget.pathname,
@@ -3971,8 +3971,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               const parsedSource = (0, _getnextpathnameinfo.getNextPathnameInfo)(
                 (0, _parserelativeurl.parseRelativeUrl)(source).pathname,
                 {
-                  nextConfig: ('TURBOPACK compile-time falsy', 0)
-                    ? 'TURBOPACK unreachable'
+                  nextConfig: ("TURBOPACK compile-time falsy", 0)
+                    ? "TURBOPACK unreachable"
                     : nextConfig,
                   parseData: true,
                 },
@@ -3981,7 +3981,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               parsedRewriteTarget.pathname = as;
             }
             if (
-              ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+              ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
             );
             else if (!pages.includes(fsPathname)) {
               const resolvedPathname = resolveDynamicRoute(fsPathname, pages);
@@ -4005,7 +4005,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               Object.assign(parsedRewriteTarget.query, matches || {});
             }
             return {
-              type: 'rewrite',
+              type: "rewrite",
               parsedAs: parsedRewriteTarget,
               resolvedHref,
             };
@@ -4018,16 +4018,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             parseData: true,
           }),
           defaultLocale: options.router.defaultLocale,
-          buildId: '',
+          buildId: "",
         });
         return Promise.resolve({
-          type: 'redirect-external',
+          type: "redirect-external",
           destination: `${pathname}${src.query}${src.hash}`,
         });
       }
-      const redirectTarget = response.headers.get('x-nextjs-redirect');
+      const redirectTarget = response.headers.get("x-nextjs-redirect");
       if (redirectTarget) {
-        if (redirectTarget.startsWith('/')) {
+        if (redirectTarget.startsWith("/")) {
           const src = (0, _parsepath.parsePath)(redirectTarget);
           const pathname = (0, _formatnextpathnameinfo.formatNextPathnameInfo)({
             ...(0, _getnextpathnameinfo.getNextPathnameInfo)(src.pathname, {
@@ -4035,21 +4035,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               parseData: true,
             }),
             defaultLocale: options.router.defaultLocale,
-            buildId: '',
+            buildId: "",
           });
           return Promise.resolve({
-            type: 'redirect-internal',
+            type: "redirect-internal",
             newAs: `${pathname}${src.query}${src.hash}`,
             newUrl: `${pathname}${src.query}${src.hash}`,
           });
         }
         return Promise.resolve({
-          type: 'redirect-external',
+          type: "redirect-external",
           destination: redirectTarget,
         });
       }
       return Promise.resolve({
-        type: 'next',
+        type: "next",
       });
     }
     async function withMiddlewareEffects(options) {
@@ -4069,16 +4069,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
     }
     const manualScrollRestoration =
-      ('TURBOPACK compile-time value', false) &&
-      typeof window !== 'undefined' &&
-      'scrollRestoration' in window.history &&
+      ("TURBOPACK compile-time value", false) &&
+      typeof window !== "undefined" &&
+      "scrollRestoration" in window.history &&
       !!(() => {
         try {
-          const v = '__next';
+          const v = "__next";
           return sessionStorage.setItem(v, v), sessionStorage.removeItem(v), true;
         } catch (n) {}
       })();
-    const SSG_DATA_NOT_FOUND = Symbol('SSG_DATA_NOT_FOUND');
+    const SSG_DATA_NOT_FOUND = Symbol("SSG_DATA_NOT_FOUND");
     function fetchRetry(url, attempts, options) {
       return fetch(url, {
         // Cookies are required to be present for Next.js' SSG "Preview Mode".
@@ -4092,10 +4092,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         // > receiving cookies, always supply the `credentials: 'same-origin'`
         // > option instead of relying on the default.
         // https://github.com/github/fetch#caveats
-        credentials: 'same-origin',
-        method: options.method || 'GET',
+        credentials: "same-origin",
+        method: options.method || "GET",
         headers: Object.assign({}, options.headers, {
-          'x-nextjs-data': '1',
+          "x-nextjs-data": "1",
         }),
       }).then((response) => {
         return !response.ok && attempts > 1 && response.status >= 500
@@ -4129,28 +4129,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             {},
             isPrefetch
               ? {
-                  purpose: 'prefetch',
+                  purpose: "prefetch",
                 }
               : {},
             isPrefetch && hasMiddleware
               ? {
-                  'x-middleware-prefetch': '1',
+                  "x-middleware-prefetch": "1",
                 }
               : {},
             deploymentId
               ? {
-                  'x-deployment-id': deploymentId,
+                  "x-deployment-id": deploymentId,
                 }
               : {},
           ),
-          method: params?.method ?? 'GET',
+          method: params?.method ?? "GET",
         })
           .then((response) => {
-            if (response.ok && params?.method === 'HEAD') {
+            if (response.ok && params?.method === "HEAD") {
               return {
                 dataHref,
                 response,
-                text: '',
+                text: "",
                 json: {},
                 cacheKey,
               };
@@ -4186,9 +4186,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 }
                 const error = Object.defineProperty(
                   new Error(`Failed to load static props`),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E124',
+                    value: "E124",
                     enumerable: false,
                     configurable: true,
                   },
@@ -4211,9 +4211,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                   new Error(
                     `Loaded static props were from an outdated deployment, forcing a hard reload`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E989',
+                    value: "E989",
                     enumerable: false,
                     configurable: true,
                   },
@@ -4239,8 +4239,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           .then((data) => {
             if (
               !persistCache ||
-              ('TURBOPACK compile-time value', 'development') !== 'production' ||
-              data.response.headers.get('x-middleware-cache') === 'no-cache'
+              ("TURBOPACK compile-time value", "development") !== "production" ||
+              data.response.headers.get("x-middleware-cache") === "no-cache"
             ) {
               delete inflightCache[cacheKey];
             }
@@ -4251,9 +4251,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               delete inflightCache[cacheKey];
             }
             if (
-              err.message === 'Failed to fetch' || // firefox
-              err.message === 'NetworkError when attempting to fetch resource.' || // safari
-              err.message === 'Load failed'
+              err.message === "Failed to fetch" || // firefox
+              err.message === "NetworkError when attempting to fetch resource." || // safari
+              err.message === "Load failed"
             ) {
               (0, _routeloader.markAssetError)(err);
             }
@@ -4265,7 +4265,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       // without blocking navigation when stale data is available
       if (unstable_skipClientCache && persistCache) {
         return getData({}).then((data) => {
-          if (data.response.headers.get('x-middleware-cache') !== 'no-cache') {
+          if (data.response.headers.get("x-middleware-cache") !== "no-cache") {
             // only update cache if not marked as no-cache
             inflightCache[cacheKey] = Promise.resolve(data);
           }
@@ -4278,7 +4278,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return (inflightCache[cacheKey] = getData(
         isBackground
           ? {
-              method: 'HEAD',
+              method: "HEAD",
             }
           : {},
       ));
@@ -4297,9 +4297,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           new Error(
             `Invariant: attempted to hard navigate to the same URL ${url} ${location.href}`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E282',
+            value: "E282",
             enumerable: false,
             configurable: true,
           },
@@ -4316,9 +4316,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (cancelled) {
           const error = Object.defineProperty(
             new Error(`Abort fetching component for route: "${route}"`),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E483',
+              value: "E483",
               enumerable: false,
               configurable: true,
             },
@@ -4378,7 +4378,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             // So, doing the following for (1) does no harm.
             const { pathname, query } = this;
             this.changeState(
-              'replaceState',
+              "replaceState",
               (0, _formaturl.formatWithValidation)({
                 pathname: (0, _addbasepath.addBasePath)(pathname),
                 query,
@@ -4406,7 +4406,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           let forcedScroll;
           const { url, as, options, key } = state;
           if (
-            ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+            ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
           );
           this._key = key;
           const { pathname } = (0, _parserelativeurl.parseRelativeUrl)(url);
@@ -4425,7 +4425,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             return;
           }
           this.change(
-            'replaceState',
+            "replaceState",
             url,
             as,
             Object.assign({}, options, {
@@ -4444,7 +4444,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         // We should not keep the cache, if there's an error
         // Otherwise, this cause issues when when going back and
         // come again to the errored page.
-        if (pathname !== '/_error') {
+        if (pathname !== "/_error") {
           this.components[route] = {
             Component,
             initial: true,
@@ -4454,7 +4454,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             __N_SSP: initialProps && initialProps.__N_SSP,
           };
         }
-        this.components['/_app'] = {
+        this.components["/_app"] = {
           Component: App,
           styleSheets: [],
         };
@@ -4466,7 +4466,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         // until after mount to prevent hydration mismatch
         const autoExportDynamic =
           (0, _isdynamic.isDynamicRoute)(pathname) && self.__NEXT_DATA__.autoExport;
-        this.basePath = ('TURBOPACK compile-time value', '') || '';
+        this.basePath = ("TURBOPACK compile-time value", "") || "";
         this.sub = subscription;
         this.clc = null;
         this._wrapApp = wrapApp;
@@ -4479,10 +4479,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           self.__NEXT_DATA__.gip ||
           self.__NEXT_DATA__.isExperimentalCompile ||
           (self.__NEXT_DATA__.appGip && !self.__NEXT_DATA__.gsp) ||
-          (!autoExportDynamic && !self.location.search && !('TURBOPACK compile-time value', false))
+          (!autoExportDynamic && !self.location.search && !("TURBOPACK compile-time value", false))
         );
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         this.state = {
           route,
@@ -4490,14 +4490,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           query,
           asPath: autoExportDynamic ? pathname : as,
           isPreview: !!isPreview,
-          locale: ('TURBOPACK compile-time falsy', 0) ? 'TURBOPACK unreachable' : undefined,
+          locale: ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : undefined,
           isFallback,
         };
         this._initialMatchesMiddlewarePromise = Promise.resolve(false);
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           // make sure "as" doesn't start with double slashes or else it can
           // throw an error as it's considered invalid
-          if (!as.startsWith('//')) {
+          if (!as.startsWith("//")) {
             // in order for `e.state` to work on the `onpopstate` event
             // we have to register the initial route upon initialization
             const options = {
@@ -4513,7 +4513,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               // as the server needs to resolve for correct priority
               options._shouldResolveHref = as !== pathname;
               this.changeState(
-                'replaceState',
+                "replaceState",
                 matches
                   ? asPath
                   : (0, _formaturl.formatWithValidation)({
@@ -4526,11 +4526,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               return matches;
             });
           }
-          window.addEventListener('popstate', this.onPopState);
+          window.addEventListener("popstate", this.onPopState);
           // enable custom scroll restoration handling when available
           // otherwise fallback to browser's default handling
           if (
-            ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+            ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
           );
         }
       }
@@ -4558,20 +4558,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           (as && (0, _javascripturl.isJavaScriptURLString)(as.toString()))
         ) {
           throw Object.defineProperty(
-            new Error('Next.js has blocked a javascript: URL as a security precaution.'),
-            '__NEXT_ERROR_CODE',
+            new Error("Next.js has blocked a javascript: URL as a security precaution."),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E978',
+              value: "E978",
               enumerable: false,
               configurable: true,
             },
           );
         }
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         ({ url, as } = prepareUrlAs(this, url, as));
-        return this.change('pushState', url, as, options);
+        return this.change("pushState", url, as, options);
       }
       /**
        * Performs a `replaceState` with arguments
@@ -4584,23 +4584,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           (as && (0, _javascripturl.isJavaScriptURLString)(as.toString()))
         ) {
           throw Object.defineProperty(
-            new Error('Next.js has blocked a javascript: URL as a security precaution.'),
-            '__NEXT_ERROR_CODE',
+            new Error("Next.js has blocked a javascript: URL as a security precaution."),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E978',
+              value: "E978",
               enumerable: false,
               configurable: true,
             },
           );
         }
         ({ url, as } = prepareUrlAs(this, url, as));
-        return this.change('replaceState', url, as, options);
+        return this.change("replaceState", url, as, options);
       }
       async _bfl(as, resolvedAs, locale, skipNavigate) {
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           if (!this._bfl_s && !this._bfl_d) {
             const { BloomFilter } = __turbopack_context__.r(
-              '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/bloom-filter.js [client] (ecmascript)',
+              "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/bloom-filter.js [client] (ecmascript)",
             );
             let staticFilterData;
             let dynamicFilterData;
@@ -4625,93 +4625,93 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               return new Promise(() => {});
             }
             const routerFilterSValue =
-              ('TURBOPACK compile-time value',
+              ("TURBOPACK compile-time value",
               {
-                numItems: ('TURBOPACK compile-time value', 3),
-                errorRate: ('TURBOPACK compile-time value', 0.0001),
-                numBits: ('TURBOPACK compile-time value', 58),
-                numHashes: ('TURBOPACK compile-time value', 14),
+                numItems: ("TURBOPACK compile-time value", 3),
+                errorRate: ("TURBOPACK compile-time value", 0.0001),
+                numBits: ("TURBOPACK compile-time value", 58),
+                numHashes: ("TURBOPACK compile-time value", 14),
                 bitArray:
-                  ('TURBOPACK compile-time value',
+                  ("TURBOPACK compile-time value",
                   [
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
-                    ('TURBOPACK compile-time value', 1),
-                    ('TURBOPACK compile-time value', 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
+                    ("TURBOPACK compile-time value", 1),
+                    ("TURBOPACK compile-time value", 0),
                   ]),
               });
             if (!staticFilterData && routerFilterSValue) {
-              staticFilterData = ('TURBOPACK compile-time truthy', 1)
+              staticFilterData = ("TURBOPACK compile-time truthy", 1)
                 ? routerFilterSValue
-                : 'TURBOPACK unreachable';
+                : "TURBOPACK unreachable";
             }
             const routerFilterDValue =
-              ('TURBOPACK compile-time value',
+              ("TURBOPACK compile-time value",
               {
-                numItems: ('TURBOPACK compile-time value', 0),
-                errorRate: ('TURBOPACK compile-time value', 0.0001),
-                numBits: ('TURBOPACK compile-time value', 0),
-                numHashes: ('TURBOPACK compile-time value', null),
-                bitArray: ('TURBOPACK compile-time value', []),
+                numItems: ("TURBOPACK compile-time value", 0),
+                errorRate: ("TURBOPACK compile-time value", 0.0001),
+                numBits: ("TURBOPACK compile-time value", 0),
+                numHashes: ("TURBOPACK compile-time value", null),
+                bitArray: ("TURBOPACK compile-time value", []),
               });
             if (!dynamicFilterData && routerFilterDValue) {
-              dynamicFilterData = ('TURBOPACK compile-time truthy', 1)
+              dynamicFilterData = ("TURBOPACK compile-time truthy", 1)
                 ? routerFilterDValue
-                : 'TURBOPACK unreachable';
+                : "TURBOPACK unreachable";
             }
             if (staticFilterData?.numHashes) {
               this._bfl_s = new BloomFilter(staticFilterData.numItems, staticFilterData.errorRate);
@@ -4738,7 +4738,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           for (const { as: curAs, allowMatchCurrent } of pathsToCheck) {
             if (curAs) {
               const asNoSlash = (0, _removetrailingslash.removeTrailingSlash)(
-                new URL(curAs, 'http://n').pathname,
+                new URL(curAs, "http://n").pathname,
               );
               const asNoSlashLocale = (0, _addbasepath.addBasePath)(
                 (0, _addlocale.addLocale)(asNoSlash, locale || this.locale),
@@ -4747,7 +4747,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 allowMatchCurrent ||
                 asNoSlash !==
                   (0, _removetrailingslash.removeTrailingSlash)(
-                    new URL(this.asPath, 'http://n').pathname,
+                    new URL(this.asPath, "http://n").pathname,
                   )
               ) {
                 matchesBflStatic =
@@ -4757,9 +4757,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 for (const normalizedAS of [asNoSlash, asNoSlashLocale]) {
                   // if any sub-path of as matches a dynamic filter path
                   // it should be hard navigated
-                  const curAsParts = normalizedAS.split('/');
+                  const curAsParts = normalizedAS.split("/");
                   for (let i = 0; !matchesBflDynamic && i < curAsParts.length + 1; i++) {
-                    const currentPart = curAsParts.slice(0, i).join('/');
+                    const currentPart = curAsParts.slice(0, i).join("/");
                     if (currentPart && this._bfl_d?.contains(currentPart)) {
                       matchesBflDynamic = true;
                       break;
@@ -4824,11 +4824,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
         const prevLocale = nextState.locale;
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         // marking route changes as a navigation start entry
         if (_utils.ST) {
-          performance.mark('routeChange');
+          performance.mark("routeChange");
         }
         const { shallow = false, scroll = true } = options;
         const routeProps = {
@@ -4837,7 +4837,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (this._inFlightRoute && this.clc) {
           if (!isSsr) {
             Router.events.emit(
-              'routeChangeError',
+              "routeChangeError",
               buildCancellationError(),
               this._inFlightRoute,
               routeProps,
@@ -4863,7 +4863,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         // We should not proceed. We should only change the state.
         if (!isQueryUpdating && this.onlyAHashChange(cleanedAs) && !localeChange) {
           nextState.asPath = cleanedAs;
-          Router.events.emit('hashChangeStart', as, routeProps);
+          Router.events.emit("hashChangeStart", as, routeProps);
           // TODO: do we need the resolved href when only a hash change?
           this.changeState(method, url, as, {
             ...options,
@@ -4876,11 +4876,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             await this.set(nextState, this.components[nextState.route], null);
           } catch (err) {
             if ((0, _iserror.default)(err) && err.cancelled) {
-              Router.events.emit('routeChangeError', err, cleanedAs, routeProps);
+              Router.events.emit("routeChangeError", err, cleanedAs, routeProps);
             }
             throw err;
           }
-          Router.events.emit('hashChangeComplete', as, routeProps);
+          Router.events.emit("hashChangeComplete", as, routeProps);
           return true;
         }
         const parsed = (0, _parserelativeurl.parseRelativeUrl)(url);
@@ -4910,7 +4910,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         // as this should not go into the history (That's how browsers work)
         // We should compare the new asPath to the current asPath, not the url
         if (!this.urlIsNew(cleanedAs) && !localeChange) {
-          method = 'replaceState';
+          method = "replaceState";
         }
         // we need to resolve the as value using rewrites for dynamic SSG
         // pages to allow building the data URL correctly
@@ -4925,7 +4925,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           : pathname;
         let route = (0, _removetrailingslash.removeTrailingSlash)(pathname);
         const parsedAsPathname =
-          as.startsWith('/') && (0, _parserelativeurl.parseRelativeUrl)(as).pathname;
+          as.startsWith("/") && (0, _parserelativeurl.parseRelativeUrl)(as).pathname;
         // if we detected the path as app route during prefetching
         // trigger hard navigation
         if (this.components[pathname]?.__appRouter) {
@@ -4955,11 +4955,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (isQueryUpdating && isMiddlewareMatch) {
           shouldResolveHref = false;
         }
-        if (shouldResolveHref && pathname !== '/_error') {
+        if (shouldResolveHref && pathname !== "/_error") {
           options._shouldResolveHref = true;
           if (
-            ('TURBOPACK compile-time value', false) &&
-            as.startsWith('/') //TURBOPACK unreachable
+            ("TURBOPACK compile-time value", false) &&
+            as.startsWith("/") //TURBOPACK unreachable
           );
           else {
             parsed.pathname = resolveDynamicRoute(pathname, pages);
@@ -4973,15 +4973,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           }
         }
         if (!(0, _islocalurl.isLocalURL)(as)) {
-          if (('TURBOPACK compile-time truthy', 1)) {
+          if (("TURBOPACK compile-time truthy", 1)) {
             throw Object.defineProperty(
               new Error(
                 `Invalid href: "${url}" and as: "${as}", received relative href and external as` +
                   `\nSee more info: https://nextjs.org/docs/messages/invalid-relative-url-external-as`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E380',
+                value: "E380",
                 enumerable: false,
                 configurable: true,
               },
@@ -5013,22 +5013,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               (param) => !query[param] && !routeRegex.groups[param].optional,
             );
             if (missingParams.length > 0 && !isMiddlewareMatch) {
-              if (('TURBOPACK compile-time truthy', 1)) {
+              if (("TURBOPACK compile-time truthy", 1)) {
                 console.warn(
                   `${shouldInterpolate ? `Interpolating href` : `Mismatching \`as\` and \`href\``} failed to manually provide ` +
-                    `the params: ${missingParams.join(', ')} in the \`href\`'s \`query\``,
+                    `the params: ${missingParams.join(", ")} in the \`href\`'s \`query\``,
                 );
               }
               throw Object.defineProperty(
                 new Error(
                   (shouldInterpolate
-                    ? `The provided \`href\` (${url}) value is missing query values (${missingParams.join(', ')}) to be interpolated properly. `
+                    ? `The provided \`href\` (${url}) value is missing query values (${missingParams.join(", ")}) to be interpolated properly. `
                     : `The provided \`as\` value (${asPathname}) is incompatible with the \`href\` value (${route}). `) +
-                    `Read more: https://nextjs.org/docs/messages/${shouldInterpolate ? 'href-interpolation-failed' : 'incompatible-href-as'}`,
+                    `Read more: https://nextjs.org/docs/messages/${shouldInterpolate ? "href-interpolation-failed" : "incompatible-href-as"}`,
                 ),
-                '__NEXT_ERROR_CODE',
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E344',
+                  value: "E344",
                   enumerable: false,
                   configurable: true,
                 },
@@ -5047,9 +5047,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           }
         }
         if (!isQueryUpdating) {
-          Router.events.emit('routeChangeStart', as, routeProps);
+          Router.events.emit("routeChangeStart", as, routeProps);
         }
-        const isErrorRoute = this.pathname === '/404' || this.pathname === '/_error';
+        const isErrorRoute = this.pathname === "/404" || this.pathname === "/_error";
         try {
           let routeInfo = await this.getRouteInfo({
             route,
@@ -5068,11 +5068,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           if (!isQueryUpdating && !options.shallow) {
             await this._bfl(
               as,
-              'resolvedAs' in routeInfo ? routeInfo.resolvedAs : undefined,
+              "resolvedAs" in routeInfo ? routeInfo.resolvedAs : undefined,
               nextState.locale,
             );
           }
-          if ('route' in routeInfo && isMiddlewareMatch) {
+          if ("route" in routeInfo && isMiddlewareMatch) {
             pathname = routeInfo.route || route;
             route = pathname;
             if (!routeProps.shallow) {
@@ -5104,7 +5104,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 rewriteAs = (0, _removebasepath.removeBasePath)(rewriteAs);
               }
               if (
-                ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+                ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
               );
               const routeRegex = (0, _routeregex.getRouteRegex)(pathname);
               const curRouteMatch = (0, _routematcher.getRouteMatcher)(routeRegex)(
@@ -5116,8 +5116,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             }
           }
           // If the routeInfo brings a redirect we simply apply it.
-          if ('type' in routeInfo) {
-            if (routeInfo.type === 'redirect-internal') {
+          if ("type" in routeInfo) {
+            if (routeInfo.type === "redirect-internal") {
               return this.change(method, routeInfo.newUrl, routeInfo.newAs, options);
             } else {
               handleHardNavigation({
@@ -5144,7 +5144,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               // client-navigation if it is falling back to hard navigation if
               // it's not
               if (
-                destination.startsWith('/') &&
+                destination.startsWith("/") &&
                 routeInfo.props.pageProps.__N_REDIRECT_BASE_PATH !== false
               ) {
                 const parsedHref = (0, _parserelativeurl.parseRelativeUrl)(destination);
@@ -5163,10 +5163,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             if (routeInfo.props.notFound === SSG_DATA_NOT_FOUND) {
               let notFoundRoute;
               try {
-                await this.fetchComponent('/404');
-                notFoundRoute = '/404';
+                await this.fetchComponent("/404");
+                notFoundRoute = "/404";
               } catch (_) {
-                notFoundRoute = '/_error';
+                notFoundRoute = "/_error";
               }
               routeInfo = await this.getRouteInfo({
                 route: notFoundRoute,
@@ -5181,12 +5181,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 isPreview: nextState.isPreview,
                 isNotFound: true,
               });
-              if ('type' in routeInfo) {
+              if ("type" in routeInfo) {
                 throw Object.defineProperty(
                   new Error(`Unexpected middleware effect on /404`),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E158',
+                    value: "E158",
                     enumerable: false,
                     configurable: true,
                   },
@@ -5196,7 +5196,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           }
           if (
             isQueryUpdating &&
-            this.pathname === '/_error' &&
+            this.pathname === "/_error" &&
             self.__NEXT_DATA__.props?.pageProps?.statusCode === 500 &&
             routeInfo.props?.pageProps
           ) {
@@ -5243,19 +5243,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               isPreview: nextState.isPreview,
               isQueryUpdating: isQueryUpdating && !this.isFallback,
             });
-            if ('type' in routeInfo) {
+            if ("type" in routeInfo) {
               throw Object.defineProperty(
                 new Error(`Unexpected middleware effect on ${this.pathname}`),
-                '__NEXT_ERROR_CODE',
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E225',
+                  value: "E225",
                   enumerable: false,
                   configurable: true,
                 },
               );
             }
             if (
-              this.pathname === '/_error' &&
+              this.pathname === "/_error" &&
               self.__NEXT_DATA__.props?.pageProps?.statusCode === 500 &&
               routeInfo.props?.pageProps
             ) {
@@ -5267,13 +5267,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               await this.set(upcomingRouterState, routeInfo, upcomingScrollState);
             } catch (err) {
               if ((0, _iserror.default)(err) && err.cancelled) {
-                Router.events.emit('routeChangeError', err, cleanedAs, routeProps);
+                Router.events.emit("routeChangeError", err, cleanedAs, routeProps);
               }
               throw err;
             }
             return true;
           }
-          Router.events.emit('beforeHistoryChange', as, routeProps);
+          Router.events.emit("beforeHistoryChange", as, routeProps);
           this.changeState(method, url, as, options);
           // for query updates we can skip it if the state is unchanged and we don't
           // need to scroll
@@ -5293,15 +5293,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             }
             if (routeInfo.error) {
               if (!isQueryUpdating) {
-                Router.events.emit('routeChangeError', routeInfo.error, cleanedAs, routeProps);
+                Router.events.emit("routeChangeError", routeInfo.error, cleanedAs, routeProps);
               }
               throw routeInfo.error;
             }
             if (
-              ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+              ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
             );
             if (!isQueryUpdating) {
-              Router.events.emit('routeChangeComplete', as, routeProps);
+              Router.events.emit("routeChangeComplete", as, routeProps);
             }
             // A hash mark # is the optional last part of a URL
             const hashRegex = /#.+$/;
@@ -5318,17 +5318,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       }
       changeState(method, url, as, options = {}) {
-        if (('TURBOPACK compile-time truthy', 1)) {
-          if (typeof window.history === 'undefined') {
+        if (("TURBOPACK compile-time truthy", 1)) {
+          if (typeof window.history === "undefined") {
             console.error(`Warning: window.history is not available.`);
             return;
           }
-          if (typeof window.history[method] === 'undefined') {
+          if (typeof window.history[method] === "undefined") {
             console.error(`Warning: window.history.${method} is not available`);
             return;
           }
         }
-        if (method !== 'pushState' || (0, _utils.getURL)() !== as) {
+        if (method !== "pushState" || (0, _utils.getURL)() !== as) {
           this._shallow = options.shallow;
           window.history[method](
             {
@@ -5336,10 +5336,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               as,
               options,
               __N: true,
-              key: (this._key = method !== 'pushState' ? this._key : createKey()),
+              key: (this._key = method !== "pushState" ? this._key : createKey()),
             }, // Passing the empty string here should be safe against future changes to the method.
             // https://developer.mozilla.org/docs/Web/API/History/replaceState
-            '',
+            "",
             as,
           );
         }
@@ -5350,7 +5350,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           throw err;
         }
         if ((0, _routeloader.isAssetError)(err) || loadErrorFail) {
-          Router.events.emit('routeChangeError', err, as, routeProps);
+          Router.events.emit("routeChangeError", err, as, routeProps);
           // If we can't load the page it could be one of following reasons
           //  1. Page doesn't exists
           //  2. Page does exist in a different zone
@@ -5367,7 +5367,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         console.error(err);
         try {
           let props;
-          const { page: Component, styleSheets } = await this.fetchComponent('/_error');
+          const { page: Component, styleSheets } = await this.fetchComponent("/_error");
           const routeInfo = {
             props,
             Component,
@@ -5383,7 +5383,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 query,
               });
             } catch (gipErr) {
-              console.error('Error in error page `getInitialProps`: ', gipErr);
+              console.error("Error in error page `getInitialProps`: ", gipErr);
               routeInfo.props = {};
             }
           }
@@ -5392,8 +5392,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           return this.handleRouteInfoError(
             (0, _iserror.default)(routeInfoErr)
               ? routeInfoErr
-              : Object.defineProperty(new Error(routeInfoErr + ''), '__NEXT_ERROR_CODE', {
-                  value: 'E394',
+              : Object.defineProperty(new Error(routeInfoErr + ""), "__NEXT_ERROR_CODE", {
+                  value: "E394",
                   enumerable: false,
                   configurable: true,
                 }),
@@ -5440,9 +5440,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           }
           const cachedRouteInfo =
             existingInfo &&
-            !('initial' in existingInfo) &&
-            ('TURBOPACK compile-time value', 'development') !== 'development'
-              ? 'TURBOPACK unreachable'
+            !("initial" in existingInfo) &&
+            ("TURBOPACK compile-time value", "development") !== "development"
+              ? "TURBOPACK unreachable"
               : undefined;
           const isBackground = isQueryUpdating;
           const fetchNextDataParams = {
@@ -5452,7 +5452,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 query,
               }),
               skipInterpolation: true,
-              asPath: isNotFound ? '/404' : resolvedAs,
+              asPath: isNotFound ? "/404" : resolvedAs,
               locale,
             }),
             hasMiddleware: true,
@@ -5469,7 +5469,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               ? null
               : await withMiddlewareEffects({
                   fetchData: () => fetchNextData(fetchNextDataParams),
-                  asPath: isNotFound ? '/404' : resolvedAs,
+                  asPath: isNotFound ? "/404" : resolvedAs,
                   locale: locale,
                   router: this,
                 }).catch((err) => {
@@ -5484,7 +5484,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 });
           // when rendering error routes we don't apply middleware
           // effects
-          if (data && (pathname === '/_error' || pathname === '/404')) {
+          if (data && (pathname === "/_error" || pathname === "/404")) {
             data.effect = undefined;
           }
           if (isQueryUpdating) {
@@ -5498,12 +5498,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           }
           handleCancelled();
           if (
-            data?.effect?.type === 'redirect-internal' ||
-            data?.effect?.type === 'redirect-external'
+            data?.effect?.type === "redirect-internal" ||
+            data?.effect?.type === "redirect-external"
           ) {
             return data.effect;
           }
-          if (data?.effect?.type === 'rewrite') {
+          if (data?.effect?.type === "rewrite") {
             const resolvedRoute = (0, _removetrailingslash.removeTrailingSlash)(
               data.effect.resolvedHref,
             );
@@ -5553,23 +5553,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               __N_SSG: res.mod.__N_SSG,
               __N_SSP: res.mod.__N_SSP,
             })));
-          if (('TURBOPACK compile-time truthy', 1)) {
+          if (("TURBOPACK compile-time truthy", 1)) {
             const { isValidElementType } = __turbopack_context__.r(
-              '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-is/index.js [client] (ecmascript)',
+              "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-is/index.js [client] (ecmascript)",
             );
             if (!isValidElementType(routeInfo.Component)) {
               throw Object.defineProperty(
                 new Error(`The default export is not a React Component in page: "${pathname}"`),
-                '__NEXT_ERROR_CODE',
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E286',
+                  value: "E286",
                   enumerable: false,
                   configurable: true,
                 },
               );
             }
           }
-          const wasBailedPrefetch = data?.response?.headers.get('x-middleware-skip');
+          const wasBailedPrefetch = data?.response?.headers.get("x-middleware-skip");
           const shouldFetchData = routeInfo.__N_SSG || routeInfo.__N_SSP;
           // For non-SSG prefetches that bailed before sending data
           // we clear the cache to fetch full response
@@ -5631,7 +5631,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           if (
             !this.isPreview &&
             routeInfo.__N_SSG &&
-            ('TURBOPACK compile-time value', 'development') !== 'development' &&
+            ("TURBOPACK compile-time value", "development") !== "development" &&
             !isQueryUpdating //TURBOPACK unreachable
           );
           props.pageProps = Object.assign({}, props.pageProps);
@@ -5653,7 +5653,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
       set(state, data, resetScroll) {
         this.state = state;
-        return this.sub(data, this.components['/_app'].Component, resetScroll);
+        return this.sub(data, this.components["/_app"].Component, resetScroll);
       }
       /**
        * Callback to execute before replacing router state
@@ -5663,8 +5663,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
       onlyAHashChange(as) {
         if (!this.asPath) return false;
-        const [oldUrlNoHash, oldHash] = this.asPath.split('#', 2);
-        const [newUrlNoHash, newHash] = as.split('#', 2);
+        const [oldUrlNoHash, oldHash] = this.asPath.split("#", 2);
+        const [newUrlNoHash, newHash] = as.split("#", 2);
         // Makes sure we scroll to the provided hash if the url/hash are the same
         if (newHash && oldUrlNoHash === newUrlNoHash && oldHash === newHash) {
           return true;
@@ -5680,12 +5680,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return oldHash !== newHash;
       }
       scrollToHash(as) {
-        const [, hash = ''] = as.split('#', 2);
+        const [, hash = ""] = as.split("#", 2);
         (0, _disablesmoothscroll.disableSmoothScrollDuringRouteTransition)(
           () => {
             // Scroll to top if the hash is just `#` with no value or `#top`
             // To mirror browsers
-            if (hash === '' || hash === 'top') {
+            if (hash === "" || hash === "top") {
               window.scrollTo(0, 0);
               return;
             }
@@ -5719,7 +5719,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        * @param asPath the as path of the prefetched page
        */ async prefetch(url, asPath = url, options = {}) {
         // Prefetch is not supported in development mode because it would trigger on-demand-entries
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           return;
         }
         //TURBOPACK unreachable
@@ -5760,10 +5760,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           }
           if (cancelled) {
             const err = Object.defineProperty(
-              new Error('Loading initial props cancelled'),
-              '__NEXT_ERROR_CODE',
+              new Error("Loading initial props cancelled"),
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E405',
+                value: "E405",
                 enumerable: false,
                 configurable: true,
               },
@@ -5775,7 +5775,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         });
       }
       getInitialProps(Component, ctx) {
-        const { Component: App } = this.components['/_app'];
+        const { Component: App } = this.components["/_app"];
         const AppTree = this._wrapApp(App);
         ctx.AppTree = AppTree;
         return (0, _utils.loadGetInitialProps)(App, {
@@ -5808,11 +5808,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/image-config.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/image-config.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -5831,26 +5831,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       VALID_LOADERS: () => VALID_LOADERS,
       imageConfigDefault: () => imageConfigDefault,
     });
-    const VALID_LOADERS = ['default', 'imgix', 'cloudinary', 'akamai', 'custom'];
+    const VALID_LOADERS = ["default", "imgix", "cloudinary", "akamai", "custom"];
     const imageConfigDefault = {
       deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
       imageSizes: [32, 48, 64, 96, 128, 256, 384],
-      path: '/_next/image',
-      loader: 'default',
-      loaderFile: '',
+      path: "/_next/image",
+      loader: "default",
+      loaderFile: "",
       /**
        * @deprecated Use `remotePatterns` instead to protect your application from malicious users.
        */ domains: [],
       disableStaticImages: false,
       minimumCacheTTL: 14400,
-      formats: ['image/webp'],
+      formats: ["image/webp"],
       maximumDiskCacheSize: undefined,
       maximumRedirects: 3,
       maximumResponseBody: 50000000,
       dangerouslyAllowLocalIP: false,
       dangerouslyAllowSVG: false,
       contentSecurityPolicy: `script-src 'none'; frame-src 'none'; sandbox;`,
-      contentDispositionType: 'attachment',
+      contentDispositionType: "attachment",
       localPatterns: undefined,
       remotePatterns: [],
       qualities: [75],
@@ -5858,49 +5858,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       customCacheHandler: false,
     };
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/image-config-context.shared-runtime.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/image-config-context.shared-runtime.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'ImageConfigContext', {
+    Object.defineProperty(exports, "ImageConfigContext", {
       enumerable: true,
       get: () => ImageConfigContext,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const _imageconfig = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/image-config.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/image-config.js [client] (ecmascript)",
     );
     const ImageConfigContext = _react.default.createContext(_imageconfig.imageConfigDefault);
-    if (('TURBOPACK compile-time truthy', 1)) {
-      ImageConfigContext.displayName = 'ImageConfigContext';
+    if (("TURBOPACK compile-time truthy", 1)) {
+      ImageConfigContext.displayName = "ImageConfigContext";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use client');
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use client");
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -5926,36 +5926,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       TemplateContext: () => TemplateContext,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const AppRouterContext = _react.default.createContext(null);
     const LayoutRouterContext = _react.default.createContext(null);
     const GlobalLayoutRouterContext = _react.default.createContext(null);
     const TemplateContext = _react.default.createContext(null);
-    if (('TURBOPACK compile-time truthy', 1)) {
-      AppRouterContext.displayName = 'AppRouterContext';
-      LayoutRouterContext.displayName = 'LayoutRouterContext';
-      GlobalLayoutRouterContext.displayName = 'GlobalLayoutRouterContext';
-      TemplateContext.displayName = 'TemplateContext';
+    if (("TURBOPACK compile-time truthy", 1)) {
+      AppRouterContext.displayName = "AppRouterContext";
+      LayoutRouterContext.displayName = "LayoutRouterContext";
+      GlobalLayoutRouterContext.displayName = "GlobalLayoutRouterContext";
+      TemplateContext.displayName = "TemplateContext";
     }
     const MissingSlotContext = _react.default.createContext(new Set());
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use client');
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use client");
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -5983,10 +5983,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       createDevToolsInstrumentedPromise: () => createDevToolsInstrumentedPromise,
     });
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
     );
     const _readonlyurlsearchparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/readonly-url-search-params.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/readonly-url-search-params.js [client] (ecmascript)",
     );
     const SearchParamsContext = (0, _react.createContext)(null);
     const PathnameContext = (0, _react.createContext)(null);
@@ -5994,40 +5994,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     const NavigationPromisesContext = (0, _react.createContext)(null);
     function createDevToolsInstrumentedPromise(displayName, value) {
       const promise = Promise.resolve(value);
-      promise.status = 'fulfilled';
+      promise.status = "fulfilled";
       promise.value = value;
       promise.displayName = `${displayName} (SSR)`;
       return promise;
     }
-    if (('TURBOPACK compile-time truthy', 1)) {
-      SearchParamsContext.displayName = 'SearchParamsContext';
-      PathnameContext.displayName = 'PathnameContext';
-      PathParamsContext.displayName = 'PathParamsContext';
-      NavigationPromisesContext.displayName = 'NavigationPromisesContext';
+    if (("TURBOPACK compile-time truthy", 1)) {
+      SearchParamsContext.displayName = "SearchParamsContext";
+      PathnameContext.displayName = "PathnameContext";
+      PathParamsContext.displayName = "PathParamsContext";
+      NavigationPromisesContext.displayName = "NavigationPromisesContext";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/as-path-to-search-params.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/as-path-to-search-params.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // Convert router.asPath to a URLSearchParams object
     // example: /dynamic/[slug]?foo=bar -> { foo: 'bar' }
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'asPathToSearchParams', {
+    Object.defineProperty(exports, "asPathToSearchParams", {
       enumerable: true,
       get: () => asPathToSearchParams,
     });
     function asPathToSearchParams(asPath) {
-      return new URL(asPath, 'http://n').searchParams;
+      return new URL(asPath, "http://n").searchParams;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/adapters.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/adapters.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -6051,27 +6051,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       adaptForSearchParams: () => adaptForSearchParams,
     });
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const _hooksclientcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [client] (ecmascript)",
     );
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [client] (ecmascript)",
     );
     const _aspathtosearchparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/as-path-to-search-params.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/as-path-to-search-params.js [client] (ecmascript)",
     );
     const _routeregex = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)",
     );
     function adaptForAppRouterInstance(pagesRouter) {
       return {
@@ -6153,10 +6153,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         // https://nextjs.org/docs/api-reference/next/router#router-object
         let url;
         try {
-          url = new URL(router.asPath, 'http://f');
+          url = new URL(router.asPath, "http://f");
         } catch (_) {
           // fallback to / for invalid asPath values e.g. //
-          return '/';
+          return "/";
         }
         return url.pathname;
       }, [router.asPath, router.isFallback, router.isReady, router.pathname]);
@@ -6169,12 +6169,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       );
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // This has to be a shared module which is shared between client component error boundary and dynamic component
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -6193,7 +6193,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       BailoutToCSRError: () => BailoutToCSRError,
       isBailoutToCSRError: () => isBailoutToCSRError,
     });
-    const BAILOUT_TO_CSR = 'BAILOUT_TO_CLIENT_SIDE_RENDERING';
+    const BAILOUT_TO_CSR = "BAILOUT_TO_CLIENT_SIDE_RENDERING";
     class BailoutToCSRError extends Error {
       constructor(reason) {
         super(`Bail out to client-side rendering: ${reason}`),
@@ -6202,17 +6202,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
     }
     function isBailoutToCSRError(err) {
-      if (typeof err !== 'object' || err === null || !('digest' in err)) {
+      if (typeof err !== "object" || err === null || !("digest" in err)) {
         return false;
       }
       return err.digest === BAILOUT_TO_CSR;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/error-source.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/error-source.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -6231,7 +6231,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       decorateServerError: () => decorateServerError,
       getErrorSource: () => getErrorSource,
     });
-    const symbolError = Symbol.for('NextjsError');
+    const symbolError = Symbol.for("NextjsError");
     function getErrorSource(error) {
       return error[symbolError] || null;
     }
@@ -6244,41 +6244,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       });
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/normalized-asset-prefix.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/normalized-asset-prefix.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'normalizedAssetPrefix', {
+    Object.defineProperty(exports, "normalizedAssetPrefix", {
       enumerable: true,
       get: () => normalizedAssetPrefix,
     });
     function normalizedAssetPrefix(assetPrefix) {
       // remove all leading slashes and trailing slashes
-      const escapedAssetPrefix = assetPrefix?.replace(/^\/+|\/+$/g, '') || false;
+      const escapedAssetPrefix = assetPrefix?.replace(/^\/+|\/+$/g, "") || false;
       // if an assetPrefix was '/', we return empty string
       // because it could be an unnecessary trailing slash
       if (!escapedAssetPrefix) {
-        return '';
+        return "";
       }
       if (URL.canParse(escapedAssetPrefix)) {
         const url = new URL(escapedAssetPrefix).toString();
-        return url.endsWith('/') ? url.slice(0, -1) : url;
+        return url.endsWith("/") ? url.slice(0, -1) : url;
       }
       // assuming assetPrefix here is a pathname-style,
       // restore the leading slash
       return `/${escapedAssetPrefix}`;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/format-webpack-messages.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/format-webpack-messages.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
     /**
 MIT License
@@ -6302,27 +6302,27 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/ ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+*/ ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => formatWebpackMessages,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _stripansi = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi/index.js [client] (ecmascript)",
       ),
     );
     // This file is based on https://github.com/facebook/create-react-app/blob/7b1a32be6ec9f99a6c9a3c66813f3ac09c4736b9/packages/react-dev-utils/formatWebpackMessages.js
     // It's been edited to remove chalk and CRA-specific logic
-    const friendlySyntaxErrorLabel = 'Syntax error:';
+    const friendlySyntaxErrorLabel = "Syntax error:";
     const WEBPACK_BREAKING_CHANGE_POLYFILLS =
-      '\n\nBREAKING CHANGE: webpack < 5 used to include polyfills for node.js core modules by default.';
+      "\n\nBREAKING CHANGE: webpack < 5 used to include polyfills for node.js core modules by default.";
     function isLikelyASyntaxError(message) {
       return (0, _stripansi.default)(message).includes(friendlySyntaxErrorLabel);
     }
@@ -6330,7 +6330,7 @@ SOFTWARE.
     // Cleans up webpack error messages.
     function formatMessage(message, verbose, importTraceNote) {
       // TODO: Replace this once webpack 5 is stable
-      if (typeof message === 'object' && message.message) {
+      if (typeof message === "object" && message.message) {
         const filteredModuleTrace =
           message.moduleTrace &&
           message.moduleTrace.filter(
@@ -6348,27 +6348,27 @@ SOFTWARE.
         // fall back to moduleIdentifier as a workaround
         if (
           __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__[
-            'default'
+            "default"
           ].env.NEXT_RSPACK &&
           !message.moduleName &&
           !message.file &&
           message.moduleIdentifier
         ) {
-          const parts = message.moduleIdentifier.split('!');
+          const parts = message.moduleIdentifier.split("!");
           message.moduleName = parts[parts.length - 1];
         }
         message =
-          (message.moduleName ? (0, _stripansi.default)(message.moduleName) + '\n' : '') +
-          (message.file ? (0, _stripansi.default)(message.file) + '\n' : '') +
+          (message.moduleName ? (0, _stripansi.default)(message.moduleName) + "\n" : "") +
+          (message.file ? (0, _stripansi.default)(message.file) + "\n" : "") +
           body +
-          (message.details && verbose ? '\n' + message.details : '') +
+          (message.details && verbose ? "\n" + message.details : "") +
           (filteredModuleTrace && filteredModuleTrace.length
-            ? (importTraceNote || '\n\nImport trace for requested module:') +
-              filteredModuleTrace.map((trace) => `\n${trace.moduleName}`).join('')
-            : '') +
-          (message.stack && verbose ? '\n' + message.stack : '');
+            ? (importTraceNote || "\n\nImport trace for requested module:") +
+              filteredModuleTrace.map((trace) => `\n${trace.moduleName}`).join("")
+            : "") +
+          (message.stack && verbose ? "\n" + message.stack : "");
       }
-      let lines = message.split('\n');
+      let lines = message.split("\n");
       // Extract loader paths from Webpack-added headers and move them to end.
       // Original format: "Module build failed (from ./loaders/foo-loader.js):"
       // The header line is removed and the path is appended at the end as:
@@ -6393,7 +6393,7 @@ SOFTWARE.
         const [, errorLine, errorColumn, errorMessage] = parsingError;
         return `${friendlySyntaxErrorLabel} ${errorMessage} (${errorLine}:${errorColumn})`;
       });
-      message = lines.join('\n');
+      message = lines.join("\n");
       // Smoosh syntax errors (commonly found in CSS)
       message = message.replace(
         /SyntaxError\s+\((\d+):(\d+)\)\s*(.+?)\n/g,
@@ -6412,29 +6412,29 @@ SOFTWARE.
         /^.*export '(.+?)' \(imported as '(.+?)'\) was not found in '(.+?)'.*$/gm,
         `Attempted import error: '$1' is not exported from '$3' (imported as '$2').`,
       );
-      lines = message.split('\n');
+      lines = message.split("\n");
       // Remove leading newline
-      if (lines.length > 2 && lines[1].trim() === '') {
+      if (lines.length > 2 && lines[1].trim() === "") {
         lines.splice(1, 1);
       }
       // Cleans up verbose "module not found" messages for files and packages.
-      if (lines[1] && lines[1].startsWith('Module not found: ')) {
+      if (lines[1] && lines[1].startsWith("Module not found: ")) {
         lines = [
           lines[0],
           lines[1]
-            .replace('Error: ', '')
-            .replace('Module not found: Cannot find file:', 'Cannot find file:'),
+            .replace("Error: ", "")
+            .replace("Module not found: Cannot find file:", "Cannot find file:"),
           ...lines.slice(2),
         ];
       }
       // Add helpful message for users trying to use Sass for the first time
       if (lines[1] && lines[1].match(/Cannot find module.+sass/)) {
         // ./file.module.scss (<<loader info>>) => ./file.module.scss
-        const firstLine = lines[0].split('!');
+        const firstLine = lines[0].split("!");
         lines[0] = firstLine[firstLine.length - 1];
         lines[1] = "To use Next.js' built-in Sass support, you first need to install `sass`.\n";
-        lines[1] += 'Run `npm i sass` or `yarn add sass` inside your workspace.\n';
-        lines[1] += '\nLearn more: https://nextjs.org/docs/messages/install-sass';
+        lines[1] += "Run `npm i sass` or `yarn add sass` inside your workspace.\n";
+        lines[1] += "\nLearn more: https://nextjs.org/docs/messages/install-sass";
         // dispose of unhelpful stack trace
         lines = lines.slice(0, 2);
         hadMissingSassError = true;
@@ -6446,18 +6446,18 @@ SOFTWARE.
         lines = [];
       }
       if (!verbose) {
-        message = lines.join('\n');
+        message = lines.join("\n");
         // Internal stacks are generally useless so we strip them... with the
         // exception of stacks containing `webpack:` because they're normally
         // from user code generated by Webpack. For more information see
         // https://github.com/facebook/create-react-app/pull/1050
-        message = message.replace(/^\s*at\s((?!webpack:).)*:\d+:\d+[\s)]*(\n|$)/gm, ''); // at ... ...:x:y
-        message = message.replace(/^\s*at\s<anonymous>(\n|$)/gm, ''); // at <anonymous>
+        message = message.replace(/^\s*at\s((?!webpack:).)*:\d+:\d+[\s)]*(\n|$)/gm, ""); // at ... ...:x:y
+        message = message.replace(/^\s*at\s<anonymous>(\n|$)/gm, ""); // at <anonymous>
         message = message.replace(
           /File was processed with these loaders:\n(.+[\\/](next[\\/]dist[\\/].+|@next[\\/]react-refresh-utils[\\/]loader)\.js\n)*You may need an additional loader to handle the result of these loaders.\n/g,
-          '',
+          "",
         );
-        lines = message.split('\n');
+        lines = message.split("\n");
       }
       // Append loader paths at the end (before any remaining stack trace)
       if (loaderPaths.length > 0) {
@@ -6471,16 +6471,16 @@ SOFTWARE.
       // Remove duplicated newlines
       lines = lines.filter(
         (line, index, arr) =>
-          index === 0 || line.trim() !== '' || line.trim() !== arr[index - 1].trim(),
+          index === 0 || line.trim() !== "" || line.trim() !== arr[index - 1].trim(),
       );
       // Reassemble the message
-      message = lines.join('\n');
+      message = lines.join("\n");
       return message.trim();
     }
     function formatWebpackMessages(json, verbose) {
       const formattedErrors = json.errors.map((message) => {
         const isUnknownNextFontError = message.message.includes(
-          'An error occurred in `next/font`.',
+          "An error occurred in `next/font`.",
         );
         return formatMessage(message, isUnknownNextFontError || verbose);
       });
@@ -6491,7 +6491,7 @@ SOFTWARE.
       let reactServerComponentsError = -1;
       for (let i = 0; i < formattedErrors.length; i++) {
         const error = formattedErrors[i];
-        if (error.includes('ReactServerComponentsError')) {
+        if (error.includes("ReactServerComponentsError")) {
           reactServerComponentsError = i;
           break;
         }

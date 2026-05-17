@@ -15,7 +15,7 @@
  * @see United States v. Kovel, 296 F.2d 918 (2d Cir. 1961)
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Schemas ────────────────────────────────────────────────────────
 
@@ -41,8 +41,8 @@ export const KovelReceiptSchema = z.object({
   jurisdictions: z.array(z.string()),
 
   // Legal
-  doctrineVersion: z.string().default('kovel-v1'),
-  privilegeType: z.enum(['ATTORNEY_CLIENT', 'WORK_PRODUCT', 'KOVEL_EXTENSION']),
+  doctrineVersion: z.string().default("kovel-v1"),
+  privilegeType: z.enum(["ATTORNEY_CLIENT", "WORK_PRODUCT", "KOVEL_EXTENSION"]),
   attestation: z.string(),
 });
 
@@ -84,7 +84,7 @@ export async function generateKovelReceipt(
     sessionHash,
     data.sessionStart.toISOString(),
     data.sessionEnd.toISOString(),
-  ].join('|');
+  ].join("|");
 
   const hmacSignature = await hmacSha256(signaturePayload, hmacSecret);
 
@@ -106,8 +106,8 @@ export async function generateKovelReceipt(
     queryCount: data.queryCount,
     modelUsed: data.modelUsed,
     jurisdictions: data.jurisdictions,
-    doctrineVersion: 'kovel-v1',
-    privilegeType: 'KOVEL_EXTENSION',
+    doctrineVersion: "kovel-v1",
+    privilegeType: "KOVEL_EXTENSION",
     attestation: generateAttestationText(data.firmId, durationMinutes),
   };
 
@@ -130,7 +130,7 @@ export async function verifyKovelReceipt(
     receipt.sessionHash,
     receipt.sessionStart,
     receipt.sessionEnd,
-  ].join('|');
+  ].join("|");
 
   const expectedSignature = await hmacSha256(signaturePayload, hmacSecret);
   return receipt.hmacSignature === expectedSignature;
@@ -140,27 +140,27 @@ export async function verifyKovelReceipt(
 
 function generateAttestationText(firmId: string, durationMinutes: number): string {
   return [
-    'KOVEL ATTESTATION RECEIPT',
-    '',
-    'This receipt certifies that a privileged communication session',
-    'was conducted under the Kovel Doctrine extension of attorney-client',
-    'privilege, as established in United States v. Kovel, 296 F.2d 918',
-    '(2d Cir. 1961), and reinforced by United States v. Heppner',
-    '(S.D.N.Y. 2026).',
-    '',
+    "KOVEL ATTESTATION RECEIPT",
+    "",
+    "This receipt certifies that a privileged communication session",
+    "was conducted under the Kovel Doctrine extension of attorney-client",
+    "privilege, as established in United States v. Kovel, 296 F.2d 918",
+    "(2d Cir. 1961), and reinforced by United States v. Heppner",
+    "(S.D.N.Y. 2026).",
+    "",
     `Firm: ${firmId.substring(0, 8)}...`,
     `Duration: ${durationMinutes} minutes`,
-    '',
-    'The session transcript has been hashed (SHA-256) and the hash is',
-    'recorded above. The plaintext content has been purged per the',
-    'Zero Data Retention policy.',
-    '',
-    'This receipt does not contain, and cannot be used to reconstruct,',
-    'any privileged communication content.',
-    '',
-    'Verification: Use the HMAC signature above with the firm secret',
-    'to verify receipt authenticity.',
-  ].join('\n');
+    "",
+    "The session transcript has been hashed (SHA-256) and the hash is",
+    "recorded above. The plaintext content has been purged per the",
+    "Zero Data Retention policy.",
+    "",
+    "This receipt does not contain, and cannot be used to reconstruct,",
+    "any privileged communication content.",
+    "",
+    "Verification: Use the HMAC signature above with the firm secret",
+    "to verify receipt authenticity.",
+  ].join("\n");
 }
 
 // ─── Crypto Helpers ─────────────────────────────────────────────────
@@ -168,23 +168,23 @@ function generateAttestationText(firmId: string, durationMinutes: number): strin
 async function sha256(input: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(input);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
   return Array.from(new Uint8Array(hashBuffer))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 async function hmacSha256(message: string, secret: string): Promise<string> {
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
-    'raw',
+    "raw",
     encoder.encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
+    { name: "HMAC", hash: "SHA-256" },
     false,
-    ['sign'],
+    ["sign"],
   );
-  const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(message));
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(message));
   return Array.from(new Uint8Array(signature))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }

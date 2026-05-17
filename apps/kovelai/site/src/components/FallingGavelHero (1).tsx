@@ -1,6 +1,6 @@
-'use client';
-import { motion, useAnimation } from 'framer-motion';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+"use client";
+import { motion, useAnimation } from "framer-motion";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 function GavelSVG({ className }: { className?: string }) {
   return (
@@ -71,13 +71,13 @@ function ImpactBurst({ visible }: { visible: boolean }) {
           style={{
             width: p.size,
             height: p.size,
-            background: 'radial-gradient(circle, #e6c487 0%, rgba(230,196,135,0) 100%)',
+            background: "radial-gradient(circle, #e6c487 0%, rgba(230,196,135,0) 100%)",
             left: 0,
             top: 0,
           }}
           initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
           animate={{ x: p.x, y: p.y, opacity: 0, scale: 0.2 }}
-          transition={{ duration: 0.8, delay: p.delay, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: p.delay, ease: "easeOut" }}
         />
       ))}
       <motion.div
@@ -85,13 +85,13 @@ function ImpactBurst({ visible }: { visible: boolean }) {
         style={{
           width: 20,
           height: 10,
-          background: 'radial-gradient(ellipse, rgba(230,196,135,0.3) 0%, transparent 70%)',
+          background: "radial-gradient(ellipse, rgba(230,196,135,0.3) 0%, transparent 70%)",
           left: 0,
           top: 0,
         }}
         initial={{ scale: 1, opacity: 0.8 }}
         animate={{ scale: 12, opacity: 0 }}
-        transition={{ duration: 1, ease: 'easeOut' }}
+        transition={{ duration: 1, ease: "easeOut" }}
       />
     </div>
   );
@@ -109,15 +109,15 @@ export default function FallingGavelHero() {
     await shakeControls.start({
       x: [0, -4, 6, -3, 4, -2, 0],
       y: [0, 2, -3, 1, -2, 1, 0],
-      transition: { duration: 0.5, ease: 'easeOut' },
+      transition: { duration: 0.5, ease: "easeOut" },
     });
     floatControls.start({
       y: [0, -8, 0],
       transition: {
         duration: 3,
         repeat: Infinity,
-        repeatType: 'reverse' as const,
-        ease: 'easeInOut',
+        repeatType: "reverse" as const,
+        ease: "easeInOut",
       },
     });
   }, [shakeControls, floatControls]);
@@ -131,34 +131,34 @@ export default function FallingGavelHero() {
     <motion.div
       animate={shakeControls}
       className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: '#071325' }}
+      style={{ background: "#071325" }}
     >
       {/* Atmospheric Aura */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div
           className="absolute rounded-full"
           style={{
-            width: '60vw',
-            height: '60vw',
-            top: '-15%',
-            left: '-10%',
+            width: "60vw",
+            height: "60vw",
+            top: "-15%",
+            left: "-10%",
             background:
-              'radial-gradient(ellipse at center, rgba(230,196,135,0.08) 0%, transparent 70%)',
-            filter: 'blur(100px)',
-            animation: 'aura-undulate-1 32s ease-in-out infinite',
+              "radial-gradient(ellipse at center, rgba(230,196,135,0.08) 0%, transparent 70%)",
+            filter: "blur(100px)",
+            animation: "aura-undulate-1 32s ease-in-out infinite",
           }}
         />
         <div
           className="absolute rounded-full"
           style={{
-            width: '45vw',
-            height: '45vw',
-            bottom: '10%',
-            right: '-5%',
+            width: "45vw",
+            height: "45vw",
+            bottom: "10%",
+            right: "-5%",
             background:
-              'radial-gradient(ellipse at center, rgba(170,199,255,0.06) 0%, transparent 70%)',
-            filter: 'blur(80px)',
-            animation: 'aura-undulate-2 38s ease-in-out infinite',
+              "radial-gradient(ellipse at center, rgba(170,199,255,0.06) 0%, transparent 70%)",
+            filter: "blur(80px)",
+            animation: "aura-undulate-2 38s ease-in-out infinite",
           }}
         />
       </div>
@@ -167,8 +167,8 @@ export default function FallingGavelHero() {
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03]"
         style={{
-          backgroundImage: 'radial-gradient(circle, rgba(230,196,135,0.4) 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
+          backgroundImage: "radial-gradient(circle, rgba(230,196,135,0.4) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
         }}
         aria-hidden="true"
       />
@@ -178,7 +178,7 @@ export default function FallingGavelHero() {
         className="absolute left-0 right-0 bottom-[18%] h-[1px]"
         style={{
           background:
-            'linear-gradient(90deg, transparent 0%, rgba(230,196,135,0.15) 30%, rgba(230,196,135,0.15) 70%, transparent 100%)',
+            "linear-gradient(90deg, transparent 0%, rgba(230,196,135,0.15) 30%, rgba(230,196,135,0.15) 70%, transparent 100%)",
         }}
         aria-hidden="true"
       />
@@ -186,10 +186,10 @@ export default function FallingGavelHero() {
       {/* Gavel */}
       <motion.div
         className="absolute z-10"
-        style={{ top: '15%', width: 'clamp(80px, 10vw, 140px)' }}
-        initial={{ y: '-120vh', rotate: -15 }}
+        style={{ top: "15%", width: "clamp(80px, 10vw, 140px)" }}
+        initial={{ y: "-120vh", rotate: -15 }}
         animate={hasImpacted ? undefined : { y: 0, rotate: 0 }}
-        transition={{ type: 'spring', damping: 12, stiffness: 80, mass: 1.5, restDelta: 0.5 }}
+        transition={{ type: "spring", damping: 12, stiffness: 80, mass: 1.5, restDelta: 0.5 }}
       >
         <motion.div animate={floatControls}>
           <GavelSVG className="w-full h-auto drop-shadow-[0_0_40px_rgba(230,196,135,0.3)]" />
@@ -209,10 +209,10 @@ export default function FallingGavelHero() {
           <span
             className="inline-block px-5 py-1.5 text-[0.7rem] font-bold tracking-[0.2em] uppercase"
             style={{
-              color: '#e6c487',
-              background: 'rgba(230,196,135,0.06)',
-              border: '1px solid rgba(230,196,135,0.15)',
-              borderRadius: '4px',
+              color: "#e6c487",
+              background: "rgba(230,196,135,0.06)",
+              border: "1px solid rgba(230,196,135,0.15)",
+              borderRadius: "4px",
             }}
           >
             Privilege-Preserving AI
@@ -224,9 +224,9 @@ export default function FallingGavelHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-[clamp(1.75rem,3.5vw+0.5rem,4.5rem)] font-[800] leading-[0.95] tracking-[-0.04em] uppercase mb-6"
-          style={{ color: '#d7e3fc' }}
+          style={{ color: "#d7e3fc" }}
         >
-          The Law Demands <span style={{ color: '#e6c487' }}>Precision</span>
+          The Law Demands <span style={{ color: "#e6c487" }}>Precision</span>
         </motion.h1>
 
         <motion.p
@@ -234,12 +234,12 @@ export default function FallingGavelHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.0, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-lg leading-[1.7] max-w-[640px] mx-auto mb-8"
-          style={{ color: '#d0c5b5' }}
+          style={{ color: "#d0c5b5" }}
         >
-          KovelAI routes attorney work through{' '}
-          <em className="font-semibold" style={{ color: '#d7e3fc', fontStyle: 'italic' }}>
+          KovelAI routes attorney work through{" "}
+          <em className="font-semibold" style={{ color: "#d7e3fc", fontStyle: "italic" }}>
             privilege-preserving channels
-          </em>{' '}
+          </em>{" "}
           — so your AI never compromises the seal.
         </motion.p>
 
@@ -263,7 +263,7 @@ export default function FallingGavelHero() {
         className="absolute inset-0 z-30 pointer-events-none opacity-[0.04] mix-blend-overlay"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: 'repeat',
+          backgroundRepeat: "repeat",
         }}
         aria-hidden="true"
       />

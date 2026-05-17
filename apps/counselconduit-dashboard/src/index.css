@@ -33,8 +33,8 @@
   --danger-dim: rgba(239, 68, 68, 0.12);
 
   /* Typography */
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Mono', Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "Cascadia Mono", Consolas, monospace;
 
   /* Spacing */
   --space-xs: 4px;
@@ -95,7 +95,7 @@ body {
 
 /* Background gradient mesh */
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   background:
@@ -322,7 +322,7 @@ a:hover {
 }
 
 .stat-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -869,7 +869,7 @@ a:hover {
 }
 
 .model-toggle::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 2px;
   left: 2px;

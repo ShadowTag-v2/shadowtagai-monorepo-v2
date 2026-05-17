@@ -1,5 +1,5 @@
-'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+"use client";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /* ═══════════════════════════════════════════════════════════════
    AgentSpinner — React Component
@@ -12,176 +12,176 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 // ── Canonical verb list (inlined to avoid cross-package dep) ──
 const SPINNER_VERBS = [
-  'Accomplishing',
-  'Actioning',
-  'Actualizing',
-  'Architecting',
-  'Baking',
-  'Beaming',
+  "Accomplishing",
+  "Actioning",
+  "Actualizing",
+  "Architecting",
+  "Baking",
+  "Beaming",
   "Beboppin'",
-  'Befuddling',
-  'Billowing',
-  'Blanching',
-  'Bloviating',
-  'Boogieing',
-  'Boondoggling',
-  'Booping',
-  'Bootstrapping',
-  'Brewing',
-  'Bunning',
-  'Burrowing',
-  'Calculating',
-  'Canoodling',
-  'Caramelizing',
-  'Cascading',
-  'Catapulting',
-  'Cerebrating',
-  'Channeling',
-  'Choreographing',
-  'Churning',
-  'Coalescing',
-  'Cogitating',
-  'Combobulating',
-  'Composing',
-  'Computing',
-  'Concocting',
-  'Considering',
-  'Contemplating',
-  'Cooking',
-  'Crafting',
-  'Creating',
-  'Crunching',
-  'Crystallizing',
-  'Cultivating',
-  'Deciphering',
-  'Deliberating',
-  'Determining',
-  'Discombobulating',
-  'Doing',
-  'Doodling',
-  'Drizzling',
-  'Ebbing',
-  'Effecting',
-  'Elucidating',
-  'Embellishing',
-  'Enchanting',
-  'Envisioning',
-  'Fermenting',
-  'Finagling',
-  'Flambéing',
-  'Flowing',
-  'Flummoxing',
-  'Fluttering',
-  'Forging',
-  'Forming',
-  'Frolicking',
-  'Frosting',
-  'Gallivanting',
-  'Galloping',
-  'Garnishing',
-  'Generating',
-  'Gesticulating',
-  'Germinating',
-  'Grooving',
-  'Gusting',
-  'Harmonizing',
-  'Hashing',
-  'Hatching',
-  'Herding',
-  'Hullaballooing',
-  'Hyperspacing',
-  'Ideating',
-  'Imagining',
-  'Improvising',
-  'Incubating',
-  'Inferring',
-  'Infusing',
-  'Ionizing',
-  'Jitterbugging',
-  'Kneading',
-  'Leavening',
-  'Levitating',
-  'Manifesting',
-  'Marinating',
-  'Meandering',
-  'Metamorphosing',
-  'Misting',
-  'Moonwalking',
-  'Moseying',
-  'Mulling',
-  'Mustering',
-  'Musing',
-  'Nebulizing',
-  'Nesting',
-  'Noodling',
-  'Nucleating',
-  'Orbiting',
-  'Orchestrating',
-  'Osmosing',
-  'Percolating',
-  'Perusing',
-  'Philosophising',
-  'Pollinating',
-  'Pondering',
-  'Pontificating',
-  'Precipitating',
-  'Prestidigitating',
-  'Processing',
-  'Proofing',
-  'Propagating',
-  'Puttering',
-  'Puzzling',
-  'Quantumizing',
-  'Razzle-dazzling',
-  'Recombobulating',
-  'Reticulating',
-  'Ruminating',
-  'Sautéing',
-  'Scampering',
-  'Schlepping',
-  'Scurrying',
-  'Seasoning',
-  'Shenaniganing',
-  'Shimmying',
-  'Simmering',
-  'Skedaddling',
-  'Sketching',
-  'Slithering',
-  'Smooshing',
-  'Spelunking',
-  'Spinning',
-  'Sprouting',
-  'Stewing',
-  'Sublimating',
-  'Swirling',
-  'Swooping',
-  'Synthesizing',
-  'Tempering',
-  'Thinking',
-  'Thundering',
-  'Tinkering',
-  'Transfiguring',
-  'Transmuting',
-  'Twisting',
-  'Undulating',
-  'Unfurling',
-  'Unravelling',
-  'Vibing',
-  'Waddling',
-  'Wandering',
-  'Warping',
-  'Whirlpooling',
-  'Whirring',
-  'Whisking',
-  'Wibbling',
-  'Working',
-  'Wrangling',
-  'Zesting',
-  'Zigzagging',
+  "Befuddling",
+  "Billowing",
+  "Blanching",
+  "Bloviating",
+  "Boogieing",
+  "Boondoggling",
+  "Booping",
+  "Bootstrapping",
+  "Brewing",
+  "Bunning",
+  "Burrowing",
+  "Calculating",
+  "Canoodling",
+  "Caramelizing",
+  "Cascading",
+  "Catapulting",
+  "Cerebrating",
+  "Channeling",
+  "Choreographing",
+  "Churning",
+  "Coalescing",
+  "Cogitating",
+  "Combobulating",
+  "Composing",
+  "Computing",
+  "Concocting",
+  "Considering",
+  "Contemplating",
+  "Cooking",
+  "Crafting",
+  "Creating",
+  "Crunching",
+  "Crystallizing",
+  "Cultivating",
+  "Deciphering",
+  "Deliberating",
+  "Determining",
+  "Discombobulating",
+  "Doing",
+  "Doodling",
+  "Drizzling",
+  "Ebbing",
+  "Effecting",
+  "Elucidating",
+  "Embellishing",
+  "Enchanting",
+  "Envisioning",
+  "Fermenting",
+  "Finagling",
+  "Flambéing",
+  "Flowing",
+  "Flummoxing",
+  "Fluttering",
+  "Forging",
+  "Forming",
+  "Frolicking",
+  "Frosting",
+  "Gallivanting",
+  "Galloping",
+  "Garnishing",
+  "Generating",
+  "Gesticulating",
+  "Germinating",
+  "Grooving",
+  "Gusting",
+  "Harmonizing",
+  "Hashing",
+  "Hatching",
+  "Herding",
+  "Hullaballooing",
+  "Hyperspacing",
+  "Ideating",
+  "Imagining",
+  "Improvising",
+  "Incubating",
+  "Inferring",
+  "Infusing",
+  "Ionizing",
+  "Jitterbugging",
+  "Kneading",
+  "Leavening",
+  "Levitating",
+  "Manifesting",
+  "Marinating",
+  "Meandering",
+  "Metamorphosing",
+  "Misting",
+  "Moonwalking",
+  "Moseying",
+  "Mulling",
+  "Mustering",
+  "Musing",
+  "Nebulizing",
+  "Nesting",
+  "Noodling",
+  "Nucleating",
+  "Orbiting",
+  "Orchestrating",
+  "Osmosing",
+  "Percolating",
+  "Perusing",
+  "Philosophising",
+  "Pollinating",
+  "Pondering",
+  "Pontificating",
+  "Precipitating",
+  "Prestidigitating",
+  "Processing",
+  "Proofing",
+  "Propagating",
+  "Puttering",
+  "Puzzling",
+  "Quantumizing",
+  "Razzle-dazzling",
+  "Recombobulating",
+  "Reticulating",
+  "Ruminating",
+  "Sautéing",
+  "Scampering",
+  "Schlepping",
+  "Scurrying",
+  "Seasoning",
+  "Shenaniganing",
+  "Shimmying",
+  "Simmering",
+  "Skedaddling",
+  "Sketching",
+  "Slithering",
+  "Smooshing",
+  "Spelunking",
+  "Spinning",
+  "Sprouting",
+  "Stewing",
+  "Sublimating",
+  "Swirling",
+  "Swooping",
+  "Synthesizing",
+  "Tempering",
+  "Thinking",
+  "Thundering",
+  "Tinkering",
+  "Transfiguring",
+  "Transmuting",
+  "Twisting",
+  "Undulating",
+  "Unfurling",
+  "Unravelling",
+  "Vibing",
+  "Waddling",
+  "Wandering",
+  "Warping",
+  "Whirlpooling",
+  "Whirring",
+  "Whisking",
+  "Wibbling",
+  "Working",
+  "Wrangling",
+  "Zesting",
+  "Zigzagging",
 ];
 
 // Braille spinner frames (Claude Code canonical)
-const BRAILLE_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧'];
+const BRAILLE_FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧"];
 const FRAME_INTERVAL = 125;
 const VERB_CYCLE_MS = 4_000;
 const STALL_NORMAL_MS = 10_000;
@@ -212,14 +212,14 @@ export default function AgentSpinner({
   theme,
   overlay = false,
   label,
-  className = '',
+  className = "",
   onStallChange,
 }) {
-  const [verb, setVerb] = useState('Initializing');
-  const [verbState, setVerbState] = useState('entering');
+  const [verb, setVerb] = useState("Initializing");
+  const [verbState, setVerbState] = useState("entering");
   const [frame, setFrame] = useState(0);
-  const [stall, setStall] = useState('normal');
-  const [dots, setDots] = useState('.');
+  const [stall, setStall] = useState("normal");
+  const [dots, setDots] = useState(".");
 
   const startTimeRef = useRef(0);
   const verbsRef = useRef(shuffle(SPINNER_VERBS));
@@ -230,11 +230,11 @@ export default function AgentSpinner({
   const dotsTimerRef = useRef(null);
 
   const cycleVerb = useCallback(() => {
-    setVerbState('exiting');
+    setVerbState("exiting");
     setTimeout(() => {
       verbIndexRef.current = (verbIndexRef.current + 1) % verbsRef.current.length;
       setVerb(verbsRef.current[verbIndexRef.current]);
-      setVerbState('entering');
+      setVerbState("entering");
     }, 250);
   }, []);
 
@@ -245,7 +245,7 @@ export default function AgentSpinner({
       if (verbTimerRef.current) clearInterval(verbTimerRef.current);
       if (stallTimerRef.current) clearInterval(stallTimerRef.current);
       if (dotsTimerRef.current) clearInterval(dotsTimerRef.current);
-      setStall('normal');
+      setStall("normal");
       return;
     }
 
@@ -254,8 +254,8 @@ export default function AgentSpinner({
     verbIndexRef.current = 0;
     verbsRef.current = shuffle(SPINNER_VERBS);
     setVerb(verbsRef.current[0]);
-    setVerbState('entering');
-    setStall('normal');
+    setVerbState("entering");
+    setStall("normal");
     setFrame(0);
 
     // Braille frame rotation
@@ -267,7 +267,7 @@ export default function AgentSpinner({
     verbTimerRef.current = setInterval(cycleVerb, VERB_CYCLE_MS);
 
     // Dots cycling
-    const dotFrames = ['.', '..', '...'];
+    const dotFrames = [".", "..", "..."];
     let dotIdx = 0;
     dotsTimerRef.current = setInterval(() => {
       dotIdx = (dotIdx + 1) % dotFrames.length;
@@ -277,9 +277,9 @@ export default function AgentSpinner({
     // Stall intensity
     stallTimerRef.current = setInterval(() => {
       const elapsed = Date.now() - startTimeRef.current;
-      let next = 'normal';
-      if (elapsed > STALL_WARM_MS) next = 'hot';
-      else if (elapsed > STALL_NORMAL_MS) next = 'warm';
+      let next = "normal";
+      if (elapsed > STALL_WARM_MS) next = "hot";
+      else if (elapsed > STALL_NORMAL_MS) next = "warm";
       setStall((prev) => {
         if (prev !== next) {
           onStallChange?.(next, elapsed);
@@ -298,8 +298,8 @@ export default function AgentSpinner({
 
   if (!active) return null;
 
-  const themeClass = theme ? ` agent-spinner--${theme}` : '';
-  const overlayClass = overlay ? ' agent-spinner--overlay' : '';
+  const themeClass = theme ? ` agent-spinner--${theme}` : "";
+  const overlayClass = overlay ? " agent-spinner--overlay" : "";
 
   return (
     <div

@@ -13,7 +13,7 @@
  * Architecture note: Firestore is canonical (Supabase rejected per doctrine).
  */
 
-import { createHash, randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from "node:crypto";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -23,7 +23,7 @@ export interface GenesisBlockEntry {
   /** SHA-256 of the raw bytes at ingestion time */
   sha256Hash: string;
   /** Source classification */
-  sourceType: 'GOOGLE_DRIVE_API' | 'CLOUD_BROWSER_SCRAPE' | 'WEBRTC_AUDIO' | 'FILE_UPLOAD';
+  sourceType: "GOOGLE_DRIVE_API" | "CLOUD_BROWSER_SCRAPE" | "WEBRTC_AUDIO" | "FILE_UPLOAD";
   /** The S.E.U. session that triggered this ingestion */
   seuSessionId: string;
   /** Firm provenance chain */
@@ -66,7 +66,7 @@ export interface C2PAManifest {
  */
 export function createGenesisBlock(
   rawBytes: Buffer | Uint8Array,
-  sourceType: GenesisBlockEntry['sourceType'],
+  sourceType: GenesisBlockEntry["sourceType"],
   sourceIdentifier: string,
   seuSessionId: string,
   firmId: string,
@@ -75,22 +75,22 @@ export function createGenesisBlock(
   const now = new Date().toISOString();
 
   // 1. SHA-256 of the raw, unmodified bytes
-  const sha256Hash = createHash('sha256').update(buffer).digest('hex');
+  const sha256Hash = createHash("sha256").update(buffer).digest("hex");
 
   // 2. Magic byte detection for MIME type
   const detectedMimeType = detectMimeType(buffer);
 
   // 3. C2PA manifest — proves content origin, not generation
   const c2paManifest: C2PAManifest = {
-    claimGenerator: 'KovelAI/GenesisBlock/1.0.0',
+    claimGenerator: "KovelAI/GenesisBlock/1.0.0",
     assertions: [
       {
-        label: 'c2pa.actions',
+        label: "c2pa.actions",
         data: {
           actions: [
             {
-              action: 'c2pa.ingested',
-              softwareAgent: 'KovelAI Antigravity MCP Gateway',
+              action: "c2pa.ingested",
+              softwareAgent: "KovelAI Antigravity MCP Gateway",
               when: now,
               parameters: {
                 sourceType,
@@ -101,18 +101,18 @@ export function createGenesisBlock(
         },
       },
       {
-        label: 'kovelai.fre902',
+        label: "kovelai.fre902",
         data: {
-          rule: 'Federal Rules of Evidence 901(b)(9) / 902(14)',
+          rule: "Federal Rules of Evidence 901(b)(9) / 902(14)",
           certification:
-            'This digital evidence was ingested from an external source and cryptographically hashed at the point of collection. The hash was computed BEFORE any generative AI processing occurred. The original bytes were not modified, generated, or hallucinated by any language model.',
-          hashAlgorithm: 'SHA-256',
+            "This digital evidence was ingested from an external source and cryptographically hashed at the point of collection. The hash was computed BEFORE any generative AI processing occurred. The original bytes were not modified, generated, or hallucinated by any language model.",
+          hashAlgorithm: "SHA-256",
           hashValue: sha256Hash,
         },
       },
     ],
     signatureInfo: {
-      algorithm: 'HMAC-SHA256',
+      algorithm: "HMAC-SHA256",
       issuer: `kovelai:genesis:${firmId}`,
       timestamp: now,
     },
@@ -121,7 +121,7 @@ export function createGenesisBlock(
   const id = randomUUID();
 
   // 4. Build the entry
-  const entry: Omit<GenesisBlockEntry, 'integrityCode'> = {
+  const entry: Omit<GenesisBlockEntry, "integrityCode"> = {
     id,
     sha256Hash,
     sourceType,
@@ -155,11 +155,11 @@ export function verifyGenesisBlockIntegrity(entry: GenesisBlockEntry): boolean {
  */
 export function generateRule902Certification(entry: GenesisBlockEntry): string {
   return [
-    'CERTIFICATION OF DIGITAL EVIDENCE AUTHENTICITY',
-    'Under Federal Rule of Evidence 902(14)',
-    '',
-    '═══════════════════════════════════════════════════════════',
-    '',
+    "CERTIFICATION OF DIGITAL EVIDENCE AUTHENTICITY",
+    "Under Federal Rule of Evidence 902(14)",
+    "",
+    "═══════════════════════════════════════════════════════════",
+    "",
     `Evidence ID:        ${entry.id}`,
     `SHA-256 Hash:       ${entry.sha256Hash}`,
     `Source Type:        ${entry.sourceType}`,
@@ -167,70 +167,70 @@ export function generateRule902Certification(entry: GenesisBlockEntry): string {
     `Original Size:      ${entry.byteCount.toLocaleString()} bytes`,
     `Detected MIME Type: ${entry.detectedMimeType}`,
     `Integrity Code:     ${entry.integrityCode}`,
-    '',
-    '═══════════════════════════════════════════════════════════',
-    '',
-    'DECLARATION:',
-    '',
-    'I hereby certify that the above-referenced digital evidence',
-    'was collected by the KovelAI Antigravity MCP Gateway, an',
-    'automated evidence collection system. The SHA-256 hash was',
-    'computed at the exact moment of ingestion — PRIOR to any',
-    'processing by generative artificial intelligence models.',
-    '',
-    'The original bytes were not modified, generated, synthesized,',
-    'or hallucinated by any language model or AI system.',
-    '',
-    'This certification is made pursuant to FRE 902(14) and is',
-    'subject to verification by any party through independent',
-    'SHA-256 hash computation of the original source material.',
-    '',
+    "",
+    "═══════════════════════════════════════════════════════════",
+    "",
+    "DECLARATION:",
+    "",
+    "I hereby certify that the above-referenced digital evidence",
+    "was collected by the KovelAI Antigravity MCP Gateway, an",
+    "automated evidence collection system. The SHA-256 hash was",
+    "computed at the exact moment of ingestion — PRIOR to any",
+    "processing by generative artificial intelligence models.",
+    "",
+    "The original bytes were not modified, generated, synthesized,",
+    "or hallucinated by any language model or AI system.",
+    "",
+    "This certification is made pursuant to FRE 902(14) and is",
+    "subject to verification by any party through independent",
+    "SHA-256 hash computation of the original source material.",
+    "",
     `Claim Generator:    ${entry.c2paManifest.claimGenerator}`,
     `Signature Algorithm: ${entry.c2paManifest.signatureInfo.algorithm}`,
     `Issuer:             ${entry.c2paManifest.signatureInfo.issuer}`,
-    '',
-    '═══════════════════════════════════════════════════════════',
-  ].join('\n');
+    "",
+    "═══════════════════════════════════════════════════════════",
+  ].join("\n");
 }
 
 // ─── Helpers ────────────────────────────────────────────────────
 
-function computeEntryIntegrity(entry: Omit<GenesisBlockEntry, 'integrityCode'>): string {
-  const secret = process.env.KOVELAI_GENESIS_SECRET ?? 'genesis-dev-secret';
+function computeEntryIntegrity(entry: Omit<GenesisBlockEntry, "integrityCode">): string {
+  const secret = process.env.KOVELAI_GENESIS_SECRET ?? "genesis-dev-secret";
   const canonical = JSON.stringify(entry, Object.keys(entry).sort());
-  return createHash('sha256').update(`${secret}:${canonical}`).digest('hex');
+  return createHash("sha256").update(`${secret}:${canonical}`).digest("hex");
 }
 
 function redactForPrivilege(identifier: string): string {
   // Redact full file paths to just filename for privilege protection
-  if (identifier.includes('/')) {
-    const parts = identifier.split('/');
+  if (identifier.includes("/")) {
+    const parts = identifier.split("/");
     return `[REDACTED_PATH]/${parts[parts.length - 1]}`;
   }
   return identifier;
 }
 
 function detectMimeType(buffer: Buffer): string {
-  if (buffer.length < 4) return 'application/octet-stream';
+  if (buffer.length < 4) return "application/octet-stream";
 
   const magic = buffer.subarray(0, 4);
 
   // PDF: %PDF
   if (magic[0] === 0x25 && magic[1] === 0x50 && magic[2] === 0x44 && magic[3] === 0x46) {
-    return 'application/pdf';
+    return "application/pdf";
   }
   // PNG: 0x89 P N G
   if (magic[0] === 0x89 && magic[1] === 0x50 && magic[2] === 0x4e && magic[3] === 0x47) {
-    return 'image/png';
+    return "image/png";
   }
   // JPEG: 0xFF 0xD8
   if (magic[0] === 0xff && magic[1] === 0xd8) {
-    return 'image/jpeg';
+    return "image/jpeg";
   }
   // DOCX/XLSX/PPTX (ZIP): PK
   if (magic[0] === 0x50 && magic[1] === 0x4b) {
-    return 'application/vnd.openxmlformats-officedocument';
+    return "application/vnd.openxmlformats-officedocument";
   }
 
-  return 'application/octet-stream';
+  return "application/octet-stream";
 }

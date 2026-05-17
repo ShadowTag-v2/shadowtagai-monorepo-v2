@@ -20,7 +20,7 @@ import {
   searchCourtListener,
   searchLexisNexis,
   searchWestlaw,
-} from '@/lib/connectors/legal-search';
+} from "@/lib/connectors/legal-search";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -28,7 +28,7 @@ interface UnifiedSearchResult {
   title: string;
   snippet: string;
   url: string;
-  source: 'google_enterprise' | 'perplexity_sonar' | 'westlaw' | 'lexisnexis' | 'courtlistener';
+  source: "google_enterprise" | "perplexity_sonar" | "westlaw" | "lexisnexis" | "courtlistener";
   confidence?: number;
   citations?: string[];
 }
@@ -86,7 +86,7 @@ export async function executeUnifiedLegalSearch(
   const allResults: UnifiedSearchResult[] = [];
 
   for (const result of settled) {
-    if (result.status === 'fulfilled') {
+    if (result.status === "fulfilled") {
       allResults.push(...result.value);
     } else {
     }
@@ -117,7 +117,7 @@ async function searchWestlawAdapter(
       jurisdiction: jurisdictions?.[0],
     });
 
-    return results.map(adaptLegalResult('westlaw'));
+    return results.map(adaptLegalResult("westlaw"));
   } catch {
     return [];
   }
@@ -134,7 +134,7 @@ async function searchLexisNexisAdapter(
       jurisdiction: jurisdictions?.[0],
     });
 
-    return results.map(adaptLegalResult('lexisnexis'));
+    return results.map(adaptLegalResult("lexisnexis"));
   } catch {
     return [];
   }
@@ -151,14 +151,14 @@ async function searchCourtListenerAdapter(
       court: jurisdictions?.[0],
     });
 
-    return results.map(adaptLegalResult('courtlistener'));
+    return results.map(adaptLegalResult("courtlistener"));
   } catch {
     return [];
   }
 }
 
 function adaptLegalResult(
-  source: 'westlaw' | 'lexisnexis' | 'courtlistener',
+  source: "westlaw" | "lexisnexis" | "courtlistener",
 ): (result: LegalSearchResult) => UnifiedSearchResult {
   return (result) => ({
     title: result.title,

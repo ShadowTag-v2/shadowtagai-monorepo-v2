@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type React from 'react';
+import type React from "react";
 
 /**
  * Gold Standard: ActivityCard
@@ -23,7 +23,7 @@ import type React from 'react';
 interface ActivityCardProps {
   readonly id: string;
   readonly username: string;
-  readonly action: 'MERGED' | 'COMMIT';
+  readonly action: "MERGED" | "COMMIT";
   readonly timestamp: string;
   readonly avatarUrl: string;
   readonly repoName: string;
@@ -40,7 +40,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   userUrl,
   repoUrl,
 }) => {
-  const isMerged = action === 'MERGED';
+  const isMerged = action === "MERGED";
 
   return (
     <div className="flex items-center justify-between gap-4 rounded-lg bg-surface-dark p-4 min-h-14 shadow-sm ring-1 ring-white/10">
@@ -61,7 +61,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 
           <span
             className={`inline-block px-2 py-0.5 text-xs font-semibold rounded-full ${
-              isMerged ? 'bg-purple-500/30 text-purple-300' : 'bg-primary/30 text-primary'
+              isMerged ? "bg-purple-500/30 text-purple-300" : "bg-primary/30 text-primary"
             }`}
           >
             {action}

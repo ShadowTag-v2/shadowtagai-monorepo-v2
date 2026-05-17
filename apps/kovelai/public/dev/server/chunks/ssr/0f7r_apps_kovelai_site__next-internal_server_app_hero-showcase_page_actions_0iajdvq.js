@@ -1,7 +1,7 @@
 module.exports = [
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/.next-internal/server/app/hero-showcase/page/actions.js [app-rsc] (server actions loader, ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/.next-internal/server/app/hero-showcase/page/actions.js [app-rsc] (server actions loader, ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([]);
   },

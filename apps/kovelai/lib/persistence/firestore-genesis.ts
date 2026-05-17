@@ -8,14 +8,14 @@
  * TTL: Permanent (evidence records never expire)
  */
 
-import { cert, getApps, initializeApp } from 'firebase-admin/app';
-import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore';
+import { cert, getApps, initializeApp } from "firebase-admin/app";
+import { FieldValue, getFirestore, Timestamp } from "firebase-admin/firestore";
 
 // Initialize Firebase Admin (idempotent)
 if (!getApps().length) {
   initializeApp({
-    credential: cert(JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON || '{}')),
-    projectId: process.env.GCLOUD_PROJECT || 'shadowtag-omega-v4',
+    credential: cert(JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON || "{}")),
+    projectId: process.env.GCLOUD_PROJECT || "shadowtag-omega-v4",
   });
 }
 
@@ -27,9 +27,9 @@ interface GenesisBlockDoc {
   firmId: string;
   sessionId: string;
   contentHash: string; // SHA-256 of original content
-  algorithm: 'sha256';
+  algorithm: "sha256";
   c2paManifest?: string; // C2PA manifest URI
-  sourceType: 'query' | 'document' | 'transcript' | 'search_result';
+  sourceType: "query" | "document" | "transcript" | "search_result";
   metadata: {
     fileName?: string;
     contentType?: string;
@@ -50,8 +50,8 @@ export async function persistGenesisBlock(params: {
   firmId: string;
   sessionId: string;
   contentHash: string;
-  sourceType: GenesisBlockDoc['sourceType'];
-  metadata: GenesisBlockDoc['metadata'];
+  sourceType: GenesisBlockDoc["sourceType"];
+  metadata: GenesisBlockDoc["metadata"];
   createdBy: string;
   c2paManifest?: string;
   attestationRef?: string;
@@ -64,7 +64,7 @@ export async function persistGenesisBlock(params: {
     firmId: params.firmId,
     sessionId: params.sessionId,
     contentHash: params.contentHash,
-    algorithm: 'sha256',
+    algorithm: "sha256",
     c2paManifest: params.c2paManifest,
     sourceType: params.sourceType,
     metadata: params.metadata,
@@ -74,13 +74,13 @@ export async function persistGenesisBlock(params: {
     chainPrevious: params.chainPrevious,
   };
 
-  const ref = db.collection('genesis_blocks').doc(params.firmId).collection('blocks').doc(blockId);
+  const ref = db.collection("genesis_blocks").doc(params.firmId).collection("blocks").doc(blockId);
 
   await ref.set(doc);
 
   // Update firm-level block count
   await db
-    .collection('genesis_blocks')
+    .collection("genesis_blocks")
     .doc(params.firmId)
     .set({ blockCount: FieldValue.increment(1), lastBlockAt: Timestamp.now() }, { merge: true });
 
@@ -95,11 +95,11 @@ export async function getSessionChain(
   sessionId: string,
 ): Promise<GenesisBlockDoc[]> {
   const snapshot = await db
-    .collection('genesis_blocks')
+    .collection("genesis_blocks")
     .doc(firmId)
-    .collection('blocks')
-    .where('sessionId', '==', sessionId)
-    .orderBy('createdAt', 'asc')
+    .collection("blocks")
+    .where("sessionId", "==", sessionId)
+    .orderBy("createdAt", "asc")
     .get();
 
   return snapshot.docs.map((doc) => doc.data() as GenesisBlockDoc);

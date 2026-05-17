@@ -3,14 +3,14 @@
  */
 
 export enum AgentCategory {
-  PRODUCT_STRATEGY = 'Product Strategy',
-  DEVELOPMENT = 'Development',
-  DESIGN_UX = 'Design & UX',
-  QUALITY_TESTING = 'Quality & Testing',
-  OPERATIONS = 'Operations',
-  BUSINESS_ANALYTICS = 'Business & Analytics',
-  AI_INNOVATION = 'AI & Innovation',
-  VERTEX_AI = 'Vertex AI',
+  PRODUCT_STRATEGY = "Product Strategy",
+  DEVELOPMENT = "Development",
+  DESIGN_UX = "Design & UX",
+  QUALITY_TESTING = "Quality & Testing",
+  OPERATIONS = "Operations",
+  BUSINESS_ANALYTICS = "Business & Analytics",
+  AI_INNOVATION = "AI & Innovation",
+  VERTEX_AI = "Vertex AI",
 }
 
 export interface AgentMetadata {
@@ -103,7 +103,7 @@ export abstract class BaseAgent {
       task,
       context: context || {},
       prompt: this.getSystemPrompt(),
-      status: 'success',
+      status: "success",
     };
   }
 }

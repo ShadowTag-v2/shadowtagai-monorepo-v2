@@ -3,12 +3,12 @@
  * Complete collection of 51 specialized AI agents
  */
 
-import cors from 'cors';
-import dotenv from 'dotenv';
-import express, { type NextFunction, type Request, type Response } from 'express';
-import { z } from 'zod';
-import { AgentCategory } from './agents/base';
-import { AgentRegistry } from './agents/registry';
+import cors from "cors";
+import dotenv from "dotenv";
+import express, { type NextFunction, type Request, type Response } from "express";
+import { z } from "zod";
+import { AgentCategory } from "./agents/base";
+import { AgentRegistry } from "./agents/registry";
 
 // Load environment variables
 dotenv.config();
@@ -23,7 +23,7 @@ app.use(express.json());
 
 // Request validation schemas
 const AgentTaskRequestSchema = z.object({
-  task: z.string().min(1, 'Task description is required'),
+  task: z.string().min(1, "Task description is required"),
   context: z.record(z.any()).optional(),
 });
 
@@ -39,26 +39,26 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,
-    error: err.message || 'Internal server error',
+    error: err.message || "Internal server error",
   });
 });
 
 /**
  * Root endpoint
  */
-app.get('/', (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
   res.json({
-    name: 'Vertex AI Workbench Agents API',
-    version: '1.0.0',
-    description: '51 specialized AI agents for development, ML operations, and prompt engineering',
+    name: "Vertex AI Workbench Agents API",
+    version: "1.0.0",
+    description: "51 specialized AI agents for development, ML operations, and prompt engineering",
     total_agents: AgentRegistry.getAgentCount(),
     endpoints: {
-      agents: '/agents',
-      categories: '/categories',
-      stats: '/stats',
-      search: '/agents/search?q=<query>',
-      execute: '/agents/:agentId/execute',
-      docs: '/docs',
+      agents: "/agents",
+      categories: "/categories",
+      stats: "/stats",
+      search: "/agents/search?q=<query>",
+      execute: "/agents/:agentId/execute",
+      docs: "/docs",
     },
   });
 });
@@ -66,14 +66,14 @@ app.get('/', (req: Request, res: Response) => {
 /**
  * Health check endpoint
  */
-app.get('/health', (req: Request, res: Response) => {
-  res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+app.get("/health", (req: Request, res: Response) => {
+  res.json({ status: "healthy", timestamp: new Date().toISOString() });
 });
 
 /**
  * Get all agents
  */
-app.get('/agents', (req: Request, res: Response) => {
+app.get("/agents", (req: Request, res: Response) => {
   try {
     const agentsWithIds = AgentRegistry.getAllAgentsWithIds();
     const response = agentsWithIds.map(({ id, agent }) => ({
@@ -85,7 +85,7 @@ app.get('/agents', (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -93,7 +93,7 @@ app.get('/agents', (req: Request, res: Response) => {
 /**
  * Get specific agent
  */
-app.get('/agents/:agentId', (req: Request, res: Response) => {
+app.get("/agents/:agentId", (req: Request, res: Response) => {
   try {
     const { agentId } = req.params;
     const result = AgentRegistry.getAgentWithId(agentId);
@@ -115,7 +115,7 @@ app.get('/agents/:agentId', (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -123,7 +123,7 @@ app.get('/agents/:agentId', (req: Request, res: Response) => {
 /**
  * Execute agent task
  */
-app.post('/agents/:agentId/execute', async (req: Request, res: Response) => {
+app.post("/agents/:agentId/execute", async (req: Request, res: Response) => {
   try {
     const { agentId } = req.params;
     const agent = AgentRegistry.getAgent(agentId);
@@ -154,7 +154,7 @@ app.post('/agents/:agentId/execute', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -162,7 +162,7 @@ app.post('/agents/:agentId/execute', async (req: Request, res: Response) => {
 /**
  * Get agent system prompt
  */
-app.get('/agents/:agentId/prompt', (req: Request, res: Response) => {
+app.get("/agents/:agentId/prompt", (req: Request, res: Response) => {
   try {
     const { agentId } = req.params;
     const agent = AgentRegistry.getAgent(agentId);
@@ -184,7 +184,7 @@ app.get('/agents/:agentId/prompt', (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -192,22 +192,22 @@ app.get('/agents/:agentId/prompt', (req: Request, res: Response) => {
 /**
  * Get agents by category
  */
-app.get('/agents/category/:category', (req: Request, res: Response) => {
+app.get("/agents/category/:category", (req: Request, res: Response) => {
   try {
     const { category } = req.params;
 
     // Find matching category
     const categoryKey = Object.keys(AgentCategory).find(
       (key) =>
-        AgentCategory[key as keyof typeof AgentCategory].toLowerCase().replace(/\s+/g, '-') ===
-        category.toLowerCase().replace(/\s+/g, '-'),
+        AgentCategory[key as keyof typeof AgentCategory].toLowerCase().replace(/\s+/g, "-") ===
+        category.toLowerCase().replace(/\s+/g, "-"),
     );
 
     if (!categoryKey) {
       return res.status(404).json({
         success: false,
         error: `Category '${category}' not found. Available: ${AgentRegistry.getCategories().join(
-          ', ',
+          ", ",
         )}`,
       });
     }
@@ -230,7 +230,7 @@ app.get('/agents/category/:category', (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -238,7 +238,7 @@ app.get('/agents/category/:category', (req: Request, res: Response) => {
 /**
  * Get all categories
  */
-app.get('/categories', (req: Request, res: Response) => {
+app.get("/categories", (req: Request, res: Response) => {
   try {
     const categories = AgentRegistry.getCategories();
     res.json({
@@ -251,7 +251,7 @@ app.get('/categories', (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -259,7 +259,7 @@ app.get('/categories', (req: Request, res: Response) => {
 /**
  * Search agents
  */
-app.get('/agents/search', (req: Request, res: Response) => {
+app.get("/agents/search", (req: Request, res: Response) => {
   try {
     const query = req.query.q as string;
 
@@ -287,7 +287,7 @@ app.get('/agents/search', (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -295,14 +295,14 @@ app.get('/agents/search', (req: Request, res: Response) => {
 /**
  * Get statistics
  */
-app.get('/stats', (req: Request, res: Response) => {
+app.get("/stats", (req: Request, res: Response) => {
   try {
     const stats = AgentRegistry.getStats();
     res.json({ success: true, data: stats });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -310,7 +310,7 @@ app.get('/stats', (req: Request, res: Response) => {
 /**
  * Get agents grouped by category
  */
-app.get('/agents/grouped', (req: Request, res: Response) => {
+app.get("/agents/grouped", (req: Request, res: Response) => {
   try {
     const grouped: Record<string, any[]> = {};
 
@@ -341,7 +341,7 @@ app.get('/agents/grouped', (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -349,27 +349,27 @@ app.get('/agents/grouped', (req: Request, res: Response) => {
 /**
  * API documentation endpoint
  */
-app.get('/docs', (req: Request, res: Response) => {
+app.get("/docs", (req: Request, res: Response) => {
   res.json({
-    title: 'Vertex AI Workbench Agents API',
-    version: '1.0.0',
+    title: "Vertex AI Workbench Agents API",
+    version: "1.0.0",
     description:
-      'Complete collection of 46 specialized AI agents for software development and ML operations',
+      "Complete collection of 46 specialized AI agents for software development and ML operations",
     endpoints: {
       GET: {
-        '/': 'API information',
-        '/health': 'Health check',
-        '/agents': 'List all agents',
-        '/agents/:agentId': 'Get specific agent',
-        '/agents/:agentId/prompt': 'Get agent system prompt',
-        '/agents/category/:category': 'Get agents by category',
-        '/agents/grouped': 'Get agents grouped by category',
-        '/categories': 'List all categories',
-        '/agents/search?q=query': 'Search agents',
-        '/stats': 'Get agent statistics',
+        "/": "API information",
+        "/health": "Health check",
+        "/agents": "List all agents",
+        "/agents/:agentId": "Get specific agent",
+        "/agents/:agentId/prompt": "Get agent system prompt",
+        "/agents/category/:category": "Get agents by category",
+        "/agents/grouped": "Get agents grouped by category",
+        "/categories": "List all categories",
+        "/agents/search?q=query": "Search agents",
+        "/stats": "Get agent statistics",
       },
       POST: {
-        '/agents/:agentId/execute': 'Execute agent task',
+        "/agents/:agentId/execute": "Execute agent task",
       },
     },
   });

@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class PerformanceEngineerAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'performance-engineer',
-    name: 'Performance Engineer',
-    category: 'development',
+    id: "performance-engineer",
+    name: "Performance Engineer",
+    category: "development",
     description:
-      'Finds the 5 lines making your app slow and fixes them. Implements caching that actually works.',
-    tagline: 'Performance optimization and profiling',
-    capabilities: ['analysis', 'optimization', 'implementation'],
-    tags: ['performance', 'optimization', 'caching', 'profiling', 'speed'],
-    difficulty: 'advanced',
-    estimatedTime: '2-4 hours',
+      "Finds the 5 lines making your app slow and fixes them. Implements caching that actually works.",
+    tagline: "Performance optimization and profiling",
+    capabilities: ["analysis", "optimization", "implementation"],
+    tags: ["performance", "optimization", "caching", "profiling", "speed"],
+    difficulty: "advanced",
+    estimatedTime: "2-4 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -50,42 +50,42 @@ Make apps fast. 80% of performance comes from 20% of the code.`,
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Grep', 'Edit'],
-    optional: ['Bash', 'Write'],
+    required: ["Glob", "Read", "Grep", "Edit"],
+    optional: ["Bash", "Write"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Performance Profiling',
-        description: 'Profile application performance',
-        action: 'Identify bottlenecks using profiling tools',
+        name: "Performance Profiling",
+        description: "Profile application performance",
+        action: "Identify bottlenecks using profiling tools",
       },
       {
-        name: 'Bottleneck Analysis',
-        description: 'Analyze top performance issues',
-        action: 'Prioritize by impact (Pareto principle)',
+        name: "Bottleneck Analysis",
+        description: "Analyze top performance issues",
+        action: "Prioritize by impact (Pareto principle)",
       },
       {
-        name: 'Caching Strategy',
-        description: 'Implement caching where beneficial',
-        action: 'Add memoization, CDN, Redis caching',
+        name: "Caching Strategy",
+        description: "Implement caching where beneficial",
+        action: "Add memoization, CDN, Redis caching",
       },
       {
-        name: 'Code Optimization',
-        description: 'Optimize critical code paths',
-        action: 'Improve algorithms, reduce complexity',
+        name: "Code Optimization",
+        description: "Optimize critical code paths",
+        action: "Improve algorithms, reduce complexity",
       },
       {
-        name: 'Validation',
-        description: 'Measure performance improvements',
-        action: 'Benchmark before/after metrics',
+        name: "Validation",
+        description: "Measure performance improvements",
+        action: "Benchmark before/after metrics",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

@@ -10,37 +10,37 @@
  * - Networking: VPC, Load Balancer, Cloud CDN
  */
 
-import * as gcp from '@pulumi/gcp';
-import * as k8s from '@pulumi/kubernetes';
-import * as pulumi from '@pulumi/pulumi';
+import * as gcp from "@pulumi/gcp";
+import * as k8s from "@pulumi/kubernetes";
+import * as pulumi from "@pulumi/pulumi";
 
 // Configuration
 const config = new pulumi.Config();
-const projectId = config.require('gcp:project');
-const region = config.get('region') || 'us-central1';
-const clusterName = config.get('clusterName') || 'pnkln-main';
+const projectId = config.require("gcp:project");
+const region = config.get("region") || "us-central1";
+const clusterName = config.get("clusterName") || "pnkln-main";
 
 // ============================================================================
 // VPC Network
 // ============================================================================
 
-const network = new gcp.compute.Network('pnkln-vpc', {
+const network = new gcp.compute.Network("pnkln-vpc", {
   autoCreateSubnetworks: false,
-  description: 'PNKLN Core Stack VPC',
+  description: "PNKLN Core Stack VPC",
 });
 
-const subnet = new gcp.compute.Subnetwork('gke-subnet', {
+const subnet = new gcp.compute.Subnetwork("gke-subnet", {
   network: network.id,
   region: region,
-  ipCidrRange: '10.0.0.0/24',
+  ipCidrRange: "10.0.0.0/24",
   secondaryIpRanges: [
     {
-      rangeName: 'pods',
-      ipCidrRange: '10.4.0.0/14', // 262k pods
+      rangeName: "pods",
+      ipCidrRange: "10.4.0.0/14", // 262k pods
     },
     {
-      rangeName: 'services',
-      ipCidrRange: '10.8.0.0/20', // 4k services
+      rangeName: "services",
+      ipCidrRange: "10.8.0.0/20", // 4k services
     },
   ],
   privateIpGoogleAccess: true,
@@ -50,7 +50,7 @@ const subnet = new gcp.compute.Subnetwork('gke-subnet', {
 // GKE Standard Cluster (GPU Workloads)
 // ============================================================================
 
-const standardCluster = new gcp.container.Cluster('pnkln-standard', {
+const standardCluster = new gcp.container.Cluster("pnkln-standard", {
   name: clusterName,
   location: region,
 
@@ -58,30 +58,30 @@ const standardCluster = new gcp.container.Cluster('pnkln-standard', {
   network: network.name,
   subnetwork: subnet.name,
   ipAllocationPolicy: {
-    clusterSecondaryRangeName: 'pods',
-    servicesSecondaryRangeName: 'services',
+    clusterSecondaryRangeName: "pods",
+    servicesSecondaryRangeName: "services",
   },
 
   // Private cluster configuration
   privateClusterConfig: {
     enablePrivateNodes: true,
     enablePrivateEndpoint: false, // Keep master accessible for CI/CD
-    masterIpv4CidrBlock: '10.100.0.0/28',
+    masterIpv4CidrBlock: "10.100.0.0/28",
   },
 
   // Master authorized networks (restrict API access)
   masterAuthorizedNetworksConfig: {
     cidrBlocks: [
       {
-        cidrBlock: '0.0.0.0/0', // TODO: Restrict to GitHub Actions IPs in production
-        displayName: 'All (development only)',
+        cidrBlock: "0.0.0.0/0", // TODO: Restrict to GitHub Actions IPs in production
+        displayName: "All (development only)",
       },
     ],
   },
 
   // Release channel for automatic updates
   releaseChannel: {
-    channel: 'REGULAR',
+    channel: "REGULAR",
   },
 
   // Workload Identity
@@ -91,7 +91,7 @@ const standardCluster = new gcp.container.Cluster('pnkln-standard', {
 
   // Binary Authorization
   binaryAuthorization: {
-    evaluationMode: 'PROJECT_SINGLETON_POLICY_ENFORCE',
+    evaluationMode: "PROJECT_SINGLETON_POLICY_ENFORCE",
   },
 
   // Addons
@@ -112,8 +112,8 @@ const standardCluster = new gcp.container.Cluster('pnkln-standard', {
   removeDefaultNodePool: true,
 
   // Logging and monitoring
-  loggingService: 'logging.googleapis.com/kubernetes',
-  monitoringService: 'monitoring.googleapis.com/kubernetes',
+  loggingService: "logging.googleapis.com/kubernetes",
+  monitoringService: "monitoring.googleapis.com/kubernetes",
 
   // Shielded nodes
   nodeConfig: {
@@ -128,7 +128,7 @@ const standardCluster = new gcp.container.Cluster('pnkln-standard', {
 // GPU Node Pool (NVIDIA H100)
 // ============================================================================
 
-const nvidiaH100Pool = new gcp.container.NodePool('nvidia-h100-pool', {
+const nvidiaH100Pool = new gcp.container.NodePool("nvidia-h100-pool", {
   cluster: standardCluster.name,
   location: standardCluster.location,
 
@@ -139,15 +139,15 @@ const nvidiaH100Pool = new gcp.container.NodePool('nvidia-h100-pool', {
   },
 
   nodeConfig: {
-    machineType: 'a3-highgpu-8g',
+    machineType: "a3-highgpu-8g",
 
     // GPU configuration
     guestAccelerators: [
       {
-        type: 'nvidia-h100-80gb',
+        type: "nvidia-h100-80gb",
         count: 8,
         gpuDriverInstallationConfig: {
-          gpuDriverVersion: 'LATEST',
+          gpuDriverVersion: "LATEST",
         },
       },
     ],
@@ -157,11 +157,11 @@ const nvidiaH100Pool = new gcp.container.NodePool('nvidia-h100-pool', {
 
     // Workload Identity
     workloadMetadataConfig: {
-      mode: 'GKE_METADATA',
+      mode: "GKE_METADATA",
     },
 
     // OAuth scopes
-    oauthScopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    oauthScopes: ["https://www.googleapis.com/auth/cloud-platform"],
 
     // Shielded nodes
     shieldedInstanceConfig: {
@@ -171,22 +171,22 @@ const nvidiaH100Pool = new gcp.container.NodePool('nvidia-h100-pool', {
 
     // Metadata
     metadata: {
-      'disable-legacy-endpoints': 'true',
+      "disable-legacy-endpoints": "true",
     },
 
     // Labels
     labels: {
-      'gpu-type': 'h100',
-      workload: 'ml-training',
-      'cost-optimization': 'spot',
+      "gpu-type": "h100",
+      workload: "ml-training",
+      "cost-optimization": "spot",
     },
 
     // Taints (GPU nodes only for GPU workloads)
     taints: [
       {
-        key: 'nvidia.com/gpu',
-        value: 'present',
-        effect: 'NO_SCHEDULE',
+        key: "nvidia.com/gpu",
+        value: "present",
+        effect: "NO_SCHEDULE",
       },
     ],
   },
@@ -199,7 +199,7 @@ const nvidiaH100Pool = new gcp.container.NodePool('nvidia-h100-pool', {
 
 // AMD MI300X Node Pool (Month 9+)
 const amdMi300xPool = new gcp.container.NodePool(
-  'amd-mi300x-pool',
+  "amd-mi300x-pool",
   {
     cluster: standardCluster.name,
     location: standardCluster.location,
@@ -211,25 +211,25 @@ const amdMi300xPool = new gcp.container.NodePool(
     },
 
     nodeConfig: {
-      machineType: 'a3-mega-8g-amd', // Placeholder - verify actual machine type
+      machineType: "a3-mega-8g-amd", // Placeholder - verify actual machine type
 
       workloadMetadataConfig: {
-        mode: 'GKE_METADATA',
+        mode: "GKE_METADATA",
       },
 
-      oauthScopes: ['https://www.googleapis.com/auth/cloud-platform'],
+      oauthScopes: ["https://www.googleapis.com/auth/cloud-platform"],
 
       labels: {
-        'gpu-type': 'mi300x',
-        workload: 'ml-training',
-        diversification: 'amd',
+        "gpu-type": "mi300x",
+        workload: "ml-training",
+        diversification: "amd",
       },
 
       taints: [
         {
-          key: 'amd.com/gpu',
-          value: 'present',
-          effect: 'NO_SCHEDULE',
+          key: "amd.com/gpu",
+          value: "present",
+          effect: "NO_SCHEDULE",
         },
       ],
     },
@@ -246,8 +246,8 @@ const amdMi300xPool = new gcp.container.NodePool(
 // GKE Autopilot Cluster (Stateless Services)
 // ============================================================================
 
-const autopilotCluster = new gcp.container.Cluster('pnkln-autopilot', {
-  name: 'pnkln-autopilot',
+const autopilotCluster = new gcp.container.Cluster("pnkln-autopilot", {
+  name: "pnkln-autopilot",
   location: region,
 
   // Enable Autopilot
@@ -257,13 +257,13 @@ const autopilotCluster = new gcp.container.Cluster('pnkln-autopilot', {
   network: network.name,
   subnetwork: subnet.name,
   ipAllocationPolicy: {
-    clusterSecondaryRangeName: 'pods',
-    servicesSecondaryRangeName: 'services',
+    clusterSecondaryRangeName: "pods",
+    servicesSecondaryRangeName: "services",
   },
 
   // Release channel
   releaseChannel: {
-    channel: 'REGULAR',
+    channel: "REGULAR",
   },
 
   // Workload Identity
@@ -273,7 +273,7 @@ const autopilotCluster = new gcp.container.Cluster('pnkln-autopilot', {
 
   // Binary Authorization
   binaryAuthorization: {
-    evaluationMode: 'PROJECT_SINGLETON_POLICY_ENFORCE',
+    evaluationMode: "PROJECT_SINGLETON_POLICY_ENFORCE",
   },
 });
 
@@ -282,20 +282,20 @@ const autopilotCluster = new gcp.container.Cluster('pnkln-autopilot', {
 // ============================================================================
 
 // GCS Buckets
-const videoBucket = new gcp.storage.Bucket('pnkln-video-prod', {
+const videoBucket = new gcp.storage.Bucket("pnkln-video-prod", {
   name: `${projectId}-video-prod`,
   location: region,
-  storageClass: 'STANDARD',
+  storageClass: "STANDARD",
 
   uniformBucketLevelAccess: true,
 
   lifecycleRules: [
     {
-      action: { type: 'SetStorageClass', storageClass: 'NEARLINE' },
+      action: { type: "SetStorageClass", storageClass: "NEARLINE" },
       condition: { age: 90 },
     },
     {
-      action: { type: 'SetStorageClass', storageClass: 'COLDLINE' },
+      action: { type: "SetStorageClass", storageClass: "COLDLINE" },
       condition: { age: 365 },
     },
   ],
@@ -305,10 +305,10 @@ const videoBucket = new gcp.storage.Bucket('pnkln-video-prod', {
   },
 });
 
-const modelBucket = new gcp.storage.Bucket('pnkln-models', {
+const modelBucket = new gcp.storage.Bucket("pnkln-models", {
   name: `${projectId}-models`,
   location: region,
-  storageClass: 'STANDARD',
+  storageClass: "STANDARD",
 
   uniformBucketLevelAccess: true,
 
@@ -318,34 +318,34 @@ const modelBucket = new gcp.storage.Bucket('pnkln-models', {
 });
 
 // Filestore (NFS for ML workspace)
-const filestore = new gcp.filestore.Instance('ml-workspace', {
-  name: 'ml-workspace',
+const filestore = new gcp.filestore.Instance("ml-workspace", {
+  name: "ml-workspace",
   location: `${region}-a`, // Zonal
-  tier: 'ENTERPRISE', // High throughput for GPU workloads
+  tier: "ENTERPRISE", // High throughput for GPU workloads
 
   fileShares: {
     capacityGb: 10240, // 10TB
-    name: 'ml_data',
+    name: "ml_data",
   },
 
   networks: [
     {
       network: network.name,
-      modes: ['MODE_IPV4'],
+      modes: ["MODE_IPV4"],
     },
   ],
 });
 
 // Cloud SQL (PostgreSQL)
-const dbInstance = new gcp.sql.DatabaseInstance('pnkln-db', {
-  name: 'pnkln-db',
+const dbInstance = new gcp.sql.DatabaseInstance("pnkln-db", {
+  name: "pnkln-db",
   region: region,
-  databaseVersion: 'POSTGRES_15',
+  databaseVersion: "POSTGRES_15",
 
   settings: {
-    tier: 'db-custom-8-32768', // 8 vCPU, 32GB RAM
+    tier: "db-custom-8-32768", // 8 vCPU, 32GB RAM
 
-    availabilityType: 'REGIONAL', // HA
+    availabilityType: "REGIONAL", // HA
 
     backupConfiguration: {
       enabled: true,
@@ -362,8 +362,8 @@ const dbInstance = new gcp.sql.DatabaseInstance('pnkln-db', {
 
     databaseFlags: [
       {
-        name: 'max_connections',
-        value: '1000',
+        name: "max_connections",
+        value: "1000",
       },
     ],
   },
@@ -372,18 +372,18 @@ const dbInstance = new gcp.sql.DatabaseInstance('pnkln-db', {
 });
 
 // Memorystore (Redis)
-const redisInstance = new gcp.redis.Instance('pnkln-cache', {
-  name: 'pnkln-cache',
+const redisInstance = new gcp.redis.Instance("pnkln-cache", {
+  name: "pnkln-cache",
   region: region,
-  tier: 'STANDARD_HA',
+  tier: "STANDARD_HA",
   memorySizeGb: 5,
 
-  redisVersion: 'REDIS_7_0',
+  redisVersion: "REDIS_7_0",
 
   authorizedNetwork: network.id,
 
   redisConfigs: {
-    'maxmemory-policy': 'allkeys-lru',
+    "maxmemory-policy": "allkeys-lru",
   },
 });
 
@@ -391,15 +391,15 @@ const redisInstance = new gcp.redis.Instance('pnkln-cache', {
 // Security: Binary Authorization
 // ============================================================================
 
-const coverageAttestor = new gcp.binaryauthorization.Attestor('coverage-98-attestor', {
-  name: 'coverage-98-attestor',
+const coverageAttestor = new gcp.binaryauthorization.Attestor("coverage-98-attestor", {
+  name: "coverage-98-attestor",
   attestationAuthorityNote: {
     noteReference: pulumi.interpolate`projects/${projectId}/notes/coverage-98-note`,
   },
 });
 
-const securityAttestor = new gcp.binaryauthorization.Attestor('security-scan-attestor', {
-  name: 'security-scan-attestor',
+const securityAttestor = new gcp.binaryauthorization.Attestor("security-scan-attestor", {
+  name: "security-scan-attestor",
   attestationAuthorityNote: {
     noteReference: pulumi.interpolate`projects/${projectId}/notes/security-scan-note`,
   },
@@ -409,7 +409,7 @@ const securityAttestor = new gcp.binaryauthorization.Attestor('security-scan-att
 // Kubernetes Provider
 // ============================================================================
 
-const k8sProvider = new k8s.Provider('gke-k8s', {
+const k8sProvider = new k8s.Provider("gke-k8s", {
   kubeconfig: standardCluster.name.apply(async (name) => {
     const creds = await gcp.container.getCluster({
       name: name,

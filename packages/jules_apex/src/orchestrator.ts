@@ -7,15 +7,15 @@
  * Flow: Judge 6 Verdict → Risk Classification → Jules Session → PR/Deploy
  */
 
-import { createApexClient, type JulesApexClient } from './client.js';
-import type { SessionConfig, SessionOutput } from './types.js';
+import { createApexClient, type JulesApexClient } from "./client.js";
+import type { SessionConfig, SessionOutput } from "./types.js";
 
 /** Judge 6 verdict structure */
 export interface Judge6Verdict {
   /** Unique verdict ID */
   verdictId: string;
   /** Risk classification: SAFE, REVIEW, BLOCK */
-  riskLevel: 'SAFE' | 'REVIEW' | 'BLOCK';
+  riskLevel: "SAFE" | "REVIEW" | "BLOCK";
   /** Confidence score 0-1 */
   confidence: number;
   /** The task description that was classified */
@@ -39,7 +39,7 @@ export interface DeploymentConfig {
   /** Whether to require PR review before merge */
   requireReview: boolean;
   /** Maximum risk level for auto-deploy */
-  autoDeployMaxRisk: 'SAFE' | 'REVIEW';
+  autoDeployMaxRisk: "SAFE" | "REVIEW";
 }
 
 /** Result of a deployment orchestration */
@@ -57,11 +57,11 @@ export interface DeploymentResult {
 }
 
 const DEFAULT_CONFIG: DeploymentConfig = {
-  projectId: 'shadowtag-omega-v4',
-  serviceName: 'counselconduit',
-  region: 'us-central1',
+  projectId: "shadowtag-omega-v4",
+  serviceName: "counselconduit",
+  region: "us-central1",
   requireReview: true,
-  autoDeployMaxRisk: 'SAFE',
+  autoDeployMaxRisk: "SAFE",
 };
 
 export class JulesCloudRunOrchestrator {
@@ -85,7 +85,7 @@ export class JulesCloudRunOrchestrator {
     const timestamp = new Date().toISOString();
 
     // BLOCK: Never auto-deploy
-    if (verdict.riskLevel === 'BLOCK') {
+    if (verdict.riskLevel === "BLOCK") {
       return {
         deployed: false,
         reason: `BLOCKED by Judge 6: ${verdict.justification}`,
@@ -118,8 +118,8 @@ export class JulesCloudRunOrchestrator {
     // Create Jules session for deployment
     const sessionConfig: SessionConfig = {
       prompt: this.buildDeployPrompt(verdict),
-      automationMode: this.config.requireReview ? 'AUTO_CREATE_PR' : 'AUTO_MERGE',
-      requirePlanApproval: verdict.riskLevel === 'REVIEW',
+      automationMode: this.config.requireReview ? "AUTO_CREATE_PR" : "AUTO_MERGE",
+      requirePlanApproval: verdict.riskLevel === "REVIEW",
     };
 
     try {
@@ -144,8 +144,8 @@ export class JulesCloudRunOrchestrator {
    */
   private buildDeployPrompt(verdict: Judge6Verdict): string {
     const filesSection = verdict.affectedFiles?.length
-      ? `\n\nAffected files:\n${verdict.affectedFiles.map((f) => `- ${f}`).join('\n')}`
-      : '';
+      ? `\n\nAffected files:\n${verdict.affectedFiles.map((f) => `- ${f}`).join("\n")}`
+      : "";
 
     return `Deploy the following change to Cloud Run service "${this.config.serviceName}" in project "${this.config.projectId}" (region: ${this.config.region}).
 

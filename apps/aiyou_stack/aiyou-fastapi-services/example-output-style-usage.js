@@ -11,59 +11,59 @@ const {
   loadActiveOutputStyle,
   listOutputStyles,
   setActiveOutputStyle,
-} = require('./output-style-loader');
+} = require("./output-style-loader");
 
 // Example 1: List all available output styles
 async function example1_listStyles() {
-  console.log('=== Example 1: List Available Output Styles ===\n');
+  console.log("=== Example 1: List Available Output Styles ===\n");
 
   const styles = await listOutputStyles();
 
-  console.log('Available styles:');
+  console.log("Available styles:");
   styles.forEach((style) => {
     console.log(`\n  ${style.name} (${style.level}-level)`);
     console.log(`  Description: ${style.description}`);
     console.log(`  File: ${style.filename}`);
   });
-  console.log('\n');
+  console.log("\n");
 }
 
 // Example 2: Load a specific output style
 async function example2_loadSpecificStyle() {
-  console.log('=== Example 2: Load Specific Output Style ===\n');
+  console.log("=== Example 2: Load Specific Output Style ===\n");
 
-  const { loadOutputStyle } = require('./output-style-loader');
+  const { loadOutputStyle } = require("./output-style-loader");
 
   // Load the explanatory style
-  const explanatoryPrompt = await loadOutputStyle('explanatory');
+  const explanatoryPrompt = await loadOutputStyle("explanatory");
 
   console.log('Loaded "Explanatory" style system prompt:');
-  console.log('---');
-  console.log(explanatoryPrompt.substring(0, 500) + '...');
-  console.log('---\n');
+  console.log("---");
+  console.log(explanatoryPrompt.substring(0, 500) + "...");
+  console.log("---\n");
 }
 
 // Example 3: Set and load active output style
 async function example3_setAndLoadActive() {
-  console.log('=== Example 3: Set and Load Active Style ===\n');
+  console.log("=== Example 3: Set and Load Active Style ===\n");
 
   // Set the active style
-  await setActiveOutputStyle('learning');
-  console.log('✓ Set active style to: learning\n');
+  await setActiveOutputStyle("learning");
+  console.log("✓ Set active style to: learning\n");
 
   // Load the active style
   const activePrompt = await loadActiveOutputStyle();
-  console.log('Active style system prompt (first 500 chars):');
-  console.log('---');
-  console.log(activePrompt.substring(0, 500) + '...');
-  console.log('---\n');
+  console.log("Active style system prompt (first 500 chars):");
+  console.log("---");
+  console.log(activePrompt.substring(0, 500) + "...");
+  console.log("---\n");
 }
 
 // Example 4: Using with Claude Agent SDK (pseudo-code)
 async function example4_withClaudeAgentSDK() {
-  console.log('=== Example 4: Using with Claude Agent SDK ===\n');
+  console.log("=== Example 4: Using with Claude Agent SDK ===\n");
 
-  console.log('Example code for using output styles with Claude Agent SDK:\n');
+  console.log("Example code for using output styles with Claude Agent SDK:\n");
 
   const exampleCode = `
 const { ClaudeAgent } = require('@anthropic-ai/claude-agent-sdk');
@@ -92,24 +92,24 @@ createAgentWithOutputStyle();
   `.trim();
 
   console.log(exampleCode);
-  console.log('\n');
+  console.log("\n");
 }
 
 // Example 5: Dynamic style selection
 async function example5_dynamicSelection() {
-  console.log('=== Example 5: Dynamic Style Selection ===\n');
+  console.log("=== Example 5: Dynamic Style Selection ===\n");
 
   const styles = await listOutputStyles();
 
-  console.log('Let user choose from available styles:\n');
+  console.log("Let user choose from available styles:\n");
 
   styles.forEach((style, index) => {
     console.log(`  [${index + 1}] ${style.name}`);
     console.log(`      ${style.description}`);
   });
 
-  console.log('\n// In a real app, you would prompt the user to select a number');
-  console.log('// Then load and apply that style\n');
+  console.log("\n// In a real app, you would prompt the user to select a number");
+  console.log("// Then load and apply that style\n");
 
   // Simulate user selecting option 2 (Explanatory)
   const selectedStyle = styles[1]; // Assuming Explanatory is second
@@ -122,18 +122,18 @@ async function example5_dynamicSelection() {
 
 // Example 6: Error handling
 async function example6_errorHandling() {
-  console.log('=== Example 6: Error Handling ===\n');
+  console.log("=== Example 6: Error Handling ===\n");
 
-  const { loadOutputStyle } = require('./output-style-loader');
+  const { loadOutputStyle } = require("./output-style-loader");
 
   try {
     // Try to load a non-existent style
-    await loadOutputStyle('nonexistent-style');
+    await loadOutputStyle("nonexistent-style");
   } catch (error) {
-    console.log('✓ Caught expected error:', error.message);
+    console.log("✓ Caught expected error:", error.message);
   }
 
-  console.log('\nAlways wrap output style operations in try-catch blocks\n');
+  console.log("\nAlways wrap output style operations in try-catch blocks\n");
 }
 
 // Run all examples
@@ -146,9 +146,9 @@ async function runAllExamples() {
     await example5_dynamicSelection();
     await example6_errorHandling();
 
-    console.log('=== All Examples Complete ===\n');
+    console.log("=== All Examples Complete ===\n");
   } catch (error) {
-    console.error('Error running examples:', error);
+    console.error("Error running examples:", error);
   }
 }
 
@@ -156,7 +156,7 @@ async function runAllExamples() {
 if (require.main === module) {
   const arg = process.argv[2];
 
-  if (arg === '--all' || !arg) {
+  if (arg === "--all" || !arg) {
     runAllExamples();
   } else {
     const examples = {

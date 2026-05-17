@@ -8,20 +8,20 @@
  * Applies to: /dashboard/*, /api/oracle/*, /api/approval/*
  */
 
-import { getAuth } from 'firebase-admin/auth';
-import type { NextRequest } from 'next/server';
-import { createLogger } from '../observability/structured-logger';
+import { getAuth } from "firebase-admin/auth";
+import type { NextRequest } from "next/server";
+import { createLogger } from "../observability/structured-logger";
 
-const logger = createLogger('mfa-gate');
+const logger = createLogger("mfa-gate");
 const auth = getAuth();
 
 /** Routes requiring MFA */
 const MFA_REQUIRED_ROUTES = [
-  '/dashboard',
-  '/api/oracle',
-  '/api/approval',
-  '/api/triage',
-  '/api/admin',
+  "/dashboard",
+  "/api/oracle",
+  "/api/approval",
+  "/api/triage",
+  "/api/admin",
 ];
 
 /** MFA verification result */
@@ -37,13 +37,13 @@ interface MFAVerification {
  * Verify that a request has a valid Firebase ID token with MFA factor.
  */
 export async function verifyMFA(request: NextRequest): Promise<MFAVerification> {
-  const authHeader = request.headers.get('authorization');
+  const authHeader = request.headers.get("authorization");
 
-  if (!authHeader?.startsWith('Bearer ')) {
-    logger.warn('Missing or malformed authorization header', {
+  if (!authHeader?.startsWith("Bearer ")) {
+    logger.warn("Missing or malformed authorization header", {
       path: request.nextUrl.pathname,
     });
-    return { authenticated: false, mfaVerified: false, error: 'Missing authorization header' };
+    return { authenticated: false, mfaVerified: false, error: "Missing authorization header" };
   }
 
   const idToken = authHeader.substring(7);
@@ -68,11 +68,11 @@ export async function verifyMFA(request: NextRequest): Promise<MFAVerification> 
 
     // Check for MFA factor in the token
     const hasMFA =
-      decoded.firebase?.sign_in_second_factor === 'totp' ||
-      decoded.firebase?.sign_in_second_factor === 'phone';
+      decoded.firebase?.sign_in_second_factor === "totp" ||
+      decoded.firebase?.sign_in_second_factor === "phone";
 
     if (!hasMFA) {
-      logger.warn('MFA required but not present', {
+      logger.warn("MFA required but not present", {
         uid: decoded.uid,
         path: request.nextUrl.pathname,
         signInProvider: decoded.firebase?.sign_in_provider,
@@ -82,11 +82,11 @@ export async function verifyMFA(request: NextRequest): Promise<MFAVerification> 
         mfaVerified: false,
         uid: decoded.uid,
         email: decoded.email,
-        error: 'MFA verification required for this resource',
+        error: "MFA verification required for this resource",
       };
     }
 
-    logger.info('MFA verification passed', {
+    logger.info("MFA verification passed", {
       uid: decoded.uid,
       path: request.nextUrl.pathname,
       mfaFactor: decoded.firebase?.sign_in_second_factor,
@@ -99,8 +99,8 @@ export async function verifyMFA(request: NextRequest): Promise<MFAVerification> 
       email: decoded.email,
     };
   } catch (err) {
-    const error = err instanceof Error ? err.message : 'Unknown error';
-    logger.error('Token verification failed', { error });
+    const error = err instanceof Error ? err.message : "Unknown error";
+    logger.error("Token verification failed", { error });
     return { authenticated: false, mfaVerified: false, error };
   }
 }
@@ -115,16 +115,16 @@ export async function enrollTOTP(uid: string): Promise<{
 }> {
   // Generate TOTP secret via Firebase Admin
   const totpConfig = await auth.generateTotpMultiFactorSecret(uid, {
-    displayName: 'KovelAI Attorney Auth',
+    displayName: "KovelAI Attorney Auth",
   });
 
-  logger.info('TOTP enrollment initiated', { uid });
+  logger.info("TOTP enrollment initiated", { uid });
 
   return {
     secretKey: totpConfig.sharedSecretKey,
     qrCodeUrl: totpConfig.generateQrCodeUrl(
-      (await auth.getUser(uid)).email || 'attorney@firm.com',
-      'KovelAI',
+      (await auth.getUser(uid)).email || "attorney@firm.com",
+      "KovelAI",
     ),
   };
 }

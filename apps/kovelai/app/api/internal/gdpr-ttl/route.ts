@@ -15,18 +15,18 @@
  * @see lib/queue/cloud-tasks.ts — Queue infrastructure
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Configuration ──────────────────────────────────────────────────
 
 const GDPR_TTL_DAYS = 30;
 const COLLECTIONS_TO_ENFORCE = [
-  'search_intents',
-  'sessions',
-  'dossiers',
-  'anxiety_signals',
-  'kovel_attestations',
-  'audit_logs',
+  "search_intents",
+  "sessions",
+  "dossiers",
+  "anxiety_signals",
+  "kovel_attestations",
+  "audit_logs",
 ] as const;
 
 const DeleteReportSchema = z.object({
@@ -85,17 +85,17 @@ export async function enforceGDPRRetention(): Promise<DeleteReport[]> {
 // ─── Firestore Purge Logic ──────────────────────────────────────────
 
 async function purgeExpiredDocuments(collection: string, cutoffDate: Date): Promise<number> {
-  const projectId = process.env.GCP_PROJECT_ID ?? 'shadowtag-omega-v4';
-  const databaseId = '(default)';
+  const projectId = process.env.GCP_PROJECT_ID ?? "shadowtag-omega-v4";
+  const databaseId = "(default)";
   const baseUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents`;
 
   // Query for expired documents
   const queryResponse = await fetch(
     `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents:runQuery`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${await getAccessToken()}`,
       },
       body: JSON.stringify({
@@ -103,8 +103,8 @@ async function purgeExpiredDocuments(collection: string, cutoffDate: Date): Prom
           from: [{ collectionId: collection }],
           where: {
             fieldFilter: {
-              field: { fieldPath: 'createdAt' },
-              op: 'LESS_THAN',
+              field: { fieldPath: "createdAt" },
+              op: "LESS_THAN",
               value: {
                 timestampValue: cutoffDate.toISOString(),
               },
@@ -127,7 +127,7 @@ async function purgeExpiredDocuments(collection: string, cutoffDate: Date): Prom
   for (const result of results) {
     if (result.document?.name) {
       const deleteResponse = await fetch(`${baseUrl}/${result.document.name}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${await getAccessToken()}`,
         },
@@ -145,18 +145,18 @@ async function purgeExpiredDocuments(collection: string, cutoffDate: Date): Prom
 // ─── Compliance Audit Trail ─────────────────────────────────────────
 
 async function logComplianceReport(reports: DeleteReport[]): Promise<void> {
-  const projectId = process.env.GCP_PROJECT_ID ?? 'shadowtag-omega-v4';
-  const databaseId = '(default)';
+  const projectId = process.env.GCP_PROJECT_ID ?? "shadowtag-omega-v4";
+  const databaseId = "(default)";
 
   const totalDeleted = reports.reduce((sum, r) => sum + Math.max(0, r.deletedCount), 0);
   const failedCollections = reports.filter((r) => r.deletedCount === -1);
 
   const complianceEntry = {
-    type: 'GDPR_TTL_ENFORCEMENT',
+    type: "GDPR_TTL_ENFORCEMENT",
     executedAt: new Date().toISOString(),
     totalDeleted,
     collectionReports: reports,
-    status: failedCollections.length === 0 ? 'SUCCESS' : 'PARTIAL_FAILURE',
+    status: failedCollections.length === 0 ? "SUCCESS" : "PARTIAL_FAILURE",
     failedCollections: failedCollections.map((r) => r.collection),
     nextScheduledRun: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
   };
@@ -165,9 +165,9 @@ async function logComplianceReport(reports: DeleteReport[]): Promise<void> {
     await fetch(
       `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents/gdpr_compliance_log`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${await getAccessToken()}`,
         },
         body: JSON.stringify({
@@ -199,39 +199,39 @@ async function logComplianceReport(reports: DeleteReport[]): Promise<void> {
 async function getAccessToken(): Promise<string> {
   try {
     const res = await fetch(
-      'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token',
-      { headers: { 'Metadata-Flavor': 'Google' } },
+      "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token",
+      { headers: { "Metadata-Flavor": "Google" } },
     );
     const data = await res.json();
     return data.access_token;
   } catch {
-    return process.env.GOOGLE_ACCESS_TOKEN ?? '';
+    return process.env.GOOGLE_ACCESS_TOKEN ?? "";
   }
 }
 
 // ─── Next.js API Route Handler ──────────────────────────────────────
 
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // Verify internal-only access
-  const authHeader = req.headers.get('authorization');
-  if (!authHeader?.startsWith('Bearer ') && process.env.NODE_ENV === 'production') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const authHeader = req.headers.get("authorization");
+  if (!authHeader?.startsWith("Bearer ") && process.env.NODE_ENV === "production") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
     const reports = await enforceGDPRRetention();
     return NextResponse.json({
-      status: 'completed',
+      status: "completed",
       reports,
       totalDeleted: reports.reduce((sum, r) => sum + Math.max(0, r.deletedCount), 0),
     });
   } catch (error) {
     return NextResponse.json(
       {
-        error: 'GDPR enforcement failed',
-        details: error instanceof Error ? error.message : 'Unknown',
+        error: "GDPR enforcement failed",
+        details: error instanceof Error ? error.message : "Unknown",
       },
       { status: 500 },
     );

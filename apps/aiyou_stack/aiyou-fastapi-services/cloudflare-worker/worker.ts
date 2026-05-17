@@ -32,7 +32,7 @@ interface JudgeResponse {
   reason?: string;
   latencyMs: number;
   cost: number;
-  layer: 'rules' | 'claude' | 'pytorch';
+  layer: "rules" | "claude" | "pytorch";
   ruleViolations?: Array<{
     rule: string;
     severity: string;
@@ -45,103 +45,103 @@ const ATP_519_PATTERNS = [
   // Critical violations - instant reject
   {
     pattern: /\b(fraud|scam|ponzi|pyramid scheme|phishing)\b/i,
-    rule: 'ATP-519-01',
-    severity: 'critical',
-    category: 'fraud',
+    rule: "ATP-519-01",
+    severity: "critical",
+    category: "fraud",
   },
   {
     pattern: /\b(kill|murder|assassinate|bomb|terrorist)\b/i,
-    rule: 'ATP-519-10',
-    severity: 'critical',
-    category: 'violence',
+    rule: "ATP-519-10",
+    severity: "critical",
+    category: "violence",
   },
   {
     pattern: /\b(hate speech|racial slur|genocide|lynch)\b/i,
-    rule: 'ATP-519-11',
-    severity: 'critical',
-    category: 'hate',
+    rule: "ATP-519-11",
+    severity: "critical",
+    category: "hate",
   },
   {
     pattern: /\b(sell drugs|buy cocaine|meth recipe|heroin)\b/i,
-    rule: 'ATP-519-20',
-    severity: 'critical',
-    category: 'illegal',
+    rule: "ATP-519-20",
+    severity: "critical",
+    category: "illegal",
   },
   {
     pattern: /\b(child pornography|child abuse|csam)\b/i,
-    rule: 'ATP-519-21',
-    severity: 'critical',
-    category: 'illegal',
+    rule: "ATP-519-21",
+    severity: "critical",
+    category: "illegal",
   },
   {
     pattern: /\b(human trafficking|sex trafficking)\b/i,
-    rule: 'ATP-519-22',
-    severity: 'critical',
-    category: 'illegal',
+    rule: "ATP-519-22",
+    severity: "critical",
+    category: "illegal",
   },
   {
     pattern: /\b(steal personal data|data breach|hack database)\b/i,
-    rule: 'ATP-519-31',
-    severity: 'critical',
-    category: 'privacy',
+    rule: "ATP-519-31",
+    severity: "critical",
+    category: "privacy",
   },
   {
     pattern: /\b(blackmail|extortion|ransom)\b/i,
-    rule: 'ATP-519-50',
-    severity: 'critical',
-    category: 'manipulation',
+    rule: "ATP-519-50",
+    severity: "critical",
+    category: "manipulation",
   },
   {
     pattern: /\b(suicide|kill yourself|self-harm)\b/i,
-    rule: 'ATP-519-60',
-    severity: 'critical',
-    category: 'safety',
+    rule: "ATP-519-60",
+    severity: "critical",
+    category: "safety",
   },
   {
     pattern: /\b(build a bomb|make explosives|create poison)\b/i,
-    rule: 'ATP-519-61',
-    severity: 'critical',
-    category: 'safety',
+    rule: "ATP-519-61",
+    severity: "critical",
+    category: "safety",
   },
 
   // High severity - instant reject
   {
     pattern: /\b(money laundering|tax evasion)\b/i,
-    rule: 'ATP-519-23',
-    severity: 'high',
-    category: 'illegal',
+    rule: "ATP-519-23",
+    severity: "high",
+    category: "illegal",
   },
   {
     pattern: /\b(dox|doxxing|leak phone number)\b/i,
-    rule: 'ATP-519-32',
-    severity: 'high',
-    category: 'privacy',
+    rule: "ATP-519-32",
+    severity: "high",
+    category: "privacy",
   },
   {
     pattern: /\b(manipulate|gaslight|brainwash)\b/i,
-    rule: 'ATP-519-51',
-    severity: 'high',
-    category: 'manipulation',
+    rule: "ATP-519-51",
+    severity: "high",
+    category: "manipulation",
   },
 
   // Medium severity - needs analysis
   {
     pattern: /\b(pirated software|cracked version|keygen)\b/i,
-    rule: 'ATP-519-40',
-    severity: 'medium',
-    category: 'ip',
+    rule: "ATP-519-40",
+    severity: "medium",
+    category: "ip",
   },
   {
     pattern: /\b(plagiarize|copyright infringement)\b/i,
-    rule: 'ATP-519-41',
-    severity: 'medium',
-    category: 'ip',
+    rule: "ATP-519-41",
+    severity: "medium",
+    category: "ip",
   },
   {
     pattern: /\b(fake reviews|review manipulation)\b/i,
-    rule: 'ATP-519-71',
-    severity: 'medium',
-    category: 'spam',
+    rule: "ATP-519-71",
+    severity: "medium",
+    category: "spam",
   },
 ];
 
@@ -151,31 +151,31 @@ export default {
 
     // CORS headers
     const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
     };
 
-    if (request.method === 'OPTIONS') {
+    if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
     }
 
-    if (request.method === 'GET') {
+    if (request.method === "GET") {
       return new Response(
         JSON.stringify({
-          service: 'PNKLN Judge 6 Lite',
-          version: '1.0.0',
-          status: 'operational',
+          service: "PNKLN Judge 6 Lite",
+          version: "1.0.0",
+          status: "operational",
           uptime: Date.now(),
         }),
         {
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          headers: { "Content-Type": "application/json", ...corsHeaders },
         },
       );
     }
 
-    if (request.method !== 'POST') {
-      return new Response('Method not allowed', {
+    if (request.method !== "POST") {
+      return new Response("Method not allowed", {
         status: 405,
         headers: corsHeaders,
       });
@@ -184,14 +184,14 @@ export default {
     try {
       const body: JudgeRequest = await request.json();
 
-      if (!body.content || typeof body.content !== 'string') {
+      if (!body.content || typeof body.content !== "string") {
         return new Response(
           JSON.stringify({
             error: 'Missing or invalid "content" field',
           }),
           {
             status: 400,
-            headers: { 'Content-Type': 'application/json', ...corsHeaders },
+            headers: { "Content-Type": "application/json", ...corsHeaders },
           },
         );
       }
@@ -204,19 +204,19 @@ export default {
           approved: rulesResult.approved,
           confidence: rulesResult.confidence,
           reason: rulesResult.approved
-            ? 'No policy violations detected'
-            : `Policy violations: ${rulesResult.violations.map((v) => v.rule).join(', ')}`,
+            ? "No policy violations detected"
+            : `Policy violations: ${rulesResult.violations.map((v) => v.rule).join(", ")}`,
           latencyMs: Date.now() - startTime,
           cost: 0.0001, // Rules engine is nearly free
-          layer: 'rules',
+          layer: "rules",
           ruleViolations: rulesResult.violations,
         };
 
         return new Response(JSON.stringify(response), {
           headers: {
-            'Content-Type': 'application/json',
-            'X-Latency-Ms': `${response.latencyMs}`,
-            'X-Layer': 'rules',
+            "Content-Type": "application/json",
+            "X-Latency-Ms": `${response.latencyMs}`,
+            "X-Layer": "rules",
             ...corsHeaders,
           },
         });
@@ -234,28 +234,28 @@ export default {
 
       return new Response(JSON.stringify(response), {
         headers: {
-          'Content-Type': 'application/json',
-          'X-Latency-Ms': `${response.latencyMs}`,
-          'X-Layer': 'claude',
+          "Content-Type": "application/json",
+          "X-Latency-Ms": `${response.latencyMs}`,
+          "X-Layer": "claude",
           ...corsHeaders,
         },
       });
     } catch (error) {
-      console.error('Judge 6 error:', error);
+      console.error("Judge 6 error:", error);
 
       return new Response(
         JSON.stringify({
           approved: false, // Fail safe
           confidence: 1.0,
-          reason: 'Internal error - rejected as safety precaution',
+          reason: "Internal error - rejected as safety precaution",
           latencyMs: Date.now() - startTime,
           cost: 0,
-          layer: 'error',
-          error: error instanceof Error ? error.message : 'Unknown error',
+          layer: "error",
+          error: error instanceof Error ? error.message : "Unknown error",
         }),
         {
           status: 500,
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          headers: { "Content-Type": "application/json", ...corsHeaders },
         },
       );
     }
@@ -283,9 +283,9 @@ function enforceRules(content: string): {
     }
   }
 
-  const criticalViolations = violations.filter((v) => v.severity === 'critical');
-  const highViolations = violations.filter((v) => v.severity === 'high');
-  const mediumViolations = violations.filter((v) => v.severity === 'medium');
+  const criticalViolations = violations.filter((v) => v.severity === "critical");
+  const highViolations = violations.filter((v) => v.severity === "high");
+  const mediumViolations = violations.filter((v) => v.severity === "medium");
 
   if (criticalViolations.length > 0) {
     return {
@@ -328,25 +328,25 @@ function enforceRules(content: string): {
 async function analyzeWithClaude(
   request: JudgeRequest,
   env: Env,
-): Promise<Omit<JudgeResponse, 'latencyMs'>> {
+): Promise<Omit<JudgeResponse, "latencyMs">> {
   const startTime = Date.now();
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': env.ANTHROPIC_API_KEY || '',
-        'anthropic-version': '2023-06-01',
+        "Content-Type": "application/json",
+        "x-api-key": env.ANTHROPIC_API_KEY || "",
+        "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5-20250929',
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 512,
         temperature: 0.1,
         system: buildJudgeSystemPrompt(),
         messages: [
           {
-            role: 'user',
+            role: "user",
             content: buildJudgePrompt(request),
           },
         ],
@@ -364,19 +364,19 @@ async function analyzeWithClaude(
       ...decision,
       latencyMs: Date.now() - startTime,
       cost: calculateCost(data),
-      layer: 'claude',
+      layer: "claude",
     };
   } catch (error) {
-    console.error('Claude API error:', error);
+    console.error("Claude API error:", error);
 
     // Fallback: reject on error (fail-safe)
     return {
       approved: false,
       confidence: 1.0,
-      reason: 'Analysis failed - rejected as safety precaution',
+      reason: "Analysis failed - rejected as safety precaution",
       latencyMs: Date.now() - startTime,
       cost: 0,
-      layer: 'claude',
+      layer: "claude",
     };
   }
 }
@@ -411,7 +411,7 @@ function buildJudgePrompt(request: JudgeRequest): string {
 CONTENT:
 ${request.content}
 
-USER_ID: ${request.userId || 'anonymous'}
+USER_ID: ${request.userId || "anonymous"}
 
 Respond with JSON only.`;
 }
@@ -434,13 +434,13 @@ function parseClaudeDecision(response: unknown): {
       };
     }
   } catch (error) {
-    console.error('Failed to parse Claude decision:', error);
+    console.error("Failed to parse Claude decision:", error);
   }
 
   return {
     approved: false,
     confidence: 0.5,
-    reason: 'Failed to parse decision',
+    reason: "Failed to parse decision",
   };
 }
 

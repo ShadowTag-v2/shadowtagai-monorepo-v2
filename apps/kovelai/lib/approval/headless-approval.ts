@@ -19,7 +19,7 @@
  * 6. Agent resumes and delivers to CRM backend
  */
 
-import { createHmac, randomUUID } from 'node:crypto';
+import { createHmac, randomUUID } from "node:crypto";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -30,11 +30,11 @@ export interface ApprovalRequest {
   firmId: string;
   /** Type of deliverable */
   deliverableType:
-    | 'KINETIC_MURDER_BOARD'
-    | 'ORACLE_MEMO'
-    | 'CLIENT_BRIEF'
-    | 'TIME_ENTRY'
-    | 'CLE_CERTIFICATE';
+    | "KINETIC_MURDER_BOARD"
+    | "ORACLE_MEMO"
+    | "CLIENT_BRIEF"
+    | "TIME_ENTRY"
+    | "CLE_CERTIFICATE";
   /** Human-readable summary for the lawyer */
   summary: string;
   /** Pre-signed URL to the full deliverable */
@@ -44,13 +44,13 @@ export interface ApprovalRequest {
   /** Expiration time for the approval request */
   expiresAt: string;
   /** Status */
-  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+  status: "PENDING" | "APPROVED" | "REJECTED" | "EXPIRED";
   /** Timestamp of status change */
   statusChangedAt?: string;
   /** Proof of Review hash (set when approved) */
   proofOfReviewHash?: string;
   /** Channel where approval was requested */
-  channel: 'SLACK' | 'GOOGLE_CHAT' | 'EMAIL';
+  channel: "SLACK" | "GOOGLE_CHAT" | "EMAIL";
 }
 
 export interface ApprovalResponse {
@@ -75,10 +75,10 @@ const approvalRequests = new Map<string, ApprovalRequest>();
  */
 export function createApprovalRequest(
   firmId: string,
-  deliverableType: ApprovalRequest['deliverableType'],
+  deliverableType: ApprovalRequest["deliverableType"],
   summary: string,
   deliverableUrl: string,
-  channel: ApprovalRequest['channel'] = 'SLACK',
+  channel: ApprovalRequest["channel"] = "SLACK",
   ttlMinutes: number = 60,
 ): ApprovalRequest {
   const id = randomUUID();
@@ -93,7 +93,7 @@ export function createApprovalRequest(
     deliverableUrl,
     approvalToken,
     expiresAt: new Date(now.getTime() + ttlMinutes * 60 * 1000).toISOString(),
-    status: 'PENDING',
+    status: "PENDING",
     channel,
   };
 
@@ -110,58 +110,58 @@ export function generateSlackBlockKit(request: ApprovalRequest): object {
   return {
     blocks: [
       {
-        type: 'header',
+        type: "header",
         text: {
-          type: 'plain_text',
-          text: '🛡️ KovelAI Agent — Deliverable Ready for Review',
+          type: "plain_text",
+          text: "🛡️ KovelAI Agent — Deliverable Ready for Review",
         },
       },
-      { type: 'divider' },
+      { type: "divider" },
       {
-        type: 'section',
+        type: "section",
         text: {
-          type: 'mrkdwn',
+          type: "mrkdwn",
           text: [
             `*Type:* ${formatDeliverableType(request.deliverableType)}`,
             `*Summary:* ${request.summary}`,
             `*Expires:* ${new Date(request.expiresAt).toLocaleString()}`,
-            '',
-            '⚖️ _ABA Model Rule 5.3 requires attorney review before filing._',
-          ].join('\n'),
+            "",
+            "⚖️ _ABA Model Rule 5.3 requires attorney review before filing._",
+          ].join("\n"),
         },
       },
       {
-        type: 'section',
+        type: "section",
         text: {
-          type: 'mrkdwn',
+          type: "mrkdwn",
           text: `<${request.deliverableUrl}|📄 Review Full Deliverable>`,
         },
       },
-      { type: 'divider' },
+      { type: "divider" },
       {
-        type: 'actions',
+        type: "actions",
         elements: [
           {
-            type: 'button',
-            text: { type: 'plain_text', text: '✅ APPROVE & VAULT' },
-            style: 'primary',
-            action_id: 'kovelai_approve',
+            type: "button",
+            text: { type: "plain_text", text: "✅ APPROVE & VAULT" },
+            style: "primary",
+            action_id: "kovelai_approve",
             value: request.approvalToken,
           },
           {
-            type: 'button',
-            text: { type: 'plain_text', text: '❌ REJECT' },
-            style: 'danger',
-            action_id: 'kovelai_reject',
+            type: "button",
+            text: { type: "plain_text", text: "❌ REJECT" },
+            style: "danger",
+            action_id: "kovelai_reject",
             value: request.id,
           },
         ],
       },
       {
-        type: 'context',
+        type: "context",
         elements: [
           {
-            type: 'mrkdwn',
+            type: "mrkdwn",
             text: `Request ID: \`${request.id}\` | Approval generates cryptographic Proof of Review`,
           },
         ],
@@ -187,23 +187,23 @@ export function processApproval(
   const request = approvalRequests.get(approvalRequestId);
 
   if (!request) {
-    return { error: 'Approval request not found.' };
+    return { error: "Approval request not found." };
   }
 
-  if (request.status !== 'PENDING') {
+  if (request.status !== "PENDING") {
     return { error: `Request already ${request.status.toLowerCase()}.` };
   }
 
   // Check expiration
   if (new Date() > new Date(request.expiresAt)) {
-    request.status = 'EXPIRED';
-    return { error: 'Approval request has expired.' };
+    request.status = "EXPIRED";
+    return { error: "Approval request has expired." };
   }
 
   // Validate the one-time token
   const expectedToken = generateApprovalToken(request.id, request.firmId);
   if (approvalToken !== expectedToken) {
-    return { error: 'Invalid approval token.' };
+    return { error: "Invalid approval token." };
   }
 
   // Generate Proof of Review
@@ -216,7 +216,7 @@ export function processApproval(
   );
 
   // Update request
-  request.status = 'APPROVED';
+  request.status = "APPROVED";
   request.statusChangedAt = reviewedAt;
   request.proofOfReviewHash = proofOfReviewHash;
 
@@ -234,11 +234,11 @@ export function processApproval(
  */
 export function processRejection(approvalRequestId: string): { success: boolean } {
   const request = approvalRequests.get(approvalRequestId);
-  if (!request || request.status !== 'PENDING') {
+  if (!request || request.status !== "PENDING") {
     return { success: false };
   }
 
-  request.status = 'REJECTED';
+  request.status = "REJECTED";
   request.statusChangedAt = new Date().toISOString();
   return { success: true };
 }
@@ -254,10 +254,10 @@ export function isApprovalComplete(approvalRequestId: string): {
   const request = approvalRequests.get(approvalRequestId);
   if (!request) return { complete: false, approved: false };
 
-  if (request.status === 'PENDING') {
+  if (request.status === "PENDING") {
     // Check for expiration
     if (new Date() > new Date(request.expiresAt)) {
-      request.status = 'EXPIRED';
+      request.status = "EXPIRED";
       return { complete: true, approved: false };
     }
     return { complete: false, approved: false };
@@ -265,7 +265,7 @@ export function isApprovalComplete(approvalRequestId: string): {
 
   return {
     complete: true,
-    approved: request.status === 'APPROVED',
+    approved: request.status === "APPROVED",
     proofHash: request.proofOfReviewHash,
   };
 }
@@ -273,8 +273,8 @@ export function isApprovalComplete(approvalRequestId: string): {
 // ─── Crypto Helpers ─────────────────────────────────────────────
 
 function generateApprovalToken(requestId: string, firmId: string): string {
-  const secret = process.env.KOVELAI_APPROVAL_SECRET ?? 'approval-dev-secret';
-  return createHmac('sha256', secret).update(`${requestId}:${firmId}`).digest('hex').slice(0, 32); // Truncated for URL safety
+  const secret = process.env.KOVELAI_APPROVAL_SECRET ?? "approval-dev-secret";
+  return createHmac("sha256", secret).update(`${requestId}:${firmId}`).digest("hex").slice(0, 32); // Truncated for URL safety
 }
 
 /**
@@ -289,18 +289,18 @@ function generateProofOfReview(
   reviewedAt: string,
   deliverableType: string,
 ): string {
-  const secret = process.env.KOVELAI_PROOF_SECRET ?? 'proof-dev-secret';
+  const secret = process.env.KOVELAI_PROOF_SECRET ?? "proof-dev-secret";
   const payload = `${requestId}:${reviewerEmail}:${reviewedAt}:${deliverableType}`;
-  return createHmac('sha256', secret).update(payload).digest('hex');
+  return createHmac("sha256", secret).update(payload).digest("hex");
 }
 
 function formatDeliverableType(type: string): string {
   const labels: Record<string, string> = {
-    KINETIC_MURDER_BOARD: '⚔️ Kinetic Murder Board',
-    ORACLE_MEMO: '🔮 Oracle Memo',
-    CLIENT_BRIEF: '📋 Client Brief',
-    TIME_ENTRY: '⏱️ Time Entry Draft',
-    CLE_CERTIFICATE: '🎓 CLE Certificate',
+    KINETIC_MURDER_BOARD: "⚔️ Kinetic Murder Board",
+    ORACLE_MEMO: "🔮 Oracle Memo",
+    CLIENT_BRIEF: "📋 Client Brief",
+    TIME_ENTRY: "⏱️ Time Entry Draft",
+    CLE_CERTIFICATE: "🎓 CLE Certificate",
   };
   return labels[type] ?? type;
 }

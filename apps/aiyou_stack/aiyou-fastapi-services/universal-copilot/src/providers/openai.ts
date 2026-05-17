@@ -3,10 +3,10 @@
  * Compliant implementation using public APIs only
  */
 
-import OpenAI from 'openai';
-import { ProviderError } from '../core/errors.js';
-import type { CopilotRequest, Patch, ProviderConfig } from '../core/schema.js';
-import { BaseProvider } from './base.js';
+import OpenAI from "openai";
+import { ProviderError } from "../core/errors.js";
+import type { CopilotRequest, Patch, ProviderConfig } from "../core/schema.js";
+import { BaseProvider } from "./base.js";
 
 /**
  * OpenAI provider for GPT models
@@ -17,7 +17,7 @@ export class OpenAIProvider extends BaseProvider {
 
   constructor(config: ProviderConfig) {
     super(config);
-    this.model = config.model || 'gpt-4o-2024-08-06';
+    this.model = config.model || "gpt-4o-2024-08-06";
 
     if (config.apiKey) {
       this.client = new OpenAI({
@@ -31,7 +31,7 @@ export class OpenAIProvider extends BaseProvider {
 
   async generatePatch(request: CopilotRequest): Promise<Patch> {
     if (!this.client) {
-      throw new ProviderError('OpenAI API key not configured', 'openai', false);
+      throw new ProviderError("OpenAI API key not configured", "openai", false);
     }
 
     const prompt = this.buildPrompt(request);
@@ -41,11 +41,11 @@ export class OpenAIProvider extends BaseProvider {
         model: this.model,
         messages: [
           {
-            role: 'system',
+            role: "system",
             content: this.getSystemPrompt(request.intent),
           },
           {
-            role: 'user',
+            role: "user",
             content: prompt,
           },
         ],
@@ -55,17 +55,17 @@ export class OpenAIProvider extends BaseProvider {
 
       const response = completion.choices[0]?.message?.content;
       if (!response) {
-        throw new ProviderError('Empty response from OpenAI', 'openai', true);
+        throw new ProviderError("Empty response from OpenAI", "openai", true);
       }
 
       return this.parsePatchResponse(response, request.selection.filePath);
     } catch (error: unknown) {
       if (error.status === 429) {
-        const retryAfter = error.headers?.['retry-after'];
-        throw new ProviderError('Rate limit exceeded', 'openai', true, { retryAfter });
+        const retryAfter = error.headers?.["retry-after"];
+        throw new ProviderError("Rate limit exceeded", "openai", true, { retryAfter });
       }
 
-      throw new ProviderError(error.message || 'Unknown OpenAI error', 'openai', false, {
+      throw new ProviderError(error.message || "Unknown OpenAI error", "openai", false, {
         originalError: error,
       });
     }
@@ -73,20 +73,20 @@ export class OpenAIProvider extends BaseProvider {
 
   private getSystemPrompt(intent: string): string {
     const prompts: Record<string, string> = {
-      explain: 'You are a code explanation assistant. Provide clear, concise explanations.',
+      explain: "You are a code explanation assistant. Provide clear, concise explanations.",
       refactor:
-        'You are a code refactoring expert. Improve structure while preserving functionality.',
-      test: 'You are a test generation expert. Create comprehensive unit tests.',
-      fix: 'You are a debugging expert. Fix bugs while maintaining code clarity.',
+        "You are a code refactoring expert. Improve structure while preserving functionality.",
+      test: "You are a test generation expert. Create comprehensive unit tests.",
+      fix: "You are a debugging expert. Fix bugs while maintaining code clarity.",
       optimize:
-        'You are a performance optimization expert. Improve efficiency without breaking functionality.',
-      document: 'You are a documentation expert. Add clear, helpful documentation.',
-      security: 'You are a security expert. Fix vulnerabilities following OWASP best practices.',
+        "You are a performance optimization expert. Improve efficiency without breaking functionality.",
+      document: "You are a documentation expert. Add clear, helpful documentation.",
+      security: "You are a security expert. Fix vulnerabilities following OWASP best practices.",
     };
 
     return (
       prompts[intent] ||
-      'You are a helpful coding assistant. Provide clear, correct code improvements.'
+      "You are a helpful coding assistant. Provide clear, correct code improvements."
     );
   }
 
@@ -148,7 +148,7 @@ export class OpenAIProvider extends BaseProvider {
   }
 
   getName(): string {
-    return 'openai';
+    return "openai";
   }
 
   getModel(): string {

@@ -3,17 +3,17 @@
  * Determines whether to THINK, BUILD, or SCALE
  */
 
-import { AnthropicVertex } from '@anthropic-ai/vertex-sdk';
-import { INTENT_CLASSIFIER_PROMPT } from '../prompts/system-prompts';
-import { type IntentClassification, Mode } from '../types';
-import { logger } from '../utils/logger';
+import { AnthropicVertex } from "@anthropic-ai/vertex-sdk";
+import { INTENT_CLASSIFIER_PROMPT } from "../prompts/system-prompts";
+import { type IntentClassification, Mode } from "../types";
+import { logger } from "../utils/logger";
 
 export class IntentClassifier {
   private client: AnthropicVertex;
 
   constructor() {
     this.client = new AnthropicVertex({
-      region: process.env.CLOUD_ML_REGION || 'us-central1',
+      region: process.env.CLOUD_ML_REGION || "us-central1",
       projectId: process.env.ANTHROPIC_VERTEX_PROJECT_ID,
     });
   }
@@ -23,17 +23,17 @@ export class IntentClassifier {
    */
   async classify(userInput: string): Promise<IntentClassification> {
     try {
-      logger.info('Classifying intent', { inputLength: userInput.length });
+      logger.info("Classifying intent", { inputLength: userInput.length });
 
       const response = await this.client.messages.create({
-        model: 'claude-opus-4-1@20250805',
+        model: "claude-opus-4-1@20250805",
         max_tokens: 500,
         temperature: 0, // Deterministic classification
         system: INTENT_CLASSIFIER_PROMPT,
         messages: [
           {
-            role: 'user',
-            content: [{ type: 'text', text: userInput }],
+            role: "user",
+            content: [{ type: "text", text: userInput }],
           },
         ],
       });
@@ -41,14 +41,14 @@ export class IntentClassifier {
       const responseText = response.content[0].text;
       const classification = this.parseClassification(responseText);
 
-      logger.info('Intent classified', {
+      logger.info("Intent classified", {
         mode: classification.mode,
         confidence: classification.confidence,
       });
 
       return classification;
     } catch (error) {
-      logger.error('Intent classification failed, defaulting to THINK', {
+      logger.error("Intent classification failed, defaulting to THINK", {
         error: error instanceof Error ? error.message : String(error),
       });
 
@@ -56,7 +56,7 @@ export class IntentClassifier {
       return {
         mode: Mode.THINK,
         confidence: 0.5,
-        reasoning: 'Classification failed, defaulting to strategic reasoning',
+        reasoning: "Classification failed, defaulting to strategic reasoning",
         extractedParams: {},
       };
     }
@@ -70,7 +70,7 @@ export class IntentClassifier {
       // Extract JSON from response (handle markdown code blocks)
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
-        throw new Error('No JSON found in response');
+        throw new Error("No JSON found in response");
       }
 
       const parsed = JSON.parse(jsonMatch[0]);
@@ -78,11 +78,11 @@ export class IntentClassifier {
       return {
         mode: this.normalizeMode(parsed.mode),
         confidence: parsed.confidence || 0.5,
-        reasoning: parsed.reasoning || '',
+        reasoning: parsed.reasoning || "",
         extractedParams: parsed.extractedParams || {},
       };
     } catch (error) {
-      logger.warn('Failed to parse classification JSON, using heuristics', {
+      logger.warn("Failed to parse classification JSON, using heuristics", {
         error: error instanceof Error ? error.message : String(error),
       });
 
@@ -97,16 +97,16 @@ export class IntentClassifier {
     const normalized = modeStr.toLowerCase().trim();
 
     switch (normalized) {
-      case 'think':
+      case "think":
         return Mode.THINK;
-      case 'build':
+      case "build":
         return Mode.BUILD;
-      case 'scale':
+      case "scale":
         return Mode.SCALE;
-      case 'research':
+      case "research":
         return Mode.RESEARCH;
       default:
-        logger.warn('Unknown mode, defaulting to THINK', { mode: modeStr });
+        logger.warn("Unknown mode, defaulting to THINK", { mode: modeStr });
         return Mode.THINK;
     }
   }
@@ -119,56 +119,56 @@ export class IntentClassifier {
 
     // Research keywords - check first as highest priority for multi-source queries
     const researchKeywords = [
-      'research',
-      'investigate',
-      'deep dive',
-      'what do we know',
-      'gather information',
-      'look into',
-      'prior art',
-      'competitive analysis',
-      'market research',
-      'intel',
-      'intelligence',
-      'summarize from',
+      "research",
+      "investigate",
+      "deep dive",
+      "what do we know",
+      "gather information",
+      "look into",
+      "prior art",
+      "competitive analysis",
+      "market research",
+      "intel",
+      "intelligence",
+      "summarize from",
     ];
     const researchScore = researchKeywords.filter((kw) => lowerText.includes(kw)).length;
 
     // Build keywords
     const buildKeywords = [
-      'create',
-      'build',
-      'deploy',
-      'implement',
-      'make',
-      'develop',
-      'setup',
-      'configure',
+      "create",
+      "build",
+      "deploy",
+      "implement",
+      "make",
+      "develop",
+      "setup",
+      "configure",
     ];
     const buildScore = buildKeywords.filter((kw) => lowerText.includes(kw)).length;
 
     // Scale keywords
     const scaleKeywords = [
-      'scale',
-      'grow',
-      'optimize',
-      'increase',
-      'expand',
-      'improve',
-      'accelerate',
+      "scale",
+      "grow",
+      "optimize",
+      "increase",
+      "expand",
+      "improve",
+      "accelerate",
     ];
     const scaleScore = scaleKeywords.filter((kw) => lowerText.includes(kw)).length;
 
     // Think keywords
     const thinkKeywords = [
-      'why',
-      'how',
-      'should',
-      'analyze',
-      'evaluate',
-      'compare',
-      'recommend',
-      'strategy',
+      "why",
+      "how",
+      "should",
+      "analyze",
+      "evaluate",
+      "compare",
+      "recommend",
+      "strategy",
     ];
     const thinkScore = thinkKeywords.filter((kw) => lowerText.includes(kw)).length;
 
@@ -193,8 +193,8 @@ export class IntentClassifier {
     return {
       mode,
       confidence,
-      reasoning: 'Heuristic classification based on keyword matching',
-      extractedParams: mode === Mode.RESEARCH ? { sources: ['drive', 'gmail', 'web'] } : {},
+      reasoning: "Heuristic classification based on keyword matching",
+      extractedParams: mode === Mode.RESEARCH ? { sources: ["drive", "gmail", "web"] } : {},
     };
   }
 }

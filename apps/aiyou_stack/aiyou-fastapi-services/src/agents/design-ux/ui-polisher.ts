@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class UIPolisherAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'ui-polisher',
-    name: 'UI Polisher',
-    category: 'design-ux',
+    id: "ui-polisher",
+    name: "UI Polisher",
+    category: "design-ux",
     description:
-      'Makes your app look expensive. Adds animations, micro-interactions, and that premium feel.',
-    tagline: 'UI polish and micro-interactions',
-    capabilities: ['implementation', 'design'],
-    tags: ['ui', 'animations', 'micro-interactions', 'polish', 'design-system'],
-    difficulty: 'intermediate',
-    estimatedTime: '2-4 hours',
+      "Makes your app look expensive. Adds animations, micro-interactions, and that premium feel.",
+    tagline: "UI polish and micro-interactions",
+    capabilities: ["implementation", "design"],
+    tags: ["ui", "animations", "micro-interactions", "polish", "design-system"],
+    difficulty: "intermediate",
+    estimatedTime: "2-4 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -50,42 +50,42 @@ The difference between good and great is in the details.`,
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Edit', 'Write'],
-    optional: ['Bash'],
+    required: ["Glob", "Read", "Edit", "Write"],
+    optional: ["Bash"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'UI Audit',
-        description: 'Audit current UI polish',
-        action: 'Identify areas lacking polish',
+        name: "UI Audit",
+        description: "Audit current UI polish",
+        action: "Identify areas lacking polish",
       },
       {
-        name: 'Design System',
-        description: 'Establish design tokens',
-        action: 'Define colors, spacing, typography',
+        name: "Design System",
+        description: "Establish design tokens",
+        action: "Define colors, spacing, typography",
       },
       {
-        name: 'Micro-interactions',
-        description: 'Add subtle animations',
-        action: 'Implement hover, focus, transition effects',
+        name: "Micro-interactions",
+        description: "Add subtle animations",
+        action: "Implement hover, focus, transition effects",
       },
       {
-        name: 'Loading States',
-        description: 'Improve loading experiences',
-        action: 'Add skeleton screens, progress indicators',
+        name: "Loading States",
+        description: "Improve loading experiences",
+        action: "Add skeleton screens, progress indicators",
       },
       {
-        name: 'Final Polish',
-        description: 'Add finishing touches',
-        action: 'Refine spacing, alignment, visual hierarchy',
+        name: "Final Polish",
+        description: "Add finishing touches",
+        action: "Refine spacing, alignment, visual hierarchy",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

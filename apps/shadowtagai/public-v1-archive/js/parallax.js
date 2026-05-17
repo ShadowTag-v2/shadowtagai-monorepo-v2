@@ -2,17 +2,17 @@
 // Handles scroll-triggered kinetic parallax for the hero layer
 
 export function initHeroParallax() {
-  const hero = document.querySelector('.hero');
+  const hero = document.querySelector(".hero");
   if (!hero) return;
 
   // Respect reduced-motion
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const video = hero.querySelector('.hero-video-bg');
-  const particles = hero.querySelector('.hero-particles-canvas');
-  const content = hero.querySelector('.hero-content');
-  const grain = hero.querySelector('.hero-grain');
-  const vignette = hero.querySelector('.hero-video-vignette');
+  const video = hero.querySelector(".hero-video-bg");
+  const particles = hero.querySelector(".hero-particles-canvas");
+  const content = hero.querySelector(".hero-content");
+  const grain = hero.querySelector(".hero-grain");
+  const vignette = hero.querySelector(".hero-video-vignette");
 
   let ticking = false;
   let lastScrollY = 0;
@@ -72,11 +72,11 @@ export function initHeroParallax() {
   }
 
   // Use passive listener for performance
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener("scroll", onScroll, { passive: true });
 
   // Also handle resize to recalculate hero height
   window.addEventListener(
-    'resize',
+    "resize",
     () => {
       if (!ticking) {
         requestAnimationFrame(updateParallax);
@@ -88,8 +88,8 @@ export function initHeroParallax() {
 }
 
 // Auto-initialize if DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initHeroParallax);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initHeroParallax);
 } else {
   initHeroParallax();
 }

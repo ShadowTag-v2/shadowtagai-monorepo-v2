@@ -1,18 +1,18 @@
 // Type definitions for encoding services
 export interface EncodingOptions {
-  encoding?: 'utf-8' | 'ascii' | 'base64' | 'hex' | 'binary';
+  encoding?: "utf-8" | "ascii" | "base64" | "hex" | "binary";
 }
 
 export interface ImageEncodingOptions {
-  format?: 'jpeg' | 'png' | 'webp' | 'avif' | 'gif';
+  format?: "jpeg" | "png" | "webp" | "avif" | "gif";
   quality?: number;
   width?: number;
   height?: number;
-  fit?: 'cover' | 'contain' | 'fill' | 'inside' | 'outside';
+  fit?: "cover" | "contain" | "fill" | "inside" | "outside";
 }
 
 export interface SerializationOptions {
-  format?: 'json' | 'binary' | 'msgpack';
+  format?: "json" | "binary" | "msgpack";
   pretty?: boolean;
 }
 

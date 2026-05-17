@@ -9,7 +9,7 @@
  * Analysis Type: Pre-Production (Specs Only)
  */
 
-import { GeminiIngestionAnalyzer } from '../../../src/agents/gemini-ingestion-analyzer';
+import { GeminiIngestionAnalyzer } from "../../../src/agents/gemini-ingestion-analyzer";
 
 // ==================== Example Specification Data ====================
 
@@ -135,18 +135,18 @@ spec:
 // ==================== Run Analysis ====================
 
 async function runGeminiAnalysis() {
-  console.log('=== PNKLN GEMINI INGESTION LAYER ANALYSIS ===\n');
+  console.log("=== PNKLN GEMINI INGESTION LAYER ANALYSIS ===\n");
 
   // Save specs to temp files (in production, would read from actual files)
-  const fs = require('fs').promises;
-  await fs.writeFile('/tmp/gemini-spec.md', geminiIngestionSpec);
-  await fs.writeFile('/tmp/gke-config.yaml', gkeConfig);
+  const fs = require("fs").promises;
+  await fs.writeFile("/tmp/gemini-spec.md", geminiIngestionSpec);
+  await fs.writeFile("/tmp/gke-config.yaml", gkeConfig);
 
   // Create analyzer with pre-production config
   const analyzer = new GeminiIngestionAnalyzer({
     confidenceTarget: 0.6, // Pre-prod specs-only
-    extendedThinking: 'think hard', // Complex optimization analysis
-    specDocs: ['/tmp/gemini-spec.md', '/tmp/gke-config.yaml'],
+    extendedThinking: "think hard", // Complex optimization analysis
+    specDocs: ["/tmp/gemini-spec.md", "/tmp/gke-config.yaml"],
     metrics: {
       targetRuntime: 45, // minutes
       monthlyBudget: 77, // dollars
@@ -157,36 +157,36 @@ async function runGeminiAnalysis() {
   });
 
   try {
-    console.log('[1/3] Loading specifications...');
-    console.log('  ✓ Gemini Ingestion Spec (architecture, sources, costs)');
-    console.log('  ✓ GKE Configuration (resources, scheduling)\n');
+    console.log("[1/3] Loading specifications...");
+    console.log("  ✓ Gemini Ingestion Spec (architecture, sources, costs)");
+    console.log("  ✓ GKE Configuration (resources, scheduling)\n");
 
-    console.log('[2/3] Running comprehensive analysis...');
-    console.log('  → Using Claude Sonnet 4.5 with extended thinking');
+    console.log("[2/3] Running comprehensive analysis...");
+    console.log("  → Using Claude Sonnet 4.5 with extended thinking");
     console.log(
-      '  → Analyzing 6 dimensions (architecture, performance, cost, ethics, quality, integration)',
+      "  → Analyzing 6 dimensions (architecture, performance, cost, ethics, quality, integration)",
     );
-    console.log('  → Target confidence: 60% (pre-production)\n');
+    console.log("  → Target confidence: 60% (pre-production)\n");
 
     const analysis = await analyzer.analyzeSystem();
 
-    console.log('[3/3] Analysis complete!\n');
+    console.log("[3/3] Analysis complete!\n");
 
     // ========== Results Display ==========
 
-    console.log('┌─────────────────────────────────────────────────────────────┐');
-    console.log('│                    ANALYSIS SUMMARY                         │');
-    console.log('└─────────────────────────────────────────────────────────────┘\n');
+    console.log("┌─────────────────────────────────────────────────────────────┐");
+    console.log("│                    ANALYSIS SUMMARY                         │");
+    console.log("└─────────────────────────────────────────────────────────────┘\n");
 
     console.log(
-      `Confidence Score: ${(analysis.confidence * 100).toFixed(1)}% ${analysis.confidence >= 0.6 ? '✓' : '✗'}`,
+      `Confidence Score: ${(analysis.confidence * 100).toFixed(1)}% ${analysis.confidence >= 0.6 ? "✓" : "✗"}`,
     );
     console.log(`Timestamp: ${analysis.timestamp}`);
     console.log(`\nSummary:\n${analysis.summary}\n`);
 
-    console.log('┌─────────────────────────────────────────────────────────────┐');
-    console.log('│                  DIMENSIONAL SCORES                          │');
-    console.log('└─────────────────────────────────────────────────────────────┘\n');
+    console.log("┌─────────────────────────────────────────────────────────────┐");
+    console.log("│                  DIMENSIONAL SCORES                          │");
+    console.log("└─────────────────────────────────────────────────────────────┘\n");
 
     const scores = analysis.scores;
     console.log(
@@ -212,9 +212,9 @@ async function runGeminiAnalysis() {
       `Overall:            ${(scores.overall * 100).toFixed(0)}/100 ${getScoreBar(scores.overall)}`,
     );
 
-    console.log('\n┌─────────────────────────────────────────────────────────────┐');
-    console.log('│                TOP RECOMMENDATIONS                           │');
-    console.log('└─────────────────────────────────────────────────────────────┘\n');
+    console.log("\n┌─────────────────────────────────────────────────────────────┐");
+    console.log("│                TOP RECOMMENDATIONS                           │");
+    console.log("└─────────────────────────────────────────────────────────────┘\n");
 
     const topRecs = analysis.recommendations.slice(0, 5);
     topRecs.forEach((rec, i) => {
@@ -234,12 +234,12 @@ async function runGeminiAnalysis() {
       console.log();
     });
 
-    console.log('┌─────────────────────────────────────────────────────────────┐');
-    console.log('│                    RISK ASSESSMENT                           │');
-    console.log('└─────────────────────────────────────────────────────────────┘\n');
+    console.log("┌─────────────────────────────────────────────────────────────┐");
+    console.log("│                    RISK ASSESSMENT                           │");
+    console.log("└─────────────────────────────────────────────────────────────┘\n");
 
     if (analysis.risks.length === 0) {
-      console.log('✓ No significant risks identified\n');
+      console.log("✓ No significant risks identified\n");
     } else {
       analysis.risks.forEach((risk, i) => {
         console.log(`${i + 1}. [${risk.severity}] ${risk.category}`);
@@ -250,24 +250,24 @@ async function runGeminiAnalysis() {
       });
     }
 
-    console.log('┌─────────────────────────────────────────────────────────────┐');
-    console.log('│                  TIER DISTRIBUTION                           │');
-    console.log('└─────────────────────────────────────────────────────────────┘\n');
+    console.log("┌─────────────────────────────────────────────────────────────┐");
+    console.log("│                  TIER DISTRIBUTION                           │");
+    console.log("└─────────────────────────────────────────────────────────────┘\n");
 
     const tierDist = analysis.tierDistribution;
     console.log(
-      `Tier 1 (High-Value):   ${(tierDist.tier1 * 100).toFixed(1)}% ${getBar(tierDist.tier1)} ${tierDist.tier1 >= 0.25 ? '✓' : '⚠️  (Target: 25-30%)'}`,
+      `Tier 1 (High-Value):   ${(tierDist.tier1 * 100).toFixed(1)}% ${getBar(tierDist.tier1)} ${tierDist.tier1 >= 0.25 ? "✓" : "⚠️  (Target: 25-30%)"}`,
     );
     console.log(
-      `Tier 2 (Medium-Value): ${(tierDist.tier2 * 100).toFixed(1)}% ${getBar(tierDist.tier2)} ${tierDist.tier2 >= 0.4 && tierDist.tier2 <= 0.5 ? '✓' : '⚠️  (Target: 40-50%)'}`,
+      `Tier 2 (Medium-Value): ${(tierDist.tier2 * 100).toFixed(1)}% ${getBar(tierDist.tier2)} ${tierDist.tier2 >= 0.4 && tierDist.tier2 <= 0.5 ? "✓" : "⚠️  (Target: 40-50%)"}`,
     );
     console.log(
-      `Tier 3 (Low-Value):    ${(tierDist.tier3 * 100).toFixed(1)}% ${getBar(tierDist.tier3)} ${tierDist.tier3 >= 0.2 && tierDist.tier3 <= 0.3 ? '✓' : '⚠️  (Target: 20-30%)'}`,
+      `Tier 3 (Low-Value):    ${(tierDist.tier3 * 100).toFixed(1)}% ${getBar(tierDist.tier3)} ${tierDist.tier3 >= 0.2 && tierDist.tier3 <= 0.3 ? "✓" : "⚠️  (Target: 20-30%)"}`,
     );
 
-    console.log('\n┌─────────────────────────────────────────────────────────────┐');
-    console.log('│                  SOURCE ANALYSIS                             │');
-    console.log('└─────────────────────────────────────────────────────────────┘\n');
+    console.log("\n┌─────────────────────────────────────────────────────────────┐");
+    console.log("│                  SOURCE ANALYSIS                             │");
+    console.log("└─────────────────────────────────────────────────────────────┘\n");
 
     Object.entries(analysis.sourceAnalysis).forEach(([source, metrics]) => {
       console.log(`${source.toUpperCase()}:`);
@@ -276,16 +276,16 @@ async function runGeminiAnalysis() {
         console.log(`  Items/Day: ${metrics.itemsPerDay}`);
       }
       if (metrics.issues.length > 0) {
-        console.log(`  Issues: ${metrics.issues.join(', ')}`);
+        console.log(`  Issues: ${metrics.issues.join(", ")}`);
       } else {
         console.log(`  Issues: None`);
       }
       console.log();
     });
 
-    console.log('┌─────────────────────────────────────────────────────────────┐');
-    console.log('│                  COST PROJECTION                             │');
-    console.log('└─────────────────────────────────────────────────────────────┘\n');
+    console.log("┌─────────────────────────────────────────────────────────────┐");
+    console.log("│                  COST PROJECTION                             │");
+    console.log("└─────────────────────────────────────────────────────────────┘\n");
 
     const cost = analysis.costProjection;
     console.log(`Current Monthly Cost:  $${cost.current.toFixed(2)}`);
@@ -299,24 +299,24 @@ async function runGeminiAnalysis() {
     console.log(`  Storage:  $${cost.breakdown.storage.toFixed(2)}`);
     console.log(`  APIs:     $${cost.breakdown.apis.toFixed(2)}`);
 
-    console.log('\n┌─────────────────────────────────────────────────────────────┐');
-    console.log('│                    NEXT STEPS                                │');
-    console.log('└─────────────────────────────────────────────────────────────┘\n');
+    console.log("\n┌─────────────────────────────────────────────────────────────┐");
+    console.log("│                    NEXT STEPS                                │");
+    console.log("└─────────────────────────────────────────────────────────────┘\n");
 
     analysis.nextSteps.forEach((step, i) => {
       console.log(`${i + 1}. ${step}`);
     });
 
-    console.log('\n═══════════════════════════════════════════════════════════════');
-    console.log('Analysis complete! Review recommendations above.');
-    console.log('Full analysis object available in code for programmatic use.');
-    console.log('═══════════════════════════════════════════════════════════════\n');
+    console.log("\n═══════════════════════════════════════════════════════════════");
+    console.log("Analysis complete! Review recommendations above.");
+    console.log("Full analysis object available in code for programmatic use.");
+    console.log("═══════════════════════════════════════════════════════════════\n");
 
     // Return full analysis for programmatic use
     return analysis;
   } catch (error) {
-    console.error('\n✗ Analysis failed:', error.message);
-    console.error('\nStack trace:');
+    console.error("\n✗ Analysis failed:", error.message);
+    console.error("\nStack trace:");
     console.error(error.stack);
     process.exit(1);
   }
@@ -327,13 +327,13 @@ async function runGeminiAnalysis() {
 function getScoreBar(score: number): string {
   const filled = Math.round(score * 20);
   const empty = 20 - filled;
-  return '█'.repeat(filled) + '░'.repeat(empty);
+  return "█".repeat(filled) + "░".repeat(empty);
 }
 
 function getBar(value: number): string {
   const filled = Math.round(value * 30);
   const empty = 30 - filled;
-  return '█'.repeat(filled) + '░'.repeat(empty);
+  return "█".repeat(filled) + "░".repeat(empty);
 }
 
 // ==================== Run ====================
@@ -341,11 +341,11 @@ function getBar(value: number): string {
 if (require.main === module) {
   runGeminiAnalysis()
     .then(() => {
-      console.log('Process completed successfully.');
+      console.log("Process completed successfully.");
       process.exit(0);
     })
     .catch((error) => {
-      console.error('Fatal error:', error);
+      console.error("Fatal error:", error);
       process.exit(1);
     });
 }

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { CopilotSidebar } from '@copilotkit/react-ui';
+import { CopilotSidebar } from "@copilotkit/react-ui";
 
 export function AgentDebugger() {
   return (
@@ -9,8 +9,8 @@ export function AgentDebugger() {
         defaultOpen={true}
         instructions="You are interacting with the Autoresearch Swarm via the Judge 6 Governance Layer."
         labels={{
-          title: 'Omega UI // Judge 6',
-          initial: 'Judge 6 Online. How may I assist you, Sovereign?',
+          title: "Omega UI // Judge 6",
+          initial: "Judge 6 Online. How may I assist you, Sovereign?",
         }}
         // Explicitly target the named agent from the backend
         // Note: useCoAgent or actions often auto-bind if only one exists,

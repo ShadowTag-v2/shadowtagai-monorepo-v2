@@ -259,7 +259,7 @@ class PerformanceBenchmark:
 
         # Skip memory benchmark if psutil not available
         try:
-            import psutil
+            import psutil  # noqa: F401
 
             self.benchmark_memory_usage(num_decisions=1000)
         except ImportError:

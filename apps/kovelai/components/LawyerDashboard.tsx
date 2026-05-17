@@ -13,9 +13,9 @@
  * @see lib/vault/intent-vault.ts
  */
 
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -28,7 +28,7 @@ interface RadarDataPoint {
 interface ClientProfile {
   clientId: string;
   displayName: string;
-  riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'CRITICAL';
+  riskLevel: "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
   avgUrgency: number;
   totalQueries: number;
   escalationCount: number;
@@ -52,14 +52,14 @@ interface DashboardStats {
 
 function RiskBadge({ level }: { level: string }) {
   const colors: Record<string, { bg: string; text: string; border: string }> = {
-    LOW: { bg: 'rgba(62, 254, 138, 0.1)', text: '#3efe8a', border: 'rgba(62, 254, 138, 0.3)' },
+    LOW: { bg: "rgba(62, 254, 138, 0.1)", text: "#3efe8a", border: "rgba(62, 254, 138, 0.3)" },
     MODERATE: {
-      bg: 'rgba(122, 208, 255, 0.1)',
-      text: '#7ad0ff',
-      border: 'rgba(122, 208, 255, 0.3)',
+      bg: "rgba(122, 208, 255, 0.1)",
+      text: "#7ad0ff",
+      border: "rgba(122, 208, 255, 0.3)",
     },
-    HIGH: { bg: 'rgba(255, 179, 71, 0.1)', text: '#ffb347', border: 'rgba(255, 179, 71, 0.3)' },
-    CRITICAL: { bg: 'rgba(255, 82, 82, 0.1)', text: '#ff5252', border: 'rgba(255, 82, 82, 0.3)' },
+    HIGH: { bg: "rgba(255, 179, 71, 0.1)", text: "#ffb347", border: "rgba(255, 179, 71, 0.3)" },
+    CRITICAL: { bg: "rgba(255, 82, 82, 0.1)", text: "#ff5252", border: "rgba(255, 82, 82, 0.3)" },
   };
 
   const c = colors[level] ?? colors.LOW;
@@ -67,15 +67,15 @@ function RiskBadge({ level }: { level: string }) {
   return (
     <span
       style={{
-        padding: '2px 8px',
-        borderRadius: '4px',
-        fontSize: '11px',
+        padding: "2px 8px",
+        borderRadius: "4px",
+        fontSize: "11px",
         fontWeight: 600,
         background: c.bg,
         color: c.text,
         border: `1px solid ${c.border}`,
-        textTransform: 'uppercase' as const,
-        letterSpacing: '0.05em',
+        textTransform: "uppercase" as const,
+        letterSpacing: "0.05em",
       }}
     >
       {level}
@@ -103,7 +103,7 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
     };
   });
 
-  const polygonPoints = points.map((p) => `${p.x},${p.y}`).join(' ');
+  const polygonPoints = points.map((p) => `${p.x},${p.y}`).join(" ");
 
   return (
     <svg aria-hidden="true" width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
@@ -117,7 +117,7 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
             const angle = data.indexOf(d) * angleStep - Math.PI / 2;
             return `${center + ring.radius * Math.cos(angle)},${center + ring.radius * Math.sin(angle)}`;
           })
-          .join(' ');
+          .join(" ");
         return (
           <polygon
             key={`ring-level-${ring.level}`}
@@ -177,7 +177,7 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
             fontSize="8"
             fontFamily="Inter, sans-serif"
           >
-            {d.category.split(' ')[0]}
+            {d.category.split(" ")[0]}
           </text>
         );
       })}
@@ -202,41 +202,41 @@ export function LawyerDashboard() {
 
   const [clients] = useState<ClientProfile[]>([
     {
-      clientId: 'c1',
-      displayName: 'Client A',
-      riskLevel: 'HIGH',
+      clientId: "c1",
+      displayName: "Client A",
+      riskLevel: "HIGH",
       avgUrgency: 7.2,
       totalQueries: 23,
       escalationCount: 3,
       lastActivity: new Date(Date.now() - 300000).toISOString(),
       radarData: [
-        { category: 'CRIMINAL', value: 8, max: 23 },
-        { category: 'ASSET', value: 12, max: 23 },
-        { category: 'FAMILY', value: 1, max: 23 },
-        { category: 'REGULATORY', value: 2, max: 23 },
-        { category: 'EMPLOYMENT', value: 0, max: 23 },
-        { category: 'IMMIGRATION', value: 0, max: 23 },
-        { category: 'INJURY', value: 0, max: 23 },
-        { category: 'GENERAL', value: 0, max: 23 },
+        { category: "CRIMINAL", value: 8, max: 23 },
+        { category: "ASSET", value: 12, max: 23 },
+        { category: "FAMILY", value: 1, max: 23 },
+        { category: "REGULATORY", value: 2, max: 23 },
+        { category: "EMPLOYMENT", value: 0, max: 23 },
+        { category: "IMMIGRATION", value: 0, max: 23 },
+        { category: "INJURY", value: 0, max: 23 },
+        { category: "GENERAL", value: 0, max: 23 },
       ],
     },
     {
-      clientId: 'c2',
-      displayName: 'Client B',
-      riskLevel: 'LOW',
+      clientId: "c2",
+      displayName: "Client B",
+      riskLevel: "LOW",
       avgUrgency: 3.1,
       totalQueries: 8,
       escalationCount: 0,
       lastActivity: new Date(Date.now() - 3600000).toISOString(),
       radarData: [
-        { category: 'CRIMINAL', value: 0, max: 8 },
-        { category: 'ASSET', value: 1, max: 8 },
-        { category: 'FAMILY', value: 5, max: 8 },
-        { category: 'REGULATORY', value: 0, max: 8 },
-        { category: 'EMPLOYMENT', value: 2, max: 8 },
-        { category: 'IMMIGRATION', value: 0, max: 8 },
-        { category: 'INJURY', value: 0, max: 8 },
-        { category: 'GENERAL', value: 0, max: 8 },
+        { category: "CRIMINAL", value: 0, max: 8 },
+        { category: "ASSET", value: 1, max: 8 },
+        { category: "FAMILY", value: 5, max: 8 },
+        { category: "REGULATORY", value: 0, max: 8 },
+        { category: "EMPLOYMENT", value: 2, max: 8 },
+        { category: "IMMIGRATION", value: 0, max: 8 },
+        { category: "INJURY", value: 0, max: 8 },
+        { category: "GENERAL", value: 0, max: 8 },
       ],
     },
   ]);
@@ -250,29 +250,29 @@ export function LawyerDashboard() {
   return (
     <div
       style={{
-        minHeight: '100vh',
-        background: '#0d1117',
-        color: '#e2e0fc',
-        fontFamily: 'Inter, sans-serif',
+        minHeight: "100vh",
+        background: "#0d1117",
+        color: "#e2e0fc",
+        fontFamily: "Inter, sans-serif",
       }}
     >
       {/* ── Header ── */}
       <header
         style={{
-          padding: '16px 24px',
-          background: '#111125',
-          borderBottom: '1px solid rgba(60, 73, 78, 0.15)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          padding: "16px 24px",
+          background: "#111125",
+          borderBottom: "1px solid rgba(60, 73, 78, 0.15)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <h1
           style={{
-            fontFamily: 'Space Grotesk, sans-serif',
-            fontSize: '20px',
+            fontFamily: "Space Grotesk, sans-serif",
+            fontSize: "20px",
             fontWeight: 600,
-            letterSpacing: '-0.02em',
+            letterSpacing: "-0.02em",
             margin: 0,
           }}
         >
@@ -280,12 +280,12 @@ export function LawyerDashboard() {
         </h1>
         <span
           style={{
-            padding: '4px 12px',
-            background: 'rgba(62, 254, 138, 0.1)',
-            color: '#3efe8a',
-            border: '1px solid rgba(62, 254, 138, 0.3)',
-            borderRadius: '4px',
-            fontSize: '12px',
+            padding: "4px 12px",
+            background: "rgba(62, 254, 138, 0.1)",
+            color: "#3efe8a",
+            border: "1px solid rgba(62, 254, 138, 0.3)",
+            borderRadius: "4px",
+            fontSize: "12px",
             fontWeight: 600,
           }}
         >
@@ -296,42 +296,42 @@ export function LawyerDashboard() {
       {/* ── Stats Bar ── */}
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '16px',
-          padding: '24px',
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "16px",
+          padding: "24px",
         }}
       >
         {[
-          { label: 'Active Sessions', value: stats.activeSessions, color: '#3efe8a' },
-          { label: 'Total Clients', value: stats.totalClients, color: '#a8e8ff' },
-          { label: "Today's Queries", value: stats.todayQueries, color: '#7ad0ff' },
+          { label: "Active Sessions", value: stats.activeSessions, color: "#3efe8a" },
+          { label: "Total Clients", value: stats.totalClients, color: "#a8e8ff" },
+          { label: "Today's Queries", value: stats.todayQueries, color: "#7ad0ff" },
           {
-            label: 'Escalations',
+            label: "Escalations",
             value: clients.reduce((a, c) => a + c.escalationCount, 0),
-            color: '#ffb347',
+            color: "#ffb347",
           },
         ].map((stat) => (
           <div
             key={stat.label}
             style={{
-              padding: '20px',
-              background: '#1a1a2e',
-              borderRadius: '6px',
-              borderTop: '0.5px solid rgba(180, 235, 255, 0.08)',
+              padding: "20px",
+              background: "#1a1a2e",
+              borderRadius: "6px",
+              borderTop: "0.5px solid rgba(180, 235, 255, 0.08)",
             }}
           >
             <div
               style={{
-                fontSize: '28px',
+                fontSize: "28px",
                 fontWeight: 700,
                 color: stat.color,
-                fontFamily: 'Space Grotesk',
+                fontFamily: "Space Grotesk",
               }}
             >
               {stat.value}
             </div>
-            <div style={{ fontSize: '13px', color: '#859398', marginTop: '4px' }}>{stat.label}</div>
+            <div style={{ fontSize: "13px", color: "#859398", marginTop: "4px" }}>{stat.label}</div>
           </div>
         ))}
       </div>
@@ -339,26 +339,26 @@ export function LawyerDashboard() {
       {/* ── Main Layout ── */}
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '24px',
-          padding: '0 24px 24px',
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "24px",
+          padding: "0 24px 24px",
         }}
       >
         {/* ── Client List ── */}
         <div
           style={{
-            background: '#1a1a2e',
-            borderRadius: '6px',
-            padding: '20px',
+            background: "#1a1a2e",
+            borderRadius: "6px",
+            padding: "20px",
           }}
         >
           <h2
             style={{
-              fontFamily: 'Space Grotesk',
-              fontSize: '16px',
+              fontFamily: "Space Grotesk",
+              fontSize: "16px",
               fontWeight: 600,
-              marginBottom: '16px',
+              marginBottom: "16px",
             }}
           >
             Client Activity
@@ -369,27 +369,27 @@ export function LawyerDashboard() {
               key={client.clientId}
               onClick={() => setSelectedClient(client)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedClient(client);
+                if (e.key === "Enter") setSelectedClient(client);
               }}
               style={{
-                padding: '16px',
-                marginBottom: '8px',
-                background: selectedClient?.clientId === client.clientId ? '#28283d' : '#111125',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                transition: 'background 0.2s',
-                border: 'none',
-                width: '100%',
-                color: 'inherit',
-                textAlign: 'left',
+                padding: "16px",
+                marginBottom: "8px",
+                background: selectedClient?.clientId === client.clientId ? "#28283d" : "#111125",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                transition: "background 0.2s",
+                border: "none",
+                width: "100%",
+                color: "inherit",
+                textAlign: "left",
               }}
             >
               <div>
-                <div style={{ fontWeight: 600, fontSize: '14px' }}>{client.displayName}</div>
-                <div style={{ fontSize: '12px', color: '#859398', marginTop: '4px' }}>
+                <div style={{ fontWeight: 600, fontSize: "14px" }}>{client.displayName}</div>
+                <div style={{ fontSize: "12px", color: "#859398", marginTop: "4px" }}>
                   {client.totalQueries} queries • Avg urgency: {client.avgUrgency}/10
                 </div>
               </div>
@@ -401,33 +401,33 @@ export function LawyerDashboard() {
         {/* ── Radar Panel ── */}
         <div
           style={{
-            background: '#1a1a2e',
-            borderRadius: '6px',
-            padding: '20px',
+            background: "#1a1a2e",
+            borderRadius: "6px",
+            padding: "20px",
           }}
         >
           <h2
             style={{
-              fontFamily: 'Space Grotesk',
-              fontSize: '16px',
+              fontFamily: "Space Grotesk",
+              fontSize: "16px",
               fontWeight: 600,
-              marginBottom: '16px',
+              marginBottom: "16px",
             }}
           >
             Anxiety Radar
           </h2>
           {selectedClient ? (
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: "center" }}>
               <RadarChart data={selectedClient.radarData} />
-              <div style={{ marginTop: '16px' }}>
+              <div style={{ marginTop: "16px" }}>
                 <RiskBadge level={selectedClient.riskLevel} />
-                <span style={{ marginLeft: '12px', fontSize: '13px', color: '#bbc9cf' }}>
+                <span style={{ marginLeft: "12px", fontSize: "13px", color: "#bbc9cf" }}>
                   {selectedClient.displayName}
                 </span>
               </div>
             </div>
           ) : (
-            <div style={{ textAlign: 'center', color: '#859398', padding: '40px' }}>
+            <div style={{ textAlign: "center", color: "#859398", padding: "40px" }}>
               Select a client to view their anxiety radar
             </div>
           )}
@@ -435,69 +435,69 @@ export function LawyerDashboard() {
       </div>
 
       {/* ── Token Usage ── */}
-      <div style={{ padding: '0 24px 24px' }}>
+      <div style={{ padding: "0 24px 24px" }}>
         <div
           style={{
-            background: '#1a1a2e',
-            borderRadius: '6px',
-            padding: '20px',
+            background: "#1a1a2e",
+            borderRadius: "6px",
+            padding: "20px",
           }}
         >
           <h2
             style={{
-              fontFamily: 'Space Grotesk',
-              fontSize: '16px',
+              fontFamily: "Space Grotesk",
+              fontSize: "16px",
               fontWeight: 600,
-              marginBottom: '16px',
+              marginBottom: "16px",
             }}
           >
             Token Budget
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
             <div>
-              <div style={{ fontSize: '13px', color: '#859398', marginBottom: '6px' }}>
-                Daily: {(stats.tokenUsage.daily / 1000).toFixed(0)}K /{' '}
+              <div style={{ fontSize: "13px", color: "#859398", marginBottom: "6px" }}>
+                Daily: {(stats.tokenUsage.daily / 1000).toFixed(0)}K /{" "}
                 {(stats.tokenUsage.dailyLimit / 1_000_000).toFixed(0)}M ({dailyPct}%)
               </div>
               <div
                 style={{
-                  background: '#111125',
-                  borderRadius: '4px',
-                  height: '8px',
-                  overflow: 'hidden',
+                  background: "#111125",
+                  borderRadius: "4px",
+                  height: "8px",
+                  overflow: "hidden",
                 }}
               >
                 <div
                   style={{
                     width: `${dailyPct}%`,
-                    height: '100%',
-                    background: dailyPct > 80 ? '#ffb347' : '#00d4ff',
-                    borderRadius: '4px',
-                    transition: 'width 0.3s',
+                    height: "100%",
+                    background: dailyPct > 80 ? "#ffb347" : "#00d4ff",
+                    borderRadius: "4px",
+                    transition: "width 0.3s",
                   }}
                 />
               </div>
             </div>
             <div>
-              <div style={{ fontSize: '13px', color: '#859398', marginBottom: '6px' }}>
-                Monthly: {(stats.tokenUsage.monthly / 1_000_000).toFixed(1)}M /{' '}
+              <div style={{ fontSize: "13px", color: "#859398", marginBottom: "6px" }}>
+                Monthly: {(stats.tokenUsage.monthly / 1_000_000).toFixed(1)}M /{" "}
                 {(stats.tokenUsage.monthlyLimit / 1_000_000).toFixed(0)}M ({monthlyPct}%)
               </div>
               <div
                 style={{
-                  background: '#111125',
-                  borderRadius: '4px',
-                  height: '8px',
-                  overflow: 'hidden',
+                  background: "#111125",
+                  borderRadius: "4px",
+                  height: "8px",
+                  overflow: "hidden",
                 }}
               >
                 <div
                   style={{
                     width: `${monthlyPct}%`,
-                    height: '100%',
-                    background: monthlyPct > 80 ? '#ffb347' : '#00d4ff',
-                    borderRadius: '4px',
-                    transition: 'width 0.3s',
+                    height: "100%",
+                    background: monthlyPct > 80 ? "#ffb347" : "#00d4ff",
+                    borderRadius: "4px",
+                    transition: "width 0.3s",
                   }}
                 />
               </div>

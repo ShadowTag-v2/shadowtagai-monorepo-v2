@@ -1,27 +1,27 @@
 // Service Worker for offline support and caching
-const CACHE_NAME = 'mobile-app-v1';
-const OFFLINE_URL = '/offline';
+const CACHE_NAME = "mobile-app-v1";
+const OFFLINE_URL = "/offline";
 
 // Assets to cache on install
 const STATIC_CACHE_URLS = [
-  '/',
-  '/offline',
-  '/static/css/mobile-styles.css',
-  '/static/js/touch-gestures.js',
-  '/static/js/mobile-performance.js',
-  '/static/js/app.js',
-  '/manifest.json',
+  "/",
+  "/offline",
+  "/static/css/mobile-styles.css",
+  "/static/js/touch-gestures.js",
+  "/static/js/mobile-performance.js",
+  "/static/js/app.js",
+  "/manifest.json",
 ];
 
 // Install event - cache static assets
-self.addEventListener('install', (event) => {
-  console.log('[Service Worker] Installing...');
+self.addEventListener("install", (event) => {
+  console.log("[Service Worker] Installing...");
 
   event.waitUntil(
     caches
       .open(CACHE_NAME)
       .then((cache) => {
-        console.log('[Service Worker] Caching static assets');
+        console.log("[Service Worker] Caching static assets");
         return cache.addAll(STATIC_CACHE_URLS);
       })
       .then(() => self.skipWaiting()),
@@ -29,8 +29,8 @@ self.addEventListener('install', (event) => {
 });
 
 // Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activating...');
+self.addEventListener("activate", (event) => {
+  console.log("[Service Worker] Activating...");
 
   event.waitUntil(
     caches
@@ -39,7 +39,7 @@ self.addEventListener('activate', (event) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
             if (cacheName !== CACHE_NAME) {
-              console.log('[Service Worker] Deleting old cache:', cacheName);
+              console.log("[Service Worker] Deleting old cache:", cacheName);
               return caches.delete(cacheName);
             }
           }),
@@ -50,7 +50,7 @@ self.addEventListener('activate', (event) => {
 });
 
 // Fetch event - network first, fallback to cache
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
@@ -60,7 +60,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Handle API requests - network first
-  if (url.pathname.startsWith('/api/')) {
+  if (url.pathname.startsWith("/api/")) {
     event.respondWith(
       fetch(request)
         .then((response) => {
@@ -78,9 +78,9 @@ self.addEventListener('fetch', (event) => {
           return caches.match(request).then((cachedResponse) => {
             return (
               cachedResponse ||
-              new Response(JSON.stringify({ error: 'Offline', cached: false }), {
+              new Response(JSON.stringify({ error: "Offline", cached: false }), {
                 status: 503,
-                headers: { 'Content-Type': 'application/json' },
+                headers: { "Content-Type": "application/json" },
               })
             );
           });
@@ -90,7 +90,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Handle navigation requests
-  if (request.mode === 'navigate') {
+  if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
         .then((response) => {
@@ -142,22 +142,22 @@ self.addEventListener('fetch', (event) => {
 });
 
 // Background sync for offline actions
-self.addEventListener('sync', (event) => {
-  console.log('[Service Worker] Background sync:', event.tag);
+self.addEventListener("sync", (event) => {
+  console.log("[Service Worker] Background sync:", event.tag);
 
-  if (event.tag === 'sync-data') {
+  if (event.tag === "sync-data") {
     event.waitUntil(syncData());
   }
 });
 
 // Push notifications support
-self.addEventListener('push', (event) => {
-  console.log('[Service Worker] Push received');
+self.addEventListener("push", (event) => {
+  console.log("[Service Worker] Push received");
 
   const options = {
-    body: event.data ? event.data.text() : 'New update available',
-    icon: '/static/icons/icon-192x192.png',
-    badge: '/static/icons/icon-72x72.png',
+    body: event.data ? event.data.text() : "New update available",
+    icon: "/static/icons/icon-192x192.png",
+    badge: "/static/icons/icon-72x72.png",
     vibrate: [200, 100, 200],
     data: {
       dateOfArrival: Date.now(),
@@ -165,26 +165,26 @@ self.addEventListener('push', (event) => {
     },
     actions: [
       {
-        action: 'explore',
-        title: 'Open App',
+        action: "explore",
+        title: "Open App",
       },
       {
-        action: 'close',
-        title: 'Close',
+        action: "close",
+        title: "Close",
       },
     ],
   };
 
-  event.waitUntil(self.registration.showNotification('Mobile App', options));
+  event.waitUntil(self.registration.showNotification("Mobile App", options));
 });
 
 // Notification click handler
-self.addEventListener('notificationclick', (event) => {
-  console.log('[Service Worker] Notification clicked');
+self.addEventListener("notificationclick", (event) => {
+  console.log("[Service Worker] Notification clicked");
   event.notification.close();
 
-  if (event.action === 'explore') {
-    event.waitUntil(clients.openWindow('/'));
+  if (event.action === "explore") {
+    event.waitUntil(clients.openWindow("/"));
   }
 });
 
@@ -192,23 +192,23 @@ self.addEventListener('notificationclick', (event) => {
 async function syncData() {
   try {
     // Implement your data sync logic here
-    console.log('[Service Worker] Syncing data...');
+    console.log("[Service Worker] Syncing data...");
     return Promise.resolve();
   } catch (error) {
-    console.error('[Service Worker] Sync failed:', error);
+    console.error("[Service Worker] Sync failed:", error);
     return Promise.reject(error);
   }
 }
 
 // Message handler for client communication
-self.addEventListener('message', (event) => {
-  console.log('[Service Worker] Message received:', event.data);
+self.addEventListener("message", (event) => {
+  console.log("[Service Worker] Message received:", event.data);
 
-  if (event.data.type === 'SKIP_WAITING') {
+  if (event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
 
-  if (event.data.type === 'CACHE_URLS') {
+  if (event.data.type === "CACHE_URLS") {
     event.waitUntil(
       caches.open(CACHE_NAME).then((cache) => {
         return cache.addAll(event.data.urls);

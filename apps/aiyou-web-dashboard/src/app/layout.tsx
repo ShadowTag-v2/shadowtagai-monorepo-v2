@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import type { Metadata } from 'next';
-import { Inter, Outfit } from 'next/font/google';
-import './globals.css';
-import { CopilotKit } from '@copilotkit/react-core';
-import Image from 'next/image';
-import Link from 'next/link';
-import '@copilotkit/react-ui/styles.css';
+import type { Metadata } from "next";
+import { Inter, Outfit } from "next/font/google";
+import "./globals.css";
+import { CopilotKit } from "@copilotkit/react-core";
+import Image from "next/image";
+import Link from "next/link";
+import "@copilotkit/react-ui/styles.css";
 
 const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
+  variable: "--font-inter",
+  subsets: ["latin"],
 });
 
 const outfit = Outfit({
-  variable: '--font-outfit',
-  subsets: ['latin'],
+  variable: "--font-outfit",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: 'ShadowTag - Serving the Global AI Industry',
-  description: 'Advanced Intelligence Matrices and Commercial AI Protocol Enforcement.',
+  title: "ShadowTag - Serving the Global AI Industry",
+  description: "Advanced Intelligence Matrices and Commercial AI Protocol Enforcement.",
 };
 
 export default function RootLayout({
@@ -40,7 +40,7 @@ export default function RootLayout({
             onClick={() => {
               document.documentElement.style.fontSize =
                 Math.max(12, parseFloat(getComputedStyle(document.documentElement).fontSize) - 2) +
-                'px';
+                "px";
             }}
           >
             A-
@@ -52,7 +52,7 @@ export default function RootLayout({
             onClick={() => {
               document.documentElement.style.fontSize =
                 Math.min(24, parseFloat(getComputedStyle(document.documentElement).fontSize) + 2) +
-                'px';
+                "px";
             }}
           >
             A+
@@ -62,7 +62,7 @@ export default function RootLayout({
             className="flex items-center hover:text-gray-300"
             aria-label="Toggle high contrast"
             onClick={() => {
-              document.documentElement.classList.toggle('high-contrast');
+              document.documentElement.classList.toggle("high-contrast");
             }}
           >
             <svg
@@ -81,8 +81,8 @@ export default function RootLayout({
             aria-label="Open accessibility options"
             onClick={() => {
               document
-                .querySelector('.fixed.bottom-6.left-6')
-                ?.scrollIntoView({ behavior: 'smooth' });
+                .querySelector(".fixed.bottom-6.left-6")
+                ?.scrollIntoView({ behavior: "smooth" });
             }}
           >
             <svg

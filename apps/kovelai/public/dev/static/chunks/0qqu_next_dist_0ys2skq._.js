@@ -1,10 +1,10 @@
-(globalThis['TURBOPACK'] || (globalThis['TURBOPACK'] = [])).push([
-  typeof document === 'object' ? document.currentScript : undefined,
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [app-client] (ecmascript)',
+(globalThis["TURBOPACK"] || (globalThis["TURBOPACK"] = [])).push([
+  typeof document === "object" ? document.currentScript : undefined,
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -24,7 +24,7 @@
       requestIdleCallback: () => requestIdleCallback,
     });
     const requestIdleCallback =
-      (typeof self !== 'undefined' &&
+      (typeof self !== "undefined" &&
         self.requestIdleCallback &&
         self.requestIdleCallback.bind(window)) ||
       ((cb) => {
@@ -37,27 +37,27 @@
         }, 1);
       });
     const cancelIdleCallback =
-      (typeof self !== 'undefined' &&
+      (typeof self !== "undefined" &&
         self.cancelIdleCallback &&
         self.cancelIdleCallback.bind(window)) ||
       ((id) => clearTimeout(id));
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -79,32 +79,32 @@
       initScriptLoader: () => initScriptLoader,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _reactdom = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)",
       ),
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _headmanagercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _setattributesfromprops = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [app-client] (ecmascript)",
     );
     const _requestidlecallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [app-client] (ecmascript)",
     );
     const ScriptCache = new Map();
     const LoadCache = new Set();
@@ -118,7 +118,7 @@
       if (_reactdom.default.preinit) {
         stylesheets.forEach((stylesheet) => {
           _reactdom.default.preinit(stylesheet, {
-            as: 'style',
+            as: "style",
           });
         });
         return;
@@ -127,12 +127,12 @@
       //
       // We use this function to load styles when appdir is not detected
       // TODO: Use React float APIs to load styles once available for pages dir
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const head = document.head;
         stylesheets.forEach((stylesheet) => {
-          const link = document.createElement('link');
-          link.type = 'text/css';
-          link.rel = 'stylesheet';
+          const link = document.createElement("link");
+          link.type = "text/css";
+          link.rel = "stylesheet";
           link.href = stylesheet;
           head.appendChild(link);
         });
@@ -145,8 +145,8 @@
         onLoad = () => {},
         onReady = null,
         dangerouslySetInnerHTML,
-        children = '',
-        strategy = 'afterInteractive',
+        children = "",
+        strategy = "afterInteractive",
         onError,
         stylesheets,
       } = props;
@@ -171,16 +171,16 @@
         // add cacheKey to LoadCache when load successfully
         LoadCache.add(cacheKey);
       };
-      const el = document.createElement('script');
+      const el = document.createElement("script");
       const loadPromise = new Promise((resolve, reject) => {
-        el.addEventListener('load', function (e) {
+        el.addEventListener("load", function (e) {
           resolve();
           if (onLoad) {
             onLoad.call(this, e);
           }
           afterLoad();
         });
-        el.addEventListener('error', (e) => {
+        el.addEventListener("error", (e) => {
           reject(e);
         });
       }).catch((e) => {
@@ -190,15 +190,15 @@
       });
       if (dangerouslySetInnerHTML) {
         // Casting since lib.dom.d.ts doesn't have TrustedHTML yet.
-        el.innerHTML = dangerouslySetInnerHTML.__html || '';
+        el.innerHTML = dangerouslySetInnerHTML.__html || "";
         afterLoad();
       } else if (children) {
         el.textContent =
-          typeof children === 'string'
+          typeof children === "string"
             ? children
             : Array.isArray(children)
-              ? children.join('')
-              : '';
+              ? children.join("")
+              : "";
         afterLoad();
       } else if (src) {
         el.src = src;
@@ -207,10 +207,10 @@
         ScriptCache.set(src, loadPromise);
       }
       (0, _setattributesfromprops.setAttributesFromProps)(el, props);
-      if (strategy === 'worker') {
-        el.setAttribute('type', 'text/partytown');
+      if (strategy === "worker") {
+        el.setAttribute("type", "text/partytown");
       }
-      el.setAttribute('data-nscript', strategy);
+      el.setAttribute("data-nscript", strategy);
       // Load styles associated with this script
       if (stylesheets) {
         insertStylesheets(stylesheets);
@@ -218,9 +218,9 @@
       document.body.appendChild(el);
     };
     function handleClientScriptLoad(props) {
-      const { strategy = 'afterInteractive' } = props;
-      if (strategy === 'lazyOnload') {
-        window.addEventListener('load', () => {
+      const { strategy = "afterInteractive" } = props;
+      if (strategy === "lazyOnload") {
+        window.addEventListener("load", () => {
           (0, _requestidlecallback.requestIdleCallback)(() => loadScript(props));
         });
       } else {
@@ -228,10 +228,10 @@
       }
     }
     function loadLazyScript(props) {
-      if (document.readyState === 'complete') {
+      if (document.readyState === "complete") {
         (0, _requestidlecallback.requestIdleCallback)(() => loadScript(props));
       } else {
-        window.addEventListener('load', () => {
+        window.addEventListener("load", () => {
           (0, _requestidlecallback.requestIdleCallback)(() => loadScript(props));
         });
       }
@@ -242,7 +242,7 @@
         ...document.querySelectorAll('[data-nscript="beforePageRender"]'),
       ];
       scripts.forEach((script) => {
-        const cacheKey = script.id || script.getAttribute('src');
+        const cacheKey = script.id || script.getAttribute("src");
         LoadCache.add(cacheKey);
       });
     }
@@ -257,10 +257,10 @@
      */ function Script(props) {
       const {
         id,
-        src = '',
+        src = "",
         onLoad = () => {},
         onReady = null,
-        strategy = 'afterInteractive',
+        strategy = "afterInteractive",
         onError,
         stylesheets,
         ...restProps
@@ -310,15 +310,15 @@
       const hasLoadScriptEffectCalled = (0, _react.useRef)(false);
       (0, _react.useEffect)(() => {
         if (!hasLoadScriptEffectCalled.current) {
-          if (strategy === 'afterInteractive') {
+          if (strategy === "afterInteractive") {
             loadScript(props);
-          } else if (strategy === 'lazyOnload') {
+          } else if (strategy === "lazyOnload") {
             loadLazyScript(props);
           }
           hasLoadScriptEffectCalled.current = true;
         }
       }, [props, strategy]);
-      if (strategy === 'beforeInteractive' || strategy === 'worker') {
+      if (strategy === "beforeInteractive" || strategy === "worker") {
         if (updateScripts) {
           scripts[strategy] = (scripts[strategy] || []).concat([
             {
@@ -356,13 +356,13 @@
         if (stylesheets) {
           stylesheets.forEach((styleSrc) => {
             _reactdom.default.preinit(styleSrc, {
-              as: 'style',
+              as: "style",
             });
           });
         }
         // Before interactive scripts need to be loaded by Next.js' runtime instead
         // of native <script> tags, because they no longer have `defer`.
-        if (strategy === 'beforeInteractive') {
+        if (strategy === "beforeInteractive") {
           if (!src) {
             // For inlined scripts, we put the content in `children`.
             if (restProps.dangerouslySetInnerHTML) {
@@ -370,7 +370,7 @@
               restProps.children = restProps.dangerouslySetInnerHTML.__html;
               delete restProps.dangerouslySetInnerHTML;
             }
-            return /*#__PURE__*/ (0, _jsxruntime.jsx)('script', {
+            return /*#__PURE__*/ (0, _jsxruntime.jsx)("script", {
               nonce: nonce,
               dangerouslySetInnerHTML: {
                 __html: `(self.__next_s=self.__next_s||[]).push(${JSON.stringify([
@@ -388,18 +388,18 @@
               src,
               restProps.integrity
                 ? {
-                    as: 'script',
+                    as: "script",
                     integrity: restProps.integrity,
                     nonce,
                     crossOrigin: restProps.crossOrigin,
                   }
                 : {
-                    as: 'script',
+                    as: "script",
                     nonce,
                     crossOrigin: restProps.crossOrigin,
                   },
             );
-            return /*#__PURE__*/ (0, _jsxruntime.jsx)('script', {
+            return /*#__PURE__*/ (0, _jsxruntime.jsx)("script", {
               nonce: nonce,
               dangerouslySetInnerHTML: {
                 __html: `(self.__next_s=self.__next_s||[]).push(${JSON.stringify([
@@ -412,20 +412,20 @@
               },
             });
           }
-        } else if (strategy === 'afterInteractive') {
+        } else if (strategy === "afterInteractive") {
           if (src) {
             // @ts-ignore
             _reactdom.default.preload(
               src,
               restProps.integrity
                 ? {
-                    as: 'script',
+                    as: "script",
                     integrity: restProps.integrity,
                     nonce,
                     crossOrigin: restProps.crossOrigin,
                   }
                 : {
-                    as: 'script',
+                    as: "script",
                     nonce,
                     crossOrigin: restProps.crossOrigin,
                   },
@@ -435,40 +435,40 @@
       }
       return null;
     }
-    Object.defineProperty(Script, '__nextScript', {
+    Object.defineProperty(Script, "__nextScript", {
       value: true,
     });
     const _default = Script;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'disableSmoothScrollDuringRouteTransition', {
+    Object.defineProperty(exports, "disableSmoothScrollDuringRouteTransition", {
       enumerable: true,
       get: () => disableSmoothScrollDuringRouteTransition,
     });
     const _warnonce = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/warn-once.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/warn-once.js [app-client] (ecmascript)",
     );
     function disableSmoothScrollDuringRouteTransition(fn, options = {}) {
       // if only the hash is changed, we don't need to disable smooth scrolling
@@ -478,17 +478,17 @@
         return;
       }
       const htmlElement = document.documentElement;
-      const hasDataAttribute = htmlElement.dataset.scrollBehavior === 'smooth';
+      const hasDataAttribute = htmlElement.dataset.scrollBehavior === "smooth";
       if (!hasDataAttribute) {
         // Warn if smooth scrolling is detected but no data attribute is present
         if (
-          ('TURBOPACK compile-time value', 'development') === 'development' &&
-          getComputedStyle(htmlElement).scrollBehavior === 'smooth'
+          ("TURBOPACK compile-time value", "development") === "development" &&
+          getComputedStyle(htmlElement).scrollBehavior === "smooth"
         ) {
           (0, _warnonce.warnOnce)(
-            'Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, ' +
+            "Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, " +
               'add `data-scroll-behavior="smooth"` to your <html> element. ' +
-              'Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior',
+              "Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior",
           );
         }
         // No smooth scrolling configured, run directly without style manipulation
@@ -497,7 +497,7 @@
       }
       // Proceed with temporarily disabling smooth scrolling
       const existing = htmlElement.style.scrollBehavior;
-      htmlElement.style.scrollBehavior = 'auto';
+      htmlElement.style.scrollBehavior = "auto";
       if (!options.dontForceLayout) {
         // In Chrome-based browsers we need to force reflow before calling `scrollTo`.
         // Otherwise it will not pickup the change in scrollBehavior
@@ -508,27 +508,27 @@
       htmlElement.style.scrollBehavior = existing;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/bfcache-state-manager.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/bfcache-state-manager.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'useRouterBFCache', {
+    Object.defineProperty(exports, "useRouterBFCache", {
       enumerable: true,
       get: () => useRouterBFCache,
     });
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     // When the flag is disabled, only track the currently active tree
-    const MAX_BF_CACHE_ENTRIES = ('TURBOPACK compile-time falsy', 0) ? 'TURBOPACK unreachable' : 1;
+    const MAX_BF_CACHE_ENTRIES = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : 1;
     function useRouterBFCache(activeTree, activeCacheNode, activeStateKey) {
       // The currently active entry. The entries form a linked list, sorted in
       // order of most recently active. This allows us to reuse parts of the list
@@ -602,28 +602,28 @@
       return newActiveEntry;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use client');
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use client");
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -646,61 +646,61 @@
        */ default: () => OuterLayoutRouter,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _reactdom = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)",
       ),
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _unresolvedthenable = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unresolved-thenable.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unresolved-thenable.js [app-client] (ecmascript)",
     );
     const _errorboundary = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/error-boundary.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/error-boundary.js [app-client] (ecmascript)",
     );
     const _disablesmoothscroll = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [app-client] (ecmascript)",
     );
     const _redirectboundary = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-boundary.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-boundary.js [app-client] (ecmascript)",
     );
     const _errorboundary1 = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)",
     );
     const _createroutercachekey = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-router-cache-key.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-router-cache-key.js [app-client] (ecmascript)",
     );
     const _bfcachestatemanager = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/bfcache-state-manager.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/bfcache-state-manager.js [app-client] (ecmascript)",
     );
     const _apppaths = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-client] (ecmascript)",
     );
     const _hooksclientcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _routeparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
-    const enableNewScrollHandler = ('TURBOPACK compile-time value', false);
+    const enableNewScrollHandler = ("TURBOPACK compile-time value", false);
     const __DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE =
       _reactdom.default.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
     // TODO-APP: Replace with new React API for finding dom nodes without a `ref` when available
@@ -708,21 +708,21 @@
      * Wraps ReactDOM.findDOMNode with additional logic to hide React Strict Mode warning
      */ function findDOMNode(instance) {
       // Tree-shake for server bundle
-      if (typeof window === 'undefined') return null;
+      if (typeof window === "undefined") return null;
       // __DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE.findDOMNode is null during module init.
       // We need to lazily reference it.
       const internal_reactDOMfindDOMNode =
         __DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE.findDOMNode;
       return internal_reactDOMfindDOMNode(instance);
     }
-    const rectProperties = ['bottom', 'height', 'left', 'right', 'top', 'width', 'x', 'y'];
+    const rectProperties = ["bottom", "height", "left", "right", "top", "width", "x", "y"];
     /**
      * Check if a HTMLElement is hidden or fixed/sticky position
      */ function shouldSkipElement(element) {
       // we ignore fixed or sticky positioned elements since they'll likely pass the "in-viewport" check
       // and will result in a situation we bail on scroll because of something like a fixed nav,
       // even though the actual page content is offscreen
-      if (['sticky', 'fixed'].includes(getComputedStyle(element).position)) {
+      if (["sticky", "fixed"].includes(getComputedStyle(element).position)) {
         return true;
       }
       // Uses `getBoundingClientRect` to check if the element is hidden instead of `offsetParent`
@@ -754,7 +754,7 @@
      * If the hash fragment is a name, the page has to scroll to the first element with that name.
      */ function getHashFragmentDomNode(hashFragment) {
       // If the hash fragment is `top` the page has to scroll to the top of the page.
-      if (hashFragment === 'top') {
+      if (hashFragment === "top") {
         return document.body;
       }
       // If the hash fragment is an id, the page has to scroll to the element with that id.
@@ -799,8 +799,8 @@
             // Verify if the element is a HTMLElement and if we want to consider it for scroll behavior.
             // If the element is skipped, try to select the next sibling and try again.
             while (!(domNode instanceof HTMLElement) || shouldSkipElement(domNode)) {
-              if (('TURBOPACK compile-time truthy', 1)) {
-                if (domNode.parentElement?.localName === 'head') {
+              if (("TURBOPACK compile-time truthy", 1)) {
+                if (domNode.parentElement?.localName === "head") {
                   // We enter this state when metadata was rendered as part of the page or via Next.js.
                   // This is always a bug in Next.js and caused by React hoisting metadata.
                   // Fixed with `experimental.appNewScrollHandler`
@@ -883,8 +883,8 @@
           const activeElement = document.activeElement;
           if (
             activeElement !== null &&
-            'blur' in activeElement &&
-            typeof activeElement.blur === 'function'
+            "blur" in activeElement &&
+            typeof activeElement.blur === "function"
           ) {
             // Trying to match hard navigations.
             // Ideally we'd move the internal focus cursor either to the top
@@ -938,8 +938,8 @@
         children: props.children,
       });
     }
-    const InnerScrollAndMaybeFocusHandler = ('TURBOPACK compile-time falsy', 0)
-      ? 'TURBOPACK unreachable'
+    const InnerScrollAndMaybeFocusHandler = ("TURBOPACK compile-time falsy", 0)
+      ? "TURBOPACK unreachable"
       : InnerScrollAndFocusHandlerOld;
     function ScrollAndMaybeFocusHandler({ children, cacheNode }) {
       const context = (0, _react.useContext)(
@@ -947,10 +947,10 @@
       );
       if (!context) {
         throw Object.defineProperty(
-          new Error('invariant global layout router not mounted'),
-          '__NEXT_ERROR_CODE',
+          new Error("invariant global layout router not mounted"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E473',
+            value: "E473",
             enumerable: false,
             configurable: true,
           },
@@ -981,10 +981,10 @@
       );
       if (!context) {
         throw Object.defineProperty(
-          new Error('invariant global layout router not mounted'),
-          '__NEXT_ERROR_CODE',
+          new Error("invariant global layout router not mounted"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E473',
+            value: "E473",
             enumerable: false,
             configurable: true,
           },
@@ -1037,9 +1037,9 @@
       // `useSelectedLayoutSegment` and `useSelectedLayoutSegments`.
       // Promises are cached outside of render to survive suspense retries.
       let navigationPromises = null;
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { createNestedLayoutNavigationPromises } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-devtools.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-devtools.js [app-client] (ecmascript)",
         );
         navigationPromises = createNestedLayoutNavigationPromises(tree, parentNavPromises);
       }
@@ -1154,10 +1154,10 @@
       const context = (0, _react.useContext)(_approutercontextsharedruntime.LayoutRouterContext);
       if (!context) {
         throw Object.defineProperty(
-          new Error('invariant expected layout router to be mounted'),
-          '__NEXT_ERROR_CODE',
+          new Error("invariant expected layout router to be mounted"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E56',
+            value: "E56",
             enumerable: false,
             configurable: true,
           },
@@ -1202,7 +1202,7 @@
       }
       const maybeValidationBoundaryId = null;
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       const activeSegment = activeTree[0];
       const activeCacheNode = maybeParentSlots[parallelRouterKey] ?? null;
@@ -1235,9 +1235,9 @@
       - Passed to the router during rendering to ensure it can be immediately rendered when suspending on a Flight fetch.
   */ let segmentBoundaryTriggerNode = null;
         let segmentViewStateNode = null;
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           const { SegmentBoundaryTriggerNode, SegmentViewStateNode } = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)",
           );
           const pagePrefix = (0, _apppaths.normalizeAppPath)(url);
           segmentViewStateNode = /*#__PURE__*/ (0, _jsxruntime.jsx)(
@@ -1333,7 +1333,7 @@
           ],
         });
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         let child = /*#__PURE__*/ (0, _jsxruntime.jsxs)(
           _approutercontextsharedruntime.TemplateContext.Provider,
@@ -1343,9 +1343,9 @@
           },
           stateKey,
         );
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           const { SegmentStateProvider } = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)",
           );
           child = /*#__PURE__*/ (0, _jsxruntime.jsxs)(
             SegmentStateProvider,
@@ -1356,7 +1356,7 @@
           );
         }
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         children.push(child);
         bfcacheEntry = bfcacheEntry.next;
@@ -1364,63 +1364,63 @@
       return children;
     }
     function getBoundaryDebugNameFromSegment(segment) {
-      if (segment === '/') {
+      if (segment === "/") {
         // Reached the root
-        return '/';
+        return "/";
       }
-      if (typeof segment === 'string') {
+      if (typeof segment === "string") {
         if (isVirtualLayout(segment)) {
           return undefined;
         } else {
-          return segment + '/';
+          return segment + "/";
         }
       }
       const paramCacheKey = segment[1];
-      return paramCacheKey + '/';
+      return paramCacheKey + "/";
     }
     function isVirtualLayout(segment) {
       return (
         // (like __PAGE__ and __DEFAULT__) to avoid collisions with
         // user-defined route groups.
-        segment === '(__SLOT__)'
+        segment === "(__SLOT__)"
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => RenderFromTemplateContext,
     });
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     function RenderFromTemplateContext() {
       const children = (0, _react.useContext)(_approutercontextsharedruntime.TemplateContext);
@@ -1429,32 +1429,32 @@
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'ReflectAdapter', {
+    Object.defineProperty(exports, "ReflectAdapter", {
       enumerable: true,
       get: () => ReflectAdapter,
     });
     class ReflectAdapter {
       static get(target, prop, receiver) {
         const value = Reflect.get(target, prop, receiver);
-        if (typeof value === 'function') {
+        if (typeof value === "function") {
           return value.bind(target);
         }
         return value;
@@ -1470,16 +1470,16 @@
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // This regex will have fast negatives meaning valid identifiers may not pass
     // this test. However this is only used during static generation to provide hints
     // about why a page bailed out of some or all prerendering and we can use bracket notation
     // for example while `ಠ_ಠ` is a valid identifier it's ok to print `searchParams['ಠ_ಠ']`
     // even if this would have been fine too `searchParams.ಠ_ಠ`
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1512,47 +1512,47 @@
       return `\`Reflect.has(${target}, ${stringifiedProp})\`, \`${stringifiedProp} in ${target}\`, or similar`;
     }
     const wellKnownProperties = new Set([
-      'hasOwnProperty',
-      'isPrototypeOf',
-      'propertyIsEnumerable',
-      'toString',
-      'valueOf',
-      'toLocaleString',
+      "hasOwnProperty",
+      "isPrototypeOf",
+      "propertyIsEnumerable",
+      "toString",
+      "valueOf",
+      "toLocaleString",
       // Promise prototype
-      'then',
-      'catch',
-      'finally',
+      "then",
+      "catch",
+      "finally",
       // React Promise extension
-      'status',
+      "status",
       // 'value',
       // 'error',
       // React introspection
-      'displayName',
-      '_debugInfo',
+      "displayName",
+      "_debugInfo",
       // Common tested properties
-      'toJSON',
-      '$$typeof',
-      '__esModule',
+      "toJSON",
+      "$$typeof",
+      "__esModule",
       // Tested by flight when checking for iterables
-      '@@iterator',
+      "@@iterator",
     ]);
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/search-params.browser.dev.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/search-params.browser.dev.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'createRenderSearchParamsFromClient', {
+    Object.defineProperty(exports, "createRenderSearchParamsFromClient", {
       enumerable: true,
       get: () => createRenderSearchParamsFromClient,
     });
     const _reflect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)",
     );
     const _reflectutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)",
     );
     const CachedSearchParams = new WeakMap();
     function makeUntrackedSearchParamsWithDevWarnings(underlyingSearchParams) {
@@ -1572,7 +1572,7 @@
       });
       const proxiedPromise = new Proxy(promise, {
         get(target, prop, receiver) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             if (
               !_reflectutils.wellKnownProperties.has(prop) &&
               (proxiedProperties.has(prop) || // We are accessing a property that doesn't exist on the promise nor
@@ -1580,7 +1580,7 @@
                 Reflect.has(target, prop) === false)
             ) {
               const expression = (0, _reflectutils.describeStringPropertyAccess)(
-                'searchParams',
+                "searchParams",
                 prop,
               );
               warnForSyncAccess(expression);
@@ -1589,13 +1589,13 @@
           return _reflect.ReflectAdapter.get(target, prop, receiver);
         },
         set(target, prop, value, receiver) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             proxiedProperties.delete(prop);
           }
           return Reflect.set(target, prop, value, receiver);
         },
         has(target, prop) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             if (
               !_reflectutils.wellKnownProperties.has(prop) &&
               (proxiedProperties.has(prop) || // We are accessing a property that doesn't exist on the promise nor
@@ -1603,7 +1603,7 @@
                 Reflect.has(target, prop) === false)
             ) {
               const expression = (0, _reflectutils.describeHasCheckingStringProperty)(
-                'searchParams',
+                "searchParams",
                 prop,
               );
               warnForSyncAccess(expression);
@@ -1637,66 +1637,66 @@
       return makeUntrackedSearchParamsWithDevWarnings(underlyingSearchParams);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/search-params.browser.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/search-params.browser.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'createRenderSearchParamsFromClient', {
+    Object.defineProperty(exports, "createRenderSearchParamsFromClient", {
       enumerable: true,
       get: () => createRenderSearchParamsFromClient,
     });
-    const createRenderSearchParamsFromClient = ('TURBOPACK compile-time truthy', 1)
+    const createRenderSearchParamsFromClient = ("TURBOPACK compile-time truthy", 1)
       ? __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/search-params.browser.dev.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/search-params.browser.dev.js [app-client] (ecmascript)",
         ).createRenderSearchParamsFromClient
-      : 'TURBOPACK unreachable';
+      : "TURBOPACK unreachable";
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.dev.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.dev.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'createRenderParamsFromClient', {
+    Object.defineProperty(exports, "createRenderParamsFromClient", {
       enumerable: true,
       get: () => createRenderParamsFromClient,
     });
     const _reflect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)",
     );
     const _reflectutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)",
     );
     const CachedParams = new WeakMap();
     function makeDynamicallyTrackedParamsWithDevWarnings(underlyingParams) {
@@ -1719,16 +1719,16 @@
       });
       const proxiedPromise = new Proxy(promise, {
         get(target, prop, receiver) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             if (proxiedProperties.has(prop)) {
-              const expression = (0, _reflectutils.describeStringPropertyAccess)('params', prop);
+              const expression = (0, _reflectutils.describeStringPropertyAccess)("params", prop);
               warnForSyncAccess(expression);
             }
           }
           return _reflect.ReflectAdapter.get(target, prop, receiver);
         },
         set(target, prop, value, receiver) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             proxiedProperties.delete(prop);
           }
           return _reflect.ReflectAdapter.set(target, prop, value, receiver);
@@ -1759,55 +1759,55 @@
       return makeDynamicallyTrackedParamsWithDevWarnings(clientParams);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'createRenderParamsFromClient', {
+    Object.defineProperty(exports, "createRenderParamsFromClient", {
       enumerable: true,
       get: () => createRenderParamsFromClient,
     });
-    const createRenderParamsFromClient = ('TURBOPACK compile-time truthy', 1)
+    const createRenderParamsFromClient = ("TURBOPACK compile-time truthy", 1)
       ? __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.dev.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.dev.js [app-client] (ecmascript)",
         ).createRenderParamsFromClient
-      : 'TURBOPACK unreachable';
+      : "TURBOPACK unreachable";
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/vary-params.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/vary-params.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1849,16 +1849,16 @@
       getViewportVaryParamsAccumulator: () => getViewportVaryParamsAccumulator,
     });
     const _workunitasyncstorageexternal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)",
     );
     function createSegmentVaryParamsAccumulator() {
       const accumulator = {
         varyParams: new Set(),
-        status: 'pending',
+        status: "pending",
         value: new Set(),
         then(onfulfilled) {
           if (onfulfilled) {
-            if (accumulator.status === 'pending') {
+            if (accumulator.status === "pending") {
               accumulator.resolvers.push(onfulfilled);
             } else {
               onfulfilled(accumulator.value);
@@ -1881,7 +1881,7 @@
      */ const emptySet = new Set();
     const emptyVaryParamsAccumulator = {
       varyParams: emptySet,
-      status: 'fulfilled',
+      status: "fulfilled",
       value: emptySet,
       then(onfulfilled) {
         if (onfulfilled) {
@@ -1906,8 +1906,8 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-runtime': {
+          case "prerender":
+          case "prerender-runtime": {
             const responseAccumulator = workUnitStore.varyParamsAccumulator;
             if (responseAccumulator !== null) {
               const accumulator = createSegmentVaryParamsAccumulator();
@@ -1916,15 +1916,15 @@
             }
             return null;
           }
-          case 'prerender-ppr':
-          case 'prerender-legacy':
-          case 'request':
-          case 'cache':
-          case 'private-cache':
-          case 'prerender-client':
-          case 'validation-client':
-          case 'unstable-cache':
-          case 'generate-static-params':
+          case "prerender-ppr":
+          case "prerender-legacy":
+          case "request":
+          case "cache":
+          case "private-cache":
+          case "prerender-client":
+          case "validation-client":
+          case "unstable-cache":
+          case "generate-static-params":
             break;
           default:
             workUnitStore;
@@ -1936,23 +1936,23 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-runtime': {
+          case "prerender":
+          case "prerender-runtime": {
             const responseAccumulator = workUnitStore.varyParamsAccumulator;
             if (responseAccumulator !== null) {
               return responseAccumulator.head;
             }
             return null;
           }
-          case 'prerender-ppr':
-          case 'prerender-legacy':
-          case 'request':
-          case 'cache':
-          case 'private-cache':
-          case 'prerender-client':
-          case 'validation-client':
-          case 'unstable-cache':
-          case 'generate-static-params':
+          case "prerender-ppr":
+          case "prerender-legacy":
+          case "request":
+          case "cache":
+          case "private-cache":
+          case "prerender-client":
+          case "validation-client":
+          case "unstable-cache":
+          case "generate-static-params":
             return null;
           default:
             workUnitStore;
@@ -1975,23 +1975,23 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-runtime': {
+          case "prerender":
+          case "prerender-runtime": {
             const responseAccumulator = workUnitStore.varyParamsAccumulator;
             if (responseAccumulator !== null) {
               return responseAccumulator.rootParams;
             }
             return null;
           }
-          case 'prerender-ppr':
-          case 'prerender-legacy':
-          case 'request':
-          case 'cache':
-          case 'private-cache':
-          case 'prerender-client':
-          case 'validation-client':
-          case 'unstable-cache':
-          case 'generate-static-params':
+          case "prerender-ppr":
+          case "prerender-legacy":
+          case "request":
+          case "cache":
+          case "private-cache":
+          case "prerender-client":
+          case "validation-client":
+          case "unstable-cache":
+          case "generate-static-params":
             return null;
           default:
             workUnitStore;
@@ -2017,7 +2017,7 @@
         // Object.keys(), spread, for...in, and `in` checks.
         return new Proxy(originalParamsObject, {
           get(target, prop, receiver) {
-            if (typeof prop === 'string') {
+            if (typeof prop === "string") {
               if (prop === optionalCatchAllParamName || Object.hasOwn(target, prop)) {
                 accumulateVaryParam(accumulator, prop);
               }
@@ -2063,7 +2063,7 @@
             // TODO: Unlike path params, we don't vary track each search param
             // individually. The entire search string is treated as a single param.
             // This may change in the future.
-            accumulateVaryParam(accumulator, '?');
+            accumulateVaryParam(accumulator, "?");
             return originalSearchParamsObject[searchParamName];
           },
           enumerable: true,
@@ -2101,7 +2101,7 @@
       await Promise.resolve();
     }
     function finishSegmentAccumulator(accumulator, rootVaryParams) {
-      if (accumulator.status !== 'pending') {
+      if (accumulator.status !== "pending") {
         return;
       }
       const merged = new Set(accumulator.varyParams);
@@ -2109,36 +2109,36 @@
         merged.add(param);
       }
       accumulator.value = merged;
-      accumulator.status = 'fulfilled';
+      accumulator.status = "fulfilled";
       for (const resolver of accumulator.resolvers) {
         resolver(merged);
       }
       accumulator.resolvers = [];
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/create-deduped-by-callsite-server-error-logger.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/create-deduped-by-callsite-server-error-logger.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'createDedupedByCallsiteServerErrorLoggerDev', {
+    Object.defineProperty(exports, "createDedupedByCallsiteServerErrorLoggerDev", {
       enumerable: true,
       get: () => createDedupedByCallsiteServerErrorLoggerDev,
     });
     const _react = /*#__PURE__*/ _interop_require_wildcard(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     function _getRequireWildcardCache(nodeInterop) {
-      if (typeof WeakMap !== 'function') return null;
+      if (typeof WeakMap !== "function") return null;
       var cacheBabelInterop = new WeakMap();
       var cacheNodeInterop = new WeakMap();
       return (_getRequireWildcardCache = (nodeInterop) =>
@@ -2148,7 +2148,7 @@
       if (!nodeInterop && obj && obj.__esModule) {
         return obj;
       }
-      if (obj === null || (typeof obj !== 'object' && typeof obj !== 'function')) {
+      if (obj === null || (typeof obj !== "object" && typeof obj !== "function")) {
         return {
           default: obj,
         };
@@ -2162,7 +2162,7 @@
       };
       var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
       for (var key in obj) {
-        if (key !== 'default' && Object.hasOwn(obj, key)) {
+        if (key !== "default" && Object.hasOwn(obj, key)) {
           var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
           if (desc && (desc.get || desc.set)) {
             Object.defineProperty(newObj, key, desc);
@@ -2181,12 +2181,12 @@
       current: null,
     };
     // React.cache is currently only available in canary/experimental React channels.
-    const cache = typeof _react.cache === 'function' ? _react.cache : (fn) => fn;
+    const cache = typeof _react.cache === "function" ? _react.cache : (fn) => fn;
     // When Cache Components is enabled, we record these as errors so that they
     // are captured by the dev overlay as it's more critical to fix these
     // when enabled.
-    const logErrorOrWarn = ('TURBOPACK compile-time falsy', 0)
-      ? 'TURBOPACK unreachable'
+    const logErrorOrWarn = ("TURBOPACK compile-time falsy", 0)
+      ? "TURBOPACK unreachable"
       : console.warn;
     // We don't want to dedupe across requests.
     // The developer might've just attempted to fix the warning so we should warn again if it still happens.
@@ -2200,10 +2200,10 @@
     function createDedupedByCallsiteServerErrorLoggerDev(getMessage) {
       return function logDedupedError(...args) {
         const message = getMessage(...args);
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           var _stack;
           const callStackFrames =
-            (_stack = new Error().stack) == null ? void 0 : _stack.split('\n');
+            (_stack = new Error().stack) == null ? void 0 : _stack.split("\n");
           if (callStackFrames === undefined || callStackFrames.length < 4) {
             logErrorOrWarn(message);
           } else {
@@ -2221,42 +2221,42 @@
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/after-task-async-storage-instance.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/after-task-async-storage-instance.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'afterTaskAsyncStorageInstance', {
+    Object.defineProperty(exports, "afterTaskAsyncStorageInstance", {
       enumerable: true,
       get: () => afterTaskAsyncStorageInstance,
     });
     const _asynclocalstorage = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/async-local-storage.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/async-local-storage.js [app-client] (ecmascript)",
     );
     const afterTaskAsyncStorageInstance = (0, _asynclocalstorage.createAsyncLocalStorage)();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/after-task-async-storage.external.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/after-task-async-storage.external.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'afterTaskAsyncStorage', {
+    Object.defineProperty(exports, "afterTaskAsyncStorage", {
       enumerable: true,
       get: () => _aftertaskasyncstorageinstance.afterTaskAsyncStorageInstance,
     });
     const _aftertaskasyncstorageinstance = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/after-task-async-storage-instance.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/after-task-async-storage-instance.js [app-client] (ecmascript)",
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/utils.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/utils.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2279,19 +2279,19 @@
         throwWithStaticGenerationBailoutErrorWithDynamicError,
     });
     const _staticgenerationbailout = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/static-generation-bailout.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/static-generation-bailout.js [app-client] (ecmascript)",
     );
     const _aftertaskasyncstorageexternal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/after-task-async-storage.external.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/after-task-async-storage.external.js [app-client] (ecmascript)",
     );
     function throwWithStaticGenerationBailoutErrorWithDynamicError(route, expression) {
       throw Object.defineProperty(
         new _staticgenerationbailout.StaticGenBailoutError(
           `Route ${route} with \`dynamic = "error"\` couldn't be rendered statically because it used ${expression}. See more info here: https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic#dynamic-rendering`,
         ),
-        '__NEXT_ERROR_CODE',
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E543',
+          value: "E543",
           enumerable: false,
           configurable: true,
         },
@@ -2302,9 +2302,9 @@
         new Error(
           `Route ${workStore.route} used \`searchParams\` inside "use cache". Accessing dynamic request data inside a cache scope is not supported. If you need some search params inside a cached function await \`searchParams\` outside of the cached function and pass only the required search params as arguments to the cached function. See more info here: https://nextjs.org/docs/messages/next-request-in-use-cache`,
         ),
-        '__NEXT_ERROR_CODE',
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E842',
+          value: "E842",
           enumerable: false,
           configurable: true,
         },
@@ -2315,12 +2315,12 @@
     }
     function isRequestAPICallableInsideAfter() {
       const afterTaskStore = _aftertaskasyncstorageexternal.afterTaskAsyncStorage.getStore();
-      return (afterTaskStore == null ? void 0 : afterTaskStore.rootTaskSpawnPhase) === 'action';
+      return (afterTaskStore == null ? void 0 : afterTaskStore.rootTaskSpawnPhase) === "action";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@edge-runtime/cookies/index.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@edge-runtime/cookies/index.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __defProp = Object.defineProperty;
     var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -2334,7 +2334,7 @@
         });
     };
     var __copyProps = (to, from, except, desc) => {
-      if ((from && typeof from === 'object') || typeof from === 'function') {
+      if ((from && typeof from === "object") || typeof from === "function") {
         for (const key of __getOwnPropNames(from))
           if (!__hasOwnProp.call(to, key) && key !== except)
             __defProp(to, key, {
@@ -2346,7 +2346,7 @@
     };
     var __toCommonJS = (mod) =>
       __copyProps(
-        __defProp({}, '__esModule', {
+        __defProp({}, "__esModule", {
           value: true,
         }),
         mod,
@@ -2365,33 +2365,33 @@
     function stringifyCookie(c) {
       var _a;
       const attrs = [
-        'path' in c && c.path && `Path=${c.path}`,
-        'expires' in c &&
+        "path" in c && c.path && `Path=${c.path}`,
+        "expires" in c &&
           (c.expires || c.expires === 0) &&
-          `Expires=${(typeof c.expires === 'number' ? new Date(c.expires) : c.expires).toUTCString()}`,
-        'maxAge' in c && typeof c.maxAge === 'number' && `Max-Age=${c.maxAge}`,
-        'domain' in c && c.domain && `Domain=${c.domain}`,
-        'secure' in c && c.secure && 'Secure',
-        'httpOnly' in c && c.httpOnly && 'HttpOnly',
-        'sameSite' in c && c.sameSite && `SameSite=${c.sameSite}`,
-        'partitioned' in c && c.partitioned && 'Partitioned',
-        'priority' in c && c.priority && `Priority=${c.priority}`,
+          `Expires=${(typeof c.expires === "number" ? new Date(c.expires) : c.expires).toUTCString()}`,
+        "maxAge" in c && typeof c.maxAge === "number" && `Max-Age=${c.maxAge}`,
+        "domain" in c && c.domain && `Domain=${c.domain}`,
+        "secure" in c && c.secure && "Secure",
+        "httpOnly" in c && c.httpOnly && "HttpOnly",
+        "sameSite" in c && c.sameSite && `SameSite=${c.sameSite}`,
+        "partitioned" in c && c.partitioned && "Partitioned",
+        "priority" in c && c.priority && `Priority=${c.priority}`,
       ].filter(Boolean);
-      const stringified = `${c.name}=${encodeURIComponent((_a = c.value) != null ? _a : '')}`;
-      return attrs.length === 0 ? stringified : `${stringified}; ${attrs.join('; ')}`;
+      const stringified = `${c.name}=${encodeURIComponent((_a = c.value) != null ? _a : "")}`;
+      return attrs.length === 0 ? stringified : `${stringified}; ${attrs.join("; ")}`;
     }
     function parseCookie(cookie) {
       const map = /* @__PURE__ */ new Map();
       for (const pair of cookie.split(/; */)) {
         if (!pair) continue;
-        const splitAt = pair.indexOf('=');
+        const splitAt = pair.indexOf("=");
         if (splitAt === -1) {
-          map.set(pair, 'true');
+          map.set(pair, "true");
           continue;
         }
         const [key, value] = [pair.slice(0, splitAt), pair.slice(splitAt + 1)];
         try {
-          map.set(key, decodeURIComponent(value != null ? value : 'true'));
+          map.set(key, decodeURIComponent(value != null ? value : "true"));
         } catch {}
       }
       return map;
@@ -2403,7 +2403,7 @@
       const [[name, value], ...attributes] = parseCookie(setCookie);
       const { domain, expires, httponly, maxage, path, samesite, secure, partitioned, priority } =
         Object.fromEntries(
-          attributes.map(([key, value2]) => [key.toLowerCase().replace(/-/g, ''), value2]),
+          attributes.map(([key, value2]) => [key.toLowerCase().replace(/-/g, ""), value2]),
         );
       const cookie = {
         name,
@@ -2415,7 +2415,7 @@
         ...(httponly && {
           httpOnly: true,
         }),
-        ...(typeof maxage === 'string' && {
+        ...(typeof maxage === "string" && {
           maxAge: Number(maxage),
         }),
         path,
@@ -2443,12 +2443,12 @@
       }
       return newT;
     }
-    var SAME_SITE = ['strict', 'lax', 'none'];
+    var SAME_SITE = ["strict", "lax", "none"];
     function parseSameSite(string) {
       string = string.toLowerCase();
       return SAME_SITE.includes(string) ? string : void 0;
     }
-    var PRIORITY = ['low', 'medium', 'high'];
+    var PRIORITY = ["low", "medium", "high"];
     function parsePriority(string) {
       string = string.toLowerCase();
       return PRIORITY.includes(string) ? string : void 0;
@@ -2470,14 +2470,14 @@
       }
       function notSpecialChar() {
         ch = cookiesString.charAt(pos);
-        return ch !== '=' && ch !== ';' && ch !== ',';
+        return ch !== "=" && ch !== ";" && ch !== ",";
       }
       while (pos < cookiesString.length) {
         start = pos;
         cookiesSeparatorFound = false;
         while (skipWhitespace()) {
           ch = cookiesString.charAt(pos);
-          if (ch === ',') {
+          if (ch === ",") {
             lastComma = pos;
             pos += 1;
             skipWhitespace();
@@ -2485,7 +2485,7 @@
             while (pos < cookiesString.length && notSpecialChar()) {
               pos += 1;
             }
-            if (pos < cookiesString.length && cookiesString.charAt(pos) === '=') {
+            if (pos < cookiesString.length && cookiesString.charAt(pos) === "=") {
               cookiesSeparatorFound = true;
               pos = nextStart;
               cookiesStrings.push(cookiesString.substring(start, lastComma));
@@ -2508,7 +2508,7 @@
       constructor(requestHeaders) {
         /** @internal */ this._parsed = /* @__PURE__ */ new Map();
         this._headers = requestHeaders;
-        const header = requestHeaders.get('cookie');
+        const header = requestHeaders.get("cookie");
         if (header) {
           const parsed = parseCookie(header);
           for (const [name, value] of parsed) {
@@ -2528,7 +2528,7 @@
         return this._parsed.size;
       }
       get(...args) {
-        const name = typeof args[0] === 'string' ? args[0] : args[0].name;
+        const name = typeof args[0] === "string" ? args[0] : args[0].name;
         return this._parsed.get(name);
       }
       getAll(...args) {
@@ -2538,7 +2538,7 @@
           return all.map(([_, value]) => value);
         }
         const name =
-          typeof args[0] === 'string' ? args[0] : (_a = args[0]) == null ? void 0 : _a.name;
+          typeof args[0] === "string" ? args[0] : (_a = args[0]) == null ? void 0 : _a.name;
         return all.filter(([n]) => n === name).map(([_, value]) => value);
       }
       has(name) {
@@ -2552,10 +2552,10 @@
           value,
         });
         this._headers.set(
-          'cookie',
+          "cookie",
           Array.from(map)
             .map(([_, value2]) => stringifyCookie(value2))
-            .join('; '),
+            .join("; "),
         );
         return this;
       }
@@ -2567,10 +2567,10 @@
           ? map.delete(names)
           : names.map((name) => map.delete(name));
         this._headers.set(
-          'cookie',
+          "cookie",
           Array.from(map)
             .map(([_, value]) => stringifyCookie(value))
-            .join('; '),
+            .join("; "),
         );
         return result;
       }
@@ -2582,13 +2582,13 @@
       }
       /**
        * Format the cookies in the request as a string for logging
-       */ [Symbol.for('edge-runtime.inspect.custom')]() {
+       */ [Symbol.for("edge-runtime.inspect.custom")]() {
         return `RequestCookies ${JSON.stringify(Object.fromEntries(this._parsed))}`;
       }
       toString() {
         return [...this._parsed.values()]
           .map((v) => `${v.name}=${encodeURIComponent(v.value)}`)
-          .join('; ');
+          .join("; ");
       }
     };
     // src/response-cookies.ts
@@ -2603,7 +2603,7 @@
               (_a = responseHeaders.getSetCookie) == null ? void 0 : _a.call(responseHeaders)) !=
             null
               ? _b
-              : responseHeaders.get('set-cookie')) != null
+              : responseHeaders.get("set-cookie")) != null
             ? _c
             : [];
         const cookieStrings = Array.isArray(setCookie) ? setCookie : splitCookiesString(setCookie);
@@ -2615,7 +2615,7 @@
       /**
        * {@link https://wicg.github.io/cookie-store/#CookieStore-get CookieStore#get} without the Promise.
        */ get(...args) {
-        const key = typeof args[0] === 'string' ? args[0] : args[0].name;
+        const key = typeof args[0] === "string" ? args[0] : args[0].name;
         return this._parsed.get(key);
       }
       /**
@@ -2627,7 +2627,7 @@
           return all;
         }
         const key =
-          typeof args[0] === 'string' ? args[0] : (_a = args[0]) == null ? void 0 : _a.name;
+          typeof args[0] === "string" ? args[0] : (_a = args[0]) == null ? void 0 : _a.name;
         return all.filter((c) => c.name === key);
       }
       has(name) {
@@ -2653,42 +2653,42 @@
       /**
        * {@link https://wicg.github.io/cookie-store/#CookieStore-delete CookieStore#delete} without the Promise.
        */ delete(...args) {
-        const [name, options] = typeof args[0] === 'string' ? [args[0]] : [args[0].name, args[0]];
+        const [name, options] = typeof args[0] === "string" ? [args[0]] : [args[0].name, args[0]];
         return this.set({
           ...options,
           name,
-          value: '',
+          value: "",
           expires: /* @__PURE__ */ new Date(0),
         });
       }
-      [Symbol.for('edge-runtime.inspect.custom')]() {
+      [Symbol.for("edge-runtime.inspect.custom")]() {
         return `ResponseCookies ${JSON.stringify(Object.fromEntries(this._parsed))}`;
       }
       toString() {
-        return [...this._parsed.values()].map(stringifyCookie).join('; ');
+        return [...this._parsed.values()].map(stringifyCookie).join("; ");
       }
     };
     function replace(bag, headers) {
-      headers.delete('set-cookie');
+      headers.delete("set-cookie");
       for (const [, value] of bag) {
         const serialized = stringifyCookie(value);
-        headers.append('set-cookie', serialized);
+        headers.append("set-cookie", serialized);
       }
     }
     function normalizeCookie(
       cookie = {
-        name: '',
-        value: '',
+        name: "",
+        value: "",
       },
     ) {
-      if (typeof cookie.expires === 'number') {
+      if (typeof cookie.expires === "number") {
         cookie.expires = new Date(cookie.expires);
       }
       if (cookie.maxAge) {
         cookie.expires = new Date(Date.now() + cookie.maxAge * 1e3);
       }
       if (cookie.path === null || cookie.path === void 0) {
-        cookie.path = '/';
+        cookie.path = "/";
       }
       return cookie;
     }
@@ -2702,11 +2702,11 @@
         stringifyCookie,
       });
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/cookies.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/cookies.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2728,14 +2728,14 @@
       stringifyCookie: () => _cookies.stringifyCookie,
     });
     const _cookies = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@edge-runtime/cookies/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@edge-runtime/cookies/index.js [app-client] (ecmascript)",
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/request-cookies.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/request-cookies.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2767,21 +2767,21 @@
       responseCookiesToRequestCookies: () => responseCookiesToRequestCookies,
     });
     const _cookies = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/cookies.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/cookies.js [app-client] (ecmascript)",
     );
     const _reflect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)",
     );
     const _workasyncstorageexternal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-async-storage.external.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-async-storage.external.js [app-client] (ecmascript)",
     );
     const _actionrevalidationkind = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/action-revalidation-kind.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/action-revalidation-kind.js [app-client] (ecmascript)",
     );
     class ReadonlyRequestCookiesError extends Error {
       constructor() {
         super(
-          'Cookies can only be modified in a Server Action or Route Handler. Read more: https://nextjs.org/docs/app/api-reference/functions/cookies#options',
+          "Cookies can only be modified in a Server Action or Route Handler. Read more: https://nextjs.org/docs/app/api-reference/functions/cookies#options",
         );
       }
       static callable() {
@@ -2793,9 +2793,9 @@
         return new Proxy(cookies, {
           get(target, prop, receiver) {
             switch (prop) {
-              case 'clear':
-              case 'delete':
-              case 'set':
+              case "clear":
+              case "delete":
+              case "set":
                 return ReadonlyRequestCookiesError.callable;
               default:
                 return _reflect.ReflectAdapter.get(target, prop, receiver);
@@ -2804,7 +2804,7 @@
         });
       }
     }
-    const SYMBOL_MODIFY_COOKIE_VALUES = Symbol.for('next.mutated.cookies');
+    const SYMBOL_MODIFY_COOKIE_VALUES = Symbol.for("next.mutated.cookies");
     function getModifiedCookieValues(cookies) {
       const modified = cookies[SYMBOL_MODIFY_COOKIE_VALUES];
       if (!modified || !Array.isArray(modified) || modified.length === 0) {
@@ -2867,9 +2867,9 @@
                 return modifiedValues;
               // TODO: Throw error if trying to set a cookie after the response
               // headers have been set.
-              case 'delete':
+              case "delete":
                 return (...args) => {
-                  modifiedCookies.add(typeof args[0] === 'string' ? args[0] : args[0].name);
+                  modifiedCookies.add(typeof args[0] === "string" ? args[0] : args[0].name);
                   try {
                     target.delete(...args);
                     return wrappedCookies;
@@ -2877,9 +2877,9 @@
                     updateResponseCookies();
                   }
                 };
-              case 'set':
+              case "set":
                 return (...args) => {
-                  modifiedCookies.add(typeof args[0] === 'string' ? args[0] : args[0].name);
+                  modifiedCookies.add(typeof args[0] === "string" ? args[0] : args[0].name);
                   try {
                     target.set(...args);
                     return wrappedCookies;
@@ -2899,15 +2899,15 @@
       const wrappedCookies = new Proxy(requestStore.mutableCookies, {
         get(target, prop, receiver) {
           switch (prop) {
-            case 'delete':
+            case "delete":
               return (...args) => {
-                ensureCookiesAreStillMutable(requestStore, 'cookies().delete');
+                ensureCookiesAreStillMutable(requestStore, "cookies().delete");
                 target.delete(...args);
                 return wrappedCookies;
               };
-            case 'set':
+            case "set":
               return (...args) => {
-                ensureCookiesAreStillMutable(requestStore, 'cookies().set');
+                ensureCookiesAreStillMutable(requestStore, "cookies().set");
                 target.set(...args);
                 return wrappedCookies;
               };
@@ -2919,7 +2919,7 @@
       return wrappedCookies;
     }
     function areCookiesMutableInCurrentPhase(requestStore) {
-      return requestStore.phase === 'action';
+      return requestStore.phase === "action";
     }
     /** Ensure that cookies() starts throwing on mutation
      * if we changed phases and can no longer mutate.
@@ -2941,11 +2941,11 @@
       return requestCookies;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/headers.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/headers.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2965,12 +2965,12 @@
       ReadonlyHeadersError: () => ReadonlyHeadersError,
     });
     const _reflect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)",
     );
     class ReadonlyHeadersError extends Error {
       constructor() {
         super(
-          'Headers cannot be modified. Read more: https://nextjs.org/docs/app/api-reference/functions/headers',
+          "Headers cannot be modified. Read more: https://nextjs.org/docs/app/api-reference/functions/headers",
         );
       }
       static callable() {
@@ -2987,7 +2987,7 @@
             // Because this is just an object, we expect that all "get" operations
             // are for properties. If it's a "get" for a symbol, we'll just return
             // the symbol.
-            if (typeof prop === 'symbol') {
+            if (typeof prop === "symbol") {
               return _reflect.ReflectAdapter.get(target, prop, receiver);
             }
             const lowercased = prop.toLowerCase();
@@ -2996,12 +2996,12 @@
             // headers object.
             const original = Object.keys(headers).find((o) => o.toLowerCase() === lowercased);
             // If the original casing doesn't exist, return undefined.
-            if (typeof original === 'undefined') return;
+            if (typeof original === "undefined") return;
             // If the original casing exists, return the value.
             return _reflect.ReflectAdapter.get(target, original, receiver);
           },
           set(target, prop, value, receiver) {
-            if (typeof prop === 'symbol') {
+            if (typeof prop === "symbol") {
               return _reflect.ReflectAdapter.set(target, prop, value, receiver);
             }
             const lowercased = prop.toLowerCase();
@@ -3013,19 +3013,19 @@
             return _reflect.ReflectAdapter.set(target, original ?? prop, value, receiver);
           },
           has(target, prop) {
-            if (typeof prop === 'symbol') return _reflect.ReflectAdapter.has(target, prop);
+            if (typeof prop === "symbol") return _reflect.ReflectAdapter.has(target, prop);
             const lowercased = prop.toLowerCase();
             // Let's find the original casing of the key. This assumes that there is
             // no mixed case keys (e.g. "Content-Type" and "content-type") in the
             // headers object.
             const original = Object.keys(headers).find((o) => o.toLowerCase() === lowercased);
             // If the original casing doesn't exist, return false.
-            if (typeof original === 'undefined') return false;
+            if (typeof original === "undefined") return false;
             // If the original casing exists, return true.
             return _reflect.ReflectAdapter.has(target, original);
           },
           deleteProperty(target, prop) {
-            if (typeof prop === 'symbol')
+            if (typeof prop === "symbol")
               return _reflect.ReflectAdapter.deleteProperty(target, prop);
             const lowercased = prop.toLowerCase();
             // Let's find the original casing of the key. This assumes that there is
@@ -3033,7 +3033,7 @@
             // headers object.
             const original = Object.keys(headers).find((o) => o.toLowerCase() === lowercased);
             // If the original casing doesn't exist, return true.
-            if (typeof original === 'undefined') return true;
+            if (typeof original === "undefined") return true;
             // If the original casing exists, delete the property.
             return _reflect.ReflectAdapter.deleteProperty(target, original);
           },
@@ -3046,9 +3046,9 @@
         return new Proxy(headers, {
           get(target, prop, receiver) {
             switch (prop) {
-              case 'append':
-              case 'delete':
-              case 'set':
+              case "append":
+              case "delete":
+              case "set":
                 return ReadonlyHeadersError.callable;
               default:
                 return _reflect.ReflectAdapter.get(target, prop, receiver);
@@ -3063,7 +3063,7 @@
        * @param value a header value
        * @returns a merged header value (a string)
        */ merge(value) {
-        if (Array.isArray(value)) return value.join(', ');
+        if (Array.isArray(value)) return value.join(", ");
         return value;
       }
       /**
@@ -3077,7 +3077,7 @@
       }
       append(name, value) {
         const existing = this.headers[name];
-        if (typeof existing === 'string') {
+        if (typeof existing === "string") {
           this.headers[name] = [existing, value];
         } else if (Array.isArray(existing)) {
           existing.push(value);
@@ -3090,11 +3090,11 @@
       }
       get(name) {
         const value = this.headers[name];
-        if (typeof value !== 'undefined') return this.merge(value);
+        if (typeof value !== "undefined") return this.merge(value);
         return null;
       }
       has(name) {
-        return typeof this.headers[name] !== 'undefined';
+        return typeof this.headers[name] !== "undefined";
       }
       set(name, value) {
         this.headers[name] = value;
@@ -3132,11 +3132,11 @@
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3158,7 +3158,7 @@
       isCatchAll: () => isCatchAll,
     });
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-client] (ecmascript)",
     );
     function getSegmentParam(segment) {
       const interceptionMarker = _interceptionroutes.INTERCEPTION_ROUTE_MARKERS.find((marker) =>
@@ -3169,23 +3169,23 @@
       if (interceptionMarker) {
         segment = segment.slice(interceptionMarker.length);
       }
-      if (segment.startsWith('[[...') && segment.endsWith(']]')) {
+      if (segment.startsWith("[[...") && segment.endsWith("]]")) {
         return {
           // TODO-APP: Optional catchall does not currently work with parallel routes,
           // so for now aren't handling a potential interception marker.
-          paramType: 'optional-catchall',
+          paramType: "optional-catchall",
           paramName: segment.slice(5, -2),
         };
       }
-      if (segment.startsWith('[...') && segment.endsWith(']')) {
+      if (segment.startsWith("[...") && segment.endsWith("]")) {
         return {
-          paramType: interceptionMarker ? `catchall-intercepted-${interceptionMarker}` : 'catchall',
+          paramType: interceptionMarker ? `catchall-intercepted-${interceptionMarker}` : "catchall",
           paramName: segment.slice(4, -1),
         };
       }
-      if (segment.startsWith('[') && segment.endsWith(']')) {
+      if (segment.startsWith("[") && segment.endsWith("]")) {
         return {
-          paramType: interceptionMarker ? `dynamic-intercepted-${interceptionMarker}` : 'dynamic',
+          paramType: interceptionMarker ? `dynamic-intercepted-${interceptionMarker}` : "dynamic",
           paramName: segment.slice(1, -1),
         };
       }
@@ -3193,34 +3193,34 @@
     }
     function isCatchAll(type) {
       return (
-        type === 'catchall' ||
-        type === 'catchall-intercepted-(..)(..)' ||
-        type === 'catchall-intercepted-(.)' ||
-        type === 'catchall-intercepted-(..)' ||
-        type === 'catchall-intercepted-(...)' ||
-        type === 'optional-catchall'
+        type === "catchall" ||
+        type === "catchall-intercepted-(..)(..)" ||
+        type === "catchall-intercepted-(.)" ||
+        type === "catchall-intercepted-(..)" ||
+        type === "catchall-intercepted-(...)" ||
+        type === "optional-catchall"
       );
     }
     function getParamProperties(paramType) {
       let repeat = false;
       let optional = false;
       switch (paramType) {
-        case 'catchall':
-        case 'catchall-intercepted-(..)(..)':
-        case 'catchall-intercepted-(.)':
-        case 'catchall-intercepted-(..)':
-        case 'catchall-intercepted-(...)':
+        case "catchall":
+        case "catchall-intercepted-(..)(..)":
+        case "catchall-intercepted-(.)":
+        case "catchall-intercepted-(..)":
+        case "catchall-intercepted-(...)":
           repeat = true;
           break;
-        case 'optional-catchall':
+        case "optional-catchall":
           repeat = true;
           optional = true;
           break;
-        case 'dynamic':
-        case 'dynamic-intercepted-(..)(..)':
-        case 'dynamic-intercepted-(.)':
-        case 'dynamic-intercepted-(..)':
-        case 'dynamic-intercepted-(...)':
+        case "dynamic":
+        case "dynamic-intercepted-(..)(..)":
+        case "dynamic-intercepted-(.)":
+        case "dynamic-intercepted-(..)":
+        case "dynamic-intercepted-(...)":
           break;
         default:
           paramType;
@@ -3231,16 +3231,16 @@
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3289,7 +3289,7 @@
       normalizeRepeatedSlashes: () => normalizeRepeatedSlashes,
       stringifyError: () => stringifyError,
     });
-    const WEB_VITALS = ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB'];
+    const WEB_VITALS = ["CLS", "FCP", "FID", "INP", "LCP", "TTFB"];
     function execOnce(fn) {
       let used = false;
       let result;
@@ -3307,7 +3307,7 @@
     const isAbsoluteUrl = (url) => ABSOLUTE_URL_REGEX.test(url);
     function getLocationOrigin() {
       const { protocol, hostname, port } = window.location;
-      return `${protocol}//${hostname}${port ? ':' + port : ''}`;
+      return `${protocol}//${hostname}${port ? ":" + port : ""}`;
     }
     function getURL() {
       const { href } = window.location;
@@ -3315,29 +3315,29 @@
       return href.substring(origin.length);
     }
     function getDisplayName(Component) {
-      return typeof Component === 'string'
+      return typeof Component === "string"
         ? Component
-        : Component.displayName || Component.name || 'Unknown';
+        : Component.displayName || Component.name || "Unknown";
     }
     function isResSent(res) {
       return res.finished || res.headersSent;
     }
     function normalizeRepeatedSlashes(url) {
-      const urlParts = url.split('?');
+      const urlParts = url.split("?");
       const urlNoQuery = urlParts[0];
       return (
         urlNoQuery // first we replace any non-encoded backslashes with forward
           // then normalize repeated forward slashes
-          .replace(/\\/g, '/')
-          .replace(/\/\/+/g, '/') + (urlParts[1] ? `?${urlParts.slice(1).join('?')}` : '')
+          .replace(/\\/g, "/")
+          .replace(/\/\/+/g, "/") + (urlParts[1] ? `?${urlParts.slice(1).join("?")}` : "")
       );
     }
     async function loadGetInitialProps(App, ctx) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (App.prototype?.getInitialProps) {
           const message = `"${getDisplayName(App)}.getInitialProps()" is defined as an instance method - visit https://nextjs.org/docs/messages/get-initial-props-as-an-instance-method for more information.`;
-          throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-            value: 'E1035',
+          throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+            value: "E1035",
             enumerable: false,
             configurable: true,
           });
@@ -3360,13 +3360,13 @@
       }
       if (!props) {
         const message = `"${getDisplayName(App)}.getInitialProps()" should resolve to an object. But found "${props}" instead.`;
-        throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-          value: 'E1025',
+        throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+          value: "E1025",
           enumerable: false,
           configurable: true,
         });
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (Object.keys(props).length === 0 && !ctx.ctx) {
           console.warn(
             `${getDisplayName(App)} returned an empty object from \`getInitialProps\`. This de-optimizes and prevents automatic static optimization. https://nextjs.org/docs/messages/empty-object-getInitialProps`,
@@ -3375,19 +3375,19 @@
       }
       return props;
     }
-    const SP = typeof performance !== 'undefined';
+    const SP = typeof performance !== "undefined";
     const ST =
       SP &&
-      ['mark', 'measure', 'getEntriesByName'].every(
-        (method) => typeof performance[method] === 'function',
+      ["mark", "measure", "getEntriesByName"].every(
+        (method) => typeof performance[method] === "function",
       );
     class DecodeError extends Error {}
     class NormalizeError extends Error {}
     class PageNotFoundError extends Error {
       constructor(page) {
         super();
-        this.code = 'ENOENT';
-        this.name = 'PageNotFoundError';
+        this.code = "ENOENT";
+        this.name = "PageNotFoundError";
         this.message = `Cannot find module for page: ${page}`;
       }
     }
@@ -3400,7 +3400,7 @@
     class MiddlewareNotFoundError extends Error {
       constructor() {
         super();
-        this.code = 'ENOENT';
+        this.code = "ENOENT";
         this.message = `Cannot find the middleware module`;
       }
     }
@@ -3411,11 +3411,11 @@
       });
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3440,7 +3440,7 @@
       const query = {};
       for (const [key, value] of searchParams.entries()) {
         const existing = query[key];
-        if (typeof existing === 'undefined') {
+        if (typeof existing === "undefined") {
           query[key] = value;
         } else if (Array.isArray(existing)) {
           existing.push(value);
@@ -3451,13 +3451,13 @@
       return query;
     }
     function stringifyUrlQueryParam(param) {
-      if (typeof param === 'string') {
+      if (typeof param === "string") {
         return param;
       }
-      if ((typeof param === 'number' && !isNaN(param)) || typeof param === 'boolean') {
+      if ((typeof param === "number" && !isNaN(param)) || typeof param === "boolean") {
         return String(param);
       } else {
-        return '';
+        return "";
       }
     }
     function urlQueryToSearchParams(query) {
@@ -3485,42 +3485,42 @@
       return target;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'parseRelativeUrl', {
+    Object.defineProperty(exports, "parseRelativeUrl", {
       enumerable: true,
       get: () => parseRelativeUrl,
     });
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-client] (ecmascript)",
     );
     const _querystring = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-client] (ecmascript)",
     );
     function parseRelativeUrl(url, base, parseQuery = true) {
       const globalBase = new URL(
-        typeof window === 'undefined' ? 'http://n' : (0, _utils.getLocationOrigin)(),
+        typeof window === "undefined" ? "http://n" : (0, _utils.getLocationOrigin)(),
       );
       const resolvedBase = base
         ? new URL(base, globalBase)
-        : url.startsWith('.')
-          ? new URL(typeof window === 'undefined' ? 'http://n' : window.location.href)
+        : url.startsWith(".")
+          ? new URL(typeof window === "undefined" ? "http://n" : window.location.href)
           : globalBase;
-      const { pathname, searchParams, search, hash, href, origin } = url.startsWith('/')
+      const { pathname, searchParams, search, hash, href, origin } = url.startsWith("/")
         ? // Not using `origin` to support other protocols
           new URL(`${resolvedBase.protocol}//${resolvedBase.host}${url}`)
         : new URL(url, resolvedBase);
       if (origin !== globalBase.origin) {
         throw Object.defineProperty(
           new Error(`invariant: invalid relative URL, router received ${url}`),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E159',
+            value: "E159",
             enumerable: false,
             configurable: true,
           },
@@ -3543,11 +3543,11 @@
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-validation-error.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-validation-error.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3566,11 +3566,11 @@
       InstantValidationError: () => InstantValidationError,
       isInstantValidationError: () => isInstantValidationError,
     });
-    const INSTANT_VALIDATION_ERROR_DIGEST = 'INSTANT_VALIDATION_ERROR';
+    const INSTANT_VALIDATION_ERROR_DIGEST = "INSTANT_VALIDATION_ERROR";
     function isInstantValidationError(err) {
       return !!(
         err &&
-        typeof err === 'object' &&
+        typeof err === "object" &&
         err instanceof Error &&
         err.digest === INSTANT_VALIDATION_ERROR_DIGEST
       );
@@ -3581,11 +3581,11 @@
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-samples.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-samples.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3623,31 +3623,31 @@
       trackMissingSampleErrorAndThrow: () => trackMissingSampleErrorAndThrow,
     });
     const _cookies = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/cookies.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/cookies.js [app-client] (ecmascript)",
     );
     const _requestcookies = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/request-cookies.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/request-cookies.js [app-client] (ecmascript)",
     );
     const _headers = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/headers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/headers.js [app-client] (ecmascript)",
     );
     const _getsegmentparam = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [app-client] (ecmascript)",
     );
     const _parserelativeurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [app-client] (ecmascript)",
     );
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)",
     );
     const _instantvalidationerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-validation-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-validation-error.js [app-client] (ecmascript)",
     );
     const _workunitasyncstorageexternal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)",
     );
     const _reflectutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)",
     );
     function createValidationSampleTracking() {
       return {
@@ -3659,20 +3659,20 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'request':
-          case 'validation-client':
+          case "request":
+          case "validation-client":
             // TODO(instant-validation-build): do we need any special handling for caches?
             validationSampleTracking = workUnitStore.validationSampleTracking ?? null;
             break;
-          case 'cache':
-          case 'private-cache':
-          case 'unstable-cache':
-          case 'prerender-legacy':
-          case 'prerender-ppr':
-          case 'prerender-client':
-          case 'prerender':
-          case 'prerender-runtime':
-          case 'generate-static-params':
+          case "cache":
+          case "private-cache":
+          case "unstable-cache":
+          case "prerender-legacy":
+          case "prerender-ppr":
+          case "prerender-client":
+          case "prerender":
+          case "prerender-runtime":
+          case "generate-static-params":
             break;
           default:
             workUnitStore;
@@ -3681,11 +3681,11 @@
       if (!validationSampleTracking) {
         throw Object.defineProperty(
           new _invarianterror.InvariantError(
-            'Expected to have a workUnitStore that provides validationSampleTracking',
+            "Expected to have a workUnitStore that provides validationSampleTracking",
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E1110',
+            value: "E1110",
             enumerable: false,
             configurable: true,
           },
@@ -3716,7 +3716,7 @@
       const sealed = _requestcookies.RequestCookiesAdapter.seal(cookies);
       return new Proxy(sealed, {
         get(target, prop, receiver) {
-          if (prop === 'has') {
+          if (prop === "has") {
             const originalMethod = Reflect.get(target, prop, receiver);
             const wrappedMethod = (name) => {
               if (!declaredNames.has(name)) {
@@ -3726,16 +3726,16 @@
             };
             return wrappedMethod;
           }
-          if (prop === 'get') {
+          if (prop === "get") {
             const originalMethod = Reflect.get(target, prop, receiver);
             const wrappedMethod = (nameOrCookie) => {
               let name;
-              if (typeof nameOrCookie === 'string') {
+              if (typeof nameOrCookie === "string") {
                 name = nameOrCookie;
               } else if (
                 nameOrCookie &&
-                typeof nameOrCookie === 'object' &&
-                typeof nameOrCookie.name === 'string'
+                typeof nameOrCookie === "object" &&
+                typeof nameOrCookie.name === "string"
               ) {
                 name = nameOrCookie.name;
               } else {
@@ -3762,9 +3762,9 @@
             `of \`unstable_instant\`. Add it to the sample's \`cookies\` array, ` +
             `or \`{ name: "${name}", value: null }\` if it should be absent.`,
         ),
-        '__NEXT_ERROR_CODE',
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E1115',
+          value: "E1115",
           enumerable: false,
           configurable: true,
         },
@@ -3775,14 +3775,14 @@
       // Accessing it will be implicitly allowed by the proxy --
       // if the user defined some cookies, accessing the "cookie" header is also fine.
       const sampleHeaders = rawSampleHeaders ? [...rawSampleHeaders] : [];
-      if (sampleHeaders.find(([name]) => name.toLowerCase() === 'cookie')) {
+      if (sampleHeaders.find(([name]) => name.toLowerCase() === "cookie")) {
         throw Object.defineProperty(
           new _instantvalidationerror.InstantValidationError(
             'Invalid sample: Defining cookies via a "cookie" header is not supported. Use `cookies: [{ name: ..., value: ... }]` instead.',
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E1111',
+            value: "E1111",
             enumerable: false,
             configurable: true,
           },
@@ -3791,10 +3791,10 @@
       if (sampleCookies) {
         const cookieHeaderValue = sampleCookies.toString();
         sampleHeaders.push([
-          'cookie',
+          "cookie",
           // if the `cookies` samples were empty, or they were all `null`, then we have no cookies,
           // and the header isn't present, but should remains readable, so we set it to null.
-          cookieHeaderValue !== '' ? cookieHeaderValue : null,
+          cookieHeaderValue !== "" ? cookieHeaderValue : null,
         ]);
       }
       const declaredNames = new Set();
@@ -3808,7 +3808,7 @@
       const sealed = _headers.HeadersAdapter.seal(_headers.HeadersAdapter.from(headersInit));
       return new Proxy(sealed, {
         get(target, prop, receiver) {
-          if (prop === 'get' || prop === 'has') {
+          if (prop === "get" || prop === "has") {
             const originalMethod = Reflect.get(target, prop, receiver);
             const patchedMethod = (rawName) => {
               const name = rawName.toLowerCase();
@@ -3820,9 +3820,9 @@
                         `of \`unstable_instant\`. Add it to the sample's \`headers\` array, ` +
                         `or \`["${name}", null]\` if it should be absent.`,
                     ),
-                    '__NEXT_ERROR_CODE',
+                    "__NEXT_ERROR_CODE",
                     {
-                      value: 'E1116',
+                      value: "E1116",
                       enumerable: false,
                       configurable: true,
                     },
@@ -3850,10 +3850,10 @@
         },
         enable() {
           throw Object.defineProperty(
-            new Error('Draft mode cannot be enabled during build-time instant validation.'),
-            '__NEXT_ERROR_CODE',
+            new Error("Draft mode cannot be enabled during build-time instant validation."),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E1092',
+              value: "E1092",
               enumerable: false,
               configurable: true,
             },
@@ -3861,10 +3861,10 @@
         },
         disable() {
           throw Object.defineProperty(
-            new Error('Draft mode cannot be disabled during build-time instant validation.'),
-            '__NEXT_ERROR_CODE',
+            new Error("Draft mode cannot be disabled during build-time instant validation."),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E1094',
+              value: "E1094",
               enumerable: false,
               configurable: true,
             },
@@ -3876,7 +3876,7 @@
       return new Proxy(underlyingParams, {
         get(target, prop, receiver) {
           if (
-            typeof prop === 'string' &&
+            typeof prop === "string" &&
             !_reflectutils.wellKnownProperties.has(prop) && // Only error when accessing a param that is part of the route but wasn't provided.
             // accessing properties that aren't expected to be a valid param value is fine.
             prop in underlyingParams &&
@@ -3888,9 +3888,9 @@
                   `Route "${route}" accessed param "${prop}" which is not defined in the \`samples\` ` +
                     `of \`unstable_instant\`. Add it to the sample's \`params\` object.`,
                 ),
-                '__NEXT_ERROR_CODE',
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E1095',
+                  value: "E1095",
                   enumerable: false,
                   configurable: true,
                 },
@@ -3905,7 +3905,7 @@
       return new Proxy(searchParams, {
         get(target, prop, receiver) {
           if (
-            typeof prop === 'string' &&
+            typeof prop === "string" &&
             !_reflectutils.wellKnownProperties.has(prop) &&
             !declaredSearchParamNames.has(prop)
           ) {
@@ -3915,7 +3915,7 @@
         },
         has(target, prop) {
           if (
-            typeof prop === 'string' &&
+            typeof prop === "string" &&
             !_reflectutils.wellKnownProperties.has(prop) &&
             !declaredSearchParamNames.has(prop)
           ) {
@@ -3929,10 +3929,10 @@
       return new Proxy(searchParams, {
         get(target, prop, receiver) {
           // Intercept method calls that access specific param names
-          if (prop === 'get' || prop === 'getAll' || prop === 'has') {
+          if (prop === "get" || prop === "getAll" || prop === "has") {
             const originalMathod = Reflect.get(target, prop, receiver);
             return (name) => {
-              if (typeof name === 'string' && !declaredSearchParamNames.has(name)) {
+              if (typeof name === "string" && !declaredSearchParamNames.has(name)) {
                 trackMissingSampleErrorAndThrow(createMissingSearchParamSampleError(route, name));
               }
               return originalMathod.call(target, name);
@@ -3940,7 +3940,7 @@
           }
           const value = Reflect.get(target, prop, receiver);
           // Prevent `TypeError: Value of "this" must be of type URLSearchParams` for methods
-          if (typeof value === 'function' && !Object.hasOwn(target, prop)) {
+          if (typeof value === "function" && !Object.hasOwn(target, prop)) {
             return value.bind(target);
           }
           return value;
@@ -3954,9 +3954,9 @@
             `of \`unstable_instant\`. Add it to the sample's \`searchParams\` object, ` +
             `or \`{ "${name}": null }\` if it should be absent.`,
         ),
-        '__NEXT_ERROR_CODE',
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E1098',
+          value: "E1098",
           enumerable: false,
           configurable: true,
         },
@@ -3965,11 +3965,11 @@
     function createRelativeURLFromSamples(route, sampleParams, sampleSearchParams) {
       // Build searchParams query object and URL search string from sample
       const pathname = createPathnameFromRouteAndSampleParams(route, sampleParams ?? {});
-      let search = '';
+      let search = "";
       if (sampleSearchParams) {
         const qs = createURLSearchParamsFromSample(sampleSearchParams).toString();
         if (qs) {
-          search = '?' + qs;
+          search = "?" + qs;
         }
       }
       return (0, _parserelativeurl.parseRelativeUrl)(pathname + search, undefined, true);
@@ -3996,13 +3996,13 @@
      * but it should be good enough for some initial testing.
      */ function createPathnameFromRouteAndSampleParams(route, params) {
       const interpolatedSegments = [];
-      const rawSegments = route.split('/');
+      const rawSegments = route.split("/");
       for (const rawSegment of rawSegments) {
         const param = (0, _getsegmentparam.getSegmentParam)(rawSegment);
         if (param) {
           switch (param.paramType) {
-            case 'catchall':
-            case 'optional-catchall': {
+            case "catchall":
+            case "optional-catchall": {
               let paramValue = params[param.paramName];
               if (paramValue === undefined) {
                 // The value for the param was not provided. `usePathname` will detect this and throw
@@ -4015,9 +4015,9 @@
                   new _instantvalidationerror.InstantValidationError(
                     `Expected sample param value for segment '${rawSegment}' to be an array of strings, got ${typeof paramValue}`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E1104',
+                    value: "E1104",
                     enumerable: false,
                     configurable: true,
                   },
@@ -4026,22 +4026,22 @@
               interpolatedSegments.push(...paramValue.map((v) => encodeURIComponent(v)));
               break;
             }
-            case 'dynamic': {
+            case "dynamic": {
               let paramValue = params[param.paramName];
               if (paramValue === undefined) {
                 // The value for the param was not provided. `usePathname` will detect this and throw
                 // before this can surface to userspace. Use `[NAME]` as a placeholder for the param value
                 // in case it pops up somewhere unexpectedly.
                 paramValue = rawSegment;
-              } else if (typeof paramValue !== 'string') {
+              } else if (typeof paramValue !== "string") {
                 // NOTE: this happens outside of render, so we don't need `trackMissingSampleErrorAndThrow`
                 throw Object.defineProperty(
                   new _instantvalidationerror.InstantValidationError(
                     `Expected sample param value for segment '${rawSegment}' to be a string, got ${typeof paramValue}`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E1108',
+                    value: "E1108",
                     enumerable: false,
                     configurable: true,
                   },
@@ -4050,22 +4050,22 @@
               interpolatedSegments.push(encodeURIComponent(paramValue));
               break;
             }
-            case 'catchall-intercepted-(..)(..)':
-            case 'catchall-intercepted-(.)':
-            case 'catchall-intercepted-(..)':
-            case 'catchall-intercepted-(...)':
-            case 'dynamic-intercepted-(..)(..)':
-            case 'dynamic-intercepted-(.)':
-            case 'dynamic-intercepted-(..)':
-            case 'dynamic-intercepted-(...)': {
+            case "catchall-intercepted-(..)(..)":
+            case "catchall-intercepted-(.)":
+            case "catchall-intercepted-(..)":
+            case "catchall-intercepted-(...)":
+            case "dynamic-intercepted-(..)(..)":
+            case "dynamic-intercepted-(.)":
+            case "dynamic-intercepted-(..)":
+            case "dynamic-intercepted-(...)": {
               // TODO(instant-validation-build): i don't know how these are supposed to work, or if we can even get them here
               throw Object.defineProperty(
                 new _invarianterror.InvariantError(
-                  'Not implemented: Validation of interception routes',
+                  "Not implemented: Validation of interception routes",
                 ),
-                '__NEXT_ERROR_CODE',
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E1106',
+                  value: "E1106",
                   enumerable: false,
                   configurable: true,
                 },
@@ -4079,7 +4079,7 @@
           interpolatedSegments.push(rawSegment);
         }
       }
-      return interpolatedSegments.join('/');
+      return interpolatedSegments.join("/");
     }
     function assertRootParamInSamples(workStore, sampleParams, paramName) {
       if (sampleParams && paramName in sampleParams) {
@@ -4092,9 +4092,9 @@
               `Route "${route}" accessed root param "${paramName}" which is not defined in the \`samples\` ` +
                 `of \`unstable_instant\`. Add it to the sample's \`params\` object.`,
             ),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E1114',
+              value: "E1114",
               enumerable: false,
               configurable: true,
             },
@@ -4103,16 +4103,16 @@
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/search-params.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/search-params.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -4138,46 +4138,46 @@
       makeErroringSearchParamsForUseCache: () => makeErroringSearchParamsForUseCache,
     });
     const _workasyncstorageexternal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-async-storage.external.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-async-storage.external.js [app-client] (ecmascript)",
     );
     const _varyparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/vary-params.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/vary-params.js [app-client] (ecmascript)",
     );
     const _reflect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)",
     );
     const _dynamicrendering = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)",
     );
     const _workunitasyncstorageexternal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)",
     );
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)",
     );
     const _dynamicrenderingutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dynamic-rendering-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dynamic-rendering-utils.js [app-client] (ecmascript)",
     );
     const _creatededupedbycallsiteservererrorlogger = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/create-deduped-by-callsite-server-error-logger.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/create-deduped-by-callsite-server-error-logger.js [app-client] (ecmascript)",
     );
     const _reflectutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)",
     );
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/utils.js [app-client] (ecmascript)",
     );
     const _stagedrendering = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/staged-rendering.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/staged-rendering.js [app-client] (ecmascript)",
     );
     function createSearchParamsFromClient(underlyingSearchParams) {
       const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
       if (!workStore) {
         throw Object.defineProperty(
-          new _invarianterror.InvariantError('Expected workStore to be initialized'),
-          '__NEXT_ERROR_CODE',
+          new _invarianterror.InvariantError("Expected workStore to be initialized"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E1068',
+            value: "E1068",
             enumerable: false,
             configurable: true,
           },
@@ -4186,57 +4186,57 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-client':
-          case 'prerender-ppr':
-          case 'prerender-legacy':
+          case "prerender":
+          case "prerender-client":
+          case "prerender-ppr":
+          case "prerender-legacy":
             return createStaticPrerenderSearchParams(workStore, workUnitStore);
-          case 'validation-client': {
+          case "validation-client": {
             return createClientSearchParamsInValidation(
               underlyingSearchParams,
               workStore,
               workUnitStore,
             );
           }
-          case 'prerender-runtime':
+          case "prerender-runtime":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createSearchParamsFromClient should not be called in a runtime prerender.',
+                "createSearchParamsFromClient should not be called in a runtime prerender.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E769',
+                value: "E769",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'cache':
-          case 'private-cache':
-          case 'unstable-cache':
+          case "cache":
+          case "private-cache":
+          case "unstable-cache":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createSearchParamsFromClient should not be called in cache contexts.',
+                "createSearchParamsFromClient should not be called in cache contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E739',
+                value: "E739",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'generate-static-params':
+          case "generate-static-params":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createSearchParamsFromClient should not be called inside generateStaticParams.',
+                "createSearchParamsFromClient should not be called inside generateStaticParams.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1133',
+                value: "E1133",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'request': {
+          case "request": {
             // Client searchParams are not runtime prefetchable
             const isRuntimePrefetchable = false;
             return createRenderSearchParams(
@@ -4268,10 +4268,10 @@
       const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
       if (!workStore) {
         throw Object.defineProperty(
-          new _invarianterror.InvariantError('Expected workStore to be initialized'),
-          '__NEXT_ERROR_CODE',
+          new _invarianterror.InvariantError("Expected workStore to be initialized"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E1068',
+            value: "E1068",
             enumerable: false,
             configurable: true,
           },
@@ -4280,57 +4280,57 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-client':
-          case 'prerender-ppr':
-          case 'prerender-legacy':
+          case "prerender":
+          case "prerender-client":
+          case "prerender-ppr":
+          case "prerender-legacy":
             return createStaticPrerenderSearchParams(workStore, workUnitStore);
-          case 'validation-client':
+          case "validation-client":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createServerSearchParamsForServerPage should not be called in a client validation.',
+                "createServerSearchParamsForServerPage should not be called in a client validation.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1066',
+                value: "E1066",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'cache':
-          case 'private-cache':
-          case 'unstable-cache':
+          case "cache":
+          case "private-cache":
+          case "unstable-cache":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createServerSearchParamsForServerPage should not be called in cache contexts.',
+                "createServerSearchParamsForServerPage should not be called in cache contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E747',
+                value: "E747",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'generate-static-params':
+          case "generate-static-params":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createServerSearchParamsForServerPage should not be called inside generateStaticParams.',
+                "createServerSearchParamsForServerPage should not be called inside generateStaticParams.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1128',
+                value: "E1128",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'prerender-runtime':
+          case "prerender-runtime":
             return createRuntimePrerenderSearchParams(
               underlyingSearchParams,
               workUnitStore,
               varyParamsAccumulator,
               isRuntimePrefetchable,
             );
-          case 'request':
+          case "request":
             return createRenderSearchParams(
               underlyingSearchParams,
               workStore,
@@ -4347,10 +4347,10 @@
       const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
       if (!workStore) {
         throw Object.defineProperty(
-          new _invarianterror.InvariantError('Expected workStore to be initialized'),
-          '__NEXT_ERROR_CODE',
+          new _invarianterror.InvariantError("Expected workStore to be initialized"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E1068',
+            value: "E1068",
             enumerable: false,
             configurable: true,
           },
@@ -4364,68 +4364,68 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-client':
+          case "prerender":
+          case "prerender-client":
             // We're prerendering in a mode that aborts (cacheComponents) and should stall
             // the promise to ensure the RSC side is considered dynamic
             return (0, _dynamicrenderingutils.makeHangingPromise)(
               workUnitStore.renderSignal,
               workStore.route,
-              '`searchParams`',
+              "`searchParams`",
             );
-          case 'validation-client':
+          case "validation-client":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createPrerenderSearchParamsForClientPage should not be called in a client validation.',
+                "createPrerenderSearchParamsForClientPage should not be called in a client validation.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1061',
+                value: "E1061",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'prerender-runtime':
+          case "prerender-runtime":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createPrerenderSearchParamsForClientPage should not be called in a runtime prerender.',
+                "createPrerenderSearchParamsForClientPage should not be called in a runtime prerender.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E768',
+                value: "E768",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'cache':
-          case 'private-cache':
-          case 'unstable-cache':
+          case "cache":
+          case "private-cache":
+          case "unstable-cache":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createPrerenderSearchParamsForClientPage should not be called in cache contexts.',
+                "createPrerenderSearchParamsForClientPage should not be called in cache contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E746',
+                value: "E746",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'generate-static-params':
+          case "generate-static-params":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createPrerenderSearchParamsForClientPage should not be called inside generateStaticParams.',
+                "createPrerenderSearchParamsForClientPage should not be called inside generateStaticParams.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1124',
+                value: "E1124",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'prerender-ppr':
-          case 'prerender-legacy':
-          case 'request':
+          case "prerender-ppr":
+          case "prerender-legacy":
+          case "request":
             return Promise.resolve({});
           default:
             workUnitStore;
@@ -4440,12 +4440,12 @@
         return Promise.resolve({});
       }
       switch (prerenderStore.type) {
-        case 'prerender':
-        case 'prerender-client':
+        case "prerender":
+        case "prerender-client":
           // We are in a cacheComponents (PPR or otherwise) prerender
           return makeHangingSearchParams(workStore, prerenderStore);
-        case 'prerender-ppr':
-        case 'prerender-legacy':
+        case "prerender-ppr":
+        case "prerender-legacy":
           // We are in a legacy static generation and need to interrupt the
           // prerender when search params are accessed.
           return makeErroringSearchParams(workStore, prerenderStore);
@@ -4487,7 +4487,7 @@
         // dictionary object.
         return Promise.resolve({});
       } else {
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           // Semantically we only need the dev tracking when running in `next dev`
           // but since you would never use next dev with production NODE_ENV we use this
           // as a proxy so we can statically exclude this code from production builds.
@@ -4511,7 +4511,7 @@
       const promise = (0, _dynamicrenderingutils.makeHangingPromise)(
         prerenderStore.renderSignal,
         workStore.route,
-        '`searchParams`',
+        "`searchParams`",
       );
       const proxiedPromise = new Proxy(promise, {
         get(target, prop, receiver) {
@@ -4522,13 +4522,13 @@
             return _reflect.ReflectAdapter.get(target, prop, receiver);
           }
           switch (prop) {
-            case 'then': {
-              const expression = '`await searchParams`, `searchParams.then`, or similar';
+            case "then": {
+              const expression = "`await searchParams`, `searchParams.then`, or similar";
               (0, _dynamicrendering.annotateDynamicAccess)(expression, prerenderStore);
               return _reflect.ReflectAdapter.get(target, prop, receiver);
             }
-            case 'status': {
-              const expression = '`use(searchParams)`, `searchParams.status`, or similar';
+            case "status": {
+              const expression = "`use(searchParams)`, `searchParams.status`, or similar";
               (0, _dynamicrendering.annotateDynamicAccess)(expression, prerenderStore);
               return _reflect.ReflectAdapter.get(target, prop, receiver);
             }
@@ -4559,14 +4559,14 @@
             // that was previously written to the promise and thus not an underlying searchParam value
             return _reflect.ReflectAdapter.get(target, prop, receiver);
           }
-          if (typeof prop === 'string' && prop === 'then') {
-            const expression = '`await searchParams`, `searchParams.then`, or similar';
+          if (typeof prop === "string" && prop === "then") {
+            const expression = "`await searchParams`, `searchParams.then`, or similar";
             if (workStore.dynamicShouldError) {
               (0, _utils.throwWithStaticGenerationBailoutErrorWithDynamicError)(
                 workStore.route,
                 expression,
               );
-            } else if (prerenderStore.type === 'prerender-ppr') {
+            } else if (prerenderStore.type === "prerender-ppr") {
               // PPR Prerender (no cacheComponents)
               (0, _dynamicrendering.postponeWithTracking)(
                 workStore.route,
@@ -4592,10 +4592,10 @@
       const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
       if (!workStore) {
         throw Object.defineProperty(
-          new _invarianterror.InvariantError('Expected workStore to be initialized'),
-          '__NEXT_ERROR_CODE',
+          new _invarianterror.InvariantError("Expected workStore to be initialized"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E1068',
+            value: "E1068",
             enumerable: false,
             configurable: true,
           },
@@ -4616,8 +4616,8 @@
             return _reflect.ReflectAdapter.get(target, prop, receiver);
           }
           if (
-            typeof prop === 'string' &&
-            (prop === 'then' || !_reflectutils.wellKnownProperties.has(prop))
+            typeof prop === "string" &&
+            (prop === "then" || !_reflectutils.wellKnownProperties.has(prop))
           ) {
             (0, _utils.throwForSearchParamsAccessInUseCache)(workStore, get);
           }
@@ -4692,7 +4692,7 @@
           sharedSearchParamsParent.then(() => resolve(proxiedUnderlying), reject);
         });
         // @ts-expect-error
-        promise.displayName = 'searchParams';
+        promise.displayName = "searchParams";
       } else {
         promise = (0, _dynamicrenderingutils.makeDevtoolsIOAwarePromise)(
           proxiedUnderlying,
@@ -4732,10 +4732,10 @@
       // this initialization concept so we omit the dynamic check until after we've constructed our resolved promise.
       return new Proxy(underlyingSearchParams, {
         get(target, prop, receiver) {
-          if (typeof prop === 'string' && promiseInitialized.current) {
+          if (typeof prop === "string" && promiseInitialized.current) {
             if (workStore.dynamicShouldError) {
               const expression = (0, _reflectutils.describeStringPropertyAccess)(
-                'searchParams',
+                "searchParams",
                 prop,
               );
               (0, _utils.throwWithStaticGenerationBailoutErrorWithDynamicError)(
@@ -4747,10 +4747,10 @@
           return _reflect.ReflectAdapter.get(target, prop, receiver);
         },
         has(target, prop) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             if (workStore.dynamicShouldError) {
               const expression = (0, _reflectutils.describeHasCheckingStringProperty)(
-                'searchParams',
+                "searchParams",
                 prop,
               );
               (0, _utils.throwWithStaticGenerationBailoutErrorWithDynamicError)(
@@ -4763,7 +4763,7 @@
         },
         ownKeys(target) {
           if (workStore.dynamicShouldError) {
-            const expression = '`{...searchParams}`, `Object.keys(searchParams)`, or similar';
+            const expression = "`{...searchParams}`, `Object.keys(searchParams)`, or similar";
             (0, _utils.throwWithStaticGenerationBailoutErrorWithDynamicError)(
               workStore.route,
               expression,
@@ -4790,14 +4790,14 @@
       });
       return new Proxy(promise, {
         get(target, prop, receiver) {
-          if (prop === 'then' && workStore.dynamicShouldError) {
-            const expression = '`searchParams.then`';
+          if (prop === "then" && workStore.dynamicShouldError) {
+            const expression = "`searchParams.then`";
             (0, _utils.throwWithStaticGenerationBailoutErrorWithDynamicError)(
               workStore.route,
               expression,
             );
           }
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             if (
               !_reflectutils.wellKnownProperties.has(prop) &&
               (proxiedProperties.has(prop) || // We are accessing a property that doesn't exist on the promise nor
@@ -4805,7 +4805,7 @@
                 Reflect.has(target, prop) === false)
             ) {
               const expression = (0, _reflectutils.describeStringPropertyAccess)(
-                'searchParams',
+                "searchParams",
                 prop,
               );
               warnForSyncAccess(workStore.route, expression);
@@ -4814,13 +4814,13 @@
           return _reflect.ReflectAdapter.get(target, prop, receiver);
         },
         set(target, prop, value, receiver) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             proxiedProperties.delete(prop);
           }
           return Reflect.set(target, prop, value, receiver);
         },
         has(target, prop) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             if (
               !_reflectutils.wellKnownProperties.has(prop) &&
               (proxiedProperties.has(prop) || // We are accessing a property that doesn't exist on the promise nor
@@ -4828,7 +4828,7 @@
                 Reflect.has(target, prop) === false)
             ) {
               const expression = (0, _reflectutils.describeHasCheckingStringProperty)(
-                'searchParams',
+                "searchParams",
                 prop,
               );
               warnForSyncAccess(workStore.route, expression);
@@ -4837,7 +4837,7 @@
           return Reflect.has(target, prop);
         },
         ownKeys(target) {
-          const expression = '`Object.keys(searchParams)` or similar';
+          const expression = "`Object.keys(searchParams)` or similar";
           warnForSyncAccess(workStore.route, expression);
           return Reflect.ownKeys(target);
         },
@@ -4848,16 +4848,16 @@
       createSearchAccessError,
     );
     function createSearchAccessError(route, expression) {
-      const prefix = route ? `Route "${route}" ` : 'This route ';
+      const prefix = route ? `Route "${route}" ` : "This route ";
       return Object.defineProperty(
         new Error(
           `${prefix}used ${expression}. ` +
             `\`searchParams\` is a Promise and must be unwrapped with \`await\` or \`React.use()\` before accessing its properties. ` +
             `Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis`,
         ),
-        '__NEXT_ERROR_CODE',
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E848',
+          value: "E848",
           enumerable: false,
           configurable: true,
         },
@@ -4870,7 +4870,7 @@
     ) {
       var _workUnitStore_validationSamples;
       const { createExhaustiveSearchParamsProxy } = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-samples.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-samples.js [app-client] (ecmascript)",
       );
       const declaredKeys = new Set(
         Object.keys(
@@ -4887,47 +4887,47 @@
       return Promise.resolve(underlyingSearchParams);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-access-async-storage-instance.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-access-async-storage-instance.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'dynamicAccessAsyncStorageInstance', {
+    Object.defineProperty(exports, "dynamicAccessAsyncStorageInstance", {
       enumerable: true,
       get: () => dynamicAccessAsyncStorageInstance,
     });
     const _asynclocalstorage = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/async-local-storage.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/async-local-storage.js [app-client] (ecmascript)",
     );
     const dynamicAccessAsyncStorageInstance = (0, _asynclocalstorage.createAsyncLocalStorage)();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'dynamicAccessAsyncStorage', {
+    Object.defineProperty(exports, "dynamicAccessAsyncStorage", {
       enumerable: true,
       get: () => _dynamicaccessasyncstorageinstance.dynamicAccessAsyncStorageInstance,
     });
     const _dynamicaccessasyncstorageinstance = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-access-async-storage-instance.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-access-async-storage-instance.js [app-client] (ecmascript)",
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/params.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/params.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -4953,46 +4953,46 @@
       createServerParamsForServerSegment: () => createServerParamsForServerSegment,
     });
     const _workasyncstorageexternal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-async-storage.external.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-async-storage.external.js [app-client] (ecmascript)",
     );
     const _varyparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/vary-params.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/vary-params.js [app-client] (ecmascript)",
     );
     const _reflect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/spec-extension/adapters/reflect.js [app-client] (ecmascript)",
     );
     const _dynamicrendering = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)",
     );
     const _workunitasyncstorageexternal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)",
     );
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)",
     );
     const _reflectutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/reflect-utils.js [app-client] (ecmascript)",
     );
     const _dynamicrenderingutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dynamic-rendering-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dynamic-rendering-utils.js [app-client] (ecmascript)",
     );
     const _creatededupedbycallsiteservererrorlogger = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/create-deduped-by-callsite-server-error-logger.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/create-deduped-by-callsite-server-error-logger.js [app-client] (ecmascript)",
     );
     const _dynamicaccessasyncstorageexternal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js [app-client] (ecmascript)",
     );
     const _stagedrendering = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/staged-rendering.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/staged-rendering.js [app-client] (ecmascript)",
     );
     function createParamsFromClient(underlyingParams) {
       const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
       if (!workStore) {
         throw Object.defineProperty(
-          new _invarianterror.InvariantError('Expected workStore to be initialized'),
-          '__NEXT_ERROR_CODE',
+          new _invarianterror.InvariantError("Expected workStore to be initialized"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E1068',
+            value: "E1068",
             enumerable: false,
             configurable: true,
           },
@@ -5001,10 +5001,10 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-client':
-          case 'prerender-ppr':
-          case 'prerender-legacy': {
+          case "prerender":
+          case "prerender-client":
+          case "prerender-ppr":
+          case "prerender-legacy": {
             // Client params don't need additional vary tracking because by the
             // time they reach the client, the access would have already been
             // tracked by the server.
@@ -5017,52 +5017,52 @@
               varyParamsAccumulator,
             );
           }
-          case 'validation-client':
+          case "validation-client":
             return createClientParamsInInstantValidation(
               underlyingParams,
               workStore,
               workUnitStore.validationSamples,
             );
-          case 'cache':
-          case 'private-cache':
-          case 'unstable-cache':
+          case "cache":
+          case "private-cache":
+          case "unstable-cache":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createParamsFromClient should not be called in cache contexts.',
+                "createParamsFromClient should not be called in cache contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E736',
+                value: "E736",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'prerender-runtime':
+          case "prerender-runtime":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createParamsFromClient should not be called in a runtime prerender.',
+                "createParamsFromClient should not be called in a runtime prerender.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E770',
+                value: "E770",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'generate-static-params':
+          case "generate-static-params":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createParamsFromClient should not be called inside generateStaticParams.',
+                "createParamsFromClient should not be called inside generateStaticParams.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1122',
+                value: "E1122",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'request':
-            if (('TURBOPACK compile-time truthy', 1)) {
+          case "request":
+            if (("TURBOPACK compile-time truthy", 1)) {
               // Semantically we only need the dev tracking when running in `next dev`
               // but since you would never use next dev with production NODE_ENV we use this
               // as a proxy so we can statically exclude this code from production builds.
@@ -5101,10 +5101,10 @@
       const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
       if (!workStore) {
         throw Object.defineProperty(
-          new _invarianterror.InvariantError('Expected workStore to be initialized'),
-          '__NEXT_ERROR_CODE',
+          new _invarianterror.InvariantError("Expected workStore to be initialized"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E1068',
+            value: "E1068",
             enumerable: false,
             configurable: true,
           },
@@ -5113,9 +5113,9 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-ppr':
-          case 'prerender-legacy':
+          case "prerender":
+          case "prerender-ppr":
+          case "prerender-legacy":
             return createStaticPrerenderParams(
               underlyingParams,
               null,
@@ -5123,46 +5123,46 @@
               workUnitStore,
               varyParamsAccumulator,
             );
-          case 'prerender-client':
-          case 'validation-client':
+          case "prerender-client":
+          case "validation-client":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createServerParamsForRoute should not be called in client contexts.',
+                "createServerParamsForRoute should not be called in client contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1064',
+                value: "E1064",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'cache':
-          case 'private-cache':
-          case 'unstable-cache':
+          case "cache":
+          case "private-cache":
+          case "unstable-cache":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createServerParamsForRoute should not be called in cache contexts.',
+                "createServerParamsForRoute should not be called in cache contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E738',
+                value: "E738",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'generate-static-params':
+          case "generate-static-params":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createServerParamsForRoute should not be called inside generateStaticParams.',
+                "createServerParamsForRoute should not be called inside generateStaticParams.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1131',
+                value: "E1131",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'prerender-runtime': {
+          case "prerender-runtime": {
             // Route params are not runtime prefetchable
             const isRuntimePrefetchable = false;
             return createRuntimePrerenderParams(
@@ -5173,8 +5173,8 @@
               isRuntimePrefetchable,
             );
           }
-          case 'request':
-            if (('TURBOPACK compile-time truthy', 1)) {
+          case "request":
+            if (("TURBOPACK compile-time truthy", 1)) {
               // Semantically we only need the dev tracking when running in `next dev`
               // but since you would never use next dev with production NODE_ENV we use this
               // as a proxy so we can statically exclude this code from production builds.
@@ -5205,10 +5205,10 @@
       const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
       if (!workStore) {
         throw Object.defineProperty(
-          new _invarianterror.InvariantError('Expected workStore to be initialized'),
-          '__NEXT_ERROR_CODE',
+          new _invarianterror.InvariantError("Expected workStore to be initialized"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E1068',
+            value: "E1068",
             enumerable: false,
             configurable: true,
           },
@@ -5217,10 +5217,10 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-client':
-          case 'prerender-ppr':
-          case 'prerender-legacy':
+          case "prerender":
+          case "prerender-client":
+          case "prerender-ppr":
+          case "prerender-legacy":
             return createStaticPrerenderParams(
               underlyingParams,
               optionalCatchAllParamName,
@@ -5228,45 +5228,45 @@
               workUnitStore,
               varyParamsAccumulator,
             );
-          case 'validation-client':
+          case "validation-client":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createServerParamsForServerSegment should not be called in client contexts.',
+                "createServerParamsForServerSegment should not be called in client contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1101',
+                value: "E1101",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'cache':
-          case 'private-cache':
-          case 'unstable-cache':
+          case "cache":
+          case "private-cache":
+          case "unstable-cache":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createServerParamsForServerSegment should not be called in cache contexts.',
+                "createServerParamsForServerSegment should not be called in cache contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E743',
+                value: "E743",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'generate-static-params':
+          case "generate-static-params":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createServerParamsForServerSegment should not be called inside generateStaticParams.',
+                "createServerParamsForServerSegment should not be called inside generateStaticParams.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1120',
+                value: "E1120",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'prerender-runtime':
+          case "prerender-runtime":
             return createRuntimePrerenderParams(
               underlyingParams,
               optionalCatchAllParamName,
@@ -5274,8 +5274,8 @@
               varyParamsAccumulator,
               isRuntimePrefetchable,
             );
-          case 'request':
-            if (('TURBOPACK compile-time truthy', 1)) {
+          case "request":
+            if (("TURBOPACK compile-time truthy", 1)) {
               // Semantically we only need the dev tracking when running in `next dev`
               // but since you would never use next dev with production NODE_ENV we use this
               // as a proxy so we can statically exclude this code from production builds.
@@ -5300,11 +5300,11 @@
       if (!workStore) {
         throw Object.defineProperty(
           new _invarianterror.InvariantError(
-            'Missing workStore in createPrerenderParamsForClientSegment',
+            "Missing workStore in createPrerenderParamsForClientSegment",
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E773',
+            value: "E773",
             enumerable: false,
             configurable: true,
           },
@@ -5313,8 +5313,8 @@
       const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
       if (workUnitStore) {
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-client': {
+          case "prerender":
+          case "prerender-client": {
             const fallbackParams = workUnitStore.fallbackRouteParams;
             if (fallbackParams) {
               for (const key in underlyingParams) {
@@ -5326,56 +5326,56 @@
                   return (0, _dynamicrenderingutils.makeHangingPromise)(
                     workUnitStore.renderSignal,
                     workStore.route,
-                    '`params`',
+                    "`params`",
                   );
                 }
               }
             }
             break;
           }
-          case 'validation-client':
+          case "validation-client":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createPrerenderParamsForClientSegment should not be called in validation contexts.',
+                "createPrerenderParamsForClientSegment should not be called in validation contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1099',
+                value: "E1099",
                 enumerable: false,
                 configurable: true,
               },
             );
             break;
-          case 'cache':
-          case 'private-cache':
-          case 'unstable-cache':
+          case "cache":
+          case "private-cache":
+          case "unstable-cache":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createPrerenderParamsForClientSegment should not be called in cache contexts.',
+                "createPrerenderParamsForClientSegment should not be called in cache contexts.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E734',
+                value: "E734",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'generate-static-params':
+          case "generate-static-params":
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'createPrerenderParamsForClientSegment should not be called inside generateStaticParams.',
+                "createPrerenderParamsForClientSegment should not be called inside generateStaticParams.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E1126',
+                value: "E1126",
                 enumerable: false,
                 configurable: true,
               },
             );
-          case 'prerender-ppr':
-          case 'prerender-legacy':
-          case 'prerender-runtime':
-          case 'request':
+          case "prerender-ppr":
+          case "prerender-legacy":
+          case "prerender-runtime":
+          case "request":
             break;
           default:
             workUnitStore;
@@ -5402,8 +5402,8 @@
             )
           : underlyingParams;
       switch (prerenderStore.type) {
-        case 'prerender':
-        case 'prerender-client': {
+        case "prerender":
+        case "prerender-client": {
           const fallbackParams = prerenderStore.fallbackRouteParams;
           if (fallbackParams) {
             for (const key in underlyingParams) {
@@ -5418,7 +5418,7 @@
           }
           break;
         }
-        case 'prerender-ppr': {
+        case "prerender-ppr": {
           const fallbackParams = prerenderStore.fallbackRouteParams;
           if (fallbackParams) {
             for (const key in underlyingParams) {
@@ -5434,7 +5434,7 @@
           }
           break;
         }
-        case 'prerender-legacy':
+        case "prerender-legacy":
           break;
         default:
           prerenderStore;
@@ -5484,7 +5484,7 @@
       isRuntimePrefetchable,
     ) {
       const { createExhaustiveParamsProxy } = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-samples.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-samples.js [app-client] (ecmascript)",
       );
       const declaredParams = new Set(Object.keys(validationSamples.params ?? {}));
       const proxiedUnderlying = createExhaustiveParamsProxy(
@@ -5500,7 +5500,7 @@
     }
     function createClientParamsInInstantValidation(underlyingParams, workStore, validationSamples) {
       const { createExhaustiveParamsProxy } = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-samples.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/instant-validation/instant-samples.js [app-client] (ecmascript)",
       );
       const declaredParams = new Set(
         Object.keys((validationSamples == null ? void 0 : validationSamples.params) ?? {}),
@@ -5533,7 +5533,7 @@
     const CachedParams = new WeakMap();
     const fallbackParamsProxyHandler = {
       get: function get(target, prop, receiver) {
-        if (prop === 'then' || prop === 'catch' || prop === 'finally') {
+        if (prop === "then" || prop === "catch" || prop === "finally") {
           const originalMethod = _reflect.ReflectAdapter.get(target, prop, receiver);
           return {
             [prop]: (...args) => {
@@ -5542,9 +5542,9 @@
                 store.abortController.abort(
                   Object.defineProperty(
                     new Error(`Accessed fallback \`params\` during prerendering.`),
-                    '__NEXT_ERROR_CODE',
+                    "__NEXT_ERROR_CODE",
                     {
-                      value: 'E691',
+                      value: "E691",
                       enumerable: false,
                       configurable: true,
                     },
@@ -5567,7 +5567,7 @@
         (0, _dynamicrenderingutils.makeHangingPromise)(
           prerenderStore.renderSignal,
           workStore.route,
-          '`params`',
+          "`params`",
         ),
         fallbackParamsProxyHandler,
       );
@@ -5595,14 +5595,14 @@
           if (fallbackParams.has(prop)) {
             Object.defineProperty(augmentedUnderlying, prop, {
               get() {
-                const expression = (0, _reflectutils.describeStringPropertyAccess)('params', prop);
+                const expression = (0, _reflectutils.describeStringPropertyAccess)("params", prop);
                 // In most dynamic APIs we also throw if `dynamic = "error"` however
                 // for params is only dynamic when we're generating a fallback shell
                 // and even when `dynamic = "error"` we still support generating dynamic
                 // fallback shells
                 // TODO remove this comment when cacheComponents is the default since there
                 // will be no `dynamic = "error"`
-                if (prerenderStore.type === 'prerender-ppr') {
+                if (prerenderStore.type === "prerender-ppr") {
                   // PPR Prerender (no cacheComponents)
                   (0, _dynamicrendering.postponeWithTracking)(
                     workStore.route,
@@ -5654,7 +5654,7 @@
           sharedParamsParent.then(() => resolve(underlyingParams), reject);
         });
         // @ts-expect-error
-        promise.displayName = 'params';
+        promise.displayName = "params";
         return instrumentParamsPromiseWithDevWarnings(underlyingParams, promise, workStore);
       }
       const cachedParams = CachedParams.get(underlyingParams);
@@ -5692,22 +5692,22 @@
       });
       return new Proxy(promise, {
         get(target, prop, receiver) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             if (proxiedProperties.has(prop)) {
-              const expression = (0, _reflectutils.describeStringPropertyAccess)('params', prop);
+              const expression = (0, _reflectutils.describeStringPropertyAccess)("params", prop);
               warnForSyncAccess(workStore.route, expression);
             }
           }
           return _reflect.ReflectAdapter.get(target, prop, receiver);
         },
         set(target, prop, value, receiver) {
-          if (typeof prop === 'string') {
+          if (typeof prop === "string") {
             proxiedProperties.delete(prop);
           }
           return _reflect.ReflectAdapter.set(target, prop, value, receiver);
         },
         ownKeys(target) {
-          const expression = '`...params` or similar expression';
+          const expression = "`...params` or similar expression";
           warnForSyncAccess(workStore.route, expression);
           return Reflect.ownKeys(target);
         },
@@ -5718,47 +5718,47 @@
       createParamsAccessError,
     );
     function createParamsAccessError(route, expression) {
-      const prefix = route ? `Route "${route}" ` : 'This route ';
+      const prefix = route ? `Route "${route}" ` : "This route ";
       return Object.defineProperty(
         new Error(
           `${prefix}used ${expression}. ` +
             `\`params\` is a Promise and must be unwrapped with \`await\` or \`React.use()\` before accessing its properties. ` +
             `Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis`,
         ),
-        '__NEXT_ERROR_CODE',
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E834',
+          value: "E834",
           enumerable: false,
           configurable: true,
         },
       );
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'ClientPageRoot', {
+    Object.defineProperty(exports, "ClientPageRoot", {
       enumerable: true,
       get: () => ClientPageRoot,
     });
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     const _routeparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)",
     );
     const _hooksclientcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)",
     );
     function ClientPageRoot({ Component, serverProvidedParams }) {
       let searchParams;
@@ -5782,15 +5782,15 @@
           (0, _react.use)(_hooksclientcontextsharedruntime.SearchParamsContext),
         );
       }
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         let clientSearchParams;
         let clientParams;
         const { createSearchParamsFromClient } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/search-params.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/search-params.js [app-client] (ecmascript)",
         );
         clientSearchParams = createSearchParamsFromClient(searchParams);
         const { createParamsFromClient } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/params.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/params.js [app-client] (ecmascript)",
         );
         clientParams = createParamsFromClient(params);
         return /*#__PURE__*/ (0, _jsxruntime.jsx)(Component, {
@@ -5799,11 +5799,11 @@
         });
       } else {
         const { createRenderSearchParamsFromClient } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/search-params.browser.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/search-params.browser.js [app-client] (ecmascript)",
         );
         const clientSearchParams = createRenderSearchParamsFromClient(searchParams);
         const { createRenderParamsFromClient } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.js [app-client] (ecmascript)",
         );
         const clientParams = createRenderParamsFromClient(params);
         return /*#__PURE__*/ (0, _jsxruntime.jsx)(Component, {
@@ -5813,36 +5813,36 @@
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'ClientSegmentRoot', {
+    Object.defineProperty(exports, "ClientSegmentRoot", {
       enumerable: true,
       get: () => ClientSegmentRoot,
     });
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     function ClientSegmentRoot({ Component, slots, serverProvidedParams }) {
       let params;
@@ -5856,9 +5856,9 @@
         );
         params = layoutRouterContext !== null ? layoutRouterContext.parentParams : {};
       }
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         const { createParamsFromClient } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/params.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/request/params.js [app-client] (ecmascript)",
         );
         const clientParams = createParamsFromClient(params);
         return /*#__PURE__*/ (0, _jsxruntime.jsx)(Component, {
@@ -5867,7 +5867,7 @@
         });
       } else {
         const { createRenderParamsFromClient } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request/params.browser.js [app-client] (ecmascript)",
         );
         const clientParams = createRenderParamsFromClient(params);
         return /*#__PURE__*/ (0, _jsxruntime.jsx)(Component, {
@@ -5877,37 +5877,37 @@
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'IconMark', {
+    Object.defineProperty(exports, "IconMark", {
       enumerable: true,
       get: () => IconMark,
     });
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const IconMark = () => {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         return null;
       }
-      return /*#__PURE__*/ (0, _jsxruntime.jsx)('meta', {
-        name: '\xabnxt-icon\xbb',
+      return /*#__PURE__*/ (0, _jsxruntime.jsx)("meta", {
+        name: "\xabnxt-icon\xbb",
       });
     };
   },

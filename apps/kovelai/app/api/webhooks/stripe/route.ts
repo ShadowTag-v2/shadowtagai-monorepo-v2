@@ -15,48 +15,48 @@
  * @see lib/billing/stripe-connect.ts
  */
 
-import { type NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import { type NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
 
 /** Structured server-side logger — Cloud Logging JSON compliant (Cor.30 R17). */
 function structuredLog(
   context: string,
   data: Record<string, unknown>,
-  severity: 'INFO' | 'WARNING' | 'ERROR' | 'DEBUG' = 'INFO',
+  severity: "INFO" | "WARNING" | "ERROR" | "DEBUG" = "INFO",
 ): void {
   const entry = {
     severity,
     timestamp: new Date().toISOString(),
     message: context,
     context,
-    serviceContext: { service: 'kovelai-stripe-webhook', version: '1.0.0' },
+    serviceContext: { service: "kovelai-stripe-webhook", version: "1.0.0" },
     ...data,
   };
   process.stdout.write(`${JSON.stringify(entry)}\n`);
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
-  apiVersion: '2025-03-31.basil',
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
+  apiVersion: "2025-03-31.basil",
 });
 
-const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? '';
+const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? "";
 
 // ─── Tier Mapping ───────────────────────────────────────────────────
 
 const PRICE_TO_TIER: Record<string, string> = {
-  price_1TNKSREHnWpykeMiRMDlVgLl: 'pro_monthly',
-  price_1TNKSjEHnWpykeMi0S9GCVjy: 'pro_annual',
-  price_1TNKSREHnWpykeMi8mrDf4rI: 'enterprise',
+  price_1TNKSREHnWpykeMiRMDlVgLl: "pro_monthly",
+  price_1TNKSjEHnWpykeMi0S9GCVjy: "pro_annual",
+  price_1TNKSREHnWpykeMi8mrDf4rI: "enterprise",
 };
 
 // ─── Main Handler ───────────────────────────────────────────────────
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const body = await req.text();
-  const signature = req.headers.get('stripe-signature');
+  const signature = req.headers.get("stripe-signature");
 
   if (!signature || !WEBHOOK_SECRET) {
-    return NextResponse.json({ error: 'Missing signature' }, { status: 400 });
+    return NextResponse.json({ error: "Missing signature" }, { status: 400 });
   }
 
   let event: Stripe.Event;
@@ -64,8 +64,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     event = stripe.webhooks.constructEvent(body, signature, WEBHOOK_SECRET);
   } catch (err) {
-    const _message = err instanceof Error ? err.message : 'Unknown';
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+    const _message = err instanceof Error ? err.message : "Unknown";
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
   // Idempotency: Check if event already processed
@@ -77,30 +77,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   try {
     switch (event.type) {
-      case 'checkout.session.completed':
+      case "checkout.session.completed":
         await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
         break;
 
-      case 'customer.subscription.updated':
+      case "customer.subscription.updated":
         await handleSubscriptionUpdated(event.data.object as Stripe.Subscription);
         break;
 
-      case 'customer.subscription.deleted':
+      case "customer.subscription.deleted":
         await handleSubscriptionDeleted(event.data.object as Stripe.Subscription);
         break;
 
-      case 'account.updated':
+      case "account.updated":
         await handleAccountUpdated(event.data.object as Stripe.Account);
         break;
 
-      case 'invoice.payment_failed':
+      case "invoice.payment_failed":
         await handlePaymentFailed(event.data.object as Stripe.Invoice);
         break;
 
       default:
-        structuredLog('STRIPE_WEBHOOK', {
-          level: 'info',
-          message: 'Unhandled event type',
+        structuredLog("STRIPE_WEBHOOK", {
+          level: "info",
+          message: "Unhandled event type",
           eventType: event.type,
         });
     }
@@ -108,7 +108,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     await markProcessed(eventId);
     return NextResponse.json({ received: true });
   } catch (_err) {
-    return NextResponse.json({ error: 'Handler failed' }, { status: 500 });
+    return NextResponse.json({ error: "Handler failed" }, { status: 500 });
   }
 }
 
@@ -122,12 +122,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
     return;
   }
 
-  structuredLog('STRIPE_CHECKOUT', { level: 'info', firmId, clientEmail });
+  structuredLog("STRIPE_CHECKOUT", { level: "info", firmId, clientEmail });
 
   // Provision client access in the firm's tenant
   await provisionClient({
     firmId,
-    clientEmail: clientEmail ?? '',
+    clientEmail: clientEmail ?? "",
     subscriptionId: session.subscription as string,
     stripeCustomerId: session.customer as string,
   });
@@ -136,16 +136,16 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription): Promise<void> {
   const firmId = subscription.metadata?.firmId;
   const priceId = subscription.items?.data?.[0]?.price?.id;
-  const newTier = priceId ? (PRICE_TO_TIER[priceId] ?? 'unknown') : 'unknown';
+  const newTier = priceId ? (PRICE_TO_TIER[priceId] ?? "unknown") : "unknown";
 
-  structuredLog('STRIPE_SUBSCRIPTION_UPDATE', {
-    level: 'info',
+  structuredLog("STRIPE_SUBSCRIPTION_UPDATE", {
+    level: "info",
     firmId,
     newTier,
     status: subscription.status,
   });
 
-  if (firmId && subscription.status === 'active') {
+  if (firmId && subscription.status === "active") {
     await updateTenantTier(firmId, newTier);
   }
 }
@@ -153,7 +153,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription): Pro
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription): Promise<void> {
   const firmId = subscription.metadata?.firmId;
 
-  structuredLog('STRIPE_SUBSCRIPTION_DELETE', { level: 'info', firmId });
+  structuredLog("STRIPE_SUBSCRIPTION_DELETE", { level: "info", firmId });
 
   if (firmId) {
     await deactivateTenant(firmId);
@@ -165,7 +165,7 @@ async function handleAccountUpdated(account: Stripe.Account): Promise<void> {
   const chargesEnabled = account.charges_enabled;
   const payoutsEnabled = account.payouts_enabled;
 
-  structuredLog('STRIPE_ACCOUNT_UPDATE', { level: 'info', firmId, chargesEnabled, payoutsEnabled });
+  structuredLog("STRIPE_ACCOUNT_UPDATE", { level: "info", firmId, chargesEnabled, payoutsEnabled });
 
   if (firmId) {
     await updateConnectStatus(firmId, {
@@ -177,11 +177,11 @@ async function handleAccountUpdated(account: Stripe.Account): Promise<void> {
 }
 
 async function handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
-  const firmId = invoice.metadata?.firmId ?? '';
-  const customerEmail = typeof invoice.customer_email === 'string' ? invoice.customer_email : '';
+  const firmId = invoice.metadata?.firmId ?? "";
+  const customerEmail = typeof invoice.customer_email === "string" ? invoice.customer_email : "";
   const amountDue = invoice.amount_due;
 
-  structuredLog('STRIPE_PAYMENT_FAILED', { level: 'warn', firmId, amountDue });
+  structuredLog("STRIPE_PAYMENT_FAILED", { level: "warn", firmId, amountDue });
 
   if (firmId) {
     await notifyPaymentFailure(firmId, customerEmail, amountDue);

@@ -4,16 +4,16 @@
  * Demonstrates the embedded guard validation architecture
  */
 
-import TDDRedPhaseAgent from './tdd-red-phase-agent';
+import TDDRedPhaseAgent from "./tdd-red-phase-agent";
 
 // ============================================================================
 // EXAMPLE 1: Simple Payment Processing Module
 // ============================================================================
 
 async function example1_PaymentProcessor() {
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('EXAMPLE 1: Payment Processor Module');
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("EXAMPLE 1: Payment Processor Module");
+  console.log("═══════════════════════════════════════════════════════\n");
 
   const agent = new TDDRedPhaseAgent();
 
@@ -37,7 +37,7 @@ Requirements:
 
   const result = await agent.execute(requirements);
 
-  console.log('Result:', {
+  console.log("Result:", {
     success: result.success,
     compliance_score: `${(result.compliance_report.compliance_score * 100).toFixed(1)}%`,
     total_tests: result.test_suite?.metadata.total_tests,
@@ -48,7 +48,7 @@ Requirements:
   });
 
   if (!result.success) {
-    console.log('\nViolations:');
+    console.log("\nViolations:");
     result.compliance_report.violations_found.forEach((v, i) => {
       console.log(`  ${i + 1}. [${v.severity}] ${v.rule_name}: ${v.description}`);
       if (v.suggestion) {
@@ -61,7 +61,7 @@ Requirements:
     console.log(`\nAudit trail: ${result.audit_file_path}`);
   }
 
-  console.log('\n');
+  console.log("\n");
 }
 
 // ============================================================================
@@ -69,9 +69,9 @@ Requirements:
 // ============================================================================
 
 async function example2_UserAuthentication() {
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('EXAMPLE 2: User Authentication Module');
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("EXAMPLE 2: User Authentication Module");
+  console.log("═══════════════════════════════════════════════════════\n");
 
   const agent = new TDDRedPhaseAgent();
 
@@ -96,7 +96,7 @@ Requirements:
 
   const result = await agent.execute(requirements);
 
-  console.log('Result:', {
+  console.log("Result:", {
     success: result.success,
     compliance_score: `${(result.compliance_report.compliance_score * 100).toFixed(1)}%`,
     total_tests: result.test_suite?.metadata.total_tests,
@@ -106,15 +106,15 @@ Requirements:
 
   // Show generated tests
   if (result.test_suite) {
-    console.log('\nGenerated Tests:');
+    console.log("\nGenerated Tests:");
     result.test_suite.tests.forEach((test, i) => {
       console.log(`  ${i + 1}. ${test.name} (${test.type})`);
       console.log(`     Purpose: ${test.purpose}`);
-      console.log(`     Edge cases: ${test.edge_cases_covered.join(', ')}`);
+      console.log(`     Edge cases: ${test.edge_cases_covered.join(", ")}`);
     });
   }
 
-  console.log('\n');
+  console.log("\n");
 }
 
 // ============================================================================
@@ -122,9 +122,9 @@ Requirements:
 // ============================================================================
 
 async function example3_EscalationDemo() {
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('EXAMPLE 3: Escalation Demo (Simulated Complex Module)');
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("EXAMPLE 3: Escalation Demo (Simulated Complex Module)");
+  console.log("═══════════════════════════════════════════════════════\n");
 
   // For demo purposes - in production, this would be a genuinely complex module
   // that might trigger escalation
@@ -140,7 +140,7 @@ Note: This is intentionally complex to demonstrate escalation paths
 
   const result = await agent.execute(requirements);
 
-  console.log('Result:', {
+  console.log("Result:", {
     success: result.success,
     escalation_triggered: result.compliance_report.escalation_triggered,
     escalation_reason: result.compliance_report.escalation_reason,
@@ -148,13 +148,13 @@ Note: This is intentionally complex to demonstrate escalation paths
   });
 
   if (result.compliance_report.escalation_triggered) {
-    console.log('\n⚠️  ESCALATION TRIGGERED');
+    console.log("\n⚠️  ESCALATION TRIGGERED");
     console.log(`Reason: ${result.compliance_report.escalation_reason}`);
-    console.log('Action: Manual review required');
+    console.log("Action: Manual review required");
     console.log(`Audit log: ${result.audit_file_path}`);
   }
 
-  console.log('\n');
+  console.log("\n");
 }
 
 // ============================================================================
@@ -162,45 +162,45 @@ Note: This is intentionally complex to demonstrate escalation paths
 // ============================================================================
 
 async function example4_BootstrapROI() {
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('EXAMPLE 4: Bootstrap ROI - Old vs New Architecture');
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("EXAMPLE 4: Bootstrap ROI - Old vs New Architecture");
+  console.log("═══════════════════════════════════════════════════════\n");
 
-  console.log('OLD ARCHITECTURE (3-agent circular dependency):');
-  console.log('├─ tdd-guard agent');
-  console.log('├─ tdd-red-phase agent');
-  console.log('├─ Coordination agent');
-  console.log('├─ Communication overhead: ~500ms per iteration');
-  console.log('├─ Failure modes: 3 (any agent can fail)');
-  console.log('├─ Debugging complexity: High (3 logs to correlate)');
-  console.log('└─ Total latency: ~2000ms (4 iterations × 500ms)\n');
+  console.log("OLD ARCHITECTURE (3-agent circular dependency):");
+  console.log("├─ tdd-guard agent");
+  console.log("├─ tdd-red-phase agent");
+  console.log("├─ Coordination agent");
+  console.log("├─ Communication overhead: ~500ms per iteration");
+  console.log("├─ Failure modes: 3 (any agent can fail)");
+  console.log("├─ Debugging complexity: High (3 logs to correlate)");
+  console.log("└─ Total latency: ~2000ms (4 iterations × 500ms)\n");
 
-  console.log('NEW ARCHITECTURE (1-agent, embedded validation):');
-  console.log('├─ tdd-red-phase agent (with embedded guard)');
-  console.log('├─ No external coordination');
-  console.log('├─ Communication overhead: 0ms (internal)');
-  console.log('├─ Failure modes: 1 (single agent)');
-  console.log('├─ Debugging complexity: Low (single audit log)');
-  console.log('└─ Total latency: ~500ms (internal loop)\n');
+  console.log("NEW ARCHITECTURE (1-agent, embedded validation):");
+  console.log("├─ tdd-red-phase agent (with embedded guard)");
+  console.log("├─ No external coordination");
+  console.log("├─ Communication overhead: 0ms (internal)");
+  console.log("├─ Failure modes: 1 (single agent)");
+  console.log("├─ Debugging complexity: Low (single audit log)");
+  console.log("└─ Total latency: ~500ms (internal loop)\n");
 
-  console.log('ROI CALCULATION:');
-  console.log('├─ Latency reduction: 75% (2000ms → 500ms)');
-  console.log('├─ Complexity reduction: 67% (3 agents → 1 agent)');
-  console.log('├─ Maintenance cost: -60% (simpler debugging)');
-  console.log('├─ Same quality gate: 95% compliance maintained');
-  console.log('└─ Bootstrap ROI: ✓ JUSTIFIED (elegance + performance)\n');
+  console.log("ROI CALCULATION:");
+  console.log("├─ Latency reduction: 75% (2000ms → 500ms)");
+  console.log("├─ Complexity reduction: 67% (3 agents → 1 agent)");
+  console.log("├─ Maintenance cost: -60% (simpler debugging)");
+  console.log("├─ Same quality gate: 95% compliance maintained");
+  console.log("└─ Bootstrap ROI: ✓ JUSTIFIED (elegance + performance)\n");
 
   // Demonstrate actual execution
   const agent = new TDDRedPhaseAgent();
   const startTime = Date.now();
 
-  const result = await agent.execute('Module: QuickTest');
+  const result = await agent.execute("Module: QuickTest");
 
   const executionTime = Date.now() - startTime;
 
   console.log(`Actual execution time: ${executionTime}ms`);
-  console.log(`Judge 6 SLA (p99 ≤90ms): ${executionTime < 90 ? '✓ PASS' : '✗ FAIL'}`);
-  console.log('\n');
+  console.log(`Judge 6 SLA (p99 ≤90ms): ${executionTime < 90 ? "✓ PASS" : "✗ FAIL"}`);
+  console.log("\n");
 }
 
 // ============================================================================
@@ -208,28 +208,28 @@ async function example4_BootstrapROI() {
 // ============================================================================
 
 async function example5_CustomConfiguration() {
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('EXAMPLE 5: Custom Configuration Demo');
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("EXAMPLE 5: Custom Configuration Demo");
+  console.log("═══════════════════════════════════════════════════════\n");
 
-  console.log('Default Configuration:');
-  console.log('├─ Compliance threshold: 95%');
-  console.log('├─ Max iterations: 3');
-  console.log('├─ Timeout: 90s');
-  console.log('├─ Fail fast: 10 violations');
-  console.log('└─ Integration ratio: 80%\n');
+  console.log("Default Configuration:");
+  console.log("├─ Compliance threshold: 95%");
+  console.log("├─ Max iterations: 3");
+  console.log("├─ Timeout: 90s");
+  console.log("├─ Fail fast: 10 violations");
+  console.log("└─ Integration ratio: 80%\n");
 
-  console.log('To customize, edit: /src/config/tdd-compliance-rules.json\n');
+  console.log("To customize, edit: /src/config/tdd-compliance-rules.json\n");
 
-  console.log('Rule Weight Customization:');
-  console.log('├─ R1 (Coverage): 15% → Adjust for coverage priority');
-  console.log('├─ R10 (Integration): 10% → Adjust for unit vs integration');
-  console.log('└─ Total must sum to 100%\n');
+  console.log("Rule Weight Customization:");
+  console.log("├─ R1 (Coverage): 15% → Adjust for coverage priority");
+  console.log("├─ R10 (Integration): 10% → Adjust for unit vs integration");
+  console.log("└─ Total must sum to 100%\n");
 
-  console.log('Judge 6 Integration:');
-  console.log('├─ coverage_target: 98% (from Judge 6 doctrine)');
-  console.log('├─ latency_p99_ms: 90 (p99 ≤90ms SLA)');
-  console.log('└─ Auto-enforced in compliance validation\n');
+  console.log("Judge 6 Integration:");
+  console.log("├─ coverage_target: 98% (from Judge 6 doctrine)");
+  console.log("├─ latency_p99_ms: 90 (p99 ≤90ms SLA)");
+  console.log("└─ Auto-enforced in compliance validation\n");
 }
 
 // ============================================================================
@@ -237,12 +237,12 @@ async function example5_CustomConfiguration() {
 // ============================================================================
 
 async function runAllExamples() {
-  console.log('\n');
-  console.log('████████████████████████████████████████████████████████');
-  console.log('  TDD RED-PHASE AGENT - USAGE EXAMPLES');
-  console.log('  Embedded Guard Validation Architecture');
-  console.log('████████████████████████████████████████████████████████');
-  console.log('\n');
+  console.log("\n");
+  console.log("████████████████████████████████████████████████████████");
+  console.log("  TDD RED-PHASE AGENT - USAGE EXAMPLES");
+  console.log("  Embedded Guard Validation Architecture");
+  console.log("████████████████████████████████████████████████████████");
+  console.log("\n");
 
   await example1_PaymentProcessor();
   await example2_UserAuthentication();
@@ -250,9 +250,9 @@ async function runAllExamples() {
   await example4_BootstrapROI();
   await example5_CustomConfiguration();
 
-  console.log('════════════════════════════════════════════════════════');
-  console.log('All examples completed!');
-  console.log('════════════════════════════════════════════════════════\n');
+  console.log("════════════════════════════════════════════════════════");
+  console.log("All examples completed!");
+  console.log("════════════════════════════════════════════════════════\n");
 }
 
 // Run if executed directly

@@ -14,21 +14,21 @@
  * Container: max-w-[1140px] mx-auto (matches source)
  */
 
-import type React from 'react';
+import type React from "react";
 
 /* ─── Section Title ─── */
 function SectionTitle({
   children,
-  variant = 'dark',
+  variant = "dark",
 }: {
   children: React.ReactNode;
-  variant?: 'dark' | 'light';
+  variant?: "dark" | "light";
 }) {
   return (
     <h2
       className={`
         inline-block text-4xl font-bold mb-11 tracking-tight
-        ${variant === 'light' ? 'text-white' : 'text-gray-900'}
+        ${variant === "light" ? "text-white" : "text-gray-900"}
       `}
     >
       {children}
@@ -39,7 +39,7 @@ function SectionTitle({
 /* ─── Container ─── */
 function Container({
   children,
-  className = '',
+  className = "",
 }: {
   children: React.ReactNode;
   className?: string;
@@ -191,7 +191,7 @@ export default function UnusualChassis({
       </section>
 
       {/* ─── FOOTER: py-5, #291e44 ─── */}
-      <footer className="py-5 text-white/60 text-sm" style={{ backgroundColor: '#291e44' }}>
+      <footer className="py-5 text-white/60 text-sm" style={{ backgroundColor: "#291e44" }}>
         <Container className="flex items-center justify-between">
           {footerSlot ?? (
             <>

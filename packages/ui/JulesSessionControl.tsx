@@ -1,6 +1,6 @@
-import type React from 'react';
-import { useState } from 'react';
-import './jules-session.css';
+import type React from "react";
+import { useState } from "react";
+import "./jules-session.css";
 
 interface JulesSessionControlProps {
   sourceName: string;
@@ -12,27 +12,27 @@ interface JulesSessionControlProps {
 
 export const JulesSessionControl: React.FC<JulesSessionControlProps> = ({
   sourceName,
-  sessionName = 'Initializing...',
-  status = 'CONNECTING',
+  sessionName = "Initializing...",
+  status = "CONNECTING",
   onApprovePlan,
   onInteract,
 }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
-  const isPendingApproval = status === 'PENDING_APPROVAL';
-  const isActive = status === 'ACTIVE' || isPendingApproval;
+  const isPendingApproval = status === "PENDING_APPROVAL";
+  const isActive = status === "ACTIVE" || isPendingApproval;
 
   const handleInteract = () => {
     if (inputValue.trim() && onInteract) {
       onInteract(inputValue);
-      setInputValue('');
+      setInputValue("");
     }
   };
 
   const handleApprove = () => {
     if (onApprovePlan) {
-      onApprovePlan(inputValue || 'Plan approved via UI');
-      setInputValue('');
+      onApprovePlan(inputValue || "Plan approved via UI");
+      setInputValue("");
     }
   };
 
@@ -42,35 +42,35 @@ export const JulesSessionControl: React.FC<JulesSessionControlProps> = ({
 
       <div className="sovereign-card sovereign-glass">
         <div className="sovereign-label">Active Source</div>
-        <div style={{ color: '#ffffff', marginBottom: '1.5rem', fontFamily: 'monospace' }}>
+        <div style={{ color: "#ffffff", marginBottom: "1.5rem", fontFamily: "monospace" }}>
           {sourceName}
         </div>
 
         <div className="sovereign-label">Session Status</div>
         <div className="sovereign-active-state">
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "0.5rem" }}>
             <span
-              className={isActive ? 'sovereign-status' : ''}
+              className={isActive ? "sovereign-status" : ""}
               style={
                 !isActive
                   ? {
-                      display: 'inline-block',
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '50%',
-                      backgroundColor: '#ffb4ab',
-                      marginRight: '0.5rem',
+                      display: "inline-block",
+                      width: "8px",
+                      height: "8px",
+                      borderRadius: "50%",
+                      backgroundColor: "#ffb4ab",
+                      marginRight: "0.5rem",
                     }
                   : {}
               }
             ></span>
-            <span style={{ color: '#ffffff', fontWeight: 600 }}>{status}</span>
+            <span style={{ color: "#ffffff", fontWeight: 600 }}>{status}</span>
           </div>
-          <div style={{ fontSize: '0.875rem', fontFamily: 'monospace' }}>{sessionName}</div>
+          <div style={{ fontSize: "0.875rem", fontFamily: "monospace" }}>{sessionName}</div>
         </div>
       </div>
 
-      <div className="sovereign-card sovereign-glass" style={{ marginTop: '2rem' }}>
+      <div className="sovereign-card sovereign-glass" style={{ marginTop: "2rem" }}>
         <div className="sovereign-label">Command Interface</div>
         <input
           type="text"
@@ -78,19 +78,19 @@ export const JulesSessionControl: React.FC<JulesSessionControlProps> = ({
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Issue command or approval message..."
           style={{
-            width: '100%',
-            background: 'transparent',
-            border: 'none',
-            borderBottom: '1px solid var(--sovereign-outline-variant)',
-            color: '#ffffff',
-            padding: '0.75rem 0',
-            fontFamily: 'var(--font-space-grotesk)',
-            outline: 'none',
-            marginBottom: '1.5rem',
+            width: "100%",
+            background: "transparent",
+            border: "none",
+            borderBottom: "1px solid var(--sovereign-outline-variant)",
+            color: "#ffffff",
+            padding: "0.75rem 0",
+            fontFamily: "var(--font-space-grotesk)",
+            outline: "none",
+            marginBottom: "1.5rem",
           }}
         />
 
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div style={{ display: "flex", gap: "1rem" }}>
           <button
             type="button"
             className="sovereign-btn-primary"

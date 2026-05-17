@@ -12,9 +12,9 @@
  * @see arXiv:2512.14982 — Prompt Repetition applied to token validation
  */
 
-import { randomUUID } from 'node:crypto';
-import jwt from 'jsonwebtoken';
-import { z } from 'zod';
+import { randomUUID } from "node:crypto";
+import jwt from "jsonwebtoken";
+import { z } from "zod";
 
 // ─── Token Payload Schema ─────────────────────────────────────────────
 const SEUPayloadSchema = z.object({
@@ -23,8 +23,8 @@ const SEUPayloadSchema = z.object({
   sandbox_id: z.string().min(1),
   firm_id: z.string().uuid(),
   billing_tier_id: z.string(),
-  client_state: z.enum(['PROSPECTIVE', 'RETAINED', 'EVAPORATING']),
-  iss: z.literal('kovelai-seu'),
+  client_state: z.enum(["PROSPECTIVE", "RETAINED", "EVAPORATING"]),
+  iss: z.literal("kovelai-seu"),
 });
 
 type SEUPayload = z.infer<typeof SEUPayloadSchema>;
@@ -44,8 +44,8 @@ export function mintSEUProxyToken(
   sandboxId: string,
   sandboxIp: string,
   firmId: string,
-  tierId: string = 'oracle_partner',
-  clientState: 'PROSPECTIVE' | 'RETAINED' | 'EVAPORATING' = 'PROSPECTIVE',
+  tierId: string = "oracle_partner",
+  clientState: "PROSPECTIVE" | "RETAINED" | "EVAPORATING" = "PROSPECTIVE",
 ): string {
   const payload: SEUPayload = {
     jti: randomUUID(),
@@ -54,7 +54,7 @@ export function mintSEUProxyToken(
     firm_id: firmId,
     billing_tier_id: tierId,
     client_state: clientState,
-    iss: 'kovelai-seu',
+    iss: "kovelai-seu",
   };
 
   // Validate payload structure before signing
@@ -62,8 +62,8 @@ export function mintSEUProxyToken(
 
   // E: EPHEMERAL — dies precisely when the 24-hour bounded triage window closes
   return jwt.sign(payload, getProxySecret(), {
-    expiresIn: '24h',
-    algorithm: 'HS512',
+    expiresIn: "24h",
+    algorithm: "HS512",
   });
 }
 
@@ -86,14 +86,14 @@ export async function verifySEUToken(
 ): Promise<SEUPayload> {
   try {
     const decoded = jwt.verify(token, getProxySecret(), {
-      algorithms: ['HS512'],
-      issuer: 'kovelai-seu',
+      algorithms: ["HS512"],
+      issuer: "kovelai-seu",
     }) as SEUPayload;
 
     // S: SANDBOX-BOUND — reject if IP doesn't match the minted context
     if (decoded.allowed_ip !== requestIp) {
       throw new SEUViolationError(
-        'IP_MISMATCH',
+        "IP_MISMATCH",
         `Token bound to ${decoded.allowed_ip}, request from ${requestIp}`,
       );
     }
@@ -101,7 +101,7 @@ export async function verifySEUToken(
     // Context isolation — reject if sandbox ID doesn't match
     if (decoded.sandbox_id !== requestSandboxId) {
       throw new SEUViolationError(
-        'SANDBOX_MISMATCH',
+        "SANDBOX_MISMATCH",
         `Token bound to sandbox ${decoded.sandbox_id}, request from ${requestSandboxId}`,
       );
     }
@@ -110,9 +110,9 @@ export async function verifySEUToken(
   } catch (error) {
     if (error instanceof SEUViolationError) throw error;
     if (error instanceof jwt.TokenExpiredError) {
-      throw new SEUViolationError('EXPIRED', 'Ephemeral token has expired');
+      throw new SEUViolationError("EXPIRED", "Ephemeral token has expired");
     }
-    throw new SEUViolationError('INVALID', 'Token signature verification failed');
+    throw new SEUViolationError("INVALID", "Token signature verification failed");
   }
 }
 
@@ -131,15 +131,15 @@ export function isRevoked(jti: string): boolean {
 export class SEUViolationError extends Error {
   constructor(
     public readonly violationType:
-      | 'IP_MISMATCH'
-      | 'SANDBOX_MISMATCH'
-      | 'EXPIRED'
-      | 'INVALID'
-      | 'REVOKED',
+      | "IP_MISMATCH"
+      | "SANDBOX_MISMATCH"
+      | "EXPIRED"
+      | "INVALID"
+      | "REVOKED",
     message: string,
   ) {
     super(`[SEU VIOLATION: ${violationType}] ${message}`);
-    this.name = 'SEUViolationError';
+    this.name = "SEUViolationError";
   }
 }
 
@@ -147,7 +147,7 @@ export class SEUViolationError extends Error {
 function getProxySecret(): string {
   const secret = process.env.KOVELAI_PROXY_SECRET;
   if (!secret || secret.length < 32) {
-    throw new Error('[SEU FATAL] KOVELAI_PROXY_SECRET must be set and at least 32 characters');
+    throw new Error("[SEU FATAL] KOVELAI_PROXY_SECRET must be set and at least 32 characters");
   }
   return secret;
 }

@@ -7,18 +7,18 @@ import {
   type AgentExecutionResult,
   type AgentMetadata,
   BaseAgent,
-} from './base';
+} from "./base";
 
 export class SystemArchitect extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'System Architect',
+      name: "System Architect",
       description:
-        'Transforms messy codebases into clean, scalable systems. Your future self will thank you.',
+        "Transforms messy codebases into clean, scalable systems. Your future self will thank you.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '🏗️',
-      version: '1.0.0',
-      tags: ['architecture', 'design', 'scalability', 'patterns', 'refactoring'],
+      icon: "🏗️",
+      version: "1.0.0",
+      tags: ["architecture", "design", "scalability", "patterns", "refactoring"],
     };
   }
 
@@ -52,13 +52,13 @@ Think long-term. Build systems that scale to millions of users without rewriting
 export class CodeRefactorer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Code Refactorer',
+      name: "Code Refactorer",
       description:
-        'Cleans up that code you wrote at 3am. Makes it readable, fast, and maintainable.',
+        "Cleans up that code you wrote at 3am. Makes it readable, fast, and maintainable.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '✨',
-      version: '1.0.0',
-      tags: ['refactoring', 'code-quality', 'clean-code', 'optimization'],
+      icon: "✨",
+      version: "1.0.0",
+      tags: ["refactoring", "code-quality", "clean-code", "optimization"],
     };
   }
 
@@ -92,13 +92,13 @@ Make code self-documenting. If it's hard to understand, it's hard to maintain.`;
 export class APIBuilder extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'API Builder',
+      name: "API Builder",
       description:
-        'Creates beautiful APIs that developers actually want to use. Includes auth, rate limiting, docs.',
+        "Creates beautiful APIs that developers actually want to use. Includes auth, rate limiting, docs.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '🔌',
-      version: '1.0.0',
-      tags: ['api', 'rest', 'graphql', 'authentication', 'documentation'],
+      icon: "🔌",
+      version: "1.0.0",
+      tags: ["api", "rest", "graphql", "authentication", "documentation"],
     };
   }
 
@@ -132,13 +132,13 @@ Build APIs that developers love. Good docs and clear errors make all the differe
 export class DatabaseExpert extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Database Expert',
+      name: "Database Expert",
       description:
-        'Fixes those queries that take 30 seconds. Designs schemas that scale to millions.',
+        "Fixes those queries that take 30 seconds. Designs schemas that scale to millions.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '💾',
-      version: '1.0.0',
-      tags: ['database', 'sql', 'optimization', 'schema-design', 'performance'],
+      icon: "💾",
+      version: "1.0.0",
+      tags: ["database", "sql", "optimization", "schema-design", "performance"],
     };
   }
 
@@ -172,13 +172,13 @@ A slow database kills user experience. Every query should be fast, even with mil
 export class IntegrationMaster extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Integration Master',
+      name: "Integration Master",
       description:
-        'Connects your app to any service. Handles auth flows, webhooks, and retries like magic.',
+        "Connects your app to any service. Handles auth flows, webhooks, and retries like magic.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '🔗',
-      version: '1.0.0',
-      tags: ['integration', 'api', 'webhooks', 'oauth', 'third-party'],
+      icon: "🔗",
+      version: "1.0.0",
+      tags: ["integration", "api", "webhooks", "oauth", "third-party"],
     };
   }
 
@@ -212,13 +212,13 @@ External services fail. Build integrations that handle failures gracefully and r
 export class MobileOptimizer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Mobile Optimizer',
+      name: "Mobile Optimizer",
       description:
-        'Makes your web app feel native on phones. Adds offline support, PWA features, touch gestures.',
+        "Makes your web app feel native on phones. Adds offline support, PWA features, touch gestures.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '📱',
-      version: '1.0.0',
-      tags: ['mobile', 'pwa', 'responsive', 'offline', 'touch'],
+      icon: "📱",
+      version: "1.0.0",
+      tags: ["mobile", "pwa", "responsive", "offline", "touch"],
     };
   }
 
@@ -252,13 +252,13 @@ Mobile users are your largest audience. Make it feel native, not like a desktop 
 export class PerformanceEngineer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Performance Engineer',
+      name: "Performance Engineer",
       description:
-        'Finds the 5 lines making your app slow and fixes them. Implements caching that actually works.',
+        "Finds the 5 lines making your app slow and fixes them. Implements caching that actually works.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '⚡',
-      version: '1.0.0',
-      tags: ['performance', 'optimization', 'caching', 'profiling', 'speed'],
+      icon: "⚡",
+      version: "1.0.0",
+      tags: ["performance", "optimization", "caching", "profiling", "speed"],
     };
   }
 
@@ -292,13 +292,13 @@ Users abandon slow apps. Find the bottlenecks, fix them, measure the impact.`;
 export class AccessibilityPro extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Accessibility Pro',
+      name: "Accessibility Pro",
       description:
-        'Makes your app work for everyone. Screen readers, keyboard nav, WCAG compliance without the pain.',
+        "Makes your app work for everyone. Screen readers, keyboard nav, WCAG compliance without the pain.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '♿',
-      version: '1.0.0',
-      tags: ['accessibility', 'a11y', 'wcag', 'inclusive', 'aria'],
+      icon: "♿",
+      version: "1.0.0",
+      tags: ["accessibility", "a11y", "wcag", "inclusive", "aria"],
     };
   }
 

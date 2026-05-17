@@ -14,7 +14,7 @@
  * @see Trust Service Criteria (TSC): CC6.1, CC6.3, CC6.6, CC7.2
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Evidence Record ────────────────────────────────────────────────
 
@@ -24,8 +24,8 @@ export const EvidenceRecordSchema = z.object({
   title: z.string(),
   description: z.string(),
   collectedAt: z.string().datetime(),
-  collectedBy: z.string().default('automated'),
-  status: z.enum(['PASS', 'FAIL', 'PARTIAL', 'NOT_APPLICABLE']),
+  collectedBy: z.string().default("automated"),
+  status: z.enum(["PASS", "FAIL", "PARTIAL", "NOT_APPLICABLE"]),
   evidence: z.union([z.string(), z.record(z.unknown())]),
   artifacts: z.array(z.string()).default([]),
   notes: z.string().optional(),
@@ -42,13 +42,13 @@ export type EvidenceRecord = z.infer<typeof EvidenceRecordSchema>;
 export function collectAccessControlEvidence(): EvidenceRecord {
   const serviceAccounts = [
     {
-      sa: 'counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com',
-      roles: ['roles/run.invoker', 'roles/firestore.user', 'roles/secretmanager.secretAccessor'],
+      sa: "counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com",
+      roles: ["roles/run.invoker", "roles/firestore.user", "roles/secretmanager.secretAccessor"],
       leastPrivilege: true,
     },
     {
-      sa: 'counselconduit-staging-sa@shadowtag-omega-v4.iam.gserviceaccount.com',
-      roles: ['roles/run.invoker', 'roles/firestore.user'],
+      sa: "counselconduit-staging-sa@shadowtag-omega-v4.iam.gserviceaccount.com",
+      roles: ["roles/run.invoker", "roles/firestore.user"],
       leastPrivilege: true,
     },
   ];
@@ -57,14 +57,14 @@ export function collectAccessControlEvidence(): EvidenceRecord {
 
   return {
     id: crypto.randomUUID(),
-    controlId: 'CC6.1',
-    title: 'Logical Access Controls — Service Account Inventory',
-    description: 'Verification that all service accounts follow least-privilege principle.',
+    controlId: "CC6.1",
+    title: "Logical Access Controls — Service Account Inventory",
+    description: "Verification that all service accounts follow least-privilege principle.",
     collectedAt: new Date().toISOString(),
-    collectedBy: 'automated',
-    status: allLeastPrivilege ? 'PASS' : 'FAIL',
+    collectedBy: "automated",
+    status: allLeastPrivilege ? "PASS" : "FAIL",
     evidence: { serviceAccounts },
-    artifacts: ['iam-policy-bindings.json'],
+    artifacts: ["iam-policy-bindings.json"],
   };
 }
 
@@ -75,19 +75,19 @@ export function collectAccessControlEvidence(): EvidenceRecord {
 export function collectEncryptionEvidence(): EvidenceRecord {
   return {
     id: crypto.randomUUID(),
-    controlId: 'CC6.3',
-    title: 'Encryption at Rest — GCP Native',
+    controlId: "CC6.3",
+    title: "Encryption at Rest — GCP Native",
     description:
-      'Firestore uses AES-256 at rest by default. Secret Manager uses Google-managed encryption keys.',
+      "Firestore uses AES-256 at rest by default. Secret Manager uses Google-managed encryption keys.",
     collectedAt: new Date().toISOString(),
-    collectedBy: 'automated',
-    status: 'PASS',
+    collectedBy: "automated",
+    status: "PASS",
     evidence: {
-      firestore: { encryption: 'AES-256', keyManagement: 'Google-managed', database: '(default)' },
-      secretManager: { encryption: 'AES-256', keyManagement: 'Google-managed' },
-      byokKeys: { encryption: 'AES-256-GCM (client-side)', storage: 'GCP Secret Manager' },
+      firestore: { encryption: "AES-256", keyManagement: "Google-managed", database: "(default)" },
+      secretManager: { encryption: "AES-256", keyManagement: "Google-managed" },
+      byokKeys: { encryption: "AES-256-GCM (client-side)", storage: "GCP Secret Manager" },
     },
-    artifacts: ['firestore-database-config.json'],
+    artifacts: ["firestore-database-config.json"],
   };
 }
 
@@ -98,20 +98,20 @@ export function collectEncryptionEvidence(): EvidenceRecord {
 export function collectRetentionEvidence(): EvidenceRecord {
   return {
     id: crypto.randomUUID(),
-    controlId: 'CC6.6',
-    title: 'Data Retention — GDPR 30-Day TTL',
-    description: 'Expired sessions purged by Cloud Tasks on a daily schedule.',
+    controlId: "CC6.6",
+    title: "Data Retention — GDPR 30-Day TTL",
+    description: "Expired sessions purged by Cloud Tasks on a daily schedule.",
     collectedAt: new Date().toISOString(),
-    collectedBy: 'automated',
-    status: 'PASS',
+    collectedBy: "automated",
+    status: "PASS",
     evidence: {
-      retentionPolicy: '30 days from last activity',
-      purgeSchedule: 'Daily at 02:00 UTC via Cloud Tasks',
-      purgeEndpoint: '/api/internal/gdpr-ttl',
-      purgeAuth: 'OIDC token (Cloud Tasks SA)',
-      collections: ['sessions', 'transcripts', 'search_logs'],
+      retentionPolicy: "30 days from last activity",
+      purgeSchedule: "Daily at 02:00 UTC via Cloud Tasks",
+      purgeEndpoint: "/api/internal/gdpr-ttl",
+      purgeAuth: "OIDC token (Cloud Tasks SA)",
+      collections: ["sessions", "transcripts", "search_logs"],
     },
-    artifacts: ['cloud-tasks-schedule.json', 'gdpr-ttl-route.ts'],
+    artifacts: ["cloud-tasks-schedule.json", "gdpr-ttl-route.ts"],
   };
 }
 
@@ -122,33 +122,33 @@ export function collectRetentionEvidence(): EvidenceRecord {
 export function collectMonitoringEvidence(): EvidenceRecord {
   return {
     id: crypto.randomUUID(),
-    controlId: 'CC7.2',
-    title: 'Monitoring — Rate Limiting & Audit Logging',
-    description: 'All API routes rate-limited. All MCP tool calls logged with ATP risk tier.',
+    controlId: "CC7.2",
+    title: "Monitoring — Rate Limiting & Audit Logging",
+    description: "All API routes rate-limited. All MCP tool calls logged with ATP risk tier.",
     collectedAt: new Date().toISOString(),
-    collectedBy: 'automated',
-    status: 'PASS',
+    collectedBy: "automated",
+    status: "PASS",
     evidence: {
       rateLimiting: {
-        global: '30 req/min per IP',
-        privilegedSearch: '10 req/min per IP',
-        murderBoard: '5 req/min per IP',
-        warRoomStream: '5 req/min per IP',
-        byok: '20 req/min per IP',
+        global: "30 req/min per IP",
+        privilegedSearch: "10 req/min per IP",
+        murderBoard: "5 req/min per IP",
+        warRoomStream: "5 req/min per IP",
+        byok: "20 req/min per IP",
       },
       auditLogging: {
         mcpInterceptor: true,
-        riskTiers: ['T1_SAFE', 'T2_MODERATE', 'T3_DESTRUCTIVE', 'T4_FORBIDDEN'],
+        riskTiers: ["T1_SAFE", "T2_MODERATE", "T3_DESTRUCTIVE", "T4_FORBIDDEN"],
         piiMasking: true,
-        storageBackend: 'Firestore',
+        storageBackend: "Firestore",
       },
       tokenBudgets: {
-        solo: '500K tokens/day, 10M tokens/month',
-        practice: '2M tokens/day, 50M tokens/month',
-        enterprise: '10M tokens/day, 250M tokens/month',
+        solo: "500K tokens/day, 10M tokens/month",
+        practice: "2M tokens/day, 50M tokens/month",
+        enterprise: "10M tokens/day, 250M tokens/month",
       },
     },
-    artifacts: ['rate-limiter.ts', 'mcp-interceptor.ts', 'token-budget.ts'],
+    artifacts: ["rate-limiter.ts", "mcp-interceptor.ts", "token-budget.ts"],
   };
 }
 
@@ -171,8 +171,8 @@ export function collectAllEvidence(): {
     collectMonitoringEvidence(),
   ];
 
-  const passed = records.filter((r) => r.status === 'PASS').length;
-  const failed = records.filter((r) => r.status === 'FAIL').length;
+  const passed = records.filter((r) => r.status === "PASS").length;
+  const failed = records.filter((r) => r.status === "FAIL").length;
 
   return {
     collectedAt: new Date().toISOString(),

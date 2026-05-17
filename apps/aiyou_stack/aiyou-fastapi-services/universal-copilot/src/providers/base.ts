@@ -2,7 +2,7 @@
  * Base provider interface for LLM providers
  */
 
-import type { CopilotRequest, Patch, ProviderConfig } from '../core/schema.js';
+import type { CopilotRequest, Patch, ProviderConfig } from "../core/schema.js";
 
 /**
  * Abstract base class for all LLM providers

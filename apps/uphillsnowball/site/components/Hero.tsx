@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 /**
  * UphillSnowball Hero - Kinetic Reversal
@@ -14,13 +14,13 @@ export default function Hero() {
   // Track scroll progress within the container for physics-based parallax
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end start'],
+    offset: ["start start", "end start"],
   });
 
   // Calculate the sphere's upward trajectory along the vector
   // As user scrolls down, sphere moves UP and to the RIGHT
-  const sphereX = useTransform(scrollYProgress, [0, 1], ['0%', '150%']);
-  const sphereY = useTransform(scrollYProgress, [0, 1], ['0%', '-150%']);
+  const sphereX = useTransform(scrollYProgress, [0, 1], ["0%", "150%"]);
+  const sphereY = useTransform(scrollYProgress, [0, 1], ["0%", "-150%"]);
   const sphereRotation = useTransform(scrollYProgress, [0, 1], [0, 720]);
 
   // Compounding mass effect
@@ -51,7 +51,7 @@ export default function Hero() {
             rotate: sphereRotation,
             scale: sphereScale,
           }}
-          initial={{ x: '-20vw', y: '20vh' }}
+          initial={{ x: "-20vw", y: "20vh" }}
         >
           {/* Frosted Glass Effect using atmospheric-glass hex tokens */}
           <div className="w-full h-full rounded-full backdrop-blur-xl bg-[#FAFAFA]/10 border border-[#FAFAFA]/20 shadow-[0_0_40px_rgba(250,250,250,0.1),inset_0_0_20px_rgba(250,250,250,0.2)] flex items-center justify-center overflow-hidden relative">
@@ -60,7 +60,7 @@ export default function Hero() {
             <motion.div
               className="w-1/2 h-1/2 rounded-full bg-gradient-to-br from-[#FAFAFA] to-transparent opacity-30 blur-md"
               animate={{ rotate: 360 }}
-              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             />
           </div>
         </motion.div>

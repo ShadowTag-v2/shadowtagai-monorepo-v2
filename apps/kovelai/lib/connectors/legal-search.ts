@@ -15,7 +15,7 @@
  * @see lib/auth/seu-token.ts — Firm-scoped access
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Unified Types ──────────────────────────────────────────────────
 
@@ -27,7 +27,7 @@ export const LegalCitationSchema = z.object({
   dateDecided: z.string(),
   snippet: z.string(),
   url: z.string().url().optional(),
-  source: z.enum(['westlaw', 'lexisnexis', 'google_scholar', 'courtlistener']),
+  source: z.enum(["westlaw", "lexisnexis", "google_scholar", "courtlistener"]),
   relevanceScore: z.number().min(0).max(1),
 });
 
@@ -37,7 +37,7 @@ export interface LegalSearchQuery {
   query: string;
   jurisdiction?: string;
   dateRange?: { start: string; end: string };
-  courtLevel?: 'supreme' | 'circuit' | 'district' | 'state' | 'all';
+  courtLevel?: "supreme" | "circuit" | "district" | "state" | "all";
   maxResults?: number;
 }
 
@@ -59,8 +59,8 @@ interface LegalSearchProvider {
 // ─── Westlaw Connector ──────────────────────────────────────────────
 
 class WestlawConnector implements LegalSearchProvider {
-  name = 'westlaw';
-  private baseUrl = 'https://api.thomsonreuters.com/westlaw/v1';
+  name = "westlaw";
+  private baseUrl = "https://api.thomsonreuters.com/westlaw/v1";
 
   async search(query: LegalSearchQuery, apiKey: string): Promise<LegalSearchResult> {
     const start = performance.now();
@@ -75,8 +75,8 @@ class WestlawConnector implements LegalSearchProvider {
     const response = await fetch(`${this.baseUrl}/search?${params}`, {
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'X-Client-Id': 'kovelai-privileged-search',
+        "Content-Type": "application/json",
+        "X-Client-Id": "kovelai-privileged-search",
       },
     });
 
@@ -96,12 +96,12 @@ class WestlawConnector implements LegalSearchProvider {
         dateDecided: r.date as string,
         snippet: r.snippet as string,
         url: r.url as string,
-        source: 'westlaw' as const,
+        source: "westlaw" as const,
         relevanceScore: (r.score as number) ?? 0.5,
       })),
       totalResults: data.totalResults ?? 0,
       searchTime,
-      provider: 'westlaw',
+      provider: "westlaw",
     };
   }
 
@@ -113,21 +113,21 @@ class WestlawConnector implements LegalSearchProvider {
 // ─── LexisNexis Connector ───────────────────────────────────────────
 
 class LexisNexisConnector implements LegalSearchProvider {
-  name = 'lexisnexis';
-  private baseUrl = 'https://api.lexisnexis.com/v1';
+  name = "lexisnexis";
+  private baseUrl = "https://api.lexisnexis.com/v1";
 
   async search(query: LegalSearchQuery, apiKey: string): Promise<LegalSearchResult> {
     const start = performance.now();
 
     const response = await fetch(`${this.baseUrl}/search`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         query: query.query,
-        sources: ['cases'],
+        sources: ["cases"],
         jurisdiction: query.jurisdiction,
         maxResults: query.maxResults ?? 10,
       }),
@@ -149,12 +149,12 @@ class LexisNexisConnector implements LegalSearchProvider {
         dateDecided: d.dateDecided as string,
         snippet: d.excerpt as string,
         url: d.url as string,
-        source: 'lexisnexis' as const,
+        source: "lexisnexis" as const,
         relevanceScore: (d.relevance as number) ?? 0.5,
       })),
       totalResults: data.total ?? 0,
       searchTime,
-      provider: 'lexisnexis',
+      provider: "lexisnexis",
     };
   }
 
@@ -166,22 +166,22 @@ class LexisNexisConnector implements LegalSearchProvider {
 // ─── CourtListener Connector (Free/RECAP) ───────────────────────────
 
 class CourtListenerConnector implements LegalSearchProvider {
-  name = 'courtlistener';
-  private baseUrl = 'https://www.courtlistener.com/api/rest/v4';
+  name = "courtlistener";
+  private baseUrl = "https://www.courtlistener.com/api/rest/v4";
 
   async search(query: LegalSearchQuery, _apiKey: string): Promise<LegalSearchResult> {
     const start = performance.now();
 
     const params = new URLSearchParams({
       q: query.query,
-      type: 'o', // opinions
-      order_by: 'score desc',
+      type: "o", // opinions
+      order_by: "score desc",
       ...(query.maxResults && { page_size: String(Math.min(query.maxResults, 20)) }),
     });
 
     const response = await fetch(`${this.baseUrl}/search/?${params}`, {
       headers: {
-        Authorization: `Token ${process.env.COURTLISTENER_API_KEY ?? ''}`,
+        Authorization: `Token ${process.env.COURTLISTENER_API_KEY ?? ""}`,
       },
     });
 
@@ -195,18 +195,18 @@ class CourtListenerConnector implements LegalSearchProvider {
     return {
       citations: (data.results || []).map((r: Record<string, unknown>) => ({
         caseId: String(r.id),
-        caseName: (r.caseName as string) ?? 'Untitled',
-        citation: (r.citation as string) ?? '',
-        court: (r.court as string) ?? '',
-        dateDecided: (r.dateFiled as string) ?? '',
-        snippet: ((r.snippet as string) ?? '').slice(0, 300),
-        url: `https://www.courtlistener.com${(r.absolute_url as string) ?? ''}`,
-        source: 'courtlistener' as const,
+        caseName: (r.caseName as string) ?? "Untitled",
+        citation: (r.citation as string) ?? "",
+        court: (r.court as string) ?? "",
+        dateDecided: (r.dateFiled as string) ?? "",
+        snippet: ((r.snippet as string) ?? "").slice(0, 300),
+        url: `https://www.courtlistener.com${(r.absolute_url as string) ?? ""}`,
+        source: "courtlistener" as const,
         relevanceScore: 0.5,
       })),
       totalResults: data.count ?? 0,
       searchTime,
-      provider: 'courtlistener',
+      provider: "courtlistener",
     };
   }
 
@@ -247,11 +247,11 @@ export async function searchLegalDatabases(
   }
 
   if (!provider) {
-    throw new Error('No legal search provider available');
+    throw new Error("No legal search provider available");
   }
 
   const apiKey =
-    effectiveKeys[provider.name] ?? process.env[`${provider.name.toUpperCase()}_API_KEY`] ?? '';
+    effectiveKeys[provider.name] ?? process.env[`${provider.name.toUpperCase()}_API_KEY`] ?? "";
 
   return provider.search(query, apiKey);
 }

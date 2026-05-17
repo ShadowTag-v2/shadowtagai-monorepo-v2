@@ -16,9 +16,9 @@
  *   --timeout <ms>    Navigation timeout in milliseconds (default: 60000)
  */
 
-const puppeteer = require('puppeteer');
-const fs = require('fs');
-const path = require('path');
+const puppeteer = require("puppeteer");
+const fs = require("fs");
+const path = require("path");
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -28,14 +28,14 @@ const getArg = (flag, defaultValue) => {
 };
 
 const config = {
-  url: getArg('--url', 'https://claude.ai'),
-  headless: args.includes('--headless'),
-  outputDir: getArg('--output', './extractions'),
-  timeout: parseInt(getArg('--timeout', '60000'), 10),
+  url: getArg("--url", "https://claude.ai"),
+  headless: args.includes("--headless"),
+  outputDir: getArg("--output", "./extractions"),
+  timeout: parseInt(getArg("--timeout", "60000"), 10),
 };
 
-console.log('🚀 Claude Web Conversation Extractor - Automated Runner');
-console.log('Configuration:', config);
+console.log("🚀 Claude Web Conversation Extractor - Automated Runner");
+console.log("Configuration:", config);
 
 (async () => {
   let browser;
@@ -47,14 +47,14 @@ console.log('Configuration:', config);
     }
 
     // Launch browser
-    console.log('🌐 Launching browser...');
+    console.log("🌐 Launching browser...");
     browser = await puppeteer.launch({
       headless: config.headless,
       args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
       ],
       defaultViewport: { width: 1280, height: 800 },
     });
@@ -63,74 +63,74 @@ console.log('Configuration:', config);
 
     // Set up download handling
     const client = await page.target().createCDPSession();
-    await client.send('Page.setDownloadBehavior', {
-      behavior: 'allow',
+    await client.send("Page.setDownloadBehavior", {
+      behavior: "allow",
       downloadPath: path.resolve(config.outputDir),
     });
 
     console.log(`📍 Navigating to ${config.url}...`);
     await page.goto(config.url, {
-      waitUntil: 'networkidle2',
+      waitUntil: "networkidle2",
       timeout: config.timeout,
     });
 
-    console.log('⏳ Waiting for page to fully load...');
+    console.log("⏳ Waiting for page to fully load...");
     await page.waitForTimeout(3000);
 
     // Check if user needs to log in
     const isLoggedIn = await page.evaluate(() => {
-      return !window.location.pathname.includes('/login');
+      return !window.location.pathname.includes("/login");
     });
 
     if (!isLoggedIn) {
-      console.log('🔐 Login required. Please log in to Claude in the browser window.');
-      console.log('⏳ Waiting for login... (checking every 5 seconds)');
+      console.log("🔐 Login required. Please log in to Claude in the browser window.");
+      console.log("⏳ Waiting for login... (checking every 5 seconds)");
 
       // Wait for user to log in (check every 5 seconds, max 5 minutes)
       let loggedIn = false;
       for (let i = 0; i < 60; i++) {
         await page.waitForTimeout(5000);
         loggedIn = await page.evaluate(() => {
-          return !window.location.pathname.includes('/login');
+          return !window.location.pathname.includes("/login");
         });
         if (loggedIn) {
-          console.log('✅ Login detected!');
+          console.log("✅ Login detected!");
           await page.waitForTimeout(3000); // Wait for app to load
           break;
         }
       }
 
       if (!loggedIn) {
-        throw new Error('Login timeout - please run the script again after logging in');
+        throw new Error("Login timeout - please run the script again after logging in");
       }
     } else {
-      console.log('✅ Already logged in');
+      console.log("✅ Already logged in");
     }
 
     // Read the extraction script
-    const extractionScript = fs.readFileSync(path.join(__dirname, 'extract_claude_web.js'), 'utf8');
+    const extractionScript = fs.readFileSync(path.join(__dirname, "extract_claude_web.js"), "utf8");
 
-    console.log('🔍 Executing extraction script...');
+    console.log("🔍 Executing extraction script...");
 
     // Execute the extraction and get the data
     const extractionData = await page.evaluate((script) => {
       return new Promise((resolve, reject) => {
         try {
           (async function extractClaudeWebConversations() {
-            const platform = window.location.hostname.includes('code.claude.com')
-              ? 'claude-code-web'
-              : 'claude-ai-web';
+            const platform = window.location.hostname.includes("code.claude.com")
+              ? "claude-code-web"
+              : "claude-ai-web";
 
             // 1. LocalStorage
             const localStorageData = {};
             for (let i = 0; i < localStorage.length; i++) {
               const key = localStorage.key(i);
               if (
-                key.includes('conversation') ||
-                key.includes('chat') ||
-                key.includes('message') ||
-                key.includes('claude') ||
-                key.includes('thread')
+                key.includes("conversation") ||
+                key.includes("chat") ||
+                key.includes("message") ||
+                key.includes("claude") ||
+                key.includes("thread")
               ) {
                 try {
                   localStorageData[key] = JSON.parse(localStorage.getItem(key));
@@ -152,12 +152,12 @@ console.log('Configuration:', config);
                 });
                 for (const storeName of Array.from(db.objectStoreNames)) {
                   if (
-                    storeName.includes('conversation') ||
-                    storeName.includes('chat') ||
-                    storeName.includes('message')
+                    storeName.includes("conversation") ||
+                    storeName.includes("chat") ||
+                    storeName.includes("message")
                   ) {
                     const data = await new Promise((res, rej) => {
-                      const tx = db.transaction(storeName, 'readonly');
+                      const tx = db.transaction(storeName, "readonly");
                       const req = tx.objectStore(storeName).getAll();
                       req.onsuccess = () => res(req.result);
                       req.onerror = () => rej(req.error);
@@ -174,7 +174,7 @@ console.log('Configuration:', config);
             // 3. API Fetch
             let apiConversations = [];
             try {
-              const resp = await fetch('/api/organizations/*/conversations');
+              const resp = await fetch("/api/organizations/*/conversations");
               if (resp.ok) apiConversations = await resp.json();
             } catch (e) {}
 
@@ -202,7 +202,7 @@ console.log('Configuration:', config);
 
     fs.writeFileSync(filepath, JSON.stringify(extractionData, null, 2));
 
-    console.log('✅ Extraction complete!');
+    console.log("✅ Extraction complete!");
     console.log(`📄 Data saved to: ${filepath}`);
     console.log(`📊 Summary:`);
     console.log(`   - Platform: ${extractionData.metadata.platform}`);
@@ -214,15 +214,15 @@ console.log('Configuration:', config);
       `   - IndexedDB stores: ${Object.keys(extractionData.sources.indexedDB.data).length}`,
     );
     console.log(
-      `   - API conversations: ${Array.isArray(extractionData.sources.api.conversations) ? extractionData.sources.api.conversations.length : 'N/A'}`,
+      `   - API conversations: ${Array.isArray(extractionData.sources.api.conversations) ? extractionData.sources.api.conversations.length : "N/A"}`,
     );
   } catch (error) {
-    console.error('❌ Error during extraction:', error.message);
+    console.error("❌ Error during extraction:", error.message);
     process.exit(1);
   } finally {
     if (browser) {
       await browser.close();
-      console.log('🔒 Browser closed');
+      console.log("🔒 Browser closed");
     }
   }
 })();

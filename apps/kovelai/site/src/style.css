@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /* ═══ KOVELAI DESIGN SYSTEM — Gold Edition ═══ */
 
@@ -268,7 +268,7 @@ a {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: url('/images/hero-bg.avif') center / cover no-repeat;
+  background: url("/images/hero-bg.avif") center / cover no-repeat;
   opacity: 0.25;
 }
 .hero-fade {
@@ -404,7 +404,7 @@ a {
 }
 /* SVG wireframe lines overlaid */
 .shield-outline::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 8%;
   clip-path: polygon(
@@ -422,7 +422,7 @@ a {
   border: 1px solid rgba(230, 196, 135, 0.15);
 }
 .shield-outline::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 18%;
   clip-path: polygon(
@@ -453,7 +453,7 @@ a {
   transform-origin: center;
 }
 .shield-inner::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 15%;
   left: 15%;
@@ -550,7 +550,7 @@ a {
   text-decoration: none;
 }
 .btn::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -1135,7 +1135,7 @@ a {
   display: none;
 }
 .faq-question::after {
-  content: '+';
+  content: "+";
   font-size: 1.25rem;
   font-weight: 300;
   color: var(--color-primary);

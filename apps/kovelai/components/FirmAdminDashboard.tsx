@@ -11,8 +11,8 @@
  *
  * Nag Protocol #19: Build firm admin dashboard
  */
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────
 interface FirmStats {
@@ -28,14 +28,14 @@ interface TeamMember {
   id: string;
   name: string;
   email: string;
-  role: 'admin' | 'attorney' | 'paralegal' | 'intake';
-  status: 'active' | 'invited' | 'suspended';
+  role: "admin" | "attorney" | "paralegal" | "intake";
+  status: "active" | "invited" | "suspended";
   lastActive: string;
   casesAssigned: number;
 }
 
 interface BillingStatus {
-  tier: 'solo' | 'practice' | 'enterprise';
+  tier: "solo" | "practice" | "enterprise";
   stripeConnected: boolean;
   monthlySpend: number;
   nextBillingDate: string;
@@ -44,7 +44,7 @@ interface BillingStatus {
 }
 
 interface InsuranceStatus {
-  status: 'VERIFIED' | 'CONDITIONAL' | 'FAILED' | 'PENDING';
+  status: "VERIFIED" | "CONDITIONAL" | "FAILED" | "PENDING";
   carrier: string;
   coverage: number;
   expiryDate: string;
@@ -69,15 +69,15 @@ export default function FirmAdminDashboard({
   billing,
   insurance,
 }: FirmAdminDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'team' | 'billing' | 'compliance'>(
-    'overview',
+  const [activeTab, setActiveTab] = useState<"overview" | "team" | "billing" | "compliance">(
+    "overview",
   );
 
   const tabs = [
-    { key: 'overview' as const, label: 'Overview', icon: '📊' },
-    { key: 'team' as const, label: 'Team', icon: '👥' },
-    { key: 'billing' as const, label: 'Billing', icon: '💳' },
-    { key: 'compliance' as const, label: 'Compliance', icon: '🛡️' },
+    { key: "overview" as const, label: "Overview", icon: "📊" },
+    { key: "team" as const, label: "Team", icon: "👥" },
+    { key: "billing" as const, label: "Billing", icon: "💳" },
+    { key: "compliance" as const, label: "Compliance", icon: "🛡️" },
   ];
 
   return (
@@ -99,8 +99,8 @@ export default function FirmAdminDashboard({
                 onClick={() => setActiveTab(tab.key)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === tab.key
-                    ? 'bg-white text-black'
-                    : 'bg-slate-900 text-slate-400 hover:text-white'
+                    ? "bg-white text-black"
+                    : "bg-slate-900 text-slate-400 hover:text-white"
                 }`}
               >
                 {tab.icon} {tab.label}
@@ -112,7 +112,7 @@ export default function FirmAdminDashboard({
 
       <main className="max-w-7xl mx-auto px-8 py-8">
         {/* ─── Overview Tab ──────────────────────────────────────── */}
-        {activeTab === 'overview' && (
+        {activeTab === "overview" && (
           <div className="space-y-8">
             <div className="grid grid-cols-3 lg:grid-cols-6 gap-4">
               <StatCard label="Active Sessions" value={stats.activeSessions} />
@@ -140,11 +140,11 @@ export default function FirmAdminDashboard({
                 <div className="flex items-center gap-3 mb-3">
                   <span
                     className={`w-3 h-3 rounded-full ${
-                      billing.stripeConnected ? 'bg-green-500' : 'bg-red-500 animate-pulse'
+                      billing.stripeConnected ? "bg-green-500" : "bg-red-500 animate-pulse"
                     }`}
                   />
                   <span className="text-white font-medium">
-                    {billing.stripeConnected ? 'Stripe Connected' : 'Stripe Not Connected'}
+                    {billing.stripeConnected ? "Stripe Connected" : "Stripe Not Connected"}
                   </span>
                 </div>
                 <div className="text-slate-500 text-sm space-y-1">
@@ -152,7 +152,7 @@ export default function FirmAdminDashboard({
                     Tier: <span className="text-white uppercase">{billing.tier}</span>
                   </div>
                   <div>
-                    Monthly:{' '}
+                    Monthly:{" "}
                     <span className="text-white">${billing.monthlySpend.toLocaleString()}</span>
                   </div>
                   <div>
@@ -168,11 +168,11 @@ export default function FirmAdminDashboard({
                 <div className="flex items-center gap-3 mb-3">
                   <span
                     className={`w-3 h-3 rounded-full ${
-                      insurance.status === 'VERIFIED'
-                        ? 'bg-green-500'
-                        : insurance.status === 'CONDITIONAL'
-                          ? 'bg-yellow-500 animate-pulse'
-                          : 'bg-red-500 animate-pulse'
+                      insurance.status === "VERIFIED"
+                        ? "bg-green-500"
+                        : insurance.status === "CONDITIONAL"
+                          ? "bg-yellow-500 animate-pulse"
+                          : "bg-red-500 animate-pulse"
                     }`}
                   />
                   <span className="text-white font-medium">{insurance.status}</span>
@@ -182,13 +182,13 @@ export default function FirmAdminDashboard({
                     Carrier: <span className="text-white">{insurance.carrier}</span>
                   </div>
                   <div>
-                    Coverage:{' '}
+                    Coverage:{" "}
                     <span className="text-white">${insurance.coverage.toLocaleString()}</span>
                   </div>
                   <div>
-                    Expires in:{' '}
+                    Expires in:{" "}
                     <span
-                      className={insurance.daysUntilExpiry < 30 ? 'text-red-400' : 'text-white'}
+                      className={insurance.daysUntilExpiry < 30 ? "text-red-400" : "text-white"}
                     >
                       {insurance.daysUntilExpiry} days
                     </span>
@@ -200,7 +200,7 @@ export default function FirmAdminDashboard({
         )}
 
         {/* ─── Team Tab ──────────────────────────────────────────── */}
-        {activeTab === 'team' && (
+        {activeTab === "team" && (
           <div>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold">Team Members</h2>
@@ -241,11 +241,11 @@ export default function FirmAdminDashboard({
                       <td className="px-4 py-3">
                         <span
                           className={`px-2 py-0.5 rounded text-xs ${
-                            member.status === 'active'
-                              ? 'bg-green-900 text-green-300'
-                              : member.status === 'invited'
-                                ? 'bg-blue-900 text-blue-300'
-                                : 'bg-red-900 text-red-300'
+                            member.status === "active"
+                              ? "bg-green-900 text-green-300"
+                              : member.status === "invited"
+                                ? "bg-blue-900 text-blue-300"
+                                : "bg-red-900 text-red-300"
                           }`}
                         >
                           {member.status}
@@ -269,14 +269,14 @@ export default function FirmAdminDashboard({
         )}
 
         {/* ─── Billing Tab placeholder ───────────────────────────── */}
-        {activeTab === 'billing' && (
+        {activeTab === "billing" && (
           <div className="text-center text-slate-500 py-20 font-mono">
             Billing management panel — Stripe Connect integration active
           </div>
         )}
 
         {/* ─── Compliance Tab placeholder ────────────────────────── */}
-        {activeTab === 'compliance' && (
+        {activeTab === "compliance" && (
           <div className="text-center text-slate-500 py-20 font-mono">
             Compliance dashboard — GDPR TTL enforcement, Insurance, Bar compliance
           </div>
@@ -305,7 +305,7 @@ function StatCard({
       </div>
       <div
         className={`text-xl font-black ${
-          isWarning ? 'text-red-400' : isHighlight ? 'text-green-400' : 'text-white'
+          isWarning ? "text-red-400" : isHighlight ? "text-green-400" : "text-white"
         }`}
       >
         {value}

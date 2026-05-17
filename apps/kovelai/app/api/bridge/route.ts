@@ -14,22 +14,22 @@
  * @see CounselConduit: apps/counselconduit
  */
 
-import crypto from 'node:crypto';
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import crypto from "node:crypto";
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 /** Structured server-side logger — Cloud Logging JSON compliant (Cor.30 R17). */
 function structuredLog(
   context: string,
   data: Record<string, unknown>,
-  severity: 'INFO' | 'WARNING' | 'ERROR' | 'DEBUG' = 'INFO',
+  severity: "INFO" | "WARNING" | "ERROR" | "DEBUG" = "INFO",
 ): void {
   const entry = {
     severity,
     timestamp: new Date().toISOString(),
     message: context,
     context,
-    serviceContext: { service: 'kovelai-bridge', version: '1.0.0' },
+    serviceContext: { service: "kovelai-bridge", version: "1.0.0" },
     ...data,
   };
   process.stdout.write(`${JSON.stringify(entry)}\n`);
@@ -37,24 +37,24 @@ function structuredLog(
 
 // ─── Auth ───────────────────────────────────────────────────────────
 
-const BRIDGE_SECRET = process.env.COUNSELCONDUIT_BRIDGE_SECRET ?? '';
+const BRIDGE_SECRET = process.env.COUNSELCONDUIT_BRIDGE_SECRET ?? "";
 
 function verifyBridgeAuth(req: NextRequest, body: string): boolean {
-  const signature = req.headers.get('x-bridge-signature');
+  const signature = req.headers.get("x-bridge-signature");
   if (!signature || !BRIDGE_SECRET) return false;
 
-  const expected = crypto.createHmac('sha256', BRIDGE_SECRET).update(body).digest('hex');
+  const expected = crypto.createHmac("sha256", BRIDGE_SECRET).update(body).digest("hex");
 
-  return crypto.timingSafeEqual(Buffer.from(signature, 'hex'), Buffer.from(expected, 'hex'));
+  return crypto.timingSafeEqual(Buffer.from(signature, "hex"), Buffer.from(expected, "hex"));
 }
 
 // ─── Request Schemas ────────────────────────────────────────────────
 
 const ProvisionSchema = z.object({
-  action: z.literal('provision'),
+  action: z.literal("provision"),
   firmId: z.string().uuid(),
   firmName: z.string().min(1),
-  tier: z.enum(['solo', 'practice', 'enterprise']),
+  tier: z.enum(["solo", "practice", "enterprise"]),
   adminEmail: z.string().email(),
   stripeAccountId: z.string().optional(),
   maxSeats: z.number().int().min(1).default(5),
@@ -70,20 +70,20 @@ const ProvisionSchema = z.object({
 });
 
 const SyncTierSchema = z.object({
-  action: z.literal('sync-tier'),
+  action: z.literal("sync-tier"),
   firmId: z.string().uuid(),
-  newTier: z.enum(['solo', 'practice', 'enterprise']),
+  newTier: z.enum(["solo", "practice", "enterprise"]),
   previousTier: z.string(),
   effectiveDate: z.string().datetime(),
 });
 
 const HealthSchema = z.object({
-  action: z.literal('health'),
+  action: z.literal("health"),
   requestId: z.string().uuid(),
 });
 
 const AttorneyVerifySchema = z.object({
-  action: z.literal('attorney-verify'),
+  action: z.literal("attorney-verify"),
   barNumber: z.string().min(1),
   jurisdiction: z.string().min(1),
   firmId: z.string().uuid(),
@@ -96,30 +96,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // Verify HMAC signature
   if (!verifyBridgeAuth(req, bodyText)) {
-    return NextResponse.json({ error: 'Unauthorized bridge request' }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized bridge request" }, { status: 401 });
   }
 
   let body: unknown;
   try {
     body = JSON.parse(bodyText);
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
   const action = (body as Record<string, unknown>)?.action;
 
   try {
     switch (action) {
-      case 'provision':
+      case "provision":
         return handleProvision(ProvisionSchema.parse(body));
 
-      case 'sync-tier':
+      case "sync-tier":
         return handleSyncTier(SyncTierSchema.parse(body));
 
-      case 'health':
+      case "health":
         return handleHealth(HealthSchema.parse(body));
 
-      case 'attorney-verify':
+      case "attorney-verify":
         return handleAttorneyVerify(AttorneyVerifySchema.parse(body));
 
       default:
@@ -128,11 +128,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request', details: error.errors },
+        { error: "Invalid request", details: error.errors },
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: 'Bridge handler failed' }, { status: 500 });
+    return NextResponse.json({ error: "Bridge handler failed" }, { status: 500 });
   }
 }
 
@@ -148,7 +148,7 @@ function handleProvision(data: z.infer<typeof ProvisionSchema>): NextResponse {
     stripeAccountId: data.stripeAccountId,
     maxSeats: data.maxSeats,
     features: data.features,
-    status: 'provisioning',
+    status: "provisioning",
     createdAt: new Date().toISOString(),
     kovelaiNamespace: `firms/${data.firmId}`,
     searchEndpoint: `/api/privileged-search`,
@@ -156,10 +156,10 @@ function handleProvision(data: z.infer<typeof ProvisionSchema>): NextResponse {
     oracleEndpoint: data.features.oracleMemo ? `/api/oracle/render` : null,
   };
 
-  structuredLog('BRIDGE_PROVISION', { level: 'info', firmId: data.firmId, tier: data.tier });
+  structuredLog("BRIDGE_PROVISION", { level: "info", firmId: data.firmId, tier: data.tier });
 
   return NextResponse.json({
-    status: 'provisioned',
+    status: "provisioned",
     tenant: tenantConfig,
     endpoints: {
       search: `${process.env.NEXT_PUBLIC_APP_URL}/api/privileged-search`,
@@ -176,15 +176,15 @@ function handleProvision(data: z.infer<typeof ProvisionSchema>): NextResponse {
 
 function handleSyncTier(data: z.infer<typeof SyncTierSchema>): NextResponse {
   // TODO: Wire to Firestore tier update
-  structuredLog('BRIDGE_TIER_SYNC', {
-    level: 'info',
+  structuredLog("BRIDGE_TIER_SYNC", {
+    level: "info",
     firmId: data.firmId,
     previousTier: data.previousTier,
     newTier: data.newTier,
   });
 
   return NextResponse.json({
-    status: 'synced',
+    status: "synced",
     firmId: data.firmId,
     tier: data.newTier,
     effectiveDate: data.effectiveDate,
@@ -193,10 +193,10 @@ function handleSyncTier(data: z.infer<typeof SyncTierSchema>): NextResponse {
 
 function handleHealth(data: z.infer<typeof HealthSchema>): NextResponse {
   return NextResponse.json({
-    status: 'healthy',
+    status: "healthy",
     requestId: data.requestId,
-    service: 'kovelai',
-    version: '1.0.0',
+    service: "kovelai",
+    version: "1.0.0",
     timestamp: new Date().toISOString(),
     uptime: process.uptime?.() ?? 0,
   });
@@ -204,17 +204,17 @@ function handleHealth(data: z.infer<typeof HealthSchema>): NextResponse {
 
 function handleAttorneyVerify(data: z.infer<typeof AttorneyVerifySchema>): NextResponse {
   // TODO: Wire to actual bar association verification API
-  structuredLog('BRIDGE_ATTORNEY_VERIFY', {
-    level: 'info',
+  structuredLog("BRIDGE_ATTORNEY_VERIFY", {
+    level: "info",
     jurisdiction: data.jurisdiction,
     firmId: data.firmId,
   });
 
   return NextResponse.json({
-    status: 'pending',
+    status: "pending",
     barNumber: data.barNumber,
     jurisdiction: data.jurisdiction,
     firmId: data.firmId,
-    message: 'Verification queued — real-time API integration pending.',
+    message: "Verification queued — real-time API integration pending.",
   });
 }

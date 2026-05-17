@@ -1,20 +1,20 @@
-import { Linkedin, ShieldCheck } from 'lucide-react';
+import { Linkedin, ShieldCheck } from "lucide-react";
 
 export default function TeamSection() {
   const founders = [
     {
-      name: 'Erik Hancock',
-      role: 'Principal Architect',
-      linkedin: 'https://linkedin.com/in/[LINKEDIN-ID]',
-      img: 'https://via.placeholder.com/150', // ACTION: Replace with real photo
-      bio: 'Ex-Google Cloud Principal. Built ShadowTag architecture.',
+      name: "Erik Hancock",
+      role: "Principal Architect",
+      linkedin: "https://linkedin.com/in/[LINKEDIN-ID]",
+      img: "https://via.placeholder.com/150", // ACTION: Replace with real photo
+      bio: "Ex-Google Cloud Principal. Built ShadowTag architecture.",
     },
     {
-      name: '[CO-FOUNDER NAME REQUIRED]',
-      role: 'Head of Governance',
-      linkedin: 'https://linkedin.com/in/[LINKEDIN-ID]',
-      img: 'https://via.placeholder.com/150', // ACTION: Replace with real photo
-      bio: 'Specialist in AI Safety and Sovereign Infrastructure.',
+      name: "[CO-FOUNDER NAME REQUIRED]",
+      role: "Head of Governance",
+      linkedin: "https://linkedin.com/in/[LINKEDIN-ID]",
+      img: "https://via.placeholder.com/150", // ACTION: Replace with real photo
+      bio: "Specialist in AI Safety and Sovereign Infrastructure.",
     },
   ];
 

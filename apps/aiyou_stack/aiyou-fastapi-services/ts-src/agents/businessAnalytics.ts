@@ -7,18 +7,18 @@ import {
   type AgentExecutionResult,
   type AgentMetadata,
   BaseAgent,
-} from './base';
+} from "./base";
 
 export class AnalyticsEngineer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Analytics Engineer',
+      name: "Analytics Engineer",
       description:
-        'Tracks what actually matters. Shows you user behavior, conversion funnels, and real insights.',
+        "Tracks what actually matters. Shows you user behavior, conversion funnels, and real insights.",
       category: AgentCategory.BUSINESS_ANALYTICS,
-      icon: '📊',
-      version: '1.0.0',
-      tags: ['analytics', 'metrics', 'tracking', 'insights', 'data'],
+      icon: "📊",
+      version: "1.0.0",
+      tags: ["analytics", "metrics", "tracking", "insights", "data"],
     };
   }
 
@@ -52,13 +52,13 @@ Track what moves the needle. Ignore vanity metrics, focus on actionable insights
 export class EmailAutomator extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Email Automator',
+      name: "Email Automator",
       description:
-        'Builds email flows that users actually open. Welcome series, re-engagement, transactional.',
+        "Builds email flows that users actually open. Welcome series, re-engagement, transactional.",
       category: AgentCategory.BUSINESS_ANALYTICS,
-      icon: '📧',
-      version: '1.0.0',
-      tags: ['email', 'automation', 'marketing', 'engagement', 'retention'],
+      icon: "📧",
+      version: "1.0.0",
+      tags: ["email", "automation", "marketing", "engagement", "retention"],
     };
   }
 
@@ -92,13 +92,13 @@ Email is still king for engagement. Make every message timely, relevant, and val
 export class SupportBuilder extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Support Builder',
+      name: "Support Builder",
       description:
-        'Creates help systems that reduce support tickets by 80%. FAQs, chat widgets, documentation.',
+        "Creates help systems that reduce support tickets by 80%. FAQs, chat widgets, documentation.",
       category: AgentCategory.BUSINESS_ANALYTICS,
-      icon: '💬',
-      version: '1.0.0',
-      tags: ['support', 'help', 'documentation', 'chat', 'knowledge-base'],
+      icon: "💬",
+      version: "1.0.0",
+      tags: ["support", "help", "documentation", "chat", "knowledge-base"],
     };
   }
 
@@ -132,12 +132,12 @@ The best support is self-service. Help users help themselves before they need to
 export class ComplianceExpert extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Compliance Expert',
-      description: 'Handles GDPR, CCPA, cookies. Keeps you legal without the lawyer bills.',
+      name: "Compliance Expert",
+      description: "Handles GDPR, CCPA, cookies. Keeps you legal without the lawyer bills.",
       category: AgentCategory.BUSINESS_ANALYTICS,
-      icon: '⚖️',
-      version: '1.0.0',
-      tags: ['compliance', 'gdpr', 'ccpa', 'privacy', 'legal'],
+      icon: "⚖️",
+      version: "1.0.0",
+      tags: ["compliance", "gdpr", "ccpa", "privacy", "legal"],
     };
   }
 
@@ -171,13 +171,13 @@ Compliance is not optional. Build privacy-first, stay on the right side of regul
 export class SEOMaster extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'SEO Master',
+      name: "SEO Master",
       description:
-        'Makes Google love your site. Meta tags, schema markup, sitemaps, Core Web Vitals.',
+        "Makes Google love your site. Meta tags, schema markup, sitemaps, Core Web Vitals.",
       category: AgentCategory.BUSINESS_ANALYTICS,
-      icon: '🔍',
-      version: '1.0.0',
-      tags: ['seo', 'search', 'optimization', 'google', 'organic'],
+      icon: "🔍",
+      version: "1.0.0",
+      tags: ["seo", "search", "optimization", "google", "organic"],
     };
   }
 
@@ -211,13 +211,13 @@ Organic traffic is free traffic. Optimize for search from day one.`;
 export class CommunityFeatures extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Community Features',
+      name: "Community Features",
       description:
-        'Adds forums, comments, user profiles. Builds the features that keep users coming back.',
+        "Adds forums, comments, user profiles. Builds the features that keep users coming back.",
       category: AgentCategory.BUSINESS_ANALYTICS,
-      icon: '👥',
-      version: '1.0.0',
-      tags: ['community', 'social', 'engagement', 'ugc', 'forums'],
+      icon: "👥",
+      version: "1.0.0",
+      tags: ["community", "social", "engagement", "ugc", "forums"],
     };
   }
 
@@ -251,13 +251,13 @@ Communities create retention. Give users reasons to come back and engage with ea
 export class LandingPageOptimizer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Landing Page Optimizer',
+      name: "Landing Page Optimizer",
       description:
-        'Writes copy that converts visitors to users. Headlines, CTAs, social proof that works.',
+        "Writes copy that converts visitors to users. Headlines, CTAs, social proof that works.",
       category: AgentCategory.BUSINESS_ANALYTICS,
-      icon: '📄',
-      version: '1.0.0',
-      tags: ['landing-page', 'conversion', 'copywriting', 'marketing', 'cro'],
+      icon: "📄",
+      version: "1.0.0",
+      tags: ["landing-page", "conversion", "copywriting", "marketing", "cro"],
     };
   }
 

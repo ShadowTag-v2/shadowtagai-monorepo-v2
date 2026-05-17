@@ -15,7 +15,7 @@
  * Uses Cloud Tasks for async stage execution (BullMQ banned).
  */
 
-import { buildMurderBoardPrompt, type MurderBoardStage } from '../prompts/war-room-prompts';
+import { buildMurderBoardPrompt, type MurderBoardStage } from "../prompts/war-room-prompts";
 
 // ─── Types ────────────────────────────────────────────────────────────
 export interface MurderBoardInput {
@@ -26,12 +26,12 @@ export interface MurderBoardInput {
   jurisdiction: string;
   practiceArea: string;
   documents?: string[];
-  modelTier?: 'reasoning' | 'flash' | 'lite';
+  modelTier?: "reasoning" | "flash" | "lite";
 }
 
 export interface StageResult {
   stage: MurderBoardStage;
-  status: 'pending' | 'running' | 'completed' | 'failed';
+  status: "pending" | "running" | "completed" | "failed";
   output?: unknown;
   error?: string;
   durationMs?: number;
@@ -42,22 +42,22 @@ export interface MurderBoardResult {
   id: string;
   firmId: string;
   clientId: string;
-  status: 'running' | 'completed' | 'rejected' | 'failed';
+  status: "running" | "completed" | "rejected" | "failed";
   stages: StageResult[];
-  finalDecision?: 'APPROVED' | 'CONDITIONAL_APPROVAL' | 'REJECTED';
+  finalDecision?: "APPROVED" | "CONDITIONAL_APPROVAL" | "REJECTED";
   createdAt: string;
   completedAt?: string;
 }
 
 // ─── Orchestrator ─────────────────────────────────────────────────────
 const STAGES: MurderBoardStage[] = [
-  'EXTRACTION',
-  'CONFLICT_CHECK',
-  'VIABILITY_SCORING',
-  'FEE_STRUCTURE',
-  'ORACLE_MEMO',
-  'RETAINER_DRAFT',
-  'RISK_GATE',
+  "EXTRACTION",
+  "CONFLICT_CHECK",
+  "VIABILITY_SCORING",
+  "FEE_STRUCTURE",
+  "ORACLE_MEMO",
+  "RETAINER_DRAFT",
+  "RISK_GATE",
 ];
 
 /**
@@ -72,15 +72,15 @@ export async function executeMurderBoard(
   onStageUpdate?: (stage: StageResult) => void,
 ): Promise<MurderBoardResult> {
   const boardId = crypto.randomUUID();
-  const modelTier = input.modelTier ?? 'flash';
+  const modelTier = input.modelTier ?? "flash";
   const result: MurderBoardResult = {
     id: boardId,
     firmId: input.firmId,
     clientId: input.clientId,
-    status: 'running',
+    status: "running",
     stages: STAGES.map((stage) => ({
       stage,
-      status: 'pending' as const,
+      status: "pending" as const,
     })),
     createdAt: new Date().toISOString(),
   };
@@ -90,7 +90,7 @@ export async function executeMurderBoard(
   for (let i = 0; i < STAGES.length; i++) {
     const stageName = STAGES[i];
     const stageResult = result.stages[i];
-    stageResult.status = 'running';
+    stageResult.status = "running";
     onStageUpdate?.(stageResult);
 
     const startTime = Date.now();
@@ -110,36 +110,36 @@ export async function executeMurderBoard(
       const output = await callLLM(prompt.system, prompt.user, modelTier);
 
       stageResult.output = output;
-      stageResult.status = 'completed';
+      stageResult.status = "completed";
       stageResult.durationMs = Date.now() - startTime;
 
       // Feed output to next stage
-      previousOutput = typeof output === 'string' ? output : JSON.stringify(output);
+      previousOutput = typeof output === "string" ? output : JSON.stringify(output);
 
       // Check for Judge 6 rejection at final stage
-      if (stageName === 'RISK_GATE') {
-        const riskOutput = typeof output === 'string' ? output : JSON.stringify(output);
-        if (riskOutput.includes('REJECTED')) {
-          result.finalDecision = 'REJECTED';
-          result.status = 'rejected';
-        } else if (riskOutput.includes('CONDITIONAL_APPROVAL')) {
-          result.finalDecision = 'CONDITIONAL_APPROVAL';
-          result.status = 'completed';
+      if (stageName === "RISK_GATE") {
+        const riskOutput = typeof output === "string" ? output : JSON.stringify(output);
+        if (riskOutput.includes("REJECTED")) {
+          result.finalDecision = "REJECTED";
+          result.status = "rejected";
+        } else if (riskOutput.includes("CONDITIONAL_APPROVAL")) {
+          result.finalDecision = "CONDITIONAL_APPROVAL";
+          result.status = "completed";
         } else {
-          result.finalDecision = 'APPROVED';
-          result.status = 'completed';
+          result.finalDecision = "APPROVED";
+          result.status = "completed";
         }
       }
 
       onStageUpdate?.(stageResult);
     } catch (error) {
-      stageResult.status = 'failed';
-      stageResult.error = error instanceof Error ? error.message : 'Unknown error';
+      stageResult.status = "failed";
+      stageResult.error = error instanceof Error ? error.message : "Unknown error";
       stageResult.durationMs = Date.now() - startTime;
       onStageUpdate?.(stageResult);
 
       // Stage failure — mark board as failed and stop
-      result.status = 'failed';
+      result.status = "failed";
       break;
     }
   }
@@ -166,10 +166,10 @@ function buildStageInput(
 
   // Include relevant previous stage outputs
   for (const prev of previousStages) {
-    if (prev.status === 'completed' && prev.output) {
+    if (prev.status === "completed" && prev.output) {
       parts.push(
         `[STAGE ${prev.stage} OUTPUT]\n${
-          typeof prev.output === 'string' ? prev.output : JSON.stringify(prev.output, null, 2)
+          typeof prev.output === "string" ? prev.output : JSON.stringify(prev.output, null, 2)
         }`,
       );
     }
@@ -177,17 +177,17 @@ function buildStageInput(
 
   // Stage-specific context
   switch (stage) {
-    case 'CONFLICT_CHECK':
-      parts.push(`[FIRM ID] ${input.firmId}\n[MATTER ID] ${input.matterId ?? 'NEW MATTER'}`);
+    case "CONFLICT_CHECK":
+      parts.push(`[FIRM ID] ${input.firmId}\n[MATTER ID] ${input.matterId ?? "NEW MATTER"}`);
       break;
-    case 'FEE_STRUCTURE':
+    case "FEE_STRUCTURE":
       parts.push(`[JURISDICTION FOR FEE RULES] ${input.jurisdiction}`);
       break;
     default:
       break;
   }
 
-  return parts.join('\n\n');
+  return parts.join("\n\n");
 }
 
 // ─── SSE Stream Generator ─────────────────────────────────────────────
@@ -211,8 +211,8 @@ export function createMurderBoardSSEStream(input: MurderBoardInput): ReadableStr
         controller.close();
       } catch (error) {
         const errorEvent = `data: ${JSON.stringify({
-          type: 'error',
-          message: error instanceof Error ? error.message : 'Pipeline failed',
+          type: "error",
+          message: error instanceof Error ? error.message : "Pipeline failed",
         })}\n\n`;
         controller.enqueue(encoder.encode(errorEvent));
         controller.close();
@@ -229,26 +229,26 @@ export function createMurderBoardSSEStream(input: MurderBoardInput): ReadableStr
 async function callLLM(
   systemPrompt: string,
   userPrompt: string,
-  tier: 'reasoning' | 'flash' | 'lite',
+  tier: "reasoning" | "flash" | "lite",
 ): Promise<string> {
   const modelMap: Record<string, string> = {
-    reasoning: 'gemini-2.5-pro',
-    flash: 'gemini-2.5-flash',
-    lite: 'gemini-3.1-flash-lite-preview-thinking',
+    reasoning: "gemini-2.5-pro",
+    flash: "gemini-2.5-flash",
+    lite: "gemini-3.1-flash-lite-preview-thinking",
   };
 
   const model = modelMap[tier] ?? modelMap.flash;
   const apiKey = process.env.GOOGLE_AI_API_KEY;
 
   if (!apiKey) {
-    throw new Error('[MURDER BOARD] GOOGLE_AI_API_KEY not configured');
+    throw new Error("[MURDER BOARD] GOOGLE_AI_API_KEY not configured");
   }
 
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
     {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: systemPrompt }] },
         contents: [{ parts: [{ text: userPrompt }] }],
@@ -266,5 +266,5 @@ async function callLLM(
   }
 
   const data = await response.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+  return data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 }

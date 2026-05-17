@@ -8,10 +8,10 @@
  * - WebSocket (graphql-ws protocol) for subscriptions via AsyncIterator
  */
 
-import { Spanner } from '@google-cloud/spanner';
-import type { ServerWebSocket } from 'bun';
-import { EventEmitter } from 'events';
-import { buildSchema, type ExecutionResult, graphql, parse, subscribe } from 'graphql';
+import { Spanner } from "@google-cloud/spanner";
+import type { ServerWebSocket } from "bun";
+import { EventEmitter } from "events";
+import { buildSchema, type ExecutionResult, graphql, parse, subscribe } from "graphql";
 
 // ──────────────────────────────────────────────────────────────
 // PubSub — in-memory AsyncIterator-backed event bus
@@ -73,16 +73,16 @@ const pubsub = new PubSub();
 
 // Subscription event channels
 const EVENTS = {
-  FLAG_CHANGED: 'FLAG_CHANGED',
-  TRANSACTION_CREATED: 'TRANSACTION_CREATED',
+  FLAG_CHANGED: "FLAG_CHANGED",
+  TRANSACTION_CREATED: "TRANSACTION_CREATED",
 } as const;
 
 // ──────────────────────────────────────────────────────────────
 // Spanner connection
 // ──────────────────────────────────────────────────────────────
-const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'shadowtag-omega-v4';
-const INSTANCE_ID = process.env.SPANNER_INSTANCE || 'uphill-core-cluster';
-const DATABASE_ID = process.env.SPANNER_DATABASE || 'uphill-ledger';
+const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || "shadowtag-omega-v4";
+const INSTANCE_ID = process.env.SPANNER_INSTANCE || "uphill-core-cluster";
+const DATABASE_ID = process.env.SPANNER_DATABASE || "uphill-ledger";
 
 const spanner = new Spanner({ projectId: PROJECT_ID });
 const database = spanner.instance(INSTANCE_ID).database(DATABASE_ID);
@@ -137,12 +137,12 @@ const rootValue = {
   getFlags: async ({ site_id }: { site_id: string }) => {
     try {
       const [rows] = await database.run({
-        sql: 'SELECT id, site_id, feature_name, is_active FROM feature_flags WHERE site_id = @siteId',
+        sql: "SELECT id, site_id, feature_name, is_active FROM feature_flags WHERE site_id = @siteId",
         params: { siteId: site_id },
       });
       return rows.map((row) => row.toJSON());
     } catch (err) {
-      console.error('[GraphQL] getFlags error:', err);
+      console.error("[GraphQL] getFlags error:", err);
       return [];
     }
   },
@@ -150,12 +150,12 @@ const rootValue = {
   getSiteConfig: async ({ site_id }: { site_id: string }) => {
     try {
       const [rows] = await database.run({
-        sql: 'SELECT site_id, display_name, url, lighthouse_target FROM site_configs WHERE site_id = @siteId LIMIT 1',
+        sql: "SELECT site_id, display_name, url, lighthouse_target FROM site_configs WHERE site_id = @siteId LIMIT 1",
         params: { siteId: site_id },
       });
       return rows.length > 0 ? rows[0].toJSON() : null;
     } catch (err) {
-      console.error('[GraphQL] getSiteConfig error:', err);
+      console.error("[GraphQL] getSiteConfig error:", err);
       return null;
     }
   },
@@ -170,7 +170,7 @@ const rootValue = {
       });
       return rows.map((row) => row.toJSON());
     } catch (err) {
-      console.error('[GraphQL] getRecentTransactions error:', err);
+      console.error("[GraphQL] getRecentTransactions error:", err);
       return [];
     }
   },
@@ -189,14 +189,14 @@ const rootValue = {
   }) => {
     try {
       await database.runTransactionAsync(async (transaction) => {
-        transaction.upsert('feature_flags', { id, site_id, feature_name, is_active });
+        transaction.upsert("feature_flags", { id, site_id, feature_name, is_active });
         await transaction.commit();
       });
       const flag = { id, site_id, feature_name, is_active };
       pubsub.publish(EVENTS.FLAG_CHANGED, { flagChanged: flag, site_id });
       return flag;
     } catch (err) {
-      console.error('[GraphQL] updateFlag error:', err);
+      console.error("[GraphQL] updateFlag error:", err);
       return null;
     }
   },
@@ -213,14 +213,14 @@ const rootValue = {
     const timestamp = new Date().toISOString();
     try {
       await database.runTransactionAsync(async (transaction) => {
-        transaction.insert('transactions', { id, revenue, ui_variant_id, timestamp });
+        transaction.insert("transactions", { id, revenue, ui_variant_id, timestamp });
         await transaction.commit();
       });
       const txn = { id, revenue, ui_variant_id, timestamp };
       pubsub.publish(EVENTS.TRANSACTION_CREATED, { transactionCreated: txn });
       return txn;
     } catch (err) {
-      console.error('[GraphQL] createTransaction error:', err);
+      console.error("[GraphQL] createTransaction error:", err);
       return null;
     }
   },
@@ -264,40 +264,40 @@ interface WsSession {
 // Server — HTTP + WebSocket
 // ──────────────────────────────────────────────────────────────
 if (import.meta.main) {
-  const PORT = parseInt(process.env.GRAPHQL_PORT || '4000', 10);
+  const PORT = parseInt(process.env.GRAPHQL_PORT || "4000", 10);
 
   Bun.serve<WsSession>({
     port: PORT,
 
     async fetch(req, server) {
       // ── WebSocket upgrade (graphql-ws protocol) ──
-      const upgrade = req.headers.get('upgrade')?.toLowerCase();
-      if (upgrade === 'websocket') {
-        const protocols = req.headers.get('sec-websocket-protocol') ?? '';
-        const supported = protocols.split(',').map((p) => p.trim());
-        if (supported.includes('graphql-transport-ws')) {
+      const upgrade = req.headers.get("upgrade")?.toLowerCase();
+      if (upgrade === "websocket") {
+        const protocols = req.headers.get("sec-websocket-protocol") ?? "";
+        const supported = protocols.split(",").map((p) => p.trim());
+        if (supported.includes("graphql-transport-ws")) {
           const ok = server.upgrade(req, {
-            headers: { 'Sec-WebSocket-Protocol': 'graphql-transport-ws' },
+            headers: { "Sec-WebSocket-Protocol": "graphql-transport-ws" },
             data: { subscriptions: new Map(), initialized: false } satisfies WsSession,
           });
-          return ok ? undefined : new Response('WebSocket upgrade failed', { status: 500 });
+          return ok ? undefined : new Response("WebSocket upgrade failed", { status: 500 });
         }
-        return new Response('Unsupported WebSocket subprotocol', { status: 400 });
+        return new Response("Unsupported WebSocket subprotocol", { status: 400 });
       }
 
       // ── CORS preflight ──
-      if (req.method === 'OPTIONS') {
+      if (req.method === "OPTIONS") {
         return new Response(null, {
           headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
           },
         });
       }
 
       // ── HTTP POST for queries & mutations ──
-      if (req.method === 'POST') {
+      if (req.method === "POST") {
         const { query, variables } = await req.json();
         const result = await graphql({
           schema,
@@ -306,37 +306,37 @@ if (import.meta.main) {
           variableValues: variables,
         });
         return Response.json(result, {
-          headers: { 'Access-Control-Allow-Origin': '*' },
+          headers: { "Access-Control-Allow-Origin": "*" },
         });
       }
 
-      return new Response('V25 GraphQL Nexus — POST /graphql | WS /graphql', { status: 404 });
+      return new Response("V25 GraphQL Nexus — POST /graphql | WS /graphql", { status: 404 });
     },
 
     websocket: {
       open(ws: ServerWebSocket<WsSession>) {
         // Connection opened — wait for connection_init per graphql-ws protocol
-        console.log('[WS] Client connected');
+        console.log("[WS] Client connected");
       },
 
       async message(ws: ServerWebSocket<WsSession>, rawMsg: string | Buffer) {
         try {
-          const msg = JSON.parse(typeof rawMsg === 'string' ? rawMsg : rawMsg.toString());
+          const msg = JSON.parse(typeof rawMsg === "string" ? rawMsg : rawMsg.toString());
 
           switch (msg.type) {
-            case 'connection_init': {
+            case "connection_init": {
               ws.data.initialized = true;
-              ws.send(JSON.stringify({ type: 'connection_ack' }));
+              ws.send(JSON.stringify({ type: "connection_ack" }));
               break;
             }
 
-            case 'subscribe': {
+            case "subscribe": {
               if (!ws.data.initialized) {
                 ws.send(
                   JSON.stringify({
                     id: msg.id,
-                    type: 'error',
-                    payload: [{ message: 'Not initialized' }],
+                    type: "error",
+                    payload: [{ message: "Not initialized" }],
                   }),
                 );
                 break;
@@ -354,10 +354,10 @@ if (import.meta.main) {
               });
 
               // If it's an error (not an async iterator), send error + complete
-              if (!('next' in (result as object))) {
+              if (!("next" in (result as object))) {
                 const errorResult = result as ExecutionResult;
-                ws.send(JSON.stringify({ id: msg.id, type: 'error', payload: errorResult.errors }));
-                ws.send(JSON.stringify({ id: msg.id, type: 'complete' }));
+                ws.send(JSON.stringify({ id: msg.id, type: "error", payload: errorResult.errors }));
+                ws.send(JSON.stringify({ id: msg.id, type: "complete" }));
                 break;
               }
 
@@ -369,9 +369,9 @@ if (import.meta.main) {
               (async () => {
                 try {
                   for await (const value of iterator) {
-                    ws.send(JSON.stringify({ id: msg.id, type: 'next', payload: value }));
+                    ws.send(JSON.stringify({ id: msg.id, type: "next", payload: value }));
                   }
-                  ws.send(JSON.stringify({ id: msg.id, type: 'complete' }));
+                  ws.send(JSON.stringify({ id: msg.id, type: "complete" }));
                 } catch {
                   // Client disconnected or iterator threw
                 }
@@ -380,7 +380,7 @@ if (import.meta.main) {
               break;
             }
 
-            case 'complete': {
+            case "complete": {
               // Client unsubscribing
               const iter = ws.data.subscriptions.get(msg.id);
               if (iter?.return) await iter.return();
@@ -388,13 +388,13 @@ if (import.meta.main) {
               break;
             }
 
-            case 'ping': {
-              ws.send(JSON.stringify({ type: 'pong' }));
+            case "ping": {
+              ws.send(JSON.stringify({ type: "pong" }));
               break;
             }
           }
         } catch (err) {
-          console.error('[WS] Message error:', err);
+          console.error("[WS] Message error:", err);
         }
       },
 
@@ -404,7 +404,7 @@ if (import.meta.main) {
           if (iter.return) void iter.return();
         }
         ws.data.subscriptions.clear();
-        console.log('[WS] Client disconnected');
+        console.log("[WS] Client disconnected");
       },
     },
   });

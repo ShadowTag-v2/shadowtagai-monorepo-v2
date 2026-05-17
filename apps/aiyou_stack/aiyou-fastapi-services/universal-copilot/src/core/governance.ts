@@ -3,9 +3,9 @@
  * Provides safe interface to Python-based Judge 6 system
  */
 
-import { spawn } from 'node:child_process';
-import * as path from 'node:path';
-import type { GovernanceEngine } from './router.js';
+import { spawn } from "node:child_process";
+import * as path from "node:path";
+import type { GovernanceEngine } from "./router.js";
 
 /**
  * Judge 6 governance decision
@@ -35,12 +35,12 @@ export class Judge6Adapter implements GovernanceEngine {
   private pythonPath: string;
   private judge6Path: string;
 
-  constructor(corInstanceId: string = 'copilot-001', pythonPath: string = 'python3') {
+  constructor(corInstanceId: string = "copilot-001", pythonPath: string = "python3") {
     this.corInstanceId = corInstanceId;
     this.pythonPath = pythonPath;
 
     // Path to judge6 Python package
-    this.judge6Path = path.join(process.cwd(), '..', 'judge6');
+    this.judge6Path = path.join(process.cwd(), "..", "judge6");
   }
 
   async evaluateRequest(input: string, purpose?: string): Promise<Judge6Decision> {
@@ -49,7 +49,7 @@ export class Judge6Adapter implements GovernanceEngine {
       const script = this.buildEvaluationScript(input, purpose);
 
       // Spawn Python process
-      const proc = spawn(this.pythonPath, ['-c', script], {
+      const proc = spawn(this.pythonPath, ["-c", script], {
         cwd: process.cwd(),
         env: {
           ...process.env,
@@ -57,20 +57,20 @@ export class Judge6Adapter implements GovernanceEngine {
         },
       });
 
-      let stdout = '';
-      let stderr = '';
+      let stdout = "";
+      let stderr = "";
 
-      proc.stdout.on('data', (data) => {
+      proc.stdout.on("data", (data) => {
         stdout += data.toString();
       });
 
-      proc.stderr.on('data', (data) => {
+      proc.stderr.on("data", (data) => {
         stderr += data.toString();
       });
 
-      proc.on('close', (code) => {
+      proc.on("close", (code) => {
         if (code !== 0) {
-          reject(new Error(`Judge 6 evaluation failed: ${stderr || 'Unknown error'}`));
+          reject(new Error(`Judge 6 evaluation failed: ${stderr || "Unknown error"}`));
           return;
         }
 
@@ -82,14 +82,14 @@ export class Judge6Adapter implements GovernanceEngine {
         }
       });
 
-      proc.on('error', (error) => {
+      proc.on("error", (error) => {
         reject(new Error(`Failed to spawn Judge 6 process: ${error.message}`));
       });
 
       // Timeout after 5 seconds
       setTimeout(() => {
         proc.kill();
-        reject(new Error('Judge 6 evaluation timeout'));
+        reject(new Error("Judge 6 evaluation timeout"));
       }, 5000);
     });
   }
@@ -97,7 +97,7 @@ export class Judge6Adapter implements GovernanceEngine {
   private buildEvaluationScript(input: string, purpose?: string): string {
     // Escape strings for Python
     const escapedInput = this.escapePython(input);
-    const escapedPurpose = purpose ? this.escapePython(purpose) : 'None';
+    const escapedPurpose = purpose ? this.escapePython(purpose) : "None";
 
     return `
 import sys
@@ -109,7 +109,7 @@ from judge6 import JudgmentRule
 judge = JudgmentRule(cor_instance_id="${this.escapePython(this.corInstanceId)}")
 
 user_input = """${escapedInput}"""
-declared_purpose = ${escapedPurpose === 'None' ? 'None' : `"""${escapedPurpose}"""`}
+declared_purpose = ${escapedPurpose === "None" ? "None" : `"""${escapedPurpose}"""`}
 
 decision = judge.evaluate_request(user_input, declared_purpose)
 
@@ -138,11 +138,11 @@ print(json.dumps(result))
 
   private escapePython(str: string): string {
     return str
-      .replace(/\\/g, '\\\\')
+      .replace(/\\/g, "\\\\")
       .replace(/"/g, '\\"')
-      .replace(/\n/g, '\\n')
-      .replace(/\r/g, '\\r')
-      .replace(/\t/g, '\\t');
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r")
+      .replace(/\t/g, "\\t");
   }
 }
 
@@ -156,16 +156,16 @@ export class MockGovernance implements GovernanceEngine {
 
     return {
       approved: !dangerous,
-      risk_level: dangerous ? 'RA_3' : 'RA_1',
+      risk_level: dangerous ? "RA_3" : "RA_1",
       reasoning: dangerous
-        ? 'Mock governance: Detected potentially harmful intent'
-        : 'Mock governance: Request approved',
+        ? "Mock governance: Detected potentially harmful intent"
+        : "Mock governance: Request approved",
       violated_axioms: dangerous
         ? [
             {
-              axiom_id: 'A2',
-              name: 'HARM_PROHIBITION',
-              rule: 'No output may facilitate harm',
+              axiom_id: "A2",
+              name: "HARM_PROHIBITION",
+              rule: "No output may facilitate harm",
             },
           ]
         : [],
@@ -182,7 +182,7 @@ export class MockGovernance implements GovernanceEngine {
  * Create governance engine based on environment
  */
 export function createGovernance(
-  useMock: boolean = process.env.USE_MOCK_GOVERNANCE === '1',
+  useMock: boolean = process.env.USE_MOCK_GOVERNANCE === "1",
 ): GovernanceEngine {
   if (useMock) {
     return new MockGovernance();

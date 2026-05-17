@@ -7,18 +7,18 @@ import {
   type AgentExecutionResult,
   type AgentMetadata,
   BaseAgent,
-} from './base';
+} from "./base";
 
 export class VertexModelDeployer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Vertex AI Model Deployer',
+      name: "Vertex AI Model Deployer",
       description:
-        'Deploys ML models to Vertex AI endpoints. Handles versioning, scaling, and traffic splitting.',
+        "Deploys ML models to Vertex AI endpoints. Handles versioning, scaling, and traffic splitting.",
       category: AgentCategory.VERTEX_AI,
-      icon: '🚀',
-      version: '1.0.0',
-      tags: ['vertex-ai', 'deployment', 'models', 'endpoints', 'gcp'],
+      icon: "🚀",
+      version: "1.0.0",
+      tags: ["vertex-ai", "deployment", "models", "endpoints", "gcp"],
     };
   }
 
@@ -52,12 +52,12 @@ Deploy models that scale automatically and perform reliably in production.`;
 export class NotebookOptimizer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Notebook Optimizer',
-      description: 'Optimizes Vertex AI Workbench notebooks for performance and reproducibility.',
+      name: "Notebook Optimizer",
+      description: "Optimizes Vertex AI Workbench notebooks for performance and reproducibility.",
       category: AgentCategory.VERTEX_AI,
-      icon: '📓',
-      version: '1.0.0',
-      tags: ['notebooks', 'jupyter', 'optimization', 'reproducibility'],
+      icon: "📓",
+      version: "1.0.0",
+      tags: ["notebooks", "jupyter", "optimization", "reproducibility"],
     };
   }
 
@@ -91,13 +91,13 @@ Clean, well-documented notebooks are research you can actually reproduce and sha
 export class BigQueryIntegration extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'BigQuery Integration Expert',
+      name: "BigQuery Integration Expert",
       description:
-        'Connects your ML workflows to BigQuery. Fast data access, efficient queries, and seamless ETL.',
+        "Connects your ML workflows to BigQuery. Fast data access, efficient queries, and seamless ETL.",
       category: AgentCategory.VERTEX_AI,
-      icon: '📊',
-      version: '1.0.0',
-      tags: ['bigquery', 'data', 'etl', 'sql', 'analytics'],
+      icon: "📊",
+      version: "1.0.0",
+      tags: ["bigquery", "data", "etl", "sql", "analytics"],
     };
   }
 
@@ -131,13 +131,13 @@ BigQuery is powerful but costs can add up. Query smart, not hard.`;
 export class AutoMLBuilder extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'AutoML Builder',
+      name: "AutoML Builder",
       description:
-        'Builds AutoML models on Vertex AI. No PhD required - just data and business goals.',
+        "Builds AutoML models on Vertex AI. No PhD required - just data and business goals.",
       category: AgentCategory.VERTEX_AI,
-      icon: '🎯',
-      version: '1.0.0',
-      tags: ['automl', 'machine-learning', 'vertex-ai', 'training'],
+      icon: "🎯",
+      version: "1.0.0",
+      tags: ["automl", "machine-learning", "vertex-ai", "training"],
     };
   }
 
@@ -171,13 +171,13 @@ AutoML democratizes ML. Get production models without deep ML expertise.`;
 export class FeatureStoreManager extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Feature Store Manager',
+      name: "Feature Store Manager",
       description:
-        'Manages features in Vertex AI Feature Store. Centralized features, versioning, and serving.',
+        "Manages features in Vertex AI Feature Store. Centralized features, versioning, and serving.",
       category: AgentCategory.VERTEX_AI,
-      icon: '🗄️',
-      version: '1.0.0',
-      tags: ['feature-store', 'features', 'ml', 'data'],
+      icon: "🗄️",
+      version: "1.0.0",
+      tags: ["feature-store", "features", "ml", "data"],
     };
   }
 
@@ -211,13 +211,13 @@ Centralize features. Train with the same features you serve in production.`;
 export class MLPipelineEngineer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'ML Pipeline Engineer',
+      name: "ML Pipeline Engineer",
       description:
-        'Builds end-to-end ML pipelines on Vertex AI. From data to deployment, fully automated.',
+        "Builds end-to-end ML pipelines on Vertex AI. From data to deployment, fully automated.",
       category: AgentCategory.VERTEX_AI,
-      icon: '🔄',
-      version: '1.0.0',
-      tags: ['pipelines', 'kubeflow', 'mlops', 'automation'],
+      icon: "🔄",
+      version: "1.0.0",
+      tags: ["pipelines", "kubeflow", "mlops", "automation"],
     };
   }
 
@@ -251,13 +251,13 @@ Automate the entire ML lifecycle. From raw data to production model, no manual s
 export class ModelMonitoring extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Model Monitoring Specialist',
+      name: "Model Monitoring Specialist",
       description:
-        'Monitors model performance and data drift. Alerts when models degrade, triggers retraining.',
+        "Monitors model performance and data drift. Alerts when models degrade, triggers retraining.",
       category: AgentCategory.VERTEX_AI,
-      icon: '📈',
-      version: '1.0.0',
-      tags: ['monitoring', 'drift', 'performance', 'mlops'],
+      icon: "📈",
+      version: "1.0.0",
+      tags: ["monitoring", "drift", "performance", "mlops"],
     };
   }
 
@@ -291,13 +291,13 @@ Models degrade over time. Monitor continuously, retrain proactively.`;
 export class VertexEndpointsManager extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Vertex AI Endpoints Manager',
+      name: "Vertex AI Endpoints Manager",
       description:
-        'Manages Vertex AI prediction endpoints. Scaling, monitoring, cost optimization, and SLA management.',
+        "Manages Vertex AI prediction endpoints. Scaling, monitoring, cost optimization, and SLA management.",
       category: AgentCategory.VERTEX_AI,
-      icon: '🎯',
-      version: '1.0.0',
-      tags: ['endpoints', 'serving', 'scaling', 'inference'],
+      icon: "🎯",
+      version: "1.0.0",
+      tags: ["endpoints", "serving", "scaling", "inference"],
     };
   }
 
@@ -331,13 +331,13 @@ Serving models is different from training. Optimize for latency, cost, and relia
 export class TrainingJobOptimizer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Training Job Optimizer',
+      name: "Training Job Optimizer",
       description:
-        'Optimizes Vertex AI training jobs for speed and cost. GPU utilization, distributed training, spot instances.',
+        "Optimizes Vertex AI training jobs for speed and cost. GPU utilization, distributed training, spot instances.",
       category: AgentCategory.VERTEX_AI,
-      icon: '⚡',
-      version: '1.0.0',
-      tags: ['training', 'optimization', 'gpu', 'distributed'],
+      icon: "⚡",
+      version: "1.0.0",
+      tags: ["training", "optimization", "gpu", "distributed"],
     };
   }
 
@@ -371,13 +371,13 @@ Training can be expensive. Optimize for both speed and cost without sacrificing 
 export class HyperparameterTuner extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Hyperparameter Tuner',
+      name: "Hyperparameter Tuner",
       description:
-        'Finds optimal hyperparameters using Vertex AI Hyperparameter Tuning. Bayesian optimization at scale.',
+        "Finds optimal hyperparameters using Vertex AI Hyperparameter Tuning. Bayesian optimization at scale.",
       category: AgentCategory.VERTEX_AI,
-      icon: '🎛️',
-      version: '1.0.0',
-      tags: ['hyperparameters', 'tuning', 'optimization', 'training'],
+      icon: "🎛️",
+      version: "1.0.0",
+      tags: ["hyperparameters", "tuning", "optimization", "training"],
     };
   }
 

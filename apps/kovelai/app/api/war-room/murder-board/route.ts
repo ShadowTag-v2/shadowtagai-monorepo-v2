@@ -9,12 +9,12 @@
  * @see WAR_ROOM_ARCHITECTURE.md — Technical design
  */
 
-import crypto from 'node:crypto';
-import { NextResponse } from 'next/server';
-import { createSession, getSession, runFullPipeline } from '@/lib/orchestrator/murder-board';
-import { verifySeuToken } from '@/lib/security/seu_and_stripe';
+import crypto from "node:crypto";
+import { NextResponse } from "next/server";
+import { createSession, getSession, runFullPipeline } from "@/lib/orchestrator/murder-board";
+import { verifySeuToken } from "@/lib/security/seu_and_stripe";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 interface MurderBoardRequest {
   transcript: string;
@@ -32,19 +32,19 @@ export async function POST(req: Request) {
       await req.json();
 
     // 1. Validate S.E.U. token
-    const clientIp = req.headers.get('x-forwarded-for') || 'unknown';
+    const clientIp = req.headers.get("x-forwarded-for") || "unknown";
     const payload = await verifySeuToken(seuToken, clientIp);
 
     // 2. Generate session ID
     const sessionId = crypto.randomUUID();
-    const firmId = payload.firmId ?? 'unknown';
+    const firmId = payload.firmId ?? "unknown";
 
     // 3. Create pipeline session in Firestore
     await createSession(sessionId, firmId, transcript, seuToken, clioOAuthToken, contextCacheId);
 
     // 4. In production, enqueue Stage 1 via Cloud Tasks.
     //    For development, run the full pipeline directly.
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       // TODO: Enqueue via Cloud Tasks
       // await enqueueCloudTask('kovelai-murder-board', {
       //   sessionId,
@@ -59,24 +59,24 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         sessionId,
-        status: 'intake',
-        message: 'Murder Board pipeline initiated',
+        status: "intake",
+        message: "Murder Board pipeline initiated",
         statusUrl: `/api/war-room/status/${sessionId}`,
       },
       {
         status: 202,
         headers: {
-          'Cache-Control': 'no-store',
-          'X-Kovel-Attestation': 'active',
-          'X-War-Room-Session': sessionId,
+          "Cache-Control": "no-store",
+          "X-Kovel-Attestation": "active",
+          "X-War-Room-Session": sessionId,
         },
       },
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       {
-        error: 'Murder Board initiation failed',
+        error: "Murder Board initiation failed",
         detail: message,
       },
       { status: 403 },
@@ -89,16 +89,16 @@ export async function POST(req: Request) {
  */
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const sessionId = url.searchParams.get('sessionId');
+  const sessionId = url.searchParams.get("sessionId");
 
   if (!sessionId) {
-    return NextResponse.json({ error: 'sessionId parameter required' }, { status: 400 });
+    return NextResponse.json({ error: "sessionId parameter required" }, { status: 400 });
   }
 
   const session = await getSession(sessionId);
 
   if (!session) {
-    return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+    return NextResponse.json({ error: "Session not found" }, { status: 404 });
   }
 
   return NextResponse.json({

@@ -1,45 +1,45 @@
-(globalThis['TURBOPACK'] || (globalThis['TURBOPACK'] = [])).push([
-  typeof document === 'object' ? document.currentScript : undefined,
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/register-deployment-id-global.js [client] (ecmascript)',
+(globalThis["TURBOPACK"] || (globalThis["TURBOPACK"] = [])).push([
+  typeof document === "object" ? document.currentScript : undefined,
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/register-deployment-id-global.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     const _deploymentid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [client] (ecmascript)",
     );
     const deploymentId = (0, _deploymentid.getDeploymentId)();
     globalThis.NEXT_DEPLOYMENT_ID = deploymentId;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/portal/index.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/portal/index.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'Portal', {
+    Object.defineProperty(exports, "Portal", {
       enumerable: true,
       get: () => Portal,
     });
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
     );
     const _reactdom = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react-dom/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react-dom/index.js [client] (ecmascript)",
     );
     const Portal = ({ children, type }) => {
       const [portalNode, setPortalNode] = (0, _react.useState)(null);
@@ -54,46 +54,46 @@
       return portalNode ? /*#__PURE__*/ (0, _reactdom.createPortal)(children, portalNode) : null;
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'setAttributesFromProps', {
+    Object.defineProperty(exports, "setAttributesFromProps", {
       enumerable: true,
       get: () => setAttributesFromProps,
     });
     const DOMAttributeNames = {
-      acceptCharset: 'accept-charset',
-      className: 'class',
-      htmlFor: 'for',
-      httpEquiv: 'http-equiv',
-      noModule: 'noModule',
+      acceptCharset: "accept-charset",
+      className: "class",
+      htmlFor: "for",
+      httpEquiv: "http-equiv",
+      noModule: "noModule",
     };
     const ignoreProps = [
-      'onLoad',
-      'onReady',
-      'dangerouslySetInnerHTML',
-      'children',
-      'onError',
-      'strategy',
-      'stylesheets',
+      "onLoad",
+      "onReady",
+      "dangerouslySetInnerHTML",
+      "children",
+      "onError",
+      "strategy",
+      "stylesheets",
     ];
     function isBooleanScriptAttribute(attr) {
-      return ['async', 'defer', 'noModule'].includes(attr);
+      return ["async", "defer", "noModule"].includes(attr);
     }
     function setAttributesFromProps(el, props) {
       for (const [p, value] of Object.entries(props)) {
@@ -104,7 +104,7 @@
           continue;
         }
         const attr = DOMAttributeNames[p] || p.toLowerCase();
-        if (el.tagName === 'SCRIPT' && isBooleanScriptAttribute(attr)) {
+        if (el.tagName === "SCRIPT" && isBooleanScriptAttribute(attr)) {
           // Correctly assign boolean script attributes
           // https://github.com/vercel/next.js/pull/20748
           el[attr] = !!value;
@@ -115,34 +115,34 @@
         // (e.g. if we set them to false, this coerces to the string "false", which the browser interprets as true)
         if (
           value === false ||
-          (el.tagName === 'SCRIPT' &&
+          (el.tagName === "SCRIPT" &&
             isBooleanScriptAttribute(attr) &&
-            (!value || value === 'false'))
+            (!value || value === "false"))
         ) {
           // Call setAttribute before, as we need to set and unset the attribute to override force async:
           // https://html.spec.whatwg.org/multipage/scripting.html#script-force-async
-          el.setAttribute(attr, '');
+          el.setAttribute(attr, "");
           el.removeAttribute(attr);
         }
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/head-manager.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/head-manager.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -162,32 +162,32 @@
       isEqualNode: () => isEqualNode,
     });
     const _setattributesfromprops = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [client] (ecmascript)",
     );
     function reactElementToDOM({ type, props }) {
       const el = document.createElement(type);
       (0, _setattributesfromprops.setAttributesFromProps)(el, props);
       const { children, dangerouslySetInnerHTML } = props;
       if (dangerouslySetInnerHTML) {
-        el.innerHTML = dangerouslySetInnerHTML.__html || '';
+        el.innerHTML = dangerouslySetInnerHTML.__html || "";
       } else if (children) {
         el.textContent =
-          typeof children === 'string'
+          typeof children === "string"
             ? children
             : Array.isArray(children)
-              ? children.join('')
-              : '';
+              ? children.join("")
+              : "";
       }
       return el;
     }
     function isEqualNode(oldTag, newTag) {
       if (oldTag instanceof HTMLElement && newTag instanceof HTMLElement) {
-        const nonce = newTag.getAttribute('nonce');
+        const nonce = newTag.getAttribute("nonce");
         // Only strip the nonce if `oldTag` has had it stripped. An element's nonce attribute will not
         // be stripped if there is no content security policy response header that includes a nonce.
-        if (nonce && !oldTag.getAttribute('nonce')) {
+        if (nonce && !oldTag.getAttribute("nonce")) {
           const cloneTag = newTag.cloneNode(true);
-          cloneTag.setAttribute('nonce', '');
+          cloneTag.setAttribute("nonce", "");
           cloneTag.nonce = nonce;
           return nonce === oldTag.nonce && oldTag.isEqualNode(cloneTag);
         }
@@ -195,11 +195,11 @@
       return oldTag.isEqualNode(newTag);
     }
     function updateElements(type, components) {
-      const headEl = document.querySelector('head');
+      const headEl = document.querySelector("head");
       if (!headEl) return;
       const oldTags = new Set(headEl.querySelectorAll(`${type}[data-next-head]`));
-      if (type === 'meta') {
-        const metaCharset = headEl.querySelector('meta[charset]');
+      if (type === "meta") {
+        const metaCharset = headEl.querySelector("meta[charset]");
         if (metaCharset !== null) {
           oldTags.add(metaCharset);
         }
@@ -208,7 +208,7 @@
       for (let i = 0; i < components.length; i++) {
         const component = components[i];
         const newTag = reactElementToDOM(component);
-        newTag.setAttribute('data-next-head', '');
+        newTag.setAttribute("data-next-head", "");
         let isNew = true;
         for (const oldTag of oldTags) {
           if (isEqualNode(oldTag, newTag)) {
@@ -226,7 +226,7 @@
       }
       for (const newTag of newTags) {
         // meta[charset] must be first element so special case
-        if (newTag.tagName.toLowerCase() === 'meta' && newTag.getAttribute('charset') !== null) {
+        if (newTag.tagName.toLowerCase() === "meta" && newTag.getAttribute("charset") !== null) {
           headEl.prepend(newTag);
         }
         headEl.appendChild(newTag);
@@ -240,14 +240,14 @@
           head.forEach((h) => {
             if (
               // it won't be inlined. In this case revert to the original behavior
-              h.type === 'link' &&
-              h.props['data-optimized-fonts']
+              h.type === "link" &&
+              h.props["data-optimized-fonts"]
             ) {
-              if (document.querySelector(`style[data-href="${h.props['data-href']}"]`)) {
+              if (document.querySelector(`style[data-href="${h.props["data-href"]}"]`)) {
                 return;
               } else {
-                h.props.href = h.props['data-href'];
-                h.props['data-href'] = undefined;
+                h.props.href = h.props["data-href"];
+                h.props["data-href"] = undefined;
               }
             }
             const components = tags[h.type] || [];
@@ -255,169 +255,169 @@
             tags[h.type] = components;
           });
           const titleComponent = tags.title ? tags.title[0] : null;
-          let title = '';
+          let title = "";
           if (titleComponent) {
             const { children } = titleComponent.props;
             title =
-              typeof children === 'string'
+              typeof children === "string"
                 ? children
                 : Array.isArray(children)
-                  ? children.join('')
-                  : '';
+                  ? children.join("")
+                  : "";
           }
           if (title !== document.title) document.title = title;
-          ['meta', 'base', 'link', 'style', 'script'].forEach((type) => {
+          ["meta", "base", "link", "style", "script"].forEach((type) => {
             updateElements(type, tags[type] || []);
           });
         },
       };
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'normalizePathTrailingSlash', {
+    Object.defineProperty(exports, "normalizePathTrailingSlash", {
       enumerable: true,
       get: () => normalizePathTrailingSlash,
     });
     const _removetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)",
     );
     const _parsepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)",
     );
     const normalizePathTrailingSlash = (path) => {
-      if (!path.startsWith('/') || ('TURBOPACK compile-time value', void 0)) {
+      if (!path.startsWith("/") || ("TURBOPACK compile-time value", void 0)) {
         return path;
       }
       const { pathname, query, hash } = (0, _parsepath.parsePath)(path);
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return `${(0, _removetrailingslash.removeTrailingSlash)(pathname)}${query}${hash}`;
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'addBasePath', {
+    Object.defineProperty(exports, "addBasePath", {
       enumerable: true,
       get: () => addBasePath,
     });
     const _addpathprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [client] (ecmascript)",
     );
     const _normalizetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [client] (ecmascript)",
     );
-    const basePath = ('TURBOPACK compile-time value', '') || '';
+    const basePath = ("TURBOPACK compile-time value", "") || "";
     function addBasePath(path, required) {
       return (0, _normalizetrailingslash.normalizePathTrailingSlash)(
-        ('TURBOPACK compile-time falsy', 0)
-          ? 'TURBOPACK unreachable'
+        ("TURBOPACK compile-time falsy", 0)
+          ? "TURBOPACK unreachable"
           : (0, _addpathprefix.addPathPrefix)(path, basePath),
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-locale.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-locale.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'addLocale', {
+    Object.defineProperty(exports, "addLocale", {
       enumerable: true,
       get: () => addLocale,
     });
     const _normalizetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [client] (ecmascript)",
     );
     const addLocale = (path, ...args) => {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return path;
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/trusted-types.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/trusted-types.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Stores the Trusted Types Policy. Starts as undefined and can be set to null
      * if Trusted Types is not supported in the browser.
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, '__unsafeCreateTrustedScriptURL', {
+    Object.defineProperty(exports, "__unsafeCreateTrustedScriptURL", {
       enumerable: true,
       get: () => __unsafeCreateTrustedScriptURL,
     });
@@ -426,9 +426,9 @@
      * Getter for the Trusted Types Policy. If it is undefined, it is instantiated
      * here or set to null if Trusted Types is not supported in the browser.
      */ function getPolicy() {
-      if (typeof policy === 'undefined' && typeof window !== 'undefined') {
+      if (typeof policy === "undefined" && typeof window !== "undefined") {
         policy =
-          window.trustedTypes?.createPolicy('nextjs', {
+          window.trustedTypes?.createPolicy("nextjs", {
             createHTML: (input) => input,
             createScript: (input) => input,
             createScriptURL: (input) => input,
@@ -440,22 +440,22 @@
       return getPolicy()?.createScriptURL(url) || url;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -475,7 +475,7 @@
       requestIdleCallback: () => requestIdleCallback,
     });
     const requestIdleCallback =
-      (typeof self !== 'undefined' &&
+      (typeof self !== "undefined" &&
         self.requestIdleCallback &&
         self.requestIdleCallback.bind(window)) ||
       ((cb) => {
@@ -488,40 +488,40 @@
         }, 1);
       });
     const cancelIdleCallback =
-      (typeof self !== 'undefined' &&
+      (typeof self !== "undefined" &&
         self.cancelIdleCallback &&
         self.cancelIdleCallback.bind(window)) ||
       ((id) => clearTimeout(id));
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/promise.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/promise.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'resolvePromiseWithTimeout', {
+    Object.defineProperty(exports, "resolvePromiseWithTimeout", {
       enumerable: true,
       get: () => resolvePromiseWithTimeout,
     });
     const _requestidlecallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [client] (ecmascript)",
     );
     // 3.8s was arbitrarily chosen as it's what https://web.dev/interactive
     // considers as "Good" time-to-interactive. We must assume something went
@@ -538,7 +538,7 @@
         }).catch(reject);
         // We wrap these checks separately for better dead-code elimination in
         // production bundles.
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           (devPromise || Promise.resolve()).then(() => {
             (0, _requestidlecallback.requestIdleCallback)(() =>
               setTimeout(() => {
@@ -550,32 +550,32 @@
           });
         }
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-loader.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-loader.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -599,32 +599,32 @@
       markAssetError: () => markAssetError,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _getassetpathfromroute = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-asset-path-from-route.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-asset-path-from-route.js [client] (ecmascript)",
       ),
     );
     const _trustedtypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/trusted-types.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/trusted-types.js [client] (ecmascript)",
     );
     const _requestidlecallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [client] (ecmascript)",
     );
     const _deploymentid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [client] (ecmascript)",
     );
     const _encodeuripath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/encode-uri-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/encode-uri-path.js [client] (ecmascript)",
     );
     const _promise = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/promise.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/promise.js [client] (ecmascript)",
     );
     function withFuture(key, map, generator) {
       const entry = map.get(key);
       if (entry) {
-        if ('future' in entry) {
+        if ("future" in entry) {
           return entry.future;
         }
         return Promise.resolve(entry);
@@ -649,7 +649,7 @@
             })
         : prom;
     }
-    const ASSET_LOAD_ERROR = Symbol('ASSET_LOAD_ERROR');
+    const ASSET_LOAD_ERROR = Symbol("ASSET_LOAD_ERROR");
     function markAssetError(err) {
       return Object.defineProperty(err, ASSET_LOAD_ERROR, {});
     }
@@ -658,11 +658,11 @@
     }
     function hasPrefetch(link) {
       try {
-        link = document.createElement('link');
+        link = document.createElement("link");
         return (
           // with relList.support
           (!!window.MSInputMethodContext && !!document.documentMode) ||
-          link.relList.supports('prefetch')
+          link.relList.supports("prefetch")
         );
       } catch {
         return false;
@@ -678,17 +678,17 @@
         if (document.querySelector(selector)) {
           return resolve();
         }
-        link = document.createElement('link');
+        link = document.createElement("link");
         // The order of property assignment here is intentional:
         if (as) link.as = as;
         link.rel = `prefetch`;
-        link.crossOrigin = ('TURBOPACK compile-time value', void 0);
+        link.crossOrigin = ("TURBOPACK compile-time value", void 0);
         link.onload = resolve;
         link.onerror = () =>
           reject(
             markAssetError(
-              Object.defineProperty(new Error(`Failed to prefetch: ${href}`), '__NEXT_ERROR_CODE', {
-                value: 'E268',
+              Object.defineProperty(new Error(`Failed to prefetch: ${href}`), "__NEXT_ERROR_CODE", {
+                value: "E268",
                 enumerable: false,
                 configurable: true,
               }),
@@ -701,7 +701,7 @@
     }
     function appendScript(src, script) {
       return new Promise((resolve, reject) => {
-        script = document.createElement('script');
+        script = document.createElement("script");
         // The order of property assignment here is intentional.
         // 1. Setup success/failure hooks in case the browser synchronously
         //    executes when `src` is set.
@@ -711,9 +711,9 @@
             markAssetError(
               Object.defineProperty(
                 new Error(`Failed to load script: ${src}`),
-                '__NEXT_ERROR_CODE',
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E74',
+                  value: "E74",
                   enumerable: false,
                   configurable: true,
                 },
@@ -722,7 +722,7 @@
           );
         // 2. Configure the cross-origin attribute before setting `src` in case the
         //    browser begins to fetch.
-        script.crossOrigin = ('TURBOPACK compile-time value', void 0);
+        script.crossOrigin = ("TURBOPACK compile-time value", void 0);
         // 3. Finally, set the source and inject into the DOM in case the child
         //    must be appended for fetching to start.
         script.src = src;
@@ -748,10 +748,10 @@
         onBuildManifest,
         markAssetError(
           Object.defineProperty(
-            new Error('Failed to load client build manifest'),
-            '__NEXT_ERROR_CODE',
+            new Error("Failed to load client build manifest"),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E273',
+              value: "E273",
               enumerable: false,
               configurable: true,
             },
@@ -761,11 +761,11 @@
       );
     }
     function getFilesForRoute(assetPrefix, route) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const scriptUrl =
           assetPrefix +
-          '/_next/static/chunks/pages' +
-          (0, _encodeuripath.encodeURIPath)((0, _getassetpathfromroute.default)(route, '.js')) +
+          "/_next/static/chunks/pages" +
+          (0, _encodeuripath.encodeURIPath)((0, _getassetpathfromroute.default)(route, ".js")) +
           (0, _deploymentid.getAssetTokenQuery)();
         return Promise.resolve({
           scripts: [(0, _trustedtypes.__unsafeCreateTrustedScriptURL)(scriptUrl)],
@@ -785,7 +785,7 @@
         // disposed and readded. Executing scripts twice has no functional
         // differences
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         else {
           return appendScript(src);
@@ -799,15 +799,15 @@
         styleSheets.set(
           href,
           (prom = fetch(href, {
-            credentials: 'same-origin',
+            credentials: "same-origin",
           })
             .then((res) => {
               if (!res.ok) {
                 throw Object.defineProperty(
                   new Error(`Failed to load stylesheet: ${href}`),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E189',
+                    value: "E189",
                     enumerable: false,
                     configurable: true,
                   },
@@ -844,7 +844,7 @@
             : Promise.resolve(undefined)
           ).then((input) => {
             const old = entrypoints.get(route);
-            if (old && 'resolve' in old) {
+            if (old && "resolve" in old) {
               if (input) {
                 entrypoints.set(route, input);
                 old.resolve(input);
@@ -865,7 +865,7 @@
         loadRoute(route, prefetch) {
           return withFuture(route, routes, () => {
             let devBuildPromiseResolve;
-            if (('TURBOPACK compile-time truthy', 1)) {
+            if (("TURBOPACK compile-time truthy", 1)) {
               devBuildPromise = new Promise((resolve) => {
                 devBuildPromiseResolve = resolve;
               });
@@ -887,9 +887,9 @@
               markAssetError(
                 Object.defineProperty(
                   new Error(`Route did not complete loading: ${route}`),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E12',
+                    value: "E12",
                     enumerable: false,
                     configurable: true,
                   },
@@ -904,7 +904,7 @@
                   },
                   entrypoint,
                 );
-                return 'error' in entrypoint ? entrypoint : res;
+                return "error" in entrypoint ? entrypoint : res;
               })
               .catch((err) => {
                 if (prefetch) {
@@ -930,7 +930,7 @@
             .then((output) =>
               Promise.all(
                 canPrefetch
-                  ? output.scripts.map((script) => prefetchViaDom(script.toString(), 'script'))
+                  ? output.scripts.map((script) => prefetchViaDom(script.toString(), "script"))
                   : [],
               ),
             )
@@ -944,67 +944,67 @@
       };
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/page-loader.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/page-loader.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => PageLoader,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _addbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [client] (ecmascript)",
     );
     const _interpolateas = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interpolate-as.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interpolate-as.js [client] (ecmascript)",
     );
     const _getassetpathfromroute = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-asset-path-from-route.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-asset-path-from-route.js [client] (ecmascript)",
       ),
     );
     const _addlocale = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-locale.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-locale.js [client] (ecmascript)",
     );
     const _isdynamic = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)",
     );
     const _parserelativeurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [client] (ecmascript)",
     );
     const _removetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [client] (ecmascript)",
     );
     const _routeloader = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-loader.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-loader.js [client] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/constants.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/constants.js [client] (ecmascript)",
     );
     const _promise = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/promise.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/promise.js [client] (ecmascript)",
     );
     class PageLoader {
       constructor(buildId, assetPrefix) {
@@ -1023,7 +1023,7 @@
       }
       getPageList() {
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         else {
           if (window.__DEV_PAGES_MANIFEST) {
@@ -1032,7 +1032,7 @@
             this.promisedDevPagesManifest ||= fetch(
               `${this.assetPrefix}/_next/static/development/${_constants.DEV_CLIENT_PAGES_MANIFEST}`,
               {
-                credentials: 'same-origin',
+                credentials: "same-origin",
               },
             )
               .then((res) => res.json())
@@ -1045,11 +1045,11 @@
                 throw Object.defineProperty(
                   new Error(
                     `Failed to fetch _devPagesManifest.json. Is something blocking that network request?\n` +
-                      'Read more: https://nextjs.org/docs/messages/failed-to-fetch-devpagesmanifest',
+                      "Read more: https://nextjs.org/docs/messages/failed-to-fetch-devpagesmanifest",
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E423',
+                    value: "E423",
                     enumerable: false,
                     configurable: true,
                   },
@@ -1062,10 +1062,10 @@
       getMiddleware() {
         // Webpack production
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         else if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         else {
           if (window.__DEV_MIDDLEWARE_MATCHERS) {
@@ -1077,7 +1077,7 @@
               this.promisedMiddlewareMatchers = fetch(
                 `${this.assetPrefix}/_next/static/${this.buildId}/${_constants.DEV_CLIENT_MIDDLEWARE_MANIFEST}`,
                 {
-                  credentials: 'same-origin',
+                  credentials: "same-origin",
                 },
               )
                 .then((res) => res.json())
@@ -1103,12 +1103,12 @@
         } = (0, _parserelativeurl.parseRelativeUrl)(href);
         const { pathname: asPathname } = (0, _parserelativeurl.parseRelativeUrl)(asPath);
         const route = (0, _removetrailingslash.removeTrailingSlash)(hrefPathname);
-        if (route[0] !== '/') {
+        if (route[0] !== "/") {
           throw Object.defineProperty(
             new Error(`Route name should start with a "/", got "${route}"`),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E303',
+              value: "E303",
               enumerable: false,
               configurable: true,
             },
@@ -1117,7 +1117,7 @@
         const getHrefForSlug = (path) => {
           const dataRoute = (0, _getassetpathfromroute.default)(
             (0, _removetrailingslash.removeTrailingSlash)((0, _addlocale.addLocale)(path, locale)),
-            '.json',
+            ".json",
           );
           return (0, _addbasepath.addBasePath)(
             `/_next/data/${this.buildId}${dataRoute}${search}`,
@@ -1137,7 +1137,7 @@
       }
       loadPage(route) {
         return this.routeLoader.loadRoute(route).then((res) => {
-          if ('component' in res) {
+          if ("component" in res) {
             return {
               page: res.component,
               mod: res.exports,
@@ -1155,22 +1155,22 @@
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1192,32 +1192,32 @@
       initScriptLoader: () => initScriptLoader,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)",
     );
     const _reactdom = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react-dom/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react-dom/index.js [client] (ecmascript)",
       ),
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const _headmanagercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [client] (ecmascript)",
     );
     const _setattributesfromprops = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [client] (ecmascript)",
     );
     const _requestidlecallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/request-idle-callback.js [client] (ecmascript)",
     );
     const ScriptCache = new Map();
     const LoadCache = new Set();
@@ -1231,7 +1231,7 @@
       if (_reactdom.default.preinit) {
         stylesheets.forEach((stylesheet) => {
           _reactdom.default.preinit(stylesheet, {
-            as: 'style',
+            as: "style",
           });
         });
         return;
@@ -1240,12 +1240,12 @@
       //
       // We use this function to load styles when appdir is not detected
       // TODO: Use React float APIs to load styles once available for pages dir
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const head = document.head;
         stylesheets.forEach((stylesheet) => {
-          const link = document.createElement('link');
-          link.type = 'text/css';
-          link.rel = 'stylesheet';
+          const link = document.createElement("link");
+          link.type = "text/css";
+          link.rel = "stylesheet";
           link.href = stylesheet;
           head.appendChild(link);
         });
@@ -1258,8 +1258,8 @@
         onLoad = () => {},
         onReady = null,
         dangerouslySetInnerHTML,
-        children = '',
-        strategy = 'afterInteractive',
+        children = "",
+        strategy = "afterInteractive",
         onError,
         stylesheets,
       } = props;
@@ -1284,16 +1284,16 @@
         // add cacheKey to LoadCache when load successfully
         LoadCache.add(cacheKey);
       };
-      const el = document.createElement('script');
+      const el = document.createElement("script");
       const loadPromise = new Promise((resolve, reject) => {
-        el.addEventListener('load', function (e) {
+        el.addEventListener("load", function (e) {
           resolve();
           if (onLoad) {
             onLoad.call(this, e);
           }
           afterLoad();
         });
-        el.addEventListener('error', (e) => {
+        el.addEventListener("error", (e) => {
           reject(e);
         });
       }).catch((e) => {
@@ -1303,15 +1303,15 @@
       });
       if (dangerouslySetInnerHTML) {
         // Casting since lib.dom.d.ts doesn't have TrustedHTML yet.
-        el.innerHTML = dangerouslySetInnerHTML.__html || '';
+        el.innerHTML = dangerouslySetInnerHTML.__html || "";
         afterLoad();
       } else if (children) {
         el.textContent =
-          typeof children === 'string'
+          typeof children === "string"
             ? children
             : Array.isArray(children)
-              ? children.join('')
-              : '';
+              ? children.join("")
+              : "";
         afterLoad();
       } else if (src) {
         el.src = src;
@@ -1320,10 +1320,10 @@
         ScriptCache.set(src, loadPromise);
       }
       (0, _setattributesfromprops.setAttributesFromProps)(el, props);
-      if (strategy === 'worker') {
-        el.setAttribute('type', 'text/partytown');
+      if (strategy === "worker") {
+        el.setAttribute("type", "text/partytown");
       }
-      el.setAttribute('data-nscript', strategy);
+      el.setAttribute("data-nscript", strategy);
       // Load styles associated with this script
       if (stylesheets) {
         insertStylesheets(stylesheets);
@@ -1331,9 +1331,9 @@
       document.body.appendChild(el);
     };
     function handleClientScriptLoad(props) {
-      const { strategy = 'afterInteractive' } = props;
-      if (strategy === 'lazyOnload') {
-        window.addEventListener('load', () => {
+      const { strategy = "afterInteractive" } = props;
+      if (strategy === "lazyOnload") {
+        window.addEventListener("load", () => {
           (0, _requestidlecallback.requestIdleCallback)(() => loadScript(props));
         });
       } else {
@@ -1341,10 +1341,10 @@
       }
     }
     function loadLazyScript(props) {
-      if (document.readyState === 'complete') {
+      if (document.readyState === "complete") {
         (0, _requestidlecallback.requestIdleCallback)(() => loadScript(props));
       } else {
-        window.addEventListener('load', () => {
+        window.addEventListener("load", () => {
           (0, _requestidlecallback.requestIdleCallback)(() => loadScript(props));
         });
       }
@@ -1355,7 +1355,7 @@
         ...document.querySelectorAll('[data-nscript="beforePageRender"]'),
       ];
       scripts.forEach((script) => {
-        const cacheKey = script.id || script.getAttribute('src');
+        const cacheKey = script.id || script.getAttribute("src");
         LoadCache.add(cacheKey);
       });
     }
@@ -1370,10 +1370,10 @@
      */ function Script(props) {
       const {
         id,
-        src = '',
+        src = "",
         onLoad = () => {},
         onReady = null,
-        strategy = 'afterInteractive',
+        strategy = "afterInteractive",
         onError,
         stylesheets,
         ...restProps
@@ -1423,15 +1423,15 @@
       const hasLoadScriptEffectCalled = (0, _react.useRef)(false);
       (0, _react.useEffect)(() => {
         if (!hasLoadScriptEffectCalled.current) {
-          if (strategy === 'afterInteractive') {
+          if (strategy === "afterInteractive") {
             loadScript(props);
-          } else if (strategy === 'lazyOnload') {
+          } else if (strategy === "lazyOnload") {
             loadLazyScript(props);
           }
           hasLoadScriptEffectCalled.current = true;
         }
       }, [props, strategy]);
-      if (strategy === 'beforeInteractive' || strategy === 'worker') {
+      if (strategy === "beforeInteractive" || strategy === "worker") {
         if (updateScripts) {
           scripts[strategy] = (scripts[strategy] || []).concat([
             {
@@ -1469,13 +1469,13 @@
         if (stylesheets) {
           stylesheets.forEach((styleSrc) => {
             _reactdom.default.preinit(styleSrc, {
-              as: 'style',
+              as: "style",
             });
           });
         }
         // Before interactive scripts need to be loaded by Next.js' runtime instead
         // of native <script> tags, because they no longer have `defer`.
-        if (strategy === 'beforeInteractive') {
+        if (strategy === "beforeInteractive") {
           if (!src) {
             // For inlined scripts, we put the content in `children`.
             if (restProps.dangerouslySetInnerHTML) {
@@ -1483,7 +1483,7 @@
               restProps.children = restProps.dangerouslySetInnerHTML.__html;
               delete restProps.dangerouslySetInnerHTML;
             }
-            return /*#__PURE__*/ (0, _jsxruntime.jsx)('script', {
+            return /*#__PURE__*/ (0, _jsxruntime.jsx)("script", {
               nonce: nonce,
               dangerouslySetInnerHTML: {
                 __html: `(self.__next_s=self.__next_s||[]).push(${JSON.stringify([
@@ -1501,18 +1501,18 @@
               src,
               restProps.integrity
                 ? {
-                    as: 'script',
+                    as: "script",
                     integrity: restProps.integrity,
                     nonce,
                     crossOrigin: restProps.crossOrigin,
                   }
                 : {
-                    as: 'script',
+                    as: "script",
                     nonce,
                     crossOrigin: restProps.crossOrigin,
                   },
             );
-            return /*#__PURE__*/ (0, _jsxruntime.jsx)('script', {
+            return /*#__PURE__*/ (0, _jsxruntime.jsx)("script", {
               nonce: nonce,
               dangerouslySetInnerHTML: {
                 __html: `(self.__next_s=self.__next_s||[]).push(${JSON.stringify([
@@ -1525,20 +1525,20 @@
               },
             });
           }
-        } else if (strategy === 'afterInteractive') {
+        } else if (strategy === "afterInteractive") {
           if (src) {
             // @ts-ignore
             _reactdom.default.preload(
               src,
               restProps.integrity
                 ? {
-                    as: 'script',
+                    as: "script",
                     integrity: restProps.integrity,
                     nonce,
                     crossOrigin: restProps.crossOrigin,
                   }
                 : {
-                    as: 'script',
+                    as: "script",
                     nonce,
                     crossOrigin: restProps.crossOrigin,
                   },
@@ -1548,215 +1548,215 @@
       }
       return null;
     }
-    Object.defineProperty(Script, '__nextScript', {
+    Object.defineProperty(Script, "__nextScript", {
       value: true,
     });
     const _default = Script;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/detect-domain-locale.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/detect-domain-locale.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'detectDomainLocale', {
+    Object.defineProperty(exports, "detectDomainLocale", {
       enumerable: true,
       get: () => detectDomainLocale,
     });
     const detectDomainLocale = (...args) => {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-locale.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-locale.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'removeLocale', {
+    Object.defineProperty(exports, "removeLocale", {
       enumerable: true,
       get: () => removeLocale,
     });
     const _parsepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [client] (ecmascript)",
     );
     function removeLocale(path, locale) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return path;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'hasBasePath', {
+    Object.defineProperty(exports, "hasBasePath", {
       enumerable: true,
       get: () => hasBasePath,
     });
     const _pathhasprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [client] (ecmascript)",
     );
-    const basePath = ('TURBOPACK compile-time value', '') || '';
+    const basePath = ("TURBOPACK compile-time value", "") || "";
     function hasBasePath(path) {
       return (0, _pathhasprefix.pathHasPrefix)(path, basePath);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'removeBasePath', {
+    Object.defineProperty(exports, "removeBasePath", {
       enumerable: true,
       get: () => removeBasePath,
     });
     const _hasbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)",
     );
-    const basePath = ('TURBOPACK compile-time value', '') || '';
+    const basePath = ("TURBOPACK compile-time value", "") || "";
     function removeBasePath(path) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Can't trim the basePath if it has zero length!
       if (basePath.length === 0) return path;
       path = path.slice(basePath.length);
-      if (!path.startsWith('/')) path = `/${path}`;
+      if (!path.startsWith("/")) path = `/${path}`;
       return path;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/resolve-href.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/resolve-href.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'resolveHref', {
+    Object.defineProperty(exports, "resolveHref", {
       enumerable: true,
       get: () => resolveHref,
     });
     const _querystring = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)",
     );
     const _formaturl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [client] (ecmascript)",
     );
     const _omit = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/omit.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/omit.js [client] (ecmascript)",
     );
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)",
     );
     const _normalizetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [client] (ecmascript)",
     );
     const _islocalurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-local-url.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-local-url.js [client] (ecmascript)",
     );
     const _utils1 = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [client] (ecmascript)",
     );
     const _interpolateas = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interpolate-as.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interpolate-as.js [client] (ecmascript)",
     );
     const _routeregex = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [client] (ecmascript)",
     );
     const _routematcher = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [client] (ecmascript)",
     );
     function resolveHref(router, href, resolveAs) {
       // we use a dummy base url for relative urls
       let base;
       let urlAsString =
-        typeof href === 'string' ? href : (0, _formaturl.formatWithValidation)(href);
+        typeof href === "string" ? href : (0, _formaturl.formatWithValidation)(href);
       // repeated slashes and backslashes in the URL are considered
       // invalid and will never match a Next.js page/file
       // https://www.rfc-editor.org/rfc/rfc3986.html#section-3.1
@@ -1764,23 +1764,23 @@
       const urlAsStringNoProto = urlProtoMatch
         ? urlAsString.slice(urlProtoMatch[0].length)
         : urlAsString;
-      const urlParts = urlAsStringNoProto.split('?', 1);
-      if ((urlParts[0] || '').match(/(\/\/|\\)/)) {
+      const urlParts = urlAsStringNoProto.split("?", 1);
+      if ((urlParts[0] || "").match(/(\/\/|\\)/)) {
         console.error(
           `Invalid href '${urlAsString}' passed to next/router in page: '${router.pathname}'. Repeated forward-slashes (//) or backslashes \\ are not valid in the href.`,
         );
         const normalizedUrl = (0, _utils.normalizeRepeatedSlashes)(urlAsStringNoProto);
-        urlAsString = (urlProtoMatch ? urlProtoMatch[0] : '') + normalizedUrl;
+        urlAsString = (urlProtoMatch ? urlProtoMatch[0] : "") + normalizedUrl;
       }
       // Return because it cannot be routed by the Next.js router
       if (!(0, _islocalurl.isLocalURL)(urlAsString)) {
         return resolveAs ? [urlAsString] : urlAsString;
       }
       try {
-        let baseBase = urlAsString.startsWith('#') ? router.asPath : router.pathname;
+        let baseBase = urlAsString.startsWith("#") ? router.asPath : router.pathname;
         // If the provided href is only a query string, it is safer to use the asPath
         // considering rewrites.
-        if (urlAsString.startsWith('?')) {
+        if (urlAsString.startsWith("?")) {
           baseBase = router.asPath;
           // However, if is a dynamic route, we need to use the pathname to preserve the
           // query interpolation and rewrites (router.pathname will look like "/[slug]").
@@ -1801,17 +1801,17 @@
             // but using a lighter route regex pattern check.
           }
         }
-        base = new URL(baseBase, 'http://n');
+        base = new URL(baseBase, "http://n");
       } catch (_) {
         // fallback to / for invalid asPath values e.g. //
-        base = new URL('/', 'http://n');
+        base = new URL("/", "http://n");
       }
       try {
         const finalUrl = new URL(urlAsString, base);
         finalUrl.pathname = (0, _normalizetrailingslash.normalizePathTrailingSlash)(
           finalUrl.pathname,
         );
-        let interpolatedAs = '';
+        let interpolatedAs = "";
         if ((0, _utils1.isDynamicRoute)(finalUrl.pathname) && finalUrl.searchParams && resolveAs) {
           const query = (0, _querystring.searchParamsToUrlQuery)(finalUrl.searchParams);
           const { result, params } = (0, _interpolateas.interpolateAs)(
@@ -1838,20 +1838,20 @@
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // Adapted from React's sanitizeURL function found here: https://github.com/facebook/react/blob/b565373afd0cc1988497e1107106e851e8cfb261/packages/react-dom-bindings/src/shared/sanitizeURL.js
     // A javascript: URL can contain leading C0 control or \u0020 SPACE,
@@ -1862,59 +1862,59 @@
     // A C0 control is a code point in the range \u0000 NULL to \u001F
     // INFORMATION SEPARATOR ONE, inclusive:
     // https://infra.spec.whatwg.org/#c0-control-or-space
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isJavaScriptURLString', {
+    Object.defineProperty(exports, "isJavaScriptURLString", {
       enumerable: true,
       get: () => isJavaScriptURLString,
     });
     const isJavaScriptProtocol =
       /^[\u0000-\u001F ]*j[\r\n\t]*a[\r\n\t]*v[\r\n\t]*a[\r\n\t]*s[\r\n\t]*c[\r\n\t]*r[\r\n\t]*i[\r\n\t]*p[\r\n\t]*t[\r\n\t]*:/i;
     function isJavaScriptURLString(url) {
-      return isJavaScriptProtocol.test('' + url);
+      return isJavaScriptProtocol.test("" + url);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/with-router.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/with-router.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => withRouter,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const _router = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)",
     );
     function withRouter(ComposedComponent) {
       function WithRouterWrapper(props) {
@@ -1925,29 +1925,29 @@
       }
       WithRouterWrapper.getInitialProps = ComposedComponent.getInitialProps;
       WithRouterWrapper.origGetInitialProps = ComposedComponent.origGetInitialProps;
-      if (('TURBOPACK compile-time truthy', 1)) {
-        const name = ComposedComponent.displayName || ComposedComponent.name || 'Unknown';
+      if (("TURBOPACK compile-time truthy", 1)) {
+        const name = ComposedComponent.displayName || ComposedComponent.name || "Unknown";
         WithRouterWrapper.displayName = `withRouter(${name})`;
       }
       return WithRouterWrapper;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    /* global window */ Object.defineProperty(exports, '__esModule', {
+    /* global window */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1976,29 +1976,29 @@
       withRouter: () => _withrouter.default,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const _router = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/router.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/router.js [client] (ecmascript)",
       ),
     );
     const _routercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router-context.shared-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router-context.shared-runtime.js [client] (ecmascript)",
     );
     const _iserror = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [client] (ecmascript)",
       ),
     );
     const _withrouter = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/with-router.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/with-router.js [client] (ecmascript)",
       ),
     );
     const singletonRouter = {
@@ -2006,39 +2006,39 @@
       readyCallbacks: [],
       ready(callback) {
         if (this.router) return callback();
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           this.readyCallbacks.push(callback);
         }
       },
     };
     // Create public properties and methods of the router in the singletonRouter
     const urlPropertyFields = [
-      'pathname',
-      'route',
-      'query',
-      'asPath',
-      'components',
-      'isFallback',
-      'basePath',
-      'locale',
-      'locales',
-      'defaultLocale',
-      'isReady',
-      'isPreview',
-      'isLocaleDomain',
-      'domainLocales',
+      "pathname",
+      "route",
+      "query",
+      "asPath",
+      "components",
+      "isFallback",
+      "basePath",
+      "locale",
+      "locales",
+      "defaultLocale",
+      "isReady",
+      "isPreview",
+      "isLocaleDomain",
+      "domainLocales",
     ];
     const routerEvents = [
-      'routeChangeStart',
-      'beforeHistoryChange',
-      'routeChangeComplete',
-      'routeChangeError',
-      'hashChangeStart',
-      'hashChangeComplete',
+      "routeChangeStart",
+      "beforeHistoryChange",
+      "routeChangeComplete",
+      "routeChangeError",
+      "hashChangeStart",
+      "hashChangeComplete",
     ];
-    const coreMethodFields = ['push', 'replace', 'reload', 'back', 'prefetch', 'beforePopState'];
+    const coreMethodFields = ["push", "replace", "reload", "back", "prefetch", "beforePopState"];
     // Events is a static property on the router, the router doesn't have to be initialized to use it
-    Object.defineProperty(singletonRouter, 'events', {
+    Object.defineProperty(singletonRouter, "events", {
       get() {
         return _router.default.events;
       },
@@ -2046,10 +2046,10 @@
     function getRouter() {
       if (!singletonRouter.router) {
         const message =
-          'No router instance found.\n' +
+          "No router instance found.\n" +
           'You should only use "next/router" on the client side of your app.\n';
-        throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-          value: 'E1044',
+        throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+          value: "E1044",
           enumerable: false,
           configurable: true,
         });
@@ -2085,7 +2085,7 @@
               _singletonRouter[eventField](...args);
             } catch (err) {
               console.error(`Error when running the Router event: ${eventField}`);
-              console.error((0, _iserror.default)(err) ? `${err.message}\n${err.stack}` : err + '');
+              console.error((0, _iserror.default)(err) ? `${err.message}\n${err.stack}` : err + "");
             }
           }
         });
@@ -2097,11 +2097,11 @@
       if (!router) {
         throw Object.defineProperty(
           new Error(
-            'NextRouter was not mounted. https://nextjs.org/docs/messages/next-router-not-mounted',
+            "NextRouter was not mounted. https://nextjs.org/docs/messages/next-router-not-mounted",
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E509',
+            value: "E509",
             enumerable: false,
             configurable: true,
           },
@@ -2119,7 +2119,7 @@
       const scopedRouter = router;
       const instance = {};
       for (const property of urlPropertyFields) {
-        if (typeof scopedRouter[property] === 'object') {
+        if (typeof scopedRouter[property] === "object") {
           instance[property] = Object.assign(
             Array.isArray(scopedRouter[property]) ? [] : {},
             scopedRouter[property],
@@ -2138,22 +2138,22 @@
       return instance;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-announcer.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-announcer.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2173,36 +2173,36 @@
       default: () => _default,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const _router = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)",
     );
     const nextjsRouteAnnouncerStyles = {
       border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: '1px',
-      margin: '-1px',
-      overflow: 'hidden',
+      clip: "rect(0 0 0 0)",
+      height: "1px",
+      margin: "-1px",
+      overflow: "hidden",
       padding: 0,
-      position: 'absolute',
+      position: "absolute",
       top: 0,
-      width: '1px',
+      width: "1px",
       // https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
-      whiteSpace: 'nowrap',
-      wordWrap: 'normal',
+      whiteSpace: "nowrap",
+      wordWrap: "normal",
     };
     const RouteAnnouncer = () => {
       const { asPath } = (0, _router.useRouter)();
-      const [routeAnnouncement, setRouteAnnouncement] = _react.default.useState('');
+      const [routeAnnouncement, setRouteAnnouncement] = _react.default.useState("");
       // Only announce the path change, but not for the first load because screen
       // reader will do that automatically.
       const previouslyLoadedPath = _react.default.useRef(asPath);
@@ -2214,61 +2214,61 @@
       // https://www.gatsbyjs.com/blog/2019-07-11-user-testing-accessible-client-routing/
       _react.default.useEffect(
         {
-          'RouteAnnouncer.useEffect': () => {
+          "RouteAnnouncer.useEffect": () => {
             // If the path hasn't change, we do nothing.
             if (previouslyLoadedPath.current === asPath) return;
             previouslyLoadedPath.current = asPath;
             if (document.title) {
               setRouteAnnouncement(document.title);
             } else {
-              const pageHeader = document.querySelector('h1');
+              const pageHeader = document.querySelector("h1");
               const content = pageHeader?.innerText ?? pageHeader?.textContent;
               setRouteAnnouncement(content || asPath);
             }
           },
-        }['RouteAnnouncer.useEffect'],
+        }["RouteAnnouncer.useEffect"],
         [asPath],
       );
-      return /*#__PURE__*/ (0, _jsxruntime.jsx)('p', {
-        'aria-live': 'assertive', // Make the announcement immediately.
-        id: '__next-route-announcer__',
-        role: 'alert',
+      return /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+        "aria-live": "assertive", // Make the announcement immediately.
+        id: "__next-route-announcer__",
+        role: "alert",
         style: nextjsRouteAnnouncerStyles,
         children: routeAnnouncement,
       });
     };
     const _default = RouteAnnouncer;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/readonly-url-search-params.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/readonly-url-search-params.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * ReadonlyURLSearchParams implementation shared between client and server.
      * This file is intentionally not marked as 'use client' or 'use server'
      * so it can be imported by both environments.
-     */ /** @internal */ Object.defineProperty(exports, '__esModule', {
+     */ /** @internal */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'ReadonlyURLSearchParams', {
+    Object.defineProperty(exports, "ReadonlyURLSearchParams", {
       enumerable: true,
       get: () => ReadonlyURLSearchParams,
     });
     class ReadonlyURLSearchParamsError extends Error {
       constructor() {
         super(
-          'Method unavailable on `ReadonlyURLSearchParams`. Read more: https://nextjs.org/docs/app/api-reference/functions/use-search-params#updating-searchparams',
+          "Method unavailable on `ReadonlyURLSearchParams`. Read more: https://nextjs.org/docs/app/api-reference/functions/use-search-params#updating-searchparams",
         );
       }
     }
@@ -2287,58 +2287,58 @@
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'reportGlobalError', {
+    Object.defineProperty(exports, "reportGlobalError", {
       enumerable: true,
       get: () => reportGlobalError,
     });
     const reportGlobalError =
-      typeof reportError === 'function'
+      typeof reportError === "function"
         ? reportError
         : (error) => {
             // TODO: Dispatch error event
             globalThis.console.error(error);
           };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
     // This module can be shared between both pages router and app router
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2358,30 +2358,30 @@
       onRecoverableError: () => onRecoverableError,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _bailouttocsr = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [client] (ecmascript)",
     );
     const _iserror = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [client] (ecmascript)",
       ),
     );
     const _reportglobalerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [client] (ecmascript)",
     );
     const recoverableErrors = new WeakSet();
     const isInstantTest =
-      ('TURBOPACK compile-time value', true) &&
-      typeof self !== 'undefined' &&
+      ("TURBOPACK compile-time value", true) &&
+      typeof self !== "undefined" &&
       !!self.__next_instant_test;
     function isRecoverableError(error) {
       return recoverableErrors.has(error);
     }
     const onRecoverableError = (error) => {
       // x-ref: https://github.com/facebook/react/pull/28736
-      let cause = (0, _iserror.default)(error) && 'cause' in error ? error.cause : error;
+      let cause = (0, _iserror.default)(error) && "cause" in error ? error.cause : error;
       // Skip certain custom errors which are not expected to be reported on client
       if ((0, _bailouttocsr.isBailoutToCSRError)(cause)) return;
       // Instant Navigation Testing API: suppress "server could not finish this
@@ -2391,16 +2391,16 @@
       if (isInstantTest) {
         if ((0, _iserror.default)(cause)) {
           if (
-            ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+            ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
           );
           else {
-            if (cause.message.includes('could not finish this Suspense boundary')) return;
+            if (cause.message.includes("could not finish this Suspense boundary")) return;
           }
         }
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { decorateDevError } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/stitched-error.js [client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/stitched-error.js [client] (ecmascript)",
         );
         const causeError = decorateDevError(cause);
         recoverableErrors.add(causeError);
@@ -2409,34 +2409,34 @@
       (0, _reportglobalerror.reportGlobalError)(cause);
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/tracing/tracer.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/tracing/tracer.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => _default,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _mitt = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/mitt.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/mitt.js [client] (ecmascript)",
       ),
     );
     class Span {
@@ -2446,19 +2446,19 @@
         this.startTime = options.startTime ?? Date.now();
         this.onSpanEnd = onSpanEnd;
         this.state = {
-          state: 'inprogress',
+          state: "inprogress",
         };
       }
       end(endTime) {
-        if (this.state.state === 'ended') {
-          throw Object.defineProperty(new Error('Span has already ended'), '__NEXT_ERROR_CODE', {
-            value: 'E17',
+        if (this.state.state === "ended") {
+          throw Object.defineProperty(new Error("Span has already ended"), "__NEXT_ERROR_CODE", {
+            value: "E17",
             enumerable: false,
             configurable: true,
           });
         }
         this.state = {
-          state: 'ended',
+          state: "ended",
           endTime: endTime ?? Date.now(),
         };
         this.onSpanEnd(this);
@@ -2469,36 +2469,36 @@
         return new Span(name, options, this.handleSpanEnd);
       }
       onSpanEnd(cb) {
-        this._emitter.on('spanend', cb);
+        this._emitter.on("spanend", cb);
         return () => {
-          this._emitter.off('spanend', cb);
+          this._emitter.off("spanend", cb);
         };
       }
       constructor() {
         this._emitter = (0, _mitt.default)();
         this.handleSpanEnd = (span) => {
-          this._emitter.emit('spanend', span);
+          this._emitter.emit("spanend", span);
         };
       }
     }
     const _default = new Tracer();
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2529,81 +2529,81 @@
       UNAUTHORIZED: 401,
     };
     const ALLOWED_CODES = new Set(Object.values(HTTPAccessErrorStatus));
-    const HTTP_ERROR_FALLBACK_ERROR_CODE = 'NEXT_HTTP_ERROR_FALLBACK';
+    const HTTP_ERROR_FALLBACK_ERROR_CODE = "NEXT_HTTP_ERROR_FALLBACK";
     function isHTTPAccessFallbackError(error) {
       if (
-        typeof error !== 'object' ||
+        typeof error !== "object" ||
         error === null ||
-        !('digest' in error) ||
-        typeof error.digest !== 'string'
+        !("digest" in error) ||
+        typeof error.digest !== "string"
       ) {
         return false;
       }
-      const [prefix, httpStatus] = error.digest.split(';');
+      const [prefix, httpStatus] = error.digest.split(";");
       return prefix === HTTP_ERROR_FALLBACK_ERROR_CODE && ALLOWED_CODES.has(Number(httpStatus));
     }
     function getAccessFallbackHTTPStatus(error) {
-      const httpStatus = error.digest.split(';')[1];
+      const httpStatus = error.digest.split(";")[1];
       return Number(httpStatus);
     }
     function getAccessFallbackErrorTypeByStatus(status) {
       switch (status) {
         case 401:
-          return 'unauthorized';
+          return "unauthorized";
         case 403:
-          return 'forbidden';
+          return "forbidden";
         case 404:
-          return 'not-found';
+          return "not-found";
         default:
           return;
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'RedirectStatusCode', {
+    Object.defineProperty(exports, "RedirectStatusCode", {
       enumerable: true,
       get: () => RedirectStatusCode,
     });
     var RedirectStatusCode = /*#__PURE__*/ ((RedirectStatusCode) => {
-      RedirectStatusCode[(RedirectStatusCode['SeeOther'] = 303)] = 'SeeOther';
-      RedirectStatusCode[(RedirectStatusCode['TemporaryRedirect'] = 307)] = 'TemporaryRedirect';
-      RedirectStatusCode[(RedirectStatusCode['PermanentRedirect'] = 308)] = 'PermanentRedirect';
+      RedirectStatusCode[(RedirectStatusCode["SeeOther"] = 303)] = "SeeOther";
+      RedirectStatusCode[(RedirectStatusCode["TemporaryRedirect"] = 307)] = "TemporaryRedirect";
+      RedirectStatusCode[(RedirectStatusCode["PermanentRedirect"] = 308)] = "PermanentRedirect";
       return RedirectStatusCode;
     })({});
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2623,59 +2623,59 @@
       isRedirectError: () => isRedirectError,
     });
     const _redirectstatuscode = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [client] (ecmascript)",
     );
-    const REDIRECT_ERROR_CODE = 'NEXT_REDIRECT';
+    const REDIRECT_ERROR_CODE = "NEXT_REDIRECT";
     function isRedirectError(error) {
       if (
-        typeof error !== 'object' ||
+        typeof error !== "object" ||
         error === null ||
-        !('digest' in error) ||
-        typeof error.digest !== 'string'
+        !("digest" in error) ||
+        typeof error.digest !== "string"
       ) {
         return false;
       }
-      const digest = error.digest.split(';');
+      const digest = error.digest.split(";");
       const [errorCode, type] = digest;
-      const destination = digest.slice(2, -2).join(';');
+      const destination = digest.slice(2, -2).join(";");
       const status = digest.at(-2);
       const statusCode = Number(status);
       return (
         errorCode === REDIRECT_ERROR_CODE &&
-        (type === 'replace' || type === 'push') &&
-        typeof destination === 'string' &&
+        (type === "replace" || type === "push") &&
+        typeof destination === "string" &&
         !isNaN(statusCode) &&
         statusCode in _redirectstatuscode.RedirectStatusCode
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isNextRouterError', {
+    Object.defineProperty(exports, "isNextRouterError", {
       enumerable: true,
       get: () => isNextRouterError,
     });
     const _httpaccessfallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [client] (ecmascript)",
     );
     const _redirecterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [client] (ecmascript)",
     );
     function isNextRouterError(error) {
       return (
@@ -2684,30 +2684,30 @@
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/get-socket-url.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/get-socket-url.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getSocketUrl', {
+    Object.defineProperty(exports, "getSocketUrl", {
       enumerable: true,
       get: () => getSocketUrl,
     });
     const _normalizedassetprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/normalized-asset-prefix.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/normalized-asset-prefix.js [client] (ecmascript)",
     );
     function getSocketProtocol(assetPrefix) {
       let protocol = window.location.protocol;
@@ -2715,36 +2715,36 @@
         // assetPrefix is a url
         protocol = new URL(assetPrefix).protocol;
       } catch {}
-      return protocol === 'http:' ? 'ws:' : 'wss:';
+      return protocol === "http:" ? "ws:" : "wss:";
     }
     function getSocketUrl(assetPrefix) {
       const prefix = (0, _normalizedassetprefix.normalizedAssetPrefix)(assetPrefix);
-      const protocol = getSocketProtocol(assetPrefix || '');
+      const protocol = getSocketProtocol(assetPrefix || "");
       if (URL.canParse(prefix)) {
         // since normalized asset prefix is ensured to be a URL format,
         // we can safely replace the protocol
-        return prefix.replace(/^http/, 'ws');
+        return prefix.replace(/^http/, "ws");
       }
       const { hostname, port } = window.location;
-      return `${protocol}//${hostname}${port ? `:${port}` : ''}${prefix}`;
+      return `${protocol}//${hostname}${port ? `:${port}` : ""}${prefix}`;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2766,16 +2766,16 @@
       sendMessage: () => sendMessage,
     });
     const _forwardlogs = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/forward-logs.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/forward-logs.js [client] (ecmascript)",
     );
     const _hotreloadertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [client] (ecmascript)",
     );
     const _getsocketurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/get-socket-url.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/get-socket-url.js [client] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [client] (ecmascript)",
     );
     let source;
     const messageCallbacks = [];
@@ -2796,7 +2796,7 @@
         function handleOnline() {
           _forwardlogs.logQueue.onSocketReady(source);
           reconnections = 0;
-          window.console.log('[HMR] connected');
+          window.console.log("[HMR] connected");
         }
         function handleMessage(event) {
           // While the page is reloading, don't respond to any more messages.
@@ -2846,22 +2846,22 @@
       init();
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2883,42 +2883,42 @@
       reportInvalidHmrMessage: () => reportInvalidHmrMessage,
     });
     const REACT_REFRESH_FULL_RELOAD =
-      '[Fast Refresh] performing full reload\n\n' +
+      "[Fast Refresh] performing full reload\n\n" +
       "Fast Refresh will perform a full reload when you edit a file that's imported by modules outside of the React rendering tree.\n" +
-      'You might have a file which exports a React component but also exports a value that is imported by a non-React component file.\n' +
-      'Consider migrating the non-React component export to a separate file and importing it into both files.\n\n' +
-      'It is also possible the parent component of the component you edited is a class component, which disables Fast Refresh.\n' +
-      'Fast Refresh requires at least one parent function component in your React tree.';
+      "You might have a file which exports a React component but also exports a value that is imported by a non-React component file.\n" +
+      "Consider migrating the non-React component export to a separate file and importing it into both files.\n\n" +
+      "It is also possible the parent component of the component you edited is a class component, which disables Fast Refresh.\n" +
+      "Fast Refresh requires at least one parent function component in your React tree.";
     const REACT_REFRESH_FULL_RELOAD_FROM_ERROR =
-      '[Fast Refresh] performing full reload because your application had an unrecoverable error';
+      "[Fast Refresh] performing full reload because your application had an unrecoverable error";
     function reportInvalidHmrMessage(message, err) {
       console.warn(
-        '[HMR] Invalid message: ' +
+        "[HMR] Invalid message: " +
           JSON.stringify(message) +
-          '\n' +
-          ((err instanceof Error && err?.stack) || ''),
+          "\n" +
+          ((err instanceof Error && err?.stack) || ""),
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'RuntimeErrorHandler', {
+    Object.defineProperty(exports, "RuntimeErrorHandler", {
       enumerable: true,
       get: () => RuntimeErrorHandler,
     });
@@ -2926,22 +2926,22 @@
       hadRuntimeError: false,
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/report-hmr-latency.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/report-hmr-latency.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     Object.defineProperty(
@@ -2956,7 +2956,7 @@
        *   turbopack when we must report a message to the browser console (because we
        *   already logged a "rebuilding" message), but it's not a real HMR, so we
        *   don't want to impact our telemetry.
-       */ 'default',
+       */ "default",
       {
         enumerable: true,
         get: () => reportHmrLatency,
@@ -2976,7 +2976,7 @@
       }
       sendMessage(
         JSON.stringify({
-          event: 'client-hmr-latency',
+          event: "client-hmr-latency",
           id: window.__nextDevClientId,
           startTime: startMsSinceEpoch,
           endTime: endMsSinceEpoch,
@@ -2984,7 +2984,7 @@
           updatedModules,
           // Whether the page (tab) was hidden at the time the event occurred.
           // This can impact the accuracy of the event's timing.
-          isPageHidden: document.visibilityState === 'hidden',
+          isPageHidden: document.visibilityState === "hidden",
         }),
       );
       if (self.__NEXT_HMR_LATENCY_CB) {
@@ -2992,25 +2992,25 @@
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/turbopack-hot-reloader-common.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/turbopack-hot-reloader-common.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'TurbopackHmr', {
+    Object.defineProperty(exports, "TurbopackHmr", {
       enumerable: true,
       get: () => TurbopackHmr,
     });
@@ -3037,7 +3037,7 @@
       // the message entirely.
       #runDeferredReportHmrStart() {
         if (this.#deferredReportHmrStartId != null) {
-          console.log('[Fast Refresh] rebuilding');
+          console.log("[Fast Refresh] rebuilding");
           this.#reportedHmrStart = true;
           this.#cancelDeferredReportHmrStart();
         }
@@ -3110,8 +3110,8 @@
       for (const update of updates) {
         // TODO this won't capture changes to CSS since they don't result in a "merged" update
         if (
-          update.type !== 'partial' ||
-          update.instruction.type !== 'ChunkListUpdate' ||
+          update.type !== "partial" ||
+          update.instruction.type !== "ChunkListUpdate" ||
           update.instruction.merged === undefined
         ) {
           continue;
@@ -3129,24 +3129,24 @@
       return updatedModules;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
     // TODO: Remove use of `any` type.
     /**
@@ -3176,8 +3176,8 @@
     // can be found here:
     // https://github.com/facebook/create-react-app/blob/v3.4.1/packages/react-dev-utils/webpackHotDevClient.js
     /// <reference types="webpack/module.d.ts" />
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3199,43 +3199,43 @@
       performFullReload: () => performFullReload,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _nextdevtools = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/next-devtools/index.js (raw)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/next-devtools/index.js (raw)",
     );
     const _pagesdevoverlaysetup = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js [client] (ecmascript)",
     );
     const _stripansi = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi/index.js [client] (ecmascript)",
       ),
     );
     const _websocket = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)",
     );
     const _formatwebpackmessages = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/format-webpack-messages.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/format-webpack-messages.js [client] (ecmascript)",
       ),
     );
     const _hotreloadertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [client] (ecmascript)",
     );
     const _shared = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [client] (ecmascript)",
     );
     const _runtimeerrorhandler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [client] (ecmascript)",
     );
     const _reporthmrlatency = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/report-hmr-latency.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/report-hmr-latency.js [client] (ecmascript)",
       ),
     );
     const _turbopackhotreloadercommon = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/turbopack-hot-reloader-common.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/turbopack-hot-reloader-common.js [client] (ecmascript)",
     );
     window.__nextDevClientId = Math.round(Math.random() * 100 + Date.now());
     let customHmrEventHandler;
@@ -3273,7 +3273,7 @@
     var hasCompileErrors = false;
     function clearOutdatedErrors() {
       // Clean up outdated compile errors, if any.
-      if (typeof console !== 'undefined' && typeof console.clear === 'function') {
+      if (typeof console !== "undefined" && typeof console.clear === "function") {
         if (hasCompileErrors) {
           console.clear();
         }
@@ -3283,7 +3283,7 @@
     function handleSuccess() {
       clearOutdatedErrors();
       hasCompileErrors = false;
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const hmrUpdate = turbopackHmr.onBuilt();
         if (hmrUpdate != null) {
           (0, _reporthmrlatency.default)(
@@ -3311,12 +3311,12 @@
           warnings: warnings,
           errors: [],
         });
-        if (typeof console !== 'undefined' && typeof console.warn === 'function') {
+        if (typeof console !== "undefined" && typeof console.warn === "function") {
           for (let i = 0; i < formatted.warnings?.length; i++) {
             if (i === 5) {
               console.warn(
-                'There were more warnings in other files.\n' +
-                  'You can find a complete log in the terminal.',
+                "There were more warnings in other files.\n" +
+                  "You can find a complete log in the terminal.",
               );
               break;
             }
@@ -3343,7 +3343,7 @@
       // Only show the first error.
       _nextdevtools.dispatcher.onBuildError(formatted.errors[0]);
       // Also log them to the console.
-      if (typeof console !== 'undefined' && typeof console.error === 'function') {
+      if (typeof console !== "undefined" && typeof console.error === "function") {
         for (var i = 0; i < formatted.errors.length; i++) {
           console.error((0, _stripansi.default)(formatted.errors[i]));
         }
@@ -3351,13 +3351,13 @@
       // Do not attempt to reload now.
       // We will reload on next success instead.
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
     }
     const webpackStartMsSinceEpoch = null;
-    const turbopackHmr = ('TURBOPACK compile-time truthy', 1)
+    const turbopackHmr = ("TURBOPACK compile-time truthy", 1)
       ? new _turbopackhotreloadercommon.TurbopackHmr()
-      : 'TURBOPACK unreachable';
+      : "TURBOPACK unreachable";
     let isrManifest = {};
     // There is a newer version of the code available.
     function handleAvailableHash(hash) {
@@ -3365,10 +3365,10 @@
       mostRecentCompilationHash = hash;
     }
     function handleStaticIndicator() {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const routeInfo = window.next.router.components[window.next.router.pathname];
         const pageComponent = routeInfo?.Component;
-        const appComponent = window.next.router.components['/_app']?.Component;
+        const appComponent = window.next.router.components["/_app"]?.Component;
         const isDynamicPage =
           Boolean(pageComponent?.getInitialProps) || Boolean(routeInfo?.__N_SSP);
         const hasAppGetInitialProps =
@@ -3376,7 +3376,7 @@
           appComponent?.getInitialProps !== appComponent?.origGetInitialProps;
         const isPageStatic =
           isrManifest[window.location.pathname] || (!isDynamicPage && !hasAppGetInitialProps);
-        _nextdevtools.dispatcher.onStaticIndicator(isPageStatic ? 'static' : 'dynamic');
+        _nextdevtools.dispatcher.onStaticIndicator(isPageStatic ? "static" : "dynamic");
       }
     }
     /** Handles messages from the server for the Pages Router. */ function processMessage(message) {
@@ -3388,7 +3388,7 @@
         }
         case _hotreloadertypes.HMR_MESSAGE_SENT_TO_BROWSER.BUILDING: {
           _nextdevtools.dispatcher.buildingIndicatorShow();
-          if (('TURBOPACK compile-time truthy', 1)) {
+          if (("TURBOPACK compile-time truthy", 1)) {
             turbopackHmr.onBuilding();
           } //TURBOPACK unreachable
           else;
@@ -3400,16 +3400,16 @@
           if (message.hash) handleAvailableHash(message.hash);
           const { errors, warnings } = message;
           // Is undefined when it's a 'built' event
-          if ('versionInfo' in message) _nextdevtools.dispatcher.onVersionInfo(message.versionInfo);
-          if ('devIndicator' in message)
+          if ("versionInfo" in message) _nextdevtools.dispatcher.onVersionInfo(message.versionInfo);
+          if ("devIndicator" in message)
             _nextdevtools.dispatcher.onDevIndicator(message.devIndicator);
-          if ('devToolsConfig' in message)
+          if ("devToolsConfig" in message)
             _nextdevtools.dispatcher.onDevToolsConfig(message.devToolsConfig);
           const hasErrors = Boolean(errors && errors.length);
           if (hasErrors) {
             (0, _websocket.sendMessage)(
               JSON.stringify({
-                event: 'client-error',
+                event: "client-error",
                 errorCount: errors.length,
                 clientId: window.__nextDevClientId,
               }),
@@ -3421,7 +3421,7 @@
           if (hasWarnings) {
             (0, _websocket.sendMessage)(
               JSON.stringify({
-                event: 'client-warning',
+                event: "client-warning",
                 warningCount: warnings.length,
                 clientId: window.__nextDevClientId,
               }),
@@ -3430,7 +3430,7 @@
           }
           (0, _websocket.sendMessage)(
             JSON.stringify({
-              event: 'client-success',
+              event: "client-success",
               clientId: window.__nextDevClientId,
             }),
           );
@@ -3449,9 +3449,9 @@
             const errorObject = JSON.parse(errorJSON);
             const error = Object.defineProperty(
               new Error(errorObject.message),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E394',
+                value: "E394",
                 enumerable: false,
                 configurable: true,
               },
@@ -3539,14 +3539,14 @@
     }
     // Webpack disallows updates in other states.
     function canApplyUpdates() {
-      return module.hot.status() === 'idle';
+      return module.hot.status() === "idle";
     }
     function afterApplyUpdates(fn) {
       if (canApplyUpdates()) {
         fn();
       } else {
         function handler(status) {
-          if (status === 'idle') {
+          if (status === "idle") {
             module.hot.removeStatusHandler(handler);
             fn();
           }
@@ -3557,7 +3557,7 @@
     // Attempt to update code on the fly, fall back to a hard reload.
     function tryApplyUpdatesWebpack() {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       if (!isUpdateAvailable() || !canApplyUpdates()) {
         _nextdevtools.dispatcher.onBuildOk();
@@ -3591,7 +3591,7 @@
           Date.now(),
         );
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
       }
       // https://webpack.js.org/api/hot-module-replacement/#check
@@ -3620,10 +3620,10 @@
     function performFullReload(err) {
       const stackTrace =
         err &&
-        ((err.stack && err.stack.split('\n').slice(0, 5).join('\n')) || err.message || err + '');
+        ((err.stack && err.stack.split("\n").slice(0, 5).join("\n")) || err.message || err + "");
       (0, _websocket.sendMessage)(
         JSON.stringify({
-          event: 'client-full-reload',
+          event: "client-full-reload",
           stackTrace,
           hadRuntimeError: !!_runtimeerrorhandler.RuntimeErrorHandler.hadRuntimeError,
           dependencyChain: err ? err.dependencyChain : undefined,
@@ -3632,42 +3632,42 @@
       window.location.reload();
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/tracing/report-to-socket.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/tracing/report-to-socket.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => reportToSocket,
     });
     const _websocket = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)",
     );
     function reportToSocket(span) {
-      if (span.state.state !== 'ended') {
-        throw Object.defineProperty(new Error('Expected span to be ended'), '__NEXT_ERROR_CODE', {
-          value: 'E302',
+      if (span.state.state !== "ended") {
+        throw Object.defineProperty(new Error("Expected span to be ended"), "__NEXT_ERROR_CODE", {
+          value: "E302",
           enumerable: false,
           configurable: true,
         });
       }
       (0, _websocket.sendMessage)(
         JSON.stringify({
-          event: 'span-end',
+          event: "span-end",
           startTime: span.startTime,
           endTime: span.state.endTime,
           spanName: span.name,
@@ -3676,28 +3676,28 @@
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/index.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/index.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
     /* global location */ // imports polyfill from `@next/polyfill-module` after build.
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3723,99 +3723,99 @@
       version: () => version,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/jsx-runtime.js [client] (ecmascript)",
     );
     __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/polyfill-module.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/polyfill-module.js [client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react/index.js [client] (ecmascript)",
       ),
     );
     const _client = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react-dom/client.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/react-dom/client.js [client] (ecmascript)",
       ),
     );
     const _headmanagercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [client] (ecmascript)",
     );
     const _mitt = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/mitt.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/mitt.js [client] (ecmascript)",
       ),
     );
     const _routercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router-context.shared-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router-context.shared-runtime.js [client] (ecmascript)",
     );
     const _disablesmoothscroll = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/disable-smooth-scroll.js [client] (ecmascript)",
     );
     const _isdynamic = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [client] (ecmascript)",
     );
     const _querystring = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)",
     );
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [client] (ecmascript)",
     );
     const _portal = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/portal/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/portal/index.js [client] (ecmascript)",
     );
     const _headmanager = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/head-manager.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/head-manager.js [client] (ecmascript)",
       ),
     );
     const _pageloader = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/page-loader.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/page-loader.js [client] (ecmascript)",
       ),
     );
     const _routeannouncer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-announcer.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-announcer.js [client] (ecmascript)",
     );
     const _router = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)",
     );
     const _iserror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [client] (ecmascript)",
     );
     const _imageconfigcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/image-config-context.shared-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/image-config-context.shared-runtime.js [client] (ecmascript)",
     );
     const _removebasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [client] (ecmascript)",
     );
     const _hasbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [client] (ecmascript)",
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [client] (ecmascript)",
     );
     const _adapters = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/adapters.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/adapters.js [client] (ecmascript)",
     );
     const _hooksclientcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [client] (ecmascript)",
     );
     const _onrecoverableerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [client] (ecmascript)",
     );
     const _tracer = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/tracing/tracer.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/tracing/tracer.js [client] (ecmascript)",
       ),
     );
     const _isnextroutererror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [client] (ecmascript)",
     );
-    const version = '16.2.1';
+    const version = "16.2.1";
     let router;
     const emitter = (0, _mitt.default)();
     const looseToArray = (input) => [].slice.call(input);
@@ -3849,19 +3849,19 @@
             (initialData.nextExport &&
               ((0, _isdynamic.isDynamicRoute)(router.pathname) ||
                 location.search ||
-                ('TURBOPACK compile-time value', false) ||
+                ("TURBOPACK compile-time value", false) ||
                 initialMatchesMiddleware)) ||
             (initialData.props &&
               initialData.props.__N_SSG &&
               (location.search ||
-                ('TURBOPACK compile-time value', false) ||
+                ("TURBOPACK compile-time value", false) ||
                 initialMatchesMiddleware)))
         ) {
           // update query on mount for exported pages
           router
             .replace(
               router.pathname +
-                '?' +
+                "?" +
                 String(
                   (0, _querystring.assign)(
                     (0, _querystring.urlQueryToSearchParams)(router.query),
@@ -3902,11 +3902,11 @@
       }
       render() {
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         else {
           const { PagesDevOverlayBridge } = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js [client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js [client] (ecmascript)",
           );
           return /*#__PURE__*/ (0, _jsxruntime.jsx)(PagesDevOverlayBridge, {
             children: this.props.children,
@@ -3916,18 +3916,18 @@
     }
     async function initialize(opts = {}) {
       // This makes sure this specific lines are removed in production
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         _tracer.default.onSpanEnd(
           __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/tracing/report-to-socket.js [client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/tracing/report-to-socket.js [client] (ecmascript)",
           ).default,
         );
         devClient = opts.devClient;
       }
-      initialData = JSON.parse(document.getElementById('__NEXT_DATA__').textContent);
+      initialData = JSON.parse(document.getElementById("__NEXT_DATA__").textContent);
       window.__NEXT_DATA__ = initialData;
       defaultLocale = initialData.defaultLocale;
-      const prefix = initialData.assetPrefix || '';
+      const prefix = initialData.assetPrefix || "";
       self.__next_set_public_path__(`${prefix}/_next/`);
       asPath = (0, _utils.getURL)();
       // make sure not to attempt stripping basePath for 404s
@@ -3935,11 +3935,11 @@
         asPath = (0, _removebasepath.removeBasePath)(asPath);
       }
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       if (initialData.scriptLoader) {
         const { initScriptLoader } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [client] (ecmascript)",
         );
         initScriptLoader(initialData.scriptLoader);
       }
@@ -3956,7 +3956,7 @@
       headManager.getIsSsr = () => {
         return router.isSsr;
       };
-      appElement = document.getElementById('__next');
+      appElement = document.getElementById("__next");
       return {
         assetPrefix: prefix,
       };
@@ -3970,10 +3970,10 @@
       // Create a memoized value for next/navigation router context.
       const adaptedForAppRouter = _react.default.useMemo(
         {
-          'AppContainer.useMemo[adaptedForAppRouter]': () => {
+          "AppContainer.useMemo[adaptedForAppRouter]": () => {
             return (0, _adapters.adaptForAppRouterInstance)(router);
           },
-        }['AppContainer.useMemo[adaptedForAppRouter]'],
+        }["AppContainer.useMemo[adaptedForAppRouter]"],
         [],
       );
       return /*#__PURE__*/ (0, _jsxruntime.jsx)(Container, {
@@ -3981,7 +3981,7 @@
           renderError({
             App: CachedApp,
             err: error,
-          }).catch((err) => console.error('Error rendering page: ', err)),
+          }).catch((err) => console.error("Error rendering page: ", err)),
         children: /*#__PURE__*/ (0, _jsxruntime.jsx)(
           _approutercontextsharedruntime.AppRouterContext.Provider,
           {
@@ -4011,51 +4011,51 @@
                                   _imageconfigcontextsharedruntime.ImageConfigContext.Provider,
                                   {
                                     value:
-                                      ('TURBOPACK compile-time value',
+                                      ("TURBOPACK compile-time value",
                                       {
                                         deviceSizes:
-                                          ('TURBOPACK compile-time value',
+                                          ("TURBOPACK compile-time value",
                                           [
-                                            ('TURBOPACK compile-time value', 640),
-                                            ('TURBOPACK compile-time value', 750),
-                                            ('TURBOPACK compile-time value', 828),
-                                            ('TURBOPACK compile-time value', 1080),
-                                            ('TURBOPACK compile-time value', 1200),
-                                            ('TURBOPACK compile-time value', 1920),
-                                            ('TURBOPACK compile-time value', 2048),
-                                            ('TURBOPACK compile-time value', 3840),
+                                            ("TURBOPACK compile-time value", 640),
+                                            ("TURBOPACK compile-time value", 750),
+                                            ("TURBOPACK compile-time value", 828),
+                                            ("TURBOPACK compile-time value", 1080),
+                                            ("TURBOPACK compile-time value", 1200),
+                                            ("TURBOPACK compile-time value", 1920),
+                                            ("TURBOPACK compile-time value", 2048),
+                                            ("TURBOPACK compile-time value", 3840),
                                           ]),
                                         imageSizes:
-                                          ('TURBOPACK compile-time value',
+                                          ("TURBOPACK compile-time value",
                                           [
-                                            ('TURBOPACK compile-time value', 32),
-                                            ('TURBOPACK compile-time value', 48),
-                                            ('TURBOPACK compile-time value', 64),
-                                            ('TURBOPACK compile-time value', 96),
-                                            ('TURBOPACK compile-time value', 128),
-                                            ('TURBOPACK compile-time value', 256),
-                                            ('TURBOPACK compile-time value', 384),
+                                            ("TURBOPACK compile-time value", 32),
+                                            ("TURBOPACK compile-time value", 48),
+                                            ("TURBOPACK compile-time value", 64),
+                                            ("TURBOPACK compile-time value", 96),
+                                            ("TURBOPACK compile-time value", 128),
+                                            ("TURBOPACK compile-time value", 256),
+                                            ("TURBOPACK compile-time value", 384),
                                           ]),
                                         qualities:
-                                          ('TURBOPACK compile-time value',
-                                          [('TURBOPACK compile-time value', 75)]),
-                                        path: ('TURBOPACK compile-time value', '/_next/image'),
-                                        loader: ('TURBOPACK compile-time value', 'default'),
+                                          ("TURBOPACK compile-time value",
+                                          [("TURBOPACK compile-time value", 75)]),
+                                        path: ("TURBOPACK compile-time value", "/_next/image"),
+                                        loader: ("TURBOPACK compile-time value", "default"),
                                         dangerouslyAllowSVG:
-                                          ('TURBOPACK compile-time value', false),
-                                        unoptimized: ('TURBOPACK compile-time value', true),
-                                        domains: ('TURBOPACK compile-time value', []),
-                                        remotePatterns: ('TURBOPACK compile-time value', []),
+                                          ("TURBOPACK compile-time value", false),
+                                        unoptimized: ("TURBOPACK compile-time value", true),
+                                        domains: ("TURBOPACK compile-time value", []),
+                                        remotePatterns: ("TURBOPACK compile-time value", []),
                                         localPatterns:
-                                          ('TURBOPACK compile-time value',
+                                          ("TURBOPACK compile-time value",
                                           [
-                                            ('TURBOPACK compile-time value',
+                                            ("TURBOPACK compile-time value",
                                             {
-                                              pathname: ('TURBOPACK compile-time value', '**'),
-                                              search: ('TURBOPACK compile-time value', ''),
+                                              pathname: ("TURBOPACK compile-time value", "**"),
+                                              search: ("TURBOPACK compile-time value", ""),
                                             }),
                                           ]),
-                                        output: ('TURBOPACK compile-time value', 'export'),
+                                        output: ("TURBOPACK compile-time value", "export"),
                                       }),
                                     children: children,
                                   },
@@ -4092,7 +4092,7 @@
       const { App, err } = renderErrorProps;
       // In development runtime errors are caught by our overlay
       // In production we catch runtime errors using componentDidCatch which will trigger renderError
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         // A Next.js rendering runtime error is always unrecoverable
         // FIXME: let's make this recoverable (error in GIP client-transition)
         devClient.onUnrecoverableError();
@@ -4114,24 +4114,24 @@
       // as soon as React flushes the update.
       _react.default.useLayoutEffect(
         {
-          'Head.useLayoutEffect': () => callback(),
-        }['Head.useLayoutEffect'],
+          "Head.useLayoutEffect": () => callback(),
+        }["Head.useLayoutEffect"],
         [callback],
       );
       return null;
     }
     const performanceMarks = {
-      navigationStart: 'navigationStart',
-      beforeRender: 'beforeRender',
-      afterRender: 'afterRender',
-      afterHydrate: 'afterHydrate',
-      routeChange: 'routeChange',
+      navigationStart: "navigationStart",
+      beforeRender: "beforeRender",
+      afterRender: "afterRender",
+      afterHydrate: "afterHydrate",
+      routeChange: "routeChange",
     };
     const performanceMeasures = {
-      hydration: 'Next.js-hydration',
-      beforeHydration: 'Next.js-before-hydration',
-      routeChangeToRender: 'Next.js-route-change-to-render',
-      render: 'Next.js-render',
+      hydration: "Next.js-hydration",
+      beforeHydration: "Next.js-before-hydration",
+      routeChangeToRender: "Next.js-route-change-to-render",
+      render: "Next.js-render",
     };
     let reactRoot = null;
     // On initial render a hydrate should always happen
@@ -4149,7 +4149,7 @@
       performance.mark(performanceMarks.afterHydrate); // mark end of hydration
       const hasBeforeRenderMark = performance.getEntriesByName(
         performanceMarks.beforeRender,
-        'mark',
+        "mark",
       ).length;
       if (hasBeforeRenderMark) {
         const beforeHydrationMeasure = performance.measure(
@@ -4163,12 +4163,12 @@
           performanceMarks.afterHydrate,
         );
         if (
-          ('TURBOPACK compile-time value', 'development') === 'development' && // Old versions of Safari don't return `PerformanceMeasure`s from `performance.measure()`
+          ("TURBOPACK compile-time value", "development") === "development" && // Old versions of Safari don't return `PerformanceMeasure`s from `performance.measure()`
           beforeHydrationMeasure &&
           hydrationMeasure
         ) {
           _tracer.default
-            .startSpan('navigation-to-hydration', {
+            .startSpan("navigation-to-hydration", {
               startTime: performance.timeOrigin + beforeHydrationMeasure.startTime,
               attributes: {
                 pathname: location.pathname,
@@ -4186,11 +4186,11 @@
     function markRenderComplete() {
       if (!_utils.ST) return;
       performance.mark(performanceMarks.afterRender); // mark end of render
-      const navStartEntries = performance.getEntriesByName(performanceMarks.routeChange, 'mark');
+      const navStartEntries = performance.getEntriesByName(performanceMarks.routeChange, "mark");
       if (!navStartEntries.length) return;
       const hasBeforeRenderMark = performance.getEntriesByName(
         performanceMarks.beforeRender,
-        'mark',
+        "mark",
       ).length;
       if (hasBeforeRenderMark) {
         performance.measure(
@@ -4240,23 +4240,23 @@
       // as soon as React flushes the update
       _react.default.useLayoutEffect(
         {
-          'Root.useLayoutEffect': () =>
+          "Root.useLayoutEffect": () =>
             callbacks.forEach(
               {
-                'Root.useLayoutEffect': (callback) => callback(),
-              }['Root.useLayoutEffect'],
+                "Root.useLayoutEffect": (callback) => callback(),
+              }["Root.useLayoutEffect"],
             ),
-        }['Root.useLayoutEffect'],
+        }["Root.useLayoutEffect"],
         [callbacks],
       );
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return children;
     }
     function doRender(input) {
       let { App, Component, props, err } = input;
-      const styleSheets = 'initial' in input ? undefined : input.styleSheets;
+      const styleSheets = "initial" in input ? undefined : input.styleSheets;
       Component = Component || lastAppProps.Component;
       props = props || lastAppProps.props;
       const appProps = {
@@ -4281,10 +4281,10 @@
           canceled = true;
           lastRenderReject = null;
           const error = Object.defineProperty(
-            new Error('Cancel rendering route'),
-            '__NEXT_ERROR_CODE',
+            new Error("Cancel rendering route"),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E503',
+              value: "E503",
               enumerable: false,
               configurable: true,
             },
@@ -4296,7 +4296,7 @@
       // This function has a return type to ensure it doesn't start returning a
       // Promise. It should remain synchronous.
       function onStart() {
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           return false;
         }
         //TURBOPACK unreachable
@@ -4307,7 +4307,7 @@
       }
       function onHeadCommit() {
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         if (input.scroll) {
           const { x, y } = input.scroll;
@@ -4329,7 +4329,7 @@
             children: [
               renderApp(App, appProps),
               /*#__PURE__*/ (0, _jsxruntime.jsx)(_portal.Portal, {
-                type: 'next-route-announcer',
+                type: "next-route-announcer",
                 children: /*#__PURE__*/ (0, _jsxruntime.jsx)(_routeannouncer.RouteAnnouncer, {}),
               }),
             ],
@@ -4340,8 +4340,8 @@
       renderReactElement(appElement, (callback) =>
         /*#__PURE__*/ (0, _jsxruntime.jsx)(Root, {
           callbacks: [callback, onRootCommit],
-          children: ('TURBOPACK compile-time falsy', 0)
-            ? /*#__PURE__*/ 'TURBOPACK unreachable'
+          children: ("TURBOPACK compile-time falsy", 0)
+            ? /*#__PURE__*/ "TURBOPACK unreachable"
             : elem,
         }),
       );
@@ -4354,7 +4354,7 @@
       // data for straight-forward hydration of the error page
       if (
         renderingProps.err && // renderingProps.Component might be undefined if there is a top/module-level error
-        (typeof renderingProps.Component === 'undefined' || !renderingProps.isHydratePass)
+        (typeof renderingProps.Component === "undefined" || !renderingProps.isHydratePass)
       ) {
         await renderError(renderingProps);
         return;
@@ -4367,7 +4367,7 @@
         if (renderErr.cancelled) {
           throw renderErr;
         }
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           // Ensure this error is displayed in the overlay in development
           setTimeout(() => {
             throw renderErr;
@@ -4382,8 +4382,8 @@
     async function hydrate(opts) {
       let initialErr = initialData.err;
       try {
-        const appEntrypoint = await pageLoader.routeLoader.whenEntrypoint('/_app');
-        if ('error' in appEntrypoint) {
+        const appEntrypoint = await pageLoader.routeLoader.whenEntrypoint("/_app");
+        if ("error" in appEntrypoint) {
           throw appEntrypoint.error;
         }
         const { component: app, exports: mod } = appEntrypoint;
@@ -4410,7 +4410,7 @@
               name,
               startTime: startTime || perfStartEntry,
               value: value == null ? duration : value,
-              label: entryType === 'mark' || entryType === 'measure' ? 'custom' : 'web-vital',
+              label: entryType === "mark" || entryType === "measure" ? "custom" : "web-vital",
             };
             if (attribution) {
               webVitals.attribution = attribution;
@@ -4419,27 +4419,27 @@
           };
         }
         const pageEntrypoint = // error, so we need to skip waiting for the entrypoint.
-          ('TURBOPACK compile-time value', 'development') === 'development' && initialData.err
+          ("TURBOPACK compile-time value", "development") === "development" && initialData.err
             ? {
                 error: initialData.err,
               }
             : await pageLoader.routeLoader.whenEntrypoint(initialData.page);
-        if ('error' in pageEntrypoint) {
+        if ("error" in pageEntrypoint) {
           throw pageEntrypoint.error;
         }
         CachedComponent = pageEntrypoint.component;
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           const { isValidElementType } = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-is/index.js [client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-is/index.js [client] (ecmascript)",
           );
           if (!isValidElementType(CachedComponent)) {
             throw Object.defineProperty(
               new Error(
                 `The default export is not a React Component in page: "${initialData.page}"`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E286',
+                value: "E286",
                 enumerable: false,
                 configurable: true,
               },
@@ -4450,9 +4450,9 @@
         // This catches errors like throwing in the top level of a module
         initialErr = (0, _iserror.getProperError)(error);
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const getServerError = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/node-stack-frames.js [client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/node-stack-frames.js [client] (ecmascript)",
         ).getServerError;
         // Server-side runtime errors need to be re-thrown on the client-side so
         // that the overlay is rendered.
@@ -4464,8 +4464,8 @@
                 // Generate a new error object. We `throw` it because some browsers
                 // will set the `stack` when thrown, and we want to ensure ours is
                 // not overridden when we re-throw it below.
-                throw Object.defineProperty(new Error(initialErr.message), '__NEXT_ERROR_CODE', {
-                  value: 'E394',
+                throw Object.defineProperty(new Error(initialErr.message), "__NEXT_ERROR_CODE", {
+                  value: "E394",
                   enumerable: false,
                   configurable: true,
                 });
@@ -4478,7 +4478,7 @@
               // In development, error the navigation API usage in runtime,
               // since it's not allowed to be used in pages router as it doesn't contain error boundary like app router.
               if ((0, _isnextroutererror.isNextRouterError)(initialErr)) {
-                error.message = 'Next.js navigation API is not allowed to be used in Pages Router.';
+                error.message = "Next.js navigation API is not allowed to be used in Pages Router.";
               }
               throw getServerError(error, errSource);
             });
@@ -4528,41 +4528,41 @@
       render(renderCtx);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-middleware-client.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-middleware-client.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => _default,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _hotreloadertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [client] (ecmascript)",
     );
     const _hotreloaderpages = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js [client] (ecmascript)",
       ),
     );
     const _websocket = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)",
     );
     let reloading = false;
     const _default = () => {
@@ -4573,12 +4573,12 @@
         const router = window.next?.router;
         // Determine if we're on an error page or the router is not initialized
         const isOnErrorPage =
-          !router || router.pathname === '/404' || router.pathname === '/_error';
+          !router || router.pathname === "/404" || router.pathname === "/_error";
         switch (message.type) {
           case _hotreloadertypes.HMR_MESSAGE_SENT_TO_BROWSER.RELOAD_PAGE: {
             (0, _websocket.sendMessage)(
               JSON.stringify({
-                event: 'client-reload-page',
+                event: "client-reload-page",
                 clientId: window.__nextDevClientId,
               }),
             );
@@ -4594,7 +4594,7 @@
             if (isCurrentPage || isOnErrorPage) {
               (0, _websocket.sendMessage)(
                 JSON.stringify({
-                  event: 'client-removed-page',
+                  event: "client-removed-page",
                   clientId: window.__nextDevClientId,
                   page,
                 }),
@@ -4609,13 +4609,13 @@
             const isCurrentPage = page === router?.pathname;
             // Check if the page component is not yet loaded
             const isPageNotLoaded =
-              page !== null && typeof router?.components?.[page] === 'undefined';
+              page !== null && typeof router?.components?.[page] === "undefined";
             // We enter this block if the newly added page is the one currently being viewed
             // but hasn't been loaded yet, or if we're on an error page.
             if ((isCurrentPage && isPageNotLoaded) || isOnErrorPage) {
               (0, _websocket.sendMessage)(
                 JSON.stringify({
-                  event: 'client-added-page',
+                  event: "client-added-page",
                   clientId: window.__nextDevClientId,
                   page,
                 }),
@@ -4635,67 +4635,67 @@
       return devClient;
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/on-demand-entries-client.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/on-demand-entries-client.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => _default,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     const _router = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/router.js [client] (ecmascript)",
       ),
     );
     const _websocket = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)",
     );
     const _default = async () => {
       // Never send pings when using Turbopack as it's not used.
       // Pings were originally used to keep track of active routes in on-demand-entries with webpack.
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         return;
       }
       //TURBOPACK unreachable
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/fouc.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/fouc.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // This wrapper function is used to safely select the best available function
     // to schedule removal of the no-FOUC styles workaround. requestAnimationFrame
@@ -4704,10 +4704,10 @@
     // from displayContent.
     //
     // See: https://www.vector-logic.com/blog/posts/on-request-animation-frame-and-embedded-iframes
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'displayContent', {
+    Object.defineProperty(exports, "displayContent", {
       enumerable: true,
       get: () => displayContent,
     });
@@ -4721,7 +4721,7 @@
     function displayContent() {
       return new Promise((resolve) => {
         safeCallbackQueue(() => {
-          for (var x = document.querySelectorAll('[data-next-hide-fouc]'), i = x.length; i--; ) {
+          for (var x = document.querySelectorAll("[data-next-hide-fouc]"), i = x.length; i--; ) {
             x[i].parentNode.removeChild(x[i]);
           }
           resolve();
@@ -4729,70 +4729,70 @@
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/page-bootstrap.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/page-bootstrap.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'pageBootstrap', {
+    Object.defineProperty(exports, "pageBootstrap", {
       enumerable: true,
       get: () => pageBootstrap,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/require-instrumentation-client.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/require-instrumentation-client.js [client] (ecmascript)",
     );
     const _ = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/index.js [client] (ecmascript)",
     );
     const _ondemandentriesclient = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/on-demand-entries-client.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/on-demand-entries-client.js [client] (ecmascript)",
       ),
     );
     const _fouc = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/fouc.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/fouc.js [client] (ecmascript)",
     );
     const _websocket = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js [client] (ecmascript)",
     );
     const _querystring = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [client] (ecmascript)",
     );
     const _hotreloadertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [client] (ecmascript)",
     );
     const _runtimeerrorhandler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [client] (ecmascript)",
     );
     const _shared = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [client] (ecmascript)",
     );
     const _hotreloaderpages = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js [client] (ecmascript)",
     );
     const _nextdevtools = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/next-devtools/index.js (raw)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/next-devtools/index.js (raw)",
     );
     function pageBootstrap(assetPrefix) {
       (0, _websocket.connectHMR)({
         assetPrefix,
-        path: '/_next/webpack-hmr',
+        path: "/_next/webpack-hmr",
       });
       return (0, _.hydrate)({
         beforeRender: _fouc.displayContent,
@@ -4806,9 +4806,9 @@
               const errorObject = JSON.parse(message.errorJSON);
               const error = Object.defineProperty(
                 new Error(errorObject.message),
-                '__NEXT_ERROR_CODE',
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E394',
+                  value: "E394",
                   enumerable: false,
                   configurable: true,
                 },
@@ -4837,7 +4837,7 @@
             }
             case _hotreloadertypes.HMR_MESSAGE_SENT_TO_BROWSER.CLIENT_CHANGES: {
               // This is used in `../server/dev/turbopack-utils.ts`.
-              const isOnErrorPage = window.next.router.pathname === '/_error';
+              const isOnErrorPage = window.next.router.pathname === "/_error";
               // On the error page we want to reload the page when a page was changed
               if (isOnErrorPage) {
                 if (_runtimeerrorhandler.RuntimeErrorHandler.hadRuntimeError) {
@@ -4861,13 +4861,13 @@
                 return window.location.reload();
               }
               if (!_.router.clc && pages.includes(_.router.pathname)) {
-                console.log('Refreshing page data due to server-side change');
+                console.log("Refreshing page data due to server-side change");
                 _nextdevtools.dispatcher.buildingIndicatorShow();
                 const clearIndicator = _nextdevtools.dispatcher.buildingIndicatorHide;
                 _.router
                   .replace(
                     _.router.pathname +
-                      '?' +
+                      "?" +
                       String(
                         (0, _querystring.assign)(
                           (0, _querystring.urlQueryToSearchParams)(_.router.query),
@@ -4911,44 +4911,44 @@
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/next-dev-turbopack.js [client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/next-dev-turbopack.js [client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // TODO: Remove use of `any` type.
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [client] (ecmascript)",
     );
     __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/register-deployment-id-global.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/register-deployment-id-global.js [client] (ecmascript)",
     );
     const _ = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/index.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/index.js [client] (ecmascript)",
     );
     const _hotmiddlewareclient = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-middleware-client.js [client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-middleware-client.js [client] (ecmascript)",
       ),
     );
     const _pagebootstrap = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/page-bootstrap.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/page-bootstrap.js [client] (ecmascript)",
     );
     const _hmrclientts = __turbopack_context__.r(
-      '[turbopack]/browser/dev/hmr-client/hmr-client.ts [client] (ecmascript)',
+      "[turbopack]/browser/dev/hmr-client/hmr-client.ts [client] (ecmascript)",
     );
     window.next = {
       version: _.version,
@@ -4960,7 +4960,7 @@
       emitter: _.emitter,
     };
     self.__next_set_public_path__ = () => {};
-    self.__webpack_hash__ = '';
+    self.__webpack_hash__ = "";
     const devClient = (0, _hotmiddlewareclient.default)();
     (0, _.initialize)({
       devClient,
@@ -4972,7 +4972,7 @@
             /*TURBOPACK member replacement*/ __turbopack_context__.l(c),
           );
           Promise.all(chunkPromises).catch((err) =>
-            console.error('failed to load chunks for page ' + page, err),
+            console.error("failed to load chunks for page " + page, err),
           );
         };
         (0, _hmrclientts.connect)({
@@ -4985,14 +4985,14 @@
         return (0, _pagebootstrap.pageBootstrap)(assetPrefix);
       })
       .catch((err) => {
-        console.error('Error was not caught', err);
+        console.error("Error was not caught", err);
       });
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);

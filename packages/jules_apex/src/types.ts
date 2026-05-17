@@ -17,7 +17,7 @@ export interface SessionConfig {
   /** Whether plan approval is required before execution */
   requirePlanApproval?: boolean;
   /** Automation mode for the session */
-  automationMode?: 'AUTO_CREATE_PR' | 'MANUAL' | 'AUTO_MERGE';
+  automationMode?: "AUTO_CREATE_PR" | "MANUAL" | "AUTO_MERGE";
 }
 
 /** Source context pointing to a GitHub repository */
@@ -32,12 +32,12 @@ export interface SourceContext {
 
 /** Possible states of a Jules session */
 export type SessionState =
-  | 'PENDING'
-  | 'RUNNING'
-  | 'PLAN_REVIEW'
-  | 'COMPLETED'
-  | 'FAILED'
-  | 'CANCELLED';
+  | "PENDING"
+  | "RUNNING"
+  | "PLAN_REVIEW"
+  | "COMPLETED"
+  | "FAILED"
+  | "CANCELLED";
 
 /** Output from a completed session */
 export interface SessionOutput {
@@ -68,7 +68,7 @@ export interface ChangeSet {
   /** Files modified */
   files: Array<{
     path: string;
-    action: 'create' | 'modify' | 'delete';
+    action: "create" | "modify" | "delete";
     content?: string;
     patch?: string;
   }>;

@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class ReleaseManagerAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'release-manager',
-    name: 'Release Manager',
-    category: 'operations',
+    id: "release-manager",
+    name: "Release Manager",
+    category: "operations",
     description:
-      'Handles deployments without downtime. Feature flags, rollbacks, and smooth releases.',
-    tagline: 'Release management and deployment strategies',
-    capabilities: ['implementation', 'automation'],
-    tags: ['releases', 'feature-flags', 'rollback', 'deployment', 'zero-downtime'],
-    difficulty: 'advanced',
-    estimatedTime: '3-5 hours',
+      "Handles deployments without downtime. Feature flags, rollbacks, and smooth releases.",
+    tagline: "Release management and deployment strategies",
+    capabilities: ["implementation", "automation"],
+    tags: ["releases", "feature-flags", "rollback", "deployment", "zero-downtime"],
+    difficulty: "advanced",
+    estimatedTime: "3-5 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -49,42 +49,42 @@ Deploy with confidence. Always have an escape hatch.`,
   };
 
   tools: AgentTools = {
-    required: ['Read', 'Write', 'Edit'],
-    optional: ['Bash', 'Glob'],
+    required: ["Read", "Write", "Edit"],
+    optional: ["Bash", "Glob"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Feature Flags',
-        description: 'Implement feature flag system',
-        action: 'Add feature flag library and config',
+        name: "Feature Flags",
+        description: "Implement feature flag system",
+        action: "Add feature flag library and config",
       },
       {
-        name: 'Deployment Strategy',
-        description: 'Choose deployment approach',
-        action: 'Design blue-green or canary',
+        name: "Deployment Strategy",
+        description: "Choose deployment approach",
+        action: "Design blue-green or canary",
       },
       {
-        name: 'Rollback Plan',
-        description: 'Create rollback procedures',
-        action: 'Implement automated rollback',
+        name: "Rollback Plan",
+        description: "Create rollback procedures",
+        action: "Implement automated rollback",
       },
       {
-        name: 'Release Process',
-        description: 'Document release workflow',
-        action: 'Create release checklist',
+        name: "Release Process",
+        description: "Document release workflow",
+        action: "Create release checklist",
       },
       {
-        name: 'Changelog',
-        description: 'Generate release notes',
-        action: 'Automate changelog generation',
+        name: "Changelog",
+        description: "Generate release notes",
+        action: "Automate changelog generation",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

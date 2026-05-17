@@ -17,10 +17,10 @@
  * Queue: Google Cloud Tasks (BullMQ banned per doctrine)
  */
 
-import { randomUUID } from 'node:crypto';
-import { createApprovalRequest, isApprovalComplete } from '@/lib/approval/headless-approval';
-import { createContextCache, getCache } from '@/lib/engine/vram-context-cache';
-import { AntigravityMCPGateway } from '@/lib/mcp/antigravity-gateway';
+import { randomUUID } from "node:crypto";
+import { createApprovalRequest, isApprovalComplete } from "@/lib/approval/headless-approval";
+import { createContextCache, getCache } from "@/lib/engine/vram-context-cache";
+import { AntigravityMCPGateway } from "@/lib/mcp/antigravity-gateway";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -41,7 +41,7 @@ export interface MurderBoardInput {
 }
 
 export interface MurderBoardResult {
-  status: 'OUTCOME_DELIVERED' | 'REJECTED_BY_COUNSEL' | 'APPROVAL_EXPIRED' | 'ERROR';
+  status: "OUTCOME_DELIVERED" | "REJECTED_BY_COUNSEL" | "APPROVAL_EXPIRED" | "ERROR";
   kineticMatrixEntries?: number;
   visualExhibitUrl?: string;
   proofOfReviewHash?: string;
@@ -53,15 +53,15 @@ export interface MurderBoardResult {
 }
 
 type WorkflowStep =
-  | 'INGESTING'
-  | 'CACHING'
-  | 'PARSING'
-  | 'VISUALIZING'
-  | 'AWAITING_APPROVAL'
-  | 'DELIVERING'
-  | 'BILLING'
-  | 'COMPLETE'
-  | 'FAILED';
+  | "INGESTING"
+  | "CACHING"
+  | "PARSING"
+  | "VISUALIZING"
+  | "AWAITING_APPROVAL"
+  | "DELIVERING"
+  | "BILLING"
+  | "COMPLETE"
+  | "FAILED";
 
 // ─── Execution Registry ─────────────────────────────────────────
 
@@ -87,7 +87,7 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
   const executionId = randomUUID();
   const execution: WorkflowExecution = {
     id: executionId,
-    step: 'INGESTING',
+    step: "INGESTING",
     startedAt: new Date().toISOString(),
     input,
     intermediateResults: {},
@@ -108,12 +108,12 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
     // b) Computes SHA-256 Genesis Block for FRE 902 admissibility
     // ════════════════════════════════════════════════════════════
 
-    execution.step = 'INGESTING';
+    execution.step = "INGESTING";
 
     const ingestionResult = await gateway.callTool(
-      'google_drive_read',
+      "google_drive_read",
       { folderId: input.driveFolderId, recursive: true },
-      Buffer.from('placeholder-raw-bytes'), // In production: actual file bytes
+      Buffer.from("placeholder-raw-bytes"), // In production: actual file bytes
     );
 
     if (!ingestionResult.success) {
@@ -130,7 +130,7 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
     // Subsequent queries use cache ID — 85% cost reduction.
     // ════════════════════════════════════════════════════════════
 
-    execution.step = 'CACHING';
+    execution.step = "CACHING";
 
     const cacheEntry = await createContextCache(
       input.firm.id,
@@ -149,11 +149,11 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
     // maps evidentiary status, generates deposition questions.
     // ════════════════════════════════════════════════════════════
 
-    execution.step = 'PARSING';
+    execution.step = "PARSING";
 
     const cachedContext = getCache(cacheEntry.cacheId);
     if (!cachedContext) {
-      throw new Error('VRAM cache expired before parsing could begin');
+      throw new Error("VRAM cache expired before parsing could begin");
     }
 
     // In production, this calls Gemini with the cached context:
@@ -168,14 +168,14 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
     const kineticMatrix = {
       entries: [
         {
-          verb: 'transferred',
-          original_sentence: 'The funds were transferred on March 15.',
-          active_voice_conversion: 'WHO transferred the funds on March 15?',
-          actor: 'UNKNOWN — hidden by passive construction',
-          evidentiary_status: 'NAKED_ALLEGATION',
+          verb: "transferred",
+          original_sentence: "The funds were transferred on March 15.",
+          active_voice_conversion: "WHO transferred the funds on March 15?",
+          actor: "UNKNOWN — hidden by passive construction",
+          evidentiary_status: "NAKED_ALLEGATION",
           deposition_strike_question:
-            'Can you identify, by name, who initiated the wire transfer on March 15?',
-          risk_level: 'CRITICAL',
+            "Can you identify, by name, who initiated the wire transfer on March 15?",
+          risk_level: "CRITICAL",
         },
       ],
     };
@@ -189,7 +189,7 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
     // matrix contradictions and impossibilities.
     // ════════════════════════════════════════════════════════════
 
-    execution.step = 'VISUALIZING';
+    execution.step = "VISUALIZING";
 
     // In production, this calls the image generation pipeline
     const visualExhibitUrl = `https://storage.googleapis.com/kovelai-exhibits/${executionId}/timeline.png`;
@@ -206,14 +206,14 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
     // waits for the Slack webhook to fire.
     // ════════════════════════════════════════════════════════════
 
-    execution.step = 'AWAITING_APPROVAL';
+    execution.step = "AWAITING_APPROVAL";
 
     const approvalRequest = createApprovalRequest(
       input.firm.id,
-      'KINETIC_MURDER_BOARD',
-      `Kinetic Autopsy for ${input.firm.clientName}: ${kineticMatrix.entries.length} action verbs extracted, ${kineticMatrix.entries.filter((e) => e.evidentiary_status === 'NAKED_ALLEGATION').length} naked allegations identified.`,
+      "KINETIC_MURDER_BOARD",
+      `Kinetic Autopsy for ${input.firm.clientName}: ${kineticMatrix.entries.length} action verbs extracted, ${kineticMatrix.entries.filter((e) => e.evidentiary_status === "NAKED_ALLEGATION").length} naked allegations identified.`,
       visualExhibitUrl,
-      'SLACK',
+      "SLACK",
       60, // 60-minute approval window
     );
 
@@ -222,7 +222,7 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
 
     if (!approvalResult.approved) {
       return {
-        status: approvalResult.proofHash ? 'REJECTED_BY_COUNSEL' : 'APPROVAL_EXPIRED',
+        status: approvalResult.proofHash ? "REJECTED_BY_COUNSEL" : "APPROVAL_EXPIRED",
         kineticMatrixEntries: kineticMatrix.entries.length,
         executionId,
       };
@@ -235,21 +235,21 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
     // Clio is treated as a write-only storage backend.
     // ════════════════════════════════════════════════════════════
 
-    execution.step = 'DELIVERING';
+    execution.step = "DELIVERING";
 
     // a) Attach the kinetic dossier
-    await gateway.callTool('clio_attach_dossier', {
+    await gateway.callTool("clio_attach_dossier", {
       clientName: input.firm.clientName,
       document: JSON.stringify(kineticMatrix),
-      documentType: 'KINETIC_MURDER_BOARD',
+      documentType: "KINETIC_MURDER_BOARD",
     });
 
     // b) Draft the time entry
-    await gateway.callTool('clio_draft_time_entry', {
+    await gateway.callTool("clio_draft_time_entry", {
       clientName: input.firm.clientName,
       hours: 4.5,
       rate: 450,
-      description: 'Agent-Native Kinetic Autopsy & Visual Exhibit — Reviewed & Approved',
+      description: "Agent-Native Kinetic Autopsy & Visual Exhibit — Reviewed & Approved",
     });
 
     // ════════════════════════════════════════════════════════════
@@ -258,7 +258,7 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
     // Stripe $49 Kinetic Murder Board fee capture.
     // ════════════════════════════════════════════════════════════
 
-    execution.step = 'BILLING';
+    execution.step = "BILLING";
 
     // In production:
     // await stripe.charges.create({
@@ -271,10 +271,10 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
 
     const billingChargeId = `ch_${executionId.slice(0, 16)}`;
 
-    execution.step = 'COMPLETE';
+    execution.step = "COMPLETE";
 
     return {
-      status: 'OUTCOME_DELIVERED',
+      status: "OUTCOME_DELIVERED",
       kineticMatrixEntries: kineticMatrix.entries.length,
       visualExhibitUrl,
       proofOfReviewHash: approvalResult.proofHash,
@@ -285,9 +285,9 @@ export async function executeMurderBoard(input: MurderBoardInput): Promise<Murde
       executionId,
     };
   } catch (_error) {
-    execution.step = 'FAILED';
+    execution.step = "FAILED";
     return {
-      status: 'ERROR',
+      status: "ERROR",
       executionId,
     };
   }

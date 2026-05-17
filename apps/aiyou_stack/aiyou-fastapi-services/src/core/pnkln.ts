@@ -6,13 +6,13 @@
 import {
   InfrastructureAnalyzer,
   InfrastructureComponent,
-} from '../services/infrastructure-analyzer';
-import { Mode, type PnklnResponse, type UserRequest } from '../types';
-import { logger } from '../utils/logger';
-import { metrics } from '../utils/metrics';
-import { IntentClassifier } from './intent-classifier';
-import { VertexOrchestrator } from './vertex-orchestrator';
-import { WealthEngine } from './wealth-engine';
+} from "../services/infrastructure-analyzer";
+import { Mode, type PnklnResponse, type UserRequest } from "../types";
+import { logger } from "../utils/logger";
+import { metrics } from "../utils/metrics";
+import { IntentClassifier } from "./intent-classifier";
+import { VertexOrchestrator } from "./vertex-orchestrator";
+import { WealthEngine } from "./wealth-engine";
 
 export class Pnkln {
   private orchestrator: VertexOrchestrator;
@@ -26,7 +26,7 @@ export class Pnkln {
     this.wealth = new WealthEngine();
     this.infraAnalyzer = new InfrastructureAnalyzer();
 
-    logger.info('Pnkln orchestrator initialized with infrastructure analysis capability');
+    logger.info("Pnkln orchestrator initialized with infrastructure analysis capability");
   }
 
   /**
@@ -37,7 +37,7 @@ export class Pnkln {
     const startTime = Date.now();
     const { input, context, userId, sessionId } = request;
 
-    logger.info('Pnkln execution started', {
+    logger.info("Pnkln execution started", {
       userId,
       sessionId,
       inputLength: input.length,
@@ -47,7 +47,7 @@ export class Pnkln {
       // STEP 1: Understand intent
       const intent = await this.classifier.classify(input);
 
-      logger.info('Intent classified', {
+      logger.info("Intent classified", {
         mode: intent.mode,
         confidence: intent.confidence,
       });
@@ -55,7 +55,7 @@ export class Pnkln {
       // STEP 1.5: Check for infrastructure analysis request
       const infraComponent = this.infraAnalyzer.detectComponent(input);
       if (infraComponent !== InfrastructureComponent.UNKNOWN) {
-        logger.info('Infrastructure analysis detected', {
+        logger.info("Infrastructure analysis detected", {
           component: infraComponent,
         });
 
@@ -89,7 +89,7 @@ export class Pnkln {
       // Record metrics
       metrics.recordRequest(intent.mode, executionTime, true);
 
-      logger.info('Pnkln execution completed', {
+      logger.info("Pnkln execution completed", {
         mode: intent.mode,
         executionTime,
         revenueImpact: enrichedResult.netProfit,
@@ -113,7 +113,7 @@ export class Pnkln {
 
       metrics.recordRequest(Mode.THINK, executionTime, false);
 
-      logger.error('Pnkln execution failed', {
+      logger.error("Pnkln execution failed", {
         error: error instanceof Error ? error.message : String(error),
         userId,
         sessionId,
@@ -123,12 +123,12 @@ export class Pnkln {
       // Return graceful error response
       return {
         answer:
-          'I encountered an error processing your request. Please try again or rephrase your question.',
-        revenueImpact: '$0',
+          "I encountered an error processing your request. Please try again or rephrase your question.",
+        revenueImpact: "$0",
         nextSteps: [
-          'Try rephrasing your request',
-          'Check system status',
-          'Contact support if issue persists',
+          "Try rephrasing your request",
+          "Check system status",
+          "Contact support if issue persists",
         ],
         confidence: 0,
         executionTime,
@@ -148,7 +148,7 @@ export class Pnkln {
   private formatResponse(
     enrichedResult: unknown,
     mode: Mode,
-  ): Omit<PnklnResponse, 'executionTime' | 'mode' | 'metadata'> {
+  ): Omit<PnklnResponse, "executionTime" | "mode" | "metadata"> {
     try {
       // Try to parse JSON response from Claude
       const content = enrichedResult.content;
@@ -188,7 +188,7 @@ export class Pnkln {
           };
       }
     } catch (error) {
-      logger.warn('Failed to parse structured response, returning raw content', {
+      logger.warn("Failed to parse structured response, returning raw content", {
         error: error instanceof Error ? error.message : String(error),
       });
 
@@ -206,15 +206,15 @@ export class Pnkln {
    */
   private formatThinkResponse(parsed: unknown, enriched: unknown): unknown {
     const answer = `
-**Core Insight:** ${parsed.coreInsight || 'Analysis complete'}
+**Core Insight:** ${parsed.coreInsight || "Analysis complete"}
 
 **Reasoning:**
-${(parsed.reasoning || []).map((r: string, i: number) => `${i + 1}. ${r}`).join('\n')}
+${(parsed.reasoning || []).map((r: string, i: number) => `${i + 1}. ${r}`).join("\n")}
 
 **Recommended Action:**
-${parsed.recommendedAction || 'No specific action recommended'}
+${parsed.recommendedAction || "No specific action recommended"}
 
-**Business Judgment:** ${parsed.businessJudgment || 'Under review'}
+**Business Judgment:** ${parsed.businessJudgment || "Under review"}
     `.trim();
 
     const nextSteps = [parsed.recommendedAction, ...(enriched.recommendations || [])].filter(
@@ -233,31 +233,31 @@ ${parsed.recommendedAction || 'No specific action recommended'}
    * Format BUILD mode response
    */
   private formatBuildResponse(parsed: unknown, enriched: unknown): unknown {
-    const filesCreated = (parsed.files || []).map((f: unknown) => f.path).join(', ');
-    const commandsToRun = (parsed.commands || []).join('\n');
+    const filesCreated = (parsed.files || []).map((f: unknown) => f.path).join(", ");
+    const commandsToRun = (parsed.commands || []).join("\n");
 
     const answer = `
-**${parsed.summary || 'Build completed'}**
+**${parsed.summary || "Build completed"}**
 
-**Files Created:** ${filesCreated || 'None'}
+**Files Created:** ${filesCreated || "None"}
 
 **Commands to Execute:**
 \`\`\`bash
-${commandsToRun || 'No commands'}
+${commandsToRun || "No commands"}
 \`\`\`
 
-**Estimated Monthly Cost:** ${parsed.estimatedCost?.monthly || '$0'}
+**Estimated Monthly Cost:** ${parsed.estimatedCost?.monthly || "$0"}
 
-**Revenue Projection:** ${parsed.revenueProjection?.monthly || 'TBD'}
+**Revenue Projection:** ${parsed.revenueProjection?.monthly || "TBD"}
 
 **Security Checklist:**
-${(parsed.securityChecklist || []).map((c: string) => `- ${c}`).join('\n')}
+${(parsed.securityChecklist || []).map((c: string) => `- ${c}`).join("\n")}
     `.trim();
 
     const nextSteps = [
-      'Review generated files',
-      'Execute deployment commands',
-      'Monitor initial metrics',
+      "Review generated files",
+      "Execute deployment commands",
+      "Monitor initial metrics",
       ...(enriched.recommendations || []),
     ].filter(Boolean);
 
@@ -281,25 +281,25 @@ ${(parsed.securityChecklist || []).map((c: string) => `- ${c}`).join('\n')}
 **Scaling Analysis Complete**
 
 **Current State:**
-- Pods: ${current.pods || 'Unknown'}
-- CPU: ${current.cpu || 'Unknown'}
-- Memory: ${current.memory || 'Unknown'}
-- Revenue/Hour: ${current.revenuePerHour || '$0'}
-- Cost/Hour: ${current.costPerHour || '$0'}
+- Pods: ${current.pods || "Unknown"}
+- CPU: ${current.cpu || "Unknown"}
+- Memory: ${current.memory || "Unknown"}
+- Revenue/Hour: ${current.revenuePerHour || "$0"}
+- Cost/Hour: ${current.costPerHour || "$0"}
 
-**Recommendation:** ${recommendation.action?.toUpperCase() || 'MONITOR'}
+**Recommendation:** ${recommendation.action?.toUpperCase() || "MONITOR"}
 - Target Pods: ${recommendation.targetPods || current.pods}
-- Reasoning: ${recommendation.reasoning || 'No changes needed'}
+- Reasoning: ${recommendation.reasoning || "No changes needed"}
 
 **Projections:**
-- Expected Revenue Lift: ${projections.expectedRevenueLift || '$0/month'}
-- Cost Increase: ${projections.costIncrease || '$0/month'}
-- Net Profit Increase: ${projections.netProfitIncrease || '$0/month'}
+- Expected Revenue Lift: ${projections.expectedRevenueLift || "$0/month"}
+- Cost Increase: ${projections.costIncrease || "$0/month"}
+- Net Profit Increase: ${projections.netProfitIncrease || "$0/month"}
 - Confidence: ${projections.confidence || 0.5}
 
 **Commands to Execute:**
 \`\`\`bash
-${(parsed.executeCommands || []).join('\n')}
+${(parsed.executeCommands || []).join("\n")}
 \`\`\`
     `.trim();
 
@@ -323,7 +323,7 @@ ${(parsed.executeCommands || []).join('\n')}
    * Format number as money string
    */
   private formatMoney(amount: number): string {
-    if (amount === 0) return '$0';
+    if (amount === 0) return "$0";
     if (amount < 0) return `-$${Math.abs(amount).toFixed(0)}`;
     return `$${amount.toFixed(0)}`;
   }
@@ -356,7 +356,7 @@ ${(parsed.executeCommands || []).join('\n')}
       // Record metrics
       metrics.recordRequest(Mode.BUILD, executionTime, true);
 
-      logger.info('Infrastructure analysis completed', {
+      logger.info("Infrastructure analysis completed", {
         component,
         confidence: analysisResult.confidence,
         executionTime,
@@ -366,11 +366,11 @@ ${(parsed.executeCommands || []).join('\n')}
 
       return {
         answer: formattedAnalysis,
-        revenueImpact: '$0', // Infrastructure analysis doesn't directly generate revenue
+        revenueImpact: "$0", // Infrastructure analysis doesn't directly generate revenue
         nextSteps: analysisResult.analysis.recommendations?.immediate || [
-          'Review analysis results',
-          'Prioritize recommendations',
-          'Create implementation plan',
+          "Review analysis results",
+          "Prioritize recommendations",
+          "Create implementation plan",
         ],
         confidence: analysisResult.confidence,
         executionTime,
@@ -378,13 +378,13 @@ ${(parsed.executeCommands || []).join('\n')}
         metadata: {
           userId,
           sessionId,
-          analysisType: 'infrastructure',
+          analysisType: "infrastructure",
           component: component,
           confidence: analysisResult.confidence,
         },
       };
     } catch (error) {
-      logger.error('Infrastructure analysis failed', {
+      logger.error("Infrastructure analysis failed", {
         component,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -400,7 +400,7 @@ ${(parsed.executeCommands || []).join('\n')}
     const vertexHealthy = await this.orchestrator.healthCheck();
 
     return {
-      status: vertexHealthy ? 'healthy' : 'unhealthy',
+      status: vertexHealthy ? "healthy" : "unhealthy",
       vertex: vertexHealthy,
       timestamp: new Date().toISOString(),
     };

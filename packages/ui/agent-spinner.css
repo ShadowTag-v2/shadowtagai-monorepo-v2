@@ -15,7 +15,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.625rem;
-  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', monospace;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace;
   font-size: 0.8125rem;
   letter-spacing: 0.03em;
   user-select: none;
@@ -34,28 +34,28 @@
 @keyframes agent-spinner-rotate {
   /* Claude Code uses: ⠋⠙⠹⠸⠼⠴⠦⠧ reversed = ⠧⠦⠴⠼⠸⠹⠙⠋ */
   0% {
-    content: '⠋';
+    content: "⠋";
   }
   12.5% {
-    content: '⠙';
+    content: "⠙";
   }
   25% {
-    content: '⠹';
+    content: "⠹";
   }
   37.5% {
-    content: '⠸';
+    content: "⠸";
   }
   50% {
-    content: '⠼';
+    content: "⠼";
   }
   62.5% {
-    content: '⠴';
+    content: "⠴";
   }
   75% {
-    content: '⠦';
+    content: "⠦";
   }
   87.5% {
-    content: '⠧';
+    content: "⠧";
   }
 }
 
@@ -126,19 +126,19 @@
 }
 
 .agent-spinner__dots::after {
-  content: '';
+  content: "";
   animation: agent-dots 1.5s steps(1) infinite;
 }
 
 @keyframes agent-dots {
   0% {
-    content: '.';
+    content: ".";
   }
   33% {
-    content: '..';
+    content: "..";
   }
   66% {
-    content: '...';
+    content: "...";
   }
 }
 
@@ -160,12 +160,12 @@
     transform 0.25s ease-out;
 }
 
-.agent-spinner__verb-inner[data-state='entering'] {
+.agent-spinner__verb-inner[data-state="entering"] {
   opacity: 1;
   transform: translateY(0);
 }
 
-.agent-spinner__verb-inner[data-state='exiting'] {
+.agent-spinner__verb-inner[data-state="exiting"] {
   opacity: 0;
   transform: translateY(-0.5em);
 }
@@ -173,19 +173,19 @@
 /* --- Stall Intensity Color Shifts --- */
 
 /* Phase 1: Normal (0-10s) */
-.agent-spinner[data-stall='normal'] {
+.agent-spinner[data-stall="normal"] {
   --spinner-color-dim: rgba(255, 255, 255, 0.35);
   --spinner-color-bright: rgba(255, 255, 255, 0.95);
 }
 
 /* Phase 2: Warm (10-30s) — amber shift */
-.agent-spinner[data-stall='warm'] {
+.agent-spinner[data-stall="warm"] {
   --spinner-color-dim: rgba(255, 191, 0, 0.4);
   --spinner-color-bright: rgba(255, 225, 120, 1);
 }
 
 /* Phase 3: Hot (30s+) — red shift */
-.agent-spinner[data-stall='hot'] {
+.agent-spinner[data-stall="hot"] {
   --spinner-color-dim: rgba(255, 107, 107, 0.45);
   --spinner-color-bright: rgba(255, 140, 140, 1);
   animation: agent-stall-pulse 1.5s ease-in-out infinite;

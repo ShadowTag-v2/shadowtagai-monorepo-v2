@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /* ═══ SHADOWTAG AI — OBSIDIAN DESIGN SYSTEM ═══ */
 
@@ -173,7 +173,7 @@ video {
 }
 .aurora-bg::before,
 .aurora-bg::after {
-  content: '';
+  content: "";
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
@@ -331,7 +331,7 @@ video {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: url('/images/hero-bg.avif') center / cover no-repeat;
+  background: url("/images/hero-bg.avif") center / cover no-repeat;
   opacity: 0.2;
 }
 .hero-fade {
@@ -401,7 +401,7 @@ video {
   pointer-events: none;
 }
 .holo-sheen::after {
-  content: '';
+  content: "";
   position: absolute;
   top: -100%;
   left: -50%;
@@ -430,7 +430,7 @@ video {
 }
 /* Ambient glow */
 .hero-logo::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -20%;
   border-radius: 50%;
@@ -535,7 +535,7 @@ video {
   text-decoration: none;
 }
 .btn::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(

@@ -13,13 +13,13 @@
  * @see legal-prompts.ts — System prompts for each stage
  */
 
-import { anthropic } from '@ai-sdk/anthropic';
-import { google } from '@ai-sdk/google';
-import { generateText } from 'ai';
-import { type App, getApps, initializeApp } from 'firebase-admin/app';
-import { FieldValue, type Firestore, getFirestore } from 'firebase-admin/firestore';
-import { draftShadowInvoice, generateHeppnerReceipt, pushToLawyerVault } from '@/lib/clio-vault';
-import { executePrivilegedWebSearch } from '@/lib/intelligence/vertex_search_engine';
+import { anthropic } from "@ai-sdk/anthropic";
+import { google } from "@ai-sdk/google";
+import { generateText } from "ai";
+import { type App, getApps, initializeApp } from "firebase-admin/app";
+import { FieldValue, type Firestore, getFirestore } from "firebase-admin/firestore";
+import { draftShadowInvoice, generateHeppnerReceipt, pushToLawyerVault } from "@/lib/clio-vault";
+import { executePrivilegedWebSearch } from "@/lib/intelligence/vertex_search_engine";
 import {
   BRIEF_BUILDER_PROMPT,
   CITATION_VALIDATOR_PROMPT,
@@ -27,7 +27,7 @@ import {
   OSINT_QUERY_GENERATOR_PROMPT,
   VERB_AUDITOR_PROMPT,
   WAR_ROOM_ORACLE_PROMPT,
-} from '@/lib/prompts/legal-prompts';
+} from "@/lib/prompts/legal-prompts";
 
 // ─── Firebase initialization ─────────────────────────────
 let app: App;
@@ -45,15 +45,15 @@ export interface MurderBoardSession {
   sessionId: string;
   firmId: string;
   status:
-    | 'intake'
-    | 'osint'
-    | 'verb_audit'
-    | 'oracle'
-    | 'citations'
-    | 'brief'
-    | 'vault'
-    | 'complete'
-    | 'failed';
+    | "intake"
+    | "osint"
+    | "verb_audit"
+    | "oracle"
+    | "citations"
+    | "brief"
+    | "vault"
+    | "complete"
+    | "failed";
   startedAt: FirebaseFirestore.Timestamp;
   completedAt?: FirebaseFirestore.Timestamp;
   transcript: string;
@@ -87,17 +87,17 @@ export interface VerbEntry {
   cause_of_action: string;
   element_matched: string;
   confidence: number;
-  strengthens_or_weakens: 'strengthens' | 'weakens' | 'neutral';
+  strengthens_or_weakens: "strengthens" | "weakens" | "neutral";
 }
 
 export interface CitationEntry {
   index: number;
   authority: string;
-  type: 'statute' | 'case' | 'regulation' | 'rule' | 'secondary';
+  type: "statute" | "case" | "regulation" | "rule" | "secondary";
   citation_format_correct: boolean;
   excerpt: string;
   relevance_score: number;
-  status: 'verified' | 'unverified' | 'suspect';
+  status: "verified" | "unverified" | "suspect";
   notes?: string;
 }
 
@@ -117,7 +117,7 @@ export async function createSession(
   const session: MurderBoardSession = {
     sessionId,
     firmId,
-    status: 'intake',
+    status: "intake",
     startedAt: FieldValue.serverTimestamp() as unknown as FirebaseFirestore.Timestamp,
     transcript,
     clioOAuthToken,
@@ -125,7 +125,7 @@ export async function createSession(
     seuToken,
   };
 
-  await db.collection('murder_board_sessions').doc(sessionId).set(session);
+  await db.collection("murder_board_sessions").doc(sessionId).set(session);
   return session;
 }
 
@@ -136,14 +136,14 @@ async function updateSession(
   sessionId: string,
   update: Partial<MurderBoardSession>,
 ): Promise<void> {
-  await db.collection('murder_board_sessions').doc(sessionId).update(update);
+  await db.collection("murder_board_sessions").doc(sessionId).update(update);
 }
 
 /**
  * Get the current session state.
  */
 export async function getSession(sessionId: string): Promise<MurderBoardSession | null> {
-  const doc = await db.collection('murder_board_sessions').doc(sessionId).get();
+  const doc = await db.collection("murder_board_sessions").doc(sessionId).get();
   return doc.exists ? (doc.data() as MurderBoardSession) : null;
 }
 
@@ -164,20 +164,20 @@ export async function runStage1Intake(sessionId: string): Promise<void> {
     const repeatedPrompt = `${INTAKE_EXTRACTION_PROMPT}\n\n[RE-EVALUATE]:\n${INTAKE_EXTRACTION_PROMPT}`;
 
     const result = await generateText({
-      model: google('gemini-2.5-flash-lite-preview'),
+      model: google("gemini-2.5-flash-lite-preview"),
       system: repeatedPrompt,
-      messages: [{ role: 'user', content: session.transcript }],
+      messages: [{ role: "user", content: session.transcript }],
     });
 
     const intakeData: IntakeData = JSON.parse(result.text);
 
     await updateSession(sessionId, {
       intakeData,
-      status: 'osint',
+      status: "osint",
     });
   } catch (error) {
     await updateSession(sessionId, {
-      status: 'failed',
+      status: "failed",
       error: `Stage 1 failed: ${error instanceof Error ? error.message : String(error)}`,
     });
     throw error;
@@ -197,9 +197,9 @@ export async function runStage2Osint(sessionId: string): Promise<void> {
   try {
     // Generate search queries
     const queryGenResult = await generateText({
-      model: google('gemini-2.5-flash-lite-preview'),
+      model: google("gemini-2.5-flash-lite-preview"),
       system: OSINT_QUERY_GENERATOR_PROMPT,
-      messages: [{ role: 'user', content: JSON.stringify(session.intakeData) }],
+      messages: [{ role: "user", content: JSON.stringify(session.intakeData) }],
     });
 
     const queries: string[] = JSON.parse(queryGenResult.text);
@@ -211,16 +211,16 @@ export async function runStage2Osint(sessionId: string): Promise<void> {
       searchResults.push(result);
     }
 
-    const combinedResults = searchResults.join('\n\n---\n\n');
+    const combinedResults = searchResults.join("\n\n---\n\n");
 
     await updateSession(sessionId, {
       osintQueries: queries,
       osintResults: combinedResults,
-      status: 'verb_audit',
+      status: "verb_audit",
     });
   } catch (error) {
     await updateSession(sessionId, {
-      status: 'failed',
+      status: "failed",
       error: `Stage 2 failed: ${error instanceof Error ? error.message : String(error)}`,
     });
     throw error;
@@ -242,16 +242,16 @@ export async function runStage3VerbAudit(sessionId: string): Promise<void> {
     const repeatedPrompt = `${VERB_AUDITOR_PROMPT}\n\n[CRITICAL RE-EVALUATION]:\n${VERB_AUDITOR_PROMPT}`;
 
     const result = await generateText({
-      model: google('gemini-2.5-flash-lite-preview'),
+      model: google("gemini-2.5-flash-lite-preview"),
       system: repeatedPrompt,
-      messages: [{ role: 'user', content: session.transcript }],
+      messages: [{ role: "user", content: session.transcript }],
     });
 
     const verbs: VerbEntry[] = JSON.parse(result.text);
 
     // Write to verb_ledger collection for analytics
     await db
-      .collection('verb_ledger')
+      .collection("verb_ledger")
       .doc(sessionId)
       .set({
         session_id: sessionId,
@@ -263,11 +263,11 @@ export async function runStage3VerbAudit(sessionId: string): Promise<void> {
 
     await updateSession(sessionId, {
       verbAudit: verbs,
-      status: 'oracle',
+      status: "oracle",
     });
   } catch (error) {
     await updateSession(sessionId, {
-      status: 'failed',
+      status: "failed",
       error: `Stage 3 failed: ${error instanceof Error ? error.message : String(error)}`,
     });
     throw error;
@@ -291,7 +291,7 @@ export async function runStage4Oracle(sessionId: string): Promise<void> {
 ${JSON.stringify(session.intakeData, null, 2)}
 
 ## OSINT RESULTS
-${session.osintResults || 'No OSINT results available'}
+${session.osintResults || "No OSINT results available"}
 
 ## VERB AUDIT
 ${JSON.stringify(session.verbAudit, null, 2)}
@@ -302,22 +302,22 @@ ${session.transcript}
 
     // Use Aegaeon-cached Gemini Pro if available, else Claude Sonnet 4
     const model = session.contextCacheId
-      ? google('gemini-1.5-pro-002')
-      : anthropic('claude-sonnet-4-20250514');
+      ? google("gemini-1.5-pro-002")
+      : anthropic("claude-sonnet-4-20250514");
 
     const result = await generateText({
       model,
       system: WAR_ROOM_ORACLE_PROMPT,
-      messages: [{ role: 'user', content: enrichedContext }],
+      messages: [{ role: "user", content: enrichedContext }],
     });
 
     await updateSession(sessionId, {
       oracleMemo: result.text,
-      status: 'citations',
+      status: "citations",
     });
   } catch (error) {
     await updateSession(sessionId, {
-      status: 'failed',
+      status: "failed",
       error: `Stage 4 failed: ${error instanceof Error ? error.message : String(error)}`,
     });
     throw error;
@@ -335,20 +335,20 @@ export async function runStage5Citations(sessionId: string): Promise<void> {
 
   try {
     const result = await generateText({
-      model: google('gemini-2.5-flash-lite-preview'),
+      model: google("gemini-2.5-flash-lite-preview"),
       system: CITATION_VALIDATOR_PROMPT,
-      messages: [{ role: 'user', content: session.oracleMemo }],
+      messages: [{ role: "user", content: session.oracleMemo }],
     });
 
     const citations: CitationEntry[] = JSON.parse(result.text);
 
     await updateSession(sessionId, {
       citations,
-      status: 'brief',
+      status: "brief",
     });
   } catch (error) {
     await updateSession(sessionId, {
-      status: 'failed',
+      status: "failed",
       error: `Stage 5 failed: ${error instanceof Error ? error.message : String(error)}`,
     });
     throw error;
@@ -382,18 +382,18 @@ ${JSON.stringify(session.intakeData, null, 2)}
 `;
 
     const result = await generateText({
-      model: anthropic('claude-sonnet-4-20250514'),
+      model: anthropic("claude-sonnet-4-20250514"),
       system: BRIEF_BUILDER_PROMPT,
-      messages: [{ role: 'user', content: fullContext }],
+      messages: [{ role: "user", content: fullContext }],
     });
 
     await updateSession(sessionId, {
       briefContent: result.text,
-      status: 'vault',
+      status: "vault",
     });
   } catch (error) {
     await updateSession(sessionId, {
-      status: 'failed',
+      status: "failed",
       error: `Stage 6 failed: ${error instanceof Error ? error.message : String(error)}`,
     });
     throw error;
@@ -426,24 +426,24 @@ export async function runStage7VaultPush(sessionId: string): Promise<void> {
     }
 
     await updateSession(sessionId, {
-      status: 'complete',
+      status: "complete",
       completedAt: FieldValue.serverTimestamp() as unknown as FirebaseFirestore.Timestamp,
     });
 
     // Write to Kovel telemetry
-    await db.collection('kovel_telemetry').add({
+    await db.collection("kovel_telemetry").add({
       firm_id: session.firmId,
       session_id: sessionId,
-      pipeline_type: 'war_room',
+      pipeline_type: "war_room",
       stages_completed: 7,
       verb_count: session.verbAudit?.length || 0,
       citation_count: session.citations?.length || 0,
-      model_routed: 'gemini-pro + claude-sonnet',
+      model_routed: "gemini-pro + claude-sonnet",
       timestamp: FieldValue.serverTimestamp(),
     });
   } catch (error) {
     await updateSession(sessionId, {
-      status: 'failed',
+      status: "failed",
       error: `Stage 7 failed: ${error instanceof Error ? error.message : String(error)}`,
     });
     throw error;

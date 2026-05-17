@@ -4,9 +4,9 @@
  * Displays ATP 5-19 risk matrix using ASCII art.
  */
 
-import { Box, Text } from 'ink';
-import type React from 'react';
-import type { RiskLevel } from '../types.js';
+import { Box, Text } from "ink";
+import type React from "react";
+import type { RiskLevel } from "../types.js";
 
 interface RiskMatrixProps {
   riskLevel?: RiskLevel;
@@ -19,35 +19,35 @@ export const RiskMatrix: React.FC<RiskMatrixProps> = ({ riskLevel }) => {
 
   // Risk matrix (probability × severity)
   const matrix = [
-    ['░', '░', '▒', '▓', '█'], // Severity 0 (Negligible)
-    ['░', '▒', '▓', '█', '█'], // Severity 1 (Marginal)
-    ['▒', '▓', '█', '█', '█'], // Severity 2 (Critical)
-    ['▓', '█', '█', '█', '█'], // Severity 3 (Catastrophic)
+    ["░", "░", "▒", "▓", "█"], // Severity 0 (Negligible)
+    ["░", "▒", "▓", "█", "█"], // Severity 1 (Marginal)
+    ["▒", "▓", "█", "█", "█"], // Severity 2 (Critical)
+    ["▓", "█", "█", "█", "█"], // Severity 3 (Catastrophic)
   ];
 
   // Get color for rating
   const getRatingColor = (rating: string): string => {
     switch (rating) {
-      case 'RA-1':
-        return 'green';
-      case 'RA-2':
-        return 'yellow';
-      case 'RA-3':
-        return 'magenta';
-      case 'RA-4':
-        return 'red';
+      case "RA-1":
+        return "green";
+      case "RA-2":
+        return "yellow";
+      case "RA-3":
+        return "magenta";
+      case "RA-4":
+        return "red";
       default:
-        return 'white';
+        return "white";
     }
   };
 
-  const severityLabels = ['Negligible', 'Marginal', 'Critical', 'Catastrophic'];
+  const severityLabels = ["Negligible", "Marginal", "Critical", "Catastrophic"];
   const probabilityLabels = [
-    'Extremely\nUnlikely',
-    'Unlikely',
-    'Moderately\nLikely',
-    'Likely',
-    'Very\nLikely',
+    "Extremely\nUnlikely",
+    "Unlikely",
+    "Moderately\nLikely",
+    "Likely",
+    "Very\nLikely",
   ];
 
   return (
@@ -73,7 +73,7 @@ export const RiskMatrix: React.FC<RiskMatrixProps> = ({ riskLevel }) => {
                     color={isCurrentCell ? getRatingColor(riskLevel.rating) : undefined}
                     bold={isCurrentCell}
                   >
-                    {isCurrentCell ? '█' : cell}{' '}
+                    {isCurrentCell ? "█" : cell}{" "}
                   </Text>
                 );
               })}
@@ -88,7 +88,7 @@ export const RiskMatrix: React.FC<RiskMatrixProps> = ({ riskLevel }) => {
             {riskLevel.rating}
           </Text>
           <Text dimColor>
-            {' '}
+            {" "}
             (P={riskLevel.probability}, S={riskLevel.severity})
           </Text>
         </Box>

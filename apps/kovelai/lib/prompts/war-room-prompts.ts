@@ -29,14 +29,14 @@ export const MURDER_BOARD_PROMPTS = {
 Extract ALL entities from the provided legal document and output structured JSON. Do not summarize.
 [END REPEATED INSTRUCTION]`,
     outputSchema: {
-      parties: 'string[]',
-      courts: 'string[]',
-      statutes: 'string[]',
-      dates: 'string[]',
-      amounts: 'number[]',
-      caseNumbers: 'string[]',
-      jurisdiction: 'string',
-      claimType: 'string',
+      parties: "string[]",
+      courts: "string[]",
+      statutes: "string[]",
+      dates: "string[]",
+      amounts: "number[]",
+      caseNumbers: "string[]",
+      jurisdiction: "string",
+      claimType: "string",
     },
   },
 
@@ -159,13 +159,13 @@ export type MurderBoardStage = keyof typeof MURDER_BOARD_PROMPTS;
 export function buildMurderBoardPrompt(
   stage: MurderBoardStage,
   userInput: string,
-  modelTier: 'reasoning' | 'flash' | 'lite' = 'flash',
+  modelTier: "reasoning" | "flash" | "lite" = "flash",
 ): { system: string; user: string } {
   const stageConfig = MURDER_BOARD_PROMPTS[stage];
   let systemPrompt = stageConfig.system;
 
   // Apply prompt repetition for non-reasoning tiers
-  if (modelTier !== 'reasoning') {
+  if (modelTier !== "reasoning") {
     systemPrompt = withRepetition(systemPrompt, userInput);
   }
 
@@ -181,16 +181,16 @@ export function buildMurderBoardPrompt(
  */
 export function generateFullPipelinePrompts(
   caseDescription: string,
-  modelTier: 'reasoning' | 'flash' | 'lite' = 'flash',
+  modelTier: "reasoning" | "flash" | "lite" = "flash",
 ): Array<{ stage: MurderBoardStage; system: string; user: string }> {
   const stages: MurderBoardStage[] = [
-    'EXTRACTION',
-    'CONFLICT_CHECK',
-    'VIABILITY_SCORING',
-    'FEE_STRUCTURE',
-    'ORACLE_MEMO',
-    'RETAINER_DRAFT',
-    'RISK_GATE',
+    "EXTRACTION",
+    "CONFLICT_CHECK",
+    "VIABILITY_SCORING",
+    "FEE_STRUCTURE",
+    "ORACLE_MEMO",
+    "RETAINER_DRAFT",
+    "RISK_GATE",
   ];
 
   return stages.map((stage) => ({

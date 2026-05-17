@@ -19,7 +19,7 @@
 export interface TenantServiceConfig {
   firmId: string;
   firmName: string;
-  tier: 'solo' | 'practice' | 'enterprise';
+  tier: "solo" | "practice" | "enterprise";
   region: string;
   customDomain?: string;
   byokProviders?: string[];
@@ -108,13 +108,13 @@ spec:
 ${
   config.byokProviders
     ?.map(
-      (p) => `            - name: BYOK_${p.toUpperCase().replace('-', '_')}_SECRET
+      (p) => `            - name: BYOK_${p.toUpperCase().replace("-", "_")}_SECRET
               valueFrom:
                 secretKeyRef:
                   name: byok-${config.firmId.substring(0, 8)}-${p}
                   key: latest`,
     )
-    .join('\n') ?? ''
+    .join("\n") ?? ""
 }
   traffic:
     - percent: 100
@@ -157,27 +157,27 @@ interface TierInstanceConfig {
   concurrency: number;
 }
 
-function getTierInstanceConfig(tier: TenantServiceConfig['tier']): TierInstanceConfig {
+function getTierInstanceConfig(tier: TenantServiceConfig["tier"]): TierInstanceConfig {
   switch (tier) {
-    case 'solo':
-      return { cpu: '1', memory: '512Mi', maxInstances: 3, minInstances: 0, concurrency: 80 };
-    case 'practice':
-      return { cpu: '2', memory: '1Gi', maxInstances: 10, minInstances: 1, concurrency: 120 };
-    case 'enterprise':
-      return { cpu: '4', memory: '2Gi', maxInstances: 50, minInstances: 2, concurrency: 200 };
+    case "solo":
+      return { cpu: "1", memory: "512Mi", maxInstances: 3, minInstances: 0, concurrency: 80 };
+    case "practice":
+      return { cpu: "2", memory: "1Gi", maxInstances: 10, minInstances: 1, concurrency: 120 };
+    case "enterprise":
+      return { cpu: "4", memory: "2Gi", maxInstances: 50, minInstances: 2, concurrency: 200 };
   }
 }
 
 // ─── Provision API Route ────────────────────────────────────────────
 
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 const ProvisionRequestSchema = z.object({
   firmId: z.string().uuid(),
   firmName: z.string().min(1).max(200),
-  tier: z.enum(['solo', 'practice', 'enterprise']),
-  region: z.string().default('us-central1'),
+  tier: z.enum(["solo", "practice", "enterprise"]),
+  region: z.string().default("us-central1"),
   customDomain: z.string().optional(),
   byokProviders: z.array(z.string()).optional(),
 });
@@ -185,9 +185,9 @@ const ProvisionRequestSchema = z.object({
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     // Internal-only endpoint — verify Cloud Tasks / Cloud Scheduler origin
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader && process.env.NODE_ENV === 'production') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!authHeader && process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
@@ -196,7 +196,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const service = generateTenantService(config);
 
     return NextResponse.json({
-      status: 'generated',
+      status: "generated",
       serviceId: `cc-tenant-${config.firmId.substring(0, 8)}`,
       yaml: service.yaml,
       commands: {
@@ -208,10 +208,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request', details: error.errors },
+        { error: "Invalid request", details: error.errors },
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: 'Provisioning failed' }, { status: 500 });
+    return NextResponse.json({ error: "Provisioning failed" }, { status: 500 });
   }
 }

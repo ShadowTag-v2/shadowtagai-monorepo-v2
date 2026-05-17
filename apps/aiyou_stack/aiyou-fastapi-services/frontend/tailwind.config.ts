@@ -1,20 +1,20 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
         shadowtag_v4: {
-          primary: '#6366f1',
-          secondary: '#8b5cf6',
-          accent: '#ec4899',
-          dark: '#0f172a',
-          light: '#f8fafc',
+          primary: "#6366f1",
+          secondary: "#8b5cf6",
+          accent: "#ec4899",
+          dark: "#0f172a",
+          light: "#f8fafc",
         },
       },
     },

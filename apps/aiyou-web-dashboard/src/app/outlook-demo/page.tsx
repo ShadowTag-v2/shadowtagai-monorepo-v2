@@ -1,5 +1,5 @@
-import React from 'react';
-import { VectorRetrieval } from '@/components/VectorRetrieval';
+import React from "react";
+import { VectorRetrieval } from "@/components/VectorRetrieval";
 
 export default function OutlookDemo() {
   return (
@@ -33,9 +33,9 @@ export default function OutlookDemo() {
         {/* Luxury Glass Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { tag: 'Swarm', val: '0.0.0.0:7233', act: 'Active' },
-            { tag: 'VRAM Buffer', val: '16 GB ANE', act: 'Stable' },
-            { tag: 'LanceDB Array', val: 'Port 8080', act: 'Ingesting' },
+            { tag: "Swarm", val: "0.0.0.0:7233", act: "Active" },
+            { tag: "VRAM Buffer", val: "16 GB ANE", act: "Stable" },
+            { tag: "LanceDB Array", val: "Port 8080", act: "Ingesting" },
           ].map((node, i) => (
             <div
               key={i}

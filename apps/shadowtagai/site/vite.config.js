@@ -1,13 +1,13 @@
-import { resolve } from 'node:path';
-import { defineConfig } from 'vite';
+import { resolve } from "node:path";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
-    outDir: resolve(__dirname, '../public'),
+    outDir: resolve(__dirname, "../public"),
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        main: resolve(__dirname, "index.html"),
       },
     },
     assetsInlineLimit: 4096,

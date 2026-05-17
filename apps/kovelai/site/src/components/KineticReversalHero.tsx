@@ -1,7 +1,7 @@
-'use client';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
-import Link from 'next/link';
-import { useRef } from 'react';
+"use client";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import Link from "next/link";
+import { useRef } from "react";
 
 interface KineticReversalHeroProps {
   onOpenModal: () => void;
@@ -13,7 +13,7 @@ export default function KineticReversalHero({ onOpenModal }: KineticReversalHero
   // Track scroll progress
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end start'],
+    offset: ["start start", "end start"],
   });
 
   // Smooth out the scroll physics
@@ -25,7 +25,7 @@ export default function KineticReversalHero({ onOpenModal }: KineticReversalHero
 
   // Reversal effects based on scroll
   // Background moves down while content moves up (parallax)
-  const bgY = useTransform(springProgress, [0, 1], ['0%', '30%']);
+  const bgY = useTransform(springProgress, [0, 1], ["0%", "30%"]);
 
   // Center blob expands and reverses its rotation
   const blobScale = useTransform(springProgress, [0, 1], [1, 2.5]);
@@ -33,10 +33,10 @@ export default function KineticReversalHero({ onOpenModal }: KineticReversalHero
   const blobOpacity = useTransform(springProgress, [0, 0.5, 1], [0.3, 0.1, 0]);
 
   // Main text gets "reversed" (spreads out and blurs out)
-  const textY = useTransform(springProgress, [0, 1], ['0%', '-50%']);
+  const textY = useTransform(springProgress, [0, 1], ["0%", "-50%"]);
   const textScale = useTransform(springProgress, [0, 1], [1, 0.9]);
   const textOpacity = useTransform(springProgress, [0, 0.6], [1, 0]);
-  const letterSpacing = useTransform(springProgress, [0, 1], ['-0.04em', '0.1em']);
+  const letterSpacing = useTransform(springProgress, [0, 1], ["-0.04em", "0.1em"]);
 
   return (
     <div ref={containerRef} className="relative h-[150vh] bg-surface w-full overflow-hidden">
@@ -48,9 +48,9 @@ export default function KineticReversalHero({ onOpenModal }: KineticReversalHero
             className="absolute inset-0"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(230,196,135,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(230,196,135,0.2) 1px, transparent 1px)',
-              backgroundSize: '40px 40px',
-              transform: 'perspective(500px) rotateX(60deg) translateY(-100px) scale(3)',
+                "linear-gradient(rgba(230,196,135,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(230,196,135,0.2) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+              transform: "perspective(500px) rotateX(60deg) translateY(-100px) scale(3)",
             }}
           />
         </motion.div>

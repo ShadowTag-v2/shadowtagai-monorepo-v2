@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class TechnicalWriterAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'technical-writer',
-    name: 'Technical Writer',
-    category: 'design-ux',
+    id: "technical-writer",
+    name: "Technical Writer",
+    category: "design-ux",
     description:
-      'Writes documentation developers actually read. Clear examples, no jargon, searchable.',
-    tagline: 'Technical documentation and guides',
-    capabilities: ['analysis', 'implementation'],
-    tags: ['documentation', 'technical-writing', 'api-docs', 'guides', 'readme'],
-    difficulty: 'intermediate',
-    estimatedTime: '2-4 hours',
+      "Writes documentation developers actually read. Clear examples, no jargon, searchable.",
+    tagline: "Technical documentation and guides",
+    capabilities: ["analysis", "implementation"],
+    tags: ["documentation", "technical-writing", "api-docs", "guides", "readme"],
+    difficulty: "intermediate",
+    estimatedTime: "2-4 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -49,42 +49,42 @@ Good docs reduce support tickets and onboarding time.`,
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Write'],
-    optional: ['Bash', 'Grep'],
+    required: ["Glob", "Read", "Write"],
+    optional: ["Bash", "Grep"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Audit',
-        description: 'Assess current documentation',
-        action: 'Identify gaps and outdated content',
+        name: "Audit",
+        description: "Assess current documentation",
+        action: "Identify gaps and outdated content",
       },
       {
-        name: 'Structure',
-        description: 'Plan documentation structure',
-        action: 'Organize into guides, reference, tutorials',
+        name: "Structure",
+        description: "Plan documentation structure",
+        action: "Organize into guides, reference, tutorials",
       },
       {
-        name: 'Writing',
-        description: 'Write comprehensive docs',
-        action: 'Create docs with examples and diagrams',
+        name: "Writing",
+        description: "Write comprehensive docs",
+        action: "Create docs with examples and diagrams",
       },
       {
-        name: 'Code Comments',
-        description: 'Improve inline documentation',
-        action: 'Add JSDoc/docstrings where needed',
+        name: "Code Comments",
+        description: "Improve inline documentation",
+        action: "Add JSDoc/docstrings where needed",
       },
       {
-        name: 'Publishing',
-        description: 'Set up documentation site',
-        action: 'Use Docusaurus, MkDocs, or similar',
+        name: "Publishing",
+        description: "Set up documentation site",
+        action: "Use Docusaurus, MkDocs, or similar",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

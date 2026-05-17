@@ -23,8 +23,8 @@ export interface EncryptedPayload {
   encryptedKey: string; // Base64 encoded ciphertext
   iv: string; // Base64 encoded initialization vector
   salt: string; // Base64 encoded PBKDF2 salt
-  algorithm: 'AES-256-GCM';
-  keyDerivation: 'PBKDF2-SHA256';
+  algorithm: "AES-256-GCM";
+  keyDerivation: "PBKDF2-SHA256";
   iterations: number;
 }
 
@@ -48,24 +48,24 @@ const SALT_LENGTH = 32; // 256 bits
 async function deriveKey(passphrase: string, salt: Uint8Array): Promise<CryptoKey> {
   const encoder = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey(
-    'raw',
+    "raw",
     encoder.encode(passphrase),
-    'PBKDF2',
+    "PBKDF2",
     false,
-    ['deriveKey'],
+    ["deriveKey"],
   );
 
   return crypto.subtle.deriveKey(
     {
-      name: 'PBKDF2',
+      name: "PBKDF2",
       salt,
       iterations: PBKDF2_ITERATIONS,
-      hash: 'SHA-256',
+      hash: "SHA-256",
     },
     keyMaterial,
-    { name: 'AES-GCM', length: AES_KEY_LENGTH },
+    { name: "AES-GCM", length: AES_KEY_LENGTH },
     false,
-    ['encrypt', 'decrypt'],
+    ["encrypt", "decrypt"],
   );
 }
 
@@ -89,7 +89,7 @@ export async function encryptAPIKey(apiKey: string, passphrase: string): Promise
 
   // Encrypt
   const ciphertext = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
+    { name: "AES-GCM", iv },
     key,
     encoder.encode(apiKey),
   );
@@ -98,8 +98,8 @@ export async function encryptAPIKey(apiKey: string, passphrase: string): Promise
     encryptedKey: arrayBufferToBase64(ciphertext),
     iv: arrayBufferToBase64(iv),
     salt: arrayBufferToBase64(salt),
-    algorithm: 'AES-256-GCM',
-    keyDerivation: 'PBKDF2-SHA256',
+    algorithm: "AES-256-GCM",
+    keyDerivation: "PBKDF2-SHA256",
     iterations: PBKDF2_ITERATIONS,
   };
 }
@@ -123,7 +123,7 @@ export async function decryptAPIKey(
 
   const key = await deriveKey(passphrase, salt);
 
-  const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+  const plaintext = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ciphertext);
 
   return new TextDecoder().decode(plaintext);
 }
@@ -139,7 +139,7 @@ export async function decryptAPIKey(
 export async function registerBYOK(
   apiKey: string,
   passphrase: string,
-  provider: 'anthropic' | 'google-vertex' | 'openai',
+  provider: "anthropic" | "google-vertex" | "openai",
   firmId: string,
   seuToken: string,
 ): Promise<{ status: string; secretId: string }> {
@@ -147,11 +147,11 @@ export async function registerBYOK(
   const encrypted = await encryptAPIKey(apiKey, passphrase);
 
   // Step 2: Send to server
-  const response = await fetch('/api/tokens/byok', {
-    method: 'POST',
+  const response = await fetch("/api/tokens/byok", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'X-SEU-Token': seuToken,
+      "Content-Type": "application/json",
+      "X-SEU-Token": seuToken,
     },
     body: JSON.stringify({
       provider,
@@ -172,7 +172,7 @@ export async function registerBYOK(
 
 function arrayBufferToBase64(buffer: ArrayBuffer | Uint8Array): string {
   const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
-  let binary = '';
+  let binary = "";
   for (const byte of bytes) {
     binary += String.fromCharCode(byte);
   }

@@ -15,7 +15,7 @@
  * Uses google-developer-knowledge MCP for API reference.
  */
 
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from "node:crypto";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -35,7 +35,7 @@ export interface ContextCacheEntry {
   /** Cache TTL — when it expires in VRAM */
   expiresAt: string;
   /** Status */
-  status: 'CREATING' | 'ACTIVE' | 'EXPIRED' | 'EVICTED';
+  status: "CREATING" | "ACTIVE" | "EXPIRED" | "EVICTED";
   /** Cost saved vs. stateless prompting (estimated) */
   estimatedSavingsUsd: number;
   /** Number of queries served from this cache */
@@ -84,8 +84,8 @@ export async function createContextCache(
 ): Promise<ContextCacheEntry> {
   const {
     ttlSeconds = 3600,
-    _modelId = 'gemini-2.5-pro',
-    _systemInstruction = 'You are a privileged legal research assistant. Analyze the cached documents to answer questions about the case.',
+    _modelId = "gemini-2.5-pro",
+    _systemInstruction = "You are a privileged legal research assistant. Analyze the cached documents to answer questions about the case.",
   } = config;
 
   // Estimate token count (~4 chars per token for English text)
@@ -113,7 +113,7 @@ export async function createContextCache(
     tokenCount: estimatedTokens,
     createdAt: now.toISOString(),
     expiresAt: expiresAt.toISOString(),
-    status: 'ACTIVE',
+    status: "ACTIVE",
     estimatedSavingsUsd: 0,
     queryCount: 0,
   };
@@ -133,7 +133,7 @@ export function useCache(cacheId: string): ContextCacheEntry | null {
 
   // Check expiration
   if (new Date() > new Date(entry.expiresAt)) {
-    entry.status = 'EXPIRED';
+    entry.status = "EXPIRED";
     return null;
   }
 
@@ -165,7 +165,7 @@ export function getCacheAnalytics(firmId?: string): {
 
   return {
     totalCaches: entries.length,
-    activeCaches: entries.filter((e) => e.status === 'ACTIVE').length,
+    activeCaches: entries.filter((e) => e.status === "ACTIVE").length,
     totalTokensCached: entries.reduce((sum, e) => sum + e.tokenCount, 0),
     totalQueriesServed: entries.reduce((sum, e) => sum + e.queryCount, 0),
     totalSavingsUsd: entries.reduce((sum, e) => sum + e.estimatedSavingsUsd, 0),
@@ -183,7 +183,7 @@ export function evictCache(cacheId: string): boolean {
   // In production, this calls:
   // DELETE https://generativelanguage.googleapis.com/v1beta/cachedContents/{cacheId}
 
-  entry.status = 'EVICTED';
+  entry.status = "EVICTED";
   return true;
 }
 
@@ -195,7 +195,7 @@ export function extendCacheTtl(
   additionalSeconds: number,
 ): ContextCacheEntry | null {
   const entry = cacheRegistry.get(cacheId);
-  if (!entry || entry.status !== 'ACTIVE') return null;
+  if (!entry || entry.status !== "ACTIVE") return null;
 
   // In production, this calls:
   // PATCH https://generativelanguage.googleapis.com/v1beta/cachedContents/{cacheId}

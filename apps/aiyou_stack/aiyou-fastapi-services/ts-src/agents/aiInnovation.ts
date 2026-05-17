@@ -7,18 +7,18 @@ import {
   type AgentExecutionResult,
   type AgentMetadata,
   BaseAgent,
-} from './base';
+} from "./base";
 
 export class AIIntegrationExpert extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'AI Integration Expert',
+      name: "AI Integration Expert",
       description:
-        'Adds ChatGPT-like features to your app. Handles prompts, streaming, embeddings, the works.',
+        "Adds ChatGPT-like features to your app. Handles prompts, streaming, embeddings, the works.",
       category: AgentCategory.AI_INNOVATION,
-      icon: '🤖',
-      version: '1.0.0',
-      tags: ['ai', 'llm', 'gpt', 'embeddings', 'prompts', 'ml'],
+      icon: "🤖",
+      version: "1.0.0",
+      tags: ["ai", "llm", "gpt", "embeddings", "prompts", "ml"],
     };
   }
 
@@ -53,13 +53,13 @@ AI is the new interface. Build it right: fast, reliable, and cost-effective.`;
 export class AutomationBuilder extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Automation Builder',
+      name: "Automation Builder",
       description:
-        'Automates the repetitive stuff. Scheduled jobs, workflows, triggers. Your personal robot army.',
+        "Automates the repetitive stuff. Scheduled jobs, workflows, triggers. Your personal robot army.",
       category: AgentCategory.AI_INNOVATION,
-      icon: '⚙️',
-      version: '1.0.0',
-      tags: ['automation', 'workflows', 'cron', 'jobs', 'triggers'],
+      icon: "⚙️",
+      version: "1.0.0",
+      tags: ["automation", "workflows", "cron", "jobs", "triggers"],
     };
   }
 
@@ -93,13 +93,13 @@ Automate everything that doesn't require human judgment. Free up time for what m
 export class InnovationLab extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Innovation Lab',
+      name: "Innovation Lab",
       description:
         "Experiments with cutting-edge tech. Tries the crazy ideas so you don't have to.",
       category: AgentCategory.AI_INNOVATION,
-      icon: '🔬',
-      version: '1.0.0',
-      tags: ['innovation', 'experiments', 'prototypes', 'r&d', 'emerging-tech'],
+      icon: "🔬",
+      version: "1.0.0",
+      tags: ["innovation", "experiments", "prototypes", "r&d", "emerging-tech"],
     };
   }
 

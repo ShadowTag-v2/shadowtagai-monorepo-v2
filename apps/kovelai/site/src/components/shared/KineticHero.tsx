@@ -1,27 +1,27 @@
 // Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
 
-'use client';
+"use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /* ── Design Token Constants (aligned with globals.css Sovereign Architect) ── */
 const T = {
-  ink: '#071325',
-  inkLight: '#0a1a30',
-  gold: '#e6c487',
-  goldContainer: '#c9a96e',
-  goldOn: '#412d00',
-  blue: '#aac7ff',
-  lavender: '#b8c8f2',
-  primaryText: '#d7e3fc',
-  secondaryText: '#d0c5b5',
-  outline: '#998f81',
-  surfaceHigh: '#1f2a3d',
+  ink: "#071325",
+  inkLight: "#0a1a30",
+  gold: "#e6c487",
+  goldContainer: "#c9a96e",
+  goldOn: "#412d00",
+  blue: "#aac7ff",
+  lavender: "#b8c8f2",
+  primaryText: "#d7e3fc",
+  secondaryText: "#d0c5b5",
+  outline: "#998f81",
+  surfaceHigh: "#1f2a3d",
 } as const;
 
 /* ── Kinetic Shield Geometry (SVG paths) ── */
-const SHIELD_PATH = 'M50 2 C50 2 95 20 95 55 C95 80 75 98 50 98 C25 98 5 80 5 55 C5 20 50 2 50 2Z';
+const SHIELD_PATH = "M50 2 C50 2 95 20 95 55 C95 80 75 98 50 98 C25 98 5 80 5 55 C5 20 50 2 50 2Z";
 
 /* ── Particle System ── */
 interface Particle {
@@ -48,7 +48,7 @@ function generateParticles(count: number): Particle[] {
 
 /* ── Typing Effect ── */
 function useTypingEffect(text: string, speed = 40, delay = 800) {
-  const [displayedText, setDisplayedText] = useState('');
+  const [displayedText, setDisplayedText] = useState("");
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
@@ -111,7 +111,7 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
   useEffect(() => setMounted(true), []);
 
   const { displayedText: typedTagline, isComplete: taglineComplete } = useTypingEffect(
-    'Privilege-Protected Infrastructure',
+    "Privilege-Protected Infrastructure",
     35,
     1200,
   );
@@ -125,11 +125,11 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
+    hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
     visible: {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
+      filter: "blur(0px)",
       transition: { duration: 0.8, ease: [0.25, 0.4, 0.25, 1] as const },
     },
   };
@@ -140,11 +140,11 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       style={{
-        position: 'relative',
-        minHeight: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        overflow: 'hidden',
+        position: "relative",
+        minHeight: "100dvh",
+        display: "flex",
+        alignItems: "center",
+        overflow: "hidden",
         background: `linear-gradient(170deg, ${T.ink} 0%, ${T.inkLight} 40%, ${T.ink} 100%)`,
       }}
       id="hero"
@@ -152,13 +152,13 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
       {/* ── Layer 0: Radial Gradient Atmosphere ── */}
       <div
         style={{
-          position: 'absolute',
+          position: "absolute",
           inset: 0,
           background: `
             radial-gradient(ellipse 80% 60% at 70% 40%, rgba(230, 196, 135, 0.04) 0%, transparent 60%),
             radial-gradient(ellipse 60% 80% at 20% 60%, rgba(170, 199, 255, 0.03) 0%, transparent 60%)
           `,
-          pointerEvents: 'none',
+          pointerEvents: "none",
         }}
       />
 
@@ -166,23 +166,23 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
       {mounted && (
         <motion.div
           style={{
-            position: 'absolute',
+            position: "absolute",
             inset: 0,
             x: particleShiftX,
             y: particleShiftY,
-            pointerEvents: 'none',
+            pointerEvents: "none",
           }}
         >
           {particles.map((p) => (
             <motion.div
               key={p.id}
               style={{
-                position: 'absolute',
+                position: "absolute",
                 left: `${p.x}%`,
                 top: `${p.y}%`,
                 width: p.size,
                 height: p.size,
-                borderRadius: '50%',
+                borderRadius: "50%",
                 backgroundColor: p.id % 3 === 0 ? T.gold : T.blue,
                 opacity: p.opacity,
               }}
@@ -193,7 +193,7 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
               transition={{
                 duration: p.speed,
                 repeat: Infinity,
-                ease: 'easeInOut',
+                ease: "easeInOut",
                 delay: p.id * 0.1,
               }}
             />
@@ -204,28 +204,28 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
       {/* ── Layer 2: Kinetic Shield (3D Parallax) ── */}
       <motion.div
         style={{
-          position: 'absolute',
-          right: '8%',
-          top: '50%',
-          translateY: '-50%',
+          position: "absolute",
+          right: "8%",
+          top: "50%",
+          translateY: "-50%",
           width: 320,
           height: 380,
           rotateX: shieldRotateX,
           rotateY: shieldRotateY,
           perspective: 1000,
-          pointerEvents: 'none',
+          pointerEvents: "none",
         }}
       >
         {/* Outer glow */}
         <motion.div
           style={{
-            position: 'absolute',
+            position: "absolute",
             inset: -60,
-            borderRadius: '50%',
+            borderRadius: "50%",
             background: `radial-gradient(circle, rgba(230, 196, 135, 0.06), transparent 70%)`,
           }}
           animate={{ scale: [1, 1.08, 1], opacity: [0.5, 0.8, 0.5] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         />
 
         {/* Shield SVG */}
@@ -234,10 +234,10 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
           role="img"
           aria-label="Protective shield emblem"
           style={{
-            position: 'absolute',
+            position: "absolute",
             inset: 0,
-            width: '100%',
-            height: '100%',
+            width: "100%",
+            height: "100%",
           }}
         >
           {/* Outer shield */}
@@ -248,7 +248,7 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
             strokeWidth={0.5}
             strokeOpacity={0.2}
             animate={{ strokeOpacity: [0.15, 0.3, 0.15] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
           {/* Inner shield */}
           <motion.path
@@ -257,20 +257,20 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
             stroke={T.blue}
             strokeWidth={0.3}
             strokeOpacity={0.1}
-            style={{ transform: 'scale(0.85)', transformOrigin: 'center' }}
+            style={{ transform: "scale(0.85)", transformOrigin: "center" }}
             animate={{ strokeOpacity: [0.08, 0.18, 0.08] }}
             transition={{
               duration: 3.5,
               repeat: Infinity,
-              ease: 'easeInOut',
+              ease: "easeInOut",
               delay: 0.5,
             }}
           />
           {/* Lock icon in center */}
           <motion.g
-            style={{ transformOrigin: 'center' }}
+            style={{ transformOrigin: "center" }}
             animate={{ scale: [1, 1.03, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
             <rect
               x="40"
@@ -297,13 +297,13 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
         {/* Orbiting ring */}
         <motion.div
           style={{
-            position: 'absolute',
+            position: "absolute",
             inset: -20,
             border: `1px solid rgba(230, 196, 135, 0.06)`,
-            borderRadius: '50%',
+            borderRadius: "50%",
           }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
         />
       </motion.div>
 
@@ -313,11 +313,11 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
       {/* ── Layer 3: Content ── */}
       <motion.div
         style={{
-          position: 'relative',
+          position: "relative",
           zIndex: 10,
           maxWidth: 1140,
-          margin: '0 auto',
-          padding: '6rem 1rem 4rem',
+          margin: "0 auto",
+          padding: "6rem 1rem 4rem",
           x: textShiftX,
           y: textShiftY,
         }}
@@ -329,14 +329,14 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
         <motion.div
           variants={itemVariants}
           style={{
-            fontSize: '0.6875rem',
+            fontSize: "0.6875rem",
             fontWeight: 500,
-            textTransform: 'uppercase' as const,
-            letterSpacing: '0.15em',
+            textTransform: "uppercase" as const,
+            letterSpacing: "0.15em",
             color: T.gold,
-            marginBottom: '1.5rem',
+            marginBottom: "1.5rem",
             fontFamily: "'Inter', system-ui, sans-serif",
-            minHeight: '1rem',
+            minHeight: "1rem",
           }}
         >
           {typedTagline}
@@ -360,12 +360,12 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
         <motion.h1
           variants={itemVariants}
           style={{
-            fontSize: 'clamp(1.75rem, 5vw, 3.5rem)',
+            fontSize: "clamp(1.75rem, 5vw, 3.5rem)",
             fontWeight: 800,
             lineHeight: 1.05,
-            letterSpacing: '-0.02em',
+            letterSpacing: "-0.02em",
             maxWidth: 800,
-            marginBottom: '1.5rem',
+            marginBottom: "1.5rem",
             color: T.primaryText,
             fontFamily: "'Inter', system-ui, sans-serif",
           }}
@@ -376,12 +376,12 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
             style={{ color: T.gold }}
             animate={{
               textShadow: [
-                '0 0 0px rgba(230, 196, 135, 0)',
-                '0 0 20px rgba(230, 196, 135, 0.15)',
-                '0 0 0px rgba(230, 196, 135, 0)',
+                "0 0 0px rgba(230, 196, 135, 0)",
+                "0 0 20px rgba(230, 196, 135, 0.15)",
+                "0 0 0px rgba(230, 196, 135, 0)",
               ],
             }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           >
             From Discovery.
           </motion.span>
@@ -391,11 +391,11 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
         <motion.h2
           variants={itemVariants}
           style={{
-            fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
+            fontSize: "clamp(1rem, 2.5vw, 1.5rem)",
             fontWeight: 600,
             color: T.secondaryText,
             maxWidth: 700,
-            marginBottom: '1.5rem',
+            marginBottom: "1.5rem",
             lineHeight: 1.4,
             fontFamily: "'Inter', system-ui, sans-serif",
           }}
@@ -408,11 +408,11 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
         <motion.p
           variants={itemVariants}
           style={{
-            fontSize: '0.9375rem',
+            fontSize: "0.9375rem",
             lineHeight: 1.6,
             color: T.secondaryText,
             maxWidth: 640,
-            marginBottom: '1rem',
+            marginBottom: "1rem",
             fontFamily: "'Inter', system-ui, sans-serif",
           }}
         >
@@ -424,16 +424,16 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
         <motion.p
           variants={itemVariants}
           style={{
-            fontSize: '0.9375rem',
+            fontSize: "0.9375rem",
             lineHeight: 1.6,
             color: T.secondaryText,
             maxWidth: 640,
-            marginBottom: '2rem',
+            marginBottom: "2rem",
             fontFamily: "'Inter', system-ui, sans-serif",
           }}
         >
           Your clients search at will under your privilege umbrella. You monitor every session,
-          deliver the first legal opinion, and bill their credit card automatically.{' '}
+          deliver the first legal opinion, and bill their credit card automatically.{" "}
           <strong style={{ color: T.primaryText }}>
             &ldquo;Either you do it through our firm&apos;s KovelAI, or proceed at your
             peril.&rdquo;
@@ -443,15 +443,15 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
         {/* CTAs */}
         <motion.div
           variants={itemVariants}
-          style={{ display: 'flex', flexWrap: 'wrap' as const, gap: '1rem', marginBottom: '1rem' }}
+          style={{ display: "flex", flexWrap: "wrap" as const, gap: "1rem", marginBottom: "1rem" }}
         >
           <motion.button
             type="button"
             onClick={onOpenModal}
             className="btn-gold"
             id="ctaFreeTrial"
-            style={{ fontSize: '0.875rem' }}
-            whileHover={{ scale: 1.03, boxShadow: '0 0 40px rgba(230, 196, 135, 0.3)' }}
+            style={{ fontSize: "0.875rem" }}
+            whileHover={{ scale: 1.03, boxShadow: "0 0 40px rgba(230, 196, 135, 0.3)" }}
             whileTap={{ scale: 0.98 }}
           >
             Deploy Your Firm&apos;s Portal
@@ -459,7 +459,7 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
           <motion.a
             href="#how-it-works"
             className="btn-ghost"
-            style={{ fontSize: '0.875rem' }}
+            style={{ fontSize: "0.875rem" }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -471,7 +471,7 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
         <motion.p
           variants={itemVariants}
           style={{
-            fontSize: '0.75rem',
+            fontSize: "0.75rem",
             color: T.outline,
             fontFamily: "'Inter', system-ui, sans-serif",
           }}
@@ -484,13 +484,13 @@ export default function KineticHero({ onOpenModal }: KineticHeroProps) {
       {/* ── Layer 4: Bottom Fade ── */}
       <div
         style={{
-          position: 'absolute',
+          position: "absolute",
           bottom: 0,
           left: 0,
           right: 0,
           height: 160,
           background: `linear-gradient(to top, ${T.ink}, transparent)`,
-          pointerEvents: 'none',
+          pointerEvents: "none",
         }}
       />
 

@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { motion, useInView } from 'framer-motion';
-import { useCallback, useRef, useState } from 'react';
-import ContactModal from '@/components/shared/ContactModal';
-import Footer from '@/components/shared/Footer';
-import Nav from '@/components/shared/Nav';
+import { motion, useInView } from "framer-motion";
+import { useCallback, useRef, useState } from "react";
+import ContactModal from "@/components/shared/ContactModal";
+import Footer from "@/components/shared/Footer";
+import Nav from "@/components/shared/Nav";
 
 function AnimatedSection({
   children,
-  className = '',
+  className = "",
   delay = 0,
 }: {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ function AnimatedSection({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <motion.div
@@ -33,8 +33,8 @@ function AnimatedSection({
 
 const SECTIONS = [
   {
-    id: 'collection',
-    title: '1. Information We Collect',
+    id: "collection",
+    title: "1. Information We Collect",
     content: `KovelAI collects the minimum information necessary to provide our services:
 
 • **Account Information:** Firm name, administrator email, and billing details provided during registration.
@@ -48,8 +48,8 @@ const SECTIONS = [
 • Any personally identifiable information (PII) of your clients`,
   },
   {
-    id: 'retention',
-    title: '2. Zero-Retention Architecture',
+    id: "retention",
+    title: "2. Zero-Retention Architecture",
     content: `KovelAI operates a zero-retention architecture for all privileged session data:
 
 • All AI inference occurs in ephemeral compute instances that are cryptographically shredded upon session termination.
@@ -58,8 +58,8 @@ const SECTIONS = [
 • Infrastructure logs are retained for 30 days for security monitoring, contain no session content, and are automatically purged.`,
   },
   {
-    id: 'sharing',
-    title: '3. Information Sharing',
+    id: "sharing",
+    title: "3. Information Sharing",
     content: `KovelAI does not sell, rent, or trade your information. We share data only in these limited circumstances:
 
 • **Service Providers:** Google Cloud Platform (infrastructure), Stripe (payment processing). All providers are bound by data processing agreements.
@@ -67,8 +67,8 @@ const SECTIONS = [
 • **Business Transfer:** In the event of a merger or acquisition, your data would be subject to the same privacy protections.`,
   },
   {
-    id: 'security',
-    title: '4. Security Measures',
+    id: "security",
+    title: "4. Security Measures",
     content: `• AES-256 encryption at rest for all persistent data
 • TLS 1.3 for all data in transit
 • SOC 2 Type II certified infrastructure
@@ -79,8 +79,8 @@ const SECTIONS = [
 • Penetration testing conducted annually by independent security firms`,
   },
   {
-    id: 'rights',
-    title: '5. Your Rights',
+    id: "rights",
+    title: "5. Your Rights",
     content: `Depending on your jurisdiction, you may have the following rights:
 
 • **Access:** Request a copy of the personal data we hold about you.
@@ -93,8 +93,8 @@ const SECTIONS = [
 **CCPA (California):** We do not sell personal information. California residents may exercise their rights by contacting privacy@kovelai.com.`,
   },
   {
-    id: 'contact',
-    title: '6. Contact & Updates',
+    id: "contact",
+    title: "6. Contact & Updates",
     content: `For privacy inquiries, data subject requests, or to report a concern:
 
 • **Email:** privacy@kovelai.com
@@ -125,7 +125,7 @@ export default function PrivacyPage() {
                   <span className="text-sm font-medium text-[#d0c5b5]">🔒 Privacy Policy</span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#d7e3fc] mb-6">
-                  Your Privacy,{' '}
+                  Your Privacy,{" "}
                   <span className="bg-gradient-to-r from-[#e6c487] to-[#c9a96e] bg-clip-text text-transparent">
                     By Design
                   </span>

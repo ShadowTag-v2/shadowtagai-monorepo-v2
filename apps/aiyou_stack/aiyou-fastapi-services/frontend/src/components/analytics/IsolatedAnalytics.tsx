@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
-import './IsolatedAnalytics.css';
+import "./IsolatedAnalytics.css";
 
 interface IsolatedAnalyticsProps {
   writeKey: string;
@@ -13,7 +13,7 @@ interface IsolatedAnalyticsProps {
 export function IsolatedAnalytics({
   writeKey,
   cdnHost,
-  backendUrl = 'http://localhost:8080',
+  backendUrl = "http://localhost:8080",
 }: IsolatedAnalyticsProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -25,26 +25,26 @@ export function IsolatedAnalytics({
       // or match the backendUrl domain.
 
       // Filter only for our isolated-segment messages
-      if (event.data?.source !== 'isolated-segment') return;
+      if (event.data?.source !== "isolated-segment") return;
 
-      if (event.data.type === 'iframe_ready') {
-        console.log('[Analytics] Iframe ready -> initializing');
+      if (event.data.type === "iframe_ready") {
+        console.log("[Analytics] Iframe ready -> initializing");
 
         // Send init command
         iframeRef.current?.contentWindow?.postMessage(
           {
-            target: 'isolated-segment',
-            type: 'init',
+            target: "isolated-segment",
+            type: "init",
             writeKey,
             cdnHost,
           },
-          '*',
+          "*",
         );
       }
     };
 
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, [writeKey, cdnHost]);
 
   return (

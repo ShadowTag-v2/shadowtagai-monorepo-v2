@@ -2,58 +2,58 @@
  * Prometheus metrics for monitoring
  */
 
-import client from 'prom-client';
-import type { Mode } from '../types';
+import client from "prom-client";
+import type { Mode } from "../types";
 
 // Enable default metrics (CPU, memory, etc.)
-client.collectDefaultMetrics({ prefix: 'shadowtagai_' });
+client.collectDefaultMetrics({ prefix: "shadowtagai_" });
 
 // Custom metrics
 const requestCounter = new client.Counter({
-  name: 'shadowtagai_requests_total',
-  help: 'Total number of requests processed',
-  labelNames: ['mode', 'status'],
+  name: "shadowtagai_requests_total",
+  help: "Total number of requests processed",
+  labelNames: ["mode", "status"],
 });
 
 const requestDuration = new client.Histogram({
-  name: 'shadowtagai_request_duration_seconds',
-  help: 'Request duration in seconds',
-  labelNames: ['mode'],
+  name: "shadowtagai_request_duration_seconds",
+  help: "Request duration in seconds",
+  labelNames: ["mode"],
   buckets: [0.1, 0.5, 1, 2, 5, 10, 30],
 });
 
 const vertexCallCounter = new client.Counter({
-  name: 'shadowtagai_vertex_calls_total',
-  help: 'Total number of Vertex AI API calls',
-  labelNames: ['mode', 'status'],
+  name: "shadowtagai_vertex_calls_total",
+  help: "Total number of Vertex AI API calls",
+  labelNames: ["mode", "status"],
 });
 
 const vertexCallDuration = new client.Histogram({
-  name: 'shadowtagai_vertex_call_duration_seconds',
-  help: 'Vertex AI call duration in seconds',
-  labelNames: ['mode'],
+  name: "shadowtagai_vertex_call_duration_seconds",
+  help: "Vertex AI call duration in seconds",
+  labelNames: ["mode"],
   buckets: [0.5, 1, 2, 5, 10, 20, 30],
 });
 
 const vertexTokensCounter = new client.Counter({
-  name: 'shadowtagai_vertex_tokens_total',
-  help: 'Total tokens used in Vertex AI calls',
-  labelNames: ['type'], // 'input' or 'output'
+  name: "shadowtagai_vertex_tokens_total",
+  help: "Total tokens used in Vertex AI calls",
+  labelNames: ["type"], // 'input' or 'output'
 });
 
 const revenueGauge = new client.Gauge({
-  name: 'shadowtagai_revenue_dollars',
-  help: 'Revenue generated in dollars',
+  name: "shadowtagai_revenue_dollars",
+  help: "Revenue generated in dollars",
 });
 
 const costGauge = new client.Gauge({
-  name: 'shadowtagai_cost_dollars',
-  help: 'Cost incurred in dollars',
+  name: "shadowtagai_cost_dollars",
+  help: "Cost incurred in dollars",
 });
 
 const profitGauge = new client.Gauge({
-  name: 'shadowtagai_profit_dollars',
-  help: 'Net profit in dollars',
+  name: "shadowtagai_profit_dollars",
+  help: "Net profit in dollars",
 });
 
 class Metrics {
@@ -63,7 +63,7 @@ class Metrics {
   recordRequest(mode: Mode, durationMs: number, success: boolean) {
     requestCounter.inc({
       mode,
-      status: success ? 'success' : 'error',
+      status: success ? "success" : "error",
     });
 
     requestDuration.observe({ mode }, durationMs / 1000);
@@ -73,17 +73,17 @@ class Metrics {
    * Record a Vertex AI call
    */
   recordVertexCall(mode: Mode, durationMs: number, inputTokens: number, outputTokens: number) {
-    vertexCallCounter.inc({ mode, status: 'success' });
+    vertexCallCounter.inc({ mode, status: "success" });
     vertexCallDuration.observe({ mode }, durationMs / 1000);
-    vertexTokensCounter.inc({ type: 'input' }, inputTokens);
-    vertexTokensCounter.inc({ type: 'output' }, outputTokens);
+    vertexTokensCounter.inc({ type: "input" }, inputTokens);
+    vertexTokensCounter.inc({ type: "output" }, outputTokens);
   }
 
   /**
    * Record a Vertex AI error
    */
   recordVertexError(mode: Mode) {
-    vertexCallCounter.inc({ mode, status: 'error' });
+    vertexCallCounter.inc({ mode, status: "error" });
   }
 
   /**

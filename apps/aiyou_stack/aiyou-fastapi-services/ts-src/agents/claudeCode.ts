@@ -8,18 +8,18 @@ import {
   type AgentExecutionResult,
   type AgentMetadata,
   BaseAgent,
-} from './base';
+} from "./base";
 
 export class ClaudeCodeSessionOptimizer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Claude Code Session Optimizer',
+      name: "Claude Code Session Optimizer",
       description:
-        'Optimizes Claude Code sessions for productivity, context management, and efficient task execution. Analyzes session patterns and recommends improvements.',
+        "Optimizes Claude Code sessions for productivity, context management, and efficient task execution. Analyzes session patterns and recommends improvements.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '⚡',
-      version: '1.0.0',
-      tags: ['claude-code', 'optimization', 'sessions', 'productivity', 'context'],
+      icon: "⚡",
+      version: "1.0.0",
+      tags: ["claude-code", "optimization", "sessions", "productivity", "context"],
     };
   }
 
@@ -119,13 +119,13 @@ Output Format:
 export class HookAndSkillDesigner extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Hook & Skill Designer',
+      name: "Hook & Skill Designer",
       description:
-        'Creates custom hooks (SessionStart, PromptSubmit, ToolCall) and skills for Claude Code. Designs reusable automation patterns.',
+        "Creates custom hooks (SessionStart, PromptSubmit, ToolCall) and skills for Claude Code. Designs reusable automation patterns.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '🪝',
-      version: '1.0.0',
-      tags: ['claude-code', 'hooks', 'skills', 'automation', 'customization'],
+      icon: "🪝",
+      version: "1.0.0",
+      tags: ["claude-code", "hooks", "skills", "automation", "customization"],
     };
   }
 
@@ -268,13 +268,13 @@ Output Format:
 export class MCPServerIntegration extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'MCP Server Integration Expert',
+      name: "MCP Server Integration Expert",
       description:
-        'Integrates Model Context Protocol servers with Claude Code. Designs custom MCP servers and manages tool availability.',
+        "Integrates Model Context Protocol servers with Claude Code. Designs custom MCP servers and manages tool availability.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '🔌',
-      version: '1.0.0',
-      tags: ['claude-code', 'mcp', 'integration', 'tools', 'servers'],
+      icon: "🔌",
+      version: "1.0.0",
+      tags: ["claude-code", "mcp", "integration", "tools", "servers"],
     };
   }
 
@@ -466,13 +466,13 @@ Output Format:
 export class SlashCommandBuilder extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Slash Command Builder',
+      name: "Slash Command Builder",
       description:
-        'Creates custom slash commands (.claude/commands/*.md) for Claude Code. Designs reusable command patterns and automation workflows.',
+        "Creates custom slash commands (.claude/commands/*.md) for Claude Code. Designs reusable command patterns and automation workflows.",
       category: AgentCategory.DEVELOPMENT,
-      icon: '⚡',
-      version: '1.0.0',
-      tags: ['claude-code', 'slash-commands', 'automation', 'workflows'],
+      icon: "⚡",
+      version: "1.0.0",
+      tags: ["claude-code", "slash-commands", "automation", "workflows"],
     };
   }
 
@@ -710,13 +710,13 @@ Output Format:
 export class ClaudeCodeWorkflowArchitect extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Claude Code Workflow Architect',
+      name: "Claude Code Workflow Architect",
       description:
-        'Designs optimal workflows, task breakdown patterns, and development processes for Claude Code. Maximizes productivity through intelligent task orchestration.',
+        "Designs optimal workflows, task breakdown patterns, and development processes for Claude Code. Maximizes productivity through intelligent task orchestration.",
       category: AgentCategory.OPERATIONS,
-      icon: '🏗️',
-      version: '1.0.0',
-      tags: ['claude-code', 'workflows', 'productivity', 'architecture', 'patterns'],
+      icon: "🏗️",
+      version: "1.0.0",
+      tags: ["claude-code", "workflows", "productivity", "architecture", "patterns"],
     };
   }
 

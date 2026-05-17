@@ -248,7 +248,7 @@ class JudgeSixPipeline:
             timeout_ms=70.0,
         )
 
-        self.pipeline.add_stage("hybrid_judge_decision", hybrid_judge_decision, timeout_ms=30.0)
+        self.pipeline.add_stage("hybrid_judge_decision", hybrid_judge_decision, timeout_ms=50.0)
 
     def _make_decision(self, jr_decision, semantic_result: dict | None, pytorch_result: dict) -> tuple[str, float, str]:
         """

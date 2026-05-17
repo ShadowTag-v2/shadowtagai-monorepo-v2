@@ -4,14 +4,14 @@
  * Wraps all operations in OpenTelemetry spans for distributed tracing.
  */
 
-import { type Message, PubSub } from '@google-cloud/pubsub';
-import { type Span, trace } from '@opentelemetry/api';
+import { type Message, PubSub } from "@google-cloud/pubsub";
+import { type Span, trace } from "@opentelemetry/api";
 
-const PROJECT_ID = 'shadowtag-omega-v4';
-const SUBSCRIPTION_NAME = 'kairos-mailbox-sub';
+const PROJECT_ID = "shadowtag-omega-v4";
+const SUBSCRIPTION_NAME = "kairos-mailbox-sub";
 const CONSENSUS_THRESHOLD = 0.85;
 
-const tracer = trace.getTracer('kairos-mailbox-tracer', '23.0.0');
+const tracer = trace.getTracer("kairos-mailbox-tracer", "23.0.0");
 
 export interface VoteMessage {
   agentId: string;
@@ -34,27 +34,27 @@ export class AsyncSuggestionConsumer {
     if (this.isListening) return;
     this.isListening = true;
 
-    tracer.startActiveSpan('consume_mailbox_votes', (span: Span) => {
-      console.log('⚡ [KAIROS] Polling asynchronous mailbox policies...');
+    tracer.startActiveSpan("consume_mailbox_votes", (span: Span) => {
+      console.log("⚡ [KAIROS] Polling asynchronous mailbox policies...");
 
       const subscription = this.pubsub.subscription(SUBSCRIPTION_NAME);
 
-      subscription.on('message', (message: Message) => {
+      subscription.on("message", (message: Message) => {
         try {
           const vote: VoteMessage = JSON.parse(message.data.toString());
 
-          span.addEvent('vote_received', {
-            'agent.id': vote.agentId,
-            'plan.id': vote.planId,
-            'vote.confidence': vote.confidence,
+          span.addEvent("vote_received", {
+            "agent.id": vote.agentId,
+            "plan.id": vote.planId,
+            "vote.confidence": vote.confidence,
           });
 
           this.voteBuffer.push(vote);
 
           if (vote.confidence >= CONSENSUS_THRESHOLD) {
-            span.addEvent('consensus_reached', {
-              'consensus.threshold': CONSENSUS_THRESHOLD,
-              'vote.confidence': vote.confidence,
+            span.addEvent("consensus_reached", {
+              "consensus.threshold": CONSENSUS_THRESHOLD,
+              "vote.confidence": vote.confidence,
             });
             console.log(
               `✅ [KAIROS] Consensus reached: ${vote.confidence} >= ${CONSENSUS_THRESHOLD}`,
@@ -67,7 +67,7 @@ export class AsyncSuggestionConsumer {
         }
       });
 
-      subscription.on('error', (error: Error) => {
+      subscription.on("error", (error: Error) => {
         span.recordException(error);
         console.error(`❌ [KAIROS] Subscription error: ${error.message}`);
       });
@@ -86,6 +86,6 @@ export class AsyncSuggestionConsumer {
 
   stop(): void {
     this.isListening = false;
-    console.log('⚡ [KAIROS] Mailbox consumer stopped.');
+    console.log("⚡ [KAIROS] Mailbox consumer stopped.");
   }
 }

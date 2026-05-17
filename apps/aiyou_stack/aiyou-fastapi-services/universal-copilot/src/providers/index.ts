@@ -2,22 +2,22 @@
  * Provider registry and factory
  */
 
-import type { Provider, ProviderConfig } from '../core/schema.js';
-import { createAnthropicProvider } from './anthropic.js';
-import type { BaseProvider } from './base.js';
-import { createMockProvider } from './mock.js';
-import { createOpenAIProvider } from './openai.js';
+import type { Provider, ProviderConfig } from "../core/schema.js";
+import { createAnthropicProvider } from "./anthropic.js";
+import type { BaseProvider } from "./base.js";
+import { createMockProvider } from "./mock.js";
+import { createOpenAIProvider } from "./openai.js";
 
 /**
  * Create provider instance based on type
  */
 export function createProvider(provider: Provider, config: ProviderConfig): BaseProvider {
   switch (provider) {
-    case 'mock':
+    case "mock":
       return createMockProvider(config);
-    case 'openai':
+    case "openai":
       return createOpenAIProvider(config);
-    case 'anthropic':
+    case "anthropic":
       return createAnthropicProvider(config);
     default:
       throw new Error(`Unknown provider: ${provider}`);
@@ -44,7 +44,7 @@ export function getAvailableProviders(configs: Record<Provider, ProviderConfig>)
   return providers;
 }
 
-export { AnthropicProvider } from './anthropic.js';
-export { BaseProvider } from './base.js';
-export { MockProvider } from './mock.js';
-export { OpenAIProvider } from './openai.js';
+export { AnthropicProvider } from "./anthropic.js";
+export { BaseProvider } from "./base.js";
+export { MockProvider } from "./mock.js";
+export { OpenAIProvider } from "./openai.js";

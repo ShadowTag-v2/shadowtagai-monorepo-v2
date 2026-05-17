@@ -1,9 +1,9 @@
-'use client';
-import { CopilotPopup } from '@copilotkit/react-ui';
-import Image from 'next/image';
-import Link from 'next/link';
-import { ThreatRadarWidget } from '../components/a2ui/ThreatRadarWidget';
-import CookieConsent from '../components/CookieConsent';
+"use client";
+import { CopilotPopup } from "@copilotkit/react-ui";
+import Image from "next/image";
+import Link from "next/link";
+import { ThreatRadarWidget } from "../components/a2ui/ThreatRadarWidget";
+import CookieConsent from "../components/CookieConsent";
 
 export default function Home() {
   return (
@@ -15,9 +15,9 @@ export default function Home() {
       <CopilotPopup
         defaultOpen={true}
         labels={{
-          title: 'UphillSnowball 10-Fingers Oracle',
+          title: "UphillSnowball 10-Fingers Oracle",
           initial:
-            'Target established. Commander, input the target ticker or IP for C++ Fast Monte Carlo & Cloudflare Radar dilution.',
+            "Target established. Commander, input the target ticker or IP for C++ Fast Monte Carlo & Cloudflare Radar dilution.",
         }}
         className="z-50 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
       />
@@ -45,7 +45,7 @@ export default function Home() {
             >
               <span className="h-3 w-3 rounded-full border border-current flex items-center justify-center text-[8px]">
                 i
-              </span>{' '}
+              </span>{" "}
               Accessibility
             </Link>
           </div>
@@ -304,7 +304,7 @@ export default function Home() {
                     href="/"
                     className="text-base font-medium text-gray-700 hover:text-emerald-700 border-b border-gray-100 pb-3 block flex justify-between items-center group transition-colors"
                   >
-                    Corporate Governance{' '}
+                    Corporate Governance{" "}
                     <span className="text-gray-300 group-hover:text-emerald-700 transition-colors">
                       &rarr;
                     </span>
@@ -315,7 +315,7 @@ export default function Home() {
                     href="/"
                     className="text-base font-medium text-gray-700 hover:text-emerald-700 border-b border-gray-100 pb-3 block flex justify-between items-center group transition-colors"
                   >
-                    Investor Presentation{' '}
+                    Investor Presentation{" "}
                     <span className="text-gray-300 group-hover:text-emerald-700 transition-colors">
                       &rarr;
                     </span>
@@ -382,17 +382,17 @@ export default function Home() {
                 </div>
 
                 <p className="mt-4">
-                  <span className="text-gray-900 font-bold w-20 inline-block">Telephone:</span>{' '}
+                  <span className="text-gray-900 font-bold w-20 inline-block">Telephone:</span>{" "}
                   <a href="tel:369-235-5643" className="hover:text-emerald-700 transition-colors">
                     (369) 235-5643
                   </a>
                 </p>
                 <p>
-                  <span className="text-gray-900 font-bold w-20 inline-block">Facsimile:</span>{' '}
+                  <span className="text-gray-900 font-bold w-20 inline-block">Facsimile:</span>{" "}
                   <span>(707) 263-8659</span>
                 </p>
                 <p>
-                  <span className="text-gray-900 font-bold w-20 inline-block">Email:</span>{' '}
+                  <span className="text-gray-900 font-bold w-20 inline-block">Email:</span>{" "}
                   <a
                     href="mailto:redacted@shadowtag-v4.local"
                     className="hover:text-emerald-700 transition-colors"

@@ -1,6 +1,6 @@
-(globalThis['TURBOPACK'] || (globalThis['TURBOPACK'] = [])).push([
-  typeof document === 'object' ? document.currentScript : undefined,
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/process/browser.js [app-client] (ecmascript)',
+(globalThis["TURBOPACK"] || (globalThis["TURBOPACK"] = [])).push([
+  typeof document === "object" ? document.currentScript : undefined,
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/process/browser.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
       var e = {
@@ -9,14 +9,14 @@
           var r;
           var n;
           function defaultSetTimout() {
-            throw new Error('setTimeout has not been defined');
+            throw new Error("setTimeout has not been defined");
           }
           function defaultClearTimeout() {
-            throw new Error('clearTimeout has not been defined');
+            throw new Error("clearTimeout has not been defined");
           }
           (() => {
             try {
-              if (typeof setTimeout === 'function') {
+              if (typeof setTimeout === "function") {
                 r = setTimeout;
               } else {
                 r = defaultSetTimout;
@@ -25,7 +25,7 @@
               r = defaultSetTimout;
             }
             try {
-              if (typeof clearTimeout === 'function') {
+              if (typeof clearTimeout === "function") {
                 n = clearTimeout;
               } else {
                 n = defaultClearTimeout;
@@ -129,11 +129,11 @@
           Item.prototype.run = function () {
             this.fun.apply(null, this.array);
           };
-          t.title = 'browser';
+          t.title = "browser";
           t.browser = true;
           t.env = {};
           t.argv = [];
-          t.version = '';
+          t.version = "";
           t.versions = {};
           function noop() {}
           t.on = noop;
@@ -147,11 +147,11 @@
           t.prependOnceListener = noop;
           t.listeners = (e) => [];
           t.binding = (e) => {
-            throw new Error('process.binding is not supported');
+            throw new Error("process.binding is not supported");
           };
-          t.cwd = () => '/';
+          t.cwd = () => "/";
           t.chdir = (e) => {
-            throw new Error('process.chdir is not supported');
+            throw new Error("process.chdir is not supported");
           };
           t.umask = () => 0;
         },
@@ -174,22 +174,22 @@
         }
         return i.exports;
       }
-      if (typeof __nccwpck_require__ !== 'undefined')
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/process') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/process") +
+          "/";
       var r = __nccwpck_require__(229);
       module.exports = r;
     })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/cjs/react-refresh-runtime.development.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/cjs/react-refresh-runtime.development.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     /**
      * @license React
@@ -199,13 +199,13 @@
      *
      * This source code is licensed under the MIT license found in the
      * LICENSE file in the root directory of this source tree.
-     */ ('use strict');
-    if (('TURBOPACK compile-time truthy', 1)) {
+     */ ("use strict");
+    if (("TURBOPACK compile-time truthy", 1)) {
       (() => {
         // ATTENTION
-        var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
-        var REACT_MEMO_TYPE = Symbol.for('react.memo');
-        var PossiblyWeakMap = typeof WeakMap === 'function' ? WeakMap : Map; // We never remove these associations.
+        var REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref");
+        var REACT_MEMO_TYPE = Symbol.for("react.memo");
+        var PossiblyWeakMap = typeof WeakMap === "function" ? WeakMap : Map; // We never remove these associations.
         // It's OK to reference families, but use WeakMap/Set for types.
         var allFamiliesByID = new Map();
         var allFamiliesByType = new PossiblyWeakMap();
@@ -222,7 +222,7 @@
         // It needs to be weak because we do this even for roots that failed to mount.
         // If there is no WeakMap, we won't attempt to do retrying.
         // $FlowIssue
-        var rootElements = typeof WeakMap === 'function' ? new WeakMap() : null;
+        var rootElements = typeof WeakMap === "function" ? new WeakMap() : null;
         var isPerformingRefresh = false;
         function computeFullKey(signature) {
           if (signature.fullKey !== null) {
@@ -242,7 +242,7 @@
           }
           for (var i = 0; i < hooks.length; i++) {
             var hook = hooks[i];
-            if (typeof hook !== 'function') {
+            if (typeof hook !== "function") {
               // Something's wrong. Assume we need to remount.
               signature.forceReset = true;
               signature.fullKey = fullKey;
@@ -256,7 +256,7 @@
             if (nestedHookSignature.forceReset) {
               signature.forceReset = true;
             }
-            fullKey += '\n---\n' + nestedHookKey;
+            fullKey += "\n---\n" + nestedHookKey;
           }
           signature.fullKey = fullKey;
           return fullKey;
@@ -366,7 +366,7 @@
               var helpers = helpersByRootSnapshot.get(root);
               if (helpers === undefined) {
                 throw new Error(
-                  'Could not find helpers for a root. This is a bug in React Refresh.',
+                  "Could not find helpers for a root. This is a bug in React Refresh.",
                 );
               }
               if (!failedRoots.has(root)) {
@@ -391,7 +391,7 @@
               var helpers = helpersByRootSnapshot.get(root);
               if (helpers === undefined) {
                 throw new Error(
-                  'Could not find helpers for a root. This is a bug in React Refresh.',
+                  "Could not find helpers for a root. This is a bug in React Refresh.",
                 );
               }
               if (!mountedRoots.has(root)) {
@@ -417,7 +417,7 @@
           if (type === null) {
             return;
           }
-          if (typeof type !== 'function' && typeof type !== 'object') {
+          if (typeof type !== "function" && typeof type !== "object") {
             return;
           } // This can happen in an edge case, e.g. if we register
           // return value of a HOC but it returns a cached component.
@@ -437,13 +437,13 @@
             pendingUpdates.push([family, type]);
           }
           allFamiliesByType.set(type, family); // Visit inner types because we might not have registered them.
-          if (typeof type === 'object' && type !== null) {
-            switch (getProperty(type, '$$typeof')) {
+          if (typeof type === "object" && type !== null) {
+            switch (getProperty(type, "$$typeof")) {
               case REACT_FORWARD_REF_TYPE:
-                register(type.render, id + '$render');
+                register(type.render, id + "$render");
                 break;
               case REACT_MEMO_TYPE:
-                register(type.type, id + '$type');
+                register(type.type, id + "$type");
                 break;
             }
           }
@@ -460,8 +460,8 @@
               getCustomHooks: getCustomHooks || (() => []),
             });
           } // Visit inner types because we might not have signed them.
-          if (typeof type === 'object' && type !== null) {
-            switch (getProperty(type, '$$typeof')) {
+          if (typeof type === "object" && type !== null) {
+            switch (getProperty(type, "$$typeof")) {
               case REACT_FORWARD_REF_TYPE:
                 setSignature(type.render, key, forceReset, getCustomHooks);
                 break;
@@ -489,7 +489,7 @@
           mountedRoots.forEach((root) => {
             var helpers = helpersByRoot.get(root);
             if (helpers === undefined) {
-              throw new Error('Could not find helpers for a root. This is a bug in React Refresh.');
+              throw new Error("Could not find helpers for a root. This is a bug in React Refresh.");
             }
             var instancesForRoot = helpers.findHostInstancesForRefresh(root, families);
             instancesForRoot.forEach((inst) => {
@@ -522,9 +522,9 @@
             // This isn't a real property on the hook, but it can be set to opt out
             // of DevTools integration and associated warnings and logs.
             // Using console['warn'] to evade Babel and ESLint
-            console['warn'](
-              'Something has shimmed the React DevTools global hook (__REACT_DEVTOOLS_GLOBAL_HOOK__). ' +
-                'Fast Refresh is not compatible with this shim and will be disabled.',
+            console["warn"](
+              "Something has shimmed the React DevTools global hook (__REACT_DEVTOOLS_GLOBAL_HOOK__). " +
+                "Fast Refresh is not compatible with this shim and will be disabled.",
             );
             return;
           } // Here, we just want to get a reference to scheduleRefresh.
@@ -532,8 +532,8 @@
           hook.inject = function (injected) {
             var id = oldInject.apply(this, arguments);
             if (
-              typeof injected.scheduleRefresh === 'function' &&
-              typeof injected.setRefreshHandler === 'function'
+              typeof injected.scheduleRefresh === "function" &&
+              typeof injected.setRefreshHandler === "function"
             ) {
               // This version supports React Refresh.
               helpersByRendererID.set(id, injected);
@@ -544,8 +544,8 @@
           // https://github.com/facebook/react/issues/17626
           hook.renderers.forEach((injected, id) => {
             if (
-              typeof injected.scheduleRefresh === 'function' &&
-              typeof injected.setRefreshHandler === 'function'
+              typeof injected.scheduleRefresh === "function" &&
+              typeof injected.setRefreshHandler === "function"
             ) {
               // This version supports React Refresh.
               helpersByRendererID.set(id, injected);
@@ -640,18 +640,18 @@
           var hasCustomHooks;
           var didCollectHooks = false;
           return (type, key, forceReset, getCustomHooks) => {
-            if (typeof key === 'string') {
+            if (typeof key === "string") {
               // We're in the initial phase that associates signatures
               // with the functions. Note this may be called multiple times
               // in HOC chains like _s(hoc1(_s(hoc2(_s(actualFunction))))).
               if (!savedType) {
                 // We're in the innermost call, so this is the actual type.
                 savedType = type;
-                hasCustomHooks = typeof getCustomHooks === 'function';
+                hasCustomHooks = typeof getCustomHooks === "function";
               } // Set the signature for all types (even wrappers!) in case
               // they have no signatures of their own. This is to prevent
               // problems like https://github.com/facebook/react/issues/20417.
-              if (type != null && (typeof type === 'function' || typeof type === 'object')) {
+              if (type != null && (typeof type === "function" || typeof type === "object")) {
                 setSignature(type, key, forceReset, getCustomHooks);
               }
               return type;
@@ -668,7 +668,7 @@
         }
         function isLikelyComponentType(type) {
           switch (typeof type) {
-            case 'function': {
+            case "function": {
               // First, deal with classes.
               if (type.prototype != null) {
                 if (type.prototype.isReactComponent) {
@@ -676,7 +676,7 @@
                   return true;
                 }
                 var ownNames = Object.getOwnPropertyNames(type.prototype);
-                if (ownNames.length > 1 || ownNames[0] !== 'constructor') {
+                if (ownNames.length > 1 || ownNames[0] !== "constructor") {
                   // This looks like a class.
                   return false;
                 } // eslint-disable-next-line no-proto
@@ -687,11 +687,11 @@
                 // This looks like a regular function with empty prototype.
               } // For plain functions and arrows, use name as a heuristic.
               var name = type.name || type.displayName;
-              return typeof name === 'string' && /^[A-Z]/.test(name);
+              return typeof name === "string" && /^[A-Z]/.test(name);
             }
-            case 'object': {
+            case "object": {
               if (type != null) {
-                switch (getProperty(type, '$$typeof')) {
+                switch (getProperty(type, "$$typeof")) {
                   case REACT_FORWARD_REF_TYPE:
                   case REACT_MEMO_TYPE:
                     // Definitely React components.
@@ -722,27 +722,27 @@
       })();
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/runtime.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/runtime.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
+    ("use strict");
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
       module.exports = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/cjs/react-refresh-runtime.development.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/cjs/react-refresh-runtime.development.js [app-client] (ecmascript)",
       );
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/internal/helpers.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/internal/helpers.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * MIT License
@@ -775,7 +775,7 @@
           : {
               default: mod,
             });
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     // This file is copied from the Metro JavaScript bundler, with minor tweaks for
@@ -784,20 +784,20 @@
     // https://github.com/facebook/metro/blob/d6b9685c730d0d63577db40f41369157f28dfa3a/packages/metro/src/lib/polyfills/require.js
     const runtime_1 = __importDefault(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/runtime.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/runtime.js [app-client] (ecmascript)",
       ),
     );
     function isSafeExport(key) {
       return (
-        key === '__esModule' ||
-        key === '__N_SSG' ||
-        key === '__N_SSP' || // TODO: remove this key from page config instead of allow listing it
-        key === 'config'
+        key === "__esModule" ||
+        key === "__N_SSG" ||
+        key === "__N_SSP" || // TODO: remove this key from page config instead of allow listing it
+        key === "config"
       );
     }
     function registerExportsForReactRefresh(moduleExports, moduleID) {
-      runtime_1.default.register(moduleExports, moduleID + ' %exports%');
-      if (moduleExports == null || typeof moduleExports !== 'object') {
+      runtime_1.default.register(moduleExports, moduleID + " %exports%");
+      if (moduleExports == null || typeof moduleExports !== "object") {
         // Exit if we can't iterate over exports.
         // (This is important for legacy environments.)
         return;
@@ -811,14 +811,14 @@
         } catch (_a) {
           continue;
         }
-        var typeID = moduleID + ' %exports% ' + key;
+        var typeID = moduleID + " %exports% " + key;
         runtime_1.default.register(exportValue, typeID);
       }
     }
     function getRefreshBoundarySignature(moduleExports) {
       var signature = [];
       signature.push(runtime_1.default.getFamilyByType(moduleExports));
-      if (moduleExports == null || typeof moduleExports !== 'object') {
+      if (moduleExports == null || typeof moduleExports !== "object") {
         // Exit if we can't iterate over exports.
         // (This is important for legacy environments.)
         return signature;
@@ -841,7 +841,7 @@
       if (runtime_1.default.isLikelyComponentType(moduleExports)) {
         return true;
       }
-      if (moduleExports == null || typeof moduleExports !== 'object') {
+      if (moduleExports == null || typeof moduleExports !== "object") {
         // Exit if we can't iterate over exports.
         return false;
       }
@@ -883,7 +883,7 @@
       }
       isUpdateScheduled = true;
       function canApplyUpdate(status) {
-        return status === 'idle';
+        return status === "idle";
       }
       function applyUpdate() {
         isUpdateScheduled = false;
@@ -891,7 +891,7 @@
           runtime_1.default.performReactRefresh();
         } catch (err) {
           console.warn(
-            'Warning: Failed to re-render. We will retry on the next Fast Refresh event.\n' + err,
+            "Warning: Failed to re-render. We will retry on the next Fast Refresh event.\n" + err,
           );
         }
       }
@@ -920,9 +920,9 @@
       scheduleUpdate: scheduleUpdate,
     };
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __importDefault =
       /*TURBOPACK member replacement*/ (__turbopack_context__.e &&
@@ -933,17 +933,17 @@
           : {
               default: mod,
             });
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     const runtime_1 = __importDefault(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/runtime.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-refresh/runtime.js [app-client] (ecmascript)",
       ),
     );
     const helpers_1 = __importDefault(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/internal/helpers.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/internal/helpers.js [app-client] (ecmascript)",
       ),
     );
     // Hook into ReactDOM initialization
@@ -955,7 +955,7 @@
       var prevRefreshReg = self.$RefreshReg$;
       var prevRefreshSig = self.$RefreshSig$;
       self.$RefreshReg$ = (type, id) => {
-        runtime_1.default.register(type, webpackModuleId + ' ' + id);
+        runtime_1.default.register(type, webpackModuleId + " " + id);
       };
       self.$RefreshSig$ = runtime_1.default.createSignatureFunctionForTransform;
       // Modeled after `useEffect` cleanup pattern:
@@ -966,13 +966,13 @@
       };
     };
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/cjs/react.development.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/cjs/react.development.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     /**
      * @license React
@@ -982,14 +982,14 @@
      *
      * This source code is licensed under the MIT license found in the
      * LICENSE file in the root directory of this source tree.
-     */ ('use strict');
-    'production' !== ('TURBOPACK compile-time value', 'development') &&
+     */ ("use strict");
+    "production" !== ("TURBOPACK compile-time value", "development") &&
       (() => {
         function defineDeprecationWarning(methodName, info) {
           Object.defineProperty(Component.prototype, methodName, {
             get: () => {
               console.warn(
-                '%s(...) is deprecated in plain JavaScript React classes. %s',
+                "%s(...) is deprecated in plain JavaScript React classes. %s",
                 info[0],
                 info[1],
               );
@@ -997,18 +997,18 @@
           });
         }
         function getIteratorFn(maybeIterable) {
-          if (null === maybeIterable || 'object' !== typeof maybeIterable) return null;
+          if (null === maybeIterable || "object" !== typeof maybeIterable) return null;
           maybeIterable =
             (MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL]) ||
-            maybeIterable['@@iterator'];
-          return 'function' === typeof maybeIterable ? maybeIterable : null;
+            maybeIterable["@@iterator"];
+          return "function" === typeof maybeIterable ? maybeIterable : null;
         }
         function warnNoop(publicInstance, callerName) {
           publicInstance =
             ((publicInstance = publicInstance.constructor) &&
               (publicInstance.displayName || publicInstance.name)) ||
-            'ReactClass';
-          var warningKey = publicInstance + '.' + callerName;
+            "ReactClass";
+          var warningKey = publicInstance + "." + callerName;
           didWarnStateUpdateForUnmountedComponent[warningKey] ||
             (console.error(
               "Can't call %s on a component that is not yet mounted. This is a no-op, but it might indicate a bug in your application. Instead, assign to `this.state` directly or define a `state = {};` class property with the desired state in the %s component.",
@@ -1032,7 +1032,7 @@
         }
         function noop() {}
         function testStringCoercion(value) {
-          return '' + value;
+          return "" + value;
         }
         function checkKeyStringCoercion(value) {
           try {
@@ -1045,12 +1045,12 @@
             JSCompiler_inline_result = console;
             var JSCompiler_temp_const = JSCompiler_inline_result.error;
             var JSCompiler_inline_result$jscomp$0 =
-              ('function' === typeof Symbol && Symbol.toStringTag && value[Symbol.toStringTag]) ||
+              ("function" === typeof Symbol && Symbol.toStringTag && value[Symbol.toStringTag]) ||
               value.constructor.name ||
-              'Object';
+              "Object";
             JSCompiler_temp_const.call(
               JSCompiler_inline_result,
-              'The provided key is an unsupported type %s. This value must be coerced to a string before using it here.',
+              "The provided key is an unsupported type %s. This value must be coerced to a string before using it here.",
               JSCompiler_inline_result$jscomp$0,
             );
             return testStringCoercion(value);
@@ -1058,53 +1058,53 @@
         }
         function getComponentNameFromType(type) {
           if (null == type) return null;
-          if ('function' === typeof type)
+          if ("function" === typeof type)
             return type.$$typeof === REACT_CLIENT_REFERENCE
               ? null
               : type.displayName || type.name || null;
-          if ('string' === typeof type) return type;
+          if ("string" === typeof type) return type;
           switch (type) {
             case REACT_FRAGMENT_TYPE:
-              return 'Fragment';
+              return "Fragment";
             case REACT_PROFILER_TYPE:
-              return 'Profiler';
+              return "Profiler";
             case REACT_STRICT_MODE_TYPE:
-              return 'StrictMode';
+              return "StrictMode";
             case REACT_SUSPENSE_TYPE:
-              return 'Suspense';
+              return "Suspense";
             case REACT_SUSPENSE_LIST_TYPE:
-              return 'SuspenseList';
+              return "SuspenseList";
             case REACT_ACTIVITY_TYPE:
-              return 'Activity';
+              return "Activity";
             case REACT_VIEW_TRANSITION_TYPE:
-              return 'ViewTransition';
+              return "ViewTransition";
           }
-          if ('object' === typeof type)
+          if ("object" === typeof type)
             switch (
-              ('number' === typeof type.tag &&
+              ("number" === typeof type.tag &&
                 console.error(
-                  'Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.',
+                  "Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.",
                 ),
               type.$$typeof)
             ) {
               case REACT_PORTAL_TYPE:
-                return 'Portal';
+                return "Portal";
               case REACT_CONTEXT_TYPE:
-                return type.displayName || 'Context';
+                return type.displayName || "Context";
               case REACT_CONSUMER_TYPE:
-                return (type._context.displayName || 'Context') + '.Consumer';
+                return (type._context.displayName || "Context") + ".Consumer";
               case REACT_FORWARD_REF_TYPE: {
                 var innerType = type.render;
                 type = type.displayName;
                 type ||
-                  ((type = innerType.displayName || innerType.name || ''),
-                  (type = '' !== type ? 'ForwardRef(' + type + ')' : 'ForwardRef'));
+                  ((type = innerType.displayName || innerType.name || ""),
+                  (type = "" !== type ? "ForwardRef(" + type + ")" : "ForwardRef"));
                 return type;
               }
               case REACT_MEMO_TYPE:
                 return (
                   (innerType = type.displayName || null),
-                  null !== innerType ? innerType : getComponentNameFromType(type.type) || 'Memo'
+                  null !== innerType ? innerType : getComponentNameFromType(type.type) || "Memo"
                 );
               case REACT_LAZY_TYPE:
                 innerType = type._payload;
@@ -1116,14 +1116,14 @@
           return null;
         }
         function getTaskName(type) {
-          if (type === REACT_FRAGMENT_TYPE) return '<>';
-          if ('object' === typeof type && null !== type && type.$$typeof === REACT_LAZY_TYPE)
-            return '<...>';
+          if (type === REACT_FRAGMENT_TYPE) return "<>";
+          if ("object" === typeof type && null !== type && type.$$typeof === REACT_LAZY_TYPE)
+            return "<...>";
           try {
             var name = getComponentNameFromType(type);
-            return name ? '<' + name + '>' : '<...>';
+            return name ? "<" + name + ">" : "<...>";
           } catch (x) {
-            return '<...>';
+            return "<...>";
           }
         }
         function getOwner() {
@@ -1131,11 +1131,11 @@
           return null === dispatcher ? null : dispatcher.getOwner();
         }
         function UnknownOwner() {
-          return Error('react-stack-top-frame');
+          return Error("react-stack-top-frame");
         }
         function hasValidKey(config) {
-          if (hasOwnProperty.call(config, 'key')) {
-            var getter = Object.getOwnPropertyDescriptor(config, 'key').get;
+          if (hasOwnProperty.call(config, "key")) {
+            var getter = Object.getOwnPropertyDescriptor(config, "key").get;
             if (getter && getter.isReactWarning) return !1;
           }
           return void 0 !== config.key;
@@ -1145,12 +1145,12 @@
             specialPropKeyWarningShown ||
               ((specialPropKeyWarningShown = !0),
               console.error(
-                '%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props)',
+                "%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props)",
                 displayName,
               ));
           }
           warnAboutAccessingKey.isReactWarning = !0;
-          Object.defineProperty(props, 'key', {
+          Object.defineProperty(props, "key", {
             get: warnAboutAccessingKey,
             configurable: !0,
           });
@@ -1160,7 +1160,7 @@
           didWarnAboutElementRef[componentName] ||
             ((didWarnAboutElementRef[componentName] = !0),
             console.error(
-              'Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release.',
+              "Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release.",
             ));
           componentName = this.props.ref;
           return void 0 !== componentName ? componentName : null;
@@ -1175,34 +1175,34 @@
             _owner: owner,
           };
           null !== (void 0 !== refProp ? refProp : null)
-            ? Object.defineProperty(type, 'ref', {
+            ? Object.defineProperty(type, "ref", {
                 enumerable: !1,
                 get: elementRefGetterWithDeprecationWarning,
               })
-            : Object.defineProperty(type, 'ref', {
+            : Object.defineProperty(type, "ref", {
                 enumerable: !1,
                 value: null,
               });
           type._store = {};
-          Object.defineProperty(type._store, 'validated', {
+          Object.defineProperty(type._store, "validated", {
             configurable: !1,
             enumerable: !1,
             writable: !0,
             value: 0,
           });
-          Object.defineProperty(type, '_debugInfo', {
+          Object.defineProperty(type, "_debugInfo", {
             configurable: !1,
             enumerable: !1,
             writable: !0,
             value: null,
           });
-          Object.defineProperty(type, '_debugStack', {
+          Object.defineProperty(type, "_debugStack", {
             configurable: !1,
             enumerable: !1,
             writable: !0,
             value: debugStack,
           });
-          Object.defineProperty(type, '_debugTask', {
+          Object.defineProperty(type, "_debugTask", {
             configurable: !1,
             enumerable: !1,
             writable: !0,
@@ -1226,10 +1226,10 @@
         function validateChildKeys(node) {
           isValidElement(node)
             ? node._store && (node._store.validated = 1)
-            : 'object' === typeof node &&
+            : "object" === typeof node &&
               null !== node &&
               node.$$typeof === REACT_LAZY_TYPE &&
-              ('fulfilled' === node._payload.status
+              ("fulfilled" === node._payload.status
                 ? isValidElement(node._payload.value) &&
                   node._payload.value._store &&
                   (node._payload.value._store.validated = 1)
@@ -1237,47 +1237,47 @@
         }
         function isValidElement(object) {
           return (
-            'object' === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE
+            "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE
           );
         }
         function escape(key) {
           var escaperLookup = {
-            '=': '=0',
-            ':': '=2',
+            "=": "=0",
+            ":": "=2",
           };
-          return '$' + key.replace(/[=:]/g, (match) => escaperLookup[match]);
+          return "$" + key.replace(/[=:]/g, (match) => escaperLookup[match]);
         }
         function getElementKey(element, index) {
-          return 'object' === typeof element && null !== element && null != element.key
-            ? (checkKeyStringCoercion(element.key), escape('' + element.key))
+          return "object" === typeof element && null !== element && null != element.key
+            ? (checkKeyStringCoercion(element.key), escape("" + element.key))
             : index.toString(36);
         }
         function resolveThenable(thenable) {
           switch (thenable.status) {
-            case 'fulfilled':
+            case "fulfilled":
               return thenable.value;
-            case 'rejected':
+            case "rejected":
               throw thenable.reason;
             default:
               switch (
-                ('string' === typeof thenable.status
+                ("string" === typeof thenable.status
                   ? thenable.then(noop, noop)
-                  : ((thenable.status = 'pending'),
+                  : ((thenable.status = "pending"),
                     thenable.then(
                       (fulfilledValue) => {
-                        'pending' === thenable.status &&
-                          ((thenable.status = 'fulfilled'), (thenable.value = fulfilledValue));
+                        "pending" === thenable.status &&
+                          ((thenable.status = "fulfilled"), (thenable.value = fulfilledValue));
                       },
                       (error) => {
-                        'pending' === thenable.status &&
-                          ((thenable.status = 'rejected'), (thenable.reason = error));
+                        "pending" === thenable.status &&
+                          ((thenable.status = "rejected"), (thenable.reason = error));
                       },
                     )),
                 thenable.status)
               ) {
-                case 'fulfilled':
+                case "fulfilled":
                   return thenable.value;
-                case 'rejected':
+                case "rejected":
                   throw thenable.reason;
               }
           }
@@ -1285,17 +1285,17 @@
         }
         function mapIntoArray(children, array, escapedPrefix, nameSoFar, callback) {
           var type = typeof children;
-          if ('undefined' === type || 'boolean' === type) children = null;
+          if ("undefined" === type || "boolean" === type) children = null;
           var invokeCallback = !1;
           if (null === children) invokeCallback = !0;
           else
             switch (type) {
-              case 'bigint':
-              case 'string':
-              case 'number':
+              case "bigint":
+              case "string":
+              case "number":
                 invokeCallback = !0;
                 break;
-              case 'object':
+              case "object":
                 switch (children.$$typeof) {
                   case REACT_ELEMENT_TYPE:
                   case REACT_PORTAL_TYPE:
@@ -1317,12 +1317,12 @@
           if (invokeCallback) {
             invokeCallback = children;
             callback = callback(invokeCallback);
-            var childKey = '' === nameSoFar ? '.' + getElementKey(invokeCallback, 0) : nameSoFar;
+            var childKey = "" === nameSoFar ? "." + getElementKey(invokeCallback, 0) : nameSoFar;
             isArrayImpl(callback)
-              ? ((escapedPrefix = ''),
+              ? ((escapedPrefix = ""),
                 null != childKey &&
-                  (escapedPrefix = childKey.replace(userProvidedKeyEscapeRegex, '$&/') + '/'),
-                mapIntoArray(callback, array, escapedPrefix, '', (c) => c))
+                  (escapedPrefix = childKey.replace(userProvidedKeyEscapeRegex, "$&/") + "/"),
+                mapIntoArray(callback, array, escapedPrefix, "", (c) => c))
               : null != callback &&
                 (isValidElement(callback) &&
                   (null != callback.key &&
@@ -1333,11 +1333,11 @@
                     escapedPrefix +
                       (null == callback.key ||
                       (invokeCallback && invokeCallback.key === callback.key)
-                        ? ''
-                        : ('' + callback.key).replace(userProvidedKeyEscapeRegex, '$&/') + '/') +
+                        ? ""
+                        : ("" + callback.key).replace(userProvidedKeyEscapeRegex, "$&/") + "/") +
                       childKey,
                   )),
-                  '' !== nameSoFar &&
+                  "" !== nameSoFar &&
                     null != invokeCallback &&
                     isValidElement(invokeCallback) &&
                     null == invokeCallback.key &&
@@ -1349,18 +1349,18 @@
             return 1;
           }
           invokeCallback = 0;
-          childKey = '' === nameSoFar ? '.' : nameSoFar + ':';
+          childKey = "" === nameSoFar ? "." : nameSoFar + ":";
           if (isArrayImpl(children))
             for (var i = 0; i < children.length; i++)
               (nameSoFar = children[i]),
                 (type = childKey + getElementKey(nameSoFar, i)),
                 (invokeCallback += mapIntoArray(nameSoFar, array, escapedPrefix, type, callback));
-          else if (((i = getIteratorFn(children)), 'function' === typeof i))
+          else if (((i = getIteratorFn(children)), "function" === typeof i))
             for (
               i === children.entries &&
                 (didWarnAboutMaps ||
                   console.warn(
-                    'Using Maps as children is not supported. Use an array of keyed ReactElements instead.',
+                    "Using Maps as children is not supported. Use an array of keyed ReactElements instead.",
                   ),
                 (didWarnAboutMaps = !0)),
                 children = i.call(children),
@@ -1370,8 +1370,8 @@
               (nameSoFar = nameSoFar.value),
                 (type = childKey + getElementKey(nameSoFar, i++)),
                 (invokeCallback += mapIntoArray(nameSoFar, array, escapedPrefix, type, callback));
-          else if ('object' === type) {
-            if ('function' === typeof children.then)
+          else if ("object" === type) {
+            if ("function" === typeof children.then)
               return mapIntoArray(
                 resolveThenable(children),
                 array,
@@ -1381,11 +1381,11 @@
               );
             array = String(children);
             throw Error(
-              'Objects are not valid as a React child (found: ' +
-                ('[object Object]' === array
-                  ? 'object with keys {' + Object.keys(children).join(', ') + '}'
+              "Objects are not valid as a React child (found: " +
+                ("[object Object]" === array
+                  ? "object with keys {" + Object.keys(children).join(", ") + "}"
                   : array) +
-                '). If you meant to render a collection of children, use an array instead.',
+                "). If you meant to render a collection of children, use an array instead.",
             );
           }
           return invokeCallback;
@@ -1394,7 +1394,7 @@
           if (null == children) return children;
           var result = [],
             count = 0;
-          mapIntoArray(children, result, '', '', (child) => func.call(context, child, count++));
+          mapIntoArray(children, result, "", "", (child) => func.call(context, child, count++));
           return result;
         }
         function lazyInitializer(payload) {
@@ -1420,11 +1420,11 @@
                     _ioInfo.end = performance.now();
                     var debugValue = null == moduleObject ? void 0 : moduleObject.default;
                     resolveDebugValue(debugValue);
-                    _ioInfo.value.status = 'fulfilled';
+                    _ioInfo.value.status = "fulfilled";
                     _ioInfo.value.value = debugValue;
                   }
                   void 0 === thenable.status &&
-                    ((thenable.status = 'fulfilled'), (thenable.value = moduleObject));
+                    ((thenable.status = "fulfilled"), (thenable.value = moduleObject));
                 }
               },
               (error) => {
@@ -1436,17 +1436,17 @@
                     ((_ioInfo2.end = performance.now()),
                     _ioInfo2.value.then(noop, noop),
                     rejectDebugValue(error),
-                    (_ioInfo2.value.status = 'rejected'),
+                    (_ioInfo2.value.status = "rejected"),
                     (_ioInfo2.value.reason = error));
                   void 0 === thenable.status &&
-                    ((thenable.status = 'rejected'), (thenable.reason = error));
+                    ((thenable.status = "rejected"), (thenable.reason = error));
                 }
               },
             );
             ioInfo = payload._ioInfo;
             if (null != ioInfo) {
               var displayName = thenable.displayName;
-              'string' === typeof displayName && (ioInfo.name = displayName);
+              "string" === typeof displayName && (ioInfo.name = displayName);
             }
             -1 === payload._status && ((payload._status = 0), (payload._result = thenable));
           }
@@ -1458,7 +1458,7 @@
                   "lazy: Expected the result of a dynamic import() call. Instead received: %s\n\nYour code should look like: \n  const MyComponent = lazy(() => import('./MyComponent'))\n\nDid you accidentally put curly braces around the import?",
                   ioInfo,
                 ),
-              'default' in ioInfo ||
+              "default" in ioInfo ||
                 console.error(
                   "lazy: Expected the result of a dynamic import() call. Instead received: %s\n\nYour code should look like: \n  const MyComponent = lazy(() => import('./MyComponent'))",
                   ioInfo,
@@ -1471,7 +1471,7 @@
           var dispatcher = ReactSharedInternals.H;
           null === dispatcher &&
             console.error(
-              'Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.',
+              "Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.",
             );
           return dispatcher;
         }
@@ -1489,9 +1489,9 @@
               onStartTransitionFinish = ReactSharedInternals.S;
             null !== onStartTransitionFinish &&
               onStartTransitionFinish(currentTransition, returnValue);
-            'object' === typeof returnValue &&
+            "object" === typeof returnValue &&
               null !== returnValue &&
-              'function' === typeof returnValue.then &&
+              "function" === typeof returnValue.then &&
               (ReactSharedInternals.asyncTransitions++,
               returnValue.then(releaseAsyncTransition, releaseAsyncTransition),
               returnValue.then(noop, reportGlobalError));
@@ -1504,14 +1504,14 @@
               currentTransition._updatedFibers.clear(),
               10 < scope &&
                 console.warn(
-                  'Detected a large number of updates inside startTransition. If this is due to a subscription please re-write it to use React provided hooks. Otherwise concurrent mode guarantees are off the table.',
+                  "Detected a large number of updates inside startTransition. If this is due to a subscription please re-write it to use React provided hooks. Otherwise concurrent mode guarantees are off the table.",
                 )),
               null !== prevTransition &&
                 null !== currentTransition.types &&
                 (null !== prevTransition.types &&
                   prevTransition.types !== currentTransition.types &&
                   console.error(
-                    'We expected inner Transitions to have transferred the outer types set and that you cannot add to the outer Transition while inside the inner.This is a bug in React.',
+                    "We expected inner Transitions to have transferred the outer types set and that you cannot add to the outer Transition while inside the inner.This is a bug in React.",
                   ),
                 (prevTransition.types = currentTransition.types)),
               (ReactSharedInternals.T = prevTransition);
@@ -1527,25 +1527,25 @@
           } else
             0 === ReactSharedInternals.asyncTransitions &&
               console.error(
-                'addTransitionType can only be called inside a `startTransition()` callback. It must be associated with a specific Transition.',
+                "addTransitionType can only be called inside a `startTransition()` callback. It must be associated with a specific Transition.",
               ),
               startTransition(addTransitionType.bind(null, type));
         }
         function enqueueTask(task) {
           if (null === enqueueTaskImpl)
             try {
-              var requireString = ('require' + Math.random()).slice(0, 7);
+              var requireString = ("require" + Math.random()).slice(0, 7);
               enqueueTaskImpl = (module && module[requireString]).call(
                 module,
-                'timers',
+                "timers",
               ).setImmediate;
             } catch (_err) {
               enqueueTaskImpl = (callback) => {
                 !1 === didWarnAboutMessageChannel &&
                   ((didWarnAboutMessageChannel = !0),
-                  'undefined' === typeof MessageChannel &&
+                  "undefined" === typeof MessageChannel &&
                     console.error(
-                      'This browser does not have a MessageChannel implementation, so enqueuing tasks via await act(async () => ...) will fail. Please file an issue at https://github.com/facebook/react/issues if you encounter this warning.',
+                      "This browser does not have a MessageChannel implementation, so enqueuing tasks via await act(async () => ...) will fail. Please file an issue at https://github.com/facebook/react/issues if you encounter this warning.",
                     ));
                 var channel = new MessageChannel();
                 channel.port1.onmessage = callback;
@@ -1555,14 +1555,14 @@
           return enqueueTaskImpl(task);
         }
         function aggregateErrors(errors) {
-          return 1 < errors.length && 'function' === typeof AggregateError
+          return 1 < errors.length && "function" === typeof AggregateError
             ? new AggregateError(errors)
             : errors[0];
         }
         function popActScope(prevActQueue, prevActScopeDepth) {
           prevActScopeDepth !== actScopeDepth - 1 &&
             console.error(
-              'You seem to have overlapping act() calls, this is not supported. Be sure to await previous act() calls before making a new one. ',
+              "You seem to have overlapping act() calls, this is not supported. Be sure to await previous act() calls before making a new one. ",
             );
           actScopeDepth = prevActScopeDepth;
         }
@@ -1612,35 +1612,35 @@
             }
           }
         }
-        'undefined' !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ &&
-          'function' === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart &&
+        "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ &&
+          "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart &&
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var REACT_ELEMENT_TYPE = Symbol.for('react.transitional.element'),
-          REACT_PORTAL_TYPE = Symbol.for('react.portal'),
-          REACT_FRAGMENT_TYPE = Symbol.for('react.fragment'),
-          REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode'),
-          REACT_PROFILER_TYPE = Symbol.for('react.profiler'),
-          REACT_CONSUMER_TYPE = Symbol.for('react.consumer'),
-          REACT_CONTEXT_TYPE = Symbol.for('react.context'),
-          REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref'),
-          REACT_SUSPENSE_TYPE = Symbol.for('react.suspense'),
-          REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list'),
-          REACT_MEMO_TYPE = Symbol.for('react.memo'),
-          REACT_LAZY_TYPE = Symbol.for('react.lazy'),
-          REACT_ACTIVITY_TYPE = Symbol.for('react.activity'),
-          REACT_VIEW_TRANSITION_TYPE = Symbol.for('react.view_transition'),
+        var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"),
+          REACT_PORTAL_TYPE = Symbol.for("react.portal"),
+          REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"),
+          REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"),
+          REACT_PROFILER_TYPE = Symbol.for("react.profiler"),
+          REACT_CONSUMER_TYPE = Symbol.for("react.consumer"),
+          REACT_CONTEXT_TYPE = Symbol.for("react.context"),
+          REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"),
+          REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"),
+          REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"),
+          REACT_MEMO_TYPE = Symbol.for("react.memo"),
+          REACT_LAZY_TYPE = Symbol.for("react.lazy"),
+          REACT_ACTIVITY_TYPE = Symbol.for("react.activity"),
+          REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"),
           MAYBE_ITERATOR_SYMBOL = Symbol.iterator,
           didWarnStateUpdateForUnmountedComponent = {},
           ReactNoopUpdateQueue = {
             isMounted: () => !1,
             enqueueForceUpdate: (publicInstance) => {
-              warnNoop(publicInstance, 'forceUpdate');
+              warnNoop(publicInstance, "forceUpdate");
             },
             enqueueReplaceState: (publicInstance) => {
-              warnNoop(publicInstance, 'replaceState');
+              warnNoop(publicInstance, "replaceState");
             },
             enqueueSetState: (publicInstance) => {
-              warnNoop(publicInstance, 'setState');
+              warnNoop(publicInstance, "setState");
             },
           },
           assign = Object.assign,
@@ -1649,26 +1649,26 @@
         Component.prototype.isReactComponent = {};
         Component.prototype.setState = function (partialState, callback) {
           if (
-            'object' !== typeof partialState &&
-            'function' !== typeof partialState &&
+            "object" !== typeof partialState &&
+            "function" !== typeof partialState &&
             null != partialState
           )
             throw Error(
-              'takes an object of state variables to update or a function which returns an object of state variables.',
+              "takes an object of state variables to update or a function which returns an object of state variables.",
             );
-          this.updater.enqueueSetState(this, partialState, callback, 'setState');
+          this.updater.enqueueSetState(this, partialState, callback, "setState");
         };
         Component.prototype.forceUpdate = function (callback) {
-          this.updater.enqueueForceUpdate(this, callback, 'forceUpdate');
+          this.updater.enqueueForceUpdate(this, callback, "forceUpdate");
         };
         var deprecatedAPIs = {
           isMounted: [
-            'isMounted',
-            'Instead, make sure to clean up subscriptions and pending requests in componentWillUnmount to prevent memory leaks.',
+            "isMounted",
+            "Instead, make sure to clean up subscriptions and pending requests in componentWillUnmount to prevent memory leaks.",
           ],
           replaceState: [
-            'replaceState',
-            'Refactor your code to use setState instead (see https://github.com/facebook/react/issues/3236).',
+            "replaceState",
+            "Refactor your code to use setState instead (see https://github.com/facebook/react/issues/3236).",
           ],
         };
         for (fnName in deprecatedAPIs)
@@ -1680,7 +1680,7 @@
         assign(deprecatedAPIs, Component.prototype);
         deprecatedAPIs.isPureReactComponent = !0;
         var isArrayImpl = Array.isArray,
-          REACT_CLIENT_REFERENCE = Symbol.for('react.client.reference'),
+          REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"),
           ReactSharedInternals = {
             H: null,
             A: null,
@@ -1710,35 +1710,35 @@
         var didWarnAboutMaps = !1,
           userProvidedKeyEscapeRegex = /\/+/g,
           reportGlobalError =
-            'function' === typeof reportError
+            "function" === typeof reportError
               ? reportError
               : (error) => {
-                  if ('object' === typeof window && 'function' === typeof window.ErrorEvent) {
-                    var event = new window.ErrorEvent('error', {
+                  if ("object" === typeof window && "function" === typeof window.ErrorEvent) {
+                    var event = new window.ErrorEvent("error", {
                       bubbles: !0,
                       cancelable: !0,
                       message:
-                        'object' === typeof error &&
+                        "object" === typeof error &&
                         null !== error &&
-                        'string' === typeof error.message
+                        "string" === typeof error.message
                           ? String(error.message)
                           : String(error),
                       error: error,
                     });
                     if (!window.dispatchEvent(event)) return;
                   } else if (
-                    'object' ===
+                    "object" ===
                       typeof __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
-                        'default'
+                        "default"
                       ] &&
-                    'function' ===
+                    "function" ===
                       typeof __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
-                        'default'
+                        "default"
                       ].emit
                   ) {
                     __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
-                      'default'
-                    ].emit('uncaughtException', error);
+                      "default"
+                    ].emit("uncaughtException", error);
                     return;
                   }
                   console.error(error);
@@ -1749,7 +1749,7 @@
           didWarnNoAwaitAct = !1,
           isFlushing = !1,
           queueSeveralMicrotasks =
-            'function' === typeof queueMicrotask
+            "function" === typeof queueMicrotask
               ? (callback) => {
                   queueMicrotask(() => queueMicrotask(callback));
                 }
@@ -1779,7 +1779,7 @@
           toArray: (children) => mapChildren(children, (child) => child) || [],
           only: (children) => {
             if (!isValidElement(children))
-              throw Error('React.Children.only expected to receive a single React element child.');
+              throw Error("React.Children.only expected to receive a single React element child.");
             return children;
           },
         };
@@ -1813,14 +1813,14 @@
               (ReactSharedInternals.thrownErrors.length = 0),
               callback)
             );
-          if (null !== result && 'object' === typeof result && 'function' === typeof result.then) {
+          if (null !== result && "object" === typeof result && "function" === typeof result.then) {
             var thenable = result;
             queueSeveralMicrotasks(() => {
               didAwaitActCall ||
                 didWarnNoAwaitAct ||
                 ((didWarnNoAwaitAct = !0),
                 console.error(
-                  'You called act(async () => ...) without await. This could lead to unexpected testing behaviour, interleaving multiple act calls and mixing their scopes. You should - await act(async () => ...);',
+                  "You called act(async () => ...) without await. This could lead to unexpected testing behaviour, interleaving multiple act calls and mixing their scopes. You should - await act(async () => ...);",
                 ));
             });
             return {
@@ -1867,7 +1867,7 @@
                   didWarnNoAwaitAct ||
                   ((didWarnNoAwaitAct = !0),
                   console.error(
-                    'A component suspended inside an `act` scope, but the `act` call was not awaited. When testing React components that depend on asynchronous data, you must await the result:\n\nawait act(() => ...)',
+                    "A component suspended inside an `act` scope, but the `act` call was not awaited. When testing React components that depend on asynchronous data, you must await the result:\n\nawait act(() => ...)",
                   ));
               }),
             (ReactSharedInternals.actQueue = null));
@@ -1901,7 +1901,7 @@
         };
         exports.cloneElement = function (element, config, children) {
           if (null === element || void 0 === element)
-            throw Error('The argument must be a React element, but you passed ' + element + '.');
+            throw Error("The argument must be a React element, but you passed " + element + ".");
           var props = assign({}, element.props),
             key = element.key,
             owner = element._owner;
@@ -1909,8 +1909,8 @@
             var JSCompiler_inline_result;
             a: {
               if (
-                hasOwnProperty.call(config, 'ref') &&
-                (JSCompiler_inline_result = Object.getOwnPropertyDescriptor(config, 'ref').get) &&
+                hasOwnProperty.call(config, "ref") &&
+                (JSCompiler_inline_result = Object.getOwnPropertyDescriptor(config, "ref").get) &&
                 JSCompiler_inline_result.isReactWarning
               ) {
                 JSCompiler_inline_result = !1;
@@ -1919,13 +1919,13 @@
               JSCompiler_inline_result = void 0 !== config.ref;
             }
             JSCompiler_inline_result && (owner = getOwner());
-            hasValidKey(config) && (checkKeyStringCoercion(config.key), (key = '' + config.key));
+            hasValidKey(config) && (checkKeyStringCoercion(config.key), (key = "" + config.key));
             for (propName in config)
               !hasOwnProperty.call(config, propName) ||
-                'key' === propName ||
-                '__self' === propName ||
-                '__source' === propName ||
-                ('ref' === propName && void 0 === config.ref) ||
+                "key" === propName ||
+                "__self" === propName ||
+                "__source" === propName ||
+                ("ref" === propName && void 0 === config.ref) ||
                 (props[propName] = config[propName]);
           }
           var propName = arguments.length - 2;
@@ -1971,18 +1971,18 @@
           var key = null;
           if (null != config)
             for (propName in (didWarnAboutOldJSXRuntime ||
-              !('__self' in config) ||
-              'key' in config ||
+              !("__self" in config) ||
+              "key" in config ||
               ((didWarnAboutOldJSXRuntime = !0),
               console.warn(
-                'Your app (or one of its dependencies) is using an outdated JSX transform. Update to the modern JSX transform for faster performance: https://react.dev/link/new-jsx-transform',
+                "Your app (or one of its dependencies) is using an outdated JSX transform. Update to the modern JSX transform for faster performance: https://react.dev/link/new-jsx-transform",
               )),
-            hasValidKey(config) && (checkKeyStringCoercion(config.key), (key = '' + config.key)),
+            hasValidKey(config) && (checkKeyStringCoercion(config.key), (key = "" + config.key)),
             config))
               hasOwnProperty.call(config, propName) &&
-                'key' !== propName &&
-                '__self' !== propName &&
-                '__source' !== propName &&
+                "key" !== propName &&
+                "__self" !== propName &&
+                "__source" !== propName &&
                 (i[propName] = config[propName]);
           var childrenLength = arguments.length - 2;
           if (1 === childrenLength) i.children = children;
@@ -1998,12 +1998,12 @@
           key &&
             defineKeyPropWarningGetter(
               i,
-              'function' === typeof type ? type.displayName || type.name || 'Unknown' : type,
+              "function" === typeof type ? type.displayName || type.name || "Unknown" : type,
             );
           (propName = 1e4 > ReactSharedInternals.recentlyCreatedOwnerStacks++)
             ? ((childArray = Error.stackTraceLimit),
               (Error.stackTraceLimit = 10),
-              (childrenLength = Error('react-stack-top-frame')),
+              (childrenLength = Error("react-stack-top-frame")),
               (Error.stackTraceLimit = childArray))
             : (childrenLength = unknownOwnerDebugStack);
           return ReactElement(
@@ -2025,32 +2025,32 @@
         exports.forwardRef = (render) => {
           null != render && render.$$typeof === REACT_MEMO_TYPE
             ? console.error(
-                'forwardRef requires a render function but received a `memo` component. Instead of forwardRef(memo(...)), use memo(forwardRef(...)).',
+                "forwardRef requires a render function but received a `memo` component. Instead of forwardRef(memo(...)), use memo(forwardRef(...)).",
               )
-            : 'function' !== typeof render
+            : "function" !== typeof render
               ? console.error(
-                  'forwardRef requires a render function but was given %s.',
-                  null === render ? 'null' : typeof render,
+                  "forwardRef requires a render function but was given %s.",
+                  null === render ? "null" : typeof render,
                 )
               : 0 !== render.length &&
                 2 !== render.length &&
                 console.error(
-                  'forwardRef render functions accept exactly two parameters: props and ref. %s',
+                  "forwardRef render functions accept exactly two parameters: props and ref. %s",
                   1 === render.length
-                    ? 'Did you forget to use the ref parameter?'
-                    : 'Any additional parameter will be undefined.',
+                    ? "Did you forget to use the ref parameter?"
+                    : "Any additional parameter will be undefined.",
                 );
           null != render &&
             null != render.defaultProps &&
             console.error(
-              'forwardRef render functions do not support defaultProps. Did you accidentally pass a React component?',
+              "forwardRef render functions do not support defaultProps. Did you accidentally pass a React component?",
             );
           var elementType = {
               $$typeof: REACT_FORWARD_REF_TYPE,
               render: render,
             },
             ownName;
-          Object.defineProperty(elementType, 'displayName', {
+          Object.defineProperty(elementType, "displayName", {
             enumerable: !1,
             configurable: !0,
             get: () => ownName,
@@ -2058,7 +2058,7 @@
               ownName = name;
               render.name ||
                 render.displayName ||
-                (Object.defineProperty(render, 'name', {
+                (Object.defineProperty(render, "name", {
                   value: name,
                 }),
                 (render.displayName = name));
@@ -2078,13 +2078,13 @@
               _init: lazyInitializer,
             },
             ioInfo = {
-              name: 'lazy',
+              name: "lazy",
               start: -1,
               end: -1,
               value: null,
               owner: null,
-              debugStack: Error('react-stack-top-frame'),
-              debugTask: console.createTask ? console.createTask('lazy()') : null,
+              debugStack: Error("react-stack-top-frame"),
+              debugTask: console.createTask ? console.createTask("lazy()") : null,
             };
           ctor._ioInfo = ioInfo;
           lazyType._debugInfo = [
@@ -2097,8 +2097,8 @@
         exports.memo = (type, compare) => {
           null == type &&
             console.error(
-              'memo: The first argument must be a component. Instead received: %s',
-              null === type ? 'null' : typeof type,
+              "memo: The first argument must be a component. Instead received: %s",
+              null === type ? "null" : typeof type,
             );
           compare = {
             $$typeof: REACT_MEMO_TYPE,
@@ -2106,7 +2106,7 @@
             compare: void 0 === compare ? null : compare,
           };
           var ownName;
-          Object.defineProperty(compare, 'displayName', {
+          Object.defineProperty(compare, "displayName", {
             enumerable: !1,
             configurable: !0,
             get: () => ownName,
@@ -2114,7 +2114,7 @@
               ownName = name;
               type.name ||
                 type.displayName ||
-                (Object.defineProperty(type, 'name', {
+                (Object.defineProperty(type, "name", {
                   value: name,
                 }),
                 (type.displayName = name));
@@ -2132,7 +2132,7 @@
           var dispatcher = resolveDispatcher();
           Context.$$typeof === REACT_CONSUMER_TYPE &&
             console.error(
-              'Calling useContext(Context.Consumer) is not supported and will cause bugs. Did you mean to call useContext(Context) instead?',
+              "Calling useContext(Context.Consumer) is not supported and will cause bugs. Did you mean to call useContext(Context) instead?",
             );
           return dispatcher.useContext(Context);
         };
@@ -2143,7 +2143,7 @@
         exports.useEffect = (create, deps) => {
           null == create &&
             console.warn(
-              'React Hook useEffect requires an effect callback. Did you forget to pass a callback to the hook?',
+              "React Hook useEffect requires an effect callback. Did you forget to pass a callback to the hook?",
             );
           return resolveDispatcher().useEffect(create, deps);
         };
@@ -2154,14 +2154,14 @@
         exports.useInsertionEffect = (create, deps) => {
           null == create &&
             console.warn(
-              'React Hook useInsertionEffect requires an effect callback. Did you forget to pass a callback to the hook?',
+              "React Hook useInsertionEffect requires an effect callback. Did you forget to pass a callback to the hook?",
             );
           return resolveDispatcher().useInsertionEffect(create, deps);
         };
         exports.useLayoutEffect = (create, deps) => {
           null == create &&
             console.warn(
-              'React Hook useLayoutEffect requires an effect callback. Did you forget to pass a callback to the hook?',
+              "React Hook useLayoutEffect requires an effect callback. Did you forget to pass a callback to the hook?",
             );
           return resolveDispatcher().useLayoutEffect(create, deps);
         };
@@ -2175,37 +2175,37 @@
         exports.useSyncExternalStore = (subscribe, getSnapshot, getServerSnapshot) =>
           resolveDispatcher().useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
         exports.useTransition = () => resolveDispatcher().useTransition();
-        exports.version = '19.3.0-canary-3f0b9e61-20260317';
-        'undefined' !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ &&
-          'function' === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop &&
+        exports.version = "19.3.0-canary-3f0b9e61-20260317";
+        "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ &&
+          "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop &&
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
       })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
+    ("use strict");
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
       module.exports = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/cjs/react.development.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/cjs/react.development.js [app-client] (ecmascript)",
       );
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/cjs/react-jsx-runtime.development.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/cjs/react-jsx-runtime.development.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     /**
      * @license React
@@ -2215,58 +2215,58 @@
      *
      * This source code is licensed under the MIT license found in the
      * LICENSE file in the root directory of this source tree.
-     */ ('use strict');
-    'production' !== ('TURBOPACK compile-time value', 'development') &&
+     */ ("use strict");
+    "production" !== ("TURBOPACK compile-time value", "development") &&
       (() => {
         function getComponentNameFromType(type) {
           if (null == type) return null;
-          if ('function' === typeof type)
+          if ("function" === typeof type)
             return type.$$typeof === REACT_CLIENT_REFERENCE
               ? null
               : type.displayName || type.name || null;
-          if ('string' === typeof type) return type;
+          if ("string" === typeof type) return type;
           switch (type) {
             case REACT_FRAGMENT_TYPE:
-              return 'Fragment';
+              return "Fragment";
             case REACT_PROFILER_TYPE:
-              return 'Profiler';
+              return "Profiler";
             case REACT_STRICT_MODE_TYPE:
-              return 'StrictMode';
+              return "StrictMode";
             case REACT_SUSPENSE_TYPE:
-              return 'Suspense';
+              return "Suspense";
             case REACT_SUSPENSE_LIST_TYPE:
-              return 'SuspenseList';
+              return "SuspenseList";
             case REACT_ACTIVITY_TYPE:
-              return 'Activity';
+              return "Activity";
             case REACT_VIEW_TRANSITION_TYPE:
-              return 'ViewTransition';
+              return "ViewTransition";
           }
-          if ('object' === typeof type)
+          if ("object" === typeof type)
             switch (
-              ('number' === typeof type.tag &&
+              ("number" === typeof type.tag &&
                 console.error(
-                  'Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.',
+                  "Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.",
                 ),
               type.$$typeof)
             ) {
               case REACT_PORTAL_TYPE:
-                return 'Portal';
+                return "Portal";
               case REACT_CONTEXT_TYPE:
-                return type.displayName || 'Context';
+                return type.displayName || "Context";
               case REACT_CONSUMER_TYPE:
-                return (type._context.displayName || 'Context') + '.Consumer';
+                return (type._context.displayName || "Context") + ".Consumer";
               case REACT_FORWARD_REF_TYPE: {
                 var innerType = type.render;
                 type = type.displayName;
                 type ||
-                  ((type = innerType.displayName || innerType.name || ''),
-                  (type = '' !== type ? 'ForwardRef(' + type + ')' : 'ForwardRef'));
+                  ((type = innerType.displayName || innerType.name || ""),
+                  (type = "" !== type ? "ForwardRef(" + type + ")" : "ForwardRef"));
                 return type;
               }
               case REACT_MEMO_TYPE:
                 return (
                   (innerType = type.displayName || null),
-                  null !== innerType ? innerType : getComponentNameFromType(type.type) || 'Memo'
+                  null !== innerType ? innerType : getComponentNameFromType(type.type) || "Memo"
                 );
               case REACT_LAZY_TYPE:
                 innerType = type._payload;
@@ -2278,7 +2278,7 @@
           return null;
         }
         function testStringCoercion(value) {
-          return '' + value;
+          return "" + value;
         }
         function checkKeyStringCoercion(value) {
           try {
@@ -2291,26 +2291,26 @@
             JSCompiler_inline_result = console;
             var JSCompiler_temp_const = JSCompiler_inline_result.error;
             var JSCompiler_inline_result$jscomp$0 =
-              ('function' === typeof Symbol && Symbol.toStringTag && value[Symbol.toStringTag]) ||
+              ("function" === typeof Symbol && Symbol.toStringTag && value[Symbol.toStringTag]) ||
               value.constructor.name ||
-              'Object';
+              "Object";
             JSCompiler_temp_const.call(
               JSCompiler_inline_result,
-              'The provided key is an unsupported type %s. This value must be coerced to a string before using it here.',
+              "The provided key is an unsupported type %s. This value must be coerced to a string before using it here.",
               JSCompiler_inline_result$jscomp$0,
             );
             return testStringCoercion(value);
           }
         }
         function getTaskName(type) {
-          if (type === REACT_FRAGMENT_TYPE) return '<>';
-          if ('object' === typeof type && null !== type && type.$$typeof === REACT_LAZY_TYPE)
-            return '<...>';
+          if (type === REACT_FRAGMENT_TYPE) return "<>";
+          if ("object" === typeof type && null !== type && type.$$typeof === REACT_LAZY_TYPE)
+            return "<...>";
           try {
             var name = getComponentNameFromType(type);
-            return name ? '<' + name + '>' : '<...>';
+            return name ? "<" + name + ">" : "<...>";
           } catch (x) {
-            return '<...>';
+            return "<...>";
           }
         }
         function getOwner() {
@@ -2318,11 +2318,11 @@
           return null === dispatcher ? null : dispatcher.getOwner();
         }
         function UnknownOwner() {
-          return Error('react-stack-top-frame');
+          return Error("react-stack-top-frame");
         }
         function hasValidKey(config) {
-          if (hasOwnProperty.call(config, 'key')) {
-            var getter = Object.getOwnPropertyDescriptor(config, 'key').get;
+          if (hasOwnProperty.call(config, "key")) {
+            var getter = Object.getOwnPropertyDescriptor(config, "key").get;
             if (getter && getter.isReactWarning) return !1;
           }
           return void 0 !== config.key;
@@ -2332,12 +2332,12 @@
             specialPropKeyWarningShown ||
               ((specialPropKeyWarningShown = !0),
               console.error(
-                '%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props)',
+                "%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props)",
                 displayName,
               ));
           }
           warnAboutAccessingKey.isReactWarning = !0;
-          Object.defineProperty(props, 'key', {
+          Object.defineProperty(props, "key", {
             get: warnAboutAccessingKey,
             configurable: !0,
           });
@@ -2347,7 +2347,7 @@
           didWarnAboutElementRef[componentName] ||
             ((didWarnAboutElementRef[componentName] = !0),
             console.error(
-              'Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release.',
+              "Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release.",
             ));
           componentName = this.props.ref;
           return void 0 !== componentName ? componentName : null;
@@ -2362,34 +2362,34 @@
             _owner: owner,
           };
           null !== (void 0 !== refProp ? refProp : null)
-            ? Object.defineProperty(type, 'ref', {
+            ? Object.defineProperty(type, "ref", {
                 enumerable: !1,
                 get: elementRefGetterWithDeprecationWarning,
               })
-            : Object.defineProperty(type, 'ref', {
+            : Object.defineProperty(type, "ref", {
                 enumerable: !1,
                 value: null,
               });
           type._store = {};
-          Object.defineProperty(type._store, 'validated', {
+          Object.defineProperty(type._store, "validated", {
             configurable: !1,
             enumerable: !1,
             writable: !0,
             value: 0,
           });
-          Object.defineProperty(type, '_debugInfo', {
+          Object.defineProperty(type, "_debugInfo", {
             configurable: !1,
             enumerable: !1,
             writable: !0,
             value: null,
           });
-          Object.defineProperty(type, '_debugStack', {
+          Object.defineProperty(type, "_debugStack", {
             configurable: !1,
             enumerable: !1,
             writable: !0,
             value: debugStack,
           });
-          Object.defineProperty(type, '_debugTask', {
+          Object.defineProperty(type, "_debugTask", {
             configurable: !1,
             enumerable: !1,
             writable: !0,
@@ -2408,18 +2408,18 @@
                 Object.freeze && Object.freeze(children);
               } else
                 console.error(
-                  'React.jsx: Static children should always be an array. You are likely explicitly calling React.jsxs or React.jsxDEV. Use the Babel transform instead.',
+                  "React.jsx: Static children should always be an array. You are likely explicitly calling React.jsxs or React.jsxDEV. Use the Babel transform instead.",
                 );
             else validateChildKeys(children);
-          if (hasOwnProperty.call(config, 'key')) {
+          if (hasOwnProperty.call(config, "key")) {
             children = getComponentNameFromType(type);
-            var keys = Object.keys(config).filter((k) => 'key' !== k);
+            var keys = Object.keys(config).filter((k) => "key" !== k);
             isStaticChildren =
               0 < keys.length
-                ? '{key: someKey, ' + keys.join(': ..., ') + ': ...}'
-                : '{key: someKey}';
+                ? "{key: someKey, " + keys.join(": ..., ") + ": ...}"
+                : "{key: someKey}";
             didWarnAboutKeySpread[children + isStaticChildren] ||
-              ((keys = 0 < keys.length ? '{' + keys.join(': ..., ') + ': ...}' : '{}'),
+              ((keys = 0 < keys.length ? "{" + keys.join(": ..., ") + ": ...}" : "{}"),
               console.error(
                 'A props object containing a "key" prop is being spread into JSX:\n  let props = %s;\n  <%s {...props} />\nReact keys must be passed directly to JSX without using spread:\n  let props = %s;\n  <%s key={someKey} {...props} />',
                 isStaticChildren,
@@ -2430,27 +2430,27 @@
               (didWarnAboutKeySpread[children + isStaticChildren] = !0));
           }
           children = null;
-          void 0 !== maybeKey && (checkKeyStringCoercion(maybeKey), (children = '' + maybeKey));
-          hasValidKey(config) && (checkKeyStringCoercion(config.key), (children = '' + config.key));
-          if ('key' in config) {
+          void 0 !== maybeKey && (checkKeyStringCoercion(maybeKey), (children = "" + maybeKey));
+          hasValidKey(config) && (checkKeyStringCoercion(config.key), (children = "" + config.key));
+          if ("key" in config) {
             maybeKey = {};
             for (var propName in config)
-              'key' !== propName && (maybeKey[propName] = config[propName]);
+              "key" !== propName && (maybeKey[propName] = config[propName]);
           } else maybeKey = config;
           children &&
             defineKeyPropWarningGetter(
               maybeKey,
-              'function' === typeof type ? type.displayName || type.name || 'Unknown' : type,
+              "function" === typeof type ? type.displayName || type.name || "Unknown" : type,
             );
           return ReactElement(type, children, maybeKey, getOwner(), debugStack, debugTask);
         }
         function validateChildKeys(node) {
           isValidElement(node)
             ? node._store && (node._store.validated = 1)
-            : 'object' === typeof node &&
+            : "object" === typeof node &&
               null !== node &&
               node.$$typeof === REACT_LAZY_TYPE &&
-              ('fulfilled' === node._payload.status
+              ("fulfilled" === node._payload.status
                 ? isValidElement(node._payload.value) &&
                   node._payload.value._store &&
                   (node._payload.value._store.validated = 1)
@@ -2458,27 +2458,27 @@
         }
         function isValidElement(object) {
           return (
-            'object' === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE
+            "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE
           );
         }
         var React = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
           ),
-          REACT_ELEMENT_TYPE = Symbol.for('react.transitional.element'),
-          REACT_PORTAL_TYPE = Symbol.for('react.portal'),
-          REACT_FRAGMENT_TYPE = Symbol.for('react.fragment'),
-          REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode'),
-          REACT_PROFILER_TYPE = Symbol.for('react.profiler'),
-          REACT_CONSUMER_TYPE = Symbol.for('react.consumer'),
-          REACT_CONTEXT_TYPE = Symbol.for('react.context'),
-          REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref'),
-          REACT_SUSPENSE_TYPE = Symbol.for('react.suspense'),
-          REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list'),
-          REACT_MEMO_TYPE = Symbol.for('react.memo'),
-          REACT_LAZY_TYPE = Symbol.for('react.lazy'),
-          REACT_ACTIVITY_TYPE = Symbol.for('react.activity'),
-          REACT_VIEW_TRANSITION_TYPE = Symbol.for('react.view_transition'),
-          REACT_CLIENT_REFERENCE = Symbol.for('react.client.reference'),
+          REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"),
+          REACT_PORTAL_TYPE = Symbol.for("react.portal"),
+          REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"),
+          REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"),
+          REACT_PROFILER_TYPE = Symbol.for("react.profiler"),
+          REACT_CONSUMER_TYPE = Symbol.for("react.consumer"),
+          REACT_CONTEXT_TYPE = Symbol.for("react.context"),
+          REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"),
+          REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"),
+          REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"),
+          REACT_MEMO_TYPE = Symbol.for("react.memo"),
+          REACT_LAZY_TYPE = Symbol.for("react.lazy"),
+          REACT_ACTIVITY_TYPE = Symbol.for("react.activity"),
+          REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"),
+          REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"),
           ReactSharedInternals =
             React.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE,
           hasOwnProperty = Object.prototype.hasOwnProperty,
@@ -2498,7 +2498,7 @@
           if (trackActualOwner) {
             var previousStackTraceLimit = Error.stackTraceLimit;
             Error.stackTraceLimit = 10;
-            var debugStackDEV = Error('react-stack-top-frame');
+            var debugStackDEV = Error("react-stack-top-frame");
             Error.stackTraceLimit = previousStackTraceLimit;
           } else debugStackDEV = unknownOwnerDebugStack;
           return jsxDEVImpl(
@@ -2515,7 +2515,7 @@
           if (trackActualOwner) {
             var previousStackTraceLimit = Error.stackTraceLimit;
             Error.stackTraceLimit = 10;
-            var debugStackDEV = Error('react-stack-top-frame');
+            var debugStackDEV = Error("react-stack-top-frame");
             Error.stackTraceLimit = previousStackTraceLimit;
           } else debugStackDEV = unknownOwnerDebugStack;
           return jsxDEVImpl(
@@ -2529,28 +2529,28 @@
         };
       })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
+    ("use strict");
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
       module.exports = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/cjs/react-jsx-runtime.development.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/cjs/react-jsx-runtime.development.js [app-client] (ecmascript)",
       );
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/safe-stable-stringify/index.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/safe-stable-stringify/index.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
-      'use strict';
+      "use strict";
       var e = {
         879: (e, t) => {
           const { hasOwnProperty: n } = Object.prototype;
@@ -2594,7 +2594,7 @@
             if (e.length < n) {
               n = e.length;
             }
-            const r = t === ',' ? '' : ' ';
+            const r = t === "," ? "" : " ";
             let i = `"0":${r}${e[0]}`;
             for (let f = 1; f < n; f++) {
               i += `${t}"${f}":${r}${e[f]}`;
@@ -2602,9 +2602,9 @@
             return i;
           }
           function getCircularValueOption(e) {
-            if (n.call(e, 'circularValue')) {
+            if (n.call(e, "circularValue")) {
               const t = e.circularValue;
-              if (typeof t === 'string') {
+              if (typeof t === "string") {
                 return `"${t}"`;
               }
               if (t == null) {
@@ -2613,7 +2613,7 @@
               if (t === Error || t === TypeError) {
                 return {
                   toString() {
-                    throw new TypeError('Converting circular structure to JSON');
+                    throw new TypeError("Converting circular structure to JSON");
                   },
                 };
               }
@@ -2625,9 +2625,9 @@
           }
           function getDeterministicOption(e) {
             let t;
-            if (n.call(e, 'deterministic')) {
+            if (n.call(e, "deterministic")) {
               t = e.deterministic;
-              if (typeof t !== 'boolean' && typeof t !== 'function') {
+              if (typeof t !== "boolean" && typeof t !== "function") {
                 throw new TypeError(
                   'The "deterministic" argument must be of type boolean or comparator function',
                 );
@@ -2639,7 +2639,7 @@
             let r;
             if (n.call(e, t)) {
               r = e[t];
-              if (typeof r !== 'boolean') {
+              if (typeof r !== "boolean") {
                 throw new TypeError(`The "${t}" argument must be of type boolean`);
               }
             }
@@ -2649,7 +2649,7 @@
             let r;
             if (n.call(e, t)) {
               r = e[t];
-              if (typeof r !== 'number') {
+              if (typeof r !== "number") {
                 throw new TypeError(`The "${t}" argument must be of type number`);
               }
               if (!Number.isInteger(r)) {
@@ -2663,29 +2663,29 @@
           }
           function getItemCount(e) {
             if (e === 1) {
-              return '1 item';
+              return "1 item";
             }
             return `${e} items`;
           }
           function getUniqueReplacerSet(e) {
             const t = new Set();
             for (const n of e) {
-              if (typeof n === 'string' || typeof n === 'number') {
+              if (typeof n === "string" || typeof n === "number") {
                 t.add(String(n));
               }
             }
             return t;
           }
           function getStrictOption(e) {
-            if (n.call(e, 'strict')) {
+            if (n.call(e, "strict")) {
               const t = e.strict;
-              if (typeof t !== 'boolean') {
+              if (typeof t !== "boolean") {
                 throw new TypeError('The "strict" argument must be of type boolean');
               }
               if (t) {
                 return (e) => {
                   let t = `Object can not safely be stringified. Received type ${typeof e}`;
-                  if (typeof e !== 'function') t += ` (${e.toString()})`;
+                  if (typeof e !== "function") t += ` (${e.toString()})`;
                   throw new Error(t);
                 };
               }
@@ -2700,44 +2700,44 @@
               if (e.bigint === undefined) {
                 e.bigint = false;
               }
-              if (!('circularValue' in e)) {
+              if (!("circularValue" in e)) {
                 e.circularValue = Error;
               }
             }
             const n = getCircularValueOption(e);
-            const r = getBooleanOption(e, 'bigint');
+            const r = getBooleanOption(e, "bigint");
             const i = getDeterministicOption(e);
-            const f = typeof i === 'function' ? i : undefined;
-            const u = getPositiveIntegerOption(e, 'maximumDepth');
-            const o = getPositiveIntegerOption(e, 'maximumBreadth');
+            const f = typeof i === "function" ? i : undefined;
+            const u = getPositiveIntegerOption(e, "maximumDepth");
+            const o = getPositiveIntegerOption(e, "maximumBreadth");
             function stringifyFnReplacer(e, s, l, c, a, g) {
               let p = s[e];
-              if (typeof p === 'object' && p !== null && typeof p.toJSON === 'function') {
+              if (typeof p === "object" && p !== null && typeof p.toJSON === "function") {
                 p = p.toJSON(e);
               }
               p = c.call(s, e, p);
               switch (typeof p) {
-                case 'string':
+                case "string":
                   return strEscape(p);
-                case 'object': {
+                case "object": {
                   if (p === null) {
-                    return 'null';
+                    return "null";
                   }
                   if (l.indexOf(p) !== -1) {
                     return n;
                   }
-                  let e = '';
-                  let t = ',';
+                  let e = "";
+                  let t = ",";
                   const r = g;
                   if (Array.isArray(p)) {
                     if (p.length === 0) {
-                      return '[]';
+                      return "[]";
                     }
                     if (u < l.length + 1) {
                       return '"[Array]"';
                     }
                     l.push(p);
-                    if (a !== '') {
+                    if (a !== "") {
                       g += a;
                       e += `\n${g}`;
                       t = `,\n${g}`;
@@ -2746,16 +2746,16 @@
                     let i = 0;
                     for (; i < n - 1; i++) {
                       const n = stringifyFnReplacer(String(i), p, l, c, a, g);
-                      e += n !== undefined ? n : 'null';
+                      e += n !== undefined ? n : "null";
                       e += t;
                     }
                     const f = stringifyFnReplacer(String(i), p, l, c, a, g);
-                    e += f !== undefined ? f : 'null';
+                    e += f !== undefined ? f : "null";
                     if (p.length - 1 > o) {
                       const n = p.length - o - 1;
                       e += `${t}"... ${getItemCount(n)} not stringified"`;
                     }
-                    if (a !== '') {
+                    if (a !== "") {
                       e += `\n${r}`;
                     }
                     l.pop();
@@ -2764,17 +2764,17 @@
                   let s = Object.keys(p);
                   const y = s.length;
                   if (y === 0) {
-                    return '{}';
+                    return "{}";
                   }
                   if (u < l.length + 1) {
                     return '"[Object]"';
                   }
-                  let d = '';
-                  let h = '';
-                  if (a !== '') {
+                  let d = "";
+                  let h = "";
+                  if (a !== "") {
                     g += a;
                     t = `,\n${g}`;
-                    d = ' ';
+                    d = " ";
                   }
                   const $ = Math.min(y, o);
                   if (i && !isTypedArrayWithEntries(p)) {
@@ -2794,19 +2794,19 @@
                     e += `${h}"...":${d}"${getItemCount(n)} not stringified"`;
                     h = t;
                   }
-                  if (a !== '' && h.length > 1) {
+                  if (a !== "" && h.length > 1) {
                     e = `\n${g}${e}\n${r}`;
                   }
                   l.pop();
                   return `{${e}}`;
                 }
-                case 'number':
-                  return isFinite(p) ? String(p) : t ? t(p) : 'null';
-                case 'boolean':
-                  return p === true ? 'true' : 'false';
-                case 'undefined':
+                case "number":
+                  return isFinite(p) ? String(p) : t ? t(p) : "null";
+                case "boolean":
+                  return p === true ? "true" : "false";
+                case "undefined":
                   return undefined;
-                case 'bigint':
+                case "bigint":
                   if (r) {
                     return String(p);
                   }
@@ -2815,31 +2815,31 @@
               }
             }
             function stringifyArrayReplacer(e, i, f, s, l, c) {
-              if (typeof i === 'object' && i !== null && typeof i.toJSON === 'function') {
+              if (typeof i === "object" && i !== null && typeof i.toJSON === "function") {
                 i = i.toJSON(e);
               }
               switch (typeof i) {
-                case 'string':
+                case "string":
                   return strEscape(i);
-                case 'object': {
+                case "object": {
                   if (i === null) {
-                    return 'null';
+                    return "null";
                   }
                   if (f.indexOf(i) !== -1) {
                     return n;
                   }
                   const e = c;
-                  let t = '';
-                  let r = ',';
+                  let t = "";
+                  let r = ",";
                   if (Array.isArray(i)) {
                     if (i.length === 0) {
-                      return '[]';
+                      return "[]";
                     }
                     if (u < f.length + 1) {
                       return '"[Array]"';
                     }
                     f.push(i);
-                    if (l !== '') {
+                    if (l !== "") {
                       c += l;
                       t += `\n${c}`;
                       r = `,\n${c}`;
@@ -2848,29 +2848,29 @@
                     let a = 0;
                     for (; a < n - 1; a++) {
                       const e = stringifyArrayReplacer(String(a), i[a], f, s, l, c);
-                      t += e !== undefined ? e : 'null';
+                      t += e !== undefined ? e : "null";
                       t += r;
                     }
                     const g = stringifyArrayReplacer(String(a), i[a], f, s, l, c);
-                    t += g !== undefined ? g : 'null';
+                    t += g !== undefined ? g : "null";
                     if (i.length - 1 > o) {
                       const e = i.length - o - 1;
                       t += `${r}"... ${getItemCount(e)} not stringified"`;
                     }
-                    if (l !== '') {
+                    if (l !== "") {
                       t += `\n${e}`;
                     }
                     f.pop();
                     return `[${t}]`;
                   }
                   f.push(i);
-                  let a = '';
-                  if (l !== '') {
+                  let a = "";
+                  if (l !== "") {
                     c += l;
                     r = `,\n${c}`;
-                    a = ' ';
+                    a = " ";
                   }
-                  let g = '';
+                  let g = "";
                   for (const e of s) {
                     const n = stringifyArrayReplacer(e, i[e], f, s, l, c);
                     if (n !== undefined) {
@@ -2878,19 +2878,19 @@
                       g = r;
                     }
                   }
-                  if (l !== '' && g.length > 1) {
+                  if (l !== "" && g.length > 1) {
                     t = `\n${c}${t}\n${e}`;
                   }
                   f.pop();
                   return `{${t}}`;
                 }
-                case 'number':
-                  return isFinite(i) ? String(i) : t ? t(i) : 'null';
-                case 'boolean':
-                  return i === true ? 'true' : 'false';
-                case 'undefined':
+                case "number":
+                  return isFinite(i) ? String(i) : t ? t(i) : "null";
+                case "boolean":
+                  return i === true ? "true" : "false";
+                case "undefined":
                   return undefined;
-                case 'bigint':
+                case "bigint":
                   if (r) {
                     return String(i);
                   }
@@ -2900,19 +2900,19 @@
             }
             function stringifyIndent(e, s, l, c, a) {
               switch (typeof s) {
-                case 'string':
+                case "string":
                   return strEscape(s);
-                case 'object': {
+                case "object": {
                   if (s === null) {
-                    return 'null';
+                    return "null";
                   }
-                  if (typeof s.toJSON === 'function') {
+                  if (typeof s.toJSON === "function") {
                     s = s.toJSON(e);
-                    if (typeof s !== 'object') {
+                    if (typeof s !== "object") {
                       return stringifyIndent(e, s, l, c, a);
                     }
                     if (s === null) {
-                      return 'null';
+                      return "null";
                     }
                   }
                   if (l.indexOf(s) !== -1) {
@@ -2921,7 +2921,7 @@
                   const t = a;
                   if (Array.isArray(s)) {
                     if (s.length === 0) {
-                      return '[]';
+                      return "[]";
                     }
                     if (u < l.length + 1) {
                       return '"[Array]"';
@@ -2934,11 +2934,11 @@
                     let i = 0;
                     for (; i < r - 1; i++) {
                       const t = stringifyIndent(String(i), s[i], l, c, a);
-                      e += t !== undefined ? t : 'null';
+                      e += t !== undefined ? t : "null";
                       e += n;
                     }
                     const f = stringifyIndent(String(i), s[i], l, c, a);
-                    e += f !== undefined ? f : 'null';
+                    e += f !== undefined ? f : "null";
                     if (s.length - 1 > o) {
                       const t = s.length - o - 1;
                       e += `${n}"... ${getItemCount(t)} not stringified"`;
@@ -2950,15 +2950,15 @@
                   let r = Object.keys(s);
                   const g = r.length;
                   if (g === 0) {
-                    return '{}';
+                    return "{}";
                   }
                   if (u < l.length + 1) {
                     return '"[Object]"';
                   }
                   a += c;
                   const p = `,\n${a}`;
-                  let y = '';
-                  let d = '';
+                  let y = "";
+                  let d = "";
                   let h = Math.min(g, o);
                   if (isTypedArrayWithEntries(s)) {
                     y += stringifyTypedArray(s, p, o);
@@ -2983,19 +2983,19 @@
                     y += `${d}"...": "${getItemCount(e)} not stringified"`;
                     d = p;
                   }
-                  if (d !== '') {
+                  if (d !== "") {
                     y = `\n${a}${y}\n${t}`;
                   }
                   l.pop();
                   return `{${y}}`;
                 }
-                case 'number':
-                  return isFinite(s) ? String(s) : t ? t(s) : 'null';
-                case 'boolean':
-                  return s === true ? 'true' : 'false';
-                case 'undefined':
+                case "number":
+                  return isFinite(s) ? String(s) : t ? t(s) : "null";
+                case "boolean":
+                  return s === true ? "true" : "false";
+                case "undefined":
                   return undefined;
-                case 'bigint':
+                case "bigint":
                   if (r) {
                     return String(s);
                   }
@@ -3005,29 +3005,29 @@
             }
             function stringifySimple(e, s, l) {
               switch (typeof s) {
-                case 'string':
+                case "string":
                   return strEscape(s);
-                case 'object': {
+                case "object": {
                   if (s === null) {
-                    return 'null';
+                    return "null";
                   }
-                  if (typeof s.toJSON === 'function') {
+                  if (typeof s.toJSON === "function") {
                     s = s.toJSON(e);
-                    if (typeof s !== 'object') {
+                    if (typeof s !== "object") {
                       return stringifySimple(e, s, l);
                     }
                     if (s === null) {
-                      return 'null';
+                      return "null";
                     }
                   }
                   if (l.indexOf(s) !== -1) {
                     return n;
                   }
-                  let t = '';
+                  let t = "";
                   const r = s.length !== undefined;
                   if (r && Array.isArray(s)) {
                     if (s.length === 0) {
-                      return '[]';
+                      return "[]";
                     }
                     if (u < l.length + 1) {
                       return '"[Array]"';
@@ -3037,11 +3037,11 @@
                     let n = 0;
                     for (; n < e - 1; n++) {
                       const e = stringifySimple(String(n), s[n], l);
-                      t += e !== undefined ? e : 'null';
-                      t += ',';
+                      t += e !== undefined ? e : "null";
+                      t += ",";
                     }
                     const r = stringifySimple(String(n), s[n], l);
-                    t += r !== undefined ? r : 'null';
+                    t += r !== undefined ? r : "null";
                     if (s.length - 1 > o) {
                       const e = s.length - o - 1;
                       t += `,"... ${getItemCount(e)} not stringified"`;
@@ -3052,18 +3052,18 @@
                   let c = Object.keys(s);
                   const a = c.length;
                   if (a === 0) {
-                    return '{}';
+                    return "{}";
                   }
                   if (u < l.length + 1) {
                     return '"[Object]"';
                   }
-                  let g = '';
+                  let g = "";
                   let p = Math.min(a, o);
                   if (r && isTypedArrayWithEntries(s)) {
-                    t += stringifyTypedArray(s, ',', o);
+                    t += stringifyTypedArray(s, ",", o);
                     c = c.slice(s.length);
                     p -= s.length;
-                    g = ',';
+                    g = ",";
                   }
                   if (i) {
                     c = sort(c, f);
@@ -3074,7 +3074,7 @@
                     const r = stringifySimple(n, s[n], l);
                     if (r !== undefined) {
                       t += `${g}${strEscape(n)}:${r}`;
-                      g = ',';
+                      g = ",";
                     }
                   }
                   if (a > o) {
@@ -3084,13 +3084,13 @@
                   l.pop();
                   return `{${t}}`;
                 }
-                case 'number':
-                  return isFinite(s) ? String(s) : t ? t(s) : 'null';
-                case 'boolean':
-                  return s === true ? 'true' : 'false';
-                case 'undefined':
+                case "number":
+                  return isFinite(s) ? String(s) : t ? t(s) : "null";
+                case "boolean":
+                  return s === true ? "true" : "false";
+                case "undefined":
                   return undefined;
-                case 'bigint':
+                case "bigint":
                   if (r) {
                     return String(s);
                   }
@@ -3100,34 +3100,34 @@
             }
             function stringify(e, t, n) {
               if (arguments.length > 1) {
-                let r = '';
-                if (typeof n === 'number') {
-                  r = ' '.repeat(Math.min(n, 10));
-                } else if (typeof n === 'string') {
+                let r = "";
+                if (typeof n === "number") {
+                  r = " ".repeat(Math.min(n, 10));
+                } else if (typeof n === "string") {
                   r = n.slice(0, 10);
                 }
                 if (t != null) {
-                  if (typeof t === 'function') {
+                  if (typeof t === "function") {
                     return stringifyFnReplacer(
-                      '',
+                      "",
                       {
-                        '': e,
+                        "": e,
                       },
                       [],
                       t,
                       r,
-                      '',
+                      "",
                     );
                   }
                   if (Array.isArray(t)) {
-                    return stringifyArrayReplacer('', e, [], getUniqueReplacerSet(t), r, '');
+                    return stringifyArrayReplacer("", e, [], getUniqueReplacerSet(t), r, "");
                   }
                 }
                 if (r.length !== 0) {
-                  return stringifyIndent('', e, [], r, '');
+                  return stringifyIndent("", e, [], r, "");
                 }
               }
-              return stringifySimple('', e, []);
+              return stringifySimple("", e, []);
             }
             return stringify;
           }
@@ -3151,22 +3151,22 @@
         }
         return i.exports;
       }
-      if (typeof __nccwpck_require__ !== 'undefined')
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/safe-stable-stringify') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/safe-stable-stringify") +
+          "/";
       var n = __nccwpck_require__(879);
       module.exports = n;
     })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     /**
      * @license React
@@ -3176,8 +3176,8 @@
      *
      * This source code is licensed under the MIT license found in the
      * LICENSE file in the root directory of this source tree.
-     */ ('use strict');
-    'production' !== ('TURBOPACK compile-time value', 'development') &&
+     */ ("use strict");
+    "production" !== ("TURBOPACK compile-time value", "development") &&
       (() => {
         function performWorkUntilDeadline() {
           needsPaint = !1;
@@ -3203,14 +3203,14 @@
                       !(currentTask.expirationTime > currentTime && shouldYieldToHost());
                     ) {
                       var callback = currentTask.callback;
-                      if ('function' === typeof callback) {
+                      if ("function" === typeof callback) {
                         currentTask.callback = null;
                         currentPriorityLevel = currentTask.priorityLevel;
                         var continuationCallback = callback(
                           currentTask.expirationTime <= currentTime,
                         );
                         currentTime = exports.unstable_now();
-                        if ('function' === typeof continuationCallback) {
+                        if ("function" === typeof continuationCallback) {
                           currentTask.callback = continuationCallback;
                           advanceTimers(currentTime);
                           hasMoreWork = !0;
@@ -3316,11 +3316,11 @@
             callback(exports.unstable_now());
           }, ms);
         }
-        'undefined' !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ &&
-          'function' === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart &&
+        "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ &&
+          "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart &&
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
         exports.unstable_now = void 0;
-        if ('object' === typeof performance && 'function' === typeof performance.now) {
+        if ("object" === typeof performance && "function" === typeof performance.now) {
           var localPerformance = performance;
           exports.unstable_now = () => localPerformance.now();
         } else {
@@ -3337,18 +3337,18 @@
           isHostCallbackScheduled = !1,
           isHostTimeoutScheduled = !1,
           needsPaint = !1,
-          localSetTimeout = 'function' === typeof setTimeout ? setTimeout : null,
-          localClearTimeout = 'function' === typeof clearTimeout ? clearTimeout : null,
-          localSetImmediate = 'undefined' !== typeof setImmediate ? setImmediate : null,
+          localSetTimeout = "function" === typeof setTimeout ? setTimeout : null,
+          localClearTimeout = "function" === typeof clearTimeout ? clearTimeout : null,
+          localSetImmediate = "undefined" !== typeof setImmediate ? setImmediate : null,
           isMessageLoopRunning = !1,
           taskTimeoutID = -1,
           frameInterval = 5,
           startTime = -1;
-        if ('function' === typeof localSetImmediate)
+        if ("function" === typeof localSetImmediate)
           var schedulePerformWorkUntilDeadline = () => {
             localSetImmediate(performWorkUntilDeadline);
           };
-        else if ('undefined' !== typeof MessageChannel) {
+        else if ("undefined" !== typeof MessageChannel) {
           var channel = new MessageChannel(),
             port = channel.port2;
           channel.port1.onmessage = performWorkUntilDeadline;
@@ -3371,7 +3371,7 @@
         exports.unstable_forceFrameRate = (fps) => {
           0 > fps || 125 < fps
             ? console.error(
-                'forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported',
+                "forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported",
               )
             : (frameInterval = 0 < fps ? Math.floor(1e3 / fps) : 5);
         };
@@ -3419,10 +3419,10 @@
         };
         exports.unstable_scheduleCallback = (priorityLevel, callback, options) => {
           var currentTime = exports.unstable_now();
-          'object' === typeof options && null !== options
+          "object" === typeof options && null !== options
             ? ((options = options.delay),
               (options =
-                'number' === typeof options && 0 < options ? currentTime + options : currentTime))
+                "number" === typeof options && 0 < options ? currentTime + options : currentTime))
             : (options = currentTime);
           switch (priorityLevel) {
             case 1: {
@@ -3481,46 +3481,46 @@
             }
           };
         };
-        'undefined' !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ &&
-          'function' === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop &&
+        "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ &&
+          "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop &&
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
       })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/scheduler/index.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/scheduler/index.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
+    ("use strict");
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
       module.exports = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js [app-client] (ecmascript)",
       );
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi/index.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi/index.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
-      'use strict';
+      "use strict";
       var e = {
         511: (e) => {
           e.exports = ({ onlyFirst: e = false } = {}) => {
             const r = [
-              '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
-              '(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))',
-            ].join('|');
-            return new RegExp(r, e ? undefined : 'g');
+              "[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)",
+              "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))",
+            ].join("|");
+            return new RegExp(r, e ? undefined : "g");
           };
         },
         532: (e, r, _) => {
           const t = _(511);
-          e.exports = (e) => (typeof e === 'string' ? e.replace(t(), '') : e);
+          e.exports = (e) => (typeof e === "string" ? e.replace(t(), "") : e);
         },
       };
       var r = {};
@@ -3541,11 +3541,11 @@
         }
         return a.exports;
       }
-      if (typeof __nccwpck_require__ !== 'undefined')
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi") +
+          "/";
       var _ = __nccwpck_require__(532);
       module.exports = _;
     })();

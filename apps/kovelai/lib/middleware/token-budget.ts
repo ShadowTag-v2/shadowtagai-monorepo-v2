@@ -10,7 +10,7 @@
  * @see OWASP LLM Top 10 (2025) #10
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Budget Tiers ───────────────────────────────────────────────────
 
@@ -57,7 +57,7 @@ export type UsageRecord = z.infer<typeof UsageRecordSchema>;
 
 export interface BudgetCheckResult {
   allowed: boolean;
-  reason?: 'DAILY_LIMIT' | 'MONTHLY_LIMIT' | 'CONCURRENT_LIMIT' | 'QUERY_TOO_LONG';
+  reason?: "DAILY_LIMIT" | "MONTHLY_LIMIT" | "CONCURRENT_LIMIT" | "QUERY_TOO_LONG";
   currentUsage: {
     dailyTokens: number;
     monthlyTokens: number;
@@ -121,14 +121,14 @@ export function checkBudget(
   // Check daily limit
   if (currentDailyTokens + estimatedTokens > limits.dailyTokenLimit) {
     result.allowed = false;
-    result.reason = 'DAILY_LIMIT';
+    result.reason = "DAILY_LIMIT";
     return result;
   }
 
   // Check monthly limit
   if (currentMonthlyTokens + estimatedTokens > limits.monthlyTokenLimit) {
     result.allowed = false;
-    result.reason = 'MONTHLY_LIMIT';
+    result.reason = "MONTHLY_LIMIT";
     return result;
   }
 

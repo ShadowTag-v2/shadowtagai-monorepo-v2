@@ -13,7 +13,7 @@
  * @see DIGITAL_PRIVILEGE_SHIELD.md — Kovel Directive framework
  */
 
-import { v1alpha } from '@google-cloud/discoveryengine';
+import { v1alpha } from "@google-cloud/discoveryengine";
 
 const searchClient = new v1alpha.SearchServiceClient();
 
@@ -28,7 +28,7 @@ const searchClient = new v1alpha.SearchServiceClient();
 export async function executePrivilegedWebSearch(query: string, _firmId: string): Promise<string> {
   const projectId = process.env.GCP_PROJECT;
   if (!projectId) {
-    throw new Error('GCP_PROJECT environment variable is required');
+    throw new Error("GCP_PROJECT environment variable is required");
   }
 
   const request = {
@@ -47,9 +47,9 @@ export async function executePrivilegedWebSearch(query: string, _firmId: string)
           ?.snippet?.stringValue,
     )
     .filter(Boolean)
-    .join('\n');
+    .join("\n");
 
-  return snippets || 'No findings from privileged enterprise search.';
+  return snippets || "No findings from privileged enterprise search.";
 }
 
 /**

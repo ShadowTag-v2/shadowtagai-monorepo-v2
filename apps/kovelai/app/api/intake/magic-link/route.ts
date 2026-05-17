@@ -12,10 +12,10 @@
  * Nag Protocol #15: Build client intake Magic Link generator
  */
 
-import { randomUUID } from 'node:crypto';
-import jwt from 'jsonwebtoken';
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { randomUUID } from "node:crypto";
+import jwt from "jsonwebtoken";
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 const MagicLinkSchema = z.object({
   firmId: z.string().uuid(),
@@ -40,34 +40,34 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const token = jwt.sign(
       {
         jti: linkId,
-        type: 'client_intake',
+        type: "client_intake",
         firmId: parsed.firmId,
         lawyerId: parsed.lawyerId,
         clientEmail: parsed.clientEmail,
         clientName: parsed.clientName,
         practiceArea: parsed.practiceArea,
         jurisdiction: parsed.jurisdiction,
-        iss: 'kovelai-intake',
+        iss: "kovelai-intake",
       },
       getIntakeSecret(),
       {
         expiresIn: `${parsed.expiryHours}h`,
-        algorithm: 'HS512',
+        algorithm: "HS512",
       },
     );
 
     // Base URL for the intake portal
-    const baseUrl = process.env.KOVELAI_BASE_URL ?? 'https://kovelai.web.app';
+    const baseUrl = process.env.KOVELAI_BASE_URL ?? "https://kovelai.web.app";
     const magicLink = `${baseUrl}/intake?token=${token}`;
 
     // Queue welcome email via Cloud Tasks
     const cloudTasksUrl = process.env.CLOUD_TASKS_QUEUE_URL;
     if (cloudTasksUrl) {
       fetch(cloudTasksUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          task: 'send_intake_magic_link',
+          task: "send_intake_magic_link",
           payload: {
             recipientEmail: parsed.clientEmail,
             recipientName: parsed.clientName,
@@ -85,24 +85,24 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       magicLink,
       expiresAt: expiresAt.toISOString(),
       clientEmail: parsed.clientEmail,
-      status: 'GENERATED',
-      deliveryStatus: cloudTasksUrl ? 'EMAIL_QUEUED' : 'EMAIL_NOT_CONFIGURED',
+      status: "GENERATED",
+      deliveryStatus: cloudTasksUrl ? "EMAIL_QUEUED" : "EMAIL_NOT_CONFIGURED",
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request', details: error.errors },
+        { error: "Invalid request", details: error.errors },
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: 'Magic link generation failed' }, { status: 500 });
+    return NextResponse.json({ error: "Magic link generation failed" }, { status: 500 });
   }
 }
 
 function getIntakeSecret(): string {
   const secret = process.env.KOVELAI_INTAKE_SECRET;
   if (!secret || secret.length < 32) {
-    throw new Error('[INTAKE] KOVELAI_INTAKE_SECRET must be set and at least 32 characters');
+    throw new Error("[INTAKE] KOVELAI_INTAKE_SECRET must be set and at least 32 characters");
   }
   return secret;
 }

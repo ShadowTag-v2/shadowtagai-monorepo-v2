@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { type FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -21,13 +21,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     setTimeout(() => closeButtonRef.current?.focus(), 50);
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
         return;
       }
 
       // Focus trap: Tab cycling within modal
-      if (e.key === 'Tab' && modalRef.current) {
+      if (e.key === "Tab" && modalRef.current) {
         const focusable = modalRef.current.querySelectorAll<HTMLElement>(
           'button, [href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])',
         );
@@ -45,12 +45,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     };
 
     // Prevent body scroll when modal is open
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
 
@@ -66,17 +66,17 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     const data = new FormData(form);
 
     try {
-      await fetch('https://capturelead-767252945109.us-central1.run.app', {
-        method: 'POST',
+      await fetch("https://capturelead-767252945109.us-central1.run.app", {
+        method: "POST",
         body: data,
       });
       setSubmitted(true);
       form.reset();
       // Show toast
-      const toast = document.getElementById('toast');
+      const toast = document.getElementById("toast");
       if (toast) {
-        toast.classList.add('toast--visible');
-        setTimeout(() => toast.classList.remove('toast--visible'), 4000);
+        toast.classList.add("toast--visible");
+        setTimeout(() => toast.classList.remove("toast--visible"), 4000);
       }
       setTimeout(handleClose, 2000);
     } catch {
@@ -105,7 +105,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           if (e.target === e.currentTarget) handleClose();
         }}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') handleClose();
+          if (e.key === "Enter" || e.key === " ") handleClose();
         }}
       >
         <div className="modal-content" ref={modalRef}>
@@ -206,7 +206,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     id="kv-subject"
                     name="inquiry_type"
                     className="modal-input"
-                    style={{ appearance: 'auto' }}
+                    style={{ appearance: "auto" }}
                   >
                     <option value="demo">Schedule a Demo</option>
                     <option value="enterprise">Enterprise Pricing</option>
@@ -227,7 +227,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     rows={4}
                     className="modal-input"
                     placeholder="Tell us about your firm's needs..."
-                    style={{ resize: 'vertical' }}
+                    style={{ resize: "vertical" }}
                   />
                 </div>
                 <button
@@ -235,7 +235,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   disabled={submitting}
                   className="btn-gold w-full justify-center text-sm disabled:opacity-50"
                 >
-                  {submitting ? 'Submitting…' : 'Submit Inquiry'}
+                  {submitting ? "Submitting…" : "Submit Inquiry"}
                 </button>
               </div>
             </form>

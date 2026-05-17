@@ -3,16 +3,16 @@
  * Central registry for all available agents
  */
 
-import type { Agent, AgentCategory, AgentRegistry as IAgentRegistry } from '../types/agent.types';
-import * as AIInnovation from './ai-innovation';
-import * as BusinessAnalytics from './business-analytics';
-import * as DesignUX from './design-ux';
-import * as Development from './development';
-import * as Operations from './operations';
-import * as PNKLNStack from './pnkln-stack';
+import type { Agent, AgentCategory, AgentRegistry as IAgentRegistry } from "../types/agent.types";
+import * as AIInnovation from "./ai-innovation";
+import * as BusinessAnalytics from "./business-analytics";
+import * as DesignUX from "./design-ux";
+import * as Development from "./development";
+import * as Operations from "./operations";
+import * as PNKLNStack from "./pnkln-stack";
 // Import all agents
-import * as ProductStrategy from './product-strategy';
-import * as QualityTesting from './quality-testing';
+import * as ProductStrategy from "./product-strategy";
+import * as QualityTesting from "./quality-testing";
 
 export class AgentRegistry implements IAgentRegistry {
   agents: Map<string, Agent> = new Map();

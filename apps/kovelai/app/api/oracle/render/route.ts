@@ -13,15 +13,15 @@
  * @see lib/oracle/memo-pdf.ts
  */
 
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { generateMemoPDFTemplate, OracleMemoSchema, renderMemoHTML } from '@/lib/oracle/memo-pdf';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { generateMemoPDFTemplate, OracleMemoSchema, renderMemoHTML } from "@/lib/oracle/memo-pdf";
 
 // ─── Request Schema ─────────────────────────────────────────────────
 
 const RenderRequestSchema = z.object({
   memo: OracleMemoSchema,
-  format: z.enum(['html', 'pdf_url']).default('html'),
+  format: z.enum(["html", "pdf_url"]).default("html"),
 });
 
 // ─── Handler ────────────────────────────────────────────────────────
@@ -31,14 +31,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const body = await req.json();
     const { memo, format } = RenderRequestSchema.parse(body);
 
-    if (format === 'html') {
+    if (format === "html") {
       // Dev mode: return HTML for preview
       const html = renderMemoHTML(memo);
       return new NextResponse(html, {
         headers: {
-          'Content-Type': 'text/html; charset=utf-8',
-          'X-Privilege-Shield': 'kovel-doctrine-active',
-          'Cache-Control': 'no-store, private',
+          "Content-Type": "text/html; charset=utf-8",
+          "X-Privilege-Shield": "kovel-doctrine-active",
+          "Cache-Control": "no-store, private",
         },
       });
     }
@@ -51,21 +51,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({
         template,
         fallback: true,
-        message: 'PDF service not configured. Use template data for client-side rendering.',
+        message: "PDF service not configured. Use template data for client-side rendering.",
       });
     }
 
     const pdfRes = await fetch(pdfServiceUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.PDF_RENDERER_TOKEN ?? ''}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.PDF_RENDERER_TOKEN ?? ""}`,
       },
       body: JSON.stringify({
         html: renderMemoHTML(memo),
         options: {
-          format: 'letter',
-          margin: { top: '0.5in', bottom: '0.5in', left: '0.5in', right: '0.5in' },
+          format: "letter",
+          margin: { top: "0.5in", bottom: "0.5in", left: "0.5in", right: "0.5in" },
           printBackground: true,
         },
       }),
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (!pdfRes.ok) {
       return NextResponse.json(
-        { error: 'PDF rendering failed', status: pdfRes.status },
+        { error: "PDF rendering failed", status: pdfRes.status },
         { status: 502 },
       );
     }
@@ -89,10 +89,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid memo data', details: error.errors },
+        { error: "Invalid memo data", details: error.errors },
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: 'Memo rendering failed' }, { status: 500 });
+    return NextResponse.json({ error: "Memo rendering failed" }, { status: 500 });
   }
 }

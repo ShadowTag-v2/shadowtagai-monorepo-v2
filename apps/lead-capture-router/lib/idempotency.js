@@ -1,6 +1,6 @@
-Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkIdempotency = void 0;
-const firestore_1 = require('firebase-admin/firestore');
+const firestore_1 = require("firebase-admin/firestore");
 /**
  * Ensures idempotency using Firestore transactions.
  * Designed to replace Redis-based caching to align with enterprise infrastructure.
@@ -11,7 +11,7 @@ const firestore_1 = require('firebase-admin/firestore');
  */
 async function checkIdempotency(idempotencyKey, operationName) {
   const db = (0, firestore_1.getFirestore)();
-  const docRef = db.collection('system_idempotency_keys').doc(`${operationName}_${idempotencyKey}`);
+  const docRef = db.collection("system_idempotency_keys").doc(`${operationName}_${idempotencyKey}`);
   try {
     const isFresh = await db.runTransaction(async (transaction) => {
       const doc = await transaction.get(docRef);
@@ -23,7 +23,7 @@ async function checkIdempotency(idempotencyKey, operationName) {
       transaction.set(docRef, {
         createdAt: new Date(),
         operation: operationName,
-        status: 'LOCK_ACQUIRED',
+        status: "LOCK_ACQUIRED",
       });
       return true;
     });

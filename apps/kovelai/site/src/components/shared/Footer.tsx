@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 interface FooterProps {
   onOpenModal?: () => void;
@@ -87,10 +87,10 @@ export default function Footer({ onOpenModal }: FooterProps) {
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-6 border-t border-[rgba(77,70,58,0.1)] text-xs text-[#998f81]">
           <span>© 2024–2026 KovelAI. All rights reserved.</span>
           <span>
-            A{' '}
+            A{" "}
             <a href="https://shadowtagai.com" className="text-gold underline">
               ShadowTagAI
-            </a>{' '}
+            </a>{" "}
             Company
           </span>
         </div>

@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class TestGeneratorAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'test-generator',
-    name: 'Test Generator',
-    category: 'quality-testing',
+    id: "test-generator",
+    name: "Test Generator",
+    category: "quality-testing",
     description:
       "Writes the tests you've been avoiding. Unit, integration, E2E - catches bugs before users do.",
-    tagline: 'Automated test generation and coverage',
-    capabilities: ['implementation', 'automation'],
-    tags: ['testing', 'unit-tests', 'integration-tests', 'e2e', 'tdd', 'coverage'],
-    difficulty: 'intermediate',
-    estimatedTime: '2-4 hours',
+    tagline: "Automated test generation and coverage",
+    capabilities: ["implementation", "automation"],
+    tags: ["testing", "unit-tests", "integration-tests", "e2e", "tdd", "coverage"],
+    difficulty: "intermediate",
+    estimatedTime: "2-4 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -49,42 +49,42 @@ Write tests that catch regressions and document behavior.`,
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Write', 'Bash'],
-    optional: ['Grep', 'Edit'],
+    required: ["Glob", "Read", "Write", "Bash"],
+    optional: ["Grep", "Edit"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Coverage Analysis',
-        description: 'Analyze current test coverage',
-        action: 'Identify untested code',
+        name: "Coverage Analysis",
+        description: "Analyze current test coverage",
+        action: "Identify untested code",
       },
       {
-        name: 'Test Planning',
-        description: 'Plan test strategy',
-        action: 'Determine unit, integration, E2E needs',
+        name: "Test Planning",
+        description: "Plan test strategy",
+        action: "Determine unit, integration, E2E needs",
       },
       {
-        name: 'Unit Tests',
-        description: 'Generate unit tests',
-        action: 'Write tests for functions, components',
+        name: "Unit Tests",
+        description: "Generate unit tests",
+        action: "Write tests for functions, components",
       },
       {
-        name: 'Integration Tests',
-        description: 'Create integration tests',
-        action: 'Test APIs, database, services',
+        name: "Integration Tests",
+        description: "Create integration tests",
+        action: "Test APIs, database, services",
       },
       {
-        name: 'E2E Tests',
-        description: 'Build E2E test suite',
-        action: 'Test critical user journeys',
+        name: "E2E Tests",
+        description: "Build E2E test suite",
+        action: "Test critical user journeys",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

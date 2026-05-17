@@ -1,25 +1,25 @@
-import './style.css';
+import "./style.css";
 
 // ═══ SCROLL PROGRESS ═══
-const scrollProgress = document.getElementById('scrollProgress');
+const scrollProgress = document.getElementById("scrollProgress");
 if (scrollProgress) {
   window.addEventListener(
-    'scroll',
+    "scroll",
     () => {
       const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
       scrollProgress.style.transform = `scaleX(${Math.min(pct, 1)})`;
-      scrollProgress.style.width = '100%';
+      scrollProgress.style.width = "100%";
     },
     { passive: true },
   );
 }
 
 // ═══ CSS PARTICLE FIELD ═══
-const particleContainer = document.getElementById('particles');
+const particleContainer = document.getElementById("particles");
 if (particleContainer) {
   for (let i = 0; i < 30; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
+    const p = document.createElement("div");
+    p.className = "particle";
     p.style.left = `${Math.random() * 100}%`;
     p.style.animationDuration = `${8 + Math.random() * 12}s`;
     p.style.animationDelay = `${Math.random() * 10}s`;
@@ -29,12 +29,12 @@ if (particleContainer) {
 }
 
 // ═══ REVEAL ON SCROLL ═══
-const reveals = document.querySelectorAll('.reveal');
+const reveals = document.querySelectorAll(".reveal");
 if (reveals.length) {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting) e.target.classList.add('visible');
+        if (e.isIntersecting) e.target.classList.add("visible");
       });
     },
     { threshold: 0.1 },
@@ -43,41 +43,41 @@ if (reveals.length) {
 }
 
 // ═══ CONTACT MODAL ═══
-const modal = document.getElementById('contactModal');
-const toast = document.getElementById('toast');
+const modal = document.getElementById("contactModal");
+const toast = document.getElementById("toast");
 
 window.openContactModal = () => {
   if (modal) {
-    modal.classList.add('active');
-    modal.setAttribute('aria-hidden', 'false');
-    modal.removeAttribute('inert');
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    modal.removeAttribute("inert");
   }
 };
 window.closeContactModal = () => {
   if (modal) {
-    modal.classList.remove('active');
-    modal.setAttribute('aria-hidden', 'true');
-    modal.setAttribute('inert', '');
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    modal.setAttribute("inert", "");
   }
 };
 if (modal) {
-  modal.addEventListener('click', (e) => {
+  modal.addEventListener("click", (e) => {
     if (e.target === modal) window.closeContactModal();
   });
 }
 
-const form = document.getElementById('contactForm');
+const form = document.getElementById("contactForm");
 if (form) {
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const data = new FormData(form);
-    if (data.get('_honey')) return;
+    if (data.get("_honey")) return;
     try {
-      await fetch(form.action, { method: 'POST', body: data });
+      await fetch(form.action, { method: "POST", body: data });
       window.closeContactModal();
       if (toast) {
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 4000);
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 4000);
       }
       form.reset();
     } catch (_err) {
@@ -87,23 +87,23 @@ if (form) {
 }
 
 // ═══ NAV SCROLL EFFECT ═══
-const nav = document.querySelector('.nav');
+const nav = document.querySelector(".nav");
 if (nav) {
   window.addEventListener(
-    'scroll',
+    "scroll",
     () => {
       nav.style.background =
-        window.scrollY > 50 ? 'rgba(15, 19, 31, 0.98)' : 'rgba(15, 19, 31, 0.85)';
+        window.scrollY > 50 ? "rgba(15, 19, 31, 0.98)" : "rgba(15, 19, 31, 0.85)";
     },
     { passive: true },
   );
 }
 
 // ═══ MOBILE NAV ═══
-const navToggle = document.getElementById('navToggle');
-const navLinks = document.getElementById('navLinks');
+const navToggle = document.getElementById("navToggle");
+const navLinks = document.getElementById("navLinks");
 if (navToggle && navLinks) {
-  navToggle.addEventListener('click', () => {
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+  navToggle.addEventListener("click", () => {
+    navLinks.style.display = navLinks.style.display === "flex" ? "none" : "flex";
   });
 }

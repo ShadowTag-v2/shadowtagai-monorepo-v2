@@ -37,7 +37,7 @@ export interface SSEMessage {
   retry?: number;
 }
 
-type ConnectionState = 'CONNECTING' | 'OPEN' | 'CLOSED' | 'RECONNECTING';
+type ConnectionState = "CONNECTING" | "OPEN" | "CLOSED" | "RECONNECTING";
 
 // ─── Configuration Defaults ─────────────────────────────────────────
 
@@ -53,18 +53,18 @@ const DEFAULTS = {
 
 export class ResilientSSEClient {
   private config: Required<
-    Omit<SSEClientConfig, 'onError' | 'onOpen' | 'onClose' | 'onReconnecting'>
+    Omit<SSEClientConfig, "onError" | "onOpen" | "onClose" | "onReconnecting">
   > & {
-    onError?: SSEClientConfig['onError'];
-    onOpen?: SSEClientConfig['onOpen'];
-    onClose?: SSEClientConfig['onClose'];
-    onReconnecting?: SSEClientConfig['onReconnecting'];
+    onError?: SSEClientConfig["onError"];
+    onOpen?: SSEClientConfig["onOpen"];
+    onClose?: SSEClientConfig["onClose"];
+    onReconnecting?: SSEClientConfig["onReconnecting"];
   };
   private controller: AbortController | null = null;
   private retryCount = 0;
   private lastEventId: string | null = null;
   private heartbeatTimer: ReturnType<typeof setTimeout> | null = null;
-  private _state: ConnectionState = 'CLOSED';
+  private _state: ConnectionState = "CLOSED";
   private _isDestroyed = false;
 
   get state(): ConnectionState {
@@ -86,17 +86,17 @@ export class ResilientSSEClient {
   async connect(): Promise<void> {
     if (this._isDestroyed) return;
 
-    this._state = 'CONNECTING';
+    this._state = "CONNECTING";
     this.controller = new AbortController();
 
     const headers: Record<string, string> = {
-      Accept: 'text/event-stream',
-      'Cache-Control': 'no-cache',
+      Accept: "text/event-stream",
+      "Cache-Control": "no-cache",
       ...(this.config.headers ?? {}),
     };
 
     if (this.lastEventId) {
-      headers['Last-Event-ID'] = this.lastEventId;
+      headers["Last-Event-ID"] = this.lastEventId;
     }
 
     try {
@@ -110,10 +110,10 @@ export class ResilientSSEClient {
       }
 
       if (!response.body) {
-        throw new Error('SSE response has no body');
+        throw new Error("SSE response has no body");
       }
 
-      this._state = 'OPEN';
+      this._state = "OPEN";
       this.retryCount = 0;
       this.config.onOpen?.();
       this.startHeartbeatMonitor();
@@ -122,7 +122,7 @@ export class ResilientSSEClient {
     } catch (error) {
       if (this._isDestroyed) return;
 
-      if (error instanceof DOMException && error.name === 'AbortError') {
+      if (error instanceof DOMException && error.name === "AbortError") {
         return; // Intentional disconnect
       }
 
@@ -135,14 +135,14 @@ export class ResilientSSEClient {
   private async readStream(body: ReadableStream<Uint8Array>): Promise<void> {
     const reader = body.getReader();
     const decoder = new TextDecoder();
-    let buffer = '';
+    let buffer = "";
 
     try {
       while (true) {
         const { done, value } = await reader.read();
 
         if (done) {
-          this.handleDisconnect(new Error('Stream ended'));
+          this.handleDisconnect(new Error("Stream ended"));
           return;
         }
 
@@ -157,7 +157,7 @@ export class ResilientSSEClient {
             this.lastEventId = msg.id;
           }
 
-          if (msg.event === 'heartbeat') {
+          if (msg.event === "heartbeat") {
             continue; // Internal heartbeat, don't propagate
           }
 
@@ -175,28 +175,28 @@ export class ResilientSSEClient {
 
   private parseSSE(buffer: string): { parsed: SSEMessage[]; remaining: string } {
     const messages: SSEMessage[] = [];
-    const blocks = buffer.split('\n\n');
-    const remaining = blocks.pop() ?? '';
+    const blocks = buffer.split("\n\n");
+    const remaining = blocks.pop() ?? "";
 
     for (const block of blocks) {
       if (!block.trim()) continue;
 
-      const msg: SSEMessage = { event: 'message', data: '' };
-      const lines = block.split('\n');
+      const msg: SSEMessage = { event: "message", data: "" };
+      const lines = block.split("\n");
 
       for (const line of lines) {
-        if (line.startsWith('id:')) {
+        if (line.startsWith("id:")) {
           msg.id = line.slice(3).trim();
-        } else if (line.startsWith('event:')) {
+        } else if (line.startsWith("event:")) {
           msg.event = line.slice(6).trim();
-        } else if (line.startsWith('data:')) {
-          msg.data += (msg.data ? '\n' : '') + line.slice(5).trim();
-        } else if (line.startsWith('retry:')) {
+        } else if (line.startsWith("data:")) {
+          msg.data += (msg.data ? "\n" : "") + line.slice(5).trim();
+        } else if (line.startsWith("retry:")) {
           msg.retry = parseInt(line.slice(6).trim(), 10);
         }
       }
 
-      if (msg.data || msg.event !== 'message') {
+      if (msg.data || msg.event !== "message") {
         messages.push(msg);
       }
     }
@@ -209,7 +209,7 @@ export class ResilientSSEClient {
   private startHeartbeatMonitor(): void {
     this.clearHeartbeatMonitor();
     this.heartbeatTimer = setTimeout(() => {
-      this.handleDisconnect(new Error('Heartbeat timeout'));
+      this.handleDisconnect(new Error("Heartbeat timeout"));
     }, this.config.heartbeatTimeoutMs);
   }
 
@@ -227,7 +227,7 @@ export class ResilientSSEClient {
   // ─── Reconnection Logic ───────────────────────────────────────
 
   private handleDisconnect(error: Error): void {
-    this._state = 'CLOSED';
+    this._state = "CLOSED";
     this.clearHeartbeatMonitor();
     this.controller?.abort();
 
@@ -245,7 +245,7 @@ export class ResilientSSEClient {
 
   private scheduleReconnect(): void {
     this.retryCount++;
-    this._state = 'RECONNECTING';
+    this._state = "RECONNECTING";
 
     const delay = this.calculateBackoff();
     this.config.onReconnecting?.(this.retryCount, delay);
@@ -279,7 +279,7 @@ export class ResilientSSEClient {
 
   disconnect(): void {
     this._isDestroyed = true;
-    this._state = 'CLOSED';
+    this._state = "CLOSED";
     this.clearHeartbeatMonitor();
     this.controller?.abort();
     this.config.onClose?.();
@@ -288,7 +288,7 @@ export class ResilientSSEClient {
   // ─── State Queries ────────────────────────────────────────────
 
   get isConnected(): boolean {
-    return this._state === 'OPEN';
+    return this._state === "OPEN";
   }
 
   get currentRetryCount(): number {
@@ -313,12 +313,12 @@ export function createWarRoomSSEClient(
   return new ResilientSSEClient({
     url: `/api/war-room/stream?sessionId=${sessionId}`,
     headers: {
-      'X-SEU-Token': seuToken,
-      'X-Session-ID': sessionId,
+      "X-SEU-Token": seuToken,
+      "X-Session-ID": sessionId,
     },
     onMessage,
-    onOpen: () => console.log('[Vent Mode] SSE connected'),
-    onClose: () => console.log('[Vent Mode] SSE disconnected permanently'),
+    onOpen: () => console.log("[Vent Mode] SSE connected"),
+    onClose: () => console.log("[Vent Mode] SSE disconnected permanently"),
     onReconnecting: (retry, delay) =>
       console.log(`[Vent Mode] Reconnecting (${retry}) in ${delay}ms`),
     onError: (_error, _retry) => {},

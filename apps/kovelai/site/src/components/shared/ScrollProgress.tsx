@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function ScrollProgress() {
   useEffect(() => {
-    const bar = document.getElementById('scrollProgressBar');
+    const bar = document.getElementById("scrollProgressBar");
     if (!bar) return;
 
     const onScroll = () => {
@@ -14,8 +14,8 @@ export default function ScrollProgress() {
       bar.style.width = `${percent}%`;
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return <div id="scrollProgressBar" className="scroll-progress" style={{ width: 0 }} />;

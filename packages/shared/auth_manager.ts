@@ -8,7 +8,7 @@
  * Example: `initAuthManager(app)` where `app` comes from firebase.ts.
  */
 
-import type { FirebaseApp } from 'firebase/app';
+import type { FirebaseApp } from "firebase/app";
 
 // biome-ignore lint/suspicious/noExplicitAny: Auth type unavailable without static import
 let authInstance: any | null = null;
@@ -21,10 +21,10 @@ export function initAuthManager(app: FirebaseApp): void {
 
 export async function getAuthInstance() {
   if (!_app) {
-    throw new Error('Auth manager not initialized. Call initAuthManager(app) first.');
+    throw new Error("Auth manager not initialized. Call initAuthManager(app) first.");
   }
   if (!authInstance) {
-    const { getAuth } = await import('firebase/auth');
+    const { getAuth } = await import("firebase/auth");
     authInstance = getAuth(_app);
   }
   return authInstance;
@@ -32,19 +32,19 @@ export async function getAuthInstance() {
 
 export async function signInWithGoogle() {
   const auth = await getAuthInstance();
-  const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth');
+  const { GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
   const provider = new GoogleAuthProvider();
   return signInWithPopup(auth, provider);
 }
 
 export async function signOut() {
   const auth = await getAuthInstance();
-  const { signOut: firebaseSignOut } = await import('firebase/auth');
+  const { signOut: firebaseSignOut } = await import("firebase/auth");
   return firebaseSignOut(auth);
 }
 
 export async function onAuthStateChanged(callback: (user: unknown) => void) {
   const auth = await getAuthInstance();
-  const { onAuthStateChanged: firebaseOnAuth } = await import('firebase/auth');
+  const { onAuthStateChanged: firebaseOnAuth } = await import("firebase/auth");
   return firebaseOnAuth(auth, callback);
 }

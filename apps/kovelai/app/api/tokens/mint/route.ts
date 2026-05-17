@@ -6,24 +6,24 @@
  *
  * Nag Protocol #8: Implement S.E.U. token minting endpoint
  */
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { mintSEUProxyToken } from '@/lib/security/seu-token-manager';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { mintSEUProxyToken } from "@/lib/security/seu-token-manager";
 
 const MintRequestSchema = z.object({
   sandboxId: z.string().min(1),
   sandboxIp: z.string().ip(),
   firmId: z.string().uuid(),
   tierId: z.string().optional(),
-  clientState: z.enum(['PROSPECTIVE', 'RETAINED', 'EVAPORATING']).optional(),
+  clientState: z.enum(["PROSPECTIVE", "RETAINED", "EVAPORATING"]).optional(),
 });
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     // TODO: Validate server-to-server auth (internal only)
-    const apiKey = req.headers.get('x-internal-api-key');
+    const apiKey = req.headers.get("x-internal-api-key");
     if (apiKey !== process.env.INTERNAL_API_KEY) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
@@ -46,10 +46,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request', details: error.errors },
+        { error: "Invalid request", details: error.errors },
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: 'Token minting failed' }, { status: 500 });
+    return NextResponse.json({ error: "Token minting failed" }, { status: 500 });
   }
 }

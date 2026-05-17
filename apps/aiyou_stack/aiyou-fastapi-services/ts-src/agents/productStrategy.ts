@@ -8,18 +8,18 @@ import {
   type AgentExecutionResult,
   type AgentMetadata,
   BaseAgent,
-} from './base';
+} from "./base";
 
 export class ProductStrategistAgent extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Product Strategist',
+      name: "Product Strategist",
       description:
-        'Looks at your features and asks the hard questions. Tells you what to build next and what to kill.',
+        "Looks at your features and asks the hard questions. Tells you what to build next and what to kill.",
       category: AgentCategory.PRODUCT_STRATEGY,
-      icon: '🎯',
-      version: '1.0.0',
-      tags: ['strategy', 'product', 'prioritization', 'roadmap'],
+      icon: "🎯",
+      version: "1.0.0",
+      tags: ["strategy", "product", "prioritization", "roadmap"],
     };
   }
 
@@ -52,13 +52,13 @@ Be direct and candid about features that aren't working. Focus on impact over ef
 export class GrowthEngineerAgent extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Growth Engineer',
+      name: "Growth Engineer",
       description:
-        'Finds where users get hooked in your app and builds viral loops that actually work.',
+        "Finds where users get hooked in your app and builds viral loops that actually work.",
       category: AgentCategory.PRODUCT_STRATEGY,
-      icon: '📈',
-      version: '1.0.0',
-      tags: ['growth', 'viral', 'engagement', 'retention', 'hooks'],
+      icon: "📈",
+      version: "1.0.0",
+      tags: ["growth", "viral", "engagement", "retention", "hooks"],
     };
   }
 
@@ -92,13 +92,13 @@ Build features that make users want to invite others. Make growth a product feat
 export class UserResearcherAgent extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'User Researcher',
+      name: "User Researcher",
       description:
-        'Analyzes your actual user flows and shows you where people rage quit. Then fixes it.',
+        "Analyzes your actual user flows and shows you where people rage quit. Then fixes it.",
       category: AgentCategory.PRODUCT_STRATEGY,
-      icon: '🔍',
-      version: '1.0.0',
-      tags: ['research', 'ux', 'user-flows', 'analytics', 'behavior'],
+      icon: "🔍",
+      version: "1.0.0",
+      tags: ["research", "ux", "user-flows", "analytics", "behavior"],
     };
   }
 
@@ -132,13 +132,13 @@ Don't just report problems - provide specific, implementable solutions. Focus on
 export class RevenueOptimizerAgent extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Revenue Optimizer',
+      name: "Revenue Optimizer",
       description:
-        'Spots money-making opportunities in your code. Implements pricing tiers and payment flows.',
+        "Spots money-making opportunities in your code. Implements pricing tiers and payment flows.",
       category: AgentCategory.PRODUCT_STRATEGY,
-      icon: '💰',
-      version: '1.0.0',
-      tags: ['revenue', 'pricing', 'monetization', 'payments', 'conversion'],
+      icon: "💰",
+      version: "1.0.0",
+      tags: ["revenue", "pricing", "monetization", "payments", "conversion"],
     };
   }
 
@@ -172,13 +172,13 @@ Focus on customer lifetime value and sustainable growth. Make paying easy and ob
 export class MarketAnalystAgent extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Market Analyst',
+      name: "Market Analyst",
       description:
-        'Compares your features to competitors and finds your unfair advantages. Shows what to build to win.',
+        "Compares your features to competitors and finds your unfair advantages. Shows what to build to win.",
       category: AgentCategory.PRODUCT_STRATEGY,
-      icon: '📊',
-      version: '1.0.0',
-      tags: ['competitive-analysis', 'market-research', 'strategy', 'differentiation'],
+      icon: "📊",
+      version: "1.0.0",
+      tags: ["competitive-analysis", "market-research", "strategy", "differentiation"],
     };
   }
 

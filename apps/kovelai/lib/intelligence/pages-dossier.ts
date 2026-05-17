@@ -15,7 +15,7 @@
  * @see CitationPanel.tsx — Frontend citation rendering
  */
 
-import type { ProCitation, ProSearchResult } from './pro-search-intake';
+import type { ProCitation, ProSearchResult } from "./pro-search-intake";
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -26,7 +26,7 @@ export interface DossierConfig {
   clientName: string;
   preparingAttorney: string;
   jurisdiction: string;
-  confidentialityLevel: 'ATTORNEY_WORK_PRODUCT' | 'ATTORNEY_CLIENT_PRIVILEGED' | 'PUBLIC';
+  confidentialityLevel: "ATTORNEY_WORK_PRODUCT" | "ATTORNEY_CLIENT_PRIVILEGED" | "PUBLIC";
   includeRawSources: boolean;
 }
 
@@ -81,7 +81,7 @@ export function generateDossier(
   return {
     id: dossierId,
     title: `Legal Research Dossier: ${searchResult.originalQuery.slice(0, 100)}`,
-    subtitle: `Prepared for ${config.clientName} | Matter: ${config.matterNumber ?? 'N/A'}`,
+    subtitle: `Prepared for ${config.clientName} | Matter: ${config.matterNumber ?? "N/A"}`,
     generatedAt: now,
     config,
     sections,
@@ -109,11 +109,11 @@ function buildSections(result: ProSearchResult): DossierSection[] {
 function extractSectionTitle(subQuestion: string): string {
   // Remove common prefixes and clean up
   return subQuestion
-    .replace(/^(what|how|when|where|who|why|can|does|is|are)\s+/i, '')
-    .replace(/\?$/, '')
-    .split(' ')
+    .replace(/^(what|how|when|where|who|why|can|does|is|are)\s+/i, "")
+    .replace(/\?$/, "")
+    .split(" ")
     .slice(0, 8)
-    .join(' ')
+    .join(" ")
     .replace(/^\w/, (c) => c.toUpperCase());
 }
 
@@ -129,89 +129,89 @@ function renderDossierMarkdown(
 
   // Header
   lines.push(privilegeMarker);
-  lines.push('');
+  lines.push("");
   lines.push(`# Legal Research Dossier`);
-  lines.push('');
+  lines.push("");
   lines.push(`**Query:** ${result.originalQuery}`);
   lines.push(`**Prepared for:** ${config.clientName}`);
   lines.push(`**Preparing Attorney:** ${config.preparingAttorney}`);
   lines.push(`**Firm:** ${config.firmName}`);
-  lines.push(`**Matter:** ${config.matterNumber ?? 'N/A'}`);
+  lines.push(`**Matter:** ${config.matterNumber ?? "N/A"}`);
   lines.push(`**Jurisdiction:** ${config.jurisdiction}`);
   lines.push(
-    `**Date:** ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`,
+    `**Date:** ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`,
   );
   lines.push(`**Research Steps:** ${result.steps.length}`);
   lines.push(`**Total Citations:** ${result.allCitations.length}`);
-  lines.push('');
-  lines.push('---');
-  lines.push('');
+  lines.push("");
+  lines.push("---");
+  lines.push("");
 
   // Sections
   for (const section of sections) {
-    const confidenceIcon = section.confidence > 0.7 ? '🟢' : section.confidence > 0.4 ? '🟡' : '🔴';
+    const confidenceIcon = section.confidence > 0.7 ? "🟢" : section.confidence > 0.4 ? "🟡" : "🔴";
     lines.push(`## ${section.title} ${confidenceIcon}`);
-    lines.push('');
+    lines.push("");
     lines.push(section.content);
-    lines.push('');
+    lines.push("");
 
     // Inline citations
     if (section.citations.length > 0) {
-      lines.push('**Sources:**');
+      lines.push("**Sources:**");
       for (const cit of section.citations) {
         lines.push(
           `- [${cit.index}] ${cit.authority} — *${cit.type}* (${Math.round(cit.confidence * 100)}% confidence)`,
         );
       }
-      lines.push('');
+      lines.push("");
     }
   }
 
   // Appendix
-  lines.push('---');
-  lines.push('');
-  lines.push('## Appendix: Citation Index');
-  lines.push('');
+  lines.push("---");
+  lines.push("");
+  lines.push("## Appendix: Citation Index");
+  lines.push("");
   for (const cit of result.allCitations) {
     lines.push(`**[${cit.index}]** ${cit.authority}`);
     lines.push(`  - Type: ${cit.type}`);
     lines.push(`  - Excerpt: "${cit.excerpt.slice(0, 200)}..."`);
     lines.push(`  - Confidence: ${Math.round(cit.confidence * 100)}%`);
     lines.push(`  - URL: ${cit.url}`);
-    lines.push('');
+    lines.push("");
   }
 
   // Methodology
-  lines.push('## Appendix: Research Methodology');
-  lines.push('');
+  lines.push("## Appendix: Research Methodology");
+  lines.push("");
   lines.push(buildMethodology(result));
-  lines.push('');
+  lines.push("");
 
   // Disclaimers
-  lines.push('## Disclaimers');
-  lines.push('');
+  lines.push("## Disclaimers");
+  lines.push("");
   for (const d of getDisclaimers(config)) {
     lines.push(`> ${d}`);
-    lines.push('');
+    lines.push("");
   }
 
   // Footer privilege marker
-  lines.push('---');
+  lines.push("---");
   lines.push(privilegeMarker);
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 // ─── Privilege & Compliance ─────────────────────────────────────────
 
 function buildPrivilegeMarker(config: DossierConfig): string {
   switch (config.confidentialityLevel) {
-    case 'ATTORNEY_WORK_PRODUCT':
-      return '**⚖️ ATTORNEY WORK PRODUCT — PRIVILEGED AND CONFIDENTIAL — PREPARED IN ANTICIPATION OF LITIGATION — FED. R. CIV. P. 26(b)(3)**';
-    case 'ATTORNEY_CLIENT_PRIVILEGED':
-      return '**🔒 ATTORNEY-CLIENT PRIVILEGED COMMUNICATION — DO NOT DISCLOSE — KOVEL DOCTRINE APPLIES**';
-    case 'PUBLIC':
-      return '**📄 PUBLIC RESEARCH MEMORANDUM**';
+    case "ATTORNEY_WORK_PRODUCT":
+      return "**⚖️ ATTORNEY WORK PRODUCT — PRIVILEGED AND CONFIDENTIAL — PREPARED IN ANTICIPATION OF LITIGATION — FED. R. CIV. P. 26(b)(3)**";
+    case "ATTORNEY_CLIENT_PRIVILEGED":
+      return "**🔒 ATTORNEY-CLIENT PRIVILEGED COMMUNICATION — DO NOT DISCLOSE — KOVEL DOCTRINE APPLIES**";
+    case "PUBLIC":
+      return "**📄 PUBLIC RESEARCH MEMORANDUM**";
   }
 }
 
@@ -229,13 +229,13 @@ Total research time: ${result.totalDurationMs}ms.`;
 
 function getDisclaimers(config: DossierConfig): string[] {
   const disclaimers = [
-    'This research memorandum was generated by AI-assisted legal research tools. All citations should be independently verified before reliance.',
+    "This research memorandum was generated by AI-assisted legal research tools. All citations should be independently verified before reliance.",
     "This document does not constitute legal advice. It is provided as research support for the supervising attorney's review and analysis.",
   ];
 
-  if (config.confidentialityLevel !== 'PUBLIC') {
+  if (config.confidentialityLevel !== "PUBLIC") {
     disclaimers.push(
-      'This document is protected by attorney-client privilege and/or the work-product doctrine. Unauthorized disclosure may result in waiver of these protections.',
+      "This document is protected by attorney-client privilege and/or the work-product doctrine. Unauthorized disclosure may result in waiver of these protections.",
     );
   }
 

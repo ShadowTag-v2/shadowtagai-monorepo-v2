@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import type React from 'react';
-import { useState } from 'react';
+import type React from "react";
+import { useState } from "react";
 
 export function VectorRetrieval() {
-  const [documentId, setDocumentId] = useState('');
+  const [documentId, setDocumentId] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!documentId.trim()) return;
 
     setLoading(true);
-    setError('');
+    setError("");
     setResult(null);
 
     // Call the newly minted FastApi extraction endpoint natively
     try {
       // Pointing to proxy or localhost 8000 depending on dev setup
       const response = await fetch(`http://localhost:8000/transcript/retrieval/${documentId}`);
-      if (!response.ok) throw new Error('Document vector matrix not found.');
+      if (!response.ok) throw new Error("Document vector matrix not found.");
 
       const data = await response.json();
       setResult(data.data);
     } catch (err: any) {
-      setError(err.message || 'Failed to retrieve from PyArrow matrix');
+      setError(err.message || "Failed to retrieve from PyArrow matrix");
     } finally {
       setLoading(false);
     }
@@ -75,7 +75,7 @@ export function VectorRetrieval() {
           disabled={loading}
           className="bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 font-semibold px-8 py-3 rounded-xl transition-all duration-300 disabled:opacity-50"
         >
-          {loading ? 'Scanning...' : 'Extract Node'}
+          {loading ? "Scanning..." : "Extract Node"}
         </button>
       </form>
 

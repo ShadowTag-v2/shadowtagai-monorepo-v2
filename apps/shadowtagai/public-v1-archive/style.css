@@ -35,8 +35,8 @@
   --radius-xs: 6px;
 
   /* Typography */
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --font: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: "JetBrains Mono", "SF Mono", monospace;
 }
 
 *,
@@ -450,7 +450,7 @@ em {
   transform: translateY(-4px);
 }
 .mech-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -669,7 +669,7 @@ em {
   border-bottom: none;
 }
 .price-features li::before {
-  content: '✓';
+  content: "✓";
   color: var(--accent);
   margin-right: 10px;
   font-weight: 800;

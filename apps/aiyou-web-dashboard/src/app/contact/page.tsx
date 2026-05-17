@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function GeneratedSubPage() {
   return (
@@ -41,7 +41,7 @@ export default function GeneratedSubPage() {
 
               <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col space-y-3 px-8 text-left self-stretch">
                 <p className="flex justify-between w-full m-0">
-                  <span className="text-gray-900 font-bold">Telephone:</span>{' '}
+                  <span className="text-gray-900 font-bold">Telephone:</span>{" "}
                   <a
                     href="tel:369-235-5643"
                     className="hover:text-emerald-700 transition-colors ml-8"
@@ -50,11 +50,11 @@ export default function GeneratedSubPage() {
                   </a>
                 </p>
                 <p className="flex justify-between w-full m-0">
-                  <span className="text-gray-900 font-bold">Facsimile:</span>{' '}
+                  <span className="text-gray-900 font-bold">Facsimile:</span>{" "}
                   <span className="ml-8">(707) 263-8659</span>
                 </p>
                 <p className="flex justify-between w-full m-0">
-                  <span className="text-gray-900 font-bold">Email:</span>{' '}
+                  <span className="text-gray-900 font-bold">Email:</span>{" "}
                   <a
                     href="mailto:redacted@shadowtag-v4.local"
                     className="hover:text-emerald-700 transition-colors ml-8"

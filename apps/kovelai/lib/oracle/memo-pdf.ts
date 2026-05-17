@@ -17,7 +17,7 @@
  * @see docs/pitch-deck.md — Oracle Studio pipeline
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Schemas ────────────────────────────────────────────────────────
 
@@ -36,7 +36,7 @@ export const OracleMemoSchema = z.object({
 
   // Executive Summary
   executiveSummary: z.string(),
-  riskLevel: z.enum(['LOW', 'MODERATE', 'HIGH', 'CRITICAL']),
+  riskLevel: z.enum(["LOW", "MODERATE", "HIGH", "CRITICAL"]),
 
   // Research Findings
   findings: z.array(
@@ -45,7 +45,7 @@ export const OracleMemoSchema = z.object({
       title: z.string(),
       analysis: z.string(),
       relevanceScore: z.number().min(0).max(1),
-      confidence: z.enum(['HIGH', 'MEDIUM', 'LOW']),
+      confidence: z.enum(["HIGH", "MEDIUM", "LOW"]),
     }),
   ),
 
@@ -63,7 +63,7 @@ export const OracleMemoSchema = z.object({
 
   // Risk Assessment
   riskAssessment: z.object({
-    overallRisk: z.enum(['LOW', 'MODERATE', 'HIGH', 'CRITICAL']),
+    overallRisk: z.enum(["LOW", "MODERATE", "HIGH", "CRITICAL"]),
     riskFactors: z.array(z.string()),
     mitigations: z.array(z.string()),
   }),
@@ -71,7 +71,7 @@ export const OracleMemoSchema = z.object({
   // Recommendations
   recommendations: z.array(
     z.object({
-      priority: z.enum(['IMMEDIATE', 'SHORT_TERM', 'LONG_TERM']),
+      priority: z.enum(["IMMEDIATE", "SHORT_TERM", "LONG_TERM"]),
       action: z.string(),
       rationale: z.string(),
     }),
@@ -109,7 +109,7 @@ export interface MemoPDFTemplate {
 }
 
 interface MemoPDFPage {
-  type: 'cover' | 'content' | 'citations' | 'recommendations' | 'attestation';
+  type: "cover" | "content" | "citations" | "recommendations" | "attestation";
   content: Record<string, string | string[]>;
 }
 
@@ -125,37 +125,37 @@ export function generateMemoPDFTemplate(memo: OracleMemo): MemoPDFTemplate {
       author: memo.preparedBy,
       subject: `Oracle Memo — ${memo.practiceArea}`,
       createdAt: memo.generatedAt,
-      keywords: ['privileged', 'kovel', memo.practiceArea, memo.jurisdiction],
+      keywords: ["privileged", "kovel", memo.practiceArea, memo.jurisdiction],
       confidential: true,
     },
     pages: [
       // ── Cover Page ──────────────────────────────────────────
       {
-        type: 'cover',
+        type: "cover",
         content: {
           title: memo.title,
-          subtitle: 'PRIVILEGED & CONFIDENTIAL — ATTORNEY WORK PRODUCT',
+          subtitle: "PRIVILEGED & CONFIDENTIAL — ATTORNEY WORK PRODUCT",
           preparedFor: memo.preparedFor,
           preparedBy: memo.preparedBy,
-          date: new Date(memo.generatedAt).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+          date: new Date(memo.generatedAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           }),
           jurisdiction: memo.jurisdiction,
           practiceArea: memo.practiceArea,
           riskLevel: memo.riskLevel,
           memoId: memo.memoId,
           footer:
-            'This document is protected by attorney-client privilege under the Kovel Doctrine.',
+            "This document is protected by attorney-client privilege under the Kovel Doctrine.",
         },
       },
 
       // ── Executive Summary ───────────────────────────────────
       {
-        type: 'content',
+        type: "content",
         content: {
-          heading: 'Executive Summary',
+          heading: "Executive Summary",
           body: memo.executiveSummary,
           riskBadge: `Overall Risk: ${memo.riskAssessment.overallRisk}`,
           findingsSummary: `${memo.findings.length} findings across ${memo.citations.length} cited authorities`,
@@ -164,9 +164,9 @@ export function generateMemoPDFTemplate(memo: OracleMemo): MemoPDFTemplate {
 
       // ── Research Findings ───────────────────────────────────
       {
-        type: 'content',
+        type: "content",
         content: {
-          heading: 'Research Findings',
+          heading: "Research Findings",
           findings: memo.findings.map(
             (f) =>
               `[${f.confidence}] ${f.title} (relevance: ${Math.round(f.relevanceScore * 100)}%)\n${f.analysis}`,
@@ -176,9 +176,9 @@ export function generateMemoPDFTemplate(memo: OracleMemo): MemoPDFTemplate {
 
       // ── Citations Page ──────────────────────────────────────
       {
-        type: 'citations',
+        type: "citations",
         content: {
-          heading: 'Cited Authorities',
+          heading: "Cited Authorities",
           citations: memo.citations.map(
             (c) => `${c.caseTitle}, ${c.citation} (${c.court}, ${c.year})\n${c.relevance}`,
           ),
@@ -187,9 +187,9 @@ export function generateMemoPDFTemplate(memo: OracleMemo): MemoPDFTemplate {
 
       // ── Risk Assessment ─────────────────────────────────────
       {
-        type: 'content',
+        type: "content",
         content: {
-          heading: 'Risk Assessment',
+          heading: "Risk Assessment",
           overallRisk: memo.riskAssessment.overallRisk,
           riskFactors: memo.riskAssessment.riskFactors,
           mitigations: memo.riskAssessment.mitigations,
@@ -198,41 +198,41 @@ export function generateMemoPDFTemplate(memo: OracleMemo): MemoPDFTemplate {
 
       // ── Recommendations ─────────────────────────────────────
       {
-        type: 'recommendations',
+        type: "recommendations",
         content: {
-          heading: 'Recommended Actions',
+          heading: "Recommended Actions",
           immediate: memo.recommendations
-            .filter((r) => r.priority === 'IMMEDIATE')
+            .filter((r) => r.priority === "IMMEDIATE")
             .map((r) => `${r.action}\nRationale: ${r.rationale}`),
           shortTerm: memo.recommendations
-            .filter((r) => r.priority === 'SHORT_TERM')
+            .filter((r) => r.priority === "SHORT_TERM")
             .map((r) => `${r.action}\nRationale: ${r.rationale}`),
           longTerm: memo.recommendations
-            .filter((r) => r.priority === 'LONG_TERM')
+            .filter((r) => r.priority === "LONG_TERM")
             .map((r) => `${r.action}\nRationale: ${r.rationale}`),
         },
       },
 
       // ── Attestation Page ────────────────────────────────────
       {
-        type: 'attestation',
+        type: "attestation",
         content: {
-          heading: 'Kovel Attestation',
+          heading: "Kovel Attestation",
           receiptId: memo.attestation.kovelReceiptId,
           privilegeType: memo.attestation.privilegeType,
           retention: `Data retained for ${memo.attestation.dataRetentionDays} days per GDPR policy`,
           modelInfo: `Generated by ${memo.modelInfo.primaryModel} | ${memo.modelInfo.tokenCount.toLocaleString()} tokens | ${memo.modelInfo.pipelineStages}-stage pipeline`,
           disclaimer: [
-            'PRIVILEGED & CONFIDENTIAL — ATTORNEY WORK PRODUCT',
-            '',
-            'This Oracle Memo was generated under attorney-client privilege',
-            'extended via the Kovel Doctrine. The research was conducted',
-            'through a Zero Data Retention pipeline. All AI interactions',
-            'are covered by the Kovel Attestation Receipt referenced above.',
-            '',
-            'This document may not be disclosed or distributed without',
-            'the express written consent of the supervising attorney.',
-          ].join('\n'),
+            "PRIVILEGED & CONFIDENTIAL — ATTORNEY WORK PRODUCT",
+            "",
+            "This Oracle Memo was generated under attorney-client privilege",
+            "extended via the Kovel Doctrine. The research was conducted",
+            "through a Zero Data Retention pipeline. All AI interactions",
+            "are covered by the Kovel Attestation Receipt referenced above.",
+            "",
+            "This document may not be disclosed or distributed without",
+            "the express written consent of the supervising attorney.",
+          ].join("\n"),
         },
       },
     ],
@@ -287,7 +287,7 @@ export function renderMemoHTML(memo: OracleMemo): string {
 </div>
 <div class="page">
   <h2>Cited Authorities</h2>
-  ${memo.citations.map((c) => `<div class="citation"><strong>${c.caseTitle}</strong>, ${c.citation} (${c.court}, ${c.year})<br/>${c.relevance}</div>`).join('')}
+  ${memo.citations.map((c) => `<div class="citation"><strong>${c.caseTitle}</strong>, ${c.citation} (${c.court}, ${c.year})<br/>${c.relevance}</div>`).join("")}
 </div>
 <div class="page">
   <h2>Kovel Attestation</h2>

@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class MobileOptimizerAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'mobile-optimizer',
-    name: 'Mobile Optimizer',
-    category: 'development',
+    id: "mobile-optimizer",
+    name: "Mobile Optimizer",
+    category: "development",
     description:
-      'Makes your web app feel native on phones. Adds offline support, PWA features, touch gestures.',
-    tagline: 'Mobile-first optimization and PWA implementation',
-    capabilities: ['implementation', 'optimization'],
-    tags: ['mobile', 'pwa', 'responsive', 'offline', 'performance'],
-    difficulty: 'intermediate',
-    estimatedTime: '2-4 hours',
+      "Makes your web app feel native on phones. Adds offline support, PWA features, touch gestures.",
+    tagline: "Mobile-first optimization and PWA implementation",
+    capabilities: ["implementation", "optimization"],
+    tags: ["mobile", "pwa", "responsive", "offline", "performance"],
+    difficulty: "intermediate",
+    estimatedTime: "2-4 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -49,42 +49,42 @@ Make web apps indistinguishable from native apps.`,
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Write', 'Edit'],
-    optional: ['Bash'],
+    required: ["Glob", "Read", "Write", "Edit"],
+    optional: ["Bash"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Mobile Audit',
-        description: 'Audit mobile experience and performance',
-        action: 'Analyze responsiveness, touch targets, performance',
+        name: "Mobile Audit",
+        description: "Audit mobile experience and performance",
+        action: "Analyze responsiveness, touch targets, performance",
       },
       {
-        name: 'PWA Setup',
-        description: 'Implement PWA capabilities',
-        action: 'Add manifest, service worker, icons',
+        name: "PWA Setup",
+        description: "Implement PWA capabilities",
+        action: "Add manifest, service worker, icons",
       },
       {
-        name: 'Offline Support',
-        description: 'Add offline functionality',
-        action: 'Implement caching strategies',
+        name: "Offline Support",
+        description: "Add offline functionality",
+        action: "Implement caching strategies",
       },
       {
-        name: 'Touch Optimization',
-        description: 'Optimize for touch interactions',
-        action: 'Add gestures, improve touch targets',
+        name: "Touch Optimization",
+        description: "Optimize for touch interactions",
+        action: "Add gestures, improve touch targets",
       },
       {
-        name: 'Performance',
-        description: 'Optimize mobile performance',
-        action: 'Lazy load, optimize images, reduce bundle size',
+        name: "Performance",
+        description: "Optimize mobile performance",
+        action: "Lazy load, optimize images, reduce bundle size",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

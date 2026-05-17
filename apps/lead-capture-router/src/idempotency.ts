@@ -1,4 +1,4 @@
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore } from "firebase-admin/firestore";
 
 /**
  * Ensures idempotency using Firestore transactions.
@@ -13,7 +13,7 @@ export async function checkIdempotency(
   operationName: string,
 ): Promise<boolean> {
   const db = getFirestore();
-  const docRef = db.collection('system_idempotency_keys').doc(`${operationName}_${idempotencyKey}`);
+  const docRef = db.collection("system_idempotency_keys").doc(`${operationName}_${idempotencyKey}`);
 
   try {
     const isFresh = await db.runTransaction(async (transaction) => {
@@ -28,7 +28,7 @@ export async function checkIdempotency(
       transaction.set(docRef, {
         createdAt: new Date(),
         operation: operationName,
-        status: 'LOCK_ACQUIRED',
+        status: "LOCK_ACQUIRED",
       });
 
       return true;

@@ -1,7 +1,7 @@
-import { query } from '@anthropic-ai/claude-agent-sdk';
-import { type AgentConfig, getAgentConfig } from '../config/agent-config';
-import { SYSTEM_PROMPTS } from '../config/system-prompts';
-import { architectureMcpServer } from '../tools/architecture-tools';
+import { query } from "@anthropic-ai/claude-agent-sdk";
+import { type AgentConfig, getAgentConfig } from "../config/agent-config";
+import { SYSTEM_PROMPTS } from "../config/system-prompts";
+import { architectureMcpServer } from "../tools/architecture-tools";
 
 /**
  * System Architect Agent
@@ -46,7 +46,7 @@ export class SystemArchitect {
     // Build context from files if provided
     let fullPrompt = prompt;
     if (contextFiles.length > 0) {
-      const contextInfo = contextFiles.map((file) => `Context file: ${file}`).join('\n');
+      const contextInfo = contextFiles.map((file) => `Context file: ${file}`).join("\n");
       fullPrompt = `${contextInfo}\n\n${prompt}`;
     }
 
@@ -57,7 +57,7 @@ export class SystemArchitect {
     // Add MCP server with tools if requested
     if (includeTools) {
       queryOptions.mcpServers = {
-        'architecture-tools': architectureMcpServer,
+        "architecture-tools": architectureMcpServer,
       };
     }
 
@@ -67,21 +67,21 @@ export class SystemArchitect {
     });
 
     // Collect all messages from the async generator
-    let finalResult = '';
+    let finalResult = "";
     for await (const message of queryGenerator) {
-      if (message.type === 'result' && message.subtype === 'success') {
+      if (message.type === "result" && message.subtype === "success") {
         finalResult = message.result;
-      } else if (message.type === 'assistant' && message.message.content) {
+      } else if (message.type === "assistant" && message.message.content) {
         // Collect assistant messages
         for (const block of message.message.content) {
-          if (block.type === 'text') {
+          if (block.type === "text") {
             finalResult += block.text;
           }
         }
       }
     }
 
-    return finalResult || 'No response generated';
+    return finalResult || "No response generated";
   }
 
   /**
@@ -89,7 +89,7 @@ export class SystemArchitect {
    */
   async designSystem(requirements: {
     projectType: string;
-    scalability: 'low' | 'medium' | 'high';
+    scalability: "low" | "medium" | "high";
     teamSize: number;
     specificRequirements?: string;
   }): Promise<string> {
@@ -98,7 +98,7 @@ export class SystemArchitect {
 Project Type: ${requirements.projectType}
 Scalability Needs: ${requirements.scalability}
 Team Size: ${requirements.teamSize}
-${requirements.specificRequirements ? `Specific Requirements:\n${requirements.specificRequirements}` : ''}
+${requirements.specificRequirements ? `Specific Requirements:\n${requirements.specificRequirements}` : ""}
 
 Please provide:
 1. Recommended architecture pattern with justification
@@ -124,10 +124,10 @@ Please provide:
 Description: ${codebaseInfo.description}
 
 Current Issues:
-${codebaseInfo.currentIssues.map((issue, i) => `${i + 1}. ${issue}`).join('\n')}
+${codebaseInfo.currentIssues.map((issue, i) => `${i + 1}. ${issue}`).join("\n")}
 
 Goals:
-${codebaseInfo.goals.map((goal, i) => `${i + 1}. ${goal}`).join('\n')}
+${codebaseInfo.goals.map((goal, i) => `${i + 1}. ${goal}`).join("\n")}
 
 Please provide:
 1. Prioritized list of refactoring tasks
@@ -165,7 +165,7 @@ Use the available tools to analyze the codebase structure and files.`;
     const prompt = `Assess the following technical debt issues and create a remediation plan:
 
 Issues:
-${issues.map((issue, i) => `${i + 1}. ${issue}`).join('\n')}
+${issues.map((issue, i) => `${i + 1}. ${issue}`).join("\n")}
 
 Please provide:
 1. Categorization of debt (design, code quality, testing, documentation)
@@ -185,7 +185,7 @@ Please provide:
     const prompt = `Suggest appropriate design patterns for the following problem:
 
 Problem: ${problem}
-${context ? `Context: ${context}` : ''}
+${context ? `Context: ${context}` : ""}
 
 Please provide:
 1. Recommended design patterns (with names)

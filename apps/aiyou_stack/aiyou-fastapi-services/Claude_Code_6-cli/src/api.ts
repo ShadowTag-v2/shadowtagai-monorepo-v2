@@ -4,8 +4,8 @@
  * Handles HTTP communication with FastAPI backend.
  */
 
-import fetch from 'node-fetch';
-import type { DecisionValidationRequest, DecisionValidationResponse } from './types.js';
+import fetch from "node-fetch";
+import type { DecisionValidationRequest, DecisionValidationResponse } from "./types.js";
 
 export class Cor.Claude_Code_6ApiClient {
   private baseUrl: string;

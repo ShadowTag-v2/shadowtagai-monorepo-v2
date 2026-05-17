@@ -1,8 +1,8 @@
-(globalThis['TURBOPACK'] || (globalThis['TURBOPACK'] = [])).push([
-  typeof document === 'object' ? document.currentScript : undefined,
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+(globalThis["TURBOPACK"] || (globalThis["TURBOPACK"] = [])).push([
+  typeof document === "object" ? document.currentScript : undefined,
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     function _interop_require_default(obj) {
       return obj && obj.__esModule
@@ -13,12 +13,12 @@
     }
     exports._ = _interop_require_default;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     function _getRequireWildcardCache(nodeInterop) {
-      if (typeof WeakMap !== 'function') return null;
+      if (typeof WeakMap !== "function") return null;
       var cacheBabelInterop = new WeakMap();
       var cacheNodeInterop = new WeakMap();
       return (_getRequireWildcardCache = (nodeInterop) =>
@@ -26,7 +26,7 @@
     }
     function _interop_require_wildcard(obj, nodeInterop) {
       if (!nodeInterop && obj && obj.__esModule) return obj;
-      if (obj === null || (typeof obj !== 'object' && typeof obj !== 'function'))
+      if (obj === null || (typeof obj !== "object" && typeof obj !== "function"))
         return {
           default: obj,
         };
@@ -37,7 +37,7 @@
       };
       var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
       for (var key in obj) {
-        if (key !== 'default' && Object.hasOwn(obj, key)) {
+        if (key !== "default" && Object.hasOwn(obj, key)) {
           var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
           if (desc && (desc.get || desc.set)) Object.defineProperty(newObj, key, desc);
           else newObj[key] = obj[key];

@@ -18,19 +18,19 @@
 // ═══════════════════════════════════════════════════════════
 
 export type AuthorityType =
-  | 'statute'
-  | 'case_law'
-  | 'regulation'
-  | 'constitutional'
-  | 'secondary'
-  | 'treatise'
-  | 'law_review';
+  | "statute"
+  | "case_law"
+  | "regulation"
+  | "constitutional"
+  | "secondary"
+  | "treatise"
+  | "law_review";
 
 export interface CitationValidationResult {
   citationId: string;
   originalText: string;
   isValid: boolean;
-  validationType: 'format' | 'existence' | 'currency';
+  validationType: "format" | "existence" | "currency";
   authorityType: AuthorityType;
   confidence: number;
   warnings: string[];
@@ -40,11 +40,11 @@ export interface CitationValidationResult {
 }
 
 export type ShepardStatus =
-  | 'positive' // Green — followed
-  | 'caution' // Yellow — distinguished
-  | 'negative' // Red — overruled
-  | 'questioned' // Orange — questioned
-  | 'unchecked'; // Gray — not yet validated
+  | "positive" // Green — followed
+  | "caution" // Yellow — distinguished
+  | "negative" // Red — overruled
+  | "questioned" // Orange — questioned
+  | "unchecked"; // Gray — not yet validated
 
 export interface CitationProvider {
   name: string;
@@ -103,7 +103,7 @@ const CITATION_PATTERNS: Record<AuthorityType, RegExp[]> = {
 // ═══════════════════════════════════════════════════════════
 
 export class FormatValidationProvider implements CitationProvider {
-  name = 'FormatValidator (Stub)';
+  name = "FormatValidator (Stub)";
 
   async validateCitation(text: string): Promise<CitationValidationResult> {
     const detected = this.detectAuthorityType(text);
@@ -112,19 +112,19 @@ export class FormatValidationProvider implements CitationProvider {
       citationId: `fv-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
       originalText: text,
       isValid: detected.isValid,
-      validationType: 'format',
+      validationType: "format",
       authorityType: detected.type,
       confidence: detected.confidence,
       warnings: detected.isValid
-        ? ['Format validated only — existence not verified (stub mode)']
+        ? ["Format validated only — existence not verified (stub mode)"]
         : [`Unrecognized citation format: "${text.substring(0, 50)}..."`],
-      shepardStatus: 'unchecked',
+      shepardStatus: "unchecked",
     };
   }
 
   async checkCurrency(_text: string): Promise<ShepardStatus> {
     // Stub: always return unchecked
-    return 'unchecked';
+    return "unchecked";
   }
 
   async getFullText(_citationId: string): Promise<string | null> {
@@ -150,7 +150,7 @@ export class FormatValidationProvider implements CitationProvider {
     }
 
     return {
-      type: 'secondary',
+      type: "secondary",
       isValid: false,
       confidence: 0.2,
     };
@@ -162,20 +162,20 @@ export class FormatValidationProvider implements CitationProvider {
 // ═══════════════════════════════════════════════════════════
 
 export class WestlawProvider implements CitationProvider {
-  name = 'Westlaw (Stub — Phase 3)';
+  name = "Westlaw (Stub — Phase 3)";
 
   async validateCitation(text: string): Promise<CitationValidationResult> {
     // TODO(Phase 3): Implement Westlaw API validation
     // TR API: https://developer.thomsonreuters.com/
     const formatProvider = new FormatValidationProvider();
     const result = await formatProvider.validateCitation(text);
-    result.warnings.push('Westlaw integration pending (Phase 3). Using format validation only.');
+    result.warnings.push("Westlaw integration pending (Phase 3). Using format validation only.");
     return result;
   }
 
   async checkCurrency(_text: string): Promise<ShepardStatus> {
     // TODO(Phase 3): Implement KeyCite currency check
-    return 'unchecked';
+    return "unchecked";
   }
 
   async getFullText(_citationId: string): Promise<string | null> {
@@ -189,19 +189,19 @@ export class WestlawProvider implements CitationProvider {
 // ═══════════════════════════════════════════════════════════
 
 export class LexisNexisProvider implements CitationProvider {
-  name = 'LexisNexis (Stub — Phase 3)';
+  name = "LexisNexis (Stub — Phase 3)";
 
   async validateCitation(text: string): Promise<CitationValidationResult> {
     // TODO(Phase 3): Implement LexisNexis Web Services validation
     const formatProvider = new FormatValidationProvider();
     const result = await formatProvider.validateCitation(text);
-    result.warnings.push('LexisNexis integration pending (Phase 3). Using format validation only.');
+    result.warnings.push("LexisNexis integration pending (Phase 3). Using format validation only.");
     return result;
   }
 
   async checkCurrency(_text: string): Promise<ShepardStatus> {
     // TODO(Phase 3): Implement Shepard's Citations check
-    return 'unchecked';
+    return "unchecked";
   }
 
   async getFullText(_citationId: string): Promise<string | null> {
@@ -215,13 +215,13 @@ export class LexisNexisProvider implements CitationProvider {
 // ═══════════════════════════════════════════════════════════
 
 export function getCitationProvider(
-  provider: 'format' | 'westlaw' | 'lexis' = 'format',
+  provider: "format" | "westlaw" | "lexis" = "format",
   apiKey?: string,
 ): CitationProvider {
   switch (provider) {
-    case 'westlaw':
+    case "westlaw":
       return new WestlawProvider(apiKey);
-    case 'lexis':
+    case "lexis":
       return new LexisNexisProvider(apiKey);
     default:
       return new FormatValidationProvider();

@@ -76,8 +76,8 @@
   --glow-cyan: 0 0 16px rgba(0, 227, 253, 0.3);
 
   /* Typography */
-  --font-headline: 'Space Grotesk', system-ui, sans-serif;
-  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-headline: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
   --display-lg: 4rem;
   --headline-md: 2rem;
   --headline-sm: 1.5rem;
@@ -309,7 +309,7 @@ video {
 }
 
 .nav__link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -4px;
   left: 0;
@@ -568,7 +568,7 @@ video {
 }
 
 .card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -653,7 +653,7 @@ video {
 }
 
 .product-featured__card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -903,7 +903,7 @@ video {
 }
 
 .mgmt-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;

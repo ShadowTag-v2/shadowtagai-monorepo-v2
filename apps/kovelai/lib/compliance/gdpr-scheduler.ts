@@ -16,7 +16,7 @@
  * @see app/api/internal/gdpr-ttl/route.ts
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -24,7 +24,7 @@ export interface GDPRDeletionTask {
   taskId: string;
   firmId: string;
   sessionId: string;
-  dataType: 'transcript' | 'search_query' | 'intent_signal' | 'seu_log' | 'full_session';
+  dataType: "transcript" | "search_query" | "intent_signal" | "seu_log" | "full_session";
   scheduledDeletionAt: string; // ISO datetime
   createdAt: string;
   firestorePaths: string[];
@@ -34,7 +34,7 @@ export interface GDPRDeletionTask {
 const GDPRDeletionRequestSchema = z.object({
   firmId: z.string().uuid(),
   sessionId: z.string().uuid(),
-  dataType: z.enum(['transcript', 'search_query', 'intent_signal', 'seu_log', 'full_session']),
+  dataType: z.enum(["transcript", "search_query", "intent_signal", "seu_log", "full_session"]),
   retentionDays: z.number().int().min(1).max(365).default(30),
 });
 
@@ -86,7 +86,7 @@ export function scheduleFullSessionCleanup(
   sessionId: string,
   retentionDays = 30,
 ): GDPRDeletionTask[] {
-  const dataTypes = ['transcript', 'search_query', 'intent_signal', 'seu_log'] as const;
+  const dataTypes = ["transcript", "search_query", "intent_signal", "seu_log"] as const;
 
   return dataTypes.map((dataType) =>
     createDeletionTask({
@@ -110,10 +110,10 @@ export async function enqueueDeletionTasks(
   const cloudTasksUrl = process.env.CLOUD_TASKS_QUEUE_URL;
   const queuePath =
     process.env.GDPR_QUEUE_PATH ??
-    'projects/shadowtag-omega-v4/locations/us-central1/queues/gdpr-deletion';
+    "projects/shadowtag-omega-v4/locations/us-central1/queues/gdpr-deletion";
 
   if (!cloudTasksUrl) {
-    return { enqueued: 0, errors: ['CLOUD_TASKS_QUEUE_URL not configured'] };
+    return { enqueued: 0, errors: ["CLOUD_TASKS_QUEUE_URL not configured"] };
   }
 
   const results = { enqueued: 0, errors: [] as string[] };
@@ -123,10 +123,10 @@ export async function enqueueDeletionTasks(
       const scheduleTime = new Date(task.scheduledDeletionAt);
 
       const res = await fetch(cloudTasksUrl, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.CLOUD_TASKS_SERVICE_TOKEN ?? ''}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.CLOUD_TASKS_SERVICE_TOKEN ?? ""}`,
         },
         body: JSON.stringify({
           parent: queuePath,
@@ -134,10 +134,10 @@ export async function enqueueDeletionTasks(
             name: `${queuePath}/tasks/${task.taskId}`,
             scheduleTime: scheduleTime.toISOString(),
             httpRequest: {
-              httpMethod: 'POST',
-              url: `${process.env.NEXT_PUBLIC_APP_URL ?? ''}/api/internal/gdpr-ttl`,
+              httpMethod: "POST",
+              url: `${process.env.NEXT_PUBLIC_APP_URL ?? ""}/api/internal/gdpr-ttl`,
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
               body: Buffer.from(
                 JSON.stringify({
@@ -148,7 +148,7 @@ export async function enqueueDeletionTasks(
                   firestorePaths: task.firestorePaths,
                   retainKovelReceipt: task.retainKovelReceipt,
                 }),
-              ).toString('base64'),
+              ).toString("base64"),
             },
           },
         }),

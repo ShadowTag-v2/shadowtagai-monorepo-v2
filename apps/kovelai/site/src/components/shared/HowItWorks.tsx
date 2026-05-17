@@ -1,19 +1,19 @@
 export default function HowItWorks() {
   const steps = [
     {
-      num: '01',
-      title: 'Connect',
+      num: "01",
+      title: "Connect",
       desc: "Your clients access KovelAI through your firm's branded portal. Every session is logged under privilege.",
     },
     {
-      num: '02',
-      title: 'Protect',
-      desc: 'Web searches, AI queries, and document uploads are routed through privileged infrastructure. Zero exposure.',
+      num: "02",
+      title: "Protect",
+      desc: "Web searches, AI queries, and document uploads are routed through privileged infrastructure. Zero exposure.",
     },
     {
-      num: '03',
-      title: 'Bill',
-      desc: 'Each privileged session generates billable entries. After-hours intake converts to retained matters automatically.',
+      num: "03",
+      title: "Bill",
+      desc: "Each privileged session generates billable entries. After-hours intake converts to retained matters automatically.",
     },
   ];
 

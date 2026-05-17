@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class MonitoringExpertAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'monitoring-expert',
-    name: 'Monitoring Expert',
-    category: 'operations',
+    id: "monitoring-expert",
+    name: "Monitoring Expert",
+    category: "operations",
     description:
-      'Knows when your app breaks before users complain. Sets up alerts, logs, and dashboards.',
-    tagline: 'Observability and monitoring setup',
-    capabilities: ['implementation', 'monitoring'],
-    tags: ['monitoring', 'logging', 'alerts', 'observability', 'prometheus', 'grafana'],
-    difficulty: 'intermediate',
-    estimatedTime: '2-4 hours',
+      "Knows when your app breaks before users complain. Sets up alerts, logs, and dashboards.",
+    tagline: "Observability and monitoring setup",
+    capabilities: ["implementation", "monitoring"],
+    tags: ["monitoring", "logging", "alerts", "observability", "prometheus", "grafana"],
+    difficulty: "intermediate",
+    estimatedTime: "2-4 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -48,38 +48,38 @@ Alert only on what matters. Reduce noise, increase signal.`,
   };
 
   tools: AgentTools = {
-    required: ['Read', 'Write', 'Edit'],
-    optional: ['Bash', 'Glob'],
+    required: ["Read", "Write", "Edit"],
+    optional: ["Bash", "Glob"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Metrics Setup',
-        description: 'Implement metrics collection',
-        action: 'Add Prometheus/metrics endpoints',
+        name: "Metrics Setup",
+        description: "Implement metrics collection",
+        action: "Add Prometheus/metrics endpoints",
       },
       {
-        name: 'Logging',
-        description: 'Configure structured logging',
-        action: 'Set up log aggregation',
+        name: "Logging",
+        description: "Configure structured logging",
+        action: "Set up log aggregation",
       },
       {
-        name: 'Tracing',
-        description: 'Add distributed tracing',
-        action: 'Implement OpenTelemetry',
+        name: "Tracing",
+        description: "Add distributed tracing",
+        action: "Implement OpenTelemetry",
       },
       {
-        name: 'Dashboards',
-        description: 'Create monitoring dashboards',
-        action: 'Build Grafana dashboards',
+        name: "Dashboards",
+        description: "Create monitoring dashboards",
+        action: "Build Grafana dashboards",
       },
-      { name: 'Alerting', description: 'Configure alerts', action: 'Set up actionable alerts' },
+      { name: "Alerting", description: "Configure alerts", action: "Set up actionable alerts" },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

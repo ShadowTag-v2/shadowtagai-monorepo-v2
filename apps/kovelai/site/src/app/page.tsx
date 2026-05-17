@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useCallback, useState } from 'react';
-import KineticReversalHero from '@/components/KineticReversalHero';
-import KovelSpinner from '@/components/KovelSpinner';
-import BlogTeaser from '@/components/shared/BlogTeaser';
-import ComparisonTable from '@/components/shared/ComparisonTable';
-import ContactModal from '@/components/shared/ContactModal';
-import CTASection from '@/components/shared/CTASection';
-import DiscoveryRisk from '@/components/shared/DiscoveryRisk';
-import FAQ from '@/components/shared/FAQ';
-import FallingGavel from '@/components/shared/FallingGavel';
-import Features from '@/components/shared/Features';
-import Footer from '@/components/shared/Footer';
-import HowItWorks from '@/components/shared/HowItWorks';
-import Management from '@/components/shared/Management';
-import Nav from '@/components/shared/Nav';
-import Pricing from '@/components/shared/Pricing';
-import ScrollProgress from '@/components/shared/ScrollProgress';
-import StatsBar from '@/components/shared/StatsBar';
-import Testimonials from '@/components/shared/Testimonials';
+import { useCallback, useState } from "react";
+import KineticReversalHero from "@/components/KineticReversalHero";
+import KovelSpinner from "@/components/KovelSpinner";
+import BlogTeaser from "@/components/shared/BlogTeaser";
+import ComparisonTable from "@/components/shared/ComparisonTable";
+import ContactModal from "@/components/shared/ContactModal";
+import CTASection from "@/components/shared/CTASection";
+import DiscoveryRisk from "@/components/shared/DiscoveryRisk";
+import FAQ from "@/components/shared/FAQ";
+import FallingGavel from "@/components/shared/FallingGavel";
+import Features from "@/components/shared/Features";
+import Footer from "@/components/shared/Footer";
+import HowItWorks from "@/components/shared/HowItWorks";
+import Management from "@/components/shared/Management";
+import Nav from "@/components/shared/Nav";
+import Pricing from "@/components/shared/Pricing";
+import ScrollProgress from "@/components/shared/ScrollProgress";
+import StatsBar from "@/components/shared/StatsBar";
+import Testimonials from "@/components/shared/Testimonials";
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);

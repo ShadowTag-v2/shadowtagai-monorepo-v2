@@ -1,19 +1,19 @@
 module.exports = [
-  '[externals]/react/jsx-runtime [external] (react/jsx-runtime, cjs)',
+  "[externals]/react/jsx-runtime [external] (react/jsx-runtime, cjs)",
   (__turbopack_context__, module, exports) => {
-    const mod = __turbopack_context__.x('react/jsx-runtime', () => require('react/jsx-runtime'));
+    const mod = __turbopack_context__.x("react/jsx-runtime", () => require("react/jsx-runtime"));
 
     module.exports = mod;
   },
-  '[externals]/react [external] (react, cjs)',
+  "[externals]/react [external] (react, cjs)",
   (__turbopack_context__, module, exports) => {
-    const mod = __turbopack_context__.x('react', () => require('react'));
+    const mod = __turbopack_context__.x("react", () => require("react"));
 
     module.exports = mod;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     function _interop_require_default(obj) {
       return obj && obj.__esModule
@@ -24,11 +24,11 @@ module.exports = [
     }
     exports._ = _interop_require_default;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -77,7 +77,7 @@ module.exports = [
       normalizeRepeatedSlashes: () => normalizeRepeatedSlashes,
       stringifyError: () => stringifyError,
     });
-    const WEB_VITALS = ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB'];
+    const WEB_VITALS = ["CLS", "FCP", "FID", "INP", "LCP", "TTFB"];
     function execOnce(fn) {
       let used = false;
       let result;
@@ -95,7 +95,7 @@ module.exports = [
     const isAbsoluteUrl = (url) => ABSOLUTE_URL_REGEX.test(url);
     function getLocationOrigin() {
       const { protocol, hostname, port } = window.location;
-      return `${protocol}//${hostname}${port ? ':' + port : ''}`;
+      return `${protocol}//${hostname}${port ? ":" + port : ""}`;
     }
     function getURL() {
       const { href } = window.location;
@@ -103,29 +103,29 @@ module.exports = [
       return href.substring(origin.length);
     }
     function getDisplayName(Component) {
-      return typeof Component === 'string'
+      return typeof Component === "string"
         ? Component
-        : Component.displayName || Component.name || 'Unknown';
+        : Component.displayName || Component.name || "Unknown";
     }
     function isResSent(res) {
       return res.finished || res.headersSent;
     }
     function normalizeRepeatedSlashes(url) {
-      const urlParts = url.split('?');
+      const urlParts = url.split("?");
       const urlNoQuery = urlParts[0];
       return (
         urlNoQuery // first we replace any non-encoded backslashes with forward
           // then normalize repeated forward slashes
-          .replace(/\\/g, '/')
-          .replace(/\/\/+/g, '/') + (urlParts[1] ? `?${urlParts.slice(1).join('?')}` : '')
+          .replace(/\\/g, "/")
+          .replace(/\/\/+/g, "/") + (urlParts[1] ? `?${urlParts.slice(1).join("?")}` : "")
       );
     }
     async function loadGetInitialProps(App, ctx) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (App.prototype?.getInitialProps) {
           const message = `"${getDisplayName(App)}.getInitialProps()" is defined as an instance method - visit https://nextjs.org/docs/messages/get-initial-props-as-an-instance-method for more information.`;
-          throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-            value: 'E1035',
+          throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+            value: "E1035",
             enumerable: false,
             configurable: true,
           });
@@ -148,13 +148,13 @@ module.exports = [
       }
       if (!props) {
         const message = `"${getDisplayName(App)}.getInitialProps()" should resolve to an object. But found "${props}" instead.`;
-        throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-          value: 'E1025',
+        throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+          value: "E1025",
           enumerable: false,
           configurable: true,
         });
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (Object.keys(props).length === 0 && !ctx.ctx) {
           console.warn(
             `${getDisplayName(App)} returned an empty object from \`getInitialProps\`. This de-optimizes and prevents automatic static optimization. https://nextjs.org/docs/messages/empty-object-getInitialProps`,
@@ -163,19 +163,19 @@ module.exports = [
       }
       return props;
     }
-    const SP = typeof performance !== 'undefined';
+    const SP = typeof performance !== "undefined";
     const ST =
       SP &&
-      ['mark', 'measure', 'getEntriesByName'].every(
-        (method) => typeof performance[method] === 'function',
+      ["mark", "measure", "getEntriesByName"].every(
+        (method) => typeof performance[method] === "function",
       );
     class DecodeError extends Error {}
     class NormalizeError extends Error {}
     class PageNotFoundError extends Error {
       constructor(page) {
         super();
-        this.code = 'ENOENT';
-        this.name = 'PageNotFoundError';
+        this.code = "ENOENT";
+        this.name = "PageNotFoundError";
         this.message = `Cannot find module for page: ${page}`;
       }
     }
@@ -188,7 +188,7 @@ module.exports = [
     class MiddlewareNotFoundError extends Error {
       constructor() {
         super();
-        this.code = 'ENOENT';
+        this.code = "ENOENT";
         this.message = `Cannot find the middleware module`;
       }
     }
@@ -199,28 +199,28 @@ module.exports = [
       });
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/pages/_app.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/pages/_app.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => App,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [ssr] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[externals]/react/jsx-runtime [external] (react/jsx-runtime, cjs)',
+      "[externals]/react/jsx-runtime [external] (react/jsx-runtime, cjs)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
-      __turbopack_context__.r('[externals]/react [external] (react, cjs)'),
+      __turbopack_context__.r("[externals]/react [external] (react, cjs)"),
     );
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [ssr] (ecmascript)",
     );
     /**
      * `App` component is used for initialize of pages. It allows for overwriting and full control of the `page` initialization.
@@ -246,21 +246,21 @@ module.exports = [
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/app.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/app.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     module.exports = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/pages/_app.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/pages/_app.js [ssr] (ecmascript)",
     );
   },
 ];

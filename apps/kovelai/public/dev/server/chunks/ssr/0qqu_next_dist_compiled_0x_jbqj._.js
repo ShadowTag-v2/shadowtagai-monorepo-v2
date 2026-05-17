@@ -1,18 +1,18 @@
 module.exports = [
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api/index.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api/index.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
-      'use strict';
+      "use strict";
       var e = {
         491: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ContextAPI = void 0;
           const n = r(223);
           const a = r(172);
           const o = r(930);
-          const i = 'context';
+          const i = "context";
           const c = new n.NoopContextManager();
           class ContextAPI {
             constructor() {}
@@ -45,7 +45,7 @@ module.exports = [
           t.ContextAPI = ContextAPI;
         },
         930: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.DiagAPI = void 0;
@@ -53,12 +53,12 @@ module.exports = [
           const a = r(912);
           const o = r(957);
           const i = r(172);
-          const c = 'diag';
+          const c = "diag";
           class DiagAPI {
             constructor() {
               function _logProxy(e) {
                 return (...t) => {
-                  const r = (0, i.getGlobal)('diag');
+                  const r = (0, i.getGlobal)("diag");
                   if (!r) return;
                   return r[e](...t);
                 };
@@ -73,17 +73,17 @@ module.exports = [
                 var n, c, s;
                 if (t === this) {
                   const t = new Error(
-                    'Cannot use diag as the logger for itself. Please use a DiagLogger implementation like ConsoleDiagLogger or a custom implementation',
+                    "Cannot use diag as the logger for itself. Please use a DiagLogger implementation like ConsoleDiagLogger or a custom implementation",
                   );
                   this.error((n = t.stack) !== null && n !== void 0 ? n : t.message);
                   return false;
                 }
-                if (typeof r === 'number') {
+                if (typeof r === "number") {
                   r = {
                     logLevel: r,
                   };
                 }
-                const u = (0, i.getGlobal)('diag');
+                const u = (0, i.getGlobal)("diag");
                 const l = (0, a.createLogLevelDiagLogger)(
                   (c = r.logLevel) !== null && c !== void 0 ? c : o.DiagLogLevel.INFO,
                   t,
@@ -92,22 +92,22 @@ module.exports = [
                   const e =
                     (s = new Error().stack) !== null && s !== void 0
                       ? s
-                      : '<failed to generate stacktrace>';
+                      : "<failed to generate stacktrace>";
                   u.warn(`Current logger will be overwritten from ${e}`);
                   l.warn(`Current logger will overwrite one already registered from ${e}`);
                 }
-                return (0, i.registerGlobal)('diag', l, this, true);
+                return (0, i.registerGlobal)("diag", l, this, true);
               };
               this.setLogger = setLogger;
               this.disable = () => {
                 (0, i.unregisterGlobal)(c, this);
               };
               this.createComponentLogger = (e) => new n.DiagComponentLogger(e);
-              this.verbose = _logProxy('verbose');
-              this.debug = _logProxy('debug');
-              this.info = _logProxy('info');
-              this.warn = _logProxy('warn');
-              this.error = _logProxy('error');
+              this.verbose = _logProxy("verbose");
+              this.debug = _logProxy("debug");
+              this.info = _logProxy("info");
+              this.warn = _logProxy("warn");
+              this.error = _logProxy("error");
             }
             static instance() {
               if (!DiagAPI._instance) {
@@ -119,14 +119,14 @@ module.exports = [
           t.DiagAPI = DiagAPI;
         },
         653: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.MetricsAPI = void 0;
           const n = r(660);
           const a = r(172);
           const o = r(930);
-          const i = 'metrics';
+          const i = "metrics";
           class MetricsAPI {
             constructor() {}
             static getInstance() {
@@ -151,7 +151,7 @@ module.exports = [
           t.MetricsAPI = MetricsAPI;
         },
         181: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.PropagationAPI = void 0;
@@ -161,7 +161,7 @@ module.exports = [
           const i = r(277);
           const c = r(369);
           const s = r(930);
-          const u = 'propagation';
+          const u = "propagation";
           const l = new a.NoopTextMapPropagator();
           class PropagationAPI {
             constructor() {
@@ -199,7 +199,7 @@ module.exports = [
           t.PropagationAPI = PropagationAPI;
         },
         997: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.TraceAPI = void 0;
@@ -208,7 +208,7 @@ module.exports = [
           const o = r(139);
           const i = r(607);
           const c = r(930);
-          const s = 'trace';
+          const s = "trace";
           class TraceAPI {
             constructor() {
               this._proxyTracerProvider = new a.ProxyTracerProvider();
@@ -248,13 +248,13 @@ module.exports = [
           t.TraceAPI = TraceAPI;
         },
         277: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.deleteBaggage = t.setBaggage = t.getActiveBaggage = t.getBaggage = void 0;
           const n = r(491);
           const a = r(780);
-          const o = (0, a.createContextKey)('OpenTelemetry Baggage Key');
+          const o = (0, a.createContextKey)("OpenTelemetry Baggage Key");
           function getBaggage(e) {
             return e.getValue(o) || undefined;
           }
@@ -273,7 +273,7 @@ module.exports = [
           t.deleteBaggage = deleteBaggage;
         },
         993: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.BaggageImpl = void 0;
@@ -315,14 +315,14 @@ module.exports = [
           t.BaggageImpl = BaggageImpl;
         },
         830: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.baggageEntryMetadataSymbol = void 0;
-          t.baggageEntryMetadataSymbol = Symbol('BaggageEntryMetadata');
+          t.baggageEntryMetadataSymbol = Symbol("BaggageEntryMetadata");
         },
         369: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.baggageEntryMetadataFromString = t.createBaggage = void 0;
@@ -335,9 +335,9 @@ module.exports = [
           }
           t.createBaggage = createBaggage;
           function baggageEntryMetadataFromString(e) {
-            if (typeof e !== 'string') {
+            if (typeof e !== "string") {
               i.error(`Cannot create baggage metadata from unknown type: ${typeof e}`);
-              e = '';
+              e = "";
             }
             return {
               __TYPE__: o.baggageEntryMetadataSymbol,
@@ -349,7 +349,7 @@ module.exports = [
           t.baggageEntryMetadataFromString = baggageEntryMetadataFromString;
         },
         67: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.context = void 0;
@@ -357,7 +357,7 @@ module.exports = [
           t.context = n.ContextAPI.getInstance();
         },
         223: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NoopContextManager = void 0;
@@ -382,7 +382,7 @@ module.exports = [
           t.NoopContextManager = NoopContextManager;
         },
         780: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ROOT_CONTEXT = t.createContextKey = void 0;
@@ -409,7 +409,7 @@ module.exports = [
           t.ROOT_CONTEXT = new BaseContext();
         },
         506: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.diag = void 0;
@@ -417,34 +417,34 @@ module.exports = [
           t.diag = n.DiagAPI.instance();
         },
         56: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.DiagComponentLogger = void 0;
           const n = r(172);
           class DiagComponentLogger {
             constructor(e) {
-              this._namespace = e.namespace || 'DiagComponentLogger';
+              this._namespace = e.namespace || "DiagComponentLogger";
             }
             debug(...e) {
-              return logProxy('debug', this._namespace, e);
+              return logProxy("debug", this._namespace, e);
             }
             error(...e) {
-              return logProxy('error', this._namespace, e);
+              return logProxy("error", this._namespace, e);
             }
             info(...e) {
-              return logProxy('info', this._namespace, e);
+              return logProxy("info", this._namespace, e);
             }
             warn(...e) {
-              return logProxy('warn', this._namespace, e);
+              return logProxy("warn", this._namespace, e);
             }
             verbose(...e) {
-              return logProxy('verbose', this._namespace, e);
+              return logProxy("verbose", this._namespace, e);
             }
           }
           t.DiagComponentLogger = DiagComponentLogger;
           function logProxy(e, t, r) {
-            const a = (0, n.getGlobal)('diag');
+            const a = (0, n.getGlobal)("diag");
             if (!a) {
               return;
             }
@@ -453,30 +453,30 @@ module.exports = [
           }
         },
         972: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.DiagConsoleLogger = void 0;
           const r = [
             {
-              n: 'error',
-              c: 'error',
+              n: "error",
+              c: "error",
             },
             {
-              n: 'warn',
-              c: 'warn',
+              n: "warn",
+              c: "warn",
             },
             {
-              n: 'info',
-              c: 'info',
+              n: "info",
+              c: "info",
             },
             {
-              n: 'debug',
-              c: 'debug',
+              n: "debug",
+              c: "debug",
             },
             {
-              n: 'verbose',
-              c: 'trace',
+              n: "verbose",
+              c: "trace",
             },
           ];
           class DiagConsoleLogger {
@@ -485,10 +485,10 @@ module.exports = [
                 return (...t) => {
                   if (console) {
                     let r = console[e];
-                    if (typeof r !== 'function') {
+                    if (typeof r !== "function") {
                       r = console.log;
                     }
-                    if (typeof r === 'function') {
+                    if (typeof r === "function") {
                       return r.apply(console, t);
                     }
                   }
@@ -502,7 +502,7 @@ module.exports = [
           t.DiagConsoleLogger = DiagConsoleLogger;
         },
         912: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.createLogLevelDiagLogger = void 0;
@@ -516,46 +516,46 @@ module.exports = [
             t = t || {};
             function _filterFunc(r, n) {
               const a = t[r];
-              if (typeof a === 'function' && e >= n) {
+              if (typeof a === "function" && e >= n) {
                 return a.bind(t);
               }
               return () => {};
             }
             return {
-              error: _filterFunc('error', n.DiagLogLevel.ERROR),
-              warn: _filterFunc('warn', n.DiagLogLevel.WARN),
-              info: _filterFunc('info', n.DiagLogLevel.INFO),
-              debug: _filterFunc('debug', n.DiagLogLevel.DEBUG),
-              verbose: _filterFunc('verbose', n.DiagLogLevel.VERBOSE),
+              error: _filterFunc("error", n.DiagLogLevel.ERROR),
+              warn: _filterFunc("warn", n.DiagLogLevel.WARN),
+              info: _filterFunc("info", n.DiagLogLevel.INFO),
+              debug: _filterFunc("debug", n.DiagLogLevel.DEBUG),
+              verbose: _filterFunc("verbose", n.DiagLogLevel.VERBOSE),
             };
           }
           t.createLogLevelDiagLogger = createLogLevelDiagLogger;
         },
         957: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.DiagLogLevel = void 0;
           var r;
           ((e) => {
-            e[(e['NONE'] = 0)] = 'NONE';
-            e[(e['ERROR'] = 30)] = 'ERROR';
-            e[(e['WARN'] = 50)] = 'WARN';
-            e[(e['INFO'] = 60)] = 'INFO';
-            e[(e['DEBUG'] = 70)] = 'DEBUG';
-            e[(e['VERBOSE'] = 80)] = 'VERBOSE';
-            e[(e['ALL'] = 9999)] = 'ALL';
+            e[(e["NONE"] = 0)] = "NONE";
+            e[(e["ERROR"] = 30)] = "ERROR";
+            e[(e["WARN"] = 50)] = "WARN";
+            e[(e["INFO"] = 60)] = "INFO";
+            e[(e["DEBUG"] = 70)] = "DEBUG";
+            e[(e["VERBOSE"] = 80)] = "VERBOSE";
+            e[(e["ALL"] = 9999)] = "ALL";
           })((r = t.DiagLogLevel || (t.DiagLogLevel = {})));
         },
         172: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.unregisterGlobal = t.getGlobal = t.registerGlobal = void 0;
           const n = r(200);
           const a = r(521);
           const o = r(130);
-          const i = a.VERSION.split('.')[0];
+          const i = a.VERSION.split(".")[0];
           const c = Symbol.for(`opentelemetry.js.api.${i}`);
           const s = n._globalThis;
           function registerGlobal(e, t, r, n = false) {
@@ -604,7 +604,7 @@ module.exports = [
           t.unregisterGlobal = unregisterGlobal;
         },
         130: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.isCompatible = t._makeCompatibilityCheck = void 0;
@@ -675,7 +675,7 @@ module.exports = [
           t.isCompatible = _makeCompatibilityCheck(n.VERSION);
         },
         886: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.metrics = void 0;
@@ -683,18 +683,18 @@ module.exports = [
           t.metrics = n.MetricsAPI.getInstance();
         },
         901: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ValueType = void 0;
           var r;
           ((e) => {
-            e[(e['INT'] = 0)] = 'INT';
-            e[(e['DOUBLE'] = 1)] = 'DOUBLE';
+            e[(e["INT"] = 0)] = "INT";
+            e[(e["DOUBLE"] = 1)] = "DOUBLE";
           })((r = t.ValueType || (t.ValueType = {})));
         },
         102: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.createNoopMeter =
@@ -777,7 +777,7 @@ module.exports = [
           t.createNoopMeter = createNoopMeter;
         },
         660: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NOOP_METER_PROVIDER = t.NoopMeterProvider = void 0;
@@ -808,20 +808,20 @@ module.exports = [
           var a =
             (this && this.__exportStar) ||
             ((e, t) => {
-              for (var r in e) if (r !== 'default' && !Object.hasOwn(t, r)) n(t, e, r);
+              for (var r in e) if (r !== "default" && !Object.hasOwn(t, r)) n(t, e, r);
             });
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           a(r(46), t);
         },
         651: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t._globalThis = void 0;
           t._globalThis =
-            typeof globalThis === 'object'
+            typeof globalThis === "object"
               ? globalThis
               : /*TURBOPACK member replacement*/ __turbopack_context__.g;
         },
@@ -843,15 +843,15 @@ module.exports = [
           var a =
             (this && this.__exportStar) ||
             ((e, t) => {
-              for (var r in e) if (r !== 'default' && !Object.hasOwn(t, r)) n(t, e, r);
+              for (var r in e) if (r !== "default" && !Object.hasOwn(t, r)) n(t, e, r);
             });
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           a(r(651), t);
         },
         939: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.propagation = void 0;
@@ -859,7 +859,7 @@ module.exports = [
           t.propagation = n.PropagationAPI.getInstance();
         },
         874: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NoopTextMapPropagator = void 0;
@@ -875,7 +875,7 @@ module.exports = [
           t.NoopTextMapPropagator = NoopTextMapPropagator;
         },
         194: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.defaultTextMapSetter = t.defaultTextMapGetter = void 0;
@@ -903,7 +903,7 @@ module.exports = [
           };
         },
         845: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.trace = void 0;
@@ -911,7 +911,7 @@ module.exports = [
           t.trace = n.TraceAPI.getInstance();
         },
         403: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NonRecordingSpan = void 0;
@@ -947,7 +947,7 @@ module.exports = [
           t.NonRecordingSpan = NonRecordingSpan;
         },
         614: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NoopTracer = void 0;
@@ -994,15 +994,15 @@ module.exports = [
           t.NoopTracer = NoopTracer;
           function isSpanContext(e) {
             return (
-              typeof e === 'object' &&
-              typeof e['spanId'] === 'string' &&
-              typeof e['traceId'] === 'string' &&
-              typeof e['traceFlags'] === 'number'
+              typeof e === "object" &&
+              typeof e["spanId"] === "string" &&
+              typeof e["traceId"] === "string" &&
+              typeof e["traceFlags"] === "number"
             );
           }
         },
         124: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NoopTracerProvider = void 0;
@@ -1015,7 +1015,7 @@ module.exports = [
           t.NoopTracerProvider = NoopTracerProvider;
         },
         125: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ProxyTracer = void 0;
@@ -1050,7 +1050,7 @@ module.exports = [
           t.ProxyTracer = ProxyTracer;
         },
         846: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ProxyTracerProvider = void 0;
@@ -1079,19 +1079,19 @@ module.exports = [
           t.ProxyTracerProvider = ProxyTracerProvider;
         },
         996: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.SamplingDecision = void 0;
           var r;
           ((e) => {
-            e[(e['NOT_RECORD'] = 0)] = 'NOT_RECORD';
-            e[(e['RECORD'] = 1)] = 'RECORD';
-            e[(e['RECORD_AND_SAMPLED'] = 2)] = 'RECORD_AND_SAMPLED';
+            e[(e["NOT_RECORD"] = 0)] = "NOT_RECORD";
+            e[(e["RECORD"] = 1)] = "RECORD";
+            e[(e["RECORD_AND_SAMPLED"] = 2)] = "RECORD_AND_SAMPLED";
           })((r = t.SamplingDecision || (t.SamplingDecision = {})));
         },
         607: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.getSpanContext =
@@ -1104,7 +1104,7 @@ module.exports = [
           const n = r(780);
           const a = r(403);
           const o = r(491);
-          const i = (0, n.createContextKey)('OpenTelemetry Context Key SPAN');
+          const i = (0, n.createContextKey)("OpenTelemetry Context Key SPAN");
           function getSpan(e) {
             return e.getValue(i) || undefined;
           }
@@ -1132,15 +1132,15 @@ module.exports = [
           t.getSpanContext = getSpanContext;
         },
         325: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.TraceStateImpl = void 0;
           const n = r(564);
           const a = 32;
           const o = 512;
-          const i = ',';
-          const c = '=';
+          const i = ",";
+          const c = "=";
           class TraceStateImpl {
             constructor(e) {
               this._internalState = new Map();
@@ -1206,11 +1206,11 @@ module.exports = [
           t.TraceStateImpl = TraceStateImpl;
         },
         564: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.validateValue = t.validateKey = void 0;
-          const r = '[_0-9a-z-*/]';
+          const r = "[_0-9a-z-*/]";
           const n = `[a-z]${r}{0,255}`;
           const a = `[a-z0-9]${r}{0,240}@[a-z]${r}{0,13}`;
           const o = new RegExp(`^(?:${n}|${a})$`);
@@ -1226,7 +1226,7 @@ module.exports = [
           t.validateValue = validateValue;
         },
         98: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.createTraceState = void 0;
@@ -1237,13 +1237,13 @@ module.exports = [
           t.createTraceState = createTraceState;
         },
         476: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.INVALID_SPAN_CONTEXT = t.INVALID_TRACEID = t.INVALID_SPANID = void 0;
           const n = r(475);
-          t.INVALID_SPANID = '0000000000000000';
-          t.INVALID_TRACEID = '00000000000000000000000000000000';
+          t.INVALID_SPANID = "0000000000000000";
+          t.INVALID_TRACEID = "00000000000000000000000000000000";
           t.INVALID_SPAN_CONTEXT = {
             traceId: t.INVALID_TRACEID,
             spanId: t.INVALID_SPANID,
@@ -1251,21 +1251,21 @@ module.exports = [
           };
         },
         357: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.SpanKind = void 0;
           var r;
           ((e) => {
-            e[(e['INTERNAL'] = 0)] = 'INTERNAL';
-            e[(e['SERVER'] = 1)] = 'SERVER';
-            e[(e['CLIENT'] = 2)] = 'CLIENT';
-            e[(e['PRODUCER'] = 3)] = 'PRODUCER';
-            e[(e['CONSUMER'] = 4)] = 'CONSUMER';
+            e[(e["INTERNAL"] = 0)] = "INTERNAL";
+            e[(e["SERVER"] = 1)] = "SERVER";
+            e[(e["CLIENT"] = 2)] = "CLIENT";
+            e[(e["PRODUCER"] = 3)] = "PRODUCER";
+            e[(e["CONSUMER"] = 4)] = "CONSUMER";
           })((r = t.SpanKind || (t.SpanKind = {})));
         },
         139: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.wrapSpanContext = t.isSpanContextValid = t.isValidSpanId = t.isValidTraceId = void 0;
@@ -1291,34 +1291,34 @@ module.exports = [
           t.wrapSpanContext = wrapSpanContext;
         },
         847: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.SpanStatusCode = void 0;
           var r;
           ((e) => {
-            e[(e['UNSET'] = 0)] = 'UNSET';
-            e[(e['OK'] = 1)] = 'OK';
-            e[(e['ERROR'] = 2)] = 'ERROR';
+            e[(e["UNSET"] = 0)] = "UNSET";
+            e[(e["OK"] = 1)] = "OK";
+            e[(e["ERROR"] = 2)] = "ERROR";
           })((r = t.SpanStatusCode || (t.SpanStatusCode = {})));
         },
         475: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.TraceFlags = void 0;
           var r;
           ((e) => {
-            e[(e['NONE'] = 0)] = 'NONE';
-            e[(e['SAMPLED'] = 1)] = 'SAMPLED';
+            e[(e["NONE"] = 0)] = "NONE";
+            e[(e["SAMPLED"] = 1)] = "SAMPLED";
           })((r = t.TraceFlags || (t.TraceFlags = {})));
         },
         521: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.VERSION = void 0;
-          t.VERSION = '1.6.0';
+          t.VERSION = "1.6.0";
         },
       };
       var t = {};
@@ -1339,15 +1339,15 @@ module.exports = [
         }
         return a.exports;
       }
-      if (typeof __nccwpck_require__ !== 'undefined')
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api") +
+          "/";
       var r = {};
       (() => {
         var e = r;
-        Object.defineProperty(e, '__esModule', {
+        Object.defineProperty(e, "__esModule", {
           value: true,
         });
         e.trace =
@@ -1379,135 +1379,135 @@ module.exports = [
           e.baggageEntryMetadataFromString =
             void 0;
         var t = __nccwpck_require__(369);
-        Object.defineProperty(e, 'baggageEntryMetadataFromString', {
+        Object.defineProperty(e, "baggageEntryMetadataFromString", {
           enumerable: true,
           get: () => t.baggageEntryMetadataFromString,
         });
         var n = __nccwpck_require__(780);
-        Object.defineProperty(e, 'createContextKey', {
+        Object.defineProperty(e, "createContextKey", {
           enumerable: true,
           get: () => n.createContextKey,
         });
-        Object.defineProperty(e, 'ROOT_CONTEXT', {
+        Object.defineProperty(e, "ROOT_CONTEXT", {
           enumerable: true,
           get: () => n.ROOT_CONTEXT,
         });
         var a = __nccwpck_require__(972);
-        Object.defineProperty(e, 'DiagConsoleLogger', {
+        Object.defineProperty(e, "DiagConsoleLogger", {
           enumerable: true,
           get: () => a.DiagConsoleLogger,
         });
         var o = __nccwpck_require__(957);
-        Object.defineProperty(e, 'DiagLogLevel', {
+        Object.defineProperty(e, "DiagLogLevel", {
           enumerable: true,
           get: () => o.DiagLogLevel,
         });
         var i = __nccwpck_require__(102);
-        Object.defineProperty(e, 'createNoopMeter', {
+        Object.defineProperty(e, "createNoopMeter", {
           enumerable: true,
           get: () => i.createNoopMeter,
         });
         var c = __nccwpck_require__(901);
-        Object.defineProperty(e, 'ValueType', {
+        Object.defineProperty(e, "ValueType", {
           enumerable: true,
           get: () => c.ValueType,
         });
         var s = __nccwpck_require__(194);
-        Object.defineProperty(e, 'defaultTextMapGetter', {
+        Object.defineProperty(e, "defaultTextMapGetter", {
           enumerable: true,
           get: () => s.defaultTextMapGetter,
         });
-        Object.defineProperty(e, 'defaultTextMapSetter', {
+        Object.defineProperty(e, "defaultTextMapSetter", {
           enumerable: true,
           get: () => s.defaultTextMapSetter,
         });
         var u = __nccwpck_require__(125);
-        Object.defineProperty(e, 'ProxyTracer', {
+        Object.defineProperty(e, "ProxyTracer", {
           enumerable: true,
           get: () => u.ProxyTracer,
         });
         var l = __nccwpck_require__(846);
-        Object.defineProperty(e, 'ProxyTracerProvider', {
+        Object.defineProperty(e, "ProxyTracerProvider", {
           enumerable: true,
           get: () => l.ProxyTracerProvider,
         });
         var g = __nccwpck_require__(996);
-        Object.defineProperty(e, 'SamplingDecision', {
+        Object.defineProperty(e, "SamplingDecision", {
           enumerable: true,
           get: () => g.SamplingDecision,
         });
         var p = __nccwpck_require__(357);
-        Object.defineProperty(e, 'SpanKind', {
+        Object.defineProperty(e, "SpanKind", {
           enumerable: true,
           get: () => p.SpanKind,
         });
         var d = __nccwpck_require__(847);
-        Object.defineProperty(e, 'SpanStatusCode', {
+        Object.defineProperty(e, "SpanStatusCode", {
           enumerable: true,
           get: () => d.SpanStatusCode,
         });
         var _ = __nccwpck_require__(475);
-        Object.defineProperty(e, 'TraceFlags', {
+        Object.defineProperty(e, "TraceFlags", {
           enumerable: true,
           get: () => _.TraceFlags,
         });
         var f = __nccwpck_require__(98);
-        Object.defineProperty(e, 'createTraceState', {
+        Object.defineProperty(e, "createTraceState", {
           enumerable: true,
           get: () => f.createTraceState,
         });
         var b = __nccwpck_require__(139);
-        Object.defineProperty(e, 'isSpanContextValid', {
+        Object.defineProperty(e, "isSpanContextValid", {
           enumerable: true,
           get: () => b.isSpanContextValid,
         });
-        Object.defineProperty(e, 'isValidTraceId', {
+        Object.defineProperty(e, "isValidTraceId", {
           enumerable: true,
           get: () => b.isValidTraceId,
         });
-        Object.defineProperty(e, 'isValidSpanId', {
+        Object.defineProperty(e, "isValidSpanId", {
           enumerable: true,
           get: () => b.isValidSpanId,
         });
         var v = __nccwpck_require__(476);
-        Object.defineProperty(e, 'INVALID_SPANID', {
+        Object.defineProperty(e, "INVALID_SPANID", {
           enumerable: true,
           get: () => v.INVALID_SPANID,
         });
-        Object.defineProperty(e, 'INVALID_TRACEID', {
+        Object.defineProperty(e, "INVALID_TRACEID", {
           enumerable: true,
           get: () => v.INVALID_TRACEID,
         });
-        Object.defineProperty(e, 'INVALID_SPAN_CONTEXT', {
+        Object.defineProperty(e, "INVALID_SPAN_CONTEXT", {
           enumerable: true,
           get: () => v.INVALID_SPAN_CONTEXT,
         });
         const O = __nccwpck_require__(67);
-        Object.defineProperty(e, 'context', {
+        Object.defineProperty(e, "context", {
           enumerable: true,
           get: () => O.context,
         });
         const P = __nccwpck_require__(506);
-        Object.defineProperty(e, 'diag', {
+        Object.defineProperty(e, "diag", {
           enumerable: true,
           get: () => P.diag,
         });
         const N = __nccwpck_require__(886);
-        Object.defineProperty(e, 'metrics', {
+        Object.defineProperty(e, "metrics", {
           enumerable: true,
           get: () => N.metrics,
         });
         const S = __nccwpck_require__(939);
-        Object.defineProperty(e, 'propagation', {
+        Object.defineProperty(e, "propagation", {
           enumerable: true,
           get: () => S.propagation,
         });
         const C = __nccwpck_require__(845);
-        Object.defineProperty(e, 'trace', {
+        Object.defineProperty(e, "trace", {
           enumerable: true,
           get: () => C.trace,
         });
-        e['default'] = {
+        e["default"] = {
           context: O.context,
           diag: P.diag,
           metrics: N.metrics,
@@ -1518,15 +1518,15 @@ module.exports = [
       module.exports = r;
     })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/cookie/index.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/cookie/index.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
-      'use strict';
-      if (typeof __nccwpck_require__ !== 'undefined')
+      "use strict";
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/cookie') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/cookie") +
+          "/";
       var e = {};
       (() => {
         var r = e;
@@ -1542,8 +1542,8 @@ module.exports = [
         var a = /; */;
         var n = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
         function parse(e, r) {
-          if (typeof e !== 'string') {
-            throw new TypeError('argument str must be a string');
+          if (typeof e !== "string") {
+            throw new TypeError("argument str must be a string");
           }
           var t = {};
           var n = r || {};
@@ -1551,7 +1551,7 @@ module.exports = [
           var s = n.decode || i;
           for (var p = 0; p < o.length; p++) {
             var f = o[p];
-            var u = f.indexOf('=');
+            var u = f.indexOf("=");
             if (u < 0) {
               continue;
             }
@@ -1569,65 +1569,65 @@ module.exports = [
         function serialize(e, r, i) {
           var a = i || {};
           var o = a.encode || t;
-          if (typeof o !== 'function') {
-            throw new TypeError('option encode is invalid');
+          if (typeof o !== "function") {
+            throw new TypeError("option encode is invalid");
           }
           if (!n.test(e)) {
-            throw new TypeError('argument name is invalid');
+            throw new TypeError("argument name is invalid");
           }
           var s = o(r);
           if (s && !n.test(s)) {
-            throw new TypeError('argument val is invalid');
+            throw new TypeError("argument val is invalid");
           }
-          var p = e + '=' + s;
+          var p = e + "=" + s;
           if (null != a.maxAge) {
             var f = a.maxAge - 0;
             if (isNaN(f) || !isFinite(f)) {
-              throw new TypeError('option maxAge is invalid');
+              throw new TypeError("option maxAge is invalid");
             }
-            p += '; Max-Age=' + Math.floor(f);
+            p += "; Max-Age=" + Math.floor(f);
           }
           if (a.domain) {
             if (!n.test(a.domain)) {
-              throw new TypeError('option domain is invalid');
+              throw new TypeError("option domain is invalid");
             }
-            p += '; Domain=' + a.domain;
+            p += "; Domain=" + a.domain;
           }
           if (a.path) {
             if (!n.test(a.path)) {
-              throw new TypeError('option path is invalid');
+              throw new TypeError("option path is invalid");
             }
-            p += '; Path=' + a.path;
+            p += "; Path=" + a.path;
           }
           if (a.expires) {
-            if (typeof a.expires.toUTCString !== 'function') {
-              throw new TypeError('option expires is invalid');
+            if (typeof a.expires.toUTCString !== "function") {
+              throw new TypeError("option expires is invalid");
             }
-            p += '; Expires=' + a.expires.toUTCString();
+            p += "; Expires=" + a.expires.toUTCString();
           }
           if (a.httpOnly) {
-            p += '; HttpOnly';
+            p += "; HttpOnly";
           }
           if (a.secure) {
-            p += '; Secure';
+            p += "; Secure";
           }
           if (a.sameSite) {
-            var u = typeof a.sameSite === 'string' ? a.sameSite.toLowerCase() : a.sameSite;
+            var u = typeof a.sameSite === "string" ? a.sameSite.toLowerCase() : a.sameSite;
             switch (u) {
               case true:
-                p += '; SameSite=Strict';
+                p += "; SameSite=Strict";
                 break;
-              case 'lax':
-                p += '; SameSite=Lax';
+              case "lax":
+                p += "; SameSite=Lax";
                 break;
-              case 'strict':
-                p += '; SameSite=Strict';
+              case "strict":
+                p += "; SameSite=Strict";
                 break;
-              case 'none':
-                p += '; SameSite=None';
+              case "none":
+                p += "; SameSite=None";
                 break;
               default:
-                throw new TypeError('option sameSite is invalid');
+                throw new TypeError("option sameSite is invalid");
             }
           }
           return p;
@@ -1643,9 +1643,9 @@ module.exports = [
       module.exports = e;
     })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@edge-runtime/cookies/index.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@edge-runtime/cookies/index.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __defProp = Object.defineProperty;
     var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -1659,7 +1659,7 @@ module.exports = [
         });
     };
     var __copyProps = (to, from, except, desc) => {
-      if ((from && typeof from === 'object') || typeof from === 'function') {
+      if ((from && typeof from === "object") || typeof from === "function") {
         for (const key of __getOwnPropNames(from))
           if (!__hasOwnProp.call(to, key) && key !== except)
             __defProp(to, key, {
@@ -1671,7 +1671,7 @@ module.exports = [
     };
     var __toCommonJS = (mod) =>
       __copyProps(
-        __defProp({}, '__esModule', {
+        __defProp({}, "__esModule", {
           value: true,
         }),
         mod,
@@ -1690,33 +1690,33 @@ module.exports = [
     function stringifyCookie(c) {
       var _a;
       const attrs = [
-        'path' in c && c.path && `Path=${c.path}`,
-        'expires' in c &&
+        "path" in c && c.path && `Path=${c.path}`,
+        "expires" in c &&
           (c.expires || c.expires === 0) &&
-          `Expires=${(typeof c.expires === 'number' ? new Date(c.expires) : c.expires).toUTCString()}`,
-        'maxAge' in c && typeof c.maxAge === 'number' && `Max-Age=${c.maxAge}`,
-        'domain' in c && c.domain && `Domain=${c.domain}`,
-        'secure' in c && c.secure && 'Secure',
-        'httpOnly' in c && c.httpOnly && 'HttpOnly',
-        'sameSite' in c && c.sameSite && `SameSite=${c.sameSite}`,
-        'partitioned' in c && c.partitioned && 'Partitioned',
-        'priority' in c && c.priority && `Priority=${c.priority}`,
+          `Expires=${(typeof c.expires === "number" ? new Date(c.expires) : c.expires).toUTCString()}`,
+        "maxAge" in c && typeof c.maxAge === "number" && `Max-Age=${c.maxAge}`,
+        "domain" in c && c.domain && `Domain=${c.domain}`,
+        "secure" in c && c.secure && "Secure",
+        "httpOnly" in c && c.httpOnly && "HttpOnly",
+        "sameSite" in c && c.sameSite && `SameSite=${c.sameSite}`,
+        "partitioned" in c && c.partitioned && "Partitioned",
+        "priority" in c && c.priority && `Priority=${c.priority}`,
       ].filter(Boolean);
-      const stringified = `${c.name}=${encodeURIComponent((_a = c.value) != null ? _a : '')}`;
-      return attrs.length === 0 ? stringified : `${stringified}; ${attrs.join('; ')}`;
+      const stringified = `${c.name}=${encodeURIComponent((_a = c.value) != null ? _a : "")}`;
+      return attrs.length === 0 ? stringified : `${stringified}; ${attrs.join("; ")}`;
     }
     function parseCookie(cookie) {
       const map = /* @__PURE__ */ new Map();
       for (const pair of cookie.split(/; */)) {
         if (!pair) continue;
-        const splitAt = pair.indexOf('=');
+        const splitAt = pair.indexOf("=");
         if (splitAt === -1) {
-          map.set(pair, 'true');
+          map.set(pair, "true");
           continue;
         }
         const [key, value] = [pair.slice(0, splitAt), pair.slice(splitAt + 1)];
         try {
-          map.set(key, decodeURIComponent(value != null ? value : 'true'));
+          map.set(key, decodeURIComponent(value != null ? value : "true"));
         } catch {}
       }
       return map;
@@ -1728,7 +1728,7 @@ module.exports = [
       const [[name, value], ...attributes] = parseCookie(setCookie);
       const { domain, expires, httponly, maxage, path, samesite, secure, partitioned, priority } =
         Object.fromEntries(
-          attributes.map(([key, value2]) => [key.toLowerCase().replace(/-/g, ''), value2]),
+          attributes.map(([key, value2]) => [key.toLowerCase().replace(/-/g, ""), value2]),
         );
       const cookie = {
         name,
@@ -1740,7 +1740,7 @@ module.exports = [
         ...(httponly && {
           httpOnly: true,
         }),
-        ...(typeof maxage === 'string' && {
+        ...(typeof maxage === "string" && {
           maxAge: Number(maxage),
         }),
         path,
@@ -1768,12 +1768,12 @@ module.exports = [
       }
       return newT;
     }
-    var SAME_SITE = ['strict', 'lax', 'none'];
+    var SAME_SITE = ["strict", "lax", "none"];
     function parseSameSite(string) {
       string = string.toLowerCase();
       return SAME_SITE.includes(string) ? string : void 0;
     }
-    var PRIORITY = ['low', 'medium', 'high'];
+    var PRIORITY = ["low", "medium", "high"];
     function parsePriority(string) {
       string = string.toLowerCase();
       return PRIORITY.includes(string) ? string : void 0;
@@ -1795,14 +1795,14 @@ module.exports = [
       }
       function notSpecialChar() {
         ch = cookiesString.charAt(pos);
-        return ch !== '=' && ch !== ';' && ch !== ',';
+        return ch !== "=" && ch !== ";" && ch !== ",";
       }
       while (pos < cookiesString.length) {
         start = pos;
         cookiesSeparatorFound = false;
         while (skipWhitespace()) {
           ch = cookiesString.charAt(pos);
-          if (ch === ',') {
+          if (ch === ",") {
             lastComma = pos;
             pos += 1;
             skipWhitespace();
@@ -1810,7 +1810,7 @@ module.exports = [
             while (pos < cookiesString.length && notSpecialChar()) {
               pos += 1;
             }
-            if (pos < cookiesString.length && cookiesString.charAt(pos) === '=') {
+            if (pos < cookiesString.length && cookiesString.charAt(pos) === "=") {
               cookiesSeparatorFound = true;
               pos = nextStart;
               cookiesStrings.push(cookiesString.substring(start, lastComma));
@@ -1833,7 +1833,7 @@ module.exports = [
       constructor(requestHeaders) {
         /** @internal */ this._parsed = /* @__PURE__ */ new Map();
         this._headers = requestHeaders;
-        const header = requestHeaders.get('cookie');
+        const header = requestHeaders.get("cookie");
         if (header) {
           const parsed = parseCookie(header);
           for (const [name, value] of parsed) {
@@ -1853,7 +1853,7 @@ module.exports = [
         return this._parsed.size;
       }
       get(...args) {
-        const name = typeof args[0] === 'string' ? args[0] : args[0].name;
+        const name = typeof args[0] === "string" ? args[0] : args[0].name;
         return this._parsed.get(name);
       }
       getAll(...args) {
@@ -1863,7 +1863,7 @@ module.exports = [
           return all.map(([_, value]) => value);
         }
         const name =
-          typeof args[0] === 'string' ? args[0] : (_a = args[0]) == null ? void 0 : _a.name;
+          typeof args[0] === "string" ? args[0] : (_a = args[0]) == null ? void 0 : _a.name;
         return all.filter(([n]) => n === name).map(([_, value]) => value);
       }
       has(name) {
@@ -1877,10 +1877,10 @@ module.exports = [
           value,
         });
         this._headers.set(
-          'cookie',
+          "cookie",
           Array.from(map)
             .map(([_, value2]) => stringifyCookie(value2))
-            .join('; '),
+            .join("; "),
         );
         return this;
       }
@@ -1892,10 +1892,10 @@ module.exports = [
           ? map.delete(names)
           : names.map((name) => map.delete(name));
         this._headers.set(
-          'cookie',
+          "cookie",
           Array.from(map)
             .map(([_, value]) => stringifyCookie(value))
-            .join('; '),
+            .join("; "),
         );
         return result;
       }
@@ -1907,13 +1907,13 @@ module.exports = [
       }
       /**
        * Format the cookies in the request as a string for logging
-       */ [Symbol.for('edge-runtime.inspect.custom')]() {
+       */ [Symbol.for("edge-runtime.inspect.custom")]() {
         return `RequestCookies ${JSON.stringify(Object.fromEntries(this._parsed))}`;
       }
       toString() {
         return [...this._parsed.values()]
           .map((v) => `${v.name}=${encodeURIComponent(v.value)}`)
-          .join('; ');
+          .join("; ");
       }
     };
     // src/response-cookies.ts
@@ -1928,7 +1928,7 @@ module.exports = [
               (_a = responseHeaders.getSetCookie) == null ? void 0 : _a.call(responseHeaders)) !=
             null
               ? _b
-              : responseHeaders.get('set-cookie')) != null
+              : responseHeaders.get("set-cookie")) != null
             ? _c
             : [];
         const cookieStrings = Array.isArray(setCookie) ? setCookie : splitCookiesString(setCookie);
@@ -1940,7 +1940,7 @@ module.exports = [
       /**
        * {@link https://wicg.github.io/cookie-store/#CookieStore-get CookieStore#get} without the Promise.
        */ get(...args) {
-        const key = typeof args[0] === 'string' ? args[0] : args[0].name;
+        const key = typeof args[0] === "string" ? args[0] : args[0].name;
         return this._parsed.get(key);
       }
       /**
@@ -1952,7 +1952,7 @@ module.exports = [
           return all;
         }
         const key =
-          typeof args[0] === 'string' ? args[0] : (_a = args[0]) == null ? void 0 : _a.name;
+          typeof args[0] === "string" ? args[0] : (_a = args[0]) == null ? void 0 : _a.name;
         return all.filter((c) => c.name === key);
       }
       has(name) {
@@ -1978,42 +1978,42 @@ module.exports = [
       /**
        * {@link https://wicg.github.io/cookie-store/#CookieStore-delete CookieStore#delete} without the Promise.
        */ delete(...args) {
-        const [name, options] = typeof args[0] === 'string' ? [args[0]] : [args[0].name, args[0]];
+        const [name, options] = typeof args[0] === "string" ? [args[0]] : [args[0].name, args[0]];
         return this.set({
           ...options,
           name,
-          value: '',
+          value: "",
           expires: /* @__PURE__ */ new Date(0),
         });
       }
-      [Symbol.for('edge-runtime.inspect.custom')]() {
+      [Symbol.for("edge-runtime.inspect.custom")]() {
         return `ResponseCookies ${JSON.stringify(Object.fromEntries(this._parsed))}`;
       }
       toString() {
-        return [...this._parsed.values()].map(stringifyCookie).join('; ');
+        return [...this._parsed.values()].map(stringifyCookie).join("; ");
       }
     };
     function replace(bag, headers) {
-      headers.delete('set-cookie');
+      headers.delete("set-cookie");
       for (const [, value] of bag) {
         const serialized = stringifyCookie(value);
-        headers.append('set-cookie', serialized);
+        headers.append("set-cookie", serialized);
       }
     }
     function normalizeCookie(
       cookie = {
-        name: '',
-        value: '',
+        name: "",
+        value: "",
       },
     ) {
-      if (typeof cookie.expires === 'number') {
+      if (typeof cookie.expires === "number") {
         cookie.expires = new Date(cookie.expires);
       }
       if (cookie.maxAge) {
         cookie.expires = new Date(Date.now() + cookie.maxAge * 1e3);
       }
       if (cookie.path === null || cookie.path === void 0) {
-        cookie.path = '/';
+        cookie.path = "/";
       }
       return cookie;
     }
@@ -2027,10 +2027,10 @@ module.exports = [
         stringifyCookie,
       });
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/fresh/index.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/fresh/index.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
-      'use strict';
+      "use strict";
       var e = {
         695: (e) => {
           /*!
@@ -2041,17 +2041,17 @@ module.exports = [
            */ var r = /(?:^|,)\s*?no-cache\s*?(?:,|$)/;
           e.exports = fresh;
           function fresh(e, a) {
-            var t = e['if-modified-since'];
-            var s = e['if-none-match'];
+            var t = e["if-modified-since"];
+            var s = e["if-none-match"];
             if (!t && !s) {
               return false;
             }
-            var i = e['cache-control'];
+            var i = e["cache-control"];
             if (i && r.test(i)) {
               return false;
             }
-            if (s && s !== '*') {
-              var f = a['etag'];
+            if (s && s !== "*") {
+              var f = a["etag"];
               if (!f) {
                 return false;
               }
@@ -2059,7 +2059,7 @@ module.exports = [
               var u = parseTokenList(s);
               for (var _ = 0; _ < u.length; _++) {
                 var o = u[_];
-                if (o === f || o === 'W/' + f || 'W/' + o === f) {
+                if (o === f || o === "W/" + f || "W/" + o === f) {
                   n = false;
                   break;
                 }
@@ -2069,7 +2069,7 @@ module.exports = [
               }
             }
             if (t) {
-              var p = a['last-modified'];
+              var p = a["last-modified"];
               var v = !p || !(parseHttpDate(p) <= parseHttpDate(t));
               if (v) {
                 return false;
@@ -2079,7 +2079,7 @@ module.exports = [
           }
           function parseHttpDate(e) {
             var r = e && Date.parse(e);
-            return typeof r === 'number' ? r : NaN;
+            return typeof r === "number" ? r : NaN;
           }
           function parseTokenList(e) {
             var r = 0;
@@ -2124,19 +2124,19 @@ module.exports = [
         }
         return s.exports;
       }
-      if (typeof __nccwpck_require__ !== 'undefined')
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/fresh') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/fresh") +
+          "/";
       var a = __nccwpck_require__(695);
       module.exports = a;
     })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/bytes/index.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/bytes/index.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
-      'use strict';
+      "use strict";
       var e = {
         56: (e) => {
           /*!
@@ -2159,10 +2159,10 @@ module.exports = [
           };
           var i = /^((-|\+)?(\d+(?:\.\d+)?)) *(kb|mb|gb|tb|pb)$/i;
           function bytes(e, r) {
-            if (typeof e === 'string') {
+            if (typeof e === "string") {
               return parse(e);
             }
-            if (typeof e === 'number') {
+            if (typeof e === "number") {
               return format(e, r);
             }
             return null;
@@ -2172,52 +2172,52 @@ module.exports = [
               return null;
             }
             var n = Math.abs(e);
-            var o = (i && i.thousandsSeparator) || '';
-            var s = (i && i.unitSeparator) || '';
+            var o = (i && i.thousandsSeparator) || "";
+            var s = (i && i.unitSeparator) || "";
             var f = i && i.decimalPlaces !== undefined ? i.decimalPlaces : 2;
             var u = Boolean(i && i.fixedDecimals);
-            var p = (i && i.unit) || '';
+            var p = (i && i.unit) || "";
             if (!p || !t[p.toLowerCase()]) {
               if (n >= t.pb) {
-                p = 'PB';
+                p = "PB";
               } else if (n >= t.tb) {
-                p = 'TB';
+                p = "TB";
               } else if (n >= t.gb) {
-                p = 'GB';
+                p = "GB";
               } else if (n >= t.mb) {
-                p = 'MB';
+                p = "MB";
               } else if (n >= t.kb) {
-                p = 'KB';
+                p = "KB";
               } else {
-                p = 'B';
+                p = "B";
               }
             }
             var b = e / t[p.toLowerCase()];
             var l = b.toFixed(f);
             if (!u) {
-              l = l.replace(a, '$1');
+              l = l.replace(a, "$1");
             }
             if (o) {
               l = l
-                .split('.')
+                .split(".")
                 .map((e, a) => (a === 0 ? e.replace(r, o) : e))
-                .join('.');
+                .join(".");
             }
             return l + s + p;
           }
           function parse(e) {
-            if (typeof e === 'number' && !isNaN(e)) {
+            if (typeof e === "number" && !isNaN(e)) {
               return e;
             }
-            if (typeof e !== 'string') {
+            if (typeof e !== "string") {
               return null;
             }
             var r = i.exec(e);
             var a;
-            var n = 'b';
+            var n = "b";
             if (!r) {
               a = parseInt(e, 10);
-              n = 'b';
+              n = "b";
             } else {
               a = parseFloat(r[1]);
               n = r[4].toLowerCase();
@@ -2244,18 +2244,18 @@ module.exports = [
         }
         return i.exports;
       }
-      if (typeof __nccwpck_require__ !== 'undefined')
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/bytes') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/bytes") +
+          "/";
       var a = __nccwpck_require__(56);
       module.exports = a;
     })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.node.development.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.node.development.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * @license React
@@ -2265,16 +2265,16 @@ module.exports = [
      *
      * This source code is licensed under the MIT license found in the
      * LICENSE file in the root directory of this source tree.
-     */ 'production' !== ('TURBOPACK compile-time value', 'development') &&
+     */ "production" !== ("TURBOPACK compile-time value", "development") &&
       (() => {
         function checkEvalAvailabilityOnceDev() {
           if (!hasConfirmedEval) {
             hasConfirmedEval = !0;
             try {
-              (0, eval)('null');
+              (0, eval)("null");
             } catch ($jscomp$unused$catch) {
               console.error(
-                'eval() is not supported in this environment. This can happen if you started the Node.js process with --disallow-code-generation-from-strings, or if `eval` was patched by other means. React requires eval() in development mode for various debugging features like reconstructing callstacks from a different environment.\nReact will never use eval() in production mode',
+                "eval() is not supported in this environment. This can happen if you started the Node.js process with --disallow-code-generation-from-strings, or if `eval` was patched by other means. React requires eval() in development mode for various debugging features like reconstructing callstacks from a different environment.\nReact will never use eval() in production mode",
               );
             }
           }
@@ -2285,7 +2285,7 @@ module.exports = [
             if ((bundlerConfig = moduleExports && moduleExports[metadata[2]]))
               moduleExports = bundlerConfig.name;
             else {
-              bundlerConfig = moduleExports && moduleExports['*'];
+              bundlerConfig = moduleExports && moduleExports["*"];
               if (!bundlerConfig)
                 throw Error(
                   'Could not find the module "' +
@@ -2301,11 +2301,11 @@ module.exports = [
           return metadata;
         }
         function resolveServerReference(bundlerConfig, id) {
-          var name = '',
+          var name = "",
             resolvedModuleData = bundlerConfig[id];
           if (resolvedModuleData) name = resolvedModuleData.name;
           else {
-            var idx = id.lastIndexOf('#');
+            var idx = id.lastIndexOf("#");
             -1 !== idx &&
               ((name = id.slice(idx + 1)), (resolvedModuleData = bundlerConfig[id.slice(0, idx)]));
             if (!resolvedModuleData)
@@ -2321,14 +2321,14 @@ module.exports = [
         }
         function requireAsyncModule(id) {
           var promise = globalThis.__next_require__(id);
-          if ('function' !== typeof promise.then || 'fulfilled' === promise.status) return null;
+          if ("function" !== typeof promise.then || "fulfilled" === promise.status) return null;
           promise.then(
             (value) => {
-              promise.status = 'fulfilled';
+              promise.status = "fulfilled";
               promise.value = value;
             },
             (reason) => {
-              promise.status = 'rejected';
+              promise.status = "rejected";
               promise.reason = reason;
             },
           );
@@ -2355,11 +2355,11 @@ module.exports = [
         }
         function requireModule(metadata) {
           var moduleExports = globalThis.__next_require__(metadata[0]);
-          if (4 === metadata.length && 'function' === typeof moduleExports.then)
-            if ('fulfilled' === moduleExports.status) moduleExports = moduleExports.value;
+          if (4 === metadata.length && "function" === typeof moduleExports.then)
+            if ("fulfilled" === moduleExports.status) moduleExports = moduleExports.value;
             else throw moduleExports.reason;
-          if ('*' === metadata[2]) return moduleExports;
-          if ('' === metadata[2])
+          if ("*" === metadata[2]) return moduleExports;
+          if ("" === metadata[2])
             return moduleExports.__esModule ? moduleExports.default : moduleExports;
           if (hasOwnProperty.call(moduleExports, metadata[2])) return moduleExports[metadata[2]];
         }
@@ -2372,10 +2372,10 @@ module.exports = [
                 JSCompiler_temp_const$jscomp$1 = moduleLoading.prefix + chunks[i];
               var JSCompiler_inline_result = moduleLoading.crossOrigin;
               JSCompiler_inline_result =
-                'string' === typeof JSCompiler_inline_result
-                  ? 'use-credentials' === JSCompiler_inline_result
+                "string" === typeof JSCompiler_inline_result
+                  ? "use-credentials" === JSCompiler_inline_result
                     ? JSCompiler_inline_result
-                    : ''
+                    : ""
                   : void 0;
               JSCompiler_temp_const$jscomp$0.call(
                 JSCompiler_temp_const,
@@ -2388,11 +2388,11 @@ module.exports = [
             }
         }
         function getIteratorFn(maybeIterable) {
-          if (null === maybeIterable || 'object' !== typeof maybeIterable) return null;
+          if (null === maybeIterable || "object" !== typeof maybeIterable) return null;
           maybeIterable =
             (MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL]) ||
-            maybeIterable['@@iterator'];
-          return 'function' === typeof maybeIterable ? maybeIterable : null;
+            maybeIterable["@@iterator"];
+          return "function" === typeof maybeIterable ? maybeIterable : null;
         }
         function isObjectPrototype(object) {
           if (!object) return !1;
@@ -2410,8 +2410,8 @@ module.exports = [
             if (
               !descriptor ||
               (!descriptor.enumerable &&
-                (('key' !== names[i] && 'ref' !== names[i]) ||
-                  'function' !== typeof descriptor.get))
+                (("key" !== names[i] && "ref" !== names[i]) ||
+                  "function" !== typeof descriptor.get))
             )
               return !1;
           }
@@ -2427,34 +2427,34 @@ module.exports = [
         }
         function describeValueForErrorMessage(value) {
           switch (typeof value) {
-            case 'string':
-              return JSON.stringify(10 >= value.length ? value : value.slice(0, 10) + '...');
-            case 'object':
-              if (isArrayImpl(value)) return '[...]';
-              if (null !== value && value.$$typeof === CLIENT_REFERENCE_TAG) return 'client';
+            case "string":
+              return JSON.stringify(10 >= value.length ? value : value.slice(0, 10) + "...");
+            case "object":
+              if (isArrayImpl(value)) return "[...]";
+              if (null !== value && value.$$typeof === CLIENT_REFERENCE_TAG) return "client";
               value = objectName(value);
-              return 'Object' === value ? '{...}' : value;
-            case 'function':
+              return "Object" === value ? "{...}" : value;
+            case "function":
               return value.$$typeof === CLIENT_REFERENCE_TAG
-                ? 'client'
+                ? "client"
                 : (value = value.displayName || value.name)
-                  ? 'function ' + value
-                  : 'function';
+                  ? "function " + value
+                  : "function";
             default:
               return String(value);
           }
         }
         function describeElementType(type) {
-          if ('string' === typeof type) return type;
+          if ("string" === typeof type) return type;
           switch (type) {
             case REACT_SUSPENSE_TYPE:
-              return 'Suspense';
+              return "Suspense";
             case REACT_SUSPENSE_LIST_TYPE:
-              return 'SuspenseList';
+              return "SuspenseList";
             case REACT_VIEW_TRANSITION_TYPE:
-              return 'ViewTransition';
+              return "ViewTransition";
           }
-          if ('object' === typeof type)
+          if ("object" === typeof type)
             switch (type.$$typeof) {
               case REACT_FORWARD_REF_TYPE:
                 return describeElementType(type.render);
@@ -2468,86 +2468,86 @@ module.exports = [
                 } catch (x) {}
               }
             }
-          return '';
+          return "";
         }
         function describeObjectForErrorMessage(objectOrArray, expandedName) {
           var objKind = objectName(objectOrArray);
-          if ('Object' !== objKind && 'Array' !== objKind) return objKind;
+          if ("Object" !== objKind && "Array" !== objKind) return objKind;
           var start = -1,
             length = 0;
           if (isArrayImpl(objectOrArray))
             if (jsxChildrenParents.has(objectOrArray)) {
               var type = jsxChildrenParents.get(objectOrArray);
-              objKind = '<' + describeElementType(type) + '>';
+              objKind = "<" + describeElementType(type) + ">";
               for (var i = 0; i < objectOrArray.length; i++) {
                 var value = objectOrArray[i];
                 value =
-                  'string' === typeof value
+                  "string" === typeof value
                     ? value
-                    : 'object' === typeof value && null !== value
-                      ? '{' + describeObjectForErrorMessage(value) + '}'
-                      : '{' + describeValueForErrorMessage(value) + '}';
-                '' + i === expandedName
+                    : "object" === typeof value && null !== value
+                      ? "{" + describeObjectForErrorMessage(value) + "}"
+                      : "{" + describeValueForErrorMessage(value) + "}";
+                "" + i === expandedName
                   ? ((start = objKind.length), (length = value.length), (objKind += value))
                   : (objKind =
                       15 > value.length && 40 > objKind.length + value.length
                         ? objKind + value
-                        : objKind + '{...}');
+                        : objKind + "{...}");
               }
-              objKind += '</' + describeElementType(type) + '>';
+              objKind += "</" + describeElementType(type) + ">";
             } else {
-              objKind = '[';
+              objKind = "[";
               for (type = 0; type < objectOrArray.length; type++)
-                0 < type && (objKind += ', '),
+                0 < type && (objKind += ", "),
                   (i = objectOrArray[type]),
                   (i =
-                    'object' === typeof i && null !== i
+                    "object" === typeof i && null !== i
                       ? describeObjectForErrorMessage(i)
                       : describeValueForErrorMessage(i)),
-                  '' + type === expandedName
+                  "" + type === expandedName
                     ? ((start = objKind.length), (length = i.length), (objKind += i))
                     : (objKind =
                         10 > i.length && 40 > objKind.length + i.length
                           ? objKind + i
-                          : objKind + '...');
-              objKind += ']';
+                          : objKind + "...");
+              objKind += "]";
             }
           else if (objectOrArray.$$typeof === REACT_ELEMENT_TYPE)
-            objKind = '<' + describeElementType(objectOrArray.type) + '/>';
+            objKind = "<" + describeElementType(objectOrArray.type) + "/>";
           else {
-            if (objectOrArray.$$typeof === CLIENT_REFERENCE_TAG) return 'client';
+            if (objectOrArray.$$typeof === CLIENT_REFERENCE_TAG) return "client";
             if (jsxPropsParents.has(objectOrArray)) {
               objKind = jsxPropsParents.get(objectOrArray);
-              objKind = '<' + (describeElementType(objKind) || '...');
+              objKind = "<" + (describeElementType(objKind) || "...");
               type = Object.keys(objectOrArray);
               for (i = 0; i < type.length; i++) {
-                objKind += ' ';
+                objKind += " ";
                 value = type[i];
-                objKind += describeKeyForErrorMessage(value) + '=';
+                objKind += describeKeyForErrorMessage(value) + "=";
                 var _value2 = objectOrArray[value];
                 var _substr2 =
-                  value === expandedName && 'object' === typeof _value2 && null !== _value2
+                  value === expandedName && "object" === typeof _value2 && null !== _value2
                     ? describeObjectForErrorMessage(_value2)
                     : describeValueForErrorMessage(_value2);
-                'string' !== typeof _value2 && (_substr2 = '{' + _substr2 + '}');
+                "string" !== typeof _value2 && (_substr2 = "{" + _substr2 + "}");
                 value === expandedName
                   ? ((start = objKind.length), (length = _substr2.length), (objKind += _substr2))
                   : (objKind =
                       10 > _substr2.length && 40 > objKind.length + _substr2.length
                         ? objKind + _substr2
-                        : objKind + '...');
+                        : objKind + "...");
               }
-              objKind += '>';
+              objKind += ">";
             } else {
-              objKind = '{';
+              objKind = "{";
               type = Object.keys(objectOrArray);
               for (i = 0; i < type.length; i++)
-                0 < i && (objKind += ', '),
+                0 < i && (objKind += ", "),
                   (value = type[i]),
-                  (objKind += describeKeyForErrorMessage(value) + ': '),
+                  (objKind += describeKeyForErrorMessage(value) + ": "),
                   (_value2 = objectOrArray[value]),
                   (_value2 =
-                    'object' === typeof _value2 && null !== _value2
+                    "object" === typeof _value2 && null !== _value2
                       ? describeObjectForErrorMessage(_value2)
                       : describeValueForErrorMessage(_value2)),
                   value === expandedName
@@ -2555,27 +2555,27 @@ module.exports = [
                     : (objKind =
                         10 > _value2.length && 40 > objKind.length + _value2.length
                           ? objKind + _value2
-                          : objKind + '...');
-              objKind += '}';
+                          : objKind + "...");
+              objKind += "}";
             }
           }
           return void 0 === expandedName
             ? objKind
             : -1 < start && 0 < length
-              ? ((objectOrArray = ' '.repeat(start) + '^'.repeat(length)),
-                '\n  ' + objKind + '\n  ' + objectOrArray)
-              : '\n  ' + objKind;
+              ? ((objectOrArray = " ".repeat(start) + "^".repeat(length)),
+                "\n  " + objKind + "\n  " + objectOrArray)
+              : "\n  " + objKind;
         }
         function serializeNumber(number) {
           return Number.isFinite(number)
             ? 0 === number && -Infinity === 1 / number
-              ? '$-0'
+              ? "$-0"
               : number
             : Infinity === number
-              ? '$Infinity'
+              ? "$Infinity"
               : -Infinity === number
-                ? '$-Infinity'
-                : '$NaN';
+                ? "$-Infinity"
+                : "$NaN";
         }
         function processReply(root, formFieldPrefix, temporaryReferences, resolve, reject) {
           function serializeTypedArray(tag, typedArray) {
@@ -2585,7 +2585,7 @@ module.exports = [
             var blobId = nextPartId++;
             null === formData && (formData = new FormData());
             formData.append(formFieldPrefix + blobId, typedArray);
-            return '$' + tag + blobId.toString(16);
+            return "$" + tag + blobId.toString(16);
           }
           function serializeBinaryReader(reader) {
             function progress(entry) {
@@ -2593,7 +2593,7 @@ module.exports = [
                 ? ((entry = nextPartId++),
                   data.append(formFieldPrefix + entry, new Blob(buffer)),
                   data.append(formFieldPrefix + streamId, '"$o' + entry.toString(16) + '"'),
-                  data.append(formFieldPrefix + streamId, 'C'),
+                  data.append(formFieldPrefix + streamId, "C"),
                   pendingParts--,
                   0 === pendingParts && resolve(data))
                 : (buffer.push(entry.value),
@@ -2605,12 +2605,12 @@ module.exports = [
             var streamId = nextPartId++,
               buffer = [];
             reader.read(new Uint8Array(1024)).then(progress, reject);
-            return '$r' + streamId.toString(16);
+            return "$r" + streamId.toString(16);
           }
           function serializeReader(reader) {
             function progress(entry) {
               if (entry.done)
-                data.append(formFieldPrefix + streamId, 'C'),
+                data.append(formFieldPrefix + streamId, "C"),
                   pendingParts--,
                   0 === pendingParts && resolve(data);
               else
@@ -2627,12 +2627,12 @@ module.exports = [
             pendingParts++;
             var streamId = nextPartId++;
             reader.read().then(progress, reject);
-            return '$R' + streamId.toString(16);
+            return "$R" + streamId.toString(16);
           }
           function serializeReadableStream(stream) {
             try {
               var binaryReader = stream.getReader({
-                mode: 'byob',
+                mode: "byob",
               });
             } catch (x) {
               return serializeReader(stream.getReader());
@@ -2642,11 +2642,11 @@ module.exports = [
           function serializeAsyncIterable(iterable, iterator) {
             function progress(entry) {
               if (entry.done) {
-                if (void 0 === entry.value) data.append(formFieldPrefix + streamId, 'C');
+                if (void 0 === entry.value) data.append(formFieldPrefix + streamId, "C");
                 else
                   try {
                     var partJSON = JSON.stringify(entry.value, resolveToJSON);
-                    data.append(formFieldPrefix + streamId, 'C' + partJSON);
+                    data.append(formFieldPrefix + streamId, "C" + partJSON);
                   } catch (x) {
                     reject(x);
                     return;
@@ -2668,41 +2668,41 @@ module.exports = [
             var streamId = nextPartId++;
             iterable = iterable === iterator;
             iterator.next().then(progress, reject);
-            return '$' + (iterable ? 'x' : 'X') + streamId.toString(16);
+            return "$" + (iterable ? "x" : "X") + streamId.toString(16);
           }
           function resolveToJSON(key, value) {
-            '__proto__' === key &&
+            "__proto__" === key &&
               console.error(
-                'Expected not to serialize an object with own property `__proto__`. When parsed this property will be omitted.%s',
+                "Expected not to serialize an object with own property `__proto__`. When parsed this property will be omitted.%s",
                 describeObjectForErrorMessage(this, key),
               );
             var originalValue = this[key];
-            'object' !== typeof originalValue ||
+            "object" !== typeof originalValue ||
               originalValue === value ||
               originalValue instanceof Date ||
-              ('Object' !== objectName(originalValue)
+              ("Object" !== objectName(originalValue)
                 ? console.error(
-                    'Only plain objects can be passed to Server Functions from the Client. %s objects are not supported.%s',
+                    "Only plain objects can be passed to Server Functions from the Client. %s objects are not supported.%s",
                     objectName(originalValue),
                     describeObjectForErrorMessage(this, key),
                   )
                 : console.error(
-                    'Only plain objects can be passed to Server Functions from the Client. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.%s',
+                    "Only plain objects can be passed to Server Functions from the Client. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.%s",
                     describeObjectForErrorMessage(this, key),
                   ));
             if (null === value) return null;
-            if ('object' === typeof value) {
+            if ("object" === typeof value) {
               switch (value.$$typeof) {
                 case REACT_ELEMENT_TYPE:
-                  if (void 0 !== temporaryReferences && -1 === key.indexOf(':')) {
+                  if (void 0 !== temporaryReferences && -1 === key.indexOf(":")) {
                     var parentReference = writtenObjects.get(this);
                     if (void 0 !== parentReference)
-                      return temporaryReferences.set(parentReference + ':' + key, value), '$T';
+                      return temporaryReferences.set(parentReference + ":" + key, value), "$T";
                   }
                   if (void 0 !== temporaryReferences && modelRoot === value)
-                    return (modelRoot = null), '$T';
+                    return (modelRoot = null), "$T";
                   throw Error(
-                    'React Element cannot be passed to Server Functions from the Client without a temporary reference set. Pass a TemporaryReferenceSet to the options.' +
+                    "React Element cannot be passed to Server Functions from the Client without a temporary reference set. Pass a TemporaryReferenceSet to the options." +
                       describeObjectForErrorMessage(this, key),
                   );
                 case REACT_LAZY_TYPE: {
@@ -2715,9 +2715,9 @@ module.exports = [
                     var lazyId = nextPartId++,
                       partJSON = serializeModel(parentReference, lazyId);
                     formData.append(formFieldPrefix + lazyId, partJSON);
-                    return '$' + lazyId.toString(16);
+                    return "$" + lazyId.toString(16);
                   } catch (x) {
-                    if ('object' === typeof x && null !== x && 'function' === typeof x.then) {
+                    if ("object" === typeof x && null !== x && "function" === typeof x.then) {
                       pendingParts++;
                       var _lazyId = nextPartId++;
                       parentReference = () => {
@@ -2732,7 +2732,7 @@ module.exports = [
                         }
                       };
                       x.then(parentReference, parentReference);
-                      return '$' + _lazyId.toString(16);
+                      return "$" + _lazyId.toString(16);
                     }
                     reject(x);
                     return null;
@@ -2742,14 +2742,14 @@ module.exports = [
                 }
               }
               parentReference = writtenObjects.get(value);
-              if ('function' === typeof value.then) {
+              if ("function" === typeof value.then) {
                 if (void 0 !== parentReference)
                   if (modelRoot === value) modelRoot = null;
                   else return parentReference;
                 null === formData && (formData = new FormData());
                 pendingParts++;
                 var promiseId = nextPartId++;
-                key = '$@' + promiseId.toString(16);
+                key = "$@" + promiseId.toString(16);
                 writtenObjects.set(value, key);
                 value.then((partValue) => {
                   try {
@@ -2772,10 +2772,10 @@ module.exports = [
                 if (modelRoot === value) modelRoot = null;
                 else return parentReference;
               else
-                -1 === key.indexOf(':') &&
+                -1 === key.indexOf(":") &&
                   ((parentReference = writtenObjects.get(this)),
                   void 0 !== parentReference &&
-                    ((parentReference = parentReference + ':' + key),
+                    ((parentReference = parentReference + ":" + key),
                     writtenObjects.set(value, parentReference),
                     void 0 !== temporaryReferences &&
                       temporaryReferences.set(parentReference, value)));
@@ -2784,11 +2784,11 @@ module.exports = [
                 null === formData && (formData = new FormData());
                 var _data3 = formData;
                 key = nextPartId++;
-                var prefix = formFieldPrefix + key + '_';
+                var prefix = formFieldPrefix + key + "_";
                 value.forEach((originalValue, originalKey) => {
                   _data3.append(prefix + originalKey, originalValue);
                 });
-                return '$K' + key.toString(16);
+                return "$K" + key.toString(16);
               }
               if (value instanceof Map)
                 return (
@@ -2796,7 +2796,7 @@ module.exports = [
                   (parentReference = serializeModel(Array.from(value), key)),
                   null === formData && (formData = new FormData()),
                   formData.append(formFieldPrefix + key, parentReference),
-                  '$Q' + key.toString(16)
+                  "$Q" + key.toString(16)
                 );
               if (value instanceof Set)
                 return (
@@ -2804,7 +2804,7 @@ module.exports = [
                   (parentReference = serializeModel(Array.from(value), key)),
                   null === formData && (formData = new FormData()),
                   formData.append(formFieldPrefix + key, parentReference),
-                  '$W' + key.toString(16)
+                  "$W" + key.toString(16)
                 );
               if (value instanceof ArrayBuffer)
                 return (
@@ -2812,26 +2812,26 @@ module.exports = [
                   (parentReference = nextPartId++),
                   null === formData && (formData = new FormData()),
                   formData.append(formFieldPrefix + parentReference, key),
-                  '$A' + parentReference.toString(16)
+                  "$A" + parentReference.toString(16)
                 );
-              if (value instanceof Int8Array) return serializeTypedArray('O', value);
-              if (value instanceof Uint8Array) return serializeTypedArray('o', value);
-              if (value instanceof Uint8ClampedArray) return serializeTypedArray('U', value);
-              if (value instanceof Int16Array) return serializeTypedArray('S', value);
-              if (value instanceof Uint16Array) return serializeTypedArray('s', value);
-              if (value instanceof Int32Array) return serializeTypedArray('L', value);
-              if (value instanceof Uint32Array) return serializeTypedArray('l', value);
-              if (value instanceof Float32Array) return serializeTypedArray('G', value);
-              if (value instanceof Float64Array) return serializeTypedArray('g', value);
-              if (value instanceof BigInt64Array) return serializeTypedArray('M', value);
-              if (value instanceof BigUint64Array) return serializeTypedArray('m', value);
-              if (value instanceof DataView) return serializeTypedArray('V', value);
-              if ('function' === typeof Blob && value instanceof Blob)
+              if (value instanceof Int8Array) return serializeTypedArray("O", value);
+              if (value instanceof Uint8Array) return serializeTypedArray("o", value);
+              if (value instanceof Uint8ClampedArray) return serializeTypedArray("U", value);
+              if (value instanceof Int16Array) return serializeTypedArray("S", value);
+              if (value instanceof Uint16Array) return serializeTypedArray("s", value);
+              if (value instanceof Int32Array) return serializeTypedArray("L", value);
+              if (value instanceof Uint32Array) return serializeTypedArray("l", value);
+              if (value instanceof Float32Array) return serializeTypedArray("G", value);
+              if (value instanceof Float64Array) return serializeTypedArray("g", value);
+              if (value instanceof BigInt64Array) return serializeTypedArray("M", value);
+              if (value instanceof BigUint64Array) return serializeTypedArray("m", value);
+              if (value instanceof DataView) return serializeTypedArray("V", value);
+              if ("function" === typeof Blob && value instanceof Blob)
                 return (
                   null === formData && (formData = new FormData()),
                   (key = nextPartId++),
                   formData.append(formFieldPrefix + key, value),
-                  '$B' + key.toString(16)
+                  "$B" + key.toString(16)
                 );
               if ((parentReference = getIteratorFn(value)))
                 return (
@@ -2841,13 +2841,13 @@ module.exports = [
                       (parentReference = serializeModel(Array.from(parentReference), key)),
                       null === formData && (formData = new FormData()),
                       formData.append(formFieldPrefix + key, parentReference),
-                      '$i' + key.toString(16))
+                      "$i" + key.toString(16))
                     : Array.from(parentReference)
                 );
-              if ('function' === typeof ReadableStream && value instanceof ReadableStream)
+              if ("function" === typeof ReadableStream && value instanceof ReadableStream)
                 return serializeReadableStream(value);
               parentReference = value[ASYNC_ITERATOR];
-              if ('function' === typeof parentReference)
+              if ("function" === typeof parentReference)
                 return serializeAsyncIterable(value, parentReference.call(value));
               parentReference = getPrototypeOf(value);
               if (
@@ -2856,19 +2856,19 @@ module.exports = [
               ) {
                 if (void 0 === temporaryReferences)
                   throw Error(
-                    'Only plain objects, and a few built-ins, can be passed to Server Functions. Classes or null prototypes are not supported.' +
+                    "Only plain objects, and a few built-ins, can be passed to Server Functions. Classes or null prototypes are not supported." +
                       describeObjectForErrorMessage(this, key),
                   );
-                return '$T';
+                return "$T";
               }
               value.$$typeof === REACT_CONTEXT_TYPE
                 ? console.error(
-                    'React Context Providers cannot be passed to Server Functions from the Client.%s',
+                    "React Context Providers cannot be passed to Server Functions from the Client.%s",
                     describeObjectForErrorMessage(this, key),
                   )
-                : 'Object' !== objectName(value)
+                : "Object" !== objectName(value)
                   ? console.error(
-                      'Only plain objects can be passed to Server Functions from the Client. %s objects are not supported.%s',
+                      "Only plain objects can be passed to Server Functions from the Client. %s objects are not supported.%s",
                       objectName(value),
                       describeObjectForErrorMessage(this, key),
                     )
@@ -2877,25 +2877,25 @@ module.exports = [
                       ((parentReference = Object.getOwnPropertySymbols(value)),
                       0 < parentReference.length &&
                         console.error(
-                          'Only plain objects can be passed to Server Functions from the Client. Objects with symbol properties like %s are not supported.%s',
+                          "Only plain objects can be passed to Server Functions from the Client. Objects with symbol properties like %s are not supported.%s",
                           parentReference[0].description,
                           describeObjectForErrorMessage(this, key),
                         ))
                     : console.error(
-                        'Only plain objects can be passed to Server Functions from the Client. Classes or other objects with methods are not supported.%s',
+                        "Only plain objects can be passed to Server Functions from the Client. Classes or other objects with methods are not supported.%s",
                         describeObjectForErrorMessage(this, key),
                       );
               return value;
             }
-            if ('string' === typeof value) {
-              if ('Z' === value[value.length - 1] && this[key] instanceof Date) return '$D' + value;
-              key = '$' === value[0] ? '$' + value : value;
+            if ("string" === typeof value) {
+              if ("Z" === value[value.length - 1] && this[key] instanceof Date) return "$D" + value;
+              key = "$" === value[0] ? "$" + value : value;
               return key;
             }
-            if ('boolean' === typeof value) return value;
-            if ('number' === typeof value) return serializeNumber(value);
-            if ('undefined' === typeof value) return '$undefined';
-            if ('function' === typeof value) {
+            if ("boolean" === typeof value) return value;
+            if ("number" === typeof value) return serializeNumber(value);
+            if ("undefined" === typeof value) return "$undefined";
+            if ("function" === typeof value) {
               parentReference = knownServerReferences.get(value);
               if (void 0 !== parentReference) {
                 key = writtenObjects.get(value);
@@ -2910,41 +2910,41 @@ module.exports = [
                 null === formData && (formData = new FormData());
                 parentReference = nextPartId++;
                 formData.set(formFieldPrefix + parentReference, key);
-                key = '$h' + parentReference.toString(16);
+                key = "$h" + parentReference.toString(16);
                 writtenObjects.set(value, key);
                 return key;
               }
               if (
                 void 0 !== temporaryReferences &&
-                -1 === key.indexOf(':') &&
+                -1 === key.indexOf(":") &&
                 ((parentReference = writtenObjects.get(this)), void 0 !== parentReference)
               )
-                return temporaryReferences.set(parentReference + ':' + key, value), '$T';
+                return temporaryReferences.set(parentReference + ":" + key, value), "$T";
               throw Error(
-                'Client Functions cannot be passed directly to Server Functions. Only Functions passed from the Server can be passed back again.',
+                "Client Functions cannot be passed directly to Server Functions. Only Functions passed from the Server can be passed back again.",
               );
             }
-            if ('symbol' === typeof value) {
+            if ("symbol" === typeof value) {
               if (
                 void 0 !== temporaryReferences &&
-                -1 === key.indexOf(':') &&
+                -1 === key.indexOf(":") &&
                 ((parentReference = writtenObjects.get(this)), void 0 !== parentReference)
               )
-                return temporaryReferences.set(parentReference + ':' + key, value), '$T';
+                return temporaryReferences.set(parentReference + ":" + key, value), "$T";
               throw Error(
-                'Symbols cannot be passed to a Server Function without a temporary reference set. Pass a TemporaryReferenceSet to the options.' +
+                "Symbols cannot be passed to a Server Function without a temporary reference set. Pass a TemporaryReferenceSet to the options." +
                   describeObjectForErrorMessage(this, key),
               );
             }
-            if ('bigint' === typeof value) return '$n' + value.toString(10);
+            if ("bigint" === typeof value) return "$n" + value.toString(10);
             throw Error(
-              'Type ' + typeof value + ' is not supported as an argument to a Server Function.',
+              "Type " + typeof value + " is not supported as an argument to a Server Function.",
             );
           }
           function serializeModel(model, id) {
-            'object' === typeof model &&
+            "object" === typeof model &&
               null !== model &&
-              ((id = '$' + id.toString(16)),
+              ((id = "$" + id.toString(16)),
               writtenObjects.set(model, id),
               void 0 !== temporaryReferences && temporaryReferences.set(id, model));
             modelRoot = model;
@@ -2959,7 +2959,7 @@ module.exports = [
           var json = serializeModel(root, 0);
           null === formData
             ? resolve(json)
-            : (formData.set(formFieldPrefix + '0', json), 0 === pendingParts && resolve(formData));
+            : (formData.set(formFieldPrefix + "0", json), 0 === pendingParts && resolve(formData));
           return () => {
             0 < pendingParts &&
               ((pendingParts = 0), null === formData ? resolve(json) : resolve(formData));
@@ -2974,20 +2974,20 @@ module.exports = [
             });
           processReply(
             reference,
-            '',
+            "",
             void 0,
             (body) => {
-              if ('string' === typeof body) {
+              if ("string" === typeof body) {
                 var data = new FormData();
-                data.append('0', body);
+                data.append("0", body);
                 body = data;
               }
-              thenable.status = 'fulfilled';
+              thenable.status = "fulfilled";
               thenable.value = body;
               resolve(body);
             },
             (e) => {
-              thenable.status = 'rejected';
+              thenable.status = "rejected";
               thenable.reason = e;
               reject(e);
             },
@@ -2998,7 +2998,7 @@ module.exports = [
           var referenceClosure = knownServerReferences.get(this);
           if (!referenceClosure)
             throw Error(
-              'Tried to encode a Server Action from a different instance than the encoder is from. This is a bug in React.',
+              "Tried to encode a Server Action from a different instance than the encoder is from. This is a bug in React.",
             );
           var data = null;
           if (null !== referenceClosure.bound) {
@@ -3009,20 +3009,20 @@ module.exports = [
                 bound: referenceClosure.bound,
               })),
               boundCache.set(referenceClosure, data));
-            if ('rejected' === data.status) throw data.reason;
-            if ('fulfilled' !== data.status) throw data;
+            if ("rejected" === data.status) throw data.reason;
+            if ("fulfilled" !== data.status) throw data;
             referenceClosure = data.value;
             var prefixedData = new FormData();
             referenceClosure.forEach((value, key) => {
-              prefixedData.append('$ACTION_' + identifierPrefix + ':' + key, value);
+              prefixedData.append("$ACTION_" + identifierPrefix + ":" + key, value);
             });
             data = prefixedData;
-            referenceClosure = '$ACTION_REF_' + identifierPrefix;
-          } else referenceClosure = '$ACTION_ID_' + referenceClosure.id;
+            referenceClosure = "$ACTION_REF_" + identifierPrefix;
+          } else referenceClosure = "$ACTION_ID_" + referenceClosure.id;
           return {
             name: referenceClosure,
-            method: 'POST',
-            encType: 'multipart/form-data',
+            method: "POST",
+            encType: "multipart/form-data",
             data: data,
           };
         }
@@ -3030,29 +3030,29 @@ module.exports = [
           var referenceClosure = knownServerReferences.get(this);
           if (!referenceClosure)
             throw Error(
-              'Tried to encode a Server Action from a different instance than the encoder is from. This is a bug in React.',
+              "Tried to encode a Server Action from a different instance than the encoder is from. This is a bug in React.",
             );
           if (referenceClosure.id !== referenceId) return !1;
           var boundPromise = referenceClosure.bound;
           if (null === boundPromise) return 0 === numberOfBoundArgs;
           switch (boundPromise.status) {
-            case 'fulfilled':
+            case "fulfilled":
               return boundPromise.value.length === numberOfBoundArgs;
-            case 'pending':
+            case "pending":
               throw boundPromise;
-            case 'rejected':
+            case "rejected":
               throw boundPromise.reason;
             default:
               throw (
-                ('string' !== typeof boundPromise.status &&
-                  ((boundPromise.status = 'pending'),
+                ("string" !== typeof boundPromise.status &&
+                  ((boundPromise.status = "pending"),
                   boundPromise.then(
                     (boundArgs) => {
-                      boundPromise.status = 'fulfilled';
+                      boundPromise.status = "fulfilled";
                       boundPromise.value = boundArgs;
                     },
                     (error) => {
-                      boundPromise.status = 'rejected';
+                      boundPromise.status = "rejected";
                       boundPromise.reason = error;
                     },
                   )),
@@ -3069,34 +3069,34 @@ module.exports = [
           environmentName,
           innerFunction,
         ) {
-          name || (name = '<anonymous>');
+          name || (name = "<anonymous>");
           var encodedName = JSON.stringify(name);
           1 >= line
             ? ((line = encodedName.length + 7),
               (col =
-                's=>({' +
+                "s=>({" +
                 encodedName +
-                ' '.repeat(col < line ? 0 : col - line) +
-                ':(...args) => s(...args)})\n/* This module is a proxy to a Server Action. Turn on Source Maps to see the server source. */'))
+                " ".repeat(col < line ? 0 : col - line) +
+                ":(...args) => s(...args)})\n/* This module is a proxy to a Server Action. Turn on Source Maps to see the server source. */"))
             : (col =
-                '/* This module is a proxy to a Server Action. Turn on Source Maps to see the server source. */' +
-                '\n'.repeat(line - 2) +
-                'server=>({' +
+                "/* This module is a proxy to a Server Action. Turn on Source Maps to see the server source. */" +
+                "\n".repeat(line - 2) +
+                "server=>({" +
                 encodedName +
-                ':\n' +
-                ' '.repeat(1 > col ? 0 : col - 1) +
-                '(...args) => server(...args)})');
-          filename.startsWith('/') && (filename = 'file://' + filename);
+                ":\n" +
+                " ".repeat(1 > col ? 0 : col - 1) +
+                "(...args) => server(...args)})");
+          filename.startsWith("/") && (filename = "file://" + filename);
           sourceMap
             ? ((col +=
-                '\n//# sourceURL=about://React/' +
+                "\n//# sourceURL=about://React/" +
                 encodeURIComponent(environmentName) +
-                '/' +
+                "/" +
                 encodeURI(filename) +
-                '?s' +
+                "?s" +
                 fakeServerFunctionIdx++),
-              (col += '\n//# sourceMappingURL=' + sourceMap))
-            : filename && (col += '\n//# sourceURL=' + filename);
+              (col += "\n//# sourceMappingURL=" + sourceMap))
+            : filename && (col += "\n//# sourceURL=" + filename);
           try {
             return (0, eval)(col)(innerFunction)[name];
           } catch (x) {
@@ -3119,7 +3119,7 @@ module.exports = [
                         var referenceClosure = knownServerReferences.get(this);
                         if (!referenceClosure)
                           throw Error(
-                            'Tried to encode a Server Action from a different instance than the encoder is from. This is a bug in React.',
+                            "Tried to encode a Server Action from a different instance than the encoder is from. This is a bug in React.",
                           );
                         var boundPromise = referenceClosure.bound;
                         null === boundPromise && (boundPromise = Promise.resolve([]));
@@ -3175,7 +3175,7 @@ module.exports = [
           function action() {
             var args = Array.prototype.slice.call(arguments);
             return bound
-              ? 'fulfilled' === bound.status
+              ? "fulfilled" === bound.status
                 ? callServer(id, bound.value.concat(args))
                 : Promise.resolve(bound).then((boundArgs) => callServer(id, boundArgs.concat(args)))
               : callServer(id, args);
@@ -3184,11 +3184,11 @@ module.exports = [
             bound = metaData.bound,
             location = metaData.location;
           if (location) {
-            var functionName = metaData.name || '',
+            var functionName = metaData.name || "",
               filename = location[1],
               line = location[2];
             location = location[3];
-            metaData = metaData.env || 'Server';
+            metaData = metaData.env || "Server";
             findSourceMapURL =
               null == findSourceMapURL ? null : findSourceMapURL(filename, metaData);
             action = createFakeServerFunction(
@@ -3206,10 +3206,10 @@ module.exports = [
         }
         function parseStackLocation(error) {
           error = error.stack;
-          error.startsWith('Error: react-stack-top-frame\n') && (error = error.slice(29));
-          var endOfFirst = error.indexOf('\n');
+          error.startsWith("Error: react-stack-top-frame\n") && (error = error.slice(29));
+          var endOfFirst = error.indexOf("\n");
           if (-1 !== endOfFirst) {
-            var endOfSecond = error.indexOf('\n', endOfFirst + 1);
+            var endOfSecond = error.indexOf("\n", endOfFirst + 1);
             endOfFirst =
               -1 === endOfSecond
                 ? error.slice(endOfFirst + 1)
@@ -3218,10 +3218,10 @@ module.exports = [
           error = v8FrameRegExp.exec(endOfFirst);
           if (!error && ((error = jscSpiderMonkeyFrameRegExp.exec(endOfFirst)), !error))
             return null;
-          endOfFirst = error[1] || '';
-          '<anonymous>' === endOfFirst && (endOfFirst = '');
-          endOfSecond = error[2] || error[5] || '';
-          '<anonymous>' === endOfSecond && (endOfSecond = '');
+          endOfFirst = error[1] || "";
+          "<anonymous>" === endOfFirst && (endOfFirst = "");
+          endOfSecond = error[2] || error[5] || "";
+          "<anonymous>" === endOfSecond && (endOfSecond = "");
           return [endOfFirst, endOfSecond, +(error[3] || error[6]), +(error[4] || error[7])];
         }
         function createServerReference$1(
@@ -3235,20 +3235,20 @@ module.exports = [
             var args = Array.prototype.slice.call(arguments);
             return callServer(id, args);
           }
-          var location = parseStackLocation(Error('react-stack-top-frame'));
+          var location = parseStackLocation(Error("react-stack-top-frame"));
           if (null !== location) {
             var filename = location[1],
               line = location[2];
             location = location[3];
             findSourceMapURL =
-              null == findSourceMapURL ? null : findSourceMapURL(filename, 'Client');
+              null == findSourceMapURL ? null : findSourceMapURL(filename, "Client");
             action = createFakeServerFunction(
-              functionName || '',
+              functionName || "",
               filename,
               findSourceMapURL,
               line,
               location,
-              'Client',
+              "Client",
               action,
             );
           }
@@ -3257,53 +3257,53 @@ module.exports = [
         }
         function getComponentNameFromType(type) {
           if (null == type) return null;
-          if ('function' === typeof type)
+          if ("function" === typeof type)
             return type.$$typeof === REACT_CLIENT_REFERENCE
               ? null
               : type.displayName || type.name || null;
-          if ('string' === typeof type) return type;
+          if ("string" === typeof type) return type;
           switch (type) {
             case REACT_FRAGMENT_TYPE:
-              return 'Fragment';
+              return "Fragment";
             case REACT_PROFILER_TYPE:
-              return 'Profiler';
+              return "Profiler";
             case REACT_STRICT_MODE_TYPE:
-              return 'StrictMode';
+              return "StrictMode";
             case REACT_SUSPENSE_TYPE:
-              return 'Suspense';
+              return "Suspense";
             case REACT_SUSPENSE_LIST_TYPE:
-              return 'SuspenseList';
+              return "SuspenseList";
             case REACT_ACTIVITY_TYPE:
-              return 'Activity';
+              return "Activity";
             case REACT_VIEW_TRANSITION_TYPE:
-              return 'ViewTransition';
+              return "ViewTransition";
           }
-          if ('object' === typeof type)
+          if ("object" === typeof type)
             switch (
-              ('number' === typeof type.tag &&
+              ("number" === typeof type.tag &&
                 console.error(
-                  'Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.',
+                  "Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.",
                 ),
               type.$$typeof)
             ) {
               case REACT_PORTAL_TYPE:
-                return 'Portal';
+                return "Portal";
               case REACT_CONTEXT_TYPE:
-                return type.displayName || 'Context';
+                return type.displayName || "Context";
               case REACT_CONSUMER_TYPE:
-                return (type._context.displayName || 'Context') + '.Consumer';
+                return (type._context.displayName || "Context") + ".Consumer";
               case REACT_FORWARD_REF_TYPE: {
                 var innerType = type.render;
                 type = type.displayName;
                 type ||
-                  ((type = innerType.displayName || innerType.name || ''),
-                  (type = '' !== type ? 'ForwardRef(' + type + ')' : 'ForwardRef'));
+                  ((type = innerType.displayName || innerType.name || ""),
+                  (type = "" !== type ? "ForwardRef(" + type + ")" : "ForwardRef"));
                 return type;
               }
               case REACT_MEMO_TYPE:
                 return (
                   (innerType = type.displayName || null),
-                  null !== innerType ? innerType : getComponentNameFromType(type.type) || 'Memo'
+                  null !== innerType ? innerType : getComponentNameFromType(type.type) || "Memo"
                 );
               case REACT_LAZY_TYPE:
                 innerType = type._payload;
@@ -3317,17 +3317,17 @@ module.exports = [
         function getArrayKind(array) {
           for (var kind = 0, i = 0; i < array.length && 100 > i; i++) {
             var value = array[i];
-            if ('object' === typeof value && null !== value)
-              if (isArrayImpl(value) && 2 === value.length && 'string' === typeof value[0]) {
+            if ("object" === typeof value && null !== value)
+              if (isArrayImpl(value) && 2 === value.length && "string" === typeof value[0]) {
                 if (0 !== kind && 3 !== kind) return 1;
                 kind = 3;
               } else return 1;
             else {
               if (
-                'function' === typeof value ||
-                ('string' === typeof value && 50 < value.length) ||
+                "function" === typeof value ||
+                ("string" === typeof value && 50 < value.length) ||
                 (0 !== kind && 2 !== kind) ||
-                'bigint' === typeof value
+                "bigint" === typeof value
               )
                 return 1;
               kind = 2;
@@ -3341,64 +3341,64 @@ module.exports = [
           for (key in object)
             if (
               hasOwnProperty.call(object, key) &&
-              '_' !== key[0] &&
+              "_" !== key[0] &&
               (addedProperties++,
               addValueToProperties(key, object[key], properties, indent, prefix),
               100 <= addedProperties)
             ) {
               properties.push([
                 prefix +
-                  '\u00a0\u00a0'.repeat(indent) +
-                  'Only 100 properties are shown. React will not log more properties of this object.',
-                '',
+                  "\u00a0\u00a0".repeat(indent) +
+                  "Only 100 properties are shown. React will not log more properties of this object.",
+                "",
               ]);
               break;
             }
         }
         function addValueToProperties(propertyName, value, properties, indent, prefix) {
           switch (typeof value) {
-            case 'object':
+            case "object":
               if (null === value) {
-                value = 'null';
+                value = "null";
                 break;
               } else {
                 if (
-                  ('$$typeof' in value && hasOwnProperty.call(value, '$$typeof')
+                  ("$$typeof" in value && hasOwnProperty.call(value, "$$typeof")
                     ? value.$$typeof
                     : void 0) === REACT_ELEMENT_TYPE
                 ) {
-                  var typeName = getComponentNameFromType(value.type) || '\u2026',
+                  var typeName = getComponentNameFromType(value.type) || "\u2026",
                     key = value.key;
                   value = value.props;
                   var propsKeys = Object.keys(value),
                     propsLength = propsKeys.length;
                   if (null == key && 0 === propsLength) {
-                    value = '<' + typeName + ' />';
+                    value = "<" + typeName + " />";
                     break;
                   }
                   if (
                     3 > indent ||
-                    (1 === propsLength && 'children' === propsKeys[0] && null == key)
+                    (1 === propsLength && "children" === propsKeys[0] && null == key)
                   ) {
-                    value = '<' + typeName + ' \u2026 />';
+                    value = "<" + typeName + " \u2026 />";
                     break;
                   }
                   properties.push([
-                    prefix + '\u00a0\u00a0'.repeat(indent) + propertyName,
-                    '<' + typeName,
+                    prefix + "\u00a0\u00a0".repeat(indent) + propertyName,
+                    "<" + typeName,
                   ]);
-                  null !== key && addValueToProperties('key', key, properties, indent + 1, prefix);
+                  null !== key && addValueToProperties("key", key, properties, indent + 1, prefix);
                   propertyName = !1;
                   key = 0;
                   for (var propKey in value)
                     if (
                       (key++,
-                      'children' === propKey
+                      "children" === propKey
                         ? null != value.children &&
                           (!isArrayImpl(value.children) || 0 < value.children.length) &&
                           (propertyName = !0)
                         : hasOwnProperty.call(value, propKey) &&
-                          '_' !== propKey[0] &&
+                          "_" !== propKey[0] &&
                           addValueToProperties(
                             propKey,
                             value[propKey],
@@ -3409,21 +3409,21 @@ module.exports = [
                       100 <= key)
                     )
                       break;
-                  properties.push(['', propertyName ? '>\u2026</' + typeName + '>' : '/>']);
+                  properties.push(["", propertyName ? ">\u2026</" + typeName + ">" : "/>"]);
                   return;
                 }
                 typeName = Object.prototype.toString.call(value);
                 propKey = typeName.slice(8, typeName.length - 1);
-                if ('Array' === propKey) {
+                if ("Array" === propKey) {
                   if (
                     ((typeName = 100 < value.length),
                     (key = getArrayKind(value)),
                     2 === key || 0 === key)
                   ) {
-                    value = JSON.stringify(typeName ? value.slice(0, 100).concat('\u2026') : value);
+                    value = JSON.stringify(typeName ? value.slice(0, 100).concat("\u2026") : value);
                     break;
                   } else if (3 === key) {
-                    properties.push([prefix + '\u00a0\u00a0'.repeat(indent) + propertyName, '']);
+                    properties.push([prefix + "\u00a0\u00a0".repeat(indent) + propertyName, ""]);
                     for (
                       propertyName = 0;
                       propertyName < value.length && 100 > propertyName;
@@ -3440,7 +3440,7 @@ module.exports = [
                     typeName &&
                       addValueToProperties(
                         (100).toString(),
-                        '\u2026',
+                        "\u2026",
                         properties,
                         indent + 1,
                         prefix,
@@ -3448,166 +3448,166 @@ module.exports = [
                     return;
                   }
                 }
-                if ('Promise' === propKey) {
-                  if ('fulfilled' === value.status) {
+                if ("Promise" === propKey) {
+                  if ("fulfilled" === value.status) {
                     if (
                       ((typeName = properties.length),
                       addValueToProperties(propertyName, value.value, properties, indent, prefix),
                       properties.length > typeName)
                     ) {
                       properties = properties[typeName];
-                      properties[1] = 'Promise<' + (properties[1] || 'Object') + '>';
+                      properties[1] = "Promise<" + (properties[1] || "Object") + ">";
                       return;
                     }
                   } else if (
-                    'rejected' === value.status &&
+                    "rejected" === value.status &&
                     ((typeName = properties.length),
                     addValueToProperties(propertyName, value.reason, properties, indent, prefix),
                     properties.length > typeName)
                   ) {
                     properties = properties[typeName];
-                    properties[1] = 'Rejected Promise<' + properties[1] + '>';
+                    properties[1] = "Rejected Promise<" + properties[1] + ">";
                     return;
                   }
-                  properties.push(['\u00a0\u00a0'.repeat(indent) + propertyName, 'Promise']);
+                  properties.push(["\u00a0\u00a0".repeat(indent) + propertyName, "Promise"]);
                   return;
                 }
-                'Object' === propKey &&
+                "Object" === propKey &&
                   (typeName = Object.getPrototypeOf(value)) &&
-                  'function' === typeof typeName.constructor &&
+                  "function" === typeof typeName.constructor &&
                   (propKey = typeName.constructor.name);
                 properties.push([
-                  prefix + '\u00a0\u00a0'.repeat(indent) + propertyName,
-                  'Object' === propKey ? (3 > indent ? '' : '\u2026') : propKey,
+                  prefix + "\u00a0\u00a0".repeat(indent) + propertyName,
+                  "Object" === propKey ? (3 > indent ? "" : "\u2026") : propKey,
                 ]);
                 3 > indent && addObjectToProperties(value, properties, indent + 1, prefix);
                 return;
               }
-            case 'function':
+            case "function":
               value = value.name;
-              value = '' === value || 'string' !== typeof value ? '() => {}' : value + '() {}';
+              value = "" === value || "string" !== typeof value ? "() => {}" : value + "() {}";
               break;
-            case 'string':
+            case "string":
               value =
-                'This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.' ===
+                "This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects." ===
                 value
-                  ? '\u2026'
+                  ? "\u2026"
                   : JSON.stringify(value);
               break;
-            case 'undefined':
-              value = 'undefined';
+            case "undefined":
+              value = "undefined";
               break;
-            case 'boolean':
-              value = value ? 'true' : 'false';
+            case "boolean":
+              value = value ? "true" : "false";
               break;
             default:
               value = String(value);
           }
-          properties.push([prefix + '\u00a0\u00a0'.repeat(indent) + propertyName, value]);
+          properties.push([prefix + "\u00a0\u00a0".repeat(indent) + propertyName, value]);
         }
         function getIODescription(value) {
           try {
             switch (typeof value) {
-              case 'function':
-                return value.name || '';
-              case 'object': {
-                if (null === value) return '';
+              case "function":
+                return value.name || "";
+              case "object": {
+                if (null === value) return "";
                 if (value instanceof Error) return String(value.message);
-                if ('string' === typeof value.url) return value.url;
-                if ('string' === typeof value.href) return value.href;
-                if ('string' === typeof value.src) return value.src;
-                if ('string' === typeof value.currentSrc) return value.currentSrc;
-                if ('string' === typeof value.command) return value.command;
+                if ("string" === typeof value.url) return value.url;
+                if ("string" === typeof value.href) return value.href;
+                if ("string" === typeof value.src) return value.src;
+                if ("string" === typeof value.currentSrc) return value.currentSrc;
+                if ("string" === typeof value.command) return value.command;
                 if (
-                  'object' === typeof value.request &&
+                  "object" === typeof value.request &&
                   null !== value.request &&
-                  'string' === typeof value.request.url
+                  "string" === typeof value.request.url
                 )
                   return value.request.url;
                 if (
-                  'object' === typeof value.response &&
+                  "object" === typeof value.response &&
                   null !== value.response &&
-                  'string' === typeof value.response.url
+                  "string" === typeof value.response.url
                 )
                   return value.response.url;
                 if (
-                  'string' === typeof value.id ||
-                  'number' === typeof value.id ||
-                  'bigint' === typeof value.id
+                  "string" === typeof value.id ||
+                  "number" === typeof value.id ||
+                  "bigint" === typeof value.id
                 )
                   return String(value.id);
-                if ('string' === typeof value.name) return value.name;
+                if ("string" === typeof value.name) return value.name;
                 var str = value.toString();
-                return str.startsWith('[object ') || 5 > str.length || 500 < str.length ? '' : str;
+                return str.startsWith("[object ") || 5 > str.length || 500 < str.length ? "" : str;
               }
-              case 'string':
-                return 5 > value.length || 500 < value.length ? '' : value;
-              case 'number':
-              case 'bigint':
+              case "string":
+                return 5 > value.length || 500 < value.length ? "" : value;
+              case "number":
+              case "bigint":
                 return String(value);
               default:
-                return '';
+                return "";
             }
           } catch (x) {
-            return '';
+            return "";
           }
         }
         function markAllTracksInOrder() {
           supportsUserTiming &&
             (console.timeStamp(
-              'Server Requests Track',
+              "Server Requests Track",
               0.001,
               0.001,
-              'Server Requests \u269b',
+              "Server Requests \u269b",
               void 0,
-              'primary-light',
+              "primary-light",
             ),
             console.timeStamp(
-              'Server Components Track',
+              "Server Components Track",
               0.001,
               0.001,
-              'Primary',
-              'Server Components \u269b',
-              'primary-light',
+              "Primary",
+              "Server Components \u269b",
+              "primary-light",
             ));
         }
         function getIOColor(functionName) {
           switch (functionName.charCodeAt(0) % 3) {
             case 0:
-              return 'tertiary-light';
+              return "tertiary-light";
             case 1:
-              return 'tertiary';
+              return "tertiary";
             default:
-              return 'tertiary-dark';
+              return "tertiary-dark";
           }
         }
         function getIOLongName(ioInfo, description, env, rootEnv) {
           ioInfo = ioInfo.name;
-          description = '' === description ? ioInfo : ioInfo + ' (' + description + ')';
-          return env === rootEnv || void 0 === env ? description : description + ' [' + env + ']';
+          description = "" === description ? ioInfo : ioInfo + " (" + description + ")";
+          return env === rootEnv || void 0 === env ? description : description + " [" + env + "]";
         }
         function getIOShortName(ioInfo, description, env, rootEnv) {
           ioInfo = ioInfo.name;
-          env = env === rootEnv || void 0 === env ? '' : ' [' + env + ']';
-          var desc = '';
+          env = env === rootEnv || void 0 === env ? "" : " [" + env + "]";
+          var desc = "";
           rootEnv = 30 - ioInfo.length - env.length;
           if (1 < rootEnv) {
             var l = description.length;
-            if (0 < l && l <= rootEnv) desc = ' (' + description + ')';
+            if (0 < l && l <= rootEnv) desc = " (" + description + ")";
             else if (
-              description.startsWith('http://') ||
-              description.startsWith('https://') ||
-              description.startsWith('/')
+              description.startsWith("http://") ||
+              description.startsWith("https://") ||
+              description.startsWith("/")
             ) {
-              var queryIdx = description.indexOf('?');
+              var queryIdx = description.indexOf("?");
               -1 === queryIdx && (queryIdx = description.length);
               47 === description.charCodeAt(queryIdx - 1) && queryIdx--;
-              desc = description.lastIndexOf('/', queryIdx - 1);
+              desc = description.lastIndexOf("/", queryIdx - 1);
               queryIdx - desc < rootEnv
-                ? (desc = ' (\u2026' + description.slice(desc, queryIdx) + ')')
+                ? (desc = " (\u2026" + description.slice(desc, queryIdx) + ")")
                 : ((l = description.slice(desc, desc + rootEnv / 2)),
                   (description = description.slice(queryIdx - rootEnv / 2, queryIdx)),
-                  (desc = ' (' + (0 < desc ? '\u2026' : '') + l + '\u2026' + description + ')'));
+                  (desc = " (" + (0 < desc ? "\u2026" : "") + l + "\u2026" + description + ")"));
             }
           }
           return ioInfo + desc + env;
@@ -3616,15 +3616,15 @@ module.exports = [
           if (supportsUserTiming && 0 < endTime) {
             var description = getIODescription(value),
               name = getIOShortName(asyncInfo.awaited, description, asyncInfo.env, rootEnv),
-              entryName = 'await ' + name;
+              entryName = "await " + name;
             name = getIOColor(name);
             var debugTask = asyncInfo.debugTask || asyncInfo.awaited.debugTask;
             if (debugTask) {
               var properties = [];
-              'object' === typeof value && null !== value
-                ? addObjectToProperties(value, properties, 0, '')
+              "object" === typeof value && null !== value
+                ? addObjectToProperties(value, properties, 0, "")
                 : void 0 !== value &&
-                  addValueToProperties('awaited value', value, properties, 0, '');
+                  addValueToProperties("awaited value", value, properties, 0, "");
               asyncInfo = getIOLongName(asyncInfo.awaited, description, asyncInfo.env, rootEnv);
               debugTask.run(
                 performance.measure.bind(performance, entryName, {
@@ -3634,7 +3634,7 @@ module.exports = [
                     devtools: {
                       color: name,
                       track: trackNames[trackIdx],
-                      trackGroup: 'Server Components \u269b',
+                      trackGroup: "Server Components \u269b",
                       properties: properties,
                       tooltipText: asyncInfo,
                     },
@@ -3648,7 +3648,7 @@ module.exports = [
                 0 > startTime ? 0 : startTime,
                 endTime,
                 trackNames[trackIdx],
-                'Server Components \u269b',
+                "Server Components \u269b",
                 name,
               );
           }
@@ -3660,25 +3660,25 @@ module.exports = [
             var description = getIODescription(error),
               entryName = getIOShortName(ioInfo, description, ioInfo.env, rootEnv),
               debugTask = ioInfo.debugTask;
-            entryName = '\u200b' + entryName;
+            entryName = "\u200b" + entryName;
             debugTask
               ? ((error = [
                   [
-                    'rejected with',
-                    'object' === typeof error && null !== error && 'string' === typeof error.message
+                    "rejected with",
+                    "object" === typeof error && null !== error && "string" === typeof error.message
                       ? String(error.message)
                       : String(error),
                   ],
                 ]),
-                (ioInfo = getIOLongName(ioInfo, description, ioInfo.env, rootEnv) + ' Rejected'),
+                (ioInfo = getIOLongName(ioInfo, description, ioInfo.env, rootEnv) + " Rejected"),
                 debugTask.run(
                   performance.measure.bind(performance, entryName, {
                     start: 0 > startTime ? 0 : startTime,
                     end: endTime,
                     detail: {
                       devtools: {
-                        color: 'error',
-                        track: 'Server Requests \u269b',
+                        color: "error",
+                        track: "Server Requests \u269b",
                         properties: error,
                         tooltipText: ioInfo,
                       },
@@ -3690,9 +3690,9 @@ module.exports = [
                   entryName,
                   0 > startTime ? 0 : startTime,
                   endTime,
-                  'Server Requests \u269b',
+                  "Server Requests \u269b",
                   void 0,
-                  'error',
+                  "error",
                 );
           }
         }
@@ -3704,12 +3704,12 @@ module.exports = [
               entryName = getIOShortName(ioInfo, description, ioInfo.env, rootEnv),
               color = getIOColor(entryName),
               debugTask = ioInfo.debugTask;
-            entryName = '\u200b' + entryName;
+            entryName = "\u200b" + entryName;
             if (debugTask) {
               var properties = [];
-              'object' === typeof value && null !== value
-                ? addObjectToProperties(value, properties, 0, '')
-                : void 0 !== value && addValueToProperties('Resolved', value, properties, 0, '');
+              "object" === typeof value && null !== value
+                ? addObjectToProperties(value, properties, 0, "")
+                : void 0 !== value && addValueToProperties("Resolved", value, properties, 0, "");
               ioInfo = getIOLongName(ioInfo, description, ioInfo.env, rootEnv);
               debugTask.run(
                 performance.measure.bind(performance, entryName, {
@@ -3718,7 +3718,7 @@ module.exports = [
                   detail: {
                     devtools: {
                       color: color,
-                      track: 'Server Requests \u269b',
+                      track: "Server Requests \u269b",
                       properties: properties,
                       tooltipText: ioInfo,
                     },
@@ -3731,16 +3731,16 @@ module.exports = [
                 entryName,
                 0 > startTime ? 0 : startTime,
                 endTime,
-                'Server Requests \u269b',
+                "Server Requests \u269b",
                 void 0,
                 color,
               );
           }
         }
         function prepareStackTrace(error, structuredStackTrace) {
-          error = (error.name || 'Error') + ': ' + (error.message || '');
+          error = (error.name || "Error") + ": " + (error.message || "");
           for (var i = 0; i < structuredStackTrace.length; i++)
-            error += '\n    at ' + structuredStackTrace[i].toString();
+            error += "\n    at " + structuredStackTrace[i].toString();
           return error;
         }
         function ReactPromise(status, value, reason) {
@@ -3757,26 +3757,26 @@ module.exports = [
         function unwrapWeakResponse(weakResponse) {
           weakResponse = weakResponse.weak.deref();
           if (void 0 === weakResponse)
-            throw Error('We did not expect to receive new data after GC:ing the response.');
+            throw Error("We did not expect to receive new data after GC:ing the response.");
           return weakResponse;
         }
         function closeDebugChannel(debugChannel) {
-          debugChannel.callback && debugChannel.callback('');
+          debugChannel.callback && debugChannel.callback("");
         }
         function readChunk(chunk) {
           switch (chunk.status) {
-            case 'resolved_model':
+            case "resolved_model":
               initializeModelChunk(chunk);
               break;
-            case 'resolved_module':
+            case "resolved_module":
               initializeModuleChunk(chunk);
           }
           switch (chunk.status) {
-            case 'fulfilled':
+            case "fulfilled":
               return chunk.value;
-            case 'pending':
-            case 'blocked':
-            case 'halted':
+            case "pending":
+            case "blocked":
+            case "halted":
               throw chunk;
             default:
               throw chunk.reason;
@@ -3792,10 +3792,10 @@ module.exports = [
             null !== response._pendingInitialRender &&
               (clearTimeout(response._pendingInitialRender),
               (response._pendingInitialRender = null)));
-          return new ReactPromise('pending', null, null);
+          return new ReactPromise("pending", null, null);
         }
         function releasePendingChunk(response, chunk) {
-          'pending' === chunk.status &&
+          "pending" === chunk.status &&
             0 === --response._pendingChunks &&
             ((response._weakResponse.response = null),
             (response._pendingInitialRender = setTimeout(
@@ -3808,7 +3808,7 @@ module.exports = [
             response = response._debugEndTime - performance.timeOrigin;
             for (var debugInfo = [], i = 0; i < value._debugInfo.length; i++) {
               var info = value._debugInfo[i];
-              if ('number' === typeof info.time && info.time > response) break;
+              if ("number" === typeof info.time && info.time > response) break;
               debugInfo.push(info);
             }
             value._debugInfo = debugInfo;
@@ -3816,17 +3816,17 @@ module.exports = [
         }
         function moveDebugInfoFromChunkToInnerValue(chunk, value) {
           value = resolveLazy(value);
-          'object' !== typeof value ||
+          "object" !== typeof value ||
             null === value ||
             (!isArrayImpl(value) &&
-              'function' !== typeof value[ASYNC_ITERATOR] &&
+              "function" !== typeof value[ASYNC_ITERATOR] &&
               value.$$typeof !== REACT_ELEMENT_TYPE &&
               value.$$typeof !== REACT_LAZY_TYPE) ||
             ((chunk = chunk._debugInfo.splice(0)),
             isArrayImpl(value._debugInfo)
               ? value._debugInfo.unshift.apply(value._debugInfo, chunk)
               : Object.isFrozen(value) ||
-                Object.defineProperty(value, '_debugInfo', {
+                Object.defineProperty(value, "_debugInfo", {
                   configurable: !1,
                   enumerable: !1,
                   writable: !0,
@@ -3836,7 +3836,7 @@ module.exports = [
         function wakeChunk(response, listeners, value, chunk) {
           for (var i = 0; i < listeners.length; i++) {
             var listener = listeners[i];
-            'function' === typeof listener
+            "function" === typeof listener
               ? listener(value)
               : fulfillReference(response, listener, value, chunk);
           }
@@ -3846,7 +3846,7 @@ module.exports = [
         function rejectChunk(response, listeners, error) {
           for (var i = 0; i < listeners.length; i++) {
             var listener = listeners[i];
-            'function' === typeof listener
+            "function" === typeof listener
               ? listener(error)
               : rejectReference(response, listener.handler, error);
           }
@@ -3860,7 +3860,7 @@ module.exports = [
             for (referencedChunk = 0; referencedChunk < reference.length; referencedChunk++) {
               var listener = reference[referencedChunk];
               if (
-                'function' !== typeof listener &&
+                "function" !== typeof listener &&
                 ((listener = resolveBlockedCycle(resolvedChunk, listener)), null !== listener)
               )
                 return listener;
@@ -3869,13 +3869,13 @@ module.exports = [
         }
         function wakeChunkIfInitialized(response, chunk, resolveListeners, rejectListeners) {
           switch (chunk.status) {
-            case 'fulfilled':
+            case "fulfilled":
               wakeChunk(response, resolveListeners, chunk.value, chunk);
               break;
-            case 'blocked':
+            case "blocked":
               for (var i = 0; i < resolveListeners.length; i++) {
                 var listener = resolveListeners[i];
-                if ('function' !== typeof listener) {
+                if ("function" !== typeof listener) {
                   var cyclicHandler = resolveBlockedCycle(chunk, listener);
                   if (null !== cyclicHandler)
                     switch (
@@ -3887,17 +3887,17 @@ module.exports = [
                         -1 !== listener && rejectListeners.splice(listener, 1)),
                       chunk.status)
                     ) {
-                      case 'fulfilled':
+                      case "fulfilled":
                         wakeChunk(response, resolveListeners, chunk.value, chunk);
                         return;
-                      case 'rejected':
+                      case "rejected":
                         null !== rejectListeners &&
                           rejectChunk(response, rejectListeners, chunk.reason);
                         return;
                     }
                 }
               }
-            case 'pending':
+            case "pending":
               if (chunk.value)
                 for (response = 0; response < resolveListeners.length; response++)
                   chunk.value.push(resolveListeners[response]);
@@ -3912,20 +3912,20 @@ module.exports = [
                     chunk.reason.push(rejectListeners[resolveListeners]);
               } else chunk.reason = rejectListeners;
               break;
-            case 'rejected':
+            case "rejected":
               rejectListeners && rejectChunk(response, rejectListeners, chunk.reason);
           }
         }
         function triggerErrorOnChunk(response, chunk, error) {
-          if ('pending' !== chunk.status && 'blocked' !== chunk.status) chunk.reason.error(error);
+          if ("pending" !== chunk.status && "blocked" !== chunk.status) chunk.reason.error(error);
           else {
             releasePendingChunk(response, chunk);
             var listeners = chunk.reason;
-            if ('pending' === chunk.status && null != chunk._debugChunk) {
+            if ("pending" === chunk.status && null != chunk._debugChunk) {
               var prevHandler = initializingHandler,
                 prevChunk = initializingChunk;
               initializingHandler = null;
-              chunk.status = 'blocked';
+              chunk.status = "blocked";
               chunk.value = null;
               chunk.reason = null;
               initializingChunk = chunk;
@@ -3935,18 +3935,18 @@ module.exports = [
                 (initializingHandler = prevHandler), (initializingChunk = prevChunk);
               }
             }
-            chunk.status = 'rejected';
+            chunk.status = "rejected";
             chunk.reason = error;
             null !== listeners && rejectChunk(response, listeners, error);
           }
         }
         function createResolvedModelChunk(response, value) {
-          return new ReactPromise('resolved_model', value, response);
+          return new ReactPromise("resolved_model", value, response);
         }
         function createResolvedIteratorResultChunk(response, value, done) {
           return new ReactPromise(
-            'resolved_model',
-            (done ? '{"done":true,"value":' : '{"done":false,"value":') + value + '}',
+            "resolved_model",
+            (done ? '{"done":true,"value":' : '{"done":false,"value":') + value + "}",
             response,
           );
         }
@@ -3954,16 +3954,16 @@ module.exports = [
           resolveModelChunk(
             response,
             chunk,
-            (done ? '{"done":true,"value":' : '{"done":false,"value":') + value + '}',
+            (done ? '{"done":true,"value":' : '{"done":false,"value":') + value + "}",
           );
         }
         function resolveModelChunk(response, chunk, value) {
-          if ('pending' !== chunk.status) chunk.reason.enqueueModel(value);
+          if ("pending" !== chunk.status) chunk.reason.enqueueModel(value);
           else {
             releasePendingChunk(response, chunk);
             var resolveListeners = chunk.value,
               rejectListeners = chunk.reason;
-            chunk.status = 'resolved_model';
+            chunk.status = "resolved_model";
             chunk.value = value;
             chunk.reason = response;
             null !== resolveListeners &&
@@ -3972,11 +3972,11 @@ module.exports = [
           }
         }
         function resolveModuleChunk(response, chunk, value) {
-          if ('pending' === chunk.status || 'blocked' === chunk.status) {
+          if ("pending" === chunk.status || "blocked" === chunk.status) {
             releasePendingChunk(response, chunk);
             var resolveListeners = chunk.value,
               rejectListeners = chunk.reason;
-            chunk.status = 'resolved_module';
+            chunk.status = "resolved_module";
             chunk.value = value;
             chunk.reason = null;
             value = [];
@@ -3993,23 +3993,23 @@ module.exports = [
               prevIsInitializingDebugInfo = isInitializingDebugInfo;
             isInitializingDebugInfo = !0;
             try {
-              if ('resolved_model' === debugChunk.status) {
+              if ("resolved_model" === debugChunk.status) {
                 for (var idx = debugInfo.length, c = debugChunk._debugChunk; null !== c; )
-                  'fulfilled' !== c.status && idx++, (c = c._debugChunk);
+                  "fulfilled" !== c.status && idx++, (c = c._debugChunk);
                 initializeModelChunk(debugChunk);
                 switch (debugChunk.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     debugInfo[idx] = initializeDebugInfo(response, debugChunk.value);
                     break;
-                  case 'blocked':
-                  case 'pending':
+                  case "blocked":
+                  case "pending":
                     waitForReference(
                       debugChunk,
                       debugInfo,
-                      '' + idx,
+                      "" + idx,
                       response,
                       initializeDebugInfo,
-                      [''],
+                      [""],
                       !0,
                     );
                     break;
@@ -4018,17 +4018,17 @@ module.exports = [
                 }
               } else
                 switch (debugChunk.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     break;
-                  case 'blocked':
-                  case 'pending':
+                  case "blocked":
+                  case "pending":
                     waitForReference(
                       debugChunk,
                       {},
-                      'debug',
+                      "debug",
                       response,
                       initializeDebugInfo,
-                      [''],
+                      [""],
                       !0,
                     );
                     break;
@@ -4048,7 +4048,7 @@ module.exports = [
           initializingHandler = null;
           var resolvedModel = chunk.value,
             response = chunk.reason;
-          chunk.status = 'blocked';
+          chunk.status = "blocked";
           chunk.value = null;
           chunk.reason = null;
           initializingChunk = chunk;
@@ -4063,7 +4063,7 @@ module.exports = [
                 resolvedModel++
               ) {
                 var listener = resolveListeners[resolvedModel];
-                'function' === typeof listener
+                "function" === typeof listener
                   ? listener(value)
                   : fulfillReference(response, listener, value, chunk);
               }
@@ -4075,13 +4075,13 @@ module.exports = [
                 return;
               }
             }
-            chunk.status = 'fulfilled';
+            chunk.status = "fulfilled";
             chunk.value = value;
             chunk.reason = null;
             filterDebugInfo(response, chunk);
             moveDebugInfoFromChunkToInnerValue(chunk, value);
           } catch (error) {
-            (chunk.status = 'rejected'), (chunk.reason = error);
+            (chunk.status = "rejected"), (chunk.reason = error);
           } finally {
             (initializingHandler = prevHandler), (initializingChunk = prevChunk);
           }
@@ -4089,11 +4089,11 @@ module.exports = [
         function initializeModuleChunk(chunk) {
           try {
             var value = requireModule(chunk.value);
-            chunk.status = 'fulfilled';
+            chunk.status = "fulfilled";
             chunk.value = value;
             chunk.reason = null;
           } catch (error) {
-            (chunk.status = 'rejected'), (chunk.reason = error);
+            (chunk.status = "rejected"), (chunk.reason = error);
           }
         }
         function reportGlobalError(weakResponse, error) {
@@ -4102,9 +4102,9 @@ module.exports = [
             response._closed = !0;
             response._closedReason = error;
             response._chunks.forEach((chunk) => {
-              'pending' === chunk.status
+              "pending" === chunk.status
                 ? triggerErrorOnChunk(response, chunk, error)
-                : 'fulfilled' === chunk.status &&
+                : "fulfilled" === chunk.status &&
                   null !== chunk.reason &&
                   chunk.reason.error(error);
             });
@@ -4119,15 +4119,15 @@ module.exports = [
           return null;
         }
         function getTaskName(type) {
-          if (type === REACT_FRAGMENT_TYPE) return '<>';
-          if ('function' === typeof type) return '"use client"';
-          if ('object' === typeof type && null !== type && type.$$typeof === REACT_LAZY_TYPE)
-            return type._init === readChunk ? '"use client"' : '<...>';
+          if (type === REACT_FRAGMENT_TYPE) return "<>";
+          if ("function" === typeof type) return '"use client"';
+          if ("object" === typeof type && null !== type && type.$$typeof === REACT_LAZY_TYPE)
+            return type._init === readChunk ? '"use client"' : "<...>";
           try {
             var name = getComponentNameFromType(type);
-            return name ? '<' + name + '>' : '<...>';
+            return name ? "<" + name + ">" : "<...>";
           } catch (x) {
-            return '<...>';
+            return "<...>";
           }
         }
         function initializeElement(response, element, lazyNode) {
@@ -4159,12 +4159,12 @@ module.exports = [
               lazyNode._store.validated &&
               !element._store.validated &&
               (element._store.validated = lazyNode._store.validated),
-            'fulfilled' === lazyNode._payload.status &&
+            "fulfilled" === lazyNode._payload.status &&
               lazyNode._debugInfo &&
               ((response = lazyNode._debugInfo.splice(0)),
               element._debugInfo
                 ? element._debugInfo.unshift.apply(element._debugInfo, response)
-                : Object.defineProperty(element, '_debugInfo', {
+                : Object.defineProperty(element, "_debugInfo", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
@@ -4191,10 +4191,10 @@ module.exports = [
             (response._closed
               ? response._allowPartialStream
                 ? ((response = chunk = createPendingChunk(response)),
-                  (response.status = 'halted'),
+                  (response.status = "halted"),
                   (response.value = null),
                   (response.reason = null))
-                : (chunk = new ReactPromise('rejected', null, response._closedReason))
+                : (chunk = new ReactPromise("rejected", null, response._closedReason))
               : (chunk = createPendingChunk(response)),
             chunks.set(id, chunk));
           return chunk;
@@ -4209,30 +4209,30 @@ module.exports = [
             for (var i = 1; i < path.length; i++) {
               for (
                 ;
-                'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+                "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
               ) {
                 var referencedChunk = value._payload;
                 if (referencedChunk === handler.chunk) value = handler.value;
                 else {
                   switch (referencedChunk.status) {
-                    case 'resolved_model':
+                    case "resolved_model":
                       initializeModelChunk(referencedChunk);
                       break;
-                    case 'resolved_module':
+                    case "resolved_module":
                       initializeModuleChunk(referencedChunk);
                   }
                   switch (referencedChunk.status) {
-                    case 'fulfilled':
+                    case "fulfilled":
                       value = referencedChunk.value;
                       continue;
-                    case 'blocked': {
+                    case "blocked": {
                       var cyclicHandler = resolveBlockedCycle(referencedChunk, reference);
                       if (null !== cyclicHandler) {
                         value = cyclicHandler.value;
                         continue;
                       }
                     }
-                    case 'pending':
+                    case "pending":
                       path.splice(0, i - 1);
                       null === referencedChunk.value
                         ? (referencedChunk.value = [reference])
@@ -4241,7 +4241,7 @@ module.exports = [
                         ? (referencedChunk.reason = [reference])
                         : referencedChunk.reason.push(reference);
                       return;
-                    case 'halted':
+                    case "halted":
                       return;
                     default:
                       rejectReference(response, reference.handler, referencedChunk.reason);
@@ -4250,26 +4250,26 @@ module.exports = [
                 }
               }
               var name = path[i];
-              if ('object' === typeof value && null !== value && hasOwnProperty.call(value, name))
+              if ("object" === typeof value && null !== value && hasOwnProperty.call(value, name))
                 value = value[name];
-              else throw Error('Invalid reference.');
+              else throw Error("Invalid reference.");
             }
             for (
               ;
-              'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+              "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
             ) {
               var _referencedChunk = value._payload;
               if (_referencedChunk === handler.chunk) value = handler.value;
               else {
                 switch (_referencedChunk.status) {
-                  case 'resolved_model':
+                  case "resolved_model":
                     initializeModelChunk(_referencedChunk);
                     break;
-                  case 'resolved_module':
+                  case "resolved_module":
                     initializeModuleChunk(_referencedChunk);
                 }
                 switch (_referencedChunk.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     value = _referencedChunk.value;
                     continue;
                 }
@@ -4277,24 +4277,24 @@ module.exports = [
               }
             }
             var mappedValue = map(response, value, parentObject, key);
-            '__proto__' !== key && (parentObject[key] = mappedValue);
-            '' === key && null === handler.value && (handler.value = mappedValue);
+            "__proto__" !== key && (parentObject[key] = mappedValue);
+            "" === key && null === handler.value && (handler.value = mappedValue);
             if (
               parentObject[0] === REACT_ELEMENT_TYPE &&
-              'object' === typeof handler.value &&
+              "object" === typeof handler.value &&
               null !== handler.value &&
               handler.value.$$typeof === REACT_ELEMENT_TYPE
             ) {
               var element = handler.value;
               switch (key) {
-                case '3':
+                case "3":
                   transferReferencedDebugInfo(handler.chunk, fulfilledChunk);
                   element.props = mappedValue;
                   break;
-                case '4':
+                case "4":
                   element._owner = mappedValue;
                   break;
-                case '5':
+                case "5":
                   element._debugStack = mappedValue;
                   break;
                 default:
@@ -4309,9 +4309,9 @@ module.exports = [
           0 === handler.deps &&
             ((reference = handler.chunk),
             null !== reference &&
-              'blocked' === reference.status &&
+              "blocked" === reference.status &&
               ((value = reference.value),
-              (reference.status = 'fulfilled'),
+              (reference.status = "fulfilled"),
               (reference.value = handler.value),
               (reference.reason = handler.reason),
               null !== value
@@ -4327,14 +4327,14 @@ module.exports = [
             handler.value = null;
             handler.reason = error;
             handler = handler.chunk;
-            if (null !== handler && 'blocked' === handler.status) {
+            if (null !== handler && "blocked" === handler.status) {
               if (
-                'object' === typeof blockedValue &&
+                "object" === typeof blockedValue &&
                 null !== blockedValue &&
                 blockedValue.$$typeof === REACT_ELEMENT_TYPE
               ) {
                 var erroredComponent = {
-                  name: getComponentNameFromType(blockedValue.type) || '',
+                  name: getComponentNameFromType(blockedValue.type) || "",
                   owner: blockedValue._owner,
                 };
                 erroredComponent.debugStack = blockedValue._debugStack;
@@ -4357,9 +4357,9 @@ module.exports = [
           if (
             !(
               (void 0 !== response._debugChannel && response._debugChannel.hasReadable) ||
-              'pending' !== referencedChunk.status ||
+              "pending" !== referencedChunk.status ||
               parentObject[0] !== REACT_ELEMENT_TYPE ||
-              ('4' !== key && '5' !== key)
+              ("4" !== key && "5" !== key)
             )
           )
             return null;
@@ -4442,28 +4442,28 @@ module.exports = [
                 metaData.bound,
                 response._encodeFormAction,
               );
-              '__proto__' !== key && (parentObject[key] = resolvedValue);
-              '' === key && null === handler.value && (handler.value = resolvedValue);
+              "__proto__" !== key && (parentObject[key] = resolvedValue);
+              "" === key && null === handler.value && (handler.value = resolvedValue);
               if (
                 parentObject[0] === REACT_ELEMENT_TYPE &&
-                'object' === typeof handler.value &&
+                "object" === typeof handler.value &&
                 null !== handler.value &&
                 handler.value.$$typeof === REACT_ELEMENT_TYPE
               )
                 switch (((boundArgs = handler.value), key)) {
-                  case '3':
+                  case "3":
                     boundArgs.props = resolvedValue;
                     break;
-                  case '4':
+                  case "4":
                     boundArgs._owner = resolvedValue;
                 }
               handler.deps--;
               0 === handler.deps &&
                 ((resolvedValue = handler.chunk),
                 null !== resolvedValue &&
-                  'blocked' === resolvedValue.status &&
+                  "blocked" === resolvedValue.status &&
                   ((boundArgs = resolvedValue.value),
-                  (resolvedValue.status = 'fulfilled'),
+                  (resolvedValue.status = "fulfilled"),
                   (resolvedValue.value = handler.value),
                   (resolvedValue.reason = null),
                   null !== boundArgs
@@ -4479,14 +4479,14 @@ module.exports = [
                 handler.value = null;
                 handler.reason = error;
                 var chunk = handler.chunk;
-                if (null !== chunk && 'blocked' === chunk.status) {
+                if (null !== chunk && "blocked" === chunk.status) {
                   if (
-                    'object' === typeof blockedValue &&
+                    "object" === typeof blockedValue &&
                     null !== blockedValue &&
                     blockedValue.$$typeof === REACT_ELEMENT_TYPE
                   ) {
                     var erroredComponent = {
-                      name: getComponentNameFromType(blockedValue.type) || '',
+                      name: getComponentNameFromType(blockedValue.type) || "",
                       owner: blockedValue._owner,
                     };
                     erroredComponent.debugStack = blockedValue._debugStack;
@@ -4503,10 +4503,10 @@ module.exports = [
         function resolveLazy(value) {
           for (
             ;
-            'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+            "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
           ) {
             var payload = value._payload;
-            if ('fulfilled' === payload.status) value = payload.value;
+            if ("fulfilled" === payload.status) value = payload.value;
             else break;
           }
           return value;
@@ -4522,40 +4522,40 @@ module.exports = [
           }
         }
         function getOutlinedModel(response, reference, parentObject, key, map) {
-          var path = reference.split(':');
+          var path = reference.split(":");
           reference = parseInt(path[0], 16);
           reference = getChunk(response, reference);
           null !== initializingChunk &&
             isArrayImpl(initializingChunk._children) &&
             initializingChunk._children.push(reference);
           switch (reference.status) {
-            case 'resolved_model':
+            case "resolved_model":
               initializeModelChunk(reference);
               break;
-            case 'resolved_module':
+            case "resolved_module":
               initializeModuleChunk(reference);
           }
           switch (reference.status) {
-            case 'fulfilled':
+            case "fulfilled":
               for (var value = reference.value, i = 1; i < path.length; i++) {
                 for (
                   ;
-                  'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+                  "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
                 ) {
                   value = value._payload;
                   switch (value.status) {
-                    case 'resolved_model':
+                    case "resolved_model":
                       initializeModelChunk(value);
                       break;
-                    case 'resolved_module':
+                    case "resolved_module":
                       initializeModuleChunk(value);
                   }
                   switch (value.status) {
-                    case 'fulfilled':
+                    case "fulfilled":
                       value = value.value;
                       break;
-                    case 'blocked':
-                    case 'pending':
+                    case "blocked":
+                    case "pending":
                       return waitForReference(
                         value,
                         parentObject,
@@ -4565,7 +4565,7 @@ module.exports = [
                         path.slice(i - 1),
                         isInitializingDebugInfo,
                       );
-                    case 'halted':
+                    case "halted":
                       return (
                         initializingHandler
                           ? ((parentObject = initializingHandler), parentObject.deps++)
@@ -4601,30 +4601,30 @@ module.exports = [
               }
               for (
                 ;
-                'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+                "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
               ) {
                 path = value._payload;
                 switch (path.status) {
-                  case 'resolved_model':
+                  case "resolved_model":
                     initializeModelChunk(path);
                     break;
-                  case 'resolved_module':
+                  case "resolved_module":
                     initializeModuleChunk(path);
                 }
                 switch (path.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     value = path.value;
                     continue;
                 }
                 break;
               }
               response = map(response, value, parentObject, key);
-              if (parentObject[0] !== REACT_ELEMENT_TYPE || ('4' !== key && '5' !== key))
+              if (parentObject[0] !== REACT_ELEMENT_TYPE || ("4" !== key && "5" !== key))
                 isInitializingDebugInfo ||
                   transferReferencedDebugInfo(initializingChunk, reference);
               return response;
-            case 'pending':
-            case 'blocked':
+            case "pending":
+            case "blocked":
               return waitForReference(
                 reference,
                 parentObject,
@@ -4634,7 +4634,7 @@ module.exports = [
                 path,
                 isInitializingDebugInfo,
               );
-            case 'halted':
+            case "halted":
               return (
                 initializingHandler
                   ? ((parentObject = initializingHandler), parentObject.deps++)
@@ -4686,17 +4686,17 @@ module.exports = [
           Object.setPrototypeOf(parentObject, model.prototype);
         }
         function defineLazyGetter(response, chunk, parentObject, key) {
-          '__proto__' !== key &&
+          "__proto__" !== key &&
             Object.defineProperty(parentObject, key, {
               get: () => {
-                'resolved_model' === chunk.status && initializeModelChunk(chunk);
+                "resolved_model" === chunk.status && initializeModelChunk(chunk);
                 switch (chunk.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     return chunk.value;
-                  case 'rejected':
+                  case "rejected":
                     throw chunk.reason;
                 }
-                return 'This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.';
+                return "This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.";
               },
               set: () => {},
               enumerable: !0,
@@ -4711,37 +4711,37 @@ module.exports = [
           return model;
         }
         function getInferredFunctionApproximate(code) {
-          code = code.startsWith('Object.defineProperty(')
+          code = code.startsWith("Object.defineProperty(")
             ? code.slice(22)
-            : code.startsWith('(')
+            : code.startsWith("(")
               ? code.slice(1)
               : code;
-          if (code.startsWith('async function')) {
-            var idx = code.indexOf('(', 14);
+          if (code.startsWith("async function")) {
+            var idx = code.indexOf("(", 14);
             if (-1 !== idx)
               return (
                 (code = code.slice(14, idx).trim()),
-                (0, eval)('({' + JSON.stringify(code) + ':async function(){}})')[code]
+                (0, eval)("({" + JSON.stringify(code) + ":async function(){}})")[code]
               );
-          } else if (code.startsWith('function')) {
-            if (((idx = code.indexOf('(', 8)), -1 !== idx))
+          } else if (code.startsWith("function")) {
+            if (((idx = code.indexOf("(", 8)), -1 !== idx))
               return (
                 (code = code.slice(8, idx).trim()),
-                (0, eval)('({' + JSON.stringify(code) + ':function(){}})')[code]
+                (0, eval)("({" + JSON.stringify(code) + ":function(){}})")[code]
               );
-          } else if (code.startsWith('class') && ((idx = code.indexOf('{', 5)), -1 !== idx))
+          } else if (code.startsWith("class") && ((idx = code.indexOf("{", 5)), -1 !== idx))
             return (
               (code = code.slice(5, idx).trim()),
-              (0, eval)('({' + JSON.stringify(code) + ':class{}})')[code]
+              (0, eval)("({" + JSON.stringify(code) + ":class{}})")[code]
             );
           return () => {};
         }
         function parseModelString(response, parentObject, key, value) {
-          if ('$' === value[0]) {
-            if ('$' === value)
+          if ("$" === value[0]) {
+            if ("$" === value)
               return (
                 null !== initializingHandler &&
-                  '0' === key &&
+                  "0" === key &&
                   (initializingHandler = {
                     parent: initializingHandler,
                     chunk: null,
@@ -4753,9 +4753,9 @@ module.exports = [
                 REACT_ELEMENT_TYPE
               );
             switch (value[1]) {
-              case '$':
+              case "$":
                 return value.slice(1);
-              case 'L':
+              case "L":
                 return (
                   (parentObject = parseInt(value.slice(2), 16)),
                   (response = getChunk(response, parentObject)),
@@ -4764,7 +4764,7 @@ module.exports = [
                     initializingChunk._children.push(response),
                   createLazyChunkWrapper(response, 0)
                 );
-              case '@':
+              case "@":
                 return (
                   (parentObject = parseInt(value.slice(2), 16)),
                   (response = getChunk(response, parentObject)),
@@ -4773,68 +4773,68 @@ module.exports = [
                     initializingChunk._children.push(response),
                   response
                 );
-              case 'S':
+              case "S":
                 return Symbol.for(value.slice(2));
-              case 'h': {
+              case "h": {
                 var ref = value.slice(2);
                 return getOutlinedModel(response, ref, parentObject, key, loadServerReference);
               }
-              case 'T':
-                parentObject = '$' + value.slice(2);
+              case "T":
+                parentObject = "$" + value.slice(2);
                 response = response._tempRefs;
                 if (null == response)
                   throw Error(
-                    'Missing a temporary reference set but the RSC response returned a temporary reference. Pass a temporaryReference option with the set that was used with the reply.',
+                    "Missing a temporary reference set but the RSC response returned a temporary reference. Pass a temporaryReference option with the set that was used with the reply.",
                   );
                 return response.get(parentObject);
-              case 'Q':
+              case "Q":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, createMap)
                 );
-              case 'W':
+              case "W":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, createSet)
                 );
-              case 'B':
+              case "B":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, createBlob)
                 );
-              case 'K':
+              case "K":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, createFormData)
                 );
-              case 'Z':
+              case "Z":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, resolveErrorDev)
                 );
-              case 'i':
+              case "i":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, extractIterator)
                 );
-              case 'I':
+              case "I":
                 return Infinity;
-              case '-':
-                return '$-0' === value ? -0 : -Infinity;
-              case 'N':
+              case "-":
+                return "$-0" === value ? -0 : -Infinity;
+              case "N":
                 return NaN;
-              case 'u':
+              case "u":
                 return;
-              case 'D':
+              case "D":
                 return new Date(Date.parse(value.slice(2)));
-              case 'n':
+              case "n":
                 return BigInt(value.slice(2));
-              case 'P':
+              case "P":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, applyConstructor)
                 );
-              case 'E':
+              case "E":
                 response = value.slice(2);
                 try {
                   if (!mightHaveStaticConstructor.test(response)) return (0, eval)(response);
@@ -4842,12 +4842,12 @@ module.exports = [
                 try {
                   if (
                     ((ref = getInferredFunctionApproximate(response)),
-                    response.startsWith('Object.defineProperty('))
+                    response.startsWith("Object.defineProperty("))
                   ) {
                     var idx = response.lastIndexOf(',"name",{value:"');
                     if (-1 !== idx) {
                       var name = JSON.parse(response.slice(idx + 16 - 1, response.length - 2));
-                      Object.defineProperty(ref, 'name', {
+                      Object.defineProperty(ref, "name", {
                         value: name,
                       });
                     }
@@ -4856,30 +4856,30 @@ module.exports = [
                   ref = () => {};
                 }
                 return ref;
-              case 'Y':
+              case "Y":
                 if (
                   2 < value.length &&
                   (ref = response._debugChannel && response._debugChannel.callback)
                 ) {
-                  if ('@' === value[2])
+                  if ("@" === value[2])
                     return (
                       (parentObject = value.slice(3)),
                       (key = parseInt(parentObject, 16)),
-                      response._chunks.has(key) || ref('P:' + parentObject),
+                      response._chunks.has(key) || ref("P:" + parentObject),
                       getChunk(response, key)
                     );
                   value = value.slice(2);
                   idx = parseInt(value, 16);
-                  response._chunks.has(idx) || ref('Q:' + value);
+                  response._chunks.has(idx) || ref("Q:" + value);
                   ref = getChunk(response, idx);
-                  return 'fulfilled' === ref.status
+                  return "fulfilled" === ref.status
                     ? ref.value
                     : defineLazyGetter(response, ref, parentObject, key);
                 }
-                '__proto__' !== key &&
+                "__proto__" !== key &&
                   Object.defineProperty(parentObject, key, {
                     get: () =>
-                      'This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.',
+                      "This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.",
                     set: () => {},
                     enumerable: !0,
                     configurable: !1,
@@ -4942,8 +4942,8 @@ module.exports = [
             void 0 === ReactSharedInteralsServer || null === ReactSharedInteralsServer.A
               ? null
               : ReactSharedInteralsServer.A.getOwner();
-          this._debugRootStack = null !== bundlerConfig ? Error('react-stack-top-frame') : null;
-          environmentName = void 0 === environmentName ? 'Server' : environmentName;
+          this._debugRootStack = null !== bundlerConfig ? Error("react-stack-top-frame") : null;
+          environmentName = void 0 === environmentName ? "Server" : environmentName;
           supportsCreateTask &&
             (this._debugRootTask = console.createTask(
               '"use ' + environmentName.toLowerCase() + '"',
@@ -5008,10 +5008,10 @@ module.exports = [
           };
           weakResponse = unwrapWeakResponse(weakResponse);
           var debugValuePromise = Promise.resolve(streamDebugValue);
-          debugValuePromise.status = 'fulfilled';
+          debugValuePromise.status = "fulfilled";
           debugValuePromise.value = streamDebugValue;
           streamState._debugInfo = {
-            name: 'rsc stream',
+            name: "rsc stream",
             start: weakResponse._debugStartTime,
             end: weakResponse._debugStartTime,
             byteSize: 0,
@@ -5044,17 +5044,17 @@ module.exports = [
         }
         function addAsyncInfo(chunk, asyncInfo) {
           var value = resolveLazy(chunk.value);
-          'object' !== typeof value ||
+          "object" !== typeof value ||
           null === value ||
           (!isArrayImpl(value) &&
-            'function' !== typeof value[ASYNC_ITERATOR] &&
+            "function" !== typeof value[ASYNC_ITERATOR] &&
             value.$$typeof !== REACT_ELEMENT_TYPE &&
             value.$$typeof !== REACT_LAZY_TYPE)
             ? chunk._debugInfo.push(asyncInfo)
             : isArrayImpl(value._debugInfo)
               ? value._debugInfo.push(asyncInfo)
               : Object.isFrozen(value) ||
-                Object.defineProperty(value, '_debugInfo', {
+                Object.defineProperty(value, "_debugInfo", {
                   configurable: !1,
                   enumerable: !1,
                   writable: !0,
@@ -5066,7 +5066,7 @@ module.exports = [
             ((response = {
               awaited: streamState._debugInfo,
             }),
-            'pending' === chunk.status || 'blocked' === chunk.status
+            "pending" === chunk.status || "blocked" === chunk.status
               ? ((response = addAsyncInfo.bind(null, chunk, response)),
                 chunk.then(response, response))
               : addAsyncInfo(chunk, response));
@@ -5074,10 +5074,10 @@ module.exports = [
         function resolveBuffer(response, id, buffer, streamState) {
           var chunks = response._chunks,
             chunk = chunks.get(id);
-          chunk && 'pending' !== chunk.status
+          chunk && "pending" !== chunk.status
             ? chunk.reason.enqueueValue(buffer)
             : (chunk && releasePendingChunk(response, chunk),
-              (buffer = new ReactPromise('fulfilled', buffer, null)),
+              (buffer = new ReactPromise("fulfilled", buffer, null)),
               resolveChunkDebugInfo(response, streamState, buffer),
               chunks.set(id, buffer));
         }
@@ -5091,9 +5091,9 @@ module.exports = [
             if (chunk) {
               releasePendingChunk(response, chunk);
               var blockedChunk = chunk;
-              blockedChunk.status = 'blocked';
+              blockedChunk.status = "blocked";
             } else
-              (blockedChunk = new ReactPromise('blocked', null, null)),
+              (blockedChunk = new ReactPromise("blocked", null, null)),
                 chunks.set(id, blockedChunk);
             resolveChunkDebugInfo(response, streamState, blockedChunk);
             model.then(
@@ -5104,7 +5104,7 @@ module.exports = [
             chunk
               ? (resolveChunkDebugInfo(response, streamState, chunk),
                 resolveModuleChunk(response, chunk, clientReference))
-              : ((chunk = new ReactPromise('resolved_module', clientReference, null)),
+              : ((chunk = new ReactPromise("resolved_module", clientReference, null)),
                 resolveChunkDebugInfo(response, streamState, chunk),
                 chunks.set(id, chunk));
         }
@@ -5112,13 +5112,13 @@ module.exports = [
           var chunks = response._chunks,
             chunk = chunks.get(id);
           if (chunk) {
-            if ((resolveChunkDebugInfo(response, streamState, chunk), 'pending' === chunk.status)) {
+            if ((resolveChunkDebugInfo(response, streamState, chunk), "pending" === chunk.status)) {
               id = chunk.value;
               if (null != chunk._debugChunk) {
                 streamState = initializingHandler;
                 chunks = initializingChunk;
                 initializingHandler = null;
-                chunk.status = 'blocked';
+                chunk.status = "blocked";
                 chunk.value = null;
                 chunk.reason = null;
                 initializingChunk = chunk;
@@ -5138,7 +5138,7 @@ module.exports = [
                   (initializingHandler = streamState), (initializingChunk = chunks);
                 }
               }
-              chunk.status = 'fulfilled';
+              chunk.status = "fulfilled";
               chunk.value = stream;
               chunk.reason = controller;
               null !== id
@@ -5148,7 +5148,7 @@ module.exports = [
             }
           } else
             0 === response._pendingChunks++ && (response._weakResponse.response = response),
-              (stream = new ReactPromise('fulfilled', stream, controller)),
+              (stream = new ReactPromise("fulfilled", stream, controller)),
               resolveChunkDebugInfo(response, streamState, stream),
               chunks.set(id, stream);
         }
@@ -5178,7 +5178,7 @@ module.exports = [
                 if (null === previousBlockedChunk) {
                   var chunk = createResolvedModelChunk(response, json);
                   initializeModelChunk(chunk);
-                  'fulfilled' === chunk.status
+                  "fulfilled" === chunk.status
                     ? controller.enqueue(chunk.value)
                     : (chunk.then(
                         (v) => controller.enqueue(v),
@@ -5241,12 +5241,12 @@ module.exports = [
             return createIterator((arg) => {
               if (void 0 !== arg)
                 throw Error(
-                  'Values cannot be passed to next() of AsyncIterables passed to Client Components.',
+                  "Values cannot be passed to next() of AsyncIterables passed to Client Components.",
                 );
               if (nextReadIndex === buffer.length) {
                 if (closed)
                   return new ReactPromise(
-                    'fulfilled',
+                    "fulfilled",
                     {
                       done: !0,
                       value: void 0,
@@ -5266,7 +5266,7 @@ module.exports = [
               enqueueValue: (value) => {
                 if (nextWriteIndex === buffer.length)
                   buffer[nextWriteIndex] = new ReactPromise(
-                    'fulfilled',
+                    "fulfilled",
                     {
                       done: !1,
                       value: value,
@@ -5277,7 +5277,7 @@ module.exports = [
                   var chunk = buffer[nextWriteIndex],
                     resolveListeners = chunk.value,
                     rejectListeners = chunk.reason;
-                  chunk.status = 'fulfilled';
+                  chunk.status = "fulfilled";
                   chunk.value = {
                     done: !1,
                     value: value,
@@ -5339,9 +5339,9 @@ module.exports = [
             stack = errorInfo.stack,
             env = errorInfo.env,
             errorOptions =
-              'cause' in errorInfo
+              "cause" in errorInfo
                 ? {
-                    cause: reviveModel(response, errorInfo.cause, errorInfo, 'cause'),
+                    cause: reviveModel(response, errorInfo.cause, errorInfo, "cause"),
                   }
                 : void 0;
           message = buildFakeCallStack(
@@ -5352,14 +5352,14 @@ module.exports = [
             Error.bind(
               null,
               message ||
-                'An error occurred in the Server Components render but no message was provided',
+                "An error occurred in the Server Components render but no message was provided",
               errorOptions,
             ),
           );
           stack = null;
           null != errorInfo.owner &&
             ((errorInfo = errorInfo.owner.slice(1)),
-            (errorInfo = getOutlinedModel(response, errorInfo, {}, '', createModel)),
+            (errorInfo = getOutlinedModel(response, errorInfo, {}, "", createModel)),
             null !== errorInfo && (stack = initializeFakeTask(response, errorInfo)));
           null === stack
             ? ((response = getRootTask(response, env)),
@@ -5379,7 +5379,7 @@ module.exports = [
           enclosingCol,
           environmentName,
         ) {
-          name || (name = '<anonymous>');
+          name || (name = "<anonymous>");
           var encodedName = JSON.stringify(name);
           1 > enclosingLine ? (enclosingLine = 0) : enclosingLine--;
           1 > enclosingCol ? (enclosingCol = 0) : enclosingCol--;
@@ -5394,71 +5394,71 @@ module.exports = [
               (col = col - enclosingCol - line - 3),
               0 > col && (col = 0),
               (encodedName =
-                '({' +
+                "({" +
                 encodedName +
-                ':' +
-                ' '.repeat(enclosingCol) +
-                '_=>' +
-                ' '.repeat(col) +
-                '_()})'))
+                ":" +
+                " ".repeat(enclosingCol) +
+                "_=>" +
+                " ".repeat(col) +
+                "_()})"))
             : 1 > enclosingLine
               ? ((enclosingCol -= encodedName.length + 3),
                 0 > enclosingCol && (enclosingCol = 0),
                 (encodedName =
-                  '({' +
+                  "({" +
                   encodedName +
-                  ':' +
-                  ' '.repeat(enclosingCol) +
-                  '_=>' +
-                  '\n'.repeat(line - enclosingLine) +
-                  ' '.repeat(col) +
-                  '_()})'))
+                  ":" +
+                  " ".repeat(enclosingCol) +
+                  "_=>" +
+                  "\n".repeat(line - enclosingLine) +
+                  " ".repeat(col) +
+                  "_()})"))
               : enclosingLine === line
                 ? ((col = col - enclosingCol - 3),
                   0 > col && (col = 0),
                   (encodedName =
-                    '\n'.repeat(enclosingLine - 1) +
-                    '({' +
+                    "\n".repeat(enclosingLine - 1) +
+                    "({" +
                     encodedName +
-                    ':\n' +
-                    ' '.repeat(enclosingCol) +
-                    '_=>' +
-                    ' '.repeat(col) +
-                    '_()})'))
+                    ":\n" +
+                    " ".repeat(enclosingCol) +
+                    "_=>" +
+                    " ".repeat(col) +
+                    "_()})"))
                 : (encodedName =
-                    '\n'.repeat(enclosingLine - 1) +
-                    '({' +
+                    "\n".repeat(enclosingLine - 1) +
+                    "({" +
                     encodedName +
-                    ':\n' +
-                    ' '.repeat(enclosingCol) +
-                    '_=>' +
-                    '\n'.repeat(line - enclosingLine) +
-                    ' '.repeat(col) +
-                    '_()})');
+                    ":\n" +
+                    " ".repeat(enclosingCol) +
+                    "_=>" +
+                    "\n".repeat(line - enclosingLine) +
+                    " ".repeat(col) +
+                    "_()})");
           encodedName =
             1 > enclosingLine
               ? encodedName +
-                '\n/* This module was rendered by a Server Component. Turn on Source Maps to see the server source. */'
-              : '/* This module was rendered by a Server Component. Turn on Source Maps to see the server source. */' +
+                "\n/* This module was rendered by a Server Component. Turn on Source Maps to see the server source. */"
+              : "/* This module was rendered by a Server Component. Turn on Source Maps to see the server source. */" +
                 encodedName;
-          filename.startsWith('/') && (filename = 'file://' + filename);
+          filename.startsWith("/") && (filename = "file://" + filename);
           sourceMap
             ? ((encodedName +=
-                '\n//# sourceURL=about://React/' +
+                "\n//# sourceURL=about://React/" +
                 encodeURIComponent(environmentName) +
-                '/' +
+                "/" +
                 encodeURI(filename) +
-                '?' +
+                "?" +
                 fakeFunctionIdx++),
-              (encodedName += '\n//# sourceMappingURL=' + sourceMap))
+              (encodedName += "\n//# sourceMappingURL=" + sourceMap))
             : (encodedName = filename
-                ? encodedName + ('\n//# sourceURL=' + encodeURI(filename))
-                : encodedName + '\n//# sourceURL=<anonymous>');
+                ? encodedName + ("\n//# sourceURL=" + encodeURI(filename))
+                : encodedName + "\n//# sourceURL=<anonymous>");
           try {
             var fn = (0, eval)(encodedName)[name];
           } catch (x) {
             (fn = (_) => _()),
-              Object.defineProperty(fn, 'name', {
+              Object.defineProperty(fn, "name", {
                 value: name,
               });
           }
@@ -5467,7 +5467,7 @@ module.exports = [
         function buildFakeCallStack(response, stack, environmentName, useEnclosingLine, innerCall) {
           for (var i = 0; i < stack.length; i++) {
             var frame = stack[i],
-              frameKey = frame.join('-') + '-' + environmentName + (useEnclosingLine ? '-e' : '-n'),
+              frameKey = frame.join("-") + "-" + environmentName + (useEnclosingLine ? "-e" : "-n"),
               fn = fakeFunctionCache.get(frameKey);
             if (void 0 === fn) {
               fn = frame[0];
@@ -5525,10 +5525,10 @@ module.exports = [
             env !== cachedEntry
               ? '"use ' + env.toLowerCase() + '"'
               : void 0 !== debugInfo.key
-                ? '<' + (debugInfo.name || '...') + '>'
+                ? "<" + (debugInfo.name || "...") + ">"
                 : void 0 !== debugInfo.name
-                  ? debugInfo.name || 'unknown'
-                  : 'await ' + (debugInfo.awaited.name || 'unknown');
+                  ? debugInfo.name || "unknown"
+                  : "await " + (debugInfo.awaited.name || "unknown");
           env = console.createTask.bind(console, env);
           useEnclosingLine = buildFakeCallStack(
             response,
@@ -5544,7 +5544,7 @@ module.exports = [
           return (debugInfo.debugTask = response);
         }
         function fakeJSXCallSite() {
-          return Error('react-stack-top-frame');
+          return Error("react-stack-top-frame");
         }
         function initializeFakeStack(response, debugInfo) {
           if (void 0 === debugInfo.debugStack) {
@@ -5552,7 +5552,7 @@ module.exports = [
               (debugInfo.debugStack = createFakeJSXCallStackInDEV(
                 response,
                 debugInfo.stack,
-                null == debugInfo.env ? '' : debugInfo.env,
+                null == debugInfo.env ? "" : debugInfo.env,
               ));
             var owner = debugInfo.owner;
             null != owner &&
@@ -5571,7 +5571,7 @@ module.exports = [
             _componentInfoOrAsyncInfo.debugStack = response._debugRootStack;
             _componentInfoOrAsyncInfo.debugTask = response._debugRootTask;
           } else void 0 !== debugInfo.stack && initializeFakeStack(response, debugInfo);
-          'number' === typeof debugInfo.time &&
+          "number" === typeof debugInfo.time &&
             (debugInfo = {
               time: debugInfo.time + response._timeOrigin,
             });
@@ -5579,10 +5579,10 @@ module.exports = [
         }
         function getCurrentStackInDEV() {
           var owner = currentOwnerInDEV;
-          if (null === owner) return '';
+          if (null === owner) return "";
           try {
-            var info = '';
-            if (owner.owner || 'string' !== typeof owner.name) {
+            var info = "";
+            if (owner.owner || "string" !== typeof owner.name) {
               for (; owner; ) {
                 var ownerStack = owner.debugStack;
                 if (null != ownerStack) {
@@ -5593,13 +5593,13 @@ module.exports = [
                     Error.prepareStackTrace = prepareStackTrace;
                     var stack = error.stack;
                     Error.prepareStackTrace = prevPrepareStackTrace;
-                    stack.startsWith('Error: react-stack-top-frame\n') && (stack = stack.slice(29));
-                    var idx = stack.indexOf('\n');
+                    stack.startsWith("Error: react-stack-top-frame\n") && (stack = stack.slice(29));
+                    var idx = stack.indexOf("\n");
                     -1 !== idx && (stack = stack.slice(idx + 1));
-                    idx = stack.indexOf('react_stack_bottom_frame');
-                    -1 !== idx && (idx = stack.lastIndexOf('\n', idx));
-                    var JSCompiler_inline_result = -1 !== idx ? (stack = stack.slice(0, idx)) : '';
-                    info = JSCompiler_temp_const + ('\n' + JSCompiler_inline_result);
+                    idx = stack.indexOf("react_stack_bottom_frame");
+                    -1 !== idx && (idx = stack.lastIndexOf("\n", idx));
+                    var JSCompiler_inline_result = -1 !== idx ? (stack = stack.slice(0, idx)) : "";
+                    info = JSCompiler_temp_const + ("\n" + JSCompiler_inline_result);
                   }
                 } else break;
               }
@@ -5610,19 +5610,19 @@ module.exports = [
                 try {
                   throw Error();
                 } catch (x) {
-                  (prefix = ((error = x.stack.trim().match(/\n( *(at )?)/)) && error[1]) || ''),
+                  (prefix = ((error = x.stack.trim().match(/\n( *(at )?)/)) && error[1]) || ""),
                     (suffix =
-                      -1 < x.stack.indexOf('\n    at')
-                        ? ' (<anonymous>)'
-                        : -1 < x.stack.indexOf('@')
-                          ? '@unknown:0:0'
-                          : '');
+                      -1 < x.stack.indexOf("\n    at")
+                        ? " (<anonymous>)"
+                        : -1 < x.stack.indexOf("@")
+                          ? "@unknown:0:0"
+                          : "");
                 }
-              JSCompiler_inline_result$jscomp$0 = '\n' + prefix + JSCompiler_temp_const + suffix;
+              JSCompiler_inline_result$jscomp$0 = "\n" + prefix + JSCompiler_temp_const + suffix;
             }
           } catch (x) {
             JSCompiler_inline_result$jscomp$0 =
-              '\nError generating stack: ' + x.message + '\n' + x.stack;
+              "\nError generating stack: " + x.message + "\n" + x.stack;
           }
           return JSCompiler_inline_result$jscomp$0;
         }
@@ -5632,7 +5632,7 @@ module.exports = [
             if (null == blockedChunk)
               (blockedChunk = createResolvedModelChunk(response, json)),
                 initializeModelChunk(blockedChunk),
-                'fulfilled' === blockedChunk.status
+                "fulfilled" === blockedChunk.status
                   ? replayConsoleWithCallStackInDEV(response, blockedChunk.value)
                   : (blockedChunk.then(
                       (v) => replayConsoleWithCallStackInDEV(response, v),
@@ -5664,10 +5664,10 @@ module.exports = [
             var promise = ioInfo.value;
             if (promise)
               switch (promise.status) {
-                case 'fulfilled':
+                case "fulfilled":
                   logIOInfo(ioInfo, response, promise.value);
                   break;
-                case 'rejected':
+                case "rejected":
                   logIOInfoErrored(ioInfo, response, promise.reason);
                   break;
                 default:
@@ -5687,14 +5687,14 @@ module.exports = [
           try {
             chunk
               ? (resolveModelChunk(response, chunk, model),
-                'resolved_model' === chunk.status && initializeModelChunk(chunk))
+                "resolved_model" === chunk.status && initializeModelChunk(chunk))
               : ((chunk = createResolvedModelChunk(response, model)),
                 chunks.set(id, chunk),
                 initializeModelChunk(chunk));
           } finally {
             isInitializingDebugInfo = prevIsInitializingDebugInfo;
           }
-          'fulfilled' === chunk.status
+          "fulfilled" === chunk.status
             ? initializeIOInfo(response, chunk.value)
             : chunk.then(
                 (v) => {
@@ -5756,9 +5756,9 @@ module.exports = [
               if (supportsUserTiming && 0 <= previousEndTime && 10 > trackIdx) {
                 var color =
                     componentInfo.env === response$jscomp$0._rootEnvironmentName
-                      ? 'primary-light'
-                      : 'secondary-light',
-                  entryName = componentInfo.name + ' [deduped]',
+                      ? "primary-light"
+                      : "secondary-light",
+                  entryName = componentInfo.name + " [deduped]",
                   debugTask = componentInfo.debugTask;
                 debugTask
                   ? debugTask.run(
@@ -5768,7 +5768,7 @@ module.exports = [
                         0 > startTime ? 0 : startTime,
                         previousEndTime,
                         trackNames[trackIdx],
-                        'Server Components \u269b',
+                        "Server Components \u269b",
                         color,
                       ),
                     )
@@ -5777,7 +5777,7 @@ module.exports = [
                       0 > startTime ? 0 : startTime,
                       previousEndTime,
                       trackNames[trackIdx],
-                      'Server Components \u269b',
+                      "Server Components \u269b",
                       color,
                     );
               }
@@ -5787,12 +5787,12 @@ module.exports = [
           }
           var children = root._children;
           var debugInfo = root._debugInfo;
-          if (0 === debugInfo.length && 'fulfilled' === root.status) {
+          if (0 === debugInfo.length && "fulfilled" === root.status) {
             var resolvedValue = resolveLazy(root.value);
-            'object' === typeof resolvedValue &&
+            "object" === typeof resolvedValue &&
               null !== resolvedValue &&
               (isArrayImpl(resolvedValue) ||
-                'function' === typeof resolvedValue[ASYNC_ITERATOR] ||
+                "function" === typeof resolvedValue[ASYNC_ITERATOR] ||
                 resolvedValue.$$typeof === REACT_ELEMENT_TYPE ||
                 resolvedValue.$$typeof === REACT_LAZY_TYPE) &&
               isArrayImpl(resolvedValue._debugInfo) &&
@@ -5801,8 +5801,8 @@ module.exports = [
           if (debugInfo) {
             for (var startTime$jscomp$0 = 0, i = 0; i < debugInfo.length; i++) {
               var info = debugInfo[i];
-              'number' === typeof info.time && (startTime$jscomp$0 = info.time);
-              if ('string' === typeof info.name) {
+              "number" === typeof info.time && (startTime$jscomp$0 = info.time);
+              if ("string" === typeof info.name) {
                 startTime$jscomp$0 < trackTime && trackIdx$jscomp$6++;
                 trackTime = startTime$jscomp$0;
                 break;
@@ -5810,7 +5810,7 @@ module.exports = [
             }
             for (var _i4 = debugInfo.length - 1; 0 <= _i4; _i4--) {
               var _info = debugInfo[_i4];
-              if ('number' === typeof _info.time && _info.time > parentEndTime) {
+              if ("number" === typeof _info.time && _info.time > parentEndTime) {
                 parentEndTime = _info.time;
                 break;
               }
@@ -5854,13 +5854,13 @@ module.exports = [
               _i6--
             ) {
               var _info2 = debugInfo[_i6];
-              if ('number' === typeof _info2.time) {
+              if ("number" === typeof _info2.time) {
                 0 === componentEndTime && (componentEndTime = _info2.time);
                 var time = _info2.time;
                 if (-1 < endTimeIdx)
                   for (var j = endTimeIdx - 1; j > _i6; j--) {
                     var candidateInfo = debugInfo[j];
-                    if ('string' === typeof candidateInfo.name) {
+                    if ("string" === typeof candidateInfo.name) {
                       componentEndTime > childrenEndTime && (childrenEndTime = componentEndTime);
                       var componentInfo$jscomp$0 = candidateInfo,
                         response = response$jscomp$0,
@@ -5871,7 +5871,7 @@ module.exports = [
                         childrenEndTime$jscomp$0 = childrenEndTime;
                       if (
                         isLastComponent &&
-                        'rejected' === root.status &&
+                        "rejected" === root.status &&
                         root.reason !== response._closedReason
                       ) {
                         var componentInfo$jscomp$2 = componentInfo$jscomp$1,
@@ -5885,37 +5885,37 @@ module.exports = [
                             entryName$jscomp$0 =
                               env === response._rootEnvironmentName || void 0 === env
                                 ? name
-                                : name + ' [' + env + ']',
-                            measureName = '\u200b' + entryName$jscomp$0,
+                                : name + " [" + env + "]",
+                            measureName = "\u200b" + entryName$jscomp$0,
                             properties = [
                               [
-                                'Error',
-                                'object' === typeof error &&
+                                "Error",
+                                "object" === typeof error &&
                                 null !== error &&
-                                'string' === typeof error.message
+                                "string" === typeof error.message
                                   ? String(error.message)
                                   : String(error),
                               ],
                             ];
                           null != componentInfo$jscomp$2.key &&
                             addValueToProperties(
-                              'key',
+                              "key",
                               componentInfo$jscomp$2.key,
                               properties,
                               0,
-                              '',
+                              "",
                             );
                           null != componentInfo$jscomp$2.props &&
-                            addObjectToProperties(componentInfo$jscomp$2.props, properties, 0, '');
+                            addObjectToProperties(componentInfo$jscomp$2.props, properties, 0, "");
                           performance.measure(measureName, {
                             start: 0 > startTime$jscomp$2 ? 0 : startTime$jscomp$2,
                             end: childrenEndTime$jscomp$1,
                             detail: {
                               devtools: {
-                                color: 'error',
+                                color: "error",
                                 track: trackNames[trackIdx$jscomp$1],
-                                trackGroup: 'Server Components \u269b',
-                                tooltipText: entryName$jscomp$0 + ' Errored',
+                                trackGroup: "Server Components \u269b",
+                                tooltipText: entryName$jscomp$0 + " Errored",
                                 properties: properties,
                               },
                             },
@@ -5939,39 +5939,39 @@ module.exports = [
                             color$jscomp$0 =
                               0.5 > selfTime
                                 ? isPrimaryEnv
-                                  ? 'primary-light'
-                                  : 'secondary-light'
+                                  ? "primary-light"
+                                  : "secondary-light"
                                 : 50 > selfTime
                                   ? isPrimaryEnv
-                                    ? 'primary'
-                                    : 'secondary'
+                                    ? "primary"
+                                    : "secondary"
                                   : 500 > selfTime
                                     ? isPrimaryEnv
-                                      ? 'primary-dark'
-                                      : 'secondary-dark'
-                                    : 'error',
+                                      ? "primary-dark"
+                                      : "secondary-dark"
+                                    : "error",
                             debugTask$jscomp$0 = componentInfo$jscomp$3.debugTask,
                             measureName$jscomp$0 =
-                              '\u200b' +
+                              "\u200b" +
                               (isPrimaryEnv || void 0 === env$jscomp$0
                                 ? name$jscomp$0
-                                : name$jscomp$0 + ' [' + env$jscomp$0 + ']');
+                                : name$jscomp$0 + " [" + env$jscomp$0 + "]");
                           if (debugTask$jscomp$0) {
                             var properties$jscomp$0 = [];
                             null != componentInfo$jscomp$3.key &&
                               addValueToProperties(
-                                'key',
+                                "key",
                                 componentInfo$jscomp$3.key,
                                 properties$jscomp$0,
                                 0,
-                                '',
+                                "",
                               );
                             null != componentInfo$jscomp$3.props &&
                               addObjectToProperties(
                                 componentInfo$jscomp$3.props,
                                 properties$jscomp$0,
                                 0,
-                                '',
+                                "",
                               );
                             debugTask$jscomp$0.run(
                               performance.measure.bind(performance, measureName$jscomp$0, {
@@ -5981,7 +5981,7 @@ module.exports = [
                                   devtools: {
                                     color: color$jscomp$0,
                                     track: trackNames[trackIdx$jscomp$2],
-                                    trackGroup: 'Server Components \u269b',
+                                    trackGroup: "Server Components \u269b",
                                     properties: properties$jscomp$0,
                                   },
                                 },
@@ -5994,7 +5994,7 @@ module.exports = [
                               0 > startTime$jscomp$3 ? 0 : startTime$jscomp$3,
                               childrenEndTime$jscomp$2,
                               trackNames[trackIdx$jscomp$2],
-                              'Server Components \u269b',
+                              "Server Components \u269b",
                               color$jscomp$0,
                             );
                         }
@@ -6010,7 +6010,7 @@ module.exports = [
                       if (promise) {
                         var thenable = promise;
                         switch (thenable.status) {
-                          case 'fulfilled':
+                          case "fulfilled":
                             logComponentAwait(
                               asyncInfo,
                               trackIdx$jscomp$6,
@@ -6020,7 +6020,7 @@ module.exports = [
                               thenable.value,
                             );
                             break;
-                          case 'rejected': {
+                          case "rejected": {
                             var asyncInfo$jscomp$0 = asyncInfo,
                               trackIdx$jscomp$3 = trackIdx$jscomp$6,
                               startTime$jscomp$4 = time,
@@ -6030,7 +6030,7 @@ module.exports = [
                             if (supportsUserTiming && 0 < endTime$jscomp$0) {
                               var description = getIODescription(error$jscomp$0),
                                 entryName$jscomp$1 =
-                                  'await ' +
+                                  "await " +
                                   getIOShortName(
                                     asyncInfo$jscomp$0.awaited,
                                     description,
@@ -6043,10 +6043,10 @@ module.exports = [
                               if (debugTask$jscomp$1) {
                                 var properties$jscomp$1 = [
                                     [
-                                      'Rejected',
-                                      'object' === typeof error$jscomp$0 &&
+                                      "Rejected",
+                                      "object" === typeof error$jscomp$0 &&
                                       null !== error$jscomp$0 &&
-                                      'string' === typeof error$jscomp$0.message
+                                      "string" === typeof error$jscomp$0.message
                                         ? String(error$jscomp$0.message)
                                         : String(error$jscomp$0),
                                     ],
@@ -6057,16 +6057,16 @@ module.exports = [
                                       description,
                                       asyncInfo$jscomp$0.env,
                                       rootEnv,
-                                    ) + ' Rejected';
+                                    ) + " Rejected";
                                 debugTask$jscomp$1.run(
                                   performance.measure.bind(performance, entryName$jscomp$1, {
                                     start: 0 > startTime$jscomp$4 ? 0 : startTime$jscomp$4,
                                     end: endTime$jscomp$0,
                                     detail: {
                                       devtools: {
-                                        color: 'error',
+                                        color: "error",
                                         track: trackNames[trackIdx$jscomp$3],
-                                        trackGroup: 'Server Components \u269b',
+                                        trackGroup: "Server Components \u269b",
                                         properties: properties$jscomp$1,
                                         tooltipText: tooltipText,
                                       },
@@ -6080,8 +6080,8 @@ module.exports = [
                                   0 > startTime$jscomp$4 ? 0 : startTime$jscomp$4,
                                   endTime$jscomp$0,
                                   trackNames[trackIdx$jscomp$3],
-                                  'Server Components \u269b',
-                                  'error',
+                                  "Server Components \u269b",
+                                  "error",
                                 );
                             }
                             break;
@@ -6111,7 +6111,7 @@ module.exports = [
                   endTime = time;
                   for (var _j = debugInfo.length - 1; _j > _i6; _j--) {
                     var _candidateInfo = debugInfo[_j];
-                    if ('string' === typeof _candidateInfo.name) {
+                    if ("string" === typeof _candidateInfo.name) {
                       componentEndTime > childrenEndTime && (childrenEndTime = componentEndTime);
                       var _componentInfo = _candidateInfo,
                         _env = response$jscomp$0._rootEnvironmentName,
@@ -6125,38 +6125,38 @@ module.exports = [
                           entryName$jscomp$2 =
                             env$jscomp$2 === _env || void 0 === env$jscomp$2
                               ? name$jscomp$1
-                              : name$jscomp$1 + ' [' + env$jscomp$2 + ']',
-                          measureName$jscomp$1 = '\u200b' + entryName$jscomp$2,
+                              : name$jscomp$1 + " [" + env$jscomp$2 + "]",
+                          measureName$jscomp$1 = "\u200b" + entryName$jscomp$2,
                           properties$jscomp$2 = [
                             [
-                              'Aborted',
-                              'The stream was aborted before this Component finished rendering.',
+                              "Aborted",
+                              "The stream was aborted before this Component finished rendering.",
                             ],
                           ];
                         null != componentInfo$jscomp$4.key &&
                           addValueToProperties(
-                            'key',
+                            "key",
                             componentInfo$jscomp$4.key,
                             properties$jscomp$2,
                             0,
-                            '',
+                            "",
                           );
                         null != componentInfo$jscomp$4.props &&
                           addObjectToProperties(
                             componentInfo$jscomp$4.props,
                             properties$jscomp$2,
                             0,
-                            '',
+                            "",
                           );
                         performance.measure(measureName$jscomp$1, {
                           start: 0 > startTime$jscomp$5 ? 0 : startTime$jscomp$5,
                           end: childrenEndTime$jscomp$3,
                           detail: {
                             devtools: {
-                              color: 'warning',
+                              color: "warning",
                               track: trackNames[trackIdx$jscomp$4],
-                              trackGroup: 'Server Components \u269b',
-                              tooltipText: entryName$jscomp$2 + ' Aborted',
+                              trackGroup: "Server Components \u269b",
+                              tooltipText: entryName$jscomp$2 + " Aborted",
                               properties: properties$jscomp$2,
                             },
                           },
@@ -6178,10 +6178,10 @@ module.exports = [
                         rootEnv$jscomp$0 = _env2;
                       if (supportsUserTiming && 0 < endTime$jscomp$1) {
                         var entryName$jscomp$3 =
-                            'await ' +
+                            "await " +
                             getIOShortName(
                               asyncInfo$jscomp$1.awaited,
-                              '',
+                              "",
                               asyncInfo$jscomp$1.env,
                               rootEnv$jscomp$0,
                             ),
@@ -6191,23 +6191,23 @@ module.exports = [
                           var tooltipText$jscomp$0 =
                             getIOLongName(
                               asyncInfo$jscomp$1.awaited,
-                              '',
+                              "",
                               asyncInfo$jscomp$1.env,
                               rootEnv$jscomp$0,
-                            ) + ' Aborted';
+                            ) + " Aborted";
                           debugTask$jscomp$2.run(
                             performance.measure.bind(performance, entryName$jscomp$3, {
                               start: 0 > startTime$jscomp$6 ? 0 : startTime$jscomp$6,
                               end: endTime$jscomp$1,
                               detail: {
                                 devtools: {
-                                  color: 'warning',
+                                  color: "warning",
                                   track: trackNames[trackIdx$jscomp$5],
-                                  trackGroup: 'Server Components \u269b',
+                                  trackGroup: "Server Components \u269b",
                                   properties: [
                                     [
-                                      'Aborted',
-                                      'The stream was aborted before this Promise resolved.',
+                                      "Aborted",
+                                      "The stream was aborted before this Promise resolved.",
                                     ],
                                   ],
                                   tooltipText: tooltipText$jscomp$0,
@@ -6222,8 +6222,8 @@ module.exports = [
                             0 > startTime$jscomp$6 ? 0 : startTime$jscomp$6,
                             endTime$jscomp$1,
                             trackNames[trackIdx$jscomp$5],
-                            'Server Components \u269b',
-                            'warning',
+                            "Server Components \u269b",
+                            "warning",
                           );
                       }
                     }
@@ -6291,7 +6291,7 @@ module.exports = [
               resolveTypedArray(response, id, buffer, chunk, DataView, 1, streamState);
               return;
           }
-          for (var stringDecoder = response._stringDecoder, row = '', i = 0; i < buffer.length; i++)
+          for (var stringDecoder = response._stringDecoder, row = "", i = 0; i < buffer.length; i++)
             row += stringDecoder.decode(buffer[i], decoderOptions);
           row += stringDecoder.decode(chunk);
           processFullStringRow(response, streamState, id, tag, row);
@@ -6307,33 +6307,33 @@ module.exports = [
               response = parseModel(response, streamState);
               streamState = ReactDOMSharedInternals.d;
               switch (id) {
-                case 'D':
+                case "D":
                   streamState.D(response);
                   break;
-                case 'C':
-                  'string' === typeof response
+                case "C":
+                  "string" === typeof response
                     ? streamState.C(response)
                     : streamState.C(response[0], response[1]);
                   break;
-                case 'L':
+                case "L":
                   id = response[0];
                   row = response[1];
                   3 === response.length
                     ? streamState.L(id, row, response[2])
                     : streamState.L(id, row);
                   break;
-                case 'm':
-                  'string' === typeof response
+                case "m":
+                  "string" === typeof response
                     ? streamState.m(response)
                     : streamState.m(response[0], response[1]);
                   break;
-                case 'X':
-                  'string' === typeof response
+                case "X":
+                  "string" === typeof response
                     ? streamState.X(response)
                     : streamState.X(response[0], response[1]);
                   break;
-                case 'S':
-                  'string' === typeof response
+                case "S":
+                  "string" === typeof response
                     ? streamState.S(response)
                     : streamState.S(
                         response[0],
@@ -6341,8 +6341,8 @@ module.exports = [
                         3 === response.length ? response[2] : void 0,
                       );
                   break;
-                case 'M':
-                  'string' === typeof response
+                case "M":
+                  "string" === typeof response
                     ? streamState.M(response)
                     : streamState.M(response[0], response[1]);
               }
@@ -6356,17 +6356,17 @@ module.exports = [
               chunk
                 ? (resolveChunkDebugInfo(response, streamState, chunk),
                   triggerErrorOnChunk(response, chunk, error))
-                : ((row = new ReactPromise('rejected', null, error)),
+                : ((row = new ReactPromise("rejected", null, error)),
                   resolveChunkDebugInfo(response, streamState, row),
                   tag.set(id, row));
               break;
             }
             case 84:
               tag = response._chunks;
-              (chunk = tag.get(id)) && 'pending' !== chunk.status
+              (chunk = tag.get(id)) && "pending" !== chunk.status
                 ? chunk.reason.enqueueValue(row)
                 : (chunk && releasePendingChunk(response, chunk),
-                  (row = new ReactPromise('fulfilled', row, null)),
+                  (row = new ReactPromise("fulfilled", row, null)),
                   resolveChunkDebugInfo(response, streamState, row),
                   tag.set(id, row));
               break;
@@ -6375,23 +6375,23 @@ module.exports = [
               break;
             case 68:
               id = getChunk(response, id);
-              'fulfilled' !== id.status &&
-                'rejected' !== id.status &&
-                'halted' !== id.status &&
-                'blocked' !== id.status &&
-                'resolved_module' !== id.status &&
+              "fulfilled" !== id.status &&
+                "rejected" !== id.status &&
+                "halted" !== id.status &&
+                "blocked" !== id.status &&
+                "resolved_module" !== id.status &&
                 ((streamState = id._debugChunk),
                 (tag = createResolvedModelChunk(response, row)),
                 (tag._debugChunk = streamState),
                 (id._debugChunk = tag),
                 initializeDebugChunk(response, id),
-                'blocked' !== tag.status ||
+                "blocked" !== tag.status ||
                   (void 0 !== response._debugChannel && response._debugChannel.hasReadable) ||
                   '"' !== row[0] ||
-                  '$' !== row[1] ||
-                  ((streamState = row.slice(2, row.length - 1).split(':')),
+                  "$" !== row[1] ||
+                  ((streamState = row.slice(2, row.length - 1).split(":")),
                   (streamState = parseInt(streamState[0], 16)),
-                  'pending' === getChunk(response, streamState).status && (id._debugChunk = null)));
+                  "pending" === getChunk(response, streamState).status && (id._debugChunk = null)));
               break;
             case 74:
               resolveIOInfo(response, id, row);
@@ -6403,7 +6403,7 @@ module.exports = [
               startReadableStream(response, id, void 0, streamState);
               break;
             case 114:
-              startReadableStream(response, id, 'bytes', streamState);
+              startReadableStream(response, id, "bytes", streamState);
               break;
             case 88:
               startAsyncIterable(response, id, !1, streamState);
@@ -6413,21 +6413,21 @@ module.exports = [
               break;
             case 67:
               (id = response._chunks.get(id)) &&
-                'fulfilled' === id.status &&
+                "fulfilled" === id.status &&
                 (0 === --response._pendingChunks && (response._weakResponse.response = null),
-                id.reason.close('' === row ? '"$undefined"' : row));
+                id.reason.close("" === row ? '"$undefined"' : row));
               break;
             default:
-              if ('' === row) {
+              if ("" === row) {
                 if (
                   ((streamState = response._chunks),
                   (row = streamState.get(id)) ||
                     streamState.set(id, (row = createPendingChunk(response))),
-                  'pending' === row.status || 'blocked' === row.status)
+                  "pending" === row.status || "blocked" === row.status)
                 )
                   releasePendingChunk(response, row),
                     (response = row),
-                    (response.status = 'halted'),
+                    (response.status = "halted"),
                     (response.value = null),
                     (response.reason = null);
               } else
@@ -6539,18 +6539,18 @@ module.exports = [
             response,
             json,
             {
-              '': json,
+              "": json,
             },
-            '',
+            "",
           );
         }
         function reviveModel(response, value, parentObject, key) {
-          if ('string' === typeof value)
-            return '$' === value[0] ? parseModelString(response, parentObject, key, value) : value;
-          if ('object' !== typeof value || null === value) return value;
+          if ("string" === typeof value)
+            return "$" === value[0] ? parseModelString(response, parentObject, key, value) : value;
+          if ("object" !== typeof value || null === value) return value;
           if (isArrayImpl(value)) {
             for (var i = 0; i < value.length; i++)
-              value[i] = reviveModel(response, value[i], value, '' + i);
+              value[i] = reviveModel(response, value[i], value, "" + i);
             if (value[0] === REACT_ELEMENT_TYPE) {
               if (value[0] === REACT_ELEMENT_TYPE)
                 b: {
@@ -6564,30 +6564,30 @@ module.exports = [
                     props: value[3],
                     _owner: void 0 === key ? null : key,
                   };
-                  Object.defineProperty(value, 'ref', {
+                  Object.defineProperty(value, "ref", {
                     enumerable: !1,
                     get: nullRefGetter,
                   });
                   value._store = {};
-                  Object.defineProperty(value._store, 'validated', {
+                  Object.defineProperty(value._store, "validated", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
                     value: i,
                   });
-                  Object.defineProperty(value, '_debugInfo', {
+                  Object.defineProperty(value, "_debugInfo", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
                     value: null,
                   });
-                  Object.defineProperty(value, '_debugStack', {
+                  Object.defineProperty(value, "_debugStack", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
                     value: void 0 === parentObject ? null : parentObject,
                   });
-                  Object.defineProperty(value, '_debugTask', {
+                  Object.defineProperty(value, "_debugTask", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
@@ -6597,10 +6597,10 @@ module.exports = [
                     key = initializingHandler;
                     initializingHandler = key.parent;
                     if (key.errored) {
-                      parentObject = new ReactPromise('rejected', null, key.reason);
+                      parentObject = new ReactPromise("rejected", null, key.reason);
                       initializeElement(response, value, null);
                       response = {
-                        name: getComponentNameFromType(value.type) || '',
+                        name: getComponentNameFromType(value.type) || "",
                         owner: value._owner,
                       };
                       response.debugStack = value._debugStack;
@@ -6610,7 +6610,7 @@ module.exports = [
                       break b;
                     }
                     if (0 < key.deps) {
-                      parentObject = new ReactPromise('blocked', null, null);
+                      parentObject = new ReactPromise("blocked", null, null);
                       key.value = value;
                       key.chunk = parentObject;
                       i = createLazyChunkWrapper(parentObject, i);
@@ -6629,7 +6629,7 @@ module.exports = [
             return value;
           }
           for (i in value)
-            '__proto__' === i
+            "__proto__" === i
               ? delete value[i]
               : ((parentObject = reviveModel(response, value[i], value, i)),
                 void 0 !== parentObject ? (value[i] = parentObject) : delete value[i]);
@@ -6641,12 +6641,12 @@ module.exports = [
             response._allowPartialStream
               ? ((response._closed = !0),
                 response._chunks.forEach((chunk) => {
-                  'pending' === chunk.status
+                  "pending" === chunk.status
                     ? (releasePendingChunk(response, chunk),
-                      (chunk.status = 'halted'),
+                      (chunk.status = "halted"),
                       (chunk.value = null),
                       (chunk.reason = null))
-                    : 'fulfilled' === chunk.status &&
+                    : "fulfilled" === chunk.status &&
                       null !== chunk.reason &&
                       chunk.reason.close('"$undefined"');
                 }),
@@ -6655,12 +6655,12 @@ module.exports = [
                   (closeDebugChannel(weakResponse),
                   (response._debugChannel = void 0),
                   null !== debugChannelRegistry && debugChannelRegistry.unregister(response)))
-              : reportGlobalError(weakResponse, Error('Connection closed.'));
+              : reportGlobalError(weakResponse, Error("Connection closed."));
           }
         }
         function noServerCall$1() {
           throw Error(
-            'Server Functions cannot be called during initial render. This would create a fetch waterfall. Try to use a Server Component to pass data to Client Components instead.',
+            "Server Functions cannot be called during initial render. This would create a fetch waterfall. Try to use a Server Component to pass data to Client Components instead.",
           );
         }
         function createResponseFromOptions(options) {
@@ -6670,7 +6670,7 @@ module.exports = [
             options.serverConsumerManifest.moduleLoading,
             noServerCall$1,
             options.encodeFormAction,
-            'string' === typeof options.nonce ? options.nonce : void 0,
+            "string" === typeof options.nonce ? options.nonce : void 0,
             options && options.temporaryReferences ? options.temporaryReferences : void 0,
             options && options.unstable_allowPartialStream
               ? options.unstable_allowPartialStream
@@ -6704,13 +6704,13 @@ module.exports = [
         }
         function noServerCall() {
           throw Error(
-            'Server Functions cannot be called during initial render. This would create a fetch waterfall. Try to use a Server Component to pass data to Client Components instead.',
+            "Server Functions cannot be called during initial render. This would create a fetch waterfall. Try to use a Server Component to pass data to Client Components instead.",
           );
         }
         function startReadingFromStream(response$jscomp$0, stream, onEnd) {
           var streamState = createStreamState(response$jscomp$0, stream);
-          stream.on('data', (chunk) => {
-            if ('string' === typeof chunk) {
+          stream.on("data", (chunk) => {
+            if ("string" === typeof chunk) {
               if (!hasGCedResponse(response$jscomp$0)) {
                 var response = unwrapWeakResponse(response$jscomp$0),
                   i = 0,
@@ -6758,23 +6758,23 @@ module.exports = [
                             (rowLength << 4) | (96 < lastIdx ? lastIdx - 87 : lastIdx - 48));
                       continue;
                     case 3:
-                      lastIdx = chunk.indexOf('\n', i);
+                      lastIdx = chunk.indexOf("\n", i);
                       break;
                     case 4:
                       if (84 !== rowTag)
                         throw Error(
-                          'Binary RSC chunks cannot be encoded as strings. This is a bug in the wiring of the React streams.',
+                          "Binary RSC chunks cannot be encoded as strings. This is a bug in the wiring of the React streams.",
                         );
                       if (rowLength < chunk.length || chunk.length > 3 * rowLength)
                         throw Error(
-                          'String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.',
+                          "String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.",
                         );
                       lastIdx = chunk.length;
                   }
                   if (-1 < lastIdx) {
                     if (0 < buffer.length)
                       throw Error(
-                        'String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.',
+                        "String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.",
                       );
                     i = chunk.slice(i, lastIdx);
                     processFullStringRow(response, streamState, rowID, rowTag, i);
@@ -6784,7 +6784,7 @@ module.exports = [
                     buffer.length = 0;
                   } else if (chunk.length !== i)
                     throw Error(
-                      'String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.',
+                      "String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.",
                     );
                 }
                 streamState._rowState = rowState;
@@ -6794,17 +6794,17 @@ module.exports = [
               }
             } else processBinaryChunk(response$jscomp$0, streamState, chunk);
           });
-          stream.on('error', (error) => {
+          stream.on("error", (error) => {
             reportGlobalError(response$jscomp$0, error);
           });
-          stream.on('end', onEnd);
+          stream.on("end", onEnd);
         }
-        var util = __turbopack_context__.r('[externals]/util [external] (util, cjs)'),
+        var util = __turbopack_context__.r("[externals]/util [external] (util, cjs)"),
           ReactDOM = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react-dom.js [app-rsc] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react-dom.js [app-rsc] (ecmascript)",
           ),
           React = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react.js [app-rsc] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react.js [app-rsc] (ecmascript)",
           ),
           decoderOptions = {
             stream: !0,
@@ -6816,27 +6816,27 @@ module.exports = [
           loadedChunks = new WeakSet(),
           ReactDOMSharedInternals =
             ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE,
-          REACT_ELEMENT_TYPE = Symbol.for('react.transitional.element'),
-          REACT_PORTAL_TYPE = Symbol.for('react.portal'),
-          REACT_FRAGMENT_TYPE = Symbol.for('react.fragment'),
-          REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode'),
-          REACT_PROFILER_TYPE = Symbol.for('react.profiler'),
-          REACT_CONSUMER_TYPE = Symbol.for('react.consumer'),
-          REACT_CONTEXT_TYPE = Symbol.for('react.context'),
-          REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref'),
-          REACT_SUSPENSE_TYPE = Symbol.for('react.suspense'),
-          REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list'),
-          REACT_MEMO_TYPE = Symbol.for('react.memo'),
-          REACT_LAZY_TYPE = Symbol.for('react.lazy'),
-          REACT_ACTIVITY_TYPE = Symbol.for('react.activity'),
-          REACT_VIEW_TRANSITION_TYPE = Symbol.for('react.view_transition'),
+          REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"),
+          REACT_PORTAL_TYPE = Symbol.for("react.portal"),
+          REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"),
+          REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"),
+          REACT_PROFILER_TYPE = Symbol.for("react.profiler"),
+          REACT_CONSUMER_TYPE = Symbol.for("react.consumer"),
+          REACT_CONTEXT_TYPE = Symbol.for("react.context"),
+          REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"),
+          REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"),
+          REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"),
+          REACT_MEMO_TYPE = Symbol.for("react.memo"),
+          REACT_LAZY_TYPE = Symbol.for("react.lazy"),
+          REACT_ACTIVITY_TYPE = Symbol.for("react.activity"),
+          REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"),
           MAYBE_ITERATOR_SYMBOL = Symbol.iterator,
           ASYNC_ITERATOR = Symbol.asyncIterator,
           isArrayImpl = Array.isArray,
           getPrototypeOf = Object.getPrototypeOf,
           jsxPropsParents = new WeakMap(),
           jsxChildrenParents = new WeakMap(),
-          CLIENT_REFERENCE_TAG = Symbol.for('react.client.reference'),
+          CLIENT_REFERENCE_TAG = Symbol.for("react.client.reference"),
           ObjectPrototype = Object.prototype,
           knownServerReferences = new WeakMap(),
           boundCache = new WeakMap(),
@@ -6845,19 +6845,19 @@ module.exports = [
           ArraySlice = Array.prototype.slice,
           v8FrameRegExp = /^ {3} at (?:(.+) \((.+):(\d+):(\d+)\)|(?:async )?(.+):(\d+):(\d+))$/,
           jscSpiderMonkeyFrameRegExp = /(?:(.*)@)?(.*):(\d+):(\d+)/,
-          REACT_CLIENT_REFERENCE = Symbol.for('react.client.reference'),
+          REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"),
           supportsUserTiming =
-            'undefined' !== typeof console &&
-            'function' === typeof console.timeStamp &&
-            'undefined' !== typeof performance &&
-            'function' === typeof performance.measure,
+            "undefined" !== typeof console &&
+            "function" === typeof console.timeStamp &&
+            "undefined" !== typeof performance &&
+            "function" === typeof performance.measure,
           trackNames =
-            'Primary Parallel Parallel\u200b Parallel\u200b\u200b Parallel\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b'.split(
-              ' ',
+            "Primary Parallel Parallel\u200b Parallel\u200b\u200b Parallel\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b".split(
+              " ",
             ),
           prefix,
           suffix;
-        new ('function' === typeof WeakMap ? WeakMap : Map)();
+        new ("function" === typeof WeakMap ? WeakMap : Map)();
         var ReactSharedInteralsServer =
             React.__SERVER_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE,
           ReactSharedInternals =
@@ -6866,10 +6866,10 @@ module.exports = [
         ReactPromise.prototype = Object.create(Promise.prototype);
         ReactPromise.prototype.then = function (resolve, reject) {
           switch (this.status) {
-            case 'resolved_model':
+            case "resolved_model":
               initializeModelChunk(this);
               break;
-            case 'resolved_module':
+            case "resolved_module":
               initializeModuleChunk(this);
           }
           var resolveCallback = resolve,
@@ -6886,24 +6886,24 @@ module.exports = [
             });
           wrapperPromise.then(resolveCallback, rejectCallback);
           switch (this.status) {
-            case 'fulfilled':
-              'function' === typeof resolve && resolve(this.value);
+            case "fulfilled":
+              "function" === typeof resolve && resolve(this.value);
               break;
-            case 'pending':
-            case 'blocked':
-              'function' === typeof resolve &&
+            case "pending":
+            case "blocked":
+              "function" === typeof resolve &&
                 (null === this.value && (this.value = []), this.value.push(resolve));
-              'function' === typeof reject &&
+              "function" === typeof reject &&
                 (null === this.reason && (this.reason = []), this.reason.push(reject));
               break;
-            case 'halted':
+            case "halted":
               break;
             default:
-              'function' === typeof reject && reject(this.reason);
+              "function" === typeof reject && reject(this.reason);
           }
         };
         var debugChannelRegistry =
-            'function' === typeof FinalizationRegistry
+            "function" === typeof FinalizationRegistry
               ? new FinalizationRegistry(closeDebugChannel)
               : null,
           initializingHandler = null,
@@ -6935,36 +6935,36 @@ module.exports = [
                 a: {
                   var offset = 0;
                   switch (methodName) {
-                    case 'dir':
-                    case 'dirxml':
-                    case 'groupEnd':
-                    case 'table': {
+                    case "dir":
+                    case "dirxml":
+                    case "groupEnd":
+                    case "table": {
                       var JSCompiler_inline_result = bind$1.apply(
                         console[methodName],
                         [console].concat(payload),
                       );
                       break a;
                     }
-                    case 'assert':
+                    case "assert":
                       offset = 1;
                   }
                   var newArgs = payload.slice(0);
-                  'string' === typeof newArgs[offset]
+                  "string" === typeof newArgs[offset]
                     ? newArgs.splice(
                         offset,
                         1,
-                        '\u001b[0m\u001b[7m%c%s\u001b[0m%c ' + newArgs[offset],
-                        'background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px',
-                        ' ' + env + ' ',
-                        '',
+                        "\u001b[0m\u001b[7m%c%s\u001b[0m%c " + newArgs[offset],
+                        "background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px",
+                        " " + env + " ",
+                        "",
                       )
                     : newArgs.splice(
                         offset,
                         0,
-                        '\u001b[0m\u001b[7m%c%s\u001b[0m%c',
-                        'background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px',
-                        ' ' + env + ' ',
-                        '',
+                        "\u001b[0m\u001b[7m%c%s\u001b[0m%c",
+                        "background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px",
+                        " " + env + " ",
+                        "",
                       );
                   newArgs.unshift(console);
                   JSCompiler_inline_result = bind$1.apply(console[methodName], newArgs);
@@ -7019,7 +7019,7 @@ module.exports = [
             serverConsumerManifest.moduleLoading,
             noServerCall,
             options ? options.encodeFormAction : void 0,
-            options && 'string' === typeof options.nonce ? options.nonce : void 0,
+            options && "string" === typeof options.nonce ? options.nonce : void 0,
             void 0,
             options && options.unstable_allowPartialStream
               ? options.unstable_allowPartialStream
@@ -7064,7 +7064,7 @@ module.exports = [
           new Promise((resolve, reject) => {
             var abort = processReply(
               value,
-              '',
+              "",
               options && options.temporaryReferences ? options.temporaryReferences : void 0,
               resolve,
               reject,
@@ -7075,9 +7075,9 @@ module.exports = [
               else {
                 var listener = () => {
                   abort(signal.reason);
-                  signal.removeEventListener('abort', listener);
+                  signal.removeEventListener("abort", listener);
                 };
-                signal.addEventListener('abort', listener);
+                signal.addEventListener("abort", listener);
               }
             }
           });
@@ -7087,23 +7087,23 @@ module.exports = [
         };
       })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.node.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.node.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
       module.exports = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.node.development.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.node.development.js [app-rsc] (ecmascript)",
       );
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/string-hash/index.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/string-hash/index.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
-      'use strict';
+      "use strict";
       var e = {
         328: (e) => {
           function hash(e) {
@@ -7135,11 +7135,11 @@ module.exports = [
         }
         return t.exports;
       }
-      if (typeof __nccwpck_require__ !== 'undefined')
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/string-hash') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/string-hash") +
+          "/";
       var _ = __nccwpck_require__(328);
       module.exports = _;
     })();

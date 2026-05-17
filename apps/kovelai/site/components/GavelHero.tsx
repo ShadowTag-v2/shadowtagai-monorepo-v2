@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import type React from 'react';
-import { useEffect, useRef } from 'react';
+import type React from "react";
+import { useEffect, useRef } from "react";
 
 /**
  * GavelHero — Cinematic gavel-fall hero overlay for KovelAI
@@ -24,13 +24,13 @@ import { useEffect, useRef } from 'react';
 
 /* ── DESIGN TOKENS ── */
 const T = {
-  surface: '#0A0A0F',
-  tertiary: '#00BCD4',
-  onTertiary: '#003238',
-  onSurface: '#FFFFFF',
-  onSurfaceV: '#8B949E',
-  glass: 'rgba(10, 10, 15, 0.65)',
-  glassBorder: 'rgba(255, 255, 255, 0.08)',
+  surface: "#0A0A0F",
+  tertiary: "#00BCD4",
+  onTertiary: "#003238",
+  onSurface: "#FFFFFF",
+  onSurfaceV: "#8B949E",
+  glass: "rgba(10, 10, 15, 0.65)",
+  glassBorder: "rgba(255, 255, 255, 0.08)",
 } as const;
 
 /** Total frames in scroll-driven sequence (8s @ 30fps). Update if Veo asset changes. */
@@ -38,18 +38,18 @@ const FRAME_COUNT = 240;
 
 const styles = {
   wrapper: {
-    position: 'relative' as const,
-    width: '100%',
-    height: '100vh',
-    overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: "relative" as const,
+    width: "100%",
+    height: "100vh",
+    overflow: "hidden",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   } satisfies React.CSSProperties,
 
   /* Layer 0 — Canvas scroll-driven frame zone (replaces <video>) */
   canvasZone: {
-    position: 'absolute' as const,
+    position: "absolute" as const,
     inset: 0,
     zIndex: 0,
     /* Cinematic gradient placeholder (visible until frames load) */
@@ -71,28 +71,28 @@ const styles = {
   } satisfies React.CSSProperties,
 
   canvas: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover' as const,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover" as const,
     opacity: 0.12,
   } satisfies React.CSSProperties,
 
   /* Grain overlay for premium texture */
   grain: {
-    position: 'absolute' as const,
+    position: "absolute" as const,
     inset: 0,
     zIndex: 1,
     opacity: 0.04,
     backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-    pointerEvents: 'none' as const,
+    pointerEvents: "none" as const,
   } satisfies React.CSSProperties,
 
   /* The gavel "impact point" — a bright cyan pulse at center-bottom */
   impactPoint: {
-    position: 'absolute' as const,
-    bottom: '20%',
-    left: '50%',
-    transform: 'translateX(-50%)',
+    position: "absolute" as const,
+    bottom: "20%",
+    left: "50%",
+    transform: "translateX(-50%)",
     width: 320,
     height: 4,
     background: `linear-gradient(90deg, transparent, ${T.tertiary}, transparent)`,
@@ -100,39 +100,39 @@ const styles = {
     zIndex: 1,
     opacity: 0.6,
     /* Pulse animation via CSS keyframes */
-    animation: 'gavelPulse 3s ease-in-out infinite',
+    animation: "gavelPulse 3s ease-in-out infinite",
   } satisfies React.CSSProperties,
 
   /* Layer 1 — Atmospheric glass scrim */
   scrim: {
-    position: 'absolute' as const,
+    position: "absolute" as const,
     inset: 0,
     zIndex: 10,
     background:
-      'linear-gradient(180deg, transparent 0%, rgba(10,10,15,0.4) 40%, rgba(10,10,15,0.85) 100%)',
-    backdropFilter: 'blur(2px)',
-    WebkitBackdropFilter: 'blur(2px)',
+      "linear-gradient(180deg, transparent 0%, rgba(10,10,15,0.4) 40%, rgba(10,10,15,0.85) 100%)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
   } satisfies React.CSSProperties,
 
   /* Layer 2 — Content overlay */
   content: {
-    position: 'relative' as const,
+    position: "relative" as const,
     zIndex: 20,
-    textAlign: 'center' as const,
+    textAlign: "center" as const,
     maxWidth: 800,
-    padding: '0 24px',
+    padding: "0 24px",
   } satisfies React.CSSProperties,
 
   badge: {
-    display: 'inline-flex',
-    alignItems: 'center',
+    display: "inline-flex",
+    alignItems: "center",
     gap: 8,
-    backgroundColor: 'rgba(10, 43, 48, 0.8)',
+    backgroundColor: "rgba(10, 43, 48, 0.8)",
     color: T.tertiary,
     fontSize: 12,
     fontWeight: 500,
-    letterSpacing: '0.04em',
-    padding: '6px 14px',
+    letterSpacing: "0.04em",
+    padding: "6px 14px",
     borderRadius: 9999,
     marginBottom: 24,
     border: `1px solid ${T.glassBorder}`,
@@ -143,9 +143,9 @@ const styles = {
     fontSize: 64,
     fontWeight: 900,
     lineHeight: 1.1,
-    letterSpacing: '-0.03em',
+    letterSpacing: "-0.03em",
     color: T.onSurface,
-    margin: '0 0 16px',
+    margin: "0 0 16px",
   } satisfies React.CSSProperties,
 
   headlineAccent: {
@@ -158,43 +158,43 @@ const styles = {
     fontWeight: 400,
     lineHeight: 1.6,
     color: T.onSurfaceV,
-    margin: '0 0 32px',
+    margin: "0 0 32px",
     maxWidth: 560,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    marginLeft: "auto",
+    marginRight: "auto",
   } satisfies React.CSSProperties,
 
   ctas: {
-    display: 'flex',
+    display: "flex",
     gap: 16,
-    justifyContent: 'center',
-    flexWrap: 'wrap' as const,
+    justifyContent: "center",
+    flexWrap: "wrap" as const,
   } satisfies React.CSSProperties,
 
   ctaPrimary: {
     backgroundColor: T.tertiary,
     color: T.onTertiary,
-    border: 'none',
+    border: "none",
     borderRadius: 16,
-    padding: '14px 32px',
+    padding: "14px 32px",
     fontSize: 14,
     fontWeight: 600,
-    letterSpacing: '0.02em',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    letterSpacing: "0.02em",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
   } satisfies React.CSSProperties,
 
   ctaGhost: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     color: T.tertiary,
     border: `1px solid ${T.tertiary}`,
     borderRadius: 16,
-    padding: '14px 32px',
+    padding: "14px 32px",
     fontSize: 14,
     fontWeight: 600,
-    letterSpacing: '0.02em',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    letterSpacing: "0.02em",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
   } satisfies React.CSSProperties,
 } as const;
 
@@ -229,8 +229,8 @@ interface GavelHeroProps {
 
 export function GavelHero({
   headline,
-  subheadline = 'Multi-model AI routing with cryptographic privilege attestation. Protected under United States v. Heppner.',
-  frameDir = '/frames/',
+  subheadline = "Multi-model AI routing with cryptographic privilege attestation. Protected under United States v. Heppner.",
+  frameDir = "/frames/",
   frameCount = FRAME_COUNT,
 }: GavelHeroProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -238,10 +238,10 @@ export function GavelHero({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Frame state
     const frames: HTMLImageElement[] = [];
@@ -274,7 +274,7 @@ export function GavelHero({
     };
 
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas, { passive: true });
+    window.addEventListener("resize", resizeCanvas, { passive: true });
 
     // eslint-disable-next-line prefer-const -- assigned conditionally
     let onScroll: (() => void) | null = null;
@@ -292,7 +292,7 @@ export function GavelHero({
       // Preload all frames
       for (let i = 1; i <= frameCount; i++) {
         const img = new Image();
-        img.src = `${frameDir}frame_${String(i).padStart(4, '0')}.jpg`;
+        img.src = `${frameDir}frame_${String(i).padStart(4, "0")}.jpg`;
         img.onload = () => {
           framesLoaded++;
           if (framesLoaded === frameCount) {
@@ -330,12 +330,12 @@ export function GavelHero({
         }
       };
 
-      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener("scroll", onScroll, { passive: true });
     }
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      if (onScroll) window.removeEventListener('scroll', onScroll);
+      window.removeEventListener("resize", resizeCanvas);
+      if (onScroll) window.removeEventListener("scroll", onScroll);
     };
   }, [frameDir, frameCount]);
 

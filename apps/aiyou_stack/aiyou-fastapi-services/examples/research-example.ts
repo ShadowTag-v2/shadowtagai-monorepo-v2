@@ -5,16 +5,16 @@
  * with different personas and tools for various research tasks.
  */
 
-import { query } from '@anthropic-ai/claude-agent-sdk';
-import searchTool from '../agents/research/tools/search.js';
-import synthesisTool from '../agents/research/tools/synthesis.js';
+import { query } from "@anthropic-ai/claude-agent-sdk";
+import searchTool from "../agents/research/tools/search.js";
+import synthesisTool from "../agents/research/tools/synthesis.js";
 
 /**
  * Example 1: Academic Research
  * Using the academic persona for rigorous scholarly research
  */
 async function academicResearchExample() {
-  console.log('=== Academic Research Example ===\n');
+  console.log("=== Academic Research Example ===\n");
 
   const result = await query({
     prompt: `Conduct a comprehensive literature review on the following topic:
@@ -29,16 +29,16 @@ async function academicResearchExample() {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/academic.md',
+        type: "file",
+        path: "./agents/research/personas/academic.md",
       },
       tools: [searchTool, synthesisTool],
-      settingSources: ['project', 'local'],
+      settingSources: ["project", "local"],
       temperature: 0.3, // Academic persona uses low temperature
     },
   });
 
-  console.log('Academic Research Result:');
+  console.log("Academic Research Result:");
   console.log(result);
 }
 
@@ -47,7 +47,7 @@ async function academicResearchExample() {
  * Using the business persona for market intelligence
  */
 async function businessResearchExample() {
-  console.log('\n=== Business Research Example ===\n');
+  console.log("\n=== Business Research Example ===\n");
 
   const result = await query({
     prompt: `Research the following market opportunity:
@@ -63,16 +63,16 @@ async function businessResearchExample() {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/business.md',
+        type: "file",
+        path: "./agents/research/personas/business.md",
       },
       tools: [searchTool, synthesisTool],
-      settingSources: ['project', 'local'],
+      settingSources: ["project", "local"],
       temperature: 0.5, // Business persona uses moderate temperature
     },
   });
 
-  console.log('Business Research Result:');
+  console.log("Business Research Result:");
   console.log(result);
 }
 
@@ -81,7 +81,7 @@ async function businessResearchExample() {
  * Using the technical persona for technology evaluation
  */
 async function technicalResearchExample() {
-  console.log('\n=== Technical Research Example ===\n');
+  console.log("\n=== Technical Research Example ===\n");
 
   const result = await query({
     prompt: `Evaluate the following technology for our infrastructure:
@@ -99,16 +99,16 @@ async function technicalResearchExample() {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/technical.md',
+        type: "file",
+        path: "./agents/research/personas/technical.md",
       },
       tools: [searchTool, synthesisTool],
-      settingSources: ['project', 'local'],
+      settingSources: ["project", "local"],
       temperature: 0.4, // Technical persona uses moderate-low temperature
     },
   });
 
-  console.log('Technical Research Result:');
+  console.log("Technical Research Result:");
   console.log(result);
 }
 
@@ -117,17 +117,17 @@ async function technicalResearchExample() {
  * Demonstrating direct tool usage for fine-grained control
  */
 async function customResearchWithToolsExample() {
-  console.log('\n=== Custom Research with Direct Tool Usage ===\n');
+  console.log("\n=== Custom Research with Direct Tool Usage ===\n");
 
   // Step 1: Search for information
   const searchResult = await searchTool.execute({
-    query: 'Claude AI agent SDK best practices',
-    sources: ['web', 'technical'],
+    query: "Claude AI agent SDK best practices",
+    sources: ["web", "technical"],
     maxResults: 15,
-    depth: 'comprehensive',
+    depth: "comprehensive",
   });
 
-  console.log('Search Results:', searchResult);
+  console.log("Search Results:", searchResult);
 
   // Step 2: Synthesize findings
   if (searchResult.success) {
@@ -139,12 +139,12 @@ async function customResearchWithToolsExample() {
 
     const synthesisResult = await synthesisTool.execute({
       sources,
-      mode: 'comprehensive',
-      citationStyle: 'APA',
-      theme: 'Claude AI Agent SDK Best Practices',
+      mode: "comprehensive",
+      citationStyle: "APA",
+      theme: "Claude AI Agent SDK Best Practices",
     });
 
-    console.log('\nSynthesis Result:', synthesisResult);
+    console.log("\nSynthesis Result:", synthesisResult);
   }
 }
 
@@ -153,39 +153,39 @@ async function customResearchWithToolsExample() {
  * Using streaming for real-time research updates
  */
 async function streamingResearchExample() {
-  console.log('\n=== Streaming Research Example ===\n');
+  console.log("\n=== Streaming Research Example ===\n");
 
-  console.log('Research in progress...\n');
+  console.log("Research in progress...\n");
 
   for await (const chunk of query({
-    prompt: 'Research the latest developments in quantum computing and provide a summary',
+    prompt: "Research the latest developments in quantum computing and provide a summary",
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/technical.md',
+        type: "file",
+        path: "./agents/research/personas/technical.md",
       },
       tools: [searchTool, synthesisTool],
-      settingSources: ['project', 'local'],
+      settingSources: ["project", "local"],
       stream: true,
     },
   })) {
     // Process each chunk as it arrives
-    if (chunk.type === 'text') {
+    if (chunk.type === "text") {
       process.stdout.write(chunk.content);
-    } else if (chunk.type === 'tool_use') {
+    } else if (chunk.type === "tool_use") {
       console.log(`\n[Using tool: ${chunk.name}]`);
     }
   }
 
-  console.log('\n\nResearch complete!');
+  console.log("\n\nResearch complete!");
 }
 
 /**
  * Main execution
  */
 async function main() {
-  console.log('Master Agent Framework - Research Agent Examples\n');
-  console.log('='.repeat(60));
+  console.log("Master Agent Framework - Research Agent Examples\n");
+  console.log("=".repeat(60));
 
   try {
     // Run examples
@@ -195,8 +195,8 @@ async function main() {
     await customResearchWithToolsExample();
     await streamingResearchExample();
 
-    console.log(`\n${'='.repeat(60)}`);
-    console.log('\nAll examples completed successfully!');
+    console.log(`\n${"=".repeat(60)}`);
+    console.log("\nAll examples completed successfully!");
   } catch (_error) {
     process.exit(1);
   }

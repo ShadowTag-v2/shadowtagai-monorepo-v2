@@ -9,7 +9,7 @@
  * - Self-validation
  */
 
-import { query } from '@anthropic-ai/claude-agent-sdk';
+import { query } from "@anthropic-ai/claude-agent-sdk";
 
 // ==================== Types ====================
 
@@ -46,7 +46,7 @@ interface ValidationReport {
 interface ValidationError {
   field: string;
   message: string;
-  severity: 'critical' | 'high' | 'medium';
+  severity: "critical" | "high" | "medium";
 }
 
 interface ValidationWarning {
@@ -122,9 +122,9 @@ Must:
 // ==================== Workflow Steps ====================
 
 const classifyInputStep: WorkflowStep = {
-  name: 'classify_input',
+  name: "classify_input",
   execute: async (context: WorkflowContext) => {
-    console.log('[Step 1] Classifying input type...');
+    console.log("[Step 1] Classifying input type...");
 
     const result = await query({
       prompt: `
@@ -141,7 +141,7 @@ Return a JSON object with: { format: string, schema: object, rules: string[] }
       options: {
         systemPrompt: WORKFLOW_SYSTEM_PROMPT,
         maxTokens: 2000,
-        model: 'claude-sonnet-4.5-20250514',
+        model: "claude-sonnet-4.5-20250514",
       },
     });
 
@@ -153,9 +153,9 @@ Return a JSON object with: { format: string, schema: object, rules: string[] }
 };
 
 const schemaValidationStep: WorkflowStep = {
-  name: 'schema_validation',
+  name: "schema_validation",
   execute: async (context: WorkflowContext) => {
-    console.log('[Step 2] Validating against schema...');
+    console.log("[Step 2] Validating against schema...");
 
     const schema = context.results.classify_input.schema;
 
@@ -179,21 +179,21 @@ Return JSON: { valid: boolean, errors: Array<{field, message, severity}> }
       options: {
         systemPrompt: WORKFLOW_SYSTEM_PROMPT,
         maxTokens: 3000,
-        model: 'claude-sonnet-4.5-20250514',
+        model: "claude-sonnet-4.5-20250514",
       },
     });
 
     return JSON.parse(result);
   },
   validate: (result) => {
-    return result && typeof result.valid === 'boolean' && Array.isArray(result.errors);
+    return result && typeof result.valid === "boolean" && Array.isArray(result.errors);
   },
 };
 
 const businessRuleValidationStep: WorkflowStep = {
-  name: 'business_rule_validation',
+  name: "business_rule_validation",
   execute: async (context: WorkflowContext) => {
-    console.log('[Step 3] Applying business rules...');
+    console.log("[Step 3] Applying business rules...");
 
     const rules = context.results.classify_input.rules;
 
@@ -205,7 +205,7 @@ Data:
 ${JSON.stringify(context.input, null, 2)}
 
 Rules:
-${rules.join('\n')}
+${rules.join("\n")}
 
 Validate each rule and return:
 { valid: boolean, violations: Array<{rule, field, message}> }
@@ -213,21 +213,21 @@ Validate each rule and return:
       options: {
         systemPrompt: WORKFLOW_SYSTEM_PROMPT,
         maxTokens: 3000,
-        model: 'claude-sonnet-4.5-20250514',
+        model: "claude-sonnet-4.5-20250514",
       },
     });
 
     return JSON.parse(result);
   },
   validate: (result) => {
-    return result && typeof result.valid === 'boolean' && Array.isArray(result.violations);
+    return result && typeof result.valid === "boolean" && Array.isArray(result.violations);
   },
 };
 
 const qualityChecksStep: WorkflowStep = {
-  name: 'quality_checks',
+  name: "quality_checks",
   execute: async (context: WorkflowContext) => {
-    console.log('[Step 4] Running quality checks...');
+    console.log("[Step 4] Running quality checks...");
 
     const result = await query({
       prompt: `
@@ -246,7 +246,7 @@ Return: { warnings: Array<{field, message, type}> }
       options: {
         systemPrompt: WORKFLOW_SYSTEM_PROMPT,
         maxTokens: 2000,
-        model: 'claude-sonnet-4.5-20250514',
+        model: "claude-sonnet-4.5-20250514",
       },
     });
 
@@ -258,9 +258,9 @@ Return: { warnings: Array<{field, message, type}> }
 };
 
 const generateReportStep: WorkflowStep = {
-  name: 'generate_report',
+  name: "generate_report",
   execute: async (context: WorkflowContext) => {
-    console.log('[Step 5] Generating validation report...');
+    console.log("[Step 5] Generating validation report...");
 
     const schemaErrors = context.results.schema_validation.errors;
     const businessViolations = context.results.business_rule_validation.violations;
@@ -296,14 +296,14 @@ Return JSON: {
       options: {
         systemPrompt: WORKFLOW_SYSTEM_PROMPT,
         maxTokens: 4000,
-        model: 'claude-sonnet-4.5-20250514',
+        model: "claude-sonnet-4.5-20250514",
       },
     });
 
     return JSON.parse(result);
   },
   validate: (result) => {
-    return result && typeof result.valid === 'boolean' && result.summary;
+    return result && typeof result.valid === "boolean" && result.summary;
   },
 };
 
@@ -381,22 +381,22 @@ async function main() {
   const testData = {
     users: [
       {
-        name: 'John Doe',
-        email: 'redacted@shadowtag-v4.local',
+        name: "John Doe",
+        email: "redacted@shadowtag-v4.local",
         age: 30,
-        role: 'admin',
+        role: "admin",
       },
       {
-        name: 'Jane Smith',
-        email: 'invalid-email', // Invalid email
+        name: "Jane Smith",
+        email: "invalid-email", // Invalid email
         age: -5, // Invalid age
-        role: 'user',
+        role: "user",
       },
       {
-        name: 'John Doe', // Duplicate
-        email: 'redacted@shadowtag-v4.local',
+        name: "John Doe", // Duplicate
+        email: "redacted@shadowtag-v4.local",
         age: 30,
-        role: 'admin',
+        role: "admin",
       },
     ],
   };
@@ -413,13 +413,13 @@ async function main() {
   try {
     const report = await workflow.execute(testData);
 
-    console.log('\n=== VALIDATION REPORT ===');
+    console.log("\n=== VALIDATION REPORT ===");
     console.log(JSON.stringify(report, null, 2));
 
     if (report.valid) {
-      console.log('\n✓ Data is valid and ready for processing');
+      console.log("\n✓ Data is valid and ready for processing");
     } else {
-      console.log('\n✗ Data validation failed');
+      console.log("\n✗ Data validation failed");
       console.log(`Errors: ${report.errors.length}`);
       console.log(`Warnings: ${report.warnings.length}`);
     }

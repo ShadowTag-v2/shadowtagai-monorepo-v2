@@ -8,12 +8,12 @@
  * TTL: 90 days (configurable per firm)
  */
 
-import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore, Timestamp } from "firebase-admin/firestore";
 
 const db = getFirestore();
 
 /** Approval Request Status */
-type ApprovalStatus = 'pending' | 'approved' | 'rejected' | 'expired' | 'auto_approved';
+type ApprovalStatus = "pending" | "approved" | "rejected" | "expired" | "auto_approved";
 
 /** Approval Request Firestore Document */
 interface ApprovalRequestDoc {
@@ -24,14 +24,14 @@ interface ApprovalRequestDoc {
   requestedBy: string; // System or paralegal email
   assignedTo: string; // Attorney email
   status: ApprovalStatus;
-  channel: 'slack' | 'google_chat' | 'email' | 'in_app';
+  channel: "slack" | "google_chat" | "email" | "in_app";
   proofOfReviewHash?: string; // HMAC-SHA256 of review action
   tokenHash: string; // Hash of the one-time approval token
   expiresAt: Timestamp;
   metadata: {
     memoTitle: string;
     memoWordCount: number;
-    riskTier: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+    riskTier: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
     modelUsed: string;
     clientMatter?: string;
   };
@@ -49,10 +49,10 @@ export async function createApprovalRequest(params: {
   sessionId: string;
   memoId: string;
   assignedTo: string;
-  channel: ApprovalRequestDoc['channel'];
+  channel: ApprovalRequestDoc["channel"];
   tokenHash: string;
   ttlMinutes: number;
-  metadata: ApprovalRequestDoc['metadata'];
+  metadata: ApprovalRequestDoc["metadata"];
 }): Promise<{ path: string; requestId: string }> {
   const requestId = `AR-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const expiresAt = Timestamp.fromMillis(Date.now() + params.ttlMinutes * 60_000);
@@ -62,9 +62,9 @@ export async function createApprovalRequest(params: {
     firmId: params.firmId,
     sessionId: params.sessionId,
     memoId: params.memoId,
-    requestedBy: 'system',
+    requestedBy: "system",
     assignedTo: params.assignedTo,
-    status: 'pending',
+    status: "pending",
     channel: params.channel,
     tokenHash: params.tokenHash,
     expiresAt,
@@ -73,16 +73,16 @@ export async function createApprovalRequest(params: {
   };
 
   const ref = db
-    .collection('approval_requests')
+    .collection("approval_requests")
     .doc(params.firmId)
-    .collection('requests')
+    .collection("requests")
     .doc(requestId);
 
   await ref.set(doc);
 
   // Update firm-level pending count
   await db
-    .collection('approval_requests')
+    .collection("approval_requests")
     .doc(params.firmId)
     .set(
       { pendingCount: FieldValue.increment(1), lastRequestAt: Timestamp.now() },
@@ -98,15 +98,15 @@ export async function createApprovalRequest(params: {
 export async function resolveApproval(params: {
   firmId: string;
   requestId: string;
-  status: 'approved' | 'rejected';
+  status: "approved" | "rejected";
   resolvedBy: string;
   proofOfReviewHash: string;
   rejectionReason?: string;
 }): Promise<void> {
   const ref = db
-    .collection('approval_requests')
+    .collection("approval_requests")
     .doc(params.firmId)
-    .collection('requests')
+    .collection("requests")
     .doc(params.requestId);
 
   await ref.update({
@@ -119,7 +119,7 @@ export async function resolveApproval(params: {
 
   // Decrement pending count
   await db
-    .collection('approval_requests')
+    .collection("approval_requests")
     .doc(params.firmId)
     .set({ pendingCount: FieldValue.increment(-1) }, { merge: true });
 }
@@ -130,11 +130,11 @@ export async function resolveApproval(params: {
  */
 export async function expireStaleApprovals(firmId: string): Promise<number> {
   const snapshot = await db
-    .collection('approval_requests')
+    .collection("approval_requests")
     .doc(firmId)
-    .collection('requests')
-    .where('status', '==', 'pending')
-    .where('expiresAt', '<', Timestamp.now())
+    .collection("requests")
+    .where("status", "==", "pending")
+    .where("expiresAt", "<", Timestamp.now())
     .get();
 
   const batch = db.batch();
@@ -142,9 +142,9 @@ export async function expireStaleApprovals(firmId: string): Promise<number> {
 
   for (const doc of snapshot.docs) {
     batch.update(doc.ref, {
-      status: 'expired',
+      status: "expired",
       resolvedAt: Timestamp.now(),
-      resolvedBy: 'system:ttl_expiry',
+      resolvedBy: "system:ttl_expiry",
     });
     count++;
   }
@@ -152,7 +152,7 @@ export async function expireStaleApprovals(firmId: string): Promise<number> {
   if (count > 0) {
     await batch.commit();
     await db
-      .collection('approval_requests')
+      .collection("approval_requests")
       .doc(firmId)
       .set({ pendingCount: FieldValue.increment(-count) }, { merge: true });
   }
@@ -168,13 +168,13 @@ export async function getApprovalAuditTrail(
   options?: { sessionId?: string; limit?: number },
 ): Promise<ApprovalRequestDoc[]> {
   let query = db
-    .collection('approval_requests')
+    .collection("approval_requests")
     .doc(firmId)
-    .collection('requests')
-    .orderBy('createdAt', 'desc');
+    .collection("requests")
+    .orderBy("createdAt", "desc");
 
   if (options?.sessionId) {
-    query = query.where('sessionId', '==', options.sessionId) as typeof query;
+    query = query.where("sessionId", "==", options.sessionId) as typeof query;
   }
 
   const snapshot = await query.limit(options?.limit || 100).get();

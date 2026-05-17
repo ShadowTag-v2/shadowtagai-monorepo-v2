@@ -3,10 +3,10 @@
  * Routes requests to appropriate providers with Judge 6 enforcement
  */
 
-import Bottleneck from 'bottleneck';
-import { type BaseProvider, createProvider } from '../providers/index.js';
-import { GovernanceError, RateLimitError, ValidationError } from './errors.js';
-import type { CopilotRequest, CopilotResponse, Provider, RouterConfig } from './schema.js';
+import Bottleneck from "bottleneck";
+import { type BaseProvider, createProvider } from "../providers/index.js";
+import { GovernanceError, RateLimitError, ValidationError } from "./errors.js";
+import type { CopilotRequest, CopilotResponse, Provider, RouterConfig } from "./schema.js";
 
 /**
  * Judge 6 governance integration interface
@@ -63,7 +63,7 @@ export class CopilotRouter {
     });
 
     // Setup rate limit event handlers
-    this.limiter.on('failed', async (error, jobInfo) => {
+    this.limiter.on("failed", async (error, jobInfo) => {
       if (jobInfo.retryCount < 2) {
         this.stats.rateLimitHits++;
         return 1000; // Retry after 1 second
@@ -96,7 +96,7 @@ export class CopilotRouter {
     const providerConfigs = this.config.providers || {};
 
     // Always initialize mock provider
-    this.providers.set('mock', createProvider('mock', {}));
+    this.providers.set("mock", createProvider("mock", {}));
 
     // Initialize configured providers
     for (const [name, config] of Object.entries(providerConfigs)) {
@@ -155,17 +155,17 @@ export class CopilotRouter {
 
   private validateRequest(request: CopilotRequest): void {
     if (!request.selection.code || request.selection.code.trim().length === 0) {
-      throw new ValidationError('Code selection cannot be empty');
+      throw new ValidationError("Code selection cannot be empty");
     }
 
     if (request.selection.code.length > 50000) {
-      throw new ValidationError('Code selection too large (max 50KB)', {
+      throw new ValidationError("Code selection too large (max 50KB)", {
         size: request.selection.code.length,
       });
     }
 
     if (!request.selection.filePath) {
-      throw new ValidationError('File path is required');
+      throw new ValidationError("File path is required");
     }
   }
 
@@ -175,7 +175,7 @@ export class CopilotRouter {
     reasoning?: string;
   }> {
     if (!this.governance) {
-      return { approved: true, riskLevel: 'RA_1' };
+      return { approved: true, riskLevel: "RA_1" };
     }
 
     const purpose = `Code ${request.intent} for ${request.selection.filePath}`;
@@ -205,13 +205,13 @@ export class CopilotRouter {
         throw error;
       }
       // Fail closed on governance errors
-      throw new GovernanceError('Governance check failed', 'RA_4', [], { originalError: error });
+      throw new GovernanceError("Governance check failed", "RA_4", [], { originalError: error });
     }
   }
 
   private selectProvider(preference: Provider): BaseProvider {
     // If specific provider requested, use it
-    if (preference !== 'auto') {
+    if (preference !== "auto") {
       const provider = this.providers.get(preference);
       if (!provider) {
         throw new ValidationError(`Provider ${preference} not available`);
@@ -221,7 +221,7 @@ export class CopilotRouter {
 
     // Auto-selection logic
     // Priority: anthropic > openai > mock
-    const priorities: Provider[] = ['anthropic', 'openai', 'mock'];
+    const priorities: Provider[] = ["anthropic", "openai", "mock"];
 
     for (const name of priorities) {
       const provider = this.providers.get(name);
@@ -231,7 +231,7 @@ export class CopilotRouter {
     }
 
     // Fallback to mock
-    return this.providers.get('mock')!;
+    return this.providers.get("mock")!;
   }
 
   private estimateTokens(request: CopilotRequest, response: string): number {

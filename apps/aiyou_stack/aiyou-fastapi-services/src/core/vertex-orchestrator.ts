@@ -3,15 +3,15 @@
  * Handles all Claude API calls via Vertex AI
  */
 
-import { AnthropicVertex } from '@anthropic-ai/vertex-sdk';
-import { BUILD_PROMPT, SCALE_PROMPT, THINK_PROMPT } from '../prompts/system-prompts';
-import { Mode } from '../types';
-import { logger } from '../utils/logger';
-import { metrics } from '../utils/metrics';
+import { AnthropicVertex } from "@anthropic-ai/vertex-sdk";
+import { BUILD_PROMPT, SCALE_PROMPT, THINK_PROMPT } from "../prompts/system-prompts";
+import { Mode } from "../types";
+import { logger } from "../utils/logger";
+import { metrics } from "../utils/metrics";
 
 export class VertexOrchestrator {
   private client: AnthropicVertex;
-  private model: string = 'claude-opus-4-1@20250805';
+  private model: string = "claude-opus-4-1@20250805";
   private maxTokens: number = 20000;
 
   constructor() {
@@ -20,11 +20,11 @@ export class VertexOrchestrator {
     // - ANTHROPIC_VERTEX_PROJECT_ID (GKE Secret)
     // Uses Workload Identity for authentication
     this.client = new AnthropicVertex({
-      region: process.env.CLOUD_ML_REGION || 'us-central1',
+      region: process.env.CLOUD_ML_REGION || "us-central1",
       projectId: process.env.ANTHROPIC_VERTEX_PROJECT_ID,
     });
 
-    logger.info('VertexOrchestrator initialized', {
+    logger.info("VertexOrchestrator initialized", {
       region: process.env.CLOUD_ML_REGION,
       model: this.model,
     });
@@ -38,7 +38,7 @@ export class VertexOrchestrator {
     const systemPrompt = this.getSystemPrompt(mode);
 
     try {
-      logger.info('Executing Vertex AI request', { mode, promptLength: prompt.length });
+      logger.info("Executing Vertex AI request", { mode, promptLength: prompt.length });
 
       const message = await this.client.messages.create({
         model: this.model,
@@ -47,10 +47,10 @@ export class VertexOrchestrator {
         system: systemPrompt,
         messages: [
           {
-            role: 'user',
+            role: "user",
             content: [
               {
-                type: 'text',
+                type: "text",
                 text: this.buildPromptWithContext(prompt, context),
               },
             ],
@@ -69,7 +69,7 @@ export class VertexOrchestrator {
         message.usage?.output_tokens || 0,
       );
 
-      logger.info('Vertex AI request completed', {
+      logger.info("Vertex AI request completed", {
         mode,
         duration,
         inputTokens: message.usage?.input_tokens,
@@ -82,7 +82,7 @@ export class VertexOrchestrator {
       const duration = Date.now() - startTime;
       metrics.recordVertexError(mode);
 
-      logger.error('Vertex AI request failed', {
+      logger.error("Vertex AI request failed", {
         mode,
         duration,
         error: error instanceof Error ? error.message : String(error),
@@ -115,7 +115,7 @@ export class VertexOrchestrator {
 
     const contextStr = Object.entries(context)
       .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
-      .join('\n');
+      .join("\n");
 
     return `CONTEXT:\n${contextStr}\n\nUSER REQUEST:\n${prompt}`;
   }
@@ -130,15 +130,15 @@ export class VertexOrchestrator {
         max_tokens: 10,
         messages: [
           {
-            role: 'user',
-            content: [{ type: 'text', text: 'ping' }],
+            role: "user",
+            content: [{ type: "text", text: "ping" }],
           },
         ],
       });
 
       return response.content.length > 0;
     } catch (error) {
-      logger.error('Vertex AI health check failed', {
+      logger.error("Vertex AI health check failed", {
         error: error instanceof Error ? error.message : String(error),
       });
       return false;

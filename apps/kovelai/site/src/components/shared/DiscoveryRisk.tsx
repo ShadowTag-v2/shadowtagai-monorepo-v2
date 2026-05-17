@@ -1,19 +1,19 @@
 export default function DiscoveryRisk() {
   const cards = [
     {
-      icon: '⚖️',
-      title: 'Privilege Shield',
+      icon: "⚖️",
+      title: "Privilege Shield",
       desc: "All client web activity routed through your firm's privileged infrastructure. Zero discoverable footprint.",
     },
     {
-      icon: '🔒',
-      title: 'Zero Data Retention',
+      icon: "🔒",
+      title: "Zero Data Retention",
       desc: "No search logs, no browsing history, no metadata. The data that doesn't exist can't be subpoenaed.",
     },
     {
-      icon: '💰',
-      title: 'Revenue at the Front Door',
-      desc: 'Clients pay for privileged access. Your firm captures intake revenue 24/7, even after hours.',
+      icon: "💰",
+      title: "Revenue at the Front Door",
+      desc: "Clients pay for privileged access. Your firm captures intake revenue 24/7, even after hours.",
     },
   ];
 

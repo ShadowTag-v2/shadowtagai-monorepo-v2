@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function VectorUpload() {
-  const [status, setStatus] = useState('Idle');
+  const [status, setStatus] = useState("Idle");
 
   const shadowDrop = () => {
-    setStatus('Ingesting...');
-    setTimeout(() => setStatus('SUCCESS_VECTORIZED'), 2000);
+    setStatus("Ingesting...");
+    setTimeout(() => setStatus("SUCCESS_VECTORIZED"), 2000);
   };
 
   return (
@@ -38,7 +38,7 @@ export default function VectorUpload() {
             Queue Status
           </span>
           <span
-            className={`text-xs font-bold uppercase tracking-wider ${status.includes('SUCCESS') ? 'text-emerald-400' : 'text-indigo-400'}`}
+            className={`text-xs font-bold uppercase tracking-wider ${status.includes("SUCCESS") ? "text-emerald-400" : "text-indigo-400"}`}
           >
             {status}
           </span>

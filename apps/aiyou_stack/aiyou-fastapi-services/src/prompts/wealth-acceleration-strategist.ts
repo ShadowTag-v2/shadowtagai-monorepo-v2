@@ -339,6 +339,6 @@ NOT success:
 `;
 
 export const WEALTH_ACCELERATION_SYSTEM_PROMPT = {
-  type: 'custom' as const,
+  type: "custom" as const,
   prompt: WEALTH_ACCELERATION_AGENT_PROMPT,
 };

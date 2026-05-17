@@ -7,13 +7,13 @@
  *
  * Nag Protocol #16: Oracle Studio 7-stage pipeline SSE streaming
  */
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import {
   createMurderBoardSSEStream,
   type MurderBoardInput,
-} from '@/lib/orchestrator/murder-board-v2';
-import { verifySEUToken } from '@/lib/security/seu-token-manager';
+} from "@/lib/orchestrator/murder-board-v2";
+import { verifySEUToken } from "@/lib/security/seu-token-manager";
 
 // ─── Request Schema ───────────────────────────────────────────────────
 const StreamRequestSchema = z.object({
@@ -24,7 +24,7 @@ const StreamRequestSchema = z.object({
   practiceArea: z.string().min(2).max(100),
   matterId: z.string().optional(),
   documents: z.array(z.string()).optional(),
-  modelTier: z.enum(['reasoning', 'flash', 'lite']).optional(),
+  modelTier: z.enum(["reasoning", "flash", "lite"]).optional(),
   ephemeralToken: z.string().min(1),
   sandboxId: z.string().min(1),
 });
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     const parsed = StreamRequestSchema.parse(body);
 
     // Validate S.E.U. token
-    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? '0.0.0.0';
+    const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "0.0.0.0";
     await verifySEUToken(parsed.ephemeralToken, clientIp, parsed.sandboxId);
 
     // Build pipeline input
@@ -56,19 +56,19 @@ export async function POST(req: NextRequest): Promise<Response> {
 
     return new Response(stream, {
       headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        Connection: 'keep-alive',
-        'X-Privilege-Shield': 'kovel-doctrine-active',
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Connection: "keep-alive",
+        "X-Privilege-Shield": "kovel-doctrine-active",
       },
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request', details: error.errors },
+        { error: "Invalid request", details: error.errors },
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: 'Pipeline initialization failed' }, { status: 500 });
+    return NextResponse.json({ error: "Pipeline initialization failed" }, { status: 500 });
   }
 }

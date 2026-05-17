@@ -1,7 +1,7 @@
 module.exports = [
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     function _interop_require_default(obj) {
       return obj && obj.__esModule
@@ -12,23 +12,23 @@ module.exports = [
     }
     exports._ = _interop_require_default;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/modern-browserslist-target.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/modern-browserslist-target.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // Note: This file is JS because it's used by the taskfile-swc.js file, which is JS.
     // Keep file changes in sync with the corresponding `.d.ts` files.
     /**
      * These are the minimum browser versions that we consider "modern" and thus compile for by default.
      * This list was generated using `pnpm browserslist "baseline widely available"` on 2025-10-01.
-     */ const MODERN_BROWSERSLIST_TARGET = ['chrome 111', 'edge 111', 'firefox 111', 'safari 16.4'];
+     */ const MODERN_BROWSERSLIST_TARGET = ["chrome 111", "edge 111", "firefox 111", "safari 16.4"];
     module.exports = MODERN_BROWSERSLIST_TARGET;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/entry-constants.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/entry-constants.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -51,16 +51,16 @@ module.exports = [
       UNDERSCORE_NOT_FOUND_ROUTE: () => UNDERSCORE_NOT_FOUND_ROUTE,
       UNDERSCORE_NOT_FOUND_ROUTE_ENTRY: () => UNDERSCORE_NOT_FOUND_ROUTE_ENTRY,
     });
-    const UNDERSCORE_NOT_FOUND_ROUTE = '/_not-found';
+    const UNDERSCORE_NOT_FOUND_ROUTE = "/_not-found";
     const UNDERSCORE_NOT_FOUND_ROUTE_ENTRY = `${UNDERSCORE_NOT_FOUND_ROUTE}/page`;
-    const UNDERSCORE_GLOBAL_ERROR_ROUTE = '/_global-error';
+    const UNDERSCORE_GLOBAL_ERROR_ROUTE = "/_global-error";
     const UNDERSCORE_GLOBAL_ERROR_ROUTE_ENTRY = `${UNDERSCORE_GLOBAL_ERROR_ROUTE}/page`;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/constants.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/constants.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -216,20 +216,20 @@ module.exports = [
       UNDERSCORE_NOT_FOUND_ROUTE_ENTRY: () => _entryconstants.UNDERSCORE_NOT_FOUND_ROUTE_ENTRY,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [ssr] (ecmascript)",
     );
     const _modernbrowserslisttarget = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/modern-browserslist-target.js [ssr] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/modern-browserslist-target.js [ssr] (ecmascript)",
       ),
     );
     const _entryconstants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/entry-constants.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/entry-constants.js [ssr] (ecmascript)",
     );
     const COMPILER_NAMES = {
-      client: 'client',
-      server: 'server',
-      edgeServer: 'edge-server',
+      client: "client",
+      server: "server",
+      edgeServer: "edge-server",
     };
     const COMPILER_INDEXES = {
       [COMPILER_NAMES.client]: 0,
@@ -239,128 +239,128 @@ module.exports = [
     var AdapterOutputType = /*#__PURE__*/ ((AdapterOutputType) => {
       /**
        * `PAGES` represents all the React pages that are under `pages/`.
-       */ AdapterOutputType['PAGES'] = 'PAGES';
+       */ AdapterOutputType["PAGES"] = "PAGES";
       /**
        * `PAGES_API` represents all the API routes under `pages/api/`.
-       */ AdapterOutputType['PAGES_API'] = 'PAGES_API';
+       */ AdapterOutputType["PAGES_API"] = "PAGES_API";
       /**
        * `APP_PAGE` represents all the React pages that are under `app/` with the
        * filename of `page.{j,t}s{,x}`.
-       */ AdapterOutputType['APP_PAGE'] = 'APP_PAGE';
+       */ AdapterOutputType["APP_PAGE"] = "APP_PAGE";
       /**
        * `APP_ROUTE` represents all the API routes and metadata routes that are under `app/` with the
        * filename of `route.{j,t}s{,x}`.
-       */ AdapterOutputType['APP_ROUTE'] = 'APP_ROUTE';
+       */ AdapterOutputType["APP_ROUTE"] = "APP_ROUTE";
       /**
        * `PRERENDER` represents an ISR enabled route that might
        * have a seeded cache entry or fallback generated during build
-       */ AdapterOutputType['PRERENDER'] = 'PRERENDER';
+       */ AdapterOutputType["PRERENDER"] = "PRERENDER";
       /**
        * `STATIC_FILE` represents a static file (ie /_next/static)
-       */ AdapterOutputType['STATIC_FILE'] = 'STATIC_FILE';
+       */ AdapterOutputType["STATIC_FILE"] = "STATIC_FILE";
       /**
        * `MIDDLEWARE` represents the middleware output if present
-       */ AdapterOutputType['MIDDLEWARE'] = 'MIDDLEWARE';
+       */ AdapterOutputType["MIDDLEWARE"] = "MIDDLEWARE";
       return AdapterOutputType;
     })({});
-    const PHASE_EXPORT = 'phase-export';
-    const PHASE_ANALYZE = 'phase-analyze';
-    const PHASE_PRODUCTION_BUILD = 'phase-production-build';
-    const PHASE_PRODUCTION_SERVER = 'phase-production-server';
-    const PHASE_DEVELOPMENT_SERVER = 'phase-development-server';
-    const PHASE_TEST = 'phase-test';
-    const PHASE_INFO = 'phase-info';
-    const PAGES_MANIFEST = 'pages-manifest.json';
-    const APP_PATHS_MANIFEST = 'app-paths-manifest.json';
-    const APP_PATH_ROUTES_MANIFEST = 'app-path-routes-manifest.json';
-    const BUILD_MANIFEST = 'build-manifest.json';
-    const FUNCTIONS_CONFIG_MANIFEST = 'functions-config-manifest.json';
-    const SUBRESOURCE_INTEGRITY_MANIFEST = 'subresource-integrity-manifest';
-    const NEXT_FONT_MANIFEST = 'next-font-manifest';
-    const EXPORT_MARKER = 'export-marker.json';
-    const EXPORT_DETAIL = 'export-detail.json';
-    const PRERENDER_MANIFEST = 'prerender-manifest.json';
-    const PREFETCH_HINTS = 'prefetch-hints.json';
-    const ROUTES_MANIFEST = 'routes-manifest.json';
-    const IMAGES_MANIFEST = 'images-manifest.json';
-    const SERVER_FILES_MANIFEST = 'required-server-files';
-    const DEV_CLIENT_PAGES_MANIFEST = '_devPagesManifest.json';
-    const MIDDLEWARE_MANIFEST = 'middleware-manifest.json';
-    const TURBOPACK_CLIENT_MIDDLEWARE_MANIFEST = '_clientMiddlewareManifest.js';
-    const TURBOPACK_CLIENT_BUILD_MANIFEST = 'client-build-manifest.json';
-    const DEV_CLIENT_MIDDLEWARE_MANIFEST = '_devMiddlewareManifest.json';
-    const REACT_LOADABLE_MANIFEST = 'react-loadable-manifest.json';
-    const SERVER_DIRECTORY = 'server';
+    const PHASE_EXPORT = "phase-export";
+    const PHASE_ANALYZE = "phase-analyze";
+    const PHASE_PRODUCTION_BUILD = "phase-production-build";
+    const PHASE_PRODUCTION_SERVER = "phase-production-server";
+    const PHASE_DEVELOPMENT_SERVER = "phase-development-server";
+    const PHASE_TEST = "phase-test";
+    const PHASE_INFO = "phase-info";
+    const PAGES_MANIFEST = "pages-manifest.json";
+    const APP_PATHS_MANIFEST = "app-paths-manifest.json";
+    const APP_PATH_ROUTES_MANIFEST = "app-path-routes-manifest.json";
+    const BUILD_MANIFEST = "build-manifest.json";
+    const FUNCTIONS_CONFIG_MANIFEST = "functions-config-manifest.json";
+    const SUBRESOURCE_INTEGRITY_MANIFEST = "subresource-integrity-manifest";
+    const NEXT_FONT_MANIFEST = "next-font-manifest";
+    const EXPORT_MARKER = "export-marker.json";
+    const EXPORT_DETAIL = "export-detail.json";
+    const PRERENDER_MANIFEST = "prerender-manifest.json";
+    const PREFETCH_HINTS = "prefetch-hints.json";
+    const ROUTES_MANIFEST = "routes-manifest.json";
+    const IMAGES_MANIFEST = "images-manifest.json";
+    const SERVER_FILES_MANIFEST = "required-server-files";
+    const DEV_CLIENT_PAGES_MANIFEST = "_devPagesManifest.json";
+    const MIDDLEWARE_MANIFEST = "middleware-manifest.json";
+    const TURBOPACK_CLIENT_MIDDLEWARE_MANIFEST = "_clientMiddlewareManifest.js";
+    const TURBOPACK_CLIENT_BUILD_MANIFEST = "client-build-manifest.json";
+    const DEV_CLIENT_MIDDLEWARE_MANIFEST = "_devMiddlewareManifest.json";
+    const REACT_LOADABLE_MANIFEST = "react-loadable-manifest.json";
+    const SERVER_DIRECTORY = "server";
     const CONFIG_FILES = [
-      'next.config.js',
-      'next.config.mjs',
-      'next.config.ts',
+      "next.config.js",
+      "next.config.mjs",
+      "next.config.ts",
       // process.features can be undefined on Edge runtime
       // TODO: Remove `as any` once we bump @types/node to v22.10.0+
-      ...(process?.features?.typescript ? ['next.config.mts'] : []),
+      ...(process?.features?.typescript ? ["next.config.mts"] : []),
     ];
-    const BUILD_ID_FILE = 'BUILD_ID';
-    const BLOCKED_PAGES = ['/_document', '/_app', '/_error'];
-    const CLIENT_PUBLIC_FILES_PATH = 'public';
-    const CLIENT_STATIC_FILES_PATH = 'static';
-    const STRING_LITERAL_DROP_BUNDLE = '__NEXT_DROP_CLIENT_FILE__';
-    const NEXT_BUILTIN_DOCUMENT = '__NEXT_BUILTIN_DOCUMENT__';
-    const BARREL_OPTIMIZATION_PREFIX = '__barrel_optimize__';
-    const CLIENT_REFERENCE_MANIFEST = 'client-reference-manifest';
-    const SERVER_REFERENCE_MANIFEST = 'server-reference-manifest';
-    const MIDDLEWARE_BUILD_MANIFEST = 'middleware-build-manifest';
-    const MIDDLEWARE_REACT_LOADABLE_MANIFEST = 'middleware-react-loadable-manifest';
-    const INTERCEPTION_ROUTE_REWRITE_MANIFEST = 'interception-route-rewrite-manifest';
-    const DYNAMIC_CSS_MANIFEST = 'dynamic-css-manifest';
+    const BUILD_ID_FILE = "BUILD_ID";
+    const BLOCKED_PAGES = ["/_document", "/_app", "/_error"];
+    const CLIENT_PUBLIC_FILES_PATH = "public";
+    const CLIENT_STATIC_FILES_PATH = "static";
+    const STRING_LITERAL_DROP_BUNDLE = "__NEXT_DROP_CLIENT_FILE__";
+    const NEXT_BUILTIN_DOCUMENT = "__NEXT_BUILTIN_DOCUMENT__";
+    const BARREL_OPTIMIZATION_PREFIX = "__barrel_optimize__";
+    const CLIENT_REFERENCE_MANIFEST = "client-reference-manifest";
+    const SERVER_REFERENCE_MANIFEST = "server-reference-manifest";
+    const MIDDLEWARE_BUILD_MANIFEST = "middleware-build-manifest";
+    const MIDDLEWARE_REACT_LOADABLE_MANIFEST = "middleware-react-loadable-manifest";
+    const INTERCEPTION_ROUTE_REWRITE_MANIFEST = "interception-route-rewrite-manifest";
+    const DYNAMIC_CSS_MANIFEST = "dynamic-css-manifest";
     const CLIENT_STATIC_FILES_RUNTIME_MAIN = `main`;
     const CLIENT_STATIC_FILES_RUNTIME_MAIN_APP = `${CLIENT_STATIC_FILES_RUNTIME_MAIN}-app`;
-    const APP_CLIENT_INTERNALS = 'app-pages-internals';
+    const APP_CLIENT_INTERNALS = "app-pages-internals";
     const CLIENT_STATIC_FILES_RUNTIME_REACT_REFRESH = `react-refresh`;
     const CLIENT_STATIC_FILES_RUNTIME_WEBPACK = `webpack`;
-    const CLIENT_STATIC_FILES_RUNTIME_POLYFILLS = 'polyfills';
+    const CLIENT_STATIC_FILES_RUNTIME_POLYFILLS = "polyfills";
     const CLIENT_STATIC_FILES_RUNTIME_POLYFILLS_SYMBOL = Symbol(
       CLIENT_STATIC_FILES_RUNTIME_POLYFILLS,
     );
-    const DEFAULT_RUNTIME_WEBPACK = 'webpack-runtime';
-    const EDGE_RUNTIME_WEBPACK = 'edge-runtime-webpack';
-    const STATIC_PROPS_ID = '__N_SSG';
-    const SERVER_PROPS_ID = '__N_SSP';
+    const DEFAULT_RUNTIME_WEBPACK = "webpack-runtime";
+    const EDGE_RUNTIME_WEBPACK = "edge-runtime-webpack";
+    const STATIC_PROPS_ID = "__N_SSG";
+    const SERVER_PROPS_ID = "__N_SSP";
     const DEFAULT_SERIF_FONT = {
-      name: 'Times New Roman',
+      name: "Times New Roman",
       xAvgCharWidth: 821,
       azAvgWidth: 854.3953488372093,
       unitsPerEm: 2048,
     };
     const DEFAULT_SANS_SERIF_FONT = {
-      name: 'Arial',
+      name: "Arial",
       xAvgCharWidth: 904,
       azAvgWidth: 934.5116279069767,
       unitsPerEm: 2048,
     };
-    const STATIC_STATUS_PAGES = ['/500'];
+    const STATIC_STATUS_PAGES = ["/500"];
     const TRACE_OUTPUT_VERSION = 1;
     const TURBO_TRACE_DEFAULT_MEMORY_LIMIT = 6000;
     const RSC_MODULE_TYPES = {
-      client: 'client',
-      server: 'server',
+      client: "client",
+      server: "server",
     };
     const EDGE_UNSUPPORTED_NODE_APIS = [
-      'clearImmediate',
-      'setImmediate',
-      'BroadcastChannel',
-      'ByteLengthQueuingStrategy',
-      'CompressionStream',
-      'CountQueuingStrategy',
-      'DecompressionStream',
-      'DomException',
-      'MessageChannel',
-      'MessageEvent',
-      'MessagePort',
-      'ReadableByteStreamController',
-      'ReadableStreamBYOBRequest',
-      'ReadableStreamDefaultController',
-      'TransformStreamDefaultController',
-      'WritableStreamDefaultController',
+      "clearImmediate",
+      "setImmediate",
+      "BroadcastChannel",
+      "ByteLengthQueuingStrategy",
+      "CompressionStream",
+      "CountQueuingStrategy",
+      "DecompressionStream",
+      "DomException",
+      "MessageChannel",
+      "MessageEvent",
+      "MessagePort",
+      "ReadableByteStreamController",
+      "ReadableStreamBYOBRequest",
+      "ReadableStreamDefaultController",
+      "TransformStreamDefaultController",
+      "WritableStreamDefaultController",
     ];
     const SYSTEM_ENTRYPOINTS = new Set([
       CLIENT_STATIC_FILES_RUNTIME_MAIN,
@@ -368,22 +368,22 @@ module.exports = [
       CLIENT_STATIC_FILES_RUNTIME_MAIN_APP,
     ]);
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/sorted-routes.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/sorted-routes.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -404,38 +404,38 @@ module.exports = [
     });
     class UrlNode {
       insert(urlPath) {
-        this._insert(urlPath.split('/').filter(Boolean), [], false);
+        this._insert(urlPath.split("/").filter(Boolean), [], false);
       }
       smoosh() {
         return this._smoosh();
       }
-      _smoosh(prefix = '/') {
+      _smoosh(prefix = "/") {
         const childrenPaths = [...this.children.keys()].sort();
         if (this.slugName !== null) {
-          childrenPaths.splice(childrenPaths.indexOf('[]'), 1);
+          childrenPaths.splice(childrenPaths.indexOf("[]"), 1);
         }
         if (this.restSlugName !== null) {
-          childrenPaths.splice(childrenPaths.indexOf('[...]'), 1);
+          childrenPaths.splice(childrenPaths.indexOf("[...]"), 1);
         }
         if (this.optionalRestSlugName !== null) {
-          childrenPaths.splice(childrenPaths.indexOf('[[...]]'), 1);
+          childrenPaths.splice(childrenPaths.indexOf("[[...]]"), 1);
         }
         const routes = childrenPaths
           .map((c) => this.children.get(c)._smoosh(`${prefix}${c}/`))
           .reduce((prev, curr) => [...prev, ...curr], []);
         if (this.slugName !== null) {
-          routes.push(...this.children.get('[]')._smoosh(`${prefix}[${this.slugName}]/`));
+          routes.push(...this.children.get("[]")._smoosh(`${prefix}[${this.slugName}]/`));
         }
         if (!this.placeholder) {
-          const r = prefix === '/' ? '/' : prefix.slice(0, -1);
+          const r = prefix === "/" ? "/" : prefix.slice(0, -1);
           if (this.optionalRestSlugName != null) {
             throw Object.defineProperty(
               new Error(
                 `You cannot define a route with the same specificity as a optional catch-all route ("${r}" and "${r}[[...${this.optionalRestSlugName}]]").`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E458',
+                value: "E458",
                 enumerable: false,
                 configurable: true,
               },
@@ -444,12 +444,12 @@ module.exports = [
           routes.unshift(r);
         }
         if (this.restSlugName !== null) {
-          routes.push(...this.children.get('[...]')._smoosh(`${prefix}[...${this.restSlugName}]/`));
+          routes.push(...this.children.get("[...]")._smoosh(`${prefix}[...${this.restSlugName}]/`));
         }
         if (this.optionalRestSlugName !== null) {
           routes.push(
             ...this.children
-              .get('[[...]]')
+              .get("[[...]]")
               ._smoosh(`${prefix}[[...${this.optionalRestSlugName}]]/`),
           );
         }
@@ -463,9 +463,9 @@ module.exports = [
         if (isCatchAll) {
           throw Object.defineProperty(
             new Error(`Catch-all must be the last part of the URL.`),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E392',
+              value: "E392",
               enumerable: false,
               configurable: true,
             },
@@ -474,52 +474,52 @@ module.exports = [
         // The next segment in the urlPaths list
         let nextSegment = urlPaths[0];
         // Check if the segment matches `[something]`
-        if (nextSegment.startsWith('[') && nextSegment.endsWith(']')) {
+        if (nextSegment.startsWith("[") && nextSegment.endsWith("]")) {
           // Strip `[` and `]`, leaving only `something`
           let segmentName = nextSegment.slice(1, -1);
           let isOptional = false;
-          if (segmentName.startsWith('[') && segmentName.endsWith(']')) {
+          if (segmentName.startsWith("[") && segmentName.endsWith("]")) {
             // Strip optional `[` and `]`, leaving only `something`
             segmentName = segmentName.slice(1, -1);
             isOptional = true;
           }
-          if (segmentName.startsWith('…')) {
+          if (segmentName.startsWith("…")) {
             throw Object.defineProperty(
               new Error(
                 `Detected a three-dot character ('…') at ('${segmentName}'). Did you mean ('...')?`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E147',
+                value: "E147",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
-          if (segmentName.startsWith('...')) {
+          if (segmentName.startsWith("...")) {
             // Strip `...`, leaving only `something`
             segmentName = segmentName.substring(3);
             isCatchAll = true;
           }
-          if (segmentName.startsWith('[') || segmentName.endsWith(']')) {
+          if (segmentName.startsWith("[") || segmentName.endsWith("]")) {
             throw Object.defineProperty(
               new Error(
                 `Segment names may not start or end with extra brackets ('${segmentName}').`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E421',
+                value: "E421",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
-          if (segmentName.startsWith('.')) {
+          if (segmentName.startsWith(".")) {
             throw Object.defineProperty(
               new Error(`Segment names may not start with erroneous periods ('${segmentName}').`),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E288',
+                value: "E288",
                 enumerable: false,
                 configurable: true,
               },
@@ -538,9 +538,9 @@ module.exports = [
                   new Error(
                     `You cannot use different slug names for the same dynamic path ('${previousSlug}' !== '${nextSlug}').`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E337',
+                    value: "E337",
                     enumerable: false,
                     configurable: true,
                   },
@@ -553,22 +553,22 @@ module.exports = [
                   new Error(
                     `You cannot have the same slug name "${nextSlug}" repeat within a single dynamic path`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E247',
+                    value: "E247",
                     enumerable: false,
                     configurable: true,
                   },
                 );
               }
-              if (slug.replace(/\W/g, '') === nextSegment.replace(/\W/g, '')) {
+              if (slug.replace(/\W/g, "") === nextSegment.replace(/\W/g, "")) {
                 throw Object.defineProperty(
                   new Error(
                     `You cannot have the slug names "${slug}" and "${nextSlug}" differ only by non-word symbols within a single dynamic path`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E499',
+                    value: "E499",
                     enumerable: false,
                     configurable: true,
                   },
@@ -584,9 +584,9 @@ module.exports = [
                   new Error(
                     `You cannot use both an required and optional catch-all route at the same level ("[...${this.restSlugName}]" and "${urlPaths[0]}" ).`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E299',
+                    value: "E299",
                     enumerable: false,
                     configurable: true,
                   },
@@ -596,16 +596,16 @@ module.exports = [
               // slugName is kept as it can only be one particular slugName
               this.optionalRestSlugName = segmentName;
               // nextSegment is overwritten to [[...]] so that it can later be sorted specifically
-              nextSegment = '[[...]]';
+              nextSegment = "[[...]]";
             } else {
               if (this.optionalRestSlugName != null) {
                 throw Object.defineProperty(
                   new Error(
                     `You cannot use both an optional and required catch-all route at the same level ("[[...${this.optionalRestSlugName}]]" and "${urlPaths[0]}").`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E300',
+                    value: "E300",
                     enumerable: false,
                     configurable: true,
                   },
@@ -615,15 +615,15 @@ module.exports = [
               // slugName is kept as it can only be one particular slugName
               this.restSlugName = segmentName;
               // nextSegment is overwritten to [...] so that it can later be sorted specifically
-              nextSegment = '[...]';
+              nextSegment = "[...]";
             }
           } else {
             if (isOptional) {
               throw Object.defineProperty(
                 new Error(`Optional route parameters are not yet supported ("${urlPaths[0]}").`),
-                '__NEXT_ERROR_CODE',
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E435',
+                  value: "E435",
                   enumerable: false,
                   configurable: true,
                 },
@@ -633,7 +633,7 @@ module.exports = [
             // slugName is kept as it can only be one particular slugName
             this.slugName = segmentName;
             // nextSegment is overwritten to [] so that it can later be sorted specifically
-            nextSegment = '[]';
+            nextSegment = "[]";
           }
         }
         // If this UrlNode doesn't have the nextSegment yet we create a new child UrlNode
@@ -684,29 +684,29 @@ module.exports = [
       return sorted.map((pathname) => objects[indexes[pathname]]);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * For a given page path, this function ensures that there is a leading slash.
      * If there is not a leading slash, one is added, otherwise it is noop.
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'ensureLeadingSlash', {
+    Object.defineProperty(exports, "ensureLeadingSlash", {
       enumerable: true,
       get: () => ensureLeadingSlash,
     });
     function ensureLeadingSlash(path) {
-      return path.startsWith('/') ? path : `/${path}`;
+      return path.startsWith("/") ? path : `/${path}`;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -744,17 +744,17 @@ module.exports = [
     }
     function isGroupSegment(segment) {
       // Use array[0] for performant purpose
-      return segment[0] === '(' && segment.endsWith(')');
+      return segment[0] === "(" && segment.endsWith(")");
     }
     function isParallelRouteSegment(segment) {
-      return segment.startsWith('@') && segment !== '@children';
+      return segment.startsWith("@") && segment !== "@children";
     }
     function addSearchParamsIfPageSegment(segment, searchParams) {
       const isPageSegment = segment.includes(PAGE_SEGMENT_KEY);
       if (isPageSegment) {
         const stringifiedQuery = JSON.stringify(searchParams);
-        return stringifiedQuery !== '{}'
-          ? PAGE_SEGMENT_KEY + '?' + stringifiedQuery
+        return stringifiedQuery !== "{}"
+          ? PAGE_SEGMENT_KEY + "?" + stringifiedQuery
           : PAGE_SEGMENT_KEY;
       }
       return segment;
@@ -765,7 +765,7 @@ module.exports = [
       }
       // For 'children', use first segment; for other parallel routes, use last segment
       const rawSegment =
-        parallelRouteKey === 'children' ? segments[0] : segments[segments.length - 1];
+        parallelRouteKey === "children" ? segments[0] : segments[segments.length - 1];
       // If the default slot is showing, return null since it's not technically "selected" (it's a fallback)
       // Returning an internal value like `__DEFAULT__` would be confusing
       return rawSegment === DEFAULT_SEGMENT_KEY ? null : rawSegment;
@@ -789,15 +789,15 @@ module.exports = [
       segmentPath.push(segmentValue);
       return getSelectedLayoutSegmentPath(node, parallelRouteKey, false, segmentPath);
     }
-    const PAGE_SEGMENT_KEY = '__PAGE__';
-    const DEFAULT_SEGMENT_KEY = '__DEFAULT__';
-    const NOT_FOUND_SEGMENT_KEY = '/_not-found';
+    const PAGE_SEGMENT_KEY = "__PAGE__";
+    const DEFAULT_SEGMENT_KEY = "__DEFAULT__";
+    const NOT_FOUND_SEGMENT_KEY = "/_not-found";
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -819,14 +819,14 @@ module.exports = [
       normalizeRscURL: () => normalizeRscURL,
     });
     const _ensureleadingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [ssr] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [ssr] (ecmascript)",
     );
     function normalizeAppPath(route) {
       return (0, _ensureleadingslash.ensureLeadingSlash)(
-        route.split('/').reduce((pathname, segment, index, segments) => {
+        route.split("/").reduce((pathname, segment, index, segments) => {
           // Empty segments are ignored.
           if (!segment) {
             return pathname;
@@ -836,33 +836,33 @@ module.exports = [
             return pathname;
           }
           // Parallel segments are ignored.
-          if (segment[0] === '@') {
+          if (segment[0] === "@") {
             return pathname;
           }
           // The last segment (if it's a leaf) should be ignored.
-          if ((segment === 'page' || segment === 'route') && index === segments.length - 1) {
+          if ((segment === "page" || segment === "route") && index === segments.length - 1) {
             return pathname;
           }
           return `${pathname}/${segment}`;
-        }, ''),
+        }, ""),
       );
     }
     function compareAppPaths(a, b) {
-      const aHasSlot = a.includes('/@');
-      const bHasSlot = b.includes('/@');
+      const aHasSlot = a.includes("/@");
+      const bHasSlot = b.includes("/@");
       if (aHasSlot && !bHasSlot) return -1;
       if (!aHasSlot && bHasSlot) return 1;
       return a.localeCompare(b);
     }
     function normalizeRscURL(url) {
-      return url.replace(/\.rsc($|\?)/, '$1');
+      return url.replace(/\.rsc($|\?)/, "$1");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -884,14 +884,14 @@ module.exports = [
       isInterceptionRouteAppPath: () => isInterceptionRouteAppPath,
     });
     const _apppaths = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [ssr] (ecmascript)",
     );
-    const INTERCEPTION_ROUTE_MARKERS = ['(..)(..)', '(.)', '(..)', '(...)'];
+    const INTERCEPTION_ROUTE_MARKERS = ["(..)(..)", "(.)", "(..)", "(...)"];
     function isInterceptionRouteAppPath(path) {
       // TODO-APP: add more serious validation
       return (
         path
-          .split('/')
+          .split("/")
           .find((segment) => INTERCEPTION_ROUTE_MARKERS.find((m) => segment.startsWith(m))) !==
         undefined
       );
@@ -900,7 +900,7 @@ module.exports = [
       let interceptingRoute;
       let marker;
       let interceptedRoute;
-      for (const segment of path.split('/')) {
+      for (const segment of path.split("/")) {
         marker = INTERCEPTION_ROUTE_MARKERS.find((m) => segment.startsWith(m));
         if (marker) {
           [interceptingRoute, interceptedRoute] = path.split(marker, 2);
@@ -912,9 +912,9 @@ module.exports = [
           new Error(
             `Invalid interception route: ${path}. Must be in the format /<intercepting route>/(..|...|..)(..)/<intercepted route>`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E269',
+            value: "E269",
             enumerable: false,
             configurable: true,
           },
@@ -922,64 +922,64 @@ module.exports = [
       }
       interceptingRoute = (0, _apppaths.normalizeAppPath)(interceptingRoute); // normalize the path, e.g. /(blog)/feed -> /feed
       switch (marker) {
-        case '(.)':
+        case "(.)":
           // (.) indicates that we should match with sibling routes, so we just need to append the intercepted route to the intercepting route
-          if (interceptingRoute === '/') {
+          if (interceptingRoute === "/") {
             interceptedRoute = `/${interceptedRoute}`;
           } else {
-            interceptedRoute = interceptingRoute + '/' + interceptedRoute;
+            interceptedRoute = interceptingRoute + "/" + interceptedRoute;
           }
           break;
-        case '(..)':
+        case "(..)":
           // (..) indicates that we should match at one level up, so we need to remove the last segment of the intercepting route
-          if (interceptingRoute === '/') {
+          if (interceptingRoute === "/") {
             throw Object.defineProperty(
               new Error(
                 `Invalid interception route: ${path}. Cannot use (..) marker at the root level, use (.) instead.`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E207',
+                value: "E207",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
           interceptedRoute = interceptingRoute
-            .split('/')
+            .split("/")
             .slice(0, -1)
             .concat(interceptedRoute)
-            .join('/');
+            .join("/");
           break;
-        case '(...)':
+        case "(...)":
           // (...) will match the route segment in the root directory, so we need to use the root directory to prepend the intercepted route
-          interceptedRoute = '/' + interceptedRoute;
+          interceptedRoute = "/" + interceptedRoute;
           break;
-        case '(..)(..)': {
+        case "(..)(..)": {
           // (..)(..) indicates that we should match at two levels up, so we need to remove the last two segments of the intercepting route
-          const splitInterceptingRoute = interceptingRoute.split('/');
+          const splitInterceptingRoute = interceptingRoute.split("/");
           if (splitInterceptingRoute.length <= 2) {
             throw Object.defineProperty(
               new Error(
                 `Invalid interception route: ${path}. Cannot use (..)(..) marker at the root level or one level up.`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E486',
+                value: "E486",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
-          interceptedRoute = splitInterceptingRoute.slice(0, -2).concat(interceptedRoute).join('/');
+          interceptedRoute = splitInterceptingRoute.slice(0, -2).concat(interceptedRoute).join("/");
           break;
         }
         default:
           throw Object.defineProperty(
-            new Error('Invariant: unexpected marker'),
-            '__NEXT_ERROR_CODE',
+            new Error("Invariant: unexpected marker"),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E112',
+              value: "E112",
               enumerable: false,
               configurable: true,
             },
@@ -991,19 +991,19 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isDynamicRoute', {
+    Object.defineProperty(exports, "isDynamicRoute", {
       enumerable: true,
       get: () => isDynamicRoute,
     });
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [ssr] (ecmascript)",
     );
     // Identify /.*[param].*/ in route string
     const TEST_ROUTE = /\/[^/]*\[[^/]+\][^/]*(?=\/|$)/;
@@ -1021,11 +1021,11 @@ module.exports = [
       return TEST_ROUTE.test(route);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1047,62 +1047,62 @@ module.exports = [
       isDynamicRoute: () => _isdynamic.isDynamicRoute,
     });
     const _sortedroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/sorted-routes.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/sorted-routes.js [ssr] (ecmascript)",
     );
     const _isdynamic = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-dynamic.js [ssr] (ecmascript)",
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * For a given page path, this function ensures that there is no backslash
      * escaping slashes in the path. Example:
      *  - `foo\/bar\/baz` -> `foo/bar/baz`
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'normalizePathSep', {
+    Object.defineProperty(exports, "normalizePathSep", {
       enumerable: true,
       get: () => normalizePathSep,
     });
     function normalizePathSep(path) {
-      return path.replace(/\\/g, '/');
+      return path.replace(/\\/g, "/");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/denormalize-page-path.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/denormalize-page-path.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'denormalizePagePath', {
+    Object.defineProperty(exports, "denormalizePagePath", {
       enumerable: true,
       get: () => denormalizePagePath,
     });
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [ssr] (ecmascript)",
     );
     const _normalizepathsep = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [ssr] (ecmascript)",
     );
     function denormalizePagePath(page) {
       const _page = (0, _normalizepathsep.normalizePathSep)(page);
-      return _page.startsWith('/index/') && !(0, _utils.isDynamicRoute)(_page)
+      return _page.startsWith("/index/") && !(0, _utils.isDynamicRoute)(_page)
         ? _page.slice(6)
-        : _page !== '/index'
+        : _page !== "/index"
           ? _page
-          : '/';
+          : "/";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1151,7 +1151,7 @@ module.exports = [
       normalizeRepeatedSlashes: () => normalizeRepeatedSlashes,
       stringifyError: () => stringifyError,
     });
-    const WEB_VITALS = ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB'];
+    const WEB_VITALS = ["CLS", "FCP", "FID", "INP", "LCP", "TTFB"];
     function execOnce(fn) {
       let used = false;
       let result;
@@ -1169,7 +1169,7 @@ module.exports = [
     const isAbsoluteUrl = (url) => ABSOLUTE_URL_REGEX.test(url);
     function getLocationOrigin() {
       const { protocol, hostname, port } = window.location;
-      return `${protocol}//${hostname}${port ? ':' + port : ''}`;
+      return `${protocol}//${hostname}${port ? ":" + port : ""}`;
     }
     function getURL() {
       const { href } = window.location;
@@ -1177,29 +1177,29 @@ module.exports = [
       return href.substring(origin.length);
     }
     function getDisplayName(Component) {
-      return typeof Component === 'string'
+      return typeof Component === "string"
         ? Component
-        : Component.displayName || Component.name || 'Unknown';
+        : Component.displayName || Component.name || "Unknown";
     }
     function isResSent(res) {
       return res.finished || res.headersSent;
     }
     function normalizeRepeatedSlashes(url) {
-      const urlParts = url.split('?');
+      const urlParts = url.split("?");
       const urlNoQuery = urlParts[0];
       return (
         urlNoQuery // first we replace any non-encoded backslashes with forward
           // then normalize repeated forward slashes
-          .replace(/\\/g, '/')
-          .replace(/\/\/+/g, '/') + (urlParts[1] ? `?${urlParts.slice(1).join('?')}` : '')
+          .replace(/\\/g, "/")
+          .replace(/\/\/+/g, "/") + (urlParts[1] ? `?${urlParts.slice(1).join("?")}` : "")
       );
     }
     async function loadGetInitialProps(App, ctx) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (App.prototype?.getInitialProps) {
           const message = `"${getDisplayName(App)}.getInitialProps()" is defined as an instance method - visit https://nextjs.org/docs/messages/get-initial-props-as-an-instance-method for more information.`;
-          throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-            value: 'E1035',
+          throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+            value: "E1035",
             enumerable: false,
             configurable: true,
           });
@@ -1222,13 +1222,13 @@ module.exports = [
       }
       if (!props) {
         const message = `"${getDisplayName(App)}.getInitialProps()" should resolve to an object. But found "${props}" instead.`;
-        throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-          value: 'E1025',
+        throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+          value: "E1025",
           enumerable: false,
           configurable: true,
         });
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (Object.keys(props).length === 0 && !ctx.ctx) {
           console.warn(
             `${getDisplayName(App)} returned an empty object from \`getInitialProps\`. This de-optimizes and prevents automatic static optimization. https://nextjs.org/docs/messages/empty-object-getInitialProps`,
@@ -1237,19 +1237,19 @@ module.exports = [
       }
       return props;
     }
-    const SP = typeof performance !== 'undefined';
+    const SP = typeof performance !== "undefined";
     const ST =
       SP &&
-      ['mark', 'measure', 'getEntriesByName'].every(
-        (method) => typeof performance[method] === 'function',
+      ["mark", "measure", "getEntriesByName"].every(
+        (method) => typeof performance[method] === "function",
       );
     class DecodeError extends Error {}
     class NormalizeError extends Error {}
     class PageNotFoundError extends Error {
       constructor(page) {
         super();
-        this.code = 'ENOENT';
-        this.name = 'PageNotFoundError';
+        this.code = "ENOENT";
+        this.name = "PageNotFoundError";
         this.message = `Cannot find module for page: ${page}`;
       }
     }
@@ -1262,7 +1262,7 @@ module.exports = [
     class MiddlewareNotFoundError extends Error {
       constructor() {
         super();
-        this.code = 'ENOENT';
+        this.code = "ENOENT";
         this.message = `Cannot find the middleware module`;
       }
     }
@@ -1273,35 +1273,35 @@ module.exports = [
       });
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-page-path.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-page-path.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'normalizePagePath', {
+    Object.defineProperty(exports, "normalizePagePath", {
       enumerable: true,
       get: () => normalizePagePath,
     });
     const _ensureleadingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [ssr] (ecmascript)",
     );
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/index.js [ssr] (ecmascript)",
     );
     const _utils1 = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [ssr] (ecmascript)",
     );
     function normalizePagePath(page) {
       const normalized =
         /^\/index(\/|$)/.test(page) && !(0, _utils.isDynamicRoute)(page)
           ? `/index${page}`
-          : page === '/'
-            ? '/index'
+          : page === "/"
+            ? "/index"
             : (0, _ensureleadingslash.ensureLeadingSlash)(page);
-      if (('TURBOPACK compile-time truthy', 1)) {
-        const { posix } = __turbopack_context__.r('[externals]/path [external] (path, cjs)');
+      if (("TURBOPACK compile-time truthy", 1)) {
+        const { posix } = __turbopack_context__.r("[externals]/path [external] (path, cjs)");
         const resolvedPage = posix.normalize(normalized);
         if (resolvedPage !== normalized) {
           throw new _utils1.NormalizeError(
@@ -1312,22 +1312,22 @@ module.exports = [
       return normalized;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/get-page-files.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/get-page-files.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getPageFiles', {
+    Object.defineProperty(exports, "getPageFiles", {
       enumerable: true,
       get: () => getPageFiles,
     });
     const _denormalizepagepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/denormalize-page-path.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/denormalize-page-path.js [ssr] (ecmascript)",
     );
     const _normalizepagepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-page-path.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-page-path.js [ssr] (ecmascript)",
     );
     function getPageFiles(buildManifest, page) {
       const normalizedPage = (0, _denormalizepagepath.denormalizePagePath)(
@@ -1341,13 +1341,13 @@ module.exports = [
       return files;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/htmlescape.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/htmlescape.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // This utility is based on https://github.com/zertosh/htmlescape
     // License: https://github.com/zertosh/htmlescape/blob/0527ca7156a524d256101bb310a9f970f63078ad/LICENSE
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1367,22 +1367,22 @@ module.exports = [
       htmlEscapeJsonString: () => htmlEscapeJsonString,
     });
     const ESCAPE_LOOKUP = {
-      '&': '\\u0026',
-      '>': '\\u003e',
-      '<': '\\u003c',
-      '\u2028': '\\u2028',
-      '\u2029': '\\u2029',
+      "&": "\\u0026",
+      ">": "\\u003e",
+      "<": "\\u003c",
+      "\u2028": "\\u2028",
+      "\u2029": "\\u2029",
     };
     const ESCAPE_REGEX = /[&><\u2028\u2029]/g;
     function htmlEscapeJsonString(str) {
       return str.replace(ESCAPE_REGEX, (match) => ESCAPE_LOOKUP[match]);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-plain-object.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-plain-object.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1405,7 +1405,7 @@ module.exports = [
       return Object.prototype.toString.call(value);
     }
     function isPlainObject(value) {
-      if (getObjectClassLabel(value) !== '[object Object]') {
+      if (getObjectClassLabel(value) !== "[object Object]") {
         return false;
       }
       const prototype = Object.getPrototypeOf(value);
@@ -1417,14 +1417,14 @@ module.exports = [
        * but Edge Runtime expose Object from vm, being that kind of type-checking wrongly fail.
        *
        * It was changed to the current implementation since it's resilient to serialization.
-       */ return prototype === null || Object.hasOwn(prototype, 'isPrototypeOf');
+       */ return prototype === null || Object.hasOwn(prototype, "isPrototypeOf");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1447,7 +1447,7 @@ module.exports = [
       getProperError: () => getProperError,
     });
     const _isplainobject = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-plain-object.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-plain-object.js [ssr] (ecmascript)",
     );
     /**
      * This is a safe stringify function that handles circular references.
@@ -1459,9 +1459,9 @@ module.exports = [
       const seen = new WeakSet();
       return JSON.stringify(obj, (_key, value) => {
         // If value is an object and already seen, replace with "[Circular]"
-        if (typeof value === 'object' && value !== null) {
+        if (typeof value === "object" && value !== null) {
           if (seen.has(value)) {
-            return '[Circular]';
+            return "[Circular]";
           }
           seen.add(value);
         }
@@ -1469,24 +1469,24 @@ module.exports = [
       });
     }
     function isError(err) {
-      return typeof err === 'object' && err !== null && 'name' in err && 'message' in err;
+      return typeof err === "object" && err !== null && "name" in err && "message" in err;
     }
     function getProperError(err) {
       if (isError(err)) {
         return err;
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         // provide better error for case where `throw undefined`
         // is called in development
-        if (typeof err === 'undefined') {
+        if (typeof err === "undefined") {
           return Object.defineProperty(
             new Error(
-              'An undefined error was thrown, ' +
-                'see here for more info: https://nextjs.org/docs/messages/threw-undefined',
+              "An undefined error was thrown, " +
+                "see here for more info: https://nextjs.org/docs/messages/threw-undefined",
             ),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E98',
+              value: "E98",
               enumerable: false,
               configurable: true,
             },
@@ -1495,12 +1495,12 @@ module.exports = [
         if (err === null) {
           return Object.defineProperty(
             new Error(
-              'A null error was thrown, ' +
-                'see here for more info: https://nextjs.org/docs/messages/threw-undefined',
+              "A null error was thrown, " +
+                "see here for more info: https://nextjs.org/docs/messages/threw-undefined",
             ),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E336',
+              value: "E336",
               enumerable: false,
               configurable: true,
             },
@@ -1508,28 +1508,28 @@ module.exports = [
         }
       }
       return Object.defineProperty(
-        new Error((0, _isplainobject.isPlainObject)(err) ? safeStringifyLite(err) : err + ''),
-        '__NEXT_ERROR_CODE',
+        new Error((0, _isplainobject.isPlainObject)(err) ? safeStringifyLite(err) : err + ""),
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E394',
+          value: "E394",
           enumerable: false,
           configurable: true,
         },
       );
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/pages/module.compiled.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/pages/module.compiled.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
-      if (('TURBOPACK compile-time truthy', 1)) {
-        if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           module.exports = __turbopack_context__.r(
-            '[externals]/next/dist/compiled/next-server/pages-turbo.runtime.dev.js [external] (next/dist/compiled/next-server/pages-turbo.runtime.dev.js, cjs)',
+            "[externals]/next/dist/compiled/next-server/pages-turbo.runtime.dev.js [external] (next/dist/compiled/next-server/pages-turbo.runtime.dev.js, cjs)",
           );
         } //TURBOPACK unreachable
         else;
@@ -1537,35 +1537,35 @@ module.exports = [
       else;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/pages/vendored/contexts/html-context.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/pages/vendored/contexts/html-context.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     module.exports = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/pages/module.compiled.js [ssr] (ecmascript)',
-    ).vendored['contexts'].HtmlContext;
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/pages/module.compiled.js [ssr] (ecmascript)",
+    ).vendored["contexts"].HtmlContext;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/encode-uri-path.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/encode-uri-path.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'encodeURIPath', {
+    Object.defineProperty(exports, "encodeURIPath", {
       enumerable: true,
       get: () => encodeURIPath,
     });
     function encodeURIPath(file) {
       return file
-        .split('/')
+        .split("/")
         .map((p) => encodeURIComponent(p))
-        .join('/');
+        .join("/");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/constants.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/constants.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Contains predefined constants for the trace span name in next/server.
@@ -1573,7 +1573,7 @@ module.exports = [
      * Currently, next/server/tracer is internal implementation only for tracking
      * next.js's implementation only with known span names defined here.
      **/ // eslint typescript has a bug with TS enums
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1617,162 +1617,162 @@ module.exports = [
       StartServerSpan: () => StartServerSpan,
     });
     var BaseServerSpan = /*#__PURE__*/ ((BaseServerSpan) => {
-      BaseServerSpan['handleRequest'] = 'BaseServer.handleRequest';
-      BaseServerSpan['run'] = 'BaseServer.run';
-      BaseServerSpan['pipe'] = 'BaseServer.pipe';
-      BaseServerSpan['getStaticHTML'] = 'BaseServer.getStaticHTML';
-      BaseServerSpan['render'] = 'BaseServer.render';
-      BaseServerSpan['renderToResponseWithComponents'] =
-        'BaseServer.renderToResponseWithComponents';
-      BaseServerSpan['renderToResponse'] = 'BaseServer.renderToResponse';
-      BaseServerSpan['renderToHTML'] = 'BaseServer.renderToHTML';
-      BaseServerSpan['renderError'] = 'BaseServer.renderError';
-      BaseServerSpan['renderErrorToResponse'] = 'BaseServer.renderErrorToResponse';
-      BaseServerSpan['renderErrorToHTML'] = 'BaseServer.renderErrorToHTML';
-      BaseServerSpan['render404'] = 'BaseServer.render404';
+      BaseServerSpan["handleRequest"] = "BaseServer.handleRequest";
+      BaseServerSpan["run"] = "BaseServer.run";
+      BaseServerSpan["pipe"] = "BaseServer.pipe";
+      BaseServerSpan["getStaticHTML"] = "BaseServer.getStaticHTML";
+      BaseServerSpan["render"] = "BaseServer.render";
+      BaseServerSpan["renderToResponseWithComponents"] =
+        "BaseServer.renderToResponseWithComponents";
+      BaseServerSpan["renderToResponse"] = "BaseServer.renderToResponse";
+      BaseServerSpan["renderToHTML"] = "BaseServer.renderToHTML";
+      BaseServerSpan["renderError"] = "BaseServer.renderError";
+      BaseServerSpan["renderErrorToResponse"] = "BaseServer.renderErrorToResponse";
+      BaseServerSpan["renderErrorToHTML"] = "BaseServer.renderErrorToHTML";
+      BaseServerSpan["render404"] = "BaseServer.render404";
       return BaseServerSpan;
     })(BaseServerSpan || {});
     var LoadComponentsSpan = /*#__PURE__*/ ((LoadComponentsSpan) => {
-      LoadComponentsSpan['loadDefaultErrorComponents'] =
-        'LoadComponents.loadDefaultErrorComponents';
-      LoadComponentsSpan['loadComponents'] = 'LoadComponents.loadComponents';
+      LoadComponentsSpan["loadDefaultErrorComponents"] =
+        "LoadComponents.loadDefaultErrorComponents";
+      LoadComponentsSpan["loadComponents"] = "LoadComponents.loadComponents";
       return LoadComponentsSpan;
     })(LoadComponentsSpan || {});
     var NextServerSpan = /*#__PURE__*/ ((NextServerSpan) => {
-      NextServerSpan['getRequestHandler'] = 'NextServer.getRequestHandler';
-      NextServerSpan['getRequestHandlerWithMetadata'] = 'NextServer.getRequestHandlerWithMetadata';
-      NextServerSpan['getServer'] = 'NextServer.getServer';
-      NextServerSpan['getServerRequestHandler'] = 'NextServer.getServerRequestHandler';
-      NextServerSpan['createServer'] = 'createServer.createServer';
+      NextServerSpan["getRequestHandler"] = "NextServer.getRequestHandler";
+      NextServerSpan["getRequestHandlerWithMetadata"] = "NextServer.getRequestHandlerWithMetadata";
+      NextServerSpan["getServer"] = "NextServer.getServer";
+      NextServerSpan["getServerRequestHandler"] = "NextServer.getServerRequestHandler";
+      NextServerSpan["createServer"] = "createServer.createServer";
       return NextServerSpan;
     })(NextServerSpan || {});
     var NextNodeServerSpan = /*#__PURE__*/ ((NextNodeServerSpan) => {
-      NextNodeServerSpan['compression'] = 'NextNodeServer.compression';
-      NextNodeServerSpan['getBuildId'] = 'NextNodeServer.getBuildId';
-      NextNodeServerSpan['createComponentTree'] = 'NextNodeServer.createComponentTree';
-      NextNodeServerSpan['clientComponentLoading'] = 'NextNodeServer.clientComponentLoading';
-      NextNodeServerSpan['getLayoutOrPageModule'] = 'NextNodeServer.getLayoutOrPageModule';
-      NextNodeServerSpan['generateStaticRoutes'] = 'NextNodeServer.generateStaticRoutes';
-      NextNodeServerSpan['generateFsStaticRoutes'] = 'NextNodeServer.generateFsStaticRoutes';
-      NextNodeServerSpan['generatePublicRoutes'] = 'NextNodeServer.generatePublicRoutes';
-      NextNodeServerSpan['generateImageRoutes'] = 'NextNodeServer.generateImageRoutes.route';
-      NextNodeServerSpan['sendRenderResult'] = 'NextNodeServer.sendRenderResult';
-      NextNodeServerSpan['proxyRequest'] = 'NextNodeServer.proxyRequest';
-      NextNodeServerSpan['runApi'] = 'NextNodeServer.runApi';
-      NextNodeServerSpan['render'] = 'NextNodeServer.render';
-      NextNodeServerSpan['renderHTML'] = 'NextNodeServer.renderHTML';
-      NextNodeServerSpan['imageOptimizer'] = 'NextNodeServer.imageOptimizer';
-      NextNodeServerSpan['getPagePath'] = 'NextNodeServer.getPagePath';
-      NextNodeServerSpan['getRoutesManifest'] = 'NextNodeServer.getRoutesManifest';
-      NextNodeServerSpan['findPageComponents'] = 'NextNodeServer.findPageComponents';
-      NextNodeServerSpan['getFontManifest'] = 'NextNodeServer.getFontManifest';
-      NextNodeServerSpan['getServerComponentManifest'] =
-        'NextNodeServer.getServerComponentManifest';
-      NextNodeServerSpan['getRequestHandler'] = 'NextNodeServer.getRequestHandler';
-      NextNodeServerSpan['renderToHTML'] = 'NextNodeServer.renderToHTML';
-      NextNodeServerSpan['renderError'] = 'NextNodeServer.renderError';
-      NextNodeServerSpan['renderErrorToHTML'] = 'NextNodeServer.renderErrorToHTML';
-      NextNodeServerSpan['render404'] = 'NextNodeServer.render404';
-      NextNodeServerSpan['startResponse'] = 'NextNodeServer.startResponse';
+      NextNodeServerSpan["compression"] = "NextNodeServer.compression";
+      NextNodeServerSpan["getBuildId"] = "NextNodeServer.getBuildId";
+      NextNodeServerSpan["createComponentTree"] = "NextNodeServer.createComponentTree";
+      NextNodeServerSpan["clientComponentLoading"] = "NextNodeServer.clientComponentLoading";
+      NextNodeServerSpan["getLayoutOrPageModule"] = "NextNodeServer.getLayoutOrPageModule";
+      NextNodeServerSpan["generateStaticRoutes"] = "NextNodeServer.generateStaticRoutes";
+      NextNodeServerSpan["generateFsStaticRoutes"] = "NextNodeServer.generateFsStaticRoutes";
+      NextNodeServerSpan["generatePublicRoutes"] = "NextNodeServer.generatePublicRoutes";
+      NextNodeServerSpan["generateImageRoutes"] = "NextNodeServer.generateImageRoutes.route";
+      NextNodeServerSpan["sendRenderResult"] = "NextNodeServer.sendRenderResult";
+      NextNodeServerSpan["proxyRequest"] = "NextNodeServer.proxyRequest";
+      NextNodeServerSpan["runApi"] = "NextNodeServer.runApi";
+      NextNodeServerSpan["render"] = "NextNodeServer.render";
+      NextNodeServerSpan["renderHTML"] = "NextNodeServer.renderHTML";
+      NextNodeServerSpan["imageOptimizer"] = "NextNodeServer.imageOptimizer";
+      NextNodeServerSpan["getPagePath"] = "NextNodeServer.getPagePath";
+      NextNodeServerSpan["getRoutesManifest"] = "NextNodeServer.getRoutesManifest";
+      NextNodeServerSpan["findPageComponents"] = "NextNodeServer.findPageComponents";
+      NextNodeServerSpan["getFontManifest"] = "NextNodeServer.getFontManifest";
+      NextNodeServerSpan["getServerComponentManifest"] =
+        "NextNodeServer.getServerComponentManifest";
+      NextNodeServerSpan["getRequestHandler"] = "NextNodeServer.getRequestHandler";
+      NextNodeServerSpan["renderToHTML"] = "NextNodeServer.renderToHTML";
+      NextNodeServerSpan["renderError"] = "NextNodeServer.renderError";
+      NextNodeServerSpan["renderErrorToHTML"] = "NextNodeServer.renderErrorToHTML";
+      NextNodeServerSpan["render404"] = "NextNodeServer.render404";
+      NextNodeServerSpan["startResponse"] = "NextNodeServer.startResponse";
       // nested inner span, does not require parent scope name
-      NextNodeServerSpan['route'] = 'route';
-      NextNodeServerSpan['onProxyReq'] = 'onProxyReq';
-      NextNodeServerSpan['apiResolver'] = 'apiResolver';
-      NextNodeServerSpan['internalFetch'] = 'internalFetch';
+      NextNodeServerSpan["route"] = "route";
+      NextNodeServerSpan["onProxyReq"] = "onProxyReq";
+      NextNodeServerSpan["apiResolver"] = "apiResolver";
+      NextNodeServerSpan["internalFetch"] = "internalFetch";
       return NextNodeServerSpan;
     })(NextNodeServerSpan || {});
     var StartServerSpan = /*#__PURE__*/ ((StartServerSpan) => {
-      StartServerSpan['startServer'] = 'startServer.startServer';
+      StartServerSpan["startServer"] = "startServer.startServer";
       return StartServerSpan;
     })(StartServerSpan || {});
     var RenderSpan = /*#__PURE__*/ ((RenderSpan) => {
-      RenderSpan['getServerSideProps'] = 'Render.getServerSideProps';
-      RenderSpan['getStaticProps'] = 'Render.getStaticProps';
-      RenderSpan['renderToString'] = 'Render.renderToString';
-      RenderSpan['renderDocument'] = 'Render.renderDocument';
-      RenderSpan['createBodyResult'] = 'Render.createBodyResult';
+      RenderSpan["getServerSideProps"] = "Render.getServerSideProps";
+      RenderSpan["getStaticProps"] = "Render.getStaticProps";
+      RenderSpan["renderToString"] = "Render.renderToString";
+      RenderSpan["renderDocument"] = "Render.renderDocument";
+      RenderSpan["createBodyResult"] = "Render.createBodyResult";
       return RenderSpan;
     })(RenderSpan || {});
     var AppRenderSpan = /*#__PURE__*/ ((AppRenderSpan) => {
-      AppRenderSpan['renderToString'] = 'AppRender.renderToString';
-      AppRenderSpan['renderToReadableStream'] = 'AppRender.renderToReadableStream';
-      AppRenderSpan['getBodyResult'] = 'AppRender.getBodyResult';
-      AppRenderSpan['fetch'] = 'AppRender.fetch';
+      AppRenderSpan["renderToString"] = "AppRender.renderToString";
+      AppRenderSpan["renderToReadableStream"] = "AppRender.renderToReadableStream";
+      AppRenderSpan["getBodyResult"] = "AppRender.getBodyResult";
+      AppRenderSpan["fetch"] = "AppRender.fetch";
       return AppRenderSpan;
     })(AppRenderSpan || {});
     var RouterSpan = /*#__PURE__*/ ((RouterSpan) => {
-      RouterSpan['executeRoute'] = 'Router.executeRoute';
+      RouterSpan["executeRoute"] = "Router.executeRoute";
       return RouterSpan;
     })(RouterSpan || {});
     var NodeSpan = /*#__PURE__*/ ((NodeSpan) => {
-      NodeSpan['runHandler'] = 'Node.runHandler';
+      NodeSpan["runHandler"] = "Node.runHandler";
       return NodeSpan;
     })(NodeSpan || {});
     var AppRouteRouteHandlersSpan = /*#__PURE__*/ ((AppRouteRouteHandlersSpan) => {
-      AppRouteRouteHandlersSpan['runHandler'] = 'AppRouteRouteHandlers.runHandler';
+      AppRouteRouteHandlersSpan["runHandler"] = "AppRouteRouteHandlers.runHandler";
       return AppRouteRouteHandlersSpan;
     })(AppRouteRouteHandlersSpan || {});
     var ResolveMetadataSpan = /*#__PURE__*/ ((ResolveMetadataSpan) => {
-      ResolveMetadataSpan['generateMetadata'] = 'ResolveMetadata.generateMetadata';
-      ResolveMetadataSpan['generateViewport'] = 'ResolveMetadata.generateViewport';
+      ResolveMetadataSpan["generateMetadata"] = "ResolveMetadata.generateMetadata";
+      ResolveMetadataSpan["generateViewport"] = "ResolveMetadata.generateViewport";
       return ResolveMetadataSpan;
     })(ResolveMetadataSpan || {});
     var MiddlewareSpan = /*#__PURE__*/ ((MiddlewareSpan) => {
-      MiddlewareSpan['execute'] = 'Middleware.execute';
+      MiddlewareSpan["execute"] = "Middleware.execute";
       return MiddlewareSpan;
     })(MiddlewareSpan || {});
     const NextVanillaSpanAllowlist = new Set([
-      'Middleware.execute',
-      'BaseServer.handleRequest',
-      'Render.getServerSideProps',
-      'Render.getStaticProps',
-      'AppRender.fetch',
-      'AppRender.getBodyResult',
-      'Render.renderDocument',
-      'Node.runHandler',
-      'AppRouteRouteHandlers.runHandler',
-      'ResolveMetadata.generateMetadata',
-      'ResolveMetadata.generateViewport',
-      'NextNodeServer.createComponentTree',
-      'NextNodeServer.findPageComponents',
-      'NextNodeServer.getLayoutOrPageModule',
-      'NextNodeServer.startResponse',
-      'NextNodeServer.clientComponentLoading',
+      "Middleware.execute",
+      "BaseServer.handleRequest",
+      "Render.getServerSideProps",
+      "Render.getStaticProps",
+      "AppRender.fetch",
+      "AppRender.getBodyResult",
+      "Render.renderDocument",
+      "Node.runHandler",
+      "AppRouteRouteHandlers.runHandler",
+      "ResolveMetadata.generateMetadata",
+      "ResolveMetadata.generateViewport",
+      "NextNodeServer.createComponentTree",
+      "NextNodeServer.findPageComponents",
+      "NextNodeServer.getLayoutOrPageModule",
+      "NextNodeServer.startResponse",
+      "NextNodeServer.clientComponentLoading",
     ]);
     const LogSpanAllowList = new Set([
-      'NextNodeServer.findPageComponents',
-      'NextNodeServer.createComponentTree',
-      'NextNodeServer.clientComponentLoading',
+      "NextNodeServer.findPageComponents",
+      "NextNodeServer.createComponentTree",
+      "NextNodeServer.clientComponentLoading",
     ]);
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-thenable.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-thenable.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Check to see if a value is Thenable.
      *
      * @param promise the maybe-thenable value
      * @returns true if the value is thenable
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isThenable', {
+    Object.defineProperty(exports, "isThenable", {
       enumerable: true,
       get: () => isThenable,
     });
     function isThenable(promise) {
       return (
         promise !== null &&
-        typeof promise === 'object' &&
-        'then' in promise &&
-        typeof promise.then === 'function'
+        typeof promise === "object" &&
+        "then" in promise &&
+        typeof promise.then === "function"
       );
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
@@ -1782,9 +1782,9 @@ module.exports = [
      *
      * @since 1.0.0
      */ __turbopack_context__.s([
-      'ROOT_CONTEXT',
+      "ROOT_CONTEXT",
       () => ROOT_CONTEXT,
-      'createContextKey',
+      "createContextKey",
       () => createContextKey,
     ]);
     function createContextKey(description) {
@@ -1818,22 +1818,22 @@ module.exports = [
     }
     const ROOT_CONTEXT = new BaseContext();
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/context/NoopContextManager.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/context/NoopContextManager.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['NoopContextManager', () => NoopContextManager]);
+    __turbopack_context__.s(["NoopContextManager", () => NoopContextManager]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)",
       );
     class NoopContextManager {
       active() {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'ROOT_CONTEXT'
+          "ROOT_CONTEXT"
         ];
       }
       with(_context, fn, thisArg, ...args) {
@@ -1850,25 +1850,25 @@ module.exports = [
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/version.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/version.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ // this is autogenerated file, see scripts/version-update.js
-    __turbopack_context__.s(['VERSION', () => VERSION]);
-    const VERSION = '1.9.1';
+    __turbopack_context__.s(["VERSION", () => VERSION]);
+    const VERSION = "1.9.1";
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/internal/semver.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/internal/semver.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      '_makeCompatibilityCheck',
+      "_makeCompatibilityCheck",
       () => _makeCompatibilityCheck,
-      'isCompatible',
+      "isCompatible",
       () => isCompatible,
     ]);
     /*
@@ -1876,7 +1876,7 @@ module.exports = [
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/version.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/version.js [ssr] (ecmascript)",
       );
     const re = /^(\d+)\.(\d+)\.(\d+)(-(.+))?$/;
     function _makeCompatibilityCheck(ownVersion) {
@@ -1951,20 +1951,20 @@ module.exports = [
     }
     const isCompatible = _makeCompatibilityCheck(
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'VERSION'
+        "VERSION"
       ],
     );
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'getGlobal',
+      "getGlobal",
       () => getGlobal,
-      'registerGlobal',
+      "registerGlobal",
       () => registerGlobal,
-      'unregisterGlobal',
+      "unregisterGlobal",
       () => unregisterGlobal,
     ]);
     /*
@@ -1972,27 +1972,27 @@ module.exports = [
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/version.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/version.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$semver$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/internal/semver.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/internal/semver.js [ssr] (ecmascript)",
       );
     const major =
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'VERSION'
-      ].split('.')[0];
+        "VERSION"
+      ].split(".")[0];
     const GLOBAL_OPENTELEMETRY_API_KEY = Symbol.for(`opentelemetry.js.api.${major}`);
     const _global =
-      typeof globalThis === 'object'
+      typeof globalThis === "object"
         ? globalThis
-        : typeof self === 'object'
+        : typeof self === "object"
           ? self
-          : ('TURBOPACK compile-time falsy', 0)
-            ? 'TURBOPACK unreachable'
-            : ('TURBOPACK compile-time truthy', 1)
+          : ("TURBOPACK compile-time falsy", 0)
+            ? "TURBOPACK unreachable"
+            : ("TURBOPACK compile-time truthy", 1)
               ? /*TURBOPACK member replacement*/ __turbopack_context__.g
-              : 'TURBOPACK unreachable';
+              : "TURBOPACK unreachable";
     function registerGlobal(type, instance, diag, allowOverride = false) {
       var _a;
       const api = (_global[GLOBAL_OPENTELEMETRY_API_KEY] =
@@ -2001,7 +2001,7 @@ module.exports = [
           : {
               version:
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-                  'VERSION'
+                  "VERSION"
                 ],
             });
       if (!allowOverride && api[type]) {
@@ -2015,19 +2015,19 @@ module.exports = [
       if (
         api.version !==
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'VERSION'
+          "VERSION"
         ]
       ) {
         // All registered APIs must be of the same version exactly
         const err = new Error(
-          `@opentelemetry/api: Registration of version v${api.version} for ${type} does not match previously registered API v${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__['VERSION']}`,
+          `@opentelemetry/api: Registration of version v${api.version} for ${type} does not match previously registered API v${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["VERSION"]}`,
         );
         diag.error(err.stack || err.message);
         return false;
       }
       api[type] = instance;
       diag.debug(
-        `@opentelemetry/api: Registered a global for ${type} v${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__['VERSION']}.`,
+        `@opentelemetry/api: Registered a global for ${type} v${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["VERSION"]}.`,
       );
       return true;
     }
@@ -2041,7 +2041,7 @@ module.exports = [
         !globalVersion ||
         !(0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$semver$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'isCompatible'
+          "isCompatible"
         ])(globalVersion)
       ) {
         return;
@@ -2052,7 +2052,7 @@ module.exports = [
     }
     function unregisterGlobal(type, diag) {
       diag.debug(
-        `@opentelemetry/api: Unregistering a global for ${type} v${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__['VERSION']}.`,
+        `@opentelemetry/api: Unregistering a global for ${type} v${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$version$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["VERSION"]}.`,
       );
       const api = _global[GLOBAL_OPENTELEMETRY_API_KEY];
       if (api) {
@@ -2060,43 +2060,43 @@ module.exports = [
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/diag/ComponentLogger.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/diag/ComponentLogger.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['DiagComponentLogger', () => DiagComponentLogger]);
+    __turbopack_context__.s(["DiagComponentLogger", () => DiagComponentLogger]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)",
       );
     class DiagComponentLogger {
       constructor(props) {
-        this._namespace = props.namespace || 'DiagComponentLogger';
+        this._namespace = props.namespace || "DiagComponentLogger";
       }
       debug(...args) {
-        return logProxy('debug', this._namespace, args);
+        return logProxy("debug", this._namespace, args);
       }
       error(...args) {
-        return logProxy('error', this._namespace, args);
+        return logProxy("error", this._namespace, args);
       }
       info(...args) {
-        return logProxy('info', this._namespace, args);
+        return logProxy("info", this._namespace, args);
       }
       warn(...args) {
-        return logProxy('warn', this._namespace, args);
+        return logProxy("warn", this._namespace, args);
       }
       verbose(...args) {
-        return logProxy('verbose', this._namespace, args);
+        return logProxy("verbose", this._namespace, args);
       }
     }
     function logProxy(funcName, namespace, args) {
       const logger = (0,
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'getGlobal'
-      ])('diag');
+        "getGlobal"
+      ])("diag");
       // shortcut if logger not set
       if (!logger) {
         return;
@@ -2104,9 +2104,9 @@ module.exports = [
       return logger[funcName](namespace, ...args);
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/diag/types.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/diag/types.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
@@ -2115,127 +2115,127 @@ module.exports = [
      * Defines the available internal logging levels for the diagnostic logger, the numeric values
      * of the levels are defined to match the original values from the initial LogLevel to avoid
      * compatibility/migration issues for any implementation that assume the numeric ordering.
-     */ __turbopack_context__.s(['DiagLogLevel', () => DiagLogLevel]);
+     */ __turbopack_context__.s(["DiagLogLevel", () => DiagLogLevel]);
     var DiagLogLevel;
     ((DiagLogLevel) => {
       /** Diagnostic Logging level setting to disable all logging (except and forced logs) */ DiagLogLevel[
-        (DiagLogLevel['NONE'] = 0)
-      ] = 'NONE';
-      /** Identifies an error scenario */ DiagLogLevel[(DiagLogLevel['ERROR'] = 30)] = 'ERROR';
-      /** Identifies a warning scenario */ DiagLogLevel[(DiagLogLevel['WARN'] = 50)] = 'WARN';
-      /** General informational log message */ DiagLogLevel[(DiagLogLevel['INFO'] = 60)] = 'INFO';
-      /** General debug log message */ DiagLogLevel[(DiagLogLevel['DEBUG'] = 70)] = 'DEBUG';
+        (DiagLogLevel["NONE"] = 0)
+      ] = "NONE";
+      /** Identifies an error scenario */ DiagLogLevel[(DiagLogLevel["ERROR"] = 30)] = "ERROR";
+      /** Identifies a warning scenario */ DiagLogLevel[(DiagLogLevel["WARN"] = 50)] = "WARN";
+      /** General informational log message */ DiagLogLevel[(DiagLogLevel["INFO"] = 60)] = "INFO";
+      /** General debug log message */ DiagLogLevel[(DiagLogLevel["DEBUG"] = 70)] = "DEBUG";
       /**
        * Detailed trace level logging should only be used for development, should only be set
        * in a development environment.
-       */ DiagLogLevel[(DiagLogLevel['VERBOSE'] = 80)] = 'VERBOSE';
+       */ DiagLogLevel[(DiagLogLevel["VERBOSE"] = 80)] = "VERBOSE";
       /** Used to set the logging level to include all logging */ DiagLogLevel[
-        (DiagLogLevel['ALL'] = 9999)
-      ] = 'ALL';
+        (DiagLogLevel["ALL"] = 9999)
+      ] = "ALL";
     })(DiagLogLevel || (DiagLogLevel = {}));
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/diag/internal/logLevelLogger.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/diag/internal/logLevelLogger.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['createLogLevelDiagLogger', () => createLogLevelDiagLogger]);
+    __turbopack_context__.s(["createLogLevelDiagLogger", () => createLogLevelDiagLogger]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/diag/types.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/diag/types.js [ssr] (ecmascript)",
       );
     function createLogLevelDiagLogger(maxLevel, logger) {
       if (
         maxLevel <
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'DiagLogLevel'
+          "DiagLogLevel"
         ].NONE
       ) {
         maxLevel =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagLogLevel'
+            "DiagLogLevel"
           ].NONE;
       } else if (
         maxLevel >
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'DiagLogLevel'
+          "DiagLogLevel"
         ].ALL
       ) {
         maxLevel =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagLogLevel'
+            "DiagLogLevel"
           ].ALL;
       }
       // In case the logger is null or undefined
       logger = logger || {};
       function _filterFunc(funcName, theLevel) {
         const theFunc = logger[funcName];
-        if (typeof theFunc === 'function' && maxLevel >= theLevel) {
+        if (typeof theFunc === "function" && maxLevel >= theLevel) {
           return theFunc.bind(logger);
         }
         return () => {};
       }
       return {
         error: _filterFunc(
-          'error',
+          "error",
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagLogLevel'
+            "DiagLogLevel"
           ].ERROR,
         ),
         warn: _filterFunc(
-          'warn',
+          "warn",
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagLogLevel'
+            "DiagLogLevel"
           ].WARN,
         ),
         info: _filterFunc(
-          'info',
+          "info",
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagLogLevel'
+            "DiagLogLevel"
           ].INFO,
         ),
         debug: _filterFunc(
-          'debug',
+          "debug",
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagLogLevel'
+            "DiagLogLevel"
           ].DEBUG,
         ),
         verbose: _filterFunc(
-          'verbose',
+          "verbose",
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagLogLevel'
+            "DiagLogLevel"
           ].VERBOSE,
         ),
       };
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['DiagAPI', () => DiagAPI]);
+    __turbopack_context__.s(["DiagAPI", () => DiagAPI]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$ComponentLogger$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/diag/ComponentLogger.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/diag/ComponentLogger.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$internal$2f$logLevelLogger$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/diag/internal/logLevelLogger.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/diag/internal/logLevelLogger.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/diag/types.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/diag/types.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)",
       );
-    const API_NAME = 'diag';
+    const API_NAME = "diag";
     class DiagAPI {
       /** Get the singleton instance of the DiagAPI API */ static instance() {
         if (!DiagAPI._instance) {
@@ -2251,8 +2251,8 @@ module.exports = [
           return (...args) => {
             const logger = (0,
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-              'getGlobal'
-            ])('diag');
+              "getGlobal"
+            ])("diag");
             // shortcut if logger not set
             if (!logger) return;
             return logger[funcName](...args);
@@ -2265,7 +2265,7 @@ module.exports = [
           optionsOrLogLevel = {
             logLevel:
               __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-                'DiagLogLevel'
+                "DiagLogLevel"
               ].INFO,
           },
         ) => {
@@ -2275,28 +2275,28 @@ module.exports = [
             // Logging to the console might break the user application.
             // Try to log to self. If a logger was previously registered it will receive the log.
             const err = new Error(
-              'Cannot use diag as the logger for itself. Please use a DiagLogger implementation like ConsoleDiagLogger or a custom implementation',
+              "Cannot use diag as the logger for itself. Please use a DiagLogger implementation like ConsoleDiagLogger or a custom implementation",
             );
             this.error((_a = err.stack) !== null && _a !== void 0 ? _a : err.message);
             return false;
           }
-          if (typeof optionsOrLogLevel === 'number') {
+          if (typeof optionsOrLogLevel === "number") {
             optionsOrLogLevel = {
               logLevel: optionsOrLogLevel,
             };
           }
           const oldLogger = (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getGlobal'
-          ])('diag');
+            "getGlobal"
+          ])("diag");
           const newLogger = (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$internal$2f$logLevelLogger$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'createLogLevelDiagLogger'
+            "createLogLevelDiagLogger"
           ])(
             (_b = optionsOrLogLevel.logLevel) !== null && _b !== void 0
               ? _b
               : __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-                  'DiagLogLevel'
+                  "DiagLogLevel"
                 ].INFO,
             logger,
           );
@@ -2305,59 +2305,59 @@ module.exports = [
             const stack =
               (_c = new Error().stack) !== null && _c !== void 0
                 ? _c
-                : '<failed to generate stacktrace>';
+                : "<failed to generate stacktrace>";
             oldLogger.warn(`Current logger will be overwritten from ${stack}`);
             newLogger.warn(`Current logger will overwrite one already registered from ${stack}`);
           }
           return (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'registerGlobal'
-          ])('diag', newLogger, this, true);
+            "registerGlobal"
+          ])("diag", newLogger, this, true);
         };
         this.setLogger = setLogger;
         this.disable = () => {
           (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'unregisterGlobal'
+            "unregisterGlobal"
           ])(API_NAME, this);
         };
         this.createComponentLogger = (options) => {
           return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$ComponentLogger$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagComponentLogger'
+            "DiagComponentLogger"
           ](options);
         };
-        this.verbose = _logProxy('verbose');
-        this.debug = _logProxy('debug');
-        this.info = _logProxy('info');
-        this.warn = _logProxy('warn');
-        this.error = _logProxy('error');
+        this.verbose = _logProxy("verbose");
+        this.debug = _logProxy("debug");
+        this.info = _logProxy("info");
+        this.warn = _logProxy("warn");
+        this.error = _logProxy("error");
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['ContextAPI', () => ContextAPI]);
+    __turbopack_context__.s(["ContextAPI", () => ContextAPI]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$NoopContextManager$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/context/NoopContextManager.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/context/NoopContextManager.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)",
       );
-    const API_NAME = 'context';
+    const API_NAME = "context";
     const NOOP_CONTEXT_MANAGER =
       new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$NoopContextManager$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'NoopContextManager'
+        "NoopContextManager"
       ]();
     class ContextAPI {
       /** Empty private constructor prevents end users from constructing a new instance of the API */ constructor() {}
@@ -2374,12 +2374,12 @@ module.exports = [
        */ setGlobalContextManager(contextManager) {
         return (0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'registerGlobal'
+          "registerGlobal"
         ])(
           API_NAME,
           contextManager,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagAPI'
+            "DiagAPI"
           ].instance(),
         );
       }
@@ -2410,7 +2410,7 @@ module.exports = [
         return (
           (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getGlobal'
+            "getGlobal"
           ])(API_NAME) || NOOP_CONTEXT_MANAGER
         );
       }
@@ -2418,21 +2418,21 @@ module.exports = [
         this._getContextManager().disable();
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'unregisterGlobal'
+          "unregisterGlobal"
         ])(
           API_NAME,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagAPI'
+            "DiagAPI"
           ].instance(),
         );
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/context-api.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/context-api.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['context', () => context]);
+    __turbopack_context__.s(["context", () => context]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
@@ -2440,18 +2440,18 @@ module.exports = [
     // tree-shaking on each api instance.
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)",
       );
     const context =
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'ContextAPI'
+        "ContextAPI"
       ].getInstance();
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/diag-api.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/diag-api.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['diag', () => diag]);
+    __turbopack_context__.s(["diag", () => diag]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
@@ -2459,16 +2459,16 @@ module.exports = [
     // tree-shaking on each api instance.
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)",
       );
     const diag =
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'DiagAPI'
+        "DiagAPI"
       ].instance();
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeter.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeter.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
@@ -2477,43 +2477,43 @@ module.exports = [
      * NoopMeter is a noop implementation of the {@link Meter} interface. It reuses
      * constant NoopMetrics for all of its methods.
      */ __turbopack_context__.s([
-      'NOOP_COUNTER_METRIC',
+      "NOOP_COUNTER_METRIC",
       () => NOOP_COUNTER_METRIC,
-      'NOOP_GAUGE_METRIC',
+      "NOOP_GAUGE_METRIC",
       () => NOOP_GAUGE_METRIC,
-      'NOOP_HISTOGRAM_METRIC',
+      "NOOP_HISTOGRAM_METRIC",
       () => NOOP_HISTOGRAM_METRIC,
-      'NOOP_METER',
+      "NOOP_METER",
       () => NOOP_METER,
-      'NOOP_OBSERVABLE_COUNTER_METRIC',
+      "NOOP_OBSERVABLE_COUNTER_METRIC",
       () => NOOP_OBSERVABLE_COUNTER_METRIC,
-      'NOOP_OBSERVABLE_GAUGE_METRIC',
+      "NOOP_OBSERVABLE_GAUGE_METRIC",
       () => NOOP_OBSERVABLE_GAUGE_METRIC,
-      'NOOP_OBSERVABLE_UP_DOWN_COUNTER_METRIC',
+      "NOOP_OBSERVABLE_UP_DOWN_COUNTER_METRIC",
       () => NOOP_OBSERVABLE_UP_DOWN_COUNTER_METRIC,
-      'NOOP_UP_DOWN_COUNTER_METRIC',
+      "NOOP_UP_DOWN_COUNTER_METRIC",
       () => NOOP_UP_DOWN_COUNTER_METRIC,
-      'NoopCounterMetric',
+      "NoopCounterMetric",
       () => NoopCounterMetric,
-      'NoopGaugeMetric',
+      "NoopGaugeMetric",
       () => NoopGaugeMetric,
-      'NoopHistogramMetric',
+      "NoopHistogramMetric",
       () => NoopHistogramMetric,
-      'NoopMeter',
+      "NoopMeter",
       () => NoopMeter,
-      'NoopMetric',
+      "NoopMetric",
       () => NoopMetric,
-      'NoopObservableCounterMetric',
+      "NoopObservableCounterMetric",
       () => NoopObservableCounterMetric,
-      'NoopObservableGaugeMetric',
+      "NoopObservableGaugeMetric",
       () => NoopObservableGaugeMetric,
-      'NoopObservableMetric',
+      "NoopObservableMetric",
       () => NoopObservableMetric,
-      'NoopObservableUpDownCounterMetric',
+      "NoopObservableUpDownCounterMetric",
       () => NoopObservableUpDownCounterMetric,
-      'NoopUpDownCounterMetric',
+      "NoopUpDownCounterMetric",
       () => NoopUpDownCounterMetric,
-      'createNoopMeter',
+      "createNoopMeter",
       () => createNoopMeter,
     ]);
     class NoopMeter {
@@ -2592,14 +2592,14 @@ module.exports = [
       return NOOP_METER;
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeterProvider.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeterProvider.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'NOOP_METER_PROVIDER',
+      "NOOP_METER_PROVIDER",
       () => NOOP_METER_PROVIDER,
-      'NoopMeterProvider',
+      "NoopMeterProvider",
       () => NoopMeterProvider,
     ]);
     /*
@@ -2607,38 +2607,38 @@ module.exports = [
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2f$NoopMeter$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeter.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeter.js [ssr] (ecmascript)",
       );
     class NoopMeterProvider {
       getMeter(_name, _version, _options) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2f$NoopMeter$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'NOOP_METER'
+          "NOOP_METER"
         ];
       }
     }
     const NOOP_METER_PROVIDER = new NoopMeterProvider();
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/api/metrics.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/api/metrics.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['MetricsAPI', () => MetricsAPI]);
+    __turbopack_context__.s(["MetricsAPI", () => MetricsAPI]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2f$NoopMeterProvider$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeterProvider.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeterProvider.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)",
       );
-    const API_NAME = 'metrics';
+    const API_NAME = "metrics";
     class MetricsAPI {
       /** Empty private constructor prevents end users from constructing a new instance of the API */ constructor() {}
       /** Get the singleton instance of the Metrics API */ static getInstance() {
@@ -2653,12 +2653,12 @@ module.exports = [
        */ setGlobalMeterProvider(provider) {
         return (0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'registerGlobal'
+          "registerGlobal"
         ])(
           API_NAME,
           provider,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagAPI'
+            "DiagAPI"
           ].instance(),
         );
       }
@@ -2668,10 +2668,10 @@ module.exports = [
         return (
           (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getGlobal'
+            "getGlobal"
           ])(API_NAME) ||
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2f$NoopMeterProvider$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'NOOP_METER_PROVIDER'
+            "NOOP_METER_PROVIDER"
           ]
         );
       }
@@ -2683,21 +2683,21 @@ module.exports = [
       /** Remove the global meter provider */ disable() {
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'unregisterGlobal'
+          "unregisterGlobal"
         ])(
           API_NAME,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagAPI'
+            "DiagAPI"
           ].instance(),
         );
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/metrics-api.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/metrics-api.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['metrics', () => metrics]);
+    __turbopack_context__.s(["metrics", () => metrics]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
@@ -2705,23 +2705,23 @@ module.exports = [
     // tree-shaking on each api instance.
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$metrics$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/metrics.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/metrics.js [ssr] (ecmascript)",
       );
     const metrics =
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$metrics$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'MetricsAPI'
+        "MetricsAPI"
       ].getInstance();
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/propagation/NoopTextMapPropagator.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/propagation/NoopTextMapPropagator.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ /**
      * No-op implementations of {@link TextMapPropagator}.
-     */ __turbopack_context__.s(['NoopTextMapPropagator', () => NoopTextMapPropagator]);
+     */ __turbopack_context__.s(["NoopTextMapPropagator", () => NoopTextMapPropagator]);
     class NoopTextMapPropagator {
       /** Noop inject function does nothing */ inject(_context, _carrier) {}
       /** Noop extract function does nothing and returns the input context */ extract(
@@ -2735,9 +2735,9 @@ module.exports = [
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/propagation/TextMapPropagator.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/propagation/TextMapPropagator.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
@@ -2745,9 +2745,9 @@ module.exports = [
      */ /**
      * @since 1.0.0
      */ __turbopack_context__.s([
-      'defaultTextMapGetter',
+      "defaultTextMapGetter",
       () => defaultTextMapGetter,
-      'defaultTextMapSetter',
+      "defaultTextMapSetter",
       () => defaultTextMapSetter,
     ]);
     const defaultTextMapGetter = {
@@ -2773,18 +2773,18 @@ module.exports = [
       },
     };
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/baggage/context-helpers.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/baggage/context-helpers.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'deleteBaggage',
+      "deleteBaggage",
       () => deleteBaggage,
-      'getActiveBaggage',
+      "getActiveBaggage",
       () => getActiveBaggage,
-      'getBaggage',
+      "getBaggage",
       () => getBaggage,
-      'setBaggage',
+      "setBaggage",
       () => setBaggage,
     ]);
     /*
@@ -2792,25 +2792,25 @@ module.exports = [
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)",
       );
     /**
      * Baggage key
      */ const BAGGAGE_KEY = (0,
     __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-      'createContextKey'
-    ])('OpenTelemetry Baggage Key');
+      "createContextKey"
+    ])("OpenTelemetry Baggage Key");
     function getBaggage(context) {
       return context.getValue(BAGGAGE_KEY) || undefined;
     }
     function getActiveBaggage() {
       return getBaggage(
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'ContextAPI'
+          "ContextAPI"
         ]
           .getInstance()
           .active(),
@@ -2823,14 +2823,14 @@ module.exports = [
       return context.deleteValue(BAGGAGE_KEY);
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/baggage/internal/baggage-impl.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/baggage/internal/baggage-impl.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
-     */ __turbopack_context__.s(['BaggageImpl', () => BaggageImpl]);
+     */ __turbopack_context__.s(["BaggageImpl", () => BaggageImpl]);
     class BaggageImpl {
       constructor(entries) {
         this._entries = entries ? new Map(entries) : new Map();
@@ -2867,26 +2867,26 @@ module.exports = [
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/baggage/internal/symbol.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/baggage/internal/symbol.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ /**
      * Symbol used to make BaggageEntryMetadata an opaque type
-     */ __turbopack_context__.s(['baggageEntryMetadataSymbol', () => baggageEntryMetadataSymbol]);
-    const baggageEntryMetadataSymbol = Symbol('BaggageEntryMetadata');
+     */ __turbopack_context__.s(["baggageEntryMetadataSymbol", () => baggageEntryMetadataSymbol]);
+    const baggageEntryMetadataSymbol = Symbol("BaggageEntryMetadata");
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/baggage/utils.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/baggage/utils.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'baggageEntryMetadataFromString',
+      "baggageEntryMetadataFromString",
       () => baggageEntryMetadataFromString,
-      'createBaggage',
+      "createBaggage",
       () => createBaggage,
     ]);
     /*
@@ -2894,34 +2894,34 @@ module.exports = [
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$internal$2f$baggage$2d$impl$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/baggage/internal/baggage-impl.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/baggage/internal/baggage-impl.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$internal$2f$symbol$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/baggage/internal/symbol.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/baggage/internal/symbol.js [ssr] (ecmascript)",
       );
     const diag =
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'DiagAPI'
+        "DiagAPI"
       ].instance();
     function createBaggage(entries = {}) {
       return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$internal$2f$baggage$2d$impl$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'BaggageImpl'
+        "BaggageImpl"
       ](new Map(Object.entries(entries)));
     }
     function baggageEntryMetadataFromString(str) {
-      if (typeof str !== 'string') {
+      if (typeof str !== "string") {
         diag.error(`Cannot create baggage metadata from unknown type: ${typeof str}`);
-        str = '';
+        str = "";
       }
       return {
         __TYPE__:
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$internal$2f$symbol$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'baggageEntryMetadataSymbol'
+            "baggageEntryMetadataSymbol"
           ],
         toString() {
           return str;
@@ -2929,64 +2929,64 @@ module.exports = [
       };
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/api/propagation.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/api/propagation.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['PropagationAPI', () => PropagationAPI]);
+    __turbopack_context__.s(["PropagationAPI", () => PropagationAPI]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2f$NoopTextMapPropagator$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/propagation/NoopTextMapPropagator.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/propagation/NoopTextMapPropagator.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2f$TextMapPropagator$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/propagation/TextMapPropagator.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/propagation/TextMapPropagator.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$context$2d$helpers$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/baggage/context-helpers.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/baggage/context-helpers.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/baggage/utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/baggage/utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)",
       );
-    const API_NAME = 'propagation';
+    const API_NAME = "propagation";
     const NOOP_TEXT_MAP_PROPAGATOR =
       new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2f$NoopTextMapPropagator$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'NoopTextMapPropagator'
+        "NoopTextMapPropagator"
       ]();
     class PropagationAPI {
       /** Empty private constructor prevents end users from constructing a new instance of the API */ constructor() {
         this.createBaggage =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'createBaggage'
+            "createBaggage"
           ];
         this.getBaggage =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$context$2d$helpers$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getBaggage'
+            "getBaggage"
           ];
         this.getActiveBaggage =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$context$2d$helpers$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getActiveBaggage'
+            "getActiveBaggage"
           ];
         this.setBaggage =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$context$2d$helpers$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'setBaggage'
+            "setBaggage"
           ];
         this.deleteBaggage =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$context$2d$helpers$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'deleteBaggage'
+            "deleteBaggage"
           ];
       }
       /** Get the singleton instance of the Propagator API */ static getInstance() {
@@ -3002,12 +3002,12 @@ module.exports = [
        */ setGlobalPropagator(propagator) {
         return (0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'registerGlobal'
+          "registerGlobal"
         ])(
           API_NAME,
           propagator,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagAPI'
+            "DiagAPI"
           ].instance(),
         );
       }
@@ -3021,7 +3021,7 @@ module.exports = [
         context,
         carrier,
         setter = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2f$TextMapPropagator$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'defaultTextMapSetter'
+          "defaultTextMapSetter"
         ],
       ) {
         return this._getGlobalPropagator().inject(context, carrier, setter);
@@ -3036,7 +3036,7 @@ module.exports = [
         context,
         carrier,
         getter = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2f$TextMapPropagator$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'defaultTextMapGetter'
+          "defaultTextMapGetter"
         ],
       ) {
         return this._getGlobalPropagator().extract(context, carrier, getter);
@@ -3049,11 +3049,11 @@ module.exports = [
       /** Remove the global propagator */ disable() {
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'unregisterGlobal'
+          "unregisterGlobal"
         ])(
           API_NAME,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagAPI'
+            "DiagAPI"
           ].instance(),
         );
       }
@@ -3061,17 +3061,17 @@ module.exports = [
         return (
           (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getGlobal'
+            "getGlobal"
           ])(API_NAME) || NOOP_TEXT_MAP_PROPAGATOR
         );
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/propagation-api.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/propagation-api.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['propagation', () => propagation]);
+    __turbopack_context__.s(["propagation", () => propagation]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
@@ -3079,41 +3079,41 @@ module.exports = [
     // tree-shaking on each api instance.
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$propagation$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/propagation.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/propagation.js [ssr] (ecmascript)",
       );
     const propagation =
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$propagation$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'PropagationAPI'
+        "PropagationAPI"
       ].getInstance();
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/trace_flags.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/trace_flags.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ /**
      * @since 1.0.0
-     */ __turbopack_context__.s(['TraceFlags', () => TraceFlags]);
+     */ __turbopack_context__.s(["TraceFlags", () => TraceFlags]);
     var TraceFlags;
     ((TraceFlags) => {
-      /** Represents no flag set. */ TraceFlags[(TraceFlags['NONE'] = 0)] = 'NONE';
+      /** Represents no flag set. */ TraceFlags[(TraceFlags["NONE"] = 0)] = "NONE";
       /** Bit to represent whether trace is sampled in trace flags. */ TraceFlags[
-        (TraceFlags['SAMPLED'] = 1)
-      ] = 'SAMPLED';
+        (TraceFlags["SAMPLED"] = 1)
+      ] = "SAMPLED";
     })(TraceFlags || (TraceFlags = {}));
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'INVALID_SPANID',
+      "INVALID_SPANID",
       () => INVALID_SPANID,
-      'INVALID_SPAN_CONTEXT',
+      "INVALID_SPAN_CONTEXT",
       () => INVALID_SPAN_CONTEXT,
-      'INVALID_TRACEID',
+      "INVALID_TRACEID",
       () => INVALID_TRACEID,
     ]);
     /*
@@ -3121,35 +3121,35 @@ module.exports = [
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$trace_flags$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/trace_flags.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/trace_flags.js [ssr] (ecmascript)",
       );
-    const INVALID_SPANID = '0000000000000000';
-    const INVALID_TRACEID = '00000000000000000000000000000000';
+    const INVALID_SPANID = "0000000000000000";
+    const INVALID_TRACEID = "00000000000000000000000000000000";
     const INVALID_SPAN_CONTEXT = {
       traceId: INVALID_TRACEID,
       spanId: INVALID_SPANID,
       traceFlags:
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$trace_flags$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'TraceFlags'
+          "TraceFlags"
         ].NONE,
     };
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['NonRecordingSpan', () => NonRecordingSpan]);
+    __turbopack_context__.s(["NonRecordingSpan", () => NonRecordingSpan]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$invalid$2d$span$2d$constants$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js [ssr] (ecmascript)",
       );
     class NonRecordingSpan {
       constructor(
         spanContext = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$invalid$2d$span$2d$constants$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'INVALID_SPAN_CONTEXT'
+          "INVALID_SPAN_CONTEXT"
         ],
       ) {
         this._spanContext = spanContext;
@@ -3194,22 +3194,22 @@ module.exports = [
       recordException(_exception, _time) {}
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/context-utils.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/context-utils.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'deleteSpan',
+      "deleteSpan",
       () => deleteSpan,
-      'getActiveSpan',
+      "getActiveSpan",
       () => getActiveSpan,
-      'getSpan',
+      "getSpan",
       () => getSpan,
-      'getSpanContext',
+      "getSpanContext",
       () => getSpanContext,
-      'setSpan',
+      "setSpan",
       () => setSpan,
-      'setSpanContext',
+      "setSpanContext",
       () => setSpanContext,
     ]);
     /*
@@ -3217,29 +3217,29 @@ module.exports = [
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NonRecordingSpan$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)",
       );
     /**
      * span key
      */ const SPAN_KEY = (0,
     __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-      'createContextKey'
-    ])('OpenTelemetry Context Key SPAN');
+      "createContextKey"
+    ])("OpenTelemetry Context Key SPAN");
     function getSpan(context) {
       return context.getValue(SPAN_KEY) || undefined;
     }
     function getActiveSpan() {
       return getSpan(
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'ContextAPI'
+          "ContextAPI"
         ]
           .getInstance()
           .active(),
@@ -3255,7 +3255,7 @@ module.exports = [
       return setSpan(
         context,
         new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NonRecordingSpan$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'NonRecordingSpan'
+          "NonRecordingSpan"
         ](spanContext),
       );
     }
@@ -3264,18 +3264,18 @@ module.exports = [
       return (_a = getSpan(context)) === null || _a === void 0 ? void 0 : _a.spanContext();
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'isSpanContextValid',
+      "isSpanContextValid",
       () => isSpanContextValid,
-      'isValidSpanId',
+      "isValidSpanId",
       () => isValidSpanId,
-      'isValidTraceId',
+      "isValidTraceId",
       () => isValidTraceId,
-      'wrapSpanContext',
+      "wrapSpanContext",
       () => wrapSpanContext,
     ]);
     /*
@@ -3283,11 +3283,11 @@ module.exports = [
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$invalid$2d$span$2d$constants$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NonRecordingSpan$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js [ssr] (ecmascript)",
       );
     // Valid characters (0-9, a-f, A-F) are marked as 1.
     const isHex = new Uint8Array([
@@ -3299,7 +3299,7 @@ module.exports = [
     function isValidHex(id, length) {
       // As of 1.9.0 the id was allowed to be a non-string value,
       // even though it was not possible in the types.
-      if (typeof id !== 'string' || id.length !== length) return false;
+      if (typeof id !== "string" || id.length !== length) return false;
       let r = 0;
       for (let i = 0; i < id.length; i += 4) {
         r +=
@@ -3315,7 +3315,7 @@ module.exports = [
         isValidHex(traceId, 32) &&
         traceId !==
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$invalid$2d$span$2d$constants$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'INVALID_TRACEID'
+            "INVALID_TRACEID"
           ]
       );
     }
@@ -3324,7 +3324,7 @@ module.exports = [
         isValidHex(spanId, 16) &&
         spanId !==
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$invalid$2d$span$2d$constants$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'INVALID_SPANID'
+            "INVALID_SPANID"
           ]
       );
     }
@@ -3333,37 +3333,37 @@ module.exports = [
     }
     function wrapSpanContext(spanContext) {
       return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NonRecordingSpan$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'NonRecordingSpan'
+        "NonRecordingSpan"
       ](spanContext);
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracer.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracer.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['NoopTracer', () => NoopTracer]);
+    __turbopack_context__.s(["NoopTracer", () => NoopTracer]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/context.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/context-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/context-utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NonRecordingSpan$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$spancontext$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js [ssr] (ecmascript)",
       );
     const contextApi =
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'ContextAPI'
+        "ContextAPI"
       ].getInstance();
     class NoopTracer {
       // startSpan starts a noop span.
@@ -3371,28 +3371,28 @@ module.exports = [
         const root = Boolean(options === null || options === void 0 ? void 0 : options.root);
         if (root) {
           return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NonRecordingSpan$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'NonRecordingSpan'
+            "NonRecordingSpan"
           ]();
         }
         const parentFromContext =
           context &&
           (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getSpanContext'
+            "getSpanContext"
           ])(context);
         if (
           isSpanContext(parentFromContext) &&
           (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$spancontext$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'isSpanContextValid'
+            "isSpanContextValid"
           ])(parentFromContext)
         ) {
           return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NonRecordingSpan$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'NonRecordingSpan'
+            "NonRecordingSpan"
           ](parentFromContext);
         } else {
           return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NonRecordingSpan$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'NonRecordingSpan'
+            "NonRecordingSpan"
           ]();
         }
       }
@@ -3416,7 +3416,7 @@ module.exports = [
         const span = this.startSpan(name, opts, parentContext);
         const contextWithSpanSet = (0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'setSpan'
+          "setSpan"
         ])(parentContext, span);
         return contextApi.with(contextWithSpanSet, fn, undefined, span);
       }
@@ -3424,31 +3424,31 @@ module.exports = [
     function isSpanContext(spanContext) {
       return (
         spanContext !== null &&
-        typeof spanContext === 'object' &&
-        'spanId' in spanContext &&
-        typeof spanContext['spanId'] === 'string' &&
-        'traceId' in spanContext &&
-        typeof spanContext['traceId'] === 'string' &&
-        'traceFlags' in spanContext &&
-        typeof spanContext['traceFlags'] === 'number'
+        typeof spanContext === "object" &&
+        "spanId" in spanContext &&
+        typeof spanContext["spanId"] === "string" &&
+        "traceId" in spanContext &&
+        typeof spanContext["traceId"] === "string" &&
+        "traceFlags" in spanContext &&
+        typeof spanContext["traceFlags"] === "number"
       );
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracer.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracer.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['ProxyTracer', () => ProxyTracer]);
+    __turbopack_context__.s(["ProxyTracer", () => ProxyTracer]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NoopTracer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracer.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracer.js [ssr] (ecmascript)",
       );
     const NOOP_TRACER =
       new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NoopTracer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'NoopTracer'
+        "NoopTracer"
       ]();
     class ProxyTracer {
       constructor(provider, name, version, options) {
@@ -3480,45 +3480,45 @@ module.exports = [
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracerProvider.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracerProvider.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['NoopTracerProvider', () => NoopTracerProvider]);
+    __turbopack_context__.s(["NoopTracerProvider", () => NoopTracerProvider]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NoopTracer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracer.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracer.js [ssr] (ecmascript)",
       );
     class NoopTracerProvider {
       getTracer(_name, _version, _options) {
         return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NoopTracer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'NoopTracer'
+          "NoopTracer"
         ]();
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracerProvider.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracerProvider.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['ProxyTracerProvider', () => ProxyTracerProvider]);
+    __turbopack_context__.s(["ProxyTracerProvider", () => ProxyTracerProvider]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$ProxyTracer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracer.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracer.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NoopTracerProvider$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracerProvider.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/NoopTracerProvider.js [ssr] (ecmascript)",
       );
     const NOOP_TRACER_PROVIDER =
       new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$NoopTracerProvider$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'NoopTracerProvider'
+        "NoopTracerProvider"
       ]();
     class ProxyTracerProvider {
       /**
@@ -3528,7 +3528,7 @@ module.exports = [
         return (_a = this.getDelegateTracer(name, version, options)) !== null && _a !== void 0
           ? _a
           : new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$ProxyTracer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-              'ProxyTracer'
+              "ProxyTracer"
             ](this, name, version, options);
       }
       getDelegate() {
@@ -3548,72 +3548,72 @@ module.exports = [
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/api/trace.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/api/trace.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['TraceAPI', () => TraceAPI]);
+    __turbopack_context__.s(["TraceAPI", () => TraceAPI]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$ProxyTracerProvider$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracerProvider.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracerProvider.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$spancontext$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/context-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/context-utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/diag.js [ssr] (ecmascript)",
       );
-    const API_NAME = 'trace';
+    const API_NAME = "trace";
     class TraceAPI {
       /** Empty private constructor prevents end users from constructing a new instance of the API */ constructor() {
         this._proxyTracerProvider =
           new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$ProxyTracerProvider$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'ProxyTracerProvider'
+            "ProxyTracerProvider"
           ]();
         this.wrapSpanContext =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$spancontext$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'wrapSpanContext'
+            "wrapSpanContext"
           ];
         this.isSpanContextValid =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$spancontext$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'isSpanContextValid'
+            "isSpanContextValid"
           ];
         this.deleteSpan =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'deleteSpan'
+            "deleteSpan"
           ];
         this.getSpan =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getSpan'
+            "getSpan"
           ];
         this.getActiveSpan =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getActiveSpan'
+            "getActiveSpan"
           ];
         this.getSpanContext =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getSpanContext'
+            "getSpanContext"
           ];
         this.setSpan =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'setSpan'
+            "setSpan"
           ];
         this.setSpanContext =
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$context$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'setSpanContext'
+            "setSpanContext"
           ];
       }
       /** Get the singleton instance of the Trace API */ static getInstance() {
@@ -3629,12 +3629,12 @@ module.exports = [
        */ setGlobalTracerProvider(provider) {
         const success = (0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'registerGlobal'
+          "registerGlobal"
         ])(
           API_NAME,
           this._proxyTracerProvider,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagAPI'
+            "DiagAPI"
           ].instance(),
         );
         if (success) {
@@ -3648,7 +3648,7 @@ module.exports = [
         return (
           (0,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'getGlobal'
+            "getGlobal"
           ])(API_NAME) || this._proxyTracerProvider
         );
       }
@@ -3660,25 +3660,25 @@ module.exports = [
       /** Remove the global tracer provider */ disable() {
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$internal$2f$global$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'unregisterGlobal'
+          "unregisterGlobal"
         ])(
           API_NAME,
           __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$diag$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'DiagAPI'
+            "DiagAPI"
           ].instance(),
         );
         this._proxyTracerProvider =
           new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$ProxyTracerProvider$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-            'ProxyTracerProvider'
+            "ProxyTracerProvider"
           ]();
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace-api.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace-api.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['trace', () => trace]);
+    __turbopack_context__.s(["trace", () => trace]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
@@ -3686,73 +3686,73 @@ module.exports = [
     // tree-shaking on each api instance.
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$trace$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/api/trace.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/api/trace.js [ssr] (ecmascript)",
       );
     const trace =
       __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$api$2f$trace$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'TraceAPI'
+        "TraceAPI"
       ].getInstance();
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/index.js [ssr] (ecmascript) <locals>',
+  "[project]/node_modules/@opentelemetry/api/build/esm/index.js [ssr] (ecmascript) <locals>",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
-     */ __turbopack_context__.s(['default', () => __TURBOPACK__default__export__]);
+     */ __turbopack_context__.s(["default", () => __TURBOPACK__default__export__]);
     // Split module-level variable definition into separate files to allow
     // tree-shaking on each api instance.
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/context-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/context-api.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/diag-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/diag-api.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/metrics-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/metrics-api.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/propagation-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/propagation-api.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace-api.js [ssr] (ecmascript)",
       );
     const __TURBOPACK__default__export__ = {
       context:
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'context'
+          "context"
         ],
       diag: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'diag'
+        "diag"
       ],
       metrics:
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'metrics'
+          "metrics"
         ],
       propagation:
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'propagation'
+          "propagation"
         ],
       trace:
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'trace'
+          "trace"
         ],
     };
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/diag/consoleLogger.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/diag/consoleLogger.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'DiagConsoleLogger',
+      "DiagConsoleLogger",
       () => DiagConsoleLogger,
-      '_originalConsoleMethods',
+      "_originalConsoleMethods",
       () => _originalConsoleMethods,
     ]);
     /*
@@ -3760,32 +3760,32 @@ module.exports = [
      * SPDX-License-Identifier: Apache-2.0
      */ const consoleMap = [
       {
-        n: 'error',
-        c: 'error',
+        n: "error",
+        c: "error",
       },
       {
-        n: 'warn',
-        c: 'warn',
+        n: "warn",
+        c: "warn",
       },
       {
-        n: 'info',
-        c: 'info',
+        n: "info",
+        c: "info",
       },
       {
-        n: 'debug',
-        c: 'debug',
+        n: "debug",
+        c: "debug",
       },
       {
-        n: 'verbose',
-        c: 'trace',
+        n: "verbose",
+        c: "trace",
       },
     ];
     const _originalConsoleMethods = {};
-    if (typeof console !== 'undefined') {
-      const keys = ['error', 'warn', 'info', 'debug', 'trace', 'log'];
+    if (typeof console !== "undefined") {
+      const keys = ["error", "warn", "info", "debug", "trace", "log"];
       for (const key of keys) {
         // eslint-disable-next-line no-console
-        if (typeof console[key] === 'function') {
+        if (typeof console[key] === "function") {
           // eslint-disable-next-line no-console
           _originalConsoleMethods[key] = console[key];
         }
@@ -3798,19 +3798,19 @@ module.exports = [
             // Prefer original (pre-instrumentation) methods saved at module load time.
             let theFunc = _originalConsoleMethods[funcName];
             // Some environments only expose the console when the F12 developer console is open
-            if (typeof theFunc !== 'function') {
-              theFunc = _originalConsoleMethods['log'];
+            if (typeof theFunc !== "function") {
+              theFunc = _originalConsoleMethods["log"];
             }
             // Fall back in case console was not available at module load time but became available later.
-            if (typeof theFunc !== 'function' && console) {
+            if (typeof theFunc !== "function" && console) {
               // eslint-disable-next-line no-console
               theFunc = console[funcName];
-              if (typeof theFunc !== 'function') {
+              if (typeof theFunc !== "function") {
                 // eslint-disable-next-line no-console
                 theFunc = console.log;
               }
             }
-            if (typeof theFunc === 'function') {
+            if (typeof theFunc === "function") {
               return theFunc.apply(console, args);
             }
           };
@@ -3821,9 +3821,9 @@ module.exports = [
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/metrics/Metric.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/metrics/Metric.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
@@ -3832,16 +3832,16 @@ module.exports = [
      * The Type of value. It describes how the data is reported.
      *
      * @since 1.3.0
-     */ __turbopack_context__.s(['ValueType', () => ValueType]);
+     */ __turbopack_context__.s(["ValueType", () => ValueType]);
     var ValueType;
     ((ValueType) => {
-      ValueType[(ValueType['INT'] = 0)] = 'INT';
-      ValueType[(ValueType['DOUBLE'] = 1)] = 'DOUBLE';
+      ValueType[(ValueType["INT"] = 0)] = "INT";
+      ValueType[(ValueType["DOUBLE"] = 1)] = "DOUBLE";
     })(ValueType || (ValueType = {}));
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/SamplingResult.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/SamplingResult.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
@@ -3852,61 +3852,61 @@ module.exports = [
      * and collected.
      *
      * @since 1.0.0
-     */ __turbopack_context__.s(['SamplingDecision', () => SamplingDecision]);
+     */ __turbopack_context__.s(["SamplingDecision", () => SamplingDecision]);
     var SamplingDecision;
     ((SamplingDecision) => {
       /**
        * `Span.isRecording() === false`, span will not be recorded and all events
        * and attributes will be dropped.
-       */ SamplingDecision[(SamplingDecision['NOT_RECORD'] = 0)] = 'NOT_RECORD';
+       */ SamplingDecision[(SamplingDecision["NOT_RECORD"] = 0)] = "NOT_RECORD";
       /**
        * `Span.isRecording() === true`, but `Sampled` flag in {@link TraceFlags}
        * MUST NOT be set.
-       */ SamplingDecision[(SamplingDecision['RECORD'] = 1)] = 'RECORD';
+       */ SamplingDecision[(SamplingDecision["RECORD"] = 1)] = "RECORD";
       /**
        * `Span.isRecording() === true` AND `Sampled` flag in {@link TraceFlags}
        * MUST be set.
-       */ SamplingDecision[(SamplingDecision['RECORD_AND_SAMPLED'] = 2)] = 'RECORD_AND_SAMPLED';
+       */ SamplingDecision[(SamplingDecision["RECORD_AND_SAMPLED"] = 2)] = "RECORD_AND_SAMPLED";
     })(SamplingDecision || (SamplingDecision = {}));
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/span_kind.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/span_kind.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ /**
      * @since 1.0.0
-     */ __turbopack_context__.s(['SpanKind', () => SpanKind]);
+     */ __turbopack_context__.s(["SpanKind", () => SpanKind]);
     var SpanKind;
     ((SpanKind) => {
       /** Default value. Indicates that the span is used internally. */ SpanKind[
-        (SpanKind['INTERNAL'] = 0)
-      ] = 'INTERNAL';
+        (SpanKind["INTERNAL"] = 0)
+      ] = "INTERNAL";
       /**
        * Indicates that the span covers server-side handling of an RPC or other
        * remote request.
-       */ SpanKind[(SpanKind['SERVER'] = 1)] = 'SERVER';
+       */ SpanKind[(SpanKind["SERVER"] = 1)] = "SERVER";
       /**
        * Indicates that the span covers the client-side wrapper around an RPC or
        * other remote request.
-       */ SpanKind[(SpanKind['CLIENT'] = 2)] = 'CLIENT';
+       */ SpanKind[(SpanKind["CLIENT"] = 2)] = "CLIENT";
       /**
        * Indicates that the span describes producer sending a message to a
        * broker. Unlike client and server, there is no direct critical path latency
        * relationship between producer and consumer spans.
-       */ SpanKind[(SpanKind['PRODUCER'] = 3)] = 'PRODUCER';
+       */ SpanKind[(SpanKind["PRODUCER"] = 3)] = "PRODUCER";
       /**
        * Indicates that the span describes consumer receiving a message from a
        * broker. Unlike client and server, there is no direct critical path latency
        * relationship between producer and consumer spans.
-       */ SpanKind[(SpanKind['CONSUMER'] = 4)] = 'CONSUMER';
+       */ SpanKind[(SpanKind["CONSUMER"] = 4)] = "CONSUMER";
     })(SpanKind || (SpanKind = {}));
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/status.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/status.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     /*
      * Copyright The OpenTelemetry Authors
@@ -3915,35 +3915,35 @@ module.exports = [
      * An enumeration of status codes.
      *
      * @since 1.0.0
-     */ __turbopack_context__.s(['SpanStatusCode', () => SpanStatusCode]);
+     */ __turbopack_context__.s(["SpanStatusCode", () => SpanStatusCode]);
     var SpanStatusCode;
     ((SpanStatusCode) => {
       /**
        * The default status.
-       */ SpanStatusCode[(SpanStatusCode['UNSET'] = 0)] = 'UNSET';
+       */ SpanStatusCode[(SpanStatusCode["UNSET"] = 0)] = "UNSET";
       /**
        * The operation has been validated by an Application developer or
        * Operator to have completed successfully.
-       */ SpanStatusCode[(SpanStatusCode['OK'] = 1)] = 'OK';
+       */ SpanStatusCode[(SpanStatusCode["OK"] = 1)] = "OK";
       /**
        * The operation contains an error.
-       */ SpanStatusCode[(SpanStatusCode['ERROR'] = 2)] = 'ERROR';
+       */ SpanStatusCode[(SpanStatusCode["ERROR"] = 2)] = "ERROR";
     })(SpanStatusCode || (SpanStatusCode = {}));
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/tracestate-validators.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/tracestate-validators.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'validateKey',
+      "validateKey",
       () => validateKey,
-      'validateValue',
+      "validateValue",
       () => validateValue,
     ]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
-     */ const VALID_KEY_CHAR_RANGE = '[_0-9a-z-*/]';
+     */ const VALID_KEY_CHAR_RANGE = "[_0-9a-z-*/]";
     const VALID_KEY = `[a-z]${VALID_KEY_CHAR_RANGE}{0,255}`;
     const VALID_VENDOR_KEY = `[a-z0-9]${VALID_KEY_CHAR_RANGE}{0,240}@[a-z]${VALID_KEY_CHAR_RANGE}{0,13}`;
     const VALID_KEY_REGEX = new RegExp(`^(?:${VALID_KEY}|${VALID_VENDOR_KEY})$`);
@@ -3956,22 +3956,22 @@ module.exports = [
       return VALID_VALUE_BASE_REGEX.test(value) && !INVALID_VALUE_COMMA_EQUAL_REGEX.test(value);
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/tracestate-impl.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/tracestate-impl.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['TraceStateImpl', () => TraceStateImpl]);
+    __turbopack_context__.s(["TraceStateImpl", () => TraceStateImpl]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$internal$2f$tracestate$2d$validators$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/tracestate-validators.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/tracestate-validators.js [ssr] (ecmascript)",
       );
     const MAX_TRACE_STATE_ITEMS = 32;
     const MAX_TRACE_STATE_LEN = 512;
-    const LIST_MEMBERS_SEPARATOR = ',';
-    const LIST_MEMBER_KEY_VALUE_SPLITTER = '=';
+    const LIST_MEMBERS_SEPARATOR = ",";
+    const LIST_MEMBER_KEY_VALUE_SPLITTER = "=";
     class TraceStateImpl {
       constructor(rawTraceState) {
         this._internalState = new Map();
@@ -4016,11 +4016,11 @@ module.exports = [
               if (
                 (0,
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$internal$2f$tracestate$2d$validators$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-                  'validateKey'
+                  "validateKey"
                 ])(key) &&
                 (0,
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$internal$2f$tracestate$2d$validators$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-                  'validateValue'
+                  "validateValue"
                 ])(value)
               ) {
                 agg.set(key, value);
@@ -4050,273 +4050,273 @@ module.exports = [
       }
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/utils.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/utils.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
-    __turbopack_context__.s(['createTraceState', () => createTraceState]);
+    __turbopack_context__.s(["createTraceState", () => createTraceState]);
     /*
      * Copyright The OpenTelemetry Authors
      * SPDX-License-Identifier: Apache-2.0
      */ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$internal$2f$tracestate$2d$impl$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/tracestate-impl.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/tracestate-impl.js [ssr] (ecmascript)",
       );
     function createTraceState(rawTraceState) {
       return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$internal$2f$tracestate$2d$impl$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-        'TraceStateImpl'
+        "TraceStateImpl"
       ](rawTraceState);
     }
   },
-  '[project]/node_modules/@opentelemetry/api/build/esm/index.js [ssr] (ecmascript)',
+  "[project]/node_modules/@opentelemetry/api/build/esm/index.js [ssr] (ecmascript)",
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'DiagConsoleLogger',
+      "DiagConsoleLogger",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$consoleLogger$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'DiagConsoleLogger'
+          "DiagConsoleLogger"
         ],
-      'DiagLogLevel',
+      "DiagLogLevel",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'DiagLogLevel'
+          "DiagLogLevel"
         ],
-      'INVALID_SPANID',
+      "INVALID_SPANID",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$invalid$2d$span$2d$constants$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'INVALID_SPANID'
+          "INVALID_SPANID"
         ],
-      'INVALID_SPAN_CONTEXT',
+      "INVALID_SPAN_CONTEXT",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$invalid$2d$span$2d$constants$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'INVALID_SPAN_CONTEXT'
+          "INVALID_SPAN_CONTEXT"
         ],
-      'INVALID_TRACEID',
+      "INVALID_TRACEID",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$invalid$2d$span$2d$constants$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'INVALID_TRACEID'
+          "INVALID_TRACEID"
         ],
-      'ProxyTracer',
+      "ProxyTracer",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$ProxyTracer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'ProxyTracer'
+          "ProxyTracer"
         ],
-      'ProxyTracerProvider',
+      "ProxyTracerProvider",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$ProxyTracerProvider$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'ProxyTracerProvider'
+          "ProxyTracerProvider"
         ],
-      'ROOT_CONTEXT',
+      "ROOT_CONTEXT",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'ROOT_CONTEXT'
+          "ROOT_CONTEXT"
         ],
-      'SamplingDecision',
+      "SamplingDecision",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$SamplingResult$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'SamplingDecision'
+          "SamplingDecision"
         ],
-      'SpanKind',
+      "SpanKind",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$span_kind$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'SpanKind'
+          "SpanKind"
         ],
-      'SpanStatusCode',
+      "SpanStatusCode",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$status$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'SpanStatusCode'
+          "SpanStatusCode"
         ],
-      'TraceFlags',
+      "TraceFlags",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$trace_flags$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'TraceFlags'
+          "TraceFlags"
         ],
-      'ValueType',
+      "ValueType",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2f$Metric$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'ValueType'
+          "ValueType"
         ],
-      'baggageEntryMetadataFromString',
+      "baggageEntryMetadataFromString",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'baggageEntryMetadataFromString'
+          "baggageEntryMetadataFromString"
         ],
-      'context',
+      "context",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'context'
+          "context"
         ],
-      'createContextKey',
+      "createContextKey",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'createContextKey'
+          "createContextKey"
         ],
-      'createNoopMeter',
+      "createNoopMeter",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2f$NoopMeter$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'createNoopMeter'
+          "createNoopMeter"
         ],
-      'createTraceState',
+      "createTraceState",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$internal$2f$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'createTraceState'
+          "createTraceState"
         ],
-      'default',
+      "default",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$index$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__[
-          'default'
+          "default"
         ],
-      'defaultTextMapGetter',
+      "defaultTextMapGetter",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2f$TextMapPropagator$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'defaultTextMapGetter'
+          "defaultTextMapGetter"
         ],
-      'defaultTextMapSetter',
+      "defaultTextMapSetter",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2f$TextMapPropagator$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'defaultTextMapSetter'
+          "defaultTextMapSetter"
         ],
-      'diag',
+      "diag",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'diag'
+          "diag"
         ],
-      'isSpanContextValid',
+      "isSpanContextValid",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$spancontext$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'isSpanContextValid'
+          "isSpanContextValid"
         ],
-      'isValidSpanId',
+      "isValidSpanId",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$spancontext$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'isValidSpanId'
+          "isValidSpanId"
         ],
-      'isValidTraceId',
+      "isValidTraceId",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$spancontext$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'isValidTraceId'
+          "isValidTraceId"
         ],
-      'metrics',
+      "metrics",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'metrics'
+          "metrics"
         ],
-      'propagation',
+      "propagation",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'propagation'
+          "propagation"
         ],
-      'trace',
+      "trace",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__[
-          'trace'
+          "trace"
         ],
     ]);
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$index$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/index.js [ssr] (ecmascript) <locals>',
+        "[project]/node_modules/@opentelemetry/api/build/esm/index.js [ssr] (ecmascript) <locals>",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$baggage$2f$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/baggage/utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/baggage/utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2f$context$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/context/context.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$consoleLogger$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/diag/consoleLogger.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/diag/consoleLogger.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2f$types$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/diag/types.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/diag/types.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2f$NoopMeter$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeter.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/metrics/NoopMeter.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2f$Metric$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/metrics/Metric.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/metrics/Metric.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2f$TextMapPropagator$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/propagation/TextMapPropagator.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/propagation/TextMapPropagator.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$ProxyTracer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracer.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracer.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$ProxyTracerProvider$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracerProvider.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracerProvider.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$SamplingResult$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/SamplingResult.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/SamplingResult.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$span_kind$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/span_kind.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/span_kind.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$status$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/status.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/status.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$trace_flags$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/trace_flags.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/trace_flags.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$internal$2f$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/internal/utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$spancontext$2d$utils$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2f$invalid$2d$span$2d$constants$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$context$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/context-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/context-api.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$diag$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/diag-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/diag-api.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$metrics$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/metrics-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/metrics-api.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$propagation$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/propagation-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/propagation-api.js [ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$opentelemetry$2f$api$2f$build$2f$esm$2f$trace$2d$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/node_modules/@opentelemetry/api/build/esm/trace-api.js [ssr] (ecmascript)',
+        "[project]/node_modules/@opentelemetry/api/build/esm/trace-api.js [ssr] (ecmascript)",
       );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api/index.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api/index.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
-      'use strict';
+      "use strict";
       var e = {
         491: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ContextAPI = void 0;
           const n = r(223);
           const a = r(172);
           const o = r(930);
-          const i = 'context';
+          const i = "context";
           const c = new n.NoopContextManager();
           class ContextAPI {
             constructor() {}
@@ -4349,7 +4349,7 @@ module.exports = [
           t.ContextAPI = ContextAPI;
         },
         930: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.DiagAPI = void 0;
@@ -4357,12 +4357,12 @@ module.exports = [
           const a = r(912);
           const o = r(957);
           const i = r(172);
-          const c = 'diag';
+          const c = "diag";
           class DiagAPI {
             constructor() {
               function _logProxy(e) {
                 return (...t) => {
-                  const r = (0, i.getGlobal)('diag');
+                  const r = (0, i.getGlobal)("diag");
                   if (!r) return;
                   return r[e](...t);
                 };
@@ -4377,17 +4377,17 @@ module.exports = [
                 var n, c, s;
                 if (t === this) {
                   const t = new Error(
-                    'Cannot use diag as the logger for itself. Please use a DiagLogger implementation like ConsoleDiagLogger or a custom implementation',
+                    "Cannot use diag as the logger for itself. Please use a DiagLogger implementation like ConsoleDiagLogger or a custom implementation",
                   );
                   this.error((n = t.stack) !== null && n !== void 0 ? n : t.message);
                   return false;
                 }
-                if (typeof r === 'number') {
+                if (typeof r === "number") {
                   r = {
                     logLevel: r,
                   };
                 }
-                const u = (0, i.getGlobal)('diag');
+                const u = (0, i.getGlobal)("diag");
                 const l = (0, a.createLogLevelDiagLogger)(
                   (c = r.logLevel) !== null && c !== void 0 ? c : o.DiagLogLevel.INFO,
                   t,
@@ -4396,22 +4396,22 @@ module.exports = [
                   const e =
                     (s = new Error().stack) !== null && s !== void 0
                       ? s
-                      : '<failed to generate stacktrace>';
+                      : "<failed to generate stacktrace>";
                   u.warn(`Current logger will be overwritten from ${e}`);
                   l.warn(`Current logger will overwrite one already registered from ${e}`);
                 }
-                return (0, i.registerGlobal)('diag', l, this, true);
+                return (0, i.registerGlobal)("diag", l, this, true);
               };
               this.setLogger = setLogger;
               this.disable = () => {
                 (0, i.unregisterGlobal)(c, this);
               };
               this.createComponentLogger = (e) => new n.DiagComponentLogger(e);
-              this.verbose = _logProxy('verbose');
-              this.debug = _logProxy('debug');
-              this.info = _logProxy('info');
-              this.warn = _logProxy('warn');
-              this.error = _logProxy('error');
+              this.verbose = _logProxy("verbose");
+              this.debug = _logProxy("debug");
+              this.info = _logProxy("info");
+              this.warn = _logProxy("warn");
+              this.error = _logProxy("error");
             }
             static instance() {
               if (!DiagAPI._instance) {
@@ -4423,14 +4423,14 @@ module.exports = [
           t.DiagAPI = DiagAPI;
         },
         653: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.MetricsAPI = void 0;
           const n = r(660);
           const a = r(172);
           const o = r(930);
-          const i = 'metrics';
+          const i = "metrics";
           class MetricsAPI {
             constructor() {}
             static getInstance() {
@@ -4455,7 +4455,7 @@ module.exports = [
           t.MetricsAPI = MetricsAPI;
         },
         181: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.PropagationAPI = void 0;
@@ -4465,7 +4465,7 @@ module.exports = [
           const i = r(277);
           const c = r(369);
           const s = r(930);
-          const u = 'propagation';
+          const u = "propagation";
           const l = new a.NoopTextMapPropagator();
           class PropagationAPI {
             constructor() {
@@ -4503,7 +4503,7 @@ module.exports = [
           t.PropagationAPI = PropagationAPI;
         },
         997: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.TraceAPI = void 0;
@@ -4512,7 +4512,7 @@ module.exports = [
           const o = r(139);
           const i = r(607);
           const c = r(930);
-          const s = 'trace';
+          const s = "trace";
           class TraceAPI {
             constructor() {
               this._proxyTracerProvider = new a.ProxyTracerProvider();
@@ -4552,13 +4552,13 @@ module.exports = [
           t.TraceAPI = TraceAPI;
         },
         277: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.deleteBaggage = t.setBaggage = t.getActiveBaggage = t.getBaggage = void 0;
           const n = r(491);
           const a = r(780);
-          const o = (0, a.createContextKey)('OpenTelemetry Baggage Key');
+          const o = (0, a.createContextKey)("OpenTelemetry Baggage Key");
           function getBaggage(e) {
             return e.getValue(o) || undefined;
           }
@@ -4577,7 +4577,7 @@ module.exports = [
           t.deleteBaggage = deleteBaggage;
         },
         993: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.BaggageImpl = void 0;
@@ -4619,14 +4619,14 @@ module.exports = [
           t.BaggageImpl = BaggageImpl;
         },
         830: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.baggageEntryMetadataSymbol = void 0;
-          t.baggageEntryMetadataSymbol = Symbol('BaggageEntryMetadata');
+          t.baggageEntryMetadataSymbol = Symbol("BaggageEntryMetadata");
         },
         369: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.baggageEntryMetadataFromString = t.createBaggage = void 0;
@@ -4639,9 +4639,9 @@ module.exports = [
           }
           t.createBaggage = createBaggage;
           function baggageEntryMetadataFromString(e) {
-            if (typeof e !== 'string') {
+            if (typeof e !== "string") {
               i.error(`Cannot create baggage metadata from unknown type: ${typeof e}`);
-              e = '';
+              e = "";
             }
             return {
               __TYPE__: o.baggageEntryMetadataSymbol,
@@ -4653,7 +4653,7 @@ module.exports = [
           t.baggageEntryMetadataFromString = baggageEntryMetadataFromString;
         },
         67: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.context = void 0;
@@ -4661,7 +4661,7 @@ module.exports = [
           t.context = n.ContextAPI.getInstance();
         },
         223: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NoopContextManager = void 0;
@@ -4686,7 +4686,7 @@ module.exports = [
           t.NoopContextManager = NoopContextManager;
         },
         780: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ROOT_CONTEXT = t.createContextKey = void 0;
@@ -4713,7 +4713,7 @@ module.exports = [
           t.ROOT_CONTEXT = new BaseContext();
         },
         506: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.diag = void 0;
@@ -4721,34 +4721,34 @@ module.exports = [
           t.diag = n.DiagAPI.instance();
         },
         56: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.DiagComponentLogger = void 0;
           const n = r(172);
           class DiagComponentLogger {
             constructor(e) {
-              this._namespace = e.namespace || 'DiagComponentLogger';
+              this._namespace = e.namespace || "DiagComponentLogger";
             }
             debug(...e) {
-              return logProxy('debug', this._namespace, e);
+              return logProxy("debug", this._namespace, e);
             }
             error(...e) {
-              return logProxy('error', this._namespace, e);
+              return logProxy("error", this._namespace, e);
             }
             info(...e) {
-              return logProxy('info', this._namespace, e);
+              return logProxy("info", this._namespace, e);
             }
             warn(...e) {
-              return logProxy('warn', this._namespace, e);
+              return logProxy("warn", this._namespace, e);
             }
             verbose(...e) {
-              return logProxy('verbose', this._namespace, e);
+              return logProxy("verbose", this._namespace, e);
             }
           }
           t.DiagComponentLogger = DiagComponentLogger;
           function logProxy(e, t, r) {
-            const a = (0, n.getGlobal)('diag');
+            const a = (0, n.getGlobal)("diag");
             if (!a) {
               return;
             }
@@ -4757,30 +4757,30 @@ module.exports = [
           }
         },
         972: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.DiagConsoleLogger = void 0;
           const r = [
             {
-              n: 'error',
-              c: 'error',
+              n: "error",
+              c: "error",
             },
             {
-              n: 'warn',
-              c: 'warn',
+              n: "warn",
+              c: "warn",
             },
             {
-              n: 'info',
-              c: 'info',
+              n: "info",
+              c: "info",
             },
             {
-              n: 'debug',
-              c: 'debug',
+              n: "debug",
+              c: "debug",
             },
             {
-              n: 'verbose',
-              c: 'trace',
+              n: "verbose",
+              c: "trace",
             },
           ];
           class DiagConsoleLogger {
@@ -4789,10 +4789,10 @@ module.exports = [
                 return (...t) => {
                   if (console) {
                     let r = console[e];
-                    if (typeof r !== 'function') {
+                    if (typeof r !== "function") {
                       r = console.log;
                     }
-                    if (typeof r === 'function') {
+                    if (typeof r === "function") {
                       return r.apply(console, t);
                     }
                   }
@@ -4806,7 +4806,7 @@ module.exports = [
           t.DiagConsoleLogger = DiagConsoleLogger;
         },
         912: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.createLogLevelDiagLogger = void 0;
@@ -4820,46 +4820,46 @@ module.exports = [
             t = t || {};
             function _filterFunc(r, n) {
               const a = t[r];
-              if (typeof a === 'function' && e >= n) {
+              if (typeof a === "function" && e >= n) {
                 return a.bind(t);
               }
               return () => {};
             }
             return {
-              error: _filterFunc('error', n.DiagLogLevel.ERROR),
-              warn: _filterFunc('warn', n.DiagLogLevel.WARN),
-              info: _filterFunc('info', n.DiagLogLevel.INFO),
-              debug: _filterFunc('debug', n.DiagLogLevel.DEBUG),
-              verbose: _filterFunc('verbose', n.DiagLogLevel.VERBOSE),
+              error: _filterFunc("error", n.DiagLogLevel.ERROR),
+              warn: _filterFunc("warn", n.DiagLogLevel.WARN),
+              info: _filterFunc("info", n.DiagLogLevel.INFO),
+              debug: _filterFunc("debug", n.DiagLogLevel.DEBUG),
+              verbose: _filterFunc("verbose", n.DiagLogLevel.VERBOSE),
             };
           }
           t.createLogLevelDiagLogger = createLogLevelDiagLogger;
         },
         957: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.DiagLogLevel = void 0;
           var r;
           ((e) => {
-            e[(e['NONE'] = 0)] = 'NONE';
-            e[(e['ERROR'] = 30)] = 'ERROR';
-            e[(e['WARN'] = 50)] = 'WARN';
-            e[(e['INFO'] = 60)] = 'INFO';
-            e[(e['DEBUG'] = 70)] = 'DEBUG';
-            e[(e['VERBOSE'] = 80)] = 'VERBOSE';
-            e[(e['ALL'] = 9999)] = 'ALL';
+            e[(e["NONE"] = 0)] = "NONE";
+            e[(e["ERROR"] = 30)] = "ERROR";
+            e[(e["WARN"] = 50)] = "WARN";
+            e[(e["INFO"] = 60)] = "INFO";
+            e[(e["DEBUG"] = 70)] = "DEBUG";
+            e[(e["VERBOSE"] = 80)] = "VERBOSE";
+            e[(e["ALL"] = 9999)] = "ALL";
           })((r = t.DiagLogLevel || (t.DiagLogLevel = {})));
         },
         172: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.unregisterGlobal = t.getGlobal = t.registerGlobal = void 0;
           const n = r(200);
           const a = r(521);
           const o = r(130);
-          const i = a.VERSION.split('.')[0];
+          const i = a.VERSION.split(".")[0];
           const c = Symbol.for(`opentelemetry.js.api.${i}`);
           const s = n._globalThis;
           function registerGlobal(e, t, r, n = false) {
@@ -4908,7 +4908,7 @@ module.exports = [
           t.unregisterGlobal = unregisterGlobal;
         },
         130: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.isCompatible = t._makeCompatibilityCheck = void 0;
@@ -4979,7 +4979,7 @@ module.exports = [
           t.isCompatible = _makeCompatibilityCheck(n.VERSION);
         },
         886: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.metrics = void 0;
@@ -4987,18 +4987,18 @@ module.exports = [
           t.metrics = n.MetricsAPI.getInstance();
         },
         901: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ValueType = void 0;
           var r;
           ((e) => {
-            e[(e['INT'] = 0)] = 'INT';
-            e[(e['DOUBLE'] = 1)] = 'DOUBLE';
+            e[(e["INT"] = 0)] = "INT";
+            e[(e["DOUBLE"] = 1)] = "DOUBLE";
           })((r = t.ValueType || (t.ValueType = {})));
         },
         102: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.createNoopMeter =
@@ -5081,7 +5081,7 @@ module.exports = [
           t.createNoopMeter = createNoopMeter;
         },
         660: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NOOP_METER_PROVIDER = t.NoopMeterProvider = void 0;
@@ -5112,20 +5112,20 @@ module.exports = [
           var a =
             (this && this.__exportStar) ||
             ((e, t) => {
-              for (var r in e) if (r !== 'default' && !Object.hasOwn(t, r)) n(t, e, r);
+              for (var r in e) if (r !== "default" && !Object.hasOwn(t, r)) n(t, e, r);
             });
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           a(r(46), t);
         },
         651: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t._globalThis = void 0;
           t._globalThis =
-            typeof globalThis === 'object'
+            typeof globalThis === "object"
               ? globalThis
               : /*TURBOPACK member replacement*/ __turbopack_context__.g;
         },
@@ -5147,15 +5147,15 @@ module.exports = [
           var a =
             (this && this.__exportStar) ||
             ((e, t) => {
-              for (var r in e) if (r !== 'default' && !Object.hasOwn(t, r)) n(t, e, r);
+              for (var r in e) if (r !== "default" && !Object.hasOwn(t, r)) n(t, e, r);
             });
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           a(r(651), t);
         },
         939: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.propagation = void 0;
@@ -5163,7 +5163,7 @@ module.exports = [
           t.propagation = n.PropagationAPI.getInstance();
         },
         874: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NoopTextMapPropagator = void 0;
@@ -5179,7 +5179,7 @@ module.exports = [
           t.NoopTextMapPropagator = NoopTextMapPropagator;
         },
         194: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.defaultTextMapSetter = t.defaultTextMapGetter = void 0;
@@ -5207,7 +5207,7 @@ module.exports = [
           };
         },
         845: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.trace = void 0;
@@ -5215,7 +5215,7 @@ module.exports = [
           t.trace = n.TraceAPI.getInstance();
         },
         403: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NonRecordingSpan = void 0;
@@ -5251,7 +5251,7 @@ module.exports = [
           t.NonRecordingSpan = NonRecordingSpan;
         },
         614: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NoopTracer = void 0;
@@ -5298,15 +5298,15 @@ module.exports = [
           t.NoopTracer = NoopTracer;
           function isSpanContext(e) {
             return (
-              typeof e === 'object' &&
-              typeof e['spanId'] === 'string' &&
-              typeof e['traceId'] === 'string' &&
-              typeof e['traceFlags'] === 'number'
+              typeof e === "object" &&
+              typeof e["spanId"] === "string" &&
+              typeof e["traceId"] === "string" &&
+              typeof e["traceFlags"] === "number"
             );
           }
         },
         124: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.NoopTracerProvider = void 0;
@@ -5319,7 +5319,7 @@ module.exports = [
           t.NoopTracerProvider = NoopTracerProvider;
         },
         125: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ProxyTracer = void 0;
@@ -5354,7 +5354,7 @@ module.exports = [
           t.ProxyTracer = ProxyTracer;
         },
         846: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.ProxyTracerProvider = void 0;
@@ -5383,19 +5383,19 @@ module.exports = [
           t.ProxyTracerProvider = ProxyTracerProvider;
         },
         996: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.SamplingDecision = void 0;
           var r;
           ((e) => {
-            e[(e['NOT_RECORD'] = 0)] = 'NOT_RECORD';
-            e[(e['RECORD'] = 1)] = 'RECORD';
-            e[(e['RECORD_AND_SAMPLED'] = 2)] = 'RECORD_AND_SAMPLED';
+            e[(e["NOT_RECORD"] = 0)] = "NOT_RECORD";
+            e[(e["RECORD"] = 1)] = "RECORD";
+            e[(e["RECORD_AND_SAMPLED"] = 2)] = "RECORD_AND_SAMPLED";
           })((r = t.SamplingDecision || (t.SamplingDecision = {})));
         },
         607: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.getSpanContext =
@@ -5408,7 +5408,7 @@ module.exports = [
           const n = r(780);
           const a = r(403);
           const o = r(491);
-          const i = (0, n.createContextKey)('OpenTelemetry Context Key SPAN');
+          const i = (0, n.createContextKey)("OpenTelemetry Context Key SPAN");
           function getSpan(e) {
             return e.getValue(i) || undefined;
           }
@@ -5436,15 +5436,15 @@ module.exports = [
           t.getSpanContext = getSpanContext;
         },
         325: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.TraceStateImpl = void 0;
           const n = r(564);
           const a = 32;
           const o = 512;
-          const i = ',';
-          const c = '=';
+          const i = ",";
+          const c = "=";
           class TraceStateImpl {
             constructor(e) {
               this._internalState = new Map();
@@ -5510,11 +5510,11 @@ module.exports = [
           t.TraceStateImpl = TraceStateImpl;
         },
         564: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.validateValue = t.validateKey = void 0;
-          const r = '[_0-9a-z-*/]';
+          const r = "[_0-9a-z-*/]";
           const n = `[a-z]${r}{0,255}`;
           const a = `[a-z0-9]${r}{0,240}@[a-z]${r}{0,13}`;
           const o = new RegExp(`^(?:${n}|${a})$`);
@@ -5530,7 +5530,7 @@ module.exports = [
           t.validateValue = validateValue;
         },
         98: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.createTraceState = void 0;
@@ -5541,13 +5541,13 @@ module.exports = [
           t.createTraceState = createTraceState;
         },
         476: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.INVALID_SPAN_CONTEXT = t.INVALID_TRACEID = t.INVALID_SPANID = void 0;
           const n = r(475);
-          t.INVALID_SPANID = '0000000000000000';
-          t.INVALID_TRACEID = '00000000000000000000000000000000';
+          t.INVALID_SPANID = "0000000000000000";
+          t.INVALID_TRACEID = "00000000000000000000000000000000";
           t.INVALID_SPAN_CONTEXT = {
             traceId: t.INVALID_TRACEID,
             spanId: t.INVALID_SPANID,
@@ -5555,21 +5555,21 @@ module.exports = [
           };
         },
         357: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.SpanKind = void 0;
           var r;
           ((e) => {
-            e[(e['INTERNAL'] = 0)] = 'INTERNAL';
-            e[(e['SERVER'] = 1)] = 'SERVER';
-            e[(e['CLIENT'] = 2)] = 'CLIENT';
-            e[(e['PRODUCER'] = 3)] = 'PRODUCER';
-            e[(e['CONSUMER'] = 4)] = 'CONSUMER';
+            e[(e["INTERNAL"] = 0)] = "INTERNAL";
+            e[(e["SERVER"] = 1)] = "SERVER";
+            e[(e["CLIENT"] = 2)] = "CLIENT";
+            e[(e["PRODUCER"] = 3)] = "PRODUCER";
+            e[(e["CONSUMER"] = 4)] = "CONSUMER";
           })((r = t.SpanKind || (t.SpanKind = {})));
         },
         139: (e, t, r) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.wrapSpanContext = t.isSpanContextValid = t.isValidSpanId = t.isValidTraceId = void 0;
@@ -5595,34 +5595,34 @@ module.exports = [
           t.wrapSpanContext = wrapSpanContext;
         },
         847: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.SpanStatusCode = void 0;
           var r;
           ((e) => {
-            e[(e['UNSET'] = 0)] = 'UNSET';
-            e[(e['OK'] = 1)] = 'OK';
-            e[(e['ERROR'] = 2)] = 'ERROR';
+            e[(e["UNSET"] = 0)] = "UNSET";
+            e[(e["OK"] = 1)] = "OK";
+            e[(e["ERROR"] = 2)] = "ERROR";
           })((r = t.SpanStatusCode || (t.SpanStatusCode = {})));
         },
         475: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.TraceFlags = void 0;
           var r;
           ((e) => {
-            e[(e['NONE'] = 0)] = 'NONE';
-            e[(e['SAMPLED'] = 1)] = 'SAMPLED';
+            e[(e["NONE"] = 0)] = "NONE";
+            e[(e["SAMPLED"] = 1)] = "SAMPLED";
           })((r = t.TraceFlags || (t.TraceFlags = {})));
         },
         521: (e, t) => {
-          Object.defineProperty(t, '__esModule', {
+          Object.defineProperty(t, "__esModule", {
             value: true,
           });
           t.VERSION = void 0;
-          t.VERSION = '1.6.0';
+          t.VERSION = "1.6.0";
         },
       };
       var t = {};
@@ -5643,15 +5643,15 @@ module.exports = [
         }
         return a.exports;
       }
-      if (typeof __nccwpck_require__ !== 'undefined')
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api") +
+          "/";
       var r = {};
       (() => {
         var e = r;
-        Object.defineProperty(e, '__esModule', {
+        Object.defineProperty(e, "__esModule", {
           value: true,
         });
         e.trace =
@@ -5683,135 +5683,135 @@ module.exports = [
           e.baggageEntryMetadataFromString =
             void 0;
         var t = __nccwpck_require__(369);
-        Object.defineProperty(e, 'baggageEntryMetadataFromString', {
+        Object.defineProperty(e, "baggageEntryMetadataFromString", {
           enumerable: true,
           get: () => t.baggageEntryMetadataFromString,
         });
         var n = __nccwpck_require__(780);
-        Object.defineProperty(e, 'createContextKey', {
+        Object.defineProperty(e, "createContextKey", {
           enumerable: true,
           get: () => n.createContextKey,
         });
-        Object.defineProperty(e, 'ROOT_CONTEXT', {
+        Object.defineProperty(e, "ROOT_CONTEXT", {
           enumerable: true,
           get: () => n.ROOT_CONTEXT,
         });
         var a = __nccwpck_require__(972);
-        Object.defineProperty(e, 'DiagConsoleLogger', {
+        Object.defineProperty(e, "DiagConsoleLogger", {
           enumerable: true,
           get: () => a.DiagConsoleLogger,
         });
         var o = __nccwpck_require__(957);
-        Object.defineProperty(e, 'DiagLogLevel', {
+        Object.defineProperty(e, "DiagLogLevel", {
           enumerable: true,
           get: () => o.DiagLogLevel,
         });
         var i = __nccwpck_require__(102);
-        Object.defineProperty(e, 'createNoopMeter', {
+        Object.defineProperty(e, "createNoopMeter", {
           enumerable: true,
           get: () => i.createNoopMeter,
         });
         var c = __nccwpck_require__(901);
-        Object.defineProperty(e, 'ValueType', {
+        Object.defineProperty(e, "ValueType", {
           enumerable: true,
           get: () => c.ValueType,
         });
         var s = __nccwpck_require__(194);
-        Object.defineProperty(e, 'defaultTextMapGetter', {
+        Object.defineProperty(e, "defaultTextMapGetter", {
           enumerable: true,
           get: () => s.defaultTextMapGetter,
         });
-        Object.defineProperty(e, 'defaultTextMapSetter', {
+        Object.defineProperty(e, "defaultTextMapSetter", {
           enumerable: true,
           get: () => s.defaultTextMapSetter,
         });
         var u = __nccwpck_require__(125);
-        Object.defineProperty(e, 'ProxyTracer', {
+        Object.defineProperty(e, "ProxyTracer", {
           enumerable: true,
           get: () => u.ProxyTracer,
         });
         var l = __nccwpck_require__(846);
-        Object.defineProperty(e, 'ProxyTracerProvider', {
+        Object.defineProperty(e, "ProxyTracerProvider", {
           enumerable: true,
           get: () => l.ProxyTracerProvider,
         });
         var g = __nccwpck_require__(996);
-        Object.defineProperty(e, 'SamplingDecision', {
+        Object.defineProperty(e, "SamplingDecision", {
           enumerable: true,
           get: () => g.SamplingDecision,
         });
         var p = __nccwpck_require__(357);
-        Object.defineProperty(e, 'SpanKind', {
+        Object.defineProperty(e, "SpanKind", {
           enumerable: true,
           get: () => p.SpanKind,
         });
         var d = __nccwpck_require__(847);
-        Object.defineProperty(e, 'SpanStatusCode', {
+        Object.defineProperty(e, "SpanStatusCode", {
           enumerable: true,
           get: () => d.SpanStatusCode,
         });
         var _ = __nccwpck_require__(475);
-        Object.defineProperty(e, 'TraceFlags', {
+        Object.defineProperty(e, "TraceFlags", {
           enumerable: true,
           get: () => _.TraceFlags,
         });
         var f = __nccwpck_require__(98);
-        Object.defineProperty(e, 'createTraceState', {
+        Object.defineProperty(e, "createTraceState", {
           enumerable: true,
           get: () => f.createTraceState,
         });
         var b = __nccwpck_require__(139);
-        Object.defineProperty(e, 'isSpanContextValid', {
+        Object.defineProperty(e, "isSpanContextValid", {
           enumerable: true,
           get: () => b.isSpanContextValid,
         });
-        Object.defineProperty(e, 'isValidTraceId', {
+        Object.defineProperty(e, "isValidTraceId", {
           enumerable: true,
           get: () => b.isValidTraceId,
         });
-        Object.defineProperty(e, 'isValidSpanId', {
+        Object.defineProperty(e, "isValidSpanId", {
           enumerable: true,
           get: () => b.isValidSpanId,
         });
         var v = __nccwpck_require__(476);
-        Object.defineProperty(e, 'INVALID_SPANID', {
+        Object.defineProperty(e, "INVALID_SPANID", {
           enumerable: true,
           get: () => v.INVALID_SPANID,
         });
-        Object.defineProperty(e, 'INVALID_TRACEID', {
+        Object.defineProperty(e, "INVALID_TRACEID", {
           enumerable: true,
           get: () => v.INVALID_TRACEID,
         });
-        Object.defineProperty(e, 'INVALID_SPAN_CONTEXT', {
+        Object.defineProperty(e, "INVALID_SPAN_CONTEXT", {
           enumerable: true,
           get: () => v.INVALID_SPAN_CONTEXT,
         });
         const O = __nccwpck_require__(67);
-        Object.defineProperty(e, 'context', {
+        Object.defineProperty(e, "context", {
           enumerable: true,
           get: () => O.context,
         });
         const P = __nccwpck_require__(506);
-        Object.defineProperty(e, 'diag', {
+        Object.defineProperty(e, "diag", {
           enumerable: true,
           get: () => P.diag,
         });
         const N = __nccwpck_require__(886);
-        Object.defineProperty(e, 'metrics', {
+        Object.defineProperty(e, "metrics", {
           enumerable: true,
           get: () => N.metrics,
         });
         const S = __nccwpck_require__(939);
-        Object.defineProperty(e, 'propagation', {
+        Object.defineProperty(e, "propagation", {
           enumerable: true,
           get: () => S.propagation,
         });
         const C = __nccwpck_require__(845);
-        Object.defineProperty(e, 'trace', {
+        Object.defineProperty(e, "trace", {
           enumerable: true,
           get: () => C.trace,
         });
-        e['default'] = {
+        e["default"] = {
           context: O.context,
           diag: P.diag,
           metrics: N.metrics,
@@ -5822,11 +5822,11 @@ module.exports = [
       module.exports = r;
     })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/tracer.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/tracer.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -5852,10 +5852,10 @@ module.exports = [
       isBubbledError: () => isBubbledError,
     });
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/constants.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/constants.js [ssr] (ecmascript)",
     );
     const _isthenable = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-thenable.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-thenable.js [ssr] (ecmascript)",
     );
     const NEXT_OTEL_PERFORMANCE_PREFIX = process.env.NEXT_OTEL_PERFORMANCE_PREFIX;
     let api;
@@ -5867,16 +5867,16 @@ module.exports = [
     // the version that is bundled with Next.js.
     // the API is ~stable, so this should be fine
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
       try {
         api = __turbopack_context__.r(
-          '[project]/node_modules/@opentelemetry/api/build/esm/index.js [ssr] (ecmascript)',
+          "[project]/node_modules/@opentelemetry/api/build/esm/index.js [ssr] (ecmascript)",
         );
       } catch (err) {
         api = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api/index.js [ssr] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@opentelemetry/api/index.js [ssr] (ecmascript)",
         );
       }
     }
@@ -5887,16 +5887,16 @@ module.exports = [
       }
     }
     function isBubbledError(error) {
-      if (typeof error !== 'object' || error === null) return false;
+      if (typeof error !== "object" || error === null) return false;
       return error instanceof BubbledError;
     }
     const closeSpanWithError = (span, error) => {
       if (isBubbledError(error) && error.bubble) {
-        span.setAttribute('next.bubble', true);
+        span.setAttribute("next.bubble", true);
       } else {
         if (error) {
           span.recordException(error);
-          span.setAttribute('error.type', error.name);
+          span.setAttribute("error.type", error.name);
         }
         span.setStatus({
           code: SpanStatusCode.ERROR,
@@ -5907,7 +5907,7 @@ module.exports = [
     };
     /** we use this map to propagate attributes from nested spans to the top span */ const rootSpanAttributesStore =
       new Map();
-    const rootSpanIdKey = api.createContextKey('next.rootSpanId');
+    const rootSpanIdKey = api.createContextKey("next.rootSpanId");
     let lastSpanId = 0;
     const getSpanId = () => lastSpanId++;
     const clientTraceDataSetter = {
@@ -5924,7 +5924,7 @@ module.exports = [
        * Since wrap / trace can be defined in any place prior to actual trace subscriber initialization,
        * This should be lazily evaluated.
        */ getTracerInstance() {
-        return trace.getTracer('next.js', '0.0.1');
+        return trace.getTracer("next.js", "0.0.1");
       }
       getContext() {
         return context;
@@ -5961,7 +5961,7 @@ module.exports = [
         const [type, fnOrOptions, fnOrEmpty] = args;
         // coerce options form overload
         const { fn, options } =
-          typeof fnOrOptions === 'function'
+          typeof fnOrOptions === "function"
             ? {
                 fn: fnOrOptions,
                 options: {},
@@ -5975,7 +5975,7 @@ module.exports = [
         const spanName = options.spanName ?? type;
         if (
           (!_constants.NextVanillaSpanAllowlist.has(type) &&
-            process.env.NEXT_OTEL_VERBOSE !== '1') ||
+            process.env.NEXT_OTEL_VERBOSE !== "1") ||
           options.hideSpan
         ) {
           return fn();
@@ -5993,12 +5993,12 @@ module.exports = [
         // of telemetry when using a custom server
         const existingRootSpanId = spanContext.getValue(rootSpanIdKey);
         const isRootSpan =
-          typeof existingRootSpanId !== 'number' ||
+          typeof existingRootSpanId !== "number" ||
           !rootSpanAttributesStore.has(existingRootSpanId);
         const spanId = getSpanId();
         options.attributes = {
-          'next.span_name': spanName,
-          'next.span_type': type,
+          "next.span_name": spanName,
+          "next.span_type": type,
           ...options.attributes,
         };
         return context.with(spanContext.setValue(rootSpanIdKey, spanId), () =>
@@ -6006,7 +6006,7 @@ module.exports = [
             let startTime;
             if (NEXT_OTEL_PERFORMANCE_PREFIX && type && _constants.LogSpanAllowList.has(type)) {
               startTime =
-                'performance' in globalThis && 'measure' in performance
+                "performance" in globalThis && "measure" in performance
                   ? globalThis.performance.now()
                   : undefined;
             }
@@ -6017,7 +6017,7 @@ module.exports = [
               rootSpanAttributesStore.delete(spanId);
               if (startTime) {
                 performance.measure(
-                  `${NEXT_OTEL_PERFORMANCE_PREFIX}:next-${(type.split('.').pop() || '').replace(/[A-Z]/g, (match) => '-' + match.toLowerCase())}`,
+                  `${NEXT_OTEL_PERFORMANCE_PREFIX}:next-${(type.split(".").pop() || "").replace(/[A-Z]/g, (match) => "-" + match.toLowerCase())}`,
                   {
                     start: startTime,
                     end: performance.now(),
@@ -6075,18 +6075,18 @@ module.exports = [
         const [name, options, fn] = args.length === 3 ? args : [args[0], {}, args[1]];
         if (
           !_constants.NextVanillaSpanAllowlist.has(name) &&
-          process.env.NEXT_OTEL_VERBOSE !== '1'
+          process.env.NEXT_OTEL_VERBOSE !== "1"
         ) {
           return fn;
         }
         return function () {
           let optionsObj = options;
-          if (typeof optionsObj === 'function' && typeof fn === 'function') {
+          if (typeof optionsObj === "function" && typeof fn === "function") {
             optionsObj = optionsObj.apply(this, arguments);
           }
           const lastArgId = arguments.length - 1;
           const cb = arguments[lastArgId];
-          if (typeof cb === 'function') {
+          if (typeof cb === "function") {
             const scopeBoundCb = tracer.getContext().bind(context.active(), cb);
             return tracer.trace(name, optionsObj, (_span, done) => {
               arguments[lastArgId] = function (err) {
@@ -6132,14 +6132,14 @@ module.exports = [
       return () => tracer;
     })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/utils.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/utils.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getTracedMetadata', {
+    Object.defineProperty(exports, "getTracedMetadata", {
       enumerable: true,
       get: () => getTracedMetadata,
     });
@@ -6148,9 +6148,9 @@ module.exports = [
       return traceData.filter(({ key }) => clientTraceMetadata.includes(key));
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/pretty-bytes.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/pretty-bytes.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /*
 MIT License
@@ -6162,14 +6162,14 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/ Object.defineProperty(exports, '__esModule', {
+*/ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => prettyBytes,
     });
-    const UNITS = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const UNITS = ["B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     /*
 Formats the given number using `Number#toLocaleString`.
 - If locale is a string, the value is expected to be a locale-key (for example: `de`).
@@ -6177,7 +6177,7 @@ Formats the given number using `Number#toLocaleString`.
 - If no value for locale is specified, the number is returned unmodified.
 */ const toLocaleString = (number, locale) => {
       let result = number;
-      if (typeof locale === 'string') {
+      if (typeof locale === "string") {
         result = number.toLocaleString(locale);
       } else if (locale === true) {
         result = number.toLocaleString();
@@ -6188,9 +6188,9 @@ Formats the given number using `Number#toLocaleString`.
       if (!Number.isFinite(number)) {
         throw Object.defineProperty(
           new TypeError(`Expected a finite number, got ${typeof number}: ${number}`),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E572',
+            value: "E572",
             enumerable: false,
             configurable: true,
           },
@@ -6198,30 +6198,30 @@ Formats the given number using `Number#toLocaleString`.
       }
       options = Object.assign({}, options);
       if (options.signed && number === 0) {
-        return ' 0 B';
+        return " 0 B";
       }
       const isNegative = number < 0;
-      const prefix = isNegative ? '-' : options.signed ? '+' : '';
+      const prefix = isNegative ? "-" : options.signed ? "+" : "";
       if (isNegative) {
         number = -number;
       }
       if (number < 1) {
         const numberString = toLocaleString(number, options.locale);
-        return prefix + numberString + ' B';
+        return prefix + numberString + " B";
       }
       const exponent = Math.min(Math.floor(Math.log10(number) / 3), UNITS.length - 1);
       number = Number((number / 1000 ** exponent).toPrecision(3));
       const numberString = toLocaleString(number, options.locale);
       const unit = UNITS[exponent];
-      return prefix + numberString + ' ' + unit;
+      return prefix + numberString + " " + unit;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/pages/_document.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/pages/_document.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /// <reference types="webpack/module.d.ts" />
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -6250,36 +6250,36 @@ Formats the given number using `Number#toLocaleString`.
        */ default: () => Document,
     });
     const _jsxruntime = __turbopack_context__.r(
-      '[externals]/react/jsx-runtime [external] (react/jsx-runtime, cjs)',
+      "[externals]/react/jsx-runtime [external] (react/jsx-runtime, cjs)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard(
-      __turbopack_context__.r('[externals]/react [external] (react, cjs)'),
+      __turbopack_context__.r("[externals]/react [external] (react, cjs)"),
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/constants.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/constants.js [ssr] (ecmascript)",
     );
     const _getpagefiles = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/get-page-files.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/get-page-files.js [ssr] (ecmascript)",
     );
     const _htmlescape = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/htmlescape.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/htmlescape.js [ssr] (ecmascript)",
     );
     const _iserror = /*#__PURE__*/ _interop_require_default(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [ssr] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [ssr] (ecmascript)",
       ),
     );
     const _htmlcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/pages/vendored/contexts/html-context.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/pages/vendored/contexts/html-context.js [ssr] (ecmascript)",
     );
     const _encodeuripath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/encode-uri-path.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/encode-uri-path.js [ssr] (ecmascript)",
     );
     const _tracer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/tracer.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/tracer.js [ssr] (ecmascript)",
     );
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/utils.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/trace/utils.js [ssr] (ecmascript)",
     );
     function _interop_require_default(obj) {
       return obj && obj.__esModule
@@ -6289,7 +6289,7 @@ Formats the given number using `Number#toLocaleString`.
           };
     }
     function _getRequireWildcardCache(nodeInterop) {
-      if (typeof WeakMap !== 'function') return null;
+      if (typeof WeakMap !== "function") return null;
       var cacheBabelInterop = new WeakMap();
       var cacheNodeInterop = new WeakMap();
       return (_getRequireWildcardCache = (nodeInterop) =>
@@ -6299,7 +6299,7 @@ Formats the given number using `Number#toLocaleString`.
       if (!nodeInterop && obj && obj.__esModule) {
         return obj;
       }
-      if (obj === null || (typeof obj !== 'object' && typeof obj !== 'function')) {
+      if (obj === null || (typeof obj !== "object" && typeof obj !== "function")) {
         return {
           default: obj,
         };
@@ -6313,7 +6313,7 @@ Formats the given number using `Number#toLocaleString`.
       };
       var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
       for (var key in obj) {
-        if (key !== 'default' && Object.hasOwn(obj, key)) {
+        if (key !== "default" && Object.hasOwn(obj, key)) {
           var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
           if (desc && (desc.get || desc.set)) {
             Object.defineProperty(newObj, key, desc);
@@ -6331,7 +6331,7 @@ Formats the given number using `Number#toLocaleString`.
     /** Set of pages that have triggered a large data warning on production mode. */ const largePageDataWarnings =
       new Set();
     function getDocumentFiles(buildManifest, pathname) {
-      const sharedFiles = (0, _getpagefiles.getPageFiles)(buildManifest, '/_app');
+      const sharedFiles = (0, _getpagefiles.getPageFiles)(buildManifest, "/_app");
       const pageFiles = (0, _getpagefiles.getPageFiles)(buildManifest, pathname);
       return {
         sharedFiles,
@@ -6345,10 +6345,10 @@ Formats the given number using `Number#toLocaleString`.
       const { assetPrefix, buildManifest, assetQueryString, disableOptimizedLoading, crossOrigin } =
         context;
       return buildManifest.polyfillFiles
-        .filter((polyfill) => polyfill.endsWith('.js') && !polyfill.endsWith('.module.js'))
+        .filter((polyfill) => polyfill.endsWith(".js") && !polyfill.endsWith(".module.js"))
         .map((polyfill) =>
           /*#__PURE__*/ (0, _jsxruntime.jsx)(
-            'script',
+            "script",
             {
               defer: !disableOptimizedLoading,
               nonce: props.nonce,
@@ -6373,9 +6373,9 @@ Formats the given number using `Number#toLocaleString`.
         crossOrigin,
       } = context;
       return dynamicImports.map((file) => {
-        if (!file.endsWith('.js') || files.allFiles.includes(file)) return null;
+        if (!file.endsWith(".js") || files.allFiles.includes(file)) return null;
         return /*#__PURE__*/ (0, _jsxruntime.jsx)(
-          'script',
+          "script",
           {
             async: !isDevelopment && disableOptimizedLoading,
             defer: !disableOptimizedLoading,
@@ -6398,17 +6398,17 @@ Formats the given number using `Number#toLocaleString`.
         disableOptimizedLoading,
         crossOrigin,
       } = context;
-      const normalScripts = files.allFiles.filter((file) => file.endsWith('.js'));
+      const normalScripts = files.allFiles.filter((file) => file.endsWith(".js"));
       const lowPriorityScripts =
         (_buildManifest_lowPriorityFiles = buildManifest.lowPriorityFiles) == null
           ? void 0
-          : _buildManifest_lowPriorityFiles.filter((file) => file.endsWith('.js'));
+          : _buildManifest_lowPriorityFiles.filter((file) => file.endsWith(".js"));
       return [...normalScripts, ...lowPriorityScripts].map((file) => {
         // static/chunks/51e975e7b637a580.js should use the immutable id, while
         // static/Yj152X97rfGgF7NPcJEZs/_ssgManifest.js should use the deployment id
-        const query = file.startsWith('static/chunks') ? assetQueryString : mutableAssetQueryString;
+        const query = file.startsWith("static/chunks") ? assetQueryString : mutableAssetQueryString;
         return /*#__PURE__*/ (0, _jsxruntime.jsx)(
-          'script',
+          "script",
           {
             src: `${assetPrefix}/_next/${(0, _encodeuripath.encodeURIPath)(file)}${query}`,
             nonce: props.nonce,
@@ -6423,10 +6423,10 @@ Formats the given number using `Number#toLocaleString`.
     function getPreNextWorkerScripts(context, props) {
       const { assetPrefix, scriptLoader, crossOrigin, nextScriptWorkers } = context;
       // disable `nextScriptWorkers` in edge runtime
-      if (!nextScriptWorkers || ('TURBOPACK compile-time value', 'nodejs') === 'edge') return null;
+      if (!nextScriptWorkers || ("TURBOPACK compile-time value", "nodejs") === "edge") return null;
       try {
         // @ts-expect-error: Prevent webpack from processing this require
-        const { partytownSnippet } = __non_webpack_require__('@builder.io/partytown/integration');
+        const { partytownSnippet } = __non_webpack_require__("@builder.io/partytown/integration");
         const children = Array.isArray(props.children) ? props.children : [props.children];
         // Check to see if the user has defined their own Partytown configuration
         const userDefinedConfig = children.find((child) => {
@@ -6441,14 +6441,14 @@ Formats the given number using `Number#toLocaleString`.
                     null
                   ? void 0
                   : _child_props_dangerouslySetInnerHTML.__html.length) &&
-            'data-partytown-config' in child.props
+            "data-partytown-config" in child.props
           );
         });
         return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
           children: [
             !userDefinedConfig &&
-              /*#__PURE__*/ (0, _jsxruntime.jsx)('script', {
-                'data-partytown-config': '',
+              /*#__PURE__*/ (0, _jsxruntime.jsx)("script", {
+                "data-partytown-config": "",
                 dangerouslySetInnerHTML: {
                   __html: `
             partytown = {
@@ -6457,8 +6457,8 @@ Formats the given number using `Number#toLocaleString`.
           `,
                 },
               }),
-            /*#__PURE__*/ (0, _jsxruntime.jsx)('script', {
-              'data-partytown': '',
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("script", {
+              "data-partytown": "",
               dangerouslySetInnerHTML: {
                 __html: partytownSnippet(),
               },
@@ -6484,39 +6484,39 @@ Formats the given number using `Number#toLocaleString`.
                 // Embed inline script if provided with children
                 srcProps.dangerouslySetInnerHTML = {
                   __html:
-                    typeof scriptChildren === 'string'
+                    typeof scriptChildren === "string"
                       ? scriptChildren
                       : Array.isArray(scriptChildren)
-                        ? scriptChildren.join('')
-                        : '',
+                        ? scriptChildren.join("")
+                        : "",
                 };
               } else {
                 throw Object.defineProperty(
                   new Error(
-                    'Invalid usage of next/script. Did you forget to include a src attribute or an inline script? https://nextjs.org/docs/messages/invalid-script',
+                    "Invalid usage of next/script. Did you forget to include a src attribute or an inline script? https://nextjs.org/docs/messages/invalid-script",
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E82',
+                    value: "E82",
                     enumerable: false,
                     configurable: true,
                   },
                 );
               }
-              return /*#__PURE__*/ (0, _react.createElement)('script', {
+              return /*#__PURE__*/ (0, _react.createElement)("script", {
                 ...srcProps,
                 ...scriptProps,
-                type: 'text/partytown',
+                type: "text/partytown",
                 key: src || index,
                 nonce: props.nonce,
-                'data-nscript': 'worker',
+                "data-nscript": "worker",
                 crossOrigin: props.crossOrigin || crossOrigin,
               });
             }),
           ],
         });
       } catch (err) {
-        if ((0, _iserror.default)(err) && err.code !== 'MODULE_NOT_FOUND') {
+        if ((0, _iserror.default)(err) && err.code !== "MODULE_NOT_FOUND") {
           console.warn(`Warning: ${err.message}`);
         }
         return null;
@@ -6529,12 +6529,12 @@ Formats the given number using `Number#toLocaleString`.
         .filter((script) => script.src)
         .map((file, index) => {
           const { strategy, ...scriptProps } = file;
-          return /*#__PURE__*/ (0, _react.createElement)('script', {
+          return /*#__PURE__*/ (0, _react.createElement)("script", {
             ...scriptProps,
             key: scriptProps.src || index,
             defer: scriptProps.defer ?? !disableOptimizedLoading,
             nonce: scriptProps.nonce || props.nonce,
-            'data-nscript': 'beforeInteractive',
+            "data-nscript": "beforeInteractive",
             crossOrigin: props.crossOrigin || crossOrigin,
           });
         });
@@ -6551,8 +6551,8 @@ Formats the given number using `Number#toLocaleString`.
     function getNextFontLinkTags(
       nextFontManifest,
       dangerousAsPath,
-      assetPrefix = '',
-      assetQueryString = '',
+      assetPrefix = "",
+      assetQueryString = "",
     ) {
       if (!nextFontManifest) {
         return {
@@ -6560,7 +6560,7 @@ Formats the given number using `Number#toLocaleString`.
           preload: null,
         };
       }
-      const appFontsEntry = nextFontManifest.pages['/_app'];
+      const appFontsEntry = nextFontManifest.pages["/_app"];
       const pageFontsEntry = nextFontManifest.pages[dangerousAsPath];
       const preloadedFontFiles = Array.from(
         new Set([...(appFontsEntry ?? []), ...(pageFontsEntry ?? [])]),
@@ -6572,25 +6572,25 @@ Formats the given number using `Number#toLocaleString`.
       );
       return {
         preconnect: preconnectToSelf
-          ? /*#__PURE__*/ (0, _jsxruntime.jsx)('link', {
-              'data-next-font': nextFontManifest.pagesUsingSizeAdjust ? 'size-adjust' : '',
-              rel: 'preconnect',
-              href: '/',
-              crossOrigin: 'anonymous',
+          ? /*#__PURE__*/ (0, _jsxruntime.jsx)("link", {
+              "data-next-font": nextFontManifest.pagesUsingSizeAdjust ? "size-adjust" : "",
+              rel: "preconnect",
+              href: "/",
+              crossOrigin: "anonymous",
             })
           : null,
         preload: preloadedFontFiles
           ? preloadedFontFiles.map((fontFile) => {
               const ext = /\.(woff|woff2|eot|ttf|otf)$/.exec(fontFile)[1];
               return /*#__PURE__*/ (0, _jsxruntime.jsx)(
-                'link',
+                "link",
                 {
-                  rel: 'preload',
+                  rel: "preload",
                   href: `${assetPrefix}/_next/${(0, _encodeuripath.encodeURIPath)(fontFile)}${assetQueryString}`,
-                  as: 'font',
+                  as: "font",
                   type: `font/${ext}`,
-                  crossOrigin: 'anonymous',
-                  'data-next-font': fontFile.includes('-s') ? 'size-adjust' : '',
+                  crossOrigin: "anonymous",
+                  "data-next-font": fontFile.includes("-s") ? "size-adjust" : "",
                 },
                 fontFile,
               );
@@ -6609,13 +6609,13 @@ Formats the given number using `Number#toLocaleString`.
           crossOrigin,
           optimizeCss,
         } = this.context;
-        const cssFiles = files.allFiles.filter((f) => f.endsWith('.css'));
+        const cssFiles = files.allFiles.filter((f) => f.endsWith(".css"));
         const sharedFiles = new Set(files.sharedFiles);
         // Unmanaged files are CSS files that will be handled directly by the
         // webpack runtime (`mini-css-extract-plugin`).
         let unmanagedFiles = new Set([]);
         let localDynamicCssFiles = Array.from(
-          new Set(dynamicImports.filter((file) => file.endsWith('.css'))),
+          new Set(dynamicImports.filter((file) => file.endsWith(".css"))),
         );
         if (localDynamicCssFiles.length) {
           const existing = new Set(cssFiles);
@@ -6633,12 +6633,12 @@ Formats the given number using `Number#toLocaleString`.
           if (!optimizeCss) {
             cssLinkElements.push(
               /*#__PURE__*/ (0, _jsxruntime.jsx)(
-                'link',
+                "link",
                 {
                   nonce: this.props.nonce,
-                  rel: 'preload',
+                  rel: "preload",
                   href: `${assetPrefix}/_next/${(0, _encodeuripath.encodeURIPath)(file)}${assetQueryString}`,
-                  as: 'style',
+                  as: "style",
                   crossOrigin: this.props.crossOrigin || crossOrigin,
                 },
                 `${file}-preload`,
@@ -6647,15 +6647,15 @@ Formats the given number using `Number#toLocaleString`.
           }
           cssLinkElements.push(
             /*#__PURE__*/ (0, _jsxruntime.jsx)(
-              'link',
+              "link",
               {
                 nonce: this.props.nonce,
-                rel: 'stylesheet',
+                rel: "stylesheet",
                 href: `${assetPrefix}/_next/${(0, _encodeuripath.encodeURIPath)(file)}${assetQueryString}`,
                 crossOrigin: this.props.crossOrigin || crossOrigin,
-                'data-n-g': isUnmanagedFile ? undefined : isSharedFile ? '' : undefined,
-                'data-n-p':
-                  isSharedFile || isUnmanagedFile || isFileInDynamicCssManifest ? undefined : '',
+                "data-n-g": isUnmanagedFile ? undefined : isSharedFile ? "" : undefined,
+                "data-n-p":
+                  isSharedFile || isUnmanagedFile || isFileInDynamicCssManifest ? undefined : "",
               },
               file,
             ),
@@ -6667,15 +6667,15 @@ Formats the given number using `Number#toLocaleString`.
         const { dynamicImports, assetPrefix, assetQueryString, crossOrigin } = this.context;
         return dynamicImports
           .map((file) => {
-            if (!file.endsWith('.js')) {
+            if (!file.endsWith(".js")) {
               return null;
             }
             return /*#__PURE__*/ (0, _jsxruntime.jsx)(
-              'link',
+              "link",
               {
-                rel: 'preload',
+                rel: "preload",
                 href: `${assetPrefix}/_next/${(0, _encodeuripath.encodeURIPath)(file)}${assetQueryString}`,
-                as: 'script',
+                as: "script",
                 nonce: this.props.nonce,
                 crossOrigin: this.props.crossOrigin || crossOrigin,
               },
@@ -6687,17 +6687,17 @@ Formats the given number using `Number#toLocaleString`.
       getPreloadMainLinks(files) {
         const { assetPrefix, assetQueryString, scriptLoader, crossOrigin } = this.context;
         const preloadFiles = files.allFiles.filter((file) => {
-          return file.endsWith('.js');
+          return file.endsWith(".js");
         });
         return [
           ...(scriptLoader.beforeInteractive || []).map((file) =>
             /*#__PURE__*/ (0, _jsxruntime.jsx)(
-              'link',
+              "link",
               {
                 nonce: this.props.nonce,
-                rel: 'preload',
+                rel: "preload",
                 href: file.src,
-                as: 'script',
+                as: "script",
                 crossOrigin: this.props.crossOrigin || crossOrigin,
               },
               file.src,
@@ -6705,12 +6705,12 @@ Formats the given number using `Number#toLocaleString`.
           ),
           ...preloadFiles.map((file) =>
             /*#__PURE__*/ (0, _jsxruntime.jsx)(
-              'link',
+              "link",
               {
                 nonce: this.props.nonce,
-                rel: 'preload',
+                rel: "preload",
                 href: `${assetPrefix}/_next/${(0, _encodeuripath.encodeURIPath)(file)}${assetQueryString}`,
-                as: 'script',
+                as: "script",
                 crossOrigin: this.props.crossOrigin || crossOrigin,
               },
               file,
@@ -6725,26 +6725,26 @@ Formats the given number using `Number#toLocaleString`.
           .filter((script) => !script.src && (script.dangerouslySetInnerHTML || script.children))
           .map((file, index) => {
             const { strategy, children, dangerouslySetInnerHTML, src, ...scriptProps } = file;
-            let html = '';
+            let html = "";
             if (dangerouslySetInnerHTML && dangerouslySetInnerHTML.__html) {
               html = dangerouslySetInnerHTML.__html;
             } else if (children) {
               html =
-                typeof children === 'string'
+                typeof children === "string"
                   ? children
                   : Array.isArray(children)
-                    ? children.join('')
-                    : '';
+                    ? children.join("")
+                    : "";
             }
-            return /*#__PURE__*/ (0, _react.createElement)('script', {
+            return /*#__PURE__*/ (0, _react.createElement)("script", {
               ...scriptProps,
               dangerouslySetInnerHTML: {
                 __html: html,
               },
               key: scriptProps.id || index,
               nonce: nonce,
-              'data-nscript': 'beforeInteractive',
-              crossOrigin: crossOrigin || ('TURBOPACK compile-time value', void 0),
+              "data-nscript": "beforeInteractive",
+              crossOrigin: crossOrigin || ("TURBOPACK compile-time value", void 0),
             });
           });
       }
@@ -6784,16 +6784,16 @@ Formats the given number using `Number#toLocaleString`.
           head.forEach((child) => {
             if (
               child &&
-              child.type === 'link' &&
-              child.props['rel'] === 'preload' &&
-              child.props['as'] === 'style'
+              child.type === "link" &&
+              child.props["rel"] === "preload" &&
+              child.props["as"] === "style"
             ) {
               cssPreloads.push(child);
             } else {
               if (child) {
                 otherHeadElements.push(
                   /*#__PURE__*/ _react.default.cloneElement(child, {
-                    'data-next-head': '',
+                    "data-next-head": "",
                   }),
                 );
               }
@@ -6803,7 +6803,7 @@ Formats the given number using `Number#toLocaleString`.
         }
         let children = _react.default.Children.toArray(this.props.children).filter(Boolean);
         // show a warning if Head contains <title> (only in development)
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           children = _react.default.Children.map(children, (child) => {
             var _child_props;
             const isReactHelmet =
@@ -6811,20 +6811,20 @@ Formats the given number using `Number#toLocaleString`.
                 ? void 0
                 : (_child_props = child.props) == null
                   ? void 0
-                  : _child_props['data-react-helmet'];
+                  : _child_props["data-react-helmet"];
             if (!isReactHelmet) {
               var _child_props1;
-              if ((child == null ? void 0 : child.type) === 'title') {
+              if ((child == null ? void 0 : child.type) === "title") {
                 console.warn(
                   "Warning: <title> should not be used in _document.js's <Head>. https://nextjs.org/docs/messages/no-document-title",
                 );
               } else if (
-                (child == null ? void 0 : child.type) === 'meta' &&
+                (child == null ? void 0 : child.type) === "meta" &&
                 (child == null
                   ? void 0
                   : (_child_props1 = child.props) == null
                     ? void 0
-                    : _child_props1.name) === 'viewport'
+                    : _child_props1.name) === "viewport"
               ) {
                 console.warn(
                   "Warning: viewport meta tags should not be used in _document.js's <Head>. https://nextjs.org/docs/messages/no-document-viewport-meta",
@@ -6836,7 +6836,7 @@ Formats the given number using `Number#toLocaleString`.
           });
           if (this.props.crossOrigin)
             console.warn(
-              'Warning: `Head` attribute `crossOrigin` is deprecated. https://nextjs.org/docs/messages/doc-crossorigin-deprecated',
+              "Warning: `Head` attribute `crossOrigin` is deprecated. https://nextjs.org/docs/messages/doc-crossorigin-deprecated",
             );
         }
         const files = getDocumentFiles(this.context.buildManifest, this.context.__NEXT_DATA__.page);
@@ -6852,7 +6852,7 @@ Formats the given number using `Number#toLocaleString`.
         );
         const traceMetaTags = (tracingMetadata || []).map(({ key, value }, index) =>
           /*#__PURE__*/ (0, _jsxruntime.jsx)(
-            'meta',
+            "meta",
             {
               name: key,
               content: value,
@@ -6860,21 +6860,21 @@ Formats the given number using `Number#toLocaleString`.
             `next-trace-data-${index}`,
           ),
         );
-        return /*#__PURE__*/ (0, _jsxruntime.jsxs)('head', {
+        return /*#__PURE__*/ (0, _jsxruntime.jsxs)("head", {
           ...getHeadHTMLProps(this.props),
           children: [
             this.context.isDevelopment &&
               /*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
                 children: [
-                  /*#__PURE__*/ (0, _jsxruntime.jsx)('style', {
-                    'data-next-hide-fouc': true,
+                  /*#__PURE__*/ (0, _jsxruntime.jsx)("style", {
+                    "data-next-hide-fouc": true,
                     dangerouslySetInnerHTML: {
                       __html: `body{display:none}`,
                     },
                   }),
-                  /*#__PURE__*/ (0, _jsxruntime.jsx)('noscript', {
-                    'data-next-hide-fouc': true,
-                    children: /*#__PURE__*/ (0, _jsxruntime.jsx)('style', {
+                  /*#__PURE__*/ (0, _jsxruntime.jsx)("noscript", {
+                    "data-next-hide-fouc": true,
+                    children: /*#__PURE__*/ (0, _jsxruntime.jsx)("style", {
                       dangerouslySetInnerHTML: {
                         __html: `body{display:block}`,
                       },
@@ -6889,8 +6889,8 @@ Formats the given number using `Number#toLocaleString`.
             this.getBeforeInteractiveInlineScripts(),
             !optimizeCss && this.getCssLinks(files),
             !optimizeCss &&
-              /*#__PURE__*/ (0, _jsxruntime.jsx)('noscript', {
-                'data-n-css': this.props.nonce ?? '',
+              /*#__PURE__*/ (0, _jsxruntime.jsx)("noscript", {
+                "data-n-css": this.props.nonce ?? "",
               }),
             !disableRuntimeJS && !disableJsPreload && this.getPreloadDynamicChunks(),
             !disableRuntimeJS && !disableJsPreload && this.getPreloadMainLinks(files),
@@ -6900,14 +6900,14 @@ Formats the given number using `Number#toLocaleString`.
             !disableOptimizedLoading && !disableRuntimeJS && this.getScripts(files),
             optimizeCss && this.getCssLinks(files),
             optimizeCss &&
-              /*#__PURE__*/ (0, _jsxruntime.jsx)('noscript', {
-                'data-n-css': this.props.nonce ?? '',
+              /*#__PURE__*/ (0, _jsxruntime.jsx)("noscript", {
+                "data-n-css": this.props.nonce ?? "",
               }),
             this.context.isDevelopment && // this element is used to mount development styles so the
               // ordering matches production
               // (by default, style-loader injects at the bottom of <head />)
-              /*#__PURE__*/ (0, _jsxruntime.jsx)('noscript', {
-                id: '__next_css__DO_NOT_USE__',
+              /*#__PURE__*/ (0, _jsxruntime.jsx)("noscript", {
+                id: "__next_css__DO_NOT_USE__",
               }),
             traceMetaTags,
             styles || null,
@@ -6932,7 +6932,7 @@ Formats the given number using `Number#toLocaleString`.
             ? void 0
             : _children_find_props.children;
       const bodyChildren =
-        (_children_find1 = children.find((child) => child.type === 'body')) == null
+        (_children_find1 = children.find((child) => child.type === "body")) == null
           ? void 0
           : (_children_find_props1 = _children_find1.props) == null
             ? void 0
@@ -6947,20 +6947,20 @@ Formats the given number using `Number#toLocaleString`.
         if (!child) return;
         // When using the `next/script` component, register it in script loader.
         if ((_child_type = child.type) == null ? void 0 : _child_type.__nextScript) {
-          if (child.props.strategy === 'beforeInteractive') {
+          if (child.props.strategy === "beforeInteractive") {
             scriptLoader.beforeInteractive = (scriptLoader.beforeInteractive || []).concat([
               {
                 ...child.props,
               },
             ]);
             return;
-          } else if (['lazyOnload', 'afterInteractive', 'worker'].includes(child.props.strategy)) {
+          } else if (["lazyOnload", "afterInteractive", "worker"].includes(child.props.strategy)) {
             scriptLoaderItems.push(child.props);
             return;
-          } else if (typeof child.props.strategy === 'undefined') {
+          } else if (typeof child.props.strategy === "undefined") {
             scriptLoaderItems.push({
               ...child.props,
-              strategy: 'afterInteractive',
+              strategy: "afterInteractive",
             });
             return;
           }
@@ -6989,30 +6989,30 @@ Formats the given number using `Number#toLocaleString`.
           if (largePageDataWarnings.has(__NEXT_DATA__.page)) {
             return (0, _htmlescape.htmlEscapeJsonString)(data);
           }
-          const bytes = ('TURBOPACK compile-time falsy', 0)
-            ? 'TURBOPACK unreachable'
+          const bytes = ("TURBOPACK compile-time falsy", 0)
+            ? "TURBOPACK unreachable"
             : Buffer.from(data).byteLength;
           const prettyBytes = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/pretty-bytes.js [ssr] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/pretty-bytes.js [ssr] (ecmascript)",
           ).default;
           if (largePageDataBytes && bytes > largePageDataBytes) {
             if (
-              ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+              ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
             );
             console.warn(
-              `Warning: data for page "${__NEXT_DATA__.page}"${__NEXT_DATA__.page === context.dangerousAsPath ? '' : ` (path "${context.dangerousAsPath}")`} is ${prettyBytes(bytes)} which exceeds the threshold of ${prettyBytes(largePageDataBytes)}, this amount of data can reduce performance.\nSee more info here: https://nextjs.org/docs/messages/large-page-data`,
+              `Warning: data for page "${__NEXT_DATA__.page}"${__NEXT_DATA__.page === context.dangerousAsPath ? "" : ` (path "${context.dangerousAsPath}")`} is ${prettyBytes(bytes)} which exceeds the threshold of ${prettyBytes(largePageDataBytes)}, this amount of data can reduce performance.\nSee more info here: https://nextjs.org/docs/messages/large-page-data`,
             );
           }
           return (0, _htmlescape.htmlEscapeJsonString)(data);
         } catch (err) {
-          if ((0, _iserror.default)(err) && err.message.indexOf('circular structure') !== -1) {
+          if ((0, _iserror.default)(err) && err.message.indexOf("circular structure") !== -1) {
             throw Object.defineProperty(
               new Error(
                 `Circular structure in "getInitialProps" result of page "${__NEXT_DATA__.page}". https://nextjs.org/docs/messages/circular-structure`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E490',
+                value: "E490",
                 enumerable: false,
                 configurable: true,
               },
@@ -7033,10 +7033,10 @@ Formats the given number using `Number#toLocaleString`.
         } = this.context;
         const disableRuntimeJS = unstable_runtimeJS === false;
         docComponentsRendered.NextScript = true;
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           if (this.props.crossOrigin)
             console.warn(
-              'Warning: `NextScript` attribute `crossOrigin` is deprecated. https://nextjs.org/docs/messages/doc-crossorigin-deprecated',
+              "Warning: `NextScript` attribute `crossOrigin` is deprecated. https://nextjs.org/docs/messages/doc-crossorigin-deprecated",
             );
         }
         const files = getDocumentFiles(this.context.buildManifest, this.context.__NEXT_DATA__.page);
@@ -7045,7 +7045,7 @@ Formats the given number using `Number#toLocaleString`.
             !disableRuntimeJS && buildManifest.devFiles
               ? buildManifest.devFiles.map((file) =>
                   /*#__PURE__*/ (0, _jsxruntime.jsx)(
-                    'script',
+                    "script",
                     {
                       src: `${assetPrefix}/_next/${(0, _encodeuripath.encodeURIPath)(file)}${assetQueryString}`,
                       nonce: this.props.nonce,
@@ -7057,9 +7057,9 @@ Formats the given number using `Number#toLocaleString`.
               : null,
             disableRuntimeJS
               ? null
-              : /*#__PURE__*/ (0, _jsxruntime.jsx)('script', {
-                  id: '__NEXT_DATA__',
-                  type: 'application/json',
+              : /*#__PURE__*/ (0, _jsxruntime.jsx)("script", {
+                  id: "__NEXT_DATA__",
+                  type: "application/json",
                   nonce: this.props.nonce,
                   crossOrigin: this.props.crossOrigin || crossOrigin,
                   dangerouslySetInnerHTML: {
@@ -7079,17 +7079,17 @@ Formats the given number using `Number#toLocaleString`.
       _htmlcontextsharedruntime.useHtmlContext)();
       docComponentsRendered.Html = true;
       handleDocumentScriptLoaderItems(scriptLoader, __NEXT_DATA__, props);
-      return /*#__PURE__*/ (0, _jsxruntime.jsx)('html', {
+      return /*#__PURE__*/ (0, _jsxruntime.jsx)("html", {
         ...props,
         lang: props.lang || locale || undefined,
-        'data-dpl-id': deploymentId || undefined,
+        "data-dpl-id": deploymentId || undefined,
       });
     }
     function Main() {
       const { docComponentsRendered } = (0, _htmlcontextsharedruntime.useHtmlContext)();
       docComponentsRendered.Main = true;
       // @ts-ignore
-      return /*#__PURE__*/ (0, _jsxruntime.jsx)('next-js-internal-body-render-target', {});
+      return /*#__PURE__*/ (0, _jsxruntime.jsx)("next-js-internal-body-render-target", {});
     }
     class Document extends _react.default.Component {
       /**
@@ -7104,7 +7104,7 @@ Formats the given number using `Number#toLocaleString`.
             /*#__PURE__*/ (0, _jsxruntime.jsx)(Head, {
               nonce: this.props.nonce,
             }),
-            /*#__PURE__*/ (0, _jsxruntime.jsxs)('body', {
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("body", {
               children: [
                 /*#__PURE__*/ (0, _jsxruntime.jsx)(Main, {}),
                 /*#__PURE__*/ (0, _jsxruntime.jsx)(NextScript, {
@@ -7122,7 +7122,7 @@ Formats the given number using `Number#toLocaleString`.
       return /*#__PURE__*/ (0, _jsxruntime.jsxs)(Html, {
         children: [
           /*#__PURE__*/ (0, _jsxruntime.jsx)(Head, {}),
-          /*#__PURE__*/ (0, _jsxruntime.jsxs)('body', {
+          /*#__PURE__*/ (0, _jsxruntime.jsxs)("body", {
             children: [
               /*#__PURE__*/ (0, _jsxruntime.jsx)(Main, {}),
               /*#__PURE__*/ (0, _jsxruntime.jsx)(NextScript, {}),
@@ -7133,10 +7133,10 @@ Formats the given number using `Number#toLocaleString`.
     };
     Document[_constants.NEXT_BUILTIN_DOCUMENT] = InternalFunctionDocument;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/document.js [ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/document.js [ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     module.exports = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/pages/_document.js [ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/pages/_document.js [ssr] (ecmascript)",
     );
   },
 ];

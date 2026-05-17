@@ -7,18 +7,18 @@ import {
   type AgentExecutionResult,
   type AgentMetadata,
   BaseAgent,
-} from './base';
+} from "./base";
 
 export class UXOptimizer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'UX Optimizer',
+      name: "UX Optimizer",
       description:
-        'Simplifies confusing user flows. Reduces 10 clicks to 2. Makes everything obvious.',
+        "Simplifies confusing user flows. Reduces 10 clicks to 2. Makes everything obvious.",
       category: AgentCategory.DESIGN_UX,
-      icon: '🎨',
-      version: '1.0.0',
-      tags: ['ux', 'user-experience', 'flows', 'simplification', 'usability'],
+      icon: "🎨",
+      version: "1.0.0",
+      tags: ["ux", "user-experience", "flows", "simplification", "usability"],
     };
   }
 
@@ -52,13 +52,13 @@ Every click is a chance to lose a user. Make the path to value as short and obvi
 export class UIPolisher extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'UI Polisher',
+      name: "UI Polisher",
       description:
-        'Makes your app look expensive. Adds animations, micro-interactions, and that premium feel.',
+        "Makes your app look expensive. Adds animations, micro-interactions, and that premium feel.",
       category: AgentCategory.DESIGN_UX,
-      icon: '💎',
-      version: '1.0.0',
-      tags: ['ui', 'design', 'animations', 'polish', 'visual-design'],
+      icon: "💎",
+      version: "1.0.0",
+      tags: ["ui", "design", "animations", "polish", "visual-design"],
     };
   }
 
@@ -92,13 +92,13 @@ The difference between good and great is polish. Small touches create big impres
 export class ContentWriter extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Content Writer',
+      name: "Content Writer",
       description:
-        'Turns boring error messages into helpful guides. Makes every word in your app work harder.',
+        "Turns boring error messages into helpful guides. Makes every word in your app work harder.",
       category: AgentCategory.DESIGN_UX,
-      icon: '✍️',
-      version: '1.0.0',
-      tags: ['content', 'copywriting', 'ux-writing', 'microcopy', 'messaging'],
+      icon: "✍️",
+      version: "1.0.0",
+      tags: ["content", "copywriting", "ux-writing", "microcopy", "messaging"],
     };
   }
 
@@ -132,13 +132,13 @@ Words shape experience. Every message is a chance to help, delight, or guide use
 export class DesignSystemBuilder extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: 'Design System Builder',
+      name: "Design System Builder",
       description:
         "Creates a component library you'll actually use. Consistent styles across everything.",
       category: AgentCategory.DESIGN_UX,
-      icon: '🧩',
-      version: '1.0.0',
-      tags: ['design-system', 'components', 'consistency', 'library', 'tokens'],
+      icon: "🧩",
+      version: "1.0.0",
+      tags: ["design-system", "components", "consistency", "library", "tokens"],
     };
   }
 

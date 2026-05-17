@@ -13,11 +13,11 @@
 (async () => {
   console.clear();
   console.log(
-    '%c🚀 ChatGPT Stealth Extractor v3.1 (Auth Fix)',
-    'font-size: 20px; font-weight: bold; color: #10a37f;',
+    "%c🚀 ChatGPT Stealth Extractor v3.1 (Auth Fix)",
+    "font-size: 20px; font-weight: bold; color: #10a37f;",
   );
 
-  var platform = 'chatgpt-web-stealth-auth';
+  var platform = "chatgpt-web-stealth-auth";
   var MAX_CONVERSATIONS = 3000;
   var AUTH_TOKEN = null;
 
@@ -30,32 +30,32 @@
 
   // STEP 0: Get Auth Token using their internal session endpoint
   try {
-    console.log('🔑 Step 0: Attempting to get Auth Token...');
-    var sessionResp = await fetch('/api/auth/session');
+    console.log("🔑 Step 0: Attempting to get Auth Token...");
+    var sessionResp = await fetch("/api/auth/session");
     if (sessionResp.ok) {
       var sessionData = await sessionResp.json();
       AUTH_TOKEN = sessionData.accessToken;
       if (AUTH_TOKEN) {
-        console.log('   ✅ Auth Token acquired!');
+        console.log("   ✅ Auth Token acquired!");
       } else {
-        console.warn('   ⚠️ No access token in session data. Continuing with cookies only...');
+        console.warn("   ⚠️ No access token in session data. Continuing with cookies only...");
       }
     } else {
-      console.warn('   ⚠️ Failed to fetch session. Status: ' + sessionResp.status);
+      console.warn("   ⚠️ Failed to fetch session. Status: " + sessionResp.status);
     }
   } catch (e) {
-    console.warn('   ⚠️ Session fetch error: ' + e.message);
+    console.warn("   ⚠️ Session fetch error: " + e.message);
   }
 
   var headers = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   };
   if (AUTH_TOKEN) {
-    headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    headers["Authorization"] = "Bearer " + AUTH_TOKEN;
   }
 
   // STEP 1: Fetch Conversation List
-  console.log('\n📄 Step 1: Scanning conversation list...');
+  console.log("\n📄 Step 1: Scanning conversation list...");
   var conversationMetas = [];
   var offset = 0;
   var limit = 50; // Try lower limit if 50 fails?
@@ -65,8 +65,8 @@
   try {
     while (hasMore && conversationMetas.length < MAX_CONVERSATIONS) {
       var url =
-        '/backend-api/conversations?offset=' + offset + '&limit=' + limit + '&order=updated';
-      var response = await fetch(url, { method: 'GET', headers: headers });
+        "/backend-api/conversations?offset=" + offset + "&limit=" + limit + "&order=updated";
+      var response = await fetch(url, { method: "GET", headers: headers });
 
       if (response.ok) {
         var data = await response.json();
@@ -77,22 +77,22 @@
         } else {
           conversationMetas = conversationMetas.concat(items);
           offset += limit;
-          console.log('   Found ' + conversationMetas.length + ' conversations...');
+          console.log("   Found " + conversationMetas.length + " conversations...");
           await sleep(1000, 2000);
         }
       } else {
-        console.error('   ❌ List fetch error: ' + response.status);
+        console.error("   ❌ List fetch error: " + response.status);
         listErrors.push(response.status);
         if (response.status === 401 || response.status === 403) {
           alert(
-            'Authentication Error (' +
+            "Authentication Error (" +
               response.status +
-              '). Please refresh the page and log in again, then retry.',
+              "). Please refresh the page and log in again, then retry.",
           );
           return; // Stop immediately
         }
         if (response.status === 429) {
-          console.log('   ⚠️ Rate limited. Waiting 30s...');
+          console.log("   ⚠️ Rate limited. Waiting 30s...");
           await sleep(30000, 30000);
         } else {
           hasMore = false;
@@ -100,32 +100,32 @@
       }
     }
   } catch (e) {
-    console.error('   ❌ Critical list error: ' + e.message);
-    alert('Critical Error: ' + e.message);
+    console.error("   ❌ Critical list error: " + e.message);
+    alert("Critical Error: " + e.message);
     return;
   }
 
-  console.log('✅ Found total: ' + conversationMetas.length + ' conversations.');
+  console.log("✅ Found total: " + conversationMetas.length + " conversations.");
 
   if (conversationMetas.length === 0) {
     alert(
-      'Zero conversations found! Please check the console for header errors or refresh the page.',
+      "Zero conversations found! Please check the console for header errors or refresh the page.",
     );
   }
 
   // STEP 2: Fetch Details
-  console.log('\n📥 Step 2: Extracting message history...');
+  console.log("\n📥 Step 2: Extracting message history...");
   var fullConversations = [];
   var successCount = 0;
   var failCount = 0;
 
   for (var i = 0; i < conversationMetas.length; i++) {
     var meta = conversationMetas[i];
-    var progress = '[' + (i + 1) + '/' + conversationMetas.length + ']';
+    var progress = "[" + (i + 1) + "/" + conversationMetas.length + "]";
 
     try {
-      var resp = await fetch('/backend-api/conversation/' + meta.id, {
-        method: 'GET',
+      var resp = await fetch("/backend-api/conversation/" + meta.id, {
+        method: "GET",
         headers: headers,
       });
 
@@ -139,21 +139,21 @@
           current_node: detail.current_node,
         });
         successCount++;
-        console.log(progress + ' OK: ' + (meta.title || 'Untitled').substring(0, 30));
+        console.log(progress + " OK: " + (meta.title || "Untitled").substring(0, 30));
       } else {
-        console.log(progress + ' FAIL (' + resp.status + '): ' + meta.id);
+        console.log(progress + " FAIL (" + resp.status + "): " + meta.id);
         fullConversations.push({ id: meta.id, title: meta.title, error: resp.status });
         failCount++;
 
         if (resp.status === 429) {
-          console.log('   🛑 Rate limit hit. Pausing 60 seconds...');
+          console.log("   🛑 Rate limit hit. Pausing 60 seconds...");
           await sleep(60000, 60000);
           i--;
           continue;
         }
       }
     } catch (err) {
-      console.error(progress + ' Error: ' + err.message);
+      console.error(progress + " Error: " + err.message);
       failCount++;
     }
 
@@ -168,28 +168,28 @@
       total_scanned: conversationMetas.length,
       success_count: successCount,
       fail_count: failCount,
-      auth_method: AUTH_TOKEN ? 'bearer' : 'cookie',
+      auth_method: AUTH_TOKEN ? "bearer" : "cookie",
     },
     data: {
       api_conversations: fullConversations,
     },
   };
 
-  var blob = new Blob([JSON.stringify(extraction, null, 2)], { type: 'application/json' });
+  var blob = new Blob([JSON.stringify(extraction, null, 2)], { type: "application/json" });
   var downloadUrl = URL.createObjectURL(blob);
-  var a = document.createElement('a');
+  var a = document.createElement("a");
   a.href = downloadUrl;
-  a.download = 'chatgpt_backup_v3_' + Date.now() + '.json';
+  a.download = "chatgpt_backup_v3_" + Date.now() + ".json";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
 
   alert(
-    'Extraction Complete!\nSaved: ' +
+    "Extraction Complete!\nSaved: " +
       a.download +
-      '\nSuccess: ' +
+      "\nSuccess: " +
       successCount +
-      '\nFailed: ' +
+      "\nFailed: " +
       failCount,
   );
 })();

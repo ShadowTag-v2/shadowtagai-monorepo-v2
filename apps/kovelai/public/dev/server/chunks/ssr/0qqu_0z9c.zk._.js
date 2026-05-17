@@ -1,46 +1,46 @@
 module.exports = [
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * For a given page path, this function ensures that there is no backslash
      * escaping slashes in the path. Example:
      *  - `foo\/bar\/baz` -> `foo/bar/baz`
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'normalizePathSep', {
+    Object.defineProperty(exports, "normalizePathSep", {
       enumerable: true,
       get: () => normalizePathSep,
     });
     function normalizePathSep(path) {
-      return path.replace(/\\/g, '/');
+      return path.replace(/\\/g, "/");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * For a given page path, this function ensures that there is a leading slash.
      * If there is not a leading slash, one is added, otherwise it is noop.
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'ensureLeadingSlash', {
+    Object.defineProperty(exports, "ensureLeadingSlash", {
       enumerable: true,
       get: () => ensureLeadingSlash,
     });
     function ensureLeadingSlash(path) {
-      return path.startsWith('/') ? path : `/${path}`;
+      return path.startsWith("/") ? path : `/${path}`;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -78,17 +78,17 @@ module.exports = [
     }
     function isGroupSegment(segment) {
       // Use array[0] for performant purpose
-      return segment[0] === '(' && segment.endsWith(')');
+      return segment[0] === "(" && segment.endsWith(")");
     }
     function isParallelRouteSegment(segment) {
-      return segment.startsWith('@') && segment !== '@children';
+      return segment.startsWith("@") && segment !== "@children";
     }
     function addSearchParamsIfPageSegment(segment, searchParams) {
       const isPageSegment = segment.includes(PAGE_SEGMENT_KEY);
       if (isPageSegment) {
         const stringifiedQuery = JSON.stringify(searchParams);
-        return stringifiedQuery !== '{}'
-          ? PAGE_SEGMENT_KEY + '?' + stringifiedQuery
+        return stringifiedQuery !== "{}"
+          ? PAGE_SEGMENT_KEY + "?" + stringifiedQuery
           : PAGE_SEGMENT_KEY;
       }
       return segment;
@@ -99,7 +99,7 @@ module.exports = [
       }
       // For 'children', use first segment; for other parallel routes, use last segment
       const rawSegment =
-        parallelRouteKey === 'children' ? segments[0] : segments[segments.length - 1];
+        parallelRouteKey === "children" ? segments[0] : segments[segments.length - 1];
       // If the default slot is showing, return null since it's not technically "selected" (it's a fallback)
       // Returning an internal value like `__DEFAULT__` would be confusing
       return rawSegment === DEFAULT_SEGMENT_KEY ? null : rawSegment;
@@ -123,15 +123,15 @@ module.exports = [
       segmentPath.push(segmentValue);
       return getSelectedLayoutSegmentPath(node, parallelRouteKey, false, segmentPath);
     }
-    const PAGE_SEGMENT_KEY = '__PAGE__';
-    const DEFAULT_SEGMENT_KEY = '__DEFAULT__';
-    const NOT_FOUND_SEGMENT_KEY = '/_not-found';
+    const PAGE_SEGMENT_KEY = "__PAGE__";
+    const DEFAULT_SEGMENT_KEY = "__DEFAULT__";
+    const NOT_FOUND_SEGMENT_KEY = "/_not-found";
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -153,14 +153,14 @@ module.exports = [
       normalizeRscURL: () => normalizeRscURL,
     });
     const _ensureleadingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/ensure-leading-slash.js [app-rsc] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-rsc] (ecmascript)",
     );
     function normalizeAppPath(route) {
       return (0, _ensureleadingslash.ensureLeadingSlash)(
-        route.split('/').reduce((pathname, segment, index, segments) => {
+        route.split("/").reduce((pathname, segment, index, segments) => {
           // Empty segments are ignored.
           if (!segment) {
             return pathname;
@@ -170,48 +170,48 @@ module.exports = [
             return pathname;
           }
           // Parallel segments are ignored.
-          if (segment[0] === '@') {
+          if (segment[0] === "@") {
             return pathname;
           }
           // The last segment (if it's a leaf) should be ignored.
-          if ((segment === 'page' || segment === 'route') && index === segments.length - 1) {
+          if ((segment === "page" || segment === "route") && index === segments.length - 1) {
             return pathname;
           }
           return `${pathname}/${segment}`;
-        }, ''),
+        }, ""),
       );
     }
     function compareAppPaths(a, b) {
-      const aHasSlot = a.includes('/@');
-      const bHasSlot = b.includes('/@');
+      const aHasSlot = a.includes("/@");
+      const bHasSlot = b.includes("/@");
       if (aHasSlot && !bHasSlot) return -1;
       if (!aHasSlot && bHasSlot) return 1;
       return a.localeCompare(b);
     }
     function normalizeRscURL(url) {
-      return url.replace(/\.rsc($|\?)/, '$1');
+      return url.replace(/\.rsc($|\?)/, "$1");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-app-route-route.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-app-route-route.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isAppRouteRoute', {
+    Object.defineProperty(exports, "isAppRouteRoute", {
       enumerable: true,
       get: () => isAppRouteRoute,
     });
     function isAppRouteRoute(route) {
-      return route.endsWith('/route');
+      return route.endsWith("/route");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/is-metadata-route.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/is-metadata-route.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -243,44 +243,44 @@ module.exports = [
       isStaticMetadataRoute: () => isStaticMetadataRoute,
     });
     const _normalizepathsep = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [app-rsc] (ecmascript)",
     );
     const _apppaths = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)",
     );
     const _isapprouteroute = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-app-route-route.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-app-route-route.js [app-rsc] (ecmascript)",
     );
     const STATIC_METADATA_IMAGES = {
       icon: {
-        filename: 'icon',
-        extensions: ['ico', 'jpg', 'jpeg', 'png', 'svg'],
+        filename: "icon",
+        extensions: ["ico", "jpg", "jpeg", "png", "svg"],
       },
       apple: {
-        filename: 'apple-icon',
-        extensions: ['jpg', 'jpeg', 'png'],
+        filename: "apple-icon",
+        extensions: ["jpg", "jpeg", "png"],
       },
       favicon: {
-        filename: 'favicon',
-        extensions: ['ico'],
+        filename: "favicon",
+        extensions: ["ico"],
       },
       openGraph: {
-        filename: 'opengraph-image',
-        extensions: ['jpg', 'jpeg', 'png', 'gif'],
+        filename: "opengraph-image",
+        extensions: ["jpg", "jpeg", "png", "gif"],
       },
       twitter: {
-        filename: 'twitter-image',
-        extensions: ['jpg', 'jpeg', 'png', 'gif'],
+        filename: "twitter-image",
+        extensions: ["jpg", "jpeg", "png", "gif"],
       },
     };
-    const DEFAULT_METADATA_ROUTE_EXTENSIONS = ['js', 'jsx', 'ts', 'tsx'];
+    const DEFAULT_METADATA_ROUTE_EXTENSIONS = ["js", "jsx", "ts", "tsx"];
     const getExtensionRegexString = (staticExtensions, dynamicExtensions) => {
       let result;
       // If there's no possible multi dynamic routes, will not match any <name>[].<ext> files
       if (!dynamicExtensions || dynamicExtensions.length === 0) {
-        result = `(\\.(?:${staticExtensions.join('|')}))`;
+        result = `(\\.(?:${staticExtensions.join("|")}))`;
       } else {
-        result = `(?:\\.(${staticExtensions.join('|')})|(\\.(${dynamicExtensions.join('|')})))`;
+        result = `(?:\\.(${staticExtensions.join("|")})|(\\.(${dynamicExtensions.join("|")})))`;
       }
       return result;
     };
@@ -306,14 +306,14 @@ module.exports = [
       if (SITEMAP_XML_REGEX.test(normalizedPath)) return true;
       // Quick negative check - if it doesn't contain any metadata keywords, skip
       if (
-        !normalizedPath.includes('robots') &&
-        !normalizedPath.includes('manifest') &&
-        !normalizedPath.includes('sitemap') &&
-        !normalizedPath.includes('icon') &&
-        !normalizedPath.includes('apple-icon') &&
-        !normalizedPath.includes('opengraph-image') &&
-        !normalizedPath.includes('twitter-image') &&
-        !normalizedPath.includes('favicon')
+        !normalizedPath.includes("robots") &&
+        !normalizedPath.includes("manifest") &&
+        !normalizedPath.includes("sitemap") &&
+        !normalizedPath.includes("icon") &&
+        !normalizedPath.includes("apple-icon") &&
+        !normalizedPath.includes("opengraph-image") &&
+        !normalizedPath.includes("twitter-image") &&
+        !normalizedPath.includes("favicon")
       ) {
         return false;
       }
@@ -321,22 +321,22 @@ module.exports = [
     }
     function getCompiledRegexes(pageExtensions, strictlyMatchExtensions) {
       // Create cache key
-      const cacheKey = `${pageExtensions.join(',')}|${strictlyMatchExtensions}`;
+      const cacheKey = `${pageExtensions.join(",")}|${strictlyMatchExtensions}`;
       const cached = compiledRegexCache.get(cacheKey);
       if (cached) {
         return cached;
       }
       // Pre-compute common strings
-      const trailingMatcher = strictlyMatchExtensions ? '$' : '?$';
-      const variantsMatcher = '\\d?';
-      const groupSuffix = strictlyMatchExtensions ? '' : '(-\\w{6})?';
+      const trailingMatcher = strictlyMatchExtensions ? "$" : "?$";
+      const variantsMatcher = "\\d?";
+      const groupSuffix = strictlyMatchExtensions ? "" : "(-\\w{6})?";
       const suffixMatcher = variantsMatcher + groupSuffix;
       // Pre-compute extension arrays to avoid repeated concatenation
-      const robotsExts = pageExtensions.length > 0 ? [...pageExtensions, 'txt'] : ['txt'];
+      const robotsExts = pageExtensions.length > 0 ? [...pageExtensions, "txt"] : ["txt"];
       const manifestExts =
         pageExtensions.length > 0
-          ? [...pageExtensions, 'webmanifest', 'json']
-          : ['webmanifest', 'json'];
+          ? [...pageExtensions, "webmanifest", "json"]
+          : ["webmanifest", "json"];
       const regexes = [
         new RegExp(`^[\\\\/]robots${getExtensionRegexString(robotsExts, null)}${trailingMatcher}`),
         new RegExp(
@@ -344,7 +344,7 @@ module.exports = [
         ),
         // FAVICON_REGEX removed - already handled in fastPathCheck
         new RegExp(
-          `[\\\\/]sitemap${getExtensionRegexString(['xml'], pageExtensions)}${trailingMatcher}`,
+          `[\\\\/]sitemap${getExtensionRegexString(["xml"], pageExtensions)}${trailingMatcher}`,
         ),
         new RegExp(
           `[\\\\/]icon${suffixMatcher}${getExtensionRegexString(STATIC_METADATA_IMAGES.icon.extensions, pageExtensions)}${trailingMatcher}`,
@@ -385,14 +385,14 @@ module.exports = [
     }
     function isStaticMetadataRoute(route) {
       // extract ext with regex
-      const pathname = route.replace(/\/route$/, '');
+      const pathname = route.replace(/\/route$/, "");
       const matched =
         (0, _isapprouteroute.isAppRouteRoute)(route) &&
         isMetadataRouteFile(pathname, [], true) && // These routes can either be built by static or dynamic entrypoints,
         // so we assume they're dynamic
-        pathname !== '/robots.txt' &&
-        pathname !== '/manifest.webmanifest' &&
-        !pathname.endsWith('/sitemap.xml');
+        pathname !== "/robots.txt" &&
+        pathname !== "/manifest.webmanifest" &&
+        !pathname.endsWith("/sitemap.xml");
       return matched;
     }
     function isMetadataPage(page) {
@@ -402,18 +402,18 @@ module.exports = [
     }
     function isMetadataRoute(route) {
       let page = (0, _apppaths.normalizeAppPath)(route)
-        .replace(/^\/?app\//, '') // Remove the dynamic route id
-        .replace('/[__metadata_id__]', '') // Remove the /route suffix
-        .replace(/\/route$/, '');
-      if (page[0] !== '/') page = '/' + page;
+        .replace(/^\/?app\//, "") // Remove the dynamic route id
+        .replace("/[__metadata_id__]", "") // Remove the /route suffix
+        .replace(/\/route$/, "");
+      if (page[0] !== "/") page = "/" + page;
       const matched =
         (0, _isapprouteroute.isAppRouteRoute)(route) && isMetadataRouteFile(page, [], false);
       return matched;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/isomorphic/path.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/isomorphic/path.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * This module is for next.js server internal usage of path module.
@@ -421,21 +421,21 @@ module.exports = [
      * It will use path-browserify polyfill for edge runtime.
      */ let path;
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
-      path = __turbopack_context__.r('[externals]/path [external] (path, cjs)');
+      path = __turbopack_context__.r("[externals]/path [external] (path, cjs)");
     }
     module.exports = path;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'normalizeLocalePath', {
+    Object.defineProperty(exports, "normalizeLocalePath", {
       enumerable: true,
       get: () => normalizeLocalePath,
     });
@@ -459,7 +459,7 @@ module.exports = [
       let detectedLocale;
       // The first segment will be empty, because it has a leading `/`. If
       // there is no further segment, there is no locale (or it's the default).
-      const segments = pathname.split('/', 2);
+      const segments = pathname.split("/", 2);
       // If there's no second segment (ie, the pathname is just `/`), there's no
       // locale.
       if (!segments[1])
@@ -478,26 +478,26 @@ module.exports = [
       // Return the case-sensitive locale.
       detectedLocale = locales[index];
       // Remove the `/${locale}` part of the pathname.
-      pathname = pathname.slice(detectedLocale.length + 1) || '/';
+      pathname = pathname.slice(detectedLocale.length + 1) || "/";
       return {
         pathname,
         detectedLocale,
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp/index.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp/index.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     (() => {
-      'use strict';
-      if (typeof __nccwpck_require__ !== 'undefined')
+      "use strict";
+      if (typeof __nccwpck_require__ !== "undefined")
         __nccwpck_require__.ab =
-          ('TURBOPACK compile-time value',
-          '/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp') +
-          '/';
+          ("TURBOPACK compile-time value",
+          "/ROOT/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp") +
+          "/";
       var e = {};
       (() => {
         var n = e;
-        Object.defineProperty(n, '__esModule', {
+        Object.defineProperty(n, "__esModule", {
           value: true,
         });
         n.pathToRegexp =
@@ -513,40 +513,40 @@ module.exports = [
           var r = 0;
           while (r < e.length) {
             var t = e[r];
-            if (t === '*' || t === '+' || t === '?') {
+            if (t === "*" || t === "+" || t === "?") {
               n.push({
-                type: 'MODIFIER',
+                type: "MODIFIER",
                 index: r,
                 value: e[r++],
               });
               continue;
             }
-            if (t === '\\') {
+            if (t === "\\") {
               n.push({
-                type: 'ESCAPED_CHAR',
+                type: "ESCAPED_CHAR",
                 index: r++,
                 value: e[r++],
               });
               continue;
             }
-            if (t === '{') {
+            if (t === "{") {
               n.push({
-                type: 'OPEN',
+                type: "OPEN",
                 index: r,
                 value: e[r++],
               });
               continue;
             }
-            if (t === '}') {
+            if (t === "}") {
               n.push({
-                type: 'CLOSE',
+                type: "CLOSE",
                 index: r,
                 value: e[r++],
               });
               continue;
             }
-            if (t === ':') {
-              var a = '';
+            if (t === ":") {
+              var a = "";
               var i = r + 1;
               while (i < e.length) {
                 var o = e.charCodeAt(i);
@@ -561,45 +561,45 @@ module.exports = [
                 }
                 break;
               }
-              if (!a) throw new TypeError('Missing parameter name at '.concat(r));
+              if (!a) throw new TypeError("Missing parameter name at ".concat(r));
               n.push({
-                type: 'NAME',
+                type: "NAME",
                 index: r,
                 value: a,
               });
               r = i;
               continue;
             }
-            if (t === '(') {
+            if (t === "(") {
               var c = 1;
-              var f = '';
+              var f = "";
               var i = r + 1;
-              if (e[i] === '?') {
+              if (e[i] === "?") {
                 throw new TypeError('Pattern cannot start with "?" at '.concat(i));
               }
               while (i < e.length) {
-                if (e[i] === '\\') {
+                if (e[i] === "\\") {
                   f += e[i++] + e[i++];
                   continue;
                 }
-                if (e[i] === ')') {
+                if (e[i] === ")") {
                   c--;
                   if (c === 0) {
                     i++;
                     break;
                   }
-                } else if (e[i] === '(') {
+                } else if (e[i] === "(") {
                   c++;
-                  if (e[i + 1] !== '?') {
-                    throw new TypeError('Capturing groups are not allowed at '.concat(i));
+                  if (e[i + 1] !== "?") {
+                    throw new TypeError("Capturing groups are not allowed at ".concat(i));
                   }
                 }
                 f += e[i++];
               }
-              if (c) throw new TypeError('Unbalanced pattern at '.concat(r));
-              if (!f) throw new TypeError('Missing pattern at '.concat(r));
+              if (c) throw new TypeError("Unbalanced pattern at ".concat(r));
+              if (!f) throw new TypeError("Missing pattern at ".concat(r));
               n.push({
-                type: 'PATTERN',
+                type: "PATTERN",
                 index: r,
                 value: f,
               });
@@ -607,15 +607,15 @@ module.exports = [
               continue;
             }
             n.push({
-              type: 'CHAR',
+              type: "CHAR",
               index: r,
               value: e[r++],
             });
           }
           n.push({
-            type: 'END',
+            type: "END",
             index: r,
-            value: '',
+            value: "",
           });
           return n;
         }
@@ -625,13 +625,13 @@ module.exports = [
           }
           var r = lexer(e);
           var t = n.prefixes,
-            a = t === void 0 ? './' : t,
+            a = t === void 0 ? "./" : t,
             i = n.delimiter,
-            o = i === void 0 ? '/#?' : i;
+            o = i === void 0 ? "/#?" : i;
           var c = [];
           var f = 0;
           var u = 0;
-          var p = '';
+          var p = "";
           var tryConsume = (e) => {
             if (u < r.length && r[u].type === e) return r[u++].value;
           };
@@ -641,12 +641,12 @@ module.exports = [
             var t = r[u],
               a = t.type,
               i = t.index;
-            throw new TypeError('Unexpected '.concat(a, ' at ').concat(i, ', expected ').concat(e));
+            throw new TypeError("Unexpected ".concat(a, " at ").concat(i, ", expected ").concat(e));
           };
           var consumeText = () => {
-            var e = '';
+            var e = "";
             var n;
-            while ((n = tryConsume('CHAR') || tryConsume('ESCAPED_CHAR'))) {
+            while ((n = tryConsume("CHAR") || tryConsume("ESCAPED_CHAR"))) {
               e += n;
             }
             return e;
@@ -660,64 +660,64 @@ module.exports = [
           };
           var safePattern = (e) => {
             var n = c[c.length - 1];
-            var r = e || (n && typeof n === 'string' ? n : '');
+            var r = e || (n && typeof n === "string" ? n : "");
             if (n && !r) {
               throw new TypeError(
                 'Must have text between two parameters, missing text after "'.concat(n.name, '"'),
               );
             }
-            if (!r || isSafe(r)) return '[^'.concat(escapeString(o), ']+?');
-            return '(?:(?!'.concat(escapeString(r), ')[^').concat(escapeString(o), '])+?');
+            if (!r || isSafe(r)) return "[^".concat(escapeString(o), "]+?");
+            return "(?:(?!".concat(escapeString(r), ")[^").concat(escapeString(o), "])+?");
           };
           while (u < r.length) {
-            var v = tryConsume('CHAR');
-            var s = tryConsume('NAME');
-            var d = tryConsume('PATTERN');
+            var v = tryConsume("CHAR");
+            var s = tryConsume("NAME");
+            var d = tryConsume("PATTERN");
             if (s || d) {
-              var g = v || '';
+              var g = v || "";
               if (a.indexOf(g) === -1) {
                 p += g;
-                g = '';
+                g = "";
               }
               if (p) {
                 c.push(p);
-                p = '';
+                p = "";
               }
               c.push({
                 name: s || f++,
                 prefix: g,
-                suffix: '',
+                suffix: "",
                 pattern: d || safePattern(g),
-                modifier: tryConsume('MODIFIER') || '',
+                modifier: tryConsume("MODIFIER") || "",
               });
               continue;
             }
-            var x = v || tryConsume('ESCAPED_CHAR');
+            var x = v || tryConsume("ESCAPED_CHAR");
             if (x) {
               p += x;
               continue;
             }
             if (p) {
               c.push(p);
-              p = '';
+              p = "";
             }
-            var h = tryConsume('OPEN');
+            var h = tryConsume("OPEN");
             if (h) {
               var g = consumeText();
-              var l = tryConsume('NAME') || '';
-              var m = tryConsume('PATTERN') || '';
+              var l = tryConsume("NAME") || "";
+              var m = tryConsume("PATTERN") || "";
               var T = consumeText();
-              mustConsume('CLOSE');
+              mustConsume("CLOSE");
               c.push({
-                name: l || (m ? f++ : ''),
+                name: l || (m ? f++ : ""),
                 pattern: l && !m ? safePattern(g) : m,
                 prefix: g,
                 suffix: T,
-                modifier: tryConsume('MODIFIER') || '',
+                modifier: tryConsume("MODIFIER") || "",
               });
               continue;
             }
-            mustConsume('END');
+            mustConsume("END");
           }
           return c;
         }
@@ -736,21 +736,21 @@ module.exports = [
             i = n.validate,
             o = i === void 0 ? true : i;
           var c = e.map((e) => {
-            if (typeof e === 'object') {
-              return new RegExp('^(?:'.concat(e.pattern, ')$'), r);
+            if (typeof e === "object") {
+              return new RegExp("^(?:".concat(e.pattern, ")$"), r);
             }
           });
           return (n) => {
-            var r = '';
+            var r = "";
             for (var t = 0; t < e.length; t++) {
               var i = e[t];
-              if (typeof i === 'string') {
+              if (typeof i === "string") {
                 r += i;
                 continue;
               }
               var f = n ? n[i.name] : undefined;
-              var u = i.modifier === '?' || i.modifier === '*';
-              var p = i.modifier === '*' || i.modifier === '+';
+              var u = i.modifier === "?" || i.modifier === "*";
+              var p = i.modifier === "*" || i.modifier === "+";
               if (Array.isArray(f)) {
                 if (!p) {
                   throw new TypeError(
@@ -775,7 +775,7 @@ module.exports = [
                 }
                 continue;
               }
-              if (typeof f === 'string' || typeof f === 'number') {
+              if (typeof f === "string" || typeof f === "number") {
                 var s = a(String(f), i);
                 if (o && !c[t].test(s)) {
                   throw new TypeError(
@@ -789,7 +789,7 @@ module.exports = [
                 continue;
               }
               if (u) continue;
-              var d = p ? 'an array' : 'a string';
+              var d = p ? "an array" : "a string";
               throw new TypeError('Expected "'.concat(i.name, '" to be ').concat(d));
             }
             return r;
@@ -815,9 +815,9 @@ module.exports = [
               o = t.index;
             var c = Object.create(null);
             var _loop_1 = (e) => {
-              if (t[e] === undefined) return 'continue';
+              if (t[e] === undefined) return "continue";
               var r = n[e - 1];
-              if (r.modifier === '*' || r.modifier === '+') {
+              if (r.modifier === "*" || r.modifier === "+") {
                 c[r.name] = t[e].split(r.prefix + r.suffix).map((e) => a(e, r));
               } else {
                 c[r.name] = a(t[e], r);
@@ -835,10 +835,10 @@ module.exports = [
         }
         n.regexpToFunction = regexpToFunction;
         function escapeString(e) {
-          return e.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1');
+          return e.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
         }
         function flags(e) {
-          return e && e.sensitive ? '' : 'i';
+          return e && e.sensitive ? "" : "i";
         }
         function regexpToRegexp(e, n) {
           if (!n) return e;
@@ -848,10 +848,10 @@ module.exports = [
           while (a) {
             n.push({
               name: a[1] || t++,
-              prefix: '',
-              suffix: '',
-              modifier: '',
-              pattern: '',
+              prefix: "",
+              suffix: "",
+              modifier: "",
+              pattern: "",
             });
             a = r.exec(e.source);
           }
@@ -859,7 +859,7 @@ module.exports = [
         }
         function arrayToRegexp(e, n, r) {
           var t = e.map((e) => pathToRegexp(e, n, r).source);
-          return new RegExp('(?:'.concat(t.join('|'), ')'), flags(r));
+          return new RegExp("(?:".concat(t.join("|"), ")"), flags(r));
         }
         function stringToRegexp(e, n, r) {
           return tokensToRegexp(parse(e, r), n, r);
@@ -877,15 +877,15 @@ module.exports = [
             u = r.encode,
             p = u === void 0 ? (e) => e : u,
             v = r.delimiter,
-            s = v === void 0 ? '/#?' : v,
+            s = v === void 0 ? "/#?" : v,
             d = r.endsWith,
-            g = d === void 0 ? '' : d;
-          var x = '['.concat(escapeString(g), ']|$');
-          var h = '['.concat(escapeString(s), ']');
-          var l = o ? '^' : '';
+            g = d === void 0 ? "" : d;
+          var x = "[".concat(escapeString(g), "]|$");
+          var h = "[".concat(escapeString(s), "]");
+          var l = o ? "^" : "";
           for (var m = 0, T = e; m < T.length; m++) {
             var E = T[m];
-            if (typeof E === 'string') {
+            if (typeof E === "string") {
               l += escapeString(p(E));
             } else {
               var w = escapeString(p(E.prefix));
@@ -893,47 +893,47 @@ module.exports = [
               if (E.pattern) {
                 if (n) n.push(E);
                 if (w || y) {
-                  if (E.modifier === '+' || E.modifier === '*') {
-                    var R = E.modifier === '*' ? '?' : '';
-                    l += '(?:'
-                      .concat(w, '((?:')
-                      .concat(E.pattern, ')(?:')
+                  if (E.modifier === "+" || E.modifier === "*") {
+                    var R = E.modifier === "*" ? "?" : "";
+                    l += "(?:"
+                      .concat(w, "((?:")
+                      .concat(E.pattern, ")(?:")
                       .concat(y)
-                      .concat(w, '(?:')
-                      .concat(E.pattern, '))*)')
-                      .concat(y, ')')
+                      .concat(w, "(?:")
+                      .concat(E.pattern, "))*)")
+                      .concat(y, ")")
                       .concat(R);
                   } else {
-                    l += '(?:'
-                      .concat(w, '(')
-                      .concat(E.pattern, ')')
-                      .concat(y, ')')
+                    l += "(?:"
+                      .concat(w, "(")
+                      .concat(E.pattern, ")")
+                      .concat(y, ")")
                       .concat(E.modifier);
                   }
                 } else {
-                  if (E.modifier === '+' || E.modifier === '*') {
+                  if (E.modifier === "+" || E.modifier === "*") {
                     throw new TypeError(
                       'Can not repeat "'.concat(E.name, '" without a prefix and suffix'),
                     );
                   }
-                  l += '('.concat(E.pattern, ')').concat(E.modifier);
+                  l += "(".concat(E.pattern, ")").concat(E.modifier);
                 }
               } else {
-                l += '(?:'.concat(w).concat(y, ')').concat(E.modifier);
+                l += "(?:".concat(w).concat(y, ")").concat(E.modifier);
               }
             }
           }
           if (f) {
-            if (!a) l += ''.concat(h, '?');
-            l += !r.endsWith ? '$' : '(?='.concat(x, ')');
+            if (!a) l += "".concat(h, "?");
+            l += !r.endsWith ? "$" : "(?=".concat(x, ")");
           } else {
             var A = e[e.length - 1];
-            var _ = typeof A === 'string' ? h.indexOf(A[A.length - 1]) > -1 : A === undefined;
+            var _ = typeof A === "string" ? h.indexOf(A[A.length - 1]) > -1 : A === undefined;
             if (!a) {
-              l += '(?:'.concat(h, '(?=').concat(x, '))?');
+              l += "(?:".concat(h, "(?=").concat(x, "))?");
             }
             if (!_) {
-              l += '(?='.concat(h, '|').concat(x, ')');
+              l += "(?=".concat(h, "|").concat(x, ")");
             }
           }
           return new RegExp(l, flags(r));
@@ -949,25 +949,25 @@ module.exports = [
       module.exports = e;
     })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-match.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-match.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getPathMatch', {
+    Object.defineProperty(exports, "getPathMatch", {
       enumerable: true,
       get: () => getPathMatch,
     });
     const _pathtoregexp = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp/index.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp/index.js [app-rsc] (ecmascript)",
     );
     function getPathMatch(path, options) {
       const keys = [];
       const regexp = (0, _pathtoregexp.pathToRegexp)(path, keys, {
-        delimiter: '/',
-        sensitive: typeof options?.sensitive === 'boolean' ? options.sensitive : false,
+        delimiter: "/",
+        sensitive: typeof options?.sensitive === "boolean" ? options.sensitive : false,
         strict: options?.strict,
       });
       const matcher = (0, _pathtoregexp.regexpToFunction)(
@@ -983,7 +983,7 @@ module.exports = [
        * merged with the params provided in the second argument.
        */ return (pathname, params) => {
         // If no pathname is provided it's not a match.
-        if (typeof pathname !== 'string') return false;
+        if (typeof pathname !== "string") return false;
         const match = matcher(pathname);
         // If the path did not match `false` will be returned.
         if (!match) return false;
@@ -993,7 +993,7 @@ module.exports = [
          * "number" for unnamed parameters.
          */ if (options?.removeUnnamedParams) {
           for (const key of keys) {
-            if (typeof key.name === 'number') {
+            if (typeof key.name === "number") {
               delete match.params[key.name];
             }
           }
@@ -1005,11 +1005,11 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1146,50 +1146,50 @@ module.exports = [
       WEBPACK_RESOURCE_QUERIES: () => WEBPACK_RESOURCE_QUERIES,
       WEB_SOCKET_MAX_RECONNECTIONS: () => WEB_SOCKET_MAX_RECONNECTIONS,
     });
-    const TEXT_PLAIN_CONTENT_TYPE_HEADER = 'text/plain';
-    const HTML_CONTENT_TYPE_HEADER = 'text/html; charset=utf-8';
-    const JSON_CONTENT_TYPE_HEADER = 'application/json; charset=utf-8';
-    const NEXT_QUERY_PARAM_PREFIX = 'nxtP';
-    const NEXT_INTERCEPTION_MARKER_PREFIX = 'nxtI';
-    const MATCHED_PATH_HEADER = 'x-matched-path';
-    const PRERENDER_REVALIDATE_HEADER = 'x-prerender-revalidate';
-    const PRERENDER_REVALIDATE_ONLY_GENERATED_HEADER = 'x-prerender-revalidate-if-generated';
-    const RSC_SEGMENTS_DIR_SUFFIX = '.segments';
-    const RSC_SEGMENT_SUFFIX = '.segment.rsc';
-    const RSC_SUFFIX = '.rsc';
-    const ACTION_SUFFIX = '.action';
-    const NEXT_DATA_SUFFIX = '.json';
-    const NEXT_META_SUFFIX = '.meta';
-    const NEXT_BODY_SUFFIX = '.body';
-    const NEXT_NAV_DEPLOYMENT_ID_HEADER = 'x-nextjs-deployment-id';
-    const NEXT_CACHE_TAGS_HEADER = 'x-next-cache-tags';
-    const NEXT_CACHE_REVALIDATED_TAGS_HEADER = 'x-next-revalidated-tags';
-    const NEXT_CACHE_REVALIDATE_TAG_TOKEN_HEADER = 'x-next-revalidate-tag-token';
-    const NEXT_RESUME_HEADER = 'next-resume';
-    const NEXT_RESUME_STATE_LENGTH_HEADER = 'x-next-resume-state-length';
+    const TEXT_PLAIN_CONTENT_TYPE_HEADER = "text/plain";
+    const HTML_CONTENT_TYPE_HEADER = "text/html; charset=utf-8";
+    const JSON_CONTENT_TYPE_HEADER = "application/json; charset=utf-8";
+    const NEXT_QUERY_PARAM_PREFIX = "nxtP";
+    const NEXT_INTERCEPTION_MARKER_PREFIX = "nxtI";
+    const MATCHED_PATH_HEADER = "x-matched-path";
+    const PRERENDER_REVALIDATE_HEADER = "x-prerender-revalidate";
+    const PRERENDER_REVALIDATE_ONLY_GENERATED_HEADER = "x-prerender-revalidate-if-generated";
+    const RSC_SEGMENTS_DIR_SUFFIX = ".segments";
+    const RSC_SEGMENT_SUFFIX = ".segment.rsc";
+    const RSC_SUFFIX = ".rsc";
+    const ACTION_SUFFIX = ".action";
+    const NEXT_DATA_SUFFIX = ".json";
+    const NEXT_META_SUFFIX = ".meta";
+    const NEXT_BODY_SUFFIX = ".body";
+    const NEXT_NAV_DEPLOYMENT_ID_HEADER = "x-nextjs-deployment-id";
+    const NEXT_CACHE_TAGS_HEADER = "x-next-cache-tags";
+    const NEXT_CACHE_REVALIDATED_TAGS_HEADER = "x-next-revalidated-tags";
+    const NEXT_CACHE_REVALIDATE_TAG_TOKEN_HEADER = "x-next-revalidate-tag-token";
+    const NEXT_RESUME_HEADER = "next-resume";
+    const NEXT_RESUME_STATE_LENGTH_HEADER = "x-next-resume-state-length";
     const NEXT_CACHE_TAG_MAX_ITEMS = 128;
     const NEXT_CACHE_TAG_MAX_LENGTH = 256;
     const NEXT_CACHE_SOFT_TAG_MAX_LENGTH = 1024;
-    const NEXT_CACHE_IMPLICIT_TAG_ID = '_N_T_';
-    const NEXT_CACHE_ROOT_PARAM_TAG_ID = '_N_RP_';
+    const NEXT_CACHE_IMPLICIT_TAG_ID = "_N_T_";
+    const NEXT_CACHE_ROOT_PARAM_TAG_ID = "_N_RP_";
     const CACHE_ONE_YEAR_SECONDS = 31536000;
     const INFINITE_CACHE = 0xfffffffe;
-    const MIDDLEWARE_FILENAME = 'middleware';
+    const MIDDLEWARE_FILENAME = "middleware";
     const MIDDLEWARE_LOCATION_REGEXP = `(?:src/)?${MIDDLEWARE_FILENAME}`;
-    const PROXY_FILENAME = 'proxy';
+    const PROXY_FILENAME = "proxy";
     const PROXY_LOCATION_REGEXP = `(?:src/)?${PROXY_FILENAME}`;
-    const INSTRUMENTATION_HOOK_FILENAME = 'instrumentation';
-    const PAGES_DIR_ALIAS = 'private-next-pages';
-    const DOT_NEXT_ALIAS = 'private-dot-next';
-    const ROOT_DIR_ALIAS = 'private-next-root-dir';
-    const APP_DIR_ALIAS = 'private-next-app-dir';
-    const RSC_MOD_REF_PROXY_ALIAS = 'private-next-rsc-mod-ref-proxy';
-    const RSC_ACTION_VALIDATE_ALIAS = 'private-next-rsc-action-validate';
-    const RSC_ACTION_PROXY_ALIAS = 'private-next-rsc-server-reference';
-    const RSC_CACHE_WRAPPER_ALIAS = 'private-next-rsc-cache-wrapper';
-    const RSC_DYNAMIC_IMPORT_WRAPPER_ALIAS = 'private-next-rsc-track-dynamic-import';
-    const RSC_ACTION_ENCRYPTION_ALIAS = 'private-next-rsc-action-encryption';
-    const RSC_ACTION_CLIENT_WRAPPER_ALIAS = 'private-next-rsc-action-client-wrapper';
+    const INSTRUMENTATION_HOOK_FILENAME = "instrumentation";
+    const PAGES_DIR_ALIAS = "private-next-pages";
+    const DOT_NEXT_ALIAS = "private-dot-next";
+    const ROOT_DIR_ALIAS = "private-next-root-dir";
+    const APP_DIR_ALIAS = "private-next-app-dir";
+    const RSC_MOD_REF_PROXY_ALIAS = "private-next-rsc-mod-ref-proxy";
+    const RSC_ACTION_VALIDATE_ALIAS = "private-next-rsc-action-validate";
+    const RSC_ACTION_PROXY_ALIAS = "private-next-rsc-server-reference";
+    const RSC_CACHE_WRAPPER_ALIAS = "private-next-rsc-cache-wrapper";
+    const RSC_DYNAMIC_IMPORT_WRAPPER_ALIAS = "private-next-rsc-track-dynamic-import";
+    const RSC_ACTION_ENCRYPTION_ALIAS = "private-next-rsc-action-encryption";
+    const RSC_ACTION_CLIENT_WRAPPER_ALIAS = "private-next-rsc-action-client-wrapper";
     const PUBLIC_DIR_MIDDLEWARE_CONFLICT = `You can not have a '_next' folder inside of your public folder. This conflicts with the internal '/_next' route. https://nextjs.org/docs/messages/public-next-folder-conflict`;
     const SSG_GET_INITIAL_PROPS_CONFLICT = `You can not use getInitialProps with getStaticProps. To use SSG, please remove your getInitialProps`;
     const SERVER_PROPS_GET_INIT_PROPS_CONFLICT = `You can not use getInitialProps with getServerSideProps. Please remove getInitialProps.`;
@@ -1197,20 +1197,20 @@ module.exports = [
     const STATIC_STATUS_PAGE_GET_INITIAL_PROPS_ERROR = `can not have getInitialProps/getServerSideProps, https://nextjs.org/docs/messages/404-get-initial-props`;
     const SERVER_PROPS_EXPORT_ERROR = `pages with \`getServerSideProps\` can not be exported. See more info here: https://nextjs.org/docs/messages/gssp-export`;
     const GSP_NO_RETURNED_VALUE =
-      'Your `getStaticProps` function did not return an object. Did you forget to add a `return`?';
+      "Your `getStaticProps` function did not return an object. Did you forget to add a `return`?";
     const GSSP_NO_RETURNED_VALUE =
-      'Your `getServerSideProps` function did not return an object. Did you forget to add a `return`?';
+      "Your `getServerSideProps` function did not return an object. Did you forget to add a `return`?";
     const UNSTABLE_REVALIDATE_RENAME_ERROR =
-      'The `unstable_revalidate` property is available for general use.\n' +
-      'Please use `revalidate` instead.';
+      "The `unstable_revalidate` property is available for general use.\n" +
+      "Please use `revalidate` instead.";
     const GSSP_COMPONENT_MEMBER_ERROR = `can not be attached to a page's component and must be exported from the page. See more info here: https://nextjs.org/docs/messages/gssp-component-member`;
     const NON_STANDARD_NODE_ENV = `You are using a non-standard "NODE_ENV" value in your environment. This creates inconsistencies in the project and is strongly advised against. Read more: https://nextjs.org/docs/messages/non-standard-node-env`;
     const SSG_FALLBACK_EXPORT_ERROR = `Pages with \`fallback\` enabled in \`getStaticPaths\` can not be exported. See more info here: https://nextjs.org/docs/messages/ssg-fallback-true-export`;
-    const ESLINT_DEFAULT_DIRS = ['app', 'pages', 'components', 'lib', 'src'];
+    const ESLINT_DEFAULT_DIRS = ["app", "pages", "components", "lib", "src"];
     const SERVER_RUNTIME = {
-      edge: 'edge',
-      experimentalEdge: 'experimental-edge',
-      nodejs: 'nodejs',
+      edge: "edge",
+      experimentalEdge: "experimental-edge",
+      nodejs: "nodejs",
     };
     const WEB_SOCKET_MAX_RECONNECTIONS = 12;
     /**
@@ -1219,44 +1219,44 @@ module.exports = [
      */ const WEBPACK_LAYERS_NAMES = {
       /**
        * The layer for the shared code between the client and server bundles.
-       */ shared: 'shared',
+       */ shared: "shared",
       /**
        * The layer for server-only runtime and picking up `react-server` export conditions.
        * Including app router RSC pages and app router custom routes and metadata routes.
-       */ reactServerComponents: 'rsc',
+       */ reactServerComponents: "rsc",
       /**
        * Server Side Rendering layer for app (ssr).
-       */ serverSideRendering: 'ssr',
+       */ serverSideRendering: "ssr",
       /**
        * The browser client bundle layer for actions.
-       */ actionBrowser: 'action-browser',
+       */ actionBrowser: "action-browser",
       /**
        * The Node.js bundle layer for the API routes.
-       */ apiNode: 'api-node',
+       */ apiNode: "api-node",
       /**
        * The Edge Lite bundle layer for the API routes.
-       */ apiEdge: 'api-edge',
+       */ apiEdge: "api-edge",
       /**
        * The layer for the middleware code.
-       */ middleware: 'middleware',
+       */ middleware: "middleware",
       /**
        * The layer for the instrumentation hooks.
-       */ instrument: 'instrument',
+       */ instrument: "instrument",
       /**
        * The layer for assets on the edge.
-       */ edgeAsset: 'edge-asset',
+       */ edgeAsset: "edge-asset",
       /**
        * The browser client bundle layer for App directory.
-       */ appPagesBrowser: 'app-pages-browser',
+       */ appPagesBrowser: "app-pages-browser",
       /**
        * The browser client bundle layer for Pages directory.
-       */ pagesDirBrowser: 'pages-dir-browser',
+       */ pagesDirBrowser: "pages-dir-browser",
       /**
        * The Edge Lite bundle layer for Pages directory.
-       */ pagesDirEdge: 'pages-dir-edge',
+       */ pagesDirEdge: "pages-dir-edge",
       /**
        * The Node.js bundle layer for Pages directory.
-       */ pagesDirNode: 'pages-dir-node',
+       */ pagesDirNode: "pages-dir-node",
     };
     const WEBPACK_LAYERS = {
       ...WEBPACK_LAYERS_NAMES,
@@ -1299,17 +1299,17 @@ module.exports = [
       },
     };
     const WEBPACK_RESOURCE_QUERIES = {
-      edgeSSREntry: '__next_edge_ssr_entry__',
-      metadata: '__next_metadata__',
-      metadataRoute: '__next_metadata_route__',
-      metadataImageMeta: '__next_metadata_image_meta__',
+      edgeSSREntry: "__next_edge_ssr_entry__",
+      metadata: "__next_metadata__",
+      metadataRoute: "__next_metadata_route__",
+      metadataImageMeta: "__next_metadata_image_meta__",
     };
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1331,14 +1331,14 @@ module.exports = [
       isInterceptionRouteAppPath: () => isInterceptionRouteAppPath,
     });
     const _apppaths = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)",
     );
-    const INTERCEPTION_ROUTE_MARKERS = ['(..)(..)', '(.)', '(..)', '(...)'];
+    const INTERCEPTION_ROUTE_MARKERS = ["(..)(..)", "(.)", "(..)", "(...)"];
     function isInterceptionRouteAppPath(path) {
       // TODO-APP: add more serious validation
       return (
         path
-          .split('/')
+          .split("/")
           .find((segment) => INTERCEPTION_ROUTE_MARKERS.find((m) => segment.startsWith(m))) !==
         undefined
       );
@@ -1347,7 +1347,7 @@ module.exports = [
       let interceptingRoute;
       let marker;
       let interceptedRoute;
-      for (const segment of path.split('/')) {
+      for (const segment of path.split("/")) {
         marker = INTERCEPTION_ROUTE_MARKERS.find((m) => segment.startsWith(m));
         if (marker) {
           [interceptingRoute, interceptedRoute] = path.split(marker, 2);
@@ -1359,9 +1359,9 @@ module.exports = [
           new Error(
             `Invalid interception route: ${path}. Must be in the format /<intercepting route>/(..|...|..)(..)/<intercepted route>`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E269',
+            value: "E269",
             enumerable: false,
             configurable: true,
           },
@@ -1369,64 +1369,64 @@ module.exports = [
       }
       interceptingRoute = (0, _apppaths.normalizeAppPath)(interceptingRoute); // normalize the path, e.g. /(blog)/feed -> /feed
       switch (marker) {
-        case '(.)':
+        case "(.)":
           // (.) indicates that we should match with sibling routes, so we just need to append the intercepted route to the intercepting route
-          if (interceptingRoute === '/') {
+          if (interceptingRoute === "/") {
             interceptedRoute = `/${interceptedRoute}`;
           } else {
-            interceptedRoute = interceptingRoute + '/' + interceptedRoute;
+            interceptedRoute = interceptingRoute + "/" + interceptedRoute;
           }
           break;
-        case '(..)':
+        case "(..)":
           // (..) indicates that we should match at one level up, so we need to remove the last segment of the intercepting route
-          if (interceptingRoute === '/') {
+          if (interceptingRoute === "/") {
             throw Object.defineProperty(
               new Error(
                 `Invalid interception route: ${path}. Cannot use (..) marker at the root level, use (.) instead.`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E207',
+                value: "E207",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
           interceptedRoute = interceptingRoute
-            .split('/')
+            .split("/")
             .slice(0, -1)
             .concat(interceptedRoute)
-            .join('/');
+            .join("/");
           break;
-        case '(...)':
+        case "(...)":
           // (...) will match the route segment in the root directory, so we need to use the root directory to prepend the intercepted route
-          interceptedRoute = '/' + interceptedRoute;
+          interceptedRoute = "/" + interceptedRoute;
           break;
-        case '(..)(..)': {
+        case "(..)(..)": {
           // (..)(..) indicates that we should match at two levels up, so we need to remove the last two segments of the intercepting route
-          const splitInterceptingRoute = interceptingRoute.split('/');
+          const splitInterceptingRoute = interceptingRoute.split("/");
           if (splitInterceptingRoute.length <= 2) {
             throw Object.defineProperty(
               new Error(
                 `Invalid interception route: ${path}. Cannot use (..)(..) marker at the root level or one level up.`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E486',
+                value: "E486",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
-          interceptedRoute = splitInterceptingRoute.slice(0, -2).concat(interceptedRoute).join('/');
+          interceptedRoute = splitInterceptingRoute.slice(0, -2).concat(interceptedRoute).join("/");
           break;
         }
         default:
           throw Object.defineProperty(
-            new Error('Invariant: unexpected marker'),
-            '__NEXT_ERROR_CODE',
+            new Error("Invariant: unexpected marker"),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E112',
+              value: "E112",
               enumerable: false,
               configurable: true,
             },
@@ -1438,15 +1438,15 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // regexp is based on https://github.com/sindresorhus/escape-string-regexp
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'escapeStringRegexp', {
+    Object.defineProperty(exports, "escapeStringRegexp", {
       enumerable: true,
       get: () => escapeStringRegexp,
     });
@@ -1455,14 +1455,14 @@ module.exports = [
     function escapeStringRegexp(str) {
       // see also: https://github.com/lodash/lodash/blob/2da024c3b4f9947a48517639de7560457cd4ec6c/escapeRegExp.js#L23
       if (reHasRegExp.test(str)) {
-        return str.replace(reReplaceRegExp, '\\$&');
+        return str.replace(reReplaceRegExp, "\\$&");
       }
       return str;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Removes the trailing slash for a given route or page path. Preserves the
@@ -1470,51 +1470,51 @@ module.exports = [
      *   - `/foo/bar/` -> `/foo/bar`
      *   - `/foo/bar` -> `/foo/bar`
      *   - `/` -> `/`
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'removeTrailingSlash', {
+    Object.defineProperty(exports, "removeTrailingSlash", {
       enumerable: true,
       get: () => removeTrailingSlash,
     });
     function removeTrailingSlash(route) {
-      return route.replace(/\/$/, '') || '/';
+      return route.replace(/\/$/, "") || "/";
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'InvariantError', {
+    Object.defineProperty(exports, "InvariantError", {
       enumerable: true,
       get: () => InvariantError,
     });
     class InvariantError extends Error {
       constructor(message, options) {
         super(
-          `Invariant: ${message.endsWith('.') ? message : message + '.'} This is a bug in Next.js.`,
+          `Invariant: ${message.endsWith(".") ? message : message + "."} This is a bug in Next.js.`,
           options,
         );
-        this.name = 'InvariantError';
+        this.name = "InvariantError";
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-loader-tree.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-loader-tree.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'parseLoaderTree', {
+    Object.defineProperty(exports, "parseLoaderTree", {
       enumerable: true,
       get: () => parseLoaderTree,
     });
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-rsc] (ecmascript)",
     );
     function parseLoaderTree(tree) {
       const [segment, parallelRoutes, modules, staticSiblings] = tree;
@@ -1534,11 +1534,11 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1560,7 +1560,7 @@ module.exports = [
       isCatchAll: () => isCatchAll,
     });
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)",
     );
     function getSegmentParam(segment) {
       const interceptionMarker = _interceptionroutes.INTERCEPTION_ROUTE_MARKERS.find((marker) =>
@@ -1571,23 +1571,23 @@ module.exports = [
       if (interceptionMarker) {
         segment = segment.slice(interceptionMarker.length);
       }
-      if (segment.startsWith('[[...') && segment.endsWith(']]')) {
+      if (segment.startsWith("[[...") && segment.endsWith("]]")) {
         return {
           // TODO-APP: Optional catchall does not currently work with parallel routes,
           // so for now aren't handling a potential interception marker.
-          paramType: 'optional-catchall',
+          paramType: "optional-catchall",
           paramName: segment.slice(5, -2),
         };
       }
-      if (segment.startsWith('[...') && segment.endsWith(']')) {
+      if (segment.startsWith("[...") && segment.endsWith("]")) {
         return {
-          paramType: interceptionMarker ? `catchall-intercepted-${interceptionMarker}` : 'catchall',
+          paramType: interceptionMarker ? `catchall-intercepted-${interceptionMarker}` : "catchall",
           paramName: segment.slice(4, -1),
         };
       }
-      if (segment.startsWith('[') && segment.endsWith(']')) {
+      if (segment.startsWith("[") && segment.endsWith("]")) {
         return {
-          paramType: interceptionMarker ? `dynamic-intercepted-${interceptionMarker}` : 'dynamic',
+          paramType: interceptionMarker ? `dynamic-intercepted-${interceptionMarker}` : "dynamic",
           paramName: segment.slice(1, -1),
         };
       }
@@ -1595,34 +1595,34 @@ module.exports = [
     }
     function isCatchAll(type) {
       return (
-        type === 'catchall' ||
-        type === 'catchall-intercepted-(..)(..)' ||
-        type === 'catchall-intercepted-(.)' ||
-        type === 'catchall-intercepted-(..)' ||
-        type === 'catchall-intercepted-(...)' ||
-        type === 'optional-catchall'
+        type === "catchall" ||
+        type === "catchall-intercepted-(..)(..)" ||
+        type === "catchall-intercepted-(.)" ||
+        type === "catchall-intercepted-(..)" ||
+        type === "catchall-intercepted-(...)" ||
+        type === "optional-catchall"
       );
     }
     function getParamProperties(paramType) {
       let repeat = false;
       let optional = false;
       switch (paramType) {
-        case 'catchall':
-        case 'catchall-intercepted-(..)(..)':
-        case 'catchall-intercepted-(.)':
-        case 'catchall-intercepted-(..)':
-        case 'catchall-intercepted-(...)':
+        case "catchall":
+        case "catchall-intercepted-(..)(..)":
+        case "catchall-intercepted-(.)":
+        case "catchall-intercepted-(..)":
+        case "catchall-intercepted-(...)":
           repeat = true;
           break;
-        case 'optional-catchall':
+        case "optional-catchall":
           repeat = true;
           optional = true;
           break;
-        case 'dynamic':
-        case 'dynamic-intercepted-(..)(..)':
-        case 'dynamic-intercepted-(.)':
-        case 'dynamic-intercepted-(..)':
-        case 'dynamic-intercepted-(...)':
+        case "dynamic":
+        case "dynamic-intercepted-(..)(..)":
+        case "dynamic-intercepted-(.)":
+        case "dynamic-intercepted-(..)":
+        case "dynamic-intercepted-(...)":
           break;
         default:
           paramType;
@@ -1633,11 +1633,11 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/routes/app.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/routes/app.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1661,16 +1661,16 @@ module.exports = [
       parseAppRouteSegment: () => parseAppRouteSegment,
     });
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-rsc] (ecmascript)",
     );
     const _getsegmentparam = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript)",
     );
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)",
     );
     function parseAppRouteSegment(segment) {
-      if (segment === '') {
+      if (segment === "") {
         return null;
       }
       // Check if the segment starts with an interception marker
@@ -1680,26 +1680,26 @@ module.exports = [
       const param = (0, _getsegmentparam.getSegmentParam)(segment);
       if (param) {
         return {
-          type: 'dynamic',
+          type: "dynamic",
           name: segment,
           param,
           interceptionMarker,
         };
-      } else if (segment.startsWith('(') && segment.endsWith(')')) {
+      } else if (segment.startsWith("(") && segment.endsWith(")")) {
         return {
-          type: 'route-group',
+          type: "route-group",
           name: segment,
           interceptionMarker,
         };
-      } else if (segment.startsWith('@')) {
+      } else if (segment.startsWith("@")) {
         return {
-          type: 'parallel-route',
+          type: "parallel-route",
           name: segment,
           interceptionMarker,
         };
       } else {
         return {
-          type: 'static',
+          type: "static",
           name: segment,
           interceptionMarker,
         };
@@ -1716,7 +1716,7 @@ module.exports = [
       );
     }
     function parseAppRoute(pathname, normalized) {
-      const pathnameSegments = pathname.split('/').filter(Boolean);
+      const pathnameSegments = pathname.split("/").filter(Boolean);
       // Build segments array with static and dynamic segments
       const segments = [];
       // Parse if this is an interception route.
@@ -1731,15 +1731,15 @@ module.exports = [
         }
         if (
           normalized &&
-          (appSegment.type === 'route-group' || appSegment.type === 'parallel-route')
+          (appSegment.type === "route-group" || appSegment.type === "parallel-route")
         ) {
           throw Object.defineProperty(
             new _invarianterror.InvariantError(
               `${pathname} is being parsed as a normalized route, but it has a route group or parallel route segment.`,
             ),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E923',
+              value: "E923",
               enumerable: false,
               configurable: true,
             },
@@ -1751,9 +1751,9 @@ module.exports = [
           if (parts.length !== 2) {
             throw Object.defineProperty(
               new Error(`Invalid interception route: ${pathname}`),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E924',
+                value: "E924",
                 enumerable: false,
                 configurable: true,
               },
@@ -1768,7 +1768,7 @@ module.exports = [
           interceptionMarker = appSegment.interceptionMarker;
         }
       }
-      const dynamicSegments = segments.filter((segment) => segment.type === 'dynamic');
+      const dynamicSegments = segments.filter((segment) => segment.type === "dynamic");
       return {
         normalized,
         pathname,
@@ -1780,55 +1780,55 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-prefix-from-param-type.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-prefix-from-param-type.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'interceptionPrefixFromParamType', {
+    Object.defineProperty(exports, "interceptionPrefixFromParamType", {
       enumerable: true,
       get: () => interceptionPrefixFromParamType,
     });
     function interceptionPrefixFromParamType(paramType) {
       switch (paramType) {
-        case 'catchall-intercepted-(..)(..)':
-        case 'dynamic-intercepted-(..)(..)':
-          return '(..)(..)';
-        case 'catchall-intercepted-(.)':
-        case 'dynamic-intercepted-(.)':
-          return '(.)';
-        case 'catchall-intercepted-(..)':
-        case 'dynamic-intercepted-(..)':
-          return '(..)';
-        case 'catchall-intercepted-(...)':
-        case 'dynamic-intercepted-(...)':
-          return '(...)';
-        case 'catchall':
-        case 'dynamic':
-        case 'optional-catchall':
+        case "catchall-intercepted-(..)(..)":
+        case "dynamic-intercepted-(..)(..)":
+          return "(..)(..)";
+        case "catchall-intercepted-(.)":
+        case "dynamic-intercepted-(.)":
+          return "(.)";
+        case "catchall-intercepted-(..)":
+        case "dynamic-intercepted-(..)":
+          return "(..)";
+        case "catchall-intercepted-(...)":
+        case "dynamic-intercepted-(...)":
+          return "(...)";
+        case "catchall":
+        case "dynamic":
+        case "optional-catchall":
         default:
           return null;
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/resolve-param-value.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/resolve-param-value.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'resolveParamValue', {
+    Object.defineProperty(exports, "resolveParamValue", {
       enumerable: true,
       get: () => resolveParamValue,
     });
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-rsc] (ecmascript)",
     );
     const _interceptionprefixfromparamtype = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-prefix-from-param-type.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-prefix-from-param-type.js [app-rsc] (ecmascript)",
     );
     /**
      * Extracts the param value from a path segment, handling interception markers
@@ -1840,7 +1840,7 @@ module.exports = [
      * @returns The extracted param value
      */ function getParamValueFromSegment(pathSegment, params, paramType) {
       // If the segment is dynamic, resolve it from the params object
-      if (pathSegment.type === 'dynamic') {
+      if (pathSegment.type === "dynamic") {
         return params[pathSegment.param.paramName];
       }
       // If the paramType indicates this is an intercepted param, strip the marker
@@ -1848,26 +1848,26 @@ module.exports = [
       const interceptionPrefix = (0,
       _interceptionprefixfromparamtype.interceptionPrefixFromParamType)(paramType);
       if (interceptionPrefix === pathSegment.interceptionMarker) {
-        return pathSegment.name.replace(pathSegment.interceptionMarker, '');
+        return pathSegment.name.replace(pathSegment.interceptionMarker, "");
       }
       // For static segments, use the name
       return pathSegment.name;
     }
     function resolveParamValue(paramName, paramType, depth, route, params) {
       switch (paramType) {
-        case 'catchall':
-        case 'optional-catchall':
-        case 'catchall-intercepted-(..)(..)':
-        case 'catchall-intercepted-(.)':
-        case 'catchall-intercepted-(..)':
-        case 'catchall-intercepted-(...)': {
+        case "catchall":
+        case "optional-catchall":
+        case "catchall-intercepted-(..)(..)":
+        case "catchall-intercepted-(.)":
+        case "catchall-intercepted-(..)":
+        case "catchall-intercepted-(...)": {
           // For catchall routes, derive from pathname using depth to determine
           // which segments to use
           const processedSegments = [];
           // Process segments to handle any embedded dynamic params
           for (let index = depth; index < route.segments.length; index++) {
             const pathSegment = route.segments[index];
-            if (pathSegment.type === 'static') {
+            if (pathSegment.type === "static") {
               let value = pathSegment.name;
               // For intercepted catch-all params, strip the marker from the first segment
               const interceptionPrefix = (0,
@@ -1878,7 +1878,7 @@ module.exports = [
                 interceptionPrefix === pathSegment.interceptionMarker
               ) {
                 // Strip the interception marker from the value
-                value = value.replace(pathSegment.interceptionMarker, '');
+                value = value.replace(pathSegment.interceptionMarker, "");
               }
               processedSegments.push(value);
             } else {
@@ -1886,7 +1886,7 @@ module.exports = [
               if (!Object.hasOwn(params, pathSegment.param.paramName)) {
                 // If the segment is an optional catchall, we can break out of the
                 // loop because it's optional!
-                if (pathSegment.param.paramType === 'optional-catchall') {
+                if (pathSegment.param.paramType === "optional-catchall") {
                   break;
                 }
                 // Unknown param placeholder in pathname - can't derive full value
@@ -1904,7 +1904,7 @@ module.exports = [
           }
           if (processedSegments.length > 0) {
             return processedSegments;
-          } else if (paramType === 'optional-catchall') {
+          } else if (paramType === "optional-catchall") {
             return undefined;
           } else {
             // We shouldn't be able to match a catchall segment without any path
@@ -1913,26 +1913,26 @@ module.exports = [
               new _invarianterror.InvariantError(
                 `Unexpected empty path segments match for a route "${route.pathname}" with param "${paramName}" of type "${paramType}"`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E931',
+                value: "E931",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
         }
-        case 'dynamic':
-        case 'dynamic-intercepted-(..)(..)':
-        case 'dynamic-intercepted-(.)':
-        case 'dynamic-intercepted-(..)':
-        case 'dynamic-intercepted-(...)':
+        case "dynamic":
+        case "dynamic-intercepted-(..)(..)":
+        case "dynamic-intercepted-(.)":
+        case "dynamic-intercepted-(..)":
+        case "dynamic-intercepted-(...)":
           // For regular dynamic parameters, take the segment at this depth
           if (depth < route.segments.length) {
             const pathSegment = route.segments[depth];
             // Check if the segment at this depth is a placeholder for an unknown param
             if (
-              pathSegment.type === 'dynamic' &&
+              pathSegment.type === "dynamic" &&
               !Object.hasOwn(params, pathSegment.param.paramName)
             ) {
               // The segment is a placeholder like [category] and we don't have the value
@@ -1949,11 +1949,11 @@ module.exports = [
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-dynamic-param.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-dynamic-param.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1979,16 +1979,16 @@ module.exports = [
       parseParameter: () => parseParameter,
     });
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-rsc] (ecmascript)",
     );
     const _parseloadertree = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-loader-tree.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-loader-tree.js [app-rsc] (ecmascript)",
     );
     const _app = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/routes/app.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/routes/app.js [app-rsc] (ecmascript)",
     );
     const _resolveparamvalue = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/resolve-param-value.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/resolve-param-value.js [app-rsc] (ecmascript)",
     );
     /**
      * Gets the value of a param from the params object. This correctly handles the
@@ -2008,7 +2008,7 @@ module.exports = [
         value = searchValue;
       } else if (Array.isArray(value)) {
         value = value.map((i) => encodeURIComponent(i));
-      } else if (typeof value === 'string') {
+      } else if (typeof value === "string") {
         value = encodeURIComponent(value);
       }
       return value;
@@ -2029,7 +2029,7 @@ module.exports = [
         const { segment, parallelRoutes } = (0, _parseloadertree.parseLoaderTree)(tree);
         const appSegment = (0, _app.parseAppRouteSegment)(segment);
         if (
-          appSegment?.type === 'dynamic' &&
+          appSegment?.type === "dynamic" &&
           !Object.hasOwn(interpolated, appSegment.param.paramName) && // If the param is in the fallback route params, we don't need to
           // interpolate it because it's already marked as being unknown.
           !fallbackRouteParams?.has(appSegment.param.paramName)
@@ -2044,14 +2044,14 @@ module.exports = [
           );
           if (paramValue !== undefined) {
             interpolated[paramName] = paramValue;
-          } else if (paramType !== 'optional-catchall') {
+          } else if (paramType !== "optional-catchall") {
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
                 `Could not resolve param value for segment: ${paramName}`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E932',
+                value: "E932",
                 enumerable: false,
                 configurable: true,
               },
@@ -2062,8 +2062,8 @@ module.exports = [
         let nextDepth = depth;
         if (
           appSegment &&
-          appSegment.type !== 'route-group' &&
-          appSegment.type !== 'parallel-route'
+          appSegment.type !== "route-group" &&
+          appSegment.type !== "parallel-route"
         ) {
           nextDepth++;
         }
@@ -2088,27 +2088,27 @@ module.exports = [
       // handle the case where an optional catchall does not have a value,
       // e.g. `/dashboard/[[...slug]]` when requesting `/dashboard`
       if (!value || value.length === 0) {
-        if (dynamicParamType === 'oc') {
+        if (dynamicParamType === "oc") {
           return {
             param: segmentKey,
             value: null,
             type: dynamicParamType,
-            treeSegment: [segmentKey, '', dynamicParamType, staticSiblings],
+            treeSegment: [segmentKey, "", dynamicParamType, staticSiblings],
           };
         }
         throw Object.defineProperty(
           new _invarianterror.InvariantError(
             `Missing value for segment key: "${segmentKey}" with dynamic param type: ${dynamicParamType}`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E864',
+            value: "E864",
             enumerable: false,
             configurable: true,
           },
         );
       }
-      const paramCacheKey = Array.isArray(value) ? value.join('/') : value;
+      const paramCacheKey = Array.isArray(value) ? value.join("/") : value;
       return {
         param: segmentKey,
         // The value that is passed to user code.
@@ -2131,11 +2131,11 @@ module.exports = [
       return parseMatchedParameter(match[2]);
     }
     function parseMatchedParameter(param) {
-      const optional = param.startsWith('[') && param.endsWith(']');
+      const optional = param.startsWith("[") && param.endsWith("]");
       if (optional) {
         param = param.slice(1, -1);
       }
-      const repeat = param.startsWith('...');
+      const repeat = param.startsWith("...");
       if (repeat) {
         param = param.slice(3);
       }
@@ -2146,11 +2146,11 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2172,19 +2172,19 @@ module.exports = [
       getRouteRegex: () => getRouteRegex,
     });
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-rsc] (ecmascript)",
     );
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)",
     );
     const _escaperegexp = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [app-rsc] (ecmascript)",
     );
     const _removetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [app-rsc] (ecmascript)",
     );
     const _getdynamicparam = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-dynamic-param.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/get-dynamic-param.js [app-rsc] (ecmascript)",
     );
     function getParametrizedRoute(route, includeSuffix, includePrefix) {
       const groups = {};
@@ -2192,7 +2192,7 @@ module.exports = [
       const segments = [];
       for (const segment of (0, _removetrailingslash.removeTrailingSlash)(route)
         .slice(1)
-        .split('/')) {
+        .split("/")) {
         const markerMatch = _interceptionroutes.INTERCEPTION_ROUTE_MARKERS.find((m) =>
           segment.startsWith(m),
         );
@@ -2219,7 +2219,7 @@ module.exports = [
           if (includePrefix && paramMatches[1]) {
             segments.push(`/${(0, _escaperegexp.escapeStringRegexp)(paramMatches[1])}`);
           }
-          let s = repeat ? (optional ? '(?:/(.+?))?' : '/(.+?)') : '/([^/]+?)';
+          let s = repeat ? (optional ? "(?:/(.+?))?" : "/(.+?)") : "/([^/]+?)";
           // Remove the leading slash if includePrefix already added it.
           if (includePrefix && paramMatches[1]) {
             s = s.substring(1);
@@ -2234,7 +2234,7 @@ module.exports = [
         }
       }
       return {
-        parameterizedRoute: segments.join(''),
+        parameterizedRoute: segments.join(""),
         groups,
       };
     }
@@ -2249,7 +2249,7 @@ module.exports = [
       );
       let re = parameterizedRoute;
       if (!excludeOptionalTrailingSlash) {
-        re += '(?:/)?';
+        re += "(?:/)?";
       }
       return {
         re: new RegExp(`^${re}$`),
@@ -2262,7 +2262,7 @@ module.exports = [
      */ function buildGetSafeRouteKey() {
       let i = 0;
       return () => {
-        let routeKey = '';
+        let routeKey = "";
         let j = ++i;
         while (j > 0) {
           routeKey += String.fromCharCode(97 + ((j - 1) % 26));
@@ -2282,7 +2282,7 @@ module.exports = [
       const { key, optional, repeat } = (0, _getdynamicparam.parseMatchedParameter)(segment);
       // replace any non-word characters since they can break
       // the named regex
-      let cleanedKey = key.replace(/\W/g, '');
+      let cleanedKey = key.replace(/\W/g, "");
       if (keyPrefix) {
         cleanedKey = `${keyPrefix}${cleanedKey}`;
       }
@@ -2309,7 +2309,7 @@ module.exports = [
       // the non-intercepted route (ie /app/(.)[username] should not match /app/[username])
       const interceptionPrefix = interceptionMarker
         ? (0, _escaperegexp.escapeStringRegexp)(interceptionMarker)
-        : '';
+        : "";
       let pattern;
       if (duplicateKey && backreferenceDuplicateKeys) {
         // Use a backreference to the key to ensure that the key is the same value
@@ -2349,7 +2349,7 @@ module.exports = [
       reference = structuredClone(reference);
       for (const segment of (0, _removetrailingslash.removeTrailingSlash)(route)
         .slice(1)
-        .split('/')) {
+        .split("/")) {
         const hasInterceptionMarker = _interceptionroutes.INTERCEPTION_ROUTE_MARKERS.some((m) =>
           segment.startsWith(m),
         );
@@ -2376,7 +2376,7 @@ module.exports = [
           });
           segments.push(pattern);
           inverseParts.push(
-            `/${paramMatches[1]}:${reference.names[key] ?? cleanedKey}${repeat ? (optional ? '*' : '+') : ''}`,
+            `/${paramMatches[1]}:${reference.names[key] ?? cleanedKey}${repeat ? (optional ? "*" : "+") : ""}`,
           );
           reference.names[key] ??= cleanedKey;
         } else if (paramMatches && paramMatches[2]) {
@@ -2399,7 +2399,7 @@ module.exports = [
           }
           segments.push(s);
           inverseParts.push(
-            `/:${reference.names[key] ?? cleanedKey}${repeat ? (optional ? '*' : '+') : ''}`,
+            `/:${reference.names[key] ?? cleanedKey}${repeat ? (optional ? "*" : "+") : ""}`,
           );
           reference.names[key] ??= cleanedKey;
         } else {
@@ -2413,9 +2413,9 @@ module.exports = [
         }
       }
       return {
-        namedParameterizedRoute: segments.join(''),
+        namedParameterizedRoute: segments.join(""),
         routeKeys,
-        pathToRegexpPattern: inverseParts.join(''),
+        pathToRegexpPattern: inverseParts.join(""),
         reference,
       };
     }
@@ -2430,7 +2430,7 @@ module.exports = [
       );
       let namedRegex = result.namedParameterizedRoute;
       if (!options.excludeOptionalTrailingSlash) {
-        namedRegex += '(?:/)?';
+        namedRegex += "(?:/)?";
       }
       return {
         ...getRouteRegex(normalizedRoute, options),
@@ -2443,8 +2443,8 @@ module.exports = [
     function getNamedMiddlewareRegex(normalizedRoute, options) {
       const { parameterizedRoute } = getParametrizedRoute(normalizedRoute, false, false);
       const { catchAll = true } = options;
-      if (parameterizedRoute === '/') {
-        const catchAllRegex = catchAll ? '.*' : '';
+      if (parameterizedRoute === "/") {
+        const catchAllRegex = catchAll ? ".*" : "";
         return {
           namedRegex: `^/${catchAllRegex}$`,
         };
@@ -2457,17 +2457,17 @@ module.exports = [
         false,
         undefined,
       );
-      const catchAllGroupedRegex = catchAll ? '(?:(/.*)?)' : '';
+      const catchAllGroupedRegex = catchAll ? "(?:(/.*)?)" : "";
       return {
         namedRegex: `^${namedParameterizedRoute}${catchAllGroupedRegex}$`,
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2516,7 +2516,7 @@ module.exports = [
       normalizeRepeatedSlashes: () => normalizeRepeatedSlashes,
       stringifyError: () => stringifyError,
     });
-    const WEB_VITALS = ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB'];
+    const WEB_VITALS = ["CLS", "FCP", "FID", "INP", "LCP", "TTFB"];
     function execOnce(fn) {
       let used = false;
       let result;
@@ -2534,7 +2534,7 @@ module.exports = [
     const isAbsoluteUrl = (url) => ABSOLUTE_URL_REGEX.test(url);
     function getLocationOrigin() {
       const { protocol, hostname, port } = window.location;
-      return `${protocol}//${hostname}${port ? ':' + port : ''}`;
+      return `${protocol}//${hostname}${port ? ":" + port : ""}`;
     }
     function getURL() {
       const { href } = window.location;
@@ -2542,29 +2542,29 @@ module.exports = [
       return href.substring(origin.length);
     }
     function getDisplayName(Component) {
-      return typeof Component === 'string'
+      return typeof Component === "string"
         ? Component
-        : Component.displayName || Component.name || 'Unknown';
+        : Component.displayName || Component.name || "Unknown";
     }
     function isResSent(res) {
       return res.finished || res.headersSent;
     }
     function normalizeRepeatedSlashes(url) {
-      const urlParts = url.split('?');
+      const urlParts = url.split("?");
       const urlNoQuery = urlParts[0];
       return (
         urlNoQuery // first we replace any non-encoded backslashes with forward
           // then normalize repeated forward slashes
-          .replace(/\\/g, '/')
-          .replace(/\/\/+/g, '/') + (urlParts[1] ? `?${urlParts.slice(1).join('?')}` : '')
+          .replace(/\\/g, "/")
+          .replace(/\/\/+/g, "/") + (urlParts[1] ? `?${urlParts.slice(1).join("?")}` : "")
       );
     }
     async function loadGetInitialProps(App, ctx) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (App.prototype?.getInitialProps) {
           const message = `"${getDisplayName(App)}.getInitialProps()" is defined as an instance method - visit https://nextjs.org/docs/messages/get-initial-props-as-an-instance-method for more information.`;
-          throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-            value: 'E1035',
+          throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+            value: "E1035",
             enumerable: false,
             configurable: true,
           });
@@ -2587,13 +2587,13 @@ module.exports = [
       }
       if (!props) {
         const message = `"${getDisplayName(App)}.getInitialProps()" should resolve to an object. But found "${props}" instead.`;
-        throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-          value: 'E1025',
+        throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+          value: "E1025",
           enumerable: false,
           configurable: true,
         });
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (Object.keys(props).length === 0 && !ctx.ctx) {
           console.warn(
             `${getDisplayName(App)} returned an empty object from \`getInitialProps\`. This de-optimizes and prevents automatic static optimization. https://nextjs.org/docs/messages/empty-object-getInitialProps`,
@@ -2602,19 +2602,19 @@ module.exports = [
       }
       return props;
     }
-    const SP = typeof performance !== 'undefined';
+    const SP = typeof performance !== "undefined";
     const ST =
       SP &&
-      ['mark', 'measure', 'getEntriesByName'].every(
-        (method) => typeof performance[method] === 'function',
+      ["mark", "measure", "getEntriesByName"].every(
+        (method) => typeof performance[method] === "function",
       );
     class DecodeError extends Error {}
     class NormalizeError extends Error {}
     class PageNotFoundError extends Error {
       constructor(page) {
         super();
-        this.code = 'ENOENT';
-        this.name = 'PageNotFoundError';
+        this.code = "ENOENT";
+        this.name = "PageNotFoundError";
         this.message = `Cannot find module for page: ${page}`;
       }
     }
@@ -2627,7 +2627,7 @@ module.exports = [
     class MiddlewareNotFoundError extends Error {
       constructor() {
         super();
-        this.code = 'ENOENT';
+        this.code = "ENOENT";
         this.message = `Cannot find the middleware module`;
       }
     }
@@ -2638,11 +2638,11 @@ module.exports = [
       });
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/route-pattern-normalizer.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/route-pattern-normalizer.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2669,9 +2669,9 @@ module.exports = [
       stripNormalizedSeparators: () => stripNormalizedSeparators,
       stripParameterSeparators: () => stripParameterSeparators,
     });
-    const PARAM_SEPARATOR = '_NEXTSEP_';
+    const PARAM_SEPARATOR = "_NEXTSEP_";
     function hasAdjacentParameterIssues(route) {
-      if (typeof route !== 'string') return false;
+      if (typeof route !== "string") return false;
       // Check for interception route markers followed immediately by parameters
       // Pattern: /(.):param, /(..):param, /(...):param, /(.)(.):param etc.
       // These patterns cause "Must have text between two parameters" errors
@@ -2698,23 +2698,23 @@ module.exports = [
         // Token union type: Token = string | TokenObject
         // Literal path segments are strings, parameters/wildcards are objects
         if (
-          typeof token === 'object' &&
+          typeof token === "object" &&
           token !== null && // Not all token objects have 'modifier' property (e.g., simple text tokens)
-          'modifier' in token && // Only repeating modifiers (* or +) cause the validation error
+          "modifier" in token && // Only repeating modifiers (* or +) cause the validation error
           // Other modifiers like '?' (optional) are fine
-          (token.modifier === '*' || token.modifier === '+') && // Token objects can have different shapes depending on route pattern
-          'prefix' in token &&
-          'suffix' in token && // Both prefix and suffix must be empty strings
+          (token.modifier === "*" || token.modifier === "+") && // Token objects can have different shapes depending on route pattern
+          "prefix" in token &&
+          "suffix" in token && // Both prefix and suffix must be empty strings
           // This is what causes the validation error in path-to-regexp
-          token.prefix === '' &&
-          token.suffix === ''
+          token.prefix === "" &&
+          token.suffix === ""
         ) {
           // Add minimal prefix to satisfy path-to-regexp validation
           // We use '/' as it's the most common path delimiter and won't break route matching
           // The prefix gets used in regex generation but doesn't affect parameter extraction
           return {
             ...token,
-            prefix: '/',
+            prefix: "/",
           };
         }
         return token;
@@ -2724,18 +2724,18 @@ module.exports = [
       // Remove separator after interception route markers
       // Pattern: (.)_NEXTSEP_ -> (.), (..)_NEXTSEP_ -> (..), etc.
       // The separator appears after the closing paren of interception markers
-      return pathname.replace(new RegExp(`\\)${PARAM_SEPARATOR}`, 'g'), ')');
+      return pathname.replace(new RegExp(`\\)${PARAM_SEPARATOR}`, "g"), ")");
     }
     function stripParameterSeparators(params) {
       const cleaned = {};
       for (const [key, value] of Object.entries(params)) {
-        if (typeof value === 'string') {
+        if (typeof value === "string") {
           // Remove the separator if it appears at the start of parameter values
-          cleaned[key] = value.replace(new RegExp(`^${PARAM_SEPARATOR}`), '');
+          cleaned[key] = value.replace(new RegExp(`^${PARAM_SEPARATOR}`), "");
         } else if (Array.isArray(value)) {
           // Handle array parameters (from repeated route segments)
           cleaned[key] = value.map((item) =>
-            typeof item === 'string' ? item.replace(new RegExp(`^${PARAM_SEPARATOR}`), '') : item,
+            typeof item === "string" ? item.replace(new RegExp(`^${PARAM_SEPARATOR}`), "") : item,
           );
         } else {
           cleaned[key] = value;
@@ -2744,14 +2744,14 @@ module.exports = [
       return cleaned;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Client-safe utilities for route matching that don't import server-side
      * utilities to avoid bundling issues with Turbopack
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2775,13 +2775,13 @@ module.exports = [
       safeRouteMatcher: () => safeRouteMatcher,
     });
     const _pathtoregexp = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp/index.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/path-to-regexp/index.js [app-rsc] (ecmascript)",
     );
     const _routepatternnormalizer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/route-pattern-normalizer.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/route-pattern-normalizer.js [app-rsc] (ecmascript)",
     );
     function safePathToRegexp(route, keys, options) {
-      if (typeof route !== 'string') {
+      if (typeof route !== "string") {
         return (0, _pathtoregexp.pathToRegexp)(route, keys, options);
       }
       // Check if normalization is needed and cache the result
@@ -2861,22 +2861,22 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getRouteMatcher', {
+    Object.defineProperty(exports, "getRouteMatcher", {
       enumerable: true,
       get: () => getRouteMatcher,
     });
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-rsc] (ecmascript)",
     );
     const _routematchutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [app-rsc] (ecmascript)",
     );
     function getRouteMatcher({ re, groups }) {
       const rawMatcher = (pathname) => {
@@ -2887,10 +2887,10 @@ module.exports = [
             return decodeURIComponent(param);
           } catch {
             throw Object.defineProperty(
-              new _utils.DecodeError('failed to decode param'),
-              '__NEXT_ERROR_CODE',
+              new _utils.DecodeError("failed to decode param"),
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E528',
+                value: "E528",
                 enumerable: false,
                 configurable: true,
               },
@@ -2902,7 +2902,7 @@ module.exports = [
           const match = routeMatch[group.pos];
           if (match !== undefined) {
             if (group.repeat) {
-              params[key] = match.split('/').map((entry) => decode(entry));
+              params[key] = match.split("/").map((entry) => decode(entry));
             } else {
               params[key] = decode(match);
             }
@@ -2914,11 +2914,11 @@ module.exports = [
       return (0, _routematchutils.safeRouteMatcher)(rawMatcher);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2943,7 +2943,7 @@ module.exports = [
       const query = {};
       for (const [key, value] of searchParams.entries()) {
         const existing = query[key];
-        if (typeof existing === 'undefined') {
+        if (typeof existing === "undefined") {
           query[key] = value;
         } else if (Array.isArray(existing)) {
           existing.push(value);
@@ -2954,13 +2954,13 @@ module.exports = [
       return query;
     }
     function stringifyUrlQueryParam(param) {
-      if (typeof param === 'string') {
+      if (typeof param === "string") {
         return param;
       }
-      if ((typeof param === 'number' && !isNaN(param)) || typeof param === 'boolean') {
+      if ((typeof param === "number" && !isNaN(param)) || typeof param === "boolean") {
         return String(param);
       } else {
-        return '';
+        return "";
       }
     }
     function urlQueryToSearchParams(query) {
@@ -2988,42 +2988,42 @@ module.exports = [
       return target;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'parseRelativeUrl', {
+    Object.defineProperty(exports, "parseRelativeUrl", {
       enumerable: true,
       get: () => parseRelativeUrl,
     });
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils.js [app-rsc] (ecmascript)",
     );
     const _querystring = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-rsc] (ecmascript)",
     );
     function parseRelativeUrl(url, base, parseQuery = true) {
       const globalBase = new URL(
-        ('TURBOPACK compile-time truthy', 1) ? 'http://n' : 'TURBOPACK unreachable',
+        ("TURBOPACK compile-time truthy", 1) ? "http://n" : "TURBOPACK unreachable",
       );
       const resolvedBase = base
         ? new URL(base, globalBase)
-        : url.startsWith('.')
-          ? new URL(('TURBOPACK compile-time truthy', 1) ? 'http://n' : 'TURBOPACK unreachable')
+        : url.startsWith(".")
+          ? new URL(("TURBOPACK compile-time truthy", 1) ? "http://n" : "TURBOPACK unreachable")
           : globalBase;
-      const { pathname, searchParams, search, hash, href, origin } = url.startsWith('/')
+      const { pathname, searchParams, search, hash, href, origin } = url.startsWith("/")
         ? // Not using `origin` to support other protocols
           new URL(`${resolvedBase.protocol}//${resolvedBase.host}${url}`)
         : new URL(url, resolvedBase);
       if (origin !== globalBase.origin) {
         throw Object.defineProperty(
           new Error(`invariant: invalid relative URL, router received ${url}`),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E159',
+            value: "E159",
             enumerable: false,
             configurable: true,
           },
@@ -3046,25 +3046,25 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-url.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-url.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'parseUrl', {
+    Object.defineProperty(exports, "parseUrl", {
       enumerable: true,
       get: () => parseUrl,
     });
     const _querystring = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-rsc] (ecmascript)",
     );
     const _parserelativeurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js [app-rsc] (ecmascript)",
     );
     function parseUrl(url) {
-      if (url.startsWith('/')) {
+      if (url.startsWith("/")) {
         return (0, _parserelativeurl.parseRelativeUrl)(url);
       }
       const parsedURL = new URL(url);
@@ -3085,18 +3085,18 @@ module.exports = [
         search,
         origin: parsedURL.origin,
         slashes:
-          parsedURL.href.slice(parsedURL.protocol.length, parsedURL.protocol.length + 2) === '//',
+          parsedURL.href.slice(parsedURL.protocol.length, parsedURL.protocol.length + 2) === "//",
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/api-utils/get-cookie-parser.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/api-utils/get-cookie-parser.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getCookieParser', {
+    Object.defineProperty(exports, "getCookieParser", {
       enumerable: true,
       get: () => getCookieParser,
     });
@@ -3107,17 +3107,17 @@ module.exports = [
           return {};
         }
         const { parse: parseCookieFn } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/cookie/index.js [app-rsc] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/cookie/index.js [app-rsc] (ecmascript)",
         );
-        return parseCookieFn(Array.isArray(cookie) ? cookie.join('; ') : cookie);
+        return parseCookieFn(Array.isArray(cookie) ? cookie.join("; ") : cookie);
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/prepare-destination.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/prepare-destination.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3141,25 +3141,25 @@ module.exports = [
       prepareDestination: () => prepareDestination,
     });
     const _escaperegexp = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/escape-regexp.js [app-rsc] (ecmascript)",
     );
     const _parseurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-url.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-url.js [app-rsc] (ecmascript)",
     );
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)",
     );
     const _getcookieparser = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/api-utils/get-cookie-parser.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/api-utils/get-cookie-parser.js [app-rsc] (ecmascript)",
     );
     const _routematchutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-match-utils.js [app-rsc] (ecmascript)",
     );
     /**
      * Ensure only a-zA-Z are used for param names for proper interpolating
      * with path-to-regexp
      */ function getSafeParamName(paramName) {
-      let newParamName = '';
+      let newParamName = "";
       for (let i = 0; i < paramName.length; i++) {
         const charCode = paramName.charCodeAt(i);
         if (
@@ -3173,12 +3173,12 @@ module.exports = [
     }
     function escapeSegment(str, segmentName) {
       return str.replace(
-        new RegExp(`:${(0, _escaperegexp.escapeStringRegexp)(segmentName)}`, 'g'),
+        new RegExp(`:${(0, _escaperegexp.escapeStringRegexp)(segmentName)}`, "g"),
         `__ESC_COLON_${segmentName}`,
       );
     }
     function unescapeSegments(str) {
-      return str.replace(/__ESC_COLON_/gi, ':');
+      return str.replace(/__ESC_COLON_/gi, ":");
     }
     function matchHas(req, query, has = [], missing = []) {
       const params = {};
@@ -3186,13 +3186,13 @@ module.exports = [
         let value;
         let key = hasItem.key;
         switch (hasItem.type) {
-          case 'header': {
+          case "header": {
             key = key.toLowerCase();
             value = req.headers[key];
             break;
           }
-          case 'cookie': {
-            if ('cookies' in req) {
+          case "cookie": {
+            if ("cookies" in req) {
               value = req.cookies[hasItem.key];
             } else {
               const cookies = (0, _getcookieparser.getCookieParser)(req.headers)();
@@ -3200,14 +3200,14 @@ module.exports = [
             }
             break;
           }
-          case 'query': {
+          case "query": {
             value = query[key];
             break;
           }
-          case 'host': {
+          case "host": {
             const { host } = req?.headers || {};
             // remove port from host if present
-            const hostname = host?.split(':', 1)[0].toLowerCase();
+            const hostname = host?.split(":", 1)[0].toLowerCase();
             value = hostname;
             break;
           }
@@ -3229,7 +3229,7 @@ module.exports = [
                 Object.keys(matches.groups).forEach((groupKey) => {
                   params[groupKey] = matches.groups[groupKey];
                 });
-              } else if (hasItem.type === 'host' && matches[0]) {
+              } else if (hasItem.type === "host" && matches[0]) {
                 params.host = matches[0];
               }
             }
@@ -3246,24 +3246,24 @@ module.exports = [
       return false;
     }
     function compileNonPath(value, params) {
-      if (!value.includes(':')) {
+      if (!value.includes(":")) {
         return value;
       }
       for (const key of Object.keys(params)) {
         if (value.includes(`:${key}`)) {
           value = value
-            .replace(new RegExp(`:${key}\\*`, 'g'), `:${key}--ESCAPED_PARAM_ASTERISKS`)
-            .replace(new RegExp(`:${key}\\?`, 'g'), `:${key}--ESCAPED_PARAM_QUESTION`)
-            .replace(new RegExp(`:${key}\\+`, 'g'), `:${key}--ESCAPED_PARAM_PLUS`)
-            .replace(new RegExp(`:${key}(?!\\w)`, 'g'), `--ESCAPED_PARAM_COLON${key}`);
+            .replace(new RegExp(`:${key}\\*`, "g"), `:${key}--ESCAPED_PARAM_ASTERISKS`)
+            .replace(new RegExp(`:${key}\\?`, "g"), `:${key}--ESCAPED_PARAM_QUESTION`)
+            .replace(new RegExp(`:${key}\\+`, "g"), `:${key}--ESCAPED_PARAM_PLUS`)
+            .replace(new RegExp(`:${key}(?!\\w)`, "g"), `--ESCAPED_PARAM_COLON${key}`);
         }
       }
       value = value
-        .replace(/(:|\*|\?|\+|\(|\)|\{|\})/g, '\\$1')
-        .replace(/--ESCAPED_PARAM_PLUS/g, '+')
-        .replace(/--ESCAPED_PARAM_COLON/g, ':')
-        .replace(/--ESCAPED_PARAM_QUESTION/g, '?')
-        .replace(/--ESCAPED_PARAM_ASTERISKS/g, '*');
+        .replace(/(:|\*|\?|\+|\(|\)|\{|\})/g, "\\$1")
+        .replace(/--ESCAPED_PARAM_PLUS/g, "+")
+        .replace(/--ESCAPED_PARAM_COLON/g, ":")
+        .replace(/--ESCAPED_PARAM_QUESTION/g, "?")
+        .replace(/--ESCAPED_PARAM_ASTERISKS/g, "*");
       // the value needs to start with a forward-slash to be compiled
       // correctly
       return (0, _routematchutils.safeCompile)(`/${value}`, {
@@ -3360,13 +3360,13 @@ module.exports = [
           destQuery[key] = strOrArray.map((value) =>
             compileNonPath(unescapeSegments(value), args.params),
           );
-        } else if (typeof strOrArray === 'string') {
+        } else if (typeof strOrArray === "string") {
           destQuery[key] = compileNonPath(unescapeSegments(strOrArray), args.params);
         }
       }
       // add path params to query if it's not a redirect and not
       // already defined in destination query or path
-      const paramKeys = Object.keys(args.params).filter((name) => name !== 'nextInternalLocale');
+      const paramKeys = Object.keys(args.params).filter((name) => name !== "nextInternalLocale");
       if (args.appendParamsToQuery && !paramKeys.some((key) => destParams.includes(key))) {
         for (const key of paramKeys) {
           if (!(key in destQuery)) {
@@ -3378,16 +3378,16 @@ module.exports = [
       // The compiler also that the interception route marker is an unnamed param, hence '0',
       // so we need to add it to the params object.
       if ((0, _interceptionroutes.isInterceptionRouteAppPath)(destPath)) {
-        for (const segment of destPath.split('/')) {
+        for (const segment of destPath.split("/")) {
           const marker = _interceptionroutes.INTERCEPTION_ROUTE_MARKERS.find((m) =>
             segment.startsWith(m),
           );
           if (marker) {
-            if (marker === '(..)(..)') {
-              args.params['0'] = '(..)';
-              args.params['1'] = '(..)';
+            if (marker === "(..)(..)") {
+              args.params["0"] = "(..)";
+              args.params["1"] = "(..)";
             } else {
-              args.params['0'] = marker;
+              args.params["0"] = marker;
             }
             break;
           }
@@ -3395,22 +3395,22 @@ module.exports = [
       }
       try {
         newUrl = destPathCompiler(args.params);
-        const [pathname, hash] = newUrl.split('#', 2);
+        const [pathname, hash] = newUrl.split("#", 2);
         if (destHostnameCompiler) {
           parsedDestination.hostname = destHostnameCompiler(args.params);
         }
         parsedDestination.pathname = pathname;
-        parsedDestination.hash = `${hash ? '#' : ''}${hash || ''}`;
-        parsedDestination.search = destSearch ? compileNonPath(destSearch, args.params) : '';
+        parsedDestination.hash = `${hash ? "#" : ""}${hash || ""}`;
+        parsedDestination.search = destSearch ? compileNonPath(destSearch, args.params) : "";
       } catch (err) {
         if (err.message.match(/Expected .*? to not repeat, but got an array/)) {
           throw Object.defineProperty(
             new Error(
               `To use a multi-match in the destination you must add \`*\` at the end of the param name to signify it should repeat. https://nextjs.org/docs/messages/invalid-multi-match`,
             ),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E329',
+              value: "E329",
               enumerable: false,
               configurable: true,
             },
@@ -3433,11 +3433,11 @@ module.exports = [
       };
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/utils.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/utils.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3463,15 +3463,15 @@ module.exports = [
       validateURL: () => validateURL,
     });
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-rsc] (ecmascript)",
     );
     function fromNodeOutgoingHttpHeaders(nodeHeaders) {
       const headers = new Headers();
       for (const [key, value] of Object.entries(nodeHeaders)) {
         const values = Array.isArray(value) ? value : [value];
         for (let v of values) {
-          if (typeof v === 'undefined') continue;
-          if (typeof v === 'number') {
+          if (typeof v === "undefined") continue;
+          if (typeof v === "number") {
             v = v.toString();
           }
           headers.append(key, v);
@@ -3495,14 +3495,14 @@ module.exports = [
       }
       function notSpecialChar() {
         ch = cookiesString.charAt(pos);
-        return ch !== '=' && ch !== ';' && ch !== ',';
+        return ch !== "=" && ch !== ";" && ch !== ",";
       }
       while (pos < cookiesString.length) {
         start = pos;
         cookiesSeparatorFound = false;
         while (skipWhitespace()) {
           ch = cookiesString.charAt(pos);
-          if (ch === ',') {
+          if (ch === ",") {
             // ',' is a cookie separator if we have later first '=', not ';' or ','
             lastComma = pos;
             pos += 1;
@@ -3512,7 +3512,7 @@ module.exports = [
               pos += 1;
             }
             // currently special character
-            if (pos < cookiesString.length && cookiesString.charAt(pos) === '=') {
+            if (pos < cookiesString.length && cookiesString.charAt(pos) === "=") {
               // we found cookies separator
               cookiesSeparatorFound = true;
               // pos is inside the next cookie, so back up and return it.
@@ -3539,7 +3539,7 @@ module.exports = [
       const cookies = [];
       if (headers) {
         for (const [key, value] of headers.entries()) {
-          if (key.toLowerCase() === 'set-cookie') {
+          if (key.toLowerCase() === "set-cookie") {
             // We may have gotten a comma joined string of cookies, or multiple
             // set-cookie headers. We need to merge them into one header array
             // to represent all the cookies.
@@ -3563,9 +3563,9 @@ module.exports = [
               cause: error,
             },
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E61',
+            value: "E61",
             enumerable: false,
             configurable: true,
           },
@@ -3585,19 +3585,19 @@ module.exports = [
       return null;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/decode-query-path-parameter.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/decode-query-path-parameter.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Decodes a query path parameter.
      *
      * @param value - The value to decode.
      * @returns The decoded value.
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'decodeQueryPathParameter', {
+    Object.defineProperty(exports, "decodeQueryPathParameter", {
       enumerable: true,
       get: () => decodeQueryPathParameter,
     });
@@ -3611,11 +3611,11 @@ module.exports = [
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3674,17 +3674,17 @@ module.exports = [
       RSC_CONTENT_TYPE_HEADER: () => RSC_CONTENT_TYPE_HEADER,
       RSC_HEADER: () => RSC_HEADER,
     });
-    const RSC_HEADER = 'rsc';
-    const ACTION_HEADER = 'next-action';
-    const NEXT_ROUTER_STATE_TREE_HEADER = 'next-router-state-tree';
-    const NEXT_ROUTER_PREFETCH_HEADER = 'next-router-prefetch';
-    const NEXT_ROUTER_SEGMENT_PREFETCH_HEADER = 'next-router-segment-prefetch';
-    const NEXT_HMR_REFRESH_HEADER = 'next-hmr-refresh';
-    const NEXT_HMR_REFRESH_HASH_COOKIE = '__next_hmr_refresh_hash__';
-    const NEXT_URL = 'next-url';
-    const RSC_CONTENT_TYPE_HEADER = 'text/x-component';
-    const NEXT_INSTANT_PREFETCH_HEADER = 'next-instant-navigation-testing-prefetch';
-    const NEXT_INSTANT_TEST_COOKIE = 'next-instant-navigation-testing';
+    const RSC_HEADER = "rsc";
+    const ACTION_HEADER = "next-action";
+    const NEXT_ROUTER_STATE_TREE_HEADER = "next-router-state-tree";
+    const NEXT_ROUTER_PREFETCH_HEADER = "next-router-prefetch";
+    const NEXT_ROUTER_SEGMENT_PREFETCH_HEADER = "next-router-segment-prefetch";
+    const NEXT_HMR_REFRESH_HEADER = "next-hmr-refresh";
+    const NEXT_HMR_REFRESH_HASH_COOKIE = "__next_hmr_refresh_hash__";
+    const NEXT_URL = "next-url";
+    const RSC_CONTENT_TYPE_HEADER = "text/x-component";
+    const NEXT_INSTANT_PREFETCH_HEADER = "next-instant-navigation-testing-prefetch";
+    const NEXT_INSTANT_TEST_COOKIE = "next-instant-navigation-testing";
     const FLIGHT_HEADERS = [
       RSC_HEADER,
       NEXT_ROUTER_STATE_TREE_HEADER,
@@ -3692,33 +3692,33 @@ module.exports = [
       NEXT_HMR_REFRESH_HEADER,
       NEXT_ROUTER_SEGMENT_PREFETCH_HEADER,
     ];
-    const NEXT_RSC_UNION_QUERY = '_rsc';
-    const NEXT_ROUTER_STALE_TIME_HEADER = 'x-nextjs-stale-time';
-    const NEXT_DID_POSTPONE_HEADER = 'x-nextjs-postponed';
-    const NEXT_REWRITTEN_PATH_HEADER = 'x-nextjs-rewritten-path';
-    const NEXT_REWRITTEN_QUERY_HEADER = 'x-nextjs-rewritten-query';
-    const NEXT_IS_PRERENDER_HEADER = 'x-nextjs-prerender';
-    const NEXT_ACTION_NOT_FOUND_HEADER = 'x-nextjs-action-not-found';
-    const NEXT_REQUEST_ID_HEADER = 'x-nextjs-request-id';
-    const NEXT_HTML_REQUEST_ID_HEADER = 'x-nextjs-html-request-id';
-    const NEXT_ACTION_REVALIDATED_HEADER = 'x-action-revalidated';
+    const NEXT_RSC_UNION_QUERY = "_rsc";
+    const NEXT_ROUTER_STALE_TIME_HEADER = "x-nextjs-stale-time";
+    const NEXT_DID_POSTPONE_HEADER = "x-nextjs-postponed";
+    const NEXT_REWRITTEN_PATH_HEADER = "x-nextjs-rewritten-path";
+    const NEXT_REWRITTEN_QUERY_HEADER = "x-nextjs-rewritten-query";
+    const NEXT_IS_PRERENDER_HEADER = "x-nextjs-prerender";
+    const NEXT_ACTION_NOT_FOUND_HEADER = "x-nextjs-action-not-found";
+    const NEXT_REQUEST_ID_HEADER = "x-nextjs-request-id";
+    const NEXT_HTML_REQUEST_ID_HEADER = "x-nextjs-html-request-id";
+    const NEXT_ACTION_REVALIDATED_HEADER = "x-action-revalidated";
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/url.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/url.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3742,9 +3742,9 @@ module.exports = [
       stripNextRscUnionQuery: () => stripNextRscUnionQuery,
     });
     const _approuterheaders = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-rsc] (ecmascript)",
     );
-    const DUMMY_ORIGIN = 'http://n';
+    const DUMMY_ORIGIN = "http://n";
     function isFullStringUrl(url) {
       return /https?:\/\//.test(url);
     }
@@ -3772,12 +3772,12 @@ module.exports = [
         path: parsedUrl.pathname,
         pathname: parsedUrl.pathname,
         href: `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`,
-        host: '',
-        hostname: '',
-        auth: '',
-        protocol: '',
+        host: "",
+        hostname: "",
+        auth: "",
+        protocol: "",
         slashes: null,
-        port: '',
+        port: "",
       };
       return legacyUrl;
     }
@@ -3787,12 +3787,12 @@ module.exports = [
       return urlInstance.pathname + urlInstance.search;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     function _getRequireWildcardCache(nodeInterop) {
-      if (typeof WeakMap !== 'function') return null;
+      if (typeof WeakMap !== "function") return null;
       var cacheBabelInterop = new WeakMap();
       var cacheNodeInterop = new WeakMap();
       return (_getRequireWildcardCache = (nodeInterop) =>
@@ -3800,7 +3800,7 @@ module.exports = [
     }
     function _interop_require_wildcard(obj, nodeInterop) {
       if (!nodeInterop && obj && obj.__esModule) return obj;
-      if (obj === null || (typeof obj !== 'object' && typeof obj !== 'function'))
+      if (obj === null || (typeof obj !== "object" && typeof obj !== "function"))
         return {
           default: obj,
         };
@@ -3811,7 +3811,7 @@ module.exports = [
       };
       var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
       for (var key in obj) {
-        if (key !== 'default' && Object.hasOwn(obj, key)) {
+        if (key !== "default" && Object.hasOwn(obj, key)) {
           var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
           if (desc && (desc.get || desc.set)) Object.defineProperty(newObj, key, desc);
           else newObj[key] = obj[key];
@@ -3823,9 +3823,9 @@ module.exports = [
     }
     exports._ = _interop_require_wildcard;
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // Format function modified from nodejs
     // Copyright Joyent, Inc. and other Node contributors.
@@ -3848,7 +3848,7 @@ module.exports = [
     // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
     // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
     // USE OR OTHER DEALINGS IN THE SOFTWARE.
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3870,64 +3870,64 @@ module.exports = [
       urlObjectKeys: () => urlObjectKeys,
     });
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-rsc] (ecmascript)",
     );
     const _querystring = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/querystring.js [app-rsc] (ecmascript)",
       ),
     );
     const slashedProtocols = /https?|ftp|gopher|file/;
     function formatUrl(urlObj) {
       let { auth, hostname } = urlObj;
-      let protocol = urlObj.protocol || '';
-      let pathname = urlObj.pathname || '';
-      let hash = urlObj.hash || '';
-      let query = urlObj.query || '';
+      let protocol = urlObj.protocol || "";
+      let pathname = urlObj.pathname || "";
+      let hash = urlObj.hash || "";
+      let query = urlObj.query || "";
       let host = false;
-      auth = auth ? encodeURIComponent(auth).replace(/%3A/i, ':') + '@' : '';
+      auth = auth ? encodeURIComponent(auth).replace(/%3A/i, ":") + "@" : "";
       if (urlObj.host) {
         host = auth + urlObj.host;
       } else if (hostname) {
-        host = auth + (~hostname.indexOf(':') ? `[${hostname}]` : hostname);
+        host = auth + (~hostname.indexOf(":") ? `[${hostname}]` : hostname);
         if (urlObj.port) {
-          host += ':' + urlObj.port;
+          host += ":" + urlObj.port;
         }
       }
-      if (query && typeof query === 'object') {
+      if (query && typeof query === "object") {
         query = String(_querystring.urlQueryToSearchParams(query));
       }
-      let search = urlObj.search || (query && `?${query}`) || '';
-      if (protocol && !protocol.endsWith(':')) protocol += ':';
+      let search = urlObj.search || (query && `?${query}`) || "";
+      if (protocol && !protocol.endsWith(":")) protocol += ":";
       if (urlObj.slashes || ((!protocol || slashedProtocols.test(protocol)) && host !== false)) {
-        host = '//' + (host || '');
-        if (pathname && pathname[0] !== '/') pathname = '/' + pathname;
+        host = "//" + (host || "");
+        if (pathname && pathname[0] !== "/") pathname = "/" + pathname;
       } else if (!host) {
-        host = '';
+        host = "";
       }
-      if (hash && hash[0] !== '#') hash = '#' + hash;
-      if (search && search[0] !== '?') search = '?' + search;
+      if (hash && hash[0] !== "#") hash = "#" + hash;
+      if (search && search[0] !== "?") search = "?" + search;
       pathname = pathname.replace(/[?#]/g, encodeURIComponent);
-      search = search.replace('#', '%23');
+      search = search.replace("#", "%23");
       return `${protocol}${host}${pathname}${search}${hash}`;
     }
     const urlObjectKeys = [
-      'auth',
-      'hash',
-      'host',
-      'hostname',
-      'href',
-      'path',
-      'pathname',
-      'port',
-      'protocol',
-      'query',
-      'search',
-      'slashes',
+      "auth",
+      "hash",
+      "host",
+      "hostname",
+      "href",
+      "path",
+      "pathname",
+      "port",
+      "protocol",
+      "query",
+      "search",
+      "slashes",
     ];
     function formatWithValidation(url) {
-      if (('TURBOPACK compile-time truthy', 1)) {
-        if (url !== null && typeof url === 'object') {
+      if (("TURBOPACK compile-time truthy", 1)) {
+        if (url !== null && typeof url === "object") {
           Object.keys(url).forEach((key) => {
             if (!urlObjectKeys.includes(key)) {
               console.warn(`Unknown key passed via urlObject into url.format: ${key}`);
@@ -3938,11 +3938,11 @@ module.exports = [
       return formatUrl(url);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/server-utils.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/server-utils.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3968,45 +3968,45 @@ module.exports = [
       normalizeDynamicRouteParams: () => normalizeDynamicRouteParams,
     });
     const _normalizelocalepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/i18n/normalize-locale-path.js [app-rsc] (ecmascript)",
     );
     const _pathmatch = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-match.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-match.js [app-rsc] (ecmascript)",
     );
     const _routeregex = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [app-rsc] (ecmascript)",
     );
     const _routematcher = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-matcher.js [app-rsc] (ecmascript)",
     );
     const _preparedestination = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/prepare-destination.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/prepare-destination.js [app-rsc] (ecmascript)",
     );
     const _removetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [app-rsc] (ecmascript)",
     );
     const _apppaths = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-rsc] (ecmascript)",
     );
     const _utils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/utils.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/web/utils.js [app-rsc] (ecmascript)",
     );
     const _decodequerypathparameter = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/decode-query-path-parameter.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/decode-query-path-parameter.js [app-rsc] (ecmascript)",
     );
     const _url = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/url.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/url.js [app-rsc] (ecmascript)",
     );
     const _formaturl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/format-url.js [app-rsc] (ecmascript)",
     );
     function filterInternalQuery(query, paramKeys) {
       // this is used to pass query information in rewrites
       // but should not be exposed in final query
-      delete query['nextInternalLocale'];
+      delete query["nextInternalLocale"];
       for (const key in query) {
         const isNextQueryPrefix =
           key !== _constants.NEXT_QUERY_PARAM_PREFIX &&
@@ -4035,18 +4035,18 @@ module.exports = [
       if (!defaultRouteRegex) return pathname;
       for (const param of Object.keys(defaultRouteRegex.groups)) {
         const { optional, repeat } = defaultRouteRegex.groups[param];
-        let builtParam = `[${repeat ? '...' : ''}${param}]`;
+        let builtParam = `[${repeat ? "..." : ""}${param}]`;
         if (optional) {
           builtParam = `[${builtParam}]`;
         }
         let paramValue;
         const value = params[param];
         if (Array.isArray(value)) {
-          paramValue = value.map((v) => v && encodeURIComponent(v)).join('/');
+          paramValue = value.map((v) => v && encodeURIComponent(v)).join("/");
         } else if (value) {
           paramValue = encodeURIComponent(value);
         } else {
-          paramValue = '';
+          paramValue = "";
         }
         if (paramValue || optional) {
           pathname = pathname.replaceAll(builtParam, paramValue);
@@ -4064,7 +4064,7 @@ module.exports = [
       const params = {};
       for (const key of Object.keys(defaultRouteRegex.groups)) {
         let value = query[key];
-        if (typeof value === 'string') {
+        if (typeof value === "string") {
           value = (0, _apppaths.normalizeRscURL)(value);
         } else if (Array.isArray(value)) {
           value = value.map(_apppaths.normalizeRscURL);
@@ -4087,7 +4087,7 @@ module.exports = [
             : value.includes(defaultValue);
         if (
           isDefaultValue ||
-          (typeof value === 'undefined' && !(isOptional && ignoreMissingOptional))
+          (typeof value === "undefined" && !(isOptional && ignoreMissingOptional))
         ) {
           return {
             params: {},
@@ -4102,8 +4102,8 @@ module.exports = [
             (Array.isArray(value) &&
               value.length === 1 && // fallback optional catch-all SSG pages have
               // [[...paramName]] for the root path on Vercel
-              (value[0] === 'index' || value[0] === `[[...${key}]]`)) ||
-            value === 'index' ||
+              (value[0] === "index" || value[0] === `[[...${key}]]`)) ||
+            value === "index" ||
             value === `[[...${key}]]`)
         ) {
           value = undefined;
@@ -4111,8 +4111,8 @@ module.exports = [
         }
         // query values from the proxy aren't already split into arrays
         // so make sure to normalize catch-all values
-        if (value && typeof value === 'string' && defaultRouteRegex.groups[key].repeat) {
-          value = value.split('/');
+        if (value && typeof value === "string" && defaultRouteRegex.groups[key].repeat) {
+          value = value.split("/");
         }
         if (value) {
           params[key] = value;
@@ -4149,7 +4149,7 @@ module.exports = [
         const rewriteParams = {};
         let fsPathname = rewrittenParsedUrl.pathname;
         const matchesPage = () => {
-          const fsPathnameNoSlash = (0, _removetrailingslash.removeTrailingSlash)(fsPathname || '');
+          const fsPathnameNoSlash = (0, _removetrailingslash.removeTrailingSlash)(fsPathname || "");
           return (
             fsPathnameNoSlash === (0, _removetrailingslash.removeTrailingSlash)(page) ||
             (dynamicRouteMatcher == null ? void 0 : dynamicRouteMatcher(fsPathnameNoSlash))
@@ -4157,7 +4157,7 @@ module.exports = [
         };
         const checkRewrite = (rewrite) => {
           const matcher = (0, _pathmatch.getPathMatch)(
-            rewrite.source + (trailingSlash ? '(/)?' : ''),
+            rewrite.source + (trailingSlash ? "(/)?" : ""),
             {
               removeUnnamedParams: true,
               strict: true,
@@ -4197,7 +4197,7 @@ module.exports = [
             fsPathname = rewrittenParsedUrl.pathname;
             if (!fsPathname) return false;
             if (basePath) {
-              fsPathname = fsPathname.replace(new RegExp(`^${basePath}`), '') || '/';
+              fsPathname = fsPathname.replace(new RegExp(`^${basePath}`), "") || "/";
             }
             if (i18n) {
               const result = (0, _normalizelocalepath.normalizeLocalePath)(
@@ -4286,7 +4286,7 @@ module.exports = [
       function normalizeQueryParams(query, routeParamKeys) {
         // this is used to pass query information in rewrites
         // but should not be exposed in final query
-        delete query['nextInternalLocale'];
+        delete query["nextInternalLocale"];
         for (const [key, value] of Object.entries(query)) {
           const normalizedKey = (0, _utils.normalizeNextQueryParam)(key);
           if (!normalizedKey) continue;
@@ -4294,7 +4294,7 @@ module.exports = [
           // to consume it for the dynamic route matcher.
           delete query[key];
           routeParamKeys.add(normalizedKey);
-          if (typeof value === 'undefined') continue;
+          if (typeof value === "undefined") continue;
           query[normalizedKey] = Array.isArray(value)
             ? value.map((v) => (0, _decodequerypathparameter.decodeQueryPathParameter)(v))
             : (0, _decodequerypathparameter.decodeQueryPathParameter)(value);
@@ -4334,15 +4334,15 @@ module.exports = [
       };
     }
     function getPreviouslyRevalidatedTags(headers, previewModeId) {
-      return typeof headers[_constants.NEXT_CACHE_REVALIDATED_TAGS_HEADER] === 'string' &&
+      return typeof headers[_constants.NEXT_CACHE_REVALIDATED_TAGS_HEADER] === "string" &&
         headers[_constants.NEXT_CACHE_REVALIDATE_TAG_TOKEN_HEADER] === previewModeId
-        ? headers[_constants.NEXT_CACHE_REVALIDATED_TAGS_HEADER].split(',')
+        ? headers[_constants.NEXT_CACHE_REVALIDATED_TAGS_HEADER].split(",")
         : [];
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hash.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hash.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // http://www.cse.yorku.ca/~oz/hash.html
     // More specifically, 32-bit hash via djbxor
@@ -4351,7 +4351,7 @@ module.exports = [
     // where rust does not have easy way to repreesnt js's 53-bit float number type for the matching
     // overflow behavior. This is more `correct` in terms of having canonical hash across different runtime / implementation
     // as can gaurantee determinstic output from 32bit hash.
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -4382,11 +4382,11 @@ module.exports = [
       return djb2Hash(str).toString(36).slice(0, 5);
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/get-metadata-route.js [app-rsc] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/get-metadata-route.js [app-rsc] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -4408,30 +4408,30 @@ module.exports = [
       normalizeMetadataRoute: () => normalizeMetadataRoute,
     });
     const _ismetadataroute = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/is-metadata-route.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/is-metadata-route.js [app-rsc] (ecmascript)",
     );
     const _path = /*#__PURE__*/ _interop_require_default(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/isomorphic/path.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/isomorphic/path.js [app-rsc] (ecmascript)",
       ),
     );
     const _serverutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/server-utils.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/server-utils.js [app-rsc] (ecmascript)",
     );
     const _routeregex = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/route-regex.js [app-rsc] (ecmascript)",
     );
     const _hash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hash.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hash.js [app-rsc] (ecmascript)",
     );
     const _apppaths = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)",
     );
     const _normalizepathsep = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/page-path/normalize-path-sep.js [app-rsc] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-rsc] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-rsc] (ecmascript)",
     );
     function _interop_require_default(obj) {
       return obj && obj.__esModule
@@ -4460,13 +4460,13 @@ module.exports = [
       // e.g. /parent/opengraph-image -> /parent
       const parentPathname = _path.default.dirname(page);
       // Only apply suffix to metadata routes except for sitemaps
-      if (page.endsWith('/sitemap') || page.endsWith('/sitemap.xml')) {
-        return '';
+      if (page.endsWith("/sitemap") || page.endsWith("/sitemap.xml")) {
+        return "";
       }
       // Calculate the hash suffix based on the parent path
-      let suffix = '';
+      let suffix = "";
       // Check if there's any special characters in the parent pathname.
-      const segments = parentPathname.split('/');
+      const segments = parentPathname.split("/");
       if (
         segments.some(
           (seg) => (0, _segment.isGroupSegment)(seg) || (0, _segment.isParallelRouteSegment)(seg),
@@ -4487,7 +4487,7 @@ module.exports = [
         ? Object.keys(routeRegex.groups).reduce((acc, key) => {
             const { repeat } = routeRegex.groups[key];
             // Use array for catch-all segments, string for regular segments
-            acc[key] = repeat ? ['-'] : '-';
+            acc[key] = repeat ? ["-"] : "-";
             return acc;
           }, {})
         : params;
@@ -4495,7 +4495,7 @@ module.exports = [
       const { name, ext } = _path.default.parse(lastSegment);
       const pagePath = _path.default.posix.join(segment, name);
       const suffix = getMetadataRouteSuffix(pagePath);
-      const routeSuffix = suffix ? `-${suffix}` : '';
+      const routeSuffix = suffix ? `-${suffix}` : "";
       return (0, _normalizepathsep.normalizePathSep)(
         _path.default.join(route, `${name}${routeSuffix}${ext}`),
       );
@@ -4505,50 +4505,50 @@ module.exports = [
         return page;
       }
       let route = page;
-      let suffix = '';
-      if (page === '/robots') {
-        route += '.txt';
-      } else if (page === '/manifest') {
-        route += '.webmanifest';
+      let suffix = "";
+      if (page === "/robots") {
+        route += ".txt";
+      } else if (page === "/manifest") {
+        route += ".webmanifest";
       } else {
         suffix = getMetadataRouteSuffix(page);
       }
       // Support both /<metadata-route.ext> and custom routes /<metadata-route>/route.ts.
       // If it's a metadata file route, we need to append /[id]/route to the page.
-      if (!route.endsWith('/route')) {
+      if (!route.endsWith("/route")) {
         const { dir, name: baseName, ext } = _path.default.parse(route);
         route = _path.default.posix.join(
           dir,
-          `${baseName}${suffix ? `-${suffix}` : ''}${ext}`,
-          'route',
+          `${baseName}${suffix ? `-${suffix}` : ""}${ext}`,
+          "route",
         );
       }
       return route;
     }
     function normalizeMetadataPageToRoute(page, isDynamic) {
-      const isRoute = page.endsWith('/route');
-      const routePagePath = isRoute ? page.slice(0, -'/route'.length) : page;
-      const metadataRouteExtension = routePagePath.endsWith('/sitemap') ? '.xml' : '';
+      const isRoute = page.endsWith("/route");
+      const routePagePath = isRoute ? page.slice(0, -"/route".length) : page;
+      const metadataRouteExtension = routePagePath.endsWith("/sitemap") ? ".xml" : "";
       const mapped = isDynamic
         ? `${routePagePath}/[__metadata_id__]`
         : `${routePagePath}${metadataRouteExtension}`;
-      return mapped + (isRoute ? '/route' : '');
+      return mapped + (isRoute ? "/route" : "");
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-modules/app-page/module.compiled.js [app-ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-modules/app-page/module.compiled.js [app-ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       else {
-        if (('TURBOPACK compile-time truthy', 1)) {
-          if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
+          if (("TURBOPACK compile-time truthy", 1)) {
             module.exports = __turbopack_context__.r(
-              '[externals]/next/dist/compiled/next-server/app-page-turbo.runtime.dev.js [external] (next/dist/compiled/next-server/app-page-turbo.runtime.dev.js, cjs)',
+              "[externals]/next/dist/compiled/next-server/app-page-turbo.runtime.dev.js [external] (next/dist/compiled/next-server/app-page-turbo.runtime.dev.js, cjs)",
             );
           } //TURBOPACK unreachable
           else;
@@ -4557,425 +4557,425 @@ module.exports = [
       }
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-kind.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-kind.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-kind.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-kind.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/instrumentation/utils.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/instrumentation/utils.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/instrumentation/utils.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/instrumentation/utils.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/tracer.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/tracer.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/tracer.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/tracer.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request-meta.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request-meta.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request-meta.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request-meta.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/constants.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/constants.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/constants.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/constants.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/interop-default.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/interop-default.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/interop-default.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/interop-default.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/strip-flight-headers.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/strip-flight-headers.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/strip-flight-headers.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/strip-flight-headers.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/base-http/node.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/base-http/node.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/base-http/node.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/base-http/node.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/experimental/ppr.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/experimental/ppr.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/experimental/ppr.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/experimental/ppr.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request/fallback-params.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request/fallback-params.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request/fallback-params.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request/fallback-params.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/manifests-singleton.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/manifests-singleton.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/manifests-singleton.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/manifests-singleton.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/streaming-metadata.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/streaming-metadata.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/streaming-metadata.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/streaming-metadata.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/server-action-request-meta.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/server-action-request-meta.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/server-action-request-meta.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/server-action-request-meta.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/app-router-headers.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/app-router-headers.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/app-router-headers.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/app-router-headers.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/is-bot.js [app-rsc] (ecmascript, Next.js server utility) <locals>',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/is-bot.js [app-rsc] (ecmascript, Next.js server utility) <locals>",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/is-bot.js [app-rsc] (ecmascript) <locals>',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/is-bot.js [app-rsc] (ecmascript) <locals>",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/index.js [app-rsc] (ecmascript, Next.js server utility) <locals>',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/index.js [app-rsc] (ecmascript, Next.js server utility) <locals>",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/index.js [app-rsc] (ecmascript) <locals>',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/index.js [app-rsc] (ecmascript) <locals>",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/types.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/types.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/types.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/types.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/fallback.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/fallback.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/fallback.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/fallback.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/render-result.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/render-result.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/render-result.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/render-result.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/constants.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/constants.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/constants.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/constants.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/encoded-tags.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/encoded-tags.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/encoded-tags.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/encoded-tags.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/node-web-streams-helper.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/node-web-streams-helper.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/node-web-streams-helper.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/node-web-streams-helper.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/send-payload.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/send-payload.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/send-payload.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/send-payload.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/size-limit.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/size-limit.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/size-limit.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/size-limit.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/postponed-request-body.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/postponed-request-body.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/postponed-request-body.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/postponed-request-body.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility) <locals>',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility) <locals>",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript) <locals>',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript) <locals>",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/redirect-status-code.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/redirect-status-code.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/redirect-status-code.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/redirect-status-code.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/invariant-error.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/invariant-error.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/invariant-error.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/invariant-error.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/scheduler.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/scheduler.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/scheduler.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/scheduler.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript)",
       ),
     );
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript, Next.js server utility)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript, Next.js server utility)",
   (__turbopack_context__) => {
     __turbopack_context__.n(
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript)",
       ),
     );
   },
   '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/build/templates/app-page.js?page=/hero-showcase/page { METADATA_0 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/favicon.ico.mjs { IMAGE => \\"[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/favicon.ico (static in ecmascript, tag client)\\" } [app-rsc] (structured image object, ecmascript)", MODULE_1 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>',
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      '__next_app__',
+      "__next_app__",
       () => __next_app__,
-      'handler',
+      "handler",
       () => handler,
-      'routeModule',
+      "routeModule",
       () => routeModule,
     ]);
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$lib$2f$metadata$2f$get$2d$metadata$2d$route$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/get-metadata-route.js [app-rsc] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/get-metadata-route.js [app-rsc] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$module$2e$compiled$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-modules/app-page/module.compiled.js [app-ssr] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-modules/app-page/module.compiled.js [app-ssr] (ecmascript)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$route$2d$kind$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-kind.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/route-kind.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$instrumentation$2f$utils$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/instrumentation/utils.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/instrumentation/utils.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$trace$2f$tracer$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/tracer.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/tracer.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request-meta.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request-meta.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$trace$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/constants.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/trace/constants.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$interop$2d$default$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/interop-default.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/interop-default.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$strip$2d$flight$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/strip-flight-headers.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/strip-flight-headers.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$base$2d$http$2f$node$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/base-http/node.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/base-http/node.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$experimental$2f$ppr$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/experimental/ppr.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/experimental/ppr.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2f$fallback$2d$params$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request/fallback-params.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/request/fallback-params.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$manifests$2d$singleton$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/manifests-singleton.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/manifests-singleton.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$streaming$2d$metadata$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/streaming-metadata.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/streaming-metadata.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$app$2d$paths$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/app-paths.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$server$2d$action$2d$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/server-action-request-meta.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/server-action-request-meta.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/app-router-headers.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/app-router-headers.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$is$2d$bot$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__$3c$locals$3e$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/is-bot.js [app-rsc] (ecmascript, Next.js server utility) <locals>',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/is-bot.js [app-rsc] (ecmascript, Next.js server utility) <locals>",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$response$2d$cache$2f$index$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__$3c$locals$3e$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/index.js [app-rsc] (ecmascript, Next.js server utility) <locals>',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/index.js [app-rsc] (ecmascript, Next.js server utility) <locals>",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$response$2d$cache$2f$types$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/types.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/response-cache/types.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$fallback$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/fallback.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/fallback.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$render$2d$result$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/render-result.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/render-result.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/constants.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/constants.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$stream$2d$utils$2f$encoded$2d$tags$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/encoded-tags.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/encoded-tags.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$stream$2d$utils$2f$node$2d$web$2d$streams$2d$helper$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/node-web-streams-helper.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/stream-utils/node-web-streams-helper.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/send-payload.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/send-payload.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$externals$5d2f$next$2f$dist$2f$shared$2f$lib$2f$no$2d$fallback$2d$error$2e$external$2e$js__$5b$external$5d$__$28$next$2f$dist$2f$shared$2f$lib$2f$no$2d$fallback$2d$error$2e$external$2e$js$2c$__cjs$29$__ =
       __turbopack_context__.i(
-        '[externals]/next/dist/shared/lib/no-fallback-error.external.js [external] (next/dist/shared/lib/no-fallback-error.external.js, cjs)',
+        "[externals]/next/dist/shared/lib/no-fallback-error.external.js [external] (next/dist/shared/lib/no-fallback-error.external.js, cjs)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$size$2d$limit$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/size-limit.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/size-limit.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$postponed$2d$request$2d$body$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/postponed-request-body.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/lib/postponed-request-body.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__$3c$locals$3e$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility) <locals>',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility) <locals>",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$redirect$2d$status$2d$code$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/redirect-status-code.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/redirect-status-code.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$invariant$2d$error$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/invariant-error.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/invariant-error.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$scheduler$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/scheduler.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/scheduler.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$interception$2d$routes$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/interception-routes.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$get$2d$segment$2d$param$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/shared/lib/router/utils/get-segment-param.js [app-rsc] (ecmascript, Next.js server utility)",
       );
     const __TURBOPACK__icon__$23$0__ = () =>
       __turbopack_context__.r(
@@ -4983,44 +4983,44 @@ module.exports = [
       );
     const __TURBOPACK__layout__$23$1__ = () =>
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)",
       );
     const __TURBOPACK__not$2d$found__$23$2__ = () =>
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)",
       );
     const __TURBOPACK__forbidden__$23$3__ = () =>
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)",
       );
     const __TURBOPACK__unauthorized__$23$4__ = () =>
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)",
       );
     const __TURBOPACK__global$2d$error__$23$5__ = () =>
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)",
       );
     const __TURBOPACK__page__$23$6__ = () =>
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-rsc] (ecmascript, Next.js Server Component)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-rsc] (ecmascript, Next.js Server Component)",
       );
     // We inject the tree and pages here so that we can use them in the route
     // module.
     const tree = [
-      '',
+      "",
       {
         children: [
-          'hero-showcase',
+          "hero-showcase",
           {
             children: [
-              '__PAGE__',
+              "__PAGE__",
               {},
               {
                 metadata: {},
                 page: [
                   __TURBOPACK__page__$23$6__,
-                  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx',
+                  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx",
                 ],
               },
               [],
@@ -5038,16 +5038,16 @@ module.exports = [
             async (props) => {
               const mod = (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$interop$2d$default$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'interopDefault'
+                "interopDefault"
               ])(await __TURBOPACK__icon__$23$0__());
               return [
                 {
                   url:
                     (0,
                     __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$lib$2f$metadata$2f$get$2d$metadata$2d$route$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__[
-                      'fillMetadataSegment'
-                    ])('//', await props.params, 'favicon.ico', true) +
-                    `?${mod.src.split('/').splice(-1)[0]}`,
+                      "fillMetadataSegment"
+                    ])("//", await props.params, "favicon.ico", true) +
+                    `?${mod.src.split("/").splice(-1)[0]}`,
                   sizes: `${mod.width}x${mod.height}`,
                   type: `image/x-icon`,
                 },
@@ -5057,23 +5057,23 @@ module.exports = [
         },
         layout: [
           __TURBOPACK__layout__$23$1__,
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout.tsx',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout.tsx",
         ],
-        'not-found': [
+        "not-found": [
           __TURBOPACK__not$2d$found__$23$2__,
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/not-found.js',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/not-found.js",
         ],
         forbidden: [
           __TURBOPACK__forbidden__$23$3__,
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/forbidden.js',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/forbidden.js",
         ],
         unauthorized: [
           __TURBOPACK__unauthorized__$23$4__,
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/unauthorized.js',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/unauthorized.js",
         ],
-        'global-error': [
+        "global-error": [
           __TURBOPACK__global$2d$error__$23$5__,
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js",
         ],
       },
       [],
@@ -5086,29 +5086,29 @@ module.exports = [
     };
     const routeModule =
       new __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$module$2e$compiled$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__[
-        'AppPageRouteModule'
+        "AppPageRouteModule"
       ]({
         definition: {
           kind: __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$route$2d$kind$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-            'RouteKind'
+            "RouteKind"
           ].APP_PAGE,
-          page: '/hero-showcase/page',
-          pathname: '/hero-showcase',
+          page: "/hero-showcase/page",
+          pathname: "/hero-showcase",
           // The following aren't used in production.
-          bundlePath: '',
-          filename: '',
+          bundlePath: "",
+          filename: "",
           appPaths: [],
         },
         userland: {
           loaderTree: tree,
         },
-        distDir: ('TURBOPACK compile-time value', '../public/dev') || '',
-        relativeProjectDir: ('TURBOPACK compile-time value', '') || '',
+        distDir: ("TURBOPACK compile-time value", "../public/dev") || "",
+        relativeProjectDir: ("TURBOPACK compile-time value", "") || "",
       });
     function buildDynamicSegmentPlaceholder(param) {
       const { repeat, optional } = (0,
       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$get$2d$segment$2d$param$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-        'getParamProperties'
+        "getParamProperties"
       ])(param.paramType);
       if (optional) {
         return `[[...${param.paramName}]]`;
@@ -5134,11 +5134,11 @@ module.exports = [
       );
       return (
         fallbackPathname
-          .split('/')
+          .split("/")
           .map((segment) => {
             const segmentParam = (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$get$2d$segment$2d$param$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'getSegmentParam'
+              "getSegmentParam"
             ])(segment);
             if (!segmentParam) {
               return segment;
@@ -5152,11 +5152,11 @@ module.exports = [
               return segment;
             }
             const encodedValue = Array.isArray(value)
-              ? value.map((item) => encodeURIComponent(item)).join('/')
+              ? value.map((item) => encodeURIComponent(item)).join("/")
               : encodeURIComponent(value);
             return segment.replace(buildDynamicSegmentPlaceholder(remainingParam), encodedValue);
           })
-          .join('/') || '/'
+          .join("/") || "/"
       );
     }
     async function handler(req, res, ctx) {
@@ -5167,39 +5167,39 @@ module.exports = [
       if (ctx.requestMeta) {
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'setRequestMeta'
+          "setRequestMeta"
         ])(req, ctx.requestMeta);
       }
       if (routeModule.isDev) {
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'addRequestMeta'
-        ])(req, 'devRequestTimingInternalsEnd', process.hrtime.bigint());
+          "addRequestMeta"
+        ])(req, "devRequestTimingInternalsEnd", process.hrtime.bigint());
       }
       const isMinimalMode = Boolean(
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'getRequestMeta'
-        ])(req, 'minimalMode'),
+          "getRequestMeta"
+        ])(req, "minimalMode"),
       );
-      let srcPage = '/hero-showcase/page';
+      let srcPage = "/hero-showcase/page";
       // turbopack doesn't normalize `/index` in the page name
       // so we need to to process dynamic routes properly
       // TODO: fix turbopack providing differing value from webpack
-      if (('TURBOPACK compile-time truthy', 1)) {
-        srcPage = srcPage.replace(/\/index$/, '') || '/';
-      } else if (srcPage === '/index') {
+      if (("TURBOPACK compile-time truthy", 1)) {
+        srcPage = srcPage.replace(/\/index$/, "") || "/";
+      } else if (srcPage === "/index") {
         // we always normalize /index specifically
-        srcPage = '/';
+        srcPage = "/";
       }
-      const multiZoneDraftMode = ('TURBOPACK compile-time value', false);
+      const multiZoneDraftMode = ("TURBOPACK compile-time value", false);
       const prepareResult = await routeModule.prepare(req, res, {
         srcPage,
         multiZoneDraftMode,
       });
       if (!prepareResult) {
         res.statusCode = 400;
-        res.end('Bad Request');
+        res.end("Bad Request");
         ctx.waitUntil == null ? void 0 : ctx.waitUntil.call(ctx, Promise.resolve());
         return null;
       }
@@ -5227,7 +5227,7 @@ module.exports = [
       } = prepareResult;
       const normalizedSrcPage = (0,
       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$app$2d$paths$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-        'normalizeAppPath'
+        "normalizeAppPath"
       ])(srcPage);
       let { isOnDemandRevalidate } = prepareResult;
       // We use the resolvedPathname instead of the parsedUrl.pathname because it
@@ -5242,20 +5242,20 @@ module.exports = [
         !nextConfig.cacheComponents &&
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$interception$2d$routes$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'isInterceptionRouteAppPath'
+          "isInterceptionRouteAppPath"
         ])(resolvedPathname)
           ? null
           : routeModule.match(resolvedPathname, prerenderManifest);
       const prerenderInfo = (prerenderMatch == null ? void 0 : prerenderMatch.route) ?? null;
       const isPrerendered = !!prerenderManifest.routes[resolvedPathname];
-      const userAgent = req.headers['user-agent'] || '';
+      const userAgent = req.headers["user-agent"] || "";
       const botType = (0,
       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$is$2d$bot$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__$3c$locals$3e$__[
-        'getBotType'
+        "getBotType"
       ])(userAgent);
       const isHtmlBot = (0,
       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$streaming$2d$metadata$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-        'isHtmlBotRequest'
+        "isHtmlBotRequest"
       ])(req);
       /**
        * If true, this indicates that the request being made is for an app
@@ -5263,60 +5263,60 @@ module.exports = [
        */ const isPrefetchRSCRequest =
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'getRequestMeta'
-        ])(req, 'isPrefetchRSCRequest') ??
+          "getRequestMeta"
+        ])(req, "isPrefetchRSCRequest") ??
         req.headers[
           __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-            'NEXT_ROUTER_PREFETCH_HEADER'
+            "NEXT_ROUTER_PREFETCH_HEADER"
           ]
-        ] === '1'; // exclude runtime prefetches, which use '2'
+        ] === "1"; // exclude runtime prefetches, which use '2'
       // NOTE: Don't delete headers[RSC] yet, it still needs to be used in renderToHTML later
       const isRSCRequest =
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'getRequestMeta'
-        ])(req, 'isRSCRequest') ??
+          "getRequestMeta"
+        ])(req, "isRSCRequest") ??
         Boolean(
           req.headers[
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'RSC_HEADER'
+              "RSC_HEADER"
             ]
           ],
         );
       const isPossibleServerAction = (0,
       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$server$2d$action$2d$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-        'getIsPossibleServerAction'
+        "getIsPossibleServerAction"
       ])(req);
       /**
        * If the route being rendered is an app page, and the ppr feature has been
        * enabled, then the given route _could_ support PPR.
        */ const couldSupportPPR = (0,
       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$experimental$2f$ppr$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-        'checkIsAppPPREnabled'
+        "checkIsAppPPREnabled"
       ])(nextConfig.experimental.ppr);
       // Stash postponed state for server actions when in minimal mode.
       // We extract it here so the RDC is available for the re-render after the action completes.
       const resumeStateLengthHeader =
         req.headers[
           __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-            'NEXT_RESUME_STATE_LENGTH_HEADER'
+            "NEXT_RESUME_STATE_LENGTH_HEADER"
           ]
         ];
       if (
         !(0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'getRequestMeta'
-        ])(req, 'postponed') &&
+          "getRequestMeta"
+        ])(req, "postponed") &&
         isMinimalMode &&
         couldSupportPPR &&
         isPossibleServerAction &&
         resumeStateLengthHeader &&
-        typeof resumeStateLengthHeader === 'string'
+        typeof resumeStateLengthHeader === "string"
       ) {
         const stateLength = parseInt(resumeStateLengthHeader, 10);
         const { maxPostponedStateSize, maxPostponedStateSizeBytes } = (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$postponed$2d$request$2d$body$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'getMaxPostponedStateSize'
+          "getMaxPostponedStateSize"
         ])(nextConfig.experimental.maxPostponedStateSize);
         if (!isNaN(stateLength) && stateLength > 0) {
           var _nextConfig_experimental_serverActions;
@@ -5325,7 +5325,7 @@ module.exports = [
             res.end(
               (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$postponed$2d$request$2d$body$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'getPostponedStateExceededErrorMessage'
+                "getPostponedStateExceededErrorMessage"
               ])(maxPostponedStateSize),
             );
             ctx.waitUntil == null ? void 0 : ctx.waitUntil.call(ctx, Promise.resolve());
@@ -5335,7 +5335,7 @@ module.exports = [
           // payloads before the action handler checks. We use stateLength (not
           // maxPostponedStateSizeBytes) so the postponed state doesn't eat into
           // the action body budget - it's already validated above.
-          const defaultActionBodySizeLimit = '1 MB';
+          const defaultActionBodySizeLimit = "1 MB";
           const actionBodySizeLimit =
             ((_nextConfig_experimental_serverActions = nextConfig.experimental.serverActions) ==
             null
@@ -5345,14 +5345,14 @@ module.exports = [
             actionBodySizeLimit !== defaultActionBodySizeLimit
               ? __turbopack_context__
                   .r(
-                    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/bytes/index.js [app-rsc] (ecmascript)',
+                    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/bytes/index.js [app-rsc] (ecmascript)",
                   )
                   .parse(actionBodySizeLimit)
               : 1024 * 1024; // 1 MB
           const maxTotalBodySize = stateLength + actionBodySizeLimitBytes;
           const fullBody = await (0,
           __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$postponed$2d$request$2d$body$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-            'readBodyWithSizeLimit'
+            "readBodyWithSizeLimit"
           ])(req, maxTotalBodySize);
           if (fullBody === null) {
             res.statusCode = 413;
@@ -5365,25 +5365,25 @@ module.exports = [
           }
           if (fullBody.length >= stateLength) {
             // Extract postponed state from the beginning
-            const postponedState = fullBody.subarray(0, stateLength).toString('utf8');
+            const postponedState = fullBody.subarray(0, stateLength).toString("utf8");
             (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'addRequestMeta'
-            ])(req, 'postponed', postponedState);
+              "addRequestMeta"
+            ])(req, "postponed", postponedState);
             // Store the remaining action body for the action handler
             const actionBody = fullBody.subarray(stateLength);
             (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'addRequestMeta'
-            ])(req, 'actionBody', actionBody);
+              "addRequestMeta"
+            ])(req, "actionBody", actionBody);
           } else {
             throw Object.defineProperty(
               new Error(
                 `invariant: expected ${stateLength} bytes of postponed state but only received ${fullBody.length} bytes`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E979',
+                value: "E979",
                 enumerable: false,
                 configurable: true,
               },
@@ -5394,54 +5394,54 @@ module.exports = [
       if (
         !(0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'getRequestMeta'
-        ])(req, 'postponed') &&
+          "getRequestMeta"
+        ])(req, "postponed") &&
         couldSupportPPR &&
         req.headers[
           __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-            'NEXT_RESUME_HEADER'
+            "NEXT_RESUME_HEADER"
           ]
-        ] === '1' &&
-        req.method === 'POST'
+        ] === "1" &&
+        req.method === "POST"
       ) {
         const { maxPostponedStateSize, maxPostponedStateSizeBytes } = (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$postponed$2d$request$2d$body$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'getMaxPostponedStateSize'
+          "getMaxPostponedStateSize"
         ])(nextConfig.experimental.maxPostponedStateSize);
         // Decode the postponed state from the request body, it will come as
         // an array of buffers, so collect them and then concat them to form
         // the string.
         const body = await (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$postponed$2d$request$2d$body$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'readBodyWithSizeLimit'
+          "readBodyWithSizeLimit"
         ])(req, maxPostponedStateSizeBytes);
         if (body === null) {
           res.statusCode = 413;
           res.end(
             (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$postponed$2d$request$2d$body$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'getPostponedStateExceededErrorMessage'
+              "getPostponedStateExceededErrorMessage"
             ])(maxPostponedStateSize),
           );
           ctx.waitUntil == null ? void 0 : ctx.waitUntil.call(ctx, Promise.resolve());
           return null;
         }
-        const postponed = body.toString('utf8');
+        const postponed = body.toString("utf8");
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'addRequestMeta'
-        ])(req, 'postponed', postponed);
+          "addRequestMeta"
+        ])(req, "postponed", postponed);
       }
       // When enabled, this will allow the use of the `?__nextppronly` query to
       // enable debugging of the static shell.
       const hasDebugStaticShellQuery =
-        ('TURBOPACK compile-time value', false) === '1' &&
-        typeof query.__nextppronly !== 'undefined' &&
+        ("TURBOPACK compile-time value", false) === "1" &&
+        typeof query.__nextppronly !== "undefined" &&
         couldSupportPPR;
       // When enabled, this will allow the use of the `?__nextppronly` query
       // to enable debugging of the fallback shell.
       const hasDebugFallbackShellQuery =
-        hasDebugStaticShellQuery && query.__nextppronly === 'fallback';
+        hasDebugStaticShellQuery && query.__nextppronly === "fallback";
       // Whether the testing API is exposed (dev mode or explicit flag)
       const exposeTestingApi =
         routeModule.isDev === true ||
@@ -5458,19 +5458,19 @@ module.exports = [
         exposeTestingApi &&
         (req.headers[
           __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-            'NEXT_INSTANT_PREFETCH_HEADER'
+            "NEXT_INSTANT_PREFETCH_HEADER"
           ]
-        ] === '1' ||
+        ] === "1" ||
           (req.headers[
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'RSC_HEADER'
+              "RSC_HEADER"
             ]
           ] === undefined &&
-            typeof req.headers.cookie === 'string' &&
+            typeof req.headers.cookie === "string" &&
             req.headers.cookie.includes(
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'NEXT_INSTANT_TEST_COOKIE'
-              ] + '=',
+                "NEXT_INSTANT_TEST_COOKIE"
+              ] + "=",
             )));
       // This page supports PPR if it is marked as being `PARTIALLY_STATIC` in the
       // prerender manifest and this is an app page.
@@ -5482,7 +5482,7 @@ module.exports = [
           prerenderManifest.routes[normalizedSrcPage] ??
           prerenderManifest.dynamicRoutes[normalizedSrcPage]) == null
           ? void 0
-          : _this.renderingMode) === 'PARTIALLY_STATIC' || // Ideally we'd want to check the appConfig to see if this page has PPR
+          : _this.renderingMode) === "PARTIALLY_STATIC" || // Ideally we'd want to check the appConfig to see if this page has PPR
           // enabled or not, but that would require plumbing the appConfig through
           // to the server during development. We assume that the page supports it
           // but only during development or when the testing API is exposed.
@@ -5502,8 +5502,8 @@ module.exports = [
       const minimalPostponed = isRoutePPREnabled
         ? (0,
           __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-            'getRequestMeta'
-          ])(req, 'postponed')
+            "getRequestMeta"
+          ])(req, "postponed")
         : undefined;
       // If PPR is enabled, and this is a RSC request (but not a prefetch), then
       // we can use this fact to only generate the flight data for the request
@@ -5532,8 +5532,8 @@ module.exports = [
       // generated, so we will always either return a static response or a 404.
       const segmentPrefetchHeader = (0,
       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-        'getRequestMeta'
-      ])(req, 'segmentPrefetchRSCRequest');
+        "getRequestMeta"
+      ])(req, "segmentPrefetchRSCRequest");
       // TODO: investigate existing bug with shouldServeStreamingMetadata always
       // being true for a revalidate due to modifying the base-server this.renderOpts
       // when fixing this to correct logic it causes hydration issue since we set
@@ -5545,7 +5545,7 @@ module.exports = [
             ? true
             : (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$streaming$2d$metadata$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'shouldServeStreamingMetadata'
+                "shouldServeStreamingMetadata"
               ])(userAgent, nextConfig.htmlLimitedBots);
       const isSSG = Boolean(
         (prerenderInfo || isPrerendered || prerenderManifest.routes[normalizedSrcPage]) && // If this is a bot request and PPR is enabled, then we don't want
@@ -5561,14 +5561,14 @@ module.exports = [
         // dynamic HTML.
         !isSSG || // If this request has provided postponed data, it supports dynamic
         // HTML.
-        typeof minimalPostponed === 'string' || // If this handler supports onCacheEntryV2, then we can only support
+        typeof minimalPostponed === "string" || // If this handler supports onCacheEntryV2, then we can only support
         // dynamic responses if it's a dynamic RSC request and not in minimal mode. If it
         // doesn't support it we must fallback to the default behavior.
         (supportsRDCForNavigations &&
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'getRequestMeta'
-        ])(req, 'onCacheEntryV2')
+          "getRequestMeta"
+        ])(req, "onCacheEntryV2")
           ? // RSC request, we'll pass the minimal postponed data to the render
             // which will trigger the `supportsDynamicResponse` to be true.
             isDynamicRSCRequest && !isMinimalMode
@@ -5597,7 +5597,7 @@ module.exports = [
         // that matched this request so `/prefix/[one]/[two]` can specialize into
         // `/prefix/c/[two]` without promoting all the way to `/prefix/c/foo`.
         const fallbackPathname = prerenderMatch
-          ? typeof (prerenderInfo == null ? void 0 : prerenderInfo.fallback) === 'string'
+          ? typeof (prerenderInfo == null ? void 0 : prerenderInfo.fallback) === "string"
             ? prerenderInfo.fallback
             : prerenderMatch.source
           : null;
@@ -5648,7 +5648,7 @@ module.exports = [
       if (!routeModule.isDev && !isDraftMode && isSSG && isRSCRequest && !isDynamicRSCRequest) {
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$strip$2d$flight$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'stripFlightHeaders'
+          "stripFlightHeaders"
         ])(req.headers);
       }
       const ComponentMod = {
@@ -5664,17 +5664,17 @@ module.exports = [
       if (serverActionsManifest && clientReferenceManifest) {
         (0,
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$manifests$2d$singleton$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'setManifestsSingleton'
+          "setManifestsSingleton"
         ])({
           page: srcPage,
           clientReferenceManifest,
           serverActionsManifest,
         });
       }
-      const method = req.method || 'GET';
+      const method = req.method || "GET";
       const tracer = (0,
       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$trace$2f$tracer$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-        'getTracer'
+        "getTracer"
       ])();
       const activeSpan = tracer.getActiveScopeSpan();
       const isWrappedByNextServer = Boolean(
@@ -5698,28 +5698,28 @@ module.exports = [
         if (routerServerContext == null ? void 0 : routerServerContext.render404) {
           await routerServerContext.render404(req, res, parsedUrl, false);
         } else {
-          res.end('This page could not be found');
+          res.end("This page could not be found");
         }
         return null;
       };
       try {
         const varyHeader = routeModule.getVaryHeader(resolvedPathname, interceptionRoutePatterns);
-        res.setHeader('Vary', varyHeader);
+        res.setHeader("Vary", varyHeader);
         let parentSpan;
         const invokeRouteModule = async (span, context) => {
           const nextReq =
             new __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$base$2d$http$2f$node$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'NodeNextRequest'
+              "NodeNextRequest"
             ](req);
           const nextRes =
             new __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$base$2d$http$2f$node$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'NodeNextResponse'
+              "NodeNextResponse"
             ](res);
           return routeModule.render(nextReq, nextRes, context).finally(() => {
             if (!span) return;
             span.setAttributes({
-              'http.status_code': res.statusCode,
-              'next.rsc': false,
+              "http.status_code": res.statusCode,
+              "next.rsc": false,
             });
             const rootSpanAttributes = tracer.getRootSpanAttributes();
             // We were unable to get attributes, probably OTEL is not enabled
@@ -5727,29 +5727,29 @@ module.exports = [
               return;
             }
             if (
-              rootSpanAttributes.get('next.span_type') !==
+              rootSpanAttributes.get("next.span_type") !==
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$trace$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'BaseServerSpan'
+                "BaseServerSpan"
               ].handleRequest
             ) {
               console.warn(
-                `Unexpected root span type '${rootSpanAttributes.get('next.span_type')}'. Please report this Next.js issue https://github.com/vercel/next.js`,
+                `Unexpected root span type '${rootSpanAttributes.get("next.span_type")}'. Please report this Next.js issue https://github.com/vercel/next.js`,
               );
               return;
             }
-            const route = rootSpanAttributes.get('next.route');
+            const route = rootSpanAttributes.get("next.route");
             if (route) {
               const name = `${method} ${route}`;
               span.setAttributes({
-                'next.route': route,
-                'http.route': route,
-                'next.span_name': name,
+                "next.route": route,
+                "http.route": route,
+                "next.span_name": name,
               });
               span.updateName(name);
               // Propagate http.route to the parent span if one exists (e.g.
               // a platform-created HTTP span in adapter deployments).
               if (parentSpan && parentSpan !== span) {
-                parentSpan.setAttribute('http.route', route);
+                parentSpan.setAttribute("http.route", route);
                 parentSpan.updateName(name);
               }
             } else {
@@ -5760,8 +5760,8 @@ module.exports = [
         const incrementalCache =
           (0,
           __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-            'getRequestMeta'
-          ])(req, 'incrementalCache') ||
+            "getRequestMeta"
+          ])(req, "incrementalCache") ||
           (await routeModule.getIncrementalCache(
             req,
             nextConfig,
@@ -5782,8 +5782,8 @@ module.exports = [
             },
             serverComponentsHmrCache: (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'getRequestMeta'
-            ])(req, 'serverComponentsHmrCache'),
+              "getRequestMeta"
+            ])(req, "serverComponentsHmrCache"),
             fallbackRouteParams,
             renderOpts: {
               App: () => null,
@@ -5792,7 +5792,7 @@ module.exports = [
               ComponentMod,
               Component: (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$interop$2d$default$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'interopDefault'
+                "interopDefault"
               ])(ComponentMod),
               params,
               routeModule,
@@ -5800,7 +5800,7 @@ module.exports = [
               postponed,
               shouldWaitOnAllReady,
               serveStreamingMetadata,
-              supportsDynamicResponse: typeof postponed === 'string' || supportsDynamicResponse,
+              supportsDynamicResponse: typeof postponed === "string" || supportsDynamicResponse,
               buildManifest,
               nextFontManifest,
               reactLoadableManifest,
@@ -5812,12 +5812,12 @@ module.exports = [
                 routerServerContext == null ? void 0 : routerServerContext.setReactDebugChannel,
               sendErrorsToBrowser:
                 routerServerContext == null ? void 0 : routerServerContext.sendErrorsToBrowser,
-              dir: ('TURBOPACK compile-time truthy', 1)
-                ? require('path').join(
+              dir: ("TURBOPACK compile-time truthy", 1)
+                ? require("path").join(
                     /* turbopackIgnore: true */ process.cwd(),
                     routeModule.relativeProjectDir,
                   )
-                : 'TURBOPACK unreachable',
+                : "TURBOPACK unreachable",
               isDraftMode,
               botType,
               isOnDemandRevalidate,
@@ -5837,7 +5837,7 @@ module.exports = [
               basePath: nextConfig.basePath,
               serverActions: nextConfig.experimental.serverActions,
               logServerFunctions:
-                typeof nextConfig.logging === 'object' &&
+                typeof nextConfig.logging === "object" &&
                 Boolean(nextConfig.logging.serverFunctions),
               ...(isDebugStaticShell || isDebugDynamicAccesses || isDebugFallbackShell
                 ? {
@@ -5862,12 +5862,12 @@ module.exports = [
                 clientParamParsingOrigins: nextConfig.experimental.clientParamParsingOrigins,
                 maxPostponedStateSizeBytes: (0,
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$size$2d$limit$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'parseMaxPostponedStateSize'
+                  "parseMaxPostponedStateSize"
                 ])(nextConfig.experimental.maxPostponedStateSize),
               },
               waitUntil: ctx.waitUntil,
               onClose: (cb) => {
-                res.on('close', cb);
+                res.on("close", cb);
               },
               onAfterTaskError: () => {},
               onInstrumentationRequestError: (error, _request, errorContext, silenceLog) =>
@@ -5880,8 +5880,8 @@ module.exports = [
                 ),
               err: (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'getRequestMeta'
-              ])(req, 'invokeError'),
+                "getRequestMeta"
+              ])(req, "invokeError"),
             },
           };
           // When we're revalidating in the background, we should not allow dynamic
@@ -5895,7 +5895,7 @@ module.exports = [
           if (cacheTags) {
             headers[
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'NEXT_CACHE_TAGS_HEADER'
+                "NEXT_CACHE_TAGS_HEADER"
               ]
             ] = cacheTags;
           }
@@ -5916,23 +5916,23 @@ module.exports = [
                 `Page changed from static to dynamic at runtime ${resolvedPathname}${(staticBailoutInfo == null ? void 0 : staticBailoutInfo.description) ? `, reason: ${staticBailoutInfo.description}` : ``}` +
                   `\nsee more here https://nextjs.org/docs/messages/app-static-to-dynamic-error`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E132',
+                value: "E132",
                 enumerable: false,
                 configurable: true,
               },
             );
             if (staticBailoutInfo == null ? void 0 : staticBailoutInfo.stack) {
               const stack = staticBailoutInfo.stack;
-              err.stack = err.message + stack.substring(stack.indexOf('\n'));
+              err.stack = err.message + stack.substring(stack.indexOf("\n"));
             }
             throw err;
           }
           return {
             value: {
               kind: __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$response$2d$cache$2f$types$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'CachedRouteKind'
+                "CachedRouteKind"
               ].APP_PAGE,
               html: result,
               headers,
@@ -5965,7 +5965,7 @@ module.exports = [
               await routerServerContext.render404(req, res);
             } else {
               res.statusCode = 404;
-              res.end('This page could not be found');
+              res.end("This page could not be found");
             }
             return null;
           }
@@ -5973,7 +5973,7 @@ module.exports = [
           if (prerenderInfo) {
             fallbackMode = (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$fallback$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'parseFallbackField'
+              "parseFallbackField"
             ])(prerenderInfo.fallback);
           }
           if (
@@ -5991,7 +5991,7 @@ module.exports = [
             // should not inherit a shell from another generated branch.
             fallbackMode =
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$fallback$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'FallbackMode'
+                "FallbackMode"
               ].PRERENDER;
           }
           // When serving a HTML bot request, we want to serve a blocking render and
@@ -6000,17 +6000,17 @@ module.exports = [
           if (
             fallbackMode ===
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$fallback$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'FallbackMode'
+                "FallbackMode"
               ].PRERENDER &&
             (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$router$2f$utils$2f$is$2d$bot$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__$3c$locals$3e$__[
-              'isBot'
+              "isBot"
             ])(userAgent)
           ) {
             if (!isRoutePPREnabled || isHtmlBot) {
               fallbackMode =
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$fallback$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'FallbackMode'
+                  "FallbackMode"
                 ].BLOCKING_STATIC_RENDER;
             }
           }
@@ -6028,20 +6028,20 @@ module.exports = [
             isOnDemandRevalidate &&
             (fallbackMode !==
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$fallback$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'FallbackMode'
+                "FallbackMode"
               ].NOT_FOUND ||
               previousIncrementalCacheEntry)
           ) {
             fallbackMode =
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$fallback$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'FallbackMode'
+                "FallbackMode"
               ].BLOCKING_STATIC_RENDER;
           }
           if (
             !isMinimalMode &&
             fallbackMode !==
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$fallback$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'FallbackMode'
+                "FallbackMode"
               ].BLOCKING_STATIC_RENDER &&
             staticPathKey &&
             !didRespond &&
@@ -6056,14 +6056,14 @@ module.exports = [
               (isProduction || prerenderInfo) && // When fallback isn't present, abort this render so we 404
               fallbackMode ===
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$fallback$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'FallbackMode'
+                  "FallbackMode"
                 ].NOT_FOUND
             ) {
               if (nextConfig.adapterPath) {
                 return await render404();
               }
               throw new __TURBOPACK__imported__module__$5b$externals$5d2f$next$2f$dist$2f$shared$2f$lib$2f$no$2d$fallback$2d$error$2e$external$2e$js__$5b$external$5d$__$28$next$2f$dist$2f$shared$2f$lib$2f$no$2d$fallback$2d$error$2e$external$2e$js$2c$__cjs$29$__[
-                'NoFallbackError'
+                "NoFallbackError"
               ]();
             }
             // When cacheComponents is enabled, we can use the fallback
@@ -6077,7 +6077,7 @@ module.exports = [
             ) {
               const cacheKey =
                 isProduction &&
-                typeof (prerenderInfo == null ? void 0 : prerenderInfo.fallback) === 'string'
+                typeof (prerenderInfo == null ? void 0 : prerenderInfo.fallback) === "string"
                   ? prerenderInfo.fallback
                   : normalizedSrcPage;
               const fallbackRouteParams = // navigation testing), use the prerender manifest's fallback
@@ -6088,12 +6088,12 @@ module.exports = [
                 (prerenderInfo == null ? void 0 : prerenderInfo.fallbackRouteParams)
                   ? (0,
                     __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2f$fallback$2d$params$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                      'createOpaqueFallbackRouteParams'
+                      "createOpaqueFallbackRouteParams"
                     ])(prerenderInfo.fallbackRouteParams)
                   : isDebugFallbackShell
                     ? (0,
                       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2f$fallback$2d$params$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                        'getFallbackRouteParams'
+                        "getFallbackRouteParams"
                       ])(normalizedSrcPage, routeModule)
                     : null;
               // When rendering a debug static shell, override the fallback
@@ -6102,8 +6102,8 @@ module.exports = [
               if (isDebugStaticShell && fallbackRouteParams) {
                 (0,
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'addRequestMeta'
-                ])(req, 'fallbackParams', fallbackRouteParams);
+                  "addRequestMeta"
+                ])(req, "fallbackParams", fallbackRouteParams);
               }
               // We use the response cache here to handle the revalidation and
               // management of the fallback shell.
@@ -6113,7 +6113,7 @@ module.exports = [
                 nextConfig,
                 routeKind:
                   __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$route$2d$kind$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                    'RouteKind'
+                    "RouteKind"
                   ].APP_PAGE,
                 isFallback: true,
                 prerenderManifest,
@@ -6159,7 +6159,7 @@ module.exports = [
                 ) {
                   (0,
                   __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$scheduler$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                    'scheduleOnNextTick'
+                    "scheduleOnNextTick"
                   ])(async () => {
                     const responseCache = routeModule.getResponseCache(req);
                     try {
@@ -6181,7 +6181,7 @@ module.exports = [
                               remainingFallbackRouteParams.length > 0
                                 ? (0,
                                   __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2f$fallback$2d$params$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                                    'createOpaqueFallbackRouteParams'
+                                    "createOpaqueFallbackRouteParams"
                                   ])(remainingFallbackRouteParams)
                                 : null,
                             forceStaticRender: true,
@@ -6192,7 +6192,7 @@ module.exports = [
                         ctx.waitUntil,
                       );
                     } catch (err) {
-                      console.error('Error revalidating the page in the background', err);
+                      console.error("Error revalidating the page in the background", err);
                     }
                   });
                 }
@@ -6217,7 +6217,7 @@ module.exports = [
           // action.
           if (
             supportsRDCForNavigations &&
-            ('TURBOPACK compile-time value', 'nodejs') !== 'edge' &&
+            ("TURBOPACK compile-time value", "nodejs") !== "edge" &&
             !isMinimalMode &&
             incrementalCache && // Include both dynamic RSC requests (navigations) and server actions
             (isDynamicRSCRequest || isPossibleServerAction) && // We don't typically trigger an on-demand revalidation for dynamic RSC
@@ -6229,7 +6229,7 @@ module.exports = [
           ) {
             const incrementalCacheEntry = await incrementalCache.get(resolvedPathname, {
               kind: __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$response$2d$cache$2f$types$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'IncrementalCacheKind'
+                "IncrementalCacheKind"
               ].APP_PAGE,
               isRoutePPREnabled: true,
               isFallback: false,
@@ -6241,7 +6241,7 @@ module.exports = [
               incrementalCacheEntry.value &&
               incrementalCacheEntry.value.kind ===
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$response$2d$cache$2f$types$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'CachedRouteKind'
+                  "CachedRouteKind"
                 ].APP_PAGE
             ) {
               // CRITICAL: we're assigning the postponed data from the cache entry
@@ -6259,7 +6259,7 @@ module.exports = [
                 // render is not blocked on it.
                 (0,
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$scheduler$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'scheduleOnNextTick'
+                  "scheduleOnNextTick"
                 ])(async () => {
                   const responseCache = routeModule.getResponseCache(req);
                   try {
@@ -6282,7 +6282,7 @@ module.exports = [
                       ctx.waitUntil,
                     );
                   } catch (err) {
-                    console.error('Error revalidating the page in the background', err);
+                    console.error("Error revalidating the page in the background", err);
                   }
                 });
               }
@@ -6290,7 +6290,7 @@ module.exports = [
           }
           // When we're in minimal mode, if we're trying to debug the static shell,
           // we should just return nothing instead of resuming the dynamic render.
-          if ((isDebugStaticShell || isDebugDynamicAccesses) && typeof postponed !== 'undefined') {
+          if ((isDebugStaticShell || isDebugDynamicAccesses) && typeof postponed !== "undefined") {
             return {
               cacheControl: {
                 revalidate: 1,
@@ -6298,10 +6298,10 @@ module.exports = [
               },
               value: {
                 kind: __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$response$2d$cache$2f$types$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'CachedRouteKind'
+                  "CachedRouteKind"
                 ].PAGES,
                 html: __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$render$2d$result$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'default'
+                  "default"
                 ].EMPTY,
                 pageData: {},
                 headers: undefined,
@@ -6314,18 +6314,18 @@ module.exports = [
             ((isProduction &&
               (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'getRequestMeta'
-              ])(req, 'renderFallbackShell')) ||
+                "getRequestMeta"
+              ])(req, "renderFallbackShell")) ||
               (isDebugStaticShell && !isPrerendered)) &&
             (prerenderInfo == null ? void 0 : prerenderInfo.fallbackRouteParams)
               ? (0,
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2f$fallback$2d$params$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'createOpaqueFallbackRouteParams'
+                  "createOpaqueFallbackRouteParams"
                 ])(prerenderInfo.fallbackRouteParams)
               : isDebugFallbackShell
                 ? (0,
                   __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2f$fallback$2d$params$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                    'getFallbackRouteParams'
+                    "getFallbackRouteParams"
                   ])(normalizedSrcPage, routeModule)
                 : null;
           // For staged dynamic rendering (Cached Navigations) and debug static
@@ -6341,13 +6341,13 @@ module.exports = [
           ) {
             const fallbackParams = (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2f$fallback$2d$params$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'createOpaqueFallbackRouteParams'
+              "createOpaqueFallbackRouteParams"
             ])(prerenderInfo.fallbackRouteParams);
             if (fallbackParams) {
               (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'addRequestMeta'
-              ])(req, 'fallbackParams', fallbackParams);
+                "addRequestMeta"
+              ])(req, "fallbackParams", fallbackParams);
             }
           }
           // Perform the render.
@@ -6369,7 +6369,7 @@ module.exports = [
               }),
             routeKind:
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$route$2d$kind$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'RouteKind'
+                "RouteKind"
               ].APP_PAGE,
             isOnDemandRevalidate,
             isRoutePPREnabled,
@@ -6381,13 +6381,13 @@ module.exports = [
           });
           if (isDraftMode) {
             res.setHeader(
-              'Cache-Control',
-              'private, no-cache, no-store, max-age=0, must-revalidate',
+              "Cache-Control",
+              "private, no-cache, no-store, max-age=0, must-revalidate",
             );
           }
           // In dev, we should not cache pages for any reason.
           if (routeModule.isDev) {
-            res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+            res.setHeader("Cache-Control", "no-cache, must-revalidate");
           }
           if (!cacheEntry) {
             if (ssgCacheKey) {
@@ -6397,10 +6397,10 @@ module.exports = [
               // with a cache entry, then either Next.js or the application has a
               // bug that needs fixing.
               throw Object.defineProperty(
-                new Error('invariant: cache entry required but not generated'),
-                '__NEXT_ERROR_CODE',
+                new Error("invariant: cache entry required but not generated"),
+                "__NEXT_ERROR_CODE",
                 {
-                  value: 'E62',
+                  value: "E62",
                   enumerable: false,
                   configurable: true,
                 },
@@ -6411,7 +6411,7 @@ module.exports = [
           if (
             ((_cacheEntry_value = cacheEntry.value) == null ? void 0 : _cacheEntry_value.kind) !==
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$response$2d$cache$2f$types$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'CachedRouteKind'
+              "CachedRouteKind"
             ].APP_PAGE
           ) {
             var _cacheEntry_value1;
@@ -6419,15 +6419,15 @@ module.exports = [
               new Error(
                 `Invariant app-page handler received invalid cache entry ${((_cacheEntry_value1 = cacheEntry.value)) == null ? void 0 : _cacheEntry_value1.kind}`,
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E707',
+                value: "E707",
                 enumerable: false,
                 configurable: true,
               },
             );
           }
-          const didPostpone = typeof cacheEntry.value.postponed === 'string';
+          const didPostpone = typeof cacheEntry.value.postponed === "string";
           // Set the build ID header for RSC navigation requests when deploymentId is configured. This
           // corresponds with maybeAppendBuildIdToRSCPayload in app-render.tsx which omits the build ID
           // from the RSC payload when deploymentId is set (relying on this header instead). Server
@@ -6438,7 +6438,7 @@ module.exports = [
           if (isRSCRequest && !isPossibleServerAction && deploymentId) {
             res.setHeader(
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'NEXT_NAV_DEPLOYMENT_ID_HEADER'
+                "NEXT_NAV_DEPLOYMENT_ID_HEADER"
               ],
               deploymentId,
             );
@@ -6454,23 +6454,23 @@ module.exports = [
               // set x-nextjs-cache header to match the header
               // we set for the image-optimizer
               res.setHeader(
-                'x-nextjs-cache',
+                "x-nextjs-cache",
                 isOnDemandRevalidate
-                  ? 'REVALIDATED'
+                  ? "REVALIDATED"
                   : cacheEntry.isMiss
-                    ? 'MISS'
+                    ? "MISS"
                     : cacheEntry.isStale
-                      ? 'STALE'
-                      : 'HIT',
+                      ? "STALE"
+                      : "HIT",
               );
             }
             // Set a header used by the client router to signal the response is static
             // and should respect the `static` cache staleTime value.
             res.setHeader(
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'NEXT_IS_PRERENDER_HEADER'
+                "NEXT_IS_PRERENDER_HEADER"
               ],
-              '1',
+              "1",
             );
           }
           const { value: cachedData } = cacheEntry;
@@ -6496,7 +6496,7 @@ module.exports = [
                 expire: undefined,
               };
             } else if (!isSSG) {
-              if (!res.getHeader('Cache-Control')) {
+              if (!res.getHeader("Cache-Control")) {
                 cacheControl = {
                   revalidate: 0,
                   expire: undefined,
@@ -6505,16 +6505,16 @@ module.exports = [
             } else if (cacheEntry.cacheControl) {
               // If the cache entry has a cache control with a revalidate value that's
               // a number, use it.
-              if (typeof cacheEntry.cacheControl.revalidate === 'number') {
+              if (typeof cacheEntry.cacheControl.revalidate === "number") {
                 var _cacheEntry_cacheControl;
                 if (cacheEntry.cacheControl.revalidate < 1) {
                   throw Object.defineProperty(
                     new Error(
                       `Invalid revalidate configuration provided: ${cacheEntry.cacheControl.revalidate} < 1`,
                     ),
-                    '__NEXT_ERROR_CODE',
+                    "__NEXT_ERROR_CODE",
                     {
-                      value: 'E22',
+                      value: "E22",
                       enumerable: false,
                       configurable: true,
                     },
@@ -6531,7 +6531,7 @@ module.exports = [
                 cacheControl = {
                   revalidate:
                     __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                      'CACHE_ONE_YEAR_SECONDS'
+                      "CACHE_ONE_YEAR_SECONDS"
                     ],
                   expire: undefined,
                 };
@@ -6540,10 +6540,10 @@ module.exports = [
           }
           cacheEntry.cacheControl = cacheControl;
           if (
-            typeof segmentPrefetchHeader === 'string' &&
+            typeof segmentPrefetchHeader === "string" &&
             (cachedData == null ? void 0 : cachedData.kind) ===
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$response$2d$cache$2f$types$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'CachedRouteKind'
+                "CachedRouteKind"
               ].APP_PAGE &&
             cachedData.segmentData
           ) {
@@ -6559,9 +6559,9 @@ module.exports = [
             // response itself contains whether the data is dynamic.
             res.setHeader(
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'NEXT_DID_POSTPONE_HEADER'
+                "NEXT_DID_POSTPONE_HEADER"
               ],
-              '2',
+              "2",
             );
             // Add the cache tags header to the response if it exists and we're in
             // minimal mode while rendering a static page.
@@ -6570,13 +6570,13 @@ module.exports = [
                 ? void 0
                 : _cachedData_headers1[
                     __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                      'NEXT_CACHE_TAGS_HEADER'
+                      "NEXT_CACHE_TAGS_HEADER"
                     ]
                   ];
-            if (isMinimalMode && isSSG && tags && typeof tags === 'string') {
+            if (isMinimalMode && isSSG && tags && typeof tags === "string") {
               res.setHeader(
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'NEXT_CACHE_TAGS_HEADER'
+                  "NEXT_CACHE_TAGS_HEADER"
                 ],
                 tags,
               );
@@ -6586,7 +6586,7 @@ module.exports = [
               // Cache hit
               return (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'sendRenderResult'
+                "sendRenderResult"
               ])({
                 req,
                 res,
@@ -6594,11 +6594,11 @@ module.exports = [
                 poweredByHeader: nextConfig.poweredByHeader,
                 result:
                   __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$render$2d$result$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                    'default'
+                    "default"
                   ].fromStatic(
                     matchedSegment,
                     __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                      'RSC_CONTENT_TYPE_HEADER'
+                      "RSC_CONTENT_TYPE_HEADER"
                     ],
                   ),
                 cacheControl: cacheEntry.cacheControl,
@@ -6613,7 +6613,7 @@ module.exports = [
             res.statusCode = 204;
             return (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'sendRenderResult'
+              "sendRenderResult"
             ])({
               req,
               res,
@@ -6621,7 +6621,7 @@ module.exports = [
               poweredByHeader: nextConfig.poweredByHeader,
               result:
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$render$2d$result$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'default'
+                  "default"
                 ].EMPTY,
               cacheControl: cacheEntry.cacheControl,
             });
@@ -6634,23 +6634,23 @@ module.exports = [
           const onCacheEntry = supportsRDCForNavigations
             ? ((0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'getRequestMeta'
-              ])(req, 'onCacheEntryV2') ??
+                "getRequestMeta"
+              ])(req, "onCacheEntryV2") ??
               (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'getRequestMeta'
-              ])(req, 'onCacheEntry'))
+                "getRequestMeta"
+              ])(req, "onCacheEntry"))
             : (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'getRequestMeta'
-              ])(req, 'onCacheEntry');
+                "getRequestMeta"
+              ])(req, "onCacheEntry");
           if (onCacheEntry) {
             const finished = await onCacheEntry(cacheEntry, {
               url:
                 (0,
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2d$meta$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'getRequestMeta'
-                ])(req, 'initURL') ?? req.url,
+                  "getRequestMeta"
+                ])(req, "initURL") ?? req.url,
             });
             if (finished) return null;
           }
@@ -6661,17 +6661,17 @@ module.exports = [
             if (!isMinimalMode || !isSSG) {
               delete headers[
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'NEXT_CACHE_TAGS_HEADER'
+                  "NEXT_CACHE_TAGS_HEADER"
                 ]
               ];
             }
             for (let [key, value] of Object.entries(headers)) {
-              if (typeof value === 'undefined') continue;
+              if (typeof value === "undefined") continue;
               if (Array.isArray(value)) {
                 for (const v of value) {
                   res.appendHeader(key, v);
                 }
-              } else if (typeof value === 'number') {
+              } else if (typeof value === "number") {
                 value = value.toString();
                 res.appendHeader(key, value);
               } else {
@@ -6686,13 +6686,13 @@ module.exports = [
               ? void 0
               : _cachedData_headers[
                   __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                    'NEXT_CACHE_TAGS_HEADER'
+                    "NEXT_CACHE_TAGS_HEADER"
                   ]
                 ];
-          if (isMinimalMode && isSSG && tags && typeof tags === 'string') {
+          if (isMinimalMode && isSSG && tags && typeof tags === "string") {
             res.setHeader(
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$lib$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'NEXT_CACHE_TAGS_HEADER'
+                "NEXT_CACHE_TAGS_HEADER"
               ],
               tags,
             );
@@ -6708,7 +6708,7 @@ module.exports = [
             !isMinimalMode &&
             cachedData.status &&
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$redirect$2d$status$2d$code$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'RedirectStatusCode'
+              "RedirectStatusCode"
             ][cachedData.status] &&
             isRSCRequest
           ) {
@@ -6718,9 +6718,9 @@ module.exports = [
           if (didPostpone && !isDynamicRSCRequest) {
             res.setHeader(
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'NEXT_DID_POSTPONE_HEADER'
+                "NEXT_DID_POSTPONE_HEADER"
               ],
-              '1',
+              "1",
             );
           }
           // we don't go through this block when preview mode is true
@@ -6729,19 +6729,19 @@ module.exports = [
           // return the generated payload
           if (isRSCRequest && !isDraftMode) {
             // If this is a dynamic RSC request, then stream the response.
-            if (typeof cachedData.rscData === 'undefined') {
+            if (typeof cachedData.rscData === "undefined") {
               // If the response is not an RSC response, then we can't serve it.
               if (
                 cachedData.html.contentType !==
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'RSC_CONTENT_TYPE_HEADER'
+                  "RSC_CONTENT_TYPE_HEADER"
                 ]
               ) {
                 if (nextConfig.cacheComponents) {
                   res.statusCode = 404;
                   return (0,
                   __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                    'sendRenderResult'
+                    "sendRenderResult"
                   ])({
                     req,
                     res,
@@ -6749,7 +6749,7 @@ module.exports = [
                     poweredByHeader: nextConfig.poweredByHeader,
                     result:
                       __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$render$2d$result$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                        'default'
+                        "default"
                       ].EMPTY,
                     cacheControl: cacheEntry.cacheControl,
                   });
@@ -6757,11 +6757,11 @@ module.exports = [
                   // Otherwise this case is not expected.
                   throw Object.defineProperty(
                     new __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$shared$2f$lib$2f$invariant$2d$error$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                      'InvariantError'
+                      "InvariantError"
                     ](`Expected RSC response, got ${cachedData.html.contentType}`),
-                    '__NEXT_ERROR_CODE',
+                    "__NEXT_ERROR_CODE",
                     {
-                      value: 'E789',
+                      value: "E789",
                       enumerable: false,
                       configurable: true,
                     },
@@ -6770,7 +6770,7 @@ module.exports = [
               }
               return (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'sendRenderResult'
+                "sendRenderResult"
               ])({
                 req,
                 res,
@@ -6784,7 +6784,7 @@ module.exports = [
             // data.
             return (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'sendRenderResult'
+              "sendRenderResult"
             ])({
               req,
               res,
@@ -6792,11 +6792,11 @@ module.exports = [
               poweredByHeader: nextConfig.poweredByHeader,
               result:
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$render$2d$result$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'default'
+                  "default"
                 ].fromStatic(
                   cachedData.rscData,
                   __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$client$2f$components$2f$app$2d$router$2d$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                    'RSC_CONTENT_TYPE_HEADER'
+                    "RSC_CONTENT_TYPE_HEADER"
                   ],
                 ),
               cacheControl: cacheEntry.cacheControl,
@@ -6815,12 +6815,12 @@ module.exports = [
             body.pipeThrough(
               (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$stream$2d$utils$2f$node$2d$web$2d$streams$2d$helper$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'createInstantTestScriptInsertionTransformStream'
+                "createInstantTestScriptInsertionTransformStream"
               ])(instantTestRequestId),
             );
             return (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'sendRenderResult'
+              "sendRenderResult"
             ])({
               req,
               res,
@@ -6841,11 +6841,11 @@ module.exports = [
             // that's between the static and dynamic parts so we can compare the
             // chunks and add assertions.
             if (
-              ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+              ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
             );
             return (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'sendRenderResult'
+              "sendRenderResult"
             ])({
               req,
               res,
@@ -6867,7 +6867,7 @@ module.exports = [
                 start(controller) {
                   controller.enqueue(
                     __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$stream$2d$utils$2f$encoded$2d$tags$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                      'ENCODED_TAGS'
+                      "ENCODED_TAGS"
                     ].CLOSED.BODY_AND_HTML,
                   );
                   controller.close();
@@ -6876,7 +6876,7 @@ module.exports = [
             );
             return (0,
             __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-              'sendRenderResult'
+              "sendRenderResult"
             ])({
               req,
               res,
@@ -6893,7 +6893,7 @@ module.exports = [
           // that's between the static and dynamic parts so we can compare the
           // chunks and add assertions.
           if (
-            ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+            ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
           );
           // This request has postponed, so let's create a new transformer that the
           // dynamic data can pipe to that will attach the dynamic data to the end
@@ -6915,10 +6915,10 @@ module.exports = [
               var _result_value;
               if (!result) {
                 throw Object.defineProperty(
-                  new Error('Invariant: expected a result to be returned'),
-                  '__NEXT_ERROR_CODE',
+                  new Error("Invariant: expected a result to be returned"),
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E463',
+                    value: "E463",
                     enumerable: false,
                     configurable: true,
                   },
@@ -6927,7 +6927,7 @@ module.exports = [
               if (
                 ((_result_value = result.value) == null ? void 0 : _result_value.kind) !==
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$response$2d$cache$2f$types$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'CachedRouteKind'
+                  "CachedRouteKind"
                 ].APP_PAGE
               ) {
                 var _result_value1;
@@ -6935,9 +6935,9 @@ module.exports = [
                   new Error(
                     `Invariant: expected a page response, got ${((_result_value1 = result.value)) == null ? void 0 : _result_value1.kind}`,
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E305',
+                    value: "E305",
                     enumerable: false,
                     configurable: true,
                   },
@@ -6955,7 +6955,7 @@ module.exports = [
             });
           return (0,
           __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$send$2d$payload$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-            'sendRenderResult'
+            "sendRenderResult"
           ])({
             req,
             res,
@@ -6982,16 +6982,16 @@ module.exports = [
             () =>
               tracer.trace(
                 __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$trace$2f$constants$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                  'BaseServerSpan'
+                  "BaseServerSpan"
                 ].handleRequest,
                 {
                   spanName: `${method} ${srcPage}`,
                   kind: __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$lib$2f$trace$2f$tracer$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                    'SpanKind'
+                    "SpanKind"
                   ].SERVER,
                   attributes: {
-                    'http.method': method,
-                    'http.target': req.url,
+                    "http.method": method,
+                    "http.target": req.url,
                   },
                 },
                 handleResponse,
@@ -7005,7 +7005,7 @@ module.exports = [
           !(
             err instanceof
             __TURBOPACK__imported__module__$5b$externals$5d2f$next$2f$dist$2f$shared$2f$lib$2f$no$2d$fallback$2d$error$2e$external$2e$js__$5b$external$5d$__$28$next$2f$dist$2f$shared$2f$lib$2f$no$2d$fallback$2d$error$2e$external$2e$js$2c$__cjs$29$__[
-              'NoFallbackError'
+              "NoFallbackError"
             ]
           )
         ) {
@@ -7014,12 +7014,12 @@ module.exports = [
             req,
             err,
             {
-              routerKind: 'App Router',
+              routerKind: "App Router",
               routePath: srcPage,
-              routeType: 'render',
+              routeType: "render",
               revalidateReason: (0,
               __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$instrumentation$2f$utils$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-                'getRevalidateReason'
+                "getRevalidateReason"
               ])({
                 isStaticGeneration: isSSG,
                 isOnDemandRevalidate,
@@ -7041,7 +7041,7 @@ module.exports = [
      */ function createPPRBoundarySentinel() {
       return new ReadableStream({
         start(controller) {
-          controller.enqueue(new TextEncoder().encode('<!-- PPR_BOUNDARY_SENTINEL -->'));
+          controller.enqueue(new TextEncoder().encode("<!-- PPR_BOUNDARY_SENTINEL -->"));
           controller.close();
         },
       });
@@ -7049,203 +7049,203 @@ module.exports = [
   },
   '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/build/templates/app-page.js?page=/hero-showcase/page { METADATA_0 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/favicon.ico.mjs { IMAGE => \\"[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/favicon.ico (static in ecmascript, tag client)\\" } [app-rsc] (structured image object, ecmascript)", MODULE_1 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript)',
   (__turbopack_context__) => {
-    'use strict';
+    "use strict";
 
     __turbopack_context__.s([
-      'ClientPageRoot',
+      "ClientPageRoot",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'ClientPageRoot'
+          "ClientPageRoot"
         ],
-      'ClientSegmentRoot',
+      "ClientSegmentRoot",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'ClientSegmentRoot'
+          "ClientSegmentRoot"
         ],
-      'Fragment',
+      "Fragment",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'Fragment'
+          "Fragment"
         ],
-      'HTTPAccessFallbackBoundary',
+      "HTTPAccessFallbackBoundary",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'HTTPAccessFallbackBoundary'
+          "HTTPAccessFallbackBoundary"
         ],
-      'InstantValidation',
+      "InstantValidation",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'InstantValidation'
+          "InstantValidation"
         ],
-      'LayoutRouter',
+      "LayoutRouter",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'LayoutRouter'
+          "LayoutRouter"
         ],
-      'LoadingBoundaryProvider',
+      "LoadingBoundaryProvider",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'LoadingBoundaryProvider'
+          "LoadingBoundaryProvider"
         ],
-      'Postpone',
+      "Postpone",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'Postpone'
+          "Postpone"
         ],
-      'RenderFromTemplateContext',
+      "RenderFromTemplateContext",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'RenderFromTemplateContext'
+          "RenderFromTemplateContext"
         ],
-      'RootLayoutBoundary',
+      "RootLayoutBoundary",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'RootLayoutBoundary'
+          "RootLayoutBoundary"
         ],
-      'SegmentViewNode',
+      "SegmentViewNode",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'SegmentViewNode'
+          "SegmentViewNode"
         ],
-      'SegmentViewStateNode',
+      "SegmentViewStateNode",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'SegmentViewStateNode'
+          "SegmentViewStateNode"
         ],
-      '__next_app__',
+      "__next_app__",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$build$2f$templates$2f$app$2d$page$2e$js$3f$page$3d2f$hero$2d$showcase$2f$page__$7b$__METADATA_0__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$favicon$2e$ico$2e$mjs__$7b$__IMAGE__$3d3e$__$5c225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$favicon$2e$ico__$28$static__in__ecmascript$2c$__tag__client$295c22$__$7d$__$5b$app$2d$rsc$5d$__$28$structured__image__object$2c$__ecmascript$29222c$__MODULE_1__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$layout$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_2__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$not$2d$found$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_3__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$forbidden$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_4__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$unauthorized$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_5__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$global$2d$error$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_6__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$hero$2d$showcase$2f$page$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__[
-          '__next_app__'
+          "__next_app__"
         ],
-      'actionAsyncStorage',
+      "actionAsyncStorage",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'actionAsyncStorage'
+          "actionAsyncStorage"
         ],
-      'captureOwnerStack',
+      "captureOwnerStack",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'captureOwnerStack'
+          "captureOwnerStack"
         ],
-      'collectPrefetchHints',
+      "collectPrefetchHints",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'collectPrefetchHints'
+          "collectPrefetchHints"
         ],
-      'collectSegmentData',
+      "collectSegmentData",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'collectSegmentData'
+          "collectSegmentData"
         ],
-      'createElement',
+      "createElement",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'createElement'
+          "createElement"
         ],
-      'createMetadataComponents',
+      "createMetadataComponents",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'createMetadataComponents'
+          "createMetadataComponents"
         ],
-      'createPrerenderParamsForClientSegment',
+      "createPrerenderParamsForClientSegment",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'createPrerenderParamsForClientSegment'
+          "createPrerenderParamsForClientSegment"
         ],
-      'createPrerenderSearchParamsForClientPage',
+      "createPrerenderSearchParamsForClientPage",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'createPrerenderSearchParamsForClientPage'
+          "createPrerenderSearchParamsForClientPage"
         ],
-      'createServerParamsForServerSegment',
+      "createServerParamsForServerSegment",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'createServerParamsForServerSegment'
+          "createServerParamsForServerSegment"
         ],
-      'createServerSearchParamsForServerPage',
+      "createServerSearchParamsForServerPage",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'createServerSearchParamsForServerPage'
+          "createServerSearchParamsForServerPage"
         ],
-      'createTemporaryReferenceSet',
+      "createTemporaryReferenceSet",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'createTemporaryReferenceSet'
+          "createTemporaryReferenceSet"
         ],
-      'decodeAction',
+      "decodeAction",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'decodeAction'
+          "decodeAction"
         ],
-      'decodeFormState',
+      "decodeFormState",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'decodeFormState'
+          "decodeFormState"
         ],
-      'decodeReply',
+      "decodeReply",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'decodeReply'
+          "decodeReply"
         ],
-      'handler',
+      "handler",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$build$2f$templates$2f$app$2d$page$2e$js$3f$page$3d2f$hero$2d$showcase$2f$page__$7b$__METADATA_0__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$favicon$2e$ico$2e$mjs__$7b$__IMAGE__$3d3e$__$5c225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$favicon$2e$ico__$28$static__in__ecmascript$2c$__tag__client$295c22$__$7d$__$5b$app$2d$rsc$5d$__$28$structured__image__object$2c$__ecmascript$29222c$__MODULE_1__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$layout$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_2__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$not$2d$found$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_3__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$forbidden$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_4__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$unauthorized$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_5__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$global$2d$error$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_6__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$hero$2d$showcase$2f$page$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__[
-          'handler'
+          "handler"
         ],
-      'patchFetch',
+      "patchFetch",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'patchFetch'
+          "patchFetch"
         ],
-      'preconnect',
+      "preconnect",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'preconnect'
+          "preconnect"
         ],
-      'preloadFont',
+      "preloadFont",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'preloadFont'
+          "preloadFont"
         ],
-      'preloadStyle',
+      "preloadStyle",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'preloadStyle'
+          "preloadStyle"
         ],
-      'prerender',
+      "prerender",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'prerender'
+          "prerender"
         ],
-      'renderToReadableStream',
+      "renderToReadableStream",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'renderToReadableStream'
+          "renderToReadableStream"
         ],
-      'routeModule',
+      "routeModule",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$build$2f$templates$2f$app$2d$page$2e$js$3f$page$3d2f$hero$2d$showcase$2f$page__$7b$__METADATA_0__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$favicon$2e$ico$2e$mjs__$7b$__IMAGE__$3d3e$__$5c225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$favicon$2e$ico__$28$static__in__ecmascript$2c$__tag__client$295c22$__$7d$__$5b$app$2d$rsc$5d$__$28$structured__image__object$2c$__ecmascript$29222c$__MODULE_1__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$layout$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_2__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$not$2d$found$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_3__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$forbidden$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_4__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$unauthorized$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_5__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$global$2d$error$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_6__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$hero$2d$showcase$2f$page$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__[
-          'routeModule'
+          "routeModule"
         ],
-      'serverHooks',
+      "serverHooks",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'serverHooks'
+          "serverHooks"
         ],
-      'taintObjectReference',
+      "taintObjectReference",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'taintObjectReference'
+          "taintObjectReference"
         ],
-      'workAsyncStorage',
+      "workAsyncStorage",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'workAsyncStorage'
+          "workAsyncStorage"
         ],
-      'workUnitAsyncStorage',
+      "workUnitAsyncStorage",
       () =>
         __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__[
-          'workUnitAsyncStorage'
+          "workUnitAsyncStorage"
         ],
     ]);
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$build$2f$templates$2f$app$2d$page$2e$js$3f$page$3d2f$hero$2d$showcase$2f$page__$7b$__METADATA_0__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$favicon$2e$ico$2e$mjs__$7b$__IMAGE__$3d3e$__$5c225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$favicon$2e$ico__$28$static__in__ecmascript$2c$__tag__client$295c22$__$7d$__$5b$app$2d$rsc$5d$__$28$structured__image__object$2c$__ecmascript$29222c$__MODULE_1__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$layout$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_2__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$not$2d$found$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_3__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$forbidden$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_4__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$unauthorized$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_5__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$builtin$2f$global$2d$error$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$29222c$__MODULE_6__$3d3e$__$225b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$src$2f$app$2f$hero$2d$showcase$2f$page$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__Server__Component$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__ =
@@ -7254,7 +7254,7 @@ module.exports = [
       );
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$app$2d$render$2f$entry$2d$base$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$2c$__Next$2e$js__server__utility$29$__ =
       __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/server/app-render/entry-base.js [app-rsc] (ecmascript, Next.js server utility)",
       );
   },
 ];

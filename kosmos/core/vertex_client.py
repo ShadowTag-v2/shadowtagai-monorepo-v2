@@ -14,7 +14,7 @@ import logging
 
 try:
     import vertexai
-    from vertexai.generative_models import GenerativeModel, GenerationConfig, Part
+    from vertexai.generative_models import GenerativeModel, GenerationConfig
     from vertexai.preview.generative_models import Tool, FunctionDeclaration
 except ImportError:
     raise ImportError("Vertex AI SDK not installed. Install with: pip install google-cloud-aiplatform")

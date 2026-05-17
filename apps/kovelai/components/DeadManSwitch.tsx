@@ -14,9 +14,9 @@
  * @see U.S. v. Heppner — anti-forensic requirements
  */
 
-'use client';
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // ─── Configuration ──────────────────────────────────────────────────
 
@@ -90,13 +90,13 @@ export function useDeadManSwitch(config: DeadManSwitchConfig) {
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibility);
-    return () => document.removeEventListener('visibilitychange', handleVisibility);
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
   }, [config, resetTimer]);
 
   // ── User Activity Listeners ───────────────────────────────────
   useEffect(() => {
-    const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'];
+    const events = ["mousemove", "mousedown", "keydown", "touchstart", "scroll"];
     events.forEach((event) => document.addEventListener(event, resetTimer));
     return () => events.forEach((event) => document.removeEventListener(event, resetTimer));
   }, [resetTimer]);
@@ -107,14 +107,14 @@ export function useDeadManSwitch(config: DeadManSwitchConfig) {
       // Clear any local state
       try {
         sessionStorage.clear();
-        localStorage.removeItem('kovelai_session');
+        localStorage.removeItem("kovelai_session");
       } catch {
         // Ignore errors during unload
       }
     };
 
-    window.addEventListener('beforeunload', handleUnload);
-    return () => window.removeEventListener('beforeunload', handleUnload);
+    window.addEventListener("beforeunload", handleUnload);
+    return () => window.removeEventListener("beforeunload", handleUnload);
   }, []);
 
   return {
@@ -157,26 +157,26 @@ export function DeadManSwitchUI({ config, onSessionEnd }: DeadManSwitchUIProps) 
     return (
       <div
         style={{
-          position: 'fixed',
+          position: "fixed",
           inset: 0,
-          background: '#0d1117',
+          background: "#0d1117",
           zIndex: 9999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          animation: 'fadeIn 0.5s ease-in',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          animation: "fadeIn 0.5s ease-in",
         }}
       >
         <div
           style={{
-            textAlign: 'center',
-            color: '#859398',
-            fontFamily: 'Space Grotesk, sans-serif',
+            textAlign: "center",
+            color: "#859398",
+            fontFamily: "Space Grotesk, sans-serif",
           }}
         >
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔒</div>
-          <div style={{ fontSize: '20px', fontWeight: 600 }}>Session Terminated</div>
-          <div style={{ fontSize: '14px', marginTop: '8px' }}>All data has been wiped.</div>
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>🔒</div>
+          <div style={{ fontSize: "20px", fontWeight: 600 }}>Session Terminated</div>
+          <div style={{ fontSize: "14px", marginTop: "8px" }}>All data has been wiped.</div>
         </div>
       </div>
     );
@@ -187,50 +187,50 @@ export function DeadManSwitchUI({ config, onSessionEnd }: DeadManSwitchUIProps) 
       {/* Timer Badge */}
       <div
         style={{
-          position: 'fixed',
-          bottom: '16px',
-          right: '16px',
-          padding: '8px 16px',
-          borderRadius: '6px',
-          background: isWarning ? 'rgba(255, 82, 82, 0.1)' : 'rgba(62, 254, 138, 0.1)',
-          border: `1px solid ${isWarning ? 'rgba(255, 82, 82, 0.3)' : 'rgba(62, 254, 138, 0.3)'}`,
-          color: isWarning ? '#ff5252' : '#3efe8a',
-          fontFamily: 'monospace',
-          fontSize: '13px',
+          position: "fixed",
+          bottom: "16px",
+          right: "16px",
+          padding: "8px 16px",
+          borderRadius: "6px",
+          background: isWarning ? "rgba(255, 82, 82, 0.1)" : "rgba(62, 254, 138, 0.1)",
+          border: `1px solid ${isWarning ? "rgba(255, 82, 82, 0.3)" : "rgba(62, 254, 138, 0.3)"}`,
+          color: isWarning ? "#ff5252" : "#3efe8a",
+          fontFamily: "monospace",
+          fontSize: "13px",
           zIndex: 9998,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          transition: 'all 0.3s ease',
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          transition: "all 0.3s ease",
         }}
       >
         <span
           style={{
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            background: isWarning ? '#ff5252' : '#3efe8a',
-            animation: isWarning ? 'pulse 1s infinite' : 'none',
+            width: "8px",
+            height: "8px",
+            borderRadius: "50%",
+            background: isWarning ? "#ff5252" : "#3efe8a",
+            animation: isWarning ? "pulse 1s infinite" : "none",
           }}
         />
-        {minutes}:{remainingSeconds.toString().padStart(2, '0')}
-        {isTabHidden && ' (paused)'}
+        {minutes}:{remainingSeconds.toString().padStart(2, "0")}
+        {isTabHidden && " (paused)"}
       </div>
 
       {/* Warning Overlay */}
       {isWarning && (
         <div
           style={{
-            position: 'fixed',
+            position: "fixed",
             top: 0,
             left: 0,
             right: 0,
-            padding: '12px',
-            background: 'rgba(255, 82, 82, 0.1)',
-            borderBottom: '1px solid rgba(255, 82, 82, 0.2)',
-            color: '#ff5252',
-            textAlign: 'center',
-            fontSize: '14px',
+            padding: "12px",
+            background: "rgba(255, 82, 82, 0.1)",
+            borderBottom: "1px solid rgba(255, 82, 82, 0.2)",
+            color: "#ff5252",
+            textAlign: "center",
+            fontSize: "14px",
             zIndex: 9998,
           }}
         >

@@ -10,7 +10,7 @@
  * @see ATP 5-19 Tier System
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -21,7 +21,7 @@ const ToolCallLogSchema = z.object({
   serverName: z.string(),
   arguments: z.record(z.unknown()),
   result: z.object({
-    status: z.enum(['success', 'error', 'timeout']),
+    status: z.enum(["success", "error", "timeout"]),
     durationMs: z.number(),
     errorMessage: z.string().optional(),
   }),
@@ -31,49 +31,49 @@ const ToolCallLogSchema = z.object({
     userId: z.string().optional(),
     stage: z.string().optional(),
   }),
-  riskTier: z.enum(['T1_SAFE', 'T2_MODERATE', 'T3_DESTRUCTIVE', 'T4_FORBIDDEN']),
+  riskTier: z.enum(["T1_SAFE", "T2_MODERATE", "T3_DESTRUCTIVE", "T4_FORBIDDEN"]),
 });
 
 type ToolCallLog = z.infer<typeof ToolCallLogSchema>;
 
 // ─── Risk Classification ────────────────────────────────────────────
 
-const TOOL_RISK_MAP: Record<string, ToolCallLog['riskTier']> = {
+const TOOL_RISK_MAP: Record<string, ToolCallLog["riskTier"]> = {
   // T1 — Read-only, safe
-  'google-developer-knowledge:search_documents': 'T1_SAFE',
-  'google-developer-knowledge:get_documents': 'T1_SAFE',
-  'google-developer-knowledge:answer_query': 'T1_SAFE',
-  'firebase-mcp-server:firestore_get_document': 'T1_SAFE',
-  'firebase-mcp-server:firestore_list_documents': 'T1_SAFE',
-  'firebase-mcp-server:firestore_query_collection': 'T1_SAFE',
-  'chrome-devtools-mcp:take_screenshot': 'T1_SAFE',
-  'chrome-devtools-mcp:take_snapshot': 'T1_SAFE',
+  "google-developer-knowledge:search_documents": "T1_SAFE",
+  "google-developer-knowledge:get_documents": "T1_SAFE",
+  "google-developer-knowledge:answer_query": "T1_SAFE",
+  "firebase-mcp-server:firestore_get_document": "T1_SAFE",
+  "firebase-mcp-server:firestore_list_documents": "T1_SAFE",
+  "firebase-mcp-server:firestore_query_collection": "T1_SAFE",
+  "chrome-devtools-mcp:take_screenshot": "T1_SAFE",
+  "chrome-devtools-mcp:take_snapshot": "T1_SAFE",
 
   // T2 — Writes, moderate risk
-  'firebase-mcp-server:firestore_add_document': 'T2_MODERATE',
-  'firebase-mcp-server:firestore_update_document': 'T2_MODERATE',
-  'StitchMCP:generate_screen_from_text': 'T2_MODERATE',
-  'StitchMCP:edit_screens': 'T2_MODERATE',
+  "firebase-mcp-server:firestore_add_document": "T2_MODERATE",
+  "firebase-mcp-server:firestore_update_document": "T2_MODERATE",
+  "StitchMCP:generate_screen_from_text": "T2_MODERATE",
+  "StitchMCP:edit_screens": "T2_MODERATE",
 
   // T3 — Destructive operations
-  'firebase-mcp-server:firestore_delete_document': 'T3_DESTRUCTIVE',
-  'firebase-mcp-server:firestore_delete_database': 'T3_DESTRUCTIVE',
+  "firebase-mcp-server:firestore_delete_document": "T3_DESTRUCTIVE",
+  "firebase-mcp-server:firestore_delete_database": "T3_DESTRUCTIVE",
 
   // T4 — Forbidden (should never appear in production)
-  'firebase-mcp-server:auth_update_user': 'T4_FORBIDDEN',
+  "firebase-mcp-server:auth_update_user": "T4_FORBIDDEN",
 };
 
 // ─── PII Masking ────────────────────────────────────────────────────
 
 const PII_PATTERNS: Array<[RegExp, string]> = [
-  [/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, '[EMAIL_REDACTED]'],
-  [/\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g, '[PHONE_REDACTED]'],
-  [/\b\d{3}[-]?\d{2}[-]?\d{4}\b/g, '[SSN_REDACTED]'],
-  [/\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/g, '[CARD_REDACTED]'],
+  [/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, "[EMAIL_REDACTED]"],
+  [/\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g, "[PHONE_REDACTED]"],
+  [/\b\d{3}[-]?\d{2}[-]?\d{4}\b/g, "[SSN_REDACTED]"],
+  [/\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/g, "[CARD_REDACTED]"],
 ];
 
 function maskPII(input: unknown): unknown {
-  if (typeof input === 'string') {
+  if (typeof input === "string") {
     let masked = input;
     for (const [pattern, replacement] of PII_PATTERNS) {
       masked = masked.replace(pattern, replacement);
@@ -83,12 +83,12 @@ function maskPII(input: unknown): unknown {
   if (Array.isArray(input)) {
     return input.map(maskPII);
   }
-  if (typeof input === 'object' && input !== null) {
+  if (typeof input === "object" && input !== null) {
     const masked: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(input)) {
       // Completely redact known sensitive fields
-      if (['password', 'secret', 'token', 'apiKey', 'pem', 'private_key'].includes(key)) {
-        masked[key] = '[REDACTED]';
+      if (["password", "secret", "token", "apiKey", "pem", "private_key"].includes(key)) {
+        masked[key] = "[REDACTED]";
       } else {
         masked[key] = maskPII(value);
       }
@@ -121,16 +121,16 @@ export class MCPInterceptor {
     stage?: string,
   ): Promise<T> {
     const toolKey = `${serverName}:${toolName}`;
-    const riskTier = TOOL_RISK_MAP[toolKey] ?? 'T2_MODERATE';
+    const riskTier = TOOL_RISK_MAP[toolKey] ?? "T2_MODERATE";
 
     // Block T4 forbidden operations
-    if (riskTier === 'T4_FORBIDDEN') {
+    if (riskTier === "T4_FORBIDDEN") {
       const log = this.createLog(
         toolName,
         serverName,
         args,
         {
-          status: 'error',
+          status: "error",
           durationMs: 0,
           errorMessage: `BLOCKED: Tool ${toolKey} is T4_FORBIDDEN and cannot be executed.`,
         },
@@ -153,7 +153,7 @@ export class MCPInterceptor {
         serverName,
         args,
         {
-          status: 'success',
+          status: "success",
           durationMs,
         },
         riskTier,
@@ -172,9 +172,9 @@ export class MCPInterceptor {
         serverName,
         args,
         {
-          status: 'error',
+          status: "error",
           durationMs,
-          errorMessage: error instanceof Error ? error.message : 'Unknown error',
+          errorMessage: error instanceof Error ? error.message : "Unknown error",
         },
         riskTier,
         stage,
@@ -191,8 +191,8 @@ export class MCPInterceptor {
     toolName: string,
     serverName: string,
     args: Record<string, unknown>,
-    result: ToolCallLog['result'],
-    riskTier: ToolCallLog['riskTier'],
+    result: ToolCallLog["result"],
+    riskTier: ToolCallLog["riskTier"],
     stage?: string,
   ): ToolCallLog {
     return {

@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class SystemArchitectAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'system-architect',
-    name: 'System Architect',
-    category: 'development',
+    id: "system-architect",
+    name: "System Architect",
+    category: "development",
     description:
-      'Transforms messy codebases into clean, scalable systems. Your future self will thank you.',
-    tagline: 'Architecture design and system optimization',
-    capabilities: ['analysis', 'implementation', 'optimization'],
-    tags: ['architecture', 'design-patterns', 'scalability', 'refactoring', 'clean-code'],
-    difficulty: 'expert',
-    estimatedTime: '4-8 hours',
+      "Transforms messy codebases into clean, scalable systems. Your future self will thank you.",
+    tagline: "Architecture design and system optimization",
+    capabilities: ["analysis", "implementation", "optimization"],
+    tags: ["architecture", "design-patterns", "scalability", "refactoring", "clean-code"],
+    difficulty: "expert",
+    estimatedTime: "4-8 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -48,42 +48,42 @@ Provide architectural blueprints and migration paths. Show the structure, not ju
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Grep', 'Write', 'Edit'],
-    optional: ['Bash', 'WebFetch'],
+    required: ["Glob", "Read", "Grep", "Write", "Edit"],
+    optional: ["Bash", "WebFetch"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Architecture Analysis',
-        description: 'Analyze current system architecture and identify issues',
-        action: 'Map dependencies, layers, and coupling',
+        name: "Architecture Analysis",
+        description: "Analyze current system architecture and identify issues",
+        action: "Map dependencies, layers, and coupling",
       },
       {
-        name: 'Design Patterns',
-        description: 'Identify applicable design patterns',
-        action: 'Apply SOLID principles and patterns',
+        name: "Design Patterns",
+        description: "Identify applicable design patterns",
+        action: "Apply SOLID principles and patterns",
       },
       {
-        name: 'Refactoring Plan',
-        description: 'Create step-by-step refactoring roadmap',
-        action: 'Prioritize architectural improvements',
+        name: "Refactoring Plan",
+        description: "Create step-by-step refactoring roadmap",
+        action: "Prioritize architectural improvements",
       },
       {
-        name: 'Implementation',
-        description: 'Execute architectural refactoring',
-        action: 'Implement new structure incrementally',
+        name: "Implementation",
+        description: "Execute architectural refactoring",
+        action: "Implement new structure incrementally",
       },
       {
-        name: 'Validation',
-        description: 'Verify architecture improvements',
-        action: 'Test and validate changes',
+        name: "Validation",
+        description: "Verify architecture improvements",
+        action: "Test and validate changes",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

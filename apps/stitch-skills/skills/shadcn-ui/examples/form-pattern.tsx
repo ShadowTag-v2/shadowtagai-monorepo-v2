@@ -1,12 +1,12 @@
 // Example: Form Pattern with shadcn/ui components
 // Demonstrates: Form building, validation, and composition
 
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,33 +15,33 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/components/ui/use-toast';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
 
 // Define form schema with zod
 const formSchema = z.object({
   username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
+    message: "Username must be at least 2 characters.",
   }),
   email: z.string().email({
-    message: 'Please enter a valid email address.',
+    message: "Please enter a valid email address.",
   }),
-  role: z.enum(['admin', 'user', 'viewer'], {
-    required_error: 'Please select a role.',
+  role: z.enum(["admin", "user", "viewer"], {
+    required_error: "Please select a role.",
   }),
   bio: z
     .string()
     .max(160, {
-      message: 'Bio must not be longer than 160 characters.',
+      message: "Bio must not be longer than 160 characters.",
     })
     .optional(),
 });
@@ -53,9 +53,9 @@ export function UserProfileForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
-      email: '',
-      bio: '',
+      username: "",
+      email: "",
+      bio: "",
     },
   });
 
@@ -65,8 +65,8 @@ export function UserProfileForm() {
     console.log(values);
 
     toast({
-      title: 'Profile updated',
-      description: 'Your profile has been successfully updated.',
+      title: "Profile updated",
+      description: "Your profile has been successfully updated.",
     });
   }
 

@@ -1,42 +1,42 @@
-(globalThis['TURBOPACK'] || (globalThis['TURBOPACK'] = [])).push([
-  typeof document === 'object' ? document.currentScript : undefined,
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/register-deployment-id-global.js [app-client] (ecmascript)',
+(globalThis["TURBOPACK"] || (globalThis["TURBOPACK"] = [])).push([
+  typeof document === "object" ? document.currentScript : undefined,
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/register-deployment-id-global.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     const _deploymentid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)",
     );
     const deploymentId = (0, _deploymentid.getDeploymentId)();
     globalThis.NEXT_DEPLOYMENT_ID = deploymentId;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/asset-prefix.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/asset-prefix.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getAssetPrefix', {
+    Object.defineProperty(exports, "getAssetPrefix", {
       enumerable: true,
       get: () => getAssetPrefix,
     });
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)",
     );
     function getAssetPrefix() {
       const currentScript = document.currentScript;
@@ -45,24 +45,24 @@
           new _invarianterror.InvariantError(
             `Expected document.currentScript to be a <script> element. Received ${currentScript} instead.`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E783',
+            value: "E783",
             enumerable: false,
             configurable: true,
           },
         );
       }
       const { pathname } = new URL(currentScript.src);
-      const nextIndex = pathname.indexOf('/_next/');
+      const nextIndex = pathname.indexOf("/_next/");
       if (nextIndex === -1) {
         throw Object.defineProperty(
           new _invarianterror.InvariantError(
             `Expected document.currentScript src to contain '/_next/'. Received ${currentScript.src} instead.`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E784',
+            value: "E784",
             enumerable: false,
             configurable: true,
           },
@@ -71,46 +71,46 @@
       return pathname.slice(0, nextIndex);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'setAttributesFromProps', {
+    Object.defineProperty(exports, "setAttributesFromProps", {
       enumerable: true,
       get: () => setAttributesFromProps,
     });
     const DOMAttributeNames = {
-      acceptCharset: 'accept-charset',
-      className: 'class',
-      htmlFor: 'for',
-      httpEquiv: 'http-equiv',
-      noModule: 'noModule',
+      acceptCharset: "accept-charset",
+      className: "class",
+      htmlFor: "for",
+      httpEquiv: "http-equiv",
+      noModule: "noModule",
     };
     const ignoreProps = [
-      'onLoad',
-      'onReady',
-      'dangerouslySetInnerHTML',
-      'children',
-      'onError',
-      'strategy',
-      'stylesheets',
+      "onLoad",
+      "onReady",
+      "dangerouslySetInnerHTML",
+      "children",
+      "onError",
+      "strategy",
+      "stylesheets",
     ];
     function isBooleanScriptAttribute(attr) {
-      return ['async', 'defer', 'noModule'].includes(attr);
+      return ["async", "defer", "noModule"].includes(attr);
     }
     function setAttributesFromProps(el, props) {
       for (const [p, value] of Object.entries(props)) {
@@ -121,7 +121,7 @@
           continue;
         }
         const attr = DOMAttributeNames[p] || p.toLowerCase();
-        if (el.tagName === 'SCRIPT' && isBooleanScriptAttribute(attr)) {
+        if (el.tagName === "SCRIPT" && isBooleanScriptAttribute(attr)) {
           // Correctly assign boolean script attributes
           // https://github.com/vercel/next.js/pull/20748
           el[attr] = !!value;
@@ -132,57 +132,57 @@
         // (e.g. if we set them to false, this coerces to the string "false", which the browser interprets as true)
         if (
           value === false ||
-          (el.tagName === 'SCRIPT' &&
+          (el.tagName === "SCRIPT" &&
             isBooleanScriptAttribute(attr) &&
-            (!value || value === 'false'))
+            (!value || value === "false"))
         ) {
           // Call setAttribute before, as we need to set and unset the attribute to override force async:
           // https://html.spec.whatwg.org/multipage/scripting.html#script-force-async
-          el.setAttribute(attr, '');
+          el.setAttribute(attr, "");
           el.removeAttribute(attr);
         }
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-bootstrap.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-bootstrap.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     /**
      * Before starting the Next.js runtime and requiring any module, we need to make
      * sure the following scripts are executed in the correct order:
      * - Polyfills
      * - next/script with `beforeInteractive` strategy
-     */ ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+     */ ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'appBootstrap', {
+    Object.defineProperty(exports, "appBootstrap", {
       enumerable: true,
       get: () => appBootstrap,
     });
     const _assetprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/asset-prefix.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/asset-prefix.js [app-client] (ecmascript)",
     );
     const _setattributesfromprops = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/set-attributes-from-props.js [app-client] (ecmascript)",
     );
-    const version = '16.2.1';
+    const version = "16.2.1";
     window.next = {
       version,
       appDir: true,
@@ -195,7 +195,7 @@
         .reduce((promise, [src, props]) => {
           return promise.then(() => {
             return new Promise((resolve, reject) => {
-              const el = document.createElement('script');
+              const el = document.createElement("script");
               if (props) {
                 (0, _setattributesfromprops.setAttributesFromProps)(el, props);
               }
@@ -227,64 +227,64 @@
         // environment variable `__NEXT_EXPERIMENTAL_STATIC_SHELL_DEBUGGING` is
         // set to `1`. Otherwise the following is optimized out.
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         hydrate(assetPrefix);
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'reportGlobalError', {
+    Object.defineProperty(exports, "reportGlobalError", {
       enumerable: true,
       get: () => reportGlobalError,
     });
     const reportGlobalError =
-      typeof reportError === 'function'
+      typeof reportError === "function"
         ? reportError
         : (error) => {
             // TODO: Dispatch error event
             globalThis.console.error(error);
           };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     // This module can be shared between both pages router and app router
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -304,30 +304,30 @@
       onRecoverableError: () => onRecoverableError,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _bailouttocsr = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [app-client] (ecmascript)",
     );
     const _iserror = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [app-client] (ecmascript)",
       ),
     );
     const _reportglobalerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [app-client] (ecmascript)",
     );
     const recoverableErrors = new WeakSet();
     const isInstantTest =
-      ('TURBOPACK compile-time value', true) &&
-      typeof self !== 'undefined' &&
+      ("TURBOPACK compile-time value", true) &&
+      typeof self !== "undefined" &&
       !!self.__next_instant_test;
     function isRecoverableError(error) {
       return recoverableErrors.has(error);
     }
     const onRecoverableError = (error) => {
       // x-ref: https://github.com/facebook/react/pull/28736
-      let cause = (0, _iserror.default)(error) && 'cause' in error ? error.cause : error;
+      let cause = (0, _iserror.default)(error) && "cause" in error ? error.cause : error;
       // Skip certain custom errors which are not expected to be reported on client
       if ((0, _bailouttocsr.isBailoutToCSRError)(cause)) return;
       // Instant Navigation Testing API: suppress "server could not finish this
@@ -337,16 +337,16 @@
       if (isInstantTest) {
         if ((0, _iserror.default)(cause)) {
           if (
-            ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+            ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
           );
           else {
-            if (cause.message.includes('could not finish this Suspense boundary')) return;
+            if (cause.message.includes("could not finish this Suspense boundary")) return;
           }
         }
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { decorateDevError } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/stitched-error.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/stitched-error.js [app-client] (ecmascript)",
         );
         const causeError = decorateDevError(cause);
         recoverableErrors.add(causeError);
@@ -355,22 +355,22 @@
       (0, _reportglobalerror.reportGlobalError)(cause);
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -401,81 +401,81 @@
       UNAUTHORIZED: 401,
     };
     const ALLOWED_CODES = new Set(Object.values(HTTPAccessErrorStatus));
-    const HTTP_ERROR_FALLBACK_ERROR_CODE = 'NEXT_HTTP_ERROR_FALLBACK';
+    const HTTP_ERROR_FALLBACK_ERROR_CODE = "NEXT_HTTP_ERROR_FALLBACK";
     function isHTTPAccessFallbackError(error) {
       if (
-        typeof error !== 'object' ||
+        typeof error !== "object" ||
         error === null ||
-        !('digest' in error) ||
-        typeof error.digest !== 'string'
+        !("digest" in error) ||
+        typeof error.digest !== "string"
       ) {
         return false;
       }
-      const [prefix, httpStatus] = error.digest.split(';');
+      const [prefix, httpStatus] = error.digest.split(";");
       return prefix === HTTP_ERROR_FALLBACK_ERROR_CODE && ALLOWED_CODES.has(Number(httpStatus));
     }
     function getAccessFallbackHTTPStatus(error) {
-      const httpStatus = error.digest.split(';')[1];
+      const httpStatus = error.digest.split(";")[1];
       return Number(httpStatus);
     }
     function getAccessFallbackErrorTypeByStatus(status) {
       switch (status) {
         case 401:
-          return 'unauthorized';
+          return "unauthorized";
         case 403:
-          return 'forbidden';
+          return "forbidden";
         case 404:
-          return 'not-found';
+          return "not-found";
         default:
           return;
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'RedirectStatusCode', {
+    Object.defineProperty(exports, "RedirectStatusCode", {
       enumerable: true,
       get: () => RedirectStatusCode,
     });
     var RedirectStatusCode = /*#__PURE__*/ ((RedirectStatusCode) => {
-      RedirectStatusCode[(RedirectStatusCode['SeeOther'] = 303)] = 'SeeOther';
-      RedirectStatusCode[(RedirectStatusCode['TemporaryRedirect'] = 307)] = 'TemporaryRedirect';
-      RedirectStatusCode[(RedirectStatusCode['PermanentRedirect'] = 308)] = 'PermanentRedirect';
+      RedirectStatusCode[(RedirectStatusCode["SeeOther"] = 303)] = "SeeOther";
+      RedirectStatusCode[(RedirectStatusCode["TemporaryRedirect"] = 307)] = "TemporaryRedirect";
+      RedirectStatusCode[(RedirectStatusCode["PermanentRedirect"] = 308)] = "PermanentRedirect";
       return RedirectStatusCode;
     })({});
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -495,59 +495,59 @@
       isRedirectError: () => isRedirectError,
     });
     const _redirectstatuscode = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [app-client] (ecmascript)",
     );
-    const REDIRECT_ERROR_CODE = 'NEXT_REDIRECT';
+    const REDIRECT_ERROR_CODE = "NEXT_REDIRECT";
     function isRedirectError(error) {
       if (
-        typeof error !== 'object' ||
+        typeof error !== "object" ||
         error === null ||
-        !('digest' in error) ||
-        typeof error.digest !== 'string'
+        !("digest" in error) ||
+        typeof error.digest !== "string"
       ) {
         return false;
       }
-      const digest = error.digest.split(';');
+      const digest = error.digest.split(";");
       const [errorCode, type] = digest;
-      const destination = digest.slice(2, -2).join(';');
+      const destination = digest.slice(2, -2).join(";");
       const status = digest.at(-2);
       const statusCode = Number(status);
       return (
         errorCode === REDIRECT_ERROR_CODE &&
-        (type === 'replace' || type === 'push') &&
-        typeof destination === 'string' &&
+        (type === "replace" || type === "push") &&
+        typeof destination === "string" &&
         !isNaN(statusCode) &&
         statusCode in _redirectstatuscode.RedirectStatusCode
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isNextRouterError', {
+    Object.defineProperty(exports, "isNextRouterError", {
       enumerable: true,
       get: () => isNextRouterError,
     });
     const _httpaccessfallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)",
     );
     const _redirecterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)",
     );
     function isNextRouterError(error) {
       return (
@@ -556,22 +556,22 @@
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/console.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/console.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -591,67 +591,67 @@
       parseConsoleArgs: () => parseConsoleArgs,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _iserror = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/is-error.js [app-client] (ecmascript)",
       ),
     );
     function formatObject(arg, depth) {
       switch (typeof arg) {
-        case 'object':
+        case "object":
           if (arg === null) {
-            return 'null';
+            return "null";
           } else if (Array.isArray(arg)) {
-            let result = '[';
+            let result = "[";
             if (depth < 1) {
               for (let i = 0; i < arg.length; i++) {
-                if (result !== '[') {
-                  result += ',';
+                if (result !== "[") {
+                  result += ",";
                 }
                 if (Object.hasOwn(arg, i)) {
                   result += formatObject(arg[i], depth + 1);
                 }
               }
             } else {
-              result += arg.length > 0 ? '...' : '';
+              result += arg.length > 0 ? "..." : "";
             }
-            result += ']';
+            result += "]";
             return result;
           } else if (arg instanceof Error) {
-            return arg + '';
+            return arg + "";
           } else {
             const keys = Object.keys(arg);
-            let result = '{';
+            let result = "{";
             if (depth < 1) {
               for (let i = 0; i < keys.length; i++) {
                 const key = keys[i];
-                const desc = Object.getOwnPropertyDescriptor(arg, 'key');
+                const desc = Object.getOwnPropertyDescriptor(arg, "key");
                 if (desc && !desc.get && !desc.set) {
                   const jsonKey = JSON.stringify(key);
                   if (jsonKey !== '"' + key + '"') {
-                    result += jsonKey + ': ';
+                    result += jsonKey + ": ";
                   } else {
-                    result += key + ': ';
+                    result += key + ": ";
                   }
                   result += formatObject(desc.value, depth + 1);
                 }
               }
             } else {
-              result += keys.length > 0 ? '...' : '';
+              result += keys.length > 0 ? "..." : "";
             }
-            result += '}';
+            result += "}";
             return result;
           }
-        case 'string':
+        case "string":
           return JSON.stringify(arg);
-        case 'number':
-        case 'bigint':
-        case 'boolean':
-        case 'symbol':
-        case 'undefined':
-        case 'function':
+        case "number":
+        case "bigint":
+        case "boolean":
+        case "symbol":
+        case "undefined":
+        case "function":
         default:
           return String(arg);
       }
@@ -659,24 +659,24 @@
     function formatConsoleArgs(args) {
       let message;
       let idx;
-      if (typeof args[0] === 'string') {
+      if (typeof args[0] === "string") {
         message = args[0];
         idx = 1;
       } else {
-        message = '';
+        message = "";
         idx = 0;
       }
-      let result = '';
+      let result = "";
       let startQuote = false;
       for (let i = 0; i < message.length; ++i) {
         const char = message[i];
-        if (char !== '%' || i === message.length - 1 || idx >= args.length) {
+        if (char !== "%" || i === message.length - 1 || idx >= args.length) {
           result += char;
           continue;
         }
         const code = message[++i];
         switch (code) {
-          case 'c': {
+          case "c": {
             // TODO: We should colorize with HTML instead of turning into a string.
             // Ignore for now.
             result = startQuote ? `${result}]` : `[${result}`;
@@ -684,30 +684,30 @@
             idx++;
             break;
           }
-          case 'O':
-          case 'o': {
+          case "O":
+          case "o": {
             result += formatObject(args[idx++], 0);
             break;
           }
-          case 'd':
-          case 'i': {
+          case "d":
+          case "i": {
             result += parseInt(args[idx++], 10);
             break;
           }
-          case 'f': {
+          case "f": {
             result += parseFloat(args[idx++]);
             break;
           }
-          case 's': {
+          case "s": {
             result += String(args[idx++]);
             break;
           }
           default:
-            result += '%' + code;
+            result += "%" + code;
         }
       }
       for (; idx < args.length; idx++) {
-        result += (idx > 0 ? ' ' : '') + formatObject(args[idx], 0);
+        result += (idx > 0 ? " " : "") + formatObject(args[idx], 0);
       }
       return result;
     }
@@ -727,11 +727,11 @@
       // ]
       if (
         args.length > 3 &&
-        typeof args[0] === 'string' &&
-        args[0].startsWith('%c%s%c') &&
-        typeof args[1] === 'string' &&
-        typeof args[2] === 'string' &&
-        typeof args[3] === 'string'
+        typeof args[0] === "string" &&
+        args[0].startsWith("%c%s%c") &&
+        typeof args[1] === "string" &&
+        typeof args[2] === "string" &&
+        typeof args[3] === "string"
       ) {
         const environmentName = args[2];
         const maybeError = args[4];
@@ -746,22 +746,22 @@
       };
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -820,17 +820,17 @@
       RSC_CONTENT_TYPE_HEADER: () => RSC_CONTENT_TYPE_HEADER,
       RSC_HEADER: () => RSC_HEADER,
     });
-    const RSC_HEADER = 'rsc';
-    const ACTION_HEADER = 'next-action';
-    const NEXT_ROUTER_STATE_TREE_HEADER = 'next-router-state-tree';
-    const NEXT_ROUTER_PREFETCH_HEADER = 'next-router-prefetch';
-    const NEXT_ROUTER_SEGMENT_PREFETCH_HEADER = 'next-router-segment-prefetch';
-    const NEXT_HMR_REFRESH_HEADER = 'next-hmr-refresh';
-    const NEXT_HMR_REFRESH_HASH_COOKIE = '__next_hmr_refresh_hash__';
-    const NEXT_URL = 'next-url';
-    const RSC_CONTENT_TYPE_HEADER = 'text/x-component';
-    const NEXT_INSTANT_PREFETCH_HEADER = 'next-instant-navigation-testing-prefetch';
-    const NEXT_INSTANT_TEST_COOKIE = 'next-instant-navigation-testing';
+    const RSC_HEADER = "rsc";
+    const ACTION_HEADER = "next-action";
+    const NEXT_ROUTER_STATE_TREE_HEADER = "next-router-state-tree";
+    const NEXT_ROUTER_PREFETCH_HEADER = "next-router-prefetch";
+    const NEXT_ROUTER_SEGMENT_PREFETCH_HEADER = "next-router-segment-prefetch";
+    const NEXT_HMR_REFRESH_HEADER = "next-hmr-refresh";
+    const NEXT_HMR_REFRESH_HASH_COOKIE = "__next_hmr_refresh_hash__";
+    const NEXT_URL = "next-url";
+    const RSC_CONTENT_TYPE_HEADER = "text/x-component";
+    const NEXT_INSTANT_PREFETCH_HEADER = "next-instant-navigation-testing-prefetch";
+    const NEXT_INSTANT_TEST_COOKIE = "next-instant-navigation-testing";
     const FLIGHT_HEADERS = [
       RSC_HEADER,
       NEXT_ROUTER_STATE_TREE_HEADER,
@@ -838,33 +838,33 @@
       NEXT_HMR_REFRESH_HEADER,
       NEXT_ROUTER_SEGMENT_PREFETCH_HEADER,
     ];
-    const NEXT_RSC_UNION_QUERY = '_rsc';
-    const NEXT_ROUTER_STALE_TIME_HEADER = 'x-nextjs-stale-time';
-    const NEXT_DID_POSTPONE_HEADER = 'x-nextjs-postponed';
-    const NEXT_REWRITTEN_PATH_HEADER = 'x-nextjs-rewritten-path';
-    const NEXT_REWRITTEN_QUERY_HEADER = 'x-nextjs-rewritten-query';
-    const NEXT_IS_PRERENDER_HEADER = 'x-nextjs-prerender';
-    const NEXT_ACTION_NOT_FOUND_HEADER = 'x-nextjs-action-not-found';
-    const NEXT_REQUEST_ID_HEADER = 'x-nextjs-request-id';
-    const NEXT_HTML_REQUEST_ID_HEADER = 'x-nextjs-html-request-id';
-    const NEXT_ACTION_REVALIDATED_HEADER = 'x-action-revalidated';
+    const NEXT_RSC_UNION_QUERY = "_rsc";
+    const NEXT_ROUTER_STALE_TIME_HEADER = "x-nextjs-stale-time";
+    const NEXT_DID_POSTPONE_HEADER = "x-nextjs-postponed";
+    const NEXT_REWRITTEN_PATH_HEADER = "x-nextjs-rewritten-path";
+    const NEXT_REWRITTEN_QUERY_HEADER = "x-nextjs-rewritten-query";
+    const NEXT_IS_PRERENDER_HEADER = "x-nextjs-prerender";
+    const NEXT_ACTION_NOT_FOUND_HEADER = "x-nextjs-action-not-found";
+    const NEXT_REQUEST_ID_HEADER = "x-nextjs-request-id";
+    const NEXT_HTML_REQUEST_ID_HEADER = "x-nextjs-html-request-id";
+    const NEXT_ACTION_REVALIDATED_HEADER = "x-action-revalidated";
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -895,48 +895,48 @@
       PrefetchKind: () => PrefetchKind,
       ScrollBehavior: () => ScrollBehavior,
     });
-    const ACTION_REFRESH = 'refresh';
-    const ACTION_NAVIGATE = 'navigate';
-    const ACTION_RESTORE = 'restore';
-    const ACTION_SERVER_PATCH = 'server-patch';
-    const ACTION_HMR_REFRESH = 'hmr-refresh';
-    const ACTION_SERVER_ACTION = 'server-action';
+    const ACTION_REFRESH = "refresh";
+    const ACTION_NAVIGATE = "navigate";
+    const ACTION_RESTORE = "restore";
+    const ACTION_SERVER_PATCH = "server-patch";
+    const ACTION_HMR_REFRESH = "hmr-refresh";
+    const ACTION_SERVER_ACTION = "server-action";
     var PrefetchKind = /*#__PURE__*/ ((PrefetchKind) => {
-      PrefetchKind['AUTO'] = 'auto';
-      PrefetchKind['FULL'] = 'full';
+      PrefetchKind["AUTO"] = "auto";
+      PrefetchKind["FULL"] = "full";
       return PrefetchKind;
     })({});
     var ScrollBehavior = /*#__PURE__*/ ((ScrollBehavior) => {
       /** Use per-node ScrollRef to decide whether to scroll. */ ScrollBehavior[
-        (ScrollBehavior['Default'] = 0)
-      ] = 'Default';
+        (ScrollBehavior["Default"] = 0)
+      ] = "Default";
       /** Suppress scroll entirely (e.g. scroll={false} on Link or router.push). */ ScrollBehavior[
-        (ScrollBehavior['NoScroll'] = 1)
-      ] = 'NoScroll';
+        (ScrollBehavior["NoScroll"] = 1)
+      ] = "NoScroll";
       return ScrollBehavior;
     })({});
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -960,25 +960,25 @@
       useActionQueue: () => useActionQueue,
     });
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _isthenable = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-thenable.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-thenable.js [app-client] (ecmascript)",
     );
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     // The app router state lives outside of React, so we can import the dispatch
     // method directly wherever we need it, rather than passing it around via props
     // or context.
     let dispatch = null;
     function refreshOnInstantNavigationUnlock() {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (dispatch !== null) {
           dispatch({
             type: _routerreducertypes.ACTION_REFRESH,
@@ -992,10 +992,10 @@
     function dispatchAppRouterAction(action) {
       if (dispatch === null) {
         throw Object.defineProperty(
-          new Error('Internal Next.js error: Router action dispatched before initialization.'),
-          '__NEXT_ERROR_CODE',
+          new Error("Internal Next.js error: Router action dispatched before initialization."),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E668',
+            value: "E668",
             enumerable: false,
             configurable: true,
           },
@@ -1009,10 +1009,10 @@
     function dispatchGestureState(state) {
       if (setGestureRouterState === null) {
         throw Object.defineProperty(
-          new Error('Internal Next.js error: Router action dispatched before initialization.'),
-          '__NEXT_ERROR_CODE',
+          new Error("Internal Next.js error: Router action dispatched before initialization."),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E668',
+            value: "E668",
             enumerable: false,
             configurable: true,
           },
@@ -1020,10 +1020,10 @@
       }
       setGestureRouterState(state);
     }
-    const __DEV__ = ('TURBOPACK compile-time value', 'development') !== 'production';
-    const promisesWithDebugInfo = ('TURBOPACK compile-time truthy', 1)
+    const __DEV__ = ("TURBOPACK compile-time value", "development") !== "production";
+    const promisesWithDebugInfo = ("TURBOPACK compile-time truthy", 1)
       ? new WeakMap()
-      : 'TURBOPACK unreachable';
+      : "TURBOPACK unreachable";
     function useActionQueue(actionQueue) {
       const [canonicalState, setState] = _react.default.useState(actionQueue.state);
       // Wrap the canonical state in useOptimistic to support
@@ -1031,7 +1031,7 @@
       // of the router state that represents the eventual target if/when the gesture
       // completes. Otherwise it returns the canonical state.
       const [state, setGesture] = (0, _react.useOptimistic)(canonicalState);
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         setGestureRouterState = setGesture;
       }
       // Because of a known issue that requires to decode Flight streams inside the
@@ -1042,9 +1042,9 @@
       // this is conceptually how we're modeling the app router state, despite the
       // weird implementation details.
       let nextDispatch;
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { useAppDevRenderingIndicator } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/use-app-dev-rendering-indicator.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/use-app-dev-rendering-indicator.js [app-client] (ecmascript)",
         );
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const appDevRenderingIndicator = useAppDevRenderingIndicator();
@@ -1055,7 +1055,7 @@
         };
       } //TURBOPACK unreachable
       else;
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         dispatch = nextDispatch;
       }
       // When navigating to a non-prefetched route, then App Router state will be
@@ -1065,7 +1065,7 @@
       // in the React DevTools.
       const stateWithDebugInfo = (0, _react.useMemo)(() => {
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         if ((0, _isthenable.isThenable)(state)) {
           // useMemo can't be used to cache a Promise since the memoized value is thrown
@@ -1091,24 +1091,24 @@
         : stateWithDebugInfo;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     /**
      * Navigation lock for the Instant Navigation Testing API.
@@ -1121,8 +1121,8 @@
      * and delete the cookie to end one. Next.js writes captured values.
      * The CookieStore handler distinguishes them by value: pending = external,
      * captured = self-write (ignored).
-     */ ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+     */ ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1148,23 +1148,23 @@
       waitForNavigationLockIfActive: () => waitForNavigationLockIfActive,
     });
     const _approuterheaders = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)",
     );
     const _useactionqueue = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)",
     );
     function parseCookieValue(raw) {
       try {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length >= 3) {
           const rawState = parsed[2];
-          return rawState === null ? 'mpa' : 'spa';
+          return rawState === null ? "mpa" : "spa";
         }
       } catch {}
-      return 'pending';
+      return "pending";
     }
     function writeCookieValue(value) {
-      if (typeof cookieStore === 'undefined') {
+      if (typeof cookieStore === "undefined") {
         return;
       }
       // Read the existing cookie to preserve its attributes (domain, path),
@@ -1176,7 +1176,7 @@
           const options = {
             name: _approuterheaders.NEXT_INSTANT_TEST_COOKIE,
             value: JSON.stringify(value),
-            path: existing.path ?? '/',
+            path: existing.path ?? "/",
           };
           if (existing.domain) {
             options.domain = existing.domain;
@@ -1206,11 +1206,11 @@
       }
     }
     function startListeningForInstantNavigationCookie() {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         // If the server served a static shell, this is an MPA page load
         // while the lock is held. Transition to captured-MPA and acquire.
         if (self.__next_instant_test) {
-          if (typeof cookieStore !== 'undefined') {
+          if (typeof cookieStore !== "undefined") {
             // If the cookie was already cleared during the MPA page
             // transition, reload to get the full dynamic page.
             cookieStore.get(_approuterheaders.NEXT_INSTANT_TEST_COOKIE).then((cookie) => {
@@ -1222,14 +1222,14 @@
           writeCookieValue([1, `c${Math.random()}`, null]);
           acquireLock();
         }
-        if (typeof cookieStore === 'undefined') {
+        if (typeof cookieStore === "undefined") {
           return;
         }
-        cookieStore.addEventListener('change', (event) => {
+        cookieStore.addEventListener("change", (event) => {
           for (const cookie of event.changed) {
             if (cookie.name === _approuterheaders.NEXT_INSTANT_TEST_COOKIE) {
-              const state = parseCookieValue(cookie.value ?? '');
-              if (state !== 'pending') {
+              const state = parseCookieValue(cookie.value ?? "");
+              if (state !== "pending") {
                 // Captured value — our own transition. Ignore.
                 return;
               }
@@ -1252,7 +1252,7 @@
       }
     }
     function transitionToCapturedSPA(fromTree, toTree) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         writeCookieValue([
           1,
           `c${Math.random()}`,
@@ -1264,7 +1264,7 @@
       }
     }
     function updateCapturedSPAToTree(fromTree, toTree) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         writeCookieValue([
           1,
           `c${Math.random()}`,
@@ -1276,92 +1276,92 @@
       }
     }
     function isNavigationLocked() {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         return lockState !== null;
       }
       //TURBOPACK unreachable
     }
     async function waitForNavigationLockIfActive() {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (lockState !== null) {
           await lockState.promise;
         }
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-globals.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-globals.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     // imports polyfill from `@next/polyfill-module` after build.
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/polyfill-module.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/polyfill-module.js [app-client] (ecmascript)",
     );
     // Only set up devtools for the dev server.
-    if (('TURBOPACK compile-time truthy', 1)) {
+    if (("TURBOPACK compile-time truthy", 1)) {
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/app-dev-overlay-setup.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/app-dev-overlay-setup.js [app-client] (ecmascript)",
       );
     }
     // Start listening for the instant navigation test cookie. The test framework
     // (e.g. Playwright) sets/clears this cookie to control the navigation lock.
     // Browser-only.
-    if (('TURBOPACK compile-time value', true) && typeof window !== 'undefined') {
+    if (("TURBOPACK compile-time value", true) && typeof window !== "undefined") {
       const { startListeningForInstantNavigationCookie } = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)",
       );
       startListeningForInstantNavigationCookie();
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/readonly-url-search-params.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/readonly-url-search-params.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * ReadonlyURLSearchParams implementation shared between client and server.
      * This file is intentionally not marked as 'use client' or 'use server'
      * so it can be imported by both environments.
-     */ /** @internal */ Object.defineProperty(exports, '__esModule', {
+     */ /** @internal */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'ReadonlyURLSearchParams', {
+    Object.defineProperty(exports, "ReadonlyURLSearchParams", {
       enumerable: true,
       get: () => ReadonlyURLSearchParams,
     });
     class ReadonlyURLSearchParamsError extends Error {
       constructor() {
         super(
-          'Method unavailable on `ReadonlyURLSearchParams`. Read more: https://nextjs.org/docs/app/api-reference/functions/use-search-params#updating-searchparams',
+          "Method unavailable on `ReadonlyURLSearchParams`. Read more: https://nextjs.org/docs/app/api-reference/functions/use-search-params#updating-searchparams",
         );
       }
     }
@@ -1380,33 +1380,33 @@
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-untracked.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-untracked.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'useUntrackedPathname', {
+    Object.defineProperty(exports, "useUntrackedPathname", {
       enumerable: true,
       get: () => useUntrackedPathname,
     });
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     const _hooksclientcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)",
     );
     /**
      * This checks to see if the current render has any unknown route parameters that
@@ -1415,28 +1415,28 @@
      *
      * @returns true if there are any unknown route parameters, false otherwise
      */ function hasFallbackRouteParams() {
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         // AsyncLocalStorage should not be included in the client bundle.
         const { workUnitAsyncStorage } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js [app-client] (ecmascript)",
         );
         const workUnitStore = workUnitAsyncStorage.getStore();
         if (!workUnitStore) return false;
         switch (workUnitStore.type) {
-          case 'prerender':
-          case 'prerender-client':
-          case 'prerender-ppr':
-          case 'validation-client': {
+          case "prerender":
+          case "prerender-client":
+          case "prerender-ppr":
+          case "validation-client": {
             const fallbackParams = workUnitStore.fallbackRouteParams;
             return fallbackParams ? fallbackParams.size > 0 : false;
           }
-          case 'prerender-legacy':
-          case 'request':
-          case 'prerender-runtime':
-          case 'cache':
-          case 'private-cache':
-          case 'unstable-cache':
-          case 'generate-static-params':
+          case "prerender-legacy":
+          case "request":
+          case "prerender-runtime":
+          case "cache":
+          case "private-cache":
+          case "unstable-cache":
+          case "generate-static-params":
             break;
           default:
             workUnitStore;
@@ -1459,53 +1459,53 @@
       return (0, _react.useContext)(_hooksclientcontextsharedruntime.PathnameContext);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'createHrefFromUrl', {
+    Object.defineProperty(exports, "createHrefFromUrl", {
       enumerable: true,
       get: () => createHrefFromUrl,
     });
     function createHrefFromUrl(url, includeHash = true) {
-      return url.pathname + url.search + (includeHash ? url.hash : '');
+      return url.pathname + url.search + (includeHash ? url.hash : "");
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/nav-failure-handler.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/nav-failure-handler.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1525,15 +1525,15 @@
       useNavFailureHandler: () => useNavFailureHandler,
     });
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     const _createhreffromurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
     );
     function handleHardNavError(error) {
       if (
         error &&
-        typeof window !== 'undefined' &&
+        typeof window !== "undefined" &&
         window.next.__pendingUrl &&
         (0, _createhreffromurl.createHrefFromUrl)(new URL(window.location.href)) !==
           (0, _createhreffromurl.createHrefFromUrl)(window.next.__pendingUrl)
@@ -1546,36 +1546,36 @@
     }
     function useNavFailureHandler() {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'handleISRError', {
+    Object.defineProperty(exports, "handleISRError", {
       enumerable: true,
       get: () => handleISRError,
     });
     const workAsyncStorage =
-      typeof window === 'undefined'
+      typeof window === "undefined"
         ? __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-async-storage.external.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/work-async-storage.external.js [app-client] (ecmascript)",
           ).workAsyncStorage
         : undefined;
     function handleISRError({ error }) {
@@ -1590,28 +1590,28 @@
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/error-boundary.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/error-boundary.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use client');
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use client");
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1631,36 +1631,36 @@
       ErrorBoundaryHandler: () => ErrorBoundaryHandler,
     });
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _navigationuntracked = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-untracked.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-untracked.js [app-client] (ecmascript)",
     );
     const _isnextroutererror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)",
     );
     const _navfailurehandler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/nav-failure-handler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/nav-failure-handler.js [app-client] (ecmascript)",
     );
     const _handleisrerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-client] (ecmascript)",
     );
     const _isbot = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [app-client] (ecmascript)",
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const isBotUserAgent =
-      typeof window !== 'undefined' && (0, _isbot.isBot)(window.navigator.userAgent);
+      typeof window !== "undefined" && (0, _isbot.isBot)(window.navigator.userAgent);
     class ErrorBoundaryHandler extends _react.default.Component {
       static {
         ErrorBoundaryHandler.contextType = _approutercontextsharedruntime.AppRouterContext;
@@ -1700,7 +1700,7 @@
         // the error boundary and instead should fallback
         // to a hard navigation to attempt recovering
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         /**
          * Handles reset of the error boundary when a navigation happens.
@@ -1761,22 +1761,22 @@
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/error-styles.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/error-styles.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -1798,99 +1798,99 @@
       errorThemeCss: () => errorThemeCss,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const errorStyles = {
       container: {
         fontFamily:
           'system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       },
       card: {
-        marginTop: '-32px',
-        maxWidth: '325px',
-        padding: '32px 28px',
-        textAlign: 'left',
+        marginTop: "-32px",
+        maxWidth: "325px",
+        padding: "32px 28px",
+        textAlign: "left",
       },
       icon: {
-        marginBottom: '24px',
+        marginBottom: "24px",
       },
       title: {
-        fontSize: '24px',
+        fontSize: "24px",
         fontWeight: 500,
-        letterSpacing: '-0.02em',
-        lineHeight: '32px',
-        margin: '0 0 12px 0',
-        color: 'var(--next-error-title)',
+        letterSpacing: "-0.02em",
+        lineHeight: "32px",
+        margin: "0 0 12px 0",
+        color: "var(--next-error-title)",
       },
       message: {
-        fontSize: '14px',
+        fontSize: "14px",
         fontWeight: 400,
-        lineHeight: '21px',
-        margin: '0 0 20px 0',
-        color: 'var(--next-error-message)',
+        lineHeight: "21px",
+        margin: "0 0 20px 0",
+        color: "var(--next-error-message)",
       },
       form: {
         margin: 0,
       },
       buttonGroup: {
-        display: 'flex',
-        gap: '8px',
-        alignItems: 'center',
+        display: "flex",
+        gap: "8px",
+        alignItems: "center",
       },
       button: {
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '32px',
-        padding: '0 12px',
-        fontSize: '14px',
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "32px",
+        padding: "0 12px",
+        fontSize: "14px",
         fontWeight: 500,
-        lineHeight: '20px',
-        borderRadius: '6px',
-        cursor: 'pointer',
-        color: 'var(--next-error-btn-text)',
-        background: 'var(--next-error-btn-bg)',
-        border: 'var(--next-error-btn-border)',
+        lineHeight: "20px",
+        borderRadius: "6px",
+        cursor: "pointer",
+        color: "var(--next-error-btn-text)",
+        background: "var(--next-error-btn-bg)",
+        border: "var(--next-error-btn-border)",
       },
       buttonSecondary: {
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '32px',
-        padding: '0 12px',
-        fontSize: '14px',
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "32px",
+        padding: "0 12px",
+        fontSize: "14px",
         fontWeight: 500,
-        lineHeight: '20px',
-        borderRadius: '6px',
-        cursor: 'pointer',
-        color: 'var(--next-error-btn-secondary-text)',
-        background: 'var(--next-error-btn-secondary-bg)',
-        border: 'var(--next-error-btn-secondary-border)',
+        lineHeight: "20px",
+        borderRadius: "6px",
+        cursor: "pointer",
+        color: "var(--next-error-btn-secondary-text)",
+        background: "var(--next-error-btn-secondary-bg)",
+        border: "var(--next-error-btn-secondary-border)",
       },
       digestFooter: {
-        position: 'fixed',
-        bottom: '32px',
-        left: '0',
-        right: '0',
-        textAlign: 'center',
+        position: "fixed",
+        bottom: "32px",
+        left: "0",
+        right: "0",
+        textAlign: "center",
         fontFamily: 'ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace',
-        fontSize: '12px',
-        lineHeight: '18px',
+        fontSize: "12px",
+        lineHeight: "18px",
         fontWeight: 400,
-        margin: '0',
-        color: 'var(--next-error-digest)',
+        margin: "0",
+        color: "var(--next-error-digest)",
       },
     };
     const errorThemeCss = `
@@ -1923,122 +1923,122 @@
   }
 }
 body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg); }
-`.replace(/\n\s*/g, '');
+`.replace(/\n\s*/g, "");
     function WarningIcon() {
-      return /*#__PURE__*/ (0, _jsxruntime.jsx)('svg', {
-        width: '32',
-        height: '32',
-        viewBox: '-0.2 -1.5 32 32',
-        fill: 'none',
+      return /*#__PURE__*/ (0, _jsxruntime.jsx)("svg", {
+        width: "32",
+        height: "32",
+        viewBox: "-0.2 -1.5 32 32",
+        fill: "none",
         style: errorStyles.icon,
-        children: /*#__PURE__*/ (0, _jsxruntime.jsx)('path', {
-          d: 'M16.9328 0C18.0839 0.000116771 19.1334 0.658832 19.634 1.69531L31.4299 26.1309C32.0708 27.4588 31.1036 28.9999 29.6291 29H2.00215C0.527541 29 -0.439628 27.4588 0.201371 26.1309L11.9973 1.69531C12.4979 0.658823 13.5474 7.75066e-05 14.6984 0H16.9328ZM3.59493 26H28.0363L16.9328 3H14.6984L3.59493 26ZM15.8156 19C16.9202 19.0001 17.8156 19.8955 17.8156 21C17.8156 22.1045 16.9202 22.9999 15.8156 23C14.7111 23 13.8156 22.1046 13.8156 21C13.8156 19.8954 14.7111 19 15.8156 19ZM17.3156 16.5H14.3156V8.5H17.3156V16.5Z',
-          fill: 'var(--next-error-title)',
+        children: /*#__PURE__*/ (0, _jsxruntime.jsx)("path", {
+          d: "M16.9328 0C18.0839 0.000116771 19.1334 0.658832 19.634 1.69531L31.4299 26.1309C32.0708 27.4588 31.1036 28.9999 29.6291 29H2.00215C0.527541 29 -0.439628 27.4588 0.201371 26.1309L11.9973 1.69531C12.4979 0.658823 13.5474 7.75066e-05 14.6984 0H16.9328ZM3.59493 26H28.0363L16.9328 3H14.6984L3.59493 26ZM15.8156 19C16.9202 19.0001 17.8156 19.8955 17.8156 21C17.8156 22.1045 16.9202 22.9999 15.8156 23C14.7111 23 13.8156 22.1046 13.8156 21C13.8156 19.8954 14.7111 19 15.8156 19ZM17.3156 16.5H14.3156V8.5H17.3156V16.5Z",
+          fill: "var(--next-error-title)",
         }),
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     Object.defineProperty(
       exports, // supplied custom global error signatures.
-      'default',
+      "default",
       {
         enumerable: true,
         get: () => _default,
       },
     );
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _handleisrerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-client] (ecmascript)",
     );
     const _errorstyles = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/error-styles.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/error-styles.js [app-client] (ecmascript)",
     );
     function DefaultGlobalError({ error }) {
       const digest = error?.digest;
       const isServerError = !!digest;
       const message = isServerError
-        ? 'A server error occurred. Reload to try again.'
-        : 'Reload to try again, or go back.';
+        ? "A server error occurred. Reload to try again."
+        : "Reload to try again, or go back.";
       (0, _handleisrerror.handleISRError)({
         error,
       });
-      return /*#__PURE__*/ (0, _jsxruntime.jsxs)('html', {
-        id: '__next_error__',
+      return /*#__PURE__*/ (0, _jsxruntime.jsxs)("html", {
+        id: "__next_error__",
         children: [
-          /*#__PURE__*/ (0, _jsxruntime.jsx)('head', {
-            children: /*#__PURE__*/ (0, _jsxruntime.jsx)('style', {
+          /*#__PURE__*/ (0, _jsxruntime.jsx)("head", {
+            children: /*#__PURE__*/ (0, _jsxruntime.jsx)("style", {
               dangerouslySetInnerHTML: {
                 __html: _errorstyles.errorThemeCss,
               },
             }),
           }),
-          /*#__PURE__*/ (0, _jsxruntime.jsxs)('body', {
+          /*#__PURE__*/ (0, _jsxruntime.jsxs)("body", {
             children: [
-              /*#__PURE__*/ (0, _jsxruntime.jsx)('div', {
+              /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
                 style: _errorstyles.errorStyles.container,
-                children: /*#__PURE__*/ (0, _jsxruntime.jsxs)('div', {
+                children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
                   style: _errorstyles.errorStyles.card,
                   children: [
                     /*#__PURE__*/ (0, _jsxruntime.jsx)(_errorstyles.WarningIcon, {}),
-                    /*#__PURE__*/ (0, _jsxruntime.jsx)('h1', {
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h1", {
                       style: _errorstyles.errorStyles.title,
-                      children: 'This page couldn’t load',
+                      children: "This page couldn’t load",
                     }),
-                    /*#__PURE__*/ (0, _jsxruntime.jsx)('p', {
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
                       style: _errorstyles.errorStyles.message,
                       children: message,
                     }),
-                    /*#__PURE__*/ (0, _jsxruntime.jsxs)('div', {
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
                       style: _errorstyles.errorStyles.buttonGroup,
                       children: [
-                        /*#__PURE__*/ (0, _jsxruntime.jsx)('form', {
+                        /*#__PURE__*/ (0, _jsxruntime.jsx)("form", {
                           style: _errorstyles.errorStyles.form,
-                          children: /*#__PURE__*/ (0, _jsxruntime.jsx)('button', {
-                            type: 'submit',
+                          children: /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                            type: "submit",
                             style: _errorstyles.errorStyles.button,
-                            children: 'Reload',
+                            children: "Reload",
                           }),
                         }),
                         !isServerError &&
-                          /*#__PURE__*/ (0, _jsxruntime.jsx)('button', {
-                            type: 'button',
+                          /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                            type: "button",
                             style: _errorstyles.errorStyles.buttonSecondary,
                             onClick: () => {
                               if (window.history.length > 1) {
                                 window.history.back();
                               } else {
-                                window.location.href = '/';
+                                window.location.href = "/";
                               }
                             },
-                            children: 'Back',
+                            children: "Back",
                           }),
                       ],
                     }),
@@ -2046,9 +2046,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
                 }),
               }),
               digest &&
-                /*#__PURE__*/ (0, _jsxruntime.jsxs)('p', {
+                /*#__PURE__*/ (0, _jsxruntime.jsxs)("p", {
                   style: _errorstyles.errorStyles.digestFooter,
-                  children: ['ERROR ', digest],
+                  children: ["ERROR ", digest],
                 }),
             ],
           }),
@@ -2057,25 +2057,25 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     const _default = DefaultGlobalError;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'RuntimeErrorHandler', {
+    Object.defineProperty(exports, "RuntimeErrorHandler", {
       enumerable: true,
       get: () => RuntimeErrorHandler,
     });
@@ -2083,30 +2083,30 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       hadRuntimeError: false,
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/not-found.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/not-found.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'notFound', {
+    Object.defineProperty(exports, "notFound", {
       enumerable: true,
       get: () => notFound,
     });
     const _httpaccessfallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)",
     );
     /**
      * This function allows you to render the [not-found.js file](https://nextjs.org/docs/app/api-reference/file-conventions/not-found)
@@ -2123,8 +2123,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      * Read more: [Next.js Docs: `notFound`](https://nextjs.org/docs/app/api-reference/functions/not-found)
      */ const DIGEST = `${_httpaccessfallback.HTTP_ERROR_FALLBACK_ERROR_CODE};404`;
     function notFound() {
-      const error = Object.defineProperty(new Error(DIGEST), '__NEXT_ERROR_CODE', {
-        value: 'E1041',
+      const error = Object.defineProperty(new Error(DIGEST), "__NEXT_ERROR_CODE", {
+        value: "E1041",
         enumerable: false,
         configurable: true,
       });
@@ -2132,28 +2132,28 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       throw error;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/error-boundary-callbacks.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/error-boundary-callbacks.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     // This file is only used in app router due to the specific error state handling.
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2173,36 +2173,36 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       onUncaughtError: () => onUncaughtError,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _isnextroutererror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)",
     );
     const _bailouttocsr = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [app-client] (ecmascript)",
     );
     const _reportglobalerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/report-global-error.js [app-client] (ecmascript)",
     );
     const _errorboundary = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/error-boundary.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/error-boundary.js [app-client] (ecmascript)",
     );
     const _globalerror = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)",
       ),
     );
-    const devToolErrorMod = ('TURBOPACK compile-time truthy', 1)
+    const devToolErrorMod = ("TURBOPACK compile-time truthy", 1)
       ? __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/index.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/index.js [app-client] (ecmascript)",
         )
-      : 'TURBOPACK unreachable';
+      : "TURBOPACK unreachable";
     function onCaughtError(thrownValue, errorInfo) {
       const errorBoundaryComponent = errorInfo.errorBoundary?.constructor;
       let isImplicitErrorBoundary;
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { AppDevOverlayErrorBoundary } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/app-dev-overlay-error-boundary.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/app-dev-overlay-error-boundary.js [app-client] (ecmascript)",
         );
         isImplicitErrorBoundary = errorBoundaryComponent === AppDevOverlayErrorBoundary;
       }
@@ -2211,9 +2211,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         (errorBoundaryComponent === _errorboundary.ErrorBoundaryHandler &&
           errorInfo.errorBoundary.props.errorComponent === _globalerror.default);
       // Skip the segment explorer triggered error
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { SEGMENT_EXPLORER_SIMULATED_ERROR_MESSAGE } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)",
         );
         if (
           thrownValue instanceof Error &&
@@ -2234,24 +2234,24 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         (0, _isnextroutererror.isNextRouterError)(thrownValue)
       )
         return;
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const errorBoundaryName =
-          errorBoundaryComponent?.displayName || errorBoundaryComponent?.name || 'Unknown';
-        const componentThatErroredFrame = errorInfo?.componentStack?.split('\n')[1];
+          errorBoundaryComponent?.displayName || errorBoundaryComponent?.name || "Unknown";
+        const componentThatErroredFrame = errorInfo?.componentStack?.split("\n")[1];
         // Match chrome or safari stack trace
         const matches = // example 1: at Page (http://localhost:3000/_next/static/chunks/pages/index.js?ts=1631600000000:2:1)
           // example 2: Page@http://localhost:3000/_next/static/chunks/pages/index.js?ts=1631600000000:2:1
           componentThatErroredFrame?.match(/\s+at (\w+)\s+|(\w+)@/) ?? [];
-        const componentThatErroredName = matches[1] || matches[2] || 'Unknown';
+        const componentThatErroredName = matches[1] || matches[2] || "Unknown";
         // Create error location with errored component and error boundary, to match the behavior of default React onCaughtError handler.
         const errorBoundaryMessage = `It was handled by the <${errorBoundaryName}> error boundary.`;
-        const componentErrorMessage = ('TURBOPACK compile-time truthy', 1)
+        const componentErrorMessage = ("TURBOPACK compile-time truthy", 1)
           ? `The above error occurred in the <${componentThatErroredName}> component.`
-          : 'TURBOPACK unreachable';
+          : "TURBOPACK unreachable";
         const errorLocation = `${componentErrorMessage} ${errorBoundaryMessage}`;
         const error = devToolErrorMod.decorateDevError(thrownValue);
         // Log and report the error with location but without modifying the error stack
-        devToolErrorMod.originConsoleError('%o\n\n%s', thrownValue, errorLocation);
+        devToolErrorMod.originConsoleError("%o\n\n%s", thrownValue, errorLocation);
         devToolErrorMod.handleClientError(error);
       } //TURBOPACK unreachable
       else;
@@ -2263,7 +2263,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         (0, _isnextroutererror.isNextRouterError)(thrownValue)
       )
         return;
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const error = devToolErrorMod.decorateDevError(thrownValue);
         // TODO: Add an adendum to the overlay telling people about custom error boundaries.
         (0, _reportglobalerror.reportGlobalError)(error);
@@ -2271,36 +2271,36 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       else;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-call-server.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-call-server.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'callServer', {
+    Object.defineProperty(exports, "callServer", {
       enumerable: true,
       get: () => callServer,
     });
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     const _useactionqueue = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)",
     );
     async function callServer(actionId, actionArgs) {
       return new Promise((resolve, reject) => {
@@ -2316,41 +2316,41 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'findSourceMapURL', {
+    Object.defineProperty(exports, "findSourceMapURL", {
       enumerable: true,
       get: () => findSourceMapURL,
     });
-    const basePath = ('TURBOPACK compile-time value', '') || '';
+    const basePath = ("TURBOPACK compile-time value", "") || "";
     const pathname = `${basePath}/__nextjs_source-map`;
-    const findSourceMapURL = ('TURBOPACK compile-time truthy', 1)
+    const findSourceMapURL = ("TURBOPACK compile-time truthy", 1)
       ? function findSourceMapURL(filename) {
-          if (filename === '') {
+          if (filename === "") {
             return null;
           }
-          if (filename.startsWith(document.location.origin) && filename.includes('/_next/static')) {
+          if (filename.startsWith(document.location.origin) && filename.includes("/_next/static")) {
             // This is a request for a client chunk. This can only happen when
             // using Turbopack. In this case, since we control how those source
             // maps are generated, we can safely assume that the sourceMappingURL
@@ -2361,32 +2361,32 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             return `${filename}.map`;
           }
           const url = new URL(pathname, document.location.origin);
-          url.searchParams.set('filename', filename);
+          url.searchParams.set("filename", filename);
           return url.href;
         }
-      : 'TURBOPACK unreachable';
+      : "TURBOPACK unreachable";
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2418,13 +2418,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       urlToUrlWithoutFlightMarker: () => urlToUrlWithoutFlightMarker,
     });
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     const _segmentvalueencoding = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js [app-client] (ecmascript)",
     );
     const _approuterheaders = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)",
     );
     function getRenderedSearch(response) {
       // If the server performed a rewrite, the search params used to render the
@@ -2432,7 +2432,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // the response will include a header that gives the rewritten search query.
       const rewrittenQuery = response.headers.get(_approuterheaders.NEXT_REWRITTEN_QUERY_HEADER);
       if (rewrittenQuery !== null) {
-        return rewrittenQuery === '' ? '' : '?' + rewrittenQuery;
+        return rewrittenQuery === "" ? "" : "?" + rewrittenQuery;
       }
       // If the header is not present, there was no rewrite, so we use the search
       // query of the response URL.
@@ -2449,7 +2449,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // This needs to match the behavior in get-dynamic-param.ts.
       switch (paramType) {
         // Catchalls
-        case 'c': {
+        case "c": {
           // Catchalls receive all the remaining URL parts. If there are no
           // remaining pathname parts, return an empty array.
           return partIndex < pathnameParts.length
@@ -2457,10 +2457,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             : [];
         }
         // Catchall intercepted
-        case 'ci(..)(..)':
-        case 'ci(.)':
-        case 'ci(..)':
-        case 'ci(...)': {
+        case "ci(..)(..)":
+        case "ci(.)":
+        case "ci(..)":
+        case "ci(...)": {
           const prefix = paramType.length - 2;
           return partIndex < pathnameParts.length
             ? pathnameParts.slice(partIndex).map((s, i) => {
@@ -2472,7 +2472,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             : [];
         }
         // Optional catchalls
-        case 'oc': {
+        case "oc": {
           // Optional catchalls receive all the remaining URL parts, unless this is
           // the end of the pathname, in which case they return null.
           return partIndex < pathnameParts.length
@@ -2480,7 +2480,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             : null;
         }
         // Dynamic
-        case 'd': {
+        case "d": {
           if (partIndex >= pathnameParts.length) {
             // The route tree expected there to be more parts in the URL than there
             // actually are. This could happen if the x-nextjs-rewritten-path header
@@ -2489,15 +2489,15 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             // During a client navigation, we could trigger a hard refresh. But if
             // it happens during initial render, we don't really have any
             // recovery options.
-            return '';
+            return "";
           }
           return encodeURIComponent(pathnameParts[partIndex]);
         }
         // Dynamic intercepted
-        case 'di(..)(..)':
-        case 'di(.)':
-        case 'di(..)':
-        case 'di(...)': {
+        case "di(..)(..)":
+        case "di(.)":
+        case "di(..)":
+        case "di(...)": {
           const prefix = paramType.length - 2;
           if (partIndex >= pathnameParts.length) {
             // The route tree expected there to be more parts in the URL than there
@@ -2507,13 +2507,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             // During a client navigation, we could trigger a hard refresh. But if
             // it happens during initial render, we don't really have any
             // recovery options.
-            return '';
+            return "";
           }
           return encodeURIComponent(pathnameParts[partIndex].slice(prefix));
         }
         default:
           paramType;
-          return '';
+          return "";
       }
     }
     function doesStaticSegmentAppearInURL(segment) {
@@ -2531,9 +2531,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // always leaf nodes.
         // TODO: Investigate why the loader produces these fake page segments.
         segment.startsWith(_segment.PAGE_SEGMENT_KEY) || // Route groups.
-        (segment[0] === '(' && segment.endsWith(')')) ||
+        (segment[0] === "(" && segment.endsWith(")")) ||
         segment === _segment.DEFAULT_SEGMENT_KEY ||
-        segment === '/_not-found'
+        segment === "/_not-found"
       ) {
         return false;
       } else {
@@ -2545,7 +2545,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // This needs to match the logic in get-dynamic-param.ts, until we're able to
       // unify the various implementations so that these are always computed on
       // the client.
-      if (typeof paramValue === 'string') {
+      if (typeof paramValue === "string") {
         // TODO: Refactor or remove this helper function to accept a string rather
         // than the whole segment type. Also we can probably just append the
         // search string instead of turning it into JSON.
@@ -2555,23 +2555,23 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         );
         return pageSegmentWithSearchParams;
       } else if (paramValue === null) {
-        return '';
+        return "";
       } else {
-        return paramValue.join('/');
+        return paramValue.join("/");
       }
     }
     function urlToUrlWithoutFlightMarker(url) {
       const urlWithoutFlightParameters = new URL(url);
       urlWithoutFlightParameters.searchParams.delete(_approuterheaders.NEXT_RSC_UNION_QUERY);
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return urlWithoutFlightParameters;
     }
     function getParamValueFromCacheKey(paramCacheKey, paramType) {
       // Turn the cache key string sent by the server (as part of FlightRouterState)
       // into a value that can be passed to `useParams` and client components.
-      const isCatchAll = paramType === 'c' || paramType === 'oc';
+      const isCatchAll = paramType === "c" || paramType === "oc";
       if (isCatchAll) {
         // Catch-all param keys are a concatenation of the path segments.
         // See equivalent logic in `getSelectedParams`.
@@ -2579,7 +2579,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // it to a string and then split it back to an array. It needs to be an
         // array in some places, like when passing a key React, but we can convert
         // it at runtime in those places.
-        return paramCacheKey.split('/');
+        return paramCacheKey.split("/");
       }
       return paramCacheKey;
     }
@@ -2600,22 +2600,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return result;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2642,13 +2642,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       prepareFlightRouterStateForRequest: () => prepareFlightRouterStateForRequest,
     });
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     const _routeparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)",
     );
     const _createhreffromurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
     );
     function getFlightDataPartsFromPath(flightDataPath) {
       // Pick the last 4 items from the `FlightDataPath` to get the [tree, seedData, viewport, isHeadPartial].
@@ -2665,7 +2665,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         segmentPath,
         // if the `FlightDataPath` corresponds with the root, there'll be no segment path,
         // in which case we default to ''.
-        segment: segmentPath[segmentPath.length - 1] ?? '',
+        segment: segmentPath[segmentPath.length - 1] ?? "",
         tree,
         seedData,
         head,
@@ -2701,7 +2701,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const originalFlightDataPath = fallbackInitialRSCPayload.f[0];
       const originalFlightRouterState = originalFlightDataPath[0];
       const payload = {
-        c: canonicalUrl.split('/'),
+        c: canonicalUrl.split("/"),
         q: renderedSearch,
         i: fallbackInitialRSCPayload.i,
         f: [
@@ -2727,7 +2727,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return payload;
     }
     function fillInFallbackFlightRouterState(flightRouterState, renderedPathname, renderedSearch) {
-      const pathnameParts = renderedPathname.split('/').filter((p) => p !== '');
+      const pathnameParts = renderedPathname.split("/").filter((p) => p !== "");
       const index = 0;
       return fillInFallbackFlightRouterStateImpl(
         flightRouterState,
@@ -2745,7 +2745,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const originalSegment = flightRouterState[0];
       let newSegment;
       let doesAppearInURL;
-      if (typeof originalSegment === 'string') {
+      if (typeof originalSegment === "string") {
         newSegment = originalSegment;
         doesAppearInURL = (0, _routeparams.doesStaticSegmentAppearInURL)(originalSegment);
       } else {
@@ -2786,7 +2786,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     function normalizeFlightData(flightData) {
       // FlightData can be a string when the server didn't respond with a proper flight response,
       // or when a redirect happens, to signal to the client that it needs to perform an MPA navigation.
-      if (typeof flightData === 'string') {
+      if (typeof flightData === "string") {
         return flightData;
       }
       return flightData.map((flightDataPath) => getFlightDataPartsFromPath(flightDataPath));
@@ -2831,9 +2831,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      * - staticSiblings from dynamic segment tuples (only needed for client-side
      *   prefetch reuse decisions)
      */ function stripClientOnlyDataFromSegment(segment) {
-      if (typeof segment === 'string') {
+      if (typeof segment === "string") {
         // Strip search params from __PAGE__ segments
-        if (segment.startsWith(_segment.PAGE_SEGMENT_KEY + '?')) {
+        if (segment.startsWith(_segment.PAGE_SEGMENT_KEY + "?")) {
           return _segment.PAGE_SEGMENT_KEY;
         }
         return segment;
@@ -2844,22 +2844,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return [paramName, paramCacheKey, paramType, null];
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/set-cache-busting-search-param.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/set-cache-busting-search-param.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2879,10 +2879,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       setCacheBustingSearchParamWithHash: () => setCacheBustingSearchParamWithHash,
     });
     const _cachebustingsearchparam = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/cache-busting-search-param.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/cache-busting-search-param.js [app-client] (ecmascript)",
     );
     const _approuterheaders = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)",
     );
     const setCacheBustingSearchParam = (url, headers) => {
       const uniqueCacheKey = (0, _cachebustingsearchparam.computeCacheBustingSearchParam)(
@@ -2905,34 +2905,34 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
        * we want to preserve the %20 as %20 if that's what the user passed in, hence the custom
        * logic below.
        */ const existingSearch = url.search;
-      const rawQuery = existingSearch.startsWith('?') ? existingSearch.slice(1) : existingSearch;
+      const rawQuery = existingSearch.startsWith("?") ? existingSearch.slice(1) : existingSearch;
       // Always remove any existing cache busting param and add a fresh one to ensure
       // we have the correct value based on current request headers
       const pairs = rawQuery
-        .split('&')
+        .split("&")
         .filter((pair) => pair && !pair.startsWith(`${_approuterheaders.NEXT_RSC_UNION_QUERY}=`));
       if (hash.length > 0) {
         pairs.push(`${_approuterheaders.NEXT_RSC_UNION_QUERY}=${hash}`);
       } else {
         pairs.push(`${_approuterheaders.NEXT_RSC_UNION_QUERY}`);
       }
-      url.search = pairs.length ? `?${pairs.join('&')}` : '';
+      url.search = pairs.length ? `?${pairs.join("&")}` : "";
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // This gets assigned as a side-effect during app initialization. Because it
     // represents the build used to create the JS bundle, it should never change
@@ -2950,7 +2950,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     // Note that this can also be initialized with the deployment id instead (if available). So it's not
     // the same as "the build id", but we are running out of alternative names for "build id or
     // deployment id".
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -2969,7 +2969,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       getNavigationBuildId: () => getNavigationBuildId,
       setNavigationBuildId: () => setNavigationBuildId,
     });
-    let globalBuildId = '';
+    let globalBuildId = "";
     function setNavigationBuildId(buildId) {
       globalBuildId = buildId;
     }
@@ -2977,63 +2977,63 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return globalBuildId;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/match-segments.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/match-segments.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'matchSegment', {
+    Object.defineProperty(exports, "matchSegment", {
       enumerable: true,
       get: () => matchSegment,
     });
     const matchSegment = (existingSegment, segment) => {
       // segment is either Array or string
-      if (typeof existingSegment === 'string') {
-        if (typeof segment === 'string') {
+      if (typeof existingSegment === "string") {
+        if (typeof segment === "string") {
           // Common case: segment is just a string
           return existingSegment === segment;
         }
         return false;
       }
-      if (typeof segment === 'string') {
+      if (typeof segment === "string") {
         return false;
       }
       return existingSegment[0] === segment[0] && existingSegment[1] === segment[1];
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // TypeScript trick to simulate opaque types, like in Flow.
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'createCacheKey', {
+    Object.defineProperty(exports, "createCacheKey", {
       enumerable: true,
       get: () => createCacheKey,
     });
@@ -3047,24 +3047,24 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return cacheKey;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Shared types and constants for the Segment Cache.
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3086,10 +3086,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       PrefetchPriority: () => PrefetchPriority,
     });
     var NavigationResultTag = /*#__PURE__*/ ((NavigationResultTag) => {
-      NavigationResultTag[(NavigationResultTag['MPA'] = 0)] = 'MPA';
-      NavigationResultTag[(NavigationResultTag['Success'] = 1)] = 'Success';
-      NavigationResultTag[(NavigationResultTag['NoOp'] = 2)] = 'NoOp';
-      NavigationResultTag[(NavigationResultTag['Async'] = 3)] = 'Async';
+      NavigationResultTag[(NavigationResultTag["MPA"] = 0)] = "MPA";
+      NavigationResultTag[(NavigationResultTag["Success"] = 1)] = "Success";
+      NavigationResultTag[(NavigationResultTag["NoOp"] = 2)] = "NoOp";
+      NavigationResultTag[(NavigationResultTag["Async"] = 3)] = "Async";
       return NavigationResultTag;
     })({});
     var PrefetchPriority = /*#__PURE__*/ ((PrefetchPriority) => {
@@ -3098,43 +3098,43 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
        * bandwidth is reserved for this task only. There's only ever one Intent-
        * priority task at a time; when a new Intent task is scheduled, the previous
        * one is bumped down to Default.
-       */ PrefetchPriority[(PrefetchPriority['Intent'] = 2)] = 'Intent';
+       */ PrefetchPriority[(PrefetchPriority["Intent"] = 2)] = "Intent";
       /**
        * The default priority for prefetch tasks.
-       */ PrefetchPriority[(PrefetchPriority['Default'] = 1)] = 'Default';
+       */ PrefetchPriority[(PrefetchPriority["Default"] = 1)] = "Default";
       /**
        * Assigned to tasks when they spawn non-blocking background work, like
        * revalidating a partially cached entry to see if more data is available.
-       */ PrefetchPriority[(PrefetchPriority['Background'] = 0)] = 'Background';
+       */ PrefetchPriority[(PrefetchPriority["Background"] = 0)] = "Background";
       return PrefetchPriority;
     })({});
     var FetchStrategy = /*#__PURE__*/ ((FetchStrategy) => {
       // Deliberately ordered so we can easily compare two segments
       // and determine if one segment is "more specific" than another
       // (i.e. if it's likely that it contains more data)
-      FetchStrategy[(FetchStrategy['LoadingBoundary'] = 0)] = 'LoadingBoundary';
-      FetchStrategy[(FetchStrategy['PPR'] = 1)] = 'PPR';
-      FetchStrategy[(FetchStrategy['PPRRuntime'] = 2)] = 'PPRRuntime';
-      FetchStrategy[(FetchStrategy['Full'] = 3)] = 'Full';
+      FetchStrategy[(FetchStrategy["LoadingBoundary"] = 0)] = "LoadingBoundary";
+      FetchStrategy[(FetchStrategy["PPR"] = 1)] = "PPR";
+      FetchStrategy[(FetchStrategy["PPRRuntime"] = 2)] = "PPRRuntime";
+      FetchStrategy[(FetchStrategy["Full"] = 3)] = "Full";
       return FetchStrategy;
     })({});
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3166,7 +3166,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       setSizeInCacheMap: () => setSizeInCacheMap,
     });
     const _lru = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/lru.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/lru.js [app-client] (ecmascript)",
     );
     const Fallback = {};
     // This is a special internal key that is used for "revalidation" entries. It's
@@ -3447,22 +3447,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       (0, _lru.updateLruSize)(entry, size);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/lru.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/lru.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3486,10 +3486,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       updateLruSize: () => updateLruSize,
     });
     const _cachemap = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)",
     );
     const _scheduler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)",
     );
     // We use an LRU for memory management. We must update this whenever we add or
     // remove a new cache entry, or when an entry changes size.
@@ -3603,27 +3603,27 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -3653,28 +3653,28 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       startRevalidationCooldown: () => startRevalidationCooldown,
     });
     const _approutertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-types.js [app-client] (ecmascript)",
     );
     const _matchsegments = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/match-segments.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/match-segments.js [app-client] (ecmascript)",
     );
     const _cache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
     );
     const _cachekey = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)",
     );
     const _types = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     const _lru = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/lru.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/lru.js [app-client] (ecmascript)",
     );
     const scheduleMicrotask =
-      typeof queueMicrotask === 'function'
+      typeof queueMicrotask === "function"
         ? queueMicrotask
         : (fn) =>
             Promise.resolve()
@@ -3734,7 +3734,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         onInvalidate,
         _heapIndex: -1,
       };
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         task._onComplete = _onComplete;
       }
       trackMostRecentlyHoveredLink(task);
@@ -3757,7 +3757,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // does not get added back to the queue when it's pinged by the network.
       task.isCanceled = true;
       heapDelete(taskHeap, task);
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         // Call completion callback. In practice this shouldn't be reached for
         // test-initiated prefetches since cancellation is only used by the Link
         // component when elements scroll out of viewport.
@@ -3948,7 +3948,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
               heapResift(taskHeap, task);
             } else {
               // The prefetch is complete. Continue to the next task.
-              if (('TURBOPACK compile-time truthy', 1)) {
+              if (("TURBOPACK compile-time truthy", 1)) {
                 // Notify the Instant Navigation Testing API that the prefetch has
                 // completed, so it can proceed with navigation.
                 const onComplete = task._onComplete;
@@ -3991,7 +3991,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const key = task.key;
       const route = (0, _cache.readOrCreateRouteCacheEntry)(now, task, key);
       const exitStatus = pingRootRouteTree(now, task, route);
-      if (exitStatus !== 0 && key.search !== '') {
+      if (exitStatus !== 0 && key.search !== "") {
         // If the URL has a non-empty search string, also prefetch the pathname
         // without the search string. We use the searchless route tree as a base for
         // optimistic routing; see requestOptimisticRouteCacheEntry for details.
@@ -4495,7 +4495,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // contrast, a Full prefetch will refetch partial segments.
       // "inside-shared-layout" tells the server where to start looking for a
       // loading boundary.
-      let refetchMarker = refetchMarkerContext === null ? 'inside-shared-layout' : null;
+      let refetchMarker = refetchMarkerContext === null ? "inside-shared-layout" : null;
       const segment = (0, _cache.readOrCreateSegmentCacheEntry)(now, task.fetchStrategy, tree);
       switch (segment.status) {
         case _cache.EntryStatus.Empty: {
@@ -4515,8 +4515,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
               _types.FetchStrategy.LoadingBoundary,
             ),
           );
-          if (refetchMarkerContext !== 'refetch') {
-            refetchMarker = refetchMarkerContext = 'refetch';
+          if (refetchMarkerContext !== "refetch") {
+            refetchMarker = refetchMarkerContext = "refetch";
           } else {
             // There's already a parent with a refetch marker, so we don't need
             // to add another one.
@@ -4666,7 +4666,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         spawnedEntries.set(tree.requestKey, spawnedSegment);
       }
       // Don't bother to add a refetch marker if one is already present in a parent.
-      const refetchMarker = !isInsideRefetchingParent && spawnedSegment !== null ? 'refetch' : null;
+      const refetchMarker = !isInsideRefetchingParent && spawnedSegment !== null ? "refetch" : null;
       const requestTree = [tree.segment, requestTreeChildren, null, refetchMarker];
       return requestTree;
     }
@@ -4719,7 +4719,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       switch (segment.status) {
         case _cache.EntryStatus.Empty:
           if (
-            ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+            ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
           );
           // Upgrade to Pending so we know there's already a request in progress
           spawnPrefetchSubtask(
@@ -5066,22 +5066,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/vary-path.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/vary-path.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -5121,13 +5121,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       getSegmentVaryPathForRequest: () => getSegmentVaryPathForRequest,
     });
     const _types = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
     );
     const _cachemap = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)",
     );
     const _segmentvalueencoding = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js [app-client] (ecmascript)",
     );
     function getRouteVaryPath(pathname, search, nextUrl) {
       // requestKey -> searchParams -> nextUrl
@@ -5135,7 +5135,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         id: null,
         value: pathname,
         parent: {
-          id: '?',
+          id: "?",
           value: search,
           parent: {
             id: null,
@@ -5154,7 +5154,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         id: null,
         value: pathname,
         parent: {
-          id: '?',
+          id: "?",
           value: search,
           parent: {
             id: null,
@@ -5192,7 +5192,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         id: null,
         value: requestKey,
         parent: {
-          id: '?',
+          id: "?",
           value: renderedSearch,
           parent: varyPath,
         },
@@ -5235,7 +5235,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // these are not conceptually separate inputs.
         value: pageRequestKey + _segmentvalueencoding.HEAD_REQUEST_KEY,
         parent: {
-          id: '?',
+          id: "?",
           value: renderedSearch,
           parent: varyPath,
         },
@@ -5288,7 +5288,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             id: null,
             value: originalVaryPath.value,
             parent: {
-              id: '?',
+              id: "?",
               value: _cachemap.Fallback,
               parent: pathParamsVaryPath,
             },
@@ -5307,7 +5307,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         id: null,
         value: originalVaryPath.value,
         parent: {
-          id: '?',
+          id: "?",
           value: newSearch,
           parent: searchParamsVaryPath.parent,
         },
@@ -5316,7 +5316,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     function getRenderedSearchFromVaryPath(varyPath) {
       const searchParams = varyPath.parent.value;
-      return typeof searchParams === 'string' ? searchParams : null;
+      return typeof searchParams === "string" ? searchParams : null;
     }
     function getFulfilledSegmentVaryPath(original, varyParams) {
       // Re-keys a segment's vary path based on which params the segment actually
@@ -5341,113 +5341,113 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return clone;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'normalizePathTrailingSlash', {
+    Object.defineProperty(exports, "normalizePathTrailingSlash", {
       enumerable: true,
       get: () => normalizePathTrailingSlash,
     });
     const _removetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/remove-trailing-slash.js [app-client] (ecmascript)",
     );
     const _parsepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/parse-path.js [app-client] (ecmascript)",
     );
     const normalizePathTrailingSlash = (path) => {
-      if (!path.startsWith('/') || ('TURBOPACK compile-time value', void 0)) {
+      if (!path.startsWith("/") || ("TURBOPACK compile-time value", void 0)) {
         return path;
       }
       const { pathname, query, hash } = (0, _parsepath.parsePath)(path);
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return `${(0, _removetrailingslash.removeTrailingSlash)(pathname)}${query}${hash}`;
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'addBasePath', {
+    Object.defineProperty(exports, "addBasePath", {
       enumerable: true,
       get: () => addBasePath,
     });
     const _addpathprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/add-path-prefix.js [app-client] (ecmascript)",
     );
     const _normalizetrailingslash = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/normalize-trailing-slash.js [app-client] (ecmascript)",
     );
-    const basePath = ('TURBOPACK compile-time value', '') || '';
+    const basePath = ("TURBOPACK compile-time value", "") || "";
     function addBasePath(path, required) {
       return (0, _normalizetrailingslash.normalizePathTrailingSlash)(
-        ('TURBOPACK compile-time falsy', 0)
-          ? 'TURBOPACK unreachable'
+        ("TURBOPACK compile-time falsy", 0)
+          ? "TURBOPACK unreachable"
           : (0, _addpathprefix.addPathPrefix)(path, basePath),
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -5467,10 +5467,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       isExternalURL: () => isExternalURL,
     });
     const _isbot = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [app-client] (ecmascript)",
     );
     const _addbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [app-client] (ecmascript)",
     );
     function isExternalURL(url) {
       return url.origin !== window.location.origin;
@@ -5488,42 +5488,42 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // anyone rely on this throwing? (Seems unlikely.)
         throw Object.defineProperty(
           new Error(`Cannot prefetch '${href}' because it cannot be converted to a URL.`),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E234',
+            value: "E234",
             enumerable: false,
             configurable: true,
           },
         );
       }
       // Don't prefetch during development (improves compilation performance)
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         return null;
       }
       //TURBOPACK unreachable
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -5561,16 +5561,16 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       unmountPrefetchableInstance: () => unmountPrefetchableInstance,
     });
     const _types = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
     );
     const _cachekey = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)",
     );
     const _scheduler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)",
     );
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     // Tracks the most recently navigated link instance. When null, indicates
     // the current navigation was not initiated by a link click.
@@ -5598,7 +5598,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     // Use a WeakMap to associate a Link instance with its DOM element. This is
     // used by the IntersectionObserver to track the link's visibility.
-    const prefetchable = typeof WeakMap === 'function' ? new WeakMap() : new Map();
+    const prefetchable = typeof WeakMap === "function" ? new WeakMap() : new Map();
     // A Set of the currently visible links. We re-prefetch visible links after a
     // cache invalidation, or when the current URL changes. It's a separate data
     // structure from the WeakMap above because only the visible links need to
@@ -5606,9 +5606,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     const prefetchableAndVisible = new Set();
     // A single IntersectionObserver instance shared by all <Link> components.
     const observer =
-      typeof IntersectionObserver === 'function'
+      typeof IntersectionObserver === "function"
         ? new IntersectionObserver(handleIntersect, {
-            rootMargin: '200px',
+            rootMargin: "200px",
           })
         : null;
     function observeVisibility(element, instance) {
@@ -5626,9 +5626,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     }
     function coercePrefetchableUrl(href) {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const { createPrefetchURL } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)",
         );
         try {
           return createPrefetchURL(href);
@@ -5638,7 +5638,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           // TODO: Consider removing the throw from the inner function, or change it
           // to reportError. Or maybe the error isn't even necessary for automatic
           // prefetches, just navigations.
-          const reportErrorFn = typeof reportError === 'function' ? reportError : console.error;
+          const reportErrorFn = typeof reportError === "function" ? reportError : console.error;
           reportErrorFn(`Cannot prefetch '${href}' because it cannot be converted to a URL.`);
           return null;
         }
@@ -5726,7 +5726,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     }
     function onLinkVisibilityChanged(element, isVisible) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         // Prefetching on viewport is disabled in development for performance
         // reasons, because it requires compiling the target page.
         // TODO: Investigate re-enabling this.
@@ -5743,14 +5743,14 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // Prefetch the link on hover/touchstart.
       if (instance !== undefined) {
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         rescheduleLinkPrefetch(instance, _types.PrefetchPriority.Intent);
       }
     }
     function rescheduleLinkPrefetch(instance, priority) {
       // Ensures that app-router-instance is not compiled in the server bundle
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const existingPrefetchTask = instance.prefetchTask;
         if (!instance.isVisible) {
           // Cancel any in-progress prefetch task. (If it already finished then this
@@ -5765,7 +5765,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           return;
         }
         const { getCurrentAppRouterState } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)",
         );
         const appRouterState = getCurrentAppRouterState();
         if (appRouterState !== null) {
@@ -5823,22 +5823,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -5870,10 +5870,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       writeToBFCache: () => writeToBFCache,
     });
     const _navigatereducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/navigate-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/navigate-reducer.js [app-client] (ecmascript)",
     );
     const _cachemap = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)",
     );
     const UnknownDynamicStaleTime = -1;
     function computeDynamicStaleAt(now, dynamicStaleTimeSeconds) {
@@ -5884,13 +5884,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     const bfcacheMap = (0, _cachemap.createCacheMap)();
     let currentBfCacheVersion = 0;
     function invalidateBfCache() {
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         return;
       }
       currentBfCacheVersion++;
     }
     function writeToBFCache(now, varyPath, rsc, prefetchRsc, head, prefetchHead, dynamicStaleAt) {
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         return;
       }
       const entry = {
@@ -5922,7 +5922,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       writeToBFCache(now, varyPath, head, prefetchHead, null, null, dynamicStaleAt);
     }
     function updateBFCacheEntryStaleAt(varyPath, newStaleAt) {
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         return;
       }
       const isRevalidation = false;
@@ -5939,7 +5939,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     }
     function readFromBFCache(varyPath) {
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         return null;
       }
       const isRevalidation = false;
@@ -5954,7 +5954,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       );
     }
     function readFromBFCacheDuringRegularNavigation(now, varyPath) {
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         return null;
       }
       const isRevalidation = false;
@@ -5967,20 +5967,20 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Optimistic Routing (Known Routes)
@@ -6025,7 +6025,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      *   still stored during discovery (so the trie stays populated for non-
      *   intercepted siblings), but matching bails out when the pattern is marked
      *   as interceptable.
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -6047,13 +6047,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       resetKnownRoutes: () => resetKnownRoutes,
     });
     const _cache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
     );
     const _routeparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)",
     );
     const _varypath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/vary-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/vary-path.js [app-client] (ecmascript)",
     );
     function createEmptyPart() {
       return {
@@ -6079,7 +6079,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       hasDynamicRewrite,
     ) {
       const tree = routeTree;
-      const pathnameParts = pathname.split('/').filter((p) => p !== '');
+      const pathnameParts = pathname.split("/").filter((p) => p !== "");
       const firstPart = pathnameParts.length > 0 ? pathnameParts[0] : null;
       const remainingParts = pathnameParts.length > 0 ? pathnameParts.slice(1) : [];
       if (pendingEntry !== null) {
@@ -6187,7 +6187,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       let paramName = null;
       let paramType = null;
       let staticSiblings = null;
-      if (typeof segment === 'string') {
+      if (typeof segment === "string") {
         segmentAppearsInURL = (0, _routeparams.doesStaticSegmentAppearInURL)(segment);
       } else {
         // Dynamic segment tuple: [paramName, paramCacheKey, paramType, staticSiblings]
@@ -6348,7 +6348,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return entry;
     }
     function matchKnownRoute(pathname, search) {
-      const pathnameParts = pathname.split('/').filter((p) => p !== '');
+      const pathnameParts = pathname.split("/").filter((p) => p !== "");
       const resolvedParams = new Map();
       const match = matchKnownRoutePart(knownRouteTreeRoot, pathnameParts, 0, resolvedParams);
       if (match === null) {
@@ -6484,7 +6484,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         const paramType = part.dynamicChildParamType;
         const dynamicPattern = dynamicPart.pattern;
         switch (paramType) {
-          case 'c':
+          case "c":
             // Required catch-all [...param]: consumes 1+ URL parts
             if (dynamicPattern !== null && !dynamicPattern.hasDynamicRewrite && urlPart !== null) {
               resolvedParams.set(paramName, pathnameParts.slice(partIndex));
@@ -6494,7 +6494,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
               };
             }
             break;
-          case 'oc':
+          case "oc":
             // Optional catch-all [[...param]]: consumes 0+ URL parts
             if (dynamicPattern !== null && !dynamicPattern.hasDynamicRewrite) {
               if (urlPart !== null) {
@@ -6515,7 +6515,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
               }
             }
             break;
-          case 'd':
+          case "d":
             // Regular dynamic [param]: consumes exactly 1 URL part.
             // Unlike catch-all which terminates here, regular dynamic must
             // continue recursing to find the leaf pattern.
@@ -6527,14 +6527,14 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           // Intercepted routes use relative path markers like (.), (..), (...)
           // Their behavior depends on navigation context (soft vs hard nav),
           // so we can't predict them client-side. Defer to server.
-          case 'ci(..)(..)':
-          case 'ci(.)':
-          case 'ci(..)':
-          case 'ci(...)':
-          case 'di(..)(..)':
-          case 'di(.)':
-          case 'di(..)':
-          case 'di(...)':
+          case "ci(..)(..)":
+          case "ci(.)":
+          case "ci(..)":
+          case "ci(...)":
+          case "di(..)(..)":
+          case "di(.)":
+          case "di(..)":
+          case "di(...)":
             return null;
           default:
             paramType;
@@ -6567,14 +6567,14 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const originalSegment = pattern.segment;
       let newSegment = originalSegment;
       let partialVaryPath;
-      if (typeof originalSegment !== 'string') {
+      if (typeof originalSegment !== "string") {
         // Dynamic segment: compute new cache key and append to partial vary path
         const paramName = originalSegment[0];
         const paramType = originalSegment[2];
         const staticSiblings = originalSegment[3];
         const newValue = resolvedParams.get(paramName);
         if (newValue !== undefined) {
-          const newCacheKey = Array.isArray(newValue) ? newValue.join('/') : newValue;
+          const newCacheKey = Array.isArray(newValue) ? newValue.join("/") : newValue;
           newSegment = [paramName, newCacheKey, paramType, staticSiblings];
           partialVaryPath = (0, _varypath.appendLayoutVaryPath)(
             parentPartialVaryPath,
@@ -6649,27 +6649,27 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       knownRouteTreeRoot = createEmptyPart();
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -6762,82 +6762,82 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       writeStaticStageResponseIntoCache: () => writeStaticStageResponseIntoCache,
     });
     const _varyparamsdecoding = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment-cache/vary-params-decoding.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment-cache/vary-params-decoding.js [app-client] (ecmascript)",
     );
     const _approuterheaders = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)",
     );
     const _fetchserverresponse = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)",
     );
     const _scheduler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)",
     );
     const _varypath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/vary-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/vary-path.js [app-client] (ecmascript)",
     );
     const _createhreffromurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
     );
     const _cachekey = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)",
     );
     const _routeparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)",
     );
     const _cachemap = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-map.js [app-client] (ecmascript)",
     );
     const _segmentvalueencoding = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js [app-client] (ecmascript)",
     );
     const _flightdatahelpers = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)",
     );
     const _navigatereducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/navigate-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/navigate-reducer.js [app-client] (ecmascript)",
     );
     const _links = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     const _types = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
     );
     const _promisewithresolvers = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/promise-with-resolvers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/promise-with-resolvers.js [app-client] (ecmascript)",
     );
     const _bfcache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)",
     );
     const _optimisticroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)",
     );
     const _navigation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)",
     );
     const _navigationbuildid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)",
     );
     function getStaleTimeMs(staleTimeSeconds) {
       return Math.max(staleTimeSeconds, 30) * 1000;
     }
     var EntryStatus = /*#__PURE__*/ ((EntryStatus) => {
-      EntryStatus[(EntryStatus['Empty'] = 0)] = 'Empty';
-      EntryStatus[(EntryStatus['Pending'] = 1)] = 'Pending';
-      EntryStatus[(EntryStatus['Fulfilled'] = 2)] = 'Fulfilled';
-      EntryStatus[(EntryStatus['Rejected'] = 3)] = 'Rejected';
+      EntryStatus[(EntryStatus["Empty"] = 0)] = "Empty";
+      EntryStatus[(EntryStatus["Pending"] = 1)] = "Pending";
+      EntryStatus[(EntryStatus["Fulfilled"] = 2)] = "Fulfilled";
+      EntryStatus[(EntryStatus["Rejected"] = 3)] = "Rejected";
       return EntryStatus;
     })({});
     const isOutputExportMode =
-      ('TURBOPACK compile-time value', 'development') === 'production' &&
-      ('TURBOPACK compile-time value', 'export') === 'export';
-    const MetadataOnlyRequestTree = ['', {}, null, 'metadata-only'];
+      ("TURBOPACK compile-time value", "development") === "production" &&
+      ("TURBOPACK compile-time value", "export") === "export";
+    const MetadataOnlyRequestTree = ["", {}, null, "metadata-only"];
     const routeCacheMap = (0, _cachemap.createCacheMap)();
     const segmentCacheMap = (0, _cachemap.createCacheMap)();
     // All invalidation listeners for the whole cache are tracked in single set.
@@ -6899,7 +6899,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         try {
           onInvalidate();
         } catch (error) {
-          if (typeof reportError === 'function') {
+          if (typeof reportError === "function") {
             reportError(error);
           } else {
             console.error(error);
@@ -6938,7 +6938,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // No cache hit. Attempt to construct from template using the new
       // optimistic routing mechanism (pattern-based matching).
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return null;
     }
@@ -7034,13 +7034,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // string. The plan is to generalize this logic alongside other improvements
       // related to "fallback" cache entries.
       const requestedSearch = requestedUrl.search;
-      if (requestedSearch === '') {
+      if (requestedSearch === "") {
         // The caller would have already checked if a route with an empty search
         // string is in the cache. So we can bail out here.
         return null;
       }
       const urlWithoutSearchParams = new URL(requestedUrl);
-      urlWithoutSearchParams.search = '';
+      urlWithoutSearchParams.search = "";
       const routeWithNoSearchParams = readRouteCacheEntry(
         now,
         (0, _cachekey.createCacheKey)(urlWithoutSearchParams.href, nextUrl),
@@ -7061,7 +7061,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         requestedUrl.origin,
       );
       const optimisticCanonicalSearch =
-        canonicalUrlForRouteWithNoSearchParams.search !== ''
+        canonicalUrlForRouteWithNoSearchParams.search !== ""
           ? canonicalUrlForRouteWithNoSearchParams.search
           : requestedSearch;
       // Similarly, optimistically assume that rewrites for the requested
@@ -7070,7 +7070,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // route should be rewritten to the same search string. Otherwise, we use
       // the requested search string.
       const optimisticRenderedSearch =
-        routeWithNoSearchParams.renderedSearch !== ''
+        routeWithNoSearchParams.renderedSearch !== ""
           ? routeWithNoSearchParams.renderedSearch
           : requestedSearch;
       const optimisticUrl = new URL(routeWithNoSearchParams.canonicalUrl, location.origin);
@@ -7413,7 +7413,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       supportsPerSegmentPrefetching,
     ) {
       // Get the rendered search from the vary path
-      const renderedSearch = (0, _varypath.getRenderedSearchFromVaryPath)(metadataVaryPath) ?? '';
+      const renderedSearch = (0, _varypath.getRenderedSearchFromVaryPath)(metadataVaryPath) ?? "";
       const fulfilledEntry = entry;
       fulfilledEntry.status = 2;
       fulfilledEntry.tree = tree;
@@ -7501,7 +7501,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     function convertRootTreePrefetchToRouteTree(rootTree, renderedPathname, renderedSearch, acc) {
       // Remove trailing and leading slashes
-      const pathnameParts = renderedPathname.split('/').filter((p) => p !== '');
+      const pathnameParts = renderedPathname.split("/").filter((p) => p !== "");
       const index = 0;
       const rootSegment = _segmentvalueencoding.ROOT_SEGMENT_REQUEST_KEY;
       return convertTreePrefetchToRouteTree(
@@ -7564,7 +7564,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             const childParamKey = // cacheComponents is enabled.
               childParam.key !== null
                 ? childParam.key
-                : (0, _routeparams.getCacheKeyForDynamicParam)(childParamValue, '');
+                : (0, _routeparams.getCacheKeyForDynamicParam)(childParamValue, "");
             childPartialVaryPath = (0, _varypath.appendLayoutVaryPath)(
               partialVaryPath,
               childParamKey,
@@ -7834,10 +7834,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const pathname = key.pathname;
       const search = key.search;
       const nextUrl = key.nextUrl;
-      const segmentPath = '/_tree';
+      const segmentPath = "/_tree";
       const headers = {
-        [_approuterheaders.RSC_HEADER]: '1',
-        [_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER]: '1',
+        [_approuterheaders.RSC_HEADER]: "1",
+        [_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER]: "1",
         [_approuterheaders.NEXT_ROUTER_SEGMENT_PREFETCH_HEADER]: segmentPath,
       };
       if (nextUrl !== null) {
@@ -7851,7 +7851,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         let response;
         let urlAfterRedirects;
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         else {
           // "Server" mode. We can use request headers instead of the pathname.
@@ -7890,7 +7890,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // type as the state itself.
         const canonicalUrl = (0, _createhreffromurl.createHrefFromUrl)(urlAfterRedirects);
         // Check whether the response varies based on the Next-Url header.
-        const varyHeader = response.headers.get('vary');
+        const varyHeader = response.headers.get("vary");
         const couldBeIntercepted =
           varyHeader !== null && varyHeader.includes(_approuterheaders.NEXT_URL);
         // TODO: The `closed` promise was originally used to track when a streaming
@@ -7905,7 +7905,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // rather than the old prefetching flow. If it fails, it implies that PPR
         // is disabled on this route.
         const routeIsPPREnabled =
-          response.headers.get(_approuterheaders.NEXT_DID_POSTPONE_HEADER) === '2' || // In output: "export" mode, we can't rely on response headers. But if we
+          response.headers.get(_approuterheaders.NEXT_DID_POSTPONE_HEADER) === "2" || // In output: "export" mode, we can't rely on response headers. But if we
           // receive a well-formed response, we can assume it's a static response,
           // because all data is static in this mode.
           isOutputExportMode;
@@ -8069,11 +8069,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             // an implementation detail and not as a stable part of the protocol.
             // It just needs to match the equivalent logic that happens when
             // prerendering the responses. It should not leak outside of Next.js.
-            '/_index'
+            "/_index"
           : requestKey;
       const headers = {
-        [_approuterheaders.RSC_HEADER]: '1',
-        [_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER]: '1',
+        [_approuterheaders.RSC_HEADER]: "1",
+        [_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER]: "1",
         [_approuterheaders.NEXT_ROUTER_SEGMENT_PREFETCH_HEADER]: normalizedRequestKey,
       };
       if (nextUrl !== null) {
@@ -8082,7 +8082,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // Tell the server to perform a static pre-render for the Instant Navigation
       // Testing API. Static pre-renders don't normally happen during development.
       addInstantPrefetchHeaderIfLocked(headers);
-      const requestUrl = ('TURBOPACK compile-time falsy', 0) ? 'TURBOPACK unreachable' : url;
+      const requestUrl = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : url;
       try {
         const response = await fetchPrefetchResponse(requestUrl, headers);
         if (
@@ -8094,7 +8094,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           // is disabled on this route. Theoretically this should never happen
           // because we only issue requests for segments once we've verified that
           // the route supports PPR.
-          (response.headers.get(_approuterheaders.NEXT_DID_POSTPONE_HEADER) !== '2' && // In output: "export" mode, we can't rely on response headers. But if
+          (response.headers.get(_approuterheaders.NEXT_DID_POSTPONE_HEADER) !== "2" && // In output: "export" mode, we can't rely on response headers. But if
             // we receive a well-formed response, we can assume it's a static
             // response, because all data is static in this mode.
             !isOutputExportMode) ||
@@ -8141,8 +8141,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // across different param values for params that the segment doesn't
         // actually depend on.
         const varyParams = serverData.varyParams;
-        const fulfilledVaryPath = ('TURBOPACK compile-time falsy', 0)
-          ? 'TURBOPACK unreachable'
+        const fulfilledVaryPath = ("TURBOPACK compile-time falsy", 0)
+          ? "TURBOPACK unreachable"
           : (0, _varypath.getSegmentVaryPathForRequest)(segmentCacheEntry.fetchStrategy, tree);
         // Re-key and upsert the entry at the fulfilled vary path. This ensures
         // the entry is stored at the most generic path possible based on which
@@ -8169,9 +8169,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const url = new URL(route.canonicalUrl, location.origin);
       const nextUrl = routeKey.nextUrl;
       const headers = {
-        [_approuterheaders.RSC_HEADER]: '1',
-        [_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER]: '1',
-        [_approuterheaders.NEXT_ROUTER_SEGMENT_PREFETCH_HEADER]: '/' + _segment.PAGE_SEGMENT_KEY,
+        [_approuterheaders.RSC_HEADER]: "1",
+        [_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER]: "1",
+        [_approuterheaders.NEXT_ROUTER_SEGMENT_PREFETCH_HEADER]: "/" + _segment.PAGE_SEGMENT_KEY,
       };
       if (nextUrl !== null) {
         headers[_approuterheaders.NEXT_URL] = nextUrl;
@@ -8183,7 +8183,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           !response ||
           !response.ok ||
           response.status === 204 ||
-          (response.headers.get(_approuterheaders.NEXT_DID_POSTPONE_HEADER) !== '2' &&
+          (response.headers.get(_approuterheaders.NEXT_DID_POSTPONE_HEADER) !== "2" &&
             !isOutputExportMode) ||
           !response.body
         ) {
@@ -8301,7 +8301,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         dynamicRequestTree = MetadataOnlyRequestTree;
       }
       const headers = {
-        [_approuterheaders.RSC_HEADER]: '1',
+        [_approuterheaders.RSC_HEADER]: "1",
         [_approuterheaders.NEXT_ROUTER_STATE_TREE_HEADER]: (0,
         _flightdatahelpers.prepareFlightRouterStateForRequest)(dynamicRequestTree),
       };
@@ -8313,11 +8313,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           break;
         }
         case _types.FetchStrategy.PPRRuntime: {
-          headers[_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER] = '2';
+          headers[_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER] = "2";
           break;
         }
         case _types.FetchStrategy.LoadingBoundary: {
-          headers[_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER] = '1';
+          headers[_approuterheaders.NEXT_ROUTER_PREFETCH_HEADER] = "1";
           break;
         }
         default: {
@@ -8406,7 +8406,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         const buildId =
           response.headers.get(_constants.NEXT_NAV_DEPLOYMENT_ID_HEADER) ?? serverData.b;
         const flightDatas = (0, _flightdatahelpers.normalizeFlightData)(serverData.f);
-        if (typeof flightDatas === 'string') {
+        if (typeof flightDatas === "string") {
           rejectSegmentEntriesIfStillPending(spawnedEntries, Date.now() + 10 * 1000);
           return null;
         }
@@ -8468,7 +8468,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const normalizedFlightDataResult = (0, _flightdatahelpers.normalizeFlightData)(serverData.f);
       if (
         // MPA navigation.
-        typeof normalizedFlightDataResult === 'string' ||
+        typeof normalizedFlightDataResult === "string" ||
         normalizedFlightDataResult.length !== 1
       ) {
         rejectRouteCacheEntry(entry, now + 10 * 1000);
@@ -8485,7 +8485,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // The head has its own partiality flag (flightDataEntry.isHeadPartial)
       // which is handled separately in writeDynamicRenderResponseIntoCache.
       const isResponsePartial =
-        response.headers.get(_approuterheaders.NEXT_DID_POSTPONE_HEADER) === '1';
+        response.headers.get(_approuterheaders.NEXT_DID_POSTPONE_HEADER) === "1";
       // Convert the server-sent data into the RouteTree format used by the
       // client cache.
       //
@@ -8620,8 +8620,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           //
           // Without Cache Components, the server always sends the correct
           // isHeadPartial value, so no override is needed.
-          const isHeadPartial = ('TURBOPACK compile-time falsy', 0)
-            ? 'TURBOPACK unreachable'
+          const isHeadPartial = ("TURBOPACK compile-time falsy", 0)
+            ? "TURBOPACK unreachable"
             : flightDataEntry.isHeadPartial;
           fulfillEntrySpawnedByRuntimePrefetch(
             now,
@@ -8725,7 +8725,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         const fulfilledEntry = fulfillSegmentCacheEntry(ownedEntry, rsc, staleAt, isPartial);
         // Re-key the entry based on which params the segment actually depends on.
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
       } else {
         // There's no matching entry. Attempt to create a new one.
@@ -8741,7 +8741,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           );
           // Re-key the entry based on which params the segment actually depends on.
           if (
-            ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+            ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
           );
         } else {
           // There was already an entry in the cache. But we may be able to
@@ -8754,15 +8754,15 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           );
           // Use the fulfilled vary path if available, otherwise fall back to
           // the request vary path.
-          const varyPath = ('TURBOPACK compile-time falsy', 0)
-            ? 'TURBOPACK unreachable'
+          const varyPath = ("TURBOPACK compile-time falsy", 0)
+            ? "TURBOPACK unreachable"
             : (0, _varypath.getSegmentVaryPathForRequest)(fetchStrategy, tree);
           upsertSegmentEntry(now, varyPath, newEntry);
         }
       }
     }
     async function fetchPrefetchResponse(url, headers) {
-      const fetchPriority = 'low';
+      const fetchPriority = "low";
       // When issuing a prefetch request, don't immediately decode the response; we
       // use the lower level `createFromResponse` API instead because we need to do
       // some extra processing of the response stream. See
@@ -8778,13 +8778,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         return null;
       }
       // Check the content type
-      if (('TURBOPACK compile-time falsy', 0)) {
+      if (("TURBOPACK compile-time falsy", 0)) {
         // In output: "export" mode, we relaxed about the content type, since it's
         // not Next.js that's serving the response. If the status is OK, assume the
         // response is valid. If it's not a valid response, the Flight client won't
         // be able to decode it, and we'll treat it as a miss.
       } else {
-        const contentType = response.headers.get('content-type');
+        const contentType = response.headers.get("content-type");
         const isFlightResponse =
           contentType && contentType.startsWith(_approuterheaders.RSC_CONTENT_TYPE_HEADER);
         if (!isFlightResponse) {
@@ -8885,7 +8885,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     function addSegmentPathToUrlInOutputExportMode(url, segmentPath) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return url;
     }
@@ -8896,18 +8896,18 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      * Adds the instant prefetch header if the navigation lock is active.
      * Uses a lazy require to ensure dead code elimination.
      */ function addInstantPrefetchHeaderIfLocked(headers) {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { isNavigationLocked } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)",
         );
         if (isNavigationLocked()) {
-          headers[_approuterheaders.NEXT_INSTANT_PREFETCH_HEADER] = '1';
+          headers[_approuterheaders.NEXT_INSTANT_PREFETCH_HEADER] = "1";
         }
       }
     }
     function getStaleAtFromHeader(now, response) {
       const staleTimeSeconds = parseInt(
-        response.headers.get(_approuterheaders.NEXT_ROUTER_STALE_TIME_HEADER) ?? '',
+        response.headers.get(_approuterheaders.NEXT_ROUTER_STALE_TIME_HEADER) ?? "",
         10,
       );
       const staleTimeMs = !isNaN(staleTimeSeconds)
@@ -8954,7 +8954,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           ? (0, _varyparamsdecoding.readVaryParams)(headVaryParamsThenable)
           : null;
       const flightDatas = (0, _flightdatahelpers.normalizeFlightData)(flightData);
-      if (typeof flightDatas === 'string') {
+      if (typeof flightDatas === "string") {
         return;
       }
       const navigationSeed = (0, _navigation.convertServerPatchToFullTree)(
@@ -8997,7 +8997,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           : null;
       const staleAt = await getStaleAt(now, serverData.s);
       const flightDatas = (0, _flightdatahelpers.normalizeFlightData)(serverData.f);
-      if (typeof flightDatas === 'string') {
+      if (typeof flightDatas === "string") {
         return null;
       }
       const navigationSeed = (0, _navigation.convertServerPatchToFullTree)(
@@ -9021,7 +9021,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // Cached Navigations is enabled. When enabled, dynamic navigation responses
       // don't have a marker but may contain dynamic holes, so they are treated as
       // partial. When disabled, unmarked responses are treated as non-partial.
-      const defaultIsPartial = !!('TURBOPACK compile-time value', false);
+      const defaultIsPartial = !!("TURBOPACK compile-time value", false);
       const reader = stream.getReader();
       const { done, value } = await reader.read();
       if (done || !value || value.byteLength === 0) {
@@ -9056,22 +9056,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       };
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -9091,10 +9091,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       getOrCreateDebugChannelReadableWriterPair: () => getOrCreateDebugChannelReadableWriterPair,
     });
     const _approuterheaders = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)",
     );
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)",
     );
     const pairs = new Map();
     function getOrCreateDebugChannelReadableWriterPair(requestId) {
@@ -9119,9 +9119,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             new _invarianterror.InvariantError(
               `Expected a ${JSON.stringify(_approuterheaders.NEXT_REQUEST_ID_HEADER)} request header.`,
             ),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E854',
+              value: "E854",
               enumerable: false,
               configurable: true,
             },
@@ -9134,9 +9134,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             new _invarianterror.InvariantError(
               `Expected a request ID to be defined for the document via self.__next_r.`,
             ),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E806',
+              value: "E806",
               enumerable: false,
               configurable: true,
             },
@@ -9149,28 +9149,28 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       };
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use client');
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use client");
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -9198,50 +9198,50 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       resolveStaticStageData: () => resolveStaticStageData,
     });
     const _client = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)",
     );
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)",
     );
     const _approuterheaders = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)",
     );
     const _appcallserver = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-call-server.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-call-server.js [app-client] (ecmascript)",
     );
     const _appfindsourcemapurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)",
     );
     const _flightdatahelpers = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)",
     );
     const _setcachebustingsearchparam = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/set-cache-busting-search-param.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/set-cache-busting-search-param.js [app-client] (ecmascript)",
     );
     const _routeparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/route-params.js [app-client] (ecmascript)",
     );
     const _deploymentid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)",
     );
     const _navigationbuildid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)",
     );
     const _cache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
     );
     const _bfcache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)",
     );
     const createFromReadableStream = _client.createFromReadableStream;
     const createFromFetch = _client.createFromFetch;
     let createDebugChannel;
-    if (('TURBOPACK compile-time truthy', 1)) {
+    if (("TURBOPACK compile-time truthy", 1)) {
       createDebugChannel = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)",
       ).createDebugChannel;
     }
     function doMpaNavigation(url) {
@@ -9250,16 +9250,16 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       ).toString();
     }
     let isPageUnloading = false;
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Track when the page is unloading, e.g. due to reloading the page or
       // performing hard navigations. This allows us to suppress error logging when
       // the browser cancels in-flight requests during page unload.
-      window.addEventListener('pagehide', () => {
+      window.addEventListener("pagehide", () => {
         isPageUnloading = true;
       });
       // Reset the flag on pageshow, e.g. when navigating back and the JavaScript
       // execution context is restored by the browser.
-      window.addEventListener('pageshow', () => {
+      window.addEventListener("pageshow", () => {
         isPageUnloading = false;
       });
     }
@@ -9267,7 +9267,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const { flightRouterState, nextUrl } = options;
       const headers = {
         // Enable flight response
-        [_approuterheaders.RSC_HEADER]: '1',
+        [_approuterheaders.RSC_HEADER]: "1",
         // Provide the current router state
         [_approuterheaders.NEXT_ROUTER_STATE_TREE_HEADER]: (0,
         _flightdatahelpers.prepareFlightRouterStateForRequest)(
@@ -9276,10 +9276,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         ),
       };
       if (
-        ('TURBOPACK compile-time value', 'development') === 'development' &&
+        ("TURBOPACK compile-time value", "development") === "development" &&
         options.isHmrRefresh
       ) {
-        headers[_approuterheaders.NEXT_HMR_REFRESH_HEADER] = '1';
+        headers[_approuterheaders.NEXT_HMR_REFRESH_HEADER] = "1";
       }
       if (nextUrl) {
         headers[_approuterheaders.NEXT_URL] = nextUrl;
@@ -9289,23 +9289,23 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const originalUrl = url;
       try {
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         // Typically, during a navigation, we decode the response using Flight's
         // `createFromFetch` API, which accepts a `fetch` promise.
         // TODO: Remove this check once the old PPR flag is removed
         const isLegacyPPR =
-          ('TURBOPACK compile-time value', false) && !('TURBOPACK compile-time value', false);
+          ("TURBOPACK compile-time value", false) && !("TURBOPACK compile-time value", false);
         const shouldImmediatelyDecode = !isLegacyPPR;
-        const res = await createFetch(url, headers, 'auto', shouldImmediatelyDecode);
+        const res = await createFetch(url, headers, "auto", shouldImmediatelyDecode);
         const responseUrl = (0, _routeparams.urlToUrlWithoutFlightMarker)(new URL(res.url));
         const canonicalUrl = res.redirected ? responseUrl : originalUrl;
-        const contentType = res.headers.get('content-type') || '';
-        const interception = !!res.headers.get('vary')?.includes(_approuterheaders.NEXT_URL);
+        const contentType = res.headers.get("content-type") || "";
+        const interception = !!res.headers.get("vary")?.includes(_approuterheaders.NEXT_URL);
         const postponed = !!res.headers.get(_approuterheaders.NEXT_DID_POSTPONE_HEADER);
         const isFlightResponse = contentType.startsWith(_approuterheaders.RSC_CONTENT_TYPE_HEADER);
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         // If fetch returns something different than flight response handle it like a mpa navigation
         // If the fetch was not 200, we also handle it like a mpa navigation
@@ -9324,7 +9324,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // Or Webpack needs to include the runtime update in the Flight response as
         // a blocking script.
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         let flightResponsePromise = res.flightResponsePromise;
         if (flightResponsePromise === null) {
@@ -9349,7 +9349,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           return doMpaNavigation(res.url);
         }
         const normalizedFlightData = (0, _flightdatahelpers.normalizeFlightData)(flightResponse.f);
-        if (typeof normalizedFlightData === 'string') {
+        if (typeof normalizedFlightData === "string") {
           return doMpaNavigation(normalizedFlightData);
         }
         const staticStageData =
@@ -9395,7 +9395,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     async function processFetch(response) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return {
         response,
@@ -9439,13 +9439,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // cache busting search param) from the request so they're
       // maximally cacheable.
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       const deploymentId = (0, _deploymentid.getDeploymentId)();
       if (deploymentId) {
-        headers['x-deployment-id'] = deploymentId;
+        headers["x-deployment-id"] = deploymentId;
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (self.__next_r) {
           headers[_approuterheaders.NEXT_HTML_REQUEST_ID_HEADER] = self.__next_r;
         }
@@ -9458,7 +9458,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       const fetchOptions = {
         // Backwards compat for older browsers. `same-origin` is the default in modern browsers.
-        credentials: 'same-origin',
+        credentials: "same-origin",
         headers,
         priority: fetchPriority || undefined,
         signal,
@@ -9505,7 +9505,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // occur in a middleware or a third-party proxy.
       const redirected = browserResponse.redirected;
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Remove the cache busting search param from the response URL, to prevent it
       // from leaking outside of this function.
@@ -9579,30 +9579,30 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/is-navigating-to-new-root-layout.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/is-navigating-to-new-root-layout.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isNavigatingToNewRootLayout', {
+    Object.defineProperty(exports, "isNavigatingToNewRootLayout", {
       enumerable: true,
       get: () => isNavigatingToNewRootLayout,
     });
     const _approutertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-types.js [app-client] (ecmascript)",
     );
     function isNavigatingToNewRootLayout(currentTree, nextTree) {
       // Compare segments
@@ -9653,22 +9653,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return false;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/committed-state.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/committed-state.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -9707,27 +9707,27 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       lastCommittedTree = tree;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -9753,60 +9753,60 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       startPPRNavigation: () => startPPRNavigation,
     });
     const _approutertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-types.js [app-client] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     const _matchsegments = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/match-segments.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/match-segments.js [app-client] (ecmascript)",
     );
     const _createhreffromurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
     );
     const _fetchserverresponse = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)",
     );
     const _useactionqueue = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)",
     );
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     const _isnavigatingtonewrootlayout = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/is-navigating-to-new-root-layout.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/is-navigating-to-new-root-layout.js [app-client] (ecmascript)",
     );
     const _committedstate = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/committed-state.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/committed-state.js [app-client] (ecmascript)",
     );
     const _navigation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)",
     );
     const _cache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
     );
     const _types = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
     );
     const _optimisticroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)",
     );
     const _varypath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/vary-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/vary-path.js [app-client] (ecmascript)",
     );
     const _bfcache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)",
     );
     var FreshnessPolicy = /*#__PURE__*/ ((FreshnessPolicy) => {
-      FreshnessPolicy[(FreshnessPolicy['Default'] = 0)] = 'Default';
-      FreshnessPolicy[(FreshnessPolicy['Hydration'] = 1)] = 'Hydration';
-      FreshnessPolicy[(FreshnessPolicy['HistoryTraversal'] = 2)] = 'HistoryTraversal';
-      FreshnessPolicy[(FreshnessPolicy['RefreshAll'] = 3)] = 'RefreshAll';
-      FreshnessPolicy[(FreshnessPolicy['HMRRefresh'] = 4)] = 'HMRRefresh';
-      FreshnessPolicy[(FreshnessPolicy['Gesture'] = 5)] = 'Gesture';
+      FreshnessPolicy[(FreshnessPolicy["Default"] = 0)] = "Default";
+      FreshnessPolicy[(FreshnessPolicy["Hydration"] = 1)] = "Hydration";
+      FreshnessPolicy[(FreshnessPolicy["HistoryTraversal"] = 2)] = "HistoryTraversal";
+      FreshnessPolicy[(FreshnessPolicy["RefreshAll"] = 3)] = "RefreshAll";
+      FreshnessPolicy[(FreshnessPolicy["HMRRefresh"] = 4)] = "HMRRefresh";
+      FreshnessPolicy[(FreshnessPolicy["Gesture"] = 5)] = "Gesture";
       return FreshnessPolicy;
     })({});
     const noop = () => {};
@@ -10326,8 +10326,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         const stringifiedQuery = JSON.stringify(
           Object.fromEntries(new URLSearchParams(renderedSearch)),
         );
-        return stringifiedQuery !== '{}'
-          ? _segment.PAGE_SEGMENT_KEY + '?' + stringifiedQuery
+        return stringifiedQuery !== "{}"
+          ? _segment.PAGE_SEGMENT_KEY + "?" + stringifiedQuery
           : _segment.PAGE_SEGMENT_KEY;
       }
       return newRouteTree.segment;
@@ -10369,7 +10369,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // The "refetch" marker is set on the top-most segment that requires new
         // data. We can omit it if a parent was already marked.
         if (!parentNeedsDynamicRequest) {
-          dynamicRequestTree[3] = 'refetch';
+          dynamicRequestTree[3] = "refetch";
         }
       } else if (childNeedsDynamicRequest) {
         // This segment does not request new data, but at least one of its
@@ -10563,7 +10563,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             // heuristic, we assume that the rest dynamic data will stream in
             // quickly, so it's still better to skip the prefetch state.
             const oldRsc = bfcacheEntry.rsc;
-            const oldRscDidResolve = !isDeferredRsc(oldRsc) || oldRsc.status !== 'pending';
+            const oldRscDidResolve = !isDeferredRsc(oldRsc) || oldRsc.status !== "pending";
             const dropPrefetchRsc = oldRscDidResolve;
             return {
               cacheNode: createCacheNode(
@@ -10710,7 +10710,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             }
           }
         }
-        if (('TURBOPACK compile-time value', false) && isCachedHeadPartial) {
+        if (("TURBOPACK compile-time value", false) && isCachedHeadPartial) {
           // TODO: When optimistic routing is enabled, don't block on waiting for
           // the viewport to resolve. This is a temporary workaround until Vary
           // Params are tracked when rendering the metadata. We'll fix it before
@@ -10726,7 +10726,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           // This line of code works because the App Router treats `null` as
           // "no renderable head available", rather than an empty head. React treats
           // an empty string as empty.
-          cachedHead = '';
+          cachedHead = "";
         }
         if (seedHead !== null) {
           if (isCachedHeadPartial) {
@@ -11062,7 +11062,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // action queue into a more reactive navigation model.
       const lastCommitted = (0, _committedstate.getLastCommittedTree)();
       const retryNavigateType =
-        lastCommitted !== null && baseTree !== lastCommitted ? originalNavigateType : 'replace';
+        lastCommitted !== null && baseTree !== lastCommitted ? originalNavigateType : "replace";
       const retryAction = {
         type: _routerreducertypes.ACTION_SERVER_PATCH,
         previousTree: baseTree,
@@ -11088,7 +11088,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           nextUrl,
           isHmrRefresh: freshnessPolicy === 4,
         });
-        if (typeof result === 'string') {
+        if (typeof result === "string") {
           // fetchServerResponse will return an href to indicate that the SPA
           // navigation failed. For example, if the server triggered a hard
           // redirect, or the fetch request errored. Initiate an MPA navigation
@@ -11110,7 +11110,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // If the navigation lock is active, wait for it to be released before
         // writing the dynamic data. This allows tests to assert on the prefetched
         // UI state.
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           await waitForNavigationLock();
         }
         if (routeCacheEntry !== null && result.staticStageData !== null) {
@@ -11381,7 +11381,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     const DEFERRED = Symbol();
     function isDeferredRsc(value) {
-      return value && typeof value === 'object' && value.tag === DEFERRED;
+      return value && typeof value === "object" && value.tag === DEFERRED;
     }
     function createDeferredRsc() {
       // Create an unresolved promise that represents data derived from a Flight
@@ -11403,11 +11403,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         resolve = res;
         reject = rej;
       });
-      pendingRsc.status = 'pending';
+      pendingRsc.status = "pending";
       pendingRsc.resolve = (value, responseDebugInfo) => {
-        if (pendingRsc.status === 'pending') {
+        if (pendingRsc.status === "pending") {
           const fulfilledRsc = pendingRsc;
-          fulfilledRsc.status = 'fulfilled';
+          fulfilledRsc.status = "fulfilled";
           fulfilledRsc.value = value;
           if (responseDebugInfo !== null) {
             // Transfer the debug info to the derived promise.
@@ -11417,9 +11417,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         }
       };
       pendingRsc.reject = (error, responseDebugInfo) => {
-        if (pendingRsc.status === 'pending') {
+        if (pendingRsc.status === "pending") {
           const rejectedRsc = pendingRsc;
-          rejectedRsc.status = 'rejected';
+          rejectedRsc.status = "rejected";
           rejectedRsc.reason = error;
           if (responseDebugInfo !== null) {
             // Transfer the debug info to the derived promise.
@@ -11439,30 +11439,30 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      *
      * Not exposed in production builds by default.
      */ async function waitForNavigationLock() {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { waitForNavigationLockIfActive } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)",
         );
         await waitForNavigationLockIfActive();
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -11486,55 +11486,55 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       getSelectedParams: () => getSelectedParams,
     });
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-client] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     const _matchsegments = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/match-segments.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/match-segments.js [app-client] (ecmascript)",
     );
     const removeLeadingSlash = (segment) => {
-      return segment[0] === '/' ? segment.slice(1) : segment;
+      return segment[0] === "/" ? segment.slice(1) : segment;
     };
     const segmentToPathname = (segment) => {
-      if (typeof segment === 'string') {
+      if (typeof segment === "string") {
         // 'children' is not a valid path -- it's technically a parallel route that corresponds with the current segment's page
         // if we don't skip it, then the computed pathname might be something like `/children` which doesn't make sense.
-        if (segment === 'children') return '';
+        if (segment === "children") return "";
         return segment;
       }
       return segment[1];
     };
     const segmentToSourcePagePathname = (segment) => {
-      if (typeof segment === 'string') {
-        if (segment === 'children') return '';
-        if (segment.startsWith(_segment.PAGE_SEGMENT_KEY)) return 'page';
+      if (typeof segment === "string") {
+        if (segment === "children") return "";
+        if (segment.startsWith(_segment.PAGE_SEGMENT_KEY)) return "page";
         return segment;
       }
       const [paramName, , dynamicParamType] = segment;
       switch (dynamicParamType) {
-        case 'c':
+        case "c":
           return `[...${paramName}]`;
-        case 'ci(..)(..)':
+        case "ci(..)(..)":
           return `(..)(..)[...${paramName}]`;
-        case 'ci(.)':
+        case "ci(.)":
           return `(.)[...${paramName}]`;
-        case 'ci(..)':
+        case "ci(..)":
           return `(..)[...${paramName}]`;
-        case 'ci(...)':
+        case "ci(...)":
           return `(...)[...${paramName}]`;
-        case 'oc':
+        case "oc":
           return `[[...${paramName}]]`;
-        case 'd':
+        case "d":
           return `[${paramName}]`;
-        case 'di(..)(..)':
+        case "di(..)(..)":
           return `(..)(..)[${paramName}]`;
-        case 'di(.)':
+        case "di(.)":
           return `(.)[${paramName}]`;
-        case 'di(..)':
+        case "di(..)":
           return `(..)[${paramName}]`;
-        case 'di(...)':
+        case "di(...)":
           return `(...)[${paramName}]`;
         default:
           dynamicParamType;
@@ -11545,11 +11545,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return (
         segments.reduce((acc, segment) => {
           segment = removeLeadingSlash(segment);
-          if (segment === '' || (0, _segment.isGroupSegment)(segment)) {
+          if (segment === "" || (0, _segment.isGroupSegment)(segment)) {
             return acc;
           }
           return `${acc}/${segment}`;
-        }, '') || '/'
+        }, "") || "/"
       );
     }
     function extractPathFromFlightRouterState(flightRouterState) {
@@ -11561,7 +11561,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         _interceptionroutes.INTERCEPTION_ROUTE_MARKERS.some((m) => segment.startsWith(m))
       )
         return undefined;
-      if (segment.startsWith(_segment.PAGE_SEGMENT_KEY)) return '';
+      if (segment.startsWith(_segment.PAGE_SEGMENT_KEY)) return "";
       const segments = [segmentToPathname(segment)];
       const parallelRoutes = flightRouterState[1] ?? {};
       const childrenPath = parallelRoutes.children
@@ -11571,7 +11571,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         segments.push(childrenPath);
       } else {
         for (const [key, value] of Object.entries(parallelRoutes)) {
-          if (key === 'children') continue;
+          if (key === "children") continue;
           const childPath = extractPathFromFlightRouterState(value);
           if (childPath !== undefined) {
             segments.push(childPath);
@@ -11585,7 +11585,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       if (segment === _segment.DEFAULT_SEGMENT_KEY) {
         return undefined;
       }
-      if (segment === 'page') {
+      if (segment === "page") {
         return [segment];
       }
       const parallelRoutes = flightRouterState[1] ?? {};
@@ -11593,20 +11593,20 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         ? extractSourcePageSegmentsFromFlightRouterState(parallelRoutes.children)
         : undefined;
       if (childrenPath !== undefined) {
-        return segment === '' ? childrenPath : [removeLeadingSlash(segment), ...childrenPath];
+        return segment === "" ? childrenPath : [removeLeadingSlash(segment), ...childrenPath];
       }
       for (const [key, value] of Object.entries(parallelRoutes)) {
-        if (key === 'children') continue;
+        if (key === "children") continue;
         const childPath = extractSourcePageSegmentsFromFlightRouterState(value);
         if (childPath !== undefined) {
-          return segment === '' ? childPath : [removeLeadingSlash(segment), ...childPath];
+          return segment === "" ? childPath : [removeLeadingSlash(segment), ...childPath];
         }
       }
       return undefined;
     }
     function extractSourcePageFromFlightRouterState(flightRouterState) {
       const sourcePageSegments = extractSourcePageSegmentsFromFlightRouterState(flightRouterState);
-      return sourcePageSegments ? `/${sourcePageSegments.join('/')}` : undefined;
+      return sourcePageSegments ? `/${sourcePageSegments.join("/")}` : undefined;
     }
     function computeChangedPathImpl(treeA, treeB) {
       const [segmentA, parallelRoutesA] = treeA;
@@ -11618,11 +11618,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           (m) => normalizedSegmentA.startsWith(m) || normalizedSegmentB.startsWith(m),
         )
       ) {
-        return '';
+        return "";
       }
       if (!(0, _matchsegments.matchSegment)(segmentA, segmentB)) {
         // once we find where the tree changed, we compute the rest of the path by traversing the tree
-        return extractPathFromFlightRouterState(treeB) ?? '';
+        return extractPathFromFlightRouterState(treeB) ?? "";
       }
       for (const parallelRouterKey in parallelRoutesA) {
         if (parallelRoutesB[parallelRouterKey]) {
@@ -11639,11 +11639,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     function computeChangedPath(treeA, treeB) {
       const changedPath = computeChangedPathImpl(treeA, treeB);
-      if (changedPath == null || changedPath === '/') {
+      if (changedPath == null || changedPath === "/") {
         return changedPath;
       }
       // lightweight normalization to remove route groups
-      return normalizeSegments(changedPath.split('/'));
+      return normalizeSegments(changedPath.split("/"));
     }
     function getSelectedParams(currentTree, params = {}) {
       const parallelRoutes = currentTree[1];
@@ -11653,9 +11653,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         const segmentValue = isDynamicParameter ? segment[1] : segment;
         if (!segmentValue || segmentValue.startsWith(_segment.PAGE_SEGMENT_KEY)) continue;
         // Ensure catchAll and optional catchall are turned into an array
-        const isCatchAll = isDynamicParameter && (segment[2] === 'c' || segment[2] === 'oc');
+        const isCatchAll = isDynamicParameter && (segment[2] === "c" || segment[2] === "oc");
         if (isCatchAll) {
-          params[segment[0]] = segment[1].split('/');
+          params[segment[0]] = segment[1].split("/");
         } else if (isDynamicParameter) {
           params[segment[0]] = segment[1];
         }
@@ -11664,20 +11664,20 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return params;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     // Adapted from React's sanitizeURL function found here: https://github.com/facebook/react/blob/b565373afd0cc1988497e1107106e851e8cfb261/packages/react-dom-bindings/src/shared/sanitizeURL.js
     // A javascript: URL can contain leading C0 control or \u0020 SPACE,
@@ -11688,40 +11688,40 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     // A C0 control is a code point in the range \u0000 NULL to \u001F
     // INFORMATION SEPARATOR ONE, inclusive:
     // https://infra.spec.whatwg.org/#c0-control-or-space
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'isJavaScriptURLString', {
+    Object.defineProperty(exports, "isJavaScriptURLString", {
       enumerable: true,
       get: () => isJavaScriptURLString,
     });
     const isJavaScriptProtocol =
       /^[\u0000-\u001F ]*j[\r\n\t]*a[\r\n\t]*v[\r\n\t]*a[\r\n\t]*s[\r\n\t]*c[\r\n\t]*r[\r\n\t]*i[\r\n\t]*p[\r\n\t]*t[\r\n\t]*:/i;
     function isJavaScriptURLString(url) {
-      return isJavaScriptProtocol.test('' + url);
+      return isJavaScriptProtocol.test("" + url);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -11749,46 +11749,46 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       navigateToKnownRoute: () => navigateToKnownRoute,
     });
     const _fetchserverresponse = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
     const _createhreffromurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)",
     );
     const _cache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
     );
     const _optimisticroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)",
     );
     const _cachekey = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)",
     );
     const _scheduler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)",
     );
     const _types = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
     );
     const _links = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)",
     );
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     const _computechangedpath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)",
     );
     const _javascripturl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [app-client] (ecmascript)",
     );
     const _bfcache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)",
     );
     function navigate(
       state,
@@ -11808,9 +11808,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // for routes that already have a cached route tree. Without this, the
       // static shell might be incomplete because some segments were never
       // requested.
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { isNavigationLocked } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)",
         );
         if (isNavigationLocked()) {
           return ensurePrefetchThenNavigate(
@@ -11884,7 +11884,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       //
       // TODO: There are multiple reasons a prefetch might be rejected; we should
       // track them explicitly and choose what to do here based on that.
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (route === null || route.status !== _cache.EntryStatus.Rejected) {
           const optimisticRoute = (0, _cache.deprecated_requestOptimisticRouteCacheEntry)(
             now,
@@ -12075,7 +12075,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     // during the normal flow when diffing the route tree, but for an unprefetched
     // navigation, where we don't know the structure of the target route, we use
     // this instead.
-    const DynamicRequestTreeForEntireRoute = ['', {}, null, 'refetch'];
+    const DynamicRequestTreeForEntireRoute = ["", {}, null, "refetch"];
     async function navigateToUnknownRoute(
       now,
       state,
@@ -12122,7 +12122,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         nextUrl,
       });
       const result = await promiseForDynamicServerResponse;
-      if (typeof result === 'string') {
+      if (typeof result === "string") {
         // This is an MPA navigation.
         const redirectUrl = new URL(result, location.origin);
         return completeHardNavigation(state, redirectUrl, navigateType);
@@ -12243,7 +12243,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     function completeHardNavigation(state, url, navigateType) {
       if ((0, _javascripturl.isJavaScriptURLString)(url.href)) {
-        console.error('Next.js has blocked a javascript: URL as a security precaution.');
+        console.error("Next.js has blocked a javascript: URL as a security precaution.");
         return state;
       }
       const newState = {
@@ -12252,7 +12252,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             ? (0, _createhreffromurl.createHrefFromUrl)(url)
             : url.href,
         pushRef: {
-          pendingPush: navigateType === 'push',
+          pendingPush: navigateType === "push",
           mpaNavigation: true,
           preserveCustomHistoryState: false,
         },
@@ -12376,7 +12376,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         canonicalUrl,
         renderedSearch,
         pushRef: {
-          pendingPush: navigateType === 'push',
+          pendingPush: navigateType === "push",
           mpaNavigation: false,
           preserveCustomHistoryState: false,
         },
@@ -12389,7 +12389,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             // view. #top is handled in layout-router.
             //
             // Refer to `ScrollAndFocusHandler` for details on how this is used.
-            scrollBehavior !== _routerreducertypes.ScrollBehavior.NoScroll && url.hash !== ''
+            scrollBehavior !== _routerreducertypes.ScrollBehavior.NoScroll && url.hash !== ""
               ? decodeURIComponent(url.hash.slice(1))
               : oldState.focusAndScrollRef.hashFragment,
         },
@@ -12610,7 +12610,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // The "to" tree starts as null and is filled in after the prefetch
       // resolves and the navigation produces a new router state.
       const { transitionToCapturedSPA, updateCapturedSPAToTree } = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation-testing-lock.js [app-client] (ecmascript)",
       );
       transitionToCapturedSPA(currentFlightRouterState, null);
       const cacheKey = (0, _cachekey.createCacheKey)(url.href, nextUrl);
@@ -12644,27 +12644,27 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return result;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/navigate-reducer.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/navigate-reducer.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -12686,17 +12686,17 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       navigateReducer: () => navigateReducer,
     });
     const _navigation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)",
     );
     const _cache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
-    const DYNAMIC_STALETIME_MS = Number(('TURBOPACK compile-time value', '0')) * 1000;
+    const DYNAMIC_STALETIME_MS = Number(("TURBOPACK compile-time value", "0")) * 1000;
     const STATIC_STALETIME_MS = (0, _cache.getStaleTimeMs)(
-      Number(('TURBOPACK compile-time value', '300')),
+      Number(("TURBOPACK compile-time value", "300")),
     );
     function navigateReducer(state, action) {
       const { url, isExternalUrl, navigateType, scrollBehavior } = action;
@@ -12705,7 +12705,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       // Handles case where `<meta http-equiv="refresh">` tag is present,
       // which will trigger an MPA navigation.
-      if (document.getElementById('__next-page-redirect')) {
+      if (document.getElementById("__next-page-redirect")) {
         return (0, _navigation.completeHardNavigation)(state, url, navigateType);
       }
       // Temporary glue code between the router reducer and the new navigation
@@ -12727,49 +12727,49 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/has-interception-route-in-current-tree.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/has-interception-route-in-current-tree.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'hasInterceptionRouteInCurrentTree', {
+    Object.defineProperty(exports, "hasInterceptionRouteInCurrentTree", {
       enumerable: true,
       get: () => hasInterceptionRouteInCurrentTree,
     });
     const _interceptionroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/interception-routes.js [app-client] (ecmascript)",
     );
     function hasInterceptionRouteInCurrentTree([segment, parallelRoutes]) {
       // If we have a dynamic segment, it's marked as an interception route by the presence of the `i` suffix.
       if (
         Array.isArray(segment) &&
-        (segment[2] === 'di(..)(..)' ||
-          segment[2] === 'ci(..)(..)' ||
-          segment[2] === 'di(.)' ||
-          segment[2] === 'ci(.)' ||
-          segment[2] === 'di(..)' ||
-          segment[2] === 'ci(..)' ||
-          segment[2] === 'di(...)' ||
-          segment[2] === 'ci(...)')
+        (segment[2] === "di(..)(..)" ||
+          segment[2] === "ci(..)(..)" ||
+          segment[2] === "di(.)" ||
+          segment[2] === "ci(.)" ||
+          segment[2] === "di(..)" ||
+          segment[2] === "ci(..)" ||
+          segment[2] === "di(...)" ||
+          segment[2] === "ci(...)")
       ) {
         return true;
       }
       // If segment is not an array, apply the existing string-based check
       if (
-        typeof segment === 'string' &&
+        typeof segment === "string" &&
         (0, _interceptionroutes.isInterceptionRouteAppPath)(segment)
       ) {
         return true;
@@ -12785,27 +12785,27 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return false;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/refresh-reducer.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/refresh-reducer.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -12825,22 +12825,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       refreshReducer: () => refreshReducer,
     });
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     const _navigation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)",
     );
     const _cache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
     );
     const _hasinterceptionrouteincurrenttree = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/has-interception-route-in-current-tree.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/has-interception-route-in-current-tree.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
     const _bfcache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)",
     );
     function refreshReducer(state, action) {
       // During a refresh, we invalidate the segment cache but not the route cache.
@@ -12852,7 +12852,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // preserve prefetched data when refreshing after an MPA navigation. This is
       // only used for testing and is not exposed in production builds by default.
       const bypassCacheInvalidation =
-        ('TURBOPACK compile-time value', true) && action.bypassCacheInvalidation;
+        ("TURBOPACK compile-time value", true) && action.bypassCacheInvalidation;
       if (!bypassCacheInvalidation) {
         const currentNextUrl = state.nextUrl;
         const currentRouterState = state.tree;
@@ -12892,7 +12892,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         currentRenderedSearch,
         _bfcache.UnknownDynamicStaleTime,
       );
-      const navigateType = 'replace';
+      const navigateType = "replace";
       return (0, _navigation.navigateToKnownRoute)(
         now,
         state,
@@ -12914,42 +12914,42 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/server-patch-reducer.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/server-patch-reducer.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'serverPatchReducer', {
+    Object.defineProperty(exports, "serverPatchReducer", {
       enumerable: true,
       get: () => serverPatchReducer,
     });
     const _createhreffromurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
     );
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     const _navigation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)",
     );
     const _refreshreducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/refresh-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/refresh-reducer.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
     function serverPatchReducer(state, action) {
       // A "retry" is a navigation that happens due to a route mismatch. It's
@@ -13001,39 +13001,39 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/restore-reducer.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/restore-reducer.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'restoreReducer', {
+    Object.defineProperty(exports, "restoreReducer", {
       enumerable: true,
       get: () => restoreReducer,
     });
     const _computechangedpath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
     const _navigation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)",
     );
     const _bfcache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)",
     );
     function restoreReducer(state, action) {
       // This action is used to restore the router state from the history state.
@@ -13087,7 +13087,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         accumulation,
       );
       if (task === null) {
-        return (0, _navigation.completeHardNavigation)(state, restoredUrl, 'replace');
+        return (0, _navigation.completeHardNavigation)(state, restoredUrl, "replace");
       }
       (0, _pprnavigations.spawnDynamicRequests)(
         task,
@@ -13098,7 +13098,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // mismatch occurs, the retry handler will traverse the known route tree
         // to find and mark the entry.
         null,
-        'replace',
+        "replace",
       );
       return (0, _navigation.completeTraverseNavigation)(
         state,
@@ -13110,33 +13110,33 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/hmr-refresh-reducer.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/hmr-refresh-reducer.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'hmrRefreshReducer', {
+    Object.defineProperty(exports, "hmrRefreshReducer", {
       enumerable: true,
       get: () => hmrRefreshReducer,
     });
     const _refreshreducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/refresh-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/refresh-reducer.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
     function hmrRefreshReducer(state) {
       return (0, _refreshreducer.refreshDynamicData)(
@@ -13145,22 +13145,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unrecognized-action-error.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unrecognized-action-error.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -13182,66 +13182,66 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     class UnrecognizedActionError extends Error {
       constructor(...args) {
         super(...args);
-        this.name = 'UnrecognizedActionError';
+        this.name = "UnrecognizedActionError";
       }
     }
     function unstable_isUnrecognizedActionError(error) {
-      return !!(error && typeof error === 'object' && error instanceof UnrecognizedActionError);
+      return !!(error && typeof error === "object" && error instanceof UnrecognizedActionError);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/assign-location.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/assign-location.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'assignLocation', {
+    Object.defineProperty(exports, "assignLocation", {
       enumerable: true,
       get: () => assignLocation,
     });
     const _addbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [app-client] (ecmascript)",
     );
     function assignLocation(location, url) {
-      if (location.startsWith('.')) {
+      if (location.startsWith(".")) {
         const urlBase = url.origin + url.pathname;
         return new URL(
           // new URL('./relative', 'https://example.com/subdir').href -> 'https://example.com/relative'
           // new URL('./relative', 'https://example.com/subdir/').href -> 'https://example.com/subdir/relative'
-          (urlBase.endsWith('/') ? urlBase : urlBase + '/') + location,
+          (urlBase.endsWith("/") ? urlBase : urlBase + "/") + location,
         );
       }
       return new URL((0, _addbasepath.addBasePath)(location), url.href);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -13269,15 +13269,15 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       redirect: () => redirect,
     });
     const _redirectstatuscode = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-status-code.js [app-client] (ecmascript)",
     );
     const _redirecterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)",
     );
     const actionAsyncStorage =
-      typeof window === 'undefined'
+      typeof window === "undefined"
         ? __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/action-async-storage.external.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/action-async-storage.external.js [app-client] (ecmascript)",
           ).actionAsyncStorage
         : undefined;
     function getRedirectError(
@@ -13287,9 +13287,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     ) {
       const error = Object.defineProperty(
         new Error(_redirecterror.REDIRECT_ERROR_CODE),
-        '__NEXT_ERROR_CODE',
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E394',
+          value: "E394",
           enumerable: false,
           configurable: true,
         },
@@ -13298,226 +13298,226 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return error;
     }
     function redirect(/** The URL to redirect to */ url, type) {
-      type ??= actionAsyncStorage?.getStore()?.isAction ? 'push' : 'replace';
+      type ??= actionAsyncStorage?.getStore()?.isAction ? "push" : "replace";
       throw getRedirectError(url, type, _redirectstatuscode.RedirectStatusCode.TemporaryRedirect);
     }
-    function permanentRedirect(/** The URL to redirect to */ url, type = 'replace') {
+    function permanentRedirect(/** The URL to redirect to */ url, type = "replace") {
       throw getRedirectError(url, type, _redirectstatuscode.RedirectStatusCode.PermanentRedirect);
     }
     function getURLFromRedirectError(error) {
       if (!(0, _redirecterror.isRedirectError)(error)) return null;
       // Slices off the beginning of the digest that contains the code and the
       // separating ';'.
-      return error.digest.split(';').slice(2, -2).join(';');
+      return error.digest.split(";").slice(2, -2).join(";");
     }
     function getRedirectTypeFromError(error) {
       if (!(0, _redirecterror.isRedirectError)(error)) {
-        throw Object.defineProperty(new Error('Not a redirect error'), '__NEXT_ERROR_CODE', {
-          value: 'E260',
+        throw Object.defineProperty(new Error("Not a redirect error"), "__NEXT_ERROR_CODE", {
+          value: "E260",
           enumerable: false,
           configurable: true,
         });
       }
-      return error.digest.split(';', 2)[1];
+      return error.digest.split(";", 2)[1];
     }
     function getRedirectStatusCodeFromError(error) {
       if (!(0, _redirecterror.isRedirectError)(error)) {
-        throw Object.defineProperty(new Error('Not a redirect error'), '__NEXT_ERROR_CODE', {
-          value: 'E260',
+        throw Object.defineProperty(new Error("Not a redirect error"), "__NEXT_ERROR_CODE", {
+          value: "E260",
           enumerable: false,
           configurable: true,
         });
       }
-      return Number(error.digest.split(';').at(-2));
+      return Number(error.digest.split(";").at(-2));
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'hasBasePath', {
+    Object.defineProperty(exports, "hasBasePath", {
       enumerable: true,
       get: () => hasBasePath,
     });
     const _pathhasprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/path-has-prefix.js [app-client] (ecmascript)",
     );
-    const basePath = ('TURBOPACK compile-time value', '') || '';
+    const basePath = ("TURBOPACK compile-time value", "") || "";
     function hasBasePath(path) {
       return (0, _pathhasprefix.pathHasPrefix)(path, basePath);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'removeBasePath', {
+    Object.defineProperty(exports, "removeBasePath", {
       enumerable: true,
       get: () => removeBasePath,
     });
     const _hasbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [app-client] (ecmascript)",
     );
-    const basePath = ('TURBOPACK compile-time value', '') || '';
+    const basePath = ("TURBOPACK compile-time value", "") || "";
     function removeBasePath(path) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Can't trim the basePath if it has zero length!
       if (basePath.length === 0) return path;
       path = path.slice(basePath.length);
-      if (!path.startsWith('/')) path = `/${path}`;
+      if (!path.startsWith("/")) path = `/${path}`;
       return path;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/server-action-reducer.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/server-action-reducer.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'serverActionReducer', {
+    Object.defineProperty(exports, "serverActionReducer", {
       enumerable: true,
       get: () => serverActionReducer,
     });
     const _appcallserver = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-call-server.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-call-server.js [app-client] (ecmascript)",
     );
     const _appfindsourcemapurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)",
     );
     const _approuterheaders = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)",
     );
     const _unrecognizedactionerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unrecognized-action-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unrecognized-action-error.js [app-client] (ecmascript)",
     );
     const _client = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)",
     );
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     const _assignlocation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/assign-location.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/assign-location.js [app-client] (ecmascript)",
     );
     const _createhreffromurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
     );
     const _hasinterceptionrouteincurrenttree = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/has-interception-route-in-current-tree.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/has-interception-route-in-current-tree.js [app-client] (ecmascript)",
     );
     const _flightdatahelpers = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)",
     );
     const _redirect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)",
     );
     const _removebasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [app-client] (ecmascript)",
     );
     const _hasbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [app-client] (ecmascript)",
     );
     const _serverreferenceinfo = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/server-reference-info.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/server-reference-info.js [app-client] (ecmascript)",
     );
     const _cache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
     );
     const _scheduler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)",
     );
     const _deploymentid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)",
     );
     const _navigationbuildid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)",
     );
     const _navigation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)",
     );
     const _optimisticroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)",
     );
     const _actionrevalidationkind = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/action-revalidation-kind.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/action-revalidation-kind.js [app-client] (ecmascript)",
     );
     const _approuterutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
     const _fetchserverresponse = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)",
     );
     const _bfcache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)",
     );
     const createFromFetch = _client.createFromFetch;
     let createDebugChannel;
-    if (('TURBOPACK compile-time truthy', 1)) {
+    if (("TURBOPACK compile-time truthy", 1)) {
       createDebugChannel = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)",
       ).createDebugChannel;
     }
     async function fetchServerAction(state, nextUrl, { actionId, actionArgs }) {
@@ -13535,12 +13535,12 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       };
       const deploymentId = (0, _deploymentid.getDeploymentId)();
       if (deploymentId) {
-        headers['x-deployment-id'] = deploymentId;
+        headers["x-deployment-id"] = deploymentId;
       }
       if (nextUrl) {
         headers[_approuterheaders.NEXT_URL] = nextUrl;
       }
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         if (self.__next_r) {
           headers[_approuterheaders.NEXT_HTML_REQUEST_ID_HEADER] = self.__next_r;
         }
@@ -13552,7 +13552,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           .toString(16);
       }
       const res = await fetch(state.canonicalUrl, {
-        method: 'POST',
+        method: "POST",
         headers,
         body,
       });
@@ -13560,28 +13560,28 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const unrecognizedActionHeader = res.headers.get(
         _approuterheaders.NEXT_ACTION_NOT_FOUND_HEADER,
       );
-      if (unrecognizedActionHeader === '1') {
+      if (unrecognizedActionHeader === "1") {
         throw Object.defineProperty(
           new _unrecognizedactionerror.UnrecognizedActionError(
             `Server Action "${actionId}" was not found on the server. \nRead more: https://nextjs.org/docs/messages/failed-to-find-server-action`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E715',
+            value: "E715",
             enumerable: false,
             configurable: true,
           },
         );
       }
-      const redirectHeader = res.headers.get('x-action-redirect');
-      const [location1, _redirectType] = redirectHeader?.split(';') || [];
+      const redirectHeader = res.headers.get("x-action-redirect");
+      const [location1, _redirectType] = redirectHeader?.split(";") || [];
       let redirectType;
       switch (_redirectType) {
-        case 'push':
-          redirectType = 'push';
+        case "push":
+          redirectType = "push";
           break;
-        case 'replace':
-          redirectType = 'replace';
+        case "replace":
+          redirectType = "replace";
           break;
         default:
           redirectType = undefined;
@@ -13589,7 +13589,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const isPrerender = !!res.headers.get(_approuterheaders.NEXT_IS_PRERENDER_HEADER);
       let revalidationKind = _actionrevalidationkind.ActionDidNotRevalidate;
       try {
-        const revalidationHeader = res.headers.get('x-action-revalidated');
+        const revalidationHeader = res.headers.get("x-action-revalidated");
         if (revalidationHeader) {
           const parsedKind = JSON.parse(revalidationHeader);
           if (
@@ -13606,7 +13606,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             new URL(state.canonicalUrl, window.location.href),
           )
         : undefined;
-      const contentType = res.headers.get('content-type');
+      const contentType = res.headers.get("content-type");
       const isRscResponse = !!(
         contentType && contentType.startsWith(_approuterheaders.RSC_CONTENT_TYPE_HEADER)
       );
@@ -13617,11 +13617,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // The server can respond with a text/plain error message, but we'll fallback to something generic
         // if there isn't one.
         const message =
-          res.status >= 400 && contentType === 'text/plain'
+          res.status >= 400 && contentType === "text/plain"
             ? await res.text()
-            : 'An unexpected response was received from the server.';
-        throw Object.defineProperty(new Error(message), '__NEXT_ERROR_CODE', {
-          value: 'E394',
+            : "An unexpected response was received from the server.";
+        throw Object.defineProperty(new Error(message), "__NEXT_ERROR_CODE", {
+          value: "E394",
           enumerable: false,
           configurable: true,
         });
@@ -13665,7 +13665,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           // MPA navigation via completeHardNavigation().
         } else {
           const maybeFlightData = (0, _flightdatahelpers.normalizeFlightData)(response.f);
-          if (maybeFlightData !== '') {
+          if (maybeFlightData !== "") {
             actionFlightData = maybeFlightData;
             actionFlightDataRenderedSearch = response.q;
           }
@@ -13734,7 +13734,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             // propagation.
             (0, _scheduler.startRevalidationCooldown)();
           }
-          const navigateType = redirectType || 'push';
+          const navigateType = redirectType || "push";
           if (redirectLocation !== undefined) {
             // If the action triggered a redirect, the action promise will be rejected with
             // a redirect so that it's handled by RedirectBoundary as we won't have a valid
@@ -13781,7 +13781,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             // about the various response types.
             return (0, _navigation.completeHardNavigation)(state, redirectLocation, navigateType);
           }
-          if (typeof flightData === 'string') {
+          if (typeof flightData === "string") {
             // If the flight data is just a string, something earlier in the
             // response handling triggered an external redirect.
             return (0, _navigation.completeHardNavigation)(
@@ -13890,48 +13890,48 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return redirectError;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'reducer', {
+    Object.defineProperty(exports, "reducer", {
       enumerable: true,
       get: () => reducer,
     });
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     const _navigatereducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/navigate-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/navigate-reducer.js [app-client] (ecmascript)",
     );
     const _serverpatchreducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/server-patch-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/server-patch-reducer.js [app-client] (ecmascript)",
     );
     const _restorereducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/restore-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/restore-reducer.js [app-client] (ecmascript)",
     );
     const _refreshreducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/refresh-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/refresh-reducer.js [app-client] (ecmascript)",
     );
     const _hmrrefreshreducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/hmr-refresh-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/hmr-refresh-reducer.js [app-client] (ecmascript)",
     );
     const _serveractionreducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/server-action-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/server-action-reducer.js [app-client] (ecmascript)",
     );
     /**
      * Reducer that handles the app-router state updates.
@@ -13957,8 +13957,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         }
         // This case should never be hit as dispatch is strongly typed.
         default:
-          throw Object.defineProperty(new Error('Unknown action'), '__NEXT_ERROR_CODE', {
-            value: 'E295',
+          throw Object.defineProperty(new Error("Unknown action"), "__NEXT_ERROR_CODE", {
+            value: "E295",
             enumerable: false,
             configurable: true,
           });
@@ -13967,41 +13967,41 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     function serverReducer(state, _action) {
       return state;
     }
-    const reducer = typeof window === 'undefined' ? serverReducer : clientReducer;
+    const reducer = typeof window === "undefined" ? serverReducer : clientReducer;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/prefetch.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/prefetch.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'prefetch', {
+    Object.defineProperty(exports, "prefetch", {
       enumerable: true,
       get: () => prefetch,
     });
     const _approuterutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)",
     );
     const _cachekey = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache-key.js [app-client] (ecmascript)",
     );
     const _scheduler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/scheduler.js [app-client] (ecmascript)",
     );
     const _types = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
     );
     function prefetch(href, nextUrl, treeAtTimeOfPrefetch, fetchStrategy, onInvalidate) {
       const url = (0, _approuterutils.createPrefetchURL)(href);
@@ -14019,27 +14019,27 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -14065,46 +14065,46 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       publicAppRouterInstance: () => publicAppRouterInstance,
     });
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     const _routerreducer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer.js [app-client] (ecmascript)",
     );
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     const _isthenable = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-thenable.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/is-thenable.js [app-client] (ecmascript)",
     );
     const _types = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
     );
     const _prefetch = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/prefetch.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/prefetch.js [app-client] (ecmascript)",
     );
     const _navigation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/navigation.js [app-client] (ecmascript)",
     );
     const _useactionqueue = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)",
     );
     const _optimisticroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
     const _addbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/add-base-path.js [app-client] (ecmascript)",
     );
     const _approuterutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-utils.js [app-client] (ecmascript)",
     );
     const _links = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)",
     );
     const _javascripturl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/lib/javascript-url.js [app-client] (ecmascript)",
     );
     function runRemainingActions(actionQueue, setState) {
       if (actionQueue.pending !== null) {
@@ -14243,22 +14243,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         last: null,
         onRouterTransitionStart:
           instrumentationHooks !== null &&
-          typeof instrumentationHooks.onRouterTransitionStart === 'function'
+          typeof instrumentationHooks.onRouterTransitionStart === "function"
             ? instrumentationHooks.onRouterTransitionStart
             : null,
       };
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         // The action queue is lazily created on hydration, but after that point
         // it doesn't change. So we can store it in a global rather than pass
         // it around everywhere via props/context.
         if (globalActionQueue !== null) {
           throw Object.defineProperty(
             new Error(
-              'Internal Next.js Error: createMutableActionQueue was called more ' + 'than once',
+              "Internal Next.js Error: createMutableActionQueue was called more " + "than once",
             ),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E624',
+              value: "E624",
               enumerable: false,
               configurable: true,
             },
@@ -14274,10 +14274,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     function getAppRouterActionQueue() {
       if (globalActionQueue === null) {
         throw Object.defineProperty(
-          new Error('Internal Next.js error: Router action dispatched before initialization.'),
-          '__NEXT_ERROR_CODE',
+          new Error("Internal Next.js error: Router action dispatched before initialization."),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E668',
+            value: "E668",
             enumerable: false,
             configurable: true,
           },
@@ -14307,7 +14307,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       const url = new URL((0, _addbasepath.addBasePath)(href), location.href);
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       (0, _links.setLinkForCurrentNavigation)(linkInstanceRef);
       const onRouterTransitionStart = getProfilingHookForOnNavigationStart();
@@ -14326,7 +14326,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     function dispatchTraverseAction(href, historyState) {
       const onRouterTransitionStart = getProfilingHookForOnNavigationStart();
       if (onRouterTransitionStart !== null) {
-        onRouterTransitionStart(href, 'traverse');
+        onRouterTransitionStart(href, "traverse");
       }
       (0, _useactionqueue.dispatchAppRouterAction)({
         type: _routerreducertypes.ACTION_RESTORE,
@@ -14343,7 +14343,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      * Only available when experimental.gestureTransition is enabled.
      */ function gesturePush(href, options) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
     }
     const publicAppRouterInstance = {
@@ -14354,10 +14354,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         (href, options) => {
           if ((0, _javascripturl.isJavaScriptURLString)(href)) {
             throw Object.defineProperty(
-              new Error('Next.js has blocked a javascript: URL as a security precaution.'),
-              '__NEXT_ERROR_CODE',
+              new Error("Next.js has blocked a javascript: URL as a security precaution."),
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E978',
+                value: "E978",
                 enumerable: false,
                 configurable: true,
               },
@@ -14398,10 +14398,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       replace: (href, options) => {
         if ((0, _javascripturl.isJavaScriptURLString)(href)) {
           throw Object.defineProperty(
-            new Error('Next.js has blocked a javascript: URL as a security precaution.'),
-            '__NEXT_ERROR_CODE',
+            new Error("Next.js has blocked a javascript: URL as a security precaution."),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E978',
+              value: "E978",
               enumerable: false,
               configurable: true,
             },
@@ -14410,7 +14410,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         (0, _react.startTransition)(() => {
           dispatchNavigateAction(
             href,
-            'replace',
+            "replace",
             options?.scroll === false
               ? _routerreducertypes.ScrollBehavior.NoScroll
               : _routerreducertypes.ScrollBehavior.Default,
@@ -14422,10 +14422,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       push: (href, options) => {
         if ((0, _javascripturl.isJavaScriptURLString)(href)) {
           throw Object.defineProperty(
-            new Error('Next.js has blocked a javascript: URL as a security precaution.'),
-            '__NEXT_ERROR_CODE',
+            new Error("Next.js has blocked a javascript: URL as a security precaution."),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E978',
+              value: "E978",
               enumerable: false,
               configurable: true,
             },
@@ -14434,7 +14434,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         (0, _react.startTransition)(() => {
           dispatchNavigateAction(
             href,
-            'push',
+            "push",
             options?.scroll === false
               ? _routerreducertypes.ScrollBehavior.NoScroll
               : _routerreducertypes.ScrollBehavior.Default,
@@ -14452,7 +14452,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       },
       hmrRefresh: () => {
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         else {
           // Reset the known routes table so that route predictions are cleared
@@ -14468,59 +14468,59 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     };
     // Conditionally add experimental_gesturePush when gestureTransition is enabled
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     // Exists for debugging purposes. Don't use in application code.
-    if (typeof window !== 'undefined' && window.next) {
+    if (typeof window !== "undefined" && window.next) {
       window.next.router = publicAppRouterInstance;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-announcer.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-announcer.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'AppRouterAnnouncer', {
+    Object.defineProperty(exports, "AppRouterAnnouncer", {
       enumerable: true,
       get: () => AppRouterAnnouncer,
     });
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     const _reactdom = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)",
     );
-    const ANNOUNCER_TYPE = 'next-route-announcer';
-    const ANNOUNCER_ID = '__next-route-announcer__';
+    const ANNOUNCER_TYPE = "next-route-announcer";
+    const ANNOUNCER_ID = "__next-route-announcer__";
     function getAnnouncerNode() {
       const existingAnnouncer = document.getElementsByName(ANNOUNCER_TYPE)[0];
       if (existingAnnouncer?.shadowRoot?.childNodes[0]) {
         return existingAnnouncer.shadowRoot.childNodes[0];
       } else {
         const container = document.createElement(ANNOUNCER_TYPE);
-        container.style.cssText = 'position:absolute';
-        const announcer = document.createElement('div');
-        announcer.ariaLive = 'assertive';
+        container.style.cssText = "position:absolute";
+        const announcer = document.createElement("div");
+        announcer.ariaLive = "assertive";
         announcer.id = ANNOUNCER_ID;
-        announcer.role = 'alert';
+        announcer.role = "alert";
         announcer.style.cssText =
-          'position:absolute;border:0;height:1px;margin:-1px;padding:0;width:1px;clip:rect(0 0 0 0);overflow:hidden;white-space:nowrap;word-wrap:normal';
+          "position:absolute;border:0;height:1px;margin:-1px;padding:0;width:1px;clip:rect(0 0 0 0);overflow:hidden;white-space:nowrap;word-wrap:normal";
         // Use shadow DOM here to avoid any potential CSS bleed
         const shadow = container.attachShadow({
-          mode: 'open',
+          mode: "open",
         });
         shadow.appendChild(announcer);
         document.body.appendChild(container);
@@ -14539,16 +14539,16 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           }
         };
       }, []);
-      const [routeAnnouncement, setRouteAnnouncement] = (0, _react.useState)('');
+      const [routeAnnouncement, setRouteAnnouncement] = (0, _react.useState)("");
       const previousTitle = (0, _react.useRef)(undefined);
       (0, _react.useEffect)(() => {
-        let currentTitle = '';
+        let currentTitle = "";
         if (document.title) {
           currentTitle = document.title;
         } else {
-          const pageHeader = document.querySelector('h1');
+          const pageHeader = document.querySelector("h1");
           if (pageHeader) {
-            currentTitle = pageHeader.innerText || pageHeader.textContent || '';
+            currentTitle = pageHeader.innerText || pageHeader.textContent || "";
           }
         }
         // Only announce the title change, but not for the first load because screen
@@ -14563,35 +14563,35 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         : null;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/forbidden.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/forbidden.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'forbidden', {
+    Object.defineProperty(exports, "forbidden", {
       enumerable: true,
       get: () => forbidden,
     });
     const _httpaccessfallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)",
     );
     // TODO: Add `forbidden` docs
     /**
@@ -14607,21 +14607,21 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      * Read more: [Next.js Docs: `forbidden`](https://nextjs.org/docs/app/api-reference/functions/forbidden)
      */ const DIGEST = `${_httpaccessfallback.HTTP_ERROR_FALLBACK_ERROR_CODE};403`;
     function forbidden() {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         throw Object.defineProperty(
           new Error(
             `\`forbidden()\` is experimental and only allowed to be enabled when \`experimental.authInterrupts\` is enabled.`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E488',
+            value: "E488",
             enumerable: false,
             configurable: true,
           },
         );
       }
-      const error = Object.defineProperty(new Error(DIGEST), '__NEXT_ERROR_CODE', {
-        value: 'E1019',
+      const error = Object.defineProperty(new Error(DIGEST), "__NEXT_ERROR_CODE", {
+        value: "E1019",
         enumerable: false,
         configurable: true,
       });
@@ -14629,35 +14629,35 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       throw error;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unauthorized.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unauthorized.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'unauthorized', {
+    Object.defineProperty(exports, "unauthorized", {
       enumerable: true,
       get: () => unauthorized,
     });
     const _httpaccessfallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)",
     );
     // TODO: Add `unauthorized` docs
     /**
@@ -14674,21 +14674,21 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      * Read more: [Next.js Docs: `unauthorized`](https://nextjs.org/docs/app/api-reference/functions/unauthorized)
      */ const DIGEST = `${_httpaccessfallback.HTTP_ERROR_FALLBACK_ERROR_CODE};401`;
     function unauthorized() {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         throw Object.defineProperty(
           new Error(
             `\`unauthorized()\` is experimental and only allowed to be used when \`experimental.authInterrupts\` is enabled.`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E411',
+            value: "E411",
             enumerable: false,
             configurable: true,
           },
         );
       }
-      const error = Object.defineProperty(new Error(DIGEST), '__NEXT_ERROR_CODE', {
-        value: 'E1002',
+      const error = Object.defineProperty(new Error(DIGEST), "__NEXT_ERROR_CODE", {
+        value: "E1002",
         enumerable: false,
         configurable: true,
       });
@@ -14696,33 +14696,33 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       throw error;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.browser.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.browser.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'unstable_rethrow', {
+    Object.defineProperty(exports, "unstable_rethrow", {
       enumerable: true,
       get: () => unstable_rethrow,
     });
     const _bailouttocsr = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [app-client] (ecmascript)",
     );
     const _isnextroutererror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)",
     );
     function unstable_rethrow(error) {
       if (
@@ -14731,27 +14731,27 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       ) {
         throw error;
       }
-      if (error instanceof Error && 'cause' in error) {
+      if (error instanceof Error && "cause" in error) {
         unstable_rethrow(error.cause);
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/hooks-server-context.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/hooks-server-context.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -14770,7 +14770,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       DynamicServerError: () => DynamicServerError,
       isDynamicServerError: () => isDynamicServerError,
     });
-    const DYNAMIC_ERROR_CODE = 'DYNAMIC_SERVER_USAGE';
+    const DYNAMIC_ERROR_CODE = "DYNAMIC_SERVER_USAGE";
     class DynamicServerError extends Error {
       constructor(description) {
         super(`Dynamic server usage: ${description}`),
@@ -14780,32 +14780,32 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     function isDynamicServerError(err) {
       if (
-        typeof err !== 'object' ||
+        typeof err !== "object" ||
         err === null ||
-        !('digest' in err) ||
-        typeof err.digest !== 'string'
+        !("digest" in err) ||
+        typeof err.digest !== "string"
       ) {
         return false;
       }
       return err.digest === DYNAMIC_ERROR_CODE;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/static-generation-bailout.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/static-generation-bailout.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -14824,58 +14824,58 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       StaticGenBailoutError: () => StaticGenBailoutError,
       isStaticGenBailoutError: () => isStaticGenBailoutError,
     });
-    const NEXT_STATIC_GEN_BAILOUT = 'NEXT_STATIC_GEN_BAILOUT';
+    const NEXT_STATIC_GEN_BAILOUT = "NEXT_STATIC_GEN_BAILOUT";
     class StaticGenBailoutError extends Error {
       constructor(...args) {
         super(...args), (this.code = NEXT_STATIC_GEN_BAILOUT);
       }
     }
     function isStaticGenBailoutError(error) {
-      if (typeof error !== 'object' || error === null || !('code' in error)) {
+      if (typeof error !== "object" || error === null || !("code" in error)) {
         return false;
       }
       return error.code === NEXT_STATIC_GEN_BAILOUT;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.server.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.server.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'unstable_rethrow', {
+    Object.defineProperty(exports, "unstable_rethrow", {
       enumerable: true,
       get: () => unstable_rethrow,
     });
     const _dynamicrenderingutils = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dynamic-rendering-utils.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dynamic-rendering-utils.js [app-client] (ecmascript)",
     );
     const _ispostpone = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/router-utils/is-postpone.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/lib/router-utils/is-postpone.js [app-client] (ecmascript)",
     );
     const _bailouttocsr = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [app-client] (ecmascript)",
     );
     const _isnextroutererror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/is-next-router-error.js [app-client] (ecmascript)",
     );
     const _dynamicrendering = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)",
     );
     const _hooksservercontext = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/hooks-server-context.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/hooks-server-context.js [app-client] (ecmascript)",
     );
     function unstable_rethrow(error) {
       if (
@@ -14889,25 +14889,25 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       ) {
         throw error;
       }
-      if (error instanceof Error && 'cause' in error) {
+      if (error instanceof Error && "cause" in error) {
         unstable_rethrow(error.cause);
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * This function should be used to rethrow internal Next.js errors so that they can be handled by the framework.
@@ -14915,38 +14915,38 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      * This function will rethrow the error if it is a Next.js error so it can be handled, otherwise it will do nothing.
      *
      * Read more: [Next.js Docs: `unstable_rethrow`](https://nextjs.org/docs/app/api-reference/functions/unstable_rethrow)
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'unstable_rethrow', {
+    Object.defineProperty(exports, "unstable_rethrow", {
       enumerable: true,
       get: () => unstable_rethrow,
     });
     const unstable_rethrow =
-      typeof window === 'undefined'
+      typeof window === "undefined"
         ? __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.server.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.server.js [app-client] (ecmascript)",
           ).unstable_rethrow
         : __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.browser.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.browser.js [app-client] (ecmascript)",
           ).unstable_rethrow;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation.react-server.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation.react-server.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -14980,60 +14980,60 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       unstable_rethrow: () => _unstablerethrow.unstable_rethrow,
     });
     const _readonlyurlsearchparams = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/readonly-url-search-params.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/readonly-url-search-params.js [app-client] (ecmascript)",
     );
     const _redirect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)",
     );
     const _notfound = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/not-found.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/not-found.js [app-client] (ecmascript)",
     );
     const _forbidden = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/forbidden.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/forbidden.js [app-client] (ecmascript)",
     );
     const _unauthorized = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unauthorized.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unauthorized.js [app-client] (ecmascript)",
     );
     const _unstablerethrow = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unstable-rethrow.js [app-client] (ecmascript)",
     );
     function unstable_isUnrecognizedActionError() {
       throw Object.defineProperty(
-        new Error('`unstable_isUnrecognizedActionError` can only be used on the client.'),
-        '__NEXT_ERROR_CODE',
+        new Error("`unstable_isUnrecognizedActionError` can only be used on the client."),
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E776',
+          value: "E776",
           enumerable: false,
           configurable: true,
         },
       );
     }
     const RedirectType = {
-      push: 'push',
-      replace: 'replace',
+      push: "push",
+      replace: "replace",
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -15086,50 +15086,50 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       useServerInsertedHTML: () => _serverinsertedhtmlsharedruntime.useServerInsertedHTML,
     });
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _hooksclientcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     const _serverinsertedhtmlsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/server-inserted-html.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/server-inserted-html.shared-runtime.js [app-client] (ecmascript)",
     );
     const _unrecognizedactionerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unrecognized-action-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unrecognized-action-error.js [app-client] (ecmascript)",
     );
     const _navigationreactserver = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation.react-server.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation.react-server.js [app-client] (ecmascript)",
     );
     const useDynamicRouteParams =
-      typeof window === 'undefined'
+      typeof window === "undefined"
         ? __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)",
           ).useDynamicRouteParams
         : undefined;
     const useDynamicSearchParams =
-      typeof window === 'undefined'
+      typeof window === "undefined"
         ? __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/app-render/dynamic-rendering.js [app-client] (ecmascript)",
           ).useDynamicSearchParams
         : undefined;
     const {
       instrumentParamsForClientValidation,
       instrumentSearchParamsForClientValidation,
       expectCompleteParamsInClientValidation,
-    } = ('TURBOPACK compile-time falsy', 0) ? 'TURBOPACK unreachable' : {};
+    } = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : {};
     function useSearchParams() {
-      useDynamicSearchParams?.('useSearchParams()');
+      useDynamicSearchParams?.("useSearchParams()");
       const searchParams = (0, _react.useContext)(
         _hooksclientcontextsharedruntime.SearchParamsContext,
       );
@@ -15147,12 +15147,12 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // During build-time instant validation, wrap with an proxy
       // so that accessing undeclared search params throws an error.
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Instrument with Suspense DevTools (dev-only)
       if (
-        ('TURBOPACK compile-time value', 'development') !== 'production' &&
-        'use' in _react.default
+        ("TURBOPACK compile-time value", "development") !== "production" &&
+        "use" in _react.default
       ) {
         const navigationPromises = (0, _react.use)(
           _hooksclientcontextsharedruntime.NavigationPromisesContext,
@@ -15164,19 +15164,19 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return readonlySearchParams;
     }
     function usePathname() {
-      useDynamicRouteParams?.('usePathname()');
+      useDynamicRouteParams?.("usePathname()");
       // In the case where this is `null`, the compat types added in `next-env.d.ts`
       // will add a new overload that changes the return type to include `null`.
       const pathname = (0, _react.useContext)(_hooksclientcontextsharedruntime.PathnameContext);
       // During build-time instant validation, error if fallback params exist
       // because usePathname() can't return a sensible value without all params.
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Instrument with Suspense DevTools (dev-only)
       if (
-        ('TURBOPACK compile-time value', 'development') !== 'production' &&
-        'use' in _react.default
+        ("TURBOPACK compile-time value", "development") !== "production" &&
+        "use" in _react.default
       ) {
         const navigationPromises = (0, _react.use)(
           _hooksclientcontextsharedruntime.NavigationPromisesContext,
@@ -15191,10 +15191,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const router = (0, _react.useContext)(_approutercontextsharedruntime.AppRouterContext);
       if (router === null) {
         throw Object.defineProperty(
-          new Error('invariant expected app router to be mounted'),
-          '__NEXT_ERROR_CODE',
+          new Error("invariant expected app router to be mounted"),
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E238',
+            value: "E238",
             enumerable: false,
             configurable: true,
           },
@@ -15203,17 +15203,17 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return router;
     }
     function useParams() {
-      useDynamicRouteParams?.('useParams()');
+      useDynamicRouteParams?.("useParams()");
       const params = (0, _react.useContext)(_hooksclientcontextsharedruntime.PathParamsContext);
       // During build-time instant validation, wrap with a proxy
       // so that accessing undeclared params throws an error.
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Instrument with Suspense DevTools (dev-only)
       if (
-        ('TURBOPACK compile-time value', 'development') !== 'production' &&
-        'use' in _react.default
+        ("TURBOPACK compile-time value", "development") !== "production" &&
+        "use" in _react.default
       ) {
         const navigationPromises = (0, _react.use)(
           _hooksclientcontextsharedruntime.NavigationPromisesContext,
@@ -15224,20 +15224,20 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       return params;
     }
-    function useSelectedLayoutSegments(parallelRouteKey = 'children') {
-      useDynamicRouteParams?.('useSelectedLayoutSegments()');
+    function useSelectedLayoutSegments(parallelRouteKey = "children") {
+      useDynamicRouteParams?.("useSelectedLayoutSegments()");
       const context = (0, _react.useContext)(_approutercontextsharedruntime.LayoutRouterContext);
       // @ts-expect-error This only happens in `pages`. Type is overwritten in navigation.d.ts
       if (!context) return null;
       // During build-time instant validation, error if fallback params exist
       // because useSelectedLayoutSegments() can't return a sensible value without all params.
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Instrument with Suspense DevTools (dev-only)
       if (
-        ('TURBOPACK compile-time value', 'development') !== 'production' &&
-        'use' in _react.default
+        ("TURBOPACK compile-time value", "development") !== "production" &&
+        "use" in _react.default
       ) {
         const navigationPromises = (0, _react.use)(
           _hooksclientcontextsharedruntime.NavigationPromisesContext,
@@ -15253,8 +15253,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       return (0, _segment.getSelectedLayoutSegmentPath)(context.parentTree, parallelRouteKey);
     }
-    function useSelectedLayoutSegment(parallelRouteKey = 'children') {
-      useDynamicRouteParams?.('useSelectedLayoutSegment()');
+    function useSelectedLayoutSegment(parallelRouteKey = "children") {
+      useDynamicRouteParams?.("useSelectedLayoutSegment()");
       const navigationPromises = (0, _react.useContext)(
         _hooksclientcontextsharedruntime.NavigationPromisesContext,
       );
@@ -15262,13 +15262,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // During build-time instant validation, error if fallback params exist
       // because useSelectedLayoutSegment() can't return a sensible value without all params.
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Instrument with Suspense DevTools (dev-only)
       if (
-        ('TURBOPACK compile-time value', 'development') !== 'production' &&
+        ("TURBOPACK compile-time value", "development") !== "production" &&
         navigationPromises &&
-        'use' in _react.default
+        "use" in _react.default
       ) {
         const promise = navigationPromises.selectedLayoutSegmentPromises?.get(parallelRouteKey);
         if (promise) {
@@ -15280,22 +15280,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return (0, _segment.computeSelectedLayoutSegment)(selectedLayoutSegments, parallelRouteKey);
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-boundary.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-boundary.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -15315,30 +15315,30 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       RedirectErrorBoundary: () => RedirectErrorBoundary,
     });
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _navigation = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation.js [app-client] (ecmascript)",
     );
     const _redirect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)",
     );
     const _redirecterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)",
     );
     function HandleRedirect({ redirect, reset, redirectType }) {
       const router = (0, _navigation.useRouter)();
       (0, _react.useEffect)(() => {
         _react.default.startTransition(() => {
-          if (redirectType === 'push') {
+          if (redirectType === "push") {
             router.push(redirect, {});
           } else {
             router.replace(redirect, {});
@@ -15360,7 +15360,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         if ((0, _redirecterror.isRedirectError)(error)) {
           const url = (0, _redirect.getURLFromRedirectError)(error);
           const redirectType = (0, _redirect.getRedirectTypeFromError)(error);
-          if ('handled' in error) {
+          if ("handled" in error) {
             // The redirect was already handled. We'll still catch the redirect error
             // so that we can remount the subtree, but we don't actually need to trigger the
             // router.push.
@@ -15401,30 +15401,30 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-router-cache-key.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-router-cache-key.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'createRouterCacheKey', {
+    Object.defineProperty(exports, "createRouterCacheKey", {
       enumerable: true,
       get: () => createRouterCacheKey,
     });
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     function createRouterCacheKey(segment, withoutSearchParameters = false) {
       // if the segment is an array, it means it's a dynamic segment
@@ -15440,36 +15440,36 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return segment;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/find-head-in-cache.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/find-head-in-cache.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'findHeadInCache', {
+    Object.defineProperty(exports, "findHeadInCache", {
       enumerable: true,
       get: () => findHeadInCache,
     });
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     const _createroutercachekey = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-router-cache-key.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-router-cache-key.js [app-client] (ecmascript)",
     );
     function findHeadInCache(cache, parallelRoutes) {
-      return findHeadInCacheImpl(cache, parallelRoutes, '', '');
+      return findHeadInCacheImpl(cache, parallelRoutes, "", "");
     }
     function findHeadInCacheImpl(cache, parallelRoutes, keyPrefix, keyPrefixWithoutSearchParams) {
       const isLastItem = Object.keys(parallelRoutes).length === 0;
@@ -15479,10 +15479,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       // First try the 'children' parallel route if it exists
       // when starting from the "root", this corresponds with the main page component
-      const parallelRoutesKeys = Object.keys(parallelRoutes).filter((key) => key !== 'children');
+      const parallelRoutesKeys = Object.keys(parallelRoutes).filter((key) => key !== "children");
       // if we are at the root, we need to check the children slot first
-      if ('children' in parallelRoutes) {
-        parallelRoutesKeys.unshift('children');
+      if ("children" in parallelRoutes) {
+        parallelRoutesKeys.unshift("children");
       }
       const slots = cache.slots;
       if (slots !== null) {
@@ -15505,8 +15505,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           const item = findHeadInCacheImpl(
             childCacheNode,
             childParallelRoutes,
-            keyPrefix + '/' + cacheKey,
-            keyPrefix + '/' + cacheKeyWithoutSearchParams,
+            keyPrefix + "/" + cacheKey,
+            keyPrefix + "/" + cacheKeyWithoutSearchParams,
           );
           if (item) {
             return item;
@@ -15516,27 +15516,27 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return null;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unresolved-thenable.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unresolved-thenable.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     /**
      * Create a "Thenable" that does not resolve. This is used to suspend indefinitely when data is not available yet.
-     */ Object.defineProperty(exports, '__esModule', {
+     */ Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'unresolvedThenable', {
+    Object.defineProperty(exports, "unresolvedThenable", {
       enumerable: true,
       get: () => unresolvedThenable,
     });
@@ -15544,22 +15544,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       then: () => {},
     };
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/errors/graceful-degrade-boundary.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/errors/graceful-degrade-boundary.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -15579,10 +15579,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       default: () => _default,
     });
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     function getDomNodeAttributes(node) {
       const result = {};
@@ -15598,7 +15598,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         this.state = {
           hasError: false,
         };
-        this.rootHtml = '';
+        this.rootHtml = "";
         this.htmlAttributes = {};
         this.htmlRef = /*#__PURE__*/ (0, _react.createRef)();
       }
@@ -15619,13 +15619,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       render() {
         const { hasError } = this.state;
         // Cache the root HTML content on the first render
-        if (typeof window !== 'undefined' && !this.rootHtml) {
+        if (typeof window !== "undefined" && !this.rootHtml) {
           this.rootHtml = document.documentElement.innerHTML;
           this.htmlAttributes = getDomNodeAttributes(document.documentElement);
         }
         if (hasError) {
           // Render the current HTML content without hydration
-          return /*#__PURE__*/ (0, _jsxruntime.jsx)('html', {
+          return /*#__PURE__*/ (0, _jsxruntime.jsx)("html", {
             ref: this.htmlRef,
             suppressHydrationWarning: true,
             dangerouslySetInnerHTML: {
@@ -15638,52 +15638,52 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     const _default = GracefulDegradeBoundary;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/errors/root-error-boundary.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/errors/root-error-boundary.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => RootErrorBoundary,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _gracefuldegradeboundary = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/errors/graceful-degrade-boundary.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/errors/graceful-degrade-boundary.js [app-client] (ecmascript)",
       ),
     );
     const _errorboundary = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/error-boundary.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/error-boundary.js [app-client] (ecmascript)",
     );
     const _isbot = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/router/utils/is-bot.js [app-client] (ecmascript)",
     );
     const isBotUserAgent =
-      typeof window !== 'undefined' && (0, _isbot.isBot)(window.navigator.userAgent);
+      typeof window !== "undefined" && (0, _isbot.isBot)(window.navigator.userAgent);
     function RootErrorBoundary({ children, errorComponent, errorStyles, errorScripts }) {
       if (isBotUserAgent) {
         // Preserve existing DOM/HTML for bots to avoid replacing content with an error UI
@@ -15700,27 +15700,27 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-devtools.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-devtools.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -15740,10 +15740,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       createRootNavigationPromises: () => createRootNavigationPromises,
     });
     const _hooksclientcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _segment = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/segment.js [app-client] (ecmascript)",
     );
     const layoutSegmentPromisesCache = new WeakMap();
     /**
@@ -15751,7 +15751,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      * This is dev-only code for React Suspense DevTools instrumentation.
      */ function createLayoutSegmentPromises(tree) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Check if we already have cached promises for this tree
       const cached = layoutSegmentPromisesCache.get(tree);
@@ -15769,14 +15769,14 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         segmentPromises.set(
           parallelRouteKey,
           (0, _hooksclientcontextsharedruntime.createDevToolsInstrumentedPromise)(
-            'useSelectedLayoutSegment',
+            "useSelectedLayoutSegment",
             segment,
           ),
         );
         segmentsPromises.set(
           parallelRouteKey,
           (0, _hooksclientcontextsharedruntime.createDevToolsInstrumentedPromise)(
-            'useSelectedLayoutSegments',
+            "useSelectedLayoutSegments",
             segments,
           ),
         );
@@ -15792,7 +15792,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     const rootNavigationPromisesCache = new WeakMap();
     function createRootNavigationPromises(tree, pathname, searchParams, pathParams) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       // Create stable cache keys from the values
       const searchParamsString = searchParams.toString();
@@ -15815,15 +15815,15 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const layoutSegmentPromises = createLayoutSegmentPromises(tree);
       const promises = {
         pathname: (0, _hooksclientcontextsharedruntime.createDevToolsInstrumentedPromise)(
-          'usePathname',
+          "usePathname",
           pathname,
         ),
         searchParams: (0, _hooksclientcontextsharedruntime.createDevToolsInstrumentedPromise)(
-          'useSearchParams',
+          "useSearchParams",
           readonlySearchParams,
         ),
         params: (0, _hooksclientcontextsharedruntime.createDevToolsInstrumentedPromise)(
-          'useParams',
+          "useParams",
           pathParams,
         ),
         ...layoutSegmentPromises,
@@ -15834,7 +15834,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     const nestedLayoutPromisesCache = new WeakMap();
     function createNestedLayoutNavigationPromises(tree, parentNavPromises) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       const parallelRoutes = tree[1];
       const parallelRouteKeys = Object.keys(parallelRoutes);
@@ -15863,56 +15863,56 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return promises;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use client');
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use client");
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'HTTPAccessFallbackBoundary', {
+    Object.defineProperty(exports, "HTTPAccessFallbackBoundary", {
       enumerable: true,
       get: () => HTTPAccessFallbackBoundary,
     });
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _navigationuntracked = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-untracked.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-untracked.js [app-client] (ecmascript)",
     );
     const _httpaccessfallback = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/http-access-fallback.js [app-client] (ecmascript)",
     );
     const _warnonce = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/warn-once.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/utils/warn-once.js [app-client] (ecmascript)",
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     class HTTPAccessFallbackErrorBoundary extends _react.default.Component {
       constructor(props) {
@@ -15924,19 +15924,19 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       componentDidCatch() {
         if (
-          ('TURBOPACK compile-time value', 'development') === 'development' &&
+          ("TURBOPACK compile-time value", "development") === "development" &&
           this.props.missingSlots &&
           this.props.missingSlots.size > 0 && // A missing children slot is the typical not-found case, so no need to warn
-          !this.props.missingSlots.has('children')
+          !this.props.missingSlots.has("children")
         ) {
           let warningMessage =
-            'No default component was found for a parallel route rendered on this page. Falling back to nearest NotFound boundary.\n' +
-            'Learn more: https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#defaultjs\n\n';
+            "No default component was found for a parallel route rendered on this page. Falling back to nearest NotFound boundary.\n" +
+            "Learn more: https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#defaultjs\n\n";
           const formattedSlots = Array.from(this.props.missingSlots)
             .sort((a, b) => a.localeCompare(b))
             .map((slot) => `@${slot}`)
-            .join(', ');
-          warningMessage += 'Missing slots: ' + formattedSlots;
+            .join(", ");
+          warningMessage += "Missing slots: " + formattedSlots;
           (0, _warnonce.warnOnce)(warningMessage);
         }
       }
@@ -15989,13 +15989,13 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           }
           return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
             children: [
-              /*#__PURE__*/ (0, _jsxruntime.jsx)('meta', {
-                name: 'robots',
-                content: 'noindex',
+              /*#__PURE__*/ (0, _jsxruntime.jsx)("meta", {
+                name: "robots",
+                content: "noindex",
               }),
-              ('TURBOPACK compile-time value', 'development') === 'development' &&
-                /*#__PURE__*/ (0, _jsxruntime.jsx)('meta', {
-                  name: 'boundary-next-error',
+              ("TURBOPACK compile-time value", "development") === "development" &&
+                /*#__PURE__*/ (0, _jsxruntime.jsx)("meta", {
+                  name: "boundary-next-error",
                   content: (0, _httpaccessfallback.getAccessFallbackErrorTypeByStatus)(
                     triggeredStatus,
                   ),
@@ -16032,22 +16032,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/dev-root-http-access-fallback-boundary.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/dev-root-http-access-fallback-boundary.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -16067,25 +16067,25 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       bailOnRootNotFound: () => bailOnRootNotFound,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _errorboundary = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)",
     );
     function bailOnRootNotFound() {
       throw Object.defineProperty(
-        new Error('notFound() is not allowed to use in root layout'),
-        '__NEXT_ERROR_CODE',
+        new Error("notFound() is not allowed to use in root layout"),
+        "__NEXT_ERROR_CODE",
         {
-          value: 'E192',
+          value: "E192",
           enumerable: false,
           configurable: true,
         },
@@ -16102,22 +16102,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -16139,47 +16139,47 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       reportInvalidHmrMessage: () => reportInvalidHmrMessage,
     });
     const REACT_REFRESH_FULL_RELOAD =
-      '[Fast Refresh] performing full reload\n\n' +
+      "[Fast Refresh] performing full reload\n\n" +
       "Fast Refresh will perform a full reload when you edit a file that's imported by modules outside of the React rendering tree.\n" +
-      'You might have a file which exports a React component but also exports a value that is imported by a non-React component file.\n' +
-      'Consider migrating the non-React component export to a separate file and importing it into both files.\n\n' +
-      'It is also possible the parent component of the component you edited is a class component, which disables Fast Refresh.\n' +
-      'Fast Refresh requires at least one parent function component in your React tree.';
+      "You might have a file which exports a React component but also exports a value that is imported by a non-React component file.\n" +
+      "Consider migrating the non-React component export to a separate file and importing it into both files.\n\n" +
+      "It is also possible the parent component of the component you edited is a class component, which disables Fast Refresh.\n" +
+      "Fast Refresh requires at least one parent function component in your React tree.";
     const REACT_REFRESH_FULL_RELOAD_FROM_ERROR =
-      '[Fast Refresh] performing full reload because your application had an unrecoverable error';
+      "[Fast Refresh] performing full reload because your application had an unrecoverable error";
     function reportInvalidHmrMessage(message, err) {
       console.warn(
-        '[HMR] Invalid message: ' +
+        "[HMR] Invalid message: " +
           JSON.stringify(message) +
-          '\n' +
-          ((err instanceof Error && err?.stack) || ''),
+          "\n" +
+          ((err instanceof Error && err?.stack) || ""),
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/get-socket-url.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/get-socket-url.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'getSocketUrl', {
+    Object.defineProperty(exports, "getSocketUrl", {
       enumerable: true,
       get: () => getSocketUrl,
     });
     const _normalizedassetprefix = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/normalized-asset-prefix.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/normalized-asset-prefix.js [app-client] (ecmascript)",
     );
     function getSocketProtocol(assetPrefix) {
       let protocol = window.location.protocol;
@@ -16187,41 +16187,41 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // assetPrefix is a url
         protocol = new URL(assetPrefix).protocol;
       } catch {}
-      return protocol === 'http:' ? 'ws:' : 'wss:';
+      return protocol === "http:" ? "ws:" : "wss:";
     }
     function getSocketUrl(assetPrefix) {
       const prefix = (0, _normalizedassetprefix.normalizedAssetPrefix)(assetPrefix);
-      const protocol = getSocketProtocol(assetPrefix || '');
+      const protocol = getSocketProtocol(assetPrefix || "");
       if (URL.canParse(prefix)) {
         // since normalized asset prefix is ensured to be a URL format,
         // we can safely replace the protocol
-        return prefix.replace(/^http/, 'ws');
+        return prefix.replace(/^http/, "ws");
       }
       const { hostname, port } = window.location;
-      return `${protocol}//${hostname}${port ? `:${port}` : ''}${prefix}`;
+      return `${protocol}//${hostname}${port ? `:${port}` : ""}${prefix}`;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -16243,31 +16243,31 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       useWebSocketPing: () => useWebSocketPing,
     });
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _getsocketurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/get-socket-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/get-socket-url.js [app-client] (ecmascript)",
     );
     const _hotreloadertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [app-client] (ecmascript)",
     );
     const _shared = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [app-client] (ecmascript)",
     );
     const _hotreloaderapp = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js [app-client] (ecmascript)",
     );
     const _forwardlogs = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/forward-logs.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/forward-logs.js [app-client] (ecmascript)",
     );
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)",
     );
     const _constants = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/constants.js [app-client] (ecmascript)",
     );
     let reconnections = 0;
     let reloading = false;
@@ -16279,9 +16279,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           new _invarianterror.InvariantError(
             `Expected a request ID to be defined for the document via self.__next_r.`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E806',
+            value: "E806",
             enumerable: false,
             configurable: true,
           },
@@ -16302,11 +16302,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         const newWebSocket = new window.WebSocket(
           `${(0, _getsocketurl.getSocketUrl)(assetPrefix)}/_next/webpack-hmr?id=${self.__next_r}`,
         );
-        newWebSocket.binaryType = 'arraybuffer';
+        newWebSocket.binaryType = "arraybuffer";
         function handleOnline() {
           _forwardlogs.logQueue.onSocketReady(newWebSocket);
           reconnections = 0;
-          window.console.log('[HMR] connected');
+          window.console.log("[HMR] connected");
         }
         function handleMessage(event) {
           // While the page is reloading, don't respond to any more messages.
@@ -16334,7 +16334,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             // Track webpack compilation hash for server restart detection
             if (
               message.type === _hotreloadertypes.HMR_MESSAGE_SENT_TO_BROWSER.SYNC &&
-              'hash' in message
+              "hash" in message
             ) {
               // If we had previously reconnected and the hash changed, the server may have restarted
               if (
@@ -16383,7 +16383,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     function createProcessTurbopackMessage(sendMessage) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       const queue = [];
       let callback;
@@ -16396,7 +16396,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       };
       __turbopack_context__
         .A(
-          '[turbopack]/browser/dev/hmr-client/hmr-client.ts [app-client] (ecmascript, async loader)',
+          "[turbopack]/browser/dev/hmr-client/hmr-client.ts [app-client] (ecmascript, async loader)",
         )
         .then(({ connect }) => {
           connect({
@@ -16421,10 +16421,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       (0, _react.useEffect)(() => {
         if (!webSocket) {
           throw Object.defineProperty(
-            new _invarianterror.InvariantError('Expected webSocket to be defined in dev mode.'),
-            '__NEXT_ERROR_CODE',
+            new _invarianterror.InvariantError("Expected webSocket to be defined in dev mode."),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E785',
+              value: "E785",
               enumerable: false,
               configurable: true,
             },
@@ -16432,7 +16432,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         }
         // Never send pings when using Turbopack as it's not used.
         // Pings were originally used to keep track of active routes in on-demand-entries with webpack.
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           return;
         }
         //TURBOPACK unreachable
@@ -16471,9 +16471,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         default: {
           throw Object.defineProperty(
             new _invarianterror.InvariantError(`Invalid binary HMR message of type ${messageType}`),
-            '__NEXT_ERROR_CODE',
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E809',
+              value: "E809",
               enumerable: false,
               configurable: true,
             },
@@ -16487,9 +16487,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           new _invarianterror.InvariantError(
             `Invalid binary HMR message: insufficient data (expected ${expectedLength} bytes, got ${data.byteLength})`,
           ),
-          '__NEXT_ERROR_CODE',
+          "__NEXT_ERROR_CODE",
           {
-            value: 'E808',
+            value: "E808",
             enumerable: false,
             configurable: true,
           },
@@ -16497,22 +16497,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/report-hmr-latency.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/report-hmr-latency.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     Object.defineProperty(
@@ -16527,7 +16527,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
        *   turbopack when we must report a message to the browser console (because we
        *   already logged a "rebuilding" message), but it's not a real HMR, so we
        *   don't want to impact our telemetry.
-       */ 'default',
+       */ "default",
       {
         enumerable: true,
         get: () => reportHmrLatency,
@@ -16547,7 +16547,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       sendMessage(
         JSON.stringify({
-          event: 'client-hmr-latency',
+          event: "client-hmr-latency",
           id: window.__nextDevClientId,
           startTime: startMsSinceEpoch,
           endTime: endMsSinceEpoch,
@@ -16555,7 +16555,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           updatedModules,
           // Whether the page (tab) was hidden at the time the event occurred.
           // This can impact the accuracy of the event's timing.
-          isPageHidden: document.visibilityState === 'hidden',
+          isPageHidden: document.visibilityState === "hidden",
         }),
       );
       if (self.__NEXT_HMR_LATENCY_CB) {
@@ -16563,25 +16563,25 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/turbopack-hot-reloader-common.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/turbopack-hot-reloader-common.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'TurbopackHmr', {
+    Object.defineProperty(exports, "TurbopackHmr", {
       enumerable: true,
       get: () => TurbopackHmr,
     });
@@ -16608,7 +16608,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // the message entirely.
       #runDeferredReportHmrStart() {
         if (this.#deferredReportHmrStartId != null) {
-          console.log('[Fast Refresh] rebuilding');
+          console.log("[Fast Refresh] rebuilding");
           this.#reportedHmrStart = true;
           this.#cancelDeferredReportHmrStart();
         }
@@ -16681,8 +16681,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       for (const update of updates) {
         // TODO this won't capture changes to CSS since they don't result in a "merged" update
         if (
-          update.type !== 'partial' ||
-          update.instruction.type !== 'ChunkListUpdate' ||
+          update.type !== "partial" ||
+          update.instruction.type !== "ChunkListUpdate" ||
           update.instruction.merged === undefined
         ) {
           continue;
@@ -16700,28 +16700,28 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return updatedModules;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     /// <reference types="webpack/module.d.ts" />
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -16745,85 +16745,85 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       waitForWebpackRuntimeHotUpdate: () => waitForWebpackRuntimeHotUpdate,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
     );
     const _stripansi = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/strip-ansi/index.js [app-client] (ecmascript)",
       ),
     );
     const _formatwebpackmessages = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/format-webpack-messages.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/format-webpack-messages.js [app-client] (ecmascript)",
       ),
     );
     const _shared = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/shared.js [app-client] (ecmascript)",
     );
     const _nextdevtools = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/next-devtools/index.js (raw)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/next-devtools/index.js (raw)",
     );
     const _replayssronlyerrors = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/replay-ssr-only-errors.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/replay-ssr-only-errors.js [app-client] (ecmascript)",
     );
     const _appdevoverlayerrorboundary = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/app-dev-overlay-error-boundary.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/app-dev-overlay-error-boundary.js [app-client] (ecmascript)",
     );
     const _useerrorhandler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/use-error-handler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/use-error-handler.js [app-client] (ecmascript)",
     );
     const _runtimeerrorhandler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/runtime-error-handler.js [app-client] (ecmascript)",
     );
     const _websocket = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js [app-client] (ecmascript)",
     );
     const _hotreloadertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/dev/hot-reloader-types.js [app-client] (ecmascript)",
     );
     const _navigationuntracked = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-untracked.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-untracked.js [app-client] (ecmascript)",
     );
     const _reporthmrlatency = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/report-hmr-latency.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/report-hmr-latency.js [app-client] (ecmascript)",
       ),
     );
     const _turbopackhotreloadercommon = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/turbopack-hot-reloader-common.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/turbopack-hot-reloader-common.js [app-client] (ecmascript)",
     );
     const _approuterheaders = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-headers.js [app-client] (ecmascript)",
     );
     const _approuterinstance = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)",
     );
     const _invarianterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/invariant-error.js [app-client] (ecmascript)",
     );
     const _debugchannel = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)",
     );
     const _client = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)",
     );
     const _appfindsourcemapurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)",
     );
     const createFromReadableStream = _client.createFromReadableStream;
     let mostRecentCompilationHash = null;
     const __nextDevClientId = Math.round(Math.random() * 100 + Date.now());
     let reloading = false;
     const webpackStartMsSinceEpoch = null;
-    const turbopackHmr = ('TURBOPACK compile-time truthy', 1)
+    const turbopackHmr = ("TURBOPACK compile-time truthy", 1)
       ? new _turbopackhotreloadercommon.TurbopackHmr()
-      : 'TURBOPACK unreachable';
+      : "TURBOPACK unreachable";
     let pendingHotUpdateWebpack = Promise.resolve();
     let resolvePendingHotUpdateWebpack = () => {};
     function setPendingHotUpdateWebpack() {
@@ -16846,21 +16846,21 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
      * For webpack: Check if the hash changed compared to __webpack_hash__
      * For Turbopack: Always true because it doesn't have __webpack_hash__
      */ function isUpdateAvailable() {
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         return true;
       }
       //TURBOPACK unreachable
     }
     // Webpack disallows updates in other states.
     function canApplyUpdates() {
-      return module.hot.status() === 'idle';
+      return module.hot.status() === "idle";
     }
     function afterApplyUpdates(fn) {
       if (canApplyUpdates()) {
         fn();
       } else {
         function handler(status) {
-          if (status === 'idle') {
+          if (status === "idle") {
             module.hot.removeStatusHandler(handler);
             fn();
           }
@@ -16871,10 +16871,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     function performFullReload(err, sendMessage) {
       const stackTrace =
         err &&
-        ((err.stack && err.stack.split('\n').slice(0, 5).join('\n')) || err.message || err + '');
+        ((err.stack && err.stack.split("\n").slice(0, 5).join("\n")) || err.message || err + "");
       sendMessage(
         JSON.stringify({
-          event: 'client-full-reload',
+          event: "client-full-reload",
           stackTrace,
           hadRuntimeError: !!_runtimeerrorhandler.RuntimeErrorHandler.hadRuntimeError,
           dependencyChain: err ? err.dependencyChain : undefined,
@@ -16921,7 +16921,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           Date.now(),
         );
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
       }
       // https://webpack.js.org/api/hot-module-replacement/#check
@@ -16963,11 +16963,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         // Do not attempt to reload now.
         // We will reload on next success instead.
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
       }
       function handleHotUpdate() {
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           const hmrUpdate = turbopackHmr.onBuilt();
           if (hmrUpdate != null) {
             (0, _reporthmrlatency.default)(
@@ -16984,7 +16984,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       switch (message.type) {
         case _hotreloadertypes.HMR_MESSAGE_SENT_TO_BROWSER.ISR_MANIFEST: {
-          if (('TURBOPACK compile-time truthy', 1)) {
+          if (("TURBOPACK compile-time truthy", 1)) {
             staticIndicatorState.appIsrManifest = message.data;
             // Handle the initial static indicator status on receiving the ISR
             // manifest. Navigation is handled in an effect inside HotReload for
@@ -16994,14 +16994,14 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
               ? message.data[staticIndicatorState.pathname]
               : undefined;
             _nextdevtools.dispatcher.onStaticIndicator(
-              isStatic === undefined ? 'pending' : isStatic ? 'static' : 'dynamic',
+              isStatic === undefined ? "pending" : isStatic ? "static" : "dynamic",
             );
           }
           break;
         }
         case _hotreloadertypes.HMR_MESSAGE_SENT_TO_BROWSER.BUILDING: {
           _nextdevtools.dispatcher.buildingIndicatorShow();
-          if (('TURBOPACK compile-time truthy', 1)) {
+          if (("TURBOPACK compile-time truthy", 1)) {
             turbopackHmr.onBuilding();
           } //TURBOPACK unreachable
           else;
@@ -17015,19 +17015,19 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           }
           const { errors, warnings } = message;
           // Is undefined when it's a 'built' event
-          if ('versionInfo' in message) _nextdevtools.dispatcher.onVersionInfo(message.versionInfo);
-          if ('debug' in message && message.debug)
+          if ("versionInfo" in message) _nextdevtools.dispatcher.onVersionInfo(message.versionInfo);
+          if ("debug" in message && message.debug)
             _nextdevtools.dispatcher.onDebugInfo(message.debug);
-          if ('devIndicator' in message)
+          if ("devIndicator" in message)
             _nextdevtools.dispatcher.onDevIndicator(message.devIndicator);
-          if ('devToolsConfig' in message)
+          if ("devToolsConfig" in message)
             _nextdevtools.dispatcher.onDevToolsConfig(message.devToolsConfig);
           const hasErrors = Boolean(errors && errors.length);
           // Compilation with errors (e.g. syntax error or missing modules).
           if (hasErrors) {
             sendMessage(
               JSON.stringify({
-                event: 'client-error',
+                event: "client-error",
                 errorCount: errors.length,
                 clientId: __nextDevClientId,
               }),
@@ -17039,7 +17039,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           if (hasWarnings) {
             sendMessage(
               JSON.stringify({
-                event: 'client-warning',
+                event: "client-warning",
                 warningCount: warnings.length,
                 clientId: __nextDevClientId,
               }),
@@ -17052,8 +17052,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             for (let i = 0; i < formattedMessages.warnings.length; i++) {
               if (i === 5) {
                 console.warn(
-                  'There were more warnings in other files.\n' +
-                    'You can find a complete log in the terminal.',
+                  "There were more warnings in other files.\n" +
+                    "You can find a complete log in the terminal.",
                 );
                 break;
               }
@@ -17063,7 +17063,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           }
           sendMessage(
             JSON.stringify({
-              event: 'client-success',
+              event: "client-success",
               clientId: __nextDevClientId,
             }),
           );
@@ -17100,7 +17100,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           turbopackHmr?.onServerComponentChanges();
           sendMessage(
             JSON.stringify({
-              event: 'server-component-reload-page',
+              event: "server-component-reload-page",
               clientId: __nextDevClientId,
               hash: message.hash,
             }),
@@ -17110,7 +17110,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           document.cookie = `${_approuterheaders.NEXT_HMR_REFRESH_HASH_COOKIE}=${message.hash};path=/`;
           if (
             _runtimeerrorhandler.RuntimeErrorHandler.hadRuntimeError ||
-            document.documentElement.id === '__next_error__'
+            document.documentElement.id === "__next_error__"
           ) {
             if (reloading) return;
             reloading = true;
@@ -17121,7 +17121,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             _nextdevtools.dispatcher.onRefresh();
           });
           if (
-            ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+            ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
           );
           return;
         }
@@ -17129,7 +17129,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           turbopackHmr?.onReloadPage();
           sendMessage(
             JSON.stringify({
-              event: 'client-reload-page',
+              event: "client-reload-page",
               clientId: __nextDevClientId,
             }),
           );
@@ -17149,9 +17149,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             const errorObject = JSON.parse(errorJSON);
             const error = Object.defineProperty(
               new Error(errorObject.message),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E394',
+                value: "E394",
                 enumerable: false,
                 configurable: true,
               },
@@ -17227,7 +17227,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
               for (const error of errors) {
                 const code = errorCodes.get(error);
                 if (code !== undefined) {
-                  Object.defineProperty(error, '__NEXT_ERROR_CODE', {
+                  Object.defineProperty(error, "__NEXT_ERROR_CODE", {
                     value: code,
                     enumerable: false,
                     configurable: true,
@@ -17239,12 +17239,12 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             (err) => {
               console.error(
                 Object.defineProperty(
-                  new Error('Failed to deserialize errors.', {
+                  new Error("Failed to deserialize errors.", {
                     cause: err,
                   }),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E946',
+                    value: "E946",
                     enumerable: false,
                     configurable: true,
                   },
@@ -17272,7 +17272,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // We don't want access of the pathname for the dev tools to trigger a dynamic
       // access (as the dev overlay will never be present in production).
       const pathname = (0, _navigationuntracked.useUntrackedPathname)();
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         // this conditional is only for dead-code elimination which
         // isn't a runtime conditional only build-time so ignore hooks rule
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -17280,11 +17280,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           if (!staticIndicatorState) {
             throw Object.defineProperty(
               new _invarianterror.InvariantError(
-                'Expected staticIndicatorState to be defined in dev mode.',
+                "Expected staticIndicatorState to be defined in dev mode.",
               ),
-              '__NEXT_ERROR_CODE',
+              "__NEXT_ERROR_CODE",
               {
-                value: 'E786',
+                value: "E786",
                 enumerable: false,
                 configurable: true,
               },
@@ -17294,7 +17294,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           if (staticIndicatorState.appIsrManifest) {
             const isStatic = pathname ? staticIndicatorState.appIsrManifest[pathname] : undefined;
             _nextdevtools.dispatcher.onStaticIndicator(
-              isStatic === undefined ? 'pending' : isStatic ? 'static' : 'dynamic',
+              isStatic === undefined ? "pending" : isStatic ? "static" : "dynamic",
             );
           }
         }, [pathname, staticIndicatorState]);
@@ -17313,122 +17313,122 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'default', {
+    Object.defineProperty(exports, "default", {
       enumerable: true,
       get: () => AppRouter,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _interop_require_wildcard = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_wildcard._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _routerreducertypes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/router-reducer-types.js [app-client] (ecmascript)",
     );
     const _createhreffromurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
     );
     const _hooksclientcontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _useactionqueue = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/use-action-queue.js [app-client] (ecmascript)",
     );
     const _committedstate = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/committed-state.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/committed-state.js [app-client] (ecmascript)",
     );
     const _approuterannouncer = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-announcer.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-announcer.js [app-client] (ecmascript)",
     );
     const _redirectboundary = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-boundary.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-boundary.js [app-client] (ecmascript)",
     );
     const _findheadincache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/find-head-in-cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/reducers/find-head-in-cache.js [app-client] (ecmascript)",
     );
     const _unresolvedthenable = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unresolved-thenable.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/unresolved-thenable.js [app-client] (ecmascript)",
     );
     const _removebasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/remove-base-path.js [app-client] (ecmascript)",
     );
     const _hasbasepath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/has-base-path.js [app-client] (ecmascript)",
     );
     const _computechangedpath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)",
     );
     const _navfailurehandler = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/nav-failure-handler.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/nav-failure-handler.js [app-client] (ecmascript)",
     );
     const _approuterinstance = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)",
     );
     const _redirect = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect.js [app-client] (ecmascript)",
     );
     const _redirecterror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/redirect-error.js [app-client] (ecmascript)",
     );
     const _links = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/links.js [app-client] (ecmascript)",
     );
     const _rooterrorboundary = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/errors/root-error-boundary.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/errors/root-error-boundary.js [app-client] (ecmascript)",
       ),
     );
     const _globalerror = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)",
       ),
     );
     const _boundarycomponents = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)",
     );
     const _deploymentid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)",
     );
     const globalMutable = {};
     function HistoryUpdater({ appRouterState }) {
       (0, _react.useInsertionEffect)(() => {
         if (
-          ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+          ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
         );
         const { tree, pushRef, canonicalUrl, renderedSearch } = appRouterState;
         const appHistoryState = {
@@ -17451,9 +17451,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         ) {
           // This intentionally mutates React state, pushRef is overwritten to ensure additional push/replace calls do not trigger an additional history entry.
           pushRef.pendingPush = false;
-          window.history.pushState(historyState, '', canonicalUrl);
+          window.history.pushState(historyState, "", canonicalUrl);
         } else {
-          window.history.replaceState(historyState, '', canonicalUrl);
+          window.history.replaceState(historyState, "", canonicalUrl);
         }
         (0, _committedstate.setLastCommittedTree)(tree);
       }, [appRouterState]);
@@ -17501,7 +17501,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const { searchParams, pathname } = (0, _react.useMemo)(() => {
         const url = new URL(
           canonicalUrl,
-          typeof window === 'undefined' ? 'http://n' : window.location.href,
+          typeof window === "undefined" ? "http://n" : window.location.href,
         );
         return {
           // This is turned into a readonly class in `useSearchParams`
@@ -17511,7 +17511,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             : url.pathname,
         };
       }, [canonicalUrl]);
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { cache, tree } = state;
         // This hook is in a conditional but that is ok because `process.env.NODE_ENV` never changes
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -17555,34 +17555,34 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
             historyState: window.history.state.__PRIVATE_NEXTJS_INTERNALS_TREE,
           });
         }
-        window.addEventListener('pageshow', handlePageShow);
+        window.addEventListener("pageshow", handlePageShow);
         return () => {
-          window.removeEventListener('pageshow', handlePageShow);
+          window.removeEventListener("pageshow", handlePageShow);
         };
       }, []);
       (0, _react.useEffect)(() => {
         // Ensure that any redirect errors that bubble up outside of the RedirectBoundary
         // are caught and handled by the router.
         function handleUnhandledRedirect(event) {
-          const error = 'reason' in event ? event.reason : event.error;
+          const error = "reason" in event ? event.reason : event.error;
           if ((0, _redirecterror.isRedirectError)(error)) {
             event.preventDefault();
             const url = (0, _redirect.getURLFromRedirectError)(error);
             const redirectType = (0, _redirect.getRedirectTypeFromError)(error);
             // TODO: This should access the router methods directly, rather than
             // go through the public interface.
-            if (redirectType === 'push') {
+            if (redirectType === "push") {
               _approuterinstance.publicAppRouterInstance.push(url, {});
             } else {
               _approuterinstance.publicAppRouterInstance.replace(url, {});
             }
           }
         }
-        window.addEventListener('error', handleUnhandledRedirect);
-        window.addEventListener('unhandledrejection', handleUnhandledRedirect);
+        window.addEventListener("error", handleUnhandledRedirect);
+        window.addEventListener("unhandledrejection", handleUnhandledRedirect);
         return () => {
-          window.removeEventListener('error', handleUnhandledRedirect);
-          window.removeEventListener('unhandledrejection', handleUnhandledRedirect);
+          window.removeEventListener("error", handleUnhandledRedirect);
+          window.removeEventListener("unhandledrejection", handleUnhandledRedirect);
         };
       }, []);
       // When mpaNavigation flag is set do a hard navigation to the new url.
@@ -17686,11 +17686,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           });
         };
         // Register popstate event to call onPopstate.
-        window.addEventListener('popstate', onPopState);
+        window.addEventListener("popstate", onPopState);
         return () => {
           window.history.pushState = originalPushState;
           window.history.replaceState = originalReplaceState;
-          window.removeEventListener('popstate', onPopState);
+          window.removeEventListener("popstate", onPopState);
         };
       }, []);
       const { cache, tree, nextUrl, focusAndScrollRef, previousNextUrl } = state;
@@ -17705,9 +17705,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // These are specially instrumented promises to show in the Suspense DevTools
       // Promises are cached outside of render to survive suspense retries.
       let instrumentedNavigationPromises = null;
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { createRootNavigationPromises } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-devtools.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/navigation-devtools.js [app-client] (ecmascript)",
         );
         instrumentedNavigationPromises = createRootNavigationPromises(
           tree,
@@ -17725,7 +17725,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           parentLoadingData: null,
           // This is the <Activity> "name" that shows up in the Suspense DevTools.
           // It represents the root of the app.
-          debugNameContext: '/',
+          debugNameContext: "/",
           // Root node always has `url`
           // Provided in AppTreeContext to ensure it can be overwritten in layout-router
           url: canonicalUrl,
@@ -17755,7 +17755,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           {
             headCacheNode: headCacheNode,
           },
-          typeof window === 'undefined' ? headKeyWithoutSearchParams : headKey,
+          typeof window === "undefined" ? headKeyWithoutSearchParams : headKey,
         );
       } else {
         head = null;
@@ -17771,23 +17771,23 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           }),
         ],
       });
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         // In development, we apply few error boundaries and hot-reloader:
         // - DevRootHTTPAccessFallbackBoundary: avoid using navigation API like notFound() in root layout
         // - HotReloader:
         //  - hot-reload the app when the code changes
         //  - render dev overlay
         //  - catch runtime errors and display global-error when necessary
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           const { DevRootHTTPAccessFallbackBoundary } = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/dev-root-http-access-fallback-boundary.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/dev-root-http-access-fallback-boundary.js [app-client] (ecmascript)",
           );
           content = /*#__PURE__*/ (0, _jsxruntime.jsx)(DevRootHTTPAccessFallbackBoundary, {
             children: content,
           });
         }
         const HotReloader = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js [app-client] (ecmascript)",
         ).default;
         content = /*#__PURE__*/ (0, _jsxruntime.jsx)(HotReloader, {
           globalError: globalError,
@@ -17802,7 +17802,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           /*#__PURE__*/ (0, _jsxruntime.jsx)(HistoryUpdater, {
             appRouterState: state,
           }),
-          ('TURBOPACK compile-time truthy', 1) ? null : /*#__PURE__*/ 'TURBOPACK unreachable',
+          ("TURBOPACK compile-time truthy", 1) ? null : /*#__PURE__*/ "TURBOPACK unreachable",
           /*#__PURE__*/ (0, _jsxruntime.jsx)(
             _hooksclientcontextsharedruntime.NavigationPromisesContext.Provider,
             {
@@ -17867,7 +17867,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     let runtimeStyles;
     let runtimeStyleChanged;
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     function RuntimeStylesForWebpack() {
       const [, forceUpdate] = _react.default.useState(0);
@@ -17886,66 +17886,66 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       const query = (0, _deploymentid.getAssetTokenQuery)();
       return [...(runtimeStyles || [])].map((href, i) =>
         /*#__PURE__*/ (0, _jsxruntime.jsx)(
-          'link',
+          "link",
           {
-            rel: 'stylesheet',
+            rel: "stylesheet",
             href: `${href}${query}`,
             // @ts-ignore
-            precedence: 'next',
+            precedence: "next",
           },
           i,
         ),
       );
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-initial-router-state.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-initial-router-state.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'createInitialRouterState', {
+    Object.defineProperty(exports, "createInitialRouterState", {
       enumerable: true,
       get: () => createInitialRouterState,
     });
     const _createhreffromurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-href-from-url.js [app-client] (ecmascript)",
     );
     const _computechangedpath = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/compute-changed-path.js [app-client] (ecmascript)",
     );
     const _flightdatahelpers = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)",
     );
     const _pprnavigations = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/ppr-navigations.js [app-client] (ecmascript)",
     );
     const _cache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/cache.js [app-client] (ecmascript)",
     );
     const _types = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/types.js [app-client] (ecmascript)",
     );
     const _bfcache = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/bfcache.js [app-client] (ecmascript)",
     );
     const _fetchserverresponse = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js [app-client] (ecmascript)",
     );
     const _optimisticroutes = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/segment-cache/optimistic-routes.js [app-client] (ecmascript)",
     );
     function createInitialRouterState({
       navigatedAt,
@@ -17968,7 +17968,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       // When initialized on the server, the canonical URL is provided as an array of parts.
       // This is to ensure that when the RSC payload streamed to the client, crawlers don't interpret it
       // as a URL that should be crawled.
-      const initialCanonicalUrl = initialCanonicalUrlParts.join('/');
+      const initialCanonicalUrl = initialCanonicalUrlParts.join("/");
       const normalizedFlightData = (0, _flightdatahelpers.getFlightDataPartsFromPath)(
         initialFlightData[0],
       );
@@ -18162,46 +18162,46 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       return initialState;
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-link-gc.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-link-gc.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'linkGc', {
+    Object.defineProperty(exports, "linkGc", {
       enumerable: true,
       get: () => linkGc,
     });
     function linkGc() {
       // TODO-APP: Remove this logic when Float has GC built-in in development.
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const callback = (mutationList) => {
           for (const mutation of mutationList) {
-            if (mutation.type === 'childList') {
+            if (mutation.type === "childList") {
               for (const node of mutation.addedNodes) {
-                if ('tagName' in node && node.tagName === 'LINK') {
+                if ("tagName" in node && node.tagName === "LINK") {
                   const link = node;
-                  if (link.dataset.precedence?.startsWith('next')) {
-                    const href = link.getAttribute('href');
+                  if (link.dataset.precedence?.startsWith("next")) {
+                    const href = link.getAttribute("href");
                     if (href) {
-                      const [resource, version] = href.split('?v=', 2);
+                      const [resource, version] = href.split("?v=", 2);
                       if (version) {
                         const currentOrigin = window.location.origin;
                         const allLinks = [
@@ -18217,10 +18217,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
                           ),
                         ];
                         for (const otherLink of allLinks) {
-                          if (otherLink.dataset.precedence?.startsWith('next')) {
-                            const otherHref = otherLink.getAttribute('href');
+                          if (otherLink.dataset.precedence?.startsWith("next")) {
+                            const otherHref = otherLink.getAttribute("href");
                             if (otherHref) {
-                              const [, otherVersion] = otherHref.split('?v=', 2);
+                              const [, otherVersion] = otherHref.split("?v=", 2);
                               if (!otherVersion || +otherVersion < +version) {
                                 // Delay the removal of the stylesheet to avoid FOUC
                                 // caused by `@font-face` rules, as they seem to be
@@ -18255,92 +18255,92 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-index.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-index.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'hydrate', {
+    Object.defineProperty(exports, "hydrate", {
       enumerable: true,
       get: () => hydrate,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)",
     );
     __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-globals.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-globals.js [app-client] (ecmascript)",
     );
     const _client = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/client.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/client.js [app-client] (ecmascript)",
       ),
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
       ),
     );
     const _client1 = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)",
     );
     const _headmanagercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _onrecoverableerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [app-client] (ecmascript)",
     );
     const _errorboundarycallbacks = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/error-boundary-callbacks.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/error-boundary-callbacks.js [app-client] (ecmascript)",
     );
     const _appcallserver = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-call-server.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-call-server.js [app-client] (ecmascript)",
     );
     const _appfindsourcemapurl = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-find-source-map-url.js [app-client] (ecmascript)",
     );
     const _approuterinstance = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router-instance.js [app-client] (ecmascript)",
     );
     const _approuter = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/app-router.js [app-client] (ecmascript)",
       ),
     );
     const _createinitialrouterstate = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-initial-router-state.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/router-reducer/create-initial-router-state.js [app-client] (ecmascript)",
     );
     const _approutercontextsharedruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/app-router-context.shared-runtime.js [app-client] (ecmascript)",
     );
     const _flightdatahelpers = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/flight-data-helpers.js [app-client] (ecmascript)",
     );
     const _deploymentid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/shared/lib/deployment-id.js [app-client] (ecmascript)",
     );
     const _navigationbuildid = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/navigation-build-id.js [app-client] (ecmascript)",
     );
     /// <reference types="react-dom/experimental" />
     const createFromReadableStream = _client1.createFromReadableStream;
@@ -18362,10 +18362,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       } else if (seg[0] === 1) {
         if (!initialServerDataBuffer)
           throw Object.defineProperty(
-            new Error('Unexpected server data: missing bootstrap script.'),
-            '__NEXT_ERROR_CODE',
+            new Error("Unexpected server data: missing bootstrap script."),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E18',
+              value: "E18",
               enumerable: false,
               configurable: true,
             },
@@ -18380,10 +18380,10 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       } else if (seg[0] === 3) {
         if (!initialServerDataBuffer)
           throw Object.defineProperty(
-            new Error('Unexpected server data: missing bootstrap script.'),
-            '__NEXT_ERROR_CODE',
+            new Error("Unexpected server data: missing bootstrap script."),
+            "__NEXT_ERROR_CODE",
             {
-              value: 'E18',
+              value: "E18",
               enumerable: false,
               configurable: true,
             },
@@ -18416,7 +18416,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     function nextServerDataRegisterWriter(ctr) {
       if (initialServerDataBuffer) {
         initialServerDataBuffer.forEach((val) => {
-          ctr.enqueue(typeof val === 'string' ? encoder.encode(val) : val);
+          ctr.enqueue(typeof val === "string" ? encoder.encode(val) : val);
         });
         if (initialServerDataLoaded && !initialServerDataFlushed) {
           // Instant Navigation Testing API: don't close or error the inline
@@ -18430,11 +18430,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
               ctr.error(
                 Object.defineProperty(
                   new Error(
-                    'The connection to the page was unexpectedly closed, possibly due to the stop button being clicked, loss of Wi-Fi, or an unstable internet connection.',
+                    "The connection to the page was unexpectedly closed, possibly due to the stop button being clicked, loss of Wi-Fi, or an unstable internet connection.",
                   ),
-                  '__NEXT_ERROR_CODE',
+                  "__NEXT_ERROR_CODE",
                   {
-                    value: 'E117',
+                    value: "E117",
                     enumerable: false,
                     configurable: true,
                   },
@@ -18460,8 +18460,8 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       initialServerDataLoaded = true;
     };
     // It's possible that the DOM is already loaded.
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', DOMContentLoaded, false);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", DOMContentLoaded, false);
     } else {
       // Delayed in marco task to ensure it's executed later than hydration
       setTimeout(DOMContentLoaded);
@@ -18478,9 +18478,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         nextServerDataRegisterWriter(controller);
       },
     });
-    if (('TURBOPACK compile-time truthy', 1)) {
+    if (("TURBOPACK compile-time truthy", 1)) {
       // @ts-expect-error
-      readable.name = 'hydration';
+      readable.name = "hydration";
     }
     // When Cache Components is enabled, tee the inlined Flight stream so we can
     // truncate a clone at the static stage byte boundary and cache it. We don't
@@ -18488,16 +18488,16 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     // cancel the clone if not needed.
     const initialFlightStreamForCache = null;
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     let debugChannel;
     if (
-      ('TURBOPACK compile-time value', '1') &&
-      ('TURBOPACK compile-time value', true) &&
-      typeof window !== 'undefined'
+      ("TURBOPACK compile-time value", "1") &&
+      ("TURBOPACK compile-time value", true) &&
+      typeof window !== "undefined"
     ) {
       const { createDebugChannel } = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/debug-channel.js [app-client] (ecmascript)",
       );
       debugChannel = createDebugChannel(undefined);
     }
@@ -18553,7 +18553,7 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         staticIndicatorState: staticIndicatorState,
       });
       if (
-        ('TURBOPACK compile-time value', 'development') === 'development' &&
+        ("TURBOPACK compile-time value", "development") === "development" &&
         initialRSCPayload.m
       ) {
         // We provide missing slot information in a context provider only during development
@@ -18568,22 +18568,22 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
       return router;
     }
-    const StrictModeIfEnabled = ('TURBOPACK compile-time truthy', 1)
+    const StrictModeIfEnabled = ("TURBOPACK compile-time truthy", 1)
       ? _react.default.StrictMode
-      : 'TURBOPACK unreachable';
+      : "TURBOPACK unreachable";
     function Root({ children }) {
       if (
-        ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+        ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
       );
       return children;
     }
-    const enableTransitionIndicator = ('TURBOPACK compile-time value', false);
+    const enableTransitionIndicator = ("TURBOPACK compile-time value", false);
     function noDefaultTransitionIndicator() {
       return () => {};
     }
     const reactRootOptions = {
-      onDefaultTransitionIndicator: ('TURBOPACK compile-time falsy', 0)
-        ? 'TURBOPACK unreachable'
+      onDefaultTransitionIndicator: ("TURBOPACK compile-time falsy", 0)
+        ? "TURBOPACK unreachable"
         : noDefaultTransitionIndicator,
       onRecoverableError: _onrecoverableerror.onRecoverableError,
       onCaughtError: _errorboundarycallbacks.onCaughtError,
@@ -18592,9 +18592,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     async function hydrate(instrumentationHooks, assetPrefix) {
       let staticIndicatorState;
       let webSocket;
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { createWebSocket } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js [app-client] (ecmascript)",
         );
         staticIndicatorState = {
           pathname: null,
@@ -18638,12 +18638,12 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
           },
         ),
       });
-      if (document.documentElement.id === '__next_error__') {
+      if (document.documentElement.id === "__next_error__") {
         let element = reactEl;
         // Server rendering failed, fall back to client-side rendering
-        if (('TURBOPACK compile-time truthy', 1)) {
+        if (("TURBOPACK compile-time truthy", 1)) {
           const { RootLevelDevOverlayElement } = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/client-entry.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/client-entry.js [app-client] (ecmascript)",
           );
           // Note this won't cause hydration mismatch because we are doing CSR w/o hydration
           element = /*#__PURE__*/ (0, _jsxruntime.jsx)(RootLevelDevOverlayElement, {
@@ -18660,66 +18660,66 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
         });
       }
       // TODO-APP: Remove this logic when Float has GC built-in in development.
-      if (('TURBOPACK compile-time truthy', 1)) {
+      if (("TURBOPACK compile-time truthy", 1)) {
         const { linkGc } = __turbopack_context__.r(
-          '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-link-gc.js [app-client] (ecmascript)',
+          "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-link-gc.js [app-client] (ecmascript)",
         );
         linkGc();
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-next-turbopack.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-next-turbopack.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
-    Object.defineProperty(exports, '__esModule', {
+    ("use strict");
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/register-deployment-id-global.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/register-deployment-id-global.js [app-client] (ecmascript)",
     );
     const _appbootstrap = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-bootstrap.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-bootstrap.js [app-client] (ecmascript)",
     );
     const _onrecoverableerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [app-client] (ecmascript)",
     );
     window.next.turbopack = true;
-    self.__webpack_hash__ = '';
+    self.__webpack_hash__ = "";
     // eslint-disable-next-line @next/internal/typechecked-require
     const instrumentationHooks = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/require-instrumentation-client.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/require-instrumentation-client.js [app-client] (ecmascript)",
     );
     (0, _appbootstrap.appBootstrap)((assetPrefix) => {
       const { hydrate } = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-index.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/app-index.js [app-client] (ecmascript)",
       );
       try {
         hydrate(instrumentationHooks, assetPrefix);
       } finally {
-        if (('TURBOPACK compile-time truthy', 1)) {
-          const enableCacheIndicator = ('TURBOPACK compile-time value', false);
+        if (("TURBOPACK compile-time truthy", 1)) {
+          const enableCacheIndicator = ("TURBOPACK compile-time value", false);
           const { getOwnerStack } = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/stitched-error.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/errors/stitched-error.js [app-client] (ecmascript)",
           );
           const { renderAppDevOverlay } = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/next-devtools/index.js (raw)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/next-devtools/index.js (raw)",
           );
           renderAppDevOverlay(
             getOwnerStack,
@@ -18730,11 +18730,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
       }
     });
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);

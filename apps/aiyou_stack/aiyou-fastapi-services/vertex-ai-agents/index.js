@@ -3,8 +3,8 @@
  * Main entry point for loading and managing AI agents
  */
 
-const fs = require('fs').promises;
-const path = require('path');
+const fs = require("fs").promises;
+const path = require("path");
 
 class AgentRegistry {
   constructor() {
@@ -20,8 +20,8 @@ class AgentRegistry {
     if (this.loaded) return;
 
     try {
-      const registryPath = path.join(__dirname, 'registry.json');
-      const registryData = await fs.readFile(registryPath, 'utf8');
+      const registryPath = path.join(__dirname, "registry.json");
+      const registryData = await fs.readFile(registryPath, "utf8");
       const registry = JSON.parse(registryData);
 
       // Load each category
@@ -35,7 +35,7 @@ class AgentRegistry {
         for (const agentId of categoryData.agents) {
           const agentPath = path.join(__dirname, categoryId, `${agentId}.json`);
           try {
-            const agentData = await fs.readFile(agentPath, 'utf8');
+            const agentData = await fs.readFile(agentPath, "utf8");
             const agent = JSON.parse(agentData);
             this.agents.set(agentId, {
               ...agent,
@@ -50,7 +50,7 @@ class AgentRegistry {
       this.loaded = true;
       console.log(`Loaded ${this.agents.size} agents across ${this.categories.size} categories`);
     } catch (error) {
-      console.error('Failed to load agent registry:', error);
+      console.error("Failed to load agent registry:", error);
       throw error;
     }
   }

@@ -1,368 +1,368 @@
 globalThis.__RSC_MANIFEST = globalThis.__RSC_MANIFEST || {};
-globalThis.__RSC_MANIFEST['/hero-showcase/page'] = {
-  moduleLoading: { prefix: '', crossOrigin: null },
+globalThis.__RSC_MANIFEST["/hero-showcase/page"] = {
+  moduleLoading: { prefix: "", crossOrigin: null },
   clientModules: {
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/layout-router.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/layout-router.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/layout-router.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/layout-router.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/render-from-template-context.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/render-from-template-context.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/render-from-template-context.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/render-from-template-context.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-page.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-page.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-page.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-page.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-segment.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-segment.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-segment.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-segment.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/http-access-fallback/error-boundary.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/http-access-fallback/error-boundary.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/http-access-fallback/error-boundary.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/http-access-fallback/error-boundary.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/framework/boundary-components.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/framework/boundary-components.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/framework/boundary-components.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/framework/boundary-components.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/metadata/generate/icon-mark.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/metadata/generate/icon-mark.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/metadata/generate/icon-mark.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/metadata/generate/icon-mark.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/next-devtools/userspace/app/segment-explorer-node.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/next-devtools/userspace/app/segment-explorer-node.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/next-devtools/userspace/app/segment-explorer-node.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/next-devtools/userspace/app/segment-explorer-node.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
-          '/_next/static/chunks/0qqu_next_dist_client_components_builtin_global-error_0fq2ijz.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
+          "/_next/static/chunks/0qqu_next_dist_client_components_builtin_global-error_0fq2ijz.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
-          '/_next/static/chunks/0qqu_next_dist_client_components_builtin_global-error_0fq2ijz.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
+          "/_next/static/chunks/0qqu_next_dist_client_components_builtin_global-error_0fq2ijz.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx <module evaluation>':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx <module evaluation>":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
-          '/_next/static/chunks/0qqu_085lci-._.js',
-          '/_next/static/chunks/_gemini_antigravity_Monorepo-Uphillsnowball_apps_kovelai_site_src_0_0c9sm._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_hero-showcase_page_tsx_0fq2ijz._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
+          "/_next/static/chunks/0qqu_085lci-._.js",
+          "/_next/static/chunks/_gemini_antigravity_Monorepo-Uphillsnowball_apps_kovelai_site_src_0_0c9sm._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_hero-showcase_page_tsx_0fq2ijz._.js",
         ],
         async: false,
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx":
       {
-        id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-client] (ecmascript)',
-        name: '*',
+        id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-client] (ecmascript)",
+        name: "*",
         chunks: [
-          '/_next/static/chunks/0qqu_next_dist_0ys2skq._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
-          '/_next/static/chunks/0qqu_085lci-._.js',
-          '/_next/static/chunks/_gemini_antigravity_Monorepo-Uphillsnowball_apps_kovelai_site_src_0_0c9sm._.js',
-          '/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_hero-showcase_page_tsx_0fq2ijz._.js',
+          "/_next/static/chunks/0qqu_next_dist_0ys2skq._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
+          "/_next/static/chunks/0qqu_085lci-._.js",
+          "/_next/static/chunks/_gemini_antigravity_Monorepo-Uphillsnowball_apps_kovelai_site_src_0_0c9sm._.js",
+          "/_next/static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_hero-showcase_page_tsx_0fq2ijz._.js",
         ],
         async: false,
       },
   },
   ssrModuleMapping: {
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/layout-router.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/layout-router.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/render-from-template-context.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/render-from-template-context.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-page.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-page.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-segment.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-segment.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/http-access-fallback/error-boundary.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/http-access-fallback/error-boundary.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/framework/boundary-components.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/framework/boundary-components.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/metadata/generate/icon-mark.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/metadata/generate/icon-mark.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/next-devtools/userspace/app/segment-explorer-node.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/next-devtools/userspace/app/segment-explorer-node.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
-            'server/chunks/ssr/0qqu_next_dist_client_components_02ep93j._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
+            "server/chunks/ssr/0qqu_next_dist_client_components_02ep93j._.js",
           ],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-ssr] (ecmascript)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-ssr] (ecmascript)",
+          name: "*",
           chunks: [
-            'server/chunks/ssr/0qqu_0bzlivq._.js',
-            'server/chunks/ssr/[externals]_next_dist_0yew8f-._.js',
-            'server/chunks/ssr/0qqu_0vo75.c._.js',
-            'server/chunks/ssr/_gemini_antigravity_Monorepo-Uphillsnowball_apps_kovelai_site_src_09cfa-x._.js',
+            "server/chunks/ssr/0qqu_0bzlivq._.js",
+            "server/chunks/ssr/[externals]_next_dist_0yew8f-._.js",
+            "server/chunks/ssr/0qqu_0vo75.c._.js",
+            "server/chunks/ssr/_gemini_antigravity_Monorepo-Uphillsnowball_apps_kovelai_site_src_09cfa-x._.js",
           ],
           async: false,
         },
@@ -370,101 +370,101 @@ globalThis.__RSC_MANIFEST['/hero-showcase/page'] = {
   },
   edgeSSRModuleMapping: {},
   rscModuleMapping: {
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/layout-router.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/layout-router.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/render-from-template-context.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/render-from-template-context.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-page.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-page.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/client-segment.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-segment.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/client-segment.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/http-access-fallback/error-boundary.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/http-access-fallback/error-boundary.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/client/components/http-access-fallback/error-boundary.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/framework/boundary-components.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/framework/boundary-components.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/metadata/generate/icon-mark.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/lib/metadata/generate/icon-mark.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/next-devtools/userspace/app/segment-explorer-node.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/esm/next-devtools/userspace/app/segment-explorer-node.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/script.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
       },
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-client] (ecmascript)':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-client] (ecmascript)":
       {
-        '*': {
-          id: '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-rsc] (client reference proxy)',
-          name: '*',
+        "*": {
+          id: "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page.tsx [app-rsc] (client reference proxy)",
+          name: "*",
           chunks: [],
           async: false,
         },
@@ -472,32 +472,32 @@ globalThis.__RSC_MANIFEST['/hero-showcase/page'] = {
   },
   edgeRscModuleMapping: {},
   entryCSSFiles: {
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout': [
-      { path: 'static/chunks/[root-of-the-server]__0xngnio._.css', inlined: false },
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout": [
+      { path: "static/chunks/[root-of-the-server]__0xngnio._.css", inlined: false },
     ],
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error':
-      [{ path: 'static/chunks/[root-of-the-server]__0xngnio._.css', inlined: false }],
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page':
-      [{ path: 'static/chunks/[root-of-the-server]__0xngnio._.css', inlined: false }],
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error":
+      [{ path: "static/chunks/[root-of-the-server]__0xngnio._.css", inlined: false }],
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page":
+      [{ path: "static/chunks/[root-of-the-server]__0xngnio._.css", inlined: false }],
   },
   entryJSFiles: {
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout': [
-      'static/chunks/0qqu_next_dist_0ys2skq._.js',
-      'static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/layout": [
+      "static/chunks/0qqu_next_dist_0ys2skq._.js",
+      "static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
     ],
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error":
       [
-        'static/chunks/0qqu_next_dist_0ys2skq._.js',
-        'static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
-        'static/chunks/0qqu_next_dist_client_components_builtin_global-error_0fq2ijz.js',
+        "static/chunks/0qqu_next_dist_0ys2skq._.js",
+        "static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
+        "static/chunks/0qqu_next_dist_client_components_builtin_global-error_0fq2ijz.js",
       ],
-    '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page':
+    "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/src/app/hero-showcase/page":
       [
-        'static/chunks/0qqu_next_dist_0ys2skq._.js',
-        'static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js',
-        'static/chunks/0qqu_085lci-._.js',
-        'static/chunks/_gemini_antigravity_Monorepo-Uphillsnowball_apps_kovelai_site_src_0_0c9sm._.js',
-        'static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_hero-showcase_page_tsx_0fq2ijz._.js',
+        "static/chunks/0qqu_next_dist_0ys2skq._.js",
+        "static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_layout_tsx_0fho~8.._.js",
+        "static/chunks/0qqu_085lci-._.js",
+        "static/chunks/_gemini_antigravity_Monorepo-Uphillsnowball_apps_kovelai_site_src_0_0c9sm._.js",
+        "static/chunks/05n5_Monorepo-Uphillsnowball_apps_kovelai_site_src_app_hero-showcase_page_tsx_0fq2ijz._.js",
       ],
   },
 };

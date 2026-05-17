@@ -1,6 +1,6 @@
-import * as fs from 'fs/promises';
-import * as path from 'path';
-import type { Component, ComponentLibrary } from '../types/design-system';
+import * as fs from "fs/promises";
+import * as path from "path";
+import type { Component, ComponentLibrary } from "../types/design-system";
 
 export class ComponentScaffolder {
   /**
@@ -8,20 +8,20 @@ export class ComponentScaffolder {
    */
   async generateComponent(
     component: Component,
-    framework: ComponentLibrary['framework'],
+    framework: ComponentLibrary["framework"],
     outputPath: string,
   ): Promise<void> {
     switch (framework) {
-      case 'react':
+      case "react":
         await this.generateReactComponent(component, outputPath);
         break;
-      case 'vue':
+      case "vue":
         await this.generateVueComponent(component, outputPath);
         break;
-      case 'svelte':
+      case "svelte":
         await this.generateSvelteComponent(component, outputPath);
         break;
-      case 'web-components':
+      case "web-components":
         await this.generateWebComponent(component, outputPath);
         break;
       default:
@@ -33,7 +33,7 @@ export class ComponentScaffolder {
    * Generate React component with TypeScript
    */
   private async generateReactComponent(component: Component, outputPath: string): Promise<void> {
-    const componentDir = path.join(outputPath, 'components', component.name);
+    const componentDir = path.join(outputPath, "components", component.name);
     await fs.mkdir(componentDir, { recursive: true });
 
     // Generate component interface
@@ -49,7 +49,7 @@ ${interfaceCode}
  * ${component.description}
  */
 export const ${component.name}: React.FC<${component.name}Props> = ({
-${component.props.map((prop) => `  ${prop.name}${!prop.required ? '?' : ''},`).join('\n')}
+${component.props.map((prop) => `  ${prop.name}${!prop.required ? "?" : ""},`).join("\n")}
 }) => {
   return (
     <div className={styles.${component.name.toLowerCase()}}>
@@ -92,11 +92,11 @@ describe('${component.name}', () => {
   private generateReactInterface(component: Component): string {
     const propsInterface = component.props
       .map((prop) => {
-        const optional = prop.required ? '' : '?';
-        const description = prop.description ? `  /** ${prop.description} */\n` : '';
+        const optional = prop.required ? "" : "?";
+        const description = prop.description ? `  /** ${prop.description} */\n` : "";
         return `${description}  ${prop.name}${optional}: ${prop.type};`;
       })
-      .join('\n');
+      .join("\n");
 
     return `export interface ${component.name}Props {
 ${propsInterface}
@@ -107,7 +107,7 @@ ${propsInterface}
    * Generate Vue component (SFC)
    */
   private async generateVueComponent(component: Component, outputPath: string): Promise<void> {
-    const componentDir = path.join(outputPath, 'components', component.name);
+    const componentDir = path.join(outputPath, "components", component.name);
     await fs.mkdir(componentDir, { recursive: true });
 
     const propsDefinition = component.props
@@ -115,10 +115,10 @@ ${propsInterface}
         return `    ${prop.name}: {
       type: ${this.mapTypeToVue(prop.type)},
       required: ${prop.required},
-      ${prop.defaultValue ? `default: ${JSON.stringify(prop.defaultValue)},` : ''}
+      ${prop.defaultValue ? `default: ${JSON.stringify(prop.defaultValue)},` : ""}
     },`;
       })
-      .join('\n');
+      .join("\n");
 
     const componentCode = `<template>
   <div class="${component.name.toLowerCase()}">
@@ -154,15 +154,15 @@ ${propsDefinition}
    * Generate Svelte component
    */
   private async generateSvelteComponent(component: Component, outputPath: string): Promise<void> {
-    const componentDir = path.join(outputPath, 'components', component.name);
+    const componentDir = path.join(outputPath, "components", component.name);
     await fs.mkdir(componentDir, { recursive: true });
 
     const propsDeclaration = component.props
       .map((prop) => {
-        const defaultVal = prop.defaultValue ? ` = ${JSON.stringify(prop.defaultValue)}` : '';
-        return `  export let ${prop.name}${!prop.required ? '?' : ''}: ${prop.type}${defaultVal};`;
+        const defaultVal = prop.defaultValue ? ` = ${JSON.stringify(prop.defaultValue)}` : "";
+        return `  export let ${prop.name}${!prop.required ? "?" : ""}: ${prop.type}${defaultVal};`;
       })
-      .join('\n');
+      .join("\n");
 
     const componentCode = `<script lang="ts">
 ${propsDeclaration}
@@ -186,10 +186,10 @@ ${propsDeclaration}
    * Generate Web Component
    */
   private async generateWebComponent(component: Component, outputPath: string): Promise<void> {
-    const componentDir = path.join(outputPath, 'components', component.name);
+    const componentDir = path.join(outputPath, "components", component.name);
     await fs.mkdir(componentDir, { recursive: true });
 
-    const observedAttributes = component.props.map((p) => `'${p.name.toLowerCase()}'`).join(', ');
+    const observedAttributes = component.props.map((p) => `'${p.name.toLowerCase()}'`).join(", ");
 
     const componentCode = `class ${component.name} extends HTMLElement {
   static get observedAttributes() {
@@ -240,7 +240,7 @@ customElements.define('${this.toKebabCase(component.name)}', ${component.name});
     const indexCode = `export { ${component.name} } from './${component.name}';
 export type { ${component.name}Props } from './${component.name}';
 `;
-    await fs.writeFile(path.join(componentDir, 'index.ts'), indexCode);
+    await fs.writeFile(path.join(componentDir, "index.ts"), indexCode);
   }
 
   /**
@@ -248,10 +248,10 @@ export type { ${component.name}Props } from './${component.name}';
    */
   async scaffoldLibrary(library: ComponentLibrary, outputPath: string): Promise<void> {
     // Create directory structure
-    await fs.mkdir(path.join(outputPath, 'components'), { recursive: true });
-    await fs.mkdir(path.join(outputPath, 'tokens'), { recursive: true });
-    await fs.mkdir(path.join(outputPath, 'styles'), { recursive: true });
-    await fs.mkdir(path.join(outputPath, 'utils'), { recursive: true });
+    await fs.mkdir(path.join(outputPath, "components"), { recursive: true });
+    await fs.mkdir(path.join(outputPath, "tokens"), { recursive: true });
+    await fs.mkdir(path.join(outputPath, "styles"), { recursive: true });
+    await fs.mkdir(path.join(outputPath, "utils"), { recursive: true });
 
     // Generate design tokens
     await this.generateDesignTokensFile(library.designTokens, outputPath);
@@ -275,25 +275,25 @@ export type { ${component.name}Props } from './${component.name}';
    * Generate design tokens as CSS variables and TypeScript
    */
   private async generateDesignTokensFile(tokens: unknown, outputPath: string): Promise<void> {
-    const tokensDir = path.join(outputPath, 'tokens');
+    const tokensDir = path.join(outputPath, "tokens");
 
     // Generate CSS variables
     const cssVariables = this.generateCSSVariables(tokens);
-    await fs.writeFile(path.join(tokensDir, 'tokens.css'), cssVariables);
+    await fs.writeFile(path.join(tokensDir, "tokens.css"), cssVariables);
 
     // Generate TypeScript tokens
     const tsTokens = `export const designTokens = ${JSON.stringify(tokens, null, 2)} as const;
 
 export type DesignTokens = typeof designTokens;
 `;
-    await fs.writeFile(path.join(tokensDir, 'tokens.ts'), tsTokens);
+    await fs.writeFile(path.join(tokensDir, "tokens.ts"), tsTokens);
   }
 
   /**
    * Generate CSS variables from design tokens
    */
   private generateCSSVariables(tokens: unknown): string {
-    let css = ':root {\n';
+    let css = ":root {\n";
 
     // Colors
     if (tokens.colors) {
@@ -332,7 +332,7 @@ export type DesignTokens = typeof designTokens;
       });
     }
 
-    css += '}\n';
+    css += "}\n";
     return css;
   }
 
@@ -341,21 +341,21 @@ export type DesignTokens = typeof designTokens;
    */
   private async generatePackageJson(library: ComponentLibrary, outputPath: string): Promise<void> {
     const packageJson = {
-      name: library.name.toLowerCase().replace(/\s+/g, '-'),
+      name: library.name.toLowerCase().replace(/\s+/g, "-"),
       version: library.version,
       description: `${library.name} Design System Component Library`,
-      main: 'dist/index.js',
-      types: 'dist/index.d.ts',
+      main: "dist/index.js",
+      types: "dist/index.d.ts",
       scripts: {
-        build: 'tsc',
-        dev: 'tsc --watch',
-        test: 'jest',
+        build: "tsc",
+        dev: "tsc --watch",
+        test: "jest",
       },
       peerDependencies: this.getPeerDependencies(library.framework),
       devDependencies: this.getDevDependencies(library.framework),
     };
 
-    await fs.writeFile(path.join(outputPath, 'package.json'), JSON.stringify(packageJson, null, 2));
+    await fs.writeFile(path.join(outputPath, "package.json"), JSON.stringify(packageJson, null, 2));
   }
 
   /**
@@ -364,18 +364,18 @@ export type DesignTokens = typeof designTokens;
   private async generateReadme(library: ComponentLibrary, outputPath: string): Promise<void> {
     const readme = `# ${library.name}
 
-${library.styleGuide?.brandGuidelines || 'A comprehensive design system component library.'}
+${library.styleGuide?.brandGuidelines || "A comprehensive design system component library."}
 
 ## Installation
 
 \`\`\`bash
-npm install ${library.name.toLowerCase().replace(/\s+/g, '-')}
+npm install ${library.name.toLowerCase().replace(/\s+/g, "-")}
 \`\`\`
 
 ## Usage
 
-\`\`\`${library.framework === 'react' ? 'jsx' : library.framework}
-import { Button } from '${library.name.toLowerCase().replace(/\s+/g, '-')}';
+\`\`\`${library.framework === "react" ? "jsx" : library.framework}
+import { Button } from '${library.name.toLowerCase().replace(/\s+/g, "-")}';
 
 // Use the component
 <Button variant="primary">Click me</Button>
@@ -383,7 +383,7 @@ import { Button } from '${library.name.toLowerCase().replace(/\s+/g, '-')}';
 
 ## Components
 
-${library.components.map((c) => `- **${c.name}**: ${c.description}`).join('\n')}
+${library.components.map((c) => `- **${c.name}**: ${c.description}`).join("\n")}
 
 ## Design Tokens
 
@@ -405,7 +405,7 @@ For detailed documentation, please visit our [documentation site](#).
 MIT
 `;
 
-    await fs.writeFile(path.join(outputPath, 'README.md'), readme);
+    await fs.writeFile(path.join(outputPath, "README.md"), readme);
   }
 
   /**
@@ -414,7 +414,7 @@ MIT
   private async generateMainIndex(library: ComponentLibrary, outputPath: string): Promise<void> {
     const exports = library.components
       .map((c) => `export { ${c.name} } from './components/${c.name}';`)
-      .join('\n');
+      .join("\n");
 
     const indexCode = `${exports}
 
@@ -422,7 +422,7 @@ export { designTokens } from './tokens/tokens';
 export type { DesignTokens } from './tokens/tokens';
 `;
 
-    await fs.writeFile(path.join(outputPath, 'index.ts'), indexCode);
+    await fs.writeFile(path.join(outputPath, "index.ts"), indexCode);
   }
 
   /**
@@ -430,49 +430,49 @@ export type { DesignTokens } from './tokens/tokens';
    */
   private mapTypeToVue(type: string): string {
     const typeMap: Record<string, string> = {
-      string: 'String',
-      number: 'Number',
-      boolean: 'Boolean',
-      array: 'Array',
-      object: 'Object',
+      string: "String",
+      number: "Number",
+      boolean: "Boolean",
+      array: "Array",
+      object: "Object",
     };
-    return typeMap[type.toLowerCase()] || 'Object';
+    return typeMap[type.toLowerCase()] || "Object";
   }
 
   private toKebabCase(str: string): string {
-    return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+    return str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
   }
 
   private getPeerDependencies(framework: string): Record<string, string> {
     const deps: Record<string, Record<string, string>> = {
-      react: { react: '^18.0.0', 'react-dom': '^18.0.0' },
-      vue: { vue: '^3.0.0' },
-      svelte: { svelte: '^4.0.0' },
-      angular: { '@angular/core': '^17.0.0' },
-      'web-components': {},
+      react: { react: "^18.0.0", "react-dom": "^18.0.0" },
+      vue: { vue: "^3.0.0" },
+      svelte: { svelte: "^4.0.0" },
+      angular: { "@angular/core": "^17.0.0" },
+      "web-components": {},
     };
     return deps[framework] || {};
   }
 
   private getDevDependencies(framework: string): Record<string, string> {
     const common = {
-      typescript: '^5.0.0',
-      '@types/node': '^20.0.0',
+      typescript: "^5.0.0",
+      "@types/node": "^20.0.0",
     };
 
     const frameworkDeps: Record<string, Record<string, string>> = {
       react: {
         ...common,
-        '@types/react': '^18.0.0',
-        '@types/react-dom': '^18.0.0',
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
       },
       vue: {
         ...common,
-        '@vitejs/plugin-vue': '^4.0.0',
+        "@vitejs/plugin-vue": "^4.0.0",
       },
       svelte: {
         ...common,
-        '@sveltejs/kit': '^2.0.0',
+        "@sveltejs/kit": "^2.0.0",
       },
     };
 

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { API_BASE_URL } from '../../src/config';
+import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { API_BASE_URL } from "../../src/config";
 
 export default function AgentUI({ workspaceId }) {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
-  const [chatInput, setChatInput] = useState('');
+  const [chatInput, setChatInput] = useState("");
   const [isChatting, setIsChatting] = useState(false);
 
   const handleDrop = async (e) => {
@@ -17,24 +17,24 @@ export default function AgentUI({ workspaceId }) {
     const files = e.dataTransfer.files;
     if (!files || files.length === 0) return;
 
-    const token = typeof window !== 'undefined' ? localStorage.getItem('ShadowTag-v2_token') : null;
+    const token = typeof window !== "undefined" ? localStorage.getItem("ShadowTag-v2_token") : null;
 
     setIsUploading(true);
     try {
       const formData = new FormData();
-      formData.append('file', files[0]);
+      formData.append("file", files[0]);
 
       const response = await fetch(`${API_BASE_URL}/workspaces/${workspaceId}/knowledge/upload`, {
-        method: 'POST',
+        method: "POST",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: formData,
       });
 
-      if (!response.ok) throw new Error('Ingestion failed.');
+      if (!response.ok) throw new Error("Ingestion failed.");
       const result = await response.json();
       setMessages((prev) => [
         ...prev,
-        { role: 'system', content: `**✅ SYSTEM OMEGA RAG INGESTION:**\n\n${result.message}` },
+        { role: "system", content: `**✅ SYSTEM OMEGA RAG INGESTION:**\n\n${result.message}` },
       ]);
     } catch (err) {
       setError(err.message);
@@ -48,27 +48,27 @@ export default function AgentUI({ workspaceId }) {
     if (!chatInput.trim()) return;
 
     const userMsg = chatInput;
-    setChatInput('');
-    setMessages((prev) => [...prev, { role: 'user', content: `**User:** ${userMsg}` }]);
+    setChatInput("");
+    setMessages((prev) => [...prev, { role: "user", content: `**User:** ${userMsg}` }]);
     setIsChatting(true);
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/v1/agents/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          workspace_id: workspaceId || 'default',
-          agent_id: 'agent-1',
+          workspace_id: workspaceId || "default",
+          agent_id: "agent-1",
           message: userMsg,
         }),
       });
       const result = await response.json();
       setMessages((prev) => [
         ...prev,
-        { role: 'agent', content: `**Agent Omega:**\n\n${result.reply}` },
+        { role: "agent", content: `**Agent Omega:**\n\n${result.reply}` },
       ]);
     } catch (err) {
-      setMessages((prev) => [...prev, { role: 'system', content: `**❌ ERROR:** ${err.message}` }]);
+      setMessages((prev) => [...prev, { role: "system", content: `**❌ ERROR:** ${err.message}` }]);
     } finally {
       setIsChatting(false);
     }
@@ -97,14 +97,14 @@ export default function AgentUI({ workspaceId }) {
           messages.map((msg, i) => (
             <div
               key={i}
-              className={`p-4 rounded-lg bg-gray-900/50 border border-gray-800 ${msg.role === 'user' ? 'border-l-4 border-l-blue-500' : 'border-l-4 border-l-emerald-500'}`}
+              className={`p-4 rounded-lg bg-gray-900/50 border border-gray-800 ${msg.role === "user" ? "border-l-4 border-l-blue-500" : "border-l-4 border-l-emerald-500"}`}
             >
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
                   img: ({ node, ...props }) => {
                     // Fix absolute pathing by injecting the API proxy explicitly
-                    const fullSrc = props.src?.startsWith('/')
+                    const fullSrc = props.src?.startsWith("/")
                       ? `${API_BASE_URL}${props.src}`
                       : props.src;
                     return (
@@ -145,7 +145,7 @@ export default function AgentUI({ workspaceId }) {
           disabled={isChatting}
           className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors disabled:opacity-50"
         >
-          {isChatting ? '...' : 'Send'}
+          {isChatting ? "..." : "Send"}
         </button>
       </form>
     </div>

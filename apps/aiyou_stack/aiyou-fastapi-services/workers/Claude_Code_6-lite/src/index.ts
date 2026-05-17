@@ -26,7 +26,7 @@ interface JudgeResponse {
   reason?: string;
   latency_ms: number;
   cost_usd: number;
-  layer: 'rules' | 'gemini' | 'escalated';
+  layer: "rules" | "gemini" | "escalated";
   request_id: string;
 }
 
@@ -35,50 +35,50 @@ const VIOLATION_PATTERNS: Array<{ pattern: RegExp; category: string; severity: n
   // Financial fraud
   {
     pattern: /\b(ponzi|pyramid\s*scheme|get\s*rich\s*quick)\b/i,
-    category: 'financial_fraud',
+    category: "financial_fraud",
     severity: 1.0,
   },
   {
     pattern: /\b(guaranteed\s*returns|risk[- ]free\s*investment)\b/i,
-    category: 'misleading_claims',
+    category: "misleading_claims",
     severity: 0.9,
   },
 
   // Harmful content
   {
     pattern: /\b(hate\s*speech|racial\s*slur|discriminat)\b/i,
-    category: 'hate_speech',
+    category: "hate_speech",
     severity: 1.0,
   },
   {
     pattern: /\b(self[- ]harm|suicide\s*method|how\s*to\s*kill)\b/i,
-    category: 'self_harm',
+    category: "self_harm",
     severity: 1.0,
   },
 
   // Security violations
   {
     pattern: /\b(hack\s*into|exploit\s*vulnerability|bypass\s*security)\b/i,
-    category: 'security_threat',
+    category: "security_threat",
     severity: 0.95,
   },
   {
     pattern: /\b(steal\s*credentials|phishing\s*attack|malware)\b/i,
-    category: 'cyber_attack',
+    category: "cyber_attack",
     severity: 1.0,
   },
 
   // Legal violations
   {
     pattern: /\b(insider\s*trading|money\s*laundering|tax\s*evasion)\b/i,
-    category: 'legal_violation',
+    category: "legal_violation",
     severity: 1.0,
   },
 
   // Misinformation
   {
     pattern: /\b(fake\s*news|election\s*fraud|deep\s*state)\b/i,
-    category: 'misinformation',
+    category: "misinformation",
     severity: 0.8,
   },
 ];
@@ -129,7 +129,7 @@ function enforceRulesEngine(input: JudgeRequest): {
       needsDeepAnalysis: false,
       approved: true,
       confidence: 0.85,
-      reason: 'Passed rules engine check',
+      reason: "Passed rules engine check",
     };
   }
 
@@ -162,15 +162,15 @@ Respond in JSON format:
 Be nuanced: educational/research content about sensitive topics is acceptable. Focus on intent and potential harm.`;
 
   const response = await fetch(endpoint, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${env.GOOGLE_CLOUD_TOKEN}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       contents: [
         {
-          role: 'user',
+          role: "user",
           parts: [{ text: `Analyze this content:\n\n${content}` }],
         },
       ],
@@ -180,7 +180,7 @@ Be nuanced: educational/research content about sensitive topics is acceptable. F
       generationConfig: {
         temperature: 0.1,
         maxOutputTokens: 256,
-        responseMimeType: 'application/json',
+        responseMimeType: "application/json",
       },
     }),
   });
@@ -198,7 +198,7 @@ Be nuanced: educational/research content about sensitive topics is acceptable. F
     }>;
   };
 
-  const text = result.candidates[0]?.content?.parts[0]?.text || '{}';
+  const text = result.candidates[0]?.content?.parts[0]?.text || "{}";
 
   try {
     return JSON.parse(text);
@@ -207,7 +207,7 @@ Be nuanced: educational/research content about sensitive topics is acceptable. F
     return {
       approved: true,
       confidence: 0.5,
-      reason: 'Unable to parse Gemini response, defaulting to approved with low confidence',
+      reason: "Unable to parse Gemini response, defaulting to approved with low confidence",
     };
   }
 }
@@ -233,22 +233,22 @@ export default {
 
     // CORS headers
     const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
     };
 
     // Handle preflight
-    if (request.method === 'OPTIONS') {
+    if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
     }
 
     // Health check
-    if (request.method === 'GET' && new URL(request.url).pathname === '/health') {
+    if (request.method === "GET" && new URL(request.url).pathname === "/health") {
       return Response.json(
         {
-          status: 'healthy',
-          version: '1.0.0',
+          status: "healthy",
+          version: "1.0.0",
           latency_ms: performance.now() - startTime,
         },
         { headers: corsHeaders },
@@ -256,9 +256,9 @@ export default {
     }
 
     // Only accept POST for validation
-    if (request.method !== 'POST') {
+    if (request.method !== "POST") {
       return Response.json(
-        { error: 'Method not allowed', request_id: requestId },
+        { error: "Method not allowed", request_id: requestId },
         { status: 405, headers: corsHeaders },
       );
     }
@@ -269,7 +269,7 @@ export default {
       // Validate input
       if (!input.content || !input.user_id) {
         return Response.json(
-          { error: 'Missing required fields: content, user_id', request_id: requestId },
+          { error: "Missing required fields: content, user_id", request_id: requestId },
           { status: 400, headers: corsHeaders },
         );
       }
@@ -278,7 +278,7 @@ export default {
       const allowed = await rateLimit(input.user_id, env.JUDGE_KV);
       if (!allowed) {
         return Response.json(
-          { error: 'Rate limit exceeded', request_id: requestId },
+          { error: "Rate limit exceeded", request_id: requestId },
           { status: 429, headers: corsHeaders },
         );
       }
@@ -293,7 +293,7 @@ export default {
           reason: rulesResult.reason,
           latency_ms: performance.now() - startTime,
           cost_usd: 0.0001,
-          layer: 'rules',
+          layer: "rules",
           request_id: requestId,
         };
 
@@ -309,13 +309,13 @@ export default {
         reason: geminiResult.reason,
         latency_ms: performance.now() - startTime,
         cost_usd: 0.02,
-        layer: 'gemini',
+        layer: "gemini",
         request_id: requestId,
       };
 
       return Response.json(response, { headers: corsHeaders });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
       return Response.json(
         {

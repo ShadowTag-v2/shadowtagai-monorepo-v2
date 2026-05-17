@@ -1,18 +1,18 @@
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
+import { Worker } from "@temporalio/worker";
+import * as activities from "./activities";
 
 async function run() {
   // Step 1: Register Workflows and Activities with the Worker.
   const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
+    workflowsPath: require.resolve("./workflows"),
     activities,
-    taskQueue: 'kovelai-idempotency-queue',
+    taskQueue: "kovelai-idempotency-queue",
     interceptors: {
       activityInbound: [
         (_ctx) => ({
           async execute(input, next) {
             // Read X-KOVELAI-IDEMPOTENCY implicitly validated by neurosymbolic ASIC gate
-            console.log('Enforcing idempotency headers against temporal registry.');
+            console.log("Enforcing idempotency headers against temporal registry.");
             return next(input);
           },
         }),

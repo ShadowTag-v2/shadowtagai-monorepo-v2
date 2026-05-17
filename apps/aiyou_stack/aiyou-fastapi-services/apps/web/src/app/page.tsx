@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { client } from '@/lib/api/client.gen';
+import { useEffect, useState } from "react";
+import { client } from "@/lib/api/client.gen";
 import {
   getFirestoreMemoryMemoryFirestoreGet,
   getGcsMemoryMemoryGcsGet,
   healthHealthGet,
-} from '@/lib/api/sdk.gen';
-import type { MemoryResponse } from '@/lib/api/types.gen';
+} from "@/lib/api/sdk.gen";
+import type { MemoryResponse } from "@/lib/api/types.gen";
 
 // Configure base URL for the client
 client.setConfig({
-  baseUrl: 'http://localhost:8000',
+  baseUrl: "http://localhost:8000",
 });
 
 export default function Home() {
-  const [status, setStatus] = useState<string>('loading...');
-  const [gcsData, setGcsData] = useState<MemoryResponse['data'] | null>(null);
-  const [firestoreData, setFirestoreData] = useState<MemoryResponse['data'] | null>(null);
+  const [status, setStatus] = useState<string>("loading...");
+  const [gcsData, setGcsData] = useState<MemoryResponse["data"] | null>(null);
+  const [firestoreData, setFirestoreData] = useState<MemoryResponse["data"] | null>(null);
 
   useEffect(() => {
     // Check Health
@@ -25,9 +25,9 @@ export default function Home() {
       .then((res) => {
         // Health endpoint returns unknown, but we know it has status
         const data = res.data as { status: string };
-        setStatus(data?.status || 'error');
+        setStatus(data?.status || "error");
       })
-      .catch(() => setStatus('offline'));
+      .catch(() => setStatus("offline"));
 
     // Fetch Memories
     getGcsMemoryMemoryGcsGet()
@@ -56,7 +56,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2">
             <div
-              className={`w-3 h-3 rounded-full ${status === 'healthy' ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-red-500'}`}
+              className={`w-3 h-3 rounded-full ${status === "healthy" ? "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" : "bg-red-500"}`}
             />
             <span className="text-sm font-medium uppercase tracking-wider text-slate-500">
               {status}
@@ -73,7 +73,7 @@ export default function Home() {
               <span className="text-xs bg-blue-500/10 text-blue-400 px-2 py-1 rounded">Batch</span>
             </div>
             <pre className="bg-slate-950 rounded-lg p-4 text-xs font-mono overflow-auto max-h-60 text-slate-300 border border-slate-900">
-              {gcsData ? JSON.stringify(gcsData, null, 2) : 'Loading GCS data...'}
+              {gcsData ? JSON.stringify(gcsData, null, 2) : "Loading GCS data..."}
             </pre>
           </div>
 
@@ -86,7 +86,7 @@ export default function Home() {
               </span>
             </div>
             <pre className="bg-slate-950 rounded-lg p-4 text-xs font-mono overflow-auto max-h-60 text-slate-300 border border-slate-900">
-              {firestoreData ? JSON.stringify(firestoreData, null, 2) : 'Loading Firestore data...'}
+              {firestoreData ? JSON.stringify(firestoreData, null, 2) : "Loading Firestore data..."}
             </pre>
           </div>
         </div>

@@ -11,9 +11,9 @@
  *   if (!await verifyAppCheck(request, response)) return;
  */
 
-import { getAppCheck } from 'firebase-admin/app-check';
-import * as logger from 'firebase-functions/logger';
-import type { Request, Response } from 'firebase-functions/v2/https';
+import { getAppCheck } from "firebase-admin/app-check";
+import * as logger from "firebase-functions/logger";
+import type { Request, Response } from "firebase-functions/v2/https";
 
 /**
  * Verifies the X-Firebase-AppCheck header on the request.
@@ -25,20 +25,20 @@ import type { Request, Response } from 'firebase-functions/v2/https';
  */
 export async function verifyAppCheck(request: Request, response: Response): Promise<boolean> {
   // Allow emulator bypass for local development
-  if (process.env.FUNCTIONS_EMULATOR === 'true') {
-    logger.info('App Check bypassed: running in emulator');
+  if (process.env.FUNCTIONS_EMULATOR === "true") {
+    logger.info("App Check bypassed: running in emulator");
     return true;
   }
 
-  const appCheckToken = request.header('X-Firebase-AppCheck');
+  const appCheckToken = request.header("X-Firebase-AppCheck");
 
   if (!appCheckToken) {
-    logger.warn('App Check: missing token', {
+    logger.warn("App Check: missing token", {
       ip: request.ip,
       path: request.path,
-      userAgent: request.headers['user-agent'],
+      userAgent: request.headers["user-agent"],
     });
-    response.status(401).json({ error: 'Unauthorized: App Check token required' });
+    response.status(401).json({ error: "Unauthorized: App Check token required" });
     return false;
   }
 
@@ -46,12 +46,12 @@ export async function verifyAppCheck(request: Request, response: Response): Prom
     await getAppCheck().verifyToken(appCheckToken);
     return true;
   } catch (error) {
-    logger.warn('App Check: invalid token', {
+    logger.warn("App Check: invalid token", {
       ip: request.ip,
       path: request.path,
       error: (error as Error).message,
     });
-    response.status(401).json({ error: 'Unauthorized: invalid App Check token' });
+    response.status(401).json({ error: "Unauthorized: invalid App Check token" });
     return false;
   }
 }

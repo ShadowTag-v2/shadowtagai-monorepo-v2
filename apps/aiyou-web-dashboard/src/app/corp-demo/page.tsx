@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import type React from 'react';
-import { useState } from 'react';
+import type React from "react";
+import { useState } from "react";
 
-type Step = 'INITIAL' | 'RESEARCHING_BAD' | 'RESEARCHING_GOOD' | 'JUDGE6_INTERVENTION' | 'LOCKED';
+type Step = "INITIAL" | "RESEARCHING_BAD" | "RESEARCHING_GOOD" | "JUDGE6_INTERVENTION" | "LOCKED";
 
 export default function CorpInvisibleDemo() {
-  const [step, setStep] = useState<Step>('INITIAL');
-  const [inputValue, setInputValue] = useState('');
+  const [step, setStep] = useState<Step>("INITIAL");
+  const [inputValue, setInputValue] = useState("");
   const [violationCount, setViolationCount] = useState(0);
 
   const handleSearchSubmit = (e?: React.FormEvent) => {
@@ -18,30 +18,30 @@ export default function CorpInvisibleDemo() {
     setViolationCount(newViolationCount);
 
     if (newViolationCount >= 3) {
-      setStep('LOCKED');
+      setStep("LOCKED");
       return;
     }
 
-    setStep('RESEARCHING_BAD');
+    setStep("RESEARCHING_BAD");
 
     // Simulate invisible interception
     setTimeout(() => {
-      setStep('JUDGE6_INTERVENTION');
+      setStep("JUDGE6_INTERVENTION");
     }, 1500); // Intercepts before the page even navigates
   };
 
   const executeMitigation = (prompt: string) => {
     setInputValue(prompt);
-    setStep('RESEARCHING_GOOD');
+    setStep("RESEARCHING_GOOD");
 
     setTimeout(() => {
       // Return to initial state, simulating a safe search completion
-      setStep('INITIAL');
-      setInputValue('');
+      setStep("INITIAL");
+      setInputValue("");
     }, 2000);
   };
 
-  if (step === 'LOCKED') {
+  if (step === "LOCKED") {
     return (
       <div className="min-h-screen bg-red-950 flex flex-col items-center justify-center p-8 font-mono">
         <div className="max-w-xl w-full bg-black border border-red-600 rounded-lg p-8 shadow-[0_0_50px_rgba(220,38,38,0.3)] text-center">
@@ -133,15 +133,15 @@ export default function CorpInvisibleDemo() {
               onChange={(e) => setInputValue(e.target.value)}
               className="flex-1 outline-none text-base text-black"
               disabled={
-                step === 'RESEARCHING_BAD' ||
-                step === 'RESEARCHING_GOOD' ||
-                step === 'JUDGE6_INTERVENTION'
+                step === "RESEARCHING_BAD" ||
+                step === "RESEARCHING_GOOD" ||
+                step === "JUDGE6_INTERVENTION"
               }
             />
-            {step === 'RESEARCHING_BAD' && (
+            {step === "RESEARCHING_BAD" && (
               <div className="absolute right-4 w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
             )}
-            {step === 'RESEARCHING_GOOD' && (
+            {step === "RESEARCHING_GOOD" && (
               <div className="absolute right-4 w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
             )}
             <div className="flex items-center space-x-3 ml-3">
@@ -185,7 +185,7 @@ export default function CorpInvisibleDemo() {
         </form>
 
         <div className="text-xs text-[#70757a] mt-8">
-          Google offered in: <span className="text-gray-400 cursor-not-allowed mx-1">Français</span>{' '}
+          Google offered in: <span className="text-gray-400 cursor-not-allowed mx-1">Français</span>{" "}
           <span className="text-gray-400 cursor-not-allowed mx-1">Español</span>
         </div>
       </div>
@@ -211,7 +211,7 @@ export default function CorpInvisibleDemo() {
       </div>
 
       {/* INVISIBLE JUDGE 6 INTERVENTION OVERLAY */}
-      {step === 'JUDGE6_INTERVENTION' && (
+      {step === "JUDGE6_INTERVENTION" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-[#111] border border-red-500/50 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] max-w-2xl w-full p-0 overflow-hidden text-white font-mono">
             {/* Header */}
@@ -244,10 +244,10 @@ export default function CorpInvisibleDemo() {
             {/* Body */}
             <div className="p-6">
               <p className="text-gray-200 text-sm leading-relaxed mb-6">
-                Your web request{' '}
+                Your web request{" "}
                 <span className="text-emerald-400 bg-emerald-900/30 px-2 py-0.5 rounded ml-1">
                   "{inputValue}"
-                </span>{' '}
+                </span>{" "}
                 has been halted. This parameter violates our internal data governance policies or
                 accesses unauthorized domains.
               </p>
@@ -278,7 +278,7 @@ export default function CorpInvisibleDemo() {
                 <button
                   type="button"
                   onClick={() =>
-                    executeMitigation('Analyze public SEC filings and anonymized market data')
+                    executeMitigation("Analyze public SEC filings and anonymized market data")
                   }
                   className="w-full text-left bg-[#1B103C]/40 hover:bg-[#2a1b5c] border border-indigo-500/30 hover:border-indigo-400 px-4 py-3 rounded text-indigo-300 hover:text-white transition-all shadow-sm"
                 >
@@ -287,7 +287,7 @@ export default function CorpInvisibleDemo() {
                 <button
                   type="button"
                   onClick={() =>
-                    executeMitigation('Synthesize verified academic papers on the topic')
+                    executeMitigation("Synthesize verified academic papers on the topic")
                   }
                   className="w-full text-left bg-[#1B103C]/40 hover:bg-[#2a1b5c] border border-indigo-500/30 hover:border-indigo-400 px-4 py-3 rounded text-indigo-300 hover:text-white transition-all shadow-sm"
                 >
@@ -296,7 +296,7 @@ export default function CorpInvisibleDemo() {
                 <button
                   type="button"
                   onClick={() =>
-                    executeMitigation('Request official API access via Data Compliance Officer')
+                    executeMitigation("Request official API access via Data Compliance Officer")
                   }
                   className="flex items-center justify-between w-full text-left bg-emerald-900/20 hover:bg-emerald-800/40 border border-emerald-500/30 hover:border-emerald-400 px-4 py-3 rounded text-emerald-400 hover:text-emerald-300 transition-all shadow-sm group"
                 >

@@ -1,10 +1,10 @@
-import { query } from '@anthropic-ai/claude-agent-sdk';
+import { query } from "@anthropic-ai/claude-agent-sdk";
 import {
   FlowAnalysisResult,
   type PainPoint,
   type UserSession,
   type UXRecommendation,
-} from '../models/schemas';
+} from "../models/schemas";
 
 export class UserResearcherAgent {
   private systemPrompt = `You are a UX research expert who identifies and fixes user pain points.
@@ -46,18 +46,18 @@ Return your analysis in JSON format with two keys:
         prompt,
         options: {
           systemPrompt: this.systemPrompt,
-          model: 'claude-sonnet-4-5-20250929',
+          model: "claude-sonnet-4-5-20250929",
         },
       });
 
       // Collect the response from the async generator
-      let responseText = '';
+      let responseText = "";
       for await (const message of result) {
-        if (message.type === 'assistant' && 'content' in message) {
+        if (message.type === "assistant" && "content" in message) {
           const content = message.content;
           if (Array.isArray(content)) {
             for (const block of content) {
-              if (block.type === 'text') {
+              if (block.type === "text") {
                 responseText += block.text;
               }
             }
@@ -69,8 +69,8 @@ Return your analysis in JSON format with two keys:
       const analysis = this.parseAnalysisResponse(responseText);
       return analysis;
     } catch (error) {
-      console.error('Error analyzing user flows:', error);
-      throw new Error('Failed to analyze user flows');
+      console.error("Error analyzing user flows:", error);
+      throw new Error("Failed to analyze user flows");
     }
   }
 
@@ -81,7 +81,7 @@ Return your analysis in JSON format with two keys:
     const exitEvents = sessions.map((session) => {
       const lastEvent = session.events[session.events.length - 1];
       return {
-        page: lastEvent?.page || session.exitPoint || 'unknown',
+        page: lastEvent?.page || session.exitPoint || "unknown",
         completedGoal: session.completedGoal,
         sessionDuration:
           session.endTime && session.startTime
@@ -111,17 +111,17 @@ Return JSON with:
         prompt,
         options: {
           systemPrompt: this.systemPrompt,
-          model: 'claude-sonnet-4-5-20250929',
+          model: "claude-sonnet-4-5-20250929",
         },
       });
 
-      let responseText = '';
+      let responseText = "";
       for await (const message of result) {
-        if (message.type === 'assistant' && 'content' in message) {
+        if (message.type === "assistant" && "content" in message) {
           const content = message.content;
           if (Array.isArray(content)) {
             for (const block of content) {
-              if (block.type === 'text') {
+              if (block.type === "text") {
                 responseText += block.text;
               }
             }
@@ -131,8 +131,8 @@ Return JSON with:
 
       return this.parseRageQuitResponse(responseText);
     } catch (error) {
-      console.error('Error detecting rage quit points:', error);
-      throw new Error('Failed to detect rage quit points');
+      console.error("Error detecting rage quit points:", error);
+      throw new Error("Failed to detect rage quit points");
     }
   }
 
@@ -160,17 +160,17 @@ Return a JSON array of recommendations matching the UXRecommendationSchema struc
         prompt,
         options: {
           systemPrompt: this.systemPrompt,
-          model: 'claude-sonnet-4-5-20250929',
+          model: "claude-sonnet-4-5-20250929",
         },
       });
 
-      let responseText = '';
+      let responseText = "";
       for await (const message of result) {
-        if (message.type === 'assistant' && 'content' in message) {
+        if (message.type === "assistant" && "content" in message) {
           const content = message.content;
           if (Array.isArray(content)) {
             for (const block of content) {
-              if (block.type === 'text') {
+              if (block.type === "text") {
                 responseText += block.text;
               }
             }
@@ -180,8 +180,8 @@ Return a JSON array of recommendations matching the UXRecommendationSchema struc
 
       return this.parseRecommendationsResponse(responseText);
     } catch (error) {
-      console.error('Error generating recommendations:', error);
-      throw new Error('Failed to generate recommendations');
+      console.error("Error generating recommendations:", error);
+      throw new Error("Failed to generate recommendations");
     }
   }
 
@@ -200,7 +200,7 @@ Return a JSON array of recommendations matching the UXRecommendationSchema struc
 
     const prompt = `Optimize this user flow to reach the goal page:
 
-Current Flow: ${currentFlow.join(' → ')}
+Current Flow: ${currentFlow.join(" → ")}
 Goal Page: ${goalPage}
 
 Successful Sessions (${successfulSessions.length}):
@@ -243,17 +243,17 @@ Return JSON with:
         prompt,
         options: {
           systemPrompt: this.systemPrompt,
-          model: 'claude-sonnet-4-5-20250929',
+          model: "claude-sonnet-4-5-20250929",
         },
       });
 
-      let responseText = '';
+      let responseText = "";
       for await (const message of result) {
-        if (message.type === 'assistant' && 'content' in message) {
+        if (message.type === "assistant" && "content" in message) {
           const content = message.content;
           if (Array.isArray(content)) {
             for (const block of content) {
-              if (block.type === 'text') {
+              if (block.type === "text") {
                 responseText += block.text;
               }
             }
@@ -263,8 +263,8 @@ Return JSON with:
 
       return this.parseOptimizationResponse(responseText);
     } catch (error) {
-      console.error('Error optimizing user flow:', error);
-      throw new Error('Failed to optimize user flow');
+      console.error("Error optimizing user flow:", error);
+      throw new Error("Failed to optimize user flow");
     }
   }
 
@@ -294,17 +294,17 @@ Return JSON with:
         prompt,
         options: {
           systemPrompt: this.systemPrompt,
-          model: 'claude-sonnet-4-5-20250929',
+          model: "claude-sonnet-4-5-20250929",
         },
       });
 
-      let responseText = '';
+      let responseText = "";
       for await (const message of result) {
-        if (message.type === 'assistant' && 'content' in message) {
+        if (message.type === "assistant" && "content" in message) {
           const content = message.content;
           if (Array.isArray(content)) {
             for (const block of content) {
-              if (block.type === 'text') {
+              if (block.type === "text") {
                 responseText += block.text;
               }
             }
@@ -314,8 +314,8 @@ Return JSON with:
 
       return this.parseFeedbackAnalysis(responseText);
     } catch (error) {
-      console.error('Error analyzing feedback:', error);
-      throw new Error('Failed to analyze feedback');
+      console.error("Error analyzing feedback:", error);
+      throw new Error("Failed to analyze feedback");
     }
   }
 
@@ -329,7 +329,7 @@ Return JSON with:
       }
       return { painPoints: [], insights: [] };
     } catch (error) {
-      console.error('Error parsing analysis response:', error);
+      console.error("Error parsing analysis response:", error);
       return { painPoints: [], insights: [] };
     }
   }
@@ -340,10 +340,10 @@ Return JSON with:
       if (jsonMatch) {
         return JSON.parse(jsonMatch[0]);
       }
-      return { rageQuitPages: [], analysis: '' };
+      return { rageQuitPages: [], analysis: "" };
     } catch (error) {
-      console.error('Error parsing rage quit response:', error);
-      return { rageQuitPages: [], analysis: '' };
+      console.error("Error parsing rage quit response:", error);
+      return { rageQuitPages: [], analysis: "" };
     }
   }
 
@@ -355,7 +355,7 @@ Return JSON with:
       }
       return [];
     } catch (error) {
-      console.error('Error parsing recommendations response:', error);
+      console.error("Error parsing recommendations response:", error);
       return [];
     }
   }
@@ -366,10 +366,10 @@ Return JSON with:
       if (jsonMatch) {
         return JSON.parse(jsonMatch[0]);
       }
-      return { optimizedFlow: [], removedSteps: [], addedSteps: [], rationale: '' };
+      return { optimizedFlow: [], removedSteps: [], addedSteps: [], rationale: "" };
     } catch (error) {
-      console.error('Error parsing optimization response:', error);
-      return { optimizedFlow: [], removedSteps: [], addedSteps: [], rationale: '' };
+      console.error("Error parsing optimization response:", error);
+      return { optimizedFlow: [], removedSteps: [], addedSteps: [], rationale: "" };
     }
   }
 
@@ -379,10 +379,10 @@ Return JSON with:
       if (jsonMatch) {
         return JSON.parse(jsonMatch[0]);
       }
-      return { themes: [], priorityIssues: [], summary: '' };
+      return { themes: [], priorityIssues: [], summary: "" };
     } catch (error) {
-      console.error('Error parsing feedback analysis:', error);
-      return { themes: [], priorityIssues: [], summary: '' };
+      console.error("Error parsing feedback analysis:", error);
+      return { themes: [], priorityIssues: [], summary: "" };
     }
   }
 }

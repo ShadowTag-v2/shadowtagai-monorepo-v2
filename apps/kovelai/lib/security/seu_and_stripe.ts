@@ -15,12 +15,12 @@
  * @see arXiv:2512.14982 (prompt repetition accuracy boost)
  */
 
-import crypto from 'node:crypto';
-import { type JWTPayload, jwtVerify, SignJWT } from 'jose';
-import Stripe from 'stripe';
+import crypto from "node:crypto";
+import { type JWTPayload, jwtVerify, SignJWT } from "jose";
+import Stripe from "stripe";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeSecretKey) throw new Error('[SEU] STRIPE_SECRET_KEY must be set');
+if (!stripeSecretKey) throw new Error("[SEU] STRIPE_SECRET_KEY must be set");
 const stripe = new Stripe(stripeSecretKey);
 const SECRET_KEY = new TextEncoder().encode(process.env.SEU_JWT_SECRET);
 
@@ -50,19 +50,19 @@ export async function chargeAndMintSEU(
   // 1. Destination Charge: Client pays Lawyer directly. KovelAI touches zero legal fees.
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amount * 100, // cents
-    currency: 'usd',
+    currency: "usd",
     transfer_data: { destination: firmStripeAccountId },
   });
 
   // 2. Token is Sandbox-Bound (IP & Payment ID), Ephemeral (1 hr), and User-Billed
   const token = await new SignJWT({
     sandboxId: paymentIntent.id,
-    clientIpHash: crypto.createHash('sha256').update(clientIp).digest('hex'),
+    clientIpHash: crypto.createHash("sha256").update(clientIp).digest("hex"),
     firmId,
   } satisfies SeuPayload)
-    .setProtectedHeader({ alg: 'HS256' })
+    .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime('1h') // [E] Ephemeral: mathematically dies in 60 minutes
+    .setExpirationTime("1h") // [E] Ephemeral: mathematically dies in 60 minutes
     .sign(SECRET_KEY);
 
   return { clientSecret: paymentIntent.client_secret, seuToken: token };
@@ -78,11 +78,11 @@ export async function chargeAndMintSEU(
  */
 export async function verifySeuToken(token: string, incomingIp: string): Promise<SeuPayload> {
   const { payload } = await jwtVerify(token, SECRET_KEY);
-  const incomingIpHash = crypto.createHash('sha256').update(incomingIp).digest('hex');
+  const incomingIpHash = crypto.createHash("sha256").update(incomingIp).digest("hex");
 
   // [S] Sandbox-Bound Check: Blocks .npmrc exfiltration hacks
   if ((payload as SeuPayload).clientIpHash !== incomingIpHash) {
-    throw new Error('S.E.U. Perimeter Breach: IP Mismatch. Execution Halted.');
+    throw new Error("S.E.U. Perimeter Breach: IP Mismatch. Execution Halted.");
   }
 
   return payload as SeuPayload;

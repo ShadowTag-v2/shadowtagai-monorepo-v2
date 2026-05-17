@@ -2,14 +2,14 @@ import {
   CopilotRuntime,
   copilotRuntimeNextJSAppRouterEndpoint,
   RemoteAdapter,
-} from '@copilotkit/runtime'; // Check import path if needed, usually exported from main
-import type { NextRequest } from 'next/server';
+} from "@copilotkit/runtime"; // Check import path if needed, usually exported from main
+import type { NextRequest } from "next/server";
 
 // ADK / AG-UI Bridge
 // This route acts as the gateway between the React Frontend and the ADK Agent (Flying n-autoresearch/Kosmos/BioAgents)
 
 const serviceAdapter = new RemoteAdapter({
-  url: 'http://127.0.0.1:8080',
+  url: "http://127.0.0.1:8080",
 });
 
 // Actually, effectively, if the python backend IS the runtime, we might just need to point the frontend to it.
@@ -39,7 +39,7 @@ export const POST = async (req: NextRequest) => {
   const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
     runtime: new CopilotRuntime(),
     serviceAdapter,
-    endpoint: '/api/copilotkit',
+    endpoint: "/api/copilotkit",
   });
 
   return handleRequest(req);

@@ -15,36 +15,36 @@
  * 7. Download will start automatically
  */
 (async function extractClaudeWebConversations() {
-  console.log('%c🚀 Claude Web Conversation Extractor v1.1', 'font-size: 16px; font-weight: bold;');
-  console.log('%c-----------------------------------------', 'color: #888;');
-  console.log('%cNOTE: Ignore any red "CORS" or "NetworkError" messages.', 'color: yellow;');
+  console.log("%c🚀 Claude Web Conversation Extractor v1.1", "font-size: 16px; font-weight: bold;");
+  console.log("%c-----------------------------------------", "color: #888;");
+  console.log('%cNOTE: Ignore any red "CORS" or "NetworkError" messages.', "color: yellow;");
   console.log(
     "%cThese are from the website's background checks, NOT this script.",
-    'color: yellow;',
+    "color: yellow;",
   );
-  console.log('%c-----------------------------------------', 'color: #888;');
+  console.log("%c-----------------------------------------", "color: #888;");
 
-  const platform = window.location.hostname.includes('code.claude.com')
-    ? 'claude-code-web'
-    : 'claude-ai-web';
+  const platform = window.location.hostname.includes("code.claude.com")
+    ? "claude-code-web"
+    : "claude-ai-web";
 
   console.log(`📍 Platform detected: ${platform}`);
 
   // ========================================
   // STEP 1: Extract from localStorage
   // ========================================
-  console.log('\n🔍 Step 1: Scanning localStorage...');
+  console.log("\n🔍 Step 1: Scanning localStorage...");
   const localStorageData = {};
   const relevantKeys = [];
 
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (
-      key.includes('conversation') ||
-      key.includes('chat') ||
-      key.includes('message') ||
-      key.includes('claude') ||
-      key.includes('thread')
+      key.includes("conversation") ||
+      key.includes("chat") ||
+      key.includes("message") ||
+      key.includes("claude") ||
+      key.includes("thread")
     ) {
       relevantKeys.push(key);
       try {
@@ -60,7 +60,7 @@
   // ========================================
   // STEP 2: Extract from IndexedDB
   // ========================================
-  console.log('\n🔍 Step 2: Scanning IndexedDB...');
+  console.log("\n🔍 Step 2: Scanning IndexedDB...");
   const indexedDBData = {};
 
   try {
@@ -76,9 +76,9 @@
 
         for (const storeName of storeNames) {
           if (
-            storeName.includes('conversation') ||
-            storeName.includes('chat') ||
-            storeName.includes('message')
+            storeName.includes("conversation") ||
+            storeName.includes("chat") ||
+            storeName.includes("message")
           ) {
             try {
               const data = await getAllFromStore(db, storeName);
@@ -97,7 +97,7 @@
     }
   } catch (e) {
     console.error(
-      '   ✗ Could not list databases (browser security restriction likely):',
+      "   ✗ Could not list databases (browser security restriction likely):",
       e.message,
     );
   }
@@ -105,17 +105,17 @@
   // ========================================
   // STEP 3: Extract from DOM (visible conversations)
   // ========================================
-  console.log('\n🔍 Step 3: Scanning DOM for visible conversations...');
+  console.log("\n🔍 Step 3: Scanning DOM for visible conversations...");
   const domConversations = [];
 
   // Try multiple selectors for different Claude interfaces
   const selectors = [
     '[data-testid="conversation"]',
     '[data-testid="chat-message"]',
-    '.conversation-item',
-    '.chat-message',
+    ".conversation-item",
+    ".chat-message",
     '[role="article"]',
-    '[data-conversation-id]',
+    "[data-conversation-id]",
   ];
 
   for (const selector of selectors) {
@@ -141,12 +141,12 @@
   // ========================================
   // STEP 4: Extract from sessionStorage
   // ========================================
-  console.log('\n🔍 Step 4: Scanning sessionStorage...');
+  console.log("\n🔍 Step 4: Scanning sessionStorage...");
   const sessionStorageData = {};
 
   for (let i = 0; i < sessionStorage.length; i++) {
     const key = sessionStorage.key(i);
-    if (key.includes('conversation') || key.includes('chat')) {
+    if (key.includes("conversation") || key.includes("chat")) {
       try {
         sessionStorageData[key] = JSON.parse(sessionStorage.getItem(key));
       } catch (e) {
@@ -160,13 +160,13 @@
   // ========================================
   // STEP 5: Try to fetch via Network API (if available)
   // ========================================
-  console.log('\n🔍 Step 5: Attempting to fetch conversations via API...');
+  console.log("\n🔍 Step 5: Attempting to fetch conversations via API...");
   const apiConversations = await tryFetchConversationsAPI();
 
   // ========================================
   // STEP 6: Consolidate and structure data
   // ========================================
-  console.log('\n📦 Consolidating extraction results...');
+  console.log("\n📦 Consolidating extraction results...");
 
   const extraction = {
     metadata: {
@@ -174,7 +174,7 @@
       extracted_at: new Date().toISOString(),
       url: window.location.href,
       user_agent: navigator.userAgent,
-      extractor_version: '1.1.0',
+      extractor_version: "1.1.0",
     },
     sources: {
       localStorage: {
@@ -208,12 +208,12 @@
   // ========================================
   // STEP 7: Download results
   // ========================================
-  console.log('\n💾 Generating download...');
+  console.log("\n💾 Generating download...");
 
   const filename = `claude_web_extraction_${platform}_${Date.now()}.json`;
-  const blob = new Blob([JSON.stringify(extraction, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(extraction, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
   a.download = filename;
   document.body.appendChild(a);
@@ -251,7 +251,7 @@
 
   function getAllFromStore(db, storeName) {
     return new Promise((resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readonly');
+      const transaction = db.transaction(storeName, "readonly");
       const store = transaction.objectStore(storeName);
       const request = store.getAll();
 
@@ -269,13 +269,13 @@
   }
 
   async function tryFetchConversationsAPI() {
-    console.group('📡 Scanning API Endpoints (Safe Mode)');
+    console.group("📡 Scanning API Endpoints (Safe Mode)");
     // Common endpoints for Claude web interfaces
     const apiEndpoints = [
-      '/api/organizations/*/conversations',
-      '/api/conversations',
-      '/api/v1/conversations',
-      '/backend-api/conversations',
+      "/api/organizations/*/conversations",
+      "/api/conversations",
+      "/api/v1/conversations",
+      "/backend-api/conversations",
     ];
 
     for (const endpoint of apiEndpoints) {
@@ -287,7 +287,7 @@
         console.log(`   👉 Probing: ${endpoint}...`);
 
         const response = await fetch(endpoint, {
-          headers: { Accept: 'application/json' },
+          headers: { Accept: "application/json" },
           signal: controller.signal,
         });
 

@@ -3,10 +3,10 @@
  * Compliant implementation using public APIs only
  */
 
-import Anthropic from '@anthropic-ai/sdk';
-import { ProviderError } from '../core/errors.js';
-import type { CopilotRequest, Patch, ProviderConfig } from '../core/schema.js';
-import { BaseProvider } from './base.js';
+import Anthropic from "@anthropic-ai/sdk";
+import { ProviderError } from "../core/errors.js";
+import type { CopilotRequest, Patch, ProviderConfig } from "../core/schema.js";
+import { BaseProvider } from "./base.js";
 
 /**
  * Anthropic provider for Claude models
@@ -17,7 +17,7 @@ export class AnthropicProvider extends BaseProvider {
 
   constructor(config: ProviderConfig) {
     super(config);
-    this.model = config.model || 'claude-sonnet-4-20250514';
+    this.model = config.model || "claude-sonnet-4-20250514";
 
     if (config.apiKey) {
       this.client = new Anthropic({
@@ -31,7 +31,7 @@ export class AnthropicProvider extends BaseProvider {
 
   async generatePatch(request: CopilotRequest): Promise<Patch> {
     if (!this.client) {
-      throw new ProviderError('Anthropic API key not configured', 'anthropic', false);
+      throw new ProviderError("Anthropic API key not configured", "anthropic", false);
     }
 
     const prompt = this.buildPrompt(request);
@@ -43,7 +43,7 @@ export class AnthropicProvider extends BaseProvider {
         temperature: request.temperature,
         messages: [
           {
-            role: 'user',
+            role: "user",
             content: prompt,
           },
         ],
@@ -51,18 +51,18 @@ export class AnthropicProvider extends BaseProvider {
       });
 
       const response = message.content[0];
-      if (response.type !== 'text') {
-        throw new ProviderError('Unexpected response type from Anthropic', 'anthropic', false);
+      if (response.type !== "text") {
+        throw new ProviderError("Unexpected response type from Anthropic", "anthropic", false);
       }
 
       return this.parsePatchResponse(response.text, request.selection.filePath);
     } catch (error: unknown) {
       if (error.status === 429) {
-        const retryAfter = error.headers?.['retry-after'];
-        throw new ProviderError('Rate limit exceeded', 'anthropic', true, { retryAfter });
+        const retryAfter = error.headers?.["retry-after"];
+        throw new ProviderError("Rate limit exceeded", "anthropic", true, { retryAfter });
       }
 
-      throw new ProviderError(error.message || 'Unknown Anthropic error', 'anthropic', false, {
+      throw new ProviderError(error.message || "Unknown Anthropic error", "anthropic", false, {
         originalError: error,
       });
     }
@@ -80,15 +80,15 @@ CRITICAL RULES:
 
     const intentSpecific: Record<string, string> = {
       explain: "\nAdd clear comments explaining the code's purpose and logic.",
-      refactor: '\nImprove structure, naming, and organization while preserving behavior.',
-      test: '\nGenerate comprehensive unit tests covering edge cases.',
-      fix: '\nFix bugs and add error handling where needed.',
-      optimize: '\nImprove performance using efficient algorithms and data structures.',
-      document: '\nAdd JSDoc/docstrings and inline comments for clarity.',
-      security: '\nFix security vulnerabilities following OWASP best practices.',
+      refactor: "\nImprove structure, naming, and organization while preserving behavior.",
+      test: "\nGenerate comprehensive unit tests covering edge cases.",
+      fix: "\nFix bugs and add error handling where needed.",
+      optimize: "\nImprove performance using efficient algorithms and data structures.",
+      document: "\nAdd JSDoc/docstrings and inline comments for clarity.",
+      security: "\nFix security vulnerabilities following OWASP best practices.",
     };
 
-    return basePrompt + (intentSpecific[intent] || '');
+    return basePrompt + (intentSpecific[intent] || "");
   }
 
   private buildPrompt(request: CopilotRequest): string {
@@ -99,7 +99,7 @@ CRITICAL RULES:
       prompt += `Language: ${selection.language}\n`;
     }
     prompt += `\nTask: ${intent}\n\n`;
-    prompt += `Current code:\n\`\`\`${selection.language || ''}\n${selection.code}\n\`\`\`\n\n`;
+    prompt += `Current code:\n\`\`\`${selection.language || ""}\n${selection.code}\n\`\`\`\n\n`;
 
     if (selection.context) {
       prompt += `Surrounding context:\n${selection.context}\n\n`;
@@ -120,7 +120,7 @@ CRITICAL RULES:
       patch = codeBlockMatch[1];
     } else {
       // Try to find diff markers
-      const diffStart = response.indexOf('---');
+      const diffStart = response.indexOf("---");
       if (diffStart !== -1) {
         patch = response.substring(diffStart);
       }
@@ -128,7 +128,7 @@ CRITICAL RULES:
 
     // Extract explanation if present (text before the patch)
     let explanation: string | undefined;
-    const diffStart = response.indexOf('---');
+    const diffStart = response.indexOf("---");
     if (diffStart > 0) {
       const preText = response.substring(0, diffStart).trim();
       if (preText.length > 0 && preText.length < 500) {
@@ -157,7 +157,7 @@ CRITICAL RULES:
   }
 
   getName(): string {
-    return 'anthropic';
+    return "anthropic";
   }
 
   getModel(): string {

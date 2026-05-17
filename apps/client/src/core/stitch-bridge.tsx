@@ -10,7 +10,7 @@
  *   3. Falls back to Material 3 defaults if the MCP is unreachable
  */
 
-import React, { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
+import React, { createContext, type ReactNode, useContext, useEffect, useState } from "react";
 
 // ─── M3 Design Token Types ────────────────────────────────────────
 export interface StitchDesignTokens {
@@ -59,21 +59,21 @@ export interface StitchDesignTokens {
 // ─── M3 Default Tokens (Dark Theme) ──────────────────────────────
 const M3_DEFAULTS: StitchDesignTokens = {
   colors: {
-    primary: '#D0BCFF',
-    onPrimary: '#381E72',
-    primaryContainer: '#4F378B',
-    onPrimaryContainer: '#EADDFF',
-    secondary: '#CCC2DC',
-    onSecondary: '#332D41',
-    surface: '#1C1B1F',
-    onSurface: '#E6E1E5',
-    surfaceVariant: '#49454F',
-    onSurfaceVariant: '#CAC4D0',
-    error: '#F2B8B5',
-    onError: '#601410',
-    outline: '#938F99',
-    background: '#0F0D13',
-    onBackground: '#E6E1E5',
+    primary: "#D0BCFF",
+    onPrimary: "#381E72",
+    primaryContainer: "#4F378B",
+    onPrimaryContainer: "#EADDFF",
+    secondary: "#CCC2DC",
+    onSecondary: "#332D41",
+    surface: "#1C1B1F",
+    onSurface: "#E6E1E5",
+    surfaceVariant: "#49454F",
+    onSurfaceVariant: "#CAC4D0",
+    error: "#F2B8B5",
+    onError: "#601410",
+    outline: "#938F99",
+    background: "#0F0D13",
+    onBackground: "#E6E1E5",
   },
   typography: {
     displayLarge: '"Outfit", "Inter", system-ui, sans-serif',
@@ -86,17 +86,17 @@ const M3_DEFAULTS: StitchDesignTokens = {
     labelLarge: '"Inter", system-ui, sans-serif',
   },
   shapes: {
-    cornerNone: '0px',
-    cornerSmall: '8px',
-    cornerMedium: '12px',
-    cornerLarge: '16px',
-    cornerFull: '9999px',
+    cornerNone: "0px",
+    cornerSmall: "8px",
+    cornerMedium: "12px",
+    cornerLarge: "16px",
+    cornerFull: "9999px",
   },
   elevation: {
-    level0: 'none',
-    level1: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-    level2: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-    level3: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
+    level0: "none",
+    level1: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+    level2: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+    level3: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",
   },
 };
 
@@ -115,9 +115,9 @@ export function StitchThemeProvider({
   useEffect(() => {
     // Attempt to fetch live tokens from Stitch MCP via the API gateway
     if (projectId) {
-      fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      fetch("/graphql", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           query: `{ serviceHealth { api graphql } }`,
         }),
@@ -125,12 +125,12 @@ export function StitchThemeProvider({
         .then((res) => res.json())
         .then((data) => {
           if (data?.data?.serviceHealth?.api) {
-            console.log('[StitchBridge] Connected to V18 GraphQL Gateway');
+            console.log("[StitchBridge] Connected to V18 GraphQL Gateway");
             // Future: fetch design system tokens from Stitch MCP via GraphQL
           }
         })
         .catch(() => {
-          console.log('[StitchBridge] Using M3 defaults (gateway offline)');
+          console.log("[StitchBridge] Using M3 defaults (gateway offline)");
         });
     }
   }, [projectId]);

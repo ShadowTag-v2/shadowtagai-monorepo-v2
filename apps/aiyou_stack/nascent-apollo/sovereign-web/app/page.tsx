@@ -1,4 +1,4 @@
-import TeamSection from '../components/TeamSection';
+import TeamSection from "../components/TeamSection";
 
 export default function Home() {
   return (
@@ -23,7 +23,7 @@ export default function Home() {
           </h1>
 
           <p className="text-lg md:text-xl text-ghost max-w-2xl mx-auto font-light leading-relaxed">
-            Stop renting ephemeral thoughts.{' '}
+            Stop renting ephemeral thoughts.{" "}
             <strong className="text-starlight font-medium">Judge6</strong> is a sovereign AI
             architecture extracted from your Cloud Workstation.
             <span className="block mt-2 font-mono text-xs text-accent">

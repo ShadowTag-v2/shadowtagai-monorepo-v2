@@ -3,5 +3,5 @@
  * Entry point for the TypeScript implementation
  */
 
-export * from './agents';
-export { default as app } from './server';
+export * from "./agents";
+export { default as app } from "./server";

@@ -9,7 +9,7 @@
  * @see docs/cor30-security-audit.md — Finding: "Missing rate limiting"
  */
 
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 // ─── Configuration ──────────────────────────────────────────────────
 
@@ -23,17 +23,17 @@ const DEFAULT_CONFIG: RateLimitConfig = {
   windowMs: 60_000, // 1 minute
   maxRequests: 30,
   keyGenerator: (req) => {
-    const forwarded = req.headers.get('x-forwarded-for');
-    const ip = forwarded?.split(',')[0]?.trim() ?? 'unknown';
+    const forwarded = req.headers.get("x-forwarded-for");
+    const ip = forwarded?.split(",")[0]?.trim() ?? "unknown";
     return `${ip}:${req.nextUrl.pathname}`;
   },
 };
 
 const ROUTE_LIMITS: Record<string, Partial<RateLimitConfig>> = {
-  '/api/privileged-search': { maxRequests: 10, windowMs: 60_000 },
-  '/api/war-room/murder-board': { maxRequests: 5, windowMs: 60_000 },
-  '/api/war-room/stream': { maxRequests: 5, windowMs: 60_000 },
-  '/api/tokens/byok': { maxRequests: 20, windowMs: 60_000 },
+  "/api/privileged-search": { maxRequests: 10, windowMs: 60_000 },
+  "/api/war-room/murder-board": { maxRequests: 5, windowMs: 60_000 },
+  "/api/war-room/stream": { maxRequests: 5, windowMs: 60_000 },
+  "/api/tokens/byok": { maxRequests: 20, windowMs: 60_000 },
 };
 
 // ─── Sliding Window Store ───────────────────────────────────────────
@@ -82,7 +82,7 @@ export function createRateLimiter(customConfig?: Partial<RateLimitConfig>) {
 
         return NextResponse.json(
           {
-            error: 'Too many requests',
+            error: "Too many requests",
             retryAfter,
             limit: effectiveConfig.maxRequests,
             window: `${effectiveConfig.windowMs / 1000}s`,
@@ -90,10 +90,10 @@ export function createRateLimiter(customConfig?: Partial<RateLimitConfig>) {
           {
             status: 429,
             headers: {
-              'Retry-After': String(retryAfter),
-              'X-RateLimit-Limit': String(effectiveConfig.maxRequests),
-              'X-RateLimit-Remaining': '0',
-              'X-RateLimit-Reset': String(
+              "Retry-After": String(retryAfter),
+              "X-RateLimit-Limit": String(effectiveConfig.maxRequests),
+              "X-RateLimit-Remaining": "0",
+              "X-RateLimit-Reset": String(
                 Math.ceil((entry.timestamps[0] + effectiveConfig.windowMs) / 1000),
               ),
             },
@@ -109,8 +109,8 @@ export function createRateLimiter(customConfig?: Partial<RateLimitConfig>) {
       const response = await handler(req);
 
       // Attach rate limit headers
-      response.headers.set('X-RateLimit-Limit', String(effectiveConfig.maxRequests));
-      response.headers.set('X-RateLimit-Remaining', String(remaining));
+      response.headers.set("X-RateLimit-Limit", String(effectiveConfig.maxRequests));
+      response.headers.set("X-RateLimit-Remaining", String(remaining));
 
       return response;
     };

@@ -1,22 +1,22 @@
-'use client';
-import { BrowserProvider } from 'ethers';
-import { useState } from 'react';
+"use client";
+import { BrowserProvider } from "ethers";
+import { useState } from "react";
 
 export default function WalletConnect() {
   const [wallet, setWallet] = useState<string | null>(null);
 
   const connectWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
+    if (typeof window.ethereum !== "undefined") {
       try {
         const provider = new BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const address = await signer.getAddress();
         setWallet(address);
       } catch (err) {
-        console.error('User denied connection', err);
+        console.error("User denied connection", err);
       }
     } else {
-      alert('Please install MetaMask!');
+      alert("Please install MetaMask!");
     }
   };
 

@@ -38,8 +38,6 @@
       }
     }
   },
-  "sortedMiddleware": [
-    "/"
-  ],
+  "sortedMiddleware": ["/"],
   "functions": {}
 }

@@ -23,7 +23,7 @@ export interface E2ETestCase {
 }
 
 interface E2EStep {
-  action: 'navigate' | 'click' | 'type' | 'snapshot' | 'screenshot' | 'wait' | 'evaluate';
+  action: "navigate" | "click" | "type" | "snapshot" | "screenshot" | "wait" | "evaluate";
   target?: string;
   value?: string;
   timeout?: number;
@@ -33,37 +33,37 @@ interface E2EStep {
 
 export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
   {
-    name: 'TC-001: Landing Page Load',
-    description: 'Verify KovelAI landing page loads with privilege banner',
+    name: "TC-001: Landing Page Load",
+    description: "Verify KovelAI landing page loads with privilege banner",
     steps: [
-      { action: 'navigate', value: 'http://localhost:3000' },
-      { action: 'wait', value: 'PRIVILEGED SESSION', timeout: 5000 },
-      { action: 'snapshot' },
-      { action: 'screenshot' },
+      { action: "navigate", value: "http://localhost:3000" },
+      { action: "wait", value: "PRIVILEGED SESSION", timeout: 5000 },
+      { action: "snapshot" },
+      { action: "screenshot" },
     ],
-    expectedOutcome: 'Page loads with KOVEL PROTECTED banner visible',
+    expectedOutcome: "Page loads with KOVEL PROTECTED banner visible",
   },
   {
-    name: 'TC-002: Search Form Submission',
-    description: 'Verify search form accepts input and submits',
+    name: "TC-002: Search Form Submission",
+    description: "Verify search form accepts input and submits",
     steps: [
-      { action: 'navigate', value: 'http://localhost:3000' },
-      { action: 'wait', value: 'Search securely', timeout: 5000 },
-      { action: 'click', target: 'input[placeholder*="Search securely"]' },
-      { action: 'type', value: 'attorney-client privilege waiver AI' },
-      { action: 'click', target: 'button[type="submit"]' },
-      { action: 'wait', value: 'Searching', timeout: 2000 },
-      { action: 'screenshot' },
+      { action: "navigate", value: "http://localhost:3000" },
+      { action: "wait", value: "Search securely", timeout: 5000 },
+      { action: "click", target: 'input[placeholder*="Search securely"]' },
+      { action: "type", value: "attorney-client privilege waiver AI" },
+      { action: "click", target: 'button[type="submit"]' },
+      { action: "wait", value: "Searching", timeout: 2000 },
+      { action: "screenshot" },
     ],
-    expectedOutcome: 'Search submits and shows loading state',
+    expectedOutcome: "Search submits and shows loading state",
   },
   {
-    name: 'TC-003: Anti-Forensic Controls',
-    description: 'Verify copy and right-click are blocked on results',
+    name: "TC-003: Anti-Forensic Controls",
+    description: "Verify copy and right-click are blocked on results",
     steps: [
-      { action: 'navigate', value: 'http://localhost:3000' },
+      { action: "navigate", value: "http://localhost:3000" },
       {
-        action: 'evaluate',
+        action: "evaluate",
         value: `
         const el = document.querySelector('[oncontextmenu]');
         const event = new MouseEvent('contextmenu', { cancelable: true });
@@ -72,7 +72,7 @@ export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
       `,
       },
       {
-        action: 'evaluate',
+        action: "evaluate",
         value: `
         const el = document.querySelector('[oncopy]');
         const event = new ClipboardEvent('copy', { cancelable: true });
@@ -81,51 +81,51 @@ export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
       `,
       },
     ],
-    expectedOutcome: 'Context menu and copy events are prevented',
+    expectedOutcome: "Context menu and copy events are prevented",
   },
   {
-    name: 'TC-004: Dead Man Switch Visibility',
-    description: 'Verify Dead Man Switch status bar is visible',
+    name: "TC-004: Dead Man Switch Visibility",
+    description: "Verify Dead Man Switch status bar is visible",
     steps: [
-      { action: 'navigate', value: 'http://localhost:3000' },
-      { action: 'wait', value: 'Heartbeats', timeout: 5000 },
-      { action: 'snapshot' },
+      { action: "navigate", value: "http://localhost:3000" },
+      { action: "wait", value: "Heartbeats", timeout: 5000 },
+      { action: "snapshot" },
     ],
-    expectedOutcome: 'Heartbeat counter and session status visible in footer',
+    expectedOutcome: "Heartbeat counter and session status visible in footer",
   },
   {
-    name: 'TC-005: Session Info Display',
-    description: 'Verify session ID and status are displayed',
+    name: "TC-005: Session Info Display",
+    description: "Verify session ID and status are displayed",
     steps: [
-      { action: 'navigate', value: 'http://localhost:3000' },
-      { action: 'wait', value: 'Session:', timeout: 5000 },
+      { action: "navigate", value: "http://localhost:3000" },
+      { action: "wait", value: "Session:", timeout: 5000 },
       {
-        action: 'evaluate',
+        action: "evaluate",
         value: `
         const footer = document.querySelector('footer, [style*="position: fixed"][style*="bottom"]');
         return footer?.textContent ?? '';
       `,
       },
     ],
-    expectedOutcome: 'Footer shows truncated session ID and heartbeat count',
+    expectedOutcome: "Footer shows truncated session ID and heartbeat count",
   },
   {
-    name: 'TC-006: Responsive Layout (Mobile)',
-    description: 'Verify search UI renders correctly on mobile viewport',
+    name: "TC-006: Responsive Layout (Mobile)",
+    description: "Verify search UI renders correctly on mobile viewport",
     steps: [
       // Emulate mobile via Chrome DevTools MCP resize_page
-      { action: 'navigate', value: 'http://localhost:3000' },
-      { action: 'snapshot' },
-      { action: 'screenshot' },
+      { action: "navigate", value: "http://localhost:3000" },
+      { action: "snapshot" },
+      { action: "screenshot" },
     ],
-    expectedOutcome: 'Search form and results stack vertically on mobile',
+    expectedOutcome: "Search form and results stack vertically on mobile",
   },
   {
-    name: 'TC-007: Security Headers',
-    description: 'Verify anti-caching headers on API responses',
+    name: "TC-007: Security Headers",
+    description: "Verify anti-caching headers on API responses",
     steps: [
       {
-        action: 'evaluate',
+        action: "evaluate",
         value: `
         const res = await fetch('/api/privileged-search', {
           method: 'POST',
@@ -140,7 +140,7 @@ export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
       `,
       },
     ],
-    expectedOutcome: 'Response includes no-store, no-cache, and X-Privilege-Shield headers',
+    expectedOutcome: "Response includes no-store, no-cache, and X-Privilege-Shield headers",
   },
 ];
 
@@ -153,8 +153,8 @@ export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
  * 3. Run each test case via Chrome DevTools MCP tools
  */
 export function generateTestRunnerInstructions(): string {
-  let instructions = '# KovelAI E2E Test Instructions\n\n';
-  instructions += 'Execute via Chrome DevTools MCP:\n\n';
+  let instructions = "# KovelAI E2E Test Instructions\n\n";
+  instructions += "Execute via Chrome DevTools MCP:\n\n";
 
   for (const test of KOVELAI_E2E_TESTS) {
     instructions += `## ${test.name}\n`;
@@ -165,9 +165,9 @@ export function generateTestRunnerInstructions(): string {
       instructions += `  - ${step.action}`;
       if (step.value) instructions += `: ${step.value.slice(0, 80)}`;
       if (step.target) instructions += ` → ${step.target}`;
-      instructions += '\n';
+      instructions += "\n";
     }
-    instructions += '\n---\n\n';
+    instructions += "\n---\n\n";
   }
 
   return instructions;

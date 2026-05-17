@@ -1,6 +1,6 @@
-import React from 'react';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
+import React from "react";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
 
 export function HeroSection() {
   return (
@@ -16,7 +16,7 @@ export function HeroSection() {
         </Badge>
 
         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground">
-          Build Faster with{' '}
+          Build Faster with{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-600">
             Precision
           </span>

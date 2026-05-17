@@ -92,8 +92,8 @@
 @layer theme {
   :root,
   :host {
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    --font-mono: 'Geist Mono', 'Geist Mono Fallback', ui-monospace, monospace;
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
     --color-red-100: #ffe2e2;
     --color-red-200: #ffcaca;
     --color-red-300: #ffa3a3;
@@ -207,8 +207,8 @@
     --blur-xl: 24px;
     --default-transition-duration: 0.15s;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    --default-font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    --default-mono-font-family: 'Geist Mono', 'Geist Mono Fallback', ui-monospace, monospace;
+    --default-font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --default-mono-font-family: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
     --color-surface: #071325;
     --color-surface-container: #142032;
     --color-surface-low: #101c2e;
@@ -306,10 +306,10 @@
       ui-sans-serif,
       system-ui,
       sans-serif,
-      'Apple Color Emoji',
-      'Segoe UI Emoji',
-      'Segoe UI Symbol',
-      'Noto Color Emoji'
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji"
     );
     font-feature-settings: var(--default-font-feature-settings, normal);
     font-variation-settings: var(--default-font-variation-settings, normal);
@@ -360,8 +360,8 @@
       Menlo,
       Monaco,
       Consolas,
-      'Liberation Mono',
-      'Courier New',
+      "Liberation Mono",
+      "Courier New",
       monospace
     );
     font-feature-settings: var(--default-mono-font-feature-settings, normal);
@@ -551,7 +551,7 @@
   }
 
   button,
-  input:where([type='button'], [type='reset'], [type='submit']) {
+  input:where([type="button"], [type="reset"], [type="submit"]) {
     appearance: button;
   }
 
@@ -567,7 +567,7 @@
     height: auto;
   }
 
-  [hidden]:where(:not([hidden='until-found'])) {
+  [hidden]:where(:not([hidden="until-found"])) {
     display: none !important;
   }
 
@@ -2893,67 +2893,67 @@
     opacity: 0.5;
   }
 
-  :where([data-slot='button-group']) .in-data-\[slot\=button-group\]\:rounded-lg {
+  :where([data-slot="button-group"]) .in-data-\[slot\=button-group\]\:rounded-lg {
     border-radius: 0.5rem;
   }
 
-  .has-data-\[icon\=inline-end\]\:pr-1\.5:has([data-icon='inline-end']) {
+  .has-data-\[icon\=inline-end\]\:pr-1\.5:has([data-icon="inline-end"]) {
     padding-right: calc(var(--spacing) * 1.5);
   }
 
-  .has-data-\[icon\=inline-end\]\:pr-2:has([data-icon='inline-end']) {
+  .has-data-\[icon\=inline-end\]\:pr-2:has([data-icon="inline-end"]) {
     padding-right: calc(var(--spacing) * 2);
   }
 
-  .has-data-\[icon\=inline-end\]\:pr-3:has([data-icon='inline-end']) {
+  .has-data-\[icon\=inline-end\]\:pr-3:has([data-icon="inline-end"]) {
     padding-right: calc(var(--spacing) * 3);
   }
 
-  .has-data-\[icon\=inline-start\]\:pl-1\.5:has([data-icon='inline-start']) {
+  .has-data-\[icon\=inline-start\]\:pl-1\.5:has([data-icon="inline-start"]) {
     padding-left: calc(var(--spacing) * 1.5);
   }
 
-  .has-data-\[icon\=inline-start\]\:pl-2:has([data-icon='inline-start']) {
+  .has-data-\[icon\=inline-start\]\:pl-2:has([data-icon="inline-start"]) {
     padding-left: calc(var(--spacing) * 2);
   }
 
-  .has-data-\[icon\=inline-start\]\:pl-3:has([data-icon='inline-start']) {
+  .has-data-\[icon\=inline-start\]\:pl-3:has([data-icon="inline-start"]) {
     padding-left: calc(var(--spacing) * 3);
   }
 
-  .aria-expanded\:bg-muted[aria-expanded='true'] {
+  .aria-expanded\:bg-muted[aria-expanded="true"] {
     background-color: var(--muted);
   }
 
-  .aria-expanded\:bg-secondary[aria-expanded='true'] {
+  .aria-expanded\:bg-secondary[aria-expanded="true"] {
     background-color: var(--secondary);
   }
 
-  .aria-expanded\:text-foreground[aria-expanded='true'] {
+  .aria-expanded\:text-foreground[aria-expanded="true"] {
     color: var(--foreground);
   }
 
-  .aria-expanded\:text-secondary-foreground[aria-expanded='true'] {
+  .aria-expanded\:text-secondary-foreground[aria-expanded="true"] {
     color: var(--secondary-foreground);
   }
 
-  .aria-invalid\:border-destructive[aria-invalid='true'] {
+  .aria-invalid\:border-destructive[aria-invalid="true"] {
     border-color: var(--destructive);
   }
 
-  .aria-invalid\:ring-3[aria-invalid='true'] {
+  .aria-invalid\:ring-3[aria-invalid="true"] {
     --tw-ring-shadow: var(--tw-ring-inset, ) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow:
       var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
       var(--tw-ring-shadow), var(--tw-shadow);
   }
 
-  .aria-invalid\:ring-destructive\/20[aria-invalid='true'] {
+  .aria-invalid\:ring-destructive\/20[aria-invalid="true"] {
     --tw-ring-color: var(--destructive);
   }
 
   @supports (color: color-mix(in lab, red, red)) {
-    .aria-invalid\:ring-destructive\/20[aria-invalid='true'] {
+    .aria-invalid\:ring-destructive\/20[aria-invalid="true"] {
       --tw-ring-color: color-mix(in oklab, var(--destructive) 20%, transparent);
     }
   }
@@ -3180,22 +3180,22 @@
     }
   }
 
-  .dark\:aria-invalid\:border-destructive\/50:is(.dark *)[aria-invalid='true'] {
+  .dark\:aria-invalid\:border-destructive\/50:is(.dark *)[aria-invalid="true"] {
     border-color: var(--destructive);
   }
 
   @supports (color: color-mix(in lab, red, red)) {
-    .dark\:aria-invalid\:border-destructive\/50:is(.dark *)[aria-invalid='true'] {
+    .dark\:aria-invalid\:border-destructive\/50:is(.dark *)[aria-invalid="true"] {
       border-color: color-mix(in oklab, var(--destructive) 50%, transparent);
     }
   }
 
-  .dark\:aria-invalid\:ring-destructive\/40:is(.dark *)[aria-invalid='true'] {
+  .dark\:aria-invalid\:ring-destructive\/40:is(.dark *)[aria-invalid="true"] {
     --tw-ring-color: var(--destructive);
   }
 
   @supports (color: color-mix(in lab, red, red)) {
-    .dark\:aria-invalid\:ring-destructive\/40:is(.dark *)[aria-invalid='true'] {
+    .dark\:aria-invalid\:ring-destructive\/40:is(.dark *)[aria-invalid="true"] {
       --tw-ring-color: color-mix(in oklab, var(--destructive) 40%, transparent);
     }
   }
@@ -3208,17 +3208,17 @@
     flex-shrink: 0;
   }
 
-  .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-3 svg:not([class*='size-']) {
+  .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-3 svg:not([class*="size-"]) {
     width: calc(var(--spacing) * 3);
     height: calc(var(--spacing) * 3);
   }
 
-  .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-3\.5 svg:not([class*='size-']) {
+  .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-3\.5 svg:not([class*="size-"]) {
     width: calc(var(--spacing) * 3.5);
     height: calc(var(--spacing) * 3.5);
   }
 
-  .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-4 svg:not([class*='size-']) {
+  .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-4 svg:not([class*="size-"]) {
     width: calc(var(--spacing) * 4);
     height: calc(var(--spacing) * 4);
   }
@@ -3237,102 +3237,102 @@
 }
 
 @property --tw-animation-delay {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0s;
 }
 
 @property --tw-animation-direction {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: normal;
 }
 
 @property --tw-animation-duration {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-animation-fill-mode {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: none;
 }
 
 @property --tw-animation-iteration-count {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 1;
 }
 
 @property --tw-enter-blur {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-enter-opacity {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 1;
 }
 
 @property --tw-enter-rotate {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-enter-scale {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 1;
 }
 
 @property --tw-enter-translate-x {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-enter-translate-y {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-exit-blur {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-exit-opacity {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 1;
 }
 
 @property --tw-exit-rotate {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-exit-scale {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 1;
 }
 
 @property --tw-exit-translate-x {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-exit-translate-y {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
@@ -3526,7 +3526,7 @@
   animation: 0.8s ease-out both scroll-entrance;
 }
 
-.scroll-entrance[data-visible='false'] {
+.scroll-entrance[data-visible="false"] {
   opacity: 0;
   transform: translateY(32px);
 }
@@ -3619,7 +3619,7 @@
 }
 
 .faq-item summary:after {
-  content: '+';
+  content: "+";
   color: #e6c487;
   font-size: 1.25rem;
   transition: transform 0.3s;
@@ -4055,335 +4055,335 @@
 }
 
 @property --tw-translate-x {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-translate-y {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-translate-z {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-rotate-x {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-rotate-y {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-rotate-z {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-skew-x {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-skew-y {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-space-y-reverse {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-space-x-reverse {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-border-style {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: solid;
 }
 
 @property --tw-gradient-position {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-gradient-from {
-  syntax: '<color>';
+  syntax: "<color>";
   inherits: false;
   initial-value: #0000;
 }
 
 @property --tw-gradient-via {
-  syntax: '<color>';
+  syntax: "<color>";
   inherits: false;
   initial-value: #0000;
 }
 
 @property --tw-gradient-to {
-  syntax: '<color>';
+  syntax: "<color>";
   inherits: false;
   initial-value: #0000;
 }
 
 @property --tw-gradient-stops {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-gradient-via-stops {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-gradient-from-position {
-  syntax: '<length-percentage>';
+  syntax: "<length-percentage>";
   inherits: false;
   initial-value: 0%;
 }
 
 @property --tw-gradient-via-position {
-  syntax: '<length-percentage>';
+  syntax: "<length-percentage>";
   inherits: false;
   initial-value: 50%;
 }
 
 @property --tw-gradient-to-position {
-  syntax: '<length-percentage>';
+  syntax: "<length-percentage>";
   inherits: false;
   initial-value: 100%;
 }
 
 @property --tw-leading {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-font-weight {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-tracking {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-shadow {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
 
 @property --tw-shadow-color {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-shadow-alpha {
-  syntax: '<percentage>';
+  syntax: "<percentage>";
   inherits: false;
   initial-value: 100%;
 }
 
 @property --tw-inset-shadow {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
 
 @property --tw-inset-shadow-color {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-inset-shadow-alpha {
-  syntax: '<percentage>';
+  syntax: "<percentage>";
   inherits: false;
   initial-value: 100%;
 }
 
 @property --tw-ring-color {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-ring-shadow {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
 
 @property --tw-inset-ring-color {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-inset-ring-shadow {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
 
 @property --tw-ring-inset {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-ring-offset-width {
-  syntax: '<length>';
+  syntax: "<length>";
   inherits: false;
   initial-value: 0;
 }
 
 @property --tw-ring-offset-color {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: #fff;
 }
 
 @property --tw-ring-offset-shadow {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
 
 @property --tw-outline-style {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
   initial-value: solid;
 }
 
 @property --tw-blur {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-brightness {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-contrast {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-grayscale {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-hue-rotate {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-invert {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-opacity {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-saturate {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-sepia {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-drop-shadow {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-drop-shadow-color {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-drop-shadow-alpha {
-  syntax: '<percentage>';
+  syntax: "<percentage>";
   inherits: false;
   initial-value: 100%;
 }
 
 @property --tw-drop-shadow-size {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-backdrop-blur {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-backdrop-brightness {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-backdrop-contrast {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-backdrop-grayscale {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-backdrop-hue-rotate {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-backdrop-invert {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-backdrop-opacity {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-backdrop-saturate {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-backdrop-sepia {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-duration {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 
 @property --tw-ease {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 

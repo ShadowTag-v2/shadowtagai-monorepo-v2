@@ -13,7 +13,7 @@
  * - Technical debt reduction
  */
 
-import { ClaudeAgentOptions, query, tool } from '@anthropic-ai/claude-agent-sdk';
+import { ClaudeAgentOptions, query, tool } from "@anthropic-ai/claude-agent-sdk";
 
 /**
  * Refactoring configuration options
@@ -23,7 +23,7 @@ export interface RefactorConfig {
    * Focus areas for refactoring
    */
   focus?: Array<
-    'readability' | 'performance' | 'maintainability' | 'best-practices' | 'technical-debt'
+    "readability" | "performance" | "maintainability" | "best-practices" | "technical-debt"
   >;
 
   /**
@@ -37,7 +37,7 @@ export interface RefactorConfig {
    * - moderate: Standard refactoring practices
    * - aggressive: Comprehensive restructuring
    */
-  aggressiveness?: 'conservative' | 'moderate' | 'aggressive';
+  aggressiveness?: "conservative" | "moderate" | "aggressive";
 
   /**
    * Whether to include explanations for each change
@@ -61,7 +61,7 @@ export interface RefactorConfig {
 export interface CodeAnalysis {
   issues: Array<{
     type: string;
-    severity: 'low' | 'medium' | 'high' | 'critical';
+    severity: "low" | "medium" | "high" | "critical";
     description: string;
     location?: string;
     suggestion?: string;
@@ -94,21 +94,21 @@ export interface RefactorResult {
  * Custom tool for analyzing code quality
  */
 const analyzeCodeTool = tool({
-  name: 'analyze_code_quality',
-  description: 'Analyzes code to identify issues, code smells, and areas for improvement',
+  name: "analyze_code_quality",
+  description: "Analyzes code to identify issues, code smells, and areas for improvement",
   parameters: {
-    type: 'object',
+    type: "object",
     properties: {
       code: {
-        type: 'string',
-        description: 'The code to analyze',
+        type: "string",
+        description: "The code to analyze",
       },
       language: {
-        type: 'string',
-        description: 'Programming language of the code',
+        type: "string",
+        description: "Programming language of the code",
       },
     },
-    required: ['code'],
+    required: ["code"],
   },
   execute: async ({ code, language }) => {
     // This is a placeholder for actual code analysis logic
@@ -117,30 +117,30 @@ const analyzeCodeTool = tool({
     const recommendations = [];
 
     // Basic heuristic checks
-    if (code.includes('var ')) {
+    if (code.includes("var ")) {
       issues.push({
-        type: 'outdated-syntax',
-        severity: 'medium' as const,
-        description: 'Use of var instead of let/const',
-        suggestion: 'Replace var with let or const for block scoping',
+        type: "outdated-syntax",
+        severity: "medium" as const,
+        description: "Use of var instead of let/const",
+        suggestion: "Replace var with let or const for block scoping",
       });
     }
 
-    if (code.split('\n').some((line) => line.length > 100)) {
+    if (code.split("\n").some((line) => line.length > 100)) {
       issues.push({
-        type: 'readability',
-        severity: 'low' as const,
-        description: 'Long lines detected (>100 characters)',
-        suggestion: 'Break long lines for better readability',
+        type: "readability",
+        severity: "low" as const,
+        description: "Long lines detected (>100 characters)",
+        suggestion: "Break long lines for better readability",
       });
     }
 
-    if (code.includes('// TODO') || code.includes('// FIXME')) {
+    if (code.includes("// TODO") || code.includes("// FIXME")) {
       issues.push({
-        type: 'technical-debt',
-        severity: 'medium' as const,
-        description: 'TODO/FIXME comments found',
-        suggestion: 'Address technical debt markers',
+        type: "technical-debt",
+        severity: "medium" as const,
+        description: "TODO/FIXME comments found",
+        suggestion: "Address technical debt markers",
       });
     }
 
@@ -148,10 +148,10 @@ const analyzeCodeTool = tool({
     const callbackDepth = (code.match(/function\s*\([^)]*\)\s*{/g) || []).length;
     if (callbackDepth > 3) {
       issues.push({
-        type: 'complexity',
-        severity: 'high' as const,
-        description: 'Deep callback nesting detected',
-        suggestion: 'Consider using async/await or promises to flatten structure',
+        type: "complexity",
+        severity: "high" as const,
+        description: "Deep callback nesting detected",
+        suggestion: "Consider using async/await or promises to flatten structure",
       });
     }
 
@@ -160,14 +160,14 @@ const analyzeCodeTool = tool({
       metrics: {
         complexity: callbackDepth,
         maintainabilityIndex: Math.max(0, 100 - issues.length * 10),
-        technicalDebt: issues.length > 5 ? 'high' : issues.length > 2 ? 'medium' : 'low',
+        technicalDebt: issues.length > 5 ? "high" : issues.length > 2 ? "medium" : "low",
       },
       recommendations: [
-        'Follow consistent naming conventions',
-        'Add appropriate error handling',
-        'Include documentation for complex logic',
-        'Consider extracting reusable functions',
-        'Ensure proper separation of concerns',
+        "Follow consistent naming conventions",
+        "Add appropriate error handling",
+        "Include documentation for complex logic",
+        "Consider extracting reusable functions",
+        "Ensure proper separation of concerns",
       ],
     };
   },
@@ -256,9 +256,9 @@ export async function refactorCode(
   config: RefactorConfig = {},
 ): Promise<RefactorResult> {
   const {
-    focus = ['readability', 'performance', 'maintainability', 'best-practices'],
-    language = 'auto-detect',
-    aggressiveness = 'moderate',
+    focus = ["readability", "performance", "maintainability", "best-practices"],
+    language = "auto-detect",
+    aggressiveness = "moderate",
     explainChanges = true,
     styleGuide,
     specificIssues = [],
@@ -268,7 +268,7 @@ export async function refactorCode(
   let prompt = `Please refactor the following code:\n\n\`\`\`${language}\n${code}\n\`\`\`\n\n`;
 
   prompt += `**Refactoring Configuration:**\n`;
-  prompt += `- Focus areas: ${focus.join(', ')}\n`;
+  prompt += `- Focus areas: ${focus.join(", ")}\n`;
   prompt += `- Aggressiveness: ${aggressiveness}\n`;
   prompt += `- Language: ${language}\n`;
 
@@ -277,14 +277,14 @@ export async function refactorCode(
   }
 
   if (specificIssues.length > 0) {
-    prompt += `- Specific issues to address: ${specificIssues.join(', ')}\n`;
+    prompt += `- Specific issues to address: ${specificIssues.join(", ")}\n`;
   }
 
   prompt += `\n**Instructions:**\n`;
   prompt += `1. First, analyze the code to identify issues and improvement opportunities\n`;
   prompt += `2. Apply refactoring based on the focus areas and aggressiveness level\n`;
   prompt += `3. Provide the refactored code\n`;
-  prompt += `4. List all changes made${explainChanges ? ' with detailed explanations' : ''}\n`;
+  prompt += `4. List all changes made${explainChanges ? " with detailed explanations" : ""}\n`;
   prompt += `5. Provide a summary of improvements\n`;
 
   // Query the agent with custom tools
@@ -293,16 +293,16 @@ export async function refactorCode(
     options: {
       systemPrompt: CODE_REFACTORER_SYSTEM_PROMPT,
       tools: [analyzeCodeTool],
-      model: 'claude-sonnet-4-5-20250929', // Use the latest model
+      model: "claude-sonnet-4-5-20250929", // Use the latest model
       maxTokens: 8192, // Allow for comprehensive refactoring
     },
   });
 
   // Parse the result (simplified - in production, use structured output)
   const responseText = result.content
-    .filter((block: unknown) => block.type === 'text')
+    .filter((block: unknown) => block.type === "text")
     .map((block: unknown) => block.text)
-    .join('\n');
+    .join("\n");
 
   // Extract refactored code from markdown code blocks
   const codeBlockMatch = responseText.match(/```[\w]*\n([\s\S]*?)\n```/);
@@ -325,7 +325,7 @@ export async function refactorCode(
  * Analyze code without refactoring
  */
 export async function analyzeCode(code: string, language?: string): Promise<CodeAnalysis> {
-  const prompt = `Please analyze the following code for issues, code smells, and improvement opportunities:\n\n\`\`\`${language || ''}\n${code}\n\`\`\`\n\nProvide a detailed analysis including:
+  const prompt = `Please analyze the following code for issues, code smells, and improvement opportunities:\n\n\`\`\`${language || ""}\n${code}\n\`\`\`\n\nProvide a detailed analysis including:
 1. List of issues with severity levels
 2. Code quality metrics
 3. Specific recommendations for improvement`;
@@ -335,13 +335,13 @@ export async function analyzeCode(code: string, language?: string): Promise<Code
     options: {
       systemPrompt: CODE_REFACTORER_SYSTEM_PROMPT,
       tools: [analyzeCodeTool],
-      model: 'claude-sonnet-4-5-20250929',
+      model: "claude-sonnet-4-5-20250929",
     },
   });
 
   // Use the analyze_code_quality tool result if available
   const toolResult = result.content.find(
-    (block: unknown) => block.type === 'tool_result' && block.name === 'analyze_code_quality',
+    (block: unknown) => block.type === "tool_result" && block.name === "analyze_code_quality",
   );
 
   if (toolResult) {
@@ -364,12 +364,12 @@ export async function* refactorInteractive(
   config: RefactorConfig = {},
 ): AsyncGenerator<string, void, string | undefined> {
   const currentCode = code;
-  let userFeedback = '';
+  let userFeedback = "";
 
   const initialPrompt = `I have code that needs refactoring. Let's work on it together interactively.
 
 Initial code:
-\`\`\`${config.language || ''}
+\`\`\`${config.language || ""}
 ${currentCode}
 \`\`\`
 
@@ -382,21 +382,21 @@ Please start by analyzing the code and suggesting the first improvement.`;
     options: {
       systemPrompt: CODE_REFACTORER_SYSTEM_PROMPT,
       tools: [analyzeCodeTool],
-      model: 'claude-sonnet-4-5-20250929',
+      model: "claude-sonnet-4-5-20250929",
       stream: true,
     },
   });
 
   for await (const chunk of stream) {
-    if (chunk.type === 'text') {
+    if (chunk.type === "text") {
       yield chunk.text;
     }
   }
 
   // Allow for follow-up iterations
   while (true) {
-    userFeedback = yield '';
-    if (!userFeedback || userFeedback.toLowerCase() === 'done') {
+    userFeedback = yield "";
+    if (!userFeedback || userFeedback.toLowerCase() === "done") {
       break;
     }
 
@@ -404,13 +404,13 @@ Please start by analyzing the code and suggesting the first improvement.`;
       prompt: userFeedback,
       options: {
         systemPrompt: CODE_REFACTORER_SYSTEM_PROMPT,
-        model: 'claude-sonnet-4-5-20250929',
+        model: "claude-sonnet-4-5-20250929",
         stream: true,
       },
     });
 
     for await (const chunk of followUpStream) {
-      if (chunk.type === 'text') {
+      if (chunk.type === "text") {
         yield chunk.text;
       }
     }

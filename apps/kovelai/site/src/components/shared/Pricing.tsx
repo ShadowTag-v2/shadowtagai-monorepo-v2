@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 /**
  * Stripe Integration Reference (DO NOT DELETE):
@@ -20,10 +20,10 @@ import { useState } from 'react';
  * - Checkout API alternative: /api/billing/checkout (server-side Stripe Checkout Session).
  */
 
-const TRIAL_LINK = process.env.NEXT_PUBLIC_STRIPE_TRIAL_LINK || '#';
+const TRIAL_LINK = process.env.NEXT_PUBLIC_STRIPE_TRIAL_LINK || "#";
 const PRO_MONTHLY_LINK =
-  process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_LINK || process.env.NEXT_PUBLIC_STRIPE_PRO_LINK || '#';
-const PRO_ANNUAL_LINK = process.env.NEXT_PUBLIC_STRIPE_PRO_ANNUAL_LINK || '#';
+  process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_LINK || process.env.NEXT_PUBLIC_STRIPE_PRO_LINK || "#";
+const PRO_ANNUAL_LINK = process.env.NEXT_PUBLIC_STRIPE_PRO_ANNUAL_LINK || "#";
 
 interface PricingProps {
   onOpenModal: () => void;
@@ -32,67 +32,67 @@ interface PricingProps {
 export default function Pricing({ onOpenModal }: PricingProps) {
   const [isAnnual, setIsAnnual] = useState(false);
 
-  const proPrice = isAnnual ? '119' : '149';
-  const proPeriod = '/mo';
-  const proCtaLabel = isAnnual ? 'Start Pro — $59.50/mo' : 'Start Pro — $74.50/mo';
+  const proPrice = isAnnual ? "119" : "149";
+  const proPeriod = "/mo";
+  const proCtaLabel = isAnnual ? "Start Pro — $59.50/mo" : "Start Pro — $74.50/mo";
   const proCtaLink = isAnnual ? PRO_ANNUAL_LINK : PRO_MONTHLY_LINK;
   const proSubtext = isAnnual
-    ? 'Billed $1,428/yr — save $360 vs monthly'
-    : 'or save 20% with annual billing →';
+    ? "Billed $1,428/yr — save $360 vs monthly"
+    : "or save 20% with annual billing →";
 
   const plans = [
     {
-      tier: 'Trial',
-      price: '0',
-      period: '/mo',
+      tier: "Trial",
+      price: "0",
+      period: "/mo",
       features: [
-        '10,000 tokens/month',
-        'Kovel Doctrine protection',
-        'Zero data retention',
-        'Basic intake dashboard',
-        'Email support',
+        "10,000 tokens/month",
+        "Kovel Doctrine protection",
+        "Zero data retention",
+        "Basic intake dashboard",
+        "Email support",
       ],
-      cta: 'Start Free Trial',
+      cta: "Start Free Trial",
       ctaLink: TRIAL_LINK,
-      ctaStyle: 'btn-ghost',
+      ctaStyle: "btn-ghost",
       featured: false,
     },
     {
-      tier: 'Professional',
+      tier: "Professional",
       price: proPrice,
       period: proPeriod,
-      badge: '50% OFF — Beta Launch',
+      badge: "50% OFF — Beta Launch",
       features: [
-        '100,000 tokens/month',
-        'Everything in Trial, plus:',
-        'Privileged web search proxy',
-        'After-hours AI intake',
-        'Revenue analytics dashboard',
-        'Matter pipeline integration',
-        'Priority support',
+        "100,000 tokens/month",
+        "Everything in Trial, plus:",
+        "Privileged web search proxy",
+        "After-hours AI intake",
+        "Revenue analytics dashboard",
+        "Matter pipeline integration",
+        "Priority support",
       ],
       cta: proCtaLabel,
       ctaLink: proCtaLink,
-      ctaStyle: 'btn-gold',
+      ctaStyle: "btn-gold",
       featured: true,
       subtext: proSubtext,
     },
     {
-      tier: 'Enterprise',
-      price: '20K',
-      period: '/mo',
+      tier: "Enterprise",
+      price: "20K",
+      period: "/mo",
       features: [
-        'Unlimited tokens',
-        'Everything in Professional, plus:',
-        'Dedicated compliance officer',
-        'Custom retention policies',
-        'BYOK (Bring Your Own Key)',
-        'Regional data isolation',
-        '24/7 phone + Slack support',
+        "Unlimited tokens",
+        "Everything in Professional, plus:",
+        "Dedicated compliance officer",
+        "Custom retention policies",
+        "BYOK (Bring Your Own Key)",
+        "Regional data isolation",
+        "24/7 phone + Slack support",
       ],
-      cta: 'Contact Sales',
+      cta: "Contact Sales",
       ctaAction: true,
-      ctaStyle: 'btn-ghost',
+      ctaStyle: "btn-ghost",
       featured: false,
     },
   ];
@@ -113,7 +113,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
             id="monthly-btn"
             type="button"
             onClick={() => setIsAnnual(false)}
-            className={`text-sm font-medium transition-colors ${!isAnnual ? 'text-primary-text' : 'text-[#998f81]'}`}
+            className={`text-sm font-medium transition-colors ${!isAnnual ? "text-primary-text" : "text-[#998f81]"}`}
           >
             Monthly
           </button>
@@ -125,14 +125,14 @@ export default function Pricing({ onOpenModal }: PricingProps) {
             onClick={() => setIsAnnual(!isAnnual)}
             className="relative inline-flex h-7 w-[52px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-[#071325]"
             style={{
-              backgroundColor: isAnnual ? '#e6c487' : 'rgba(77,70,58,0.3)',
+              backgroundColor: isAnnual ? "#e6c487" : "rgba(77,70,58,0.3)",
             }}
           >
             <span
               className="pointer-events-none inline-block h-[22px] w-[22px] rounded-full bg-white shadow-lg ring-0 transition-transform duration-200 ease-in-out"
               style={{
-                transform: isAnnual ? 'translateX(26px)' : 'translateX(2px)',
-                marginTop: '1px',
+                transform: isAnnual ? "translateX(26px)" : "translateX(2px)",
+                marginTop: "1px",
               }}
             />
           </button>
@@ -140,7 +140,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
             id="annual-btn"
             type="button"
             onClick={() => setIsAnnual(true)}
-            className={`text-sm font-medium transition-colors ${isAnnual ? 'text-primary-text' : 'text-[#998f81]'}`}
+            className={`text-sm font-medium transition-colors ${isAnnual ? "text-primary-text" : "text-[#998f81]"}`}
           >
             Annual
           </button>
@@ -155,7 +155,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
           {plans.map((p) => (
             <div
               key={p.tier}
-              className={`pricing-card ${p.featured ? 'pricing-card--featured' : ''}`}
+              className={`pricing-card ${p.featured ? "pricing-card--featured" : ""}`}
             >
               {p.featured && <div className="pricing-badge">Most Popular</div>}
               {p.badge && (
@@ -168,7 +168,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
               </div>
               <div className="text-3xl font-extrabold text-primary-text mb-4">
                 <span className="text-lg text-[#a89d8e]">$</span>
-                <span id={p.tier === 'Professional' ? 'pro-price' : undefined}>{p.price}</span>
+                <span id={p.tier === "Professional" ? "pro-price" : undefined}>{p.price}</span>
                 <span className="text-sm font-normal text-[#a89d8e]">{p.period}</span>
               </div>
               <ul className="flex-1 space-y-2 mb-6">

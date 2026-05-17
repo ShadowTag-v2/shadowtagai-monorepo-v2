@@ -1,12 +1,12 @@
-import React from 'react';
-import { Button } from './ui/button';
+import React from "react";
+import { Button } from "./ui/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from './ui/navigation-menu';
+} from "./ui/navigation-menu";
 
 export function NavigationBar() {
   return (

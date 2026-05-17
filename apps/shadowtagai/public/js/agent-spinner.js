@@ -11,193 +11,193 @@
 
 // ── Canonical verb list (from src/constants/spinnerVerbs.ts) ──
 const SPINNER_VERBS = [
-  'Accomplishing',
-  'Actioning',
-  'Actualizing',
-  'Architecting',
-  'Baking',
-  'Beaming',
+  "Accomplishing",
+  "Actioning",
+  "Actualizing",
+  "Architecting",
+  "Baking",
+  "Beaming",
   "Beboppin'",
-  'Befuddling',
-  'Billowing',
-  'Blanching',
-  'Bloviating',
-  'Boogieing',
-  'Boondoggling',
-  'Booping',
-  'Bootstrapping',
-  'Brewing',
-  'Bunning',
-  'Burrowing',
-  'Calculating',
-  'Canoodling',
-  'Caramelizing',
-  'Cascading',
-  'Catapulting',
-  'Cerebrating',
-  'Channeling',
-  'Channelling',
-  'Choreographing',
-  'Churning',
-  'Clauding',
-  'Coalescing',
-  'Cogitating',
-  'Combobulating',
-  'Composing',
-  'Computing',
-  'Concocting',
-  'Considering',
-  'Contemplating',
-  'Cooking',
-  'Crafting',
-  'Creating',
-  'Crunching',
-  'Crystallizing',
-  'Cultivating',
-  'Deciphering',
-  'Deliberating',
-  'Determining',
-  'Dilly-dallying',
-  'Discombobulating',
-  'Doing',
-  'Doodling',
-  'Drizzling',
-  'Ebbing',
-  'Effecting',
-  'Elucidating',
-  'Embellishing',
-  'Enchanting',
-  'Envisioning',
-  'Evaporating',
-  'Fermenting',
-  'Fiddle-faddling',
-  'Finagling',
-  'Flambéing',
-  'Flibbertigibbeting',
-  'Flowing',
-  'Flummoxing',
-  'Fluttering',
-  'Forging',
-  'Forming',
-  'Frolicking',
-  'Frosting',
-  'Gallivanting',
-  'Galloping',
-  'Garnishing',
-  'Generating',
-  'Gesticulating',
-  'Germinating',
-  'Gitifying',
-  'Grooving',
-  'Gusting',
-  'Harmonizing',
-  'Hashing',
-  'Hatching',
-  'Herding',
-  'Honking',
-  'Hullaballooing',
-  'Hyperspacing',
-  'Ideating',
-  'Imagining',
-  'Improvising',
-  'Incubating',
-  'Inferring',
-  'Infusing',
-  'Ionizing',
-  'Jitterbugging',
-  'Julienning',
-  'Kneading',
-  'Leavening',
-  'Levitating',
-  'Lollygagging',
-  'Manifesting',
-  'Marinating',
-  'Meandering',
-  'Metamorphosing',
-  'Misting',
-  'Moonwalking',
-  'Moseying',
-  'Mulling',
-  'Mustering',
-  'Musing',
-  'Nebulizing',
-  'Nesting',
-  'Newspapering',
-  'Noodling',
-  'Nucleating',
-  'Orbiting',
-  'Orchestrating',
-  'Osmosing',
-  'Perambulating',
-  'Percolating',
-  'Perusing',
-  'Philosophising',
-  'Photosynthesizing',
-  'Pollinating',
-  'Pondering',
-  'Pontificating',
-  'Pouncing',
-  'Precipitating',
-  'Prestidigitating',
-  'Processing',
-  'Proofing',
-  'Propagating',
-  'Puttering',
-  'Puzzling',
-  'Quantumizing',
-  'Razzle-dazzling',
-  'Razzmatazzing',
-  'Recombobulating',
-  'Reticulating',
-  'Roosting',
-  'Ruminating',
-  'Sautéing',
-  'Scampering',
-  'Schlepping',
-  'Scurrying',
-  'Seasoning',
-  'Shenaniganing',
-  'Shimmying',
-  'Simmering',
-  'Skedaddling',
-  'Sketching',
-  'Slithering',
-  'Smooshing',
-  'Sock-hopping',
-  'Spelunking',
-  'Spinning',
-  'Sprouting',
-  'Stewing',
-  'Sublimating',
-  'Swirling',
-  'Swooping',
-  'Symbioting',
-  'Synthesizing',
-  'Tempering',
-  'Thinking',
-  'Thundering',
-  'Tinkering',
-  'Tomfoolering',
-  'Topsy-turvying',
-  'Transfiguring',
-  'Transmuting',
-  'Twisting',
-  'Undulating',
-  'Unfurling',
-  'Unravelling',
-  'Vibing',
-  'Waddling',
-  'Wandering',
-  'Warping',
-  'Whatchamacalliting',
-  'Whirlpooling',
-  'Whirring',
-  'Whisking',
-  'Wibbling',
-  'Working',
-  'Wrangling',
-  'Zesting',
-  'Zigzagging',
+  "Befuddling",
+  "Billowing",
+  "Blanching",
+  "Bloviating",
+  "Boogieing",
+  "Boondoggling",
+  "Booping",
+  "Bootstrapping",
+  "Brewing",
+  "Bunning",
+  "Burrowing",
+  "Calculating",
+  "Canoodling",
+  "Caramelizing",
+  "Cascading",
+  "Catapulting",
+  "Cerebrating",
+  "Channeling",
+  "Channelling",
+  "Choreographing",
+  "Churning",
+  "Clauding",
+  "Coalescing",
+  "Cogitating",
+  "Combobulating",
+  "Composing",
+  "Computing",
+  "Concocting",
+  "Considering",
+  "Contemplating",
+  "Cooking",
+  "Crafting",
+  "Creating",
+  "Crunching",
+  "Crystallizing",
+  "Cultivating",
+  "Deciphering",
+  "Deliberating",
+  "Determining",
+  "Dilly-dallying",
+  "Discombobulating",
+  "Doing",
+  "Doodling",
+  "Drizzling",
+  "Ebbing",
+  "Effecting",
+  "Elucidating",
+  "Embellishing",
+  "Enchanting",
+  "Envisioning",
+  "Evaporating",
+  "Fermenting",
+  "Fiddle-faddling",
+  "Finagling",
+  "Flambéing",
+  "Flibbertigibbeting",
+  "Flowing",
+  "Flummoxing",
+  "Fluttering",
+  "Forging",
+  "Forming",
+  "Frolicking",
+  "Frosting",
+  "Gallivanting",
+  "Galloping",
+  "Garnishing",
+  "Generating",
+  "Gesticulating",
+  "Germinating",
+  "Gitifying",
+  "Grooving",
+  "Gusting",
+  "Harmonizing",
+  "Hashing",
+  "Hatching",
+  "Herding",
+  "Honking",
+  "Hullaballooing",
+  "Hyperspacing",
+  "Ideating",
+  "Imagining",
+  "Improvising",
+  "Incubating",
+  "Inferring",
+  "Infusing",
+  "Ionizing",
+  "Jitterbugging",
+  "Julienning",
+  "Kneading",
+  "Leavening",
+  "Levitating",
+  "Lollygagging",
+  "Manifesting",
+  "Marinating",
+  "Meandering",
+  "Metamorphosing",
+  "Misting",
+  "Moonwalking",
+  "Moseying",
+  "Mulling",
+  "Mustering",
+  "Musing",
+  "Nebulizing",
+  "Nesting",
+  "Newspapering",
+  "Noodling",
+  "Nucleating",
+  "Orbiting",
+  "Orchestrating",
+  "Osmosing",
+  "Perambulating",
+  "Percolating",
+  "Perusing",
+  "Philosophising",
+  "Photosynthesizing",
+  "Pollinating",
+  "Pondering",
+  "Pontificating",
+  "Pouncing",
+  "Precipitating",
+  "Prestidigitating",
+  "Processing",
+  "Proofing",
+  "Propagating",
+  "Puttering",
+  "Puzzling",
+  "Quantumizing",
+  "Razzle-dazzling",
+  "Razzmatazzing",
+  "Recombobulating",
+  "Reticulating",
+  "Roosting",
+  "Ruminating",
+  "Sautéing",
+  "Scampering",
+  "Schlepping",
+  "Scurrying",
+  "Seasoning",
+  "Shenaniganing",
+  "Shimmying",
+  "Simmering",
+  "Skedaddling",
+  "Sketching",
+  "Slithering",
+  "Smooshing",
+  "Sock-hopping",
+  "Spelunking",
+  "Spinning",
+  "Sprouting",
+  "Stewing",
+  "Sublimating",
+  "Swirling",
+  "Swooping",
+  "Symbioting",
+  "Synthesizing",
+  "Tempering",
+  "Thinking",
+  "Thundering",
+  "Tinkering",
+  "Tomfoolering",
+  "Topsy-turvying",
+  "Transfiguring",
+  "Transmuting",
+  "Twisting",
+  "Undulating",
+  "Unfurling",
+  "Unravelling",
+  "Vibing",
+  "Waddling",
+  "Wandering",
+  "Warping",
+  "Whatchamacalliting",
+  "Whirlpooling",
+  "Whirring",
+  "Whisking",
+  "Wibbling",
+  "Working",
+  "Wrangling",
+  "Zesting",
+  "Zigzagging",
 ];
 
 // ── Stall thresholds (from Claude Code Spinner.tsx) ──
@@ -234,25 +234,25 @@ function createAgentSpinner(container, opts = {}) {
   const onStallChange = opts.onStallChange || null;
 
   // ── DOM Discovery ──
-  const verbEl = container.querySelector('.agent-spinner__verb');
-  const verbWrapEl = container.querySelector('.agent-spinner__verb-wrap');
+  const verbEl = container.querySelector(".agent-spinner__verb");
+  const verbWrapEl = container.querySelector(".agent-spinner__verb-wrap");
 
   let verbIndex = 0;
   let verbTimer = null;
   let stallTimer = null;
   let startTime = 0;
-  let currentStall = 'normal';
+  let currentStall = "normal";
 
   function setVerb(text) {
     if (!verbEl) return;
     // If we have a verb-wrap with enter/exit transitions
     if (verbWrapEl) {
-      const inner = verbWrapEl.querySelector('.agent-spinner__verb-inner');
+      const inner = verbWrapEl.querySelector(".agent-spinner__verb-inner");
       if (inner) {
-        inner.setAttribute('data-state', 'exiting');
+        inner.setAttribute("data-state", "exiting");
         setTimeout(() => {
           verbEl.textContent = text;
-          inner.setAttribute('data-state', 'entering');
+          inner.setAttribute("data-state", "entering");
         }, 250);
         return;
       }
@@ -267,23 +267,23 @@ function createAgentSpinner(container, opts = {}) {
 
   function updateStall() {
     const elapsed = Date.now() - startTime;
-    let next = 'normal';
+    let next = "normal";
     if (elapsed > STALL_WARM_MS) {
-      next = 'hot';
+      next = "hot";
     } else if (elapsed > STALL_NORMAL_MS) {
-      next = 'warm';
+      next = "warm";
     }
     if (next !== currentStall) {
       currentStall = next;
-      container.setAttribute('data-stall', next);
+      container.setAttribute("data-stall", next);
       if (onStallChange) onStallChange(next, elapsed);
     }
   }
 
   function start() {
     startTime = Date.now();
-    currentStall = 'normal';
-    container.setAttribute('data-stall', 'normal');
+    currentStall = "normal";
+    container.setAttribute("data-stall", "normal");
     verbIndex = 0;
     setVerb(verbs[0]);
 
@@ -292,8 +292,8 @@ function createAgentSpinner(container, opts = {}) {
     // Stall intensity check every second
     stallTimer = setInterval(updateStall, 1_000);
 
-    container.style.display = '';
-    container.removeAttribute('hidden');
+    container.style.display = "";
+    container.removeAttribute("hidden");
   }
 
   function stop() {
@@ -305,13 +305,13 @@ function createAgentSpinner(container, opts = {}) {
       clearInterval(stallTimer);
       stallTimer = null;
     }
-    currentStall = 'normal';
-    container.setAttribute('data-stall', 'normal');
+    currentStall = "normal";
+    container.setAttribute("data-stall", "normal");
   }
 
   function destroy() {
     stop();
-    container.style.display = 'none';
+    container.style.display = "none";
   }
 
   return { start, stop, destroy, getVerbs: () => verbs };
@@ -327,9 +327,9 @@ function createAgentSpinner(container, opts = {}) {
  * @returns {string} HTML string
  */
 function agentSpinnerHTML(opts = {}) {
-  const theme = opts.theme ? ` agent-spinner--${opts.theme}` : '';
-  const overlay = opts.overlay ? ' agent-spinner--overlay' : '';
-  const label = opts.label || '';
+  const theme = opts.theme ? ` agent-spinner--${opts.theme}` : "";
+  const overlay = opts.overlay ? " agent-spinner--overlay" : "";
+  const label = opts.label || "";
 
   return `<div class="agent-spinner${theme}${overlay}" data-stall="normal" role="status" aria-live="polite" aria-label="Loading">
   <span class="agent-spinner__glyph" aria-hidden="true">⠋</span>
@@ -339,15 +339,15 @@ function agentSpinnerHTML(opts = {}) {
     </div>
   </div>
   <span class="agent-spinner__dots" aria-hidden="true"></span>
-  ${label ? `<span class="agent-spinner__label">${label}</span>` : ''}
+  ${label ? `<span class="agent-spinner__label">${label}</span>` : ""}
 </div>`;
 }
 
 // ── Exports (ESM + UMD compatible) ──
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = { createAgentSpinner, agentSpinnerHTML, SPINNER_VERBS };
 }
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.AgentSpinner = { createAgentSpinner, agentSpinnerHTML, SPINNER_VERBS };
 }
 

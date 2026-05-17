@@ -12,7 +12,7 @@
  * [Agent] → [Antigravity Interceptor] → [Risk Evaluation] → [MCP Server]
  *         ↳ [RKILL if Tier 5 violation]
  */
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Risk Evaluation (ATP 5-19 Doctrine) ──────────────────────────────
 export enum MitigationTier {
@@ -31,45 +31,45 @@ export enum MitigationTier {
 // Tool risk classification
 const TOOL_RISK_MATRIX: Record<string, { maxTier: MitigationTier; description: string }> = {
   // Read-only operations — safe
-  clio_get_contact: { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Read contact' },
-  clio_get_matter: { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Read matter' },
+  clio_get_contact: { maxTier: MitigationTier.Tier1_ACCEPT, description: "Read contact" },
+  clio_get_matter: { maxTier: MitigationTier.Tier1_ACCEPT, description: "Read matter" },
   clio_fuzzy_conflict_check: {
     maxTier: MitigationTier.Tier1_ACCEPT,
-    description: 'Conflict check',
+    description: "Conflict check",
   },
-  sharepoint_read_document: { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Read document' },
+  sharepoint_read_document: { maxTier: MitigationTier.Tier1_ACCEPT, description: "Read document" },
 
   // Write operations — mitigate
   clio_attach_dossier: {
     maxTier: MitigationTier.Tier2_MITIGATE,
-    description: 'Attach document to matter',
+    description: "Attach document to matter",
   },
   clio_draft_time_entry: {
     maxTier: MitigationTier.Tier2_MITIGATE,
-    description: 'Draft billable time',
+    description: "Draft billable time",
   },
   sharepoint_upload_document: {
     maxTier: MitigationTier.Tier2_MITIGATE,
-    description: 'Upload to SharePoint',
+    description: "Upload to SharePoint",
   },
 
   // Financial operations — review required
   stripe_create_charge: {
     maxTier: MitigationTier.Tier3_REVIEW,
-    description: 'Create Stripe charge',
+    description: "Create Stripe charge",
   },
   clio_submit_invoice: {
     maxTier: MitigationTier.Tier3_REVIEW,
-    description: 'Submit invoice to client',
+    description: "Submit invoice to client",
   },
 
   // Destructive operations — reject
-  clio_delete_matter: { maxTier: MitigationTier.Tier4_REJECT, description: 'Delete matter' },
-  clio_delete_contact: { maxTier: MitigationTier.Tier4_REJECT, description: 'Delete contact' },
+  clio_delete_matter: { maxTier: MitigationTier.Tier4_REJECT, description: "Delete matter" },
+  clio_delete_contact: { maxTier: MitigationTier.Tier4_REJECT, description: "Delete contact" },
 
   // Catastrophic operations — RKILL
-  clio_export_all_data: { maxTier: MitigationTier.Tier5_RKILL, description: 'Mass data export' },
-  admin_reset_database: { maxTier: MitigationTier.Tier5_RKILL, description: 'Database reset' },
+  clio_export_all_data: { maxTier: MitigationTier.Tier5_RKILL, description: "Mass data export" },
+  admin_reset_database: { maxTier: MitigationTier.Tier5_RKILL, description: "Database reset" },
 };
 
 interface RiskContext {
@@ -135,7 +135,7 @@ export class AntigravityMCPClient {
   private mcpEndpoint: string;
   private agentId: string;
 
-  constructor(firmMcpUrl: string, agentId: string = 'kovelai-agent') {
+  constructor(firmMcpUrl: string, agentId: string = "kovelai-agent") {
     this.mcpEndpoint = firmMcpUrl;
     this.agentId = agentId;
   }
@@ -162,12 +162,12 @@ export class AntigravityMCPClient {
       tool: toolName,
       riskTier,
       payloadSizeBytes: payload.length,
-      action: 'PENDING',
+      action: "PENDING",
     };
 
     // Tier 5: RKILL — catastrophic, kill immediately
     if (riskTier === MitigationTier.Tier5_RKILL) {
-      logEntry.action = 'RKILL';
+      logEntry.action = "RKILL";
       await this.logInterception(logEntry);
       throw new AntigravityRKILLError(
         `[ANTIGRAVITY RKILL] ATP 5-19 Violation: Catastrophic tool call blocked. Tool: ${toolName}`,
@@ -176,7 +176,7 @@ export class AntigravityMCPClient {
 
     // Tier 4: Reject — block and log
     if (riskTier === MitigationTier.Tier4_REJECT) {
-      logEntry.action = 'REJECTED';
+      logEntry.action = "REJECTED";
       await this.logInterception(logEntry);
       throw new AntigravityRejectError(
         `[ANTIGRAVITY REJECT] Tool call rejected: ${toolName}. Tier 4 classification.`,
@@ -185,22 +185,22 @@ export class AntigravityMCPClient {
 
     // Tier 3: Review — log warning, proceed with caution
     if (riskTier === MitigationTier.Tier3_REVIEW) {
-      logEntry.action = 'REVIEW_PASSED';
+      logEntry.action = "REVIEW_PASSED";
       await this.logInterception(logEntry);
     }
 
     // Tier 1-2: Proceed
-    logEntry.action = 'ALLOWED';
+    logEntry.action = "ALLOWED";
     await this.logInterception(logEntry);
 
     // Execute the MCP call
     try {
       const response = await fetch(`${this.mcpEndpoint}/tools/${toolName}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-Antigravity-Agent': this.agentId,
-          'X-Antigravity-Risk-Tier': riskTier.toString(),
+          "Content-Type": "application/json",
+          "X-Antigravity-Agent": this.agentId,
+          "X-Antigravity-Risk-Tier": riskTier.toString(),
         },
         body: payload,
         signal: AbortSignal.timeout(30000),
@@ -217,7 +217,7 @@ export class AntigravityMCPClient {
         throw error;
       }
       throw new Error(
-        `[ANTIGRAVITY] MCP call to ${toolName} failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        `[ANTIGRAVITY] MCP call to ${toolName} failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
     }
   }
@@ -240,16 +240,16 @@ export class AntigravityMCPClient {
    * Log interception to Firestore (or console in dev).
    */
   private async logInterception(entry: InterceptionLog): Promise<void> {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[ANTIGRAVITY LOG]', JSON.stringify(entry));
+    if (process.env.NODE_ENV === "development") {
+      console.log("[ANTIGRAVITY LOG]", JSON.stringify(entry));
       return;
     }
     // Production: write to Firestore interception_log collection
     // This is fire-and-forget — don't block the tool call
     try {
       await fetch(`${process.env.FIRESTORE_API_URL}/interception_log`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(entry),
       });
     } catch {
@@ -262,14 +262,14 @@ export class AntigravityMCPClient {
 export class AntigravityRKILLError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'AntigravityRKILLError';
+    this.name = "AntigravityRKILLError";
   }
 }
 
 export class AntigravityRejectError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'AntigravityRejectError';
+    this.name = "AntigravityRejectError";
   }
 }
 
@@ -280,5 +280,5 @@ interface InterceptionLog {
   tool: string;
   riskTier: MitigationTier;
   payloadSizeBytes: number;
-  action: 'PENDING' | 'ALLOWED' | 'REVIEW_PASSED' | 'REJECTED' | 'RKILL';
+  action: "PENDING" | "ALLOWED" | "REVIEW_PASSED" | "REJECTED" | "RKILL";
 }

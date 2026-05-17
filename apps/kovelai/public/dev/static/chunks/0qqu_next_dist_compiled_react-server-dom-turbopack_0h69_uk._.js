@@ -1,12 +1,12 @@
-(globalThis['TURBOPACK'] || (globalThis['TURBOPACK'] = [])).push([
-  typeof document === 'object' ? document.currentScript : undefined,
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.development.js [app-client] (ecmascript)',
+(globalThis["TURBOPACK"] || (globalThis["TURBOPACK"] = [])).push([
+  typeof document === "object" ? document.currentScript : undefined,
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.development.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
     /**
      * @license React
@@ -16,17 +16,17 @@
      *
      * This source code is licensed under the MIT license found in the
      * LICENSE file in the root directory of this source tree.
-     */ ('use strict');
-    'production' !== ('TURBOPACK compile-time value', 'development') &&
+     */ ("use strict");
+    "production" !== ("TURBOPACK compile-time value", "development") &&
       (() => {
         function checkEvalAvailabilityOnceDev() {
           if (!hasConfirmedEval) {
             hasConfirmedEval = !0;
             try {
-              (0, eval)('null');
+              (0, eval)("null");
             } catch ($jscomp$unused$catch) {
               console.error(
-                'eval() is not supported in this environment. If this page was served with a `Content-Security-Policy` header, make sure that `unsafe-eval` is included. React requires eval() in development mode for various debugging features like reconstructing callstacks from a different environment.\nReact will never use eval() in production mode',
+                "eval() is not supported in this environment. If this page was served with a `Content-Security-Policy` header, make sure that `unsafe-eval` is included. React requires eval() in development mode for various debugging features like reconstructing callstacks from a different environment.\nReact will never use eval() in production mode",
               );
             }
           }
@@ -37,7 +37,7 @@
             if ((bundlerConfig = moduleExports && moduleExports[metadata[2]]))
               moduleExports = bundlerConfig.name;
             else {
-              bundlerConfig = moduleExports && moduleExports['*'];
+              bundlerConfig = moduleExports && moduleExports["*"];
               if (!bundlerConfig)
                 throw Error(
                   'Could not find the module "' +
@@ -53,11 +53,11 @@
           return metadata;
         }
         function resolveServerReference(bundlerConfig, id) {
-          var name = '',
+          var name = "",
             resolvedModuleData = bundlerConfig[id];
           if (resolvedModuleData) name = resolvedModuleData.name;
           else {
-            var idx = id.lastIndexOf('#');
+            var idx = id.lastIndexOf("#");
             -1 !== idx &&
               ((name = id.slice(idx + 1)), (resolvedModuleData = bundlerConfig[id.slice(0, idx)]));
             if (!resolvedModuleData)
@@ -73,14 +73,14 @@
         }
         function requireAsyncModule(id) {
           var promise = /*TURBOPACK member replacement*/ __turbopack_context__.r(id);
-          if ('function' !== typeof promise.then || 'fulfilled' === promise.status) return null;
+          if ("function" !== typeof promise.then || "fulfilled" === promise.status) return null;
           promise.then(
             (value) => {
-              promise.status = 'fulfilled';
+              promise.status = "fulfilled";
               promise.value = value;
             },
             (reason) => {
-              promise.status = 'rejected';
+              promise.status = "rejected";
               promise.reason = reason;
             },
           );
@@ -107,20 +107,20 @@
         }
         function requireModule(metadata) {
           var moduleExports = /*TURBOPACK member replacement*/ __turbopack_context__.r(metadata[0]);
-          if (4 === metadata.length && 'function' === typeof moduleExports.then)
-            if ('fulfilled' === moduleExports.status) moduleExports = moduleExports.value;
+          if (4 === metadata.length && "function" === typeof moduleExports.then)
+            if ("fulfilled" === moduleExports.status) moduleExports = moduleExports.value;
             else throw moduleExports.reason;
-          if ('*' === metadata[2]) return moduleExports;
-          if ('' === metadata[2])
+          if ("*" === metadata[2]) return moduleExports;
+          if ("" === metadata[2])
             return moduleExports.__esModule ? moduleExports.default : moduleExports;
           if (hasOwnProperty.call(moduleExports, metadata[2])) return moduleExports[metadata[2]];
         }
         function getIteratorFn(maybeIterable) {
-          if (null === maybeIterable || 'object' !== typeof maybeIterable) return null;
+          if (null === maybeIterable || "object" !== typeof maybeIterable) return null;
           maybeIterable =
             (MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL]) ||
-            maybeIterable['@@iterator'];
-          return 'function' === typeof maybeIterable ? maybeIterable : null;
+            maybeIterable["@@iterator"];
+          return "function" === typeof maybeIterable ? maybeIterable : null;
         }
         function isObjectPrototype(object) {
           if (!object) return !1;
@@ -138,8 +138,8 @@
             if (
               !descriptor ||
               (!descriptor.enumerable &&
-                (('key' !== names[i] && 'ref' !== names[i]) ||
-                  'function' !== typeof descriptor.get))
+                (("key" !== names[i] && "ref" !== names[i]) ||
+                  "function" !== typeof descriptor.get))
             )
               return !1;
           }
@@ -155,34 +155,34 @@
         }
         function describeValueForErrorMessage(value) {
           switch (typeof value) {
-            case 'string':
-              return JSON.stringify(10 >= value.length ? value : value.slice(0, 10) + '...');
-            case 'object':
-              if (isArrayImpl(value)) return '[...]';
-              if (null !== value && value.$$typeof === CLIENT_REFERENCE_TAG) return 'client';
+            case "string":
+              return JSON.stringify(10 >= value.length ? value : value.slice(0, 10) + "...");
+            case "object":
+              if (isArrayImpl(value)) return "[...]";
+              if (null !== value && value.$$typeof === CLIENT_REFERENCE_TAG) return "client";
               value = objectName(value);
-              return 'Object' === value ? '{...}' : value;
-            case 'function':
+              return "Object" === value ? "{...}" : value;
+            case "function":
               return value.$$typeof === CLIENT_REFERENCE_TAG
-                ? 'client'
+                ? "client"
                 : (value = value.displayName || value.name)
-                  ? 'function ' + value
-                  : 'function';
+                  ? "function " + value
+                  : "function";
             default:
               return String(value);
           }
         }
         function describeElementType(type) {
-          if ('string' === typeof type) return type;
+          if ("string" === typeof type) return type;
           switch (type) {
             case REACT_SUSPENSE_TYPE:
-              return 'Suspense';
+              return "Suspense";
             case REACT_SUSPENSE_LIST_TYPE:
-              return 'SuspenseList';
+              return "SuspenseList";
             case REACT_VIEW_TRANSITION_TYPE:
-              return 'ViewTransition';
+              return "ViewTransition";
           }
-          if ('object' === typeof type)
+          if ("object" === typeof type)
             switch (type.$$typeof) {
               case REACT_FORWARD_REF_TYPE:
                 return describeElementType(type.render);
@@ -196,86 +196,86 @@
                 } catch (x) {}
               }
             }
-          return '';
+          return "";
         }
         function describeObjectForErrorMessage(objectOrArray, expandedName) {
           var objKind = objectName(objectOrArray);
-          if ('Object' !== objKind && 'Array' !== objKind) return objKind;
+          if ("Object" !== objKind && "Array" !== objKind) return objKind;
           var start = -1,
             length = 0;
           if (isArrayImpl(objectOrArray))
             if (jsxChildrenParents.has(objectOrArray)) {
               var type = jsxChildrenParents.get(objectOrArray);
-              objKind = '<' + describeElementType(type) + '>';
+              objKind = "<" + describeElementType(type) + ">";
               for (var i = 0; i < objectOrArray.length; i++) {
                 var value = objectOrArray[i];
                 value =
-                  'string' === typeof value
+                  "string" === typeof value
                     ? value
-                    : 'object' === typeof value && null !== value
-                      ? '{' + describeObjectForErrorMessage(value) + '}'
-                      : '{' + describeValueForErrorMessage(value) + '}';
-                '' + i === expandedName
+                    : "object" === typeof value && null !== value
+                      ? "{" + describeObjectForErrorMessage(value) + "}"
+                      : "{" + describeValueForErrorMessage(value) + "}";
+                "" + i === expandedName
                   ? ((start = objKind.length), (length = value.length), (objKind += value))
                   : (objKind =
                       15 > value.length && 40 > objKind.length + value.length
                         ? objKind + value
-                        : objKind + '{...}');
+                        : objKind + "{...}");
               }
-              objKind += '</' + describeElementType(type) + '>';
+              objKind += "</" + describeElementType(type) + ">";
             } else {
-              objKind = '[';
+              objKind = "[";
               for (type = 0; type < objectOrArray.length; type++)
-                0 < type && (objKind += ', '),
+                0 < type && (objKind += ", "),
                   (i = objectOrArray[type]),
                   (i =
-                    'object' === typeof i && null !== i
+                    "object" === typeof i && null !== i
                       ? describeObjectForErrorMessage(i)
                       : describeValueForErrorMessage(i)),
-                  '' + type === expandedName
+                  "" + type === expandedName
                     ? ((start = objKind.length), (length = i.length), (objKind += i))
                     : (objKind =
                         10 > i.length && 40 > objKind.length + i.length
                           ? objKind + i
-                          : objKind + '...');
-              objKind += ']';
+                          : objKind + "...");
+              objKind += "]";
             }
           else if (objectOrArray.$$typeof === REACT_ELEMENT_TYPE)
-            objKind = '<' + describeElementType(objectOrArray.type) + '/>';
+            objKind = "<" + describeElementType(objectOrArray.type) + "/>";
           else {
-            if (objectOrArray.$$typeof === CLIENT_REFERENCE_TAG) return 'client';
+            if (objectOrArray.$$typeof === CLIENT_REFERENCE_TAG) return "client";
             if (jsxPropsParents.has(objectOrArray)) {
               objKind = jsxPropsParents.get(objectOrArray);
-              objKind = '<' + (describeElementType(objKind) || '...');
+              objKind = "<" + (describeElementType(objKind) || "...");
               type = Object.keys(objectOrArray);
               for (i = 0; i < type.length; i++) {
-                objKind += ' ';
+                objKind += " ";
                 value = type[i];
-                objKind += describeKeyForErrorMessage(value) + '=';
+                objKind += describeKeyForErrorMessage(value) + "=";
                 var _value2 = objectOrArray[value];
                 var _substr2 =
-                  value === expandedName && 'object' === typeof _value2 && null !== _value2
+                  value === expandedName && "object" === typeof _value2 && null !== _value2
                     ? describeObjectForErrorMessage(_value2)
                     : describeValueForErrorMessage(_value2);
-                'string' !== typeof _value2 && (_substr2 = '{' + _substr2 + '}');
+                "string" !== typeof _value2 && (_substr2 = "{" + _substr2 + "}");
                 value === expandedName
                   ? ((start = objKind.length), (length = _substr2.length), (objKind += _substr2))
                   : (objKind =
                       10 > _substr2.length && 40 > objKind.length + _substr2.length
                         ? objKind + _substr2
-                        : objKind + '...');
+                        : objKind + "...");
               }
-              objKind += '>';
+              objKind += ">";
             } else {
-              objKind = '{';
+              objKind = "{";
               type = Object.keys(objectOrArray);
               for (i = 0; i < type.length; i++)
-                0 < i && (objKind += ', '),
+                0 < i && (objKind += ", "),
                   (value = type[i]),
-                  (objKind += describeKeyForErrorMessage(value) + ': '),
+                  (objKind += describeKeyForErrorMessage(value) + ": "),
                   (_value2 = objectOrArray[value]),
                   (_value2 =
-                    'object' === typeof _value2 && null !== _value2
+                    "object" === typeof _value2 && null !== _value2
                       ? describeObjectForErrorMessage(_value2)
                       : describeValueForErrorMessage(_value2)),
                   value === expandedName
@@ -283,27 +283,27 @@
                     : (objKind =
                         10 > _value2.length && 40 > objKind.length + _value2.length
                           ? objKind + _value2
-                          : objKind + '...');
-              objKind += '}';
+                          : objKind + "...");
+              objKind += "}";
             }
           }
           return void 0 === expandedName
             ? objKind
             : -1 < start && 0 < length
-              ? ((objectOrArray = ' '.repeat(start) + '^'.repeat(length)),
-                '\n  ' + objKind + '\n  ' + objectOrArray)
-              : '\n  ' + objKind;
+              ? ((objectOrArray = " ".repeat(start) + "^".repeat(length)),
+                "\n  " + objKind + "\n  " + objectOrArray)
+              : "\n  " + objKind;
         }
         function serializeNumber(number) {
           return Number.isFinite(number)
             ? 0 === number && -Infinity === 1 / number
-              ? '$-0'
+              ? "$-0"
               : number
             : Infinity === number
-              ? '$Infinity'
+              ? "$Infinity"
               : -Infinity === number
-                ? '$-Infinity'
-                : '$NaN';
+                ? "$-Infinity"
+                : "$NaN";
         }
         function processReply(root, formFieldPrefix, temporaryReferences, resolve, reject) {
           function serializeTypedArray(tag, typedArray) {
@@ -313,7 +313,7 @@
             var blobId = nextPartId++;
             null === formData && (formData = new FormData());
             formData.append(formFieldPrefix + blobId, typedArray);
-            return '$' + tag + blobId.toString(16);
+            return "$" + tag + blobId.toString(16);
           }
           function serializeBinaryReader(reader) {
             function progress(entry) {
@@ -321,7 +321,7 @@
                 ? ((entry = nextPartId++),
                   data.append(formFieldPrefix + entry, new Blob(buffer)),
                   data.append(formFieldPrefix + streamId, '"$o' + entry.toString(16) + '"'),
-                  data.append(formFieldPrefix + streamId, 'C'),
+                  data.append(formFieldPrefix + streamId, "C"),
                   pendingParts--,
                   0 === pendingParts && resolve(data))
                 : (buffer.push(entry.value),
@@ -333,12 +333,12 @@
             var streamId = nextPartId++,
               buffer = [];
             reader.read(new Uint8Array(1024)).then(progress, reject);
-            return '$r' + streamId.toString(16);
+            return "$r" + streamId.toString(16);
           }
           function serializeReader(reader) {
             function progress(entry) {
               if (entry.done)
-                data.append(formFieldPrefix + streamId, 'C'),
+                data.append(formFieldPrefix + streamId, "C"),
                   pendingParts--,
                   0 === pendingParts && resolve(data);
               else
@@ -355,12 +355,12 @@
             pendingParts++;
             var streamId = nextPartId++;
             reader.read().then(progress, reject);
-            return '$R' + streamId.toString(16);
+            return "$R" + streamId.toString(16);
           }
           function serializeReadableStream(stream) {
             try {
               var binaryReader = stream.getReader({
-                mode: 'byob',
+                mode: "byob",
               });
             } catch (x) {
               return serializeReader(stream.getReader());
@@ -370,11 +370,11 @@
           function serializeAsyncIterable(iterable, iterator) {
             function progress(entry) {
               if (entry.done) {
-                if (void 0 === entry.value) data.append(formFieldPrefix + streamId, 'C');
+                if (void 0 === entry.value) data.append(formFieldPrefix + streamId, "C");
                 else
                   try {
                     var partJSON = JSON.stringify(entry.value, resolveToJSON);
-                    data.append(formFieldPrefix + streamId, 'C' + partJSON);
+                    data.append(formFieldPrefix + streamId, "C" + partJSON);
                   } catch (x) {
                     reject(x);
                     return;
@@ -396,41 +396,41 @@
             var streamId = nextPartId++;
             iterable = iterable === iterator;
             iterator.next().then(progress, reject);
-            return '$' + (iterable ? 'x' : 'X') + streamId.toString(16);
+            return "$" + (iterable ? "x" : "X") + streamId.toString(16);
           }
           function resolveToJSON(key, value) {
-            '__proto__' === key &&
+            "__proto__" === key &&
               console.error(
-                'Expected not to serialize an object with own property `__proto__`. When parsed this property will be omitted.%s',
+                "Expected not to serialize an object with own property `__proto__`. When parsed this property will be omitted.%s",
                 describeObjectForErrorMessage(this, key),
               );
             var originalValue = this[key];
-            'object' !== typeof originalValue ||
+            "object" !== typeof originalValue ||
               originalValue === value ||
               originalValue instanceof Date ||
-              ('Object' !== objectName(originalValue)
+              ("Object" !== objectName(originalValue)
                 ? console.error(
-                    'Only plain objects can be passed to Server Functions from the Client. %s objects are not supported.%s',
+                    "Only plain objects can be passed to Server Functions from the Client. %s objects are not supported.%s",
                     objectName(originalValue),
                     describeObjectForErrorMessage(this, key),
                   )
                 : console.error(
-                    'Only plain objects can be passed to Server Functions from the Client. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.%s',
+                    "Only plain objects can be passed to Server Functions from the Client. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.%s",
                     describeObjectForErrorMessage(this, key),
                   ));
             if (null === value) return null;
-            if ('object' === typeof value) {
+            if ("object" === typeof value) {
               switch (value.$$typeof) {
                 case REACT_ELEMENT_TYPE:
-                  if (void 0 !== temporaryReferences && -1 === key.indexOf(':')) {
+                  if (void 0 !== temporaryReferences && -1 === key.indexOf(":")) {
                     var parentReference = writtenObjects.get(this);
                     if (void 0 !== parentReference)
-                      return temporaryReferences.set(parentReference + ':' + key, value), '$T';
+                      return temporaryReferences.set(parentReference + ":" + key, value), "$T";
                   }
                   if (void 0 !== temporaryReferences && modelRoot === value)
-                    return (modelRoot = null), '$T';
+                    return (modelRoot = null), "$T";
                   throw Error(
-                    'React Element cannot be passed to Server Functions from the Client without a temporary reference set. Pass a TemporaryReferenceSet to the options.' +
+                    "React Element cannot be passed to Server Functions from the Client without a temporary reference set. Pass a TemporaryReferenceSet to the options." +
                       describeObjectForErrorMessage(this, key),
                   );
                 case REACT_LAZY_TYPE: {
@@ -443,9 +443,9 @@
                     var lazyId = nextPartId++,
                       partJSON = serializeModel(parentReference, lazyId);
                     formData.append(formFieldPrefix + lazyId, partJSON);
-                    return '$' + lazyId.toString(16);
+                    return "$" + lazyId.toString(16);
                   } catch (x) {
-                    if ('object' === typeof x && null !== x && 'function' === typeof x.then) {
+                    if ("object" === typeof x && null !== x && "function" === typeof x.then) {
                       pendingParts++;
                       var _lazyId = nextPartId++;
                       parentReference = () => {
@@ -460,7 +460,7 @@
                         }
                       };
                       x.then(parentReference, parentReference);
-                      return '$' + _lazyId.toString(16);
+                      return "$" + _lazyId.toString(16);
                     }
                     reject(x);
                     return null;
@@ -470,14 +470,14 @@
                 }
               }
               parentReference = writtenObjects.get(value);
-              if ('function' === typeof value.then) {
+              if ("function" === typeof value.then) {
                 if (void 0 !== parentReference)
                   if (modelRoot === value) modelRoot = null;
                   else return parentReference;
                 null === formData && (formData = new FormData());
                 pendingParts++;
                 var promiseId = nextPartId++;
-                key = '$@' + promiseId.toString(16);
+                key = "$@" + promiseId.toString(16);
                 writtenObjects.set(value, key);
                 value.then((partValue) => {
                   try {
@@ -500,10 +500,10 @@
                 if (modelRoot === value) modelRoot = null;
                 else return parentReference;
               else
-                -1 === key.indexOf(':') &&
+                -1 === key.indexOf(":") &&
                   ((parentReference = writtenObjects.get(this)),
                   void 0 !== parentReference &&
-                    ((parentReference = parentReference + ':' + key),
+                    ((parentReference = parentReference + ":" + key),
                     writtenObjects.set(value, parentReference),
                     void 0 !== temporaryReferences &&
                       temporaryReferences.set(parentReference, value)));
@@ -512,11 +512,11 @@
                 null === formData && (formData = new FormData());
                 var _data3 = formData;
                 key = nextPartId++;
-                var prefix = formFieldPrefix + key + '_';
+                var prefix = formFieldPrefix + key + "_";
                 value.forEach((originalValue, originalKey) => {
                   _data3.append(prefix + originalKey, originalValue);
                 });
-                return '$K' + key.toString(16);
+                return "$K" + key.toString(16);
               }
               if (value instanceof Map)
                 return (
@@ -524,7 +524,7 @@
                   (parentReference = serializeModel(Array.from(value), key)),
                   null === formData && (formData = new FormData()),
                   formData.append(formFieldPrefix + key, parentReference),
-                  '$Q' + key.toString(16)
+                  "$Q" + key.toString(16)
                 );
               if (value instanceof Set)
                 return (
@@ -532,7 +532,7 @@
                   (parentReference = serializeModel(Array.from(value), key)),
                   null === formData && (formData = new FormData()),
                   formData.append(formFieldPrefix + key, parentReference),
-                  '$W' + key.toString(16)
+                  "$W" + key.toString(16)
                 );
               if (value instanceof ArrayBuffer)
                 return (
@@ -540,26 +540,26 @@
                   (parentReference = nextPartId++),
                   null === formData && (formData = new FormData()),
                   formData.append(formFieldPrefix + parentReference, key),
-                  '$A' + parentReference.toString(16)
+                  "$A" + parentReference.toString(16)
                 );
-              if (value instanceof Int8Array) return serializeTypedArray('O', value);
-              if (value instanceof Uint8Array) return serializeTypedArray('o', value);
-              if (value instanceof Uint8ClampedArray) return serializeTypedArray('U', value);
-              if (value instanceof Int16Array) return serializeTypedArray('S', value);
-              if (value instanceof Uint16Array) return serializeTypedArray('s', value);
-              if (value instanceof Int32Array) return serializeTypedArray('L', value);
-              if (value instanceof Uint32Array) return serializeTypedArray('l', value);
-              if (value instanceof Float32Array) return serializeTypedArray('G', value);
-              if (value instanceof Float64Array) return serializeTypedArray('g', value);
-              if (value instanceof BigInt64Array) return serializeTypedArray('M', value);
-              if (value instanceof BigUint64Array) return serializeTypedArray('m', value);
-              if (value instanceof DataView) return serializeTypedArray('V', value);
-              if ('function' === typeof Blob && value instanceof Blob)
+              if (value instanceof Int8Array) return serializeTypedArray("O", value);
+              if (value instanceof Uint8Array) return serializeTypedArray("o", value);
+              if (value instanceof Uint8ClampedArray) return serializeTypedArray("U", value);
+              if (value instanceof Int16Array) return serializeTypedArray("S", value);
+              if (value instanceof Uint16Array) return serializeTypedArray("s", value);
+              if (value instanceof Int32Array) return serializeTypedArray("L", value);
+              if (value instanceof Uint32Array) return serializeTypedArray("l", value);
+              if (value instanceof Float32Array) return serializeTypedArray("G", value);
+              if (value instanceof Float64Array) return serializeTypedArray("g", value);
+              if (value instanceof BigInt64Array) return serializeTypedArray("M", value);
+              if (value instanceof BigUint64Array) return serializeTypedArray("m", value);
+              if (value instanceof DataView) return serializeTypedArray("V", value);
+              if ("function" === typeof Blob && value instanceof Blob)
                 return (
                   null === formData && (formData = new FormData()),
                   (key = nextPartId++),
                   formData.append(formFieldPrefix + key, value),
-                  '$B' + key.toString(16)
+                  "$B" + key.toString(16)
                 );
               if ((parentReference = getIteratorFn(value)))
                 return (
@@ -569,13 +569,13 @@
                       (parentReference = serializeModel(Array.from(parentReference), key)),
                       null === formData && (formData = new FormData()),
                       formData.append(formFieldPrefix + key, parentReference),
-                      '$i' + key.toString(16))
+                      "$i" + key.toString(16))
                     : Array.from(parentReference)
                 );
-              if ('function' === typeof ReadableStream && value instanceof ReadableStream)
+              if ("function" === typeof ReadableStream && value instanceof ReadableStream)
                 return serializeReadableStream(value);
               parentReference = value[ASYNC_ITERATOR];
-              if ('function' === typeof parentReference)
+              if ("function" === typeof parentReference)
                 return serializeAsyncIterable(value, parentReference.call(value));
               parentReference = getPrototypeOf(value);
               if (
@@ -584,19 +584,19 @@
               ) {
                 if (void 0 === temporaryReferences)
                   throw Error(
-                    'Only plain objects, and a few built-ins, can be passed to Server Functions. Classes or null prototypes are not supported.' +
+                    "Only plain objects, and a few built-ins, can be passed to Server Functions. Classes or null prototypes are not supported." +
                       describeObjectForErrorMessage(this, key),
                   );
-                return '$T';
+                return "$T";
               }
               value.$$typeof === REACT_CONTEXT_TYPE
                 ? console.error(
-                    'React Context Providers cannot be passed to Server Functions from the Client.%s',
+                    "React Context Providers cannot be passed to Server Functions from the Client.%s",
                     describeObjectForErrorMessage(this, key),
                   )
-                : 'Object' !== objectName(value)
+                : "Object" !== objectName(value)
                   ? console.error(
-                      'Only plain objects can be passed to Server Functions from the Client. %s objects are not supported.%s',
+                      "Only plain objects can be passed to Server Functions from the Client. %s objects are not supported.%s",
                       objectName(value),
                       describeObjectForErrorMessage(this, key),
                     )
@@ -605,25 +605,25 @@
                       ((parentReference = Object.getOwnPropertySymbols(value)),
                       0 < parentReference.length &&
                         console.error(
-                          'Only plain objects can be passed to Server Functions from the Client. Objects with symbol properties like %s are not supported.%s',
+                          "Only plain objects can be passed to Server Functions from the Client. Objects with symbol properties like %s are not supported.%s",
                           parentReference[0].description,
                           describeObjectForErrorMessage(this, key),
                         ))
                     : console.error(
-                        'Only plain objects can be passed to Server Functions from the Client. Classes or other objects with methods are not supported.%s',
+                        "Only plain objects can be passed to Server Functions from the Client. Classes or other objects with methods are not supported.%s",
                         describeObjectForErrorMessage(this, key),
                       );
               return value;
             }
-            if ('string' === typeof value) {
-              if ('Z' === value[value.length - 1] && this[key] instanceof Date) return '$D' + value;
-              key = '$' === value[0] ? '$' + value : value;
+            if ("string" === typeof value) {
+              if ("Z" === value[value.length - 1] && this[key] instanceof Date) return "$D" + value;
+              key = "$" === value[0] ? "$" + value : value;
               return key;
             }
-            if ('boolean' === typeof value) return value;
-            if ('number' === typeof value) return serializeNumber(value);
-            if ('undefined' === typeof value) return '$undefined';
-            if ('function' === typeof value) {
+            if ("boolean" === typeof value) return value;
+            if ("number" === typeof value) return serializeNumber(value);
+            if ("undefined" === typeof value) return "$undefined";
+            if ("function" === typeof value) {
               parentReference = knownServerReferences.get(value);
               if (void 0 !== parentReference) {
                 key = writtenObjects.get(value);
@@ -638,41 +638,41 @@
                 null === formData && (formData = new FormData());
                 parentReference = nextPartId++;
                 formData.set(formFieldPrefix + parentReference, key);
-                key = '$h' + parentReference.toString(16);
+                key = "$h" + parentReference.toString(16);
                 writtenObjects.set(value, key);
                 return key;
               }
               if (
                 void 0 !== temporaryReferences &&
-                -1 === key.indexOf(':') &&
+                -1 === key.indexOf(":") &&
                 ((parentReference = writtenObjects.get(this)), void 0 !== parentReference)
               )
-                return temporaryReferences.set(parentReference + ':' + key, value), '$T';
+                return temporaryReferences.set(parentReference + ":" + key, value), "$T";
               throw Error(
-                'Client Functions cannot be passed directly to Server Functions. Only Functions passed from the Server can be passed back again.',
+                "Client Functions cannot be passed directly to Server Functions. Only Functions passed from the Server can be passed back again.",
               );
             }
-            if ('symbol' === typeof value) {
+            if ("symbol" === typeof value) {
               if (
                 void 0 !== temporaryReferences &&
-                -1 === key.indexOf(':') &&
+                -1 === key.indexOf(":") &&
                 ((parentReference = writtenObjects.get(this)), void 0 !== parentReference)
               )
-                return temporaryReferences.set(parentReference + ':' + key, value), '$T';
+                return temporaryReferences.set(parentReference + ":" + key, value), "$T";
               throw Error(
-                'Symbols cannot be passed to a Server Function without a temporary reference set. Pass a TemporaryReferenceSet to the options.' +
+                "Symbols cannot be passed to a Server Function without a temporary reference set. Pass a TemporaryReferenceSet to the options." +
                   describeObjectForErrorMessage(this, key),
               );
             }
-            if ('bigint' === typeof value) return '$n' + value.toString(10);
+            if ("bigint" === typeof value) return "$n" + value.toString(10);
             throw Error(
-              'Type ' + typeof value + ' is not supported as an argument to a Server Function.',
+              "Type " + typeof value + " is not supported as an argument to a Server Function.",
             );
           }
           function serializeModel(model, id) {
-            'object' === typeof model &&
+            "object" === typeof model &&
               null !== model &&
-              ((id = '$' + id.toString(16)),
+              ((id = "$" + id.toString(16)),
               writtenObjects.set(model, id),
               void 0 !== temporaryReferences && temporaryReferences.set(id, model));
             modelRoot = model;
@@ -687,7 +687,7 @@
           var json = serializeModel(root, 0);
           null === formData
             ? resolve(json)
-            : (formData.set(formFieldPrefix + '0', json), 0 === pendingParts && resolve(formData));
+            : (formData.set(formFieldPrefix + "0", json), 0 === pendingParts && resolve(formData));
           return () => {
             0 < pendingParts &&
               ((pendingParts = 0), null === formData ? resolve(json) : resolve(formData));
@@ -702,34 +702,34 @@
           environmentName,
           innerFunction,
         ) {
-          name || (name = '<anonymous>');
+          name || (name = "<anonymous>");
           var encodedName = JSON.stringify(name);
           1 >= line
             ? ((line = encodedName.length + 7),
               (col =
-                's=>({' +
+                "s=>({" +
                 encodedName +
-                ' '.repeat(col < line ? 0 : col - line) +
-                ':(...args) => s(...args)})\n/* This module is a proxy to a Server Action. Turn on Source Maps to see the server source. */'))
+                " ".repeat(col < line ? 0 : col - line) +
+                ":(...args) => s(...args)})\n/* This module is a proxy to a Server Action. Turn on Source Maps to see the server source. */"))
             : (col =
-                '/* This module is a proxy to a Server Action. Turn on Source Maps to see the server source. */' +
-                '\n'.repeat(line - 2) +
-                'server=>({' +
+                "/* This module is a proxy to a Server Action. Turn on Source Maps to see the server source. */" +
+                "\n".repeat(line - 2) +
+                "server=>({" +
                 encodedName +
-                ':\n' +
-                ' '.repeat(1 > col ? 0 : col - 1) +
-                '(...args) => server(...args)})');
-          filename.startsWith('/') && (filename = 'file://' + filename);
+                ":\n" +
+                " ".repeat(1 > col ? 0 : col - 1) +
+                "(...args) => server(...args)})");
+          filename.startsWith("/") && (filename = "file://" + filename);
           sourceMap
             ? ((col +=
-                '\n//# sourceURL=about://React/' +
+                "\n//# sourceURL=about://React/" +
                 encodeURIComponent(environmentName) +
-                '/' +
+                "/" +
                 encodeURI(filename) +
-                '?s' +
+                "?s" +
                 fakeServerFunctionIdx++),
-              (col += '\n//# sourceMappingURL=' + sourceMap))
-            : filename && (col += '\n//# sourceURL=' + filename);
+              (col += "\n//# sourceMappingURL=" + sourceMap))
+            : filename && (col += "\n//# sourceURL=" + filename);
           try {
             return (0, eval)(col)(innerFunction)[name];
           } catch (x) {
@@ -753,7 +753,7 @@
           function action() {
             var args = Array.prototype.slice.call(arguments);
             return bound
-              ? 'fulfilled' === bound.status
+              ? "fulfilled" === bound.status
                 ? callServer(id, bound.value.concat(args))
                 : Promise.resolve(bound).then((boundArgs) => callServer(id, boundArgs.concat(args)))
               : callServer(id, args);
@@ -762,11 +762,11 @@
             bound = metaData.bound,
             location = metaData.location;
           if (location) {
-            encodeFormAction = metaData.name || '';
+            encodeFormAction = metaData.name || "";
             var filename = location[1],
               line = location[2];
             location = location[3];
-            metaData = metaData.env || 'Server';
+            metaData = metaData.env || "Server";
             findSourceMapURL =
               null == findSourceMapURL ? null : findSourceMapURL(filename, metaData);
             action = createFakeServerFunction(
@@ -784,10 +784,10 @@
         }
         function parseStackLocation(error) {
           error = error.stack;
-          error.startsWith('Error: react-stack-top-frame\n') && (error = error.slice(29));
-          var endOfFirst = error.indexOf('\n');
+          error.startsWith("Error: react-stack-top-frame\n") && (error = error.slice(29));
+          var endOfFirst = error.indexOf("\n");
           if (-1 !== endOfFirst) {
-            var endOfSecond = error.indexOf('\n', endOfFirst + 1);
+            var endOfSecond = error.indexOf("\n", endOfFirst + 1);
             endOfFirst =
               -1 === endOfSecond
                 ? error.slice(endOfFirst + 1)
@@ -796,61 +796,61 @@
           error = v8FrameRegExp.exec(endOfFirst);
           if (!error && ((error = jscSpiderMonkeyFrameRegExp.exec(endOfFirst)), !error))
             return null;
-          endOfFirst = error[1] || '';
-          '<anonymous>' === endOfFirst && (endOfFirst = '');
-          endOfSecond = error[2] || error[5] || '';
-          '<anonymous>' === endOfSecond && (endOfSecond = '');
+          endOfFirst = error[1] || "";
+          "<anonymous>" === endOfFirst && (endOfFirst = "");
+          endOfSecond = error[2] || error[5] || "";
+          "<anonymous>" === endOfSecond && (endOfSecond = "");
           return [endOfFirst, endOfSecond, +(error[3] || error[6]), +(error[4] || error[7])];
         }
         function getComponentNameFromType(type) {
           if (null == type) return null;
-          if ('function' === typeof type)
+          if ("function" === typeof type)
             return type.$$typeof === REACT_CLIENT_REFERENCE
               ? null
               : type.displayName || type.name || null;
-          if ('string' === typeof type) return type;
+          if ("string" === typeof type) return type;
           switch (type) {
             case REACT_FRAGMENT_TYPE:
-              return 'Fragment';
+              return "Fragment";
             case REACT_PROFILER_TYPE:
-              return 'Profiler';
+              return "Profiler";
             case REACT_STRICT_MODE_TYPE:
-              return 'StrictMode';
+              return "StrictMode";
             case REACT_SUSPENSE_TYPE:
-              return 'Suspense';
+              return "Suspense";
             case REACT_SUSPENSE_LIST_TYPE:
-              return 'SuspenseList';
+              return "SuspenseList";
             case REACT_ACTIVITY_TYPE:
-              return 'Activity';
+              return "Activity";
             case REACT_VIEW_TRANSITION_TYPE:
-              return 'ViewTransition';
+              return "ViewTransition";
           }
-          if ('object' === typeof type)
+          if ("object" === typeof type)
             switch (
-              ('number' === typeof type.tag &&
+              ("number" === typeof type.tag &&
                 console.error(
-                  'Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.',
+                  "Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.",
                 ),
               type.$$typeof)
             ) {
               case REACT_PORTAL_TYPE:
-                return 'Portal';
+                return "Portal";
               case REACT_CONTEXT_TYPE:
-                return type.displayName || 'Context';
+                return type.displayName || "Context";
               case REACT_CONSUMER_TYPE:
-                return (type._context.displayName || 'Context') + '.Consumer';
+                return (type._context.displayName || "Context") + ".Consumer";
               case REACT_FORWARD_REF_TYPE: {
                 var innerType = type.render;
                 type = type.displayName;
                 type ||
-                  ((type = innerType.displayName || innerType.name || ''),
-                  (type = '' !== type ? 'ForwardRef(' + type + ')' : 'ForwardRef'));
+                  ((type = innerType.displayName || innerType.name || ""),
+                  (type = "" !== type ? "ForwardRef(" + type + ")" : "ForwardRef"));
                 return type;
               }
               case REACT_MEMO_TYPE:
                 return (
                   (innerType = type.displayName || null),
-                  null !== innerType ? innerType : getComponentNameFromType(type.type) || 'Memo'
+                  null !== innerType ? innerType : getComponentNameFromType(type.type) || "Memo"
                 );
               case REACT_LAZY_TYPE:
                 innerType = type._payload;
@@ -864,17 +864,17 @@
         function getArrayKind(array) {
           for (var kind = 0, i = 0; i < array.length && 100 > i; i++) {
             var value = array[i];
-            if ('object' === typeof value && null !== value)
-              if (isArrayImpl(value) && 2 === value.length && 'string' === typeof value[0]) {
+            if ("object" === typeof value && null !== value)
+              if (isArrayImpl(value) && 2 === value.length && "string" === typeof value[0]) {
                 if (0 !== kind && 3 !== kind) return 1;
                 kind = 3;
               } else return 1;
             else {
               if (
-                'function' === typeof value ||
-                ('string' === typeof value && 50 < value.length) ||
+                "function" === typeof value ||
+                ("string" === typeof value && 50 < value.length) ||
                 (0 !== kind && 2 !== kind) ||
-                'bigint' === typeof value
+                "bigint" === typeof value
               )
                 return 1;
               kind = 2;
@@ -888,64 +888,64 @@
           for (key in object)
             if (
               hasOwnProperty.call(object, key) &&
-              '_' !== key[0] &&
+              "_" !== key[0] &&
               (addedProperties++,
               addValueToProperties(key, object[key], properties, indent, prefix),
               100 <= addedProperties)
             ) {
               properties.push([
                 prefix +
-                  '\u00a0\u00a0'.repeat(indent) +
-                  'Only 100 properties are shown. React will not log more properties of this object.',
-                '',
+                  "\u00a0\u00a0".repeat(indent) +
+                  "Only 100 properties are shown. React will not log more properties of this object.",
+                "",
               ]);
               break;
             }
         }
         function addValueToProperties(propertyName, value, properties, indent, prefix) {
           switch (typeof value) {
-            case 'object':
+            case "object":
               if (null === value) {
-                value = 'null';
+                value = "null";
                 break;
               } else {
                 if (
-                  ('$$typeof' in value && hasOwnProperty.call(value, '$$typeof')
+                  ("$$typeof" in value && hasOwnProperty.call(value, "$$typeof")
                     ? value.$$typeof
                     : void 0) === REACT_ELEMENT_TYPE
                 ) {
-                  var typeName = getComponentNameFromType(value.type) || '\u2026',
+                  var typeName = getComponentNameFromType(value.type) || "\u2026",
                     key = value.key;
                   value = value.props;
                   var propsKeys = Object.keys(value),
                     propsLength = propsKeys.length;
                   if (null == key && 0 === propsLength) {
-                    value = '<' + typeName + ' />';
+                    value = "<" + typeName + " />";
                     break;
                   }
                   if (
                     3 > indent ||
-                    (1 === propsLength && 'children' === propsKeys[0] && null == key)
+                    (1 === propsLength && "children" === propsKeys[0] && null == key)
                   ) {
-                    value = '<' + typeName + ' \u2026 />';
+                    value = "<" + typeName + " \u2026 />";
                     break;
                   }
                   properties.push([
-                    prefix + '\u00a0\u00a0'.repeat(indent) + propertyName,
-                    '<' + typeName,
+                    prefix + "\u00a0\u00a0".repeat(indent) + propertyName,
+                    "<" + typeName,
                   ]);
-                  null !== key && addValueToProperties('key', key, properties, indent + 1, prefix);
+                  null !== key && addValueToProperties("key", key, properties, indent + 1, prefix);
                   propertyName = !1;
                   key = 0;
                   for (var propKey in value)
                     if (
                       (key++,
-                      'children' === propKey
+                      "children" === propKey
                         ? null != value.children &&
                           (!isArrayImpl(value.children) || 0 < value.children.length) &&
                           (propertyName = !0)
                         : hasOwnProperty.call(value, propKey) &&
-                          '_' !== propKey[0] &&
+                          "_" !== propKey[0] &&
                           addValueToProperties(
                             propKey,
                             value[propKey],
@@ -956,21 +956,21 @@
                       100 <= key)
                     )
                       break;
-                  properties.push(['', propertyName ? '>\u2026</' + typeName + '>' : '/>']);
+                  properties.push(["", propertyName ? ">\u2026</" + typeName + ">" : "/>"]);
                   return;
                 }
                 typeName = Object.prototype.toString.call(value);
                 propKey = typeName.slice(8, typeName.length - 1);
-                if ('Array' === propKey) {
+                if ("Array" === propKey) {
                   if (
                     ((typeName = 100 < value.length),
                     (key = getArrayKind(value)),
                     2 === key || 0 === key)
                   ) {
-                    value = JSON.stringify(typeName ? value.slice(0, 100).concat('\u2026') : value);
+                    value = JSON.stringify(typeName ? value.slice(0, 100).concat("\u2026") : value);
                     break;
                   } else if (3 === key) {
-                    properties.push([prefix + '\u00a0\u00a0'.repeat(indent) + propertyName, '']);
+                    properties.push([prefix + "\u00a0\u00a0".repeat(indent) + propertyName, ""]);
                     for (
                       propertyName = 0;
                       propertyName < value.length && 100 > propertyName;
@@ -987,7 +987,7 @@
                     typeName &&
                       addValueToProperties(
                         (100).toString(),
-                        '\u2026',
+                        "\u2026",
                         properties,
                         indent + 1,
                         prefix,
@@ -995,166 +995,166 @@
                     return;
                   }
                 }
-                if ('Promise' === propKey) {
-                  if ('fulfilled' === value.status) {
+                if ("Promise" === propKey) {
+                  if ("fulfilled" === value.status) {
                     if (
                       ((typeName = properties.length),
                       addValueToProperties(propertyName, value.value, properties, indent, prefix),
                       properties.length > typeName)
                     ) {
                       properties = properties[typeName];
-                      properties[1] = 'Promise<' + (properties[1] || 'Object') + '>';
+                      properties[1] = "Promise<" + (properties[1] || "Object") + ">";
                       return;
                     }
                   } else if (
-                    'rejected' === value.status &&
+                    "rejected" === value.status &&
                     ((typeName = properties.length),
                     addValueToProperties(propertyName, value.reason, properties, indent, prefix),
                     properties.length > typeName)
                   ) {
                     properties = properties[typeName];
-                    properties[1] = 'Rejected Promise<' + properties[1] + '>';
+                    properties[1] = "Rejected Promise<" + properties[1] + ">";
                     return;
                   }
-                  properties.push(['\u00a0\u00a0'.repeat(indent) + propertyName, 'Promise']);
+                  properties.push(["\u00a0\u00a0".repeat(indent) + propertyName, "Promise"]);
                   return;
                 }
-                'Object' === propKey &&
+                "Object" === propKey &&
                   (typeName = Object.getPrototypeOf(value)) &&
-                  'function' === typeof typeName.constructor &&
+                  "function" === typeof typeName.constructor &&
                   (propKey = typeName.constructor.name);
                 properties.push([
-                  prefix + '\u00a0\u00a0'.repeat(indent) + propertyName,
-                  'Object' === propKey ? (3 > indent ? '' : '\u2026') : propKey,
+                  prefix + "\u00a0\u00a0".repeat(indent) + propertyName,
+                  "Object" === propKey ? (3 > indent ? "" : "\u2026") : propKey,
                 ]);
                 3 > indent && addObjectToProperties(value, properties, indent + 1, prefix);
                 return;
               }
-            case 'function':
+            case "function":
               value = value.name;
-              value = '' === value || 'string' !== typeof value ? '() => {}' : value + '() {}';
+              value = "" === value || "string" !== typeof value ? "() => {}" : value + "() {}";
               break;
-            case 'string':
+            case "string":
               value =
-                'This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.' ===
+                "This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects." ===
                 value
-                  ? '\u2026'
+                  ? "\u2026"
                   : JSON.stringify(value);
               break;
-            case 'undefined':
-              value = 'undefined';
+            case "undefined":
+              value = "undefined";
               break;
-            case 'boolean':
-              value = value ? 'true' : 'false';
+            case "boolean":
+              value = value ? "true" : "false";
               break;
             default:
               value = String(value);
           }
-          properties.push([prefix + '\u00a0\u00a0'.repeat(indent) + propertyName, value]);
+          properties.push([prefix + "\u00a0\u00a0".repeat(indent) + propertyName, value]);
         }
         function getIODescription(value) {
           try {
             switch (typeof value) {
-              case 'function':
-                return value.name || '';
-              case 'object': {
-                if (null === value) return '';
+              case "function":
+                return value.name || "";
+              case "object": {
+                if (null === value) return "";
                 if (value instanceof Error) return String(value.message);
-                if ('string' === typeof value.url) return value.url;
-                if ('string' === typeof value.href) return value.href;
-                if ('string' === typeof value.src) return value.src;
-                if ('string' === typeof value.currentSrc) return value.currentSrc;
-                if ('string' === typeof value.command) return value.command;
+                if ("string" === typeof value.url) return value.url;
+                if ("string" === typeof value.href) return value.href;
+                if ("string" === typeof value.src) return value.src;
+                if ("string" === typeof value.currentSrc) return value.currentSrc;
+                if ("string" === typeof value.command) return value.command;
                 if (
-                  'object' === typeof value.request &&
+                  "object" === typeof value.request &&
                   null !== value.request &&
-                  'string' === typeof value.request.url
+                  "string" === typeof value.request.url
                 )
                   return value.request.url;
                 if (
-                  'object' === typeof value.response &&
+                  "object" === typeof value.response &&
                   null !== value.response &&
-                  'string' === typeof value.response.url
+                  "string" === typeof value.response.url
                 )
                   return value.response.url;
                 if (
-                  'string' === typeof value.id ||
-                  'number' === typeof value.id ||
-                  'bigint' === typeof value.id
+                  "string" === typeof value.id ||
+                  "number" === typeof value.id ||
+                  "bigint" === typeof value.id
                 )
                   return String(value.id);
-                if ('string' === typeof value.name) return value.name;
+                if ("string" === typeof value.name) return value.name;
                 var str = value.toString();
-                return str.startsWith('[object ') || 5 > str.length || 500 < str.length ? '' : str;
+                return str.startsWith("[object ") || 5 > str.length || 500 < str.length ? "" : str;
               }
-              case 'string':
-                return 5 > value.length || 500 < value.length ? '' : value;
-              case 'number':
-              case 'bigint':
+              case "string":
+                return 5 > value.length || 500 < value.length ? "" : value;
+              case "number":
+              case "bigint":
                 return String(value);
               default:
-                return '';
+                return "";
             }
           } catch (x) {
-            return '';
+            return "";
           }
         }
         function markAllTracksInOrder() {
           supportsUserTiming &&
             (console.timeStamp(
-              'Server Requests Track',
+              "Server Requests Track",
               0.001,
               0.001,
-              'Server Requests \u269b',
+              "Server Requests \u269b",
               void 0,
-              'primary-light',
+              "primary-light",
             ),
             console.timeStamp(
-              'Server Components Track',
+              "Server Components Track",
               0.001,
               0.001,
-              'Primary',
-              'Server Components \u269b',
-              'primary-light',
+              "Primary",
+              "Server Components \u269b",
+              "primary-light",
             ));
         }
         function getIOColor(functionName) {
           switch (functionName.charCodeAt(0) % 3) {
             case 0:
-              return 'tertiary-light';
+              return "tertiary-light";
             case 1:
-              return 'tertiary';
+              return "tertiary";
             default:
-              return 'tertiary-dark';
+              return "tertiary-dark";
           }
         }
         function getIOLongName(ioInfo, description, env, rootEnv) {
           ioInfo = ioInfo.name;
-          description = '' === description ? ioInfo : ioInfo + ' (' + description + ')';
-          return env === rootEnv || void 0 === env ? description : description + ' [' + env + ']';
+          description = "" === description ? ioInfo : ioInfo + " (" + description + ")";
+          return env === rootEnv || void 0 === env ? description : description + " [" + env + "]";
         }
         function getIOShortName(ioInfo, description, env, rootEnv) {
           ioInfo = ioInfo.name;
-          env = env === rootEnv || void 0 === env ? '' : ' [' + env + ']';
-          var desc = '';
+          env = env === rootEnv || void 0 === env ? "" : " [" + env + "]";
+          var desc = "";
           rootEnv = 30 - ioInfo.length - env.length;
           if (1 < rootEnv) {
             var l = description.length;
-            if (0 < l && l <= rootEnv) desc = ' (' + description + ')';
+            if (0 < l && l <= rootEnv) desc = " (" + description + ")";
             else if (
-              description.startsWith('http://') ||
-              description.startsWith('https://') ||
-              description.startsWith('/')
+              description.startsWith("http://") ||
+              description.startsWith("https://") ||
+              description.startsWith("/")
             ) {
-              var queryIdx = description.indexOf('?');
+              var queryIdx = description.indexOf("?");
               -1 === queryIdx && (queryIdx = description.length);
               47 === description.charCodeAt(queryIdx - 1) && queryIdx--;
-              desc = description.lastIndexOf('/', queryIdx - 1);
+              desc = description.lastIndexOf("/", queryIdx - 1);
               queryIdx - desc < rootEnv
-                ? (desc = ' (\u2026' + description.slice(desc, queryIdx) + ')')
+                ? (desc = " (\u2026" + description.slice(desc, queryIdx) + ")")
                 : ((l = description.slice(desc, desc + rootEnv / 2)),
                   (description = description.slice(queryIdx - rootEnv / 2, queryIdx)),
-                  (desc = ' (' + (0 < desc ? '\u2026' : '') + l + '\u2026' + description + ')'));
+                  (desc = " (" + (0 < desc ? "\u2026" : "") + l + "\u2026" + description + ")"));
             }
           }
           return ioInfo + desc + env;
@@ -1163,15 +1163,15 @@
           if (supportsUserTiming && 0 < endTime) {
             var description = getIODescription(value),
               name = getIOShortName(asyncInfo.awaited, description, asyncInfo.env, rootEnv),
-              entryName = 'await ' + name;
+              entryName = "await " + name;
             name = getIOColor(name);
             var debugTask = asyncInfo.debugTask || asyncInfo.awaited.debugTask;
             if (debugTask) {
               var properties = [];
-              'object' === typeof value && null !== value
-                ? addObjectToProperties(value, properties, 0, '')
+              "object" === typeof value && null !== value
+                ? addObjectToProperties(value, properties, 0, "")
                 : void 0 !== value &&
-                  addValueToProperties('awaited value', value, properties, 0, '');
+                  addValueToProperties("awaited value", value, properties, 0, "");
               asyncInfo = getIOLongName(asyncInfo.awaited, description, asyncInfo.env, rootEnv);
               debugTask.run(
                 performance.measure.bind(performance, entryName, {
@@ -1181,7 +1181,7 @@
                     devtools: {
                       color: name,
                       track: trackNames[trackIdx],
-                      trackGroup: 'Server Components \u269b',
+                      trackGroup: "Server Components \u269b",
                       properties: properties,
                       tooltipText: asyncInfo,
                     },
@@ -1195,7 +1195,7 @@
                 0 > startTime ? 0 : startTime,
                 endTime,
                 trackNames[trackIdx],
-                'Server Components \u269b',
+                "Server Components \u269b",
                 name,
               );
           }
@@ -1207,25 +1207,25 @@
             var description = getIODescription(error),
               entryName = getIOShortName(ioInfo, description, ioInfo.env, rootEnv),
               debugTask = ioInfo.debugTask;
-            entryName = '\u200b' + entryName;
+            entryName = "\u200b" + entryName;
             debugTask
               ? ((error = [
                   [
-                    'rejected with',
-                    'object' === typeof error && null !== error && 'string' === typeof error.message
+                    "rejected with",
+                    "object" === typeof error && null !== error && "string" === typeof error.message
                       ? String(error.message)
                       : String(error),
                   ],
                 ]),
-                (ioInfo = getIOLongName(ioInfo, description, ioInfo.env, rootEnv) + ' Rejected'),
+                (ioInfo = getIOLongName(ioInfo, description, ioInfo.env, rootEnv) + " Rejected"),
                 debugTask.run(
                   performance.measure.bind(performance, entryName, {
                     start: 0 > startTime ? 0 : startTime,
                     end: endTime,
                     detail: {
                       devtools: {
-                        color: 'error',
-                        track: 'Server Requests \u269b',
+                        color: "error",
+                        track: "Server Requests \u269b",
                         properties: error,
                         tooltipText: ioInfo,
                       },
@@ -1237,9 +1237,9 @@
                   entryName,
                   0 > startTime ? 0 : startTime,
                   endTime,
-                  'Server Requests \u269b',
+                  "Server Requests \u269b",
                   void 0,
-                  'error',
+                  "error",
                 );
           }
         }
@@ -1251,12 +1251,12 @@
               entryName = getIOShortName(ioInfo, description, ioInfo.env, rootEnv),
               color = getIOColor(entryName),
               debugTask = ioInfo.debugTask;
-            entryName = '\u200b' + entryName;
+            entryName = "\u200b" + entryName;
             if (debugTask) {
               var properties = [];
-              'object' === typeof value && null !== value
-                ? addObjectToProperties(value, properties, 0, '')
-                : void 0 !== value && addValueToProperties('Resolved', value, properties, 0, '');
+              "object" === typeof value && null !== value
+                ? addObjectToProperties(value, properties, 0, "")
+                : void 0 !== value && addValueToProperties("Resolved", value, properties, 0, "");
               ioInfo = getIOLongName(ioInfo, description, ioInfo.env, rootEnv);
               debugTask.run(
                 performance.measure.bind(performance, entryName, {
@@ -1265,7 +1265,7 @@
                   detail: {
                     devtools: {
                       color: color,
-                      track: 'Server Requests \u269b',
+                      track: "Server Requests \u269b",
                       properties: properties,
                       tooltipText: ioInfo,
                     },
@@ -1278,7 +1278,7 @@
                 entryName,
                 0 > startTime ? 0 : startTime,
                 endTime,
-                'Server Requests \u269b',
+                "Server Requests \u269b",
                 void 0,
                 color,
               );
@@ -1298,26 +1298,26 @@
         function unwrapWeakResponse(weakResponse) {
           weakResponse = weakResponse.weak.deref();
           if (void 0 === weakResponse)
-            throw Error('We did not expect to receive new data after GC:ing the response.');
+            throw Error("We did not expect to receive new data after GC:ing the response.");
           return weakResponse;
         }
         function closeDebugChannel(debugChannel) {
-          debugChannel.callback && debugChannel.callback('');
+          debugChannel.callback && debugChannel.callback("");
         }
         function readChunk(chunk) {
           switch (chunk.status) {
-            case 'resolved_model':
+            case "resolved_model":
               initializeModelChunk(chunk);
               break;
-            case 'resolved_module':
+            case "resolved_module":
               initializeModuleChunk(chunk);
           }
           switch (chunk.status) {
-            case 'fulfilled':
+            case "fulfilled":
               return chunk.value;
-            case 'pending':
-            case 'blocked':
-            case 'halted':
+            case "pending":
+            case "blocked":
+            case "halted":
               throw chunk;
             default:
               throw chunk.reason;
@@ -1333,10 +1333,10 @@
             null !== response._pendingInitialRender &&
               (clearTimeout(response._pendingInitialRender),
               (response._pendingInitialRender = null)));
-          return new ReactPromise('pending', null, null);
+          return new ReactPromise("pending", null, null);
         }
         function releasePendingChunk(response, chunk) {
-          'pending' === chunk.status &&
+          "pending" === chunk.status &&
             0 === --response._pendingChunks &&
             ((response._weakResponse.response = null),
             (response._pendingInitialRender = setTimeout(
@@ -1349,7 +1349,7 @@
             response = response._debugEndTime - performance.timeOrigin;
             for (var debugInfo = [], i = 0; i < value._debugInfo.length; i++) {
               var info = value._debugInfo[i];
-              if ('number' === typeof info.time && info.time > response) break;
+              if ("number" === typeof info.time && info.time > response) break;
               debugInfo.push(info);
             }
             value._debugInfo = debugInfo;
@@ -1357,17 +1357,17 @@
         }
         function moveDebugInfoFromChunkToInnerValue(chunk, value) {
           value = resolveLazy(value);
-          'object' !== typeof value ||
+          "object" !== typeof value ||
             null === value ||
             (!isArrayImpl(value) &&
-              'function' !== typeof value[ASYNC_ITERATOR] &&
+              "function" !== typeof value[ASYNC_ITERATOR] &&
               value.$$typeof !== REACT_ELEMENT_TYPE &&
               value.$$typeof !== REACT_LAZY_TYPE) ||
             ((chunk = chunk._debugInfo.splice(0)),
             isArrayImpl(value._debugInfo)
               ? value._debugInfo.unshift.apply(value._debugInfo, chunk)
               : Object.isFrozen(value) ||
-                Object.defineProperty(value, '_debugInfo', {
+                Object.defineProperty(value, "_debugInfo", {
                   configurable: !1,
                   enumerable: !1,
                   writable: !0,
@@ -1377,7 +1377,7 @@
         function wakeChunk(response, listeners, value, chunk) {
           for (var i = 0; i < listeners.length; i++) {
             var listener = listeners[i];
-            'function' === typeof listener
+            "function" === typeof listener
               ? listener(value)
               : fulfillReference(response, listener, value, chunk);
           }
@@ -1387,7 +1387,7 @@
         function rejectChunk(response, listeners, error) {
           for (var i = 0; i < listeners.length; i++) {
             var listener = listeners[i];
-            'function' === typeof listener
+            "function" === typeof listener
               ? listener(error)
               : rejectReference(response, listener.handler, error);
           }
@@ -1401,7 +1401,7 @@
             for (referencedChunk = 0; referencedChunk < reference.length; referencedChunk++) {
               var listener = reference[referencedChunk];
               if (
-                'function' !== typeof listener &&
+                "function" !== typeof listener &&
                 ((listener = resolveBlockedCycle(resolvedChunk, listener)), null !== listener)
               )
                 return listener;
@@ -1410,13 +1410,13 @@
         }
         function wakeChunkIfInitialized(response, chunk, resolveListeners, rejectListeners) {
           switch (chunk.status) {
-            case 'fulfilled':
+            case "fulfilled":
               wakeChunk(response, resolveListeners, chunk.value, chunk);
               break;
-            case 'blocked':
+            case "blocked":
               for (var i = 0; i < resolveListeners.length; i++) {
                 var listener = resolveListeners[i];
-                if ('function' !== typeof listener) {
+                if ("function" !== typeof listener) {
                   var cyclicHandler = resolveBlockedCycle(chunk, listener);
                   if (null !== cyclicHandler)
                     switch (
@@ -1428,17 +1428,17 @@
                         -1 !== listener && rejectListeners.splice(listener, 1)),
                       chunk.status)
                     ) {
-                      case 'fulfilled':
+                      case "fulfilled":
                         wakeChunk(response, resolveListeners, chunk.value, chunk);
                         return;
-                      case 'rejected':
+                      case "rejected":
                         null !== rejectListeners &&
                           rejectChunk(response, rejectListeners, chunk.reason);
                         return;
                     }
                 }
               }
-            case 'pending':
+            case "pending":
               if (chunk.value)
                 for (response = 0; response < resolveListeners.length; response++)
                   chunk.value.push(resolveListeners[response]);
@@ -1453,20 +1453,20 @@
                     chunk.reason.push(rejectListeners[resolveListeners]);
               } else chunk.reason = rejectListeners;
               break;
-            case 'rejected':
+            case "rejected":
               rejectListeners && rejectChunk(response, rejectListeners, chunk.reason);
           }
         }
         function triggerErrorOnChunk(response, chunk, error) {
-          if ('pending' !== chunk.status && 'blocked' !== chunk.status) chunk.reason.error(error);
+          if ("pending" !== chunk.status && "blocked" !== chunk.status) chunk.reason.error(error);
           else {
             releasePendingChunk(response, chunk);
             var listeners = chunk.reason;
-            if ('pending' === chunk.status && null != chunk._debugChunk) {
+            if ("pending" === chunk.status && null != chunk._debugChunk) {
               var prevHandler = initializingHandler,
                 prevChunk = initializingChunk;
               initializingHandler = null;
-              chunk.status = 'blocked';
+              chunk.status = "blocked";
               chunk.value = null;
               chunk.reason = null;
               initializingChunk = chunk;
@@ -1476,18 +1476,18 @@
                 (initializingHandler = prevHandler), (initializingChunk = prevChunk);
               }
             }
-            chunk.status = 'rejected';
+            chunk.status = "rejected";
             chunk.reason = error;
             null !== listeners && rejectChunk(response, listeners, error);
           }
         }
         function createResolvedModelChunk(response, value) {
-          return new ReactPromise('resolved_model', value, response);
+          return new ReactPromise("resolved_model", value, response);
         }
         function createResolvedIteratorResultChunk(response, value, done) {
           return new ReactPromise(
-            'resolved_model',
-            (done ? '{"done":true,"value":' : '{"done":false,"value":') + value + '}',
+            "resolved_model",
+            (done ? '{"done":true,"value":' : '{"done":false,"value":') + value + "}",
             response,
           );
         }
@@ -1495,16 +1495,16 @@
           resolveModelChunk(
             response,
             chunk,
-            (done ? '{"done":true,"value":' : '{"done":false,"value":') + value + '}',
+            (done ? '{"done":true,"value":' : '{"done":false,"value":') + value + "}",
           );
         }
         function resolveModelChunk(response, chunk, value) {
-          if ('pending' !== chunk.status) chunk.reason.enqueueModel(value);
+          if ("pending" !== chunk.status) chunk.reason.enqueueModel(value);
           else {
             releasePendingChunk(response, chunk);
             var resolveListeners = chunk.value,
               rejectListeners = chunk.reason;
-            chunk.status = 'resolved_model';
+            chunk.status = "resolved_model";
             chunk.value = value;
             chunk.reason = response;
             null !== resolveListeners &&
@@ -1513,11 +1513,11 @@
           }
         }
         function resolveModuleChunk(response, chunk, value) {
-          if ('pending' === chunk.status || 'blocked' === chunk.status) {
+          if ("pending" === chunk.status || "blocked" === chunk.status) {
             releasePendingChunk(response, chunk);
             var resolveListeners = chunk.value,
               rejectListeners = chunk.reason;
-            chunk.status = 'resolved_module';
+            chunk.status = "resolved_module";
             chunk.value = value;
             chunk.reason = null;
             value = value[1];
@@ -1534,9 +1534,9 @@
                 }
                 var end = (ioInfo = -1),
                   byteSize = 0;
-                if ('function' === typeof performance.getEntriesByType)
+                if ("function" === typeof performance.getEntriesByType)
                   for (
-                    var resourceEntries = performance.getEntriesByType('resource'), i$jscomp$0 = 0;
+                    var resourceEntries = performance.getEntriesByType("resource"), i$jscomp$0 = 0;
                     i$jscomp$0 < resourceEntries.length;
                     i$jscomp$0++
                   ) {
@@ -1547,24 +1547,24 @@
                       (byteSize = resourceEntry.transferSize || 0));
                   }
                 resourceEntries = Promise.resolve(href);
-                resourceEntries.status = 'fulfilled';
+                resourceEntries.status = "fulfilled";
                 resourceEntries.value = href;
-                i$jscomp$0 = Error('react-stack-top-frame');
-                i$jscomp$0.stack.startsWith('Error: react-stack-top-frame')
+                i$jscomp$0 = Error("react-stack-top-frame");
+                i$jscomp$0.stack.startsWith("Error: react-stack-top-frame")
                   ? (i$jscomp$0.stack =
-                      'Error: react-stack-top-frame\n    at Client Component Bundle (' +
+                      "Error: react-stack-top-frame\n    at Client Component Bundle (" +
                       href +
-                      ':1:1)\n    at Client Component Bundle (' +
+                      ":1:1)\n    at Client Component Bundle (" +
                       href +
-                      ':1:1)')
+                      ":1:1)")
                   : (i$jscomp$0.stack =
-                      'Client Component Bundle@' +
+                      "Client Component Bundle@" +
                       href +
-                      ':1:1\nClient Component Bundle@' +
+                      ":1:1\nClient Component Bundle@" +
                       href +
-                      ':1:1');
+                      ":1:1");
                 ioInfo = {
-                  name: 'script',
+                  name: "script",
                   start: ioInfo,
                   end: end,
                   value: resourceEntries,
@@ -1590,23 +1590,23 @@
               prevIsInitializingDebugInfo = isInitializingDebugInfo;
             isInitializingDebugInfo = !0;
             try {
-              if ('resolved_model' === debugChunk.status) {
+              if ("resolved_model" === debugChunk.status) {
                 for (var idx = debugInfo.length, c = debugChunk._debugChunk; null !== c; )
-                  'fulfilled' !== c.status && idx++, (c = c._debugChunk);
+                  "fulfilled" !== c.status && idx++, (c = c._debugChunk);
                 initializeModelChunk(debugChunk);
                 switch (debugChunk.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     debugInfo[idx] = initializeDebugInfo(response, debugChunk.value);
                     break;
-                  case 'blocked':
-                  case 'pending':
+                  case "blocked":
+                  case "pending":
                     waitForReference(
                       debugChunk,
                       debugInfo,
-                      '' + idx,
+                      "" + idx,
                       response,
                       initializeDebugInfo,
-                      [''],
+                      [""],
                       !0,
                     );
                     break;
@@ -1615,17 +1615,17 @@
                 }
               } else
                 switch (debugChunk.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     break;
-                  case 'blocked':
-                  case 'pending':
+                  case "blocked":
+                  case "pending":
                     waitForReference(
                       debugChunk,
                       {},
-                      'debug',
+                      "debug",
                       response,
                       initializeDebugInfo,
-                      [''],
+                      [""],
                       !0,
                     );
                     break;
@@ -1645,7 +1645,7 @@
           initializingHandler = null;
           var resolvedModel = chunk.value,
             response = chunk.reason;
-          chunk.status = 'blocked';
+          chunk.status = "blocked";
           chunk.value = null;
           chunk.reason = null;
           initializingChunk = chunk;
@@ -1660,7 +1660,7 @@
                 resolvedModel++
               ) {
                 var listener = resolveListeners[resolvedModel];
-                'function' === typeof listener
+                "function" === typeof listener
                   ? listener(value)
                   : fulfillReference(response, listener, value, chunk);
               }
@@ -1672,13 +1672,13 @@
                 return;
               }
             }
-            chunk.status = 'fulfilled';
+            chunk.status = "fulfilled";
             chunk.value = value;
             chunk.reason = null;
             filterDebugInfo(response, chunk);
             moveDebugInfoFromChunkToInnerValue(chunk, value);
           } catch (error) {
-            (chunk.status = 'rejected'), (chunk.reason = error);
+            (chunk.status = "rejected"), (chunk.reason = error);
           } finally {
             (initializingHandler = prevHandler), (initializingChunk = prevChunk);
           }
@@ -1686,11 +1686,11 @@
         function initializeModuleChunk(chunk) {
           try {
             var value = requireModule(chunk.value);
-            chunk.status = 'fulfilled';
+            chunk.status = "fulfilled";
             chunk.value = value;
             chunk.reason = null;
           } catch (error) {
-            (chunk.status = 'rejected'), (chunk.reason = error);
+            (chunk.status = "rejected"), (chunk.reason = error);
           }
         }
         function reportGlobalError(weakResponse, error) {
@@ -1699,9 +1699,9 @@
             response._closed = !0;
             response._closedReason = error;
             response._chunks.forEach((chunk) => {
-              'pending' === chunk.status
+              "pending" === chunk.status
                 ? triggerErrorOnChunk(response, chunk, error)
-                : 'fulfilled' === chunk.status &&
+                : "fulfilled" === chunk.status &&
                   null !== chunk.reason &&
                   chunk.reason.error(error);
             });
@@ -1716,15 +1716,15 @@
           return null;
         }
         function getTaskName(type) {
-          if (type === REACT_FRAGMENT_TYPE) return '<>';
-          if ('function' === typeof type) return '"use client"';
-          if ('object' === typeof type && null !== type && type.$$typeof === REACT_LAZY_TYPE)
-            return type._init === readChunk ? '"use client"' : '<...>';
+          if (type === REACT_FRAGMENT_TYPE) return "<>";
+          if ("function" === typeof type) return '"use client"';
+          if ("object" === typeof type && null !== type && type.$$typeof === REACT_LAZY_TYPE)
+            return type._init === readChunk ? '"use client"' : "<...>";
           try {
             var name = getComponentNameFromType(type);
-            return name ? '<' + name + '>' : '<...>';
+            return name ? "<" + name + ">" : "<...>";
           } catch (x) {
-            return '<...>';
+            return "<...>";
           }
         }
         function initializeElement(response, element, lazyNode) {
@@ -1756,12 +1756,12 @@
               lazyNode._store.validated &&
               !element._store.validated &&
               (element._store.validated = lazyNode._store.validated),
-            'fulfilled' === lazyNode._payload.status &&
+            "fulfilled" === lazyNode._payload.status &&
               lazyNode._debugInfo &&
               ((response = lazyNode._debugInfo.splice(0)),
               element._debugInfo
                 ? element._debugInfo.unshift.apply(element._debugInfo, response)
-                : Object.defineProperty(element, '_debugInfo', {
+                : Object.defineProperty(element, "_debugInfo", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
@@ -1788,10 +1788,10 @@
             (response._closed
               ? response._allowPartialStream
                 ? ((response = chunk = createPendingChunk(response)),
-                  (response.status = 'halted'),
+                  (response.status = "halted"),
                   (response.value = null),
                   (response.reason = null))
-                : (chunk = new ReactPromise('rejected', null, response._closedReason))
+                : (chunk = new ReactPromise("rejected", null, response._closedReason))
               : (chunk = createPendingChunk(response)),
             chunks.set(id, chunk));
           return chunk;
@@ -1806,30 +1806,30 @@
             for (var i = 1; i < path.length; i++) {
               for (
                 ;
-                'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+                "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
               ) {
                 var referencedChunk = value._payload;
                 if (referencedChunk === handler.chunk) value = handler.value;
                 else {
                   switch (referencedChunk.status) {
-                    case 'resolved_model':
+                    case "resolved_model":
                       initializeModelChunk(referencedChunk);
                       break;
-                    case 'resolved_module':
+                    case "resolved_module":
                       initializeModuleChunk(referencedChunk);
                   }
                   switch (referencedChunk.status) {
-                    case 'fulfilled':
+                    case "fulfilled":
                       value = referencedChunk.value;
                       continue;
-                    case 'blocked': {
+                    case "blocked": {
                       var cyclicHandler = resolveBlockedCycle(referencedChunk, reference);
                       if (null !== cyclicHandler) {
                         value = cyclicHandler.value;
                         continue;
                       }
                     }
-                    case 'pending':
+                    case "pending":
                       path.splice(0, i - 1);
                       null === referencedChunk.value
                         ? (referencedChunk.value = [reference])
@@ -1838,7 +1838,7 @@
                         ? (referencedChunk.reason = [reference])
                         : referencedChunk.reason.push(reference);
                       return;
-                    case 'halted':
+                    case "halted":
                       return;
                     default:
                       rejectReference(response, reference.handler, referencedChunk.reason);
@@ -1847,26 +1847,26 @@
                 }
               }
               var name = path[i];
-              if ('object' === typeof value && null !== value && hasOwnProperty.call(value, name))
+              if ("object" === typeof value && null !== value && hasOwnProperty.call(value, name))
                 value = value[name];
-              else throw Error('Invalid reference.');
+              else throw Error("Invalid reference.");
             }
             for (
               ;
-              'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+              "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
             ) {
               var _referencedChunk = value._payload;
               if (_referencedChunk === handler.chunk) value = handler.value;
               else {
                 switch (_referencedChunk.status) {
-                  case 'resolved_model':
+                  case "resolved_model":
                     initializeModelChunk(_referencedChunk);
                     break;
-                  case 'resolved_module':
+                  case "resolved_module":
                     initializeModuleChunk(_referencedChunk);
                 }
                 switch (_referencedChunk.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     value = _referencedChunk.value;
                     continue;
                 }
@@ -1874,24 +1874,24 @@
               }
             }
             var mappedValue = map(response, value, parentObject, key);
-            '__proto__' !== key && (parentObject[key] = mappedValue);
-            '' === key && null === handler.value && (handler.value = mappedValue);
+            "__proto__" !== key && (parentObject[key] = mappedValue);
+            "" === key && null === handler.value && (handler.value = mappedValue);
             if (
               parentObject[0] === REACT_ELEMENT_TYPE &&
-              'object' === typeof handler.value &&
+              "object" === typeof handler.value &&
               null !== handler.value &&
               handler.value.$$typeof === REACT_ELEMENT_TYPE
             ) {
               var element = handler.value;
               switch (key) {
-                case '3':
+                case "3":
                   transferReferencedDebugInfo(handler.chunk, fulfilledChunk);
                   element.props = mappedValue;
                   break;
-                case '4':
+                case "4":
                   element._owner = mappedValue;
                   break;
-                case '5':
+                case "5":
                   element._debugStack = mappedValue;
                   break;
                 default:
@@ -1906,9 +1906,9 @@
           0 === handler.deps &&
             ((reference = handler.chunk),
             null !== reference &&
-              'blocked' === reference.status &&
+              "blocked" === reference.status &&
               ((value = reference.value),
-              (reference.status = 'fulfilled'),
+              (reference.status = "fulfilled"),
               (reference.value = handler.value),
               (reference.reason = handler.reason),
               null !== value
@@ -1924,14 +1924,14 @@
             handler.value = null;
             handler.reason = error;
             handler = handler.chunk;
-            if (null !== handler && 'blocked' === handler.status) {
+            if (null !== handler && "blocked" === handler.status) {
               if (
-                'object' === typeof blockedValue &&
+                "object" === typeof blockedValue &&
                 null !== blockedValue &&
                 blockedValue.$$typeof === REACT_ELEMENT_TYPE
               ) {
                 var erroredComponent = {
-                  name: getComponentNameFromType(blockedValue.type) || '',
+                  name: getComponentNameFromType(blockedValue.type) || "",
                   owner: blockedValue._owner,
                 };
                 erroredComponent.debugStack = blockedValue._debugStack;
@@ -1954,9 +1954,9 @@
           if (
             !(
               (void 0 !== response._debugChannel && response._debugChannel.hasReadable) ||
-              'pending' !== referencedChunk.status ||
+              "pending" !== referencedChunk.status ||
               parentObject[0] !== REACT_ELEMENT_TYPE ||
-              ('4' !== key && '5' !== key)
+              ("4" !== key && "5" !== key)
             )
           )
             return null;
@@ -2029,28 +2029,28 @@
                 resolvedValue = resolvedValue.bind.apply(resolvedValue, boundArgs);
               }
               registerBoundServerReference(resolvedValue, metaData.id, metaData.bound);
-              '__proto__' !== key && (parentObject[key] = resolvedValue);
-              '' === key && null === handler.value && (handler.value = resolvedValue);
+              "__proto__" !== key && (parentObject[key] = resolvedValue);
+              "" === key && null === handler.value && (handler.value = resolvedValue);
               if (
                 parentObject[0] === REACT_ELEMENT_TYPE &&
-                'object' === typeof handler.value &&
+                "object" === typeof handler.value &&
                 null !== handler.value &&
                 handler.value.$$typeof === REACT_ELEMENT_TYPE
               )
                 switch (((boundArgs = handler.value), key)) {
-                  case '3':
+                  case "3":
                     boundArgs.props = resolvedValue;
                     break;
-                  case '4':
+                  case "4":
                     boundArgs._owner = resolvedValue;
                 }
               handler.deps--;
               0 === handler.deps &&
                 ((resolvedValue = handler.chunk),
                 null !== resolvedValue &&
-                  'blocked' === resolvedValue.status &&
+                  "blocked" === resolvedValue.status &&
                   ((boundArgs = resolvedValue.value),
-                  (resolvedValue.status = 'fulfilled'),
+                  (resolvedValue.status = "fulfilled"),
                   (resolvedValue.value = handler.value),
                   (resolvedValue.reason = null),
                   null !== boundArgs
@@ -2066,14 +2066,14 @@
                 handler.value = null;
                 handler.reason = error;
                 var chunk = handler.chunk;
-                if (null !== chunk && 'blocked' === chunk.status) {
+                if (null !== chunk && "blocked" === chunk.status) {
                   if (
-                    'object' === typeof blockedValue &&
+                    "object" === typeof blockedValue &&
                     null !== blockedValue &&
                     blockedValue.$$typeof === REACT_ELEMENT_TYPE
                   ) {
                     var erroredComponent = {
-                      name: getComponentNameFromType(blockedValue.type) || '',
+                      name: getComponentNameFromType(blockedValue.type) || "",
                       owner: blockedValue._owner,
                     };
                     erroredComponent.debugStack = blockedValue._debugStack;
@@ -2090,10 +2090,10 @@
         function resolveLazy(value) {
           for (
             ;
-            'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+            "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
           ) {
             var payload = value._payload;
-            if ('fulfilled' === payload.status) value = payload.value;
+            if ("fulfilled" === payload.status) value = payload.value;
             else break;
           }
           return value;
@@ -2109,40 +2109,40 @@
           }
         }
         function getOutlinedModel(response, reference, parentObject, key, map) {
-          var path = reference.split(':');
+          var path = reference.split(":");
           reference = parseInt(path[0], 16);
           reference = getChunk(response, reference);
           null !== initializingChunk &&
             isArrayImpl(initializingChunk._children) &&
             initializingChunk._children.push(reference);
           switch (reference.status) {
-            case 'resolved_model':
+            case "resolved_model":
               initializeModelChunk(reference);
               break;
-            case 'resolved_module':
+            case "resolved_module":
               initializeModuleChunk(reference);
           }
           switch (reference.status) {
-            case 'fulfilled':
+            case "fulfilled":
               for (var value = reference.value, i = 1; i < path.length; i++) {
                 for (
                   ;
-                  'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+                  "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
                 ) {
                   value = value._payload;
                   switch (value.status) {
-                    case 'resolved_model':
+                    case "resolved_model":
                       initializeModelChunk(value);
                       break;
-                    case 'resolved_module':
+                    case "resolved_module":
                       initializeModuleChunk(value);
                   }
                   switch (value.status) {
-                    case 'fulfilled':
+                    case "fulfilled":
                       value = value.value;
                       break;
-                    case 'blocked':
-                    case 'pending':
+                    case "blocked":
+                    case "pending":
                       return waitForReference(
                         value,
                         parentObject,
@@ -2152,7 +2152,7 @@
                         path.slice(i - 1),
                         isInitializingDebugInfo,
                       );
-                    case 'halted':
+                    case "halted":
                       return (
                         initializingHandler
                           ? ((parentObject = initializingHandler), parentObject.deps++)
@@ -2188,30 +2188,30 @@
               }
               for (
                 ;
-                'object' === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
+                "object" === typeof value && null !== value && value.$$typeof === REACT_LAZY_TYPE;
               ) {
                 path = value._payload;
                 switch (path.status) {
-                  case 'resolved_model':
+                  case "resolved_model":
                     initializeModelChunk(path);
                     break;
-                  case 'resolved_module':
+                  case "resolved_module":
                     initializeModuleChunk(path);
                 }
                 switch (path.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     value = path.value;
                     continue;
                 }
                 break;
               }
               response = map(response, value, parentObject, key);
-              if (parentObject[0] !== REACT_ELEMENT_TYPE || ('4' !== key && '5' !== key))
+              if (parentObject[0] !== REACT_ELEMENT_TYPE || ("4" !== key && "5" !== key))
                 isInitializingDebugInfo ||
                   transferReferencedDebugInfo(initializingChunk, reference);
               return response;
-            case 'pending':
-            case 'blocked':
+            case "pending":
+            case "blocked":
               return waitForReference(
                 reference,
                 parentObject,
@@ -2221,7 +2221,7 @@
                 path,
                 isInitializingDebugInfo,
               );
-            case 'halted':
+            case "halted":
               return (
                 initializingHandler
                   ? ((parentObject = initializingHandler), parentObject.deps++)
@@ -2273,17 +2273,17 @@
           Object.setPrototypeOf(parentObject, model.prototype);
         }
         function defineLazyGetter(response, chunk, parentObject, key) {
-          '__proto__' !== key &&
+          "__proto__" !== key &&
             Object.defineProperty(parentObject, key, {
               get: () => {
-                'resolved_model' === chunk.status && initializeModelChunk(chunk);
+                "resolved_model" === chunk.status && initializeModelChunk(chunk);
                 switch (chunk.status) {
-                  case 'fulfilled':
+                  case "fulfilled":
                     return chunk.value;
-                  case 'rejected':
+                  case "rejected":
                     throw chunk.reason;
                 }
-                return 'This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.';
+                return "This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.";
               },
               set: () => {},
               enumerable: !0,
@@ -2298,37 +2298,37 @@
           return model;
         }
         function getInferredFunctionApproximate(code) {
-          code = code.startsWith('Object.defineProperty(')
+          code = code.startsWith("Object.defineProperty(")
             ? code.slice(22)
-            : code.startsWith('(')
+            : code.startsWith("(")
               ? code.slice(1)
               : code;
-          if (code.startsWith('async function')) {
-            var idx = code.indexOf('(', 14);
+          if (code.startsWith("async function")) {
+            var idx = code.indexOf("(", 14);
             if (-1 !== idx)
               return (
                 (code = code.slice(14, idx).trim()),
-                (0, eval)('({' + JSON.stringify(code) + ':async function(){}})')[code]
+                (0, eval)("({" + JSON.stringify(code) + ":async function(){}})")[code]
               );
-          } else if (code.startsWith('function')) {
-            if (((idx = code.indexOf('(', 8)), -1 !== idx))
+          } else if (code.startsWith("function")) {
+            if (((idx = code.indexOf("(", 8)), -1 !== idx))
               return (
                 (code = code.slice(8, idx).trim()),
-                (0, eval)('({' + JSON.stringify(code) + ':function(){}})')[code]
+                (0, eval)("({" + JSON.stringify(code) + ":function(){}})")[code]
               );
-          } else if (code.startsWith('class') && ((idx = code.indexOf('{', 5)), -1 !== idx))
+          } else if (code.startsWith("class") && ((idx = code.indexOf("{", 5)), -1 !== idx))
             return (
               (code = code.slice(5, idx).trim()),
-              (0, eval)('({' + JSON.stringify(code) + ':class{}})')[code]
+              (0, eval)("({" + JSON.stringify(code) + ":class{}})")[code]
             );
           return () => {};
         }
         function parseModelString(response, parentObject, key, value) {
-          if ('$' === value[0]) {
-            if ('$' === value)
+          if ("$" === value[0]) {
+            if ("$" === value)
               return (
                 null !== initializingHandler &&
-                  '0' === key &&
+                  "0" === key &&
                   (initializingHandler = {
                     parent: initializingHandler,
                     chunk: null,
@@ -2340,9 +2340,9 @@
                 REACT_ELEMENT_TYPE
               );
             switch (value[1]) {
-              case '$':
+              case "$":
                 return value.slice(1);
-              case 'L':
+              case "L":
                 return (
                   (parentObject = parseInt(value.slice(2), 16)),
                   (response = getChunk(response, parentObject)),
@@ -2351,7 +2351,7 @@
                     initializingChunk._children.push(response),
                   createLazyChunkWrapper(response, 0)
                 );
-              case '@':
+              case "@":
                 return (
                   (parentObject = parseInt(value.slice(2), 16)),
                   (response = getChunk(response, parentObject)),
@@ -2360,68 +2360,68 @@
                     initializingChunk._children.push(response),
                   response
                 );
-              case 'S':
+              case "S":
                 return Symbol.for(value.slice(2));
-              case 'h': {
+              case "h": {
                 var ref = value.slice(2);
                 return getOutlinedModel(response, ref, parentObject, key, loadServerReference);
               }
-              case 'T':
-                parentObject = '$' + value.slice(2);
+              case "T":
+                parentObject = "$" + value.slice(2);
                 response = response._tempRefs;
                 if (null == response)
                   throw Error(
-                    'Missing a temporary reference set but the RSC response returned a temporary reference. Pass a temporaryReference option with the set that was used with the reply.',
+                    "Missing a temporary reference set but the RSC response returned a temporary reference. Pass a temporaryReference option with the set that was used with the reply.",
                   );
                 return response.get(parentObject);
-              case 'Q':
+              case "Q":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, createMap)
                 );
-              case 'W':
+              case "W":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, createSet)
                 );
-              case 'B':
+              case "B":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, createBlob)
                 );
-              case 'K':
+              case "K":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, createFormData)
                 );
-              case 'Z':
+              case "Z":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, resolveErrorDev)
                 );
-              case 'i':
+              case "i":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, extractIterator)
                 );
-              case 'I':
+              case "I":
                 return Infinity;
-              case '-':
-                return '$-0' === value ? -0 : -Infinity;
-              case 'N':
+              case "-":
+                return "$-0" === value ? -0 : -Infinity;
+              case "N":
                 return NaN;
-              case 'u':
+              case "u":
                 return;
-              case 'D':
+              case "D":
                 return new Date(Date.parse(value.slice(2)));
-              case 'n':
+              case "n":
                 return BigInt(value.slice(2));
-              case 'P':
+              case "P":
                 return (
                   (ref = value.slice(2)),
                   getOutlinedModel(response, ref, parentObject, key, applyConstructor)
                 );
-              case 'E':
+              case "E":
                 response = value.slice(2);
                 try {
                   if (!mightHaveStaticConstructor.test(response)) return (0, eval)(response);
@@ -2429,12 +2429,12 @@
                 try {
                   if (
                     ((ref = getInferredFunctionApproximate(response)),
-                    response.startsWith('Object.defineProperty('))
+                    response.startsWith("Object.defineProperty("))
                   ) {
                     var idx = response.lastIndexOf(',"name",{value:"');
                     if (-1 !== idx) {
                       var name = JSON.parse(response.slice(idx + 16 - 1, response.length - 2));
-                      Object.defineProperty(ref, 'name', {
+                      Object.defineProperty(ref, "name", {
                         value: name,
                       });
                     }
@@ -2443,30 +2443,30 @@
                   ref = () => {};
                 }
                 return ref;
-              case 'Y':
+              case "Y":
                 if (
                   2 < value.length &&
                   (ref = response._debugChannel && response._debugChannel.callback)
                 ) {
-                  if ('@' === value[2])
+                  if ("@" === value[2])
                     return (
                       (parentObject = value.slice(3)),
                       (key = parseInt(parentObject, 16)),
-                      response._chunks.has(key) || ref('P:' + parentObject),
+                      response._chunks.has(key) || ref("P:" + parentObject),
                       getChunk(response, key)
                     );
                   value = value.slice(2);
                   idx = parseInt(value, 16);
-                  response._chunks.has(idx) || ref('Q:' + value);
+                  response._chunks.has(idx) || ref("Q:" + value);
                   ref = getChunk(response, idx);
-                  return 'fulfilled' === ref.status
+                  return "fulfilled" === ref.status
                     ? ref.value
                     : defineLazyGetter(response, ref, parentObject, key);
                 }
-                '__proto__' !== key &&
+                "__proto__" !== key &&
                   Object.defineProperty(parentObject, key, {
                     get: () =>
-                      'This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.',
+                      "This object has been omitted by React in the console log to avoid sending too much data from the server. Try logging smaller or more specific objects.",
                     set: () => {},
                     enumerable: !0,
                     configurable: !1,
@@ -2529,8 +2529,8 @@
             void 0 === ReactSharedInteralsServer || null === ReactSharedInteralsServer.A
               ? null
               : ReactSharedInteralsServer.A.getOwner();
-          this._debugRootStack = null !== bundlerConfig ? Error('react-stack-top-frame') : null;
-          environmentName = void 0 === environmentName ? 'Server' : environmentName;
+          this._debugRootStack = null !== bundlerConfig ? Error("react-stack-top-frame") : null;
+          environmentName = void 0 === environmentName ? "Server" : environmentName;
           supportsCreateTask &&
             (this._debugRootTask = console.createTask(
               '"use ' + environmentName.toLowerCase() + '"',
@@ -2560,10 +2560,10 @@
           };
           weakResponse = unwrapWeakResponse(weakResponse);
           var debugValuePromise = Promise.resolve(streamDebugValue);
-          debugValuePromise.status = 'fulfilled';
+          debugValuePromise.status = "fulfilled";
           debugValuePromise.value = streamDebugValue;
           streamState._debugInfo = {
-            name: 'rsc stream',
+            name: "rsc stream",
             start: weakResponse._debugStartTime,
             end: weakResponse._debugStartTime,
             byteSize: 0,
@@ -2596,17 +2596,17 @@
         }
         function addAsyncInfo(chunk, asyncInfo) {
           var value = resolveLazy(chunk.value);
-          'object' !== typeof value ||
+          "object" !== typeof value ||
           null === value ||
           (!isArrayImpl(value) &&
-            'function' !== typeof value[ASYNC_ITERATOR] &&
+            "function" !== typeof value[ASYNC_ITERATOR] &&
             value.$$typeof !== REACT_ELEMENT_TYPE &&
             value.$$typeof !== REACT_LAZY_TYPE)
             ? chunk._debugInfo.push(asyncInfo)
             : isArrayImpl(value._debugInfo)
               ? value._debugInfo.push(asyncInfo)
               : Object.isFrozen(value) ||
-                Object.defineProperty(value, '_debugInfo', {
+                Object.defineProperty(value, "_debugInfo", {
                   configurable: !1,
                   enumerable: !1,
                   writable: !0,
@@ -2618,7 +2618,7 @@
             ((response = {
               awaited: streamState._debugInfo,
             }),
-            'pending' === chunk.status || 'blocked' === chunk.status
+            "pending" === chunk.status || "blocked" === chunk.status
               ? ((response = addAsyncInfo.bind(null, chunk, response)),
                 chunk.then(response, response))
               : addAsyncInfo(chunk, response));
@@ -2626,10 +2626,10 @@
         function resolveBuffer(response, id, buffer, streamState) {
           var chunks = response._chunks,
             chunk = chunks.get(id);
-          chunk && 'pending' !== chunk.status
+          chunk && "pending" !== chunk.status
             ? chunk.reason.enqueueValue(buffer)
             : (chunk && releasePendingChunk(response, chunk),
-              (buffer = new ReactPromise('fulfilled', buffer, null)),
+              (buffer = new ReactPromise("fulfilled", buffer, null)),
               resolveChunkDebugInfo(response, streamState, buffer),
               chunks.set(id, buffer));
         }
@@ -2642,9 +2642,9 @@
             if (chunk) {
               releasePendingChunk(response, chunk);
               var blockedChunk = chunk;
-              blockedChunk.status = 'blocked';
+              blockedChunk.status = "blocked";
             } else
-              (blockedChunk = new ReactPromise('blocked', null, null)),
+              (blockedChunk = new ReactPromise("blocked", null, null)),
                 chunks.set(id, blockedChunk);
             resolveChunkDebugInfo(response, streamState, blockedChunk);
             model.then(
@@ -2655,7 +2655,7 @@
             chunk
               ? (resolveChunkDebugInfo(response, streamState, chunk),
                 resolveModuleChunk(response, chunk, clientReference))
-              : ((chunk = new ReactPromise('resolved_module', clientReference, null)),
+              : ((chunk = new ReactPromise("resolved_module", clientReference, null)),
                 resolveChunkDebugInfo(response, streamState, chunk),
                 chunks.set(id, chunk));
         }
@@ -2663,13 +2663,13 @@
           var chunks = response._chunks,
             chunk = chunks.get(id);
           if (chunk) {
-            if ((resolveChunkDebugInfo(response, streamState, chunk), 'pending' === chunk.status)) {
+            if ((resolveChunkDebugInfo(response, streamState, chunk), "pending" === chunk.status)) {
               id = chunk.value;
               if (null != chunk._debugChunk) {
                 streamState = initializingHandler;
                 chunks = initializingChunk;
                 initializingHandler = null;
-                chunk.status = 'blocked';
+                chunk.status = "blocked";
                 chunk.value = null;
                 chunk.reason = null;
                 initializingChunk = chunk;
@@ -2689,7 +2689,7 @@
                   (initializingHandler = streamState), (initializingChunk = chunks);
                 }
               }
-              chunk.status = 'fulfilled';
+              chunk.status = "fulfilled";
               chunk.value = stream;
               chunk.reason = controller;
               null !== id
@@ -2699,7 +2699,7 @@
             }
           } else
             0 === response._pendingChunks++ && (response._weakResponse.response = response),
-              (stream = new ReactPromise('fulfilled', stream, controller)),
+              (stream = new ReactPromise("fulfilled", stream, controller)),
               resolveChunkDebugInfo(response, streamState, stream),
               chunks.set(id, stream);
         }
@@ -2729,7 +2729,7 @@
                 if (null === previousBlockedChunk) {
                   var chunk = createResolvedModelChunk(response, json);
                   initializeModelChunk(chunk);
-                  'fulfilled' === chunk.status
+                  "fulfilled" === chunk.status
                     ? controller.enqueue(chunk.value)
                     : (chunk.then(
                         (v) => controller.enqueue(v),
@@ -2792,12 +2792,12 @@
             return createIterator((arg) => {
               if (void 0 !== arg)
                 throw Error(
-                  'Values cannot be passed to next() of AsyncIterables passed to Client Components.',
+                  "Values cannot be passed to next() of AsyncIterables passed to Client Components.",
                 );
               if (nextReadIndex === buffer.length) {
                 if (closed)
                   return new ReactPromise(
-                    'fulfilled',
+                    "fulfilled",
                     {
                       done: !0,
                       value: void 0,
@@ -2817,7 +2817,7 @@
               enqueueValue: (value) => {
                 if (nextWriteIndex === buffer.length)
                   buffer[nextWriteIndex] = new ReactPromise(
-                    'fulfilled',
+                    "fulfilled",
                     {
                       done: !1,
                       value: value,
@@ -2828,7 +2828,7 @@
                   var chunk = buffer[nextWriteIndex],
                     resolveListeners = chunk.value,
                     rejectListeners = chunk.reason;
-                  chunk.status = 'fulfilled';
+                  chunk.status = "fulfilled";
                   chunk.value = {
                     done: !1,
                     value: value,
@@ -2890,9 +2890,9 @@
             stack = errorInfo.stack,
             env = errorInfo.env,
             errorOptions =
-              'cause' in errorInfo
+              "cause" in errorInfo
                 ? {
-                    cause: reviveModel(response, errorInfo.cause, errorInfo, 'cause'),
+                    cause: reviveModel(response, errorInfo.cause, errorInfo, "cause"),
                   }
                 : void 0;
           message = buildFakeCallStack(
@@ -2903,14 +2903,14 @@
             Error.bind(
               null,
               message ||
-                'An error occurred in the Server Components render but no message was provided',
+                "An error occurred in the Server Components render but no message was provided",
               errorOptions,
             ),
           );
           stack = null;
           null != errorInfo.owner &&
             ((errorInfo = errorInfo.owner.slice(1)),
-            (errorInfo = getOutlinedModel(response, errorInfo, {}, '', createModel)),
+            (errorInfo = getOutlinedModel(response, errorInfo, {}, "", createModel)),
             null !== errorInfo && (stack = initializeFakeTask(response, errorInfo)));
           null === stack
             ? ((response = getRootTask(response, env)),
@@ -2930,7 +2930,7 @@
           enclosingCol,
           environmentName,
         ) {
-          name || (name = '<anonymous>');
+          name || (name = "<anonymous>");
           var encodedName = JSON.stringify(name);
           1 > enclosingLine ? (enclosingLine = 0) : enclosingLine--;
           1 > enclosingCol ? (enclosingCol = 0) : enclosingCol--;
@@ -2945,71 +2945,71 @@
               (col = col - enclosingCol - line - 3),
               0 > col && (col = 0),
               (encodedName =
-                '({' +
+                "({" +
                 encodedName +
-                ':' +
-                ' '.repeat(enclosingCol) +
-                '_=>' +
-                ' '.repeat(col) +
-                '_()})'))
+                ":" +
+                " ".repeat(enclosingCol) +
+                "_=>" +
+                " ".repeat(col) +
+                "_()})"))
             : 1 > enclosingLine
               ? ((enclosingCol -= encodedName.length + 3),
                 0 > enclosingCol && (enclosingCol = 0),
                 (encodedName =
-                  '({' +
+                  "({" +
                   encodedName +
-                  ':' +
-                  ' '.repeat(enclosingCol) +
-                  '_=>' +
-                  '\n'.repeat(line - enclosingLine) +
-                  ' '.repeat(col) +
-                  '_()})'))
+                  ":" +
+                  " ".repeat(enclosingCol) +
+                  "_=>" +
+                  "\n".repeat(line - enclosingLine) +
+                  " ".repeat(col) +
+                  "_()})"))
               : enclosingLine === line
                 ? ((col = col - enclosingCol - 3),
                   0 > col && (col = 0),
                   (encodedName =
-                    '\n'.repeat(enclosingLine - 1) +
-                    '({' +
+                    "\n".repeat(enclosingLine - 1) +
+                    "({" +
                     encodedName +
-                    ':\n' +
-                    ' '.repeat(enclosingCol) +
-                    '_=>' +
-                    ' '.repeat(col) +
-                    '_()})'))
+                    ":\n" +
+                    " ".repeat(enclosingCol) +
+                    "_=>" +
+                    " ".repeat(col) +
+                    "_()})"))
                 : (encodedName =
-                    '\n'.repeat(enclosingLine - 1) +
-                    '({' +
+                    "\n".repeat(enclosingLine - 1) +
+                    "({" +
                     encodedName +
-                    ':\n' +
-                    ' '.repeat(enclosingCol) +
-                    '_=>' +
-                    '\n'.repeat(line - enclosingLine) +
-                    ' '.repeat(col) +
-                    '_()})');
+                    ":\n" +
+                    " ".repeat(enclosingCol) +
+                    "_=>" +
+                    "\n".repeat(line - enclosingLine) +
+                    " ".repeat(col) +
+                    "_()})");
           encodedName =
             1 > enclosingLine
               ? encodedName +
-                '\n/* This module was rendered by a Server Component. Turn on Source Maps to see the server source. */'
-              : '/* This module was rendered by a Server Component. Turn on Source Maps to see the server source. */' +
+                "\n/* This module was rendered by a Server Component. Turn on Source Maps to see the server source. */"
+              : "/* This module was rendered by a Server Component. Turn on Source Maps to see the server source. */" +
                 encodedName;
-          filename.startsWith('/') && (filename = 'file://' + filename);
+          filename.startsWith("/") && (filename = "file://" + filename);
           sourceMap
             ? ((encodedName +=
-                '\n//# sourceURL=about://React/' +
+                "\n//# sourceURL=about://React/" +
                 encodeURIComponent(environmentName) +
-                '/' +
+                "/" +
                 encodeURI(filename) +
-                '?' +
+                "?" +
                 fakeFunctionIdx++),
-              (encodedName += '\n//# sourceMappingURL=' + sourceMap))
+              (encodedName += "\n//# sourceMappingURL=" + sourceMap))
             : (encodedName = filename
-                ? encodedName + ('\n//# sourceURL=' + encodeURI(filename))
-                : encodedName + '\n//# sourceURL=<anonymous>');
+                ? encodedName + ("\n//# sourceURL=" + encodeURI(filename))
+                : encodedName + "\n//# sourceURL=<anonymous>");
           try {
             var fn = (0, eval)(encodedName)[name];
           } catch (x) {
             (fn = (_) => _()),
-              Object.defineProperty(fn, 'name', {
+              Object.defineProperty(fn, "name", {
                 value: name,
               });
           }
@@ -3018,7 +3018,7 @@
         function buildFakeCallStack(response, stack, environmentName, useEnclosingLine, innerCall) {
           for (var i = 0; i < stack.length; i++) {
             var frame = stack[i],
-              frameKey = frame.join('-') + '-' + environmentName + (useEnclosingLine ? '-e' : '-n'),
+              frameKey = frame.join("-") + "-" + environmentName + (useEnclosingLine ? "-e" : "-n"),
               fn = fakeFunctionCache.get(frameKey);
             if (void 0 === fn) {
               fn = frame[0];
@@ -3076,10 +3076,10 @@
             env !== cachedEntry
               ? '"use ' + env.toLowerCase() + '"'
               : void 0 !== debugInfo.key
-                ? '<' + (debugInfo.name || '...') + '>'
+                ? "<" + (debugInfo.name || "...") + ">"
                 : void 0 !== debugInfo.name
-                  ? debugInfo.name || 'unknown'
-                  : 'await ' + (debugInfo.awaited.name || 'unknown');
+                  ? debugInfo.name || "unknown"
+                  : "await " + (debugInfo.awaited.name || "unknown");
           env = console.createTask.bind(console, env);
           useEnclosingLine = buildFakeCallStack(
             response,
@@ -3095,7 +3095,7 @@
           return (debugInfo.debugTask = response);
         }
         function fakeJSXCallSite() {
-          return Error('react-stack-top-frame');
+          return Error("react-stack-top-frame");
         }
         function initializeFakeStack(response, debugInfo) {
           if (void 0 === debugInfo.debugStack) {
@@ -3103,7 +3103,7 @@
               (debugInfo.debugStack = createFakeJSXCallStackInDEV(
                 response,
                 debugInfo.stack,
-                null == debugInfo.env ? '' : debugInfo.env,
+                null == debugInfo.env ? "" : debugInfo.env,
               ));
             var owner = debugInfo.owner;
             null != owner &&
@@ -3122,7 +3122,7 @@
             _componentInfoOrAsyncInfo.debugStack = response._debugRootStack;
             _componentInfoOrAsyncInfo.debugTask = response._debugRootTask;
           } else void 0 !== debugInfo.stack && initializeFakeStack(response, debugInfo);
-          'number' === typeof debugInfo.time &&
+          "number" === typeof debugInfo.time &&
             (debugInfo = {
               time: debugInfo.time + response._timeOrigin,
             });
@@ -3130,10 +3130,10 @@
         }
         function getCurrentStackInDEV() {
           var owner = currentOwnerInDEV;
-          if (null === owner) return '';
+          if (null === owner) return "";
           try {
-            var info = '';
-            if (owner.owner || 'string' !== typeof owner.name) {
+            var info = "";
+            if (owner.owner || "string" !== typeof owner.name) {
               for (; owner; ) {
                 var ownerStack = owner.debugStack;
                 if (null != ownerStack) {
@@ -3144,13 +3144,13 @@
                     Error.prepareStackTrace = void 0;
                     var stack = error.stack;
                     Error.prepareStackTrace = prevPrepareStackTrace;
-                    stack.startsWith('Error: react-stack-top-frame\n') && (stack = stack.slice(29));
-                    var idx = stack.indexOf('\n');
+                    stack.startsWith("Error: react-stack-top-frame\n") && (stack = stack.slice(29));
+                    var idx = stack.indexOf("\n");
                     -1 !== idx && (stack = stack.slice(idx + 1));
-                    idx = stack.indexOf('react_stack_bottom_frame');
-                    -1 !== idx && (idx = stack.lastIndexOf('\n', idx));
-                    var JSCompiler_inline_result = -1 !== idx ? (stack = stack.slice(0, idx)) : '';
-                    info = JSCompiler_temp_const + ('\n' + JSCompiler_inline_result);
+                    idx = stack.indexOf("react_stack_bottom_frame");
+                    -1 !== idx && (idx = stack.lastIndexOf("\n", idx));
+                    var JSCompiler_inline_result = -1 !== idx ? (stack = stack.slice(0, idx)) : "";
+                    info = JSCompiler_temp_const + ("\n" + JSCompiler_inline_result);
                   }
                 } else break;
               }
@@ -3161,19 +3161,19 @@
                 try {
                   throw Error();
                 } catch (x) {
-                  (prefix = ((error = x.stack.trim().match(/\n( *(at )?)/)) && error[1]) || ''),
+                  (prefix = ((error = x.stack.trim().match(/\n( *(at )?)/)) && error[1]) || ""),
                     (suffix =
-                      -1 < x.stack.indexOf('\n    at')
-                        ? ' (<anonymous>)'
-                        : -1 < x.stack.indexOf('@')
-                          ? '@unknown:0:0'
-                          : '');
+                      -1 < x.stack.indexOf("\n    at")
+                        ? " (<anonymous>)"
+                        : -1 < x.stack.indexOf("@")
+                          ? "@unknown:0:0"
+                          : "");
                 }
-              JSCompiler_inline_result$jscomp$0 = '\n' + prefix + JSCompiler_temp_const + suffix;
+              JSCompiler_inline_result$jscomp$0 = "\n" + prefix + JSCompiler_temp_const + suffix;
             }
           } catch (x) {
             JSCompiler_inline_result$jscomp$0 =
-              '\nError generating stack: ' + x.message + '\n' + x.stack;
+              "\nError generating stack: " + x.message + "\n" + x.stack;
           }
           return JSCompiler_inline_result$jscomp$0;
         }
@@ -3183,7 +3183,7 @@
             if (null == blockedChunk)
               (blockedChunk = createResolvedModelChunk(response, json)),
                 initializeModelChunk(blockedChunk),
-                'fulfilled' === blockedChunk.status
+                "fulfilled" === blockedChunk.status
                   ? replayConsoleWithCallStackInDEV(response, blockedChunk.value)
                   : (blockedChunk.then(
                       (v) => replayConsoleWithCallStackInDEV(response, v),
@@ -3215,10 +3215,10 @@
             var promise = ioInfo.value;
             if (promise)
               switch (promise.status) {
-                case 'fulfilled':
+                case "fulfilled":
                   logIOInfo(ioInfo, response, promise.value);
                   break;
-                case 'rejected':
+                case "rejected":
                   logIOInfoErrored(ioInfo, response, promise.reason);
                   break;
                 default:
@@ -3238,14 +3238,14 @@
           try {
             chunk
               ? (resolveModelChunk(response, chunk, model),
-                'resolved_model' === chunk.status && initializeModelChunk(chunk))
+                "resolved_model" === chunk.status && initializeModelChunk(chunk))
               : ((chunk = createResolvedModelChunk(response, model)),
                 chunks.set(id, chunk),
                 initializeModelChunk(chunk));
           } finally {
             isInitializingDebugInfo = prevIsInitializingDebugInfo;
           }
-          'fulfilled' === chunk.status
+          "fulfilled" === chunk.status
             ? initializeIOInfo(response, chunk.value)
             : chunk.then(
                 (v) => {
@@ -3307,9 +3307,9 @@
               if (supportsUserTiming && 0 <= previousEndTime && 10 > trackIdx) {
                 var color =
                     componentInfo.env === response$jscomp$0._rootEnvironmentName
-                      ? 'primary-light'
-                      : 'secondary-light',
-                  entryName = componentInfo.name + ' [deduped]',
+                      ? "primary-light"
+                      : "secondary-light",
+                  entryName = componentInfo.name + " [deduped]",
                   debugTask = componentInfo.debugTask;
                 debugTask
                   ? debugTask.run(
@@ -3319,7 +3319,7 @@
                         0 > startTime ? 0 : startTime,
                         previousEndTime,
                         trackNames[trackIdx],
-                        'Server Components \u269b',
+                        "Server Components \u269b",
                         color,
                       ),
                     )
@@ -3328,7 +3328,7 @@
                       0 > startTime ? 0 : startTime,
                       previousEndTime,
                       trackNames[trackIdx],
-                      'Server Components \u269b',
+                      "Server Components \u269b",
                       color,
                     );
               }
@@ -3338,12 +3338,12 @@
           }
           var children = root._children;
           var debugInfo = root._debugInfo;
-          if (0 === debugInfo.length && 'fulfilled' === root.status) {
+          if (0 === debugInfo.length && "fulfilled" === root.status) {
             var resolvedValue = resolveLazy(root.value);
-            'object' === typeof resolvedValue &&
+            "object" === typeof resolvedValue &&
               null !== resolvedValue &&
               (isArrayImpl(resolvedValue) ||
-                'function' === typeof resolvedValue[ASYNC_ITERATOR] ||
+                "function" === typeof resolvedValue[ASYNC_ITERATOR] ||
                 resolvedValue.$$typeof === REACT_ELEMENT_TYPE ||
                 resolvedValue.$$typeof === REACT_LAZY_TYPE) &&
               isArrayImpl(resolvedValue._debugInfo) &&
@@ -3352,8 +3352,8 @@
           if (debugInfo) {
             for (var startTime$jscomp$0 = 0, i = 0; i < debugInfo.length; i++) {
               var info = debugInfo[i];
-              'number' === typeof info.time && (startTime$jscomp$0 = info.time);
-              if ('string' === typeof info.name) {
+              "number" === typeof info.time && (startTime$jscomp$0 = info.time);
+              if ("string" === typeof info.name) {
                 startTime$jscomp$0 < trackTime && trackIdx$jscomp$6++;
                 trackTime = startTime$jscomp$0;
                 break;
@@ -3361,7 +3361,7 @@
             }
             for (var _i4 = debugInfo.length - 1; 0 <= _i4; _i4--) {
               var _info = debugInfo[_i4];
-              if ('number' === typeof _info.time && _info.time > parentEndTime) {
+              if ("number" === typeof _info.time && _info.time > parentEndTime) {
                 parentEndTime = _info.time;
                 break;
               }
@@ -3405,13 +3405,13 @@
               _i6--
             ) {
               var _info2 = debugInfo[_i6];
-              if ('number' === typeof _info2.time) {
+              if ("number" === typeof _info2.time) {
                 0 === componentEndTime && (componentEndTime = _info2.time);
                 var time = _info2.time;
                 if (-1 < endTimeIdx)
                   for (var j = endTimeIdx - 1; j > _i6; j--) {
                     var candidateInfo = debugInfo[j];
-                    if ('string' === typeof candidateInfo.name) {
+                    if ("string" === typeof candidateInfo.name) {
                       componentEndTime > childrenEndTime && (childrenEndTime = componentEndTime);
                       var componentInfo$jscomp$0 = candidateInfo,
                         response = response$jscomp$0,
@@ -3422,7 +3422,7 @@
                         childrenEndTime$jscomp$0 = childrenEndTime;
                       if (
                         isLastComponent &&
-                        'rejected' === root.status &&
+                        "rejected" === root.status &&
                         root.reason !== response._closedReason
                       ) {
                         var componentInfo$jscomp$2 = componentInfo$jscomp$1,
@@ -3436,37 +3436,37 @@
                             entryName$jscomp$0 =
                               env === response._rootEnvironmentName || void 0 === env
                                 ? name
-                                : name + ' [' + env + ']',
-                            measureName = '\u200b' + entryName$jscomp$0,
+                                : name + " [" + env + "]",
+                            measureName = "\u200b" + entryName$jscomp$0,
                             properties = [
                               [
-                                'Error',
-                                'object' === typeof error &&
+                                "Error",
+                                "object" === typeof error &&
                                 null !== error &&
-                                'string' === typeof error.message
+                                "string" === typeof error.message
                                   ? String(error.message)
                                   : String(error),
                               ],
                             ];
                           null != componentInfo$jscomp$2.key &&
                             addValueToProperties(
-                              'key',
+                              "key",
                               componentInfo$jscomp$2.key,
                               properties,
                               0,
-                              '',
+                              "",
                             );
                           null != componentInfo$jscomp$2.props &&
-                            addObjectToProperties(componentInfo$jscomp$2.props, properties, 0, '');
+                            addObjectToProperties(componentInfo$jscomp$2.props, properties, 0, "");
                           performance.measure(measureName, {
                             start: 0 > startTime$jscomp$2 ? 0 : startTime$jscomp$2,
                             end: childrenEndTime$jscomp$1,
                             detail: {
                               devtools: {
-                                color: 'error',
+                                color: "error",
                                 track: trackNames[trackIdx$jscomp$1],
-                                trackGroup: 'Server Components \u269b',
-                                tooltipText: entryName$jscomp$0 + ' Errored',
+                                trackGroup: "Server Components \u269b",
+                                tooltipText: entryName$jscomp$0 + " Errored",
                                 properties: properties,
                               },
                             },
@@ -3490,39 +3490,39 @@
                             color$jscomp$0 =
                               0.5 > selfTime
                                 ? isPrimaryEnv
-                                  ? 'primary-light'
-                                  : 'secondary-light'
+                                  ? "primary-light"
+                                  : "secondary-light"
                                 : 50 > selfTime
                                   ? isPrimaryEnv
-                                    ? 'primary'
-                                    : 'secondary'
+                                    ? "primary"
+                                    : "secondary"
                                   : 500 > selfTime
                                     ? isPrimaryEnv
-                                      ? 'primary-dark'
-                                      : 'secondary-dark'
-                                    : 'error',
+                                      ? "primary-dark"
+                                      : "secondary-dark"
+                                    : "error",
                             debugTask$jscomp$0 = componentInfo$jscomp$3.debugTask,
                             measureName$jscomp$0 =
-                              '\u200b' +
+                              "\u200b" +
                               (isPrimaryEnv || void 0 === env$jscomp$0
                                 ? name$jscomp$0
-                                : name$jscomp$0 + ' [' + env$jscomp$0 + ']');
+                                : name$jscomp$0 + " [" + env$jscomp$0 + "]");
                           if (debugTask$jscomp$0) {
                             var properties$jscomp$0 = [];
                             null != componentInfo$jscomp$3.key &&
                               addValueToProperties(
-                                'key',
+                                "key",
                                 componentInfo$jscomp$3.key,
                                 properties$jscomp$0,
                                 0,
-                                '',
+                                "",
                               );
                             null != componentInfo$jscomp$3.props &&
                               addObjectToProperties(
                                 componentInfo$jscomp$3.props,
                                 properties$jscomp$0,
                                 0,
-                                '',
+                                "",
                               );
                             debugTask$jscomp$0.run(
                               performance.measure.bind(performance, measureName$jscomp$0, {
@@ -3532,7 +3532,7 @@
                                   devtools: {
                                     color: color$jscomp$0,
                                     track: trackNames[trackIdx$jscomp$2],
-                                    trackGroup: 'Server Components \u269b',
+                                    trackGroup: "Server Components \u269b",
                                     properties: properties$jscomp$0,
                                   },
                                 },
@@ -3545,7 +3545,7 @@
                               0 > startTime$jscomp$3 ? 0 : startTime$jscomp$3,
                               childrenEndTime$jscomp$2,
                               trackNames[trackIdx$jscomp$2],
-                              'Server Components \u269b',
+                              "Server Components \u269b",
                               color$jscomp$0,
                             );
                         }
@@ -3561,7 +3561,7 @@
                       if (promise) {
                         var thenable = promise;
                         switch (thenable.status) {
-                          case 'fulfilled':
+                          case "fulfilled":
                             logComponentAwait(
                               asyncInfo,
                               trackIdx$jscomp$6,
@@ -3571,7 +3571,7 @@
                               thenable.value,
                             );
                             break;
-                          case 'rejected': {
+                          case "rejected": {
                             var asyncInfo$jscomp$0 = asyncInfo,
                               trackIdx$jscomp$3 = trackIdx$jscomp$6,
                               startTime$jscomp$4 = time,
@@ -3581,7 +3581,7 @@
                             if (supportsUserTiming && 0 < endTime$jscomp$0) {
                               var description = getIODescription(error$jscomp$0),
                                 entryName$jscomp$1 =
-                                  'await ' +
+                                  "await " +
                                   getIOShortName(
                                     asyncInfo$jscomp$0.awaited,
                                     description,
@@ -3594,10 +3594,10 @@
                               if (debugTask$jscomp$1) {
                                 var properties$jscomp$1 = [
                                     [
-                                      'Rejected',
-                                      'object' === typeof error$jscomp$0 &&
+                                      "Rejected",
+                                      "object" === typeof error$jscomp$0 &&
                                       null !== error$jscomp$0 &&
-                                      'string' === typeof error$jscomp$0.message
+                                      "string" === typeof error$jscomp$0.message
                                         ? String(error$jscomp$0.message)
                                         : String(error$jscomp$0),
                                     ],
@@ -3608,16 +3608,16 @@
                                       description,
                                       asyncInfo$jscomp$0.env,
                                       rootEnv,
-                                    ) + ' Rejected';
+                                    ) + " Rejected";
                                 debugTask$jscomp$1.run(
                                   performance.measure.bind(performance, entryName$jscomp$1, {
                                     start: 0 > startTime$jscomp$4 ? 0 : startTime$jscomp$4,
                                     end: endTime$jscomp$0,
                                     detail: {
                                       devtools: {
-                                        color: 'error',
+                                        color: "error",
                                         track: trackNames[trackIdx$jscomp$3],
-                                        trackGroup: 'Server Components \u269b',
+                                        trackGroup: "Server Components \u269b",
                                         properties: properties$jscomp$1,
                                         tooltipText: tooltipText,
                                       },
@@ -3631,8 +3631,8 @@
                                   0 > startTime$jscomp$4 ? 0 : startTime$jscomp$4,
                                   endTime$jscomp$0,
                                   trackNames[trackIdx$jscomp$3],
-                                  'Server Components \u269b',
-                                  'error',
+                                  "Server Components \u269b",
+                                  "error",
                                 );
                             }
                             break;
@@ -3662,7 +3662,7 @@
                   endTime = time;
                   for (var _j = debugInfo.length - 1; _j > _i6; _j--) {
                     var _candidateInfo = debugInfo[_j];
-                    if ('string' === typeof _candidateInfo.name) {
+                    if ("string" === typeof _candidateInfo.name) {
                       componentEndTime > childrenEndTime && (childrenEndTime = componentEndTime);
                       var _componentInfo = _candidateInfo,
                         _env = response$jscomp$0._rootEnvironmentName,
@@ -3676,38 +3676,38 @@
                           entryName$jscomp$2 =
                             env$jscomp$2 === _env || void 0 === env$jscomp$2
                               ? name$jscomp$1
-                              : name$jscomp$1 + ' [' + env$jscomp$2 + ']',
-                          measureName$jscomp$1 = '\u200b' + entryName$jscomp$2,
+                              : name$jscomp$1 + " [" + env$jscomp$2 + "]",
+                          measureName$jscomp$1 = "\u200b" + entryName$jscomp$2,
                           properties$jscomp$2 = [
                             [
-                              'Aborted',
-                              'The stream was aborted before this Component finished rendering.',
+                              "Aborted",
+                              "The stream was aborted before this Component finished rendering.",
                             ],
                           ];
                         null != componentInfo$jscomp$4.key &&
                           addValueToProperties(
-                            'key',
+                            "key",
                             componentInfo$jscomp$4.key,
                             properties$jscomp$2,
                             0,
-                            '',
+                            "",
                           );
                         null != componentInfo$jscomp$4.props &&
                           addObjectToProperties(
                             componentInfo$jscomp$4.props,
                             properties$jscomp$2,
                             0,
-                            '',
+                            "",
                           );
                         performance.measure(measureName$jscomp$1, {
                           start: 0 > startTime$jscomp$5 ? 0 : startTime$jscomp$5,
                           end: childrenEndTime$jscomp$3,
                           detail: {
                             devtools: {
-                              color: 'warning',
+                              color: "warning",
                               track: trackNames[trackIdx$jscomp$4],
-                              trackGroup: 'Server Components \u269b',
-                              tooltipText: entryName$jscomp$2 + ' Aborted',
+                              trackGroup: "Server Components \u269b",
+                              tooltipText: entryName$jscomp$2 + " Aborted",
                               properties: properties$jscomp$2,
                             },
                           },
@@ -3729,10 +3729,10 @@
                         rootEnv$jscomp$0 = _env2;
                       if (supportsUserTiming && 0 < endTime$jscomp$1) {
                         var entryName$jscomp$3 =
-                            'await ' +
+                            "await " +
                             getIOShortName(
                               asyncInfo$jscomp$1.awaited,
-                              '',
+                              "",
                               asyncInfo$jscomp$1.env,
                               rootEnv$jscomp$0,
                             ),
@@ -3742,23 +3742,23 @@
                           var tooltipText$jscomp$0 =
                             getIOLongName(
                               asyncInfo$jscomp$1.awaited,
-                              '',
+                              "",
                               asyncInfo$jscomp$1.env,
                               rootEnv$jscomp$0,
-                            ) + ' Aborted';
+                            ) + " Aborted";
                           debugTask$jscomp$2.run(
                             performance.measure.bind(performance, entryName$jscomp$3, {
                               start: 0 > startTime$jscomp$6 ? 0 : startTime$jscomp$6,
                               end: endTime$jscomp$1,
                               detail: {
                                 devtools: {
-                                  color: 'warning',
+                                  color: "warning",
                                   track: trackNames[trackIdx$jscomp$5],
-                                  trackGroup: 'Server Components \u269b',
+                                  trackGroup: "Server Components \u269b",
                                   properties: [
                                     [
-                                      'Aborted',
-                                      'The stream was aborted before this Promise resolved.',
+                                      "Aborted",
+                                      "The stream was aborted before this Promise resolved.",
                                     ],
                                   ],
                                   tooltipText: tooltipText$jscomp$0,
@@ -3773,8 +3773,8 @@
                             0 > startTime$jscomp$6 ? 0 : startTime$jscomp$6,
                             endTime$jscomp$1,
                             trackNames[trackIdx$jscomp$5],
-                            'Server Components \u269b',
-                            'warning',
+                            "Server Components \u269b",
+                            "warning",
                           );
                       }
                     }
@@ -3842,7 +3842,7 @@
               resolveTypedArray(response, id, buffer, chunk, DataView, 1, streamState);
               return;
           }
-          for (var stringDecoder = response._stringDecoder, row = '', i = 0; i < buffer.length; i++)
+          for (var stringDecoder = response._stringDecoder, row = "", i = 0; i < buffer.length; i++)
             row += stringDecoder.decode(buffer[i], decoderOptions);
           row += stringDecoder.decode(chunk);
           processFullStringRow(response, streamState, id, tag, row);
@@ -3858,33 +3858,33 @@
               response = parseModel(response, streamState);
               streamState = ReactDOMSharedInternals.d;
               switch (id) {
-                case 'D':
+                case "D":
                   streamState.D(response);
                   break;
-                case 'C':
-                  'string' === typeof response
+                case "C":
+                  "string" === typeof response
                     ? streamState.C(response)
                     : streamState.C(response[0], response[1]);
                   break;
-                case 'L':
+                case "L":
                   id = response[0];
                   row = response[1];
                   3 === response.length
                     ? streamState.L(id, row, response[2])
                     : streamState.L(id, row);
                   break;
-                case 'm':
-                  'string' === typeof response
+                case "m":
+                  "string" === typeof response
                     ? streamState.m(response)
                     : streamState.m(response[0], response[1]);
                   break;
-                case 'X':
-                  'string' === typeof response
+                case "X":
+                  "string" === typeof response
                     ? streamState.X(response)
                     : streamState.X(response[0], response[1]);
                   break;
-                case 'S':
-                  'string' === typeof response
+                case "S":
+                  "string" === typeof response
                     ? streamState.S(response)
                     : streamState.S(
                         response[0],
@@ -3892,8 +3892,8 @@
                         3 === response.length ? response[2] : void 0,
                       );
                   break;
-                case 'M':
-                  'string' === typeof response
+                case "M":
+                  "string" === typeof response
                     ? streamState.M(response)
                     : streamState.M(response[0], response[1]);
               }
@@ -3907,17 +3907,17 @@
               chunk
                 ? (resolveChunkDebugInfo(response, streamState, chunk),
                   triggerErrorOnChunk(response, chunk, error))
-                : ((row = new ReactPromise('rejected', null, error)),
+                : ((row = new ReactPromise("rejected", null, error)),
                   resolveChunkDebugInfo(response, streamState, row),
                   tag.set(id, row));
               break;
             }
             case 84:
               tag = response._chunks;
-              (chunk = tag.get(id)) && 'pending' !== chunk.status
+              (chunk = tag.get(id)) && "pending" !== chunk.status
                 ? chunk.reason.enqueueValue(row)
                 : (chunk && releasePendingChunk(response, chunk),
-                  (row = new ReactPromise('fulfilled', row, null)),
+                  (row = new ReactPromise("fulfilled", row, null)),
                   resolveChunkDebugInfo(response, streamState, row),
                   tag.set(id, row));
               break;
@@ -3926,23 +3926,23 @@
               break;
             case 68:
               id = getChunk(response, id);
-              'fulfilled' !== id.status &&
-                'rejected' !== id.status &&
-                'halted' !== id.status &&
-                'blocked' !== id.status &&
-                'resolved_module' !== id.status &&
+              "fulfilled" !== id.status &&
+                "rejected" !== id.status &&
+                "halted" !== id.status &&
+                "blocked" !== id.status &&
+                "resolved_module" !== id.status &&
                 ((streamState = id._debugChunk),
                 (tag = createResolvedModelChunk(response, row)),
                 (tag._debugChunk = streamState),
                 (id._debugChunk = tag),
                 initializeDebugChunk(response, id),
-                'blocked' !== tag.status ||
+                "blocked" !== tag.status ||
                   (void 0 !== response._debugChannel && response._debugChannel.hasReadable) ||
                   '"' !== row[0] ||
-                  '$' !== row[1] ||
-                  ((streamState = row.slice(2, row.length - 1).split(':')),
+                  "$" !== row[1] ||
+                  ((streamState = row.slice(2, row.length - 1).split(":")),
                   (streamState = parseInt(streamState[0], 16)),
-                  'pending' === getChunk(response, streamState).status && (id._debugChunk = null)));
+                  "pending" === getChunk(response, streamState).status && (id._debugChunk = null)));
               break;
             case 74:
               resolveIOInfo(response, id, row);
@@ -3954,7 +3954,7 @@
               startReadableStream(response, id, void 0, streamState);
               break;
             case 114:
-              startReadableStream(response, id, 'bytes', streamState);
+              startReadableStream(response, id, "bytes", streamState);
               break;
             case 88:
               startAsyncIterable(response, id, !1, streamState);
@@ -3964,21 +3964,21 @@
               break;
             case 67:
               (id = response._chunks.get(id)) &&
-                'fulfilled' === id.status &&
+                "fulfilled" === id.status &&
                 (0 === --response._pendingChunks && (response._weakResponse.response = null),
-                id.reason.close('' === row ? '"$undefined"' : row));
+                id.reason.close("" === row ? '"$undefined"' : row));
               break;
             default:
-              if ('' === row) {
+              if ("" === row) {
                 if (
                   ((streamState = response._chunks),
                   (row = streamState.get(id)) ||
                     streamState.set(id, (row = createPendingChunk(response))),
-                  'pending' === row.status || 'blocked' === row.status)
+                  "pending" === row.status || "blocked" === row.status)
                 )
                   releasePendingChunk(response, row),
                     (response = row),
-                    (response.status = 'halted'),
+                    (response.status = "halted"),
                     (response.value = null),
                     (response.reason = null);
               } else
@@ -4090,18 +4090,18 @@
             response,
             json,
             {
-              '': json,
+              "": json,
             },
-            '',
+            "",
           );
         }
         function reviveModel(response, value, parentObject, key) {
-          if ('string' === typeof value)
-            return '$' === value[0] ? parseModelString(response, parentObject, key, value) : value;
-          if ('object' !== typeof value || null === value) return value;
+          if ("string" === typeof value)
+            return "$" === value[0] ? parseModelString(response, parentObject, key, value) : value;
+          if ("object" !== typeof value || null === value) return value;
           if (isArrayImpl(value)) {
             for (var i = 0; i < value.length; i++)
-              value[i] = reviveModel(response, value[i], value, '' + i);
+              value[i] = reviveModel(response, value[i], value, "" + i);
             if (value[0] === REACT_ELEMENT_TYPE) {
               if (value[0] === REACT_ELEMENT_TYPE)
                 b: {
@@ -4115,30 +4115,30 @@
                     props: value[3],
                     _owner: void 0 === key ? null : key,
                   };
-                  Object.defineProperty(value, 'ref', {
+                  Object.defineProperty(value, "ref", {
                     enumerable: !1,
                     get: nullRefGetter,
                   });
                   value._store = {};
-                  Object.defineProperty(value._store, 'validated', {
+                  Object.defineProperty(value._store, "validated", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
                     value: i,
                   });
-                  Object.defineProperty(value, '_debugInfo', {
+                  Object.defineProperty(value, "_debugInfo", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
                     value: null,
                   });
-                  Object.defineProperty(value, '_debugStack', {
+                  Object.defineProperty(value, "_debugStack", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
                     value: void 0 === parentObject ? null : parentObject,
                   });
-                  Object.defineProperty(value, '_debugTask', {
+                  Object.defineProperty(value, "_debugTask", {
                     configurable: !1,
                     enumerable: !1,
                     writable: !0,
@@ -4148,10 +4148,10 @@
                     key = initializingHandler;
                     initializingHandler = key.parent;
                     if (key.errored) {
-                      parentObject = new ReactPromise('rejected', null, key.reason);
+                      parentObject = new ReactPromise("rejected", null, key.reason);
                       initializeElement(response, value, null);
                       response = {
-                        name: getComponentNameFromType(value.type) || '',
+                        name: getComponentNameFromType(value.type) || "",
                         owner: value._owner,
                       };
                       response.debugStack = value._debugStack;
@@ -4161,7 +4161,7 @@
                       break b;
                     }
                     if (0 < key.deps) {
-                      parentObject = new ReactPromise('blocked', null, null);
+                      parentObject = new ReactPromise("blocked", null, null);
                       key.value = value;
                       key.chunk = parentObject;
                       i = createLazyChunkWrapper(parentObject, i);
@@ -4180,7 +4180,7 @@
             return value;
           }
           for (i in value)
-            '__proto__' === i
+            "__proto__" === i
               ? delete value[i]
               : ((parentObject = reviveModel(response, value[i], value, i)),
                 void 0 !== parentObject ? (value[i] = parentObject) : delete value[i]);
@@ -4192,12 +4192,12 @@
             response._allowPartialStream
               ? ((response._closed = !0),
                 response._chunks.forEach((chunk) => {
-                  'pending' === chunk.status
+                  "pending" === chunk.status
                     ? (releasePendingChunk(response, chunk),
-                      (chunk.status = 'halted'),
+                      (chunk.status = "halted"),
                       (chunk.value = null),
                       (chunk.reason = null))
-                    : 'fulfilled' === chunk.status &&
+                    : "fulfilled" === chunk.status &&
                       null !== chunk.reason &&
                       chunk.reason.close('"$undefined"');
                 }),
@@ -4206,16 +4206,16 @@
                   (closeDebugChannel(weakResponse),
                   (response._debugChannel = void 0),
                   null !== debugChannelRegistry && debugChannelRegistry.unregister(response)))
-              : reportGlobalError(weakResponse, Error('Connection closed.'));
+              : reportGlobalError(weakResponse, Error("Connection closed."));
           }
         }
         function createDebugCallbackFromWritableStream(debugWritable) {
           var textEncoder = new TextEncoder(),
             writer = debugWritable.getWriter();
           return (message) => {
-            '' === message
+            "" === message
               ? writer.close()
-              : writer.write(textEncoder.encode(message + '\n')).catch(console.error);
+              : writer.write(textEncoder.encode(message + "\n")).catch(console.error);
           };
         }
         function createResponseFromOptions(options) {
@@ -4266,7 +4266,7 @@
             if (_ref.done) return onDone();
             if (value instanceof ArrayBuffer)
               processBinaryChunk(response$jscomp$0, streamState, new Uint8Array(value));
-            else if ('string' === typeof value) {
+            else if ("string" === typeof value) {
               if (((_ref = streamState), !hasGCedResponse(response$jscomp$0))) {
                 var response = unwrapWeakResponse(response$jscomp$0),
                   i = 0,
@@ -4314,23 +4314,23 @@
                             (rowLength << 4) | (96 < lastIdx ? lastIdx - 87 : lastIdx - 48));
                       continue;
                     case 3:
-                      lastIdx = value.indexOf('\n', i);
+                      lastIdx = value.indexOf("\n", i);
                       break;
                     case 4:
                       if (84 !== rowTag)
                         throw Error(
-                          'Binary RSC chunks cannot be encoded as strings. This is a bug in the wiring of the React streams.',
+                          "Binary RSC chunks cannot be encoded as strings. This is a bug in the wiring of the React streams.",
                         );
                       if (rowLength < value.length || value.length > 3 * rowLength)
                         throw Error(
-                          'String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.',
+                          "String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.",
                         );
                       lastIdx = value.length;
                   }
                   if (-1 < lastIdx) {
                     if (0 < buffer.length)
                       throw Error(
-                        'String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.',
+                        "String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.",
                       );
                     i = value.slice(i, lastIdx);
                     processFullStringRow(response, _ref, rowID, rowTag, i);
@@ -4340,7 +4340,7 @@
                     buffer.length = 0;
                   } else if (value.length !== i)
                     throw Error(
-                      'String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.',
+                      "String chunks need to be passed in their original shape. Not split into smaller string chunks. This is a bug in the wiring of the React streams.",
                     );
                 }
                 _ref._rowState = rowState;
@@ -4373,10 +4373,10 @@
           reader.read().then(progress).catch(error);
         }
         var React = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
           ),
           ReactDOM = __turbopack_context__.r(
-            '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)',
+            "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)",
           ),
           decoderOptions = {
             stream: !0,
@@ -4389,45 +4389,45 @@
           chunkIOInfoCache = new Map(),
           ReactDOMSharedInternals =
             ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE,
-          REACT_ELEMENT_TYPE = Symbol.for('react.transitional.element'),
-          REACT_PORTAL_TYPE = Symbol.for('react.portal'),
-          REACT_FRAGMENT_TYPE = Symbol.for('react.fragment'),
-          REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode'),
-          REACT_PROFILER_TYPE = Symbol.for('react.profiler'),
-          REACT_CONSUMER_TYPE = Symbol.for('react.consumer'),
-          REACT_CONTEXT_TYPE = Symbol.for('react.context'),
-          REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref'),
-          REACT_SUSPENSE_TYPE = Symbol.for('react.suspense'),
-          REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list'),
-          REACT_MEMO_TYPE = Symbol.for('react.memo'),
-          REACT_LAZY_TYPE = Symbol.for('react.lazy'),
-          REACT_ACTIVITY_TYPE = Symbol.for('react.activity'),
-          REACT_VIEW_TRANSITION_TYPE = Symbol.for('react.view_transition'),
+          REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"),
+          REACT_PORTAL_TYPE = Symbol.for("react.portal"),
+          REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"),
+          REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"),
+          REACT_PROFILER_TYPE = Symbol.for("react.profiler"),
+          REACT_CONSUMER_TYPE = Symbol.for("react.consumer"),
+          REACT_CONTEXT_TYPE = Symbol.for("react.context"),
+          REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"),
+          REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"),
+          REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"),
+          REACT_MEMO_TYPE = Symbol.for("react.memo"),
+          REACT_LAZY_TYPE = Symbol.for("react.lazy"),
+          REACT_ACTIVITY_TYPE = Symbol.for("react.activity"),
+          REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"),
           MAYBE_ITERATOR_SYMBOL = Symbol.iterator,
           ASYNC_ITERATOR = Symbol.asyncIterator,
           isArrayImpl = Array.isArray,
           getPrototypeOf = Object.getPrototypeOf,
           jsxPropsParents = new WeakMap(),
           jsxChildrenParents = new WeakMap(),
-          CLIENT_REFERENCE_TAG = Symbol.for('react.client.reference'),
+          CLIENT_REFERENCE_TAG = Symbol.for("react.client.reference"),
           ObjectPrototype = Object.prototype,
           knownServerReferences = new WeakMap(),
           fakeServerFunctionIdx = 0,
           v8FrameRegExp = /^ {3} at (?:(.+) \((.+):(\d+):(\d+)\)|(?:async )?(.+):(\d+):(\d+))$/,
           jscSpiderMonkeyFrameRegExp = /(?:(.*)@)?(.*):(\d+):(\d+)/,
-          REACT_CLIENT_REFERENCE = Symbol.for('react.client.reference'),
+          REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"),
           supportsUserTiming =
-            'undefined' !== typeof console &&
-            'function' === typeof console.timeStamp &&
-            'undefined' !== typeof performance &&
-            'function' === typeof performance.measure,
+            "undefined" !== typeof console &&
+            "function" === typeof console.timeStamp &&
+            "undefined" !== typeof performance &&
+            "function" === typeof performance.measure,
           trackNames =
-            'Primary Parallel Parallel\u200b Parallel\u200b\u200b Parallel\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b'.split(
-              ' ',
+            "Primary Parallel Parallel\u200b Parallel\u200b\u200b Parallel\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b\u200b Parallel\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b".split(
+              " ",
             ),
           prefix,
           suffix;
-        new ('function' === typeof WeakMap ? WeakMap : Map)();
+        new ("function" === typeof WeakMap ? WeakMap : Map)();
         var ReactSharedInteralsServer =
             React.__SERVER_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE,
           ReactSharedInternals =
@@ -4436,10 +4436,10 @@
         ReactPromise.prototype = Object.create(Promise.prototype);
         ReactPromise.prototype.then = function (resolve, reject) {
           switch (this.status) {
-            case 'resolved_model':
+            case "resolved_model":
               initializeModelChunk(this);
               break;
-            case 'resolved_module':
+            case "resolved_module":
               initializeModuleChunk(this);
           }
           var resolveCallback = resolve,
@@ -4456,24 +4456,24 @@
             });
           wrapperPromise.then(resolveCallback, rejectCallback);
           switch (this.status) {
-            case 'fulfilled':
-              'function' === typeof resolve && resolve(this.value);
+            case "fulfilled":
+              "function" === typeof resolve && resolve(this.value);
               break;
-            case 'pending':
-            case 'blocked':
-              'function' === typeof resolve &&
+            case "pending":
+            case "blocked":
+              "function" === typeof resolve &&
                 (null === this.value && (this.value = []), this.value.push(resolve));
-              'function' === typeof reject &&
+              "function" === typeof reject &&
                 (null === this.reason && (this.reason = []), this.reason.push(reject));
               break;
-            case 'halted':
+            case "halted":
               break;
             default:
-              'function' === typeof reject && reject(this.reason);
+              "function" === typeof reject && reject(this.reason);
           }
         };
         var debugChannelRegistry =
-            'function' === typeof FinalizationRegistry
+            "function" === typeof FinalizationRegistry
               ? new FinalizationRegistry(closeDebugChannel)
               : null,
           initializingHandler = null,
@@ -4505,36 +4505,36 @@
                 a: {
                   var offset = 0;
                   switch (methodName) {
-                    case 'dir':
-                    case 'dirxml':
-                    case 'groupEnd':
-                    case 'table': {
+                    case "dir":
+                    case "dirxml":
+                    case "groupEnd":
+                    case "table": {
                       var JSCompiler_inline_result = bind.apply(
                         console[methodName],
                         [console].concat(payload),
                       );
                       break a;
                     }
-                    case 'assert':
+                    case "assert":
                       offset = 1;
                   }
                   var newArgs = payload.slice(0);
-                  'string' === typeof newArgs[offset]
+                  "string" === typeof newArgs[offset]
                     ? newArgs.splice(
                         offset,
                         1,
-                        '%c%s%c ' + newArgs[offset],
-                        'background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px',
-                        ' ' + env + ' ',
-                        '',
+                        "%c%s%c " + newArgs[offset],
+                        "background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px",
+                        " " + env + " ",
+                        "",
                       )
                     : newArgs.splice(
                         offset,
                         0,
-                        '%c%s%c',
-                        'background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px',
-                        ' ' + env + ' ',
-                        '',
+                        "%c%s%c",
+                        "background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px",
+                        " " + env + " ",
+                        "",
                       );
                   newArgs.unshift(console);
                   JSCompiler_inline_result = bind.apply(console[methodName], newArgs);
@@ -4564,21 +4564,21 @@
           replayConsoleWithCallStackInDEV =
             replayConsoleWithCallStack.react_stack_bottom_frame.bind(replayConsoleWithCallStack);
         ((internals) => {
-          if ('undefined' === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__) return !1;
+          if ("undefined" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__) return !1;
           var hook = __REACT_DEVTOOLS_GLOBAL_HOOK__;
           if (hook.isDisabled || !hook.supportsFlight) return !0;
           try {
             hook.inject(internals);
           } catch (err) {
-            console.error('React instrumentation encountered an error: %o.', err);
+            console.error("React instrumentation encountered an error: %o.", err);
           }
           return hook.checkDCE ? !0 : !1;
         })({
           bundleType: 1,
-          version: '19.3.0-canary-3f0b9e61-20260317',
-          rendererPackageName: 'react-server-dom-turbopack',
+          version: "19.3.0-canary-3f0b9e61-20260317",
+          rendererPackageName: "react-server-dom-turbopack",
           currentDispatcherRef: ReactSharedInternals,
-          reconcilerVersion: '19.3.0-canary-3f0b9e61-20260317',
+          reconcilerVersion: "19.3.0-canary-3f0b9e61-20260317",
           getCurrentComponentInfo: () => currentOwnerInDEV,
         });
         exports.createFromFetch = (promiseForResponse, options) => {
@@ -4627,20 +4627,20 @@
             var args = Array.prototype.slice.call(arguments);
             return callServer(id, args);
           }
-          var location = parseStackLocation(Error('react-stack-top-frame'));
+          var location = parseStackLocation(Error("react-stack-top-frame"));
           if (null !== location) {
             encodeFormAction = location[1];
             var line = location[2];
             location = location[3];
             findSourceMapURL =
-              null == findSourceMapURL ? null : findSourceMapURL(encodeFormAction, 'Client');
+              null == findSourceMapURL ? null : findSourceMapURL(encodeFormAction, "Client");
             action = createFakeServerFunction(
-              functionName || '',
+              functionName || "",
               encodeFormAction,
               findSourceMapURL,
               line,
               location,
-              'Client',
+              "Client",
               action,
             );
           }
@@ -4652,7 +4652,7 @@
           new Promise((resolve, reject) => {
             var abort = processReply(
               value,
-              '',
+              "",
               options && options.temporaryReferences ? options.temporaryReferences : void 0,
               resolve,
               reject,
@@ -4663,9 +4663,9 @@
               else {
                 var listener = () => {
                   abort(signal.reason);
-                  signal.removeEventListener('abort', listener);
+                  signal.removeEventListener("abort", listener);
                 };
-                signal.addEventListener('abort', listener);
+                signal.addEventListener("abort", listener);
               }
             }
           });
@@ -4675,30 +4675,30 @@
         };
       })();
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.browser.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.browser.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     var __TURBOPACK__imported__module__$5b$project$5d2f2e$gemini$2f$antigravity$2f$Monorepo$2d$Uphillsnowball$2f$apps$2f$kovelai$2f$site$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
       /*#__PURE__*/ __turbopack_context__.i(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)",
       );
-    ('use strict');
+    ("use strict");
     if (
-      ('TURBOPACK compile-time falsy', 0) //TURBOPACK unreachable
+      ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     );
     else {
       module.exports = __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.development.js [app-client] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.development.js [app-client] (ecmascript)",
       );
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.js [app-client] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
     module.exports = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.browser.js [app-client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/react-server-dom-turbopack/client.browser.js [app-client] (ecmascript)",
     );
   },
 ]);

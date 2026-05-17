@@ -1,33 +1,33 @@
-(globalThis['TURBOPACK'] || (globalThis['TURBOPACK'] = [])).push([
-  typeof document === 'object' ? document.currentScript : undefined,
+(globalThis["TURBOPACK"] || (globalThis["TURBOPACK"] = [])).push([
+  typeof document === "object" ? document.currentScript : undefined,
   {
     otherChunks: [
-      'static/chunks/0qqu_next_dist_compiled_0aizbqo._.js',
-      'static/chunks/0qqu_next_dist_shared_lib_0va6don._.js',
-      'static/chunks/0qqu_next_dist_client_12xqw~4._.js',
-      'static/chunks/0qqu_next_dist_0z-3grm._.js',
-      'static/chunks/[next]_entry_page-loader_ts_03wirkx._.js',
-      'static/chunks/0qqu_react-dom_0jvx9o2._.js',
-      'static/chunks/0qqu_0x2o9h.._.js',
-      'static/chunks/[root-of-the-server]__0wl2w7t._.js',
+      "static/chunks/0qqu_next_dist_compiled_0aizbqo._.js",
+      "static/chunks/0qqu_next_dist_shared_lib_0va6don._.js",
+      "static/chunks/0qqu_next_dist_client_12xqw~4._.js",
+      "static/chunks/0qqu_next_dist_0z-3grm._.js",
+      "static/chunks/[next]_entry_page-loader_ts_03wirkx._.js",
+      "static/chunks/0qqu_react-dom_0jvx9o2._.js",
+      "static/chunks/0qqu_0x2o9h.._.js",
+      "static/chunks/[root-of-the-server]__0wl2w7t._.js",
     ],
     runtimeModuleIds: [
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js [client] (ecmascript)',
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/next-dev-turbopack.js [client] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js [client] (ecmascript)",
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/next-dev-turbopack.js [client] (ecmascript)",
       '[hmr-entry]/hmr-entry.js { ENTRY => "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/pages/_error" }',
     ],
   },
 ]);
 (() => {
-  if (!Array.isArray(globalThis['TURBOPACK'])) {
+  if (!Array.isArray(globalThis["TURBOPACK"])) {
     return;
   }
 
-  const CHUNK_BASE_PATH = '/_next/';
-  const RELATIVE_ROOT_PATH = '/ROOT';
-  const RUNTIME_PUBLIC_PATH = '/_next/';
+  const CHUNK_BASE_PATH = "/_next/";
+  const RELATIVE_ROOT_PATH = "/ROOT";
+  const RUNTIME_PUBLIC_PATH = "/_next/";
   const ASSET_SUFFIX = getAssetSuffixFromScriptSrc();
-  const WORKER_FORWARDED_GLOBALS = ['NEXT_DEPLOYMENT_ID', 'NEXT_CLIENT_ASSET_SUFFIX'];
+  const WORKER_FORWARDED_GLOBALS = ["NEXT_DEPLOYMENT_ID", "NEXT_CLIENT_ASSET_SUFFIX"];
   /**
    * This file contains runtime types and functions that are shared between all
    * TurboPack ECMAScript runtimes.
@@ -42,16 +42,16 @@
      * The module was instantiated because it was included in an evaluated chunk's
      * runtime.
      * SourceData is a ChunkPath.
-     */ SourceType[(SourceType['Runtime'] = 0)] = 'Runtime';
+     */ SourceType[(SourceType["Runtime"] = 0)] = "Runtime";
     /**
      * The module was instantiated because a parent module imported it.
      * SourceData is a ModuleId.
-     */ SourceType[(SourceType['Parent'] = 1)] = 'Parent';
+     */ SourceType[(SourceType["Parent"] = 1)] = "Parent";
     /**
      * The module was instantiated because it was included in a chunk's hot module
      * update.
      * SourceData is an array of ModuleIds or undefined.
-     */ SourceType[(SourceType['Update'] = 2)] = 'Update';
+     */ SourceType[(SourceType["Update"] = 2)] = "Update";
     return SourceType;
   })(SourceType || {});
   /**
@@ -76,7 +76,7 @@
   }
   const contextPrototype = Context.prototype;
   const hasOwnProperty = Object.prototype.hasOwnProperty;
-  const toStringTag = typeof Symbol !== 'undefined' && Symbol.toStringTag;
+  const toStringTag = typeof Symbol !== "undefined" && Symbol.toStringTag;
   function defineProp(obj, name, options) {
     if (!hasOwnProperty.call(obj, name)) Object.defineProperty(obj, name, options);
   }
@@ -117,18 +117,18 @@
   /**
    * Adds the getters to the exports object.
    */ function esm(exports, bindings) {
-    defineProp(exports, '__esModule', {
+    defineProp(exports, "__esModule", {
       value: true,
     });
     if (toStringTag)
       defineProp(exports, toStringTag, {
-        value: 'Module',
+        value: "Module",
       });
     let i = 0;
     while (i < bindings.length) {
       const propName = bindings[i++];
       const tagOrFunction = bindings[i++];
-      if (typeof tagOrFunction === 'number') {
+      if (typeof tagOrFunction === "number") {
         if (tagOrFunction === BindingTag_Value) {
           defineProp(exports, propName, {
             value: bindings[i++],
@@ -140,7 +140,7 @@
         }
       } else {
         const getterFn = tagOrFunction;
-        if (typeof bindings[i] === 'function') {
+        if (typeof bindings[i] === "function") {
           const setterFn = bindings[i++];
           defineProp(exports, propName, {
             get: getterFn,
@@ -179,7 +179,7 @@
       REEXPORTED_OBJECTS.set(module, (reexportedObjects = []));
       module.exports = module.namespaceObject = new Proxy(exports, {
         get(target, prop) {
-          if (hasOwnProperty.call(target, prop) || prop === 'default' || prop === '__esModule') {
+          if (hasOwnProperty.call(target, prop) || prop === "default" || prop === "__esModule") {
             return Reflect.get(target, prop);
           }
           for (const obj of reexportedObjects) {
@@ -192,7 +192,7 @@
           const keys = Reflect.ownKeys(target);
           for (const obj of reexportedObjects) {
             for (const key of Reflect.ownKeys(obj)) {
-              if (key !== 'default' && !keys.includes(key)) keys.push(key);
+              if (key !== "default" && !keys.includes(key)) keys.push(key);
             }
           }
           return keys;
@@ -214,7 +214,7 @@
       exports = this.e;
     }
     const reexportedObjects = ensureDynamicExports(module, exports);
-    if (typeof object === 'object' && object !== null) {
+    if (typeof object === "object" && object !== null) {
       reexportedObjects.push(object);
     }
   }
@@ -264,13 +264,13 @@
     let defaultLocation = -1;
     for (
       let current = raw;
-      (typeof current === 'object' || typeof current === 'function') &&
+      (typeof current === "object" || typeof current === "function") &&
       !LEAF_PROTOTYPES.includes(current);
       current = getProto(current)
     ) {
       for (const key of Object.getOwnPropertyNames(current)) {
         bindings.push(key, createGetter(raw, key));
-        if (defaultLocation === -1 && key === 'default') {
+        if (defaultLocation === -1 && key === "default") {
           defaultLocation = bindings.length - 1;
         }
       }
@@ -283,14 +283,14 @@
         // Replace the getter with the value
         bindings.splice(defaultLocation, 1, BindingTag_Value, raw);
       } else {
-        bindings.push('default', BindingTag_Value, raw);
+        bindings.push("default", BindingTag_Value, raw);
       }
     }
     esm(ns, bindings);
     return ns;
   }
   function createNS(raw) {
-    if (typeof raw === 'function') {
+    if (typeof raw === "function") {
       return function (...args) {
         return raw.apply(this, args);
       };
@@ -315,10 +315,10 @@
   // Add a simple runtime require so that environments without one can still pass
   // `typeof require` CommonJS checks so that exports are correctly registered.
   const runtimeRequire = // @ts-ignore
-    typeof require === 'function'
+    typeof require === "function"
       ? require
       : function require1() {
-          throw new Error('Unexpected use of runtime require');
+          throw new Error("Unexpected use of runtime require");
         };
   contextPrototype.t = runtimeRequire;
   function commonJsRequire(id) {
@@ -334,11 +334,11 @@
    */ function parseRequest(request) {
     // Per the URI spec fragments can contain `?` characters, so we should trim it off first
     // https://datatracker.ietf.org/doc/html/rfc3986#section-3.5
-    const hashIndex = request.indexOf('#');
+    const hashIndex = request.indexOf("#");
     if (hashIndex !== -1) {
       request = request.substring(0, hashIndex);
     }
-    const queryIndex = request.indexOf('?');
+    const queryIndex = request.indexOf("?");
     if (queryIndex !== -1) {
       request = request.substring(0, queryIndex);
     }
@@ -353,7 +353,7 @@
         return map[id].module();
       }
       const e = new Error(`Cannot find module '${id}'`);
-      e.code = 'MODULE_NOT_FOUND';
+      e.code = "MODULE_NOT_FOUND";
       throw e;
     }
     moduleContext.keys = () => {
@@ -365,7 +365,7 @@
         return map[id].id();
       }
       const e = new Error(`Cannot find module '${id}'`);
-      e.code = 'MODULE_NOT_FOUND';
+      e.code = "MODULE_NOT_FOUND";
       throw e;
     };
     moduleContext.import = async (id) => {
@@ -377,14 +377,14 @@
   /**
    * Returns the path of a chunk defined by its data.
    */ function getChunkPath(chunkData) {
-    return typeof chunkData === 'string' ? chunkData : chunkData.path;
+    return typeof chunkData === "string" ? chunkData : chunkData.path;
   }
   function isPromise(maybePromise) {
     return (
       maybePromise != null &&
-      typeof maybePromise === 'object' &&
-      'then' in maybePromise &&
-      typeof maybePromise.then === 'function'
+      typeof maybePromise === "object" &&
+      "then" in maybePromise &&
+      typeof maybePromise.then === "function"
     );
   }
   function isAsyncModuleExt(obj) {
@@ -414,11 +414,11 @@
     while (i < chunkModules.length) {
       let end = i + 1;
       // Find our factory function
-      while (end < chunkModules.length && typeof chunkModules[end] !== 'function') {
+      while (end < chunkModules.length && typeof chunkModules[end] !== "function") {
         end++;
       }
       if (end === chunkModules.length) {
-        throw new Error('malformed chunk format, expected a factory function');
+        throw new Error("malformed chunk format, expected a factory function");
       }
       // Install the factory for each module ID that doesn't already have one.
       // When some IDs in this group already have a factory, reuse that existing
@@ -454,9 +454,9 @@
   }
   // everything below is adapted from webpack
   // https://github.com/webpack/webpack/blob/6be4065ade1e252c1d8dcba4af0f43e32af1bdc1/lib/runtime/AsyncModuleRuntimeModule.js#L13
-  const turbopackQueues = Symbol('turbopack queues');
-  const turbopackExports = Symbol('turbopack exports');
-  const turbopackError = Symbol('turbopack error');
+  const turbopackQueues = Symbol("turbopack queues");
+  const turbopackExports = Symbol("turbopack exports");
+  const turbopackError = Symbol("turbopack error");
   function resolveQueue(queue) {
     if (queue && queue.status !== 1) {
       queue.status = 1;
@@ -466,7 +466,7 @@
   }
   function wrapDeps(deps) {
     return deps.map((dep) => {
-      if (dep !== null && typeof dep === 'object') {
+      if (dep !== null && typeof dep === "object") {
         if (isAsyncModuleExt(dep)) return dep;
         if (isPromise(dep)) {
           const queue = Object.assign([], {
@@ -509,7 +509,7 @@
       [turbopackQueues]: (fn) => {
         queue && fn(queue);
         depQueues.forEach(fn);
-        promise['catch'](() => {});
+        promise["catch"](() => {});
       },
     });
     const attributes = {
@@ -523,8 +523,8 @@
         }
       },
     };
-    Object.defineProperty(module, 'exports', attributes);
-    Object.defineProperty(module, 'namespaceObject', attributes);
+    Object.defineProperty(module, "exports", attributes);
+    Object.defineProperty(module, "namespaceObject", attributes);
     function handleAsyncDependencies(deps) {
       const currentDeps = wrapDeps(deps);
       const getResult = () =>
@@ -572,12 +572,12 @@
    * This is based on webpack's existing implementation:
    * https://github.com/webpack/webpack/blob/87660921808566ef3b8796f8df61bd79fc026108/lib/runtime/RelativeUrlRuntimeModule.js
    */ const relativeURL = function relativeURL(inputUrl) {
-    const realUrl = new URL(inputUrl, 'x:/');
+    const realUrl = new URL(inputUrl, "x:/");
     const values = {};
     for (const key in realUrl) values[key] = realUrl[key];
     values.href = inputUrl;
-    values.pathname = inputUrl.replace(/[?#].*/, '');
-    values.origin = values.protocol = '';
+    values.pathname = inputUrl.replace(/[?#].*/, "");
+    values.origin = values.protocol = "";
     values.toString = values.toJSON = (..._args) => inputUrl;
     for (const key in values)
       Object.defineProperty(this, key, {
@@ -605,7 +605,7 @@
         instantiationReason = `because it was required from module ${sourceData}`;
         break;
       case 2:
-        instantiationReason = 'because of an HMR update';
+        instantiationReason = "because of an HMR update";
         break;
       default:
         invariant(sourceType, (sourceType) => `Unknown source type: ${sourceType}`);
@@ -615,15 +615,15 @@
   /**
    * A stub function to make `require` available but non-functional in ESM.
    */ function requireStub(_moduleId) {
-    throw new Error('dynamic usage of require is not supported');
+    throw new Error("dynamic usage of require is not supported");
   }
   contextPrototype.z = requireStub;
   // Make `globalThis` available to the module in a way that cannot be shadowed by a local variable.
   contextPrototype.g = globalThis;
   function applyModuleFactoryName(factory) {
     // Give the module factory a nice name to improve stack traces.
-    Object.defineProperty(factory, 'name', {
-      value: 'module evaluation',
+    Object.defineProperty(factory, "name", {
+      value: "module evaluation",
     });
   }
   /**
@@ -648,7 +648,7 @@
     return loadChunkInternal(SourceType.Runtime, chunkPath, chunkData);
   }
   async function loadChunkInternal(sourceType, sourceData, chunkData) {
-    if (typeof chunkData === 'string') {
+    if (typeof chunkData === "string") {
       return loadChunkPath(sourceType, sourceData, chunkData);
     }
     const includedList = chunkData.included || [];
@@ -734,20 +734,20 @@
             loadReason = `from module ${sourceData}`;
             break;
           case SourceType.Update:
-            loadReason = 'from an HMR update';
+            loadReason = "from an HMR update";
             break;
           default:
             invariant(sourceType, (sourceType) => `Unknown source type: ${sourceType}`);
         }
         const error = new Error(
-          `Failed to load chunk ${chunkUrl} ${loadReason}${cause ? `: ${cause}` : ''}`,
+          `Failed to load chunk ${chunkUrl} ${loadReason}${cause ? `: ${cause}` : ""}`,
           cause
             ? {
                 cause,
               }
             : undefined,
         );
-        error.name = 'ChunkLoadError';
+        error.name = "ChunkLoadError";
         throw error;
       });
       instrumentedBackendLoadChunks.set(thenable, entry);
@@ -770,7 +770,7 @@
    * no-op for browser
    * @param modulePath
    */ function resolveAbsolutePath(modulePath) {
-    return `/ROOT/${modulePath ?? ''}`;
+    return `/ROOT/${modulePath ?? ""}`;
   }
   browserContextPrototype.P = resolveAbsolutePath;
   /**
@@ -794,7 +794,7 @@
    * @param moduleChunks list of module chunk paths to load
    * @param workerOptions options to pass to the Worker constructor (optional)
    */ function createWorker(WorkerConstructor, entrypoint, moduleChunks, workerOptions) {
-    const isSharedWorker = WorkerConstructor.name === 'SharedWorker';
+    const isSharedWorker = WorkerConstructor.name === "SharedWorker";
     const chunkUrls = moduleChunks.map((chunk) => getChunkRelativeUrl(chunk)).reverse();
     const params = [chunkUrls, ASSET_SUFFIX];
     for (const globalName of WORKER_FORWARDED_GLOBALS) {
@@ -803,9 +803,9 @@
     const url = new URL(getChunkRelativeUrl(entrypoint), location.origin);
     const paramsJson = JSON.stringify(params);
     if (isSharedWorker) {
-      url.searchParams.set('params', paramsJson);
+      url.searchParams.set("params", paramsJson);
     } else {
-      url.hash = '#params=' + encodeURIComponent(paramsJson);
+      url.hash = "#params=" + encodeURIComponent(paramsJson);
     }
     // Remove type: "module" from options since our worker entrypoint is not a module
     const options = workerOptions
@@ -826,23 +826,23 @@
    * Returns the URL relative to the origin where a chunk can be fetched from.
    */ function getChunkRelativeUrl(chunkPath) {
     return `${CHUNK_BASE_PATH}${chunkPath
-      .split('/')
+      .split("/")
       .map((p) => encodeURIComponent(p))
-      .join('/')}${ASSET_SUFFIX}`;
+      .join("/")}${ASSET_SUFFIX}`;
   }
   function getPathFromScript(chunkScript) {
-    if (typeof chunkScript === 'string') {
+    if (typeof chunkScript === "string") {
       return chunkScript;
     }
     const chunkUrl = chunkScript.src;
-    const src = decodeURIComponent(chunkUrl.replace(/[?#].*$/, ''));
+    const src = decodeURIComponent(chunkUrl.replace(/[?#].*$/, ""));
     const path = src.startsWith(CHUNK_BASE_PATH) ? src.slice(CHUNK_BASE_PATH.length) : src;
     return path;
   }
   /**
    * Return the ChunkUrl from a ChunkScript.
    */ function getUrlFromScript(chunk) {
-    if (typeof chunk === 'string') {
+    if (typeof chunk === "string") {
       return getChunkRelativeUrl(chunk);
     } else {
       // This is already exactly what we want
@@ -852,19 +852,19 @@
   /**
    * Determine the chunk to register. Note that this function has side-effects!
    */ function getChunkFromRegistration(chunk) {
-    if (typeof chunk === 'string') {
+    if (typeof chunk === "string") {
       return chunk;
     } else if (!chunk) {
-      if (typeof TURBOPACK_NEXT_CHUNK_URLS !== 'undefined') {
+      if (typeof TURBOPACK_NEXT_CHUNK_URLS !== "undefined") {
         return {
           src: TURBOPACK_NEXT_CHUNK_URLS.pop(),
         };
       } else {
-        throw new Error('chunk path empty but not in a worker');
+        throw new Error("chunk path empty but not in a worker");
       }
     } else {
       return {
-        src: chunk.getAttribute('src'),
+        src: chunk.getAttribute("src"),
       };
     }
   }
@@ -918,7 +918,7 @@
    * Modules that call `module.hot.invalidate()` (while being updated).
    */ const queuedInvalidatedModules = new Set();
   class UpdateApplyError extends Error {
-    name = 'UpdateApplyError';
+    name = "UpdateApplyError";
     dependencyChain;
     constructor(message, dependencyChain) {
       super(message);
@@ -940,7 +940,7 @@
     }
   }
   function formatDependencyChain(dependencyChain) {
-    return `Dependency chain: ${dependencyChain.join(' -> ')}`;
+    return `Dependency chain: ${dependencyChain.join(" -> ")}`;
   }
   /**
    * Walks the dependency tree to find all modules affected by a change.
@@ -973,14 +973,14 @@
       if (moduleId === undefined) {
         if (autoAcceptRootModules) {
           return {
-            type: 'accepted',
+            type: "accepted",
             moduleId,
             outdatedModules,
             outdatedDependencies,
           };
         }
         return {
-          type: 'unaccepted',
+          type: "unaccepted",
           dependencyChain,
         };
       }
@@ -996,7 +996,7 @@
       }
       if (hotState.selfDeclined) {
         return {
-          type: 'self-declined',
+          type: "self-declined",
           dependencyChain,
           moduleId,
         };
@@ -1020,7 +1020,7 @@
         // Check if parent declined this dependency
         if (parentHotState?.declinedDependencies[moduleId]) {
           return {
-            type: 'declined',
+            type: "declined",
             dependencyChain: [...dependencyChain, moduleId],
             moduleId,
             parentId,
@@ -1049,7 +1049,7 @@
       }
     }
     return {
-      type: 'accepted',
+      type: "accepted",
       moduleId,
       outdatedModules,
       outdatedDependencies,
@@ -1080,22 +1080,22 @@
     for (const moduleId of invalidated) {
       const effect = getAffectedModuleEffects(moduleId, autoAcceptRootModules);
       switch (effect.type) {
-        case 'unaccepted':
+        case "unaccepted":
           throw new UpdateApplyError(
             `cannot apply update: unaccepted module. ${formatDependencyChain(effect.dependencyChain)}.`,
             effect.dependencyChain,
           );
-        case 'self-declined':
+        case "self-declined":
           throw new UpdateApplyError(
             `cannot apply update: self-declined module. ${formatDependencyChain(effect.dependencyChain)}.`,
             effect.dependencyChain,
           );
-        case 'declined':
+        case "declined":
           throw new UpdateApplyError(
             `cannot apply update: declined dependency. ${formatDependencyChain(effect.dependencyChain)}. Declined by ${effect.parentId}.`,
             effect.dependencyChain,
           );
-        case 'accepted':
+        case "accepted":
           for (const outdatedModuleId of effect.outdatedModules) {
             outdatedModules.add(outdatedModuleId);
           }
@@ -1132,9 +1132,9 @@
       accept: (modules, callback, errorHandler) => {
         if (modules === undefined) {
           hotState.selfAccepted = true;
-        } else if (typeof modules === 'function') {
+        } else if (typeof modules === "function") {
           hotState.selfAccepted = modules;
-        } else if (typeof modules === 'object' && modules !== null) {
+        } else if (typeof modules === "object" && modules !== null) {
           for (let i = 0; i < modules.length; i++) {
             hotState.acceptedDependencies[modules[i]] = callback || (() => {});
             hotState.acceptedErrorHandlers[modules[i]] = errorHandler;
@@ -1147,7 +1147,7 @@
       decline: (dep) => {
         if (dep === undefined) {
           hotState.selfDeclined = true;
-        } else if (typeof dep === 'object' && dep !== null) {
+        } else if (typeof dep === "object" && dep !== null) {
           for (let i = 0; i < dep.length; i++) {
             hotState.declinedDependencies[dep[i]] = true;
           }
@@ -1174,7 +1174,7 @@
       // NOTE(alexkirsz) This is part of the management API, which we don't
       // implement, but the Next.js React Refresh runtime uses this to decide
       // whether to schedule an update.
-      status: () => 'idle',
+      status: () => "idle",
       // NOTE(alexkirsz) Since we always return "idle" for now, these are no-ops.
       addStatusHandler: (_handler) => {},
       removeStatusHandler: (_handler) => {},
@@ -1269,11 +1269,11 @@
       }
     }
     switch (mode) {
-      case 'clear':
+      case "clear":
         delete devModuleCache[module.id];
         moduleHotData.delete(module.id);
         break;
-      case 'replace':
+      case "replace":
         moduleHotData.set(module.id, data);
         break;
       default:
@@ -1285,10 +1285,10 @@
    * Returns the parent modules of outdated modules for use in the apply phase.
    */ function disposePhase(outdatedModules, disposedModules, outdatedDependencies) {
     for (const moduleId of outdatedModules) {
-      disposeModule(moduleId, 'replace');
+      disposeModule(moduleId, "replace");
     }
     for (const moduleId of disposedModules) {
-      disposeModule(moduleId, 'clear');
+      disposeModule(moduleId, "clear");
     }
     // Removing modules from the module cache is a separate step.
     // We also want to keep track of previous parents of the outdated modules.
@@ -1335,7 +1335,7 @@
     // 1. Factory validation (same in both browser and Node.js)
     const id = moduleId;
     const moduleFactory = moduleFactories.get(id);
-    if (typeof moduleFactory !== 'function') {
+    if (typeof moduleFactory !== "function") {
       throw new Error(
         factoryNotAvailableMessage(moduleId, sourceType, sourceData) +
           `\nThis is often caused by a stale browser cache, misconfigured Cache-Control headers, or a service worker serving outdated responses.` +
@@ -1398,7 +1398,7 @@
     const deleted = new Set();
     for (const [chunkPath, mergedChunkUpdate] of Object.entries(updates)) {
       switch (mergedChunkUpdate.type) {
-        case 'added': {
+        case "added": {
           const updateAdded = new Set(mergedChunkUpdate.modules);
           for (const moduleId of updateAdded) {
             added.set(moduleId, entries[moduleId]);
@@ -1406,7 +1406,7 @@
           chunksAdded.set(chunkPath, updateAdded);
           break;
         }
-        case 'deleted': {
+        case "deleted": {
           const updateDeleted = chunkModulesMap
             ? new Set(chunkModulesMap.get(chunkPath))
             : new Set();
@@ -1416,7 +1416,7 @@
           chunksDeleted.set(chunkPath, updateDeleted);
           break;
         }
-        case 'partial': {
+        case "partial": {
           const updateAdded = new Set(mergedChunkUpdate.added);
           const updateDeleted = new Set(mergedChunkUpdate.deleted);
           for (const moduleId of updateAdded) {
@@ -1430,7 +1430,7 @@
           break;
         }
         default:
-          throw new Error('Unknown merged chunk update type');
+          throw new Error("Unknown merged chunk update type");
       }
     }
     // If a module was added from one chunk and deleted from another in the same update,
@@ -1539,7 +1539,7 @@
           callback.call(null, cbDeps);
         } catch (err) {
           const errorHandler = callbackErrorHandlers.get(callback);
-          if (typeof errorHandler === 'function') {
+          if (typeof errorHandler === "function") {
             try {
               errorHandler(err, {
                 moduleId: parentId,
@@ -1560,7 +1560,7 @@
       try {
         instantiateModuleFn(moduleId, SourceType.Update, outdatedModuleParents.get(moduleId));
       } catch (err) {
-        if (typeof errorHandler === 'function') {
+        if (typeof errorHandler === "function") {
           try {
             errorHandler(err, {
               moduleId,
@@ -1786,7 +1786,7 @@
    * Next.js' React Refresh runtime hooks into to add module context to the
    * refresh registry.
    */ function runModuleExecutionHooks(module, executeModule) {
-    if (typeof globalThis.$RefreshInterceptModuleExecution$ === 'function') {
+    if (typeof globalThis.$RefreshInterceptModuleExecution$ === "function") {
       const cleanupReactRefreshIntercept = globalThis.$RefreshInterceptModuleExecution$(module.id);
       try {
         executeModule({
@@ -1879,7 +1879,7 @@
   }
   function applyUpdate(update) {
     switch (update.type) {
-      case 'ChunkListUpdate':
+      case "ChunkListUpdate":
         applyChunkListUpdate(update);
         break;
       default:
@@ -1890,7 +1890,7 @@
     if (update.merged != null) {
       for (const merged of update.merged) {
         switch (merged.type) {
-          case 'EcmascriptMergedUpdate':
+          case "EcmascriptMergedUpdate":
             applyEcmascriptMergedUpdate(merged);
             break;
           default:
@@ -1902,16 +1902,16 @@
       for (const [chunkPath, chunkUpdate] of Object.entries(update.chunks)) {
         const chunkUrl = getChunkRelativeUrl(chunkPath);
         switch (chunkUpdate.type) {
-          case 'added':
+          case "added":
             BACKEND.loadChunkCached(SourceType.Update, chunkUrl);
             break;
-          case 'total':
+          case "total":
             DEV_BACKEND.reloadChunk?.(chunkUrl);
             break;
-          case 'deleted':
+          case "deleted":
             DEV_BACKEND.unloadChunk?.(chunkUrl);
             break;
-          case 'partial':
+          case "partial":
             invariant(
               chunkUpdate.instruction,
               (instruction) => `Unknown partial instruction: ${JSON.stringify(instruction)}.`,
@@ -1950,19 +1950,19 @@
   }
   function handleApply(chunkListPath, update) {
     switch (update.type) {
-      case 'partial': {
+      case "partial": {
         // This indicates that the update is can be applied to the current state of the application.
         applyUpdate(update.instruction);
         break;
       }
-      case 'restart': {
+      case "restart": {
         // This indicates that there is no way to apply the update to the
         // current state of the application, and that the application must be
         // restarted.
         DEV_BACKEND.restart();
         break;
       }
-      case 'notFound': {
+      case "notFound": {
         // This indicates that the chunk list no longer exists: either the dynamic import which created it was removed,
         // or the page itself was deleted.
         // If it is a dynamic import, we simply discard all modules that the chunk has exclusive access to.
@@ -2038,7 +2038,7 @@
       const noRemainingChunks = moduleChunks.size === 0;
       if (noRemainingChunks) {
         moduleChunksMap.delete(moduleId);
-        disposeModule(moduleId, 'clear');
+        disposeModule(moduleId, "clear");
         availableModules.delete(moduleId);
       }
     }
@@ -2107,7 +2107,7 @@
         chunkChunkLists.add(chunkListPath);
       }
     }
-    if (chunkList.source === 'entry') {
+    if (chunkList.source === "entry") {
       markChunkListAsRuntime(chunkListPath);
     }
   }
@@ -2122,8 +2122,8 @@
     // TURBOPACK_ASSET_SUFFIX is set in web workers
     return (
       (self.TURBOPACK_ASSET_SUFFIX ??
-        document?.currentScript?.getAttribute?.('src')?.replace(/^(.*(?=\?)|^.*$)/, '')) ||
-      ''
+        document?.currentScript?.getAttribute?.("src")?.replace(/^(.*(?=\?)|^.*$)/, "")) ||
+      ""
     );
   }
   let BACKEND;
@@ -2217,7 +2217,7 @@
         // `resolver.resolve()` in this branch.
         return resolver.promise;
       }
-      if (typeof importScripts === 'function') {
+      if (typeof importScripts === "function") {
         // We're in a web worker
         if (isCss(chunkUrl)) {
           // ignore
@@ -2239,8 +2239,8 @@
             // loaded instantly.
             resolver.resolve();
           } else {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
             link.href = chunkUrl;
             link.onerror = () => {
               resolver.reject();
@@ -2261,12 +2261,12 @@
             // There is this edge where the script already failed loading, but we
             // can't detect that. The Promise will never resolve in this case.
             for (const script of Array.from(previousScripts)) {
-              script.addEventListener('error', () => {
+              script.addEventListener("error", () => {
                 resolver.reject();
               });
             }
           } else {
-            const script = document.createElement('script');
+            const script = document.createElement("script");
             script.src = chunkUrl;
             // We'll only mark the chunk as loaded once the script has been executed,
             // which happens in `registerChunk`. Hence the absence of `resolve()` in
@@ -2329,7 +2329,7 @@
       reloadChunk(chunkUrl) {
         return new Promise((resolve, reject) => {
           if (!isCss(chunkUrl)) {
-            reject(new Error('The DOM backend can only reload CSS chunks'));
+            reject(new Error("The DOM backend can only reload CSS chunks"));
             return;
           }
           const decodedChunkUrl = decodeURI(chunkUrl);
@@ -2340,9 +2340,9 @@
             reject(new Error(`No link element found for chunk ${chunkUrl}`));
             return;
           }
-          const link = document.createElement('link');
-          link.rel = 'stylesheet';
-          if (navigator.userAgent.includes('Firefox')) {
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          if (navigator.userAgent.includes("Firefox")) {
             // Firefox won't reload CSS files that were previously loaded on the current page,
             // we need to add a query param to make sure CSS is actually reloaded from the server.
             //
@@ -2389,11 +2389,11 @@
     // eslint-disable-next-line no-eval
     return eval(code);
   }
-  const chunksToRegister = globalThis['TURBOPACK'];
-  globalThis['TURBOPACK'] = { push: registerChunk };
+  const chunksToRegister = globalThis["TURBOPACK"];
+  globalThis["TURBOPACK"] = { push: registerChunk };
   chunksToRegister.forEach(registerChunk);
-  const chunkListsToRegister = globalThis['TURBOPACK_CHUNK_LISTS'] || [];
-  globalThis['TURBOPACK_CHUNK_LISTS'] = { push: registerChunkList };
+  const chunkListsToRegister = globalThis["TURBOPACK_CHUNK_LISTS"] || [];
+  globalThis["TURBOPACK_CHUNK_LISTS"] = { push: registerChunkList };
   chunkListsToRegister.forEach(registerChunkList);
 })();
 

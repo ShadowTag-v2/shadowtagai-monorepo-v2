@@ -11,9 +11,9 @@
  *   const systemPrompt = await loadOutputStyle('explanatory');
  */
 
-const fs = require('fs').promises;
-const path = require('path');
-const os = require('os');
+const fs = require("fs").promises;
+const path = require("path");
+const os = require("os");
 
 /**
  * Parse YAML frontmatter from a markdown file
@@ -32,8 +32,8 @@ function parseFrontmatter(content) {
   const frontmatter = {};
 
   // Simple YAML parser for our use case
-  frontmatterStr.split('\n').forEach((line) => {
-    const colonIndex = line.indexOf(':');
+  frontmatterStr.split("\n").forEach((line) => {
+    const colonIndex = line.indexOf(":");
     if (colonIndex > 0) {
       const key = line.substring(0, colonIndex).trim();
       const value = line.substring(colonIndex + 1).trim();
@@ -49,11 +49,11 @@ function parseFrontmatter(content) {
  * @param {string} level - 'project' or 'user'
  * @returns {string} - Absolute path to output styles directory
  */
-function getOutputStylesPath(level = 'project') {
-  if (level === 'user') {
-    return path.join(os.homedir(), '.claude', 'output-styles');
+function getOutputStylesPath(level = "project") {
+  if (level === "user") {
+    return path.join(os.homedir(), ".claude", "output-styles");
   }
-  return path.join(process.cwd(), '.claude', 'output-styles');
+  return path.join(process.cwd(), ".claude", "output-styles");
 }
 
 /**
@@ -61,7 +61,7 @@ function getOutputStylesPath(level = 'project') {
  * @returns {string} - Absolute path to settings.local.json
  */
 function getSettingsPath() {
-  return path.join(process.cwd(), '.claude', 'settings.local.json');
+  return path.join(process.cwd(), ".claude", "settings.local.json");
 }
 
 /**
@@ -72,19 +72,19 @@ async function listOutputStyles() {
   const styles = [];
 
   // Check project-level styles
-  const projectPath = getOutputStylesPath('project');
+  const projectPath = getOutputStylesPath("project");
   try {
     const files = await fs.readdir(projectPath);
     for (const file of files) {
-      if (file.endsWith('.md')) {
+      if (file.endsWith(".md")) {
         const filePath = path.join(projectPath, file);
-        const content = await fs.readFile(filePath, 'utf-8');
+        const content = await fs.readFile(filePath, "utf-8");
         const { frontmatter } = parseFrontmatter(content);
         styles.push({
-          name: frontmatter.name || path.basename(file, '.md'),
-          description: frontmatter.description || 'No description',
+          name: frontmatter.name || path.basename(file, ".md"),
+          description: frontmatter.description || "No description",
           path: filePath,
-          level: 'project',
+          level: "project",
           filename: file,
         });
       }
@@ -94,19 +94,19 @@ async function listOutputStyles() {
   }
 
   // Check user-level styles
-  const userPath = getOutputStylesPath('user');
+  const userPath = getOutputStylesPath("user");
   try {
     const files = await fs.readdir(userPath);
     for (const file of files) {
-      if (file.endsWith('.md')) {
+      if (file.endsWith(".md")) {
         const filePath = path.join(userPath, file);
-        const content = await fs.readFile(filePath, 'utf-8');
+        const content = await fs.readFile(filePath, "utf-8");
         const { frontmatter } = parseFrontmatter(content);
         styles.push({
-          name: frontmatter.name || path.basename(file, '.md'),
-          description: frontmatter.description || 'No description',
+          name: frontmatter.name || path.basename(file, ".md"),
+          description: frontmatter.description || "No description",
           path: filePath,
-          level: 'user',
+          level: "user",
           filename: file,
         });
       }
@@ -132,7 +132,7 @@ async function findOutputStyle(styleName) {
   if (style) return style;
 
   // Try filename match
-  style = styles.find((s) => path.basename(s.filename, '.md').toLowerCase() === normalizedName);
+  style = styles.find((s) => path.basename(s.filename, ".md").toLowerCase() === normalizedName);
 
   return style || null;
 }
@@ -149,7 +149,7 @@ async function loadOutputStyle(styleName) {
     throw new Error(`Output style '${styleName}' not found`);
   }
 
-  const content = await fs.readFile(style.path, 'utf-8');
+  const content = await fs.readFile(style.path, "utf-8");
   const { content: systemPrompt } = parseFrontmatter(content);
 
   return systemPrompt.trim();
@@ -162,7 +162,7 @@ async function loadOutputStyle(styleName) {
 async function getActiveOutputStyle() {
   try {
     const settingsPath = getSettingsPath();
-    const content = await fs.readFile(settingsPath, 'utf-8');
+    const content = await fs.readFile(settingsPath, "utf-8");
     const settings = JSON.parse(content);
     return settings.outputStyle || null;
   } catch (err) {
@@ -187,7 +187,7 @@ async function setActiveOutputStyle(styleName) {
 
   // Read existing settings if they exist
   try {
-    const content = await fs.readFile(settingsPath, 'utf-8');
+    const content = await fs.readFile(settingsPath, "utf-8");
     settings = JSON.parse(content);
   } catch (err) {
     // File doesn't exist or is invalid, start fresh
@@ -200,7 +200,7 @@ async function setActiveOutputStyle(styleName) {
   await fs.mkdir(path.dirname(settingsPath), { recursive: true });
 
   // Write back to file
-  await fs.writeFile(settingsPath, JSON.stringify(settings, null, 2) + '\n', 'utf-8');
+  await fs.writeFile(settingsPath, JSON.stringify(settings, null, 2) + "\n", "utf-8");
 }
 
 /**
@@ -222,10 +222,10 @@ async function loadActiveOutputStyle() {
 
   // Fall back to default style if available
   try {
-    return await loadOutputStyle('default');
+    return await loadOutputStyle("default");
   } catch (err) {
     // No default style available, return empty string
-    return '';
+    return "";
   }
 }
 
@@ -237,22 +237,22 @@ if (require.main === module) {
   (async () => {
     try {
       switch (command) {
-        case 'list': {
+        case "list": {
           const styles = await listOutputStyles();
-          console.log('\nAvailable Output Styles:\n');
+          console.log("\nAvailable Output Styles:\n");
 
-          const projectStyles = styles.filter((s) => s.level === 'project');
+          const projectStyles = styles.filter((s) => s.level === "project");
           if (projectStyles.length > 0) {
-            console.log('Project Styles (.claude/output-styles/):');
+            console.log("Project Styles (.claude/output-styles/):");
             projectStyles.forEach((s) => {
               console.log(`  • ${s.name} - ${s.description}`);
             });
             console.log();
           }
 
-          const userStyles = styles.filter((s) => s.level === 'user');
+          const userStyles = styles.filter((s) => s.level === "user");
           if (userStyles.length > 0) {
-            console.log('User Styles (~/.claude/output-styles/):');
+            console.log("User Styles (~/.claude/output-styles/):");
             userStyles.forEach((s) => {
               console.log(`  • ${s.name} - ${s.description}`);
             });
@@ -266,9 +266,9 @@ if (require.main === module) {
           break;
         }
 
-        case 'get': {
+        case "get": {
           if (!arg) {
-            console.error('Usage: output-style-loader.js get <style-name>');
+            console.error("Usage: output-style-loader.js get <style-name>");
             process.exit(1);
           }
           const content = await loadOutputStyle(arg);
@@ -276,16 +276,16 @@ if (require.main === module) {
           break;
         }
 
-        case 'set':
+        case "set":
           if (!arg) {
-            console.error('Usage: output-style-loader.js set <style-name>');
+            console.error("Usage: output-style-loader.js set <style-name>");
             process.exit(1);
           }
           await setActiveOutputStyle(arg);
           console.log(`✓ Activated output style: ${arg}`);
           break;
 
-        case 'active': {
+        case "active": {
           const activeContent = await loadActiveOutputStyle();
           console.log(activeContent);
           break;
@@ -308,7 +308,7 @@ Examples:
           `);
       }
     } catch (err) {
-      console.error('Error:', err.message);
+      console.error("Error:", err.message);
       process.exit(1);
     }
   })();

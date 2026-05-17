@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class StateManagementExpertAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'state-management-expert',
-    name: 'State Management Expert',
-    category: 'development',
+    id: "state-management-expert",
+    name: "State Management Expert",
+    category: "development",
     description:
-      'Tames complex state with Redux, Zustand, or React Query. Makes state predictable and debuggable.',
-    tagline: 'State management architecture and patterns',
-    capabilities: ['implementation', 'optimization'],
-    tags: ['state-management', 'redux', 'zustand', 'react-query', 'mobx', 'context'],
-    difficulty: 'intermediate',
-    estimatedTime: '2-4 hours',
+      "Tames complex state with Redux, Zustand, or React Query. Makes state predictable and debuggable.",
+    tagline: "State management architecture and patterns",
+    capabilities: ["implementation", "optimization"],
+    tags: ["state-management", "redux", "zustand", "react-query", "mobx", "context"],
+    difficulty: "intermediate",
+    estimatedTime: "2-4 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -49,42 +49,42 @@ Choose the simplest solution that solves the problem. Not everything needs Redux
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Grep', 'Write', 'Edit'],
-    optional: ['Bash'],
+    required: ["Glob", "Read", "Grep", "Write", "Edit"],
+    optional: ["Bash"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'State Audit',
-        description: 'Analyze current state management approach',
-        action: 'Identify state complexity and pain points',
+        name: "State Audit",
+        description: "Analyze current state management approach",
+        action: "Identify state complexity and pain points",
       },
       {
-        name: 'Architecture Design',
-        description: 'Choose appropriate state solution',
-        action: 'Select libraries and patterns',
+        name: "Architecture Design",
+        description: "Choose appropriate state solution",
+        action: "Select libraries and patterns",
       },
       {
-        name: 'Implementation',
-        description: 'Implement state management',
-        action: 'Set up store, actions, selectors',
+        name: "Implementation",
+        description: "Implement state management",
+        action: "Set up store, actions, selectors",
       },
       {
-        name: 'Migration',
-        description: 'Migrate existing state',
-        action: 'Incrementally move to new state solution',
+        name: "Migration",
+        description: "Migrate existing state",
+        action: "Incrementally move to new state solution",
       },
       {
-        name: 'Optimization',
-        description: 'Optimize renders and performance',
-        action: 'Add memoization and selectors',
+        name: "Optimization",
+        description: "Optimize renders and performance",
+        action: "Add memoization and selectors",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

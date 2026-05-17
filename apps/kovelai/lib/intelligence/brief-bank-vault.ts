@@ -15,7 +15,7 @@
  * @see seu-token-manager.ts — Access control
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -27,7 +27,7 @@ export const BriefBankEntrySchema = z.object({
   jurisdiction: z.string(),
   tags: z.array(z.string()).max(20),
   content: z.string(),
-  contentType: z.enum(['dossier', 'memo', 'brief_fragment', 'template', 'research_chain']),
+  contentType: z.enum(["dossier", "memo", "brief_fragment", "template", "research_chain"]),
   citations: z.array(
     z.object({
       authority: z.string(),
@@ -43,7 +43,7 @@ export const BriefBankEntrySchema = z.object({
     accessCount: z.number().int().default(0),
     lastAccessedAt: z.string().datetime().optional(),
   }),
-  visibility: z.enum(['private', 'firm', 'practice_group']),
+  visibility: z.enum(["private", "firm", "practice_group"]),
 });
 
 export type BriefBankEntry = z.infer<typeof BriefBankEntrySchema>;
@@ -54,7 +54,7 @@ export interface BriefBankSearchParams {
   practiceArea?: string;
   jurisdiction?: string;
   tags?: string[];
-  contentType?: BriefBankEntry['contentType'];
+  contentType?: BriefBankEntry["contentType"];
   limit?: number;
   offset?: number;
 }
@@ -79,20 +79,20 @@ export class BriefBankVault {
 
   constructor(firmId: string) {
     this.firmId = firmId;
-    this.firestoreUrl = process.env.FIRESTORE_API_URL ?? 'http://localhost:8080/firestore';
+    this.firestoreUrl = process.env.FIRESTORE_API_URL ?? "http://localhost:8080/firestore";
   }
 
   /**
    * Store a new entry in the brief bank.
    */
-  async store(entry: Omit<BriefBankEntry, 'id' | 'metadata'>): Promise<BriefBankEntry> {
+  async store(entry: Omit<BriefBankEntry, "id" | "metadata">): Promise<BriefBankEntry> {
     const now = new Date().toISOString();
     const fullEntry: BriefBankEntry = {
       ...entry,
       id: crypto.randomUUID(),
       firmId: this.firmId,
       metadata: {
-        createdBy: 'system',
+        createdBy: "system",
         createdAt: now,
         updatedAt: now,
         accessCount: 0,
@@ -115,20 +115,20 @@ export class BriefBankVault {
 
     // Build Firestore query filters
     const filters: Record<string, unknown>[] = [
-      { field: 'firmId', op: 'EQUAL', value: this.firmId },
+      { field: "firmId", op: "EQUAL", value: this.firmId },
     ];
 
     if (params.practiceArea) {
-      filters.push({ field: 'practiceArea', op: 'EQUAL', value: params.practiceArea });
+      filters.push({ field: "practiceArea", op: "EQUAL", value: params.practiceArea });
     }
     if (params.jurisdiction) {
-      filters.push({ field: 'jurisdiction', op: 'EQUAL', value: params.jurisdiction });
+      filters.push({ field: "jurisdiction", op: "EQUAL", value: params.jurisdiction });
     }
     if (params.contentType) {
-      filters.push({ field: 'contentType', op: 'EQUAL', value: params.contentType });
+      filters.push({ field: "contentType", op: "EQUAL", value: params.contentType });
     }
     if (params.tags && params.tags.length > 0) {
-      filters.push({ field: 'tags', op: 'ARRAY_CONTAINS_ANY', value: params.tags });
+      filters.push({ field: "tags", op: "ARRAY_CONTAINS_ANY", value: params.tags });
     }
 
     const results = await this.firestoreQuery(filters, limit, params.offset ?? 0);
@@ -161,8 +161,8 @@ export class BriefBankVault {
 
     // Update access stats (fire-and-forget)
     this.firestoreUpdate(path, {
-      'metadata.accessCount': (entry.metadata.accessCount ?? 0) + 1,
-      'metadata.lastAccessedAt': new Date().toISOString(),
+      "metadata.accessCount": (entry.metadata.accessCount ?? 0) + 1,
+      "metadata.lastAccessedAt": new Date().toISOString(),
     }).catch(() => {
       /* swallow */
     });
@@ -176,8 +176,8 @@ export class BriefBankVault {
   async archive(entryId: string): Promise<void> {
     const path = `firms/${this.firmId}/brief_bank/${entryId}`;
     await this.firestoreUpdate(path, {
-      visibility: 'private',
-      'metadata.updatedAt': new Date().toISOString(),
+      visibility: "private",
+      "metadata.updatedAt": new Date().toISOString(),
       archived: true,
     });
   }
@@ -202,9 +202,9 @@ export class BriefBankVault {
       jurisdiction,
       tags,
       content: dossier.markdown,
-      contentType: 'dossier',
+      contentType: "dossier",
       citations: dossier.allCitations,
-      visibility: 'firm',
+      visibility: "firm",
     });
   }
 
@@ -212,8 +212,8 @@ export class BriefBankVault {
 
   private async firestoreWrite(path: string, data: unknown): Promise<void> {
     await fetch(`${this.firestoreUrl}/${path}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
   }
@@ -230,8 +230,8 @@ export class BriefBankVault {
 
   private async firestoreUpdate(path: string, updates: Record<string, unknown>): Promise<void> {
     await fetch(`${this.firestoreUrl}/${path}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updates),
     });
   }

@@ -16,14 +16,14 @@ export class DesignTokenGenerator {
       colors: this.generateColorScale(config.primaryColor, config.secondaryColor),
       spacing: this.generateSpacing(config.baseSpace),
       typography: {
-        fontFamily: 'Inter, system-ui, sans-serif',
+        fontFamily: "Inter, system-ui, sans-serif",
         scale: this.generateTypeScale(),
       },
       breakpoints: {
-        sm: '640px',
-        md: '768px',
-        lg: '1024px',
-        xl: '1280px',
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
       },
     };
   }
@@ -39,7 +39,7 @@ export class DesignTokenGenerator {
         500: secondary,
         main: secondary,
       },
-      neutral: '#1e293b', // Slate-800
+      neutral: "#1e293b", // Slate-800
     };
   }
 
@@ -54,10 +54,10 @@ export class DesignTokenGenerator {
 
   private generateTypeScale() {
     return {
-      h1: '2.5rem',
-      h2: '2.0rem',
-      h3: '1.75rem',
-      body: '1.0rem',
+      h1: "2.5rem",
+      h2: "2.0rem",
+      h3: "1.75rem",
+      body: "1.0rem",
     };
   }
 }

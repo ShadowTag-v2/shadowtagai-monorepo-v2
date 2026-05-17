@@ -1,23 +1,23 @@
 export default function Testimonials() {
   const testimonials = [
     {
-      initials: 'MR',
-      name: 'Managing Partner',
-      firm: 'Am Law 200 Litigation Practice, New York',
+      initials: "MR",
+      name: "Managing Partner",
+      firm: "Am Law 200 Litigation Practice, New York",
       quote:
         '"We had a client whose Google search history was subpoenaed mid-litigation. After Heppner, we moved all client research to KovelAI. The privilege held. That one save paid for three years of service."',
     },
     {
-      initials: 'SK',
-      name: 'Senior Associate',
-      firm: 'Boutique Family Law, Los Angeles',
+      initials: "SK",
+      name: "Senior Associate",
+      firm: "Boutique Family Law, Los Angeles",
       quote:
         '"The after-hours capture alone justified the cost. We went from losing 60% of weekend inquiries to converting 85% into retained matters. The privilege protection is the bonus."',
     },
     {
-      initials: 'JL',
-      name: 'Founding Partner',
-      firm: 'Criminal Defense, Chicago',
+      initials: "JL",
+      name: "Founding Partner",
+      firm: "Criminal Defense, Chicago",
       quote:
         '"We bill clients $250/month for privileged search access. They\'re happy to pay because they understand the Heppner risk. Our intake revenue is up 40% since launch."',
     },

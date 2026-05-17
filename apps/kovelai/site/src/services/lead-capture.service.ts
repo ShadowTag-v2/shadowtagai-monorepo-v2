@@ -7,7 +7,7 @@
 
 const LEAD_CAPTURE_URL =
   process.env.NEXT_PUBLIC_LEAD_CAPTURE_URL ||
-  'https://capturelead-767252945109.us-central1.run.app';
+  "https://capturelead-767252945109.us-central1.run.app";
 
 export interface LeadCapturePayload {
   name: string;
@@ -24,8 +24,8 @@ export interface LeadCapturePayload {
 export async function submitLeadCapture(payload: LeadCapturePayload): Promise<boolean> {
   try {
     const response = await fetch(LEAD_CAPTURE_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
     return response.ok;

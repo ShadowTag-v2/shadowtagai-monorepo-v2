@@ -17,8 +17,8 @@ function transform(message, attributes) {
     }
 
     // 3. Masking (Email)
-    if (data.email && data.email.includes('@')) {
-      const [user, domain] = data.email.split('@');
+    if (data.email && data.email.includes("@")) {
+      const [user, domain] = data.email.split("@");
       data.email = `${user.substring(0, 2)}***@${domain}`;
     }
 
@@ -30,9 +30,9 @@ function transform(message, attributes) {
 
     // 5. Complex Filtering/Tagging
     if (data.amount && data.amount < 10) {
-      data.processing_status = 'low_value';
+      data.processing_status = "low_value";
     } else {
-      data.processing_status = 'standard';
+      data.processing_status = "standard";
     }
 
     // Return stringified JSON
@@ -41,7 +41,7 @@ function transform(message, attributes) {
     // In case of error, you might want to return the original message
     // or null to drop it (depending on config).
     // Here we log and return null to drop malformed messages.
-    console.error('Transformation error:', e);
+    console.error("Transformation error:", e);
     return null;
   }
 }

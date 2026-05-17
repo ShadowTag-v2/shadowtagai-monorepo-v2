@@ -9,7 +9,7 @@
  * If conflicts exist, no data is saved and no payment is processed.
  */
 
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -37,10 +37,10 @@ export async function POST(req: Request) {
     if (!clientName || !adverseParties?.length || !firmId || !lawyerIoltaStripeId) {
       return NextResponse.json(
         {
-          type: 'https://kovelai.com/errors/validation',
-          title: 'Validation Error',
+          type: "https://kovelai.com/errors/validation",
+          title: "Validation Error",
           status: 400,
-          detail: 'Missing required fields.',
+          detail: "Missing required fields.",
         },
         { status: 400 },
       );
@@ -57,9 +57,9 @@ export async function POST(req: Request) {
       // Rule 1.18 violation — cannot proceed. No data saved.
       return NextResponse.json(
         {
-          status: 'CONFLICT',
+          status: "CONFLICT",
           message:
-            'Unable to consult. Potential conflict of interest detected. No data has been saved or transmitted.',
+            "Unable to consult. Potential conflict of interest detected. No data has been saved or transmitted.",
           // Never expose which parties matched (that itself would be a privilege violation)
         },
         { status: 403 },
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
     const checkoutSession = await createStripeCheckoutSession(lawyerIoltaStripeId, firmId);
 
     return NextResponse.json({
-      status: 'CLEARED',
+      status: "CLEARED",
       checkoutUrl: checkoutSession.url,
       sessionId: checkoutSession.id,
     });
@@ -82,10 +82,10 @@ export async function POST(req: Request) {
     // RFC 9457 error format — never expose stack traces
     return NextResponse.json(
       {
-        type: 'https://kovelai.com/errors/internal',
-        title: 'Internal Error',
+        type: "https://kovelai.com/errors/internal",
+        title: "Internal Error",
         status: 500,
-        detail: 'Secure transit failed. Please retry.',
+        detail: "Secure transit failed. Please retry.",
       },
       { status: 500 },
     );

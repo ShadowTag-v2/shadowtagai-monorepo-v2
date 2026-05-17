@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class DocumentationGeneratorAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'documentation-generator',
-    name: 'Documentation Generator',
-    category: 'quality-testing',
+    id: "documentation-generator",
+    name: "Documentation Generator",
+    category: "quality-testing",
     description:
-      'Generates comprehensive code documentation, JSDoc, docstrings, and inline comments.',
-    tagline: 'Automated code documentation generation',
-    capabilities: ['implementation', 'automation'],
-    tags: ['documentation', 'jsdoc', 'docstrings', 'comments', 'api-docs'],
-    difficulty: 'beginner',
-    estimatedTime: '1-2 hours',
+      "Generates comprehensive code documentation, JSDoc, docstrings, and inline comments.",
+    tagline: "Automated code documentation generation",
+    capabilities: ["implementation", "automation"],
+    tags: ["documentation", "jsdoc", "docstrings", "comments", "api-docs"],
+    difficulty: "beginner",
+    estimatedTime: "1-2 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -49,37 +49,37 @@ Good docs make onboarding faster and reduce questions.`,
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Edit'],
-    optional: ['Write', 'Bash'],
+    required: ["Glob", "Read", "Edit"],
+    optional: ["Write", "Bash"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Code Scanning',
-        description: 'Scan for undocumented code',
-        action: 'Find functions, classes without docs',
+        name: "Code Scanning",
+        description: "Scan for undocumented code",
+        action: "Find functions, classes without docs",
       },
       {
-        name: 'JSDoc/Docstring Generation',
-        description: 'Generate documentation comments',
-        action: 'Add JSDoc/docstrings to functions',
+        name: "JSDoc/Docstring Generation",
+        description: "Generate documentation comments",
+        action: "Add JSDoc/docstrings to functions",
       },
       {
-        name: 'Complex Logic',
-        description: 'Document complex algorithms',
-        action: 'Add inline comments for clarity',
+        name: "Complex Logic",
+        description: "Document complex algorithms",
+        action: "Add inline comments for clarity",
       },
       {
-        name: 'API Docs',
-        description: 'Generate API documentation',
-        action: 'Create API reference docs',
+        name: "API Docs",
+        description: "Generate API documentation",
+        action: "Create API reference docs",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

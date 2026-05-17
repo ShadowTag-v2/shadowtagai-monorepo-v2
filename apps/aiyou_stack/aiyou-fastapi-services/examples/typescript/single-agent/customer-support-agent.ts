@@ -10,12 +10,12 @@
  * - Self-validation
  */
 
-import { query, tool } from '@anthropic-ai/claude-agent-sdk';
+import { query, tool } from "@anthropic-ai/claude-agent-sdk";
 
 // ==================== Types ====================
 
 interface Message {
-  role: 'user' | 'assistant' | 'system';
+  role: "user" | "assistant" | "system";
   content: string;
   timestamp: Date;
 }
@@ -25,15 +25,15 @@ interface CustomerContext {
   conversationHistory: Message[];
   issueResolved: boolean;
   issueType?: string;
-  priority?: 'low' | 'medium' | 'high' | 'critical';
+  priority?: "low" | "medium" | "high" | "critical";
 }
 
 interface CustomerAccount {
   id: string;
   name: string;
   email: string;
-  tier: 'free' | 'pro' | 'enterprise';
-  status: 'active' | 'suspended' | 'cancelled';
+  tier: "free" | "pro" | "enterprise";
+  status: "active" | "suspended" | "cancelled";
   accountBalance: number;
 }
 
@@ -41,8 +41,8 @@ interface SupportTicket {
   id: string;
   title: string;
   description: string;
-  status: 'open' | 'in_progress' | 'resolved' | 'escalated';
-  priority: 'low' | 'medium' | 'high' | 'critical';
+  status: "open" | "in_progress" | "resolved" | "escalated";
+  priority: "low" | "medium" | "high" | "critical";
 }
 
 // ==================== System Prompt ====================
@@ -151,18 +151,18 @@ Never:
 // ==================== Tools ====================
 
 const accountLookupTool = tool({
-  name: 'account_lookup',
+  name: "account_lookup",
   description:
-    'Look up customer account information by customer ID or email. Use when you need to verify account details or check account status.',
+    "Look up customer account information by customer ID or email. Use when you need to verify account details or check account status.",
   parameters: {
-    type: 'object',
+    type: "object",
     properties: {
       identifier: {
-        type: 'string',
-        description: 'Customer ID or email address',
+        type: "string",
+        description: "Customer ID or email address",
       },
     },
-    required: ['identifier'],
+    required: ["identifier"],
   },
   execute: async ({ identifier }): Promise<CustomerAccount> => {
     // Simulate database lookup
@@ -170,33 +170,33 @@ const accountLookupTool = tool({
 
     // Mock data
     return {
-      id: 'CUST-12345',
-      name: 'John Doe',
-      email: identifier.includes('@') ? identifier : 'redacted@shadowtag-v4.local',
-      tier: 'pro',
-      status: 'active',
+      id: "CUST-12345",
+      name: "John Doe",
+      email: identifier.includes("@") ? identifier : "redacted@shadowtag-v4.local",
+      tier: "pro",
+      status: "active",
       accountBalance: 150.0,
     };
   },
 });
 
 const orderHistoryTool = tool({
-  name: 'order_history',
+  name: "order_history",
   description:
     "View customer's order history and transactions. Use when investigating billing issues or order problems.",
   parameters: {
-    type: 'object',
+    type: "object",
     properties: {
       customerId: {
-        type: 'string',
-        description: 'Customer ID',
+        type: "string",
+        description: "Customer ID",
       },
       limit: {
-        type: 'number',
-        description: 'Number of orders to retrieve (default: 10)',
+        type: "number",
+        description: "Number of orders to retrieve (default: 10)",
       },
     },
-    required: ['customerId'],
+    required: ["customerId"],
   },
   execute: async ({ customerId, limit = 10 }) => {
     console.log(`[Tool] Fetching order history for: ${customerId}`);
@@ -205,18 +205,18 @@ const orderHistoryTool = tool({
     return {
       orders: [
         {
-          id: 'ORD-001',
-          date: '2025-11-01',
+          id: "ORD-001",
+          date: "2025-11-01",
           amount: 99.99,
-          status: 'completed',
-          items: ['Pro Plan - Monthly'],
+          status: "completed",
+          items: ["Pro Plan - Monthly"],
         },
         {
-          id: 'ORD-002',
-          date: '2025-10-01',
+          id: "ORD-002",
+          date: "2025-10-01",
           amount: 99.99,
-          status: 'completed',
-          items: ['Pro Plan - Monthly'],
+          status: "completed",
+          items: ["Pro Plan - Monthly"],
         },
       ],
     };
@@ -224,32 +224,32 @@ const orderHistoryTool = tool({
 });
 
 const processRefundTool = tool({
-  name: 'process_refund',
+  name: "process_refund",
   description:
-    'Process a refund for a customer. Use only after confirming the refund is warranted. Maximum $500 without approval.',
+    "Process a refund for a customer. Use only after confirming the refund is warranted. Maximum $500 without approval.",
   parameters: {
-    type: 'object',
+    type: "object",
     properties: {
       orderId: {
-        type: 'string',
-        description: 'Order ID to refund',
+        type: "string",
+        description: "Order ID to refund",
       },
       amount: {
-        type: 'number',
-        description: 'Refund amount in USD',
+        type: "number",
+        description: "Refund amount in USD",
       },
       reason: {
-        type: 'string',
-        description: 'Reason for refund',
+        type: "string",
+        description: "Reason for refund",
       },
     },
-    required: ['orderId', 'amount', 'reason'],
+    required: ["orderId", "amount", "reason"],
   },
   execute: async ({ orderId, amount, reason }) => {
     console.log(`[Tool] Processing refund: ${orderId} - $${amount}`);
 
     if (amount > 500) {
-      throw new Error('Refund amount exceeds $500 limit. Manager approval required.');
+      throw new Error("Refund amount exceeds $500 limit. Manager approval required.");
     }
 
     // Mock refund processing
@@ -257,7 +257,7 @@ const processRefundTool = tool({
       refundId: `REF-${Date.now()}`,
       orderId,
       amount,
-      status: 'processed',
+      status: "processed",
       estimatedDays: 3,
       message: `Refund of $${amount} will appear in 3-5 business days`,
     };
@@ -265,31 +265,31 @@ const processRefundTool = tool({
 });
 
 const createTicketTool = tool({
-  name: 'create_ticket',
+  name: "create_ticket",
   description:
-    'Create a support ticket for escalation to specialists. Use when issue requires expert assistance or is beyond your scope.',
+    "Create a support ticket for escalation to specialists. Use when issue requires expert assistance or is beyond your scope.",
   parameters: {
-    type: 'object',
+    type: "object",
     properties: {
       title: {
-        type: 'string',
-        description: 'Brief ticket title',
+        type: "string",
+        description: "Brief ticket title",
       },
       description: {
-        type: 'string',
-        description: 'Detailed issue description',
+        type: "string",
+        description: "Detailed issue description",
       },
       priority: {
-        type: 'string',
-        enum: ['low', 'medium', 'high', 'critical'],
-        description: 'Issue priority',
+        type: "string",
+        enum: ["low", "medium", "high", "critical"],
+        description: "Issue priority",
       },
       customerId: {
-        type: 'string',
-        description: 'Customer ID',
+        type: "string",
+        description: "Customer ID",
       },
     },
-    required: ['title', 'description', 'priority', 'customerId'],
+    required: ["title", "description", "priority", "customerId"],
   },
   execute: async ({ title, description, priority, customerId }) => {
     console.log(`[Tool] Creating ticket: ${title} [${priority}]`);
@@ -300,27 +300,27 @@ const createTicketTool = tool({
     return {
       ticketId,
       title,
-      status: 'open',
+      status: "open",
       priority,
-      estimatedResponse: priority === 'critical' ? '1 hour' : '24 hours',
-      message: `Ticket ${ticketId} created. Specialist will respond within ${priority === 'critical' ? '1 hour' : '24 hours'}.`,
+      estimatedResponse: priority === "critical" ? "1 hour" : "24 hours",
+      message: `Ticket ${ticketId} created. Specialist will respond within ${priority === "critical" ? "1 hour" : "24 hours"}.`,
     };
   },
 });
 
 const knowledgeSearchTool = tool({
-  name: 'knowledge_search',
+  name: "knowledge_search",
   description:
-    'Search help documentation and knowledge base. Use to find solutions, troubleshooting steps, or policy information.',
+    "Search help documentation and knowledge base. Use to find solutions, troubleshooting steps, or policy information.",
   parameters: {
-    type: 'object',
+    type: "object",
     properties: {
       query: {
-        type: 'string',
-        description: 'Search query',
+        type: "string",
+        description: "Search query",
       },
     },
-    required: ['query'],
+    required: ["query"],
   },
   execute: async ({ query }) => {
     console.log(`[Tool] Searching knowledge base: ${query}`);
@@ -329,16 +329,16 @@ const knowledgeSearchTool = tool({
     return {
       results: [
         {
-          title: 'How to reset your password',
-          url: 'https://help.techcorp.com/reset-password',
+          title: "How to reset your password",
+          url: "https://help.techcorp.com/reset-password",
           excerpt:
             "Follow these steps to reset your password: 1. Click 'Forgot Password' 2. Enter your email...",
         },
         {
-          title: 'Billing FAQ',
-          url: 'https://help.techcorp.com/billing-faq',
+          title: "Billing FAQ",
+          url: "https://help.techcorp.com/billing-faq",
           excerpt:
-            'Common billing questions: When am I charged? How do I update payment method?...',
+            "Common billing questions: When am I charged? How do I update payment method?...",
         },
       ],
     };
@@ -369,7 +369,7 @@ class CustomerSupportAgent {
   async handleMessage(userMessage: string): Promise<string> {
     // Add user message to history
     this.context.conversationHistory.push({
-      role: 'user',
+      role: "user",
       content: userMessage,
       timestamp: new Date(),
     });
@@ -387,13 +387,13 @@ class CustomerSupportAgent {
           systemPrompt: SUPPORT_AGENT_PROMPT,
           tools: this.tools,
           maxTokens: 4000,
-          model: 'claude-sonnet-4.5-20250514',
+          model: "claude-sonnet-4.5-20250514",
         },
       });
 
       // Add assistant response to history
       this.context.conversationHistory.push({
-        role: 'assistant',
+        role: "assistant",
         content: response,
         timestamp: new Date(),
       });
@@ -405,7 +405,7 @@ class CustomerSupportAgent {
       const errorResponse = `I apologize, but I encountered an error: ${error.message}. Let me create a ticket to have a specialist assist you.`;
 
       this.context.conversationHistory.push({
-        role: 'assistant',
+        role: "assistant",
         content: errorResponse,
         timestamp: new Date(),
       });
@@ -418,11 +418,11 @@ class CustomerSupportAgent {
     // Include recent conversation history for context
     const recentHistory = this.context.conversationHistory
       .slice(-6) // Last 3 exchanges
-      .map((m) => `${m.role === 'user' ? 'Customer' : 'Agent'}: ${m.content}`)
-      .join('\n\n');
+      .map((m) => `${m.role === "user" ? "Customer" : "Agent"}: ${m.content}`)
+      .join("\n\n");
 
     return `
-${recentHistory ? `Previous conversation:\n${recentHistory}\n\n` : ''}
+${recentHistory ? `Previous conversation:\n${recentHistory}\n\n` : ""}
 Current customer message:
 ${currentMessage}
 
@@ -445,16 +445,16 @@ Please respond appropriately, using available tools as needed to resolve the iss
 // ==================== Main ====================
 
 async function main() {
-  console.log('=== Customer Support Agent Demo ===\n');
+  console.log("=== Customer Support Agent Demo ===\n");
 
   const agent = new CustomerSupportAgent();
 
   // Simulate a customer support conversation
   const conversation = [
-    'Hi, I was charged twice for my subscription this month!',
-    'My email is redacted@shadowtag-v4.local and my customer ID is CUST-12345',
-    'Yes, please process the refund for the duplicate charge. It was $99.99.',
-    'Thank you! That resolves my issue.',
+    "Hi, I was charged twice for my subscription this month!",
+    "My email is redacted@shadowtag-v4.local and my customer ID is CUST-12345",
+    "Yes, please process the refund for the duplicate charge. It was $99.99.",
+    "Thank you! That resolves my issue.",
   ];
 
   for (const message of conversation) {
@@ -465,7 +465,7 @@ async function main() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  console.log('\n=== Conversation Complete ===');
+  console.log("\n=== Conversation Complete ===");
   console.log(`Total messages: ${agent.getContext().conversationHistory.length}`);
   console.log(`Issue resolved: ${agent.getContext().issueResolved}`);
 }

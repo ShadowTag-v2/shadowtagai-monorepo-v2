@@ -10,8 +10,8 @@
  * @see app/api/privileged-search/route.ts
  */
 
-import { generateKovelReceipt, type KovelReceiptInput } from '@/lib/attestation/kovel-receipt';
-import { enqueueDeletionTasks, scheduleFullSessionCleanup } from '@/lib/compliance/gdpr-scheduler';
+import { generateKovelReceipt, type KovelReceiptInput } from "@/lib/attestation/kovel-receipt";
+import { enqueueDeletionTasks, scheduleFullSessionCleanup } from "@/lib/compliance/gdpr-scheduler";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -82,7 +82,7 @@ export async function closeSessionAndGenerateReceipt(
   }
 
   // Generate Kovel receipt
-  const transcriptContent = session.queries.join('\n---\n');
+  const transcriptContent = session.queries.join("\n---\n");
 
   const receiptInput: KovelReceiptInput = {
     sessionId: session.sessionId,

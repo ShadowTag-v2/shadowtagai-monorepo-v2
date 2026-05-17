@@ -1,9 +1,9 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'ShadowTag Omega',
-  description: 'God Mode Antigravity Interface',
+  title: "ShadowTag Omega",
+  description: "God Mode Antigravity Interface",
 };
 
 export default function RootLayout({

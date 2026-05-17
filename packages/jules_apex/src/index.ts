@@ -8,18 +8,18 @@
  * Copyright 2026 ShadowTag AI. Apache-2.0.
  */
 
-export type { ApexClientOptions, ApexSession } from './client.js';
+export type { ApexClientOptions, ApexSession } from "./client.js";
 
 // ShadowTag orchestration layer
-export { createApexClient, JulesApexClient } from './client.js';
+export { createApexClient, JulesApexClient } from "./client.js";
 export type {
   DeploymentConfig,
   DeploymentResult,
   Judge6Verdict,
-} from './orchestrator.js';
+} from "./orchestrator.js";
 
 // Cloud Run orchestrator
-export { JulesCloudRunOrchestrator } from './orchestrator.js';
+export { JulesCloudRunOrchestrator } from "./orchestrator.js";
 // Re-export core Jules SDK types for consumers
 export type {
   Activity,
@@ -32,4 +32,4 @@ export type {
   SessionConfig,
   SessionOutput,
   SessionState,
-} from './types.js';
+} from "./types.js";

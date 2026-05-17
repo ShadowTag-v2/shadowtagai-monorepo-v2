@@ -1,20 +1,20 @@
 // Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
 
-'use client';
+"use client";
 
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 /* ── Design Token Constants (aligned with globals.css Sovereign Architect) ── */
 const T = {
-  ink: '#071325',
-  gold: '#e6c487',
-  goldDim: 'rgba(230, 196, 135, 0.15)',
-  blue: '#aac7ff',
-  primaryText: '#d7e3fc',
-  secondaryText: '#d0c5b5',
-  surfaceHigh: '#1f2a3d',
-  outline: '#998f81',
+  ink: "#071325",
+  gold: "#e6c487",
+  goldDim: "rgba(230, 196, 135, 0.15)",
+  blue: "#aac7ff",
+  primaryText: "#d7e3fc",
+  secondaryText: "#d0c5b5",
+  surfaceHigh: "#1f2a3d",
+  outline: "#998f81",
 } as const;
 
 /* ── Gavel SVG (minimal, authoritative) ── */
@@ -54,7 +54,7 @@ function GavelSVG() {
         transition={{
           duration: 1.5,
           repeat: Infinity,
-          ease: 'easeOut',
+          ease: "easeOut",
           repeatDelay: 2,
         }}
       />
@@ -69,7 +69,7 @@ interface FallingGavelProps {
 
 export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   /* Spring-damper animation: gavel falls from above, bounces, settles */
   const gavelVariants = {
@@ -79,7 +79,7 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
       opacity: 1,
       rotate: 0,
       transition: {
-        type: 'spring' as const,
+        type: "spring" as const,
         stiffness: 200,
         damping: 12,
         mass: 1.2,
@@ -97,7 +97,7 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
       transition: {
         duration: 0.8,
         delay: 0.55,
-        ease: 'easeOut' as const,
+        ease: "easeOut" as const,
       },
     },
   };
@@ -111,11 +111,11 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
   };
 
   const textItemVariants = {
-    hidden: { opacity: 0, y: 20, filter: 'blur(6px)' },
+    hidden: { opacity: 0, y: 20, filter: "blur(6px)" },
     visible: {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
+      filter: "blur(0px)",
       transition: { duration: 0.6, ease: [0.25, 0.4, 0.25, 1] as const },
     },
   };
@@ -124,11 +124,11 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
     <section
       ref={ref}
       style={{
-        position: 'relative',
-        padding: '5rem 1rem',
-        overflow: 'hidden',
+        position: "relative",
+        padding: "5rem 1rem",
+        overflow: "hidden",
         background: `linear-gradient(180deg, ${T.ink} 0%, #0c1e38 50%, ${T.ink} 100%)`,
-        textAlign: 'center',
+        textAlign: "center",
       }}
       id="gavel-cta"
       aria-labelledby="gavel-headline"
@@ -136,33 +136,33 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
       {/* Atmospheric glow */}
       <div
         style={{
-          position: 'absolute',
+          position: "absolute",
           inset: 0,
           background: `radial-gradient(ellipse 50% 40% at 50% 45%, ${T.goldDim}, transparent 70%)`,
-          pointerEvents: 'none',
+          pointerEvents: "none",
         }}
       />
 
       {/* Gavel drop zone */}
       <div
         style={{
-          position: 'relative',
+          position: "relative",
           zIndex: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
           maxWidth: 720,
-          margin: '0 auto',
+          margin: "0 auto",
         }}
       >
         {/* Gavel animation */}
         <motion.div
           variants={gavelVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
           style={{
-            marginBottom: '1.5rem',
-            position: 'relative',
+            marginBottom: "1.5rem",
+            position: "relative",
           }}
         >
           <GavelSVG />
@@ -170,18 +170,18 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
           <motion.div
             variants={shockwaveVariants}
             initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
+            animate={isInView ? "visible" : "hidden"}
             style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
+              position: "absolute",
+              top: "50%",
+              left: "50%",
               width: 80,
               height: 80,
               marginTop: -40,
               marginLeft: -40,
-              borderRadius: '50%',
+              borderRadius: "50%",
               border: `1px solid ${T.gold}`,
-              pointerEvents: 'none',
+              pointerEvents: "none",
             }}
           />
         </motion.div>
@@ -190,17 +190,17 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
         <motion.div
           variants={textContainerVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
         >
           <motion.p
             variants={textItemVariants}
             style={{
-              fontSize: '0.6875rem',
+              fontSize: "0.6875rem",
               fontWeight: 500,
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
+              textTransform: "uppercase",
+              letterSpacing: "0.15em",
               color: T.gold,
-              marginBottom: '1rem',
+              marginBottom: "1rem",
               fontFamily: "'Inter', system-ui, sans-serif",
             }}
           >
@@ -211,12 +211,12 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
             variants={textItemVariants}
             id="gavel-headline"
             style={{
-              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+              fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
               fontWeight: 800,
               lineHeight: 1.1,
-              letterSpacing: '-0.02em',
+              letterSpacing: "-0.02em",
               color: T.primaryText,
-              marginBottom: '1rem',
+              marginBottom: "1rem",
               fontFamily: "'Inter', system-ui, sans-serif",
             }}
           >
@@ -228,11 +228,11 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
           <motion.p
             variants={textItemVariants}
             style={{
-              fontSize: '1rem',
+              fontSize: "1rem",
               lineHeight: 1.6,
               color: T.secondaryText,
               maxWidth: 560,
-              margin: '0 auto 2rem',
+              margin: "0 auto 2rem",
               fontFamily: "'Inter', system-ui, sans-serif",
             }}
           >
@@ -244,10 +244,10 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
           <motion.div
             variants={textItemVariants}
             style={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-              gap: '1rem',
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              gap: "1rem",
             }}
           >
             <motion.button
@@ -255,10 +255,10 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
               onClick={onOpenModal}
               className="btn-gold"
               id="ctaGavelDeploy"
-              style={{ fontSize: '0.875rem' }}
+              style={{ fontSize: "0.875rem" }}
               whileHover={{
                 scale: 1.04,
-                boxShadow: '0 0 50px rgba(230, 196, 135, 0.35)',
+                boxShadow: "0 0 50px rgba(230, 196, 135, 0.35)",
               }}
               whileTap={{ scale: 0.97 }}
             >
@@ -267,7 +267,7 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
             <motion.a
               href="#pricing"
               className="btn-ghost"
-              style={{ fontSize: '0.875rem' }}
+              style={{ fontSize: "0.875rem" }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -281,16 +281,16 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
       <motion.div
         initial={{ scaleX: 0 }}
         animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-        transition={{ duration: 1, delay: 1.2, ease: 'easeOut' }}
+        transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
         style={{
-          position: 'relative',
+          position: "relative",
           zIndex: 2,
           maxWidth: 300,
-          margin: '3rem auto 0',
+          margin: "3rem auto 0",
           height: 1,
           background: `linear-gradient(90deg, transparent, ${T.gold}, transparent)`,
           opacity: 0.3,
-          transformOrigin: 'center',
+          transformOrigin: "center",
         }}
       />
     </section>

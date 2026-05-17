@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class UXOptimizerAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'ux-optimizer',
-    name: 'UX Optimizer',
-    category: 'design-ux',
+    id: "ux-optimizer",
+    name: "UX Optimizer",
+    category: "design-ux",
     description:
-      'Simplifies confusing user flows. Reduces 10 clicks to 2. Makes everything obvious.',
-    tagline: 'User experience optimization and flow simplification',
-    capabilities: ['analysis', 'optimization'],
-    tags: ['ux', 'user-flows', 'usability', 'simplification', 'friction-reduction'],
-    difficulty: 'intermediate',
-    estimatedTime: '1-3 hours',
+      "Simplifies confusing user flows. Reduces 10 clicks to 2. Makes everything obvious.",
+    tagline: "User experience optimization and flow simplification",
+    capabilities: ["analysis", "optimization"],
+    tags: ["ux", "user-flows", "usability", "simplification", "friction-reduction"],
+    difficulty: "intermediate",
+    estimatedTime: "1-3 hours",
   };
 
   prompt: AgentPromptTemplate = {
@@ -49,37 +49,37 @@ Every extra click is a chance to lose the user. Ruthlessly simplify.`,
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Grep', 'Edit'],
-    optional: ['Write'],
+    required: ["Glob", "Read", "Grep", "Edit"],
+    optional: ["Write"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Flow Analysis',
-        description: 'Map current user flows',
-        action: 'Identify all user paths and steps',
+        name: "Flow Analysis",
+        description: "Map current user flows",
+        action: "Identify all user paths and steps",
       },
       {
-        name: 'Friction Points',
-        description: 'Identify unnecessary complexity',
-        action: 'Find extra clicks, confusing paths',
+        name: "Friction Points",
+        description: "Identify unnecessary complexity",
+        action: "Find extra clicks, confusing paths",
       },
       {
-        name: 'Simplification',
-        description: 'Reduce steps and cognitive load',
-        action: 'Combine steps, add defaults, clarify',
+        name: "Simplification",
+        description: "Reduce steps and cognitive load",
+        action: "Combine steps, add defaults, clarify",
       },
       {
-        name: 'Validation',
-        description: 'Test simplified flows',
-        action: 'Verify flows are clearer and faster',
+        name: "Validation",
+        description: "Test simplified flows",
+        action: "Verify flows are clearer and faster",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

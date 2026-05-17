@@ -28,17 +28,17 @@ export async function pushToLawyerVault(
   oracleMemo: string,
   heppnerReceipt: string,
 ): Promise<void> {
-  await fetch('https://app.clio.com/api/v4/notes', {
-    method: 'POST',
+  await fetch("https://app.clio.com/api/v4/notes", {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${oauthToken}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       data: {
-        subject: 'KovelAI Oracle Intelligence Memo',
+        subject: "KovelAI Oracle Intelligence Memo",
         detail: `${oracleMemo}\n\n---\n\n${heppnerReceipt}`,
-        type: 'Note',
+        type: "Note",
       },
     }),
   });
@@ -59,19 +59,19 @@ export async function draftShadowInvoice(
   hours: number,
   hourlyRate: number,
 ): Promise<void> {
-  await fetch('https://app.clio.com/api/v4/activities', {
-    method: 'POST',
+  await fetch("https://app.clio.com/api/v4/activities", {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${oauthToken}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       data: {
-        type: 'TimeEntry',
+        type: "TimeEntry",
         quantity: hours,
         description:
-          'Factual Triage, OSINT Web Search, Google Drive Extraction, ' +
-          'and Legal Research via KovelAI Sovereign OS.',
+          "Factual Triage, OSINT Web Search, Google Drive Extraction, " +
+          "and Legal Research via KovelAI Sovereign OS.",
         price: hourlyRate,
       },
     }),

@@ -1,8 +1,8 @@
-import { useStitchTheme } from '@google-labs-code/stitch-sdk';
-import type React from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { graphql, useLazyLoadQuery, useSubscription } from 'react-relay';
-import { useAuth } from '../core/auth';
+import { useStitchTheme } from "@google-labs-code/stitch-sdk";
+import type React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { graphql, useLazyLoadQuery, useSubscription } from "react-relay";
+import { useAuth } from "../core/auth";
 
 const UserAccessQuery = graphql`
   query GavelHeroAccessQuery($uid: String!) { userAccess(firebaseUid: $uid) }
@@ -12,7 +12,7 @@ const PaymentSubscription = graphql`
 `;
 
 const FRAME_COUNT = 142;
-const CDN_BASE_URL = 'https://storage.googleapis.com/shadowtag-omega-v4-cdn';
+const CDN_BASE_URL = "https://storage.googleapis.com/shadowtag-omega-v4-cdn";
 
 export const GavelHero: React.FC = () => {
   const theme = useStitchTheme();
@@ -21,11 +21,11 @@ export const GavelHero: React.FC = () => {
   // Native Relay Querying & Real-Time CDC Subscription
   const data = useLazyLoadQuery<any>(
     UserAccessQuery,
-    { uid: user?.uid ?? '' },
-    { fetchPolicy: 'store-or-network' },
+    { uid: user?.uid ?? "" },
+    { fetchPolicy: "store-or-network" },
   );
   const subConfig = useMemo(
-    () => ({ subscription: PaymentSubscription, variables: { uid: user?.uid ?? '' } }),
+    () => ({ subscription: PaymentSubscription, variables: { uid: user?.uid ?? "" } }),
     [user],
   );
   useSubscription(subConfig);
@@ -36,15 +36,15 @@ export const GavelHero: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthorized || !canvasRef.current) return;
-    const ctx = canvasRef.current.getContext('2d');
+    const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
 
     let frameIndex = 0;
     let animationFrameId: number;
     const images: HTMLImageElement[] = Array.from({ length: FRAME_COUNT }, (_, i) => {
       const img = new Image();
-      img.crossOrigin = 'Anonymous';
-      img.src = `${CDN_BASE_URL}/frames/frame_${String(i + 1).padStart(4, '0')}.png`;
+      img.crossOrigin = "Anonymous";
+      img.src = `${CDN_BASE_URL}/frames/frame_${String(i + 1).padStart(4, "0")}.png`;
       return img;
     });
 
@@ -92,7 +92,7 @@ export const GavelHero: React.FC = () => {
       )}
       <canvas
         ref={canvasRef}
-        className={`w-full h-full object-cover transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`w-full h-full object-cover transition-opacity duration-1000 ${loaded ? "opacity-100" : "opacity-0"}`}
       />
       <button
         style={{

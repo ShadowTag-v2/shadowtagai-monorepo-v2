@@ -1,11 +1,11 @@
 let socket = null;
-const BRIDGE_URL = 'ws://localhost:8081';
+const BRIDGE_URL = "ws://localhost:8081";
 
 function connectToBridge() {
-  console.log('Attempting to connect to Bridge...');
+  console.log("Attempting to connect to Bridge...");
   socket = new WebSocket(BRIDGE_URL);
 
-  socket.onopen = () => console.log('Bridge Connected');
+  socket.onopen = () => console.log("Bridge Connected");
 
   socket.onmessage = async (event) => {
     const msg = JSON.parse(event.data);
@@ -15,10 +15,10 @@ function connectToBridge() {
       let result = null;
 
       // --- ACTION HANDLERS ---
-      if (msg.action === 'navigate') {
+      if (msg.action === "navigate") {
         const tab = await chrome.tabs.create({ url: msg.payload.url });
-        result = { tabId: tab.id, status: 'navigated' };
-      } else if (msg.action === 'exec') {
+        result = { tabId: tab.id, status: "navigated" };
+      } else if (msg.action === "exec") {
         // Execute arbitrary JS in the active tab
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
         if (tab) {
@@ -40,12 +40,12 @@ function connectToBridge() {
   };
 
   socket.onclose = () => {
-    console.log('Bridge lost. Reconnecting in 5s...');
+    console.log("Bridge lost. Reconnecting in 5s...");
     setTimeout(connectToBridge, 5000);
   };
 
   socket.onerror = (err) => {
-    console.error('WebSocket Error:', err);
+    console.error("WebSocket Error:", err);
     socket.close();
   };
 }

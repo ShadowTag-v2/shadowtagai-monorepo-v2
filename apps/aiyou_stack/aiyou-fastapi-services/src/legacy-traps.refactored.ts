@@ -1,4 +1,4 @@
-import { Logger } from './lib/logger';
+import { Logger } from "./lib/logger";
 
 // 1. No 'any' types -> Define Interface
 interface UserData {
@@ -8,20 +8,20 @@ interface UserData {
 
 // 3. No Magic Strings -> Use Enums
 enum UserStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+  ACTIVE = "active",
+  INACTIVE = "inactive",
 }
 
 // 2. No console.log/error -> Use Logger Service
-const logger = new Logger('UserDataProcessor');
+const logger = new Logger("UserDataProcessor");
 
 export const processUserData = (data: UserData): string | number => {
   try {
-    if (!data) throw new Error('No data provided');
+    if (!data) throw new Error("No data provided");
 
     // 3. Magic string replacement
     if (data.status === UserStatus.ACTIVE) {
-      return 'User is ready';
+      return "User is ready";
     }
 
     // 4. No legacy libs (Remove moment/lodash) -> Native Date
@@ -39,7 +39,7 @@ export const processUserData = (data: UserData): string | number => {
     return age;
   } catch (e) {
     // 2. Logger usage
-    logger.error('Error processing user data', e as Error);
+    logger.error("Error processing user data", e as Error);
     throw e; // Check-fail: Don't swallow errors (Trap B)
   }
 };

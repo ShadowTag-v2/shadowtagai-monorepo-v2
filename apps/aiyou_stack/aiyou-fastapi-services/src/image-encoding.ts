@@ -1,5 +1,5 @@
-import sharp, { FormatEnum, type Sharp } from 'sharp';
-import type { ImageEncodingOptions, ImageEncodingResult } from './types';
+import sharp, { FormatEnum, type Sharp } from "sharp";
+import type { ImageEncodingOptions, ImageEncodingResult } from "./types";
 
 /**
  * Image Encoding Module
@@ -14,7 +14,7 @@ export class ImageEncoder {
     input: Buffer | string,
     options: ImageEncodingOptions = {},
   ): Promise<ImageEncodingResult> {
-    const { format = 'jpeg', quality = 80, width, height, fit = 'cover' } = options;
+    const { format = "jpeg", quality = 80, width, height, fit = "cover" } = options;
 
     let pipeline: Sharp = sharp(input);
 
@@ -26,19 +26,19 @@ export class ImageEncoder {
     // Convert to target format
     let outputBuffer: Buffer;
     switch (format) {
-      case 'jpeg':
+      case "jpeg":
         outputBuffer = await pipeline.jpeg({ quality }).toBuffer();
         break;
-      case 'png':
+      case "png":
         outputBuffer = await pipeline.png({ quality }).toBuffer();
         break;
-      case 'webp':
+      case "webp":
         outputBuffer = await pipeline.webp({ quality }).toBuffer();
         break;
-      case 'avif':
+      case "avif":
         outputBuffer = await pipeline.avif({ quality }).toBuffer();
         break;
-      case 'gif':
+      case "gif":
         outputBuffer = await pipeline.gif().toBuffer();
         break;
       default:
@@ -65,7 +65,7 @@ export class ImageEncoder {
     options: ImageEncodingOptions = {},
   ): Promise<string> {
     const result = await ImageEncoder.convert(input, options);
-    const base64 = result.data.toString('base64');
+    const base64 = result.data.toString("base64");
     const mimeType = `image/${result.format}`;
     return `data:${mimeType};base64,${base64}`;
   }
@@ -76,9 +76,9 @@ export class ImageEncoder {
   static fromBase64(dataUri: string): Buffer {
     const matches = dataUri.match(/^data:image\/[a-z]+;base64,(.+)$/);
     if (!matches) {
-      throw new Error('Invalid image data URI format');
+      throw new Error("Invalid image data URI format");
     }
-    return Buffer.from(matches[1], 'base64');
+    return Buffer.from(matches[1], "base64");
   }
 
   /**
@@ -86,25 +86,25 @@ export class ImageEncoder {
    */
   static async optimize(
     input: Buffer | string,
-    targetFormat?: 'jpeg' | 'png' | 'webp' | 'avif',
+    targetFormat?: "jpeg" | "png" | "webp" | "avif",
   ): Promise<ImageEncodingResult> {
     const metadata = await sharp(input).metadata();
-    const format = targetFormat || (metadata.format as any) || 'jpeg';
+    const format = targetFormat || (metadata.format as any) || "jpeg";
 
     let pipeline = sharp(input);
 
     // Apply format-specific optimizations
     switch (format) {
-      case 'jpeg':
+      case "jpeg":
         pipeline = pipeline.jpeg({ quality: 85, progressive: true, mozjpeg: true });
         break;
-      case 'png':
+      case "png":
         pipeline = pipeline.png({ compressionLevel: 9, progressive: true });
         break;
-      case 'webp':
+      case "webp":
         pipeline = pipeline.webp({ quality: 85, effort: 6 });
         break;
-      case 'avif':
+      case "avif":
         pipeline = pipeline.avif({ quality: 80, effort: 6 });
         break;
     }
@@ -145,7 +145,7 @@ export class ImageEncoder {
       ...options,
       width: size,
       height: size,
-      fit: 'cover',
+      fit: "cover",
     });
   }
 
@@ -157,17 +157,17 @@ export class ImageEncoder {
     options: Partial<ImageEncodingOptions> = {},
   ): Promise<ImageEncodingResult> {
     const pipeline = sharp(input).grayscale();
-    const format = options.format || 'jpeg';
+    const format = options.format || "jpeg";
 
     let outputBuffer: Buffer;
     switch (format) {
-      case 'jpeg':
+      case "jpeg":
         outputBuffer = await pipeline.jpeg({ quality: options.quality || 80 }).toBuffer();
         break;
-      case 'png':
+      case "png":
         outputBuffer = await pipeline.png().toBuffer();
         break;
-      case 'webp':
+      case "webp":
         outputBuffer = await pipeline.webp({ quality: options.quality || 80 }).toBuffer();
         break;
       default:
@@ -194,17 +194,17 @@ export class ImageEncoder {
     options: Partial<ImageEncodingOptions> = {},
   ): Promise<ImageEncodingResult> {
     const pipeline = sharp(input).rotate(angle);
-    const format = options.format || 'jpeg';
+    const format = options.format || "jpeg";
 
     let outputBuffer: Buffer;
     switch (format) {
-      case 'jpeg':
+      case "jpeg":
         outputBuffer = await pipeline.jpeg({ quality: options.quality || 80 }).toBuffer();
         break;
-      case 'png':
+      case "png":
         outputBuffer = await pipeline.png().toBuffer();
         break;
-      case 'webp':
+      case "webp":
         outputBuffer = await pipeline.webp({ quality: options.quality || 80 }).toBuffer();
         break;
       default:

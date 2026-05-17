@@ -1,5 +1,5 @@
 // src/schemas/common.ts
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Base schema for generic API responses.
@@ -24,11 +24,11 @@ export const ApiResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
  */
 export const UserProfileSchema = z.object({
   id: z.string().uuid(),
-  email: z.string().email('Invalid email format'),
-  username: z.string().min(3, 'Username must be at least 3 chars').max(20),
-  role: z.enum(['admin', 'editor', 'viewer']),
+  email: z.string().email("Invalid email format"),
+  username: z.string().min(3, "Username must be at least 3 chars").max(20),
+  role: z.enum(["admin", "editor", "viewer"]),
   preferences: z.object({
-    theme: z.enum(['light', 'dark', 'system']).default('system'),
+    theme: z.enum(["light", "dark", "system"]).default("system"),
     notifications: z.boolean().default(true),
   }),
   // "Trap A" reinforcement: Ensure dates are handled as strings (ISO) or Date objects, not moment moments
@@ -47,7 +47,7 @@ export function validateInput<T>(schema: z.ZodSchema<T>, input: unknown): T {
   const result = schema.safeParse(input);
   if (!result.success) {
     // This throws a structured error that middleware can catch
-    throw new Error(`Validation Failed: ${result.error.issues.map((i) => i.message).join(', ')}`);
+    throw new Error(`Validation Failed: ${result.error.issues.map((i) => i.message).join(", ")}`);
   }
   return result.data;
 }

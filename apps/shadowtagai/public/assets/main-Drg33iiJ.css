@@ -31,10 +31,10 @@
   :root,
   :host {
     --font-sans:
-      ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-      'Segoe UI Symbol', 'Noto Color Emoji';
+      ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono:
-      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
       monospace;
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
@@ -52,7 +52,7 @@
     --color-on-surface-variant: #b9cbb9;
     --color-outline: #849585;
     --color-outline-variant: #3b4b3d;
-    --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 }
@@ -82,10 +82,10 @@
       ui-sans-serif,
       system-ui,
       sans-serif,
-      'Apple Color Emoji',
-      'Segoe UI Emoji',
-      'Segoe UI Symbol',
-      'Noto Color Emoji'
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji"
     );
     font-feature-settings: var(--default-font-feature-settings, normal);
     font-variation-settings: var(--default-font-variation-settings, normal);
@@ -132,8 +132,8 @@
       Menlo,
       Monaco,
       Consolas,
-      'Liberation Mono',
-      'Courier New',
+      "Liberation Mono",
+      "Courier New",
       monospace
     );
     font-feature-settings: var(--default-mono-font-feature-settings, normal);
@@ -287,7 +287,7 @@
     box-shadow: none;
   }
   button,
-  input:where([type='button'], [type='reset'], [type='submit']) {
+  input:where([type="button"], [type="reset"], [type="submit"]) {
     appearance: button;
   }
   ::file-selector-button {
@@ -299,7 +299,7 @@
   ::-webkit-outer-spin-button {
     height: auto;
   }
-  [hidden]:where(:not([hidden='until-found'])) {
+  [hidden]:where(:not([hidden="until-found"])) {
     display: none;
   }
 }
@@ -445,7 +445,7 @@ video {
 }
 .aurora-bg:before,
 .aurora-bg:after {
-  content: '';
+  content: "";
   filter: blur(120px);
   opacity: 0.15;
   border-radius: 50%;
@@ -657,7 +657,7 @@ video {
   overflow: hidden;
 }
 .holo-sheen:after {
-  content: '';
+  content: "";
   background: linear-gradient(
     115deg,
     #0000 20%,
@@ -685,7 +685,7 @@ video {
   }
 }
 .hero-logo:before {
-  content: '';
+  content: "";
   z-index: -1;
   pointer-events: none;
   background: radial-gradient(circle, #00ff880f 0%, #7c3aed08 40%, #0000 70%);
@@ -780,7 +780,7 @@ video {
   overflow: hidden;
 }
 .btn:after {
-  content: '';
+  content: "";
   pointer-events: none;
   background: linear-gradient(110deg, #0000 20%, #ffffff14 50%, #0000 80%);
   transition: transform 0.5s;
@@ -1099,75 +1099,75 @@ video {
   }
 }
 @property --tw-rotate-x {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-rotate-y {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-rotate-z {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-skew-x {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-skew-y {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-blur {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-brightness {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-contrast {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-grayscale {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-hue-rotate {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-invert {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-opacity {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-saturate {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-sepia {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-drop-shadow {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-drop-shadow-color {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }
 @property --tw-drop-shadow-alpha {
-  syntax: '<percentage>';
+  syntax: "<percentage>";
   inherits: false;
   initial-value: 100%;
 }
 @property --tw-drop-shadow-size {
-  syntax: '*';
+  syntax: "*";
   inherits: false;
 }

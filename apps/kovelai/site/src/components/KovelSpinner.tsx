@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import AgentSpinner from './AgentSpinner';
+import { useEffect, useState } from "react";
+import AgentSpinner from "./AgentSpinner";
 
 /**
  * KovelSpinner — Client-side loading overlay for KovelAI.
@@ -30,19 +30,19 @@ export default function KovelSpinner() {
   return (
     <div
       style={{
-        position: 'fixed',
+        position: "fixed",
         inset: 0,
         zIndex: 9999,
-        background: 'rgba(7, 19, 37, 0.95)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'opacity 0.5s ease-out',
+        background: "rgba(7, 19, 37, 0.95)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "opacity 0.5s ease-out",
         opacity: active ? 1 : 0,
-        pointerEvents: active ? 'auto' : 'none',
+        pointerEvents: active ? "auto" : "none",
       }}
       role="status"
       aria-live="polite"

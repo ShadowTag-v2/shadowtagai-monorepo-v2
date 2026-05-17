@@ -13,17 +13,17 @@
  * backends directly. Everything flows through this gateway.
  */
 
-import { randomUUID } from 'node:crypto';
-import { createGenesisBlock, type GenesisBlockEntry } from '@/lib/crypto/genesis-block';
+import { randomUUID } from "node:crypto";
+import { createGenesisBlock, type GenesisBlockEntry } from "@/lib/crypto/genesis-block";
 import {
   type SanitizationResult,
   sanitizePromptInjection,
   shouldQuarantine,
-} from '@/lib/security/injection-shield';
+} from "@/lib/security/injection-shield";
 
 // ─── Types ──────────────────────────────────────────────────────
 
-export type RiskTier = 'OBSERVE' | 'WARN' | 'GATE' | 'DENY' | 'RKILL';
+export type RiskTier = "OBSERVE" | "WARN" | "GATE" | "DENY" | "RKILL";
 
 export interface ToolCallResult {
   success: boolean;
@@ -49,44 +49,44 @@ interface GatewayConfig {
 /** ATP 5-19 risk tiers for each tool category */
 const TOOL_RISK_MAP: Record<string, RiskTier> = {
   // READ operations — low risk, but need sanitization
-  google_drive_read: 'OBSERVE',
-  google_drive_list: 'OBSERVE',
-  web_browser_scrape: 'WARN',
-  clio_read_matter: 'OBSERVE',
-  clio_search_contacts: 'OBSERVE',
-  westlaw_search: 'OBSERVE',
-  lexis_search: 'OBSERVE',
-  courtlistener_search: 'OBSERVE',
+  google_drive_read: "OBSERVE",
+  google_drive_list: "OBSERVE",
+  web_browser_scrape: "WARN",
+  clio_read_matter: "OBSERVE",
+  clio_search_contacts: "OBSERVE",
+  westlaw_search: "OBSERVE",
+  lexis_search: "OBSERVE",
+  courtlistener_search: "OBSERVE",
 
   // WRITE operations — elevated risk, need approval
-  clio_create_matter: 'GATE',
-  clio_attach_dossier: 'GATE',
-  clio_draft_time_entry: 'GATE',
-  slack_send_message: 'GATE',
-  email_send: 'GATE',
+  clio_create_matter: "GATE",
+  clio_attach_dossier: "GATE",
+  clio_draft_time_entry: "GATE",
+  slack_send_message: "GATE",
+  email_send: "GATE",
 
   // DANGEROUS operations — require explicit approval
-  clio_delete_matter: 'DENY',
-  google_drive_delete: 'DENY',
-  stripe_refund: 'DENY',
+  clio_delete_matter: "DENY",
+  google_drive_delete: "DENY",
+  stripe_refund: "DENY",
 
   // CATASTROPHIC — auto-blocked, no override
-  database_drop: 'RKILL',
-  file_system_write: 'RKILL',
-  shell_execute: 'RKILL',
+  database_drop: "RKILL",
+  file_system_write: "RKILL",
+  shell_execute: "RKILL",
 };
 
 /** Tools whose responses need injection sanitization */
 const SANITIZABLE_TOOLS = new Set([
-  'google_drive_read',
-  'web_browser_scrape',
-  'westlaw_search',
-  'lexis_search',
-  'courtlistener_search',
+  "google_drive_read",
+  "web_browser_scrape",
+  "westlaw_search",
+  "lexis_search",
+  "courtlistener_search",
 ]);
 
 /** Tools that ingest raw evidence needing FRE 902 notarization */
-const NOTARIZABLE_TOOLS = new Set(['google_drive_read', 'web_browser_scrape']);
+const NOTARIZABLE_TOOLS = new Set(["google_drive_read", "web_browser_scrape"]);
 
 // ─── Audit Log ──────────────────────────────────────────────────
 
@@ -100,7 +100,7 @@ interface AuditEntry {
   quarantined: boolean;
   threatScore: number;
   genesisBlockId?: string;
-  outcome: 'ALLOWED' | 'BLOCKED' | 'QUARANTINED';
+  outcome: "ALLOWED" | "BLOCKED" | "QUARANTINED";
 }
 
 const auditLog: AuditEntry[] = [];
@@ -133,11 +133,11 @@ export class AntigravityMCPGateway {
     const auditId = randomUUID();
 
     // 1. Risk classification
-    const riskTier = TOOL_RISK_MAP[toolName] ?? 'GATE';
+    const riskTier = TOOL_RISK_MAP[toolName] ?? "GATE";
 
     // 2. RKILL — immediate block, no override
-    if (riskTier === 'RKILL') {
-      this.logAudit(auditId, toolName, riskTier, false, 0, 'BLOCKED');
+    if (riskTier === "RKILL") {
+      this.logAudit(auditId, toolName, riskTier, false, 0, "BLOCKED");
       return {
         success: false,
         data: {
@@ -150,8 +150,8 @@ export class AntigravityMCPGateway {
     }
 
     // 3. DENY — block unless explicit human override exists
-    if (riskTier === 'DENY') {
-      this.logAudit(auditId, toolName, riskTier, false, 0, 'BLOCKED');
+    if (riskTier === "DENY") {
+      this.logAudit(auditId, toolName, riskTier, false, 0, "BLOCKED");
       return {
         success: false,
         data: {
@@ -165,7 +165,7 @@ export class AntigravityMCPGateway {
 
     // 4. Whitelist check
     if (this.config.allowedTools && !this.config.allowedTools.includes(toolName)) {
-      this.logAudit(auditId, toolName, riskTier, false, 0, 'BLOCKED');
+      this.logAudit(auditId, toolName, riskTier, false, 0, "BLOCKED");
       return {
         success: false,
         data: { error: `Tool "${toolName}" is not in the allowed tools whitelist.` },
@@ -182,7 +182,7 @@ export class AntigravityMCPGateway {
     let sanitizationResult: SanitizationResult | undefined;
     let processedData = rawResult;
 
-    if (SANITIZABLE_TOOLS.has(toolName) && typeof rawResult === 'string') {
+    if (SANITIZABLE_TOOLS.has(toolName) && typeof rawResult === "string") {
       sanitizationResult = sanitizePromptInjection(rawResult);
 
       if (shouldQuarantine(sanitizationResult)) {
@@ -192,12 +192,12 @@ export class AntigravityMCPGateway {
           riskTier,
           true,
           sanitizationResult.threatScore,
-          'QUARANTINED',
+          "QUARANTINED",
         );
         return {
           success: false,
           data: {
-            error: '[QUARANTINED] Adversarial content detected. Payload isolated.',
+            error: "[QUARANTINED] Adversarial content detected. Payload isolated.",
             threats: sanitizationResult.detectedThreats,
           },
           sanitizationResult,
@@ -215,14 +215,14 @@ export class AntigravityMCPGateway {
 
     if (NOTARIZABLE_TOOLS.has(toolName) && rawResponseBytes) {
       const sourceType =
-        toolName === 'google_drive_read'
-          ? ('GOOGLE_DRIVE_API' as const)
-          : ('CLOUD_BROWSER_SCRAPE' as const);
+        toolName === "google_drive_read"
+          ? ("GOOGLE_DRIVE_API" as const)
+          : ("CLOUD_BROWSER_SCRAPE" as const);
 
       genesisBlock = createGenesisBlock(
         rawResponseBytes,
         sourceType,
-        String(args.url ?? args.fileId ?? 'unknown'),
+        String(args.url ?? args.fileId ?? "unknown"),
         this.config.seuSessionId,
         this.config.firmId,
       );
@@ -235,7 +235,7 @@ export class AntigravityMCPGateway {
       riskTier,
       false,
       sanitizationResult?.threatScore ?? 0,
-      'ALLOWED',
+      "ALLOWED",
       genesisBlock?.id,
     );
 
@@ -272,7 +272,7 @@ export class AntigravityMCPGateway {
     riskTier: RiskTier,
     quarantined: boolean,
     threatScore: number,
-    outcome: AuditEntry['outcome'],
+    outcome: AuditEntry["outcome"],
     genesisBlockId?: string,
   ): void {
     auditLog.push({

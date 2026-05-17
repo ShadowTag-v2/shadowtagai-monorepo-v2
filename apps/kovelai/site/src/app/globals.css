@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -264,7 +264,7 @@
 .scroll-entrance {
   animation: scroll-entrance 0.8s ease-out both;
 }
-.scroll-entrance[data-visible='false'] {
+.scroll-entrance[data-visible="false"] {
   opacity: 0;
   transform: translateY(32px);
 }
@@ -351,7 +351,7 @@
   justify-content: space-between;
 }
 .faq-item summary::after {
-  content: '+';
+  content: "+";
   font-size: 1.25rem;
   color: #e6c487;
   transition: transform 0.3s ease;

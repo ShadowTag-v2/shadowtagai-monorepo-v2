@@ -3,15 +3,15 @@
  * Routes infrastructure analysis requests to specialized prompts
  */
 
-import { AnthropicVertex } from '@anthropic-ai/vertex-sdk';
-import { GEMINI_INGESTION_ANALYSIS_PROMPT } from '../prompts/gemini-ingestion-analysis';
-import { logger } from '../utils/logger';
+import { AnthropicVertex } from "@anthropic-ai/vertex-sdk";
+import { GEMINI_INGESTION_ANALYSIS_PROMPT } from "../prompts/gemini-ingestion-analysis";
+import { logger } from "../utils/logger";
 
 export enum InfrastructureComponent {
-  GEMINI_INGESTION = 'gemini-ingestion',
-  JUDGE_SIX = 'judge-six',
-  PNKLN_CORE = 'pnkln-core',
-  UNKNOWN = 'unknown',
+  GEMINI_INGESTION = "gemini-ingestion",
+  JUDGE_SIX = "judge-six",
+  PNKLN_CORE = "pnkln-core",
+  UNKNOWN = "unknown",
 }
 
 export interface InfrastructureAnalysisRequest {
@@ -34,7 +34,7 @@ export class InfrastructureAnalyzer {
 
   constructor() {
     this.client = new AnthropicVertex({
-      region: process.env.CLOUD_ML_REGION || 'us-central1',
+      region: process.env.CLOUD_ML_REGION || "us-central1",
       projectId: process.env.ANTHROPIC_VERTEX_PROJECT_ID,
     });
   }
@@ -47,25 +47,25 @@ export class InfrastructureAnalyzer {
 
     // Gemini Ingestion Layer
     if (
-      input.includes('gemini ingestion') ||
-      input.includes('ingestion layer') ||
-      input.includes('intelligence collection') ||
-      input.includes('crawler') ||
-      input.includes('data ingestion')
+      input.includes("gemini ingestion") ||
+      input.includes("ingestion layer") ||
+      input.includes("intelligence collection") ||
+      input.includes("crawler") ||
+      input.includes("data ingestion")
     ) {
       return InfrastructureComponent.GEMINI_INGESTION;
     }
 
     // Judge 6
-    if (input.includes('judge') || input.includes('validation') || input.includes('enforcement')) {
+    if (input.includes("judge") || input.includes("validation") || input.includes("enforcement")) {
       return InfrastructureComponent.JUDGE_SIX;
     }
 
     // PNKLN Core
     if (
-      input.includes('pnkln core') ||
-      input.includes('core stack') ||
-      input.includes('orchestrator')
+      input.includes("pnkln core") ||
+      input.includes("core stack") ||
+      input.includes("orchestrator")
     ) {
       return InfrastructureComponent.PNKLN_CORE;
     }
@@ -83,14 +83,14 @@ export class InfrastructureAnalyzer {
 
       case InfrastructureComponent.JUDGE_SIX:
         // TODO: Add Judge 6 analysis prompt
-        return 'Judge 6 analysis not yet implemented';
+        return "Judge 6 analysis not yet implemented";
 
       case InfrastructureComponent.PNKLN_CORE:
         // TODO: Add PNKLN Core analysis prompt
-        return 'PNKLN Core analysis not yet implemented';
+        return "PNKLN Core analysis not yet implemented";
 
       default:
-        return 'Unknown component - cannot analyze';
+        return "Unknown component - cannot analyze";
     }
   }
 
@@ -102,7 +102,7 @@ export class InfrastructureAnalyzer {
   ): Promise<InfrastructureAnalysisResult> {
     const startTime = Date.now();
 
-    logger.info('Starting infrastructure analysis', {
+    logger.info("Starting infrastructure analysis", {
       component: request.component,
     });
 
@@ -124,19 +124,19 @@ export class InfrastructureAnalyzer {
       userMessage += `ADDITIONAL CONTEXT:\n${JSON.stringify(request.context, null, 2)}\n\n`;
     }
 
-    userMessage += 'Provide a comprehensive analysis in the specified JSON format.';
+    userMessage += "Provide a comprehensive analysis in the specified JSON format.";
 
     try {
       // Call Claude via Vertex AI
       const response = await this.client.messages.create({
-        model: 'claude-opus-4-1@20250805',
+        model: "claude-opus-4-1@20250805",
         max_tokens: 20000,
         temperature: 0.7,
         system: systemPrompt,
         messages: [
           {
-            role: 'user',
-            content: [{ type: 'text', text: userMessage }],
+            role: "user",
+            content: [{ type: "text", text: userMessage }],
           },
         ],
       });
@@ -144,7 +144,7 @@ export class InfrastructureAnalyzer {
       const rawResponse = response.content[0].text;
       const duration = Date.now() - startTime;
 
-      logger.info('Infrastructure analysis completed', {
+      logger.info("Infrastructure analysis completed", {
         component: request.component,
         duration,
         tokensUsed: response.usage?.total_tokens,
@@ -161,19 +161,19 @@ export class InfrastructureAnalyzer {
           analysis = JSON.parse(jsonMatch[0]);
           confidence = analysis.summary?.confidence || 0;
         } else {
-          throw new Error('No JSON found in response');
+          throw new Error("No JSON found in response");
         }
       } catch (error) {
-        logger.warn('Failed to parse analysis JSON', {
+        logger.warn("Failed to parse analysis JSON", {
           error: error instanceof Error ? error.message : String(error),
         });
 
         // Return raw response if parsing fails
         analysis = {
           summary: {
-            overallAssessment: 'Failed to parse structured analysis',
+            overallAssessment: "Failed to parse structured analysis",
             confidence: 0,
-            readinessLevel: 'unknown',
+            readinessLevel: "unknown",
           },
           rawAnalysis: rawResponse,
         };
@@ -187,7 +187,7 @@ export class InfrastructureAnalyzer {
         timestamp: new Date().toISOString(),
       };
     } catch (error) {
-      logger.error('Infrastructure analysis failed', {
+      logger.error("Infrastructure analysis failed", {
         component: request.component,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -212,9 +212,9 @@ export class InfrastructureAnalyzer {
 
 ## Executive Summary
 
-${analysis.summary?.overallAssessment || 'No summary available'}
+${analysis.summary?.overallAssessment || "No summary available"}
 
-**Readiness Level**: ${analysis.summary?.readinessLevel?.toUpperCase() || 'UNKNOWN'}
+**Readiness Level**: ${analysis.summary?.readinessLevel?.toUpperCase() || "UNKNOWN"}
 
 ---
 `;
@@ -225,13 +225,13 @@ ${analysis.summary?.overallAssessment || 'No summary available'}
 ## Architecture
 
 **Strengths**:
-${analysis.architecture.strengths?.map((s: string) => `- ${s}`).join('\n') || '- None identified'}
+${analysis.architecture.strengths?.map((s: string) => `- ${s}`).join("\n") || "- None identified"}
 
 **Weaknesses**:
-${analysis.architecture.weaknesses?.map((w: string) => `- ${w}`).join('\n') || '- None identified'}
+${analysis.architecture.weaknesses?.map((w: string) => `- ${w}`).join("\n") || "- None identified"}
 
 **Recommendations**:
-${analysis.architecture.recommendations?.map((r: string) => `- ${r}`).join('\n') || '- None'}
+${analysis.architecture.recommendations?.map((r: string) => `- ${r}`).join("\n") || "- None"}
 
 ---
 `;
@@ -253,12 +253,12 @@ ${JSON.stringify(analysis.performance, null, 2)}
       output += `
 ## Ethical Compliance
 
-- **robots.txt Adherence**: ${analysis.ethicalCompliance.robotsTxtAdherence || 'Unknown'}
-- **Rate Limiting**: ${analysis.ethicalCompliance.rateLimiting || 'Unknown'}
-- **Transparency**: ${analysis.ethicalCompliance.transparency || 'Unknown'}
+- **robots.txt Adherence**: ${analysis.ethicalCompliance.robotsTxtAdherence || "Unknown"}
+- **Rate Limiting**: ${analysis.ethicalCompliance.rateLimiting || "Unknown"}
+- **Transparency**: ${analysis.ethicalCompliance.transparency || "Unknown"}
 
 **Risks**:
-${analysis.ethicalCompliance.risks?.map((r: string) => `- ${r}`).join('\n') || '- None identified'}
+${analysis.ethicalCompliance.risks?.map((r: string) => `- ${r}`).join("\n") || "- None identified"}
 
 ---
 `;
@@ -270,13 +270,13 @@ ${analysis.ethicalCompliance.risks?.map((r: string) => `- ${r}`).join('\n') || '
 ## Recommendations
 
 **Immediate** (Urgent):
-${analysis.recommendations.immediate?.map((r: string) => `- ${r}`).join('\n') || '- None'}
+${analysis.recommendations.immediate?.map((r: string) => `- ${r}`).join("\n") || "- None"}
 
 **Short-Term** (1 month):
-${analysis.recommendations.shortTerm?.map((r: string) => `- ${r}`).join('\n') || '- None'}
+${analysis.recommendations.shortTerm?.map((r: string) => `- ${r}`).join("\n") || "- None"}
 
 **Long-Term** (Strategic):
-${analysis.recommendations.longTerm?.map((r: string) => `- ${r}`).join('\n') || '- None'}
+${analysis.recommendations.longTerm?.map((r: string) => `- ${r}`).join("\n") || "- None"}
 
 ---
 `;

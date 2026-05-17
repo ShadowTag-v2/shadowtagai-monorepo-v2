@@ -89,7 +89,7 @@ export function createSSEClient(url, options = {}) {
       eventSource = new EventSource(url);
 
       eventSource.onopen = () => {
-        console.log('[SSE] Connected');
+        console.log("[SSE] Connected");
         retryCount = 0;
         resetHeartbeatTimer();
         config.onConnect?.();
@@ -105,11 +105,11 @@ export function createSSEClient(url, options = {}) {
         }
       };
 
-      eventSource.addEventListener('heartbeat', () => {
+      eventSource.addEventListener("heartbeat", () => {
         resetHeartbeatTimer();
       });
 
-      eventSource.addEventListener('error_event', (event) => {
+      eventSource.addEventListener("error_event", (event) => {
         const data = JSON.parse(event.data);
         config.onServerError?.(data);
       });
@@ -117,11 +117,11 @@ export function createSSEClient(url, options = {}) {
       eventSource.onerror = () => {
         if (heartbeatTimer) clearTimeout(heartbeatTimer);
         eventSource.close();
-        config.onError?.({ type: 'connection_error', attempt: retryCount });
+        config.onError?.({ type: "connection_error", attempt: retryCount });
         scheduleReconnect();
       };
     } catch (err) {
-      config.onError?.({ type: 'creation_error', error: err });
+      config.onError?.({ type: "creation_error", error: err });
       scheduleReconnect();
     }
   }

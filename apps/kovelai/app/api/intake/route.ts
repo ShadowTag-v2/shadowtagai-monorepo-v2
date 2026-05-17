@@ -28,16 +28,16 @@
  * @see DIGITAL_PRIVILEGE_SHIELD.md — Kovel attestation
  */
 
-import { anthropic } from '@ai-sdk/anthropic';
-import { google } from '@ai-sdk/google';
-import { generateText, streamText } from 'ai';
-import { NextResponse } from 'next/server';
-import { draftShadowInvoice, generateHeppnerReceipt, pushToLawyerVault } from '@/lib/clio-vault';
-import { executePrivilegedWebSearch } from '@/lib/intelligence/vertex_search_engine';
-import { LAWYER_ORACLE_PROMPT, TRIAGE_PACIFIER_PROMPT } from '@/lib/prompts';
-import { verifySeuToken } from '@/lib/security/seu_and_stripe';
+import { anthropic } from "@ai-sdk/anthropic";
+import { google } from "@ai-sdk/google";
+import { generateText, streamText } from "ai";
+import { NextResponse } from "next/server";
+import { draftShadowInvoice, generateHeppnerReceipt, pushToLawyerVault } from "@/lib/clio-vault";
+import { executePrivilegedWebSearch } from "@/lib/intelligence/vertex_search_engine";
+import { LAWYER_ORACLE_PROMPT, TRIAGE_PACIFIER_PROMPT } from "@/lib/prompts";
+import { verifySeuToken } from "@/lib/security/seu_and_stripe";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 interface IntakeRequestBody {
   messages: Array<{ role: string; content: string }>;
@@ -60,16 +60,16 @@ export async function POST(req: Request) {
     // ──────────────────────────────────────────────────────
     // 1. S.E.U. SECURITY GATE
     // ──────────────────────────────────────────────────────
-    const clientIp = req.headers.get('x-forwarded-for') || 'unknown';
+    const clientIp = req.headers.get("x-forwarded-for") || "unknown";
     const payload = await verifySeuToken(seuToken, clientIp);
 
     // ──────────────────────────────────────────────────────
     // 2. WEB-TO-PRIVILEGE PIPELINE (Vertex ZDR Search)
     // ──────────────────────────────────────────────────────
     const searchContext = webSearchQuery
-      ? await executePrivilegedWebSearch(webSearchQuery, payload.firmId ?? 'unknown')
-      : '';
-    const hybridContext = searchContext ? `[WEB OSINT/RESEARCH]:\n${searchContext}` : '';
+      ? await executePrivilegedWebSearch(webSearchQuery, payload.firmId ?? "unknown")
+      : "";
+    const hybridContext = searchContext ? `[WEB OSINT/RESEARCH]:\n${searchContext}` : "";
 
     // ──────────────────────────────────────────────────────
     // 3. ALGORITHMIC OPTIMIZATION: arXiv:2512.14982
@@ -79,18 +79,18 @@ export async function POST(req: Request) {
     const optimizedPrompt = `${lastUserQuery}\n\n[SYSTEM DIRECTIVE: RE-EVALUATE CONTEXT]\n\n${lastUserQuery}`;
     const optimizedMessages = [
       ...messages.slice(0, -1),
-      { role: 'user', content: optimizedPrompt },
+      { role: "user", content: optimizedPrompt },
     ];
 
     // ──────────────────────────────────────────────────────
     // 4. TRACK A: Client Pacifier (Fast model → SSE stream)
     // ──────────────────────────────────────────────────────
     const systemMessages = hybridContext
-      ? [{ role: 'system' as const, content: hybridContext }]
+      ? [{ role: "system" as const, content: hybridContext }]
       : [];
 
     const pacifierStream = await streamText({
-      model: google('gemini-2.5-flash-lite-preview'),
+      model: google("gemini-2.5-flash-lite-preview"),
       system: TRIAGE_PACIFIER_PROMPT,
       messages: [...optimizedMessages, ...systemMessages],
     });
@@ -106,11 +106,11 @@ export async function POST(req: Request) {
           // Hit Gemini 3.1 Flash Lite using Aegaeon Context Slab (84% cost drop)
           // or fall back to Claude Sonnet 4
           const oracleModel = contextCacheId
-            ? google('gemini-3.1-flash-lite-preview', {
+            ? google("gemini-3.1-flash-lite-preview", {
                 // @ts-expect-error: cached content config
                 useCachedContent: contextCacheId,
               })
-            : anthropic('claude-sonnet-4-20250514');
+            : anthropic("claude-sonnet-4-20250514");
 
           const oracleResponse = await generateText({
             model: oracleModel,
@@ -119,7 +119,7 @@ export async function POST(req: Request) {
           });
 
           // Stateless Direct-to-Vault Transfer
-          const heppnerReceipt = generateHeppnerReceipt(seuToken, payload.firmId ?? 'unknown');
+          const heppnerReceipt = generateHeppnerReceipt(seuToken, payload.firmId ?? "unknown");
           await pushToLawyerVault(clioOAuthToken, oracleResponse.text, heppnerReceipt);
 
           // Auto-Draft Shadow Invoice in Clio
@@ -133,16 +133,16 @@ export async function POST(req: Request) {
     // ──────────────────────────────────────────────────────
     return new NextResponse(pacifierStream.toDataStream(), {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'X-Kovel-Attestation': 'active',
-        'X-SEU-Sandbox': payload.sandboxId,
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        "X-Kovel-Attestation": "active",
+        "X-SEU-Sandbox": payload.sandboxId,
       },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       {
-        error: 'Stateless Execution Failed or S.E.U. Blocked',
+        error: "Stateless Execution Failed or S.E.U. Blocked",
         detail: message,
       },
       { status: 403 },

@@ -13,8 +13,8 @@
  * @see seu_and_stripe.ts — S.E.U. token binding
  */
 
-import type React from 'react';
-import { useCallback, useState } from 'react';
+import type React from "react";
+import { useCallback, useState } from "react";
 
 // ═══════════════════════════════════════════════════════════
 // Types
@@ -34,7 +34,7 @@ interface RegisteredKey {
   keyHash: string;
   registeredAt: string;
   lastUsed?: string;
-  status: 'active' | 'expired' | 'revoked';
+  status: "active" | "expired" | "revoked";
 }
 
 interface ByokKeyManagementProps {
@@ -50,28 +50,28 @@ interface ByokKeyManagementProps {
 
 const PROVIDERS: ByokProvider[] = [
   {
-    id: 'anthropic',
-    name: 'Anthropic',
-    icon: '🤖',
-    placeholder: 'sk-ant-api03-...',
-    prefix: 'sk-ant-',
-    docsUrl: 'https://docs.anthropic.com/en/api/getting-started',
+    id: "anthropic",
+    name: "Anthropic",
+    icon: "🤖",
+    placeholder: "sk-ant-api03-...",
+    prefix: "sk-ant-",
+    docsUrl: "https://docs.anthropic.com/en/api/getting-started",
   },
   {
-    id: 'google-vertex',
-    name: 'Google Vertex AI',
-    icon: '☁️',
-    placeholder: 'Service Account JSON or API Key',
-    prefix: '',
-    docsUrl: 'https://cloud.google.com/vertex-ai/docs/start/cloud-environment',
+    id: "google-vertex",
+    name: "Google Vertex AI",
+    icon: "☁️",
+    placeholder: "Service Account JSON or API Key",
+    prefix: "",
+    docsUrl: "https://cloud.google.com/vertex-ai/docs/start/cloud-environment",
   },
   {
-    id: 'openai',
-    name: 'OpenAI',
-    icon: '🔮',
-    placeholder: 'sk-proj-...',
-    prefix: 'sk-',
-    docsUrl: 'https://platform.openai.com/docs/api-reference',
+    id: "openai",
+    name: "OpenAI",
+    icon: "🔮",
+    placeholder: "sk-proj-...",
+    prefix: "sk-",
+    docsUrl: "https://platform.openai.com/docs/api-reference",
   },
 ];
 
@@ -80,13 +80,13 @@ const PROVIDERS: ByokProvider[] = [
 // ═══════════════════════════════════════════════════════════
 
 async function generateEncryptionKey(): Promise<CryptoKey> {
-  return crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
+  return crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt", "decrypt"]);
 }
 
 async function encryptApiKey(plaintext: string, key: CryptoKey): Promise<string> {
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const encoded = new TextEncoder().encode(plaintext);
-  const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+  const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, encoded);
   // Combine IV + ciphertext for transport
   const combined = new Uint8Array(iv.length + new Uint8Array(ciphertext).length);
   combined.set(iv);
@@ -96,10 +96,10 @@ async function encryptApiKey(plaintext: string, key: CryptoKey): Promise<string>
 
 async function _hashApiKey(key: string): Promise<string> {
   const encoded = new TextEncoder().encode(key);
-  const hash = await crypto.subtle.digest('SHA-256', encoded);
+  const hash = await crypto.subtle.digest("SHA-256", encoded);
   return Array.from(new Uint8Array(hash))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -113,7 +113,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
   onKeyRevoked,
 }) => {
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
-  const [apiKey, setApiKey] = useState('');
+  const [apiKey, setApiKey] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showKey, setShowKey] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -135,11 +135,11 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
       onKeyRegistered(selectedProvider, encrypted);
 
       // 3. Clear sensitive state
-      setApiKey('');
+      setApiKey("");
       setSelectedProvider(null);
       setSuccess(`${selectedProvider} key registered successfully. Zero-knowledge verified.`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Encryption failed');
+      setError(err instanceof Error ? err.message : "Encryption failed");
     } finally {
       setIsSubmitting(false);
     }
@@ -177,18 +177,18 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
               style={{
                 ...styles.providerCard,
                 ...(isSelected ? styles.providerCardSelected : {}),
-                ...(registered?.status === 'active' ? styles.providerCardActive : {}),
+                ...(registered?.status === "active" ? styles.providerCardActive : {}),
               }}
               onClick={() => setSelectedProvider(isSelected ? null : provider.id)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ')
+                if (e.key === "Enter" || e.key === " ")
                   setSelectedProvider(isSelected ? null : provider.id);
               }}
             >
               <div style={styles.providerHeader}>
                 <span style={styles.providerIcon}>{provider.icon}</span>
                 <span style={styles.providerName}>{provider.name}</span>
-                {registered?.status === 'active' && (
+                {registered?.status === "active" && (
                   <span style={styles.activeBadge}>● Active</span>
                 )}
               </div>
@@ -206,7 +206,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                 <div style={styles.inputSection}>
                   <div style={styles.inputWrapper}>
                     <input
-                      type={showKey ? 'text' : 'password'}
+                      type={showKey ? "text" : "password"}
                       value={apiKey}
                       onChange={(e) => setApiKey(e.target.value)}
                       placeholder={provider.placeholder}
@@ -221,7 +221,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                         setShowKey(!showKey);
                       }}
                     >
-                      {showKey ? '🙈' : '👁️'}
+                      {showKey ? "🙈" : "👁️"}
                     </button>
                   </div>
                   <div style={styles.actions}>
@@ -234,7 +234,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                       }}
                       disabled={isSubmitting || !apiKey.trim()}
                     >
-                      {isSubmitting ? 'Encrypting...' : '🔒 Register Key'}
+                      {isSubmitting ? "Encrypting..." : "🔒 Register Key"}
                     </button>
                     <a
                       href={provider.docsUrl}
@@ -289,120 +289,120 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    maxWidth: '720px',
-    margin: '0 auto',
-    padding: '24px',
+    maxWidth: "720px",
+    margin: "0 auto",
+    padding: "24px",
     fontFamily: "'Inter', -apple-system, sans-serif",
   },
-  header: { marginBottom: '24px' },
+  header: { marginBottom: "24px" },
   title: {
-    fontSize: '20px',
+    fontSize: "20px",
     fontWeight: 700,
-    color: '#e2e8f0',
-    margin: '0 0 8px 0',
+    color: "#e2e8f0",
+    margin: "0 0 8px 0",
   },
-  subtitle: { fontSize: '13px', color: '#94a3b8', margin: 0, lineHeight: '1.5' },
+  subtitle: { fontSize: "13px", color: "#94a3b8", margin: 0, lineHeight: "1.5" },
   successBanner: {
-    padding: '12px 16px',
-    borderRadius: '8px',
-    backgroundColor: 'rgba(34, 197, 94, 0.12)',
-    border: '1px solid rgba(34, 197, 94, 0.3)',
-    color: '#4ade80',
-    fontSize: '13px',
-    marginBottom: '16px',
+    padding: "12px 16px",
+    borderRadius: "8px",
+    backgroundColor: "rgba(34, 197, 94, 0.12)",
+    border: "1px solid rgba(34, 197, 94, 0.3)",
+    color: "#4ade80",
+    fontSize: "13px",
+    marginBottom: "16px",
   },
   errorBanner: {
-    padding: '12px 16px',
-    borderRadius: '8px',
-    backgroundColor: 'rgba(239, 68, 68, 0.12)',
-    border: '1px solid rgba(239, 68, 68, 0.3)',
-    color: '#f87171',
-    fontSize: '13px',
-    marginBottom: '16px',
+    padding: "12px 16px",
+    borderRadius: "8px",
+    backgroundColor: "rgba(239, 68, 68, 0.12)",
+    border: "1px solid rgba(239, 68, 68, 0.3)",
+    color: "#f87171",
+    fontSize: "13px",
+    marginBottom: "16px",
   },
-  providerGrid: { display: 'flex', flexDirection: 'column', gap: '12px' },
+  providerGrid: { display: "flex", flexDirection: "column", gap: "12px" },
   providerCard: {
-    padding: '16px 20px',
-    borderRadius: '12px',
-    border: '1px solid rgba(148, 163, 184, 0.15)',
-    backgroundColor: 'rgba(30, 41, 59, 0.6)',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    padding: "16px 20px",
+    borderRadius: "12px",
+    border: "1px solid rgba(148, 163, 184, 0.15)",
+    backgroundColor: "rgba(30, 41, 59, 0.6)",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
   },
   providerCardSelected: {
-    border: '1px solid rgba(99, 102, 241, 0.5)',
-    backgroundColor: 'rgba(30, 41, 59, 0.9)',
+    border: "1px solid rgba(99, 102, 241, 0.5)",
+    backgroundColor: "rgba(30, 41, 59, 0.9)",
   },
-  providerCardActive: { border: '1px solid rgba(34, 197, 94, 0.4)' },
-  providerHeader: { display: 'flex', alignItems: 'center', gap: '10px' },
-  providerIcon: { fontSize: '24px' },
-  providerName: { fontSize: '15px', fontWeight: 600, color: '#e2e8f0', flex: 1 },
-  activeBadge: { fontSize: '12px', color: '#4ade80', fontWeight: 600 },
+  providerCardActive: { border: "1px solid rgba(34, 197, 94, 0.4)" },
+  providerHeader: { display: "flex", alignItems: "center", gap: "10px" },
+  providerIcon: { fontSize: "24px" },
+  providerName: { fontSize: "15px", fontWeight: 600, color: "#e2e8f0", flex: 1 },
+  activeBadge: { fontSize: "12px", color: "#4ade80", fontWeight: 600 },
   keyMeta: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '8px',
-    fontSize: '11px',
-    color: '#64748b',
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "8px",
+    fontSize: "11px",
+    color: "#64748b",
   },
-  keyHash: { fontFamily: 'monospace' },
+  keyHash: { fontFamily: "monospace" },
   keyDate: {},
-  inputSection: { marginTop: '12px' },
-  inputWrapper: { display: 'flex', gap: '8px' },
+  inputSection: { marginTop: "12px" },
+  inputWrapper: { display: "flex", gap: "8px" },
   input: {
     flex: 1,
-    padding: '10px 14px',
-    borderRadius: '8px',
-    border: '1px solid rgba(148, 163, 184, 0.2)',
-    backgroundColor: 'rgba(15, 23, 42, 0.8)',
-    color: '#e2e8f0',
-    fontSize: '13px',
-    fontFamily: 'monospace',
-    outline: 'none',
+    padding: "10px 14px",
+    borderRadius: "8px",
+    border: "1px solid rgba(148, 163, 184, 0.2)",
+    backgroundColor: "rgba(15, 23, 42, 0.8)",
+    color: "#e2e8f0",
+    fontSize: "13px",
+    fontFamily: "monospace",
+    outline: "none",
   },
   toggleBtn: {
-    padding: '10px',
-    borderRadius: '8px',
-    border: '1px solid rgba(148, 163, 184, 0.2)',
-    backgroundColor: 'transparent',
-    cursor: 'pointer',
-    fontSize: '16px',
+    padding: "10px",
+    borderRadius: "8px",
+    border: "1px solid rgba(148, 163, 184, 0.2)",
+    backgroundColor: "transparent",
+    cursor: "pointer",
+    fontSize: "16px",
   },
   actions: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    marginTop: '10px',
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    marginTop: "10px",
   },
   registerBtn: {
-    padding: '10px 20px',
-    borderRadius: '8px',
-    border: 'none',
-    background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-    color: '#fff',
+    padding: "10px 20px",
+    borderRadius: "8px",
+    border: "none",
+    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+    color: "#fff",
     fontWeight: 600,
-    fontSize: '13px',
-    cursor: 'pointer',
+    fontSize: "13px",
+    cursor: "pointer",
   },
-  docsLink: { fontSize: '12px', color: '#94a3b8', textDecoration: 'none' },
-  revokeSection: { marginTop: '12px' },
+  docsLink: { fontSize: "12px", color: "#94a3b8", textDecoration: "none" },
+  revokeSection: { marginTop: "12px" },
   revokeBtn: {
-    padding: '8px 16px',
-    borderRadius: '8px',
-    border: '1px solid rgba(239, 68, 68, 0.3)',
-    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-    color: '#f87171',
-    fontSize: '12px',
-    cursor: 'pointer',
+    padding: "8px 16px",
+    borderRadius: "8px",
+    border: "1px solid rgba(239, 68, 68, 0.3)",
+    backgroundColor: "rgba(239, 68, 68, 0.1)",
+    color: "#f87171",
+    fontSize: "12px",
+    cursor: "pointer",
   },
   securityNotice: {
-    marginTop: '24px',
-    padding: '16px',
-    borderRadius: '12px',
-    backgroundColor: 'rgba(99, 102, 241, 0.06)',
-    border: '1px solid rgba(99, 102, 241, 0.15)',
-    fontSize: '12px',
-    color: '#94a3b8',
+    marginTop: "24px",
+    padding: "16px",
+    borderRadius: "12px",
+    backgroundColor: "rgba(99, 102, 241, 0.06)",
+    border: "1px solid rgba(99, 102, 241, 0.15)",
+    fontSize: "12px",
+    color: "#94a3b8",
   },
-  securityList: { margin: '8px 0 0 0', paddingLeft: '20px', lineHeight: '1.8' },
+  securityList: { margin: "8px 0 0 0", paddingLeft: "20px", lineHeight: "1.8" },
 };

@@ -10,8 +10,8 @@
  * Integration: Receives data from the Privileged Search Tunnel route
  * via the Intent Vault background queue.
  */
-'use client';
-import { useMemo, useState } from 'react';
+"use client";
+import { useMemo, useState } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────
 interface AnxietyVector {
@@ -19,7 +19,7 @@ interface AnxietyVector {
   searchCount: number;
   peakHour: string;
   urgencyScore: number;
-  trend: 'rising' | 'stable' | 'declining';
+  trend: "rising" | "stable" | "declining";
 }
 
 interface SearchLog {
@@ -27,7 +27,7 @@ interface SearchLog {
   aiResponseSnippet: string;
   timestamp: string;
   category: string;
-  source: 'google_enterprise' | 'perplexity_sonar';
+  source: "google_enterprise" | "perplexity_sonar";
 }
 
 interface LawyerIntentDashboardProps {
@@ -48,37 +48,37 @@ function getUrgencyColor(score: number): {
 } {
   if (score >= 9)
     return {
-      bg: 'bg-red-950',
-      border: 'border-red-500',
-      text: 'text-red-300',
-      badge: 'bg-red-600',
+      bg: "bg-red-950",
+      border: "border-red-500",
+      text: "text-red-300",
+      badge: "bg-red-600",
     };
   if (score >= 7)
     return {
-      bg: 'bg-orange-950',
-      border: 'border-orange-500',
-      text: 'text-orange-300',
-      badge: 'bg-orange-600',
+      bg: "bg-orange-950",
+      border: "border-orange-500",
+      text: "text-orange-300",
+      badge: "bg-orange-600",
     };
   if (score >= 5)
     return {
-      bg: 'bg-yellow-950',
-      border: 'border-yellow-500',
-      text: 'text-yellow-300',
-      badge: 'bg-yellow-600',
+      bg: "bg-yellow-950",
+      border: "border-yellow-500",
+      text: "text-yellow-300",
+      badge: "bg-yellow-600",
     };
   return {
-    bg: 'bg-slate-900',
-    border: 'border-slate-600',
-    text: 'text-slate-400',
-    badge: 'bg-slate-600',
+    bg: "bg-slate-900",
+    border: "border-slate-600",
+    text: "text-slate-400",
+    badge: "bg-slate-600",
   };
 }
 
 function getTrendIcon(trend: string): string {
-  if (trend === 'rising') return '📈';
-  if (trend === 'declining') return '📉';
-  return '➡️';
+  if (trend === "rising") return "📈";
+  if (trend === "declining") return "📉";
+  return "➡️";
 }
 
 // ─── Component ────────────────────────────────────────────────────────
@@ -90,7 +90,7 @@ export default function LawyerIntentDashboard({
   sessionStart,
   sessionExpiry,
 }: LawyerIntentDashboardProps) {
-  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [activeFilter, setActiveFilter] = useState<string>("all");
   const [expandedLog, setExpandedLog] = useState<number | null>(null);
 
   // Sort vectors by urgency (highest first)
@@ -102,7 +102,7 @@ export default function LawyerIntentDashboard({
   // Filter logs by category
   const filteredLogs = useMemo(
     () =>
-      activeFilter === 'all'
+      activeFilter === "all"
         ? searchLogs
         : searchLogs.filter((log) => log.category === activeFilter),
     [searchLogs, activeFilter],
@@ -152,8 +152,8 @@ export default function LawyerIntentDashboard({
           />
           <MetricCard
             label="Peak Concern"
-            value={peakAnxiety?.topic.replace(/_/g, ' ') ?? 'N/A'}
-            sublabel={peakAnxiety ? `${peakAnxiety.searchCount} queries` : ''}
+            value={peakAnxiety?.topic.replace(/_/g, " ") ?? "N/A"}
+            sublabel={peakAnxiety ? `${peakAnxiety.searchCount} queries` : ""}
             highlight
           />
           <MetricCard
@@ -177,16 +177,16 @@ export default function LawyerIntentDashboard({
                 <button
                   type="button"
                   key={vec.topic}
-                  onClick={() => setActiveFilter(activeFilter === vec.topic ? 'all' : vec.topic)}
+                  onClick={() => setActiveFilter(activeFilter === vec.topic ? "all" : vec.topic)}
                   className={`${colors.bg} border ${colors.border} p-5 rounded-xl text-left transition-all hover:scale-[1.02] ${
-                    activeFilter === vec.topic ? 'ring-2 ring-white/30' : ''
+                    activeFilter === vec.topic ? "ring-2 ring-white/30" : ""
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span
                       className={`text-[10px] font-black uppercase tracking-widest ${colors.text}`}
                     >
-                      {vec.topic.replace(/_/g, ' ')}
+                      {vec.topic.replace(/_/g, " ")}
                     </span>
                     <span className="text-base">{getTrendIcon(vec.trend)}</span>
                   </div>
@@ -215,10 +215,10 @@ export default function LawyerIntentDashboard({
               <span className="w-2 h-2 bg-blue-500 rounded-full" />
               Privileged Search Transcript
             </h2>
-            {activeFilter !== 'all' && (
+            {activeFilter !== "all" && (
               <button
                 type="button"
-                onClick={() => setActiveFilter('all')}
+                onClick={() => setActiveFilter("all")}
                 className="text-xs text-slate-500 hover:text-white transition-colors font-mono"
               >
                 ✕ Clear filter: {activeFilter}
@@ -238,12 +238,12 @@ export default function LawyerIntentDashboard({
                   <div className="shrink-0 mt-1">
                     <span
                       className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                        log.source === 'google_enterprise'
-                          ? 'bg-blue-900 text-blue-300'
-                          : 'bg-purple-900 text-purple-300'
+                        log.source === "google_enterprise"
+                          ? "bg-blue-900 text-blue-300"
+                          : "bg-purple-900 text-purple-300"
                       }`}
                     >
-                      {log.source === 'google_enterprise' ? 'GOOGLE ZDR' : 'SONAR PRO'}
+                      {log.source === "google_enterprise" ? "GOOGLE ZDR" : "SONAR PRO"}
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
@@ -265,7 +265,7 @@ export default function LawyerIntentDashboard({
                       {new Date(log.timestamp).toLocaleTimeString()}
                     </div>
                     <div className="text-[10px] text-slate-700 uppercase mt-1">
-                      {log.category.replace(/_/g, ' ')}
+                      {log.category.replace(/_/g, " ")}
                     </div>
                   </div>
                 </div>
@@ -302,10 +302,10 @@ function MetricCard({
     <div
       className={`p-5 rounded-xl border ${
         highlight
-          ? 'bg-red-950/50 border-red-800'
+          ? "bg-red-950/50 border-red-800"
           : isGreen
-            ? 'bg-green-950/50 border-green-800'
-            : 'bg-slate-900/50 border-slate-800'
+            ? "bg-green-950/50 border-green-800"
+            : "bg-slate-900/50 border-slate-800"
       }`}
     >
       <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">
@@ -313,7 +313,7 @@ function MetricCard({
       </div>
       <div
         className={`text-2xl font-black ${
-          highlight ? 'text-red-400' : isGreen ? 'text-green-400' : 'text-white'
+          highlight ? "text-red-400" : isGreen ? "text-green-400" : "text-white"
         }`}
       >
         {value}

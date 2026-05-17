@@ -14,9 +14,9 @@
  * @see WAR_ROOM_ARCHITECTURE.md — Pipeline architecture
  */
 
-'use client';
+"use client";
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from "react";
 
 // ─── Types ───────────────────────────────────────────────
 
@@ -27,7 +27,7 @@ interface VerbEntry {
   cause_of_action: string;
   element_matched: string;
   confidence: number;
-  strengthens_or_weakens: 'strengthens' | 'weakens' | 'neutral';
+  strengthens_or_weakens: "strengthens" | "weakens" | "neutral";
 }
 
 interface KinematicVerbMatrixProps {
@@ -39,20 +39,20 @@ interface KinematicVerbMatrixProps {
 // ─── Classification Color Map ────────────────────────────
 
 const CLASSIFICATION_COLORS: Record<string, { bg: string; text: string; label: string }> = {
-  CONTACT_FORCE: { bg: '#fef2f2', text: '#dc2626', label: 'Contact / Force' },
-  MOTION_VIOLATION: { bg: '#fef9c3', text: '#ca8a04', label: 'Motion Violation' },
-  KNOWLEDGE_STATE: { bg: '#eff6ff', text: '#2563eb', label: 'Knowledge State' },
-  PROMISE_CONTRACT: { bg: '#f0fdf4', text: '#16a34a', label: 'Promise / Contract' },
-  EMPLOYMENT_ACTION: { bg: '#faf5ff', text: '#9333ea', label: 'Employment Action' },
-  SPEECH_ACT: { bg: '#fff7ed', text: '#ea580c', label: 'Speech Act' },
-  EVIDENCE_ACTION: { bg: '#f0f9ff', text: '#0284c7', label: 'Evidence Action' },
-  DOCUMENT_ACTION: { bg: '#fdf4ff', text: '#c026d3', label: 'Document Action' },
+  CONTACT_FORCE: { bg: "#fef2f2", text: "#dc2626", label: "Contact / Force" },
+  MOTION_VIOLATION: { bg: "#fef9c3", text: "#ca8a04", label: "Motion Violation" },
+  KNOWLEDGE_STATE: { bg: "#eff6ff", text: "#2563eb", label: "Knowledge State" },
+  PROMISE_CONTRACT: { bg: "#f0fdf4", text: "#16a34a", label: "Promise / Contract" },
+  EMPLOYMENT_ACTION: { bg: "#faf5ff", text: "#9333ea", label: "Employment Action" },
+  SPEECH_ACT: { bg: "#fff7ed", text: "#ea580c", label: "Speech Act" },
+  EVIDENCE_ACTION: { bg: "#f0f9ff", text: "#0284c7", label: "Evidence Action" },
+  DOCUMENT_ACTION: { bg: "#fdf4ff", text: "#c026d3", label: "Document Action" },
 };
 
 const STRENGTH_ICONS: Record<string, string> = {
-  strengthens: '🟢',
-  weakens: '🔴',
-  neutral: '⚪',
+  strengthens: "🟢",
+  weakens: "🔴",
+  neutral: "⚪",
 };
 
 // ─── Component ───────────────────────────────────────────
@@ -144,10 +144,10 @@ export function KinematicVerbMatrix({
                     width: `${coa.avgConfidence}%`,
                     backgroundColor:
                       coa.avgConfidence > 80
-                        ? '#16a34a'
+                        ? "#16a34a"
                         : coa.avgConfidence > 50
-                          ? '#ca8a04'
-                          : '#dc2626',
+                          ? "#ca8a04"
+                          : "#dc2626",
                   }}
                 />
               </span>
@@ -184,7 +184,7 @@ export function KinematicVerbMatrix({
                     onClick={() => setExpandedVerb(isExpanded ? null : idx)}
                     style={{
                       ...styles.tr,
-                      cursor: 'pointer',
+                      cursor: "pointer",
                     }}
                   >
                     <td style={styles.td}>
@@ -208,10 +208,10 @@ export function KinematicVerbMatrix({
                           ...styles.confidenceChip,
                           backgroundColor:
                             verb.confidence > 0.8
-                              ? '#dcfce7'
+                              ? "#dcfce7"
                               : verb.confidence > 0.5
-                                ? '#fef9c3'
-                                : '#fee2e2',
+                                ? "#fef9c3"
+                                : "#fee2e2",
                         }}
                       >
                         {Math.round(verb.confidence * 100)}%
@@ -267,178 +267,178 @@ export function KinematicVerbMatrix({
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    background: '#0a0a0a',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '16px',
-    padding: '24px',
+    background: "#0a0a0a",
+    border: "1px solid rgba(255,255,255,0.08)",
+    borderRadius: "16px",
+    padding: "24px",
     fontFamily: '"Inter", -apple-system, sans-serif',
-    color: '#e5e5e5',
+    color: "#e5e5e5",
   },
   header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '20px',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "20px",
   },
   title: {
-    fontSize: '18px',
+    fontSize: "18px",
     fontWeight: 700,
     margin: 0,
-    color: '#ffffff',
+    color: "#ffffff",
   },
   badge: {
-    fontSize: '12px',
-    background: 'rgba(255,255,255,0.06)',
-    padding: '4px 12px',
-    borderRadius: '100px',
-    color: '#a3a3a3',
+    fontSize: "12px",
+    background: "rgba(255,255,255,0.06)",
+    padding: "4px 12px",
+    borderRadius: "100px",
+    color: "#a3a3a3",
   },
   loadingBar: {
-    height: '4px',
-    borderRadius: '2px',
-    background: 'rgba(255,255,255,0.06)',
-    overflow: 'hidden',
+    height: "4px",
+    borderRadius: "2px",
+    background: "rgba(255,255,255,0.06)",
+    overflow: "hidden",
   },
   loadingBarFill: {
-    height: '100%',
-    width: '40%',
-    background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)',
-    borderRadius: '2px',
-    animation: 'shimmer 1.5s infinite ease-in-out',
+    height: "100%",
+    width: "40%",
+    background: "linear-gradient(90deg, #3b82f6, #8b5cf6)",
+    borderRadius: "2px",
+    animation: "shimmer 1.5s infinite ease-in-out",
   },
   rollUpGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-    gap: '8px',
-    marginBottom: '20px',
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+    gap: "8px",
+    marginBottom: "20px",
   },
   rollUpCard: {
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.06)',
-    borderRadius: '10px',
-    padding: '12px',
-    cursor: 'pointer',
-    textAlign: 'left' as const,
-    transition: 'all 0.2s ease',
-    color: '#e5e5e5',
-    fontFamily: 'inherit',
-    fontSize: 'inherit',
+    background: "rgba(255,255,255,0.03)",
+    border: "1px solid rgba(255,255,255,0.06)",
+    borderRadius: "10px",
+    padding: "12px",
+    cursor: "pointer",
+    textAlign: "left" as const,
+    transition: "all 0.2s ease",
+    color: "#e5e5e5",
+    fontFamily: "inherit",
+    fontSize: "inherit",
   },
   rollUpCardActive: {
-    border: '1px solid #3b82f6',
-    background: 'rgba(59,130,246,0.08)',
+    border: "1px solid #3b82f6",
+    background: "rgba(59,130,246,0.08)",
   },
   rollUpAction: {
-    fontSize: '13px',
+    fontSize: "13px",
     fontWeight: 600,
-    marginBottom: '6px',
+    marginBottom: "6px",
   },
   rollUpMeta: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    fontSize: '11px',
-    color: '#a3a3a3',
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    fontSize: "11px",
+    color: "#a3a3a3",
   },
   confidenceBar: {
     flex: 1,
-    height: '4px',
-    borderRadius: '2px',
-    background: 'rgba(255,255,255,0.06)',
-    overflow: 'hidden',
-    display: 'inline-block',
+    height: "4px",
+    borderRadius: "2px",
+    background: "rgba(255,255,255,0.06)",
+    overflow: "hidden",
+    display: "inline-block",
   },
   confidenceFill: {
-    height: '100%',
-    borderRadius: '2px',
-    transition: 'width 0.5s ease',
-    display: 'block',
+    height: "100%",
+    borderRadius: "2px",
+    transition: "width 0.5s ease",
+    display: "block",
   },
   confidenceLabel: {
     fontWeight: 600,
-    fontSize: '11px',
+    fontSize: "11px",
   },
   tableWrapper: {
-    overflowX: 'auto' as const,
-    borderRadius: '10px',
-    border: '1px solid rgba(255,255,255,0.06)',
+    overflowX: "auto" as const,
+    borderRadius: "10px",
+    border: "1px solid rgba(255,255,255,0.06)",
   },
   table: {
-    width: '100%',
-    borderCollapse: 'collapse' as const,
-    fontSize: '13px',
+    width: "100%",
+    borderCollapse: "collapse" as const,
+    fontSize: "13px",
   },
   th: {
-    padding: '10px 14px',
-    textAlign: 'left' as const,
-    borderBottom: '1px solid rgba(255,255,255,0.08)',
-    color: '#a3a3a3',
+    padding: "10px 14px",
+    textAlign: "left" as const,
+    borderBottom: "1px solid rgba(255,255,255,0.08)",
+    color: "#a3a3a3",
     fontWeight: 500,
-    fontSize: '11px',
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.05em',
+    fontSize: "11px",
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.05em",
   },
   tr: {
-    borderBottom: '1px solid rgba(255,255,255,0.04)',
-    transition: 'background 0.15s ease',
+    borderBottom: "1px solid rgba(255,255,255,0.04)",
+    transition: "background 0.15s ease",
   },
   td: {
-    padding: '10px 14px',
+    padding: "10px 14px",
   },
   verbCode: {
     fontFamily: '"JetBrains Mono", "Fira Code", monospace',
-    fontSize: '13px',
+    fontSize: "13px",
     fontWeight: 600,
-    color: '#f0abfc',
+    color: "#f0abfc",
   },
   classificationBadge: {
-    padding: '2px 8px',
-    borderRadius: '6px',
-    fontSize: '11px',
+    padding: "2px 8px",
+    borderRadius: "6px",
+    fontSize: "11px",
     fontWeight: 600,
   },
   confidenceChip: {
-    padding: '2px 8px',
-    borderRadius: '6px',
-    fontSize: '12px',
+    padding: "2px 8px",
+    borderRadius: "6px",
+    fontSize: "12px",
     fontWeight: 600,
-    color: '#171717',
+    color: "#171717",
   },
   expandedRow: {
     padding: 0,
-    background: 'rgba(255,255,255,0.02)',
+    background: "rgba(255,255,255,0.02)",
   },
   expandedContent: {
-    padding: '12px 14px',
-    fontSize: '12px',
+    padding: "12px 14px",
+    fontSize: "12px",
     lineHeight: 1.6,
-    borderTop: '1px dashed rgba(255,255,255,0.08)',
+    borderTop: "1px dashed rgba(255,255,255,0.08)",
   },
   expandedMeta: {
-    marginTop: '8px',
-    color: '#737373',
-    fontSize: '11px',
+    marginTop: "8px",
+    color: "#737373",
+    fontSize: "11px",
   },
   legend: {
-    display: 'flex',
-    flexWrap: 'wrap' as const,
-    gap: '12px',
-    marginTop: '16px',
-    paddingTop: '16px',
-    borderTop: '1px solid rgba(255,255,255,0.06)',
+    display: "flex",
+    flexWrap: "wrap" as const,
+    gap: "12px",
+    marginTop: "16px",
+    paddingTop: "16px",
+    borderTop: "1px solid rgba(255,255,255,0.06)",
   },
   legendItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    fontSize: '11px',
-    color: '#a3a3a3',
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+    fontSize: "11px",
+    color: "#a3a3a3",
   },
   legendDot: {
-    width: '6px',
-    height: '6px',
-    borderRadius: '50%',
-    display: 'inline-block',
+    width: "6px",
+    height: "6px",
+    borderRadius: "50%",
+    display: "inline-block",
   },
 };
 

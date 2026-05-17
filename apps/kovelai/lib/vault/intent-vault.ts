@@ -17,19 +17,19 @@
  * @see lib/classifiers/anxiety-radar.ts
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Intent Categories ──────────────────────────────────────────────
 
 export const ANXIETY_CATEGORIES = [
-  'CRIMINAL_EXPOSURE',
-  'ASSET_PROTECTION',
-  'FAMILY_LAW',
-  'REGULATORY',
-  'EMPLOYMENT',
-  'IMMIGRATION',
-  'PERSONAL_INJURY',
-  'GENERAL_ANXIETY',
+  "CRIMINAL_EXPOSURE",
+  "ASSET_PROTECTION",
+  "FAMILY_LAW",
+  "REGULATORY",
+  "EMPLOYMENT",
+  "IMMIGRATION",
+  "PERSONAL_INJURY",
+  "GENERAL_ANXIETY",
 ] as const;
 
 export const URGENCY_LEVELS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
@@ -78,7 +78,7 @@ export const ClientAnxietyProfileSchema = z.object({
   escalationCount: z.number().int(),
   categoryBreakdown: z.record(z.enum(ANXIETY_CATEGORIES), z.number().int()),
   lastActivity: z.string().datetime(),
-  riskLevel: z.enum(['LOW', 'MODERATE', 'HIGH', 'CRITICAL']),
+  riskLevel: z.enum(["LOW", "MODERATE", "HIGH", "CRITICAL"]),
 });
 
 export type ClientAnxietyProfile = z.infer<typeof ClientAnxietyProfileSchema>;
@@ -94,7 +94,7 @@ export type ClientAnxietyProfile = z.infer<typeof ClientAnxietyProfileSchema>;
 export async function recordIntent(
   intent: Omit<
     SearchIntent,
-    'id' | 'createdAt' | 'dayOfWeek' | 'hourOfDay' | 'isAfterHours' | 'isEscalation'
+    "id" | "createdAt" | "dayOfWeek" | "hourOfDay" | "isAfterHours" | "isEscalation"
   >,
 ): Promise<SearchIntent> {
   const now = new Date();
@@ -129,14 +129,14 @@ export function buildAnxietyProfile(
       clientId,
       firmId,
       totalQueries: 0,
-      topCategory: 'GENERAL_ANXIETY',
+      topCategory: "GENERAL_ANXIETY",
       avgUrgency: 0,
       maxUrgency: 1,
       afterHoursPercentage: 0,
       escalationCount: 0,
       categoryBreakdown: {},
       lastActivity: new Date().toISOString(),
-      riskLevel: 'LOW',
+      riskLevel: "LOW",
     };
   }
 
@@ -158,16 +158,16 @@ export function buildAnxietyProfile(
   // Find top category
   const topCategory = Object.entries(categoryBreakdown).sort(
     (a, b) => b[1] - a[1],
-  )[0][0] as SearchIntent['category'];
+  )[0][0] as SearchIntent["category"];
 
   const avgUrgency = totalUrgency / intents.length;
   const afterHoursPercentage = (afterHoursCount / intents.length) * 100;
 
   // Risk level calculation
-  let riskLevel: ClientAnxietyProfile['riskLevel'] = 'LOW';
-  if (avgUrgency >= 8 || escalationCount >= 3) riskLevel = 'CRITICAL';
-  else if (avgUrgency >= 6 || escalationCount >= 2) riskLevel = 'HIGH';
-  else if (avgUrgency >= 4 || afterHoursPercentage > 50) riskLevel = 'MODERATE';
+  let riskLevel: ClientAnxietyProfile["riskLevel"] = "LOW";
+  if (avgUrgency >= 8 || escalationCount >= 3) riskLevel = "CRITICAL";
+  else if (avgUrgency >= 6 || escalationCount >= 2) riskLevel = "HIGH";
+  else if (avgUrgency >= 4 || afterHoursPercentage > 50) riskLevel = "MODERATE";
 
   return {
     clientId,
@@ -191,7 +191,7 @@ export function generateRadarData(
   profile: ClientAnxietyProfile,
 ): Array<{ category: string; value: number; max: number }> {
   return ANXIETY_CATEGORIES.map((category) => ({
-    category: category.replace('_', ' '),
+    category: category.replace("_", " "),
     value: profile.categoryBreakdown[category] ?? 0,
     max: profile.totalQueries,
   }));

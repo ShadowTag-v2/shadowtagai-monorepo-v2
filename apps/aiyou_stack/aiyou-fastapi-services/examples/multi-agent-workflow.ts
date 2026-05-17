@@ -5,10 +5,10 @@
  * in a coordinated workflow for complex tasks.
  */
 
-import { query } from '@anthropic-ai/claude-agent-sdk';
-import testRunnerTool from '../agents/coding/tools/test-runner.js';
-import searchTool from '../agents/research/tools/search.js';
-import synthesisTool from '../agents/research/tools/synthesis.js';
+import { query } from "@anthropic-ai/claude-agent-sdk";
+import testRunnerTool from "../agents/coding/tools/test-runner.js";
+import searchTool from "../agents/research/tools/search.js";
+import synthesisTool from "../agents/research/tools/synthesis.js";
 
 /**
  * Workflow 1: Research → Design → Implementation
@@ -20,10 +20,10 @@ import synthesisTool from '../agents/research/tools/synthesis.js';
  * 4. Deployment Agent: Production deployment
  */
 async function productDevelopmentWorkflow() {
-  console.log('=== Product Development Workflow ===\n');
+  console.log("=== Product Development Workflow ===\n");
 
   // Step 1: Market Research (Research Agent - Business Persona)
-  console.log('Step 1: Market Research...');
+  console.log("Step 1: Market Research...");
   const marketResearch = await query({
     prompt: `Research the market for a new AI-powered code review tool:
 
@@ -36,18 +36,18 @@ async function productDevelopmentWorkflow() {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/business.md',
+        type: "file",
+        path: "./agents/research/personas/business.md",
       },
       tools: [searchTool, synthesisTool],
       temperature: 0.5,
     },
   });
 
-  console.log('Market research completed.\n');
+  console.log("Market research completed.\n");
 
   // Step 2: Technical Feasibility (Research Agent - Technical Persona)
-  console.log('Step 2: Technical Feasibility Analysis...');
+  console.log("Step 2: Technical Feasibility Analysis...");
   const techFeasibility = await query({
     prompt: `Based on the market research, evaluate technical approaches for building an AI code review tool:
 
@@ -62,18 +62,18 @@ async function productDevelopmentWorkflow() {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/technical.md',
+        type: "file",
+        path: "./agents/research/personas/technical.md",
       },
       tools: [searchTool, synthesisTool],
       temperature: 0.4,
     },
   });
 
-  console.log('Technical feasibility analysis completed.\n');
+  console.log("Technical feasibility analysis completed.\n");
 
   // Step 3: Backend Implementation (Coding Agent - Backend Persona)
-  console.log('Step 3: Backend Implementation...');
+  console.log("Step 3: Backend Implementation...");
   const backendCode = await query({
     prompt: `Implement the core backend service for the AI code review tool:
 
@@ -91,18 +91,18 @@ async function productDevelopmentWorkflow() {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/coding/personas/backend-dev.md',
+        type: "file",
+        path: "./agents/coding/personas/backend-dev.md",
       },
       tools: [testRunnerTool],
       temperature: 0.3,
     },
   });
 
-  console.log('Backend implementation completed.\n');
+  console.log("Backend implementation completed.\n");
 
   // Step 4: Frontend Implementation (Coding Agent - Frontend Persona)
-  console.log('Step 4: Frontend Implementation...');
+  console.log("Step 4: Frontend Implementation...");
   const frontendCode = await query({
     prompt: `Create a dashboard for the AI code review tool:
 
@@ -117,18 +117,18 @@ async function productDevelopmentWorkflow() {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/coding/personas/frontend-dev.md',
+        type: "file",
+        path: "./agents/coding/personas/frontend-dev.md",
       },
       tools: [testRunnerTool],
       temperature: 0.4,
     },
   });
 
-  console.log('Frontend implementation completed.\n');
+  console.log("Frontend implementation completed.\n");
 
   // Step 5: Infrastructure Setup (Coding Agent - DevOps Persona)
-  console.log('Step 5: Infrastructure and Deployment...');
+  console.log("Step 5: Infrastructure and Deployment...");
   const infrastructure = await query({
     prompt: `Set up production infrastructure for the code review tool:
 
@@ -143,14 +143,14 @@ async function productDevelopmentWorkflow() {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/coding/personas/devops.md',
+        type: "file",
+        path: "./agents/coding/personas/devops.md",
       },
       temperature: 0.3,
     },
   });
 
-  console.log('Infrastructure setup completed.\n');
+  console.log("Infrastructure setup completed.\n");
 
   return {
     marketResearch,
@@ -171,11 +171,11 @@ async function productDevelopmentWorkflow() {
  * 4. Deployment Agent: Deploy fix
  */
 async function bugFixWorkflow(bugDescription: string) {
-  console.log('=== Bug Fix Workflow ===\n');
+  console.log("=== Bug Fix Workflow ===\n");
   console.log(`Bug: ${bugDescription}\n`);
 
   // Step 1: Research similar issues
-  console.log('Step 1: Researching similar issues...');
+  console.log("Step 1: Researching similar issues...");
   const research = await query({
     prompt: `Research this production bug and find similar issues:
 
@@ -189,18 +189,18 @@ async function bugFixWorkflow(bugDescription: string) {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/technical.md',
+        type: "file",
+        path: "./agents/research/personas/technical.md",
       },
       tools: [searchTool, synthesisTool],
       temperature: 0.4,
     },
   });
 
-  console.log('Research completed.\n');
+  console.log("Research completed.\n");
 
   // Step 2: Implement fix
-  console.log('Step 2: Implementing fix...');
+  console.log("Step 2: Implementing fix...");
   const fix = await query({
     prompt: `Based on the research, implement a fix for this bug:
 
@@ -217,26 +217,26 @@ async function bugFixWorkflow(bugDescription: string) {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/coding/personas/backend-dev.md',
+        type: "file",
+        path: "./agents/coding/personas/backend-dev.md",
       },
       tools: [testRunnerTool],
       temperature: 0.3,
     },
   });
 
-  console.log('Fix implemented.\n');
+  console.log("Fix implemented.\n");
 
   // Step 3: Run tests
-  console.log('Step 3: Running tests...');
+  console.log("Step 3: Running tests...");
   const testResults = await testRunnerTool.execute({
-    framework: 'jest',
-    path: './tests',
+    framework: "jest",
+    path: "./tests",
     coverage: true,
     verbose: true,
   });
 
-  console.log('Tests completed:', testResults.metadata);
+  console.log("Tests completed:", testResults.metadata);
 
   return {
     research,
@@ -254,10 +254,10 @@ async function bugFixWorkflow(bugDescription: string) {
  * 3. Research Agent: Create user-facing documentation
  */
 async function documentationWorkflow(projectPath: string) {
-  console.log('=== Documentation Generation Workflow ===\n');
+  console.log("=== Documentation Generation Workflow ===\n");
 
   // Step 1: Research documentation best practices
-  console.log('Step 1: Researching documentation best practices...');
+  console.log("Step 1: Researching documentation best practices...");
   const bestPractices = await query({
     prompt: `Research best practices for technical documentation:
 
@@ -270,18 +270,18 @@ async function documentationWorkflow(projectPath: string) {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/technical.md',
+        type: "file",
+        path: "./agents/research/personas/technical.md",
       },
       tools: [searchTool, synthesisTool],
       temperature: 0.4,
     },
   });
 
-  console.log('Best practices research completed.\n');
+  console.log("Best practices research completed.\n");
 
   // Step 2: Generate API documentation
-  console.log('Step 2: Generating API documentation...');
+  console.log("Step 2: Generating API documentation...");
   const apiDocs = await query({
     prompt: `Generate comprehensive API documentation for the project at: ${projectPath}
 
@@ -295,17 +295,17 @@ async function documentationWorkflow(projectPath: string) {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/coding/personas/backend-dev.md',
+        type: "file",
+        path: "./agents/coding/personas/backend-dev.md",
       },
       temperature: 0.3,
     },
   });
 
-  console.log('API documentation generated.\n');
+  console.log("API documentation generated.\n");
 
   // Step 3: Create user guide
-  console.log('Step 3: Creating user guide...');
+  console.log("Step 3: Creating user guide...");
   const userGuide = await query({
     prompt: `Create a comprehensive user guide:
 
@@ -321,14 +321,14 @@ async function documentationWorkflow(projectPath: string) {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/technical.md',
+        type: "file",
+        path: "./agents/research/personas/technical.md",
       },
       temperature: 0.5,
     },
   });
 
-  console.log('User guide created.\n');
+  console.log("User guide created.\n");
 
   return {
     bestPractices,
@@ -347,10 +347,10 @@ async function documentationWorkflow(projectPath: string) {
  * 4. Coding Agent: Benchmark and validate
  */
 async function performanceOptimizationWorkflow(serviceName: string) {
-  console.log('=== Performance Optimization Workflow ===\n');
+  console.log("=== Performance Optimization Workflow ===\n");
 
   // Step 1: Research optimization techniques
-  console.log('Step 1: Researching optimization techniques...');
+  console.log("Step 1: Researching optimization techniques...");
   const research = await query({
     prompt: `Research performance optimization techniques for: ${serviceName}
 
@@ -363,18 +363,18 @@ async function performanceOptimizationWorkflow(serviceName: string) {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/research/personas/technical.md',
+        type: "file",
+        path: "./agents/research/personas/technical.md",
       },
       tools: [searchTool, synthesisTool],
       temperature: 0.4,
     },
   });
 
-  console.log('Research completed.\n');
+  console.log("Research completed.\n");
 
   // Step 2: Profile and identify bottlenecks
-  console.log('Step 2: Profiling application...');
+  console.log("Step 2: Profiling application...");
   const profiling = await query({
     prompt: `Set up profiling for ${serviceName}:
 
@@ -387,17 +387,17 @@ async function performanceOptimizationWorkflow(serviceName: string) {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/coding/personas/backend-dev.md',
+        type: "file",
+        path: "./agents/coding/personas/backend-dev.md",
       },
       temperature: 0.3,
     },
   });
 
-  console.log('Profiling completed.\n');
+  console.log("Profiling completed.\n");
 
   // Step 3: Implement optimizations
-  console.log('Step 3: Implementing optimizations...');
+  console.log("Step 3: Implementing optimizations...");
   const optimizations = await query({
     prompt: `Implement optimizations based on profiling:
 
@@ -413,14 +413,14 @@ async function performanceOptimizationWorkflow(serviceName: string) {
 
     options: {
       systemPrompt: {
-        type: 'file',
-        path: './agents/coding/personas/backend-dev.md',
+        type: "file",
+        path: "./agents/coding/personas/backend-dev.md",
       },
       temperature: 0.3,
     },
   });
 
-  console.log('Optimizations implemented.\n');
+  console.log("Optimizations implemented.\n");
 
   return {
     research,
@@ -433,39 +433,39 @@ async function performanceOptimizationWorkflow(serviceName: string) {
  * Main execution
  */
 async function main() {
-  console.log('Master Agent Framework - Multi-Agent Workflow Examples\n');
-  console.log('='.repeat(70));
+  console.log("Master Agent Framework - Multi-Agent Workflow Examples\n");
+  console.log("=".repeat(70));
 
   try {
     // Example 1: Full product development
-    console.log('\n\nWorkflow 1: Product Development\n');
+    console.log("\n\nWorkflow 1: Product Development\n");
     const _productResult = await productDevelopmentWorkflow();
-    console.log('Product development workflow completed!');
+    console.log("Product development workflow completed!");
 
     // Example 2: Bug fix workflow
-    console.log('\n\nWorkflow 2: Bug Fix\n');
+    console.log("\n\nWorkflow 2: Bug Fix\n");
     const _bugResult = await bugFixWorkflow(
-      'Memory leak in WebSocket connections causing server crashes after 24 hours',
+      "Memory leak in WebSocket connections causing server crashes after 24 hours",
     );
-    console.log('Bug fix workflow completed!');
+    console.log("Bug fix workflow completed!");
 
     // Example 3: Documentation generation
-    console.log('\n\nWorkflow 3: Documentation Generation\n');
-    const _docsResult = await documentationWorkflow('./src');
-    console.log('Documentation workflow completed!');
+    console.log("\n\nWorkflow 3: Documentation Generation\n");
+    const _docsResult = await documentationWorkflow("./src");
+    console.log("Documentation workflow completed!");
 
     // Example 4: Performance optimization
-    console.log('\n\nWorkflow 4: Performance Optimization\n');
-    const _perfResult = await performanceOptimizationWorkflow('User Authentication Service');
-    console.log('Performance optimization workflow completed!');
+    console.log("\n\nWorkflow 4: Performance Optimization\n");
+    const _perfResult = await performanceOptimizationWorkflow("User Authentication Service");
+    console.log("Performance optimization workflow completed!");
 
-    console.log(`\n${'='.repeat(70)}`);
-    console.log('\nAll workflows completed successfully!');
-    console.log('\nResults summary:');
-    console.log('- Product development: Complete');
-    console.log('- Bug fix: Implemented and tested');
-    console.log('- Documentation: Generated');
-    console.log('- Performance: Optimized');
+    console.log(`\n${"=".repeat(70)}`);
+    console.log("\nAll workflows completed successfully!");
+    console.log("\nResults summary:");
+    console.log("- Product development: Complete");
+    console.log("- Bug fix: Implemented and tested");
+    console.log("- Documentation: Generated");
+    console.log("- Performance: Optimized");
   } catch (_error) {
     process.exit(1);
   }

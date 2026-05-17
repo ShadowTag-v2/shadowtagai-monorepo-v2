@@ -48,18 +48,18 @@ const ScrollAnimator = (() => {
       return;
     }
 
-    ctx = canvas.getContext('2d');
+    ctx = canvas.getContext("2d");
     totalFrames = config.totalFrames;
     scrollHeight = config.scrollHeight || 3000;
 
-    const frameDir = config.frameDir.replace(/\/$/, '');
-    const prefix = config.framePrefix || 'frame_';
-    const ext = config.frameExtension || '.png';
+    const frameDir = config.frameDir.replace(/\/$/, "");
+    const prefix = config.framePrefix || "frame_";
+    const ext = config.frameExtension || ".png";
     const onProgress = config.onProgress || (() => {});
     const onReady = config.onReady || (() => {});
 
     // Set scroll container height
-    const container = canvas.closest('[data-scroll-container]') || document.body;
+    const container = canvas.closest("[data-scroll-container]") || document.body;
     container.style.height = `${scrollHeight + window.innerHeight}px`;
 
     // Preload all frames
@@ -68,7 +68,7 @@ const ScrollAnimator = (() => {
 
     for (let i = 0; i < totalFrames; i++) {
       const img = new Image();
-      const padded = String(i + 1).padStart(4, '0');
+      const padded = String(i + 1).padStart(4, "0");
       img.src = `${frameDir}/${prefix}${padded}${ext}`;
 
       img.onload = () => {
@@ -94,8 +94,8 @@ const ScrollAnimator = (() => {
     }
 
     // Bind scroll listener with RAF throttle
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
 
     // Initial canvas sizing
     onResize();
@@ -159,8 +159,8 @@ const ScrollAnimator = (() => {
    * Destroy the scroll animator and clean up resources.
    */
   function destroy() {
-    window.removeEventListener('scroll', onScroll);
-    window.removeEventListener('resize', onResize);
+    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("resize", onResize);
     if (rafId) {
       cancelAnimationFrame(rafId);
       rafId = null;
@@ -182,6 +182,6 @@ const ScrollAnimator = (() => {
 })();
 
 // Export for module systems
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = ScrollAnimator;
 }

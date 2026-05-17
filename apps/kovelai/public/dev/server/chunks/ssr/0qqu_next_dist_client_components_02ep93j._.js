@@ -1,20 +1,20 @@
 module.exports = [
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
-    Object.defineProperty(exports, 'handleISRError', {
+    Object.defineProperty(exports, "handleISRError", {
       enumerable: true,
       get: () => handleISRError,
     });
-    const workAsyncStorage = ('TURBOPACK compile-time truthy', 1)
+    const workAsyncStorage = ("TURBOPACK compile-time truthy", 1)
       ? __turbopack_context__.r(
-          '[externals]/next/dist/server/app-render/work-async-storage.external.js [external] (next/dist/server/app-render/work-async-storage.external.js, cjs)',
+          "[externals]/next/dist/server/app-render/work-async-storage.external.js [external] (next/dist/server/app-render/work-async-storage.external.js, cjs)",
         ).workAsyncStorage
-      : 'TURBOPACK unreachable';
+      : "TURBOPACK unreachable";
     function handleISRError({ error }) {
       if (workAsyncStorage) {
         const store = workAsyncStorage.getStore();
@@ -27,22 +27,22 @@ module.exports = [
       }
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/error-styles.js [app-ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/error-styles.js [app-ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     0 &&
@@ -64,99 +64,99 @@ module.exports = [
       errorThemeCss: () => errorThemeCss,
     });
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-ssr] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-runtime.js [app-ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-runtime.js [app-ssr] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)",
       ),
     );
     const errorStyles = {
       container: {
         fontFamily:
           'system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       },
       card: {
-        marginTop: '-32px',
-        maxWidth: '325px',
-        padding: '32px 28px',
-        textAlign: 'left',
+        marginTop: "-32px",
+        maxWidth: "325px",
+        padding: "32px 28px",
+        textAlign: "left",
       },
       icon: {
-        marginBottom: '24px',
+        marginBottom: "24px",
       },
       title: {
-        fontSize: '24px',
+        fontSize: "24px",
         fontWeight: 500,
-        letterSpacing: '-0.02em',
-        lineHeight: '32px',
-        margin: '0 0 12px 0',
-        color: 'var(--next-error-title)',
+        letterSpacing: "-0.02em",
+        lineHeight: "32px",
+        margin: "0 0 12px 0",
+        color: "var(--next-error-title)",
       },
       message: {
-        fontSize: '14px',
+        fontSize: "14px",
         fontWeight: 400,
-        lineHeight: '21px',
-        margin: '0 0 20px 0',
-        color: 'var(--next-error-message)',
+        lineHeight: "21px",
+        margin: "0 0 20px 0",
+        color: "var(--next-error-message)",
       },
       form: {
         margin: 0,
       },
       buttonGroup: {
-        display: 'flex',
-        gap: '8px',
-        alignItems: 'center',
+        display: "flex",
+        gap: "8px",
+        alignItems: "center",
       },
       button: {
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '32px',
-        padding: '0 12px',
-        fontSize: '14px',
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "32px",
+        padding: "0 12px",
+        fontSize: "14px",
         fontWeight: 500,
-        lineHeight: '20px',
-        borderRadius: '6px',
-        cursor: 'pointer',
-        color: 'var(--next-error-btn-text)',
-        background: 'var(--next-error-btn-bg)',
-        border: 'var(--next-error-btn-border)',
+        lineHeight: "20px",
+        borderRadius: "6px",
+        cursor: "pointer",
+        color: "var(--next-error-btn-text)",
+        background: "var(--next-error-btn-bg)",
+        border: "var(--next-error-btn-border)",
       },
       buttonSecondary: {
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '32px',
-        padding: '0 12px',
-        fontSize: '14px',
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "32px",
+        padding: "0 12px",
+        fontSize: "14px",
         fontWeight: 500,
-        lineHeight: '20px',
-        borderRadius: '6px',
-        cursor: 'pointer',
-        color: 'var(--next-error-btn-secondary-text)',
-        background: 'var(--next-error-btn-secondary-bg)',
-        border: 'var(--next-error-btn-secondary-border)',
+        lineHeight: "20px",
+        borderRadius: "6px",
+        cursor: "pointer",
+        color: "var(--next-error-btn-secondary-text)",
+        background: "var(--next-error-btn-secondary-bg)",
+        border: "var(--next-error-btn-secondary-border)",
       },
       digestFooter: {
-        position: 'fixed',
-        bottom: '32px',
-        left: '0',
-        right: '0',
-        textAlign: 'center',
+        position: "fixed",
+        bottom: "32px",
+        left: "0",
+        right: "0",
+        textAlign: "center",
         fontFamily: 'ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace',
-        fontSize: '12px',
-        lineHeight: '18px',
+        fontSize: "12px",
+        lineHeight: "18px",
         fontWeight: 400,
-        margin: '0',
-        color: 'var(--next-error-digest)',
+        margin: "0",
+        color: "var(--next-error-digest)",
       },
     };
     const errorThemeCss = `
@@ -189,122 +189,122 @@ module.exports = [
   }
 }
 body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg); }
-`.replace(/\n\s*/g, '');
+`.replace(/\n\s*/g, "");
     function WarningIcon() {
-      return /*#__PURE__*/ (0, _jsxruntime.jsx)('svg', {
-        width: '32',
-        height: '32',
-        viewBox: '-0.2 -1.5 32 32',
-        fill: 'none',
+      return /*#__PURE__*/ (0, _jsxruntime.jsx)("svg", {
+        width: "32",
+        height: "32",
+        viewBox: "-0.2 -1.5 32 32",
+        fill: "none",
         style: errorStyles.icon,
-        children: /*#__PURE__*/ (0, _jsxruntime.jsx)('path', {
-          d: 'M16.9328 0C18.0839 0.000116771 19.1334 0.658832 19.634 1.69531L31.4299 26.1309C32.0708 27.4588 31.1036 28.9999 29.6291 29H2.00215C0.527541 29 -0.439628 27.4588 0.201371 26.1309L11.9973 1.69531C12.4979 0.658823 13.5474 7.75066e-05 14.6984 0H16.9328ZM3.59493 26H28.0363L16.9328 3H14.6984L3.59493 26ZM15.8156 19C16.9202 19.0001 17.8156 19.8955 17.8156 21C17.8156 22.1045 16.9202 22.9999 15.8156 23C14.7111 23 13.8156 22.1046 13.8156 21C13.8156 19.8954 14.7111 19 15.8156 19ZM17.3156 16.5H14.3156V8.5H17.3156V16.5Z',
-          fill: 'var(--next-error-title)',
+        children: /*#__PURE__*/ (0, _jsxruntime.jsx)("path", {
+          d: "M16.9328 0C18.0839 0.000116771 19.1334 0.658832 19.634 1.69531L31.4299 26.1309C32.0708 27.4588 31.1036 28.9999 29.6291 29H2.00215C0.527541 29 -0.439628 27.4588 0.201371 26.1309L11.9973 1.69531C12.4979 0.658823 13.5474 7.75066e-05 14.6984 0H16.9328ZM3.59493 26H28.0363L16.9328 3H14.6984L3.59493 26ZM15.8156 19C16.9202 19.0001 17.8156 19.8955 17.8156 21C17.8156 22.1045 16.9202 22.9999 15.8156 23C14.7111 23 13.8156 22.1046 13.8156 21C13.8156 19.8954 14.7111 19 15.8156 19ZM17.3156 16.5H14.3156V8.5H17.3156V16.5Z",
+          fill: "var(--next-error-title)",
         }),
       });
     }
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);
       module.exports = exports.default;
     }
   },
-  '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-ssr] (ecmascript)',
+  "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/global-error.js [app-ssr] (ecmascript)",
   (__turbopack_context__, module, exports) => {
-    'use strict';
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
       value: true,
     });
     Object.defineProperty(
       exports, // supplied custom global error signatures.
-      'default',
+      "default",
       {
         enumerable: true,
         get: () => _default,
       },
     );
     const _interop_require_default = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-ssr] (ecmascript)",
     );
     const _jsxruntime = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-runtime.js [app-ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-runtime.js [app-ssr] (ecmascript)",
     );
     const _react = /*#__PURE__*/ _interop_require_default._(
       __turbopack_context__.r(
-        '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)',
+        "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)",
       ),
     );
     const _handleisrerror = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/handle-isr-error.js [app-ssr] (ecmascript)",
     );
     const _errorstyles = __turbopack_context__.r(
-      '[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/error-styles.js [app-ssr] (ecmascript)',
+      "[project]/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/site/node_modules/next/dist/client/components/builtin/error-styles.js [app-ssr] (ecmascript)",
     );
     function DefaultGlobalError({ error }) {
       const digest = error?.digest;
       const isServerError = !!digest;
       const message = isServerError
-        ? 'A server error occurred. Reload to try again.'
-        : 'Reload to try again, or go back.';
+        ? "A server error occurred. Reload to try again."
+        : "Reload to try again, or go back.";
       (0, _handleisrerror.handleISRError)({
         error,
       });
-      return /*#__PURE__*/ (0, _jsxruntime.jsxs)('html', {
-        id: '__next_error__',
+      return /*#__PURE__*/ (0, _jsxruntime.jsxs)("html", {
+        id: "__next_error__",
         children: [
-          /*#__PURE__*/ (0, _jsxruntime.jsx)('head', {
-            children: /*#__PURE__*/ (0, _jsxruntime.jsx)('style', {
+          /*#__PURE__*/ (0, _jsxruntime.jsx)("head", {
+            children: /*#__PURE__*/ (0, _jsxruntime.jsx)("style", {
               dangerouslySetInnerHTML: {
                 __html: _errorstyles.errorThemeCss,
               },
             }),
           }),
-          /*#__PURE__*/ (0, _jsxruntime.jsxs)('body', {
+          /*#__PURE__*/ (0, _jsxruntime.jsxs)("body", {
             children: [
-              /*#__PURE__*/ (0, _jsxruntime.jsx)('div', {
+              /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
                 style: _errorstyles.errorStyles.container,
-                children: /*#__PURE__*/ (0, _jsxruntime.jsxs)('div', {
+                children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
                   style: _errorstyles.errorStyles.card,
                   children: [
                     /*#__PURE__*/ (0, _jsxruntime.jsx)(_errorstyles.WarningIcon, {}),
-                    /*#__PURE__*/ (0, _jsxruntime.jsx)('h1', {
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h1", {
                       style: _errorstyles.errorStyles.title,
-                      children: 'This page couldn’t load',
+                      children: "This page couldn’t load",
                     }),
-                    /*#__PURE__*/ (0, _jsxruntime.jsx)('p', {
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
                       style: _errorstyles.errorStyles.message,
                       children: message,
                     }),
-                    /*#__PURE__*/ (0, _jsxruntime.jsxs)('div', {
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
                       style: _errorstyles.errorStyles.buttonGroup,
                       children: [
-                        /*#__PURE__*/ (0, _jsxruntime.jsx)('form', {
+                        /*#__PURE__*/ (0, _jsxruntime.jsx)("form", {
                           style: _errorstyles.errorStyles.form,
-                          children: /*#__PURE__*/ (0, _jsxruntime.jsx)('button', {
-                            type: 'submit',
+                          children: /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                            type: "submit",
                             style: _errorstyles.errorStyles.button,
-                            children: 'Reload',
+                            children: "Reload",
                           }),
                         }),
                         !isServerError &&
-                          /*#__PURE__*/ (0, _jsxruntime.jsx)('button', {
-                            type: 'button',
+                          /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                            type: "button",
                             style: _errorstyles.errorStyles.buttonSecondary,
                             onClick: () => {
                               if (window.history.length > 1) {
                                 window.history.back();
                               } else {
-                                window.location.href = '/';
+                                window.location.href = "/";
                               }
                             },
-                            children: 'Back',
+                            children: "Back",
                           }),
                       ],
                     }),
@@ -312,9 +312,9 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
                 }),
               }),
               digest &&
-                /*#__PURE__*/ (0, _jsxruntime.jsxs)('p', {
+                /*#__PURE__*/ (0, _jsxruntime.jsxs)("p", {
                   style: _errorstyles.errorStyles.digestFooter,
-                  children: ['ERROR ', digest],
+                  children: ["ERROR ", digest],
                 }),
             ],
           }),
@@ -323,11 +323,11 @@ body { margin: 0; color: var(--next-error-text); background: var(--next-error-bg
     }
     const _default = DefaultGlobalError;
     if (
-      (typeof exports.default === 'function' ||
-        (typeof exports.default === 'object' && exports.default !== null)) &&
-      typeof exports.default.__esModule === 'undefined'
+      (typeof exports.default === "function" ||
+        (typeof exports.default === "object" && exports.default !== null)) &&
+      typeof exports.default.__esModule === "undefined"
     ) {
-      Object.defineProperty(exports.default, '__esModule', {
+      Object.defineProperty(exports.default, "__esModule", {
         value: true,
       });
       Object.assign(exports.default, exports);

@@ -16,9 +16,9 @@
  *
  * @see U.S. v. Heppner (S.D.N.Y. 2026) — privilege waiver on public AI
  */
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { verifySEUToken } from '@/lib/security/seu-token-manager';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { verifySEUToken } from "@/lib/security/seu-token-manager";
 
 // ─── Request Validation ───────────────────────────────────────────────
 const SearchRequestSchema = z.object({
@@ -34,7 +34,7 @@ interface SearchResult {
   title: string;
   snippet: string;
   url: string;
-  source: 'google_enterprise' | 'perplexity_sonar';
+  source: "google_enterprise" | "perplexity_sonar";
 }
 
 interface AnxietySignal {
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const parsed = SearchRequestSchema.parse(body);
 
     // 1. Validate S.E.U. token — sandbox-bound, ephemeral, user-billed
-    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? '0.0.0.0';
+    const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "0.0.0.0";
     const tokenPayload = await verifySEUToken(parsed.ephemeralToken, clientIp, parsed.sandboxId);
 
     // 2. Execute privileged search via ZDR enterprise API
@@ -76,18 +76,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       {
         results,
         metadata: {
-          source: results.length > 0 ? results[0].source : 'none',
+          source: results.length > 0 ? results[0].source : "none",
           resultCount: results.length,
-          privilegeStatus: 'KOVEL_PROTECTED',
+          privilegeStatus: "KOVEL_PROTECTED",
           expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
         },
       },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, private',
-          Pragma: 'no-cache',
-          'X-Privilege-Shield': 'kovel-doctrine-active',
-          'X-Content-Type-Options': 'nosniff',
+          "Cache-Control": "no-store, no-cache, must-revalidate, private",
+          Pragma: "no-cache",
+          "X-Privilege-Shield": "kovel-doctrine-active",
+          "X-Content-Type-Options": "nosniff",
         },
       },
     );
@@ -95,17 +95,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const seuError = error as { violationType?: string };
     if (seuError.violationType) {
       return NextResponse.json(
-        { error: 'Sandbox Context Violation', code: seuError.violationType },
+        { error: "Sandbox Context Violation", code: seuError.violationType },
         { status: 403 },
       );
     }
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request', details: error.errors },
+        { error: "Invalid request", details: error.errors },
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: 'Secure Transit Failed' }, { status: 500 });
+    return NextResponse.json({ error: "Secure Transit Failed" }, { status: 500 });
   }
 }
 
@@ -126,14 +126,14 @@ async function executePrivilegedSearch(query: string, firmCxId?: string): Promis
   }
 
   try {
-    const url = new URL('https://www.googleapis.com/customsearch/v1');
-    url.searchParams.set('key', googleApiKey);
-    url.searchParams.set('cx', cxId);
-    url.searchParams.set('q', query);
-    url.searchParams.set('num', '8');
+    const url = new URL("https://www.googleapis.com/customsearch/v1");
+    url.searchParams.set("key", googleApiKey);
+    url.searchParams.set("cx", cxId);
+    url.searchParams.set("q", query);
+    url.searchParams.set("num", "8");
 
     const res = await fetch(url.toString(), {
-      headers: { Accept: 'application/json' },
+      headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(10000),
     });
 
@@ -143,10 +143,10 @@ async function executePrivilegedSearch(query: string, firmCxId?: string): Promis
 
     const data = await res.json();
     return (data.items ?? []).map((item: Record<string, string>) => ({
-      title: item.title ?? '',
-      snippet: item.snippet ?? '',
-      url: item.link ?? '',
-      source: 'google_enterprise' as const,
+      title: item.title ?? "",
+      snippet: item.snippet ?? "",
+      url: item.link ?? "",
+      source: "google_enterprise" as const,
     }));
   } catch {
     return executePerplexityFallback(query);
@@ -162,20 +162,20 @@ async function executePerplexityFallback(query: string): Promise<SearchResult[]>
   if (!apiKey) return [];
 
   try {
-    const res = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
+    const res = await fetch("https://api.perplexity.ai/chat/completions", {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: 'sonar-pro',
+        model: "sonar-pro",
         messages: [
           {
-            role: 'system',
-            content: 'You are a legal research assistant. Provide factual, cited search results.',
+            role: "system",
+            content: "You are a legal research assistant. Provide factual, cited search results.",
           },
-          { role: 'user', content: query },
+          { role: "user", content: query },
         ],
         max_tokens: 1024,
       }),
@@ -184,14 +184,14 @@ async function executePerplexityFallback(query: string): Promise<SearchResult[]>
 
     if (!res.ok) return [];
     const data = await res.json();
-    const content = data.choices?.[0]?.message?.content ?? '';
+    const content = data.choices?.[0]?.message?.content ?? "";
 
     return [
       {
         title: `Research: ${query.slice(0, 60)}`,
         snippet: content.slice(0, 500),
-        url: 'perplexity://sonar-pro',
-        source: 'perplexity_sonar' as const,
+        url: "perplexity://sonar-pro",
+        source: "perplexity_sonar" as const,
       },
     ];
   } catch {
@@ -208,81 +208,81 @@ async function executePerplexityFallback(query: string): Promise<SearchResult[]>
 const ANXIETY_CATEGORIES: Record<string, { keywords: string[]; urgency: number }> = {
   CRIMINAL_EXPOSURE: {
     keywords: [
-      'arrest',
-      'indictment',
-      'felony',
-      'prison',
-      'extradition',
-      'warrant',
-      'criminal',
-      'plea',
-      'probation',
-      'bail',
+      "arrest",
+      "indictment",
+      "felony",
+      "prison",
+      "extradition",
+      "warrant",
+      "criminal",
+      "plea",
+      "probation",
+      "bail",
     ],
     urgency: 10,
   },
   ASSET_PROTECTION: {
     keywords: [
-      'hidden',
-      'offshore',
-      'crypto',
-      'forfeiture',
-      'seizure',
-      'garnishment',
-      'lien',
-      'freeze',
-      'asset',
-      'property',
+      "hidden",
+      "offshore",
+      "crypto",
+      "forfeiture",
+      "seizure",
+      "garnishment",
+      "lien",
+      "freeze",
+      "asset",
+      "property",
     ],
     urgency: 8,
   },
   FAMILY_LAW: {
     keywords: [
-      'custody',
-      'divorce',
-      'alimony',
-      'prenup',
-      'child support',
-      'visitation',
-      'restraining',
-      'domestic',
+      "custody",
+      "divorce",
+      "alimony",
+      "prenup",
+      "child support",
+      "visitation",
+      "restraining",
+      "domestic",
     ],
     urgency: 7,
   },
   EMPLOYMENT: {
     keywords: [
-      'wrongful termination',
-      'discrimination',
-      'harassment',
-      'whistleblower',
-      'retaliation',
-      'severance',
-      'non-compete',
+      "wrongful termination",
+      "discrimination",
+      "harassment",
+      "whistleblower",
+      "retaliation",
+      "severance",
+      "non-compete",
     ],
     urgency: 6,
   },
   REGULATORY: {
     keywords: [
-      'compliance',
-      'audit',
-      'SEC',
-      'FDA',
-      'HIPAA',
-      'violation',
-      'investigation',
-      'subpoena',
+      "compliance",
+      "audit",
+      "SEC",
+      "FDA",
+      "HIPAA",
+      "violation",
+      "investigation",
+      "subpoena",
     ],
     urgency: 7,
   },
   GENERAL_ANXIETY: {
-    keywords: ['what happens if', 'can they', 'am I liable', 'is it legal', 'will I lose'],
+    keywords: ["what happens if", "can they", "am I liable", "is it legal", "will I lose"],
     urgency: 5,
   },
 };
 
 function classifyAnxietyVector(query: string): AnxietySignal {
   const lowerQuery = query.toLowerCase();
-  let bestCategory = 'GENERAL_ANXIETY';
+  let bestCategory = "GENERAL_ANXIETY";
   let bestUrgency = 3;
 
   for (const [category, config] of Object.entries(ANXIETY_CATEGORIES)) {
@@ -323,10 +323,10 @@ function queueIntentVault(payload: IntentVaultPayload): void {
   }
 
   fetch(cloudTasksUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      task: 'vault_search_intent',
+      task: "vault_search_intent",
       payload,
     }),
   }).catch((_err) => {});

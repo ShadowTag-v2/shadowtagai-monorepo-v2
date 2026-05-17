@@ -1,14 +1,14 @@
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Trust & Security | KovelAI',
+  title: "Trust & Security | KovelAI",
   description:
-    'KovelAI security architecture, compliance certifications, and privilege-preservation guarantees. SOC 2 Type II certified. Heppner-compliant by design.',
+    "KovelAI security architecture, compliance certifications, and privilege-preservation guarantees. SOC 2 Type II certified. Heppner-compliant by design.",
   openGraph: {
-    title: 'Trust & Security | KovelAI',
+    title: "Trust & Security | KovelAI",
     description:
-      'KovelAI security architecture, compliance certifications, and privilege-preservation guarantees.',
-    type: 'website',
+      "KovelAI security architecture, compliance certifications, and privilege-preservation guarantees.",
+    type: "website",
   },
 };
 

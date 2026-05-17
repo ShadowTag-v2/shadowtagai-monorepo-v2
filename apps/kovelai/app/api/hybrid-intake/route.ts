@@ -11,7 +11,7 @@
  * Custom Search Engine ID with Zero Data Retention.
  */
 
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -62,10 +62,10 @@ export async function POST(req: Request) {
     if (!isValidToken) {
       return NextResponse.json(
         {
-          type: 'https://kovelai.com/errors/auth',
-          title: 'Sandbox Compromised',
+          type: "https://kovelai.com/errors/auth",
+          title: "Sandbox Compromised",
           status: 401,
-          detail: 'S.E.U. token validation failed.',
+          detail: "S.E.U. token validation failed.",
         },
         { status: 401 },
       );
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
     //    Audio → Speech-to-Text → never cached, never logged
     // ══════════════════════════════════════════════════════════════
 
-    let voiceTranscript = '';
+    let voiceTranscript = "";
     if (audioBlob) {
       voiceTranscript = await convertAudioToText(audioBlob);
     }
@@ -105,7 +105,7 @@ export async function POST(req: Request) {
     // Structured response — never returns raw database objects
     return NextResponse.json(
       {
-        status: 'PROCESSED',
+        status: "PROCESSED",
         hasVoiceTranscript: voiceTranscript.length > 0,
         searchResultCount: searchResults.length,
         results: searchResults.map((r) => ({
@@ -117,20 +117,20 @@ export async function POST(req: Request) {
       {
         headers: {
           // Anti-caching headers — forensically clean
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          Pragma: 'no-cache',
-          Expires: '0',
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
           // HSTS
-          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
           // Prevent embedding
-          'X-Frame-Options': 'DENY',
-          'X-Content-Type-Options': 'nosniff',
+          "X-Frame-Options": "DENY",
+          "X-Content-Type-Options": "nosniff",
         },
       },
     );
   } catch {
     return NextResponse.json(
-      { type: 'https://kovelai.com/errors/internal', title: 'Secure Transit Failed', status: 500 },
+      { type: "https://kovelai.com/errors/internal", title: "Secure Transit Failed", status: 500 },
       { status: 500 },
     );
   }

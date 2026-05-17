@@ -4,13 +4,13 @@
  * Handles HTTP communication with FastAPI backend.
  */
 
-import fetch from 'node-fetch';
-import type { DecisionValidationRequest, DecisionValidationResponse } from './types.js';
+import fetch from "node-fetch";
+import type { DecisionValidationRequest, DecisionValidationResponse } from "./types.js";
 
 export class Judge6ApiClient {
   private baseUrl: string;
 
-  constructor(baseUrl: string = 'http://localhost:8000') {
+  constructor(baseUrl: string = "http://localhost:8000") {
     this.baseUrl = baseUrl;
   }
 
@@ -20,9 +20,9 @@ export class Judge6ApiClient {
   async validate(request: DecisionValidationRequest): Promise<DecisionValidationResponse> {
     try {
       const response = await fetch(`${this.baseUrl}/api/v1/validate`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(request),
       });

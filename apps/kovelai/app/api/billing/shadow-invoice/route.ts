@@ -7,9 +7,9 @@
  *
  * Nag Protocol #11: Shadow Invoice auto-draft for Clio
  */
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { AntigravityMCPClient } from '@/lib/mcp/antigravity-client';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { AntigravityMCPClient } from "@/lib/mcp/antigravity-client";
 
 const ShadowInvoiceSchema = z.object({
   firmId: z.string().uuid(),
@@ -18,12 +18,12 @@ const ShadowInvoiceSchema = z.object({
   description: z.string().min(1).max(2000),
   durationMinutes: z.number().min(1).max(480),
   activityType: z.enum([
-    'INITIAL_CONSULTATION',
-    'CASE_EVALUATION',
-    'CONFLICT_CHECK',
-    'DOCUMENT_REVIEW',
-    'LEGAL_RESEARCH',
-    'ORACLE_MEMO',
+    "INITIAL_CONSULTATION",
+    "CASE_EVALUATION",
+    "CONFLICT_CHECK",
+    "DOCUMENT_REVIEW",
+    "LEGAL_RESEARCH",
+    "ORACLE_MEMO",
   ]),
   billableRate: z.number().min(0),
   isBillable: z.boolean().default(true),
@@ -57,17 +57,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Build the Clio time entry via Antigravity MCP (risk-checked)
     const clioMcpUrl = process.env.CLIO_MCP_URL;
     if (!clioMcpUrl) {
-      return NextResponse.json({ error: 'Clio MCP not configured' }, { status: 503 });
+      return NextResponse.json({ error: "Clio MCP not configured" }, { status: 503 });
     }
 
-    const mcpClient = new AntigravityMCPClient(clioMcpUrl, 'shadow-invoice');
+    const mcpClient = new AntigravityMCPClient(clioMcpUrl, "shadow-invoice");
 
     const hours = parsed.durationMinutes / 60;
     const total = hours * parsed.billableRate;
 
     const timeEntry: ClioTimeEntry = {
-      type: 'TimeEntry',
-      date: new Date().toISOString().split('T')[0],
+      type: "TimeEntry",
+      date: new Date().toISOString().split("T")[0],
       quantity: hours,
       total,
       note: `[AI-ASSISTED] ${parsed.description}`,
@@ -79,14 +79,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     };
 
     // Route through Antigravity interceptor (Tier 2: MITIGATE)
-    const result = await mcpClient.callTool('clio_draft_time_entry', {
+    const result = await mcpClient.callTool("clio_draft_time_entry", {
       timeEntry,
       firmId: parsed.firmId,
       isDraft: true, // Always draft — never auto-submit
     });
 
     return NextResponse.json({
-      status: 'DRAFTED',
+      status: "DRAFTED",
       timeEntry: {
         hours: hours.toFixed(2),
         total: total.toFixed(2),
@@ -94,15 +94,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         matterId: parsed.matterId,
       },
       clioResponse: result,
-      note: 'Shadow invoice drafted. Lawyer must approve before submission.',
+      note: "Shadow invoice drafted. Lawyer must approve before submission.",
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request', details: error.errors },
+        { error: "Invalid request", details: error.errors },
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: 'Shadow invoice draft failed' }, { status: 500 });
+    return NextResponse.json({ error: "Shadow invoice draft failed" }, { status: 500 });
   }
 }

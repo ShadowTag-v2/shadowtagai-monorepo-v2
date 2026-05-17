@@ -1,5 +1,5 @@
-'use client';
-import { motion } from 'framer-motion';
+"use client";
+import { motion } from "framer-motion";
 
 export default function TrustManifestoPage() {
   return (
@@ -7,12 +7,12 @@ export default function TrustManifestoPage() {
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-center mb-16"
       >
         <span className="section-label">Trust & Security Manifesto</span>
         <h1 className="section-title text-[clamp(2.5rem,5vw,4rem)] mb-6">
-          The <span style={{ color: 'var(--color-gold)' }}>Privilege-Preserving</span> Architecture
+          The <span style={{ color: "var(--color-gold)" }}>Privilege-Preserving</span> Architecture
         </h1>
         <p className="section-desc mx-auto text-lg max-w-3xl">
           At KovelAI, we believe that AI should empower legal practitioners without ever

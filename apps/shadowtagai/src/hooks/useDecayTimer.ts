@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * useDecayTimer
@@ -18,16 +18,16 @@ export function useDecayTimer(ttlSeconds: number, onPurge: () => void) {
 
     // 2. Erase browser history state
     try {
-      window.history.replaceState({}, document.title, '/locked');
+      window.history.replaceState({}, document.title, "/locked");
     } catch {
       // History push may fail in some environments
     }
 
     // 3. Clear cookies (Kovel Doctrine anti-forensic purge)
-    document.cookie.split(';').forEach((c) => {
+    document.cookie.split(";").forEach((c) => {
       // biome-ignore lint/suspicious/noDocumentCookie: Setting expiry to clear each cookie
       document.cookie = c
-        .replace(/^ +/, '')
+        .replace(/^ +/, "")
         .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
     });
 
@@ -46,7 +46,7 @@ export function useDecayTimer(ttlSeconds: number, onPurge: () => void) {
 
     // Activity handlers reset the decay clock
     const resetTimer = () => setTimeLeft(ttlSeconds);
-    const events: string[] = ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'];
+    const events: string[] = ["mousemove", "keydown", "scroll", "click", "touchstart"];
     events.forEach((e) => window.addEventListener(e, resetTimer));
 
     return () => {

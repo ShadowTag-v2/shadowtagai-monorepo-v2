@@ -9,29 +9,29 @@
  * Endpoint: POST /api/conflicts/check
  */
 
-import { createLogger } from '../observability/structured-logger';
+import { createLogger } from "../observability/structured-logger";
 
-const logger = createLogger('clio-conflict-checker');
+const logger = createLogger("clio-conflict-checker");
 
 /** Conflict check result */
 interface ConflictResult {
   hasConflict: boolean;
-  conflictType?: 'current_client' | 'former_client' | 'related_matter' | 'adverse_party';
+  conflictType?: "current_client" | "former_client" | "related_matter" | "adverse_party";
   conflictDetails?: string;
   matchedEntities: Array<{
     name: string;
     matchScore: number;
-    source: 'clio' | 'manual' | 'kovelai_internal';
+    source: "clio" | "manual" | "kovelai_internal";
     matterId?: string;
   }>;
   checkedAt: string;
-  abaRule: '1.7' | '1.9' | '1.18';
+  abaRule: "1.7" | "1.9" | "1.18";
 }
 
 /** Clio API client configuration per firm */
 interface ClioConfig {
   firmId: string;
-  clioRegion: 'us' | 'ca' | 'eu';
+  clioRegion: "us" | "ca" | "eu";
   accessToken: string; // OAuth2 access token (short-lived)
   refreshToken: string; // OAuth2 refresh token (stored in Secret Manager)
 }
@@ -51,14 +51,14 @@ export async function checkClioConflicts(
   },
 ): Promise<ConflictResult> {
   const baseUrl =
-    config.clioRegion === 'eu'
-      ? 'https://eu.app.clio.com/api/v4'
-      : config.clioRegion === 'ca'
-        ? 'https://ca.app.clio.com/api/v4'
-        : 'https://app.clio.com/api/v4';
+    config.clioRegion === "eu"
+      ? "https://eu.app.clio.com/api/v4"
+      : config.clioRegion === "ca"
+        ? "https://ca.app.clio.com/api/v4"
+        : "https://app.clio.com/api/v4";
 
   const allNames = [params.prospectiveName, ...params.adverseParties];
-  const matchedEntities: ConflictResult['matchedEntities'] = [];
+  const matchedEntities: ConflictResult["matchedEntities"] = [];
 
   for (const name of allNames) {
     try {
@@ -67,13 +67,13 @@ export async function checkClioConflicts(
         {
           headers: {
             Authorization: `Bearer ${config.accessToken}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         },
       );
 
       if (!response.ok) {
-        logger.error('Clio API error', {
+        logger.error("Clio API error", {
           status: response.status,
           firmId: config.firmId,
         });
@@ -96,23 +96,23 @@ export async function checkClioConflicts(
           matchedEntities.push({
             name: contact.name,
             matchScore: score,
-            source: 'clio',
+            source: "clio",
             matterId: String(contact.id),
           });
         }
       }
     } catch (err) {
-      logger.error('Clio contact search failed', {
+      logger.error("Clio contact search failed", {
         name,
-        error: err instanceof Error ? err.message : 'unknown',
+        error: err instanceof Error ? err.message : "unknown",
       });
     }
   }
 
   // Determine conflict type
   const hasConflict = matchedEntities.length > 0;
-  let conflictType: ConflictResult['conflictType'];
-  let abaRule: ConflictResult['abaRule'] = '1.18';
+  let conflictType: ConflictResult["conflictType"];
+  let abaRule: ConflictResult["abaRule"] = "1.18";
 
   if (hasConflict) {
     // Check if matched entity is a current client
@@ -124,18 +124,18 @@ export async function checkClioConflicts(
     );
 
     if (isCurrentClient && isAdverseMatch) {
-      conflictType = 'current_client';
-      abaRule = '1.7';
+      conflictType = "current_client";
+      abaRule = "1.7";
     } else if (isAdverseMatch) {
-      conflictType = 'adverse_party';
-      abaRule = '1.9';
+      conflictType = "adverse_party";
+      abaRule = "1.9";
     } else {
-      conflictType = 'related_matter';
-      abaRule = '1.18';
+      conflictType = "related_matter";
+      abaRule = "1.18";
     }
   }
 
-  logger.info('Conflict check completed', {
+  logger.info("Conflict check completed", {
     firmId: config.firmId,
     hasConflict,
     matchCount: matchedEntities.length,

@@ -3,7 +3,7 @@
  * Specialized agent for analyzing the PNKLN Judge 6 validation system
  */
 
-import { masterPromptFramework } from '../../prompts/frameworks/master-prompt-framework';
+import { masterPromptFramework } from "../../prompts/frameworks/master-prompt-framework";
 import type {
   AgentExecutionContext,
   AgentMetadata,
@@ -11,40 +11,40 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from '../../types/agent.types';
-import { BaseAgent } from '../../utils/base-agent';
+} from "../../types/agent.types";
+import { BaseAgent } from "../../utils/base-agent";
 
 export class JudgeSixAnalyzerAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: 'judge-six-analyzer',
-    name: 'Judge 6 Validation System Analyzer',
-    category: 'quality-testing',
+    id: "judge-six-analyzer",
+    name: "Judge 6 Validation System Analyzer",
+    category: "quality-testing",
     description:
-      'Analyzes the PNKLN Judge 6 real-time validation system for performance and accuracy.',
-    tagline: 'Real-time validation system analysis',
-    capabilities: ['analysis', 'optimization'],
-    tags: ['pnkln', 'judge-6', 'validation', 'enforcement', 'latency', 'ai'],
-    difficulty: 'expert',
-    estimatedTime: '1-2 hours',
+      "Analyzes the PNKLN Judge 6 real-time validation system for performance and accuracy.",
+    tagline: "Real-time validation system analysis",
+    capabilities: ["analysis", "optimization"],
+    tags: ["pnkln", "judge-6", "validation", "enforcement", "latency", "ai"],
+    difficulty: "expert",
+    estimatedTime: "1-2 hours",
   };
 
   prompt: AgentPromptTemplate = {
-    system: masterPromptFramework.generatePrompt('judge-6'),
+    system: masterPromptFramework.generatePrompt("judge-6"),
 
     context: [
-      'judge_six.py implementation',
-      'Hybrid Gemini+PyTorch architecture specs',
-      'Performance benchmarks (p50, p95, p99 latencies)',
-      'Throughput metrics and capacity limits',
-      'False positive/negative rates',
-      'Coverage statistics (98% target)',
-      'Integration patterns (4 namespace calls)',
-      'ATP 5-19 and JR validation rules',
+      "judge_six.py implementation",
+      "Hybrid Gemini+PyTorch architecture specs",
+      "Performance benchmarks (p50, p95, p99 latencies)",
+      "Throughput metrics and capacity limits",
+      "False positive/negative rates",
+      "Coverage statistics (98% target)",
+      "Integration patterns (4 namespace calls)",
+      "ATP 5-19 and JR validation rules",
     ],
 
     examples: [
       {
-        input: 'Analyze Judge 6 for performance optimization',
+        input: "Analyze Judge 6 for performance optimization",
         output: `## Executive Summary
 Judge 6 demonstrates excellent latency performance (p99: 78ms) with opportunities
 to improve false positive rates and reduce API call costs.
@@ -99,83 +99,83 @@ Very high confidence due to production telemetry and detailed performance logs.`
   };
 
   tools: AgentTools = {
-    required: ['Glob', 'Read', 'Grep'],
-    optional: ['WebFetch', 'Bash'],
+    required: ["Glob", "Read", "Grep"],
+    optional: ["WebFetch", "Bash"],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: 'Code Review',
-        description: 'Review judge_six.py implementation',
-        action: 'Analyze code structure, AI integration, validation logic',
-        validation: 'Understand system design and decision flow',
+        name: "Code Review",
+        description: "Review judge_six.py implementation",
+        action: "Analyze code structure, AI integration, validation logic",
+        validation: "Understand system design and decision flow",
       },
       {
-        name: 'Performance Analysis',
-        description: 'Analyze latency and throughput metrics',
-        action: 'Review p50/p95/p99 latencies, throughput capacity',
-        validation: 'Verify SLA compliance (p99 ≤ 90ms)',
+        name: "Performance Analysis",
+        description: "Analyze latency and throughput metrics",
+        action: "Review p50/p95/p99 latencies, throughput capacity",
+        validation: "Verify SLA compliance (p99 ≤ 90ms)",
       },
       {
-        name: 'Quality Assessment',
-        description: 'Evaluate validation accuracy',
-        action: 'Analyze FP/FN rates, coverage, block rate',
-        validation: 'Ensure quality gates are met',
+        name: "Quality Assessment",
+        description: "Evaluate validation accuracy",
+        action: "Analyze FP/FN rates, coverage, block rate",
+        validation: "Ensure quality gates are met",
       },
       {
-        name: 'Integration Review',
-        description: 'Review namespace integrations',
-        action: 'Analyze calls to auth, storage, logging, metrics',
-        validation: 'Identify integration bottlenecks',
+        name: "Integration Review",
+        description: "Review namespace integrations",
+        action: "Analyze calls to auth, storage, logging, metrics",
+        validation: "Identify integration bottlenecks",
       },
       {
-        name: 'Cost Analysis',
-        description: 'Evaluate API call costs',
-        action: 'Calculate per-validation and monthly costs',
-        validation: 'Identify cost optimization opportunities',
+        name: "Cost Analysis",
+        description: "Evaluate API call costs",
+        action: "Calculate per-validation and monthly costs",
+        validation: "Identify cost optimization opportunities",
       },
       {
-        name: 'Optimization Planning',
-        description: 'Identify performance and cost improvements',
-        action: 'Spot latency bottlenecks, model improvements, caching',
-        validation: 'Prioritize by impact and effort',
+        name: "Optimization Planning",
+        description: "Identify performance and cost improvements",
+        action: "Spot latency bottlenecks, model improvements, caching",
+        validation: "Prioritize by impact and effort",
       },
       {
-        name: 'Report Generation',
-        description: 'Generate comprehensive analysis report',
-        action: 'Compile findings with confidence scores',
-        validation: 'Ensure actionable recommendations',
+        name: "Report Generation",
+        description: "Generate comprehensive analysis report",
+        action: "Compile findings with confidence scores",
+        validation: "Ensure actionable recommendations",
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow['steps'][0],
+    step: AgentWorkflow["steps"][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     switch (step.name) {
-      case 'Code Review':
-        result.recommendations?.push('Review judge_six.py implementation');
+      case "Code Review":
+        result.recommendations?.push("Review judge_six.py implementation");
         break;
-      case 'Performance Analysis':
-        result.recommendations?.push('Analyze latency metrics and SLA compliance');
+      case "Performance Analysis":
+        result.recommendations?.push("Analyze latency metrics and SLA compliance");
         break;
-      case 'Quality Assessment':
-        result.recommendations?.push('Evaluate validation accuracy and error rates');
+      case "Quality Assessment":
+        result.recommendations?.push("Evaluate validation accuracy and error rates");
         break;
-      case 'Integration Review':
-        result.recommendations?.push('Review namespace integration patterns');
+      case "Integration Review":
+        result.recommendations?.push("Review namespace integration patterns");
         break;
-      case 'Cost Analysis':
-        result.recommendations?.push('Calculate API costs and identify savings');
+      case "Cost Analysis":
+        result.recommendations?.push("Calculate API costs and identify savings");
         break;
-      case 'Optimization Planning':
-        result.recommendations?.push('Identify high-impact optimizations');
+      case "Optimization Planning":
+        result.recommendations?.push("Identify high-impact optimizations");
         break;
-      case 'Report Generation':
-        result.recommendations?.push('Generate comprehensive analysis report');
+      case "Report Generation":
+        result.recommendations?.push("Generate comprehensive analysis report");
         break;
     }
   }

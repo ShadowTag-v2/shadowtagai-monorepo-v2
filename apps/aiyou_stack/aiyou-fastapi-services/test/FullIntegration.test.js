@@ -1,7 +1,7 @@
-const { expect } = require('chai');
-const { ethers, upgrades } = require('hardhat');
+const { expect } = require("chai");
+const { ethers, upgrades } = require("hardhat");
 
-describe('ShadowTagAI Full Integration (ERC-4337 + 8004)', () => {
+describe("ShadowTagAI Full Integration (ERC-4337 + 8004)", () => {
   let dnaRoyalty,
     registry,
     entryPoint,
@@ -17,42 +17,42 @@ describe('ShadowTagAI Full Integration (ERC-4337 + 8004)', () => {
     [overlord] = await ethers.getSigners();
 
     // 1. Deploy Mocks & Dependencies
-    const USDC = await ethers.getContractFactory('MockERC20');
-    usdc = await USDC.deploy('USDC', 'USDC', 6); // Mock USDC
+    const USDC = await ethers.getContractFactory("MockERC20");
+    usdc = await USDC.deploy("USDC", "USDC", 6); // Mock USDC
 
     // Deploy AgentNFT
-    const AgentNFT = await ethers.getContractFactory('AgentNFT');
+    const AgentNFT = await ethers.getContractFactory("AgentNFT");
     agentNFT = await AgentNFT.deploy();
 
     // Deploy ERC-6551 Registry
     // We use a mock or standard registry artifact if available, or deploy a simple mock for testing if the standard one isn't in artifacts.
     // Since we defined the interface but not the implementation in our contracts folder, we need a mock registry or use a library.
     // For this test, let's deploy a minimal MockRegistry to satisfy the interface.
-    const MockRegistry = await ethers.getContractFactory('MockRegistry');
+    const MockRegistry = await ethers.getContractFactory("MockRegistry");
     registry = await MockRegistry.deploy();
 
     // Deploy EntryPoint Mock
-    const EntryPointMock = await ethers.getContractFactory('MockEntryPoint');
+    const EntryPointMock = await ethers.getContractFactory("MockEntryPoint");
     entryPoint = await EntryPointMock.deploy();
 
     // Deploy ERC-8004 Registry Mocks
-    const IdentityRegMock = await ethers.getContractFactory('MockERC8004Identity');
+    const IdentityRegMock = await ethers.getContractFactory("MockERC8004Identity");
     identityReg = await IdentityRegMock.deploy();
 
-    const RepRegMock = await ethers.getContractFactory('MockERC8004Reputation');
+    const RepRegMock = await ethers.getContractFactory("MockERC8004Reputation");
     repReg = await RepRegMock.deploy();
 
-    const ValRegMock = await ethers.getContractFactory('MockERC8004Validation');
+    const ValRegMock = await ethers.getContractFactory("MockERC8004Validation");
     valReg = await ValRegMock.deploy();
 
     // Deploy TBA Implementation
-    const ShadowTagAccount = await ethers.getContractFactory('ShadowTagAccount');
+    const ShadowTagAccount = await ethers.getContractFactory("ShadowTagAccount");
     tbaImpl = await ShadowTagAccount.deploy(entryPoint.target);
 
     // Deploy DNA Royalty (UUPS Proxy)
-    const DNARoyalty = await ethers.getContractFactory('ShadowTagAI_DNARoyalty');
+    const DNARoyalty = await ethers.getContractFactory("ShadowTagAI_DNARoyalty");
     dnaRoyalty = await upgrades.deployProxy(DNARoyalty, [usdc.target, agentNFT.target], {
-      initializer: 'initialize',
+      initializer: "initialize",
       constructorArgs: [
         overlord.address,
         registry.target,
@@ -62,15 +62,15 @@ describe('ShadowTagAI Full Integration (ERC-4337 + 8004)', () => {
         valReg.target,
         tbaImpl.target,
       ],
-      kind: 'uups',
-      unsafeAllow: ['state-variable-immutable', 'constructor'],
+      kind: "uups",
+      unsafeAllow: ["state-variable-immutable", "constructor"],
     });
     await dnaRoyalty.waitForDeployment();
 
     // Transfer AgentNFT ownership to DNARoyalty so it can mint
     await agentNFT.transferOwnership(dnaRoyalty.target);
     // Deploy Paymaster
-    const OverlordPaymaster = await ethers.getContractFactory('OverlordPaymaster');
+    const OverlordPaymaster = await ethers.getContractFactory("OverlordPaymaster");
     await OverlordPaymaster.deploy(
       entryPoint.target,
       overlord.address,
@@ -82,21 +82,21 @@ describe('ShadowTagAI Full Integration (ERC-4337 + 8004)', () => {
     await agentNFT.transferOwnership(dnaRoyalty.target);
   });
 
-  it('full spawn + AA distribution with ERC-8004 trust', async () => {
+  it("full spawn + AA distribution with ERC-8004 trust", async () => {
     const agentId = 1;
     const bps = 1800; // 18%
-    const agentCardURI = 'ipfs://QmAgentCard';
-    const validationProof = '0x1234'; // Mock TEE proof
+    const agentCardURI = "ipfs://QmAgentCard";
+    const validationProof = "0x1234"; // Mock TEE proof
 
     // 1. Spawn: NFT → TBA → ERC-8004 Reg
     // Note: In our mock registry, createAccount should return a predicted address
-    const tx = await dnaRoyalty.spawnChild(agentId, bps, '0x', agentCardURI, validationProof);
+    const tx = await dnaRoyalty.spawnChild(agentId, bps, "0x", agentCardURI, validationProof);
     const receipt = await tx.wait();
 
     // Find ChildSpawned event to get TBA address
     const spawnEvent = receipt.logs.find((log) => {
       try {
-        return dnaRoyalty.interface.parseLog(log)?.name === 'ChildSpawned';
+        return dnaRoyalty.interface.parseLog(log)?.name === "ChildSpawned";
       } catch {
         return false;
       }
@@ -122,8 +122,8 @@ describe('ShadowTagAI Full Integration (ERC-4337 + 8004)', () => {
     await usdc.mint(childTBA, usdCents * 1000000); // Fund TBA with USDC (mocking earnings)
 
     // Use Hardhat impersonation to act as the TBA
-    await ethers.provider.send('hardhat_impersonateAccount', [childTBA]);
-    await ethers.provider.send('hardhat_setBalance', [childTBA, '0x1000000000000000000']); // Give ETH for gas
+    await ethers.provider.send("hardhat_impersonateAccount", [childTBA]);
+    await ethers.provider.send("hardhat_setBalance", [childTBA, "0x1000000000000000000"]); // Give ETH for gas
     const tbaSigner = await ethers.getSigner(childTBA);
 
     // Approve royalty contract to pull funds from TBA
@@ -132,15 +132,15 @@ describe('ShadowTagAI Full Integration (ERC-4337 + 8004)', () => {
     const userOp = {
       sender: childTBA,
       nonce: 0,
-      initCode: '0x',
-      callData: '0x',
+      initCode: "0x",
+      callData: "0x",
       callGasLimit: 0,
       verificationGasLimit: 0,
       preVerificationGas: 0,
       maxFeePerGas: 0,
       maxPriorityFeePerGas: 0,
-      paymasterAndData: '0x',
-      signature: '0x',
+      paymasterAndData: "0x",
+      signature: "0x",
     };
 
     // Execute distribution
@@ -149,9 +149,9 @@ describe('ShadowTagAI Full Integration (ERC-4337 + 8004)', () => {
     await expect(
       dnaRoyalty.connect(tbaSigner).distributeViaUserOp(userOp, usdCents, validationProof),
     )
-      .to.emit(dnaRoyalty, 'UserOpDistributed')
+      .to.emit(dnaRoyalty, "UserOpDistributed")
       .withArgs(childTBA, Object.values(userOp), usdCents)
-      .and.to.emit(dnaRoyalty, 'RoyaltyPaid')
+      .and.to.emit(dnaRoyalty, "RoyaltyPaid")
       .withArgs(overlord.address, 18000000, 0); // Parent (overlord) gets 18% royalty
 
     // totalDistributedCents should equal the royalty paid (18% = 18000000 cents)

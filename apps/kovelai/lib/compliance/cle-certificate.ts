@@ -15,7 +15,7 @@
  * @see docs/cle-seminar-deck.md — CLE content reference
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Schemas ────────────────────────────────────────────────────────
 
@@ -31,8 +31,8 @@ export const CLECertificateSchema = z.object({
   courseDescription: z.string(),
   courseDate: z.string(), // YYYY-MM-DD
   creditHours: z.number().min(0.5).max(8),
-  creditType: z.enum(['GENERAL', 'ETHICS', 'PROFESSIONAL_RESPONSIBILITY', 'TECHNOLOGY']),
-  deliveryMethod: z.enum(['LIVE_WEBINAR', 'ON_DEMAND', 'IN_PERSON']),
+  creditType: z.enum(["GENERAL", "ETHICS", "PROFESSIONAL_RESPONSIBILITY", "TECHNOLOGY"]),
+  deliveryMethod: z.enum(["LIVE_WEBINAR", "ON_DEMAND", "IN_PERSON"]),
 
   // Attendance verification
   attendanceMinutes: z.number().int(),
@@ -45,7 +45,7 @@ export const CLECertificateSchema = z.object({
   validUntil: z.string().datetime(), // Typically 1 year for reporting
 
   // Accreditation
-  providerName: z.string().default('KovelAI Legal Technology'),
+  providerName: z.string().default("KovelAI Legal Technology"),
   providerNumber: z.string().optional(), // State bar provider number
   accreditedStates: z.array(z.string()),
 });
@@ -56,31 +56,31 @@ export type CLECertificate = z.infer<typeof CLECertificateSchema>;
 
 export const CLE_COURSES = [
   {
-    id: 'CLE-001',
-    title: 'AI-Privileged Legal Research: The Kovel Doctrine in the Digital Age',
+    id: "CLE-001",
+    title: "AI-Privileged Legal Research: The Kovel Doctrine in the Digital Age",
     description:
-      'Understanding how attorney-client privilege extends to AI-assisted research under United States v. Heppner (S.D.N.Y. 2026).',
+      "Understanding how attorney-client privilege extends to AI-assisted research under United States v. Heppner (S.D.N.Y. 2026).",
     creditHours: 1.5,
-    creditType: 'TECHNOLOGY' as const,
-    accreditedStates: ['NY', 'CA', 'IL', 'TX', 'FL', 'PA', 'NJ'],
+    creditType: "TECHNOLOGY" as const,
+    accreditedStates: ["NY", "CA", "IL", "TX", "FL", "PA", "NJ"],
   },
   {
-    id: 'CLE-002',
-    title: 'Ethics of AI in Legal Practice: Competence and Confidentiality',
+    id: "CLE-002",
+    title: "Ethics of AI in Legal Practice: Competence and Confidentiality",
     description:
-      'Model Rule 1.1 competence requirements for attorneys using AI tools, and Model Rule 1.6 confidentiality obligations.',
+      "Model Rule 1.1 competence requirements for attorneys using AI tools, and Model Rule 1.6 confidentiality obligations.",
     creditHours: 2.0,
-    creditType: 'ETHICS' as const,
-    accreditedStates: ['NY', 'CA', 'IL', 'TX', 'FL', 'PA', 'NJ', 'MA', 'DC'],
+    creditType: "ETHICS" as const,
+    accreditedStates: ["NY", "CA", "IL", "TX", "FL", "PA", "NJ", "MA", "DC"],
   },
   {
-    id: 'CLE-003',
-    title: 'Privilege Waiver in the Age of Public AI',
+    id: "CLE-003",
+    title: "Privilege Waiver in the Age of Public AI",
     description:
-      'How using ChatGPT, Claude, and Gemini on consumer platforms can waive attorney-client privilege, and how to prevent it.',
+      "How using ChatGPT, Claude, and Gemini on consumer platforms can waive attorney-client privilege, and how to prevent it.",
     creditHours: 1.0,
-    creditType: 'PROFESSIONAL_RESPONSIBILITY' as const,
-    accreditedStates: ['NY', 'CA', 'IL', 'TX', 'FL'],
+    creditType: "PROFESSIONAL_RESPONSIBILITY" as const,
+    accreditedStates: ["NY", "CA", "IL", "TX", "FL"],
   },
 ];
 
@@ -142,14 +142,14 @@ export function generateCLECertificate(
     courseDate: request.courseDate,
     creditHours: course.creditHours,
     creditType: course.creditType,
-    deliveryMethod: 'LIVE_WEBINAR',
+    deliveryMethod: "LIVE_WEBINAR",
     attendanceMinutes: request.attendanceMinutes,
     heartbeatCount: request.heartbeatCount,
     completionPercentage,
     verificationCode,
     issuedAt: now.toISOString(),
     validUntil: validUntil.toISOString(),
-    providerName: 'KovelAI Legal Technology',
+    providerName: "KovelAI Legal Technology",
     accreditedStates: course.accreditedStates,
   };
 }
@@ -173,8 +173,8 @@ export function verifyCertificate(certificate: CLECertificate, verificationCode:
  */
 export function getCertificatePDFData(cert: CLECertificate): Record<string, string> {
   return {
-    title: 'CERTIFICATE OF CONTINUING LEGAL EDUCATION',
-    subtitle: 'This certifies that',
+    title: "CERTIFICATE OF CONTINUING LEGAL EDUCATION",
+    subtitle: "This certifies that",
     name: cert.attorneyName,
     barInfo: `Bar Number: ${cert.barNumber} | Jurisdiction: ${cert.jurisdiction}`,
     courseInfo: `has successfully completed ${cert.creditHours} hours of ${cert.creditType} credit`,
@@ -184,15 +184,15 @@ export function getCertificatePDFData(cert: CLECertificate): Record<string, stri
     verification: `Verification Code: ${cert.verificationCode}`,
     issued: `Issued: ${new Date(cert.issuedAt).toLocaleDateString()}`,
     valid: `Valid Until: ${new Date(cert.validUntil).toLocaleDateString()}`,
-    states: `Accredited in: ${cert.accreditedStates.join(', ')}`,
+    states: `Accredited in: ${cert.accreditedStates.join(", ")}`,
   };
 }
 
 // ─── Helpers ────────────────────────────────────────────────────────
 
 function generateVerificationCode(): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // No I, O, 0, 1 for readability
-  let code = '';
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // No I, O, 0, 1 for readability
+  let code = "";
   for (let i = 0; i < 8; i++) {
     code += chars[Math.floor(Math.random() * chars.length)];
   }

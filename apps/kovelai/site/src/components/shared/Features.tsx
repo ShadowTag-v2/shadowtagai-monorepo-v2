@@ -26,8 +26,8 @@ export default function Features() {
           <path d="M128 80v96M176 128H80" />
         </svg>
       ),
-      title: 'AI-Powered Intake',
-      desc: 'Intelligent after-hours client intake that captures, qualifies, and organizes potential matters while your team rests.',
+      title: "AI-Powered Intake",
+      desc: "Intelligent after-hours client intake that captures, qualifies, and organizes potential matters while your team rests.",
     },
     {
       icon: (
@@ -51,8 +51,8 @@ export default function Features() {
           <path d="M48 128h160M128 48v160" />
         </svg>
       ),
-      title: 'Matter Pipeline',
-      desc: 'Every client interaction becomes a tracked, scored, and prioritized entry in your matter pipeline. No leads lost.',
+      title: "Matter Pipeline",
+      desc: "Every client interaction becomes a tracked, scored, and prioritized entry in your matter pipeline. No leads lost.",
     },
     {
       icon: (
@@ -82,8 +82,8 @@ export default function Features() {
           />
         </svg>
       ),
-      title: 'Privileged Search',
-      desc: 'Clients search the web through your firm\u0027s infrastructure. Every query is privileged, every session is billed.',
+      title: "Privileged Search",
+      desc: "Clients search the web through your firm\u0027s infrastructure. Every query is privileged, every session is billed.",
     },
     {
       icon: (
@@ -114,8 +114,8 @@ export default function Features() {
           <path d="M128 56v64" />
         </svg>
       ),
-      title: 'After-Hours Capture',
-      desc: 'Panic calls at 2 AM become organized, retained matters by 8 AM. Your paralegal costs drop, your intake revenue rises.',
+      title: "After-Hours Capture",
+      desc: "Panic calls at 2 AM become organized, retained matters by 8 AM. Your paralegal costs drop, your intake revenue rises.",
     },
     {
       icon: (
@@ -139,8 +139,8 @@ export default function Features() {
           <path d="M128 56V32M96 56V40M160 56V40" />
         </svg>
       ),
-      title: 'Compliance First',
-      desc: 'Pursuing SOC 2 Type II certification. HIPAA-supportive architecture. Built to withstand judicial scrutiny on privilege claims.',
+      title: "Compliance First",
+      desc: "Pursuing SOC 2 Type II certification. HIPAA-supportive architecture. Built to withstand judicial scrutiny on privilege claims.",
     },
     {
       icon: (
@@ -163,8 +163,8 @@ export default function Features() {
           <path d="M232 168l-68-68-48 48L72 104" fill="none" />
         </svg>
       ),
-      title: 'Revenue Analytics',
-      desc: 'Real-time dashboards showing intake conversion, after-hours capture rate, and revenue per privileged session.',
+      title: "Revenue Analytics",
+      desc: "Real-time dashboards showing intake conversion, after-hours capture rate, and revenue per privileged session.",
     },
   ];
 

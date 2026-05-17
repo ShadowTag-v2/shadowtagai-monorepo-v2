@@ -29,7 +29,7 @@ from pathlib import Path
 # Try to import Vertex AI (graceful degradation if not available)
 try:
     from google.cloud import aiplatform
-    from vertexai.generative_models import GenerativeModel, Part
+    from vertexai.generative_models import GenerativeModel
 
     VERTEX_AI_AVAILABLE = True
 except ImportError:

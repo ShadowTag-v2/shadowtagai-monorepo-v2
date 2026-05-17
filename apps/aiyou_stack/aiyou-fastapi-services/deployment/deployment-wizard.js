@@ -7,9 +7,9 @@
  * Sets up everything needed for push-to-deploy workflows.
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+const fs = require("fs");
+const path = require("path");
+const { execSync } = require("child_process");
 
 class DeploymentWizard {
   constructor() {
@@ -19,10 +19,10 @@ class DeploymentWizard {
 
   // Main wizard flow
   async run() {
-    console.log('\n🚀 Deployment Wizard');
-    console.log('=====================================\n');
-    console.log('Sets up CI/CD that actually works.');
-    console.log('Push to main, deploy to production. No more manual steps.\n');
+    console.log("\n🚀 Deployment Wizard");
+    console.log("=====================================\n");
+    console.log("Sets up CI/CD that actually works.");
+    console.log("Push to main, deploy to production. No more manual steps.\n");
 
     await this.checkPrerequisites();
     await this.gatherConfiguration();
@@ -32,67 +32,67 @@ class DeploymentWizard {
 
   // Check prerequisites
   async checkPrerequisites() {
-    console.log('📋 Checking prerequisites...\n');
+    console.log("📋 Checking prerequisites...\n");
 
     const checks = [
-      { name: 'Git', command: 'git --version' },
-      { name: 'Node.js', command: 'node --version' },
-      { name: 'npm', command: 'npm --version' },
-      { name: 'Docker', command: 'docker --version' },
+      { name: "Git", command: "git --version" },
+      { name: "Node.js", command: "node --version" },
+      { name: "npm", command: "npm --version" },
+      { name: "Docker", command: "docker --version" },
     ];
 
     for (const check of checks) {
       try {
-        const version = execSync(check.command, { encoding: 'utf8' }).trim();
+        const version = execSync(check.command, { encoding: "utf8" }).trim();
         console.log(`✅ ${check.name}: ${version}`);
       } catch (error) {
         console.log(`⚠️  ${check.name}: Not found (optional)`);
       }
     }
 
-    console.log('');
+    console.log("");
   }
 
   // Gather configuration from user or environment
   async gatherConfiguration() {
-    console.log('⚙️  Configuration\n');
+    console.log("⚙️  Configuration\n");
 
     // Detect git information
     try {
-      this.config.repoName = execSync('git config --get remote.origin.url', {
-        encoding: 'utf8',
+      this.config.repoName = execSync("git config --get remote.origin.url", {
+        encoding: "utf8",
       }).trim();
-      this.config.branch = execSync('git branch --show-current', { encoding: 'utf8' }).trim();
+      this.config.branch = execSync("git branch --show-current", { encoding: "utf8" }).trim();
       console.log(`📦 Repository: ${this.config.repoName}`);
       console.log(`🌿 Branch: ${this.config.branch}`);
     } catch (error) {
-      console.log('⚠️  Not a git repository or no remote configured');
+      console.log("⚠️  Not a git repository or no remote configured");
     }
 
     // Detect package.json
-    const packagePath = path.join(this.projectRoot, 'package.json');
+    const packagePath = path.join(this.projectRoot, "package.json");
     if (fs.existsSync(packagePath)) {
-      const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+      const pkg = JSON.parse(fs.readFileSync(packagePath, "utf8"));
       this.config.projectName = pkg.name;
-      this.config.version = pkg.version || '1.0.0';
+      this.config.version = pkg.version || "1.0.0";
       console.log(`📋 Project: ${this.config.projectName}`);
       console.log(`🔢 Version: ${this.config.version}`);
     }
 
-    console.log('');
+    console.log("");
   }
 
   // Setup deployment
   async setupDeployment() {
-    console.log('🔧 Setting up deployment automation...\n');
+    console.log("🔧 Setting up deployment automation...\n");
 
     const tasks = [
-      { name: 'Verify Docker configuration', fn: () => this.verifyDocker() },
-      { name: 'Verify GitHub Actions workflows', fn: () => this.verifyWorkflows() },
-      { name: 'Create deployment scripts', fn: () => this.createScripts() },
-      { name: 'Update package.json scripts', fn: () => this.updatePackageScripts() },
-      { name: 'Create environment templates', fn: () => this.createEnvTemplates() },
-      { name: 'Generate deployment docs', fn: () => this.generateDocs() },
+      { name: "Verify Docker configuration", fn: () => this.verifyDocker() },
+      { name: "Verify GitHub Actions workflows", fn: () => this.verifyWorkflows() },
+      { name: "Create deployment scripts", fn: () => this.createScripts() },
+      { name: "Update package.json scripts", fn: () => this.updatePackageScripts() },
+      { name: "Create environment templates", fn: () => this.createEnvTemplates() },
+      { name: "Generate deployment docs", fn: () => this.generateDocs() },
     ];
 
     for (const task of tasks) {
@@ -108,7 +108,7 @@ class DeploymentWizard {
 
   // Verify Docker configuration
   verifyDocker() {
-    const files = ['Dockerfile', 'docker-compose.yml', '.dockerignore'];
+    const files = ["Dockerfile", "docker-compose.yml", ".dockerignore"];
     for (const file of files) {
       if (!fs.existsSync(path.join(this.projectRoot, file))) {
         throw new Error(`${file} not found`);
@@ -118,12 +118,12 @@ class DeploymentWizard {
 
   // Verify GitHub Actions workflows
   verifyWorkflows() {
-    const workflowDir = path.join(this.projectRoot, '.github', 'workflows');
+    const workflowDir = path.join(this.projectRoot, ".github", "workflows");
     if (!fs.existsSync(workflowDir)) {
-      throw new Error('Workflows directory not found');
+      throw new Error("Workflows directory not found");
     }
 
-    const workflows = ['ci.yml', 'cd.yml', 'release.yml'];
+    const workflows = ["ci.yml", "cd.yml", "release.yml"];
     for (const workflow of workflows) {
       if (!fs.existsSync(path.join(workflowDir, workflow))) {
         throw new Error(`${workflow} not found`);
@@ -133,7 +133,7 @@ class DeploymentWizard {
 
   // Create deployment scripts
   createScripts() {
-    const scriptsDir = path.join(this.projectRoot, 'deployment', 'scripts');
+    const scriptsDir = path.join(this.projectRoot, "deployment", "scripts");
 
     // Deploy script
     const deployScript = `#!/bin/bash
@@ -173,7 +173,7 @@ else
 fi
 `;
 
-    fs.writeFileSync(path.join(scriptsDir, 'deploy.sh'), deployScript, { mode: 0o755 });
+    fs.writeFileSync(path.join(scriptsDir, "deploy.sh"), deployScript, { mode: 0o755 });
 
     // Rollback script
     const rollbackScript = `#!/bin/bash
@@ -198,7 +198,7 @@ docker-compose -f docker-compose.yml --profile production up -d
 echo "✅ Rollback complete!"
 `;
 
-    fs.writeFileSync(path.join(scriptsDir, 'rollback.sh'), rollbackScript, { mode: 0o755 });
+    fs.writeFileSync(path.join(scriptsDir, "rollback.sh"), rollbackScript, { mode: 0o755 });
 
     // Health check script
     const healthScript = `#!/bin/bash
@@ -222,29 +222,29 @@ echo "❌ Health check failed after $MAX_RETRIES attempts"
 exit 1
 `;
 
-    fs.writeFileSync(path.join(scriptsDir, 'health-check.sh'), healthScript, { mode: 0o755 });
+    fs.writeFileSync(path.join(scriptsDir, "health-check.sh"), healthScript, { mode: 0o755 });
   }
 
   // Update package.json scripts
   updatePackageScripts() {
-    const packagePath = path.join(this.projectRoot, 'package.json');
+    const packagePath = path.join(this.projectRoot, "package.json");
     if (!fs.existsSync(packagePath)) {
-      throw new Error('package.json not found');
+      throw new Error("package.json not found");
     }
 
-    const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+    const pkg = JSON.parse(fs.readFileSync(packagePath, "utf8"));
 
     pkg.scripts = {
       ...pkg.scripts,
-      deploy: 'node deployment/deployment-wizard.js',
-      'deploy:prod': './deployment/scripts/deploy.sh',
-      'deploy:rollback': './deployment/scripts/rollback.sh',
-      'deploy:health': './deployment/scripts/health-check.sh',
-      'docker:build': 'docker-compose build',
-      'docker:up': 'docker-compose up -d',
-      'docker:down': 'docker-compose down',
-      'docker:logs': 'docker-compose logs -f',
-      'docker:prod': 'docker-compose --profile production up -d',
+      deploy: "node deployment/deployment-wizard.js",
+      "deploy:prod": "./deployment/scripts/deploy.sh",
+      "deploy:rollback": "./deployment/scripts/rollback.sh",
+      "deploy:health": "./deployment/scripts/health-check.sh",
+      "docker:build": "docker-compose build",
+      "docker:up": "docker-compose up -d",
+      "docker:down": "docker-compose down",
+      "docker:logs": "docker-compose logs -f",
+      "docker:prod": "docker-compose --profile production up -d",
     };
 
     // Don't actually write in wizard mode, just verify
@@ -253,7 +253,7 @@ exit 1
 
   // Create environment templates
   createEnvTemplates() {
-    const configsDir = path.join(this.projectRoot, 'deployment', 'configs');
+    const configsDir = path.join(this.projectRoot, "deployment", "configs");
 
     const envExample = `# Application Configuration
 NODE_ENV=production
@@ -270,27 +270,27 @@ PORT=8000
 DEPLOY_ENV=production
 `;
 
-    fs.writeFileSync(path.join(configsDir, '.env.example'), envExample);
+    fs.writeFileSync(path.join(configsDir, ".env.example"), envExample);
 
     // Production config
     const prodConfig = {
-      environment: 'production',
+      environment: "production",
       port: 8000,
       workers: 4,
-      logLevel: 'info',
+      logLevel: "info",
       healthCheck: {
         enabled: true,
-        path: '/health',
+        path: "/health",
         interval: 30,
       },
       deployment: {
-        strategy: 'rolling',
+        strategy: "rolling",
         maxUnavailable: 1,
         healthCheckGracePeriod: 30,
       },
     };
 
-    fs.writeFileSync(path.join(configsDir, 'production.json'), JSON.stringify(prodConfig, null, 2));
+    fs.writeFileSync(path.join(configsDir, "production.json"), JSON.stringify(prodConfig, null, 2));
   }
 
   // Generate documentation
@@ -388,33 +388,33 @@ curl http://localhost:8000/health
 4. Configure production environment variables
 `;
 
-    fs.writeFileSync(path.join(this.projectRoot, 'deployment', 'DEPLOYMENT.md'), docsContent);
+    fs.writeFileSync(path.join(this.projectRoot, "deployment", "DEPLOYMENT.md"), docsContent);
   }
 
   // Display next steps
   async displayNextSteps() {
-    console.log('\n🎉 Deployment setup complete!\n');
-    console.log('Next Steps:\n');
-    console.log('1. Configure GitHub Secrets:');
-    console.log('   - Go to Settings → Secrets and variables → Actions');
-    console.log('   - Add required secrets (SSH_PRIVATE_KEY, etc.)\n');
-    console.log('2. Review and customize workflows:');
-    console.log('   - .github/workflows/ci.yml');
-    console.log('   - .github/workflows/cd.yml');
-    console.log('   - .github/workflows/release.yml\n');
-    console.log('3. Configure environment variables:');
-    console.log('   - Copy deployment/configs/.env.example to .env');
-    console.log('   - Update with your production values\n');
-    console.log('4. Test locally:');
-    console.log('   - npm run docker:build');
-    console.log('   - npm run docker:up');
-    console.log('   - npm run deploy:health\n');
-    console.log('5. Push to main branch to trigger deployment:');
-    console.log('   - git add .');
+    console.log("\n🎉 Deployment setup complete!\n");
+    console.log("Next Steps:\n");
+    console.log("1. Configure GitHub Secrets:");
+    console.log("   - Go to Settings → Secrets and variables → Actions");
+    console.log("   - Add required secrets (SSH_PRIVATE_KEY, etc.)\n");
+    console.log("2. Review and customize workflows:");
+    console.log("   - .github/workflows/ci.yml");
+    console.log("   - .github/workflows/cd.yml");
+    console.log("   - .github/workflows/release.yml\n");
+    console.log("3. Configure environment variables:");
+    console.log("   - Copy deployment/configs/.env.example to .env");
+    console.log("   - Update with your production values\n");
+    console.log("4. Test locally:");
+    console.log("   - npm run docker:build");
+    console.log("   - npm run docker:up");
+    console.log("   - npm run deploy:health\n");
+    console.log("5. Push to main branch to trigger deployment:");
+    console.log("   - git add .");
     console.log('   - git commit -m "Add deployment automation"');
-    console.log('   - git push origin main\n');
-    console.log('📚 Full documentation: deployment/DEPLOYMENT.md\n');
-    console.log('🚀 Happy deploying!\n');
+    console.log("   - git push origin main\n");
+    console.log("📚 Full documentation: deployment/DEPLOYMENT.md\n");
+    console.log("🚀 Happy deploying!\n");
   }
 }
 
@@ -422,7 +422,7 @@ curl http://localhost:8000/health
 if (require.main === module) {
   const wizard = new DeploymentWizard();
   wizard.run().catch((error) => {
-    console.error('\n❌ Error:', error.message);
+    console.error("\n❌ Error:", error.message);
     process.exit(1);
   });
 }

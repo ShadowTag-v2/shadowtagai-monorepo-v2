@@ -4,15 +4,15 @@
  * Validates markdown files for proper structure and formatting
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const DOCS = ['README.md', 'HOOKS_GUIDE.md', 'GEMINI_INGESTION_ANALYSIS.md', 'MIGRATION.md'];
+const DOCS = ["README.md", "HOOKS_GUIDE.md", "GEMINI_INGESTION_ANALYSIS.md", "MIGRATION.md"];
 
 let errors = 0;
 let warnings = 0;
 
-console.log('🔍 Validating documentation...\n');
+console.log("🔍 Validating documentation...\n");
 
 DOCS.forEach((doc) => {
   const filePath = path.join(process.cwd(), doc);
@@ -23,10 +23,10 @@ DOCS.forEach((doc) => {
     return;
   }
 
-  const content = fs.readFileSync(filePath, 'utf-8');
+  const content = fs.readFileSync(filePath, "utf-8");
 
   // Check for proper heading
-  if (!content.startsWith('# ')) {
+  if (!content.startsWith("# ")) {
     console.error(`❌ ${doc}: Missing top-level heading`);
     errors++;
   }
@@ -53,9 +53,9 @@ console.log(`   ❌ Errors: ${errors}`);
 console.log(`   ⚠️  Warnings: ${warnings}`);
 
 if (errors > 0) {
-  console.error('\n❌ Documentation validation failed!');
+  console.error("\n❌ Documentation validation failed!");
   process.exit(1);
 }
 
-console.log('\n✅ All documentation is valid!');
+console.log("\n✅ All documentation is valid!");
 process.exit(0);

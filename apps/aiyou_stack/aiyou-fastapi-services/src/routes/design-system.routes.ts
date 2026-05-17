@@ -1,10 +1,10 @@
-import { type Request, type Response, Router } from 'express';
-import { DesignSystemBuilder } from '../agents/design-system-builder';
-import { vertexWorkbenchConfig } from '../config/agent-config';
-import { VertexWorkbenchIntegration } from '../services/vertex-workbench-integration';
-import { DesignSystemRequestSchema } from '../types/design-system';
-import { AppError, asyncHandler } from '../utils/error-handler';
-import { logger } from '../utils/logger';
+import { type Request, type Response, Router } from "express";
+import { DesignSystemBuilder } from "../agents/design-system-builder";
+import { vertexWorkbenchConfig } from "../config/agent-config";
+import { VertexWorkbenchIntegration } from "../services/vertex-workbench-integration";
+import { DesignSystemRequestSchema } from "../types/design-system";
+import { AppError, asyncHandler } from "../utils/error-handler";
+import { logger } from "../utils/logger";
 
 const router = Router();
 const designSystemBuilder = new DesignSystemBuilder();
@@ -20,7 +20,7 @@ if (vertexWorkbenchConfig.projectId) {
  * Create a complete design system
  */
 router.post(
-  '/create',
+  "/create",
   asyncHandler(async (req: Request, res: Response) => {
     // Validate request
     const validatedRequest = DesignSystemRequestSchema.parse(req.body);
@@ -32,7 +32,7 @@ router.post(
 
     res.status(201).json({
       success: true,
-      message: 'Design system created successfully',
+      message: "Design system created successfully",
       data: library,
     });
   }),
@@ -43,12 +43,12 @@ router.post(
  * Generate a single component
  */
 router.post(
-  '/component',
+  "/component",
   asyncHandler(async (req: Request, res: Response) => {
     const { name, framework, description, category } = req.body;
 
     if (!name || !framework) {
-      throw new AppError(400, 'Component name and framework are required');
+      throw new AppError(400, "Component name and framework are required");
     }
 
     const component = await designSystemBuilder.generateComponent(name, framework, {
@@ -58,7 +58,7 @@ router.post(
 
     res.status(201).json({
       success: true,
-      message: 'Component generated successfully',
+      message: "Component generated successfully",
       data: component,
     });
   }),
@@ -69,19 +69,19 @@ router.post(
  * Generate style guide documentation
  */
 router.post(
-  '/style-guide',
+  "/style-guide",
   asyncHandler(async (req: Request, res: Response) => {
     const { library } = req.body;
 
     if (!library) {
-      throw new AppError(400, 'Component library data is required');
+      throw new AppError(400, "Component library data is required");
     }
 
     const styleGuide = await designSystemBuilder.generateStyleGuide(library);
 
     res.status(200).json({
       success: true,
-      message: 'Style guide generated successfully',
+      message: "Style guide generated successfully",
       data: { styleGuide },
     });
   }),
@@ -92,16 +92,16 @@ router.post(
  * Generate component design using Vertex AI
  */
 router.post(
-  '/vertex/component-design',
+  "/vertex/component-design",
   asyncHandler(async (req: Request, res: Response) => {
     if (!vertexIntegration) {
-      throw new AppError(503, 'Vertex AI integration not configured');
+      throw new AppError(503, "Vertex AI integration not configured");
     }
 
     const { componentName, framework, requirements } = req.body;
 
     if (!componentName || !framework) {
-      throw new AppError(400, 'Component name and framework are required');
+      throw new AppError(400, "Component name and framework are required");
     }
 
     const design = await vertexIntegration.generateComponentDesign(componentName, {
@@ -111,7 +111,7 @@ router.post(
 
     res.status(200).json({
       success: true,
-      message: 'Component design generated',
+      message: "Component design generated",
       data: { design },
     });
   }),
@@ -122,10 +122,10 @@ router.post(
  * Generate design tokens using Vertex AI
  */
 router.post(
-  '/vertex/design-tokens',
+  "/vertex/design-tokens",
   asyncHandler(async (req: Request, res: Response) => {
     if (!vertexIntegration) {
-      throw new AppError(503, 'Vertex AI integration not configured');
+      throw new AppError(503, "Vertex AI integration not configured");
     }
 
     const { brandGuidelines } = req.body;
@@ -134,7 +134,7 @@ router.post(
 
     res.status(200).json({
       success: true,
-      message: 'Design tokens generated',
+      message: "Design tokens generated",
       data: { tokens },
     });
   }),
@@ -145,23 +145,23 @@ router.post(
  * Analyze design system for consistency
  */
 router.post(
-  '/vertex/analyze',
+  "/vertex/analyze",
   asyncHandler(async (req: Request, res: Response) => {
     if (!vertexIntegration) {
-      throw new AppError(503, 'Vertex AI integration not configured');
+      throw new AppError(503, "Vertex AI integration not configured");
     }
 
     const { components } = req.body;
 
     if (!components || !Array.isArray(components)) {
-      throw new AppError(400, 'Components array is required');
+      throw new AppError(400, "Components array is required");
     }
 
     const analysis = await vertexIntegration.analyzeDesignSystem(components);
 
     res.status(200).json({
       success: true,
-      message: 'Design system analyzed',
+      message: "Design system analyzed",
       data: analysis,
     });
   }),
@@ -172,12 +172,12 @@ router.post(
  * Check Vertex AI integration health
  */
 router.get(
-  '/vertex/health',
+  "/vertex/health",
   asyncHandler(async (req: Request, res: Response) => {
     if (!vertexIntegration) {
       return res.status(503).json({
         success: false,
-        message: 'Vertex AI integration not configured',
+        message: "Vertex AI integration not configured",
       });
     }
 
@@ -185,7 +185,7 @@ router.get(
 
     res.status(isHealthy ? 200 : 503).json({
       success: isHealthy,
-      message: isHealthy ? 'Vertex AI is healthy' : 'Vertex AI health check failed',
+      message: isHealthy ? "Vertex AI is healthy" : "Vertex AI health check failed",
     });
   }),
 );

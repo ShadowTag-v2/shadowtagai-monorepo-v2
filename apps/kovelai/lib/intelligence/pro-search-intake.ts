@@ -19,7 +19,7 @@
  * @see arXiv:2512.14982 — Prompt repetition for accurate decomposition
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // ─── Schema ──────────────────────────────────────────────────────────
 
@@ -48,14 +48,14 @@ export interface SearchFragment {
   title: string;
   snippet: string;
   url: string;
-  source: 'google_enterprise' | 'perplexity_sonar' | 'westlaw_stub' | 'lexis_stub';
+  source: "google_enterprise" | "perplexity_sonar" | "westlaw_stub" | "lexis_stub";
   relevanceScore: number;
 }
 
 export interface ProCitation {
   index: number;
   authority: string;
-  type: 'statute' | 'case' | 'regulation' | 'rule' | 'secondary' | 'web';
+  type: "statute" | "case" | "regulation" | "rule" | "secondary" | "web";
   excerpt: string;
   url: string;
   confidence: number;
@@ -68,7 +68,7 @@ export interface ProSearchResult {
   finalSynthesis: string;
   allCitations: ProCitation[];
   totalDurationMs: number;
-  privilegeStatus: 'KOVEL_PROTECTED';
+  privilegeStatus: "KOVEL_PROTECTED";
 }
 
 // ─── Query Decomposition ─────────────────────────────────────────────
@@ -98,7 +98,7 @@ export function decomposeQuery(query: string, jurisdiction: string, maxSteps: nu
   }
 
   // Statute of limitations is always relevant
-  if (queryLower.includes('sue') || queryLower.includes('claim') || queryLower.includes('file')) {
+  if (queryLower.includes("sue") || queryLower.includes("claim") || queryLower.includes("file")) {
     subQuestions.push(`Statute of limitations ${query} ${jurisdiction}`);
   }
 
@@ -143,8 +143,8 @@ export async function executeProSearch(
     // Execute search with progressive context
     const contextPrefix =
       steps.length > 0
-        ? `[Context from previous research: ${steps.map((s) => s.synthesized).join(' | ')}]\n\n`
-        : '';
+        ? `[Context from previous research: ${steps.map((s) => s.synthesized).join(" | ")}]\n\n`
+        : "";
 
     const enrichedQuery = contextPrefix + subQuestion;
     let searchResults: SearchFragment[];
@@ -202,7 +202,7 @@ export async function executeProSearch(
     finalSynthesis,
     allCitations,
     totalDurationMs: Date.now() - startTime,
-    privilegeStatus: 'KOVEL_PROTECTED',
+    privilegeStatus: "KOVEL_PROTECTED",
   };
 }
 
@@ -215,14 +215,14 @@ function scoreRelevance(result: SearchFragment, originalQuery: string): number {
   return Math.min(1, matches / Math.max(queryTerms.length, 1));
 }
 
-function classifyCitationType(result: SearchFragment): ProCitation['type'] {
+function classifyCitationType(result: SearchFragment): ProCitation["type"] {
   const text = `${result.title} ${result.url}`.toLowerCase();
-  if (text.includes('code') || text.includes('statute') || text.includes('§')) return 'statute';
-  if (text.includes('v.') || text.includes('case') || text.includes('court')) return 'case';
-  if (text.includes('reg') || text.includes('cfr')) return 'regulation';
-  if (text.includes('rule')) return 'rule';
-  if (text.includes('law review') || text.includes('article')) return 'secondary';
-  return 'web';
+  if (text.includes("code") || text.includes("statute") || text.includes("§")) return "statute";
+  if (text.includes("v.") || text.includes("case") || text.includes("court")) return "case";
+  if (text.includes("reg") || text.includes("cfr")) return "regulation";
+  if (text.includes("rule")) return "rule";
+  if (text.includes("law review") || text.includes("article")) return "secondary";
+  return "web";
 }
 
 function synthesizeStep(subQuestion: string, results: SearchFragment[]): string {
@@ -230,12 +230,12 @@ function synthesizeStep(subQuestion: string, results: SearchFragment[]): string 
   const topSnippets = results
     .slice(0, 3)
     .map((r) => r.snippet)
-    .join(' ');
+    .join(" ");
   return `[${subQuestion}]: ${topSnippets}`;
 }
 
 function synthesizeFinal(originalQuery: string, steps: ProSearchStep[]): string {
-  const stepSummaries = steps.map((s) => `Step ${s.stepNumber}: ${s.synthesized}`).join('\n');
+  const stepSummaries = steps.map((s) => `Step ${s.stepNumber}: ${s.synthesized}`).join("\n");
   return `# Pro Search Research Brief\n\n**Query:** ${originalQuery}\n\n## Research Steps\n${stepSummaries}\n\n## Total Citations: ${steps.reduce((sum, s) => sum + s.citations.length, 0)}`;
 }
 
@@ -244,15 +244,15 @@ async function callPrivilegedSearchAPI(
   sessionId: string,
   _firmId: string,
 ): Promise<SearchFragment[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
   try {
     const res = await fetch(`${baseUrl}/api/privileged-search`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         query,
-        ephemeralToken: 'internal-pro-search',
-        sandboxId: 'pro-search-sandbox',
+        ephemeralToken: "internal-pro-search",
+        sandboxId: "pro-search-sandbox",
         sessionId,
       }),
       signal: AbortSignal.timeout(15000),

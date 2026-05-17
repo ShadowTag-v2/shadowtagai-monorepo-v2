@@ -3,7 +3,7 @@
    Implementation of the Sovereign Lens tokens for Jules control
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 :root {
   /* Sovereign Lens Tokens */
@@ -25,7 +25,7 @@
   --sovereign-electric-edge: 0 0 15px var(--sovereign-secondary);
   --sovereign-ambient-shadow: 0 40px 80px rgba(210, 187, 255, 0.04);
 
-  --font-space-grotesk: 'Space Grotesk', sans-serif;
+  --font-space-grotesk: "Space Grotesk", sans-serif;
 }
 
 .sovereign-container {
