@@ -242,3 +242,6 @@ bin/mcp-toolbox
 _archive_redundant_venvs_*/
 .hypothesis/
 control/legacy_workspaces/
+
+# Security scan reports (contain detected secrets - NEVER commit)
+.reports/

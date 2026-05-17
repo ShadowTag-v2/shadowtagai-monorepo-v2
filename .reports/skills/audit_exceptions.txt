@@ -1,1 +1,0 @@
-Added 20 exceptions to .reports/skills/unsafe_findings.md exception list.
