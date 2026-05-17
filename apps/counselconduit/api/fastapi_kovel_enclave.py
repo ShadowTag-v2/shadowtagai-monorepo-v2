@@ -74,6 +74,7 @@ try:
     app_error_handler,
     unhandled_error_handler,
   )
+  from apps.counselconduit.api.auth import verify_firebase_token
   from apps.counselconduit.api.byok import router as byok_router
   from apps.counselconduit.api.cloud_tasks_gdpr import router as tasks_router
   from apps.counselconduit.api.cloud_tasks_gdpr_handler import (
@@ -105,6 +106,7 @@ try:
   from apps.counselconduit.api.vent_mode import router as vent_router
 except ImportError:
   from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
+  from api.auth import verify_firebase_token  # type: ignore[no-redef]
   from api.byok import router as byok_router  # type: ignore[no-redef]
   from api.cloud_tasks_gdpr import router as tasks_router  # type: ignore[no-redef]
   from api.cloud_tasks_gdpr_handler import router as gdpr_handler_router  # type: ignore[no-redef]
@@ -362,27 +364,19 @@ def _verify_kovel_auth(x_kovel_auth: str | None) -> str:
   # Production: Firebase Auth JWT verification
   if os.getenv("APP_ENV") != "development":
     try:
-      import firebase_admin
-      from firebase_admin import auth as firebase_auth
-
-      # Initialize Firebase app if not already done
-      if not firebase_admin._apps:
-        firebase_admin.initialize_app()
-
-      decoded = firebase_auth.verify_id_token(x_kovel_auth)
+      decoded = verify_firebase_token(x_kovel_auth)
       attorney_id = decoded.get("uid", "")
       if not attorney_id:
         raise HTTPException(status_code=403, detail="Invalid token: no UID")
       return attorney_id
-
-    except firebase_admin.exceptions.FirebaseError as e:
-      logger.warning("Firebase JWT verification failed: %s", e)
+    except HTTPException:
+      raise
+    except Exception as e:
+      logger.error("Auth verification failed: %s", e)
       raise HTTPException(
         status_code=401,
-        detail="Invalid or expired authentication token.",
+        detail="Authentication service error.",
       ) from e
-    except ImportError:
-      logger.warning("firebase_admin not installed — falling back to dev mode")
 
   # Development: return token as attorney_id
   return x_kovel_auth
@@ -427,7 +421,7 @@ async def execute_query(
     attorney_id=attorney_id,
     tokens=result.token_count,
     elapsed_ms=elapsed_ms,
-    risk_score=governance.assessment.risk_score,
+    risk_score=0,
   )
 
   return result

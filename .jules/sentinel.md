@@ -1,0 +1,4 @@
+## 2025-05-15 - [HIGH] Inconsistent Firebase Token Revocation Checks
+**Vulnerability:** Multiple API entry points implemented their own Firebase ID token verification logic instead of using a centralized service. Specifically, `fastapi_kovel_enclave.py` and `dispatch_router.py` called `auth.verify_id_token()` without the `check_revoked=True` parameter.
+**Learning:** Decoupled authentication logic often leads to security drift where critical parameters (like revocation checks) are missed in newer or alternative implementations. Revocation checks are essential for session management in high-security environments like Legal AI.
+**Prevention:** Enforce a "Single Source of Truth" for authentication by providing a centralized helper function that is mandatory for all modules. Reject PRs that implement raw authentication calls to third-party libraries.
