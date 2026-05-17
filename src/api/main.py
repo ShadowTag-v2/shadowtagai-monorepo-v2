@@ -128,8 +128,9 @@ async def root():
 
 
 @app.get("/health")
+@app.get("/healthz")
 async def health_check():
-  """Health check endpoint."""
+  """Health check endpoint (Cloud Run compatible)."""
   return {"status": "healthy", "service": "multi-agent-system"}
 
 
