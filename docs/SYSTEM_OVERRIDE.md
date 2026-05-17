@@ -246,6 +246,29 @@ The canonical `cline_mcp_settings.json` for Plane 2:
 
 ---
 
+## DAEMON FLEET REGISTRY
+
+Autonomous background processes that maintain workspace hygiene.
+
+| Daemon | Script | Schedule | Purpose |
+|--------|--------|----------|---------|
+| Dream Consolidation | `scripts/dream_consolidation.py` | Nightly | KI maintenance: orient → gather → consolidate → prune |
+| Loop Steward | `scripts/loop_steward.py` | 5-min cycles | Autonomous task continuation with idle scaling |
+| KAIROS | `scripts/kairos_daemon.py` | Background | Proactive suggestion engine with Gemini 3.x inference |
+| pnkln-evolve | `scripts/pnkln_evolve.py` | Background | Recursive self-improvement loop |
+| Omni-Autolint | `scripts/gca_autolint_daemon.py` | Daily 3-5AM | Secure lint+push via GitHub App tokens, beads audit trail |
+
+### Daemon Health Check
+
+```bash
+# Verify daemon scripts exist and are executable
+for d in dream_consolidation loop_steward kairos_daemon pnkln_evolve gca_autolint_daemon; do
+  [ -f "scripts/${d}.py" ] && echo "✅ $d" || echo "❌ $d MISSING"
+done
+```
+
+---
+
 > **Constitutional Status:** LOCKED.
 > Modifications require STATE B (Clutch) approval and 8-Agent Board Synthesis.
 >
@@ -254,3 +277,4 @@ The canonical `cline_mcp_settings.json` for Plane 2:
 > - V26.1 (2026-05-15): Added cognitive cost rationale, drift detection protocol, server addition decision tree.
 > - V26.2 (2026-05-15): **100-tool platform constraint documented.** Plane 1 reduced from 7→6 servers (91 tools, 9 headroom). Removed `gemini-graph-memory` (Cline has equivalent), `gemini-web-fetcher` (module mismatch, now ready-to-add via `uvx`), `notebooklm-mcp` (budget overflow, lives on Cline Plane 2). Config source corrected to `~/.gemini/antigravity/mcp_config.json`. Decision tree updated with budget check step.
 > - V26.3 (2026-05-15): **Cline config hardened.** Hardcoded Maps API key replaced with `${GOOGLE_DESIGN_API_KEY}`. Phantom `gemini-github-mcp` removed (binary never existed). `gemini-web-fetcher` migrated from broken Bun→uvx and moved to Plane 2. 3 path drifts fixed (`mono-fresh` → `Monorepo-Uphillsnowball`). Stale `pyproject.toml` ruff config removed (line-length 100 vs 150 conflict). 2,836 lint violations fixed (142 I001, 754 T201, 1896 D400/D415, 44 F401/F841).
+> - V30 (2026-05-16): **Cleanup cascade.** 10 malformed `prompt_repeat.py` copies fixed (multiline default arg → escaped `\n`). Notebook schema reformatted. Biome 2.4.13 formatted 663 TS/JS files. Ruff dead-import fixes (F401). Judge6 timeout 30→50ms. Tracked `.pyc` removed. Daemon fleet registry added. 14/14 Stripe webhook tests passing. Firestore rules verified (9 collections, field-level restrictions). dotenv usage audited (18 references flagged in non-production code).
