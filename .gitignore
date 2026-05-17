@@ -245,3 +245,5 @@ control/legacy_workspaces/
 
 # Security scan reports (contain detected secrets - NEVER commit)
 .reports/
+apps/claurst/target/
+Monorepo-Uphillsnowball
