@@ -22,7 +22,7 @@ class Probability(str, Enum):
 class Severity(str, Enum):
   """Risk severity levels (ATP 5-19 compliant)."""
 
-  I = "I"  # Catastrophic (mission failure, death, >$10M loss)
+  I = "I"  # Catastrophic (mission failure, death, >$10M loss)  # noqa: E741
   II = "II"  # Critical (degraded mission, severe injury, $1-10M loss)
   III = "III"  # Moderate (degraded performance, minor injury, $100K-1M loss)
   IV = "IV"  # Negligible (minimal impact, no injury, <$100K loss)
