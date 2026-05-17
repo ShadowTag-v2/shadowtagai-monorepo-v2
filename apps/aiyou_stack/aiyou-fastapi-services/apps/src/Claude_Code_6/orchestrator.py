@@ -1,3 +1,8 @@
+# ⚠️ DEPRECATED — This file contains references to deprecated frameworks
+# (AutoGen/AG2, LangGraph, Vertex AI Workbench) that are no longer part of
+# the production CounselConduit architecture. These refs are slated for
+# removal. See deploy-preflight findings 2026-05-17.
+# Production path: apps/counselconduit/api/fastapi_kovel_enclave.py
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
 """Judge 6 LangGraph Orchestrator

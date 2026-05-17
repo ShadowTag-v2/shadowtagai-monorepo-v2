@@ -1,3 +1,8 @@
+# ⚠️ DEPRECATED — This file contains references to deprecated frameworks
+# (AutoGen/AG2, LangGraph, Vertex AI Workbench) that are no longer part of
+# the production CounselConduit architecture. These refs are slated for
+# removal. See deploy-preflight findings 2026-05-17.
+# Production path: apps/counselconduit/api/fastapi_kovel_enclave.py
 """COR AutoGen Integration - Multi-Agent Orchestration with Skill Routing
 
 This module provides:

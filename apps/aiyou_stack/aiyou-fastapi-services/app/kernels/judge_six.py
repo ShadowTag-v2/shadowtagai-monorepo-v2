@@ -7,7 +7,6 @@ Receives ViolationsScanOutput, produces JudgeSixClassification.
 
 from __future__ import annotations
 
-
 from app.kernels.base import Kernel, KernelChainError
 from app.models.decision import (
     JudgeSixClassification,

@@ -45,7 +45,13 @@ def _has_ane() -> bool:
     """True when running on Apple Silicon with the ANE dylib compiled."""
     if platform.system() != "Darwin":
         return False
-    dylib = __import__("pathlib").Path(__file__).resolve().parent.parent.parent.parent / "third_party" / "ANE" / "bridge" / "libane_bridge.dylib"
+    dylib = (
+        __import__("pathlib").Path(__file__).resolve().parent.parent.parent.parent
+        / "third_party"
+        / "ANE"
+        / "bridge"
+        / "libane_bridge.dylib"
+    )
     return dylib.exists()
 
 
@@ -94,7 +100,11 @@ def _dispatch_kvcached(text: str, file_name: str) -> list[dict[str, Any]]:
             {
                 "class": "claim",
                 "text": content,
-                "attrs": {"compute_target": "kvcached-GPU", "cost": "$0.00", "model": _KVCACHED_MODEL},
+                "attrs": {
+                    "compute_target": "kvcached-GPU",
+                    "cost": "$0.00",
+                    "model": _KVCACHED_MODEL,
+                },
                 "source": file_name,
             }
         ]
@@ -118,7 +128,9 @@ def _init_ane() -> None:
         logger.error(f"[ANE] init failed: {exc}")
 
 
-def _dispatch_ane(text: str, prompt_description: str, examples: list[Any], file_name: str) -> list[dict[str, Any]]:
+def _dispatch_ane(
+    text: str, prompt_description: str, examples: list[Any], file_name: str
+) -> list[dict[str, Any]]:
     """
     Route through ANE MIL kernel pipeline.
     MIL compilation + tensor injection wired here when kernel weights land.
