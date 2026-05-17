@@ -6,7 +6,7 @@ CRUD operations for OPORD-based atomic threads.
 import json
 import re
 from dataclasses import asdict, dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Paths
@@ -68,7 +68,7 @@ class AtomicThreadManager:
     situation: str = "",
   ) -> str:
     thread_id = self._get_next_id()
-    created = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    created = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     with open(TEMPLATES_DIR / "ATOMIC_THREAD_TEMPLATE.md") as f:
       template = f.read()

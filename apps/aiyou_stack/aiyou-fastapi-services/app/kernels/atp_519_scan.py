@@ -2,7 +2,8 @@
 
 import json
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from app.config import settings
 from app.kernels.base import Kernel, KernelChainError
@@ -62,22 +63,21 @@ Return violations in JSON format only."""
     def __init__(self, api_key: str | None = None):
         super().__init__(name="ATP519ScanKernel", max_latency_ms=settings.kernel_1_max_latency_ms)
 
-        # Configure Gemini API
+        # Configure Gemini API via new google.genai Client
         api_key = api_key or settings.gemini_api_key
         if not api_key:
             raise KernelChainError("Gemini API key not configured")
 
-        genai.configure(api_key=api_key)
+        self.client = genai.Client(api_key=api_key)
+        self.model_name = settings.gemini_model
 
-        # Initialize model with JSON output mode
-        self.model = genai.GenerativeModel(
-            model_name=settings.gemini_model,
-            generation_config={
-                "temperature": 0.1,  # Low temperature for consistency
-                "top_p": 0.95,
-                "top_k": 40,
-                "max_output_tokens": settings.kernel_1_max_output_tokens,
-            },
+        # Generation config using new types API
+        self.generation_config = types.GenerateContentConfig(
+            temperature=0.1,  # Low temperature for consistency
+            top_p=0.95,
+            top_k=40,
+            max_output_tokens=settings.kernel_1_max_output_tokens,
+            system_instruction=self.SYSTEM_PROMPT,
         )
 
     async def execute(self, kernel_input: KernelInput) -> KernelOutput:
@@ -105,8 +105,12 @@ Return violations in JSON format only."""
             # Build prompt
             prompt = self.USER_PROMPT_TEMPLATE.format(context=context)
 
-            # Call Gemini API
-            response = self.model.generate_content([self.SYSTEM_PROMPT, prompt])
+            # Call Gemini API via new client
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+                config=self.generation_config,
+            )
 
             # Parse JSON response
             response_text = response.text.strip()
@@ -126,14 +130,27 @@ Return violations in JSON format only."""
             scan_output = ViolationsScanOutput(
                 violations=violations,
                 scan_metadata={
-                    "model": settings.gemini_model,
+                    "model": self.model_name,
                     "context_size_bytes": len(context.encode()),
                 },
             )
 
-            # Calculate token counts (approximate)
-            input_tokens = len(context.split()) + len(self.SYSTEM_PROMPT.split())
-            output_tokens = len(response_text.split())
+            # Calculate token counts from response metadata
+            usage = getattr(response, "usage_metadata", None)
+            input_tokens = (
+                getattr(
+                    usage,
+                    "prompt_token_count",
+                    len(context.split()) + len(self.SYSTEM_PROMPT.split()),
+                )
+                if usage
+                else len(context.split()) + len(self.SYSTEM_PROMPT.split())
+            )
+            output_tokens = (
+                getattr(usage, "candidates_token_count", len(response_text.split()))
+                if usage
+                else len(response_text.split())
+            )
 
             # Estimate cost (Gemini Flash pricing: ~$0.00001 per 1K tokens)
             cost = (input_tokens + output_tokens) / 1000 * 0.00001

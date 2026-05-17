@@ -32,7 +32,7 @@ import hashlib
 import json
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -52,13 +52,13 @@ def _uid(prefix: str, url: str) -> str:
 
 def _parse_dt(s: str | None) -> datetime:
   if not s:
-    return datetime.utcnow()
+    return datetime.now(timezone.utc)
   for fmt in ("%Y-%m-%d", "%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%dT%H:%M:%SZ"):
     try:
       return datetime.strptime(s[:19], fmt[: len(s[:19])])
     except ValueError:
       continue
-  return datetime.utcnow()
+  return datetime.now(timezone.utc)
 
 
 def report_to_items(report: dict) -> list[dict]:

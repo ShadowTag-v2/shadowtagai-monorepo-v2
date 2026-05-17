@@ -8,7 +8,7 @@ import json
 # Add project root to path
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import schedule
@@ -58,7 +58,7 @@ class GeminiScheduler:
 
   def _log(self, message: str) -> None:
     """Log to file and stdout."""
-    timestamp = datetime.utcnow().isoformat()
+    timestamp = datetime.now(timezone.utc).isoformat()
     log_entry = f"[{timestamp}] {message}"
 
     with open(self.log_file, "a") as f:
@@ -104,7 +104,7 @@ class GeminiScheduler:
 
     result = {
       "status": "complete",
-      "timestamp": datetime.utcnow().isoformat(),
+      "timestamp": datetime.now(timezone.utc).isoformat(),
       "health_score": bugbot_results.get("health_score", 0),
       "total_issues": bugbot_results.get("total_issues", 0),
       "jura_recommendation": assessment.get("recommendation", "N/A"),
@@ -116,7 +116,7 @@ class GeminiScheduler:
     # Save results
     results_file = (
       self.log_file.parent
-      / f"ingestion_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
+      / f"ingestion_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.json"
     )
     with open(results_file, "w") as f:
       json.dump(result, f, indent=2)
