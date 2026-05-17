@@ -58,4 +58,3 @@ export function initializeObservability() {
     console.log('OpenTelemetry SDK shut down');
   });
 }
-```
