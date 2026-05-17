@@ -1,9 +1,9 @@
-# SYSTEM OVERRIDE: V26.3 SYMBIOTIC ALIGNMENT — DUAL-PLANE FLEET SEPARATION
+# SYSTEM OVERRIDE: V31 SOVEREIGN MERIDIAN — CHERRY-PICK CONSOLIDATION
 
 > **To:** Antigravity Core Engine
 > **Project:** `shadowtag-omega-v4`
-> **Version:** V26.3 | **Status:** LOCKED
-> **Last Updated:** 2026-05-15
+> **Version:** V31 | **Status:** LOCKED
+> **Last Updated:** 2026-05-17
 
 ---
 
@@ -278,3 +278,4 @@ done
 > - V26.2 (2026-05-15): **100-tool platform constraint documented.** Plane 1 reduced from 7→6 servers (91 tools, 9 headroom). Removed `gemini-graph-memory` (Cline has equivalent), `gemini-web-fetcher` (module mismatch, now ready-to-add via `uvx`), `notebooklm-mcp` (budget overflow, lives on Cline Plane 2). Config source corrected to `~/.gemini/antigravity/mcp_config.json`. Decision tree updated with budget check step.
 > - V26.3 (2026-05-15): **Cline config hardened.** Hardcoded Maps API key replaced with `${GOOGLE_DESIGN_API_KEY}`. Phantom `gemini-github-mcp` removed (binary never existed). `gemini-web-fetcher` migrated from broken Bun→uvx and moved to Plane 2. 3 path drifts fixed (`mono-fresh` → `Monorepo-Uphillsnowball`). Stale `pyproject.toml` ruff config removed (line-length 100 vs 150 conflict). 2,836 lint violations fixed (142 I001, 754 T201, 1896 D400/D415, 44 F401/F841).
 > - V30 (2026-05-16): **Cleanup cascade.** 10 malformed `prompt_repeat.py` copies fixed (multiline default arg → escaped `\n`). Notebook schema reformatted. Biome 2.4.13 formatted 663 TS/JS files. Ruff dead-import fixes (F401). Judge6 timeout 30→50ms. Tracked `.pyc` removed. Daemon fleet registry added. 14/14 Stripe webhook tests passing. Firestore rules verified (9 collections, field-level restrictions). dotenv usage audited (18 references flagged in non-production code).
+> - V31 (2026-05-17): **Cherry-pick consolidation.** Feature branch `fix/v26.3-dual-plane-hardening` had 13 commits but 4 mass-reformat bombs (7943+6901+4171+1983 files) caused 2738 merge conflicts. Solution: abort merge, cherry-pick 8 surgical commits (30 files total). Cherry-picks: E741 lint fixes, auth push URL fix, AG-UI+A2A mesh+Darwinian Gate, bicameral MCP split+Stripe tests, /healthz endpoint, TS compilation+IAM, test pollution fix, datetime.utcnow→datetime.now(UTC)+genai SDK. Test suite: **3688 passed, 35 skipped, 0 failures** (6m10s). Gitleaks: 1118 findings (all in third-party vendored code — yarn, labs/gemini-cookbook, external_sdks). Firestore rules verified (12 collections, zero open-write). Cloud Run /healthz: HTTP 404 (not yet deployed with new endpoint). Biome incremental: 1961 TS/JS files auto-fixed. Ruff: 2 F401 unused imports removed. `uphillsnowball` remote deleted. Sandbox `firestore_schema.py` cherry-picked for Phase 3.
