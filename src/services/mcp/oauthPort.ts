@@ -2,12 +2,12 @@
  * OAuth redirect port helpers — extracted from auth.ts to break the
  * auth.ts ↔ xaaIdpLogin.ts circular dependency.
  */
-import { createServer } from 'node:http';
-import { getPlatform } from '../../utils/platform.js';
+import { createServer } from "node:http";
+import { getPlatform } from "../../utils/platform.js";
 
 // Windows dynamic port range 49152-65535 is reserved
 const REDIRECT_PORT_RANGE =
-  getPlatform() === 'windows' ? { min: 39152, max: 49151 } : { min: 49152, max: 65535 };
+  getPlatform() === "windows" ? { min: 39152, max: 49151 } : { min: 49152, max: 65535 };
 const REDIRECT_PORT_FALLBACK = 3118;
 
 /**
@@ -21,7 +21,7 @@ export function buildRedirectUri(port: number = REDIRECT_PORT_FALLBACK): string 
 }
 
 function getMcpOAuthCallbackPort(): number | undefined {
-  const port = parseInt(process.env.MCP_OAUTH_CALLBACK_PORT || '', 10);
+  const port = parseInt(process.env.MCP_OAUTH_CALLBACK_PORT || "", 10);
   return port > 0 ? port : undefined;
 }
 
@@ -46,7 +46,7 @@ export async function findAvailablePort(): Promise<number> {
     try {
       await new Promise<void>((resolve, reject) => {
         const testServer = createServer();
-        testServer.once('error', reject);
+        testServer.once("error", reject);
         testServer.listen(port, () => {
           testServer.close(() => resolve());
         });
@@ -59,7 +59,7 @@ export async function findAvailablePort(): Promise<number> {
   try {
     await new Promise<void>((resolve, reject) => {
       const testServer = createServer();
-      testServer.once('error', reject);
+      testServer.once("error", reject);
       testServer.listen(REDIRECT_PORT_FALLBACK, () => {
         testServer.close(() => resolve());
       });

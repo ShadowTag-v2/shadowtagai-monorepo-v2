@@ -1,48 +1,48 @@
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { execa } from 'execa';
-import type * as React from 'react';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay } from '../../commands.js';
-import { Select } from '../../components/CustomSelect/select.js';
-import { Dialog } from '../../components/design-system/Dialog.js';
-import { Spinner } from '../../components/Spinner.js';
-import instances from '../../ink/instances.js';
-import { Box, Text } from '../../ink.js';
-import { enablePluginOp } from '../../services/plugins/pluginOperations.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { isENOENT, toError } from '../../utils/errors.js';
-import { execFileNoThrow } from '../../utils/execFileNoThrow.js';
-import { pathExists } from '../../utils/file.js';
-import { logError } from '../../utils/log.js';
-import { getPlatform } from '../../utils/platform.js';
-import { clearAllCaches } from '../../utils/plugins/cacheUtils.js';
-import { isPluginInstalled } from '../../utils/plugins/installedPluginsManager.js';
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { execa } from "execa";
+import type * as React from "react";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay } from "../../commands.js";
+import { Select } from "../../components/CustomSelect/select.js";
+import { Dialog } from "../../components/design-system/Dialog.js";
+import { Spinner } from "../../components/Spinner.js";
+import instances from "../../ink/instances.js";
+import { Box, Text } from "../../ink.js";
+import { enablePluginOp } from "../../services/plugins/pluginOperations.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { isENOENT, toError } from "../../utils/errors.js";
+import { execFileNoThrow } from "../../utils/execFileNoThrow.js";
+import { pathExists } from "../../utils/file.js";
+import { logError } from "../../utils/log.js";
+import { getPlatform } from "../../utils/platform.js";
+import { clearAllCaches } from "../../utils/plugins/cacheUtils.js";
+import { isPluginInstalled } from "../../utils/plugins/installedPluginsManager.js";
 import {
   addMarketplaceSource,
   clearMarketplacesCache,
   loadKnownMarketplacesConfig,
   refreshMarketplace,
-} from '../../utils/plugins/marketplaceManager.js';
-import { OFFICIAL_MARKETPLACE_NAME } from '../../utils/plugins/officialMarketplace.js';
-import { loadAllPlugins } from '../../utils/plugins/pluginLoader.js';
-import { installSelectedPlugins } from '../../utils/plugins/pluginStartupCheck.js';
+} from "../../utils/plugins/marketplaceManager.js";
+import { OFFICIAL_MARKETPLACE_NAME } from "../../utils/plugins/officialMarketplace.js";
+import { loadAllPlugins } from "../../utils/plugins/pluginLoader.js";
+import { installSelectedPlugins } from "../../utils/plugins/pluginStartupCheck.js";
 
 // Marketplace and plugin identifiers - varies by user type
-const INTERNAL_MARKETPLACE_NAME = 'claude-code-marketplace';
-const INTERNAL_MARKETPLACE_REPO = 'anthropics/claude-code-marketplace';
-const OFFICIAL_MARKETPLACE_REPO = 'anthropics/claude-plugins-official';
+const INTERNAL_MARKETPLACE_NAME = "claude-code-marketplace";
+const INTERNAL_MARKETPLACE_REPO = "anthropics/claude-code-marketplace";
+const OFFICIAL_MARKETPLACE_REPO = "anthropics/claude-plugins-official";
 function getMarketplaceName(): string {
-  return 'external' === 'ant' ? INTERNAL_MARKETPLACE_NAME : OFFICIAL_MARKETPLACE_NAME;
+  return "external" === "ant" ? INTERNAL_MARKETPLACE_NAME : OFFICIAL_MARKETPLACE_NAME;
 }
 function getMarketplaceRepo(): string {
-  return 'external' === 'ant' ? INTERNAL_MARKETPLACE_REPO : OFFICIAL_MARKETPLACE_REPO;
+  return "external" === "ant" ? INTERNAL_MARKETPLACE_REPO : OFFICIAL_MARKETPLACE_REPO;
 }
 function getPluginId(): string {
   return `thinkback@${getMarketplaceName()}`;
 }
-const SKILL_NAME = 'thinkback';
+const SKILL_NAME = "thinkback";
 
 /**
  * Get the thinkback skill directory from the installed plugin's cache path
@@ -50,12 +50,12 @@ const SKILL_NAME = 'thinkback';
 async function getThinkbackSkillDir(): Promise<string | null> {
   const { enabled } = await loadAllPlugins();
   const thinkbackPlugin = enabled.find(
-    (p) => p.name === 'thinkback' || p.source?.includes(getPluginId()),
+    (p) => p.name === "thinkback" || p.source?.includes(getPluginId()),
   );
   if (!thinkbackPlugin) {
     return null;
   }
-  const skillDir = join(thinkbackPlugin.path, 'skills', SKILL_NAME);
+  const skillDir = join(thinkbackPlugin.path, "skills", SKILL_NAME);
   if (await pathExists(skillDir)) {
     return skillDir;
   }
@@ -65,8 +65,8 @@ export async function playAnimation(skillDir: string): Promise<{
   success: boolean;
   message: string;
 }> {
-  const dataPath = join(skillDir, 'year_in_review.js');
-  const playerPath = join(skillDir, 'player.js');
+  const dataPath = join(skillDir, "year_in_review.js");
+  const playerPath = join(skillDir, "player.js");
 
   // Both files are prerequisites for the node subprocess. Read them here
   // (not at call sites) so all callers get consistent error messaging. The
@@ -82,7 +82,7 @@ export async function playAnimation(skillDir: string): Promise<{
     if (isENOENT(e)) {
       return {
         success: false,
-        message: 'No animation found. Run /think-back first to generate one.',
+        message: "No animation found. Run /think-back first to generate one.",
       };
     }
     logError(e);
@@ -97,7 +97,7 @@ export async function playAnimation(skillDir: string): Promise<{
     if (isENOENT(e)) {
       return {
         success: false,
-        message: 'Player script not found. The player.js file is missing from the thinkback skill.',
+        message: "Player script not found. The player.js file is missing from the thinkback skill.",
       };
     }
     logError(e);
@@ -112,13 +112,13 @@ export async function playAnimation(skillDir: string): Promise<{
   if (!inkInstance) {
     return {
       success: false,
-      message: 'Failed to access terminal instance',
+      message: "Failed to access terminal instance",
     };
   }
   inkInstance.enterAlternateScreen();
   try {
-    await execa('node', [playerPath], {
-      stdio: 'inherit',
+    await execa("node", [playerPath], {
+      stdio: "inherit",
       cwd: skillDir,
       reject: false,
     });
@@ -129,35 +129,35 @@ export async function playAnimation(skillDir: string): Promise<{
   }
 
   // Open the HTML file in browser for video download
-  const htmlPath = join(skillDir, 'year_in_review.html');
+  const htmlPath = join(skillDir, "year_in_review.html");
   if (await pathExists(htmlPath)) {
     const platform = getPlatform();
-    const openCmd = platform === 'macos' ? 'open' : platform === 'windows' ? 'start' : 'xdg-open';
+    const openCmd = platform === "macos" ? "open" : platform === "windows" ? "start" : "xdg-open";
     void execFileNoThrow(openCmd, [htmlPath]);
   }
   return {
     success: true,
-    message: 'Year in review animation complete!',
+    message: "Year in review animation complete!",
   };
 }
 type InstallState =
   | {
-      phase: 'checking';
+      phase: "checking";
     }
   | {
-      phase: 'installing-marketplace';
+      phase: "installing-marketplace";
     }
   | {
-      phase: 'installing-plugin';
+      phase: "installing-plugin";
     }
   | {
-      phase: 'enabling-plugin';
+      phase: "enabling-plugin";
     }
   | {
-      phase: 'ready';
+      phase: "ready";
     }
   | {
-      phase: 'error';
+      phase: "error";
       message: string;
     };
 function ThinkbackInstaller({
@@ -168,9 +168,9 @@ function ThinkbackInstaller({
   onError: (message: string) => void;
 }): React.ReactNode {
   const [state, setState] = useState<InstallState>({
-    phase: 'checking',
+    phase: "checking",
   });
-  const [progressMessage, setProgressMessage] = useState('');
+  const [progressMessage, setProgressMessage] = useState("");
   useEffect(() => {
     async function checkAndInstall(): Promise<void> {
       try {
@@ -186,12 +186,12 @@ function ThinkbackInstaller({
         if (!marketplaceInstalled) {
           // Install the marketplace
           setState({
-            phase: 'installing-marketplace',
+            phase: "installing-marketplace",
           });
           logForDebugging(`Installing marketplace ${marketplaceRepo}`);
           await addMarketplaceSource(
             {
-              source: 'github',
+              source: "github",
               repo: marketplaceRepo,
             },
             (message) => {
@@ -204,9 +204,9 @@ function ThinkbackInstaller({
           // Marketplace installed but plugin not installed - refresh to get latest plugins
           // Only refresh when needed to avoid potentially destructive git operations
           setState({
-            phase: 'installing-marketplace',
+            phase: "installing-marketplace",
           });
-          setProgressMessage('Updating marketplace…');
+          setProgressMessage("Updating marketplace…");
           logForDebugging(`Refreshing marketplace ${marketplaceName}`);
           await refreshMarketplace(marketplaceName, (message_0) => {
             setProgressMessage(message_0);
@@ -218,12 +218,12 @@ function ThinkbackInstaller({
         if (!pluginAlreadyInstalled) {
           // Install the plugin
           setState({
-            phase: 'installing-plugin',
+            phase: "installing-plugin",
           });
           logForDebugging(`Installing plugin ${pluginId}`);
           const result = await installSelectedPlugins([pluginId]);
           if (result.failed.length > 0) {
-            const errorMsg = result.failed.map((f) => `${f.name}: ${f.error}`).join(', ');
+            const errorMsg = result.failed.map((f) => `${f.name}: ${f.error}`).join(", ");
             throw new Error(`Failed to install plugin: ${errorMsg}`);
           }
           clearAllCaches();
@@ -232,12 +232,12 @@ function ThinkbackInstaller({
           // Plugin is installed, check if it's enabled
           const { disabled } = await loadAllPlugins();
           const isDisabled = disabled.some(
-            (p) => p.name === 'thinkback' || p.source?.includes(pluginId),
+            (p) => p.name === "thinkback" || p.source?.includes(pluginId),
           );
           if (isDisabled) {
             // Enable the plugin
             setState({
-              phase: 'enabling-plugin',
+              phase: "enabling-plugin",
             });
             logForDebugging(`Enabling plugin ${pluginId}`);
             const enableResult = await enablePluginOp(pluginId);
@@ -249,14 +249,14 @@ function ThinkbackInstaller({
           }
         }
         setState({
-          phase: 'ready',
+          phase: "ready",
         });
         onReady();
       } catch (error) {
         const err = toError(error);
         logError(err);
         setState({
-          phase: 'error',
+          phase: "error",
           message: err.message,
         });
         onError(err.message);
@@ -264,24 +264,24 @@ function ThinkbackInstaller({
     }
     void checkAndInstall();
   }, [onReady, onError]);
-  if (state.phase === 'error') {
+  if (state.phase === "error") {
     return (
       <Box flexDirection="column">
         <Text color="error">Error: {state.message}</Text>
       </Box>
     );
   }
-  if (state.phase === 'ready') {
+  if (state.phase === "ready") {
     return null;
   }
   const statusMessage =
-    state.phase === 'checking'
-      ? 'Checking thinkback installation…'
-      : state.phase === 'installing-marketplace'
-        ? 'Installing marketplace…'
-        : state.phase === 'enabling-plugin'
-          ? 'Enabling thinkback plugin…'
-          : 'Installing thinkback plugin…';
+    state.phase === "checking"
+      ? "Checking thinkback installation…"
+      : state.phase === "installing-marketplace"
+        ? "Installing marketplace…"
+        : state.phase === "enabling-plugin"
+          ? "Enabling thinkback plugin…"
+          : "Installing thinkback plugin…";
   return (
     <Box flexDirection="column">
       <Box>
@@ -291,8 +291,8 @@ function ThinkbackInstaller({
     </Box>
   );
 }
-type MenuAction = 'play' | 'edit' | 'fix' | 'regenerate';
-type GenerativeAction = Exclude<MenuAction, 'play'>;
+type MenuAction = "play" | "edit" | "fix" | "regenerate";
+type GenerativeAction = Exclude<MenuAction, "play">;
 function ThinkbackMenu(t0) {
   const $ = _c(19);
   const { onDone, onAction, skillDir, hasGenerated } = t0;
@@ -302,31 +302,31 @@ function ThinkbackMenu(t0) {
     t1 = hasGenerated
       ? [
           {
-            label: 'Play animation',
-            value: 'play' as const,
-            description: 'Watch your year in review',
+            label: "Play animation",
+            value: "play" as const,
+            description: "Watch your year in review",
           },
           {
-            label: 'Edit content',
-            value: 'edit' as const,
-            description: 'Modify the animation',
+            label: "Edit content",
+            value: "edit" as const,
+            description: "Modify the animation",
           },
           {
-            label: 'Fix errors',
-            value: 'fix' as const,
-            description: 'Fix validation or rendering issues',
+            label: "Fix errors",
+            value: "fix" as const,
+            description: "Fix validation or rendering issues",
           },
           {
-            label: 'Regenerate',
-            value: 'regenerate' as const,
-            description: 'Create a new animation from scratch',
+            label: "Regenerate",
+            value: "regenerate" as const,
+            description: "Create a new animation from scratch",
           },
         ]
       : [
           {
             label: "Let's go!",
-            value: 'regenerate' as const,
-            description: 'Generate your personalized animation',
+            value: "regenerate" as const,
+            description: "Generate your personalized animation",
           },
         ];
     $[0] = hasGenerated;
@@ -339,10 +339,10 @@ function ThinkbackMenu(t0) {
   if ($[2] !== onAction || $[3] !== onDone || $[4] !== skillDir) {
     t2 = function handleSelect(value) {
       setHasSelected(true);
-      if (value === 'play') {
+      if (value === "play") {
         playAnimation(skillDir).then(() => {
           onDone(undefined, {
-            display: 'skip',
+            display: "skip",
           });
         });
       } else {
@@ -361,7 +361,7 @@ function ThinkbackMenu(t0) {
   if ($[6] !== onDone) {
     t3 = function handleCancel() {
       onDone(undefined, {
-        display: 'skip',
+        display: "skip",
       });
     };
     $[6] = onDone;
@@ -445,7 +445,7 @@ function ThinkbackFlow(t0) {
   const [skillDir, setSkillDir] = useState(null);
   const [hasGenerated, setHasGenerated] = useState(null);
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = function handleReady() {
       setInstallComplete(true);
     };
@@ -461,7 +461,7 @@ function ThinkbackFlow(t0) {
       onDone(
         `Error with thinkback: ${message}. Try running /plugin to manually install the think-back plugin.`,
         {
-          display: 'system',
+          display: "system",
         },
       );
     };
@@ -486,7 +486,7 @@ function ThinkbackFlow(t0) {
             logForDebugging(`Thinkback skill directory: ${dir}`);
             setSkillDir(dir);
           } else {
-            handleError('Could not find thinkback skill directory');
+            handleError("Could not find thinkback skill directory");
           }
         });
       }
@@ -510,9 +510,9 @@ function ThinkbackFlow(t0) {
       if (!skillDir) {
         return;
       }
-      const dataPath = join(skillDir, 'year_in_review.js');
+      const dataPath = join(skillDir, "year_in_review.js");
       pathExists(dataPath).then((exists) => {
-        logForDebugging(`Checking for ${dataPath}: ${exists ? 'found' : 'not found'}`);
+        logForDebugging(`Checking for ${dataPath}: ${exists ? "found" : "not found"}`);
         setHasGenerated(exists);
       });
     };
@@ -534,7 +534,7 @@ function ThinkbackFlow(t0) {
         regenerate: REGENERATE_PROMPT,
       };
       onDone(prompts[action], {
-        display: 'user',
+        display: "user",
         shouldQuery: true,
       });
     };
@@ -554,7 +554,7 @@ function ThinkbackFlow(t0) {
       t8 = $[15];
     }
     let t9;
-    if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
       t9 = (
         <Text dimColor={true}>Try running /plugin to manually install the think-back plugin.</Text>
       );
@@ -590,7 +590,7 @@ function ThinkbackFlow(t0) {
   }
   if (!skillDir || hasGenerated === null) {
     let t8;
-    if ($[21] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[21] === Symbol.for("react.memo_cache_sentinel")) {
       t8 = (
         <Box>
           <Spinner />

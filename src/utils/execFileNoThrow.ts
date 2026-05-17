@@ -2,11 +2,11 @@
 // These wrappers ease error handling and cross-platform compatbility
 // By using execa, Windows automatically gets shell escaping + BAT / CMD handling
 
-import { type ExecaError, execa } from 'execa';
-import { getCwd } from '../utils/cwd.js';
-import { logError } from './log.js';
+import { type ExecaError, execa } from "execa";
+import { getCwd } from "../utils/cwd.js";
+import { logError } from "./log.js";
 
-export { execSyncWithDefaults_DEPRECATED } from './execFileNoThrowPortable.js';
+export { execSyncWithDefaults_DEPRECATED } from "./execFileNoThrowPortable.js";
 
 const MS_IN_SECOND = 1000;
 const SECONDS_IN_MINUTE = 60;
@@ -19,7 +19,7 @@ type ExecFileOptions = {
   // getCwd() -> PersistentShell -> logEvent() -> execFileNoThrow
   useCwd?: boolean;
   env?: NodeJS.ProcessEnv;
-  stdin?: 'ignore' | 'inherit' | 'pipe';
+  stdin?: "ignore" | "inherit" | "pipe";
   input?: string;
 };
 
@@ -51,7 +51,7 @@ type ExecFileWithCwdOptions = {
   cwd?: string;
   env?: NodeJS.ProcessEnv;
   shell?: boolean | string | undefined;
-  stdin?: 'ignore' | 'inherit' | 'pipe';
+  stdin?: "ignore" | "inherit" | "pipe";
   input?: string;
 };
 
@@ -74,7 +74,7 @@ function getErrorMessage(result: ExecaResultWithError, errorCode: number): strin
   if (result.shortMessage) {
     return result.shortMessage;
   }
-  if (typeof result.signal === 'string') {
+  if (typeof result.signal === "string") {
     return result.signal;
   }
   return String(errorCode);
@@ -120,13 +120,13 @@ export function execFileNoThrowWithCwd(
           if (finalPreserveOutput) {
             const errorCode = result.exitCode ?? 1;
             void resolve({
-              stdout: result.stdout || '',
-              stderr: result.stderr || '',
+              stdout: result.stdout || "",
+              stderr: result.stderr || "",
               code: errorCode,
               error: getErrorMessage(result as unknown as ExecaResultWithError, errorCode),
             });
           } else {
-            void resolve({ stdout: '', stderr: '', code: result.exitCode ?? 1 });
+            void resolve({ stdout: "", stderr: "", code: result.exitCode ?? 1 });
           }
         } else {
           void resolve({
@@ -138,7 +138,7 @@ export function execFileNoThrowWithCwd(
       })
       .catch((error: ExecaError) => {
         logError(error);
-        void resolve({ stdout: '', stderr: '', code: 1 });
+        void resolve({ stdout: "", stderr: "", code: 1 });
       });
   });
 }

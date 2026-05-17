@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Link, Text } from '../ink.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Link, Text } from "../ink.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
 
 type Props = {
   onDone: () => void;
@@ -10,7 +10,7 @@ export function CostThresholdDialog(t0) {
   const $ = _c(7);
   const { onDone } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <Box flexDirection="column">
         <Text>Learn more about how to monitor your spending:</Text>
@@ -22,11 +22,11 @@ export function CostThresholdDialog(t0) {
     t1 = $[0];
   }
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = [
       {
-        value: 'ok',
-        label: 'Got it, thanks!',
+        value: "ok",
+        label: "Got it, thanks!",
       },
     ];
     $[1] = t2;

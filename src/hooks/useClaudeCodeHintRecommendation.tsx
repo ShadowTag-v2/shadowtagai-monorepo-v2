@@ -1,4 +1,4 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 /**
  * Surfaces plugin-install prompts driven by `<claude-code-hint />` tags
  * that CLIs/SDKs emit to stderr. See docs/claude-code-hints.md.
@@ -9,35 +9,35 @@ import { c as _c } from 'react/compiler-runtime';
  * anything that reaches this hook is worth resolving.
  */
 
-import * as React from 'react';
-import { useNotifications } from '../context/notifications.js';
+import * as React from "react";
+import { useNotifications } from "../context/notifications.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
   logEvent,
-} from '../services/analytics/index.js';
+} from "../services/analytics/index.js";
 import {
   clearPendingHint,
   getPendingHintSnapshot,
   markShownThisSession,
   subscribeToPendingHint,
-} from '../utils/claudeCodeHints.js';
-import { logForDebugging } from '../utils/debug.js';
+} from "../utils/claudeCodeHints.js";
+import { logForDebugging } from "../utils/debug.js";
 import {
   disableHintRecommendations,
   markHintPluginShown,
   type PluginHintRecommendation,
   resolvePluginHint,
-} from '../utils/plugins/hintRecommendation.js';
-import { installPluginFromMarketplace } from '../utils/plugins/pluginInstallationHelpers.js';
+} from "../utils/plugins/hintRecommendation.js";
+import { installPluginFromMarketplace } from "../utils/plugins/pluginInstallationHelpers.js";
 import {
   installPluginAndNotify,
   usePluginRecommendationBase,
-} from './usePluginRecommendationBase.js';
+} from "./usePluginRecommendationBase.js";
 
 type UseClaudeCodeHintRecommendationResult = {
   recommendation: PluginHintRecommendation | null;
-  handleResponse: (response: 'yes' | 'no' | 'disable') => void;
+  handleResponse: (response: "yes" | "no" | "disable") => void;
 };
 export function useClaudeCodeHintRecommendation() {
   const $ = _c(11);
@@ -82,7 +82,7 @@ export function useClaudeCodeHintRecommendation() {
         return;
       }
       markHintPluginShown(recommendation.pluginId);
-      logEvent('tengu_plugin_hint_response', {
+      logEvent("tengu_plugin_hint_response", {
         _PROTO_plugin_name:
           recommendation.pluginName as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
         _PROTO_marketplace_name:
@@ -90,20 +90,20 @@ export function useClaudeCodeHintRecommendation() {
         response: response as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
       switch (response) {
-        case 'yes': {
+        case "yes": {
           const { pluginId, pluginName, marketplaceName } = recommendation;
           installPluginAndNotify(
             pluginId,
             pluginName,
-            'hint-plugin',
+            "hint-plugin",
             addNotification,
             async (pluginData) => {
               const result = await installPluginFromMarketplace({
                 pluginId,
                 entry: pluginData.entry,
                 marketplaceName,
-                scope: 'user',
-                trigger: 'hint',
+                scope: "user",
+                trigger: "hint",
               });
               if (!result.success) {
                 throw new Error(result.error);
@@ -112,11 +112,11 @@ export function useClaudeCodeHintRecommendation() {
           );
           break;
         }
-        case 'disable': {
+        case "disable": {
           disableHintRecommendations();
           break;
         }
-        case 'no':
+        case "no":
       }
       clearRecommendation();
     };

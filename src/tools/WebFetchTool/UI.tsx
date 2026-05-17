@@ -1,11 +1,11 @@
-import type React from 'react';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { TOOL_SUMMARY_MAX_LENGTH } from '../../constants/toolLimits.js';
-import { Box, Text } from '../../ink.js';
-import type { ToolProgressData } from '../../Tool.js';
-import type { ProgressMessage } from '../../types/message.js';
-import { formatFileSize, truncate } from '../../utils/format.js';
-import type { Output } from './WebFetchTool.js';
+import type React from "react";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { TOOL_SUMMARY_MAX_LENGTH } from "../../constants/toolLimits.js";
+import { Box, Text } from "../../ink.js";
+import type { ToolProgressData } from "../../Tool.js";
+import type { ProgressMessage } from "../../types/message.js";
+import { formatFileSize, truncate } from "../../utils/format.js";
+import type { Output } from "./WebFetchTool.js";
 export function renderToolUseMessage(
   {
     url,
@@ -25,7 +25,7 @@ export function renderToolUseMessage(
     return null;
   }
   if (verbose) {
-    return `url: "${url}"${verbose && prompt ? `, prompt: "${prompt}"` : ''}`;
+    return `url: "${url}"${verbose && prompt ? `, prompt: "${prompt}"` : ""}`;
   }
   return url;
 }

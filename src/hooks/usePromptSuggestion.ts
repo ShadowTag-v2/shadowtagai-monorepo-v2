@@ -1,11 +1,11 @@
-import { useCallback, useRef } from 'react';
-import { useTerminalFocus } from '../ink/hooks/use-terminal-focus.js';
+import { useCallback, useRef } from "react";
+import { useTerminalFocus } from "../ink/hooks/use-terminal-focus.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import { abortSpeculation } from '../services/PromptSuggestion/speculation.js';
-import { useAppState, useSetAppState } from '../state/AppState.js';
+} from "../services/analytics/index.js";
+import { abortSpeculation } from "../services/PromptSuggestion/speculation.js";
+import { useAppState, useSetAppState } from "../state/AppState.js";
 
 type Props = {
   inputValue: string;
@@ -106,11 +106,11 @@ export function usePromptSuggestion({ inputValue, isAssistantResponding }: Props
       const wasAccepted = tabWasPressed || finalInput === suggestionText;
       const timeMs = wasAccepted ? acceptedAt || Date.now() : Date.now();
 
-      logEvent('tengu_prompt_suggestion', {
-        source: 'cli' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      logEvent("tengu_prompt_suggestion", {
+        source: "cli" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         outcome: (wasAccepted
-          ? 'accepted'
-          : 'ignored') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+          ? "accepted"
+          : "ignored") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         prompt_id: promptId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         ...(generationRequestId && {
           generationRequestId:
@@ -118,8 +118,8 @@ export function usePromptSuggestion({ inputValue, isAssistantResponding }: Props
         }),
         ...(wasAccepted && {
           acceptMethod: (tabWasPressed
-            ? 'tab'
-            : 'enter') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+            ? "tab"
+            : "enter") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         }),
         ...(wasAccepted && {
           timeToAcceptMs: timeMs - shownAt,
@@ -132,7 +132,7 @@ export function usePromptSuggestion({ inputValue, isAssistantResponding }: Props
         }),
         wasFocusedWhenShown: wasFocusedWhenShown.current,
         similarity: Math.round((finalInput.length / (suggestionText?.length || 1)) * 100) / 100,
-        ...(process.env.USER_TYPE === 'ant' && {
+        ...(process.env.USER_TYPE === "ant" && {
           suggestion: suggestionText as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           userInput: finalInput as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         }),

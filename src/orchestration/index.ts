@@ -8,50 +8,49 @@
  * Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
  */
 
-// Fleet Orchestrator — Cloud Run fleet management via Jules SDK
-export {
-  JulesFleetOrchestrator,
-  type JulesConfig,
-  type GitHubSource,
-  type FleetService,
-  type ServiceStatus,
-  type DeploymentPlan,
-  type FleetDeployTarget,
-  type JulesSessionConfig,
-  type FleetHealthReport,
-  type SessionActivity,
-  type SessionArtifact,
-  type DeploymentResult,
-} from './jules_fleet_orchestrator.js';
-
-// Dart Edge Bridge — Task management integration
-export {
-  DartEdgeBridge,
-  type DartTask,
-  type DartTaskStatus,
-  type DartPriority,
-  type DartDoc,
-  type DartComment,
-  type DartMcpPlan,
-  type DartOperation,
-} from './dart_edge_bridge.js';
-
 // Claude Sourcemap Bridge — Production error deobfuscation
 export {
   ClaudeSourcemapBridge,
+  type DeobfuscatedFrame,
+  type DeobfuscatedTrace,
+  type ErrorCorrelation,
   type SourcemapEntry,
   type StackTraceFrame,
-  type DeobfuscatedTrace,
-  type DeobfuscatedFrame,
-  type ErrorCorrelation,
-} from './claude_sourcemap_bridge.js';
+} from "./claude_sourcemap_bridge.js";
+
+// Dart Edge Bridge — Task management integration
+export {
+  type DartComment,
+  type DartDoc,
+  DartEdgeBridge,
+  type DartMcpPlan,
+  type DartOperation,
+  type DartPriority,
+  type DartTask,
+  type DartTaskStatus,
+} from "./dart_edge_bridge.js";
+// Fleet Orchestrator — Cloud Run fleet management via Jules SDK
+export {
+  type DeploymentPlan,
+  type DeploymentResult,
+  type FleetDeployTarget,
+  type FleetHealthReport,
+  type FleetService,
+  type GitHubSource,
+  type JulesConfig,
+  JulesFleetOrchestrator,
+  type JulesSessionConfig,
+  type ServiceStatus,
+  type SessionActivity,
+  type SessionArtifact,
+} from "./jules_fleet_orchestrator.js";
 
 // NotebookLM Epistemic Hook — RAG memory corpus
 export {
-  NotebookLMEpistemicHook,
+  type ExpirationPolicy,
+  type MemoryCorpus,
   type MemoryEntry,
   type MemoryType,
-  type MemoryCorpus,
-  type ExpirationPolicy,
+  NotebookLMEpistemicHook,
   type NotebookLMIngestPlan,
-} from './notebooklm_hook.js';
+} from "./notebooklm_hook.js";

@@ -1,4 +1,4 @@
-import { CellWidth, cellAtIndex, type Screen, type StylePool, setCellStyleId } from './screen.js';
+import { CellWidth, cellAtIndex, type Screen, type StylePool, setCellStyleId } from "./screen.js";
 
 /**
  * Highlight all visible occurrences of `query` in the screen buffer by
@@ -41,7 +41,7 @@ export function applySearchHighlight(screen: Screen, query: string, stylePool: S
     // codeUnitToCell maps positions in the LOWERCASED text — U+0130
     // (Turkish İ) lowercases to 2 code units, so lowering the joined
     // string would desync indexOf positions from the map.
-    let text = '';
+    let text = "";
     const colOf: number[] = [];
     const codeUnitToCell: number[] = [];
     for (let col = 0; col < w; col++) {

@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import stripAnsi from 'strip-ansi';
-import { Box, Text } from '../../ink.js';
-import { formatFileSize } from '../../utils/format.js';
-import { MessageResponse } from '../MessageResponse.js';
-import { OffscreenFreeze } from '../OffscreenFreeze.js';
-import { ShellTimeDisplay } from './ShellTimeDisplay.js';
+import { c as _c } from "react/compiler-runtime";
+import stripAnsi from "strip-ansi";
+import { Box, Text } from "../../ink.js";
+import { formatFileSize } from "../../utils/format.js";
+import { MessageResponse } from "../MessageResponse.js";
+import { OffscreenFreeze } from "../OffscreenFreeze.js";
+import { ShellTimeDisplay } from "./ShellTimeDisplay.js";
 
 type Props = {
   output: string;
@@ -32,8 +32,8 @@ export function ShellProgressMessage(t0) {
   let t2;
   if ($[2] !== output || $[3] !== strippedFullOutput || $[4] !== verbose) {
     const strippedOutput = stripAnsi(output.trim());
-    lines = strippedOutput.split('\n').filter(_temp);
-    t2 = verbose ? strippedFullOutput : lines.slice(-5).join('\n');
+    lines = strippedOutput.split("\n").filter(_temp);
+    t2 = verbose ? strippedFullOutput : lines.slice(-5).join("\n");
     $[2] = output;
     $[3] = strippedFullOutput;
     $[4] = verbose;
@@ -46,7 +46,7 @@ export function ShellProgressMessage(t0) {
   const displayLines = t2;
   if (!lines.length) {
     let t3;
-    if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = <Text dimColor={true}>Running… </Text>;
       $[7] = t3;
     } else {
@@ -71,7 +71,7 @@ export function ShellProgressMessage(t0) {
     return t4;
   }
   const extraLines = totalLines ? Math.max(0, totalLines - 5) : 0;
-  let lineStatus = '';
+  let lineStatus = "";
   if (!verbose && totalBytes && totalLines) {
     lineStatus = `~${totalLines} lines`;
   } else {

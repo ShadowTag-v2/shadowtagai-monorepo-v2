@@ -1,11 +1,11 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from 'src/ink.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "src/ink.js";
 import {
   type NetworkHostPattern,
   shouldAllowManagedSandboxDomainsOnly,
-} from 'src/utils/sandbox/sandbox-adapter.js';
-import { Select } from '../CustomSelect/select.js';
-import { PermissionDialog } from './PermissionDialog.js';
+} from "src/utils/sandbox/sandbox-adapter.js";
+import { Select } from "../CustomSelect/select.js";
+import { PermissionDialog } from "./PermissionDialog.js";
 export type SandboxPermissionRequestProps = {
   hostPattern: NetworkHostPattern;
   onUserResponse: (response: { allow: boolean; persistToSettings: boolean }) => void;
@@ -18,21 +18,21 @@ export function SandboxPermissionRequest(t0) {
   if ($[0] !== onUserResponse) {
     t2 = function onSelect(value) {
       switch (value) {
-        case 'yes': {
+        case "yes": {
           onUserResponse({
             allow: true,
             persistToSettings: false,
           });
           break;
         }
-        case 'yes-dont-ask-again': {
+        case "yes-dont-ask-again": {
           onUserResponse({
             allow: true,
             persistToSettings: true,
           });
           break;
         }
-        case 'no': {
+        case "no": {
           onUserResponse({
             allow: false,
             persistToSettings: false,
@@ -47,7 +47,7 @@ export function SandboxPermissionRequest(t0) {
   }
   const onSelect = t2;
   let t3;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = shouldAllowManagedSandboxDomainsOnly();
     $[2] = t3;
   } else {
@@ -55,10 +55,10 @@ export function SandboxPermissionRequest(t0) {
   }
   const managedDomainsOnly = t3;
   let t4;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = {
-      label: 'Yes',
-      value: 'yes',
+      label: "Yes",
+      value: "yes",
     };
     $[3] = t4;
   } else {
@@ -74,7 +74,7 @@ export function SandboxPermissionRequest(t0) {
                 Yes, and don't ask again for <Text bold={true}>{host}</Text>
               </Text>
             ),
-            value: 'yes-dont-ask-again',
+            value: "yes-dont-ask-again",
           },
         ]
       : [];
@@ -84,14 +84,14 @@ export function SandboxPermissionRequest(t0) {
     t5 = $[5];
   }
   let t6;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {
       label: (
         <Text>
           No, and tell Claude what to do differently <Text bold={true}>(esc)</Text>
         </Text>
       ),
-      value: 'no',
+      value: "no",
     };
     $[6] = t6;
   } else {
@@ -107,7 +107,7 @@ export function SandboxPermissionRequest(t0) {
   }
   const options = t7;
   let t8;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = <Text dimColor={true}>Host:</Text>;
     $[9] = t8;
   } else {
@@ -127,7 +127,7 @@ export function SandboxPermissionRequest(t0) {
     t9 = $[11];
   }
   let t10;
-  if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
     t10 = (
       <Box marginTop={1}>
         <Text>Do you want to allow this connection?</Text>

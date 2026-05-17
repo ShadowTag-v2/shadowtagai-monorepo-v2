@@ -1,8 +1,8 @@
-import { createHash, randomBytes, randomUUID } from 'node:crypto';
-import { mkdir } from 'node:fs/promises';
-import { createServer, type Server } from 'node:http';
-import { join } from 'node:path';
-import { parse } from 'node:url';
+import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { mkdir } from "node:fs/promises";
+import { createServer, type Server } from "node:http";
+import { join } from "node:path";
+import { parse } from "node:url";
 import {
   discoverAuthorizationServerMetadata,
   discoverOAuthServerInfo,
@@ -10,14 +10,14 @@ import {
   type OAuthDiscoveryState,
   auth as sdkAuth,
   refreshAuthorization as sdkRefreshAuthorization,
-} from '@modelcontextprotocol/sdk/client/auth.js';
+} from "@modelcontextprotocol/sdk/client/auth.js";
 import {
   InvalidGrantError,
   OAuthError,
   ServerError,
   TemporarilyUnavailableError,
   TooManyRequestsError,
-} from '@modelcontextprotocol/sdk/server/auth/errors.js';
+} from "@modelcontextprotocol/sdk/server/auth/errors.js";
 import {
   type AuthorizationServerMetadata,
   type OAuthClientInformation,
@@ -27,28 +27,28 @@ import {
   OAuthMetadataSchema,
   type OAuthTokens,
   OAuthTokensSchema,
-} from '@modelcontextprotocol/sdk/shared/auth.js';
-import type { FetchLike } from '@modelcontextprotocol/sdk/shared/transport.js';
-import axios from 'axios';
-import xss from 'xss';
-import { MCP_CLIENT_METADATA_URL } from '../../constants/oauth.js';
-import { openBrowser } from '../../utils/browser.js';
-import { getClaudeConfigHomeDir } from '../../utils/envUtils.js';
-import { errorMessage, getErrnoCode } from '../../utils/errors.js';
-import * as lockfile from '../../utils/lockfile.js';
-import { logMCPDebug } from '../../utils/log.js';
-import { getPlatform } from '../../utils/platform.js';
-import { getSecureStorage } from '../../utils/secureStorage/index.js';
-import { clearKeychainCache } from '../../utils/secureStorage/macOsKeychainHelpers.js';
-import type { SecureStorageData } from '../../utils/secureStorage/types.js';
-import { sleep } from '../../utils/sleep.js';
-import { jsonParse, jsonStringify } from '../../utils/slowOperations.js';
-import { logEvent } from '../analytics/index.js';
-import type { AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS } from '../analytics/metadata.js';
-import { buildRedirectUri, findAvailablePort } from './oauthPort.js';
-import type { McpHTTPServerConfig, McpSSEServerConfig } from './types.js';
-import { getLoggingSafeMcpBaseUrl } from './utils.js';
-import { performCrossAppAccess, XaaTokenExchangeError } from './xaa.js';
+} from "@modelcontextprotocol/sdk/shared/auth.js";
+import type { FetchLike } from "@modelcontextprotocol/sdk/shared/transport.js";
+import axios from "axios";
+import xss from "xss";
+import { MCP_CLIENT_METADATA_URL } from "../../constants/oauth.js";
+import { openBrowser } from "../../utils/browser.js";
+import { getClaudeConfigHomeDir } from "../../utils/envUtils.js";
+import { errorMessage, getErrnoCode } from "../../utils/errors.js";
+import * as lockfile from "../../utils/lockfile.js";
+import { logMCPDebug } from "../../utils/log.js";
+import { getPlatform } from "../../utils/platform.js";
+import { getSecureStorage } from "../../utils/secureStorage/index.js";
+import { clearKeychainCache } from "../../utils/secureStorage/macOsKeychainHelpers.js";
+import type { SecureStorageData } from "../../utils/secureStorage/types.js";
+import { sleep } from "../../utils/sleep.js";
+import { jsonParse, jsonStringify } from "../../utils/slowOperations.js";
+import { logEvent } from "../analytics/index.js";
+import type { AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS } from "../analytics/metadata.js";
+import { buildRedirectUri, findAvailablePort } from "./oauthPort.js";
+import type { McpHTTPServerConfig, McpSSEServerConfig } from "./types.js";
+import { getLoggingSafeMcpBaseUrl } from "./utils.js";
+import { performCrossAppAccess, XaaTokenExchangeError } from "./xaa.js";
 import {
   acquireIdpIdToken,
   clearIdpIdToken,
@@ -57,7 +57,7 @@ import {
   getIdpClientSecret,
   getXaaIdpSettings,
   isXaaEnabled,
-} from './xaaIdpLogin.js';
+} from "./xaaIdpLogin.js";
 
 /**
  * Timeout for individual OAuth requests (metadata discovery, token refresh, etc.)
@@ -69,12 +69,12 @@ const AUTH_REQUEST_TIMEOUT_MS = 30000;
  * are emitted to analytics — keep them stable (do not rename; add new ones).
  */
 type MCPRefreshFailureReason =
-  | 'metadata_discovery_failed'
-  | 'no_client_info'
-  | 'no_tokens_returned'
-  | 'invalid_grant'
-  | 'transient_retries_exhausted'
-  | 'request_failed';
+  | "metadata_discovery_failed"
+  | "no_client_info"
+  | "no_tokens_returned"
+  | "invalid_grant"
+  | "transient_retries_exhausted"
+  | "request_failed";
 
 /**
  * Failure reasons for the `tengu_mcp_oauth_flow_error` event. Values are
@@ -82,14 +82,14 @@ type MCPRefreshFailureReason =
  * rename; add new ones).
  */
 type MCPOAuthFlowErrorReason =
-  | 'cancelled'
-  | 'timeout'
-  | 'provider_denied'
-  | 'state_mismatch'
-  | 'port_unavailable'
-  | 'sdk_auth_failed'
-  | 'token_exchange_failed'
-  | 'unknown';
+  | "cancelled"
+  | "timeout"
+  | "provider_denied"
+  | "state_mismatch"
+  | "port_unavailable"
+  | "sdk_auth_failed"
+  | "token_exchange_failed"
+  | "unknown";
 
 const MAX_LOCK_RETRIES = 5;
 
@@ -97,7 +97,7 @@ const MAX_LOCK_RETRIES = 5;
  * OAuth query parameters that should be redacted from logs.
  * These contain sensitive values that could enable CSRF or session fixation attacks.
  */
-const SENSITIVE_OAUTH_PARAMS = ['state', 'nonce', 'code_challenge', 'code_verifier', 'code'];
+const SENSITIVE_OAUTH_PARAMS = ["state", "nonce", "code_challenge", "code_verifier", "code"];
 
 /**
  * Redacts sensitive OAuth query parameters from a URL for safe logging.
@@ -108,7 +108,7 @@ function redactSensitiveUrlParams(url: string): string {
     const parsedUrl = new URL(url);
     for (const param of SENSITIVE_OAUTH_PARAMS) {
       if (parsedUrl.searchParams.has(param)) {
-        parsedUrl.searchParams.set(param, '[REDACTED]');
+        parsedUrl.searchParams.set(param, "[REDACTED]");
       }
     }
     return parsedUrl.toString();
@@ -139,9 +139,9 @@ function redactSensitiveUrlParams(url: string): string {
  * token invalidation fires correctly.
  */
 const NONSTANDARD_INVALID_GRANT_ALIASES = new Set([
-  'invalid_refresh_token',
-  'expired_refresh_token',
-  'token_expired',
+  "invalid_refresh_token",
+  "expired_refresh_token",
+  "token_expired",
 ]);
 
 /* eslint-disable eslint-plugin-n/no-unsupported-features/node-builtins --
@@ -168,7 +168,7 @@ export async function normalizeOAuthErrorBody(response: Response): Promise<Respo
   }
   const normalized = NONSTANDARD_INVALID_GRANT_ALIASES.has(result.data.error)
     ? {
-        error: 'invalid_grant',
+        error: "invalid_grant",
         error_description:
           result.data.error_description ??
           `Server returned non-standard error code: ${result.data.error}`,
@@ -176,7 +176,7 @@ export async function normalizeOAuthErrorBody(response: Response): Promise<Respo
     : result.data;
   return new Response(jsonStringify(normalized), {
     status: 400,
-    statusText: 'Bad Request',
+    statusText: "Bad Request",
     headers: response.headers,
   });
 }
@@ -190,7 +190,7 @@ export async function normalizeOAuthErrorBody(response: Response): Promise<Respo
 function createAuthFetch(): FetchLike {
   return async (url: string | URL, init?: RequestInit) => {
     const timeoutSignal = AbortSignal.timeout(AUTH_REQUEST_TIMEOUT_MS);
-    const isPost = init?.method?.toUpperCase() === 'POST';
+    const isPost = init?.method?.toUpperCase() === "POST";
 
     // No existing signal - just use timeout
     if (!init?.signal) {
@@ -203,13 +203,13 @@ function createAuthFetch(): FetchLike {
     const controller = new AbortController();
     const abort = () => controller.abort();
 
-    init.signal.addEventListener('abort', abort);
-    timeoutSignal.addEventListener('abort', abort);
+    init.signal.addEventListener("abort", abort);
+    timeoutSignal.addEventListener("abort", abort);
 
     // Cleanup to prevent event listener leaks after fetch completes
     const cleanup = () => {
-      init.signal?.removeEventListener('abort', abort);
-      timeoutSignal.removeEventListener('abort', abort);
+      init.signal?.removeEventListener("abort", abort);
+      timeoutSignal.removeEventListener("abort", abort);
     };
 
     if (init.signal.aborted) {
@@ -253,12 +253,12 @@ async function fetchAuthServerMetadata(
   resourceMetadataUrl?: URL,
 ): Promise<Awaited<ReturnType<typeof discoverAuthorizationServerMetadata>>> {
   if (configuredMetadataUrl) {
-    if (!configuredMetadataUrl.startsWith('https://')) {
+    if (!configuredMetadataUrl.startsWith("https://")) {
       throw new Error(`authServerMetadataUrl must use https:// (got: ${configuredMetadataUrl})`);
     }
     const authFetch = fetchFn ?? createAuthFetch();
     const response = await authFetch(configuredMetadataUrl, {
-      headers: { Accept: 'application/json' },
+      headers: { Accept: "application/json" },
     });
     if (response.ok) {
       return OAuthMetadataSchema.parse(await response.json());
@@ -286,7 +286,7 @@ async function fetchAuthServerMetadata(
   // Fallback only when the URL has a path component; for root URLs the SDK's
   // own fallback already probed the same endpoints.
   const url = new URL(serverUrl);
-  if (url.pathname === '/') {
+  if (url.pathname === "/") {
     return undefined;
   }
   return discoverAuthorizationServerMetadata(url, {
@@ -296,8 +296,8 @@ async function fetchAuthServerMetadata(
 
 export class AuthenticationCancelledError extends Error {
   constructor() {
-    super('Authentication was cancelled');
-    this.name = 'AuthenticationCancelledError';
+    super("Authentication was cancelled");
+    this.name = "AuthenticationCancelledError";
   }
 }
 
@@ -316,7 +316,7 @@ export function getServerKey(
     headers: serverConfig.headers || {},
   });
 
-  const hash = createHash('sha256').update(configJson).digest('hex').substring(0, 16);
+  const hash = createHash("sha256").update(configJson).digest("hex").substring(0, 16);
 
   return `${serverName}|${hash}`;
 }
@@ -367,40 +367,40 @@ async function revokeToken({
   clientId,
   clientSecret,
   accessToken,
-  authMethod = 'client_secret_basic',
+  authMethod = "client_secret_basic",
 }: {
   serverName: string;
   endpoint: string;
   token: string;
-  tokenTypeHint: 'access_token' | 'refresh_token';
+  tokenTypeHint: "access_token" | "refresh_token";
   clientId?: string;
   clientSecret?: string;
   accessToken?: string;
-  authMethod?: 'client_secret_basic' | 'client_secret_post';
+  authMethod?: "client_secret_basic" | "client_secret_post";
 }): Promise<void> {
   const params = new URLSearchParams();
-  params.set('token', token);
-  params.set('token_type_hint', tokenTypeHint);
+  params.set("token", token);
+  params.set("token_type_hint", tokenTypeHint);
 
   const headers: Record<string, string> = {
-    'Content-Type': 'application/x-www-form-urlencoded',
+    "Content-Type": "application/x-www-form-urlencoded",
   };
 
   // RFC 7009 §2.1 requires client auth per RFC 6749 §2.3. XAA always uses a
   // confidential client at the AS — strict ASes (Okta/Stytch) reject public-
   // client revocation of confidential-client tokens.
   if (clientId && clientSecret) {
-    if (authMethod === 'client_secret_post') {
-      params.set('client_id', clientId);
-      params.set('client_secret', clientSecret);
+    if (authMethod === "client_secret_post") {
+      params.set("client_id", clientId);
+      params.set("client_secret", clientSecret);
     } else {
       const basic = Buffer.from(
         `${encodeURIComponent(clientId)}:${encodeURIComponent(clientSecret)}`,
-      ).toString('base64');
+      ).toString("base64");
       headers.Authorization = `Basic ${basic}`;
     }
   } else if (clientId) {
-    params.set('client_id', clientId);
+    params.set("client_id", clientId);
   } else {
     logMCPDebug(
       serverName,
@@ -417,8 +417,8 @@ async function revokeToken({
       logMCPDebug(serverName, `Got 401, retrying ${tokenTypeHint} revocation with Bearer auth`);
       // RFC 6749 §2.3.1: must not send more than one auth method. The retry
       // switches to Bearer — clear any client creds from the body.
-      params.delete('client_id');
-      params.delete('client_secret');
+      params.delete("client_id");
+      params.delete("client_secret");
       await axios.post(endpoint, params, {
         headers: { ...headers, Authorization: `Bearer ${accessToken}` },
       });
@@ -460,29 +460,29 @@ export async function revokeServerTokens(
       );
 
       if (!metadata) {
-        logMCPDebug(serverName, 'No OAuth metadata found');
+        logMCPDebug(serverName, "No OAuth metadata found");
       } else {
         const revocationEndpoint =
-          'revocation_endpoint' in metadata ? metadata.revocation_endpoint : null;
+          "revocation_endpoint" in metadata ? metadata.revocation_endpoint : null;
         if (!revocationEndpoint) {
-          logMCPDebug(serverName, 'Server does not support token revocation');
+          logMCPDebug(serverName, "Server does not support token revocation");
         } else {
           const revocationEndpointStr = String(revocationEndpoint);
           // RFC 7009 defines revocation_endpoint_auth_methods_supported
           // separately from the token endpoint's list; prefer it if present.
           const authMethods =
-            ('revocation_endpoint_auth_methods_supported' in metadata
+            ("revocation_endpoint_auth_methods_supported" in metadata
               ? metadata.revocation_endpoint_auth_methods_supported
               : undefined) ??
-            ('token_endpoint_auth_methods_supported' in metadata
+            ("token_endpoint_auth_methods_supported" in metadata
               ? metadata.token_endpoint_auth_methods_supported
               : undefined);
-          const authMethod: 'client_secret_basic' | 'client_secret_post' =
+          const authMethod: "client_secret_basic" | "client_secret_post" =
             authMethods &&
-            !authMethods.includes('client_secret_basic') &&
-            authMethods.includes('client_secret_post')
-              ? 'client_secret_post'
-              : 'client_secret_basic';
+            !authMethods.includes("client_secret_basic") &&
+            authMethods.includes("client_secret_post")
+              ? "client_secret_post"
+              : "client_secret_basic";
           logMCPDebug(serverName, `Revoking tokens via ${revocationEndpointStr} (${authMethod})`);
 
           // Revoke refresh token first (more important - prevents future access token generation)
@@ -492,7 +492,7 @@ export async function revokeServerTokens(
                 serverName,
                 endpoint: revocationEndpointStr,
                 token: tokenData.refreshToken,
-                tokenTypeHint: 'refresh_token',
+                tokenTypeHint: "refresh_token",
                 clientId: tokenData.clientId,
                 clientSecret: tokenData.clientSecret,
                 accessToken: tokenData.accessToken,
@@ -511,7 +511,7 @@ export async function revokeServerTokens(
                 serverName,
                 endpoint: revocationEndpointStr,
                 token: tokenData.accessToken,
-                tokenTypeHint: 'access_token',
+                tokenTypeHint: "access_token",
                 clientId: tokenData.clientId,
                 clientSecret: tokenData.clientSecret,
                 accessToken: tokenData.accessToken,
@@ -528,7 +528,7 @@ export async function revokeServerTokens(
       logMCPDebug(serverName, `Failed to revoke tokens: ${errorMessage(error)}`);
     }
   } else {
-    logMCPDebug(serverName, 'No tokens to revoke');
+    logMCPDebug(serverName, "No tokens to revoke");
   }
 
   // Always clear local tokens, regardless of server-side revocation result.
@@ -547,7 +547,7 @@ export async function revokeServerTokens(
           ...freshData.mcpOAuth?.[serverKey],
           serverName,
           serverUrl: serverConfig.url,
-          accessToken: freshData.mcpOAuth?.[serverKey]?.accessToken ?? '',
+          accessToken: freshData.mcpOAuth?.[serverKey]?.accessToken ?? "",
           expiresAt: freshData.mcpOAuth?.[serverKey]?.expiresAt ?? 0,
           ...(tokenData.stepUpScope ? { stepUpScope: tokenData.stepUpScope } : {}),
           ...(tokenData.discoveryState
@@ -564,7 +564,7 @@ export async function revokeServerTokens(
       },
     };
     storage.update(updatedData);
-    logMCPDebug(serverName, 'Preserved step-up auth state across revocation');
+    logMCPDebug(serverName, "Preserved step-up auth state across revocation");
   }
 }
 
@@ -580,7 +580,7 @@ export function clearServerTokensFromLocalStorage(
   if (existingData.mcpOAuth[serverKey]) {
     delete existingData.mcpOAuth[serverKey];
     storage.update(existingData);
-    logMCPDebug(serverName, 'Cleared stored tokens');
+    logMCPDebug(serverName, "Cleared stored tokens");
   }
 }
 
@@ -589,7 +589,7 @@ type WWWAuthenticateParams = {
   resourceMetadataUrl?: URL;
 };
 
-type XaaFailureStage = 'idp_login' | 'discovery' | 'token_exchange' | 'jwt_bearer';
+type XaaFailureStage = "idp_login" | "discovery" | "token_exchange" | "jwt_bearer";
 
 /**
  * XAA (Cross-App Access) auth.
@@ -616,7 +616,7 @@ async function performMCPXaaAuth(
   skipBrowserOpen?: boolean,
 ): Promise<void> {
   if (!serverConfig.oauth?.xaa) {
-    throw new Error('XAA: oauth.xaa must be set'); // guarded by caller
+    throw new Error("XAA: oauth.xaa must be set"); // guarded by caller
   }
 
   // IdP config comes from user-level settings, not per-server.
@@ -641,19 +641,19 @@ async function performMCPXaaAuth(
     const haveKeys = Object.keys(getSecureStorage().read()?.mcpOAuthClientConfig ?? {});
     const headersForLogging = Object.fromEntries(
       Object.entries(serverConfig.headers ?? {}).map(([k, v]) =>
-        k.toLowerCase() === 'authorization' ? [k, '[REDACTED]'] : [k, v],
+        k.toLowerCase() === "authorization" ? [k, "[REDACTED]"] : [k, v],
       ),
     );
     logMCPDebug(
       serverName,
-      `XAA: secret lookup miss. wanted=${wantedKey} have=[${haveKeys.join(', ')}] configHeaders=${jsonStringify(headersForLogging)}`,
+      `XAA: secret lookup miss. wanted=${wantedKey} have=[${haveKeys.join(", ")}] configHeaders=${jsonStringify(headersForLogging)}`,
     );
     throw new Error(
       `XAA: AS client secret not found for '${serverName}'. Re-add with --client-secret.`,
     );
   }
 
-  logMCPDebug(serverName, 'XAA: starting cross-app access flow');
+  logMCPDebug(serverName, "XAA: starting cross-app access flow");
 
   // IdP client secret lives in a separate keychain slot (keyed by IdP issuer),
   // NOT the AS secret — different trust domain. Optional: if absent, PKCE-only.
@@ -664,7 +664,7 @@ async function performMCPXaaAuth(
   // acquireIdpIdToken potentially writes a fresh one.
   const idTokenCacheHit = getCachedIdpIdToken(idp.issuer) !== undefined;
 
-  let failureStage: XaaFailureStage = 'idp_login';
+  let failureStage: XaaFailureStage = "idp_login";
   try {
     let idToken;
     try {
@@ -683,12 +683,12 @@ async function performMCPXaaAuth(
     }
 
     // Discover the IdP's token endpoint for the RFC 8693 exchange.
-    failureStage = 'discovery';
+    failureStage = "discovery";
     const oidc = await discoverOidc(idp.issuer);
 
     // Run the exchange. performCrossAppAccess throws XaaTokenExchangeError
     // for the IdP leg and "jwt-bearer grant failed" for the AS leg.
-    failureStage = 'token_exchange';
+    failureStage = "token_exchange";
     let tokens;
     try {
       tokens = await performCrossAppAccess(
@@ -714,18 +714,18 @@ async function performMCPXaaAuth(
       if (e instanceof XaaTokenExchangeError) {
         if (e.shouldClearIdToken) {
           clearIdpIdToken(idp.issuer);
-          logMCPDebug(serverName, 'XAA: cleared cached id_token after token-exchange failure');
+          logMCPDebug(serverName, "XAA: cleared cached id_token after token-exchange failure");
         }
       } else if (
-        msg.includes('PRM discovery failed') ||
-        msg.includes('AS metadata discovery failed') ||
-        msg.includes('no authorization server supports jwt-bearer')
+        msg.includes("PRM discovery failed") ||
+        msg.includes("AS metadata discovery failed") ||
+        msg.includes("no authorization server supports jwt-bearer")
       ) {
         // performCrossAppAccess runs PRM + AS discovery before the actual
         // exchange — don't attribute their failures to 'token_exchange'.
-        failureStage = 'discovery';
-      } else if (msg.includes('jwt-bearer')) {
-        failureStage = 'jwt_bearer';
+        failureStage = "discovery";
+      } else if (msg.includes("jwt-bearer")) {
+        failureStage = "jwt_bearer";
       }
       throw e;
     }
@@ -762,9 +762,9 @@ async function performMCPXaaAuth(
       },
     });
 
-    logMCPDebug(serverName, 'XAA: tokens saved');
-    logEvent('tengu_mcp_oauth_flow_success', {
-      authMethod: 'xaa' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    logMCPDebug(serverName, "XAA: tokens saved");
+    logEvent("tengu_mcp_oauth_flow_success", {
+      authMethod: "xaa" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       idTokenCacheHit,
     });
   } catch (e) {
@@ -772,8 +772,8 @@ async function performMCPXaaAuth(
     if (e instanceof AuthenticationCancelledError) {
       throw e;
     }
-    logEvent('tengu_mcp_oauth_flow_failure', {
-      authMethod: 'xaa' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    logEvent("tengu_mcp_oauth_flow_failure", {
+      authMethod: "xaa" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       xaaFailureStage: failureStage as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       idTokenCacheHit,
     });
@@ -811,9 +811,9 @@ export async function performMCPOAuthFlow(
         `XAA is not enabled (set CLAUDE_CODE_ENABLE_XAA=1). Remove 'oauth.xaa' from server '${serverName}' to use the standard consent flow.`,
       );
     }
-    logEvent('tengu_mcp_oauth_flow_start', {
+    logEvent("tengu_mcp_oauth_flow_start", {
       isOAuthFlow: true,
-      authMethod: 'xaa' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      authMethod: "xaa" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       transportType:
         serverConfig.type as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       ...(getLoggingSafeMcpBaseUrl(serverConfig)
@@ -868,7 +868,7 @@ export async function performMCPOAuthFlow(
 
   const flowAttemptId = randomUUID();
 
-  logEvent('tengu_mcp_oauth_flow_start', {
+  logEvent("tengu_mcp_oauth_flow_start", {
     flowAttemptId: flowAttemptId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     isOAuthFlow: true,
     transportType: serverConfig.type as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -892,7 +892,7 @@ export async function performMCPOAuthFlow(
     const redirectUri = buildRedirectUri(port);
     logMCPDebug(
       serverName,
-      `Using redirect port: ${port}${configuredCallbackPort ? ' (from config)' : ''}`,
+      `Using redirect port: ${port}${configuredCallbackPort ? " (from config)" : ""}`,
     );
 
     const provider = new ClaudeAuthProvider(
@@ -918,7 +918,7 @@ export async function performMCPOAuthFlow(
         provider.setMetadata(metadata);
         logMCPDebug(
           serverName,
-          `Fetched OAuth metadata with scope: ${getScopeFromMetadata(metadata) || 'NONE'}`,
+          `Fetched OAuth metadata with scope: ${getScopeFromMetadata(metadata) || "NONE"}`,
         );
       }
     } catch (error) {
@@ -937,7 +937,7 @@ export async function performMCPOAuthFlow(
       if (server) {
         server.removeAllListeners();
         // Defensive: removeAllListeners() strips the error handler, so swallow any late error during close
-        server.on('error', () => {});
+        server.on("error", () => {});
         server.close();
         server = null;
       }
@@ -946,7 +946,7 @@ export async function performMCPOAuthFlow(
         timeoutId = null;
       }
       if (abortSignal && abortHandler) {
-        abortSignal.removeEventListener('abort', abortHandler);
+        abortSignal.removeEventListener("abort", abortHandler);
         abortHandler = null;
       }
       logMCPDebug(serverName, `MCP OAuth server cleaned up`);
@@ -975,7 +975,7 @@ export async function performMCPOAuthFlow(
           abortHandler();
           return;
         }
-        abortSignal.addEventListener('abort', abortHandler);
+        abortSignal.addEventListener("abort", abortHandler);
       }
 
       // Allow manual callback URL paste for remote/browser-based environments
@@ -984,12 +984,12 @@ export async function performMCPOAuthFlow(
         options.onWaitingForCallback((callbackUrl: string) => {
           try {
             const parsed = new URL(callbackUrl);
-            const code = parsed.searchParams.get('code');
-            const state = parsed.searchParams.get('state');
-            const error = parsed.searchParams.get('error');
+            const code = parsed.searchParams.get("code");
+            const state = parsed.searchParams.get("state");
+            const error = parsed.searchParams.get("error");
 
             if (error) {
-              const errorDescription = parsed.searchParams.get('error_description') || '';
+              const errorDescription = parsed.searchParams.get("error_description") || "";
               cleanup();
               rejectOnce(new Error(`OAuth error: ${error} - ${errorDescription}`));
               return;
@@ -1002,7 +1002,7 @@ export async function performMCPOAuthFlow(
 
             if (state !== oauthState) {
               cleanup();
-              rejectOnce(new Error('OAuth state mismatch - possible CSRF attack'));
+              rejectOnce(new Error("OAuth state mismatch - possible CSRF attack"));
               return;
             }
 
@@ -1016,9 +1016,9 @@ export async function performMCPOAuthFlow(
       }
 
       server = createServer((req, res) => {
-        const parsedUrl = parse(req.url || '', true);
+        const parsedUrl = parse(req.url || "", true);
 
-        if (parsedUrl.pathname === '/callback') {
+        if (parsedUrl.pathname === "/callback") {
           const code = parsedUrl.query.code as string;
           const state = parsedUrl.query.state as string;
           const error = parsedUrl.query.error;
@@ -1027,20 +1027,20 @@ export async function performMCPOAuthFlow(
 
           // Validate OAuth state to prevent CSRF attacks
           if (!error && state !== oauthState) {
-            res.writeHead(400, { 'Content-Type': 'text/html' });
+            res.writeHead(400, { "Content-Type": "text/html" });
             res.end(
               `<h1>Authentication Error</h1><p>Invalid state parameter. Please try again.</p><p>You can close this window.</p>`,
             );
             cleanup();
-            rejectOnce(new Error('OAuth state mismatch - possible CSRF attack'));
+            rejectOnce(new Error("OAuth state mismatch - possible CSRF attack"));
             return;
           }
 
           if (error) {
-            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.writeHead(200, { "Content-Type": "text/html" });
             // Sanitize error messages to prevent XSS
             const sanitizedError = xss(String(error));
-            const sanitizedErrorDescription = errorDescription ? xss(String(errorDescription)) : '';
+            const sanitizedErrorDescription = errorDescription ? xss(String(errorDescription)) : "";
             res.end(
               `<h1>Authentication Error</h1><p>${sanitizedError}: ${sanitizedErrorDescription}</p><p>You can close this window.</p>`,
             );
@@ -1057,7 +1057,7 @@ export async function performMCPOAuthFlow(
           }
 
           if (code) {
-            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.writeHead(200, { "Content-Type": "text/html" });
             res.end(
               `<h1>Authentication Successful</h1><p>You can close this window. Return to Claude Code.</p>`,
             );
@@ -1067,11 +1067,11 @@ export async function performMCPOAuthFlow(
         }
       });
 
-      server.on('error', (err: NodeJS.ErrnoException) => {
+      server.on("error", (err: NodeJS.ErrnoException) => {
         cleanup();
-        if (err.code === 'EADDRINUSE') {
+        if (err.code === "EADDRINUSE") {
           const findCmd =
-            getPlatform() === 'windows'
+            getPlatform() === "windows"
               ? `netstat -ano | findstr :${port}`
               : `lsof -ti:${port} -sTCP:LISTEN`;
           rejectOnce(
@@ -1085,7 +1085,7 @@ export async function performMCPOAuthFlow(
         }
       });
 
-      server.listen(port, '127.0.0.1', async () => {
+      server.listen(port, "127.0.0.1", async () => {
         try {
           logMCPDebug(serverName, `Starting SDK auth`);
           logMCPDebug(serverName, `Server URL: ${serverConfig.url}`);
@@ -1099,7 +1099,7 @@ export async function performMCPOAuthFlow(
           });
           logMCPDebug(serverName, `Initial auth result: ${result}`);
 
-          if (result !== 'REDIRECT') {
+          if (result !== "REDIRECT") {
             logMCPDebug(serverName, `Unexpected auth result, expected REDIRECT: ${result}`);
           }
         } catch (error) {
@@ -1118,7 +1118,7 @@ export async function performMCPOAuthFlow(
       timeoutId = setTimeout(
         (cleanup, rejectOnce) => {
           cleanup();
-          rejectOnce(new Error('Authentication timeout'));
+          rejectOnce(new Error("Authentication timeout"));
         },
         5 * 60 * 1000, // 5 minutes
         cleanup,
@@ -1139,16 +1139,16 @@ export async function performMCPOAuthFlow(
 
     logMCPDebug(serverName, `Auth result: ${result}`);
 
-    if (result === 'AUTHORIZED') {
+    if (result === "AUTHORIZED") {
       // Debug: Check if tokens were properly saved
       const savedTokens = await provider.tokens();
-      logMCPDebug(serverName, `Tokens after auth: ${savedTokens ? 'Present' : 'Missing'}`);
+      logMCPDebug(serverName, `Tokens after auth: ${savedTokens ? "Present" : "Missing"}`);
       if (savedTokens) {
         logMCPDebug(serverName, `Token access_token length: ${savedTokens.access_token?.length}`);
         logMCPDebug(serverName, `Token expires_in: ${savedTokens.expires_in}`);
       }
 
-      logEvent('tengu_mcp_oauth_flow_success', {
+      logEvent("tengu_mcp_oauth_flow_success", {
         flowAttemptId: flowAttemptId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         transportType:
           serverConfig.type as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -1169,31 +1169,31 @@ export async function performMCPOAuthFlow(
     // Determine failure reason for attribution telemetry. The try block covers
     // port acquisition, the callback server, the redirect flow, and token
     // exchange. Map known failure paths to stable reason codes.
-    let reason: MCPOAuthFlowErrorReason = 'unknown';
+    let reason: MCPOAuthFlowErrorReason = "unknown";
     let oauthErrorCode: string | undefined;
     let httpStatus: number | undefined;
 
     if (error instanceof AuthenticationCancelledError) {
-      reason = 'cancelled';
+      reason = "cancelled";
     } else if (authorizationCodeObtained) {
-      reason = 'token_exchange_failed';
+      reason = "token_exchange_failed";
     } else {
       const msg = errorMessage(error);
-      if (msg.includes('Authentication timeout')) {
-        reason = 'timeout';
-      } else if (msg.includes('OAuth state mismatch')) {
-        reason = 'state_mismatch';
-      } else if (msg.includes('OAuth error:')) {
-        reason = 'provider_denied';
+      if (msg.includes("Authentication timeout")) {
+        reason = "timeout";
+      } else if (msg.includes("OAuth state mismatch")) {
+        reason = "state_mismatch";
+      } else if (msg.includes("OAuth error:")) {
+        reason = "provider_denied";
       } else if (
-        msg.includes('already in use') ||
-        msg.includes('EADDRINUSE') ||
-        msg.includes('callback server failed') ||
-        msg.includes('No available port')
+        msg.includes("already in use") ||
+        msg.includes("EADDRINUSE") ||
+        msg.includes("callback server failed") ||
+        msg.includes("No available port")
       ) {
-        reason = 'port_unavailable';
-      } else if (msg.includes('SDK auth failed')) {
-        reason = 'sdk_auth_failed';
+        reason = "port_unavailable";
+      } else if (msg.includes("SDK auth failed")) {
+        reason = "sdk_auth_failed";
       }
     }
 
@@ -1210,7 +1210,7 @@ export async function performMCPOAuthFlow(
         httpStatus = Number(statusMatch[1]);
       }
       // If client not found, clear the stored client ID and suggest retry
-      if (error.errorCode === 'invalid_client' && error.message.includes('Client not found')) {
+      if (error.errorCode === "invalid_client" && error.message.includes("Client not found")) {
         const storage = getSecureStorage();
         const existingData = storage.read() || {};
         const serverKey = getServerKey(serverName, serverConfig);
@@ -1222,7 +1222,7 @@ export async function performMCPOAuthFlow(
       }
     }
 
-    logEvent('tengu_mcp_oauth_flow_error', {
+    logEvent("tengu_mcp_oauth_flow_error", {
       flowAttemptId: flowAttemptId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       reason: reason as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       error_code: oauthErrorCode as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -1259,8 +1259,8 @@ export function wrapFetchWithStepUpDetection(
   return async (url, init) => {
     const response = await baseFetch(url, init);
     if (response.status === 403) {
-      const wwwAuth = response.headers.get('WWW-Authenticate');
-      if (wwwAuth?.includes('insufficient_scope')) {
+      const wwwAuth = response.headers.get("WWW-Authenticate");
+      if (wwwAuth?.includes("insufficient_scope")) {
         // Match both quoted and unquoted values (RFC 6750 §3 allows either).
         // Same pattern as the SDK's extractFieldFromWwwAuth.
         const match = wwwAuth.match(/scope=(?:"([^"]+)"|([^\s,]+))/);
@@ -1317,9 +1317,9 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
     const metadata: OAuthClientMetadata = {
       client_name: `Claude Code (${this.serverName})`,
       redirect_uris: [this.redirectUri],
-      grant_types: ['authorization_code', 'refresh_token'],
-      response_types: ['code'],
-      token_endpoint_auth_method: 'none', // Public client
+      grant_types: ["authorization_code", "refresh_token"],
+      response_types: ["code"],
+      token_endpoint_auth_method: "none", // Public client
     };
 
     // Include scope from metadata if available
@@ -1367,8 +1367,8 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
   async state(): Promise<string> {
     // Generate state if not already generated for this instance
     if (!this._state) {
-      this._state = randomBytes(32).toString('base64url');
-      logMCPDebug(this.serverName, 'Generated new OAuth state');
+      this._state = randomBytes(32).toString("base64url");
+      logMCPDebug(this.serverName, "Generated new OAuth state");
     }
     return this._state;
   }
@@ -1420,7 +1420,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
           clientId: clientInformation.client_id,
           clientSecret: clientInformation.client_secret,
           // Provide default values for required fields if not present
-          accessToken: existingData.mcpOAuth?.[serverKey]?.accessToken || '',
+          accessToken: existingData.mcpOAuth?.[serverKey]?.accessToken || "",
           expiresAt: existingData.mcpOAuth?.[serverKey]?.expiresAt || 0,
         },
       },
@@ -1513,9 +1513,9 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
     // Step-up check: if a 403 insufficient_scope was detected and the current
     // token doesn't have the requested scope, omit refresh_token below so the
     // SDK skips refresh and falls through to the PKCE flow.
-    const currentScopes = tokenData.scope?.split(' ') ?? [];
+    const currentScopes = tokenData.scope?.split(" ") ?? [];
     const needsStepUp = this._pendingStepUpScope
-      ?.split(' ')
+      ?.split(" ")
       .some((s) => !currentScopes.includes(s));
     if (needsStepUp) {
       logMCPDebug(
@@ -1567,7 +1567,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
       refresh_token: needsStepUp ? undefined : tokenData.refreshToken,
       expires_in: expiresIn,
       scope: tokenData.scope,
-      token_type: 'Bearer',
+      token_type: "Bearer",
     };
 
     logMCPDebug(this.serverName, `Returning tokens`);
@@ -1631,7 +1631,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
 
     const idToken = getCachedIdpIdToken(idp.issuer);
     if (!idToken) {
-      logMCPDebug(this.serverName, 'XAA: id_token not cached, needs interactive re-auth');
+      logMCPDebug(this.serverName, "XAA: id_token not cached, needs interactive re-auth");
       return undefined;
     }
 
@@ -1640,7 +1640,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
     if (!clientId || !clientConfig?.clientSecret) {
       logMCPDebug(
         this.serverName,
-        'XAA: missing clientId or clientSecret in config — skipping silent refresh',
+        "XAA: missing clientId or clientSecret in config — skipping silent refresh",
       );
       return undefined; // shouldn't happen if `mcp add` was correct
     }
@@ -1706,7 +1706,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
       });
       return {
         access_token: tokens.access_token,
-        token_type: 'Bearer',
+        token_type: "Bearer",
         expires_in: tokens.expires_in,
         scope: tokens.scope,
         refresh_token: tokens.refresh_token,
@@ -1714,7 +1714,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
     } catch (e) {
       if (e instanceof XaaTokenExchangeError && e.shouldClearIdToken) {
         clearIdpIdToken(idp.issuer);
-        logMCPDebug(this.serverName, 'XAA: cleared id_token after exchange failure');
+        logMCPDebug(this.serverName, "XAA: cleared id_token after exchange failure");
       }
       throw e;
     }
@@ -1725,12 +1725,12 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
     this._authorizationUrl = authorizationUrl.toString();
 
     // Extract and store scopes from the authorization URL for later use in token exchange
-    const scopes = authorizationUrl.searchParams.get('scope');
+    const scopes = authorizationUrl.searchParams.get("scope");
     logMCPDebug(
       this.serverName,
       `Authorization URL: ${redactSensitiveUrlParams(authorizationUrl.toString())}`,
     );
-    logMCPDebug(this.serverName, `Scopes in URL: ${scopes || 'NOT FOUND'}`);
+    logMCPDebug(this.serverName, `Scopes in URL: ${scopes || "NOT FOUND"}`);
 
     if (scopes) {
       this._scopes = scopes;
@@ -1771,8 +1771,8 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
 
     // Validate URL scheme for security
     const urlString = authorizationUrl.toString();
-    if (!urlString.startsWith('http://') && !urlString.startsWith('https://')) {
-      throw new Error('Invalid authorization URL: must use http:// or https:// scheme');
+    if (!urlString.startsWith("http://") && !urlString.startsWith("https://")) {
+      throw new Error("Invalid authorization URL: must use http:// or https:// scheme");
     }
 
     logMCPDebug(this.serverName, `Redirecting to authorization URL`);
@@ -1808,14 +1808,14 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
   async codeVerifier(): Promise<string> {
     if (!this._codeVerifier) {
       logMCPDebug(this.serverName, `No code verifier saved`);
-      throw new Error('No code verifier saved');
+      throw new Error("No code verifier saved");
     }
     logMCPDebug(this.serverName, `Returning code verifier`);
     return this._codeVerifier;
   }
 
   async invalidateCredentials(
-    scope: 'all' | 'client' | 'tokens' | 'verifier' | 'discovery',
+    scope: "all" | "client" | "tokens" | "verifier" | "discovery",
   ): Promise<void> {
     const storage = getSecureStorage();
     const existingData = storage.read();
@@ -1826,22 +1826,22 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
     if (!tokenData) return;
 
     switch (scope) {
-      case 'all':
+      case "all":
         delete existingData.mcpOAuth[serverKey];
         break;
-      case 'client':
+      case "client":
         tokenData.clientId = undefined;
         tokenData.clientSecret = undefined;
         break;
-      case 'tokens':
-        tokenData.accessToken = '';
+      case "tokens":
+        tokenData.accessToken = "";
         tokenData.refreshToken = undefined;
         tokenData.expiresAt = 0;
         break;
-      case 'verifier':
+      case "verifier":
         this._codeVerifier = undefined;
         return;
-      case 'discovery':
+      case "discovery":
         tokenData.discoveryState = undefined;
         tokenData.stepUpScope = undefined;
         break;
@@ -1878,7 +1878,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
           ...existingData.mcpOAuth?.[serverKey],
           serverName: this.serverName,
           serverUrl: this.serverConfig.url,
-          accessToken: existingData.mcpOAuth?.[serverKey]?.accessToken || '',
+          accessToken: existingData.mcpOAuth?.[serverKey]?.accessToken || "",
           expiresAt: existingData.mcpOAuth?.[serverKey]?.expiresAt || 0,
           discoveryState: {
             authorizationServerUrl: state.authorizationServerUrl,
@@ -1906,9 +1906,9 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
       return {
         authorizationServerUrl: cached.authorizationServerUrl,
         resourceMetadataUrl: cached.resourceMetadataUrl,
-        resourceMetadata: cached.resourceMetadata as OAuthDiscoveryState['resourceMetadata'],
+        resourceMetadata: cached.resourceMetadata as OAuthDiscoveryState["resourceMetadata"],
         authorizationServerMetadata:
-          cached.authorizationServerMetadata as OAuthDiscoveryState['authorizationServerMetadata'],
+          cached.authorizationServerMetadata as OAuthDiscoveryState["authorizationServerMetadata"],
       };
     }
 
@@ -1926,7 +1926,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
           return {
             authorizationServerUrl: metadata.issuer,
             authorizationServerMetadata:
-              metadata as OAuthDiscoveryState['authorizationServerMetadata'],
+              metadata as OAuthDiscoveryState["authorizationServerMetadata"],
           };
         }
       } catch (error) {
@@ -1944,7 +1944,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
     const serverKey = getServerKey(this.serverName, this.serverConfig);
     const claudeDir = getClaudeConfigHomeDir();
     await mkdir(claudeDir, { recursive: true });
-    const sanitizedKey = serverKey.replace(/[^a-zA-Z0-9]/g, '_');
+    const sanitizedKey = serverKey.replace(/[^a-zA-Z0-9]/g, "_");
     const lockfilePath = join(claudeDir, `mcp-refresh-${sanitizedKey}.lock`);
 
     let release: (() => Promise<void>) | undefined;
@@ -1961,7 +1961,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
         break;
       } catch (e: unknown) {
         const code = getErrnoCode(e);
-        if (code === 'ELOCKED') {
+        if (code === "ELOCKED") {
           logMCPDebug(
             this.serverName,
             `Refresh lock held by another process, waiting (attempt ${retry + 1}/${MAX_LOCK_RETRIES})`,
@@ -2001,7 +2001,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
             refresh_token: tokenData.refreshToken,
             expires_in: expiresIn,
             scope: tokenData.scope,
-            token_type: 'Bearer',
+            token_type: "Bearer",
           };
         }
         // Use the freshest refresh token from storage
@@ -2027,13 +2027,13 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
 
     const mcpServerBaseUrl = getLoggingSafeMcpBaseUrl(this.serverConfig);
     const emitRefreshEvent = (
-      outcome: 'success' | 'failure',
+      outcome: "success" | "failure",
       reason?: MCPRefreshFailureReason,
     ): void => {
       logEvent(
-        outcome === 'success'
-          ? 'tengu_mcp_oauth_refresh_success'
-          : 'tengu_mcp_oauth_refresh_failure',
+        outcome === "success"
+          ? "tengu_mcp_oauth_refresh_success"
+          : "tengu_mcp_oauth_refresh_failure",
         {
           transportType: this.serverConfig
             .type as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -2090,7 +2090,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
         }
         if (!metadata) {
           logMCPDebug(this.serverName, `Failed to discover OAuth metadata`);
-          emitRefreshEvent('failure', 'metadata_discovery_failed');
+          emitRefreshEvent("failure", "metadata_discovery_failed");
           return undefined;
         }
         // Cache for future refreshes
@@ -2099,7 +2099,7 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
         const clientInfo = await this.clientInformation();
         if (!clientInfo) {
           logMCPDebug(this.serverName, `No client information available`);
-          emitRefreshEvent('failure', 'no_client_info');
+          emitRefreshEvent("failure", "no_client_info");
           return undefined;
         }
 
@@ -2114,12 +2114,12 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
         if (newTokens) {
           logMCPDebug(this.serverName, `Token refresh successful`);
           await this.saveTokens(newTokens);
-          emitRefreshEvent('success');
+          emitRefreshEvent("success");
           return newTokens;
         }
 
         logMCPDebug(this.serverName, `Token refresh returned no tokens`);
-        emitRefreshEvent('failure', 'no_tokens_returned');
+        emitRefreshEvent("failure", "no_tokens_returned");
         return undefined;
       } catch (error) {
         // Invalid grant means the refresh token itself is invalid/revoked/expired.
@@ -2143,13 +2143,13 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
                 refresh_token: tokenData.refreshToken,
                 expires_in: expiresIn,
                 scope: tokenData.scope,
-                token_type: 'Bearer',
+                token_type: "Bearer",
               };
             }
           }
           logMCPDebug(this.serverName, `No valid tokens in storage, clearing stored tokens`);
-          await this.invalidateCredentials('tokens');
-          emitRefreshEvent('failure', 'invalid_grant');
+          await this.invalidateCredentials("tokens");
+          emitRefreshEvent("failure", "invalid_grant");
           return undefined;
         }
 
@@ -2165,8 +2165,8 @@ export class ClaudeAuthProvider implements OAuthClientProvider {
         if (!isRetryable || attempt >= MAX_ATTEMPTS) {
           logMCPDebug(this.serverName, `Token refresh failed: ${errorMessage(error)}`);
           emitRefreshEvent(
-            'failure',
-            isRetryable ? 'transient_retries_exhausted' : 'request_failed',
+            "failure",
+            isRetryable ? "transient_retries_exhausted" : "request_failed",
           );
           return undefined;
         }
@@ -2192,32 +2192,32 @@ export async function readClientSecret(): Promise<string> {
 
   if (!process.stdin.isTTY) {
     throw new Error(
-      'No TTY available to prompt for client secret. Set MCP_CLIENT_SECRET env var instead.',
+      "No TTY available to prompt for client secret. Set MCP_CLIENT_SECRET env var instead.",
     );
   }
 
   return new Promise((resolve, reject) => {
-    process.stderr.write('Enter OAuth client secret: ');
+    process.stderr.write("Enter OAuth client secret: ");
     process.stdin.setRawMode?.(true);
-    let secret = '';
+    let secret = "";
     const onData = (ch: Buffer) => {
       const c = ch.toString();
-      if (c === '\n' || c === '\r') {
+      if (c === "\n" || c === "\r") {
         process.stdin.setRawMode?.(false);
-        process.stdin.removeListener('data', onData);
-        process.stderr.write('\n');
+        process.stdin.removeListener("data", onData);
+        process.stderr.write("\n");
         resolve(secret);
-      } else if (c === '\u0003') {
+      } else if (c === "\u0003") {
         process.stdin.setRawMode?.(false);
-        process.stdin.removeListener('data', onData);
-        reject(new Error('Cancelled'));
-      } else if (c === '\u007F' || c === '\b') {
+        process.stdin.removeListener("data", onData);
+        reject(new Error("Cancelled"));
+      } else if (c === "\u007F" || c === "\b") {
         secret = secret.slice(0, -1);
       } else {
         secret += c;
       }
     };
-    process.stdin.on('data', onData);
+    process.stdin.on("data", onData);
   });
 }
 
@@ -2272,16 +2272,16 @@ function getScopeFromMetadata(
 ): string | undefined {
   if (!metadata) return undefined;
   // Try 'scope' first (non-standard but used by some providers)
-  if ('scope' in metadata && typeof metadata.scope === 'string') {
+  if ("scope" in metadata && typeof metadata.scope === "string") {
     return metadata.scope;
   }
   // Try 'default_scope' (non-standard but used by some providers)
-  if ('default_scope' in metadata && typeof metadata.default_scope === 'string') {
+  if ("default_scope" in metadata && typeof metadata.default_scope === "string") {
     return metadata.default_scope;
   }
   // Fall back to scopes_supported (standard OAuth 2.0 field)
   if (metadata.scopes_supported && Array.isArray(metadata.scopes_supported)) {
-    return metadata.scopes_supported.join(' ');
+    return metadata.scopes_supported.join(" ");
   }
   return undefined;
 }

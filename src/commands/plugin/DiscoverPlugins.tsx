@@ -1,23 +1,23 @@
-import figures from 'figures';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
-import { Byline } from '../../components/design-system/Byline.js';
-import { SearchBox } from '../../components/SearchBox.js';
-import { useSearchInput } from '../../hooks/useSearchInput.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
+import figures from "figures";
+import * as React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { ConfigurableShortcutHint } from "../../components/ConfigurableShortcutHint.js";
+import { Byline } from "../../components/design-system/Byline.js";
+import { SearchBox } from "../../components/SearchBox.js";
+import { useSearchInput } from "../../hooks/useSearchInput.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- useInput needed for raw search mode text input
-import { Box, Text, useInput, useTerminalFocus } from '../../ink.js';
-import { useKeybinding, useKeybindings } from '../../keybindings/useKeybinding.js';
-import type { LoadedPlugin } from '../../types/plugin.js';
-import { count } from '../../utils/array.js';
-import { openBrowser } from '../../utils/browser.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage } from '../../utils/errors.js';
-import { clearAllCaches } from '../../utils/plugins/cacheUtils.js';
-import { formatInstallCount, getInstallCounts } from '../../utils/plugins/installCounts.js';
-import { isPluginGloballyInstalled } from '../../utils/plugins/installedPluginsManager.js';
+import { Box, Text, useInput, useTerminalFocus } from "../../ink.js";
+import { useKeybinding, useKeybindings } from "../../keybindings/useKeybinding.js";
+import type { LoadedPlugin } from "../../types/plugin.js";
+import { count } from "../../utils/array.js";
+import { openBrowser } from "../../utils/browser.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage } from "../../utils/errors.js";
+import { clearAllCaches } from "../../utils/plugins/cacheUtils.js";
+import { formatInstallCount, getInstallCounts } from "../../utils/plugins/installCounts.js";
+import { isPluginGloballyInstalled } from "../../utils/plugins/installedPluginsManager.js";
 import {
   createPluginId,
   detectEmptyMarketplaceReason,
@@ -25,22 +25,22 @@ import {
   formatFailureDetails,
   formatMarketplaceLoadingErrors,
   loadMarketplacesWithGracefulDegradation,
-} from '../../utils/plugins/marketplaceHelpers.js';
-import { loadKnownMarketplacesConfig } from '../../utils/plugins/marketplaceManager.js';
-import { OFFICIAL_MARKETPLACE_NAME } from '../../utils/plugins/officialMarketplace.js';
-import { installPluginFromMarketplace } from '../../utils/plugins/pluginInstallationHelpers.js';
-import { isPluginBlockedByPolicy } from '../../utils/plugins/pluginPolicy.js';
-import { plural } from '../../utils/stringUtils.js';
-import { truncateToWidth } from '../../utils/truncate.js';
-import { findPluginOptionsTarget, PluginOptionsFlow } from './PluginOptionsFlow.js';
-import { PluginTrustWarning } from './PluginTrustWarning.js';
+} from "../../utils/plugins/marketplaceHelpers.js";
+import { loadKnownMarketplacesConfig } from "../../utils/plugins/marketplaceManager.js";
+import { OFFICIAL_MARKETPLACE_NAME } from "../../utils/plugins/officialMarketplace.js";
+import { installPluginFromMarketplace } from "../../utils/plugins/pluginInstallationHelpers.js";
+import { isPluginBlockedByPolicy } from "../../utils/plugins/pluginPolicy.js";
+import { plural } from "../../utils/stringUtils.js";
+import { truncateToWidth } from "../../utils/truncate.js";
+import { findPluginOptionsTarget, PluginOptionsFlow } from "./PluginOptionsFlow.js";
+import { PluginTrustWarning } from "./PluginTrustWarning.js";
 import {
   buildPluginDetailsMenuOptions,
   extractGitHubRepo,
   type InstallablePlugin,
-} from './pluginDetailsHelpers.js';
-import type { ViewState as ParentViewState } from './types.js';
-import { usePagination } from './usePagination.js';
+} from "./pluginDetailsHelpers.js";
+import type { ViewState as ParentViewState } from "./types.js";
+import { usePagination } from "./usePagination.js";
 
 type Props = {
   error: string | null;
@@ -53,10 +53,10 @@ type Props = {
   targetPlugin?: string;
 };
 type ViewState =
-  | 'plugin-list'
-  | 'plugin-details'
+  | "plugin-list"
+  | "plugin-details"
   | {
-      type: 'plugin-options';
+      type: "plugin-options";
       plugin: LoadedPlugin;
       pluginId: string;
     };
@@ -71,7 +71,7 @@ export function DiscoverPlugins({
   targetPlugin,
 }: Props): React.ReactNode {
   // View state
-  const [viewState, setViewState] = useState<ViewState>('plugin-list');
+  const [viewState, setViewState] = useState<ViewState>("plugin-list");
   const [selectedPlugin, setSelectedPlugin] = useState<InstallablePlugin | null>(null);
 
   // Data state
@@ -93,7 +93,7 @@ export function DiscoverPlugins({
     setQuery: setSearchQuery,
     cursorOffset: searchCursorOffset,
   } = useSearchInput({
-    isActive: viewState === 'plugin-list' && isSearchMode && !loading,
+    isActive: viewState === "plugin-list" && isSearchMode && !loading,
     onExit: () => {
       setIsSearchMode(false);
     },
@@ -210,7 +210,7 @@ export function DiscoverPlugins({
         const successCount = count(marketplaces, (m) => m.data !== null);
         const errorResult = formatMarketplaceLoadingErrors(failures, successCount);
         if (errorResult) {
-          if (errorResult.type === 'warning') {
+          if (errorResult.type === "warning") {
             setWarning(`${errorResult.message}. Showing available plugins.`);
           } else {
             throw new Error(errorResult.message);
@@ -228,14 +228,14 @@ export function DiscoverPlugins({
               );
             } else {
               setSelectedPlugin(foundPlugin);
-              setViewState('plugin-details');
+              setViewState("plugin-details");
             }
           } else {
             setError(`Plugin "${targetPlugin}" not found in any marketplace`);
           }
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load plugins');
+        setError(err instanceof Error ? err.message : "Failed to load plugins");
       } finally {
         setLoading(false);
       }
@@ -259,7 +259,7 @@ export function DiscoverPlugins({
         pluginId: plugin_0.pluginId,
         entry: plugin_0.entry,
         marketplaceName: plugin_0.marketplaceName,
-        scope: 'user',
+        scope: "user",
       });
       if (result.success) {
         successCount_0++;
@@ -278,7 +278,7 @@ export function DiscoverPlugins({
     // Handle installation results
     if (failureCount === 0) {
       const message =
-        `✓ Installed ${successCount_0} ${plural(successCount_0, 'plugin')}. ` +
+        `✓ Installed ${successCount_0} ${plural(successCount_0, "plugin")}. ` +
         `Run /reload-plugins to activate.`;
       setResult(message);
     } else if (successCount_0 === 0) {
@@ -296,14 +296,14 @@ export function DiscoverPlugins({
       }
     }
     setParentViewState({
-      type: 'menu',
+      type: "menu",
     });
   };
 
   // Install single plugin from details view
   const handleSinglePluginInstall = async (
     plugin_1: InstallablePlugin,
-    scope: 'user' | 'project' | 'local' = 'user',
+    scope: "user" | "project" | "local" = "user",
   ) => {
     setIsInstalling(true);
     setInstallError(null);
@@ -318,7 +318,7 @@ export function DiscoverPlugins({
       if (loaded) {
         setIsInstalling(false);
         setViewState({
-          type: 'plugin-options',
+          type: "plugin-options",
           plugin: loaded,
           pluginId: plugin_1.pluginId,
         });
@@ -329,7 +329,7 @@ export function DiscoverPlugins({
         await onInstallComplete();
       }
       setParentViewState({
-        type: 'menu',
+        type: "menu",
       });
     } else {
       setIsInstalling(false);
@@ -346,28 +346,28 @@ export function DiscoverPlugins({
 
   // Escape in plugin-details view - go back to plugin-list
   useKeybinding(
-    'confirm:no',
+    "confirm:no",
     () => {
-      setViewState('plugin-list');
+      setViewState("plugin-list");
       setSelectedPlugin(null);
     },
     {
-      context: 'Confirmation',
-      isActive: viewState === 'plugin-details',
+      context: "Confirmation",
+      isActive: viewState === "plugin-details",
     },
   );
 
   // Escape in plugin-list view (not search mode) - exit to parent menu
   useKeybinding(
-    'confirm:no',
+    "confirm:no",
     () => {
       setParentViewState({
-        type: 'menu',
+        type: "menu",
       });
     },
     {
-      context: 'Confirmation',
-      isActive: viewState === 'plugin-list' && !isSearchMode,
+      context: "Confirmation",
+      isActive: viewState === "plugin-list" && !isSearchMode,
     },
   );
 
@@ -377,17 +377,17 @@ export function DiscoverPlugins({
       const keyIsNotCtrlOrMeta = !_key.ctrl && !_key.meta;
       if (!isSearchMode) {
         // Enter search mode with '/' or any printable character
-        if (input === '/' && keyIsNotCtrlOrMeta) {
+        if (input === "/" && keyIsNotCtrlOrMeta) {
           setIsSearchMode(true);
-          setSearchQuery('');
+          setSearchQuery("");
         } else if (
           keyIsNotCtrlOrMeta &&
           input.length > 0 &&
           !/^\s+$/.test(input) &&
           // Don't enter search mode for navigation keys
-          input !== 'j' &&
-          input !== 'k' &&
-          input !== 'i'
+          input !== "j" &&
+          input !== "k" &&
+          input !== "i"
         ) {
           setIsSearchMode(true);
           setSearchQuery(input);
@@ -395,26 +395,26 @@ export function DiscoverPlugins({
       }
     },
     {
-      isActive: viewState === 'plugin-list' && !loading,
+      isActive: viewState === "plugin-list" && !loading,
     },
   );
 
   // Plugin-list navigation (non-search mode)
   useKeybindings(
     {
-      'select:previous': () => {
+      "select:previous": () => {
         if (selectedIndex === 0) {
           setIsSearchMode(true);
         } else {
           pagination.handleSelectionChange(selectedIndex - 1, setSelectedIndex);
         }
       },
-      'select:next': () => {
+      "select:next": () => {
         if (selectedIndex < filteredPlugins.length - 1) {
           pagination.handleSelectionChange(selectedIndex + 1, setSelectedIndex);
         }
       },
-      'select:accept': () => {
+      "select:accept": () => {
         if (selectedIndex === filteredPlugins.length && selectedForInstall.size > 0) {
           void installSelectedPlugins();
         } else if (selectedIndex < filteredPlugins.length) {
@@ -422,13 +422,13 @@ export function DiscoverPlugins({
           if (plugin_2) {
             if (plugin_2.isInstalled) {
               setParentViewState({
-                type: 'manage-plugins',
+                type: "manage-plugins",
                 targetPlugin: plugin_2.entry.name,
                 targetMarketplace: plugin_2.marketplaceName,
               });
             } else {
               setSelectedPlugin(plugin_2);
-              setViewState('plugin-details');
+              setViewState("plugin-details");
               setDetailsMenuIndex(0);
               setInstallError(null);
             }
@@ -437,13 +437,13 @@ export function DiscoverPlugins({
       },
     },
     {
-      context: 'Select',
-      isActive: viewState === 'plugin-list' && !isSearchMode,
+      context: "Select",
+      isActive: viewState === "plugin-list" && !isSearchMode,
     },
   );
   useKeybindings(
     {
-      'plugin:toggle': () => {
+      "plugin:toggle": () => {
         if (selectedIndex < filteredPlugins.length) {
           const plugin_3 = filteredPlugins[selectedIndex];
           if (plugin_3 && !plugin_3.isInstalled) {
@@ -457,15 +457,15 @@ export function DiscoverPlugins({
           }
         }
       },
-      'plugin:install': () => {
+      "plugin:install": () => {
         if (selectedForInstall.size > 0) {
           void installSelectedPlugins();
         }
       },
     },
     {
-      context: 'Plugin',
-      isActive: viewState === 'plugin-list' && !isSearchMode,
+      context: "Plugin",
+      isActive: viewState === "plugin-list" && !isSearchMode,
     },
   );
 
@@ -478,43 +478,43 @@ export function DiscoverPlugins({
   }, [selectedPlugin]);
   useKeybindings(
     {
-      'select:previous': () => {
+      "select:previous": () => {
         if (detailsMenuIndex > 0) {
           setDetailsMenuIndex(detailsMenuIndex - 1);
         }
       },
-      'select:next': () => {
+      "select:next": () => {
         if (detailsMenuIndex < detailsMenuOptions.length - 1) {
           setDetailsMenuIndex(detailsMenuIndex + 1);
         }
       },
-      'select:accept': () => {
+      "select:accept": () => {
         if (!selectedPlugin) return;
         const action = detailsMenuOptions[detailsMenuIndex]?.action;
         const hasHomepage_0 = selectedPlugin.entry.homepage;
         const githubRepo_0 = extractGitHubRepo(selectedPlugin);
-        if (action === 'install-user') {
-          void handleSinglePluginInstall(selectedPlugin, 'user');
-        } else if (action === 'install-project') {
-          void handleSinglePluginInstall(selectedPlugin, 'project');
-        } else if (action === 'install-local') {
-          void handleSinglePluginInstall(selectedPlugin, 'local');
-        } else if (action === 'homepage' && hasHomepage_0) {
+        if (action === "install-user") {
+          void handleSinglePluginInstall(selectedPlugin, "user");
+        } else if (action === "install-project") {
+          void handleSinglePluginInstall(selectedPlugin, "project");
+        } else if (action === "install-local") {
+          void handleSinglePluginInstall(selectedPlugin, "local");
+        } else if (action === "homepage" && hasHomepage_0) {
           void openBrowser(hasHomepage_0);
-        } else if (action === 'github' && githubRepo_0) {
+        } else if (action === "github" && githubRepo_0) {
           void openBrowser(`https://github.com/${githubRepo_0}`);
-        } else if (action === 'back') {
-          setViewState('plugin-list');
+        } else if (action === "back") {
+          setViewState("plugin-list");
           setSelectedPlugin(null);
         }
       },
     },
     {
-      context: 'Select',
-      isActive: viewState === 'plugin-details' && !!selectedPlugin,
+      context: "Select",
+      isActive: viewState === "plugin-details" && !!selectedPlugin,
     },
   );
-  if (typeof viewState === 'object' && viewState.type === 'plugin-options') {
+  if (typeof viewState === "object" && viewState.type === "plugin-options") {
     const { plugin: plugin_4, pluginId: pluginId_0 } = viewState;
     function finish(msg: string): void {
       setResult(msg);
@@ -522,7 +522,7 @@ export function DiscoverPlugins({
         void onInstallComplete();
       }
       setParentViewState({
-        type: 'menu',
+        type: "menu",
       });
     }
     return (
@@ -531,13 +531,13 @@ export function DiscoverPlugins({
         pluginId={pluginId_0}
         onDone={(outcome, detail) => {
           switch (outcome) {
-            case 'configured':
+            case "configured":
               finish(`✓ Installed and configured ${plugin_4.name}. Run /reload-plugins to apply.`);
               break;
-            case 'skipped':
+            case "skipped":
               finish(`✓ Installed ${plugin_4.name}. Run /reload-plugins to apply.`);
               break;
-            case 'error':
+            case "error":
               finish(`Installed but failed to save config: ${detail}`);
               break;
           }
@@ -557,7 +557,7 @@ export function DiscoverPlugins({
   }
 
   // Plugin details view
-  if (viewState === 'plugin-details' && selectedPlugin) {
+  if (viewState === "plugin-details" && selectedPlugin) {
     const hasHomepage_1 = selectedPlugin.entry.homepage;
     const githubRepo_1 = extractGitHubRepo(selectedPlugin);
     const menuOptions = buildPluginDetailsMenuOptions(hasHomepage_1, githubRepo_1);
@@ -581,8 +581,8 @@ export function DiscoverPlugins({
           {selectedPlugin.entry.author && (
             <Box marginTop={1}>
               <Text dimColor>
-                By:{' '}
-                {typeof selectedPlugin.entry.author === 'string'
+                By:{" "}
+                {typeof selectedPlugin.entry.author === "string"
                   ? selectedPlugin.entry.author
                   : selectedPlugin.entry.author.name}
               </Text>
@@ -601,11 +601,11 @@ export function DiscoverPlugins({
         <Box flexDirection="column">
           {menuOptions.map((option, index) => (
             <Box key={option.action}>
-              {detailsMenuIndex === index && <Text>{'> '}</Text>}
-              {detailsMenuIndex !== index && <Text>{'  '}</Text>}
+              {detailsMenuIndex === index && <Text>{"> "}</Text>}
+              {detailsMenuIndex !== index && <Text>{"  "}</Text>}
               <Text bold={detailsMenuIndex === index}>
-                {isInstalling && option.action.startsWith('install-')
-                  ? 'Installing…'
+                {isInstalling && option.action.startsWith("install-")
+                  ? "Installing…"
                   : option.label}
               </Text>
             </Box>
@@ -659,7 +659,7 @@ export function DiscoverPlugins({
         <Text bold>Discover plugins</Text>
         {pagination.needsPagination && (
           <Text dimColor>
-            {' '}
+            {" "}
             ({pagination.scrollPosition.current}/{pagination.scrollPosition.total})
           </Text>
         )}
@@ -713,23 +713,23 @@ export function DiscoverPlugins({
             marginBottom={isLast && !error ? 0 : 1}
           >
             <Box>
-              <Text color={isSelected && !isSearchMode ? 'suggestion' : undefined}>
-                {isSelected && !isSearchMode ? figures.pointer : ' '}{' '}
+              <Text color={isSelected && !isSearchMode ? "suggestion" : undefined}>
+                {isSelected && !isSearchMode ? figures.pointer : " "}{" "}
               </Text>
               <Text>
                 {isInstallingThis
                   ? figures.ellipsis
                   : isSelectedForInstall
                     ? figures.radioOn
-                    : figures.radioOff}{' '}
+                    : figures.radioOff}{" "}
                 {plugin_5.entry.name}
                 <Text dimColor> · {plugin_5.marketplaceName}</Text>
-                {plugin_5.entry.tags?.includes('community-managed') && (
+                {plugin_5.entry.tags?.includes("community-managed") && (
                   <Text dimColor> [Community Managed]</Text>
                 )}
                 {installCounts && plugin_5.marketplaceName === OFFICIAL_MARKETPLACE_NAME && (
                   <Text dimColor>
-                    {' · '}
+                    {" · "}
                     {formatInstallCount(installCounts.get(plugin_5.pluginId) ?? 0)} installs
                   </Text>
                 )}
@@ -789,7 +789,7 @@ function DiscoverPluginsKeyHint(t0) {
     t1 = $[1];
   }
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = <Text>type to search</Text>;
     $[2] = t2;
   } else {
@@ -812,7 +812,7 @@ function DiscoverPluginsKeyHint(t0) {
   }
   let t4;
   let t5;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <ConfigurableShortcutHint
         action="select:accept"
@@ -866,9 +866,9 @@ function EmptyStateMessage(t0) {
   const $ = _c(6);
   const { reason } = t0;
   switch (reason) {
-    case 'git-not-installed': {
+    case "git-not-installed": {
       let t1;
-      if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <>
             <Text dimColor={true}>Git is required to install marketplaces.</Text>
@@ -881,9 +881,9 @@ function EmptyStateMessage(t0) {
       }
       return t1;
     }
-    case 'all-blocked-by-policy': {
+    case "all-blocked-by-policy": {
       let t1;
-      if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <>
             <Text dimColor={true}>
@@ -898,9 +898,9 @@ function EmptyStateMessage(t0) {
       }
       return t1;
     }
-    case 'policy-restricts-sources': {
+    case "policy-restricts-sources": {
       let t1;
-      if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <>
             <Text dimColor={true}>
@@ -915,9 +915,9 @@ function EmptyStateMessage(t0) {
       }
       return t1;
     }
-    case 'all-marketplaces-failed': {
+    case "all-marketplaces-failed": {
       let t1;
-      if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <>
             <Text dimColor={true}>Failed to load marketplace data.</Text>
@@ -930,9 +930,9 @@ function EmptyStateMessage(t0) {
       }
       return t1;
     }
-    case 'all-plugins-installed': {
+    case "all-plugins-installed": {
       let t1;
-      if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <>
             <Text dimColor={true}>All available plugins are already installed.</Text>
@@ -947,7 +947,7 @@ function EmptyStateMessage(t0) {
     }
     default: {
       let t1;
-      if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <>
             <Text dimColor={true}>No plugins available.</Text>

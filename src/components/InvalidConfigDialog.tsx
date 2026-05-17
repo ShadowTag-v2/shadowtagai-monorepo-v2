@@ -1,13 +1,13 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, render, Text } from '../ink.js';
-import { KeybindingSetup } from '../keybindings/KeybindingProviderSetup.js';
-import { AppStateProvider } from '../state/AppState.js';
-import type { ConfigParseError } from '../utils/errors.js';
-import { getBaseRenderOptions } from '../utils/renderOptions.js';
-import { jsonStringify, writeFileSync_DEPRECATED } from '../utils/slowOperations.js';
-import type { ThemeName } from '../utils/theme.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, render, Text } from "../ink.js";
+import { KeybindingSetup } from "../keybindings/KeybindingProviderSetup.js";
+import { AppStateProvider } from "../state/AppState.js";
+import type { ConfigParseError } from "../utils/errors.js";
+import { getBaseRenderOptions } from "../utils/renderOptions.js";
+import { jsonStringify, writeFileSync_DEPRECATED } from "../utils/slowOperations.js";
+import type { ThemeName } from "../utils/theme.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
 
 interface InvalidConfigHandlerProps {
   error: ConfigParseError;
@@ -28,7 +28,7 @@ function InvalidConfigDialog(t0) {
   let t1;
   if ($[0] !== onExit || $[1] !== onReset) {
     t1 = (value) => {
-      if (value === 'exit') {
+      if (value === "exit") {
         onExit();
       } else {
         onReset();
@@ -76,22 +76,22 @@ function InvalidConfigDialog(t0) {
     t4 = $[9];
   }
   let t5;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = <Text bold={true}>Choose an option:</Text>;
     $[10] = t5;
   } else {
     t5 = $[10];
   }
   let t6;
-  if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = [
       {
-        label: 'Exit and fix manually',
-        value: 'exit',
+        label: "Exit and fix manually",
+        value: "exit",
       },
       {
-        label: 'Reset with default configuration',
-        value: 'reset',
+        label: "Reset with default configuration",
+        value: "reset",
       },
     ];
     $[11] = t6;
@@ -134,7 +134,7 @@ function InvalidConfigDialog(t0) {
  * Safe fallback theme name for error dialogs to avoid circular dependency.
  * Uses a hardcoded dark theme that doesn't require reading from config.
  */
-const SAFE_ERROR_THEME_NAME: ThemeName = 'dark';
+const SAFE_ERROR_THEME_NAME: ThemeName = "dark";
 export async function showInvalidConfigDialog({ error }: InvalidConfigHandlerProps): Promise<void> {
   // Extend RenderOptions with theme property for this specific usage
   type SafeRenderOptions = Parameters<typeof render>[1] & {
@@ -164,7 +164,7 @@ export async function showInvalidConfigDialog({ error }: InvalidConfigHandlerPro
                 jsonStringify(error.defaultConfig, null, 2),
                 {
                   flush: false,
-                  encoding: 'utf8',
+                  encoding: "utf8",
                 },
               );
               unmount();

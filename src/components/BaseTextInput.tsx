@@ -1,12 +1,12 @@
-import React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { renderPlaceholder } from '../hooks/renderPlaceholder.js';
-import { usePasteHandler } from '../hooks/usePasteHandler.js';
-import { useDeclaredCursor } from '../ink/hooks/use-declared-cursor.js';
-import { Ansi, Box, Text, useInput } from '../ink.js';
-import type { BaseInputState, BaseTextInputProps } from '../types/textInputTypes.js';
-import type { TextHighlight } from '../utils/textHighlighting.js';
-import { HighlightedInput } from './PromptInput/ShimmeredInput.js';
+import React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { renderPlaceholder } from "../hooks/renderPlaceholder.js";
+import { usePasteHandler } from "../hooks/usePasteHandler.js";
+import { useDeclaredCursor } from "../ink/hooks/use-declared-cursor.js";
+import { Ansi, Box, Text, useInput } from "../ink.js";
+import type { BaseInputState, BaseTextInputProps } from "../types/textInputTypes.js";
+import type { TextHighlight } from "../utils/textHighlighting.js";
+import { HighlightedInput } from "./PromptInput/ShimmeredInput.js";
 
 type BaseTextInputComponentProps = BaseTextInputProps & {
   inputState: BaseInputState;
@@ -70,9 +70,9 @@ export function BaseTextInput(t0) {
     isActive: props.focus,
   });
   const commandWithoutArgs =
-    (props.value && props.value.trim().indexOf(' ') === -1) || props.value?.endsWith(' ');
+    (props.value && props.value.trim().indexOf(" ") === -1) || props.value?.endsWith(" ");
   const showArgumentHint = Boolean(
-    props.argumentHint && props.value && commandWithoutArgs && props.value.startsWith('/'),
+    props.argumentHint && props.value && commandWithoutArgs && props.value.startsWith("/"),
   );
   const cursorFiltered =
     props.showCursor && props.highlights
@@ -98,7 +98,7 @@ export function BaseTextInput(t0) {
         <HighlightedInput text={renderedValue} highlights={filteredHighlights} />
         {showArgumentHint && (
           <Text dimColor={true}>
-            {props.value?.endsWith(' ') ? '' : ' '}
+            {props.value?.endsWith(" ") ? "" : " "}
             {props.argumentHint}
           </Text>
         )}
@@ -108,7 +108,7 @@ export function BaseTextInput(t0) {
   }
   const T0 = Box;
   const T1 = Text;
-  const t4 = 'truncate-end';
+  const t4 = "truncate-end";
   const t5 =
     showPlaceholder && props.placeholderElement ? (
       props.placeholderElement
@@ -119,7 +119,7 @@ export function BaseTextInput(t0) {
     );
   const t6 = showArgumentHint && (
     <Text dimColor={true}>
-      {props.value?.endsWith(' ') ? '' : ' '}
+      {props.value?.endsWith(" ") ? "" : " "}
       {props.argumentHint}
     </Text>
   );

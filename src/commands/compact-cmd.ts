@@ -1,11 +1,11 @@
-import { readFileSync, writeFileSync } from 'node:fs';
-import type { Command } from 'commander';
-import { logEvent } from '../services/analytics/index.js';
+import { readFileSync, writeFileSync } from "node:fs";
+import type { Command } from "commander";
+import { logEvent } from "../services/analytics/index.js";
 import {
   type CompactionPipelineResult,
   resetCompactionCircuitBreaker,
   runCompactionPipeline,
-} from '../services/compact/index.js';
+} from "../services/compact/index.js";
 
 /**
  * Compact CLI Command — Terminal-side 4-Layer Context Compaction
@@ -41,9 +41,9 @@ export interface CompactCommandOptions {
 
 function formatBudget(budget: Record<string, number>): string {
   const lines: string[] = [];
-  lines.push('┌──────────────────────────────────────────────────┐');
-  lines.push('│        COMPACTION — Token Budget Breakdown       │');
-  lines.push('├──────────────────────────────────────────────────┤');
+  lines.push("┌──────────────────────────────────────────────────┐");
+  lines.push("│        COMPACTION — Token Budget Breakdown       │");
+  lines.push("├──────────────────────────────────────────────────┤");
   lines.push(
     `│ Effective Window:    ${budget.effectiveWindow?.toLocaleString().padStart(12)} tokens`,
   );
@@ -55,8 +55,8 @@ function formatBudget(budget: Record<string, number>): string {
   lines.push(
     `│ Max Tool Output:     ${budget.maxToolOutputLength?.toLocaleString().padStart(12)} chars`,
   );
-  lines.push('└──────────────────────────────────────────────────┘');
-  return lines.join('\n');
+  lines.push("└──────────────────────────────────────────────────┘");
+  return lines.join("\n");
 }
 
 /** Compute char-level reduction percentage */
@@ -72,13 +72,13 @@ function computeReductionPct(
 
 /** Handle --budget-only mode: show allocation and exit */
 async function handleBudgetOnly(opts: CompactCommandOptions, totalWindow?: number): Promise<void> {
-  const { allocateTokenBudget } = await import('../services/compact/tokenBudget.js');
+  const { allocateTokenBudget } = await import("../services/compact/tokenBudget.js");
   const budget = allocateTokenBudget([], totalWindow, opts.model);
 
   if (opts.json) {
     console.log(JSON.stringify(budget, null, 2));
   } else {
-    console.log(`Model: ${opts.model ?? '(default 200K)'}`);
+    console.log(`Model: ${opts.model ?? "(default 200K)"}`);
     console.log();
     console.log(formatBudget(budget as unknown as Record<string, number>));
   }
@@ -95,17 +95,17 @@ function handleDryRun(
 
   console.log(formatBudget(result.budget as unknown as Record<string, number>));
   console.log();
-  console.log('── DRY RUN — Compaction Diff Summary ──');
+  console.log("── DRY RUN — Compaction Diff Summary ──");
   console.log(`  Input messages:    ${messages.length}`);
   console.log(`  Output messages:   ${result.messages.length}`);
   console.log(`  Messages removed:  ${removed}`);
   console.log(`  Char reduction:    ${pct.toFixed(1)}%`);
   if (result.circuitBroken) {
-    console.log('  ⚠ Circuit breaker activated — compaction halted.');
+    console.log("  ⚠ Circuit breaker activated — compaction halted.");
   }
   console.log(`\n✓ Dry-run analysis complete in ${durationMs}ms`);
 
-  logEvent('tengu_compact_dry_run', {
+  logEvent("tengu_compact_dry_run", {
     inputMessages: messages.length,
     outputMessages: result.messages.length,
     durationMs,
@@ -150,19 +150,19 @@ function outputHumanResult(
 
   // Verbose: show per-layer timing breakdown
   if (opts.verbose && result.layerTimings) {
-    console.log('── Per-Layer Timing ──');
+    console.log("── Per-Layer Timing ──");
     for (const [layer, ms] of Object.entries(result.layerTimings)) {
       console.log(`  ${layer.padEnd(22)} ${ms.toFixed(2)}ms`);
     }
     console.log();
   }
 
-  console.log('Layer Execution:');
+  console.log("Layer Execution:");
   for (const layer of result.layersApplied) {
     const timing =
       opts.verbose && result.layerTimings?.[layer]
         ? ` (${result.layerTimings[layer].toFixed(2)}ms)`
-        : '';
+        : "";
     console.log(`  ✓ ${layer}${timing}`);
   }
   console.log();
@@ -170,14 +170,14 @@ function outputHumanResult(
   console.log(`Output: ${result.messages.length} messages`);
   console.log(`Reduction: ${messages.length - result.messages.length} messages removed`);
   if (result.circuitBroken) {
-    console.log('⚠ Circuit breaker activated — compaction halted.');
+    console.log("⚠ Circuit breaker activated — compaction halted.");
   }
   console.log(`\n✓ Compaction complete in ${durationMs}ms`);
 }
 
 /** Write compacted output to disk */
 function writeOutput(outputPath: string, result: CompactionPipelineResult): void {
-  writeFileSync(outputPath, JSON.stringify(result.messages, null, 2), 'utf-8');
+  writeFileSync(outputPath, JSON.stringify(result.messages, null, 2), "utf-8");
   console.log(`\n📁 Compacted output written to: ${outputPath}`);
 }
 
@@ -192,7 +192,7 @@ function enforceThreshold(
     console.log(
       `\n✗ THRESHOLD FAIL — reduction ${actualPct.toFixed(1)}% < required ${thresholdPct}%`,
     );
-    logEvent('tengu_compact_threshold_fail', {
+    logEvent("tengu_compact_threshold_fail", {
       actualPct,
       thresholdPct,
     });
@@ -208,7 +208,7 @@ function emitCompletionTelemetry(
   result: CompactionPipelineResult,
   durationMs: number,
 ): void {
-  logEvent('tengu_compact_complete', {
+  logEvent("tengu_compact_complete", {
     inputMessages: messages.length,
     outputMessages: result.messages.length,
     durationMs,
@@ -231,7 +231,7 @@ async function handleFullCompaction(
     return;
   }
 
-  const raw = readFileSync(opts.file, 'utf-8');
+  const raw = readFileSync(opts.file, "utf-8");
   const messages: Record<string, unknown>[] = JSON.parse(raw);
 
   if (!Array.isArray(messages)) {
@@ -286,26 +286,26 @@ async function handleFullCompaction(
 
 export function registerCompactCommand(program: Command) {
   program
-    .command('compact')
-    .description('4-Layer context compaction pipeline — diagnostics and analysis')
-    .option('-f, --file <path>', 'JSON conversation file to compact')
-    .option('-m, --model <model>', 'Model identifier for context window sizing')
-    .option('-w, --window <size>', 'Override total context window (tokens)')
-    .option('-o, --output <path>', 'Write compacted JSON to file')
-    .option('-t, --threshold <pct>', 'Fail if char reduction % is below this target')
-    .option('--json', 'Output results as JSON')
-    .option('--budget-only', 'Show budget allocation without processing messages')
-    .option('--dry-run', 'Analyze compaction without writing output (diff summary)')
-    .option('--verbose', 'Show per-layer timing breakdown')
-    .option('--force', 'Bypass circuit breaker and threshold gates')
+    .command("compact")
+    .description("4-Layer context compaction pipeline — diagnostics and analysis")
+    .option("-f, --file <path>", "JSON conversation file to compact")
+    .option("-m, --model <model>", "Model identifier for context window sizing")
+    .option("-w, --window <size>", "Override total context window (tokens)")
+    .option("-o, --output <path>", "Write compacted JSON to file")
+    .option("-t, --threshold <pct>", "Fail if char reduction % is below this target")
+    .option("--json", "Output results as JSON")
+    .option("--budget-only", "Show budget allocation without processing messages")
+    .option("--dry-run", "Analyze compaction without writing output (diff summary)")
+    .option("--verbose", "Show per-layer timing breakdown")
+    .option("--force", "Bypass circuit breaker and threshold gates")
     .action(async (opts: CompactCommandOptions) => {
-      console.log('╔══════════════════════════════════════════════════╗');
-      console.log('║    COMPACTION — 4-Layer Context Pipeline         ║');
-      console.log('╚══════════════════════════════════════════════════╝');
+      console.log("╔══════════════════════════════════════════════════╗");
+      console.log("║    COMPACTION — 4-Layer Context Pipeline         ║");
+      console.log("╚══════════════════════════════════════════════════╝");
       console.log();
 
-      logEvent('tengu_compact_invoked', {
-        model: opts.model ?? 'default',
+      logEvent("tengu_compact_invoked", {
+        model: opts.model ?? "default",
         budgetOnly: !!opts.budgetOnly,
         dryRun: !!opts.dryRun,
         verbose: !!opts.verbose,
@@ -329,7 +329,7 @@ export function registerCompactCommand(program: Command) {
         await handleFullCompaction(opts, totalWindow);
       } catch (e: unknown) {
         const errMsg = e instanceof Error ? e.message : String(e);
-        logEvent('tengu_compact_error', { error: errMsg });
+        logEvent("tengu_compact_error", { error: errMsg });
         process.exitCode = 1;
       }
     });

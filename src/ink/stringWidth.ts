@@ -1,7 +1,7 @@
-import emojiRegex from 'emoji-regex';
-import { eastAsianWidth } from 'get-east-asian-width';
-import stripAnsi from 'strip-ansi';
-import { getGraphemeSegmenter } from '../utils/intl.js';
+import emojiRegex from "emoji-regex";
+import { eastAsianWidth } from "get-east-asian-width";
+import stripAnsi from "strip-ansi";
+import { getGraphemeSegmenter } from "../utils/intl.js";
 
 const EMOJI_REGEX = emojiRegex();
 
@@ -18,7 +18,7 @@ const EMOJI_REGEX = emojiRegex();
  * recommended by the Unicode standard for Western contexts.
  */
 function stringWidthJavaScript(str: string): number {
-  if (typeof str !== 'string' || str.length === 0) {
+  if (typeof str !== "string" || str.length === 0) {
     return 0;
   }
 
@@ -45,7 +45,7 @@ function stringWidthJavaScript(str: string): number {
   }
 
   // Strip ANSI if escape character is present
-  if (str.includes('\x1b')) {
+  if (str.includes("\x1b")) {
     str = stripAnsi(str);
     if (str.length === 0) {
       return 0;
@@ -211,7 +211,7 @@ function isZeroWidth(codePoint: number): boolean {
 // Bun.stringWidth is resolved once at module scope rather than checked on every
 // call — typeof guards deopt property access and this is a hot path (~100k calls/frame).
 const bunStringWidth =
-  typeof Bun !== 'undefined' && typeof Bun.stringWidth === 'function' ? Bun.stringWidth : null;
+  typeof Bun !== "undefined" && typeof Bun.stringWidth === "function" ? Bun.stringWidth : null;
 
 const BUN_STRING_WIDTH_OPTS = { ambiguousIsNarrow: true } as const;
 

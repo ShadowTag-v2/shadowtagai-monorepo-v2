@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { use } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box } from '../ink.js';
-import type { AgentDefinitionsResult } from '../tools/AgentTool/loadAgentsDir.js';
-import { getMemoryFiles } from '../utils/claudemd.js';
-import { getGlobalConfig } from '../utils/config.js';
-import { getActiveNotices } from '../utils/statusNoticeDefinitions.js';
+import * as React from "react";
+import { use } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box } from "../ink.js";
+import type { AgentDefinitionsResult } from "../tools/AgentTool/loadAgentsDir.js";
+import { getMemoryFiles } from "../utils/claudemd.js";
+import { getGlobalConfig } from "../utils/config.js";
+import { getActiveNotices } from "../utils/statusNoticeDefinitions.js";
 
 type Props = {
   agentDefinitions?: AgentDefinitionsResult;
@@ -21,7 +21,7 @@ export function StatusNotices(t0) {
   const { agentDefinitions } = t0 === undefined ? {} : t0;
   const t1 = getGlobalConfig();
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = getMemoryFiles();
     $[0] = t2;
   } else {
@@ -37,7 +37,7 @@ export function StatusNotices(t0) {
     return null;
   }
   const T0 = Box;
-  const t3 = 'column';
+  const t3 = "column";
   const t4 = 1;
   const t5 = activeNotices.map((notice) => (
     <React.Fragment key={notice.id}>{notice.render(context)}</React.Fragment>

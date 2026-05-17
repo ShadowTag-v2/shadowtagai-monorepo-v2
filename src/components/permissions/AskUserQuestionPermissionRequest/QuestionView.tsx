@@ -1,21 +1,21 @@
-import figures from 'figures';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../../ink.js';
-import { useAppState } from '../../../state/AppState.js';
-import type { Question } from '../../../tools/AskUserQuestionTool/AskUserQuestionTool.js';
-import type { PastedContent } from '../../../utils/config.js';
-import { getExternalEditor } from '../../../utils/editor.js';
-import { toIDEDisplayName } from '../../../utils/ide.js';
-import type { ImageDimensions } from '../../../utils/imageResizer.js';
-import { editPromptInEditor } from '../../../utils/promptEditor.js';
-import { Select, SelectMulti } from '../../CustomSelect/index.js';
-import { Divider } from '../../design-system/Divider.js';
-import { FilePathLink } from '../../FilePathLink.js';
-import { PermissionRequestTitle } from '../PermissionRequestTitle.js';
-import { PreviewQuestionView } from './PreviewQuestionView.js';
-import { QuestionNavigationBar } from './QuestionNavigationBar.js';
-import type { QuestionState } from './use-multiple-choice-state.js';
+import figures from "figures";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../../ink.js";
+import { useAppState } from "../../../state/AppState.js";
+import type { Question } from "../../../tools/AskUserQuestionTool/AskUserQuestionTool.js";
+import type { PastedContent } from "../../../utils/config.js";
+import { getExternalEditor } from "../../../utils/editor.js";
+import { toIDEDisplayName } from "../../../utils/ide.js";
+import type { ImageDimensions } from "../../../utils/imageResizer.js";
+import { editPromptInEditor } from "../../../utils/promptEditor.js";
+import { Select, SelectMulti } from "../../CustomSelect/index.js";
+import { Divider } from "../../design-system/Divider.js";
+import { FilePathLink } from "../../FilePathLink.js";
+import { PermissionRequestTitle } from "../PermissionRequestTitle.js";
+import { PreviewQuestionView } from "./PreviewQuestionView.js";
+import { QuestionNavigationBar } from "./QuestionNavigationBar.js";
+import type { QuestionState } from "./use-multiple-choice-state.js";
 
 type Props = {
   question: Question;
@@ -81,12 +81,12 @@ export function QuestionView(t0) {
     onRemoveImage,
   } = t0;
   const hideSubmitTab = t1 === undefined ? false : t1;
-  const isInPlanMode = useAppState(_temp) === 'plan';
+  const isInPlanMode = useAppState(_temp) === "plan";
   const [isFooterFocused, setIsFooterFocused] = useState(false);
   const [footerIndex, setFooterIndex] = useState(0);
   const [isOtherFocused, setIsOtherFocused] = useState(false);
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     const editor = getExternalEditor();
     t2 = editor ? toIDEDisplayName(editor) : null;
     $[0] = t2;
@@ -97,7 +97,7 @@ export function QuestionView(t0) {
   let t3;
   if ($[1] !== onTextInputFocus) {
     t3 = (value) => {
-      const isOther = value === '__other__';
+      const isOther = value === "__other__";
       setIsOtherFocused(isOther);
       onTextInputFocus(isOther);
     };
@@ -108,7 +108,7 @@ export function QuestionView(t0) {
   }
   const handleFocus = t3;
   let t4;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = () => {
       setIsFooterFocused(true);
     };
@@ -118,7 +118,7 @@ export function QuestionView(t0) {
   }
   const handleDownFromLastItem = t4;
   let t5;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = () => {
       setIsFooterFocused(false);
     };
@@ -140,7 +140,7 @@ export function QuestionView(t0) {
       if (!isFooterFocused) {
         return;
       }
-      if (e.key === 'up' || (e.ctrl && e.key === 'p')) {
+      if (e.key === "up" || (e.ctrl && e.key === "p")) {
         e.preventDefault();
         if (footerIndex === 0) {
           handleUpFromFooter();
@@ -149,14 +149,14 @@ export function QuestionView(t0) {
         }
         return;
       }
-      if (e.key === 'down' || (e.ctrl && e.key === 'n')) {
+      if (e.key === "down" || (e.ctrl && e.key === "n")) {
         e.preventDefault();
         if (isInPlanMode && footerIndex === 0) {
           setFooterIndex(1);
         }
         return;
       }
-      if (e.key === 'return') {
+      if (e.key === "return") {
         e.preventDefault();
         if (footerIndex === 0) {
           onRespondToClaude();
@@ -165,7 +165,7 @@ export function QuestionView(t0) {
         }
         return;
       }
-      if (e.key === 'escape') {
+      if (e.key === "escape") {
         e.preventDefault();
         onCancel();
       }
@@ -215,8 +215,8 @@ export function QuestionView(t0) {
       t8 = $[21];
     }
     handleOpenEditor = t8;
-    const t9 = question.multiSelect ? 'Type something' : 'Type something.';
-    const t10 = questionState?.textInputValue ?? '';
+    const t9 = question.multiSelect ? "Type something" : "Type something.";
+    const t10 = questionState?.textInputValue ?? "";
     let t11;
     if (
       $[22] !== onUpdateQuestionState ||
@@ -242,9 +242,9 @@ export function QuestionView(t0) {
     let t12;
     if ($[26] !== t10 || $[27] !== t11 || $[28] !== t9) {
       t12 = {
-        type: 'input' as const,
-        value: '__other__',
-        label: 'Other',
+        type: "input" as const,
+        value: "__other__",
+        label: "Other",
         placeholder: t9,
         initialValue: t10,
         onChange: t11,
@@ -350,7 +350,7 @@ export function QuestionView(t0) {
     t8 = $[49];
   }
   let t9;
-  if ($[50] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[50] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = (
       <Box marginTop={-1}>
         <Divider color="inactive" />
@@ -426,7 +426,7 @@ export function QuestionView(t0) {
                 },
                 true,
               );
-              const textInput = values.includes('__other__')
+              const textInput = values.includes("__other__")
                 ? questionStates[questionText]?.textInputValue
                 : undefined;
               const finalValues = values.filter(_temp4).concat(textInput ? [textInput] : []);
@@ -434,7 +434,7 @@ export function QuestionView(t0) {
             }}
             onFocus={handleFocus}
             onCancel={onCancel}
-            submitButtonText={currentQuestionIndex === questions.length - 1 ? 'Submit' : 'Next'}
+            submitButtonText={currentQuestionIndex === questions.length - 1 ? "Submit" : "Next"}
             onSubmit={onSubmit}
             onDownFromLastItem={handleDownFromLastItem}
             isDisabled={isFooterFocused}
@@ -457,7 +457,7 @@ export function QuestionView(t0) {
                 false,
               );
               const textInput_0 =
-                value_1 === '__other__' ? questionStates[questionText]?.textInputValue : undefined;
+                value_1 === "__other__" ? questionStates[questionText]?.textInputValue : undefined;
               onAnswer(questionText, value_1, textInput_0);
             }}
             onFocus={handleFocus}
@@ -495,7 +495,7 @@ export function QuestionView(t0) {
     t12 = $[75];
   }
   let t13;
-  if ($[76] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[76] === Symbol.for("react.memo_cache_sentinel")) {
     t13 = <Divider color="inactive" />;
     $[76] = t13;
   } else {
@@ -515,7 +515,7 @@ export function QuestionView(t0) {
   } else {
     t14 = $[79];
   }
-  const t15 = isFooterFocused && footerIndex === 0 ? 'suggestion' : undefined;
+  const t15 = isFooterFocused && footerIndex === 0 ? "suggestion" : undefined;
   const t16 = options.length + 1;
   let t17;
   if ($[80] !== t15 || $[81] !== t16) {
@@ -554,7 +554,7 @@ export function QuestionView(t0) {
         ) : (
           <Text> </Text>
         )}
-        <Text color={isFooterFocused && footerIndex === 1 ? 'suggestion' : undefined}>
+        <Text color={isFooterFocused && footerIndex === 1 ? "suggestion" : undefined}>
           {options.length + 2}. Skip interview and plan immediately
         </Text>
       </Box>
@@ -590,7 +590,7 @@ export function QuestionView(t0) {
           {figures.arrowUp}/{figures.arrowDown} to navigate
         </>
       ) : (
-        'Tab/Arrow keys to navigate'
+        "Tab/Arrow keys to navigate"
       );
     $[94] = questions.length;
     $[95] = t21;
@@ -679,14 +679,14 @@ export function QuestionView(t0) {
   return t26;
 }
 function _temp4(v) {
-  return v !== '__other__';
+  return v !== "__other__";
 }
 function _temp3(opt_0) {
   return opt_0.preview;
 }
 function _temp2(opt) {
   return {
-    type: 'text' as const,
+    type: "text" as const,
     value: opt.label,
     label: opt.label,
     description: opt.description,

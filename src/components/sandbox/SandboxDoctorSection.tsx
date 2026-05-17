@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { SandboxManager } from "../../utils/sandbox/sandbox-adapter.js";
 export function SandboxDoctorSection() {
   const $ = _c(2);
   if (!SandboxManager.isSupportedPlatform()) {
@@ -11,8 +11,8 @@ export function SandboxDoctorSection() {
   }
   let t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
-    t1 = Symbol.for('react.early_return_sentinel');
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+    t1 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const depCheck = SandboxManager.checkDependencies();
       const hasErrors = depCheck.errors.length > 0;
@@ -21,8 +21,8 @@ export function SandboxDoctorSection() {
         t1 = null;
         break bb0;
       }
-      const statusColor = hasErrors ? ('error' as const) : ('warning' as const);
-      const statusText = hasErrors ? 'Missing dependencies' : 'Available (with warnings)';
+      const statusColor = hasErrors ? ("error" as const) : ("warning" as const);
+      const statusText = hasErrors ? "Missing dependencies" : "Available (with warnings)";
       t0 = (
         <Box flexDirection="column">
           <Text bold={true}>Sandbox</Text>
@@ -41,7 +41,7 @@ export function SandboxDoctorSection() {
     t0 = $[0];
     t1 = $[1];
   }
-  if (t1 !== Symbol.for('react.early_return_sentinel')) {
+  if (t1 !== Symbol.for("react.early_return_sentinel")) {
     return t1;
   }
   return t0;

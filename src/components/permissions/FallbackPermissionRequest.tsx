@@ -1,17 +1,17 @@
-import { c as _c } from 'react/compiler-runtime';
-import { getOriginalCwd } from '../../bootstrap/state.js';
-import { Box, Text, useTheme } from '../../ink.js';
-import { sanitizeToolNameForAnalytics } from '../../services/analytics/metadata.js';
-import { env } from '../../utils/env.js';
-import { shouldShowAlwaysAllowOptions } from '../../utils/permissions/permissionsLoader.js';
-import { truncateToLines } from '../../utils/stringUtils.js';
-import { logUnaryEvent } from '../../utils/unaryLogging.js';
-import { usePermissionRequestLogging } from './hooks.js';
-import { PermissionDialog } from './PermissionDialog.js';
-import { PermissionPrompt } from './PermissionPrompt.js';
-import { PermissionRuleExplanation } from './PermissionRuleExplanation.js';
+import { c as _c } from "react/compiler-runtime";
+import { getOriginalCwd } from "../../bootstrap/state.js";
+import { Box, Text, useTheme } from "../../ink.js";
+import { sanitizeToolNameForAnalytics } from "../../services/analytics/metadata.js";
+import { env } from "../../utils/env.js";
+import { shouldShowAlwaysAllowOptions } from "../../utils/permissions/permissionsLoader.js";
+import { truncateToLines } from "../../utils/stringUtils.js";
+import { logUnaryEvent } from "../../utils/unaryLogging.js";
+import { usePermissionRequestLogging } from "./hooks.js";
+import { PermissionDialog } from "./PermissionDialog.js";
+import { PermissionPrompt } from "./PermissionPrompt.js";
+import { PermissionRuleExplanation } from "./PermissionRuleExplanation.js";
 
-type FallbackOptionValue = 'yes' | 'yes-dont-ask-again' | 'no';
+type FallbackOptionValue = "yes" | "yes-dont-ask-again" | "no";
 export function FallbackPermissionRequest(t0) {
   const $ = _c(58);
   const { toolUseConfirm, onDone, onReject, workerBadge } = t0;
@@ -20,7 +20,7 @@ export function FallbackPermissionRequest(t0) {
   let t1;
   if ($[0] !== toolUseConfirm.input || $[1] !== toolUseConfirm.tool) {
     originalUserFacingName = toolUseConfirm.tool.userFacingName(toolUseConfirm.input as never);
-    t1 = originalUserFacingName.endsWith(' (MCP)')
+    t1 = originalUserFacingName.endsWith(" (MCP)")
       ? originalUserFacingName.slice(0, -6)
       : originalUserFacingName;
     $[0] = toolUseConfirm.input;
@@ -33,10 +33,10 @@ export function FallbackPermissionRequest(t0) {
   }
   const userFacingName = t1;
   let t2;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = {
-      completion_type: 'tool_use_single',
-      language_name: 'none',
+      completion_type: "tool_use_single",
+      language_name: "none",
     };
     $[4] = t2;
   } else {
@@ -48,12 +48,12 @@ export function FallbackPermissionRequest(t0) {
   if ($[5] !== onDone || $[6] !== onReject || $[7] !== toolUseConfirm) {
     t3 = (value, feedback) => {
       switch (value) {
-        case 'yes': {
+        case "yes": {
           logUnaryEvent({
-            completion_type: 'tool_use_single',
-            event: 'accept',
+            completion_type: "tool_use_single",
+            event: "accept",
             metadata: {
-              language_name: 'none',
+              language_name: "none",
               message_id: toolUseConfirm.assistantMessage.message.id,
               platform: env.platform,
             },
@@ -62,37 +62,37 @@ export function FallbackPermissionRequest(t0) {
           onDone();
           break;
         }
-        case 'yes-dont-ask-again': {
+        case "yes-dont-ask-again": {
           logUnaryEvent({
-            completion_type: 'tool_use_single',
-            event: 'accept',
+            completion_type: "tool_use_single",
+            event: "accept",
             metadata: {
-              language_name: 'none',
+              language_name: "none",
               message_id: toolUseConfirm.assistantMessage.message.id,
               platform: env.platform,
             },
           });
           toolUseConfirm.onAllow(toolUseConfirm.input, [
             {
-              type: 'addRules',
+              type: "addRules",
               rules: [
                 {
                   toolName: toolUseConfirm.tool.name,
                 },
               ],
-              behavior: 'allow',
-              destination: 'localSettings',
+              behavior: "allow",
+              destination: "localSettings",
             },
           ]);
           onDone();
           break;
         }
-        case 'no': {
+        case "no": {
           logUnaryEvent({
-            completion_type: 'tool_use_single',
-            event: 'reject',
+            completion_type: "tool_use_single",
+            event: "reject",
             metadata: {
-              language_name: 'none',
+              language_name: "none",
               message_id: toolUseConfirm.assistantMessage.message.id,
               platform: env.platform,
             },
@@ -115,10 +115,10 @@ export function FallbackPermissionRequest(t0) {
   if ($[9] !== onDone || $[10] !== onReject || $[11] !== toolUseConfirm) {
     t4 = () => {
       logUnaryEvent({
-        completion_type: 'tool_use_single',
-        event: 'reject',
+        completion_type: "tool_use_single",
+        event: "reject",
         metadata: {
-          language_name: 'none',
+          language_name: "none",
           message_id: toolUseConfirm.assistantMessage.message.id,
           platform: env.platform,
         },
@@ -136,7 +136,7 @@ export function FallbackPermissionRequest(t0) {
   }
   const handleCancel = t4;
   let t5;
-  if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = getOriginalCwd();
     $[13] = t5;
   } else {
@@ -144,7 +144,7 @@ export function FallbackPermissionRequest(t0) {
   }
   const originalCwd = t5;
   let t6;
-  if ($[14] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = shouldShowAlwaysAllowOptions();
     $[14] = t6;
   } else {
@@ -152,12 +152,12 @@ export function FallbackPermissionRequest(t0) {
   }
   const showAlwaysAllowOptions = t6;
   let t7;
-  if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = {
-      label: 'Yes',
-      value: 'yes',
+      label: "Yes",
+      value: "yes",
       feedbackConfig: {
-        type: 'accept',
+        type: "accept",
       },
     };
     $[15] = t7;
@@ -170,7 +170,7 @@ export function FallbackPermissionRequest(t0) {
     if (showAlwaysAllowOptions) {
       const t8 = <Text bold={true}>{userFacingName}</Text>;
       let t9;
-      if ($[18] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[18] === Symbol.for("react.memo_cache_sentinel")) {
         t9 = <Text bold={true}>{originalCwd}</Text>;
         $[18] = t9;
       } else {
@@ -184,7 +184,7 @@ export function FallbackPermissionRequest(t0) {
               Yes, and don't ask again for {t8} commands in {t9}
             </Text>
           ),
-          value: 'yes-dont-ask-again',
+          value: "yes-dont-ask-again",
         };
         $[19] = t8;
         $[20] = t10;
@@ -194,12 +194,12 @@ export function FallbackPermissionRequest(t0) {
       result.push(t10);
     }
     let t8;
-    if ($[21] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[21] === Symbol.for("react.memo_cache_sentinel")) {
       t8 = {
-        label: 'No',
-        value: 'no',
+        label: "No",
+        value: "no",
         feedbackConfig: {
-          type: 'reject',
+          type: "reject",
         },
       };
       $[21] = t8;
@@ -250,7 +250,7 @@ export function FallbackPermissionRequest(t0) {
   }
   let t12;
   if ($[31] !== originalUserFacingName) {
-    t12 = originalUserFacingName.endsWith(' (MCP)') ? <Text dimColor={true}> (MCP)</Text> : '';
+    t12 = originalUserFacingName.endsWith(" (MCP)") ? <Text dimColor={true}> (MCP)</Text> : "";
     $[31] = originalUserFacingName;
     $[32] = t12;
   } else {

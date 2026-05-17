@@ -1,17 +1,17 @@
-import type { UUID } from 'node:crypto';
-import React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import { getAllBaseTools } from '../tools.js';
-import type { LogOption } from '../types/logs.js';
-import { formatRelativeTimeAgo } from '../utils/format.js';
-import { getSessionIdFromLog, isLiteLog, loadFullLog } from '../utils/sessionStorage.js';
-import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js';
-import { Byline } from './design-system/Byline.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
-import { LoadingState } from './design-system/LoadingState.js';
-import { Messages } from './Messages.js';
+import type { UUID } from "node:crypto";
+import React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import { getAllBaseTools } from "../tools.js";
+import type { LogOption } from "../types/logs.js";
+import { formatRelativeTimeAgo } from "../utils/format.js";
+import { getSessionIdFromLog, isLiteLog, loadFullLog } from "../utils/sessionStorage.js";
+import { ConfigurableShortcutHint } from "./ConfigurableShortcutHint.js";
+import { Byline } from "./design-system/Byline.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
+import { LoadingState } from "./design-system/LoadingState.js";
+import { Messages } from "./Messages.js";
 
 type Props = {
   log: LogOption;
@@ -44,7 +44,7 @@ export function SessionPreview(t0) {
   const displayLog = fullLog ?? log;
   let t3;
   if ($[3] !== displayLog) {
-    t3 = getSessionIdFromLog(displayLog) || ('' as UUID);
+    t3 = getSessionIdFromLog(displayLog) || ("" as UUID);
     $[3] = displayLog;
     $[4] = t3;
   } else {
@@ -52,7 +52,7 @@ export function SessionPreview(t0) {
   }
   const conversationId = t3;
   let t4;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = getAllBaseTools();
     $[5] = t4;
   } else {
@@ -60,15 +60,15 @@ export function SessionPreview(t0) {
   }
   const tools = t4;
   let t5;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[6] = t5;
   } else {
     t5 = $[6];
   }
-  useKeybinding('confirm:no', onExit, t5);
+  useKeybinding("confirm:no", onExit, t5);
   let t6;
   if ($[7] !== fullLog || $[8] !== log || $[9] !== onSelect) {
     t6 = () => {
@@ -83,25 +83,25 @@ export function SessionPreview(t0) {
   }
   const handleSelect = t6;
   let t7;
-  if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[11] = t7;
   } else {
     t7 = $[11];
   }
-  useKeybinding('confirm:yes', handleSelect, t7);
+  useKeybinding("confirm:yes", handleSelect, t7);
   if (isLoading) {
     let t8;
-    if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
-      t8 = <LoadingState message={'Loading session\u2026'} />;
+    if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
+      t8 = <LoadingState message={"Loading session\u2026"} />;
       $[12] = t8;
     } else {
       t8 = $[12];
     }
     let t9;
-    if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
       t9 = (
         <Box flexDirection="column" padding={1}>
           {t8}
@@ -124,7 +124,7 @@ export function SessionPreview(t0) {
     return t9;
   }
   let t8;
-  if ($[14] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = [];
     $[14] = t8;
   } else {
@@ -132,7 +132,7 @@ export function SessionPreview(t0) {
   }
   let t10;
   let t9;
-  if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = [];
     t10 = new Set();
     $[15] = t10;
@@ -142,7 +142,7 @@ export function SessionPreview(t0) {
     t9 = $[16];
   }
   let t11;
-  if ($[17] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = [];
     $[17] = t11;
   } else {
@@ -181,7 +181,7 @@ export function SessionPreview(t0) {
   } else {
     t13 = $[22];
   }
-  const t14 = displayLog.gitBranch ? ` · ${displayLog.gitBranch}` : '';
+  const t14 = displayLog.gitBranch ? ` · ${displayLog.gitBranch}` : "";
   let t15;
   if ($[23] !== displayLog.messageCount || $[24] !== t13 || $[25] !== t14) {
     t15 = (
@@ -197,7 +197,7 @@ export function SessionPreview(t0) {
     t15 = $[26];
   }
   let t16;
-  if ($[27] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
     t16 = (
       <Text dimColor={true}>
         <Byline>

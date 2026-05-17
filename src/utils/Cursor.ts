@@ -1,6 +1,6 @@
-import { stringWidth } from '../ink/stringWidth.js';
-import { wrapAnsi } from '../ink/wrapAnsi.js';
-import { firstGrapheme, getGraphemeSegmenter, getWordSegmenter } from './intl.js';
+import { stringWidth } from "../ink/stringWidth.js";
+import { wrapAnsi } from "../ink/wrapAnsi.js";
+import { firstGrapheme, getGraphemeSegmenter, getWordSegmenter } from "./intl.js";
 
 /**
  * Kill ring for storing killed (cut) text that can be yanked (pasted) with Ctrl+Y.
@@ -19,11 +19,11 @@ let lastYankStart = 0;
 let lastYankLength = 0;
 let lastActionWasYank = false;
 
-export function pushToKillRing(text: string, direction: 'prepend' | 'append' = 'append'): void {
+export function pushToKillRing(text: string, direction: "prepend" | "append" = "append"): void {
   if (text.length > 0) {
     if (lastActionWasKill && killRing.length > 0) {
       // Accumulate with the most recent kill
-      if (direction === 'prepend') {
+      if (direction === "prepend") {
         killRing[0] = text + killRing[0];
       } else {
         killRing[0] = killRing[0] + text;
@@ -42,13 +42,13 @@ export function pushToKillRing(text: string, direction: 'prepend' | 'append' = '
 }
 
 export function getLastKill(): string {
-  return killRing[0] ?? '';
+  return killRing[0] ?? "";
 }
 
 export function getKillRingItem(index: number): string {
-  if (killRing.length === 0) return '';
+  if (killRing.length === 0) return "";
   const normalizedIndex = ((index % killRing.length) + killRing.length) % killRing.length;
-  return killRing[normalizedIndex] ?? '';
+  return killRing[normalizedIndex] ?? "";
 }
 
 export function getKillRingSize(): number {
@@ -90,7 +90,7 @@ export function yankPop(): {
   }
   // Cycle to next item in kill ring
   killRingIndex = (killRingIndex + 1) % killRing.length;
-  const text = killRing[killRingIndex] ?? '';
+  const text = killRing[killRingIndex] ?? "";
   return { text, start: lastYankStart, length: lastYankLength };
 }
 
@@ -235,9 +235,9 @@ export class Cursor {
         // segmenter pass) — the intermediate stringIndex from that approach is
         // always a grapheme boundary, so the "cursor in the middle of a
         // multi-codepoint character" branch was unreachable.
-        let beforeCursor = '';
+        let beforeCursor = "";
         let atCursor = cursorChar;
-        let afterCursor = '';
+        let afterCursor = "";
         let currentWidth = 0;
         let cursorFound = false;
 
@@ -259,7 +259,7 @@ export class Cursor {
         // Only invert the cursor if we have a cursor character to show
         // When ghost text is present and cursor is at end, show first ghost char in cursor
         let renderedCursor: string;
-        let ghostSuffix = '';
+        let ghostSuffix = "";
         if (
           ghostText &&
           currentLine === allLines.length - 1 &&
@@ -280,7 +280,7 @@ export class Cursor {
 
         return beforeCursor + renderedCursor + ghostSuffix + afterCursor.trimEnd();
       })
-      .join('\n');
+      .join("\n");
   }
 
   left(): Cursor {
@@ -322,14 +322,14 @@ export class Cursor {
    * boundary. Used by word-movement methods so Ctrl+W / Alt+D never leave a
    * partial chip.
    */
-  snapOutOfImageRef(offset: number, toward: 'start' | 'end'): number {
+  snapOutOfImageRef(offset: number, toward: "start" | "end"): number {
     const re = /\[Image #\d+\]/g;
     let m;
     while ((m = re.exec(this.text)) !== null) {
       const start = m.index;
       const end = start + m[0].length;
       if (offset > start && offset < end) {
-        return toward === 'start' ? start : end;
+        return toward === "start" ? start : end;
       }
     }
     return offset;
@@ -428,7 +428,7 @@ export class Cursor {
 
   firstNonBlankInLine(): Cursor {
     const { line } = this.getPosition();
-    const lineText = this.measuredText.getWrappedText()[line] || '';
+    const lineText = this.measuredText.getWrappedText()[line] || "";
 
     const match = lineText.match(/^\s*\S/);
     const column = match?.index ? match.index + match[0].length - 1 : 0;
@@ -446,12 +446,12 @@ export class Cursor {
 
   // Helper methods for finding logical line boundaries
   private findLogicalLineStart(fromOffset: number = this.offset): number {
-    const prevNewline = this.text.lastIndexOf('\n', fromOffset - 1);
+    const prevNewline = this.text.lastIndexOf("\n", fromOffset - 1);
     return prevNewline === -1 ? 0 : prevNewline + 1;
   }
 
   private findLogicalLineEnd(fromOffset: number = this.offset): number {
-    const nextNewline = this.text.indexOf('\n', fromOffset);
+    const nextNewline = this.text.indexOf("\n", fromOffset);
     return nextNewline === -1 ? this.text.length : nextNewline;
   }
 
@@ -667,7 +667,7 @@ export class Cursor {
     let pos = this.offset;
     const advance = (p: number): number => this.measuredText.nextOffset(p);
 
-    if (this.graphemeAt(pos) === '') {
+    if (this.graphemeAt(pos) === "") {
       return this;
     }
 
@@ -806,7 +806,7 @@ export class Cursor {
     return cursor;
   }
 
-  modifyText(end: Cursor, insertString: string = ''): Cursor {
+  modifyText(end: Cursor, insertString: string = ""): Cursor {
     const startOffset = this.offset;
     const endOffset = end.offset;
 
@@ -815,7 +815,7 @@ export class Cursor {
     return Cursor.fromText(
       newText,
       this.columns,
-      startOffset + insertString.normalize('NFC').length,
+      startOffset + insertString.normalize("NFC").length,
     );
   }
 
@@ -842,8 +842,8 @@ export class Cursor {
     // If cursor is right after a newline (at start of line), delete just that
     // newline — symmetric with deleteToLineEnd's newline handling. This lets
     // repeated ctrl+u clear across lines.
-    if (this.offset > 0 && this.text[this.offset - 1] === '\n') {
-      return { cursor: this.left().modifyText(this), killed: '\n' };
+    if (this.offset > 0 && this.text[this.offset - 1] === "\n") {
+      return { cursor: this.left().modifyText(this), killed: "\n" };
     }
 
     // Use startOfLine() so that at column 0 of a wrapped visual line,
@@ -856,8 +856,8 @@ export class Cursor {
 
   deleteToLineEnd(): { cursor: Cursor; killed: string } {
     // If cursor is on a newline character, delete just that character
-    if (this.text[this.offset] === '\n') {
-      return { cursor: this.modifyText(this.right()), killed: '\n' };
+    if (this.text[this.offset] === "\n") {
+      return { cursor: this.modifyText(this.right()), killed: "\n" };
     }
 
     const endCursor = this.endOfLine();
@@ -867,7 +867,7 @@ export class Cursor {
 
   deleteToLogicalLineEnd(): Cursor {
     // If cursor is on a newline character, delete just that character
-    if (this.text[this.offset] === '\n') {
+    if (this.text[this.offset] === "\n") {
       return this.modifyText(this.right());
     }
 
@@ -876,9 +876,9 @@ export class Cursor {
 
   deleteWordBefore(): { cursor: Cursor; killed: string } {
     if (this.isAtStart()) {
-      return { cursor: this, killed: '' };
+      return { cursor: this, killed: "" };
     }
-    const target = this.snapOutOfImageRef(this.prevWord().offset, 'start');
+    const target = this.snapOutOfImageRef(this.prevWord().offset, "start");
     const prevWordCursor = new Cursor(this.measuredText, target);
     const killed = this.text.slice(prevWordCursor.offset, this.offset);
     return { cursor: prevWordCursor.modifyText(this), killed };
@@ -900,7 +900,7 @@ export class Cursor {
     // chip forward, not the char before it.
     const chipAfter = this.imageRefStartingAt(this.offset);
     if (chipAfter) {
-      const end = this.text[chipAfter.end] === ' ' ? chipAfter.end + 1 : chipAfter.end;
+      const end = this.text[chipAfter.end] === " " ? chipAfter.end + 1 : chipAfter.end;
       return this.modifyText(new Cursor(this.measuredText, end));
     }
 
@@ -933,18 +933,18 @@ export class Cursor {
       return this;
     }
 
-    const target = this.snapOutOfImageRef(this.nextWord().offset, 'end');
+    const target = this.snapOutOfImageRef(this.nextWord().offset, "end");
     return this.modifyText(new Cursor(this.measuredText, target));
   }
 
   private graphemeAt(pos: number): string {
-    if (pos >= this.text.length) return '';
+    if (pos >= this.text.length) return "";
     const nextOff = this.measuredText.nextOffset(pos);
     return this.text.slice(pos, nextOff);
   }
 
   private isOverWhitespace(): boolean {
-    const currentChar = this.text[this.offset] ?? '';
+    const currentChar = this.text[this.offset] ?? "";
     return /\s/.test(currentChar);
   }
 
@@ -966,7 +966,7 @@ export class Cursor {
 
   startOfLastLine(): Cursor {
     // Go to the beginning of the last line
-    const lastNewlineIndex = this.text.lastIndexOf('\n');
+    const lastNewlineIndex = this.text.lastIndexOf("\n");
 
     if (lastNewlineIndex === -1) {
       // If there are no newlines, the text is a single line
@@ -980,7 +980,7 @@ export class Cursor {
   goToLine(lineNumber: number): Cursor {
     // Go to the beginning of the specified logical line (1-indexed, like vim)
     // Uses logical lines (separated by \n), not wrapped display lines
-    const lines = this.text.split('\n');
+    const lines = this.text.split("\n");
     const targetLine = Math.min(Math.max(0, lineNumber - 1), lines.length - 1);
     let offset = 0;
     for (let i = 0; i < targetLine; i++) {
@@ -1017,10 +1017,10 @@ export class Cursor {
    * @param count - Find the Nth occurrence
    * @returns The target offset, or null if not found
    */
-  findCharacter(char: string, type: 'f' | 'F' | 't' | 'T', count: number = 1): number | null {
+  findCharacter(char: string, type: "f" | "F" | "t" | "T", count: number = 1): number | null {
     const text = this.text;
-    const forward = type === 'f' || type === 't';
-    const till = type === 't' || type === 'T';
+    const forward = type === "f" || type === "t";
+    const till = type === "t" || type === "T";
     let found = 0;
 
     if (forward) {
@@ -1082,7 +1082,7 @@ export class MeasuredText {
     text: string,
     readonly columns: number,
   ) {
-    this.text = text.normalize('NFC');
+    this.text = text.normalize("NFC");
     this.navigationCache = new Map();
   }
 
@@ -1246,15 +1246,15 @@ export class MeasuredText {
     let searchOffset = 0;
     let lastNewLinePos = -1;
 
-    const lines = wrappedText.split('\n');
+    const lines = wrappedText.split("\n");
     for (let i = 0; i < lines.length; i++) {
       const text = lines[i]!;
       const isPrecededByNewline = (startOffset: number) =>
-        i === 0 || (startOffset > 0 && this.text[startOffset - 1] === '\n');
+        i === 0 || (startOffset > 0 && this.text[startOffset - 1] === "\n");
 
       if (text.length === 0) {
         // For blank lines, find the next newline character after the last one
-        lastNewLinePos = this.text.indexOf('\n', lastNewLinePos + 1);
+        lastNewLinePos = this.text.indexOf("\n", lastNewLinePos + 1);
 
         if (lastNewLinePos !== -1) {
           const startOffset = lastNewLinePos;
@@ -1275,7 +1275,7 @@ export class MeasuredText {
         const startOffset = this.text.indexOf(text, searchOffset);
 
         if (startOffset === -1) {
-          throw new Error('Failed to find wrapped line in text');
+          throw new Error("Failed to find wrapped line in text");
         }
 
         searchOffset = startOffset + text.length;
@@ -1283,7 +1283,7 @@ export class MeasuredText {
         // Check if this line ends with a newline in this.text
         const potentialNewlinePos = startOffset + text.length;
         const endsWithNewline =
-          potentialNewlinePos < this.text.length && this.text[potentialNewlinePos] === '\n';
+          potentialNewlinePos < this.text.length && this.text[potentialNewlinePos] === "\n";
 
         if (endsWithNewline) {
           lastNewLinePos = potentialNewlinePos;

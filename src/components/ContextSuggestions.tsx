@@ -1,9 +1,9 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import type { ContextSuggestion } from '../utils/contextSuggestions.js';
-import { formatTokens } from '../utils/format.js';
-import { StatusIcon } from './design-system/StatusIcon.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import type { ContextSuggestion } from "../utils/contextSuggestions.js";
+import { formatTokens } from "../utils/format.js";
+import { StatusIcon } from "./design-system/StatusIcon.js";
 
 type Props = {
   suggestions: ContextSuggestion[];
@@ -15,7 +15,7 @@ export function ContextSuggestions(t0) {
     return null;
   }
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = <Text bold={true}>Suggestions</Text>;
     $[0] = t1;
   } else {
@@ -52,7 +52,7 @@ function _temp(suggestion, i) {
         <Text bold={true}>{suggestion.title}</Text>
         {suggestion.savingsTokens ? (
           <Text dimColor={true}>
-            {' '}
+            {" "}
             {figures.arrowRight} save ~{formatTokens(suggestion.savingsTokens)}
           </Text>
         ) : null}

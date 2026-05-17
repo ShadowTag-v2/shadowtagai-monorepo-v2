@@ -270,7 +270,7 @@ export class FileIndex {
     for (let i = 0; i < matchCount; i++) {
       const path = topK[i]?.path;
       const positionScore = i / denom;
-      const finalScore = path.includes('test')
+      const finalScore = path.includes("test")
         ? Math.min(positionScore * 1.05, 1.0)
         : positionScore;
       results[i] = { path, score: finalScore };

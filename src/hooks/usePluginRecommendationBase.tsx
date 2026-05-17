@@ -1,19 +1,19 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 /**
  * Shared state machine + install helper for plugin-recommendation hooks
  * (LSP, claude-code-hint). Centralizes the gate chain, async-guard,
  * and success/failure notification JSX so new sources stay small.
  */
 
-import figures from 'figures';
-import * as React from 'react';
-import { getIsRemoteMode } from '../bootstrap/state.js';
-import type { useNotifications } from '../context/notifications.js';
-import { Text } from '../ink.js';
-import { logError } from '../utils/log.js';
-import { getPluginById } from '../utils/plugins/marketplaceManager.js';
+import figures from "figures";
+import * as React from "react";
+import { getIsRemoteMode } from "../bootstrap/state.js";
+import type { useNotifications } from "../context/notifications.js";
+import { Text } from "../ink.js";
+import { logError } from "../utils/log.js";
+import { getPluginById } from "../utils/plugins/marketplaceManager.js";
 
-type AddNotification = ReturnType<typeof useNotifications>['addNotification'];
+type AddNotification = ReturnType<typeof useNotifications>["addNotification"];
 type PluginData = NonNullable<Awaited<ReturnType<typeof getPluginById>>>;
 
 /**
@@ -57,7 +57,7 @@ export function usePluginRecommendationBase() {
   }
   const tryResolve = t0;
   let t1;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => setRecommendation(null);
     $[2] = t1;
   } else {
@@ -101,7 +101,7 @@ export async function installPluginAndNotify(
           {figures.tick} {pluginName} installed · restart to apply
         </Text>
       ),
-      priority: 'immediate',
+      priority: "immediate",
       timeoutMs: 5000,
     });
   } catch (error) {
@@ -109,7 +109,7 @@ export async function installPluginAndNotify(
     addNotification({
       key: `${keyPrefix}-install-failed`,
       jsx: <Text color="error">Failed to install {pluginName}</Text>,
-      priority: 'immediate',
+      priority: "immediate",
       timeoutMs: 5000,
     });
   }

@@ -1,17 +1,17 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type * as React from 'react';
-import { KeyboardShortcutHint } from '../../components/design-system/KeyboardShortcutHint.js';
-import { FallbackToolUseErrorMessage } from '../../components/FallbackToolUseErrorMessage.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { OutputLine } from '../../components/shell/OutputLine.js';
-import { ShellProgressMessage } from '../../components/shell/ShellProgressMessage.js';
-import { ShellTimeDisplay } from '../../components/shell/ShellTimeDisplay.js';
-import { Box, Text } from '../../ink.js';
-import type { Tool } from '../../Tool.js';
-import type { ProgressMessage } from '../../types/message.js';
-import type { PowerShellProgress } from '../../types/tools.js';
-import type { ThemeName } from '../../utils/theme.js';
-import type { Out, PowerShellToolInput } from './PowerShellTool.js';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type * as React from "react";
+import { KeyboardShortcutHint } from "../../components/design-system/KeyboardShortcutHint.js";
+import { FallbackToolUseErrorMessage } from "../../components/FallbackToolUseErrorMessage.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { OutputLine } from "../../components/shell/OutputLine.js";
+import { ShellProgressMessage } from "../../components/shell/ShellProgressMessage.js";
+import { ShellTimeDisplay } from "../../components/shell/ShellTimeDisplay.js";
+import { Box, Text } from "../../ink.js";
+import type { Tool } from "../../Tool.js";
+import type { ProgressMessage } from "../../types/message.js";
+import type { PowerShellProgress } from "../../types/tools.js";
+import type { ThemeName } from "../../utils/theme.js";
+import type { Out, PowerShellToolInput } from "./PowerShellTool.js";
 
 // Constants for command display
 const MAX_COMMAND_DISPLAY_LINES = 2;
@@ -32,13 +32,13 @@ export function renderToolUseMessage(
   }
   const displayCommand = command;
   if (!verbose) {
-    const lines = displayCommand.split('\n');
+    const lines = displayCommand.split("\n");
     const needsLineTruncation = lines.length > MAX_COMMAND_DISPLAY_LINES;
     const needsCharTruncation = displayCommand.length > MAX_COMMAND_DISPLAY_CHARS;
     if (needsLineTruncation || needsCharTruncation) {
       let truncated = displayCommand;
       if (needsLineTruncation) {
-        truncated = lines.slice(0, MAX_COMMAND_DISPLAY_LINES).join('\n');
+        truncated = lines.slice(0, MAX_COMMAND_DISPLAY_LINES).join("\n");
       }
       if (truncated.length > MAX_COMMAND_DISPLAY_CHARS) {
         truncated = truncated.slice(0, MAX_COMMAND_DISPLAY_CHARS);
@@ -106,7 +106,7 @@ export function renderToolResultMessage(
     verbose: boolean;
     theme: ThemeName;
     tools: Tool[];
-    style?: 'condensed';
+    style?: "condensed";
   },
 ): React.ReactNode {
   const lastProgress = progressMessagesForMessage.at(-1);
@@ -122,20 +122,20 @@ export function renderToolResultMessage(
   }
   return (
     <Box flexDirection="column">
-      {stdout !== '' ? <OutputLine content={stdout} verbose={verbose} /> : null}
-      {stderr.trim() !== '' ? <OutputLine content={stderr} verbose={verbose} isError /> : null}
-      {stdout === '' && stderr.trim() === '' ? (
+      {stdout !== "" ? <OutputLine content={stdout} verbose={verbose} /> : null}
+      {stderr.trim() !== "" ? <OutputLine content={stderr} verbose={verbose} isError /> : null}
+      {stdout === "" && stderr.trim() === "" ? (
         <MessageResponse height={1}>
           <Text dimColor>
             {backgroundTaskId ? (
               <>
-                Running in the background{' '}
+                Running in the background{" "}
                 <KeyboardShortcutHint shortcut="↓" action="manage" parens />
               </>
             ) : interrupted ? (
-              'Interrupted'
+              "Interrupted"
             ) : (
-              returnCodeInterpretation || '(No output)'
+              returnCodeInterpretation || "(No output)"
             )}
           </Text>
         </MessageResponse>
@@ -149,7 +149,7 @@ export function renderToolResultMessage(
   );
 }
 export function renderToolUseErrorMessage(
-  result: ToolResultBlockParam['content'],
+  result: ToolResultBlockParam["content"],
   {
     verbose,
     progressMessagesForMessage: _progressMessagesForMessage,

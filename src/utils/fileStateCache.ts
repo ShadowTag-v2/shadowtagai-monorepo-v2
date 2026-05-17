@@ -1,5 +1,5 @@
-import { normalize } from 'node:path';
-import { LRUCache } from 'lru-cache';
+import { normalize } from "node:path";
+import { LRUCache } from "lru-cache";
 
 export type FileState = {
   content: string;
@@ -83,11 +83,11 @@ export class FileStateCache {
     return this.cache.entries();
   }
 
-  dump(): ReturnType<LRUCache<string, FileState>['dump']> {
+  dump(): ReturnType<LRUCache<string, FileState>["dump"]> {
     return this.cache.dump();
   }
 
-  load(entries: ReturnType<LRUCache<string, FileState>['dump']>): void {
+  load(entries: ReturnType<LRUCache<string, FileState>["dump"]>): void {
     this.cache.load(entries);
   }
 }

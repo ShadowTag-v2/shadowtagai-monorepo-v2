@@ -1,18 +1,18 @@
-import { createHash, randomUUID, type UUID } from 'node:crypto';
-import { stat } from 'node:fs/promises';
-import { isAbsolute, join, relative, sep } from 'node:path';
-import { getOriginalCwd, getSessionId } from '../bootstrap/state.js';
-import type { AttributionSnapshotMessage, FileAttributionState } from '../types/logs.js';
-import { getCwd } from './cwd.js';
-import { logForDebugging } from './debug.js';
-import { execFileNoThrowWithCwd } from './execFileNoThrow.js';
-import { getFsImplementation } from './fsOperations.js';
-import { isGeneratedFile } from './generatedFiles.js';
-import { getRemoteUrlForDir, resolveGitDir } from './git/gitFilesystem.js';
-import { findGitRoot, gitExe } from './git.js';
-import { logError } from './log.js';
-import { getCanonicalName, type ModelName } from './model/model.js';
-import { sequential } from './sequential.js';
+import { createHash, randomUUID, type UUID } from "node:crypto";
+import { stat } from "node:fs/promises";
+import { isAbsolute, join, relative, sep } from "node:path";
+import { getOriginalCwd, getSessionId } from "../bootstrap/state.js";
+import type { AttributionSnapshotMessage, FileAttributionState } from "../types/logs.js";
+import { getCwd } from "./cwd.js";
+import { logForDebugging } from "./debug.js";
+import { execFileNoThrowWithCwd } from "./execFileNoThrow.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { isGeneratedFile } from "./generatedFiles.js";
+import { getRemoteUrlForDir, resolveGitDir } from "./git/gitFilesystem.js";
+import { findGitRoot, gitExe } from "./git.js";
+import { logError } from "./log.js";
+import { getCanonicalName, type ModelName } from "./model/model.js";
+import { sequential } from "./sequential.js";
 
 /**
  * List of repos where internal model names are allowed in trailers.
@@ -25,50 +25,50 @@ import { sequential } from './sequential.js';
  * Only add repos here that are confirmed PRIVATE.
  */
 const INTERNAL_MODEL_REPOS = [
-  'github.com:anthropics/claude-cli-internal',
-  'github.com/anthropics/claude-cli-internal',
-  'github.com:anthropics/anthropic',
-  'github.com/anthropics/anthropic',
-  'github.com:anthropics/apps',
-  'github.com/anthropics/apps',
-  'github.com:anthropics/casino',
-  'github.com/anthropics/casino',
-  'github.com:anthropics/dbt',
-  'github.com/anthropics/dbt',
-  'github.com:anthropics/dotfiles',
-  'github.com/anthropics/dotfiles',
-  'github.com:anthropics/terraform-config',
-  'github.com/anthropics/terraform-config',
-  'github.com:anthropics/hex-export',
-  'github.com/anthropics/hex-export',
-  'github.com:anthropics/feedback-v2',
-  'github.com/anthropics/feedback-v2',
-  'github.com:anthropics/labs',
-  'github.com/anthropics/labs',
-  'github.com:anthropics/argo-rollouts',
-  'github.com/anthropics/argo-rollouts',
-  'github.com:anthropics/starling-configs',
-  'github.com/anthropics/starling-configs',
-  'github.com:anthropics/ts-tools',
-  'github.com/anthropics/ts-tools',
-  'github.com:anthropics/ts-capsules',
-  'github.com/anthropics/ts-capsules',
-  'github.com:anthropics/feldspar-testing',
-  'github.com/anthropics/feldspar-testing',
-  'github.com:anthropics/trellis',
-  'github.com/anthropics/trellis',
-  'github.com:anthropics/claude-for-hiring',
-  'github.com/anthropics/claude-for-hiring',
-  'github.com:anthropics/forge-web',
-  'github.com/anthropics/forge-web',
-  'github.com:anthropics/infra-manifests',
-  'github.com/anthropics/infra-manifests',
-  'github.com:anthropics/mycro_manifests',
-  'github.com/anthropics/mycro_manifests',
-  'github.com:anthropics/mycro_configs',
-  'github.com/anthropics/mycro_configs',
-  'github.com:anthropics/mobile-apps',
-  'github.com/anthropics/mobile-apps',
+  "github.com:anthropics/claude-cli-internal",
+  "github.com/anthropics/claude-cli-internal",
+  "github.com:anthropics/anthropic",
+  "github.com/anthropics/anthropic",
+  "github.com:anthropics/apps",
+  "github.com/anthropics/apps",
+  "github.com:anthropics/casino",
+  "github.com/anthropics/casino",
+  "github.com:anthropics/dbt",
+  "github.com/anthropics/dbt",
+  "github.com:anthropics/dotfiles",
+  "github.com/anthropics/dotfiles",
+  "github.com:anthropics/terraform-config",
+  "github.com/anthropics/terraform-config",
+  "github.com:anthropics/hex-export",
+  "github.com/anthropics/hex-export",
+  "github.com:anthropics/feedback-v2",
+  "github.com/anthropics/feedback-v2",
+  "github.com:anthropics/labs",
+  "github.com/anthropics/labs",
+  "github.com:anthropics/argo-rollouts",
+  "github.com/anthropics/argo-rollouts",
+  "github.com:anthropics/starling-configs",
+  "github.com/anthropics/starling-configs",
+  "github.com:anthropics/ts-tools",
+  "github.com/anthropics/ts-tools",
+  "github.com:anthropics/ts-capsules",
+  "github.com/anthropics/ts-capsules",
+  "github.com:anthropics/feldspar-testing",
+  "github.com/anthropics/feldspar-testing",
+  "github.com:anthropics/trellis",
+  "github.com/anthropics/trellis",
+  "github.com:anthropics/claude-for-hiring",
+  "github.com/anthropics/claude-for-hiring",
+  "github.com:anthropics/forge-web",
+  "github.com/anthropics/forge-web",
+  "github.com:anthropics/infra-manifests",
+  "github.com/anthropics/infra-manifests",
+  "github.com:anthropics/mycro_manifests",
+  "github.com/anthropics/mycro_manifests",
+  "github.com:anthropics/mycro_configs",
+  "github.com/anthropics/mycro_configs",
+  "github.com:anthropics/mobile-apps",
+  "github.com/anthropics/mobile-apps",
 ];
 
 /**
@@ -86,13 +86,13 @@ export function getAttributionRepoRoot(): string {
 // 'internal' = remote matches INTERNAL_MODEL_REPOS allowlist
 // 'external' = has a remote, not on allowlist (public/open-source repo)
 // 'none'     = no remote URL (not a git repo, or no remote configured)
-let repoClassCache: 'internal' | 'external' | 'none' | null = null;
+let repoClassCache: "internal" | "external" | "none" | null = null;
 
 /**
  * Synchronously return the cached repo classification.
  * Returns null if the async check hasn't run yet.
  */
-export function getRepoClassCached(): 'internal' | 'external' | 'none' | null {
+export function getRepoClassCached(): "internal" | "external" | "none" | null {
   return repoClassCache;
 }
 
@@ -101,7 +101,7 @@ export function getRepoClassCached(): 'internal' | 'external' | 'none' | null {
  * Returns false if the check hasn't run yet (safe default: don't leak).
  */
 export function isInternalModelRepoCached(): boolean {
-  return repoClassCache === 'internal';
+  return repoClassCache === "internal";
 }
 
 /**
@@ -110,18 +110,18 @@ export function isInternalModelRepoCached(): boolean {
  */
 export const isInternalModelRepo = sequential(async (): Promise<boolean> => {
   if (repoClassCache !== null) {
-    return repoClassCache === 'internal';
+    return repoClassCache === "internal";
   }
 
   const cwd = getAttributionRepoRoot();
   const remoteUrl = await getRemoteUrlForDir(cwd);
 
   if (!remoteUrl) {
-    repoClassCache = 'none';
+    repoClassCache = "none";
     return false;
   }
   const isInternal = INTERNAL_MODEL_REPOS.some((repo) => remoteUrl.includes(repo));
-  repoClassCache = isInternal ? 'internal' : 'external';
+  repoClassCache = isInternal ? "internal" : "external";
   return isInternal;
 });
 
@@ -131,7 +131,7 @@ export const isInternalModelRepo = sequential(async (): Promise<boolean> => {
  */
 export function sanitizeSurfaceKey(surfaceKey: string): string {
   // Split surface key into surface and model parts (e.g., "cli/opus-4-5-fast" -> ["cli", "opus-4-5-fast"])
-  const slashIndex = surfaceKey.lastIndexOf('/');
+  const slashIndex = surfaceKey.lastIndexOf("/");
   if (slashIndex === -1) {
     return surfaceKey;
   }
@@ -150,18 +150,18 @@ export function sanitizeSurfaceKey(surfaceKey: string): string {
  */
 export function sanitizeModelName(shortName: string): string {
   // Map internal variants to public equivalents based on model family
-  if (shortName.includes('opus-4-6')) return 'claude-opus-4-6';
-  if (shortName.includes('opus-4-5')) return 'claude-opus-4-5';
-  if (shortName.includes('opus-4-1')) return 'claude-opus-4-1';
-  if (shortName.includes('opus-4')) return 'claude-opus-4';
-  if (shortName.includes('sonnet-4-6')) return 'claude-sonnet-4-6';
-  if (shortName.includes('sonnet-4-5')) return 'claude-sonnet-4-5';
-  if (shortName.includes('sonnet-4')) return 'claude-sonnet-4';
-  if (shortName.includes('sonnet-3-7')) return 'claude-sonnet-3-7';
-  if (shortName.includes('haiku-4-5')) return 'claude-haiku-4-5';
-  if (shortName.includes('haiku-3-5')) return 'claude-haiku-3-5';
+  if (shortName.includes("opus-4-6")) return "claude-opus-4-6";
+  if (shortName.includes("opus-4-5")) return "claude-opus-4-5";
+  if (shortName.includes("opus-4-1")) return "claude-opus-4-1";
+  if (shortName.includes("opus-4")) return "claude-opus-4";
+  if (shortName.includes("sonnet-4-6")) return "claude-sonnet-4-6";
+  if (shortName.includes("sonnet-4-5")) return "claude-sonnet-4-5";
+  if (shortName.includes("sonnet-4")) return "claude-sonnet-4";
+  if (shortName.includes("sonnet-3-7")) return "claude-sonnet-3-7";
+  if (shortName.includes("haiku-4-5")) return "claude-haiku-4-5";
+  if (shortName.includes("haiku-3-5")) return "claude-haiku-3-5";
   // Unknown models get a generic name
-  return 'claude';
+  return "claude";
 }
 
 /**
@@ -224,7 +224,7 @@ export type AttributionData = {
  * Get the current client surface from environment.
  */
 export function getClientSurface(): string {
-  return process.env.CLAUDE_CODE_ENTRYPOINT ?? 'cli';
+  return process.env.CLAUDE_CODE_ENTRYPOINT ?? "cli";
 }
 
 /**
@@ -239,7 +239,7 @@ export function buildSurfaceKey(surface: string, model: ModelName): string {
  * Compute SHA-256 hash of content.
  */
 export function computeContentHash(content: string): string {
-  return createHash('sha256').update(content).digest('hex');
+  return createHash("sha256").update(content).digest("hex");
 }
 
 /**
@@ -273,12 +273,12 @@ export function normalizeFilePath(filePath: string): string {
 
   if (resolvedPath.startsWith(resolvedCwd + sep) || resolvedPath === resolvedCwd) {
     // Normalize to forward slashes so keys match git diff output on Windows
-    return relative(resolvedCwd, resolvedPath).replaceAll(sep, '/');
+    return relative(resolvedCwd, resolvedPath).replaceAll(sep, "/");
   }
 
   // Fallback: try original comparison
   if (filePath.startsWith(cwd + sep) || filePath === cwd) {
-    return relative(cwd, filePath).replaceAll(sep, '/');
+    return relative(cwd, filePath).replaceAll(sep, "/");
   }
 
   return filePath;
@@ -329,9 +329,9 @@ function computeFileModificationState(
     // Calculate Claude's character contribution
     let claudeContribution: number;
 
-    if (oldContent === '' || newContent === '') {
+    if (oldContent === "" || newContent === "") {
       // New file or full deletion - contribution is the content length
-      claudeContribution = oldContent === '' ? newContent.length : oldContent.length;
+      claudeContribution = oldContent === "" ? newContent.length : oldContent.length;
     } else {
       // Find actual changed region via common prefix/suffix matching.
       // This correctly handles same-length replacements (e.g., "Esc" → "esc")
@@ -433,7 +433,7 @@ export function trackFileCreation(
   mtime: number = Date.now(),
 ): AttributionState {
   // A creation is simply a modification from empty to the new content
-  return trackFileModification(state, filePath, '', content, false, mtime);
+  return trackFileModification(state, filePath, "", content, false, mtime);
 }
 
 /**
@@ -451,7 +451,7 @@ export function trackFileDeletion(
   const deletedChars = oldContent.length;
 
   const newFileState: FileAttributionState = {
-    contentHash: '', // Empty hash for deleted files
+    contentHash: "", // Empty hash for deleted files
     claudeContribution: existingContribution + deletedChars,
     mtime: Date.now(),
   };
@@ -480,7 +480,7 @@ export function trackBulkFileChanges(
   state: AttributionState,
   changes: ReadonlyArray<{
     path: string;
-    type: 'modified' | 'created' | 'deleted';
+    type: "modified" | "created" | "deleted";
     oldContent: string;
     newContent: string;
     mtime?: number;
@@ -491,14 +491,14 @@ export function trackBulkFileChanges(
 
   for (const change of changes) {
     const mtime = change.mtime ?? Date.now();
-    if (change.type === 'deleted') {
+    if (change.type === "deleted") {
       const normalizedPath = normalizeFilePath(change.path);
       const existingState = newFileStates.get(normalizedPath);
       const existingContribution = existingState?.claudeContribution ?? 0;
       const deletedChars = change.oldContent.length;
 
       newFileStates.set(normalizedPath, {
-        contentHash: '',
+        contentHash: "",
         claudeContribution: existingContribution + deletedChars,
         mtime,
       });
@@ -600,7 +600,7 @@ export async function calculateCommitAttribution(
     stagedFiles.map(async (file) => {
       // Skip generated files
       if (isGeneratedFile(file)) {
-        return { type: 'generated' as const, file };
+        return { type: "generated" as const, file };
       }
 
       const absPath = join(cwd, file);
@@ -661,7 +661,7 @@ export async function calculateCommitAttribution(
       const percent = total > 0 ? Math.round((claudeChars / total) * 100) : 0;
 
       return {
-        type: 'file' as const,
+        type: "file" as const,
         file,
         claudeChars,
         humanChars,
@@ -675,7 +675,7 @@ export async function calculateCommitAttribution(
   for (const result of fileResults) {
     if (!result) continue;
 
-    if (result.type === 'generated') {
+    if (result.type === "generated") {
       excludedGenerated.push(result.file);
       continue;
     }
@@ -732,7 +732,7 @@ export async function getGitDiffSize(filePath: string): Promise<number> {
     // Use git diff --stat to get a summary of changes
     const result = await execFileNoThrowWithCwd(
       gitExe(),
-      ['diff', '--cached', '--stat', '--', filePath],
+      ["diff", "--cached", "--stat", "--", filePath],
       { cwd, timeout: 5000 },
     );
 
@@ -742,12 +742,12 @@ export async function getGitDiffSize(filePath: string): Promise<number> {
 
     // Parse the stat output to extract additions and deletions
     // Format: " file | 5 ++---" or " file | 10 +"
-    const lines = result.stdout.split('\n').filter(Boolean);
+    const lines = result.stdout.split("\n").filter(Boolean);
     let totalChanges = 0;
 
     for (const line of lines) {
       // Skip the summary line (e.g., "1 file changed, 3 insertions(+), 2 deletions(-)")
-      if (line.includes('file changed') || line.includes('files changed')) {
+      if (line.includes("file changed") || line.includes("files changed")) {
         const insertMatch = line.match(/(\d+) insertions?/);
         const deleteMatch = line.match(/(\d+) deletions?/);
 
@@ -773,13 +773,13 @@ export async function isFileDeleted(filePath: string): Promise<boolean> {
   try {
     const result = await execFileNoThrowWithCwd(
       gitExe(),
-      ['diff', '--cached', '--name-status', '--', filePath],
+      ["diff", "--cached", "--name-status", "--", filePath],
       { cwd, timeout: 5000 },
     );
 
     if (result.code === 0 && result.stdout) {
       // Format: "D\tfilename" for deleted files
-      return result.stdout.trim().startsWith('D\t');
+      return result.stdout.trim().startsWith("D\t");
     }
   } catch {
     // Ignore errors
@@ -795,13 +795,13 @@ export async function getStagedFiles(): Promise<string[]> {
   const cwd = getAttributionRepoRoot();
 
   try {
-    const result = await execFileNoThrowWithCwd(gitExe(), ['diff', '--cached', '--name-only'], {
+    const result = await execFileNoThrowWithCwd(gitExe(), ["diff", "--cached", "--name-only"], {
       cwd,
       timeout: 5000,
     });
 
     if (result.code === 0 && result.stdout) {
-      return result.stdout.split('\n').filter(Boolean);
+      return result.stdout.split("\n").filter(Boolean);
     }
   } catch (error) {
     logError(error as Error);
@@ -821,11 +821,11 @@ export async function isGitTransientState(): Promise<boolean> {
   if (!gitDir) return false;
 
   const indicators = [
-    'rebase-merge',
-    'rebase-apply',
-    'MERGE_HEAD',
-    'CHERRY_PICK_HEAD',
-    'BISECT_LOG',
+    "rebase-merge",
+    "rebase-apply",
+    "MERGE_HEAD",
+    "CHERRY_PICK_HEAD",
+    "BISECT_LOG",
   ];
 
   const results = await Promise.all(
@@ -856,7 +856,7 @@ export function stateToSnapshotMessage(
   }
 
   return {
-    type: 'attribution-snapshot',
+    type: "attribution-snapshot",
     messageId,
     surface: state.surface,
     fileStates,

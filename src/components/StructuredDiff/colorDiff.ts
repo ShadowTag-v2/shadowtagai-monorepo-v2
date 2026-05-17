@@ -3,10 +3,10 @@ import {
   ColorFile,
   getSyntaxTheme as nativeGetSyntaxTheme,
   type SyntaxTheme,
-} from 'color-diff-napi';
-import { isEnvDefinedFalsy } from '../../utils/envUtils.js';
+} from "color-diff-napi";
+import { isEnvDefinedFalsy } from "../../utils/envUtils.js";
 
-export type ColorModuleUnavailableReason = 'env';
+export type ColorModuleUnavailableReason = "env";
 
 /**
  * Returns a static reason why the color-diff module is unavailable, or null if available.
@@ -17,7 +17,7 @@ export type ColorModuleUnavailableReason = 'env';
  */
 export function getColorModuleUnavailableReason(): ColorModuleUnavailableReason | null {
   if (isEnvDefinedFalsy(process.env.CLAUDE_CODE_SYNTAX_HIGHLIGHT)) {
-    return 'env';
+    return "env";
   }
   return null;
 }

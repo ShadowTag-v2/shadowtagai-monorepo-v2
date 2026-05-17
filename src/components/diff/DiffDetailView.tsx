@@ -1,12 +1,12 @@
-import { resolve } from 'node:path';
-import type { StructuredPatchHunk } from 'diff';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { Box, Text } from '../../ink.js';
-import { getCwd } from '../../utils/cwd.js';
-import { readFileSafe } from '../../utils/file.js';
-import { Divider } from '../design-system/Divider.js';
-import { StructuredDiff } from '../StructuredDiff.js';
+import { resolve } from "node:path";
+import type { StructuredPatchHunk } from "diff";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { Box, Text } from "../../ink.js";
+import { getCwd } from "../../utils/cwd.js";
+import { readFileSafe } from "../../utils/file.js";
+import { Divider } from "../design-system/Divider.js";
+import { StructuredDiff } from "../StructuredDiff.js";
 
 type Props = {
   filePath: string;
@@ -30,7 +30,7 @@ export function DiffDetailView(t0) {
   bb0: {
     if (!filePath) {
       let t2;
-      if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
         t2 = {
           firstLine: null,
           fileContent: undefined,
@@ -47,7 +47,7 @@ export function DiffDetailView(t0) {
     if ($[1] !== filePath) {
       const fullPath = resolve(getCwd(), filePath);
       content = readFileSafe(fullPath);
-      t2 = content?.split('\n')[0] ?? null;
+      t2 = content?.split("\n")[0] ?? null;
       $[1] = filePath;
       $[2] = content;
       $[3] = t2;
@@ -81,7 +81,7 @@ export function DiffDetailView(t0) {
       t2 = $[8];
     }
     let t3;
-    if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = <Text dimColor={true}> (untracked)</Text>;
       $[9] = t3;
     } else {
@@ -101,14 +101,14 @@ export function DiffDetailView(t0) {
       t4 = $[11];
     }
     let t5;
-    if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
       t5 = <Divider padding={4} />;
       $[12] = t5;
     } else {
       t5 = $[12];
     }
     let t6;
-    if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
       t6 = (
         <Text dimColor={true} italic={true}>
           New file not yet staged.
@@ -164,14 +164,14 @@ export function DiffDetailView(t0) {
       t2 = $[20];
     }
     let t3;
-    if ($[21] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[21] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = <Divider padding={4} />;
       $[21] = t3;
     } else {
       t3 = $[21];
     }
     let t4;
-    if ($[22] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[22] === Symbol.for("react.memo_cache_sentinel")) {
       t4 = (
         <Box flexDirection="column">
           <Text dimColor={true} italic={true}>
@@ -213,14 +213,14 @@ export function DiffDetailView(t0) {
       t2 = $[26];
     }
     let t3;
-    if ($[27] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = <Divider padding={4} />;
       $[27] = t3;
     } else {
       t3 = $[27];
     }
     let t4;
-    if ($[28] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[28] === Symbol.for("react.memo_cache_sentinel")) {
       t4 = (
         <Box flexDirection="column">
           <Text dimColor={true} italic={true}>
@@ -279,7 +279,7 @@ export function DiffDetailView(t0) {
     t4 = $[37];
   }
   let t5;
-  if ($[38] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[38] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = <Divider padding={4} />;
     $[38] = t5;
   } else {

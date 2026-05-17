@@ -1,13 +1,13 @@
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.js';
-import type { LocalJSXCommandCall, LocalJSXCommandOnDone } from '../../types/command.js';
-import { checkOverageGate, confirmOverage, launchRemoteReview } from './reviewRemote.js';
-import { UltrareviewOverageDialog } from './UltrareviewOverageDialog.js';
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources/messages.js";
+import type { LocalJSXCommandCall, LocalJSXCommandOnDone } from "../../types/command.js";
+import { checkOverageGate, confirmOverage, launchRemoteReview } from "./reviewRemote.js";
+import { UltrareviewOverageDialog } from "./UltrareviewOverageDialog.js";
 
 function contentBlocksToString(blocks: ContentBlockParam[]): string {
   return blocks
-    .map((b) => (b.type === 'text' ? b.text : ''))
+    .map((b) => (b.type === "text" ? b.text : ""))
     .filter(Boolean)
-    .join('\n');
+    .join("\n");
 }
 async function launchAndDone(
   args: string,
@@ -30,46 +30,46 @@ async function launchAndDone(
     // null only reaches here on teleport failure (PR mode) or non-github
     // repo — both are CCR/repo connectivity issues.
     onDone(
-      'Ultrareview failed to launch the remote session. Check that this is a GitHub repo and try again.',
+      "Ultrareview failed to launch the remote session. Check that this is a GitHub repo and try again.",
       {
-        display: 'system',
+        display: "system",
       },
     );
   }
 }
 export const call: LocalJSXCommandCall = async (onDone, context, args) => {
   const gate = await checkOverageGate();
-  if (gate.kind === 'not-enabled') {
+  if (gate.kind === "not-enabled") {
     onDone(
-      'Free ultrareviews used. Enable Extra Usage at https://claude.ai/settings/billing to continue.',
+      "Free ultrareviews used. Enable Extra Usage at https://claude.ai/settings/billing to continue.",
       {
-        display: 'system',
+        display: "system",
       },
     );
     return null;
   }
-  if (gate.kind === 'low-balance') {
+  if (gate.kind === "low-balance") {
     onDone(
       `Balance too low to launch ultrareview ($${gate.available.toFixed(2)} available, $10 minimum). Top up at https://claude.ai/settings/billing`,
       {
-        display: 'system',
+        display: "system",
       },
     );
     return null;
   }
-  if (gate.kind === 'needs-confirm') {
+  if (gate.kind === "needs-confirm") {
     return (
       <UltrareviewOverageDialog
         onProceed={async (signal) => {
-          await launchAndDone(args, context, onDone, ' This review bills as Extra Usage.', signal);
+          await launchAndDone(args, context, onDone, " This review bills as Extra Usage.", signal);
           // Only persist the confirmation flag after a non-aborted launch —
           // otherwise Escape-during-launch would leave the flag set and
           // skip this dialog on the next attempt.
           if (!signal.aborted) confirmOverage();
         }}
         onCancel={() =>
-          onDone('Ultrareview cancelled.', {
-            display: 'system',
+          onDone("Ultrareview cancelled.", {
+            display: "system",
           })
         }
       />

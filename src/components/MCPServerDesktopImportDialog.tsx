@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { gracefulShutdown } from 'src/utils/gracefulShutdown.js';
-import { writeToStdout } from 'src/utils/process.js';
-import { Box, color, Text, useTheme } from '../ink.js';
-import { addMcpConfig, getAllMcpConfigs } from '../services/mcp/config.js';
-import type { ConfigScope, McpServerConfig } from '../services/mcp/types.js';
-import { plural } from '../utils/stringUtils.js';
-import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js';
-import { SelectMulti } from './CustomSelect/SelectMulti.js';
-import { Byline } from './design-system/Byline.js';
-import { Dialog } from './design-system/Dialog.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { gracefulShutdown } from "src/utils/gracefulShutdown.js";
+import { writeToStdout } from "src/utils/process.js";
+import { Box, color, Text, useTheme } from "../ink.js";
+import { addMcpConfig, getAllMcpConfigs } from "../services/mcp/config.js";
+import type { ConfigScope, McpServerConfig } from "../services/mcp/types.js";
+import { plural } from "../utils/stringUtils.js";
+import { ConfigurableShortcutHint } from "./ConfigurableShortcutHint.js";
+import { SelectMulti } from "./CustomSelect/SelectMulti.js";
+import { Byline } from "./design-system/Byline.js";
+import { Dialog } from "./design-system/Dialog.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
 
 type Props = {
   servers: Record<string, McpServerConfig>;
@@ -30,7 +30,7 @@ export function MCPServerDesktopImportDialog(t0) {
   }
   const serverNames = t1;
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = {};
     $[2] = t2;
   } else {
@@ -39,7 +39,7 @@ export function MCPServerDesktopImportDialog(t0) {
   const [existingServers, setExistingServers] = useState(t2);
   let t3;
   let t4;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = () => {
       getAllMcpConfigs().then((t5) => {
         const { servers: servers_0 } = t5;
@@ -89,10 +89,10 @@ export function MCPServerDesktopImportDialog(t0) {
     t6 = (importedCount_0) => {
       if (importedCount_0 > 0) {
         writeToStdout(
-          `\n${color('success', theme)(`Successfully imported ${importedCount_0} MCP ${plural(importedCount_0, 'server')} to ${scope} config.`)}\n`,
+          `\n${color("success", theme)(`Successfully imported ${importedCount_0} MCP ${plural(importedCount_0, "server")} to ${scope} config.`)}\n`,
         );
       } else {
-        writeToStdout('\nNo servers were imported.');
+        writeToStdout("\nNo servers were imported.");
       }
       onDone();
       gracefulShutdown();
@@ -120,7 +120,7 @@ export function MCPServerDesktopImportDialog(t0) {
   const t8 = serverNames.length;
   let t9;
   if ($[14] !== serverNames.length) {
-    t9 = plural(serverNames.length, 'server');
+    t9 = plural(serverNames.length, "server");
     $[14] = serverNames.length;
     $[15] = t9;
   } else {
@@ -141,7 +141,7 @@ export function MCPServerDesktopImportDialog(t0) {
     t11 = $[17];
   }
   let t12;
-  if ($[18] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[18] === Symbol.for("react.memo_cache_sentinel")) {
     t12 = <Text>Please select the servers you want to import:</Text>;
     $[18] = t12;
   } else {
@@ -151,7 +151,7 @@ export function MCPServerDesktopImportDialog(t0) {
   let t14;
   if ($[19] !== collisions || $[20] !== serverNames) {
     t13 = serverNames.map((server) => ({
-      label: `${server}${collisions.includes(server) ? ' (already exists)' : ''}`,
+      label: `${server}${collisions.includes(server) ? " (already exists)" : ""}`,
       value: server,
     }));
     t14 = serverNames.filter((name_0) => !collisions.includes(name_0));
@@ -206,7 +206,7 @@ export function MCPServerDesktopImportDialog(t0) {
     t16 = $[32];
   }
   let t17;
-  if ($[33] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[33] === Symbol.for("react.memo_cache_sentinel")) {
     t17 = (
       <Box paddingX={1}>
         <Text dimColor={true} italic={true}>

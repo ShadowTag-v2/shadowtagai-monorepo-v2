@@ -8,11 +8,11 @@
  * external binaries with the same argv syntax).
  */
 
-import { getCommitCounter, getPrCounter } from '../../bootstrap/state.js';
+import { getCommitCounter, getPrCounter } from "../../bootstrap/state.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
+} from "../../services/analytics/index.js";
 
 /**
  * Build a regex that matches `git <subcmd>` while tolerating git's global
@@ -20,27 +20,27 @@ import {
  * `--git-dir=path`). Common when the model retries with
  * `git -c commit.gpgsign=false commit` after a signing failure.
  */
-function gitCmdRe(subcmd: string, suffix = ''): RegExp {
+function gitCmdRe(subcmd: string, suffix = ""): RegExp {
   return new RegExp(`\\bgit(?:\\s+-[cC]\\s+\\S+|\\s+--\\S+=\\S+)*\\s+${subcmd}\\b${suffix}`);
 }
 
-const GIT_COMMIT_RE = gitCmdRe('commit');
-const GIT_PUSH_RE = gitCmdRe('push');
-const GIT_CHERRY_PICK_RE = gitCmdRe('cherry-pick');
-const GIT_MERGE_RE = gitCmdRe('merge', '(?!-)');
-const GIT_REBASE_RE = gitCmdRe('rebase');
+const GIT_COMMIT_RE = gitCmdRe("commit");
+const GIT_PUSH_RE = gitCmdRe("push");
+const GIT_CHERRY_PICK_RE = gitCmdRe("cherry-pick");
+const GIT_MERGE_RE = gitCmdRe("merge", "(?!-)");
+const GIT_REBASE_RE = gitCmdRe("rebase");
 
-export type CommitKind = 'committed' | 'amended' | 'cherry-picked';
-export type BranchAction = 'merged' | 'rebased';
-export type PrAction = 'created' | 'edited' | 'merged' | 'commented' | 'closed' | 'ready';
+export type CommitKind = "committed" | "amended" | "cherry-picked";
+export type BranchAction = "merged" | "rebased";
+export type PrAction = "created" | "edited" | "merged" | "commented" | "closed" | "ready";
 
 const GH_PR_ACTIONS: readonly { re: RegExp; action: PrAction; op: string }[] = [
-  { re: /\bgh\s+pr\s+create\b/, action: 'created', op: 'pr_create' },
-  { re: /\bgh\s+pr\s+edit\b/, action: 'edited', op: 'pr_edit' },
-  { re: /\bgh\s+pr\s+merge\b/, action: 'merged', op: 'pr_merge' },
-  { re: /\bgh\s+pr\s+comment\b/, action: 'commented', op: 'pr_comment' },
-  { re: /\bgh\s+pr\s+close\b/, action: 'closed', op: 'pr_close' },
-  { re: /\bgh\s+pr\s+ready\b/, action: 'ready', op: 'pr_ready' },
+  { re: /\bgh\s+pr\s+create\b/, action: "created", op: "pr_create" },
+  { re: /\bgh\s+pr\s+edit\b/, action: "edited", op: "pr_edit" },
+  { re: /\bgh\s+pr\s+merge\b/, action: "merged", op: "pr_merge" },
+  { re: /\bgh\s+pr\s+comment\b/, action: "commented", op: "pr_comment" },
+  { re: /\bgh\s+pr\s+close\b/, action: "closed", op: "pr_close" },
+  { re: /\bgh\s+pr\s+ready\b/, action: "ready", op: "pr_ready" },
 ];
 
 /**
@@ -103,7 +103,7 @@ function parseRefFromCommand(command: string, verb: string): string | undefined 
   if (!after) return undefined;
   for (const t of after.trim().split(/\s+/)) {
     if (/^[&|;><]/.test(t)) break;
-    if (t.startsWith('-')) continue;
+    if (t.startsWith("-")) continue;
     return t;
   }
   return undefined;
@@ -134,7 +134,7 @@ export function detectGitOperation(
     if (sha) {
       result.commit = {
         sha: sha.slice(0, 6),
-        kind: isCherryPick ? 'cherry-picked' : /--amend\b/.test(command) ? 'amended' : 'committed',
+        kind: isCherryPick ? "cherry-picked" : /--amend\b/.test(command) ? "amended" : "committed",
       };
     }
   }
@@ -143,12 +143,12 @@ export function detectGitOperation(
     if (branch) result.push = { branch };
   }
   if (GIT_MERGE_RE.test(command) && /(Fast-forward|Merge made by)/.test(output)) {
-    const ref = parseRefFromCommand(command, 'merge');
-    if (ref) result.branch = { ref, action: 'merged' };
+    const ref = parseRefFromCommand(command, "merge");
+    if (ref) result.branch = { ref, action: "merged" };
   }
   if (GIT_REBASE_RE.test(command) && /Successfully rebased/.test(output)) {
-    const ref = parseRefFromCommand(command, 'rebase');
-    if (ref) result.branch = { ref, action: 'rebased' };
+    const ref = parseRefFromCommand(command, "rebase");
+    if (ref) result.branch = { ref, action: "rebased" };
   }
   const prAction = GH_PR_ACTIONS.find((a) => a.re.test(command))?.action;
   if (prAction) {
@@ -171,36 +171,36 @@ export function trackGitOperations(command: string, exitCode: number, stdout?: s
   }
 
   if (GIT_COMMIT_RE.test(command)) {
-    logEvent('tengu_git_operation', {
-      operation: 'commit' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    logEvent("tengu_git_operation", {
+      operation: "commit" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
     if (command.match(/--amend\b/)) {
-      logEvent('tengu_git_operation', {
-        operation: 'commit_amend' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      logEvent("tengu_git_operation", {
+        operation: "commit_amend" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
     }
     getCommitCounter()?.add(1);
   }
   if (GIT_PUSH_RE.test(command)) {
-    logEvent('tengu_git_operation', {
-      operation: 'push' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    logEvent("tengu_git_operation", {
+      operation: "push" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
   }
   const prHit = GH_PR_ACTIONS.find((a) => a.re.test(command));
   if (prHit) {
-    logEvent('tengu_git_operation', {
+    logEvent("tengu_git_operation", {
       operation: prHit.op as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
   }
-  if (prHit?.action === 'created') {
+  if (prHit?.action === "created") {
     getPrCounter()?.add(1);
     // Auto-link session to PR if we can extract PR URL from stdout
     if (stdout) {
       const prInfo = findPrInStdout(stdout);
       if (prInfo) {
         // Import is done dynamically to avoid circular dependency
-        void import('../../utils/sessionStorage.js').then(({ linkSessionToPR }) => {
-          void import('../../bootstrap/state.js').then(({ getSessionId }) => {
+        void import("../../utils/sessionStorage.js").then(({ linkSessionToPR }) => {
+          void import("../../bootstrap/state.js").then(({ getSessionId }) => {
             const sessionId = getSessionId();
             if (sessionId) {
               void linkSessionToPR(
@@ -216,8 +216,8 @@ export function trackGitOperations(command: string, exitCode: number, stdout?: s
     }
   }
   if (command.match(/\bglab\s+mr\s+create\b/)) {
-    logEvent('tengu_git_operation', {
-      operation: 'pr_create' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    logEvent("tengu_git_operation", {
+      operation: "pr_create" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
     getPrCounter()?.add(1);
   }
@@ -235,8 +235,8 @@ export function trackGitOperations(command: string, exitCode: number, stdout?: s
     /https?:\/\/[^\s'"]*\/(pulls|pull-requests|merge[-_]requests)(?!\/\d)/i,
   );
   if (isCurlPost && isPrEndpoint) {
-    logEvent('tengu_git_operation', {
-      operation: 'pr_create' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    logEvent("tengu_git_operation", {
+      operation: "pr_create" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
     getPrCounter()?.add(1);
   }

@@ -1,32 +1,32 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box } from '../../../../ink.js';
-import type { SettingSource } from '../../../../utils/settings/constants.js';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Select } from '../../../CustomSelect/select.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box } from "../../../../ink.js";
+import type { SettingSource } from "../../../../utils/settings/constants.js";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Select } from "../../../CustomSelect/select.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../../design-system/KeyboardShortcutHint.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
 export function LocationStep() {
   const $ = _c(11);
   const { goNext, updateWizardData, cancel } = useWizard();
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = {
-      label: 'Project (.claude/agents/)',
-      value: 'projectSettings' as SettingSource,
+      label: "Project (.claude/agents/)",
+      value: "projectSettings" as SettingSource,
     };
     $[0] = t0;
   } else {
     t0 = $[0];
   }
   let t1;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = [
       t0,
       {
-        label: 'Personal (~/.claude/agents/)',
-        value: 'userSettings' as SettingSource,
+        label: "Personal (~/.claude/agents/)",
+        value: "userSettings" as SettingSource,
       },
     ];
     $[1] = t1;
@@ -35,10 +35,10 @@ export function LocationStep() {
   }
   const locationOptions = t1;
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Byline>
-        <KeyboardShortcutHint shortcut={'\u2191\u2193'} action="navigate" />
+        <KeyboardShortcutHint shortcut={"\u2191\u2193"} action="navigate" />
         <KeyboardShortcutHint shortcut="Enter" action="select" />
         <ConfigurableShortcutHint
           action="confirm:no"

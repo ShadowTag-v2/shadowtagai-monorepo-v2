@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, color, Link, Text, useTheme } from '../../ink.js';
-import type { CommandResultDisplay } from '../../types/command.js';
-import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js';
-import { Select } from '../CustomSelect/select.js';
-import { useTabHeaderFocus } from '../design-system/Tabs.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, color, Link, Text, useTheme } from "../../ink.js";
+import type { CommandResultDisplay } from "../../types/command.js";
+import { SandboxManager } from "../../utils/sandbox/sandbox-adapter.js";
+import { Select } from "../CustomSelect/select.js";
+import { useTabHeaderFocus } from "../design-system/Tabs.js";
 
 type Props = {
   onComplete: (
@@ -13,7 +13,7 @@ type Props = {
     },
   ) => void;
 };
-type OverrideMode = 'open' | 'closed';
+type OverrideMode = "open" | "closed";
 export function SandboxOverridesTab(t0) {
   const $ = _c(5);
   const { onComplete } = t0;
@@ -22,7 +22,7 @@ export function SandboxOverridesTab(t0) {
   const currentAllowUnsandboxed = SandboxManager.areUnsandboxedCommandsAllowed();
   if (!isEnabled) {
     let t1;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = (
         <Box flexDirection="column" paddingY={1}>
           <Text color="subtle">
@@ -38,7 +38,7 @@ export function SandboxOverridesTab(t0) {
   }
   if (isLocked) {
     let t1;
-    if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = (
         <Text color="subtle">
           Override settings are managed by a higher-priority configuration and cannot be changed
@@ -50,14 +50,14 @@ export function SandboxOverridesTab(t0) {
       t1 = $[1];
     }
     let t2;
-    if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = (
         <Box flexDirection="column" paddingY={1}>
           {t1}
           <Box marginTop={1}>
             <Text dimColor={true}>
-              Current setting:{' '}
-              {currentAllowUnsandboxed ? 'Allow unsandboxed fallback' : 'Strict sandbox mode'}
+              Current setting:{" "}
+              {currentAllowUnsandboxed ? "Allow unsandboxed fallback" : "Strict sandbox mode"}
             </Text>
           </Box>
         </Box>
@@ -73,7 +73,7 @@ export function SandboxOverridesTab(t0) {
     t1 = (
       <OverridesSelect
         onComplete={onComplete}
-        currentMode={currentAllowUnsandboxed ? 'open' : 'closed'}
+        currentMode={currentAllowUnsandboxed ? "open" : "closed"}
       />
     );
     $[3] = onComplete;
@@ -94,7 +94,7 @@ function OverridesSelect(t0) {
   const { headerFocused, focusHeader } = useTabHeaderFocus();
   let t1;
   if ($[0] !== theme) {
-    t1 = color('success', theme)('(current)');
+    t1 = color("success", theme)("(current)");
     $[0] = theme;
     $[1] = t1;
   } else {
@@ -102,14 +102,14 @@ function OverridesSelect(t0) {
   }
   const currentIndicator = t1;
   const t2 =
-    currentMode === 'open'
+    currentMode === "open"
       ? `Allow unsandboxed fallback ${currentIndicator}`
-      : 'Allow unsandboxed fallback';
+      : "Allow unsandboxed fallback";
   let t3;
   if ($[2] !== t2) {
     t3 = {
       label: t2,
-      value: 'open',
+      value: "open",
     };
     $[2] = t2;
     $[3] = t3;
@@ -117,12 +117,12 @@ function OverridesSelect(t0) {
     t3 = $[3];
   }
   const t4 =
-    currentMode === 'closed' ? `Strict sandbox mode ${currentIndicator}` : 'Strict sandbox mode';
+    currentMode === "closed" ? `Strict sandbox mode ${currentIndicator}` : "Strict sandbox mode";
   let t5;
   if ($[4] !== t4) {
     t5 = {
       label: t4,
-      value: 'closed',
+      value: "closed",
     };
     $[4] = t4;
     $[5] = t5;
@@ -144,12 +144,12 @@ function OverridesSelect(t0) {
     t7 = async function handleSelect(value) {
       const mode = value as OverrideMode;
       await SandboxManager.setSandboxSettings({
-        allowUnsandboxedCommands: mode === 'open',
+        allowUnsandboxedCommands: mode === "open",
       });
       const message =
-        mode === 'open'
-          ? '\u2713 Unsandboxed fallback allowed - commands can run outside sandbox when necessary'
-          : '\u2713 Strict sandbox mode - all commands must run in sandbox or be excluded via the `excludedCommands` option';
+        mode === "open"
+          ? "\u2713 Unsandboxed fallback allowed - commands can run outside sandbox when necessary"
+          : "\u2713 Strict sandbox mode - all commands must run in sandbox or be excluded via the `excludedCommands` option";
       onComplete(message);
     };
     $[9] = onComplete;
@@ -159,7 +159,7 @@ function OverridesSelect(t0) {
   }
   const handleSelect = t7;
   let t8;
-  if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Box marginBottom={1}>
         <Text bold={true}>Configure Overrides:</Text>
@@ -173,7 +173,7 @@ function OverridesSelect(t0) {
   if ($[12] !== onComplete) {
     t9 = () =>
       onComplete(undefined, {
-        display: 'skip',
+        display: "skip",
       });
     $[12] = onComplete;
     $[13] = t9;
@@ -207,12 +207,12 @@ function OverridesSelect(t0) {
     t10 = $[19];
   }
   let t11;
-  if ($[20] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[20] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = (
       <Text dimColor={true}>
         <Text bold={true} dimColor={true}>
           Allow unsandboxed fallback:
-        </Text>{' '}
+        </Text>{" "}
         When a command fails due to sandbox restrictions, Claude can retry with
         dangerouslyDisableSandbox to run outside the sandbox (falling back to default permissions).
       </Text>
@@ -222,12 +222,12 @@ function OverridesSelect(t0) {
     t11 = $[20];
   }
   let t12;
-  if ($[21] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[21] === Symbol.for("react.memo_cache_sentinel")) {
     t12 = (
       <Text dimColor={true}>
         <Text bold={true} dimColor={true}>
           Strict sandbox mode:
-        </Text>{' '}
+        </Text>{" "}
         All bash commands invoked by the model must run in the sandbox unless they are explicitly
         listed in excludedCommands.
       </Text>
@@ -237,13 +237,13 @@ function OverridesSelect(t0) {
     t12 = $[21];
   }
   let t13;
-  if ($[22] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[22] === Symbol.for("react.memo_cache_sentinel")) {
     t13 = (
       <Box flexDirection="column" marginTop={1} gap={1}>
         {t11}
         {t12}
         <Text dimColor={true}>
-          Learn more:{' '}
+          Learn more:{" "}
           <Link url="https://code.claude.com/docs/en/sandboxing#configure-sandboxing">
             code.claude.com/docs/en/sandboxing#configure-sandboxing
           </Link>

@@ -1,10 +1,10 @@
-import { feature } from 'bun:bundle';
-import type { UUID } from 'node:crypto';
-import type { Dirent } from 'node:fs';
+import { feature } from "bun:bundle";
+import type { UUID } from "node:crypto";
+import type { Dirent } from "node:fs";
 // Sync fs primitives for readFileTailSync — separate from fs/promises
 // imports above. Named (not wildcard) per CLAUDE.md style; no collisions
 // with the async-suffixed names.
-import { closeSync, fstatSync, openSync, readSync } from 'node:fs';
+import { closeSync, fstatSync, openSync, readSync } from "node:fs";
 import {
   appendFile as fsAppendFile,
   open as fsOpen,
@@ -14,13 +14,13 @@ import {
   stat,
   unlink,
   writeFile,
-} from 'node:fs/promises';
-import { basename, dirname, join } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
+} from "node:fs/promises";
+import { basename, dirname, join } from "node:path";
+import memoize from "lodash-es/memoize.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
+} from "src/services/analytics/index.js";
 import {
   getOriginalCwd,
   getPlanSlugCache,
@@ -29,14 +29,14 @@ import {
   getSessionProjectDir,
   isSessionPersistenceDisabled,
   switchSession,
-} from '../bootstrap/state.js';
-import { builtInCommandNames } from '../commands.js';
-import { COMMAND_NAME_TAG, TICK_TAG } from '../constants/xml.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import * as sessionIngress from '../services/api/sessionIngress.js';
-import { REPL_TOOL_NAME } from '../tools/REPLTool/constants.js';
-import { type AgentId, asAgentId, asSessionId, type SessionId } from '../types/ids.js';
-import type { AttributionSnapshotMessage } from '../types/logs.js';
+} from "../bootstrap/state.js";
+import { builtInCommandNames } from "../commands.js";
+import { COMMAND_NAME_TAG, TICK_TAG } from "../constants/xml.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import * as sessionIngress from "../services/api/sessionIngress.js";
+import { REPL_TOOL_NAME } from "../tools/REPLTool/constants.js";
+import { type AgentId, asAgentId, asSessionId, type SessionId } from "../types/ids.js";
+import type { AttributionSnapshotMessage } from "../types/logs.js";
 import {
   type ContentReplacementEntry,
   type ContextCollapseCommitEntry,
@@ -48,7 +48,7 @@ import {
   type SerializedMessage,
   sortLogs,
   type TranscriptMessage,
-} from '../types/logs.js';
+} from "../types/logs.js";
 import type {
   AssistantMessage,
   AttachmentMessage,
@@ -56,26 +56,26 @@ import type {
   SystemCompactBoundaryMessage,
   SystemMessage,
   UserMessage,
-} from '../types/message.js';
-import type { QueueOperationMessage } from '../types/messageQueueTypes.js';
-import { uniq } from './array.js';
-import { registerCleanup } from './cleanupRegistry.js';
-import { updateSessionName } from './concurrentSessions.js';
-import { getCwd } from './cwd.js';
-import { logForDebugging } from './debug.js';
-import { logForDiagnosticsNoPII } from './diagLogs.js';
-import { getClaudeConfigHomeDir, isEnvTruthy } from './envUtils.js';
-import { isFsInaccessible } from './errors.js';
-import type { FileHistorySnapshot } from './fileHistory.js';
-import { formatFileSize } from './format.js';
-import { getFsImplementation } from './fsOperations.js';
-import { getWorktreePaths } from './getWorktreePaths.js';
-import { getBranch } from './git.js';
-import { gracefulShutdownSync, isShuttingDown } from './gracefulShutdown.js';
-import { parseJSONL } from './json.js';
-import { logError } from './log.js';
-import { extractTag, isCompactBoundaryMessage } from './messages.js';
-import { sanitizePath } from './path.js';
+} from "../types/message.js";
+import type { QueueOperationMessage } from "../types/messageQueueTypes.js";
+import { uniq } from "./array.js";
+import { registerCleanup } from "./cleanupRegistry.js";
+import { updateSessionName } from "./concurrentSessions.js";
+import { getCwd } from "./cwd.js";
+import { logForDebugging } from "./debug.js";
+import { logForDiagnosticsNoPII } from "./diagLogs.js";
+import { getClaudeConfigHomeDir, isEnvTruthy } from "./envUtils.js";
+import { isFsInaccessible } from "./errors.js";
+import type { FileHistorySnapshot } from "./fileHistory.js";
+import { formatFileSize } from "./format.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { getWorktreePaths } from "./getWorktreePaths.js";
+import { getBranch } from "./git.js";
+import { gracefulShutdownSync, isShuttingDown } from "./gracefulShutdown.js";
+import { parseJSONL } from "./json.js";
+import { logError } from "./log.js";
+import { extractTag, isCompactBoundaryMessage } from "./messages.js";
+import { sanitizePath } from "./path.js";
 import {
   extractJsonStringField,
   extractLastJsonStringField,
@@ -83,15 +83,15 @@ import {
   readHeadAndTail,
   readTranscriptForLoad,
   SKIP_PRECOMPACT_THRESHOLD,
-} from './sessionStoragePortable.js';
-import { getSettings_DEPRECATED } from './settings/settings.js';
-import { jsonParse, jsonStringify } from './slowOperations.js';
-import type { ContentReplacementRecord } from './toolResultStorage.js';
-import { validateUuid } from './uuid.js';
+} from "./sessionStoragePortable.js";
+import { getSettings_DEPRECATED } from "./settings/settings.js";
+import { jsonParse, jsonStringify } from "./slowOperations.js";
+import type { ContentReplacementRecord } from "./toolResultStorage.js";
+import { validateUuid } from "./uuid.js";
 
 // Cache MACRO.VERSION at module level to work around bun --define bug in async contexts
 // See: https://github.com/oven-sh/bun/issues/26168
-const VERSION = typeof MACRO !== 'undefined' ? MACRO.VERSION : 'unknown';
+const VERSION = typeof MACRO !== "undefined" ? MACRO.VERSION : "unknown";
 
 type Transcript = (UserMessage | AssistantMessage | AttachmentMessage | SystemMessage)[];
 
@@ -127,10 +127,10 @@ const SKIP_FIRST_PROMPT_PATTERN = /^(?:\s*<[a-z][\w-]*[\s>]|\[Request interrupte
  */
 export function isTranscriptMessage(entry: Entry): entry is TranscriptMessage {
   return (
-    entry.type === 'user' ||
-    entry.type === 'assistant' ||
-    entry.type === 'attachment' ||
-    entry.type === 'system'
+    entry.type === "user" ||
+    entry.type === "assistant" ||
+    entry.type === "attachment" ||
+    entry.type === "system"
   );
 }
 
@@ -140,12 +140,12 @@ export function isTranscriptMessage(entry: Entry): entry is TranscriptMessage {
  * parentUuid. Old transcripts with progress already in the chain are handled
  * by the progressBridge rewrite in loadTranscriptFile.
  */
-export function isChainParticipant(m: Pick<Message, 'type'>): boolean {
-  return m.type !== 'progress';
+export function isChainParticipant(m: Pick<Message, "type">): boolean {
+  return m.type !== "progress";
 }
 
 type LegacyProgressEntry = {
-  type: 'progress';
+  type: "progress";
   uuid: UUID;
   parentUuid: UUID | null;
 };
@@ -157,12 +157,12 @@ type LegacyProgressEntry = {
  */
 function isLegacyProgressEntry(entry: unknown): entry is LegacyProgressEntry {
   return (
-    typeof entry === 'object' &&
+    typeof entry === "object" &&
     entry !== null &&
-    'type' in entry &&
-    entry.type === 'progress' &&
-    'uuid' in entry &&
-    typeof entry.uuid === 'string'
+    "type" in entry &&
+    entry.type === "progress" &&
+    "uuid" in entry &&
+    typeof entry.uuid === "string"
   );
 }
 
@@ -173,17 +173,17 @@ function isLegacyProgressEntry(entry: unknown): entry is LegacyProgressEntry {
  * by loadTranscriptFile to skip legacy entries from old transcripts.
  */
 const EPHEMERAL_PROGRESS_TYPES = new Set([
-  'bash_progress',
-  'powershell_progress',
-  'mcp_progress',
-  ...(feature('PROACTIVE') || feature('KAIROS') ? (['sleep_progress'] as const) : []),
+  "bash_progress",
+  "powershell_progress",
+  "mcp_progress",
+  ...(feature("PROACTIVE") || feature("KAIROS") ? (["sleep_progress"] as const) : []),
 ]);
 export function isEphemeralToolProgress(dataType: unknown): boolean {
-  return typeof dataType === 'string' && EPHEMERAL_PROGRESS_TYPES.has(dataType);
+  return typeof dataType === "string" && EPHEMERAL_PROGRESS_TYPES.has(dataType);
 }
 
 export function getProjectsDir(): string {
-  return join(getClaudeConfigHomeDir(), 'projects');
+  return join(getClaudeConfigHomeDir(), "projects");
 }
 
 export function getTranscriptPath(): string {
@@ -236,13 +236,13 @@ export function getAgentTranscriptPath(agentId: AgentId): string {
   const sessionId = getSessionId();
   const subdir = agentTranscriptSubdirs.get(agentId);
   const base = subdir
-    ? join(projectDir, sessionId, 'subagents', subdir)
-    : join(projectDir, sessionId, 'subagents');
+    ? join(projectDir, sessionId, "subagents", subdir)
+    : join(projectDir, sessionId, "subagents");
   return join(base, `agent-${agentId}.jsonl`);
 }
 
 function getAgentMetadataPath(agentId: AgentId): string {
-  return getAgentTranscriptPath(agentId).replace(/\.jsonl$/, '.meta.json');
+  return getAgentTranscriptPath(agentId).replace(/\.jsonl$/, ".meta.json");
 }
 
 export type AgentMetadata = {
@@ -273,7 +273,7 @@ export async function writeAgentMetadata(agentId: AgentId, metadata: AgentMetada
 export async function readAgentMetadata(agentId: AgentId): Promise<AgentMetadata | null> {
   const path = getAgentMetadataPath(agentId);
   try {
-    const raw = await readFile(path, 'utf-8');
+    const raw = await readFile(path, "utf-8");
     return JSON.parse(raw) as AgentMetadata;
   } catch (e) {
     if (isFsInaccessible(e)) return null;
@@ -300,7 +300,7 @@ function getRemoteAgentsDir(): string {
   // Same sessionProjectDir fallback as getAgentTranscriptPath — the project
   // dir (containing the .jsonl), not the session dir, so sessionId is joined.
   const projectDir = getSessionProjectDir() ?? getProjectDir(getOriginalCwd());
-  return join(projectDir, getSessionId(), 'remote-agents');
+  return join(projectDir, getSessionId(), "remote-agents");
 }
 
 function getRemoteAgentMetadataPath(taskId: string): string {
@@ -325,7 +325,7 @@ export async function writeRemoteAgentMetadata(
 export async function readRemoteAgentMetadata(taskId: string): Promise<RemoteAgentMetadata | null> {
   const path = getRemoteAgentMetadataPath(taskId);
   try {
-    const raw = await readFile(path, 'utf-8');
+    const raw = await readFile(path, "utf-8");
     return JSON.parse(raw) as RemoteAgentMetadata;
   } catch (e) {
     if (isFsInaccessible(e)) return null;
@@ -358,9 +358,9 @@ export async function listRemoteAgentMetadata(): Promise<RemoteAgentMetadata[]> 
   }
   const results: RemoteAgentMetadata[] = [];
   for (const entry of entries) {
-    if (!entry.isFile() || !entry.name.endsWith('.meta.json')) continue;
+    if (!entry.isFile() || !entry.name.endsWith(".meta.json")) continue;
     try {
-      const raw = await readFile(join(dir, entry.name), 'utf-8');
+      const raw = await readFile(join(dir, entry.name), "utf-8");
       results.push(JSON.parse(raw) as RemoteAgentMetadata);
     } catch (e) {
       // Skip unreadable or corrupt files — a partial write from a crashed
@@ -385,12 +385,12 @@ export function sessionIdExists(sessionId: string): boolean {
 
 // exported for testing
 export function getNodeEnv(): string {
-  return process.env.NODE_ENV || 'development';
+  return process.env.NODE_ENV || "development";
 }
 
 // exported for testing
 export function getUserType(): string {
-  return process.env.USER_TYPE || 'external';
+  return process.env.USER_TYPE || "external";
 }
 
 function getEntrypoint(): string | undefined {
@@ -510,7 +510,7 @@ class Project {
   currentSessionAgentColor: string | undefined;
   currentSessionLastPrompt: string | undefined;
   currentSessionAgentSetting: string | undefined;
-  currentSessionMode: 'coordinator' | 'normal' | undefined;
+  currentSessionMode: "coordinator" | "normal" | undefined;
   // Tri-state: undefined = never touched (don't write), null = exited worktree,
   // object = currently in worktree. reAppendSessionMetadata writes null so
   // --resume knows the session exited (vs. crashed while inside).
@@ -617,7 +617,7 @@ class Project {
       }
       const batch = queue.splice(0);
 
-      let content = '';
+      let content = "";
       const resolvers: Array<() => void> = [];
 
       for (const { entry, resolve } of batch) {
@@ -630,7 +630,7 @@ class Project {
             r();
           }
           resolvers.length = 0;
-          content = '';
+          content = "";
         }
 
         content += line;
@@ -704,11 +704,11 @@ class Project {
     // Filter with startsWith to match only top-level JSONL entries (col 0)
     // and not "type":"tag" appearing inside a nested tool_use input that
     // happens to be JSON-serialized into a message.
-    const tailLines = tail.split('\n');
+    const tailLines = tail.split("\n");
     if (!skipTitleRefresh) {
       const titleLine = tailLines.findLast((l) => l.startsWith('{"type":"custom-title"'));
       if (titleLine) {
-        const tailTitle = extractLastJsonStringField(titleLine, 'customTitle');
+        const tailTitle = extractLastJsonStringField(titleLine, "customTitle");
         // `!== undefined` distinguishes no-match from empty-string match.
         // renameSession rejects empty titles, but the CLI is defensive: an
         // external writer with customTitle:"" should clear the cache so the
@@ -720,7 +720,7 @@ class Project {
     }
     const tagLine = tailLines.findLast((l) => l.startsWith('{"type":"tag"'));
     if (tagLine) {
-      const tailTag = extractLastJsonStringField(tagLine, 'tag');
+      const tailTag = extractLastJsonStringField(tagLine, "tag");
       // Same: tagSession(id, null) writes `tag:""` to clear.
       if (tailTag !== undefined) {
         this.currentSessionTag = tailTag || undefined;
@@ -732,7 +732,7 @@ class Project {
     // land closer to EOF (they're the more critical fields for tail reads).
     if (this.currentSessionLastPrompt) {
       appendEntryToFile(this.sessionFile, {
-        type: 'last-prompt',
+        type: "last-prompt",
         lastPrompt: this.currentSessionLastPrompt,
         sessionId,
       });
@@ -741,49 +741,49 @@ class Project {
     // the entry at EOF so compaction-pushed content doesn't evict it.
     if (this.currentSessionTitle) {
       appendEntryToFile(this.sessionFile, {
-        type: 'custom-title',
+        type: "custom-title",
         customTitle: this.currentSessionTitle,
         sessionId,
       });
     }
     if (this.currentSessionTag) {
       appendEntryToFile(this.sessionFile, {
-        type: 'tag',
+        type: "tag",
         tag: this.currentSessionTag,
         sessionId,
       });
     }
     if (this.currentSessionAgentName) {
       appendEntryToFile(this.sessionFile, {
-        type: 'agent-name',
+        type: "agent-name",
         agentName: this.currentSessionAgentName,
         sessionId,
       });
     }
     if (this.currentSessionAgentColor) {
       appendEntryToFile(this.sessionFile, {
-        type: 'agent-color',
+        type: "agent-color",
         agentColor: this.currentSessionAgentColor,
         sessionId,
       });
     }
     if (this.currentSessionAgentSetting) {
       appendEntryToFile(this.sessionFile, {
-        type: 'agent-setting',
+        type: "agent-setting",
         agentSetting: this.currentSessionAgentSetting,
         sessionId,
       });
     }
     if (this.currentSessionMode) {
       appendEntryToFile(this.sessionFile, {
-        type: 'mode',
+        type: "mode",
         mode: this.currentSessionMode,
         sessionId,
       });
     }
     if (this.currentSessionWorktree !== undefined) {
       appendEntryToFile(this.sessionFile, {
-        type: 'worktree-state',
+        type: "worktree-state",
         worktreeSession: this.currentSessionWorktree,
         sessionId,
       });
@@ -794,7 +794,7 @@ class Project {
       this.currentSessionPrRepository
     ) {
       appendEntryToFile(this.sessionFile, {
-        type: 'pr-link',
+        type: "pr-link",
         sessionId,
         prNumber: this.currentSessionPrNumber,
         prUrl: this.currentSessionPrUrl,
@@ -839,7 +839,7 @@ class Project {
       if (this.sessionFile === null) return;
       try {
         let fileSize = 0;
-        const fh = await fsOpen(this.sessionFile, 'r+');
+        const fh = await fsOpen(this.sessionFile, "r+");
         try {
           const { size } = await fh.stat();
           fileSize = size;
@@ -893,12 +893,12 @@ class Project {
         if (fileSize > MAX_TOMBSTONE_REWRITE_BYTES) {
           logForDebugging(
             `Skipping tombstone removal: session file too large (${formatFileSize(fileSize)})`,
-            { level: 'warn' },
+            { level: "warn" },
           );
           return;
         }
-        const content = await readFile(this.sessionFile, { encoding: 'utf-8' });
-        const lines = content.split('\n').filter((line: string) => {
+        const content = await readFile(this.sessionFile, { encoding: "utf-8" });
+        const lines = content.split("\n").filter((line: string) => {
           if (!line.trim()) return true;
           try {
             const entry = jsonParse(line);
@@ -907,8 +907,8 @@ class Project {
             return true; // Keep malformed lines
           }
         });
-        await writeFile(this.sessionFile, lines.join('\n'), {
-          encoding: 'utf8',
+        await writeFile(this.sessionFile, lines.join("\n"), {
+          encoding: "utf8",
         });
       } catch {
         // Silently ignore errors - the file might not exist yet
@@ -926,7 +926,7 @@ class Project {
   private shouldSkipPersistence(): boolean {
     const allowTestPersistence = isEnvTruthy(process.env.TEST_ENABLE_SESSION_PERSISTENCE);
     return (
-      (getNodeEnv() === 'test' && !allowTestPersistence) ||
+      (getNodeEnv() === "test" && !allowTestPersistence) ||
       getSettings_DEPRECATED()?.cleanupPeriodDays === 0 ||
       isSessionPersistenceDisabled() ||
       isEnvTruthy(process.env.CLAUDE_CODE_SKIP_PROMPT_HISTORY)
@@ -968,7 +968,7 @@ class Project {
       // Hook progress/attachment messages alone stay buffered.
       if (
         this.sessionFile === null &&
-        messages.some((m) => m.type === 'user' || m.type === 'assistant')
+        messages.some((m) => m.type === "user" || m.type === "assistant")
       ) {
         await this.materializeSessionFile();
       }
@@ -993,8 +993,8 @@ class Project {
         // if available (set at creation time), otherwise fall back to sequential parent
         let effectiveParentUuid = parentUuid;
         if (
-          message.type === 'user' &&
-          'sourceToolAssistantUUID' in message &&
+          message.type === "user" &&
+          "sourceToolAssistantUUID" in message &&
           message.sourceToolAssistantUUID
         ) {
           effectiveParentUuid = message.sourceToolAssistantUUID;
@@ -1006,7 +1006,7 @@ class Project {
           isSidechain,
           teamName: teamInfo?.teamName,
           agentName: teamInfo?.agentName,
-          promptId: message.type === 'user' ? (getPromptId() ?? undefined) : undefined,
+          promptId: message.type === "user" ? (getPromptId() ?? undefined) : undefined,
           agentId,
           ...message,
           // Session-stamp fields MUST come after the spread. On --fork-session
@@ -1037,7 +1037,7 @@ class Project {
       if (!isSidechain) {
         const text = getFirstMeaningfulUserMessageTextContent(messages);
         if (text) {
-          const flat = text.replace(/\n/g, ' ').trim();
+          const flat = text.replace(/\n/g, " ").trim();
           this.currentSessionLastPrompt =
             flat.length > 200 ? `${flat.slice(0, 200).trim()}…` : flat;
         }
@@ -1052,7 +1052,7 @@ class Project {
   ) {
     return this.trackWrite(async () => {
       const fileHistoryMessage: FileHistorySnapshotMessage = {
-        type: 'file-history-snapshot',
+        type: "file-history-snapshot",
         messageId,
         snapshot,
         isSnapshotUpdate,
@@ -1076,7 +1076,7 @@ class Project {
   async insertContentReplacement(replacements: ContentReplacementRecord[], agentId?: AgentId) {
     return this.trackWrite(async () => {
       const entry: ContentReplacementEntry = {
-        type: 'content-replacement',
+        type: "content-replacement",
         sessionId: getSessionId() as UUID,
         agentId,
         replacements,
@@ -1111,65 +1111,65 @@ class Project {
     }
 
     // Only load current session messages if needed
-    if (entry.type === 'summary') {
+    if (entry.type === "summary") {
       // Summaries can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'custom-title') {
+    } else if (entry.type === "custom-title") {
       // Custom titles can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'ai-title') {
+    } else if (entry.type === "ai-title") {
       // AI titles can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'last-prompt') {
+    } else if (entry.type === "last-prompt") {
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'task-summary') {
+    } else if (entry.type === "task-summary") {
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'tag') {
+    } else if (entry.type === "tag") {
       // Tags can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'agent-name') {
+    } else if (entry.type === "agent-name") {
       // Agent names can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'agent-color') {
+    } else if (entry.type === "agent-color") {
       // Agent colors can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'agent-setting') {
+    } else if (entry.type === "agent-setting") {
       // Agent settings can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'pr-link') {
+    } else if (entry.type === "pr-link") {
       // PR links can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'file-history-snapshot') {
+    } else if (entry.type === "file-history-snapshot") {
       // File history snapshots can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'attribution-snapshot') {
+    } else if (entry.type === "attribution-snapshot") {
       // Attribution snapshots can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'speculation-accept') {
+    } else if (entry.type === "speculation-accept") {
       // Speculation accept entries can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'mode') {
+    } else if (entry.type === "mode") {
       // Mode entries can always be appended
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'worktree-state') {
+    } else if (entry.type === "worktree-state") {
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'content-replacement') {
+    } else if (entry.type === "content-replacement") {
       // Content replacement records can always be appended. Subagent records
       // go to the sidechain file (for AgentTool resume); main-thread
       // records go to the session file (for /resume).
       const targetFile = entry.agentId ? getAgentTranscriptPath(entry.agentId) : sessionFile;
       void this.enqueueWrite(targetFile, entry);
-    } else if (entry.type === 'marble-origami-commit') {
+    } else if (entry.type === "marble-origami-commit") {
       // Always append. Commit order matters for restore (later commits may
       // reference earlier commits' summary messages), so these must be
       // written in the order received and read back sequentially.
       void this.enqueueWrite(sessionFile, entry);
-    } else if (entry.type === 'marble-origami-snapshot') {
+    } else if (entry.type === "marble-origami-snapshot") {
       // Always append. Last-wins on restore — later entries supersede.
       void this.enqueueWrite(sessionFile, entry);
     } else {
       const messageSet = await getSessionMessages(sessionId);
-      if (entry.type === 'queue-operation') {
+      if (entry.type === "queue-operation") {
         // Queue operations are always appended to the session file
         void this.enqueueWrite(sessionFile, entry);
       } else {
@@ -1258,13 +1258,13 @@ class Project {
     // CCR v2 path: write as internal worker event
     if (this.internalEventWriter) {
       try {
-        await this.internalEventWriter('transcript', entry as unknown as Record<string, unknown>, {
+        await this.internalEventWriter("transcript", entry as unknown as Record<string, unknown>, {
           ...(isCompactBoundaryMessage(entry) && { isCompaction: true }),
           ...(entry.agentId && { agentId: entry.agentId }),
         });
       } catch {
-        logEvent('tengu_session_persistence_failed', {});
-        logForDebugging('Failed to write transcript as internal event');
+        logEvent("tengu_session_persistence_failed", {});
+        logForDebugging("Failed to write transcript as internal event");
       }
       return;
     }
@@ -1277,8 +1277,8 @@ class Project {
     const success = await sessionIngress.appendSessionLog(sessionId, entry, this.remoteIngressUrl);
 
     if (!success) {
-      logEvent('tengu_session_persistence_failed', {});
-      gracefulShutdownSync(1, 'other');
+      logEvent("tengu_session_persistence_failed", {});
+      gracefulShutdownSync(1, "other");
     }
   }
 
@@ -1293,19 +1293,19 @@ class Project {
 
   setInternalEventWriter(writer: InternalEventWriter): void {
     this.internalEventWriter = writer;
-    logForDebugging('CCR v2 internal event writer registered for transcript persistence');
+    logForDebugging("CCR v2 internal event writer registered for transcript persistence");
     // Use fast flush interval for CCR v2
     this.FLUSH_INTERVAL_MS = REMOTE_FLUSH_INTERVAL_MS;
   }
 
   setInternalEventReader(reader: InternalEventReader): void {
     this.internalEventReader = reader;
-    logForDebugging('CCR v2 internal event reader registered for session resume');
+    logForDebugging("CCR v2 internal event reader registered for session resume");
   }
 
   setInternalSubagentEventReader(reader: InternalEventReader): void {
     this.internalSubagentEventReader = reader;
-    logForDebugging('CCR v2 subagent event reader registered for session resume');
+    logForDebugging("CCR v2 subagent event reader registered for session resume");
   }
 
   getInternalEventReader(): InternalEventReader | null {
@@ -1477,7 +1477,7 @@ export async function recordContextCollapseCommit(commit: {
   const sessionId = getSessionId() as UUID;
   if (!sessionId) return;
   await getProject().appendEntry({
-    type: 'marble-origami-commit',
+    type: "marble-origami-commit",
     sessionId,
     ...commit,
   });
@@ -1502,7 +1502,7 @@ export async function recordContextCollapseSnapshot(snapshot: {
   const sessionId = getSessionId() as UUID;
   if (!sessionId) return;
   await getProject().appendEntry({
-    type: 'marble-origami-snapshot',
+    type: "marble-origami-snapshot",
     sessionId,
     ...snapshot,
   });
@@ -1531,14 +1531,14 @@ export async function hydrateRemoteSession(
 
     // Replace local logs with remote logs. writeFile truncates, so no
     // unlink is needed; an empty remoteLogs array produces an empty file.
-    const content = remoteLogs.map((e) => `${jsonStringify(e)}\n`).join('');
-    await writeFile(sessionFile, content, { encoding: 'utf8', mode: 0o600 });
+    const content = remoteLogs.map((e) => `${jsonStringify(e)}\n`).join("");
+    await writeFile(sessionFile, content, { encoding: "utf8", mode: 0o600 });
 
     logForDebugging(`Hydrated ${remoteLogs.length} entries from remote`);
     return remoteLogs.length > 0;
   } catch (error) {
     logForDebugging(`Error hydrating session from remote: ${error}`);
-    logForDiagnosticsNoPII('error', 'hydrate_remote_session_fail');
+    logForDiagnosticsNoPII("error", "hydrate_remote_session_fail");
     return false;
   } finally {
     // Set remote ingress URL after hydrating the remote session
@@ -1563,7 +1563,7 @@ export async function hydrateFromCCRv2InternalEvents(sessionId: string): Promise
   const project = getProject();
   const reader = project.getInternalEventReader();
   if (!reader) {
-    logForDebugging('No internal event reader registered for CCR v2 resume');
+    logForDebugging("No internal event reader registered for CCR v2 resume");
     return false;
   }
 
@@ -1571,8 +1571,8 @@ export async function hydrateFromCCRv2InternalEvents(sessionId: string): Promise
     // Fetch foreground events
     const events = await reader();
     if (!events) {
-      logForDebugging('Failed to read internal events for resume');
-      logForDiagnosticsNoPII('error', 'hydrate_ccr_v2_read_fail');
+      logForDebugging("Failed to read internal events for resume");
+      logForDiagnosticsNoPII("error", "hydrate_ccr_v2_read_fail");
       return false;
     }
 
@@ -1581,8 +1581,8 @@ export async function hydrateFromCCRv2InternalEvents(sessionId: string): Promise
 
     // Write foreground transcript
     const sessionFile = getTranscriptPathForSession(sessionId);
-    const fgContent = events.map((e) => `${jsonStringify(e.payload)}\n`).join('');
-    await writeFile(sessionFile, fgContent, { encoding: 'utf8', mode: 0o600 });
+    const fgContent = events.map((e) => `${jsonStringify(e.payload)}\n`).join("");
+    await writeFile(sessionFile, fgContent, { encoding: "utf8", mode: 0o600 });
 
     logForDebugging(`Hydrated ${events.length} foreground entries from CCR v2 internal events`);
 
@@ -1596,7 +1596,7 @@ export async function hydrateFromCCRv2InternalEvents(sessionId: string): Promise
         // Group by agent_id
         const byAgent = new Map<string, Record<string, unknown>[]>();
         for (const e of subagentEvents) {
-          const agentId = e.agent_id || '';
+          const agentId = e.agent_id || "";
           if (!agentId) continue;
           let list = byAgent.get(agentId);
           if (!list) {
@@ -1610,9 +1610,9 @@ export async function hydrateFromCCRv2InternalEvents(sessionId: string): Promise
         for (const [agentId, entries] of byAgent) {
           const agentFile = getAgentTranscriptPath(asAgentId(agentId));
           await mkdir(dirname(agentFile), { recursive: true, mode: 0o700 });
-          const agentContent = entries.map((p) => `${jsonStringify(p)}\n`).join('');
+          const agentContent = entries.map((p) => `${jsonStringify(p)}\n`).join("");
           await writeFile(agentFile, agentContent, {
-            encoding: 'utf8',
+            encoding: "utf8",
             mode: 0o600,
           });
         }
@@ -1623,7 +1623,7 @@ export async function hydrateFromCCRv2InternalEvents(sessionId: string): Promise
       }
     }
 
-    logForDiagnosticsNoPII('info', 'hydrate_ccr_v2_completed', {
+    logForDiagnosticsNoPII("info", "hydrate_ccr_v2_completed", {
       duration_ms: Date.now() - startMs,
       event_count: events.length,
       subagent_event_count: subagentEventCount,
@@ -1631,11 +1631,11 @@ export async function hydrateFromCCRv2InternalEvents(sessionId: string): Promise
     return events.length > 0;
   } catch (error) {
     // Re-throw epoch mismatch so the worker doesn't race against gracefulShutdown
-    if (error instanceof Error && error.message === 'CCRClient: Epoch mismatch (409)') {
+    if (error instanceof Error && error.message === "CCRClient: Epoch mismatch (409)") {
       throw error;
     }
     logForDebugging(`Error hydrating session from CCR v2: ${error}`);
-    logForDiagnosticsNoPII('error', 'hydrate_ccr_v2_fail');
+    logForDiagnosticsNoPII("error", "hydrate_ccr_v2_fail");
     return false;
   }
 }
@@ -1643,7 +1643,7 @@ export async function hydrateFromCCRv2InternalEvents(sessionId: string): Promise
 function extractFirstPrompt(transcript: TranscriptMessage[]): string {
   const textContent = getFirstMeaningfulUserMessageTextContent(transcript);
   if (textContent) {
-    let result = textContent.replace(/\n/g, ' ').trim();
+    let result = textContent.replace(/\n/g, " ").trim();
 
     // Store a reasonably long version for display-time truncation
     // The actual truncation will be applied at display time based on terminal width
@@ -1654,7 +1654,7 @@ function extractFirstPrompt(transcript: TranscriptMessage[]): string {
     return result;
   }
 
-  return 'No prompt';
+  return "No prompt";
 }
 
 /**
@@ -1665,9 +1665,9 @@ export function getFirstMeaningfulUserMessageTextContent<T extends Message>(
   transcript: T[],
 ): string | undefined {
   for (const msg of transcript) {
-    if (msg.type !== 'user' || msg.isMeta) continue;
+    if (msg.type !== "user" || msg.isMeta) continue;
     // Skip compact summary messages - they should not be treated as the first prompt
-    if ('isCompactSummary' in msg && msg.isCompactSummary) continue;
+    if ("isCompactSummary" in msg && msg.isCompactSummary) continue;
 
     const content = msg.message?.content;
     if (!content) continue;
@@ -1677,11 +1677,11 @@ export function getFirstMeaningfulUserMessageTextContent<T extends Message>(
     // text blocks so we don't miss the real prompt hidden behind
     // <ide_selection>/<ide_opened_file> blocks.
     const texts: string[] = [];
-    if (typeof content === 'string') {
+    if (typeof content === "string") {
       texts.push(content);
     } else if (Array.isArray(content)) {
       for (const block of content) {
-        if (block.type === 'text' && block.text) {
+        if (block.type === "text" && block.text) {
           texts.push(block.text);
         }
       }
@@ -1692,7 +1692,7 @@ export function getFirstMeaningfulUserMessageTextContent<T extends Message>(
 
       const commandNameTag = extractTag(textContent, COMMAND_NAME_TAG);
       if (commandNameTag) {
-        const commandName = commandNameTag.replace(/^\//, '');
+        const commandName = commandNameTag.replace(/^\//, "");
 
         // If it's a built-in command, then it's unlikely to provide
         // meaningful context (e.g. `/model sonnet`)
@@ -1701,7 +1701,7 @@ export function getFirstMeaningfulUserMessageTextContent<T extends Message>(
         } else {
           // Otherwise, for custom commands, then keep it only if it has
           // arguments (e.g. `/review reticulate splines`)
-          const commandArgs = extractTag(textContent, 'command-args')?.trim();
+          const commandArgs = extractTag(textContent, "command-args")?.trim();
           if (!commandArgs) {
             continue;
           }
@@ -1712,7 +1712,7 @@ export function getFirstMeaningfulUserMessageTextContent<T extends Message>(
 
       // Format bash input with ! prefix (as user typed it). Checked before
       // the generic XML skip so bash-mode sessions get a meaningful title.
-      const bashInput = extractTag(textContent, 'bash-input');
+      const bashInput = extractTag(textContent, "bash-input");
       if (bashInput) {
         return `! ${bashInput}`;
       }
@@ -1753,7 +1753,7 @@ export function removeExtraFields(transcript: TranscriptMessage[]): SerializedMe
  * Mutates the Map in place.
  */
 function applyPreservedSegmentRelinks(messages: Map<UUID, TranscriptMessage>): void {
-  type Seg = NonNullable<SystemCompactBoundaryMessage['compactMetadata']['preservedSegment']>;
+  type Seg = NonNullable<SystemCompactBoundaryMessage["compactMetadata"]["preservedSegment"]>;
 
   // Find the absolute-last boundary and the last seg-boundary (can differ:
   // manual /compact after reactive compact → seg is stale).
@@ -1803,7 +1803,7 @@ function applyPreservedSegmentRelinks(messages: Map<UUID, TranscriptMessage>): v
       // the full pre-compact history. Known cause: mid-turn-yielded
       // attachment pushed to mutableMessages but never recordTranscript'd
       // (SDK subprocess restarted before next turn's qe:420 flush).
-      logEvent('tengu_relink_walk_broken', {
+      logEvent("tengu_relink_walk_broken", {
         tailInTranscript: messages.has(lastSeg.tailUuid),
         headInTranscript: messages.has(lastSeg.headUuid),
         anchorInTranscript: messages.has(lastSeg.anchorUuid),
@@ -1834,7 +1834,7 @@ function applyPreservedSegmentRelinks(messages: Map<UUID, TranscriptMessage>): v
     // dedup-skipped. Without this, resume → immediate autocompact spiral.
     for (const uuid of preservedUuids) {
       const msg = messages.get(uuid);
-      if (msg?.type !== 'assistant') continue;
+      if (msg?.type !== "assistant") continue;
       messages.set(uuid, {
         ...msg,
         message: {
@@ -1940,7 +1940,7 @@ function applySnipRemovals(messages: Map<UUID, TranscriptMessage>): void {
     relinkedCount++;
   }
 
-  logEvent('tengu_snip_resume_filtered', {
+  logEvent("tengu_snip_resume_filtered", {
     removed_count: removedCount,
     relinked_count: relinkedCount,
   });
@@ -1988,7 +1988,7 @@ export function buildConversationChain(
           `Cycle detected in parentUuid chain at message ${currentMsg.uuid}. Returning partial transcript.`,
         ),
       );
-      logEvent('tengu_chain_parent_cycle', {});
+      logEvent("tengu_chain_parent_cycle", {});
       break;
     }
     seen.add(currentMsg.uuid);
@@ -2026,8 +2026,8 @@ function recoverOrphanedParallelToolResults(
   chain: TranscriptMessage[],
   seen: Set<UUID>,
 ): TranscriptMessage[] {
-  type ChainAssistant = Extract<TranscriptMessage, { type: 'assistant' }>;
-  const chainAssistants = chain.filter((m): m is ChainAssistant => m.type === 'assistant');
+  type ChainAssistant = Extract<TranscriptMessage, { type: "assistant" }>;
+  const chainAssistants = chain.filter((m): m is ChainAssistant => m.type === "assistant");
   if (chainAssistants.length === 0) return chain;
 
   // Anchor = last on-chain member of each sibling group. chainAssistants is
@@ -2043,15 +2043,15 @@ function recoverOrphanedParallelToolResults(
   const siblingsByMsgId = new Map<string, TranscriptMessage[]>();
   const toolResultsByAsst = new Map<UUID, TranscriptMessage[]>();
   for (const m of messages.values()) {
-    if (m.type === 'assistant' && m.message.id) {
+    if (m.type === "assistant" && m.message.id) {
       const group = siblingsByMsgId.get(m.message.id);
       if (group) group.push(m);
       else siblingsByMsgId.set(m.message.id, [m]);
     } else if (
-      m.type === 'user' &&
+      m.type === "user" &&
       m.parentUuid &&
       Array.isArray(m.message.content) &&
-      m.message.content.some((b) => b.type === 'tool_result')
+      m.message.content.some((b) => b.type === "tool_result")
     ) {
       const group = toolResultsByAsst.get(m.parentUuid);
       if (group) group.push(m);
@@ -2096,7 +2096,7 @@ function recoverOrphanedParallelToolResults(
   }
 
   if (recoveredCount === 0) return chain;
-  logEvent('tengu_chain_parallel_tr_recovered', {
+  logEvent("tengu_chain_parallel_tr_recovered", {
     recovered_count: recoveredCount,
   });
 
@@ -2128,14 +2128,14 @@ function recoverOrphanedParallelToolResults(
 export function checkResumeConsistency(chain: Message[]): void {
   for (let i = chain.length - 1; i >= 0; i--) {
     const m = chain[i]!;
-    if (m.type !== 'system' || m.subtype !== 'turn_duration') continue;
+    if (m.type !== "system" || m.subtype !== "turn_duration") continue;
     const expected = m.messageCount;
     if (expected === undefined) return;
     // `i` is the 0-based index of the checkpoint in the reconstructed chain.
     // The checkpoint was appended AFTER messageCount messages, so its own
     // position should be messageCount (i.e., i === expected).
     const actual = i;
-    logEvent('tengu_resume_consistency_delta', {
+    logEvent("tengu_resume_consistency_delta", {
       expected,
       actual,
       delta: actual - expected,
@@ -2194,7 +2194,7 @@ function buildAttributionSnapshotChain(
  * @throws Error if file doesn't exist or contains invalid data
  */
 export async function loadTranscriptFromFile(filePath: string): Promise<LogOption> {
-  if (filePath.endsWith('.jsonl')) {
+  if (filePath.endsWith(".jsonl")) {
     const {
       messages,
       summaries,
@@ -2210,14 +2210,14 @@ export async function loadTranscriptFromFile(filePath: string): Promise<LogOptio
     } = await loadTranscriptFile(filePath);
 
     if (messages.size === 0) {
-      throw new Error('No messages found in JSONL file');
+      throw new Error("No messages found in JSONL file");
     }
 
     // Find the most recent leaf message using pre-computed leaf UUIDs
     const leafMessage = findLatestMessage(messages.values(), (msg) => leafUuids.has(msg.uuid));
 
     if (!leafMessage) {
-      throw new Error('No valid conversation chain found in JSONL file');
+      throw new Error("No valid conversation chain found in JSONL file");
     }
 
     // Build the conversation chain backwards from leaf to root
@@ -2248,7 +2248,7 @@ export async function loadTranscriptFromFile(filePath: string): Promise<LogOptio
   }
 
   // json log files
-  const content = await readFile(filePath, { encoding: 'utf-8' });
+  const content = await readFile(filePath, { encoding: "utf-8" });
   let parsed: unknown;
 
   try {
@@ -2261,13 +2261,13 @@ export async function loadTranscriptFromFile(filePath: string): Promise<LogOptio
 
   if (Array.isArray(parsed)) {
     messages = parsed;
-  } else if (parsed && typeof parsed === 'object' && 'messages' in parsed) {
+  } else if (parsed && typeof parsed === "object" && "messages" in parsed) {
     if (!Array.isArray(parsed.messages)) {
-      throw new Error('Transcript messages must be an array');
+      throw new Error("Transcript messages must be an array");
     }
     messages = parsed.messages;
   } else {
-    throw new Error('Transcript must be an array of messages or an object with a messages array');
+    throw new Error("Transcript must be an array of messages or an object with a messages array");
   }
 
   return convertToLogOption(messages, 0, undefined, undefined, undefined, undefined, filePath);
@@ -2279,7 +2279,7 @@ export async function loadTranscriptFromFile(filePath: string): Promise<LogOptio
  * Also excludes meta messages which are not shown to the user.
  */
 function hasVisibleUserContent(message: TranscriptMessage): boolean {
-  if (message.type !== 'user') return false;
+  if (message.type !== "user") return false;
 
   // Meta messages are not shown to the user
   if (message.isMeta) return false;
@@ -2288,14 +2288,14 @@ function hasVisibleUserContent(message: TranscriptMessage): boolean {
   if (!content) return false;
 
   // String content is always visible
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return content.trim().length > 0;
   }
 
   // Array content: check for text or image blocks (not tool_result)
   if (Array.isArray(content)) {
     return content.some(
-      (block) => block.type === 'text' || block.type === 'image' || block.type === 'document',
+      (block) => block.type === "text" || block.type === "image" || block.type === "document",
     );
   }
 
@@ -2307,7 +2307,7 @@ function hasVisibleUserContent(message: TranscriptMessage): boolean {
  * Tool uses are displayed as grouped/collapsed UI elements, not as standalone messages.
  */
 function hasVisibleAssistantContent(message: TranscriptMessage): boolean {
-  if (message.type !== 'assistant') return false;
+  if (message.type !== "assistant") return false;
 
   const content = message.message?.content;
   if (!content || !Array.isArray(content)) return false;
@@ -2315,7 +2315,7 @@ function hasVisibleAssistantContent(message: TranscriptMessage): boolean {
   // Check for text block (not just tool_use/thinking blocks)
   return content.some(
     (block) =>
-      block.type === 'text' && typeof block.text === 'string' && block.text.trim().length > 0,
+      block.type === "text" && typeof block.text === "string" && block.text.trim().length > 0,
   );
 }
 
@@ -2331,21 +2331,21 @@ function countVisibleMessages(transcript: TranscriptMessage[]): number {
   let count = 0;
   for (const message of transcript) {
     switch (message.type) {
-      case 'user':
+      case "user":
         // Count user messages with visible content (text, image, not just tool_result or meta)
         if (hasVisibleUserContent(message)) {
           count++;
         }
         break;
-      case 'assistant':
+      case "assistant":
         // Count assistant messages with text content (not just tool_use)
         if (hasVisibleAssistantContent(message)) {
           count++;
         }
         break;
-      case 'attachment':
-      case 'system':
-      case 'progress':
+      case "attachment":
+      case "system":
+      case "progress":
         // These message types are not counted as visible conversation turns
         break;
     }
@@ -2422,7 +2422,7 @@ async function trackSessionBranchingAnalytics(logs: LogOption[]): Promise<void> 
   const sessionsWithBranches = branchCounts.length;
   const totalBranches = branchCounts.reduce((sum, count) => sum + count, 0);
 
-  logEvent('tengu_session_forked_branches_fetched', {
+  logEvent("tengu_session_forked_branches_fetched", {
     total_sessions: sessionIdCounts.size,
     sessions_with_branches: sessionsWithBranches,
     max_branches_per_session: Math.max(...branchCounts),
@@ -2464,14 +2464,14 @@ function appendEntryToFile(fullPath: string, entry: Record<string, unknown>): vo
 function readFileTailSync(fullPath: string): string {
   let fd: number | undefined;
   try {
-    fd = openSync(fullPath, 'r');
+    fd = openSync(fullPath, "r");
     const st = fstatSync(fd);
     const tailOffset = Math.max(0, st.size - LITE_READ_BUF_SIZE);
     const buf = Buffer.allocUnsafe(Math.min(LITE_READ_BUF_SIZE, st.size - tailOffset));
     const bytesRead = readSync(fd, buf, 0, buf.length, tailOffset);
-    return buf.toString('utf8', 0, bytesRead);
+    return buf.toString("utf8", 0, bytesRead);
   } catch {
-    return '';
+    return "";
   } finally {
     if (fd !== undefined) {
       try {
@@ -2488,12 +2488,12 @@ export async function saveCustomTitle(
   sessionId: UUID,
   customTitle: string,
   fullPath?: string,
-  source: 'user' | 'auto' = 'user',
+  source: "user" | "auto" = "user",
 ) {
   // Fall back to computed path if fullPath is not provided
   const resolvedPath = fullPath ?? getTranscriptPathForSession(sessionId);
   appendEntryToFile(resolvedPath, {
-    type: 'custom-title',
+    type: "custom-title",
     customTitle,
     sessionId,
   });
@@ -2501,7 +2501,7 @@ export async function saveCustomTitle(
   if (sessionId === getSessionId()) {
     getProject().currentSessionTitle = customTitle;
   }
-  logEvent('tengu_session_renamed', {
+  logEvent("tengu_session_renamed", {
     source: source as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 }
@@ -2535,7 +2535,7 @@ export async function saveCustomTitle(
  */
 export function saveAiGeneratedTitle(sessionId: UUID, aiTitle: string): void {
   appendEntryToFile(getTranscriptPathForSession(sessionId), {
-    type: 'ai-title',
+    type: "ai-title",
     aiTitle,
     sessionId,
   });
@@ -2549,7 +2549,7 @@ export function saveAiGeneratedTitle(sessionId: UUID, aiTitle: string): void {
  */
 export function saveTaskSummary(sessionId: UUID, summary: string): void {
   appendEntryToFile(getTranscriptPathForSession(sessionId), {
-    type: 'task-summary',
+    type: "task-summary",
     summary,
     sessionId,
     timestamp: new Date().toISOString(),
@@ -2559,12 +2559,12 @@ export function saveTaskSummary(sessionId: UUID, summary: string): void {
 export async function saveTag(sessionId: UUID, tag: string, fullPath?: string) {
   // Fall back to computed path if fullPath is not provided
   const resolvedPath = fullPath ?? getTranscriptPathForSession(sessionId);
-  appendEntryToFile(resolvedPath, { type: 'tag', tag, sessionId });
+  appendEntryToFile(resolvedPath, { type: "tag", tag, sessionId });
   // Cache for current session only (for immediate visibility)
   if (sessionId === getSessionId()) {
     getProject().currentSessionTag = tag;
   }
-  logEvent('tengu_session_tagged', {});
+  logEvent("tengu_session_tagged", {});
 }
 
 /**
@@ -2580,7 +2580,7 @@ export async function linkSessionToPR(
 ): Promise<void> {
   const resolvedPath = fullPath ?? getTranscriptPathForSession(sessionId);
   appendEntryToFile(resolvedPath, {
-    type: 'pr-link',
+    type: "pr-link",
     sessionId,
     prNumber,
     prUrl,
@@ -2594,7 +2594,7 @@ export async function linkSessionToPR(
     project.currentSessionPrUrl = prUrl;
     project.currentSessionPrRepository = prRepository;
   }
-  logEvent('tengu_session_linked_to_pr', { prNumber });
+  logEvent("tengu_session_linked_to_pr", { prNumber });
 }
 
 export function getCurrentSessionTag(sessionId: UUID): string | undefined {
@@ -2628,7 +2628,7 @@ export function restoreSessionMetadata(meta: {
   agentName?: string;
   agentColor?: string;
   agentSetting?: string;
-  mode?: 'coordinator' | 'normal';
+  mode?: "coordinator" | "normal";
   worktreeSession?: PersistedWorktreeSession | null;
   prNumber?: number;
   prUrl?: string;
@@ -2685,16 +2685,16 @@ export async function saveAgentName(
   sessionId: UUID,
   agentName: string,
   fullPath?: string,
-  source: 'user' | 'auto' = 'user',
+  source: "user" | "auto" = "user",
 ) {
   const resolvedPath = fullPath ?? getTranscriptPathForSession(sessionId);
-  appendEntryToFile(resolvedPath, { type: 'agent-name', agentName, sessionId });
+  appendEntryToFile(resolvedPath, { type: "agent-name", agentName, sessionId });
   // Cache for current session only (for immediate visibility)
   if (sessionId === getSessionId()) {
     getProject().currentSessionAgentName = agentName;
     void updateSessionName(agentName);
   }
-  logEvent('tengu_agent_name_set', {
+  logEvent("tengu_agent_name_set", {
     source: source as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 }
@@ -2702,7 +2702,7 @@ export async function saveAgentName(
 export async function saveAgentColor(sessionId: UUID, agentColor: string, fullPath?: string) {
   const resolvedPath = fullPath ?? getTranscriptPathForSession(sessionId);
   appendEntryToFile(resolvedPath, {
-    type: 'agent-color',
+    type: "agent-color",
     agentColor,
     sessionId,
   });
@@ -2710,7 +2710,7 @@ export async function saveAgentColor(sessionId: UUID, agentColor: string, fullPa
   if (sessionId === getSessionId()) {
     getProject().currentSessionAgentColor = agentColor;
   }
-  logEvent('tengu_agent_color_set', {});
+  logEvent("tengu_agent_color_set", {});
 }
 
 /**
@@ -2736,7 +2736,7 @@ export function cacheSessionTitle(customTitle: string): void {
  * first user message, and re-stamped by reAppendSessionMetadata on exit.
  * Cache-only here to avoid creating metadata-only session files at startup.
  */
-export function saveMode(mode: 'coordinator' | 'normal'): void {
+export function saveMode(mode: "coordinator" | "normal"): void {
   getProject().currentSessionMode = mode;
 }
 
@@ -2770,7 +2770,7 @@ export function saveWorktreeState(worktreeSession: PersistedWorktreeSession | nu
   // will write it on the first message via reAppendSessionMetadata.
   if (project.sessionFile) {
     appendEntryToFile(project.sessionFile, {
-      type: 'worktree-state',
+      type: "worktree-state",
       worktreeSession: stripped,
       sessionId: getSessionId(),
     });
@@ -2845,7 +2845,7 @@ export async function loadFullLog(log: LogOption): Promise<LogOption> {
     // Find the most recent user/assistant leaf message from the transcript
     const mostRecentLeaf = findLatestMessage(
       messages.values(),
-      (msg) => leafUuids.has(msg.uuid) && (msg.type === 'user' || msg.type === 'assistant'),
+      (msg) => leafUuids.has(msg.uuid) && (msg.type === "user" || msg.type === "assistant"),
     );
     if (!mostRecentLeaf) {
       return log;
@@ -2867,7 +2867,7 @@ export async function loadFullLog(log: LogOption): Promise<LogOption> {
       agentName: sessionId ? agentNames.get(sessionId) : log.agentName,
       agentColor: sessionId ? agentColors.get(sessionId) : log.agentColor,
       agentSetting: sessionId ? agentSettings.get(sessionId) : log.agentSetting,
-      mode: sessionId ? (modes.get(sessionId) as LogOption['mode']) : log.mode,
+      mode: sessionId ? (modes.get(sessionId) as LogOption["mode"]) : log.mode,
       worktreeSession:
         sessionId && worktreeStates.has(sessionId)
           ? worktreeStates.get(sessionId)
@@ -2998,7 +2998,7 @@ function resolveMetadataBuf(carry: Buffer | null, chunkBuf: Buffer): Buffer | nu
  * are <50 per session), the entire chunk is skipped without line splitting.
  */
 async function scanPreBoundaryMetadata(filePath: string, endOffset: number): Promise<string[]> {
-  const { createReadStream } = await import('node:fs');
+  const { createReadStream } = await import("node:fs");
   const NEWLINE = 0x0a;
 
   const stream = createReadStream(filePath, { end: endOffset - 1 });
@@ -3030,7 +3030,7 @@ async function scanPreBoundaryMetadata(filePath: string, endOffset: number): Pro
         for (const m of METADATA_MARKER_BUFS) {
           const mIdx = buf.indexOf(m, lineStart);
           if (mIdx !== -1 && mIdx < nl) {
-            metadataLines.push(buf.toString('utf-8', lineStart, nl));
+            metadataLines.push(buf.toString("utf-8", lineStart, nl));
             break;
           }
         }
@@ -3054,7 +3054,7 @@ async function scanPreBoundaryMetadata(filePath: string, endOffset: number): Pro
   if (carry !== null && carry.length > 0) {
     for (const m of METADATA_MARKER_BUFS) {
       if (carry.includes(m)) {
-        metadataLines.push(carry.toString('utf-8'));
+        metadataLines.push(carry.toString("utf-8"));
         break;
       }
     }
@@ -3213,7 +3213,7 @@ function walkChainBeforeParse(buf: Buffer): Buffer {
       if (uk >= 0) {
         const uuidStart = uk + KEY_LEN;
         // UUIDs are pure ASCII so latin1 avoids UTF-8 decode overhead.
-        const uuid = buf.toString('latin1', uuidStart, uuidStart + UUID_LEN);
+        const uuid = buf.toString("latin1", uuidStart, uuidStart + UUID_LEN);
         uuidToSlot.set(uuid, msgIdx.length);
         msgIdx.push(pos, lineEnd, parentStart);
       } else {
@@ -3256,7 +3256,7 @@ function walkChainBeforeParse(buf: Buffer): Buffer {
     chainBytes += msgIdx[slot + 1]! - msgIdx[slot]!;
     const parentStart = msgIdx[slot + 2]!;
     if (parentStart < 0) break;
-    const parent = buf.toString('latin1', parentStart, parentStart + UUID_LEN);
+    const parent = buf.toString("latin1", parentStart, parentStart + UUID_LEN);
     slot = uuidToSlot.get(parent);
   }
 
@@ -3406,25 +3406,25 @@ export async function loadTranscriptFile(
     // etc.) for entries written before the compact boundary. Any overlap with
     // the post-boundary buffer is harmless — later values overwrite earlier ones.
     if (metadataLines && metadataLines.length > 0) {
-      const metaEntries = parseJSONL<Entry>(Buffer.from(metadataLines.join('\n')));
+      const metaEntries = parseJSONL<Entry>(Buffer.from(metadataLines.join("\n")));
       for (const entry of metaEntries) {
-        if (entry.type === 'summary' && entry.leafUuid) {
+        if (entry.type === "summary" && entry.leafUuid) {
           summaries.set(entry.leafUuid, entry.summary);
-        } else if (entry.type === 'custom-title' && entry.sessionId) {
+        } else if (entry.type === "custom-title" && entry.sessionId) {
           customTitles.set(entry.sessionId, entry.customTitle);
-        } else if (entry.type === 'tag' && entry.sessionId) {
+        } else if (entry.type === "tag" && entry.sessionId) {
           tags.set(entry.sessionId, entry.tag);
-        } else if (entry.type === 'agent-name' && entry.sessionId) {
+        } else if (entry.type === "agent-name" && entry.sessionId) {
           agentNames.set(entry.sessionId, entry.agentName);
-        } else if (entry.type === 'agent-color' && entry.sessionId) {
+        } else if (entry.type === "agent-color" && entry.sessionId) {
           agentColors.set(entry.sessionId, entry.agentColor);
-        } else if (entry.type === 'agent-setting' && entry.sessionId) {
+        } else if (entry.type === "agent-setting" && entry.sessionId) {
           agentSettings.set(entry.sessionId, entry.agentSetting);
-        } else if (entry.type === 'mode' && entry.sessionId) {
+        } else if (entry.type === "mode" && entry.sessionId) {
           modes.set(entry.sessionId, entry.mode);
-        } else if (entry.type === 'worktree-state' && entry.sessionId) {
+        } else if (entry.type === "worktree-state" && entry.sessionId) {
           worktreeStates.set(entry.sessionId, entry.worktreeSession);
-        } else if (entry.type === 'pr-link' && entry.sessionId) {
+        } else if (entry.type === "pr-link" && entry.sessionId) {
           prNumbers.set(entry.sessionId, entry.prNumber);
           prUrls.set(entry.sessionId, entry.prUrl);
           prRepositories.set(entry.sessionId, entry.prRepository);
@@ -3474,31 +3474,31 @@ export async function loadTranscriptFile(
           contextCollapseCommits.length = 0;
           contextCollapseSnapshot = undefined;
         }
-      } else if (entry.type === 'summary' && entry.leafUuid) {
+      } else if (entry.type === "summary" && entry.leafUuid) {
         summaries.set(entry.leafUuid, entry.summary);
-      } else if (entry.type === 'custom-title' && entry.sessionId) {
+      } else if (entry.type === "custom-title" && entry.sessionId) {
         customTitles.set(entry.sessionId, entry.customTitle);
-      } else if (entry.type === 'tag' && entry.sessionId) {
+      } else if (entry.type === "tag" && entry.sessionId) {
         tags.set(entry.sessionId, entry.tag);
-      } else if (entry.type === 'agent-name' && entry.sessionId) {
+      } else if (entry.type === "agent-name" && entry.sessionId) {
         agentNames.set(entry.sessionId, entry.agentName);
-      } else if (entry.type === 'agent-color' && entry.sessionId) {
+      } else if (entry.type === "agent-color" && entry.sessionId) {
         agentColors.set(entry.sessionId, entry.agentColor);
-      } else if (entry.type === 'agent-setting' && entry.sessionId) {
+      } else if (entry.type === "agent-setting" && entry.sessionId) {
         agentSettings.set(entry.sessionId, entry.agentSetting);
-      } else if (entry.type === 'mode' && entry.sessionId) {
+      } else if (entry.type === "mode" && entry.sessionId) {
         modes.set(entry.sessionId, entry.mode);
-      } else if (entry.type === 'worktree-state' && entry.sessionId) {
+      } else if (entry.type === "worktree-state" && entry.sessionId) {
         worktreeStates.set(entry.sessionId, entry.worktreeSession);
-      } else if (entry.type === 'pr-link' && entry.sessionId) {
+      } else if (entry.type === "pr-link" && entry.sessionId) {
         prNumbers.set(entry.sessionId, entry.prNumber);
         prUrls.set(entry.sessionId, entry.prUrl);
         prRepositories.set(entry.sessionId, entry.prRepository);
-      } else if (entry.type === 'file-history-snapshot') {
+      } else if (entry.type === "file-history-snapshot") {
         fileHistorySnapshots.set(entry.messageId, entry);
-      } else if (entry.type === 'attribution-snapshot') {
+      } else if (entry.type === "attribution-snapshot") {
         attributionSnapshots.set(entry.messageId, entry);
-      } else if (entry.type === 'content-replacement') {
+      } else if (entry.type === "content-replacement") {
         // Subagent decisions key by agentId (sidechain resume); main-thread
         // decisions key by sessionId (/resume).
         if (entry.agentId) {
@@ -3510,9 +3510,9 @@ export async function loadTranscriptFile(
           contentReplacements.set(entry.sessionId, existing);
           existing.push(...entry.replacements);
         }
-      } else if (entry.type === 'marble-origami-commit') {
+      } else if (entry.type === "marble-origami-commit") {
         contextCollapseCommits.push(entry);
-      } else if (entry.type === 'marble-origami-snapshot') {
+      } else if (entry.type === "marble-origami-snapshot") {
         contextCollapseSnapshot = entry;
       }
     }
@@ -3545,12 +3545,12 @@ export async function loadTranscriptFile(
   const leafUuids = new Set<UUID>();
   let hasCycle = false;
 
-  if (getFeatureValue_CACHED_MAY_BE_STALE('tengu_pebble_leaf_prune', false)) {
+  if (getFeatureValue_CACHED_MAY_BE_STALE("tengu_pebble_leaf_prune", false)) {
     // Build a set of UUIDs that have user/assistant children
     // (these are mid-conversation nodes, not dead ends)
     const hasUserAssistantChild = new Set<UUID>();
     for (const msg of allMessages) {
-      if (msg.parentUuid && (msg.type === 'user' || msg.type === 'assistant')) {
+      if (msg.parentUuid && (msg.type === "user" || msg.type === "assistant")) {
         hasUserAssistantChild.add(msg.parentUuid);
       }
     }
@@ -3568,7 +3568,7 @@ export async function loadTranscriptFile(
           break;
         }
         seen.add(current.uuid);
-        if (current.type === 'user' || current.type === 'assistant') {
+        if (current.type === "user" || current.type === "assistant") {
           if (!hasUserAssistantChild.has(current.uuid)) {
             leafUuids.add(current.uuid);
           }
@@ -3589,7 +3589,7 @@ export async function loadTranscriptFile(
           break;
         }
         seen.add(current.uuid);
-        if (current.type === 'user' || current.type === 'assistant') {
+        if (current.type === "user" || current.type === "assistant") {
           leafUuids.add(current.uuid);
           break;
         }
@@ -3599,7 +3599,7 @@ export async function loadTranscriptFile(
   }
 
   if (hasCycle) {
-    logEvent('tengu_transcript_parent_cycle', {});
+    logEvent("tengu_transcript_parent_cycle", {});
   }
 
   return {
@@ -3798,7 +3798,7 @@ async function loadAllProjectsMessageLogsFull(limit?: number): Promise<LogOption
   // This path creates one LogOption per leaf, so use sessionId+leafUuid key.
   const deduped = new Map<string, LogOption>();
   for (const log of allLogs) {
-    const key = `${log.sessionId ?? ''}:${log.leafUuid ?? ''}`;
+    const key = `${log.sessionId ?? ""}:${log.leafUuid ?? ""}`;
     const existing = deduped.get(key);
     if (!existing || log.modified.getTime() > existing.modified.getTime()) {
       deduped.set(key, log);
@@ -3883,7 +3883,7 @@ export async function loadSameRepoMessageLogsProgressive(
   initialEnrichCount: number = INITIAL_ENRICH_COUNT,
 ): Promise<SessionLogResult> {
   logForDebugging(
-    `/resume: loading sessions for cwd=${getOriginalCwd()}, worktrees=[${worktreePaths.join(', ')}]`,
+    `/resume: loading sessions for cwd=${getOriginalCwd()}, worktrees=[${worktreePaths.join(", ")}]`,
   );
   const allStatLogs = await getStatOnlyLogsForWorktrees(worktreePaths, limit);
   logForDebugging(`/resume: found ${allStatLogs.length} session files on disk`);
@@ -3915,7 +3915,7 @@ async function getStatOnlyLogsForWorktrees(
   // On Windows, drive letter case can differ between git worktree list
   // output (e.g. C:/Users/...) and how paths were stored in project
   // directories (e.g. c:/Users/...). Use case-insensitive comparison.
-  const caseInsensitive = process.platform === 'win32';
+  const caseInsensitive = process.platform === "win32";
 
   // Sort worktree paths by sanitized prefix length (longest first) so
   // more specific matches take priority over shorter ones. Without this,
@@ -4026,13 +4026,13 @@ export function extractAgentIdsFromMessages(messages: Message[]): string[] {
 
   for (const message of messages) {
     if (
-      message.type === 'progress' &&
+      message.type === "progress" &&
       message.data &&
-      typeof message.data === 'object' &&
-      'type' in message.data &&
-      (message.data.type === 'agent_progress' || message.data.type === 'skill_progress') &&
-      'agentId' in message.data &&
-      typeof message.data.agentId === 'string'
+      typeof message.data === "object" &&
+      "type" in message.data &&
+      (message.data.type === "agent_progress" || message.data.type === "skill_progress") &&
+      "agentId" in message.data &&
+      typeof message.data.agentId === "string"
     ) {
       agentIds.push(message.data.agentId);
     }
@@ -4058,7 +4058,7 @@ export function extractTeammateTranscriptsFromTasks(tasks: {
 
   for (const task of Object.values(tasks)) {
     if (
-      task.type === 'in_process_teammate' &&
+      task.type === "in_process_teammate" &&
       task.identity?.agentId &&
       task.messages &&
       task.messages.length > 0
@@ -4107,7 +4107,7 @@ export async function loadAllSubagentTranscriptsFromDisk(): Promise<{
   const subagentsDir = join(
     getSessionProjectDir() ?? getProjectDir(getOriginalCwd()),
     getSessionId(),
-    'subagents',
+    "subagents",
   );
   let entries: Dirent[];
   try {
@@ -4117,22 +4117,22 @@ export async function loadAllSubagentTranscriptsFromDisk(): Promise<{
   }
   // Filename format is the inverse of getAgentTranscriptPath() — keep in sync.
   const agentIds = entries
-    .filter((d) => d.isFile() && d.name.startsWith('agent-') && d.name.endsWith('.jsonl'))
-    .map((d) => d.name.slice('agent-'.length, -'.jsonl'.length));
+    .filter((d) => d.isFile() && d.name.startsWith("agent-") && d.name.endsWith(".jsonl"))
+    .map((d) => d.name.slice("agent-".length, -".jsonl".length));
   return loadSubagentTranscripts(agentIds);
 }
 
 // Exported so useLogMessages can sync-compute the last loggable uuid
 // without awaiting recordTranscript's return value (race-free hint tracking).
 export function isLoggableMessage(m: Message): boolean {
-  if (m.type === 'progress') return false;
+  if (m.type === "progress") return false;
   // IMPORTANT: We deliberately filter out most attachments for non-ants because
   // they have sensitive info for training that we don't want exposed to the public.
   // When enabled, we allow hook_additional_context through since it contains
   // user-configured hook output that is useful for session context on resume.
-  if (m.type === 'attachment' && getUserType() !== 'ant') {
+  if (m.type === "attachment" && getUserType() !== "ant") {
     if (
-      m.attachment.type === 'hook_additional_context' &&
+      m.attachment.type === "hook_additional_context" &&
       isEnvTruthy(process.env.CLAUDE_CODE_SAVE_HOOK_ADDITIONAL_CONTEXT)
     ) {
       return true;
@@ -4145,9 +4145,9 @@ export function isLoggableMessage(m: Message): boolean {
 function collectReplIds(messages: readonly Message[]): Set<string> {
   const ids = new Set<string>();
   for (const m of messages) {
-    if (m.type === 'assistant' && Array.isArray(m.message.content)) {
+    if (m.type === "assistant" && Array.isArray(m.message.content)) {
       for (const b of m.message.content) {
-        if (b.type === 'tool_use' && b.name === REPL_TOOL_NAME) {
+        if (b.type === "tool_use" && b.name === REPL_TOOL_NAME) {
           ids.add(b.id);
         }
       }
@@ -4174,11 +4174,11 @@ function transformMessagesForExternalTranscript(
   replIds: Set<string>,
 ): Transcript {
   return messages.flatMap((m) => {
-    if (m.type === 'assistant' && Array.isArray(m.message.content)) {
+    if (m.type === "assistant" && Array.isArray(m.message.content)) {
       const content = m.message.content;
-      const hasRepl = content.some((b) => b.type === 'tool_use' && b.name === REPL_TOOL_NAME);
+      const hasRepl = content.some((b) => b.type === "tool_use" && b.name === REPL_TOOL_NAME);
       const filtered = hasRepl
-        ? content.filter((b) => !(b.type === 'tool_use' && b.name === REPL_TOOL_NAME))
+        ? content.filter((b) => !(b.type === "tool_use" && b.name === REPL_TOOL_NAME))
         : content;
       if (filtered.length === 0) return [];
       if (m.isVirtual) {
@@ -4190,11 +4190,11 @@ function transformMessagesForExternalTranscript(
       }
       return [m];
     }
-    if (m.type === 'user' && Array.isArray(m.message.content)) {
+    if (m.type === "user" && Array.isArray(m.message.content)) {
       const content = m.message.content;
-      const hasRepl = content.some((b) => b.type === 'tool_result' && replIds.has(b.tool_use_id));
+      const hasRepl = content.some((b) => b.type === "tool_result" && replIds.has(b.tool_use_id));
       const filtered = hasRepl
-        ? content.filter((b) => !(b.type === 'tool_result' && replIds.has(b.tool_use_id)))
+        ? content.filter((b) => !(b.type === "tool_result" && replIds.has(b.tool_use_id)))
         : content;
       if (filtered.length === 0) return [];
       if (m.isVirtual) {
@@ -4207,7 +4207,7 @@ function transformMessagesForExternalTranscript(
       return [m];
     }
     // string-content user, system, attachment
-    if ('isVirtual' in m && m.isVirtual) {
+    if ("isVirtual" in m && m.isVirtual) {
       const { isVirtual: _omit, ...rest } = m;
       return [rest];
     }
@@ -4220,7 +4220,7 @@ export function cleanMessagesForLogging(
   allMessages: readonly Message[] = messages,
 ): Transcript {
   const filtered = messages.filter(isLoggableMessage) as Transcript;
-  return getUserType() !== 'ant'
+  return getUserType() !== "ant"
     ? transformMessagesForExternalTranscript(filtered, collectReplIds(allMessages))
     : filtered;
 }
@@ -4249,21 +4249,21 @@ export async function findUnresolvedToolUse(toolUseId: string): Promise<Assistan
 
     // Find the tool use but make sure there's not also a result
     for (const message of messages.values()) {
-      if (message.type === 'assistant') {
+      if (message.type === "assistant") {
         const content = message.message.content;
         if (Array.isArray(content)) {
           for (const block of content) {
-            if (block.type === 'tool_use' && block.id === toolUseId) {
+            if (block.type === "tool_use" && block.id === toolUseId) {
               toolUseMessage = message;
               break;
             }
           }
         }
-      } else if (message.type === 'user') {
+      } else if (message.type === "user") {
         const content = message.message.content;
         if (Array.isArray(content)) {
           for (const block of content) {
-            if (block.type === 'tool_result' && block.tool_use_id === toolUseId) {
+            if (block.type === "tool_result" && block.tool_use_id === toolUseId) {
               // Found tool result, bail out
               return null;
             }
@@ -4301,8 +4301,8 @@ export async function getSessionFilesWithMtime(
 
   const candidates: Array<{ sessionId: string; filePath: string }> = [];
   for (const dirent of dirents) {
-    if (!dirent.isFile() || !dirent.name.endsWith('.jsonl')) continue;
-    const sessionId = validateUuid(basename(dirent.name, '.jsonl'));
+    if (!dirent.isFile() || !dirent.name.endsWith(".jsonl")) continue;
+    const sessionId = validateUuid(basename(dirent.name, ".jsonl"));
     if (!sessionId) continue;
     candidates.push({ sessionId, filePath: join(projectDir, dirent.name) });
   }
@@ -4430,7 +4430,7 @@ export async function loadAllLogsFromSessionFile(
       agentName: agentNames.get(sessionId),
       agentColor: agentColors.get(sessionId),
       agentSetting: agentSettings.get(sessionId),
-      mode: modes.get(sessionId) as LogOption['mode'],
+      mode: modes.get(sessionId) as LogOption["mode"],
       prNumber: prNumbers.get(sessionId),
       prUrl: prUrls.get(sessionId),
       prRepository: prRepositories.get(sessionId),
@@ -4491,14 +4491,14 @@ async function readLiteMetadata(
   buf: Buffer,
 ): Promise<LiteMetadata> {
   const { head, tail } = await readHeadAndTail(filePath, fileSize, buf);
-  if (!head) return { firstPrompt: '', isSidechain: false };
+  if (!head) return { firstPrompt: "", isSidechain: false };
 
   // Extract stable metadata from the first line via string search.
   // Works even when the first line is truncated (>64KB message).
   const isSidechain = head.includes('"isSidechain":true') || head.includes('"isSidechain": true');
-  const projectPath = extractJsonStringField(head, 'cwd');
-  const teamName = extractJsonStringField(head, 'teamName');
-  const agentSetting = extractJsonStringField(head, 'agentSetting');
+  const projectPath = extractJsonStringField(head, "cwd");
+  const teamName = extractJsonStringField(head, "teamName");
+  const agentSetting = extractJsonStringField(head, "agentSetting");
 
   // Prefer the last-prompt tail entry — captured by extractFirstPrompt at
   // write time (filtered, authoritative) and shows what the user was most
@@ -4506,31 +4506,31 @@ async function readLiteMetadata(
   // last-prompt entries existed. Raw string scrapes of head are last resort
   // and catch array-format content blocks (VS Code <ide_selection> metadata).
   const firstPrompt =
-    extractLastJsonStringField(tail, 'lastPrompt') ||
+    extractLastJsonStringField(tail, "lastPrompt") ||
     extractFirstPromptFromChunk(head) ||
-    extractJsonStringFieldPrefix(head, 'content', 200) ||
-    extractJsonStringFieldPrefix(head, 'text', 200) ||
-    '';
+    extractJsonStringFieldPrefix(head, "content", 200) ||
+    extractJsonStringFieldPrefix(head, "text", 200) ||
+    "";
 
   // Extract tail metadata via string search (last occurrence wins).
   // User titles (customTitle field, from custom-title entries) win over
   // AI titles (aiTitle field, from ai-title entries). The distinct field
   // names mean extractLastJsonStringField naturally disambiguates.
   const customTitle =
-    extractLastJsonStringField(tail, 'customTitle') ??
-    extractLastJsonStringField(head, 'customTitle') ??
-    extractLastJsonStringField(tail, 'aiTitle') ??
-    extractLastJsonStringField(head, 'aiTitle');
-  const summary = extractLastJsonStringField(tail, 'summary');
-  const tag = extractLastJsonStringField(tail, 'tag');
+    extractLastJsonStringField(tail, "customTitle") ??
+    extractLastJsonStringField(head, "customTitle") ??
+    extractLastJsonStringField(tail, "aiTitle") ??
+    extractLastJsonStringField(head, "aiTitle");
+  const summary = extractLastJsonStringField(tail, "summary");
+  const tag = extractLastJsonStringField(tail, "tag");
   const gitBranch =
-    extractLastJsonStringField(tail, 'gitBranch') ?? extractJsonStringField(head, 'gitBranch');
+    extractLastJsonStringField(tail, "gitBranch") ?? extractJsonStringField(head, "gitBranch");
 
   // PR link fields — prNumber is a number not a string, so try both
-  const prUrl = extractLastJsonStringField(tail, 'prUrl');
-  const prRepository = extractLastJsonStringField(tail, 'prRepository');
+  const prUrl = extractLastJsonStringField(tail, "prUrl");
+  const prRepository = extractLastJsonStringField(tail, "prRepository");
   let prNumber: number | undefined;
-  const prNumStr = extractLastJsonStringField(tail, 'prNumber');
+  const prNumStr = extractLastJsonStringField(tail, "prNumber");
   if (prNumStr) {
     prNumber = parseInt(prNumStr, 10) || undefined;
   }
@@ -4565,9 +4565,9 @@ async function readLiteMetadata(
 function extractFirstPromptFromChunk(chunk: string): string {
   let start = 0;
   let hasTickMessages = false;
-  let firstCommandFallback = '';
+  let firstCommandFallback = "";
   while (start < chunk.length) {
-    const newlineIdx = chunk.indexOf('\n', start);
+    const newlineIdx = chunk.indexOf("\n", start);
     const line = newlineIdx >= 0 ? chunk.slice(start, newlineIdx) : chunk.slice(start);
     start = newlineIdx >= 0 ? newlineIdx + 1 : chunk.length;
 
@@ -4579,7 +4579,7 @@ function extractFirstPromptFromChunk(chunk: string): string {
 
     try {
       const entry = jsonParse(line) as Record<string, unknown>;
-      if (entry.type !== 'user') continue;
+      if (entry.type !== "user") continue;
 
       const message = entry.message as Record<string, unknown> | undefined;
       if (!message) continue;
@@ -4590,12 +4590,12 @@ function extractFirstPromptFromChunk(chunk: string): string {
       // actual prompt), iterate all text blocks so we don't miss the real
       // prompt hidden behind <ide_selection>/<ide_opened_file> blocks.
       const texts: string[] = [];
-      if (typeof content === 'string') {
+      if (typeof content === "string") {
         texts.push(content);
       } else if (Array.isArray(content)) {
         for (const block of content) {
           const b = block as Record<string, unknown>;
-          if (b.type === 'text' && typeof b.text === 'string') {
+          if (b.type === "text" && typeof b.text === "string") {
             texts.push(b.text as string);
           }
         }
@@ -4604,7 +4604,7 @@ function extractFirstPromptFromChunk(chunk: string): string {
       for (const text of texts) {
         if (!text) continue;
 
-        let result = text.replace(/\n/g, ' ').trim();
+        let result = text.replace(/\n/g, " ").trim();
 
         // Skip command messages (slash commands) but remember the first one
         // as a fallback title. Matches skip logic in
@@ -4613,8 +4613,8 @@ function extractFirstPromptFromChunk(chunk: string): string {
         // so the session still appears in the resume picker.
         const commandNameTag = extractTag(result, COMMAND_NAME_TAG);
         if (commandNameTag) {
-          const name = commandNameTag.replace(/^\//, '');
-          const commandArgs = extractTag(result, 'command-args')?.trim() || '';
+          const name = commandNameTag.replace(/^\//, "");
+          const commandArgs = extractTag(result, "command-args")?.trim() || "";
           if (builtInCommandNames().has(name) || !commandArgs) {
             if (!firstCommandFallback) {
               firstCommandFallback = commandNameTag;
@@ -4626,11 +4626,11 @@ function extractFirstPromptFromChunk(chunk: string): string {
         }
 
         // Format bash input with ! prefix before the generic XML skip
-        const bashInput = extractTag(result, 'bash-input');
+        const bashInput = extractTag(result, "bash-input");
         if (bashInput) return `! ${bashInput}`;
 
         if (SKIP_FIRST_PROMPT_PATTERN.test(result)) {
-          if ((feature('PROACTIVE') || feature('KAIROS')) && result.startsWith(`<${TICK_TAG}>`))
+          if ((feature("PROACTIVE") || feature("KAIROS")) && result.startsWith(`<${TICK_TAG}>`))
             hasTickMessages = true;
           continue;
         }
@@ -4646,8 +4646,8 @@ function extractFirstPromptFromChunk(chunk: string): string {
   if (firstCommandFallback) return firstCommandFallback;
   // Proactive sessions have only tick messages — give them a synthetic prompt
   // so they're not filtered out by enrichLogs
-  if ((feature('PROACTIVE') || feature('KAIROS')) && hasTickMessages) return 'Proactive session';
-  return '';
+  if ((feature("PROACTIVE") || feature("KAIROS")) && hasTickMessages) return "Proactive session";
+  return "";
 }
 
 /**
@@ -4666,7 +4666,7 @@ function extractJsonStringFieldPrefix(text: string, key: string, maxLen: number)
     let i = valueStart;
     let collected = 0;
     while (i < text.length && collected < maxLen) {
-      if (text[i] === '\\') {
+      if (text[i] === "\\") {
         i += 2; // skip escaped char
         collected++;
         continue;
@@ -4676,9 +4676,9 @@ function extractJsonStringFieldPrefix(text: string, key: string, maxLen: number)
       collected++;
     }
     const raw = text.slice(valueStart, i);
-    return raw.replace(/\\n/g, ' ').replace(/\\t/g, ' ').trim();
+    return raw.replace(/\\n/g, " ").replace(/\\t/g, " ").trim();
   }
-  return '';
+  return "";
 }
 
 /**
@@ -4729,7 +4729,7 @@ export async function getSessionFilesLite(
       value: 0,
       created: new Date(fileInfo.ctime),
       modified: new Date(fileInfo.mtime),
-      firstPrompt: '',
+      firstPrompt: "",
       messageCount: 0,
       fileSize: fileInfo.size,
       isSidechain: false,
@@ -4778,7 +4778,7 @@ async function enrichLog(log: LogOption, readBuf: Buffer): Promise<LogOption | n
   // Previously these sessions were silently dropped, making them inaccessible
   // via /resume after crashes or large-context sessions.
   if (!enriched.firstPrompt && !enriched.customTitle) {
-    enriched.firstPrompt = '(session)';
+    enriched.firstPrompt = "(session)";
   }
   // Filter: skip sidechains and agent sessions
   if (enriched.isSidechain) {

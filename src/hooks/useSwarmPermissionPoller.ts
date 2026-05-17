@@ -9,21 +9,21 @@
  * in useCanUseTool.ts, which creates pending requests that this hook monitors.
  */
 
-import { useCallback, useEffect, useRef } from 'react';
-import { useInterval } from 'usehooks-ts';
-import { logForDebugging } from '../utils/debug.js';
-import { errorMessage } from '../utils/errors.js';
+import { useCallback, useEffect, useRef } from "react";
+import { useInterval } from "usehooks-ts";
+import { logForDebugging } from "../utils/debug.js";
+import { errorMessage } from "../utils/errors.js";
 import {
   type PermissionUpdate,
   permissionUpdateSchema,
-} from '../utils/permissions/PermissionUpdateSchema.js';
+} from "../utils/permissions/PermissionUpdateSchema.js";
 import {
   isSwarmWorker,
   type PermissionResponse,
   pollForResponse,
   removeWorkerResponse,
-} from '../utils/swarm/permissionSync.js';
-import { getAgentName, getTeamName } from '../utils/teammate.js';
+} from "../utils/swarm/permissionSync.js";
+import { getAgentName, getTeamName } from "../utils/teammate.js";
 
 const POLL_INTERVAL_MS = 500;
 
@@ -45,7 +45,7 @@ function parsePermissionUpdates(raw: unknown): PermissionUpdate[] {
     } else {
       logForDebugging(
         `[SwarmPermissionPoller] Dropping malformed permissionUpdate entry: ${result.error.message}`,
-        { level: 'warn' },
+        { level: "warn" },
       );
     }
   }
@@ -117,7 +117,7 @@ export function clearAllPendingCallbacks(): void {
  */
 export function processMailboxPermissionResponse(params: {
   requestId: string;
-  decision: 'approved' | 'rejected';
+  decision: "approved" | "rejected";
   feedback?: string;
   updatedInput?: Record<string, unknown>;
   permissionUpdates?: unknown;
@@ -138,7 +138,7 @@ export function processMailboxPermissionResponse(params: {
   // Remove from registry before invoking callback
   pendingCallbacks.delete(params.requestId);
 
-  if (params.decision === 'approved') {
+  if (params.decision === "approved") {
     const permissionUpdates = parsePermissionUpdates(params.permissionUpdates);
     const updatedInput = params.updatedInput;
     callback.onAllow(updatedInput, permissionUpdates);
@@ -238,7 +238,7 @@ function processResponse(response: PermissionResponse): boolean {
   // Remove from registry before invoking callback
   pendingCallbacks.delete(response.requestId);
 
-  if (response.decision === 'approved') {
+  if (response.decision === "approved") {
     const permissionUpdates = parsePermissionUpdates(response.permissionUpdates);
     const updatedInput = response.updatedInput;
     callback.onAllow(updatedInput, permissionUpdates);

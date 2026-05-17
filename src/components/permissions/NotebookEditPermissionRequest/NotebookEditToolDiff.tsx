@@ -1,16 +1,16 @@
-import { relative } from 'node:path';
-import { Suspense, use } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, NoSelect, Text } from '../../../ink.js';
-import type { NotebookCellType, NotebookContent } from '../../../types/notebook.js';
-import { intersperse } from '../../../utils/array.js';
-import { getCwd } from '../../../utils/cwd.js';
-import { getPatchForDisplay } from '../../../utils/diff.js';
-import { getFsImplementation } from '../../../utils/fsOperations.js';
-import { safeParseJSON } from '../../../utils/json.js';
-import { parseCellId } from '../../../utils/notebook.js';
-import { HighlightedCode } from '../../HighlightedCode.js';
-import { StructuredDiff } from '../../StructuredDiff.js';
+import { relative } from "node:path";
+import { Suspense, use } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, NoSelect, Text } from "../../../ink.js";
+import type { NotebookCellType, NotebookContent } from "../../../types/notebook.js";
+import { intersperse } from "../../../utils/array.js";
+import { getCwd } from "../../../utils/cwd.js";
+import { getPatchForDisplay } from "../../../utils/diff.js";
+import { getFsImplementation } from "../../../utils/fsOperations.js";
+import { safeParseJSON } from "../../../utils/json.js";
+import { parseCellId } from "../../../utils/notebook.js";
+import { HighlightedCode } from "../../HighlightedCode.js";
+import { StructuredDiff } from "../../StructuredDiff.js";
 
 type Props = {
   notebook_path: string;
@@ -37,7 +37,7 @@ export function NotebookEditToolDiff(props) {
   if ($[0] !== props.notebook_path) {
     t0 = getFsImplementation()
       .readFile(props.notebook_path, {
-        encoding: 'utf-8',
+        encoding: "utf-8",
       })
       .then(_temp)
       .catch(_temp2);
@@ -80,13 +80,13 @@ function NotebookEditToolDiffInner(t0) {
     width,
     promise,
   } = t0;
-  const edit_mode = t1 === undefined ? 'replace' : t1;
+  const edit_mode = t1 === undefined ? "replace" : t1;
   const notebookData = use(promise);
   let t2;
   if ($[0] !== cell_id || $[1] !== notebookData) {
     bb0: {
       if (!notebookData || !cell_id) {
-        t2 = '';
+        t2 = "";
         break bb0;
       }
       const cellIndex = parseCellId(cell_id);
@@ -95,7 +95,7 @@ function NotebookEditToolDiffInner(t0) {
           const source = notebookData.cells[cellIndex].source;
           let t3;
           if ($[3] !== source) {
-            t3 = Array.isArray(source) ? source.join('') : source;
+            t3 = Array.isArray(source) ? source.join("") : source;
             $[3] = source;
             $[4] = t3;
           } else {
@@ -104,7 +104,7 @@ function NotebookEditToolDiffInner(t0) {
           t2 = t3;
           break bb0;
         }
-        t2 = '';
+        t2 = "";
         break bb0;
       }
       let t3;
@@ -117,10 +117,10 @@ function NotebookEditToolDiffInner(t0) {
       }
       const cell_0 = notebookData.cells.find(t3);
       if (!cell_0) {
-        t2 = '';
+        t2 = "";
         break bb0;
       }
-      t2 = Array.isArray(cell_0.source) ? cell_0.source.join('') : cell_0.source;
+      t2 = Array.isArray(cell_0.source) ? cell_0.source.join("") : cell_0.source;
     }
     $[0] = cell_id;
     $[1] = notebookData;
@@ -131,7 +131,7 @@ function NotebookEditToolDiffInner(t0) {
   const oldSource = t2;
   let t3;
   bb1: {
-    if (!notebookData || edit_mode === 'insert' || edit_mode === 'delete') {
+    if (!notebookData || edit_mode === "insert" || edit_mode === "delete") {
       t3 = null;
       break bb1;
     }
@@ -161,16 +161,16 @@ function NotebookEditToolDiffInner(t0) {
   const hunks = t3;
   let editTypeDescription;
   switch (edit_mode) {
-    case 'insert': {
-      editTypeDescription = 'Insert new cell';
+    case "insert": {
+      editTypeDescription = "Insert new cell";
       break;
     }
-    case 'delete': {
-      editTypeDescription = 'Delete cell';
+    case "delete": {
+      editTypeDescription = "Delete cell";
       break;
     }
     default: {
-      editTypeDescription = 'Replace cell contents';
+      editTypeDescription = "Replace cell contents";
     }
   }
   let t4;
@@ -190,7 +190,7 @@ function NotebookEditToolDiffInner(t0) {
   } else {
     t5 = $[15];
   }
-  const t6 = cell_type ? ` (${cell_type})` : '';
+  const t6 = cell_type ? ` (${cell_type})` : "";
   let t7;
   if ($[16] !== cell_id || $[17] !== editTypeDescription || $[18] !== t6) {
     t7 = (
@@ -231,15 +231,15 @@ function NotebookEditToolDiffInner(t0) {
     $[29] !== width
   ) {
     t9 =
-      edit_mode === 'delete' ? (
+      edit_mode === "delete" ? (
         <Box flexDirection="column" paddingLeft={2}>
           <HighlightedCode code={oldSource} filePath={notebook_path} />
         </Box>
-      ) : edit_mode === 'insert' ? (
+      ) : edit_mode === "insert" ? (
         <Box flexDirection="column" paddingLeft={2}>
           <HighlightedCode
             code={new_source}
-            filePath={cell_type === 'markdown' ? 'file.md' : notebook_path}
+            filePath={cell_type === "markdown" ? "file.md" : notebook_path}
           />
         </Box>
       ) : hunks ? (
@@ -251,7 +251,7 @@ function NotebookEditToolDiffInner(t0) {
               dim={false}
               width={width}
               filePath={notebook_path}
-              firstLine={new_source.split('\n')[0] ?? null}
+              firstLine={new_source.split("\n")[0] ?? null}
               fileContent={oldSource}
             />
           )),
@@ -260,7 +260,7 @@ function NotebookEditToolDiffInner(t0) {
       ) : (
         <HighlightedCode
           code={new_source}
-          filePath={cell_type === 'markdown' ? 'file.md' : notebook_path}
+          filePath={cell_type === "markdown" ? "file.md" : notebook_path}
         />
       );
     $[23] = cell_type;

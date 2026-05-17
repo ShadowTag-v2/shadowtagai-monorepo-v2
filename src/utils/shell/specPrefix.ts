@@ -11,26 +11,26 @@
  * external CLIs (git, npm, kubectl) are shell-agnostic.
  */
 
-import type { CommandSpec } from '../bash/registry.js';
+import type { CommandSpec } from "../bash/registry.js";
 
-const URL_PROTOCOLS = ['http://', 'https://', 'ftp://'];
+const URL_PROTOCOLS = ["http://", "https://", "ftp://"];
 
 // Overrides for commands whose fig specs aren't available at runtime
 // (dynamic imports don't work in native/node builds). Without these,
 // calculateDepth falls back to 2, producing overly broad prefixes.
 export const DEPTH_RULES: Record<string, number> = {
   rg: 2, // pattern argument is required despite variadic paths
-  'pre-commit': 2,
+  "pre-commit": 2,
   // CLI tools with deep subcommand trees (e.g. gcloud scheduler jobs list)
   gcloud: 4,
-  'gcloud compute': 6,
-  'gcloud beta': 6,
+  "gcloud compute": 6,
+  "gcloud beta": 6,
   aws: 4,
   az: 4,
   kubectl: 3,
   docker: 3,
   dotnet: 3,
-  'git push': 2,
+  "git push": 2,
 };
 
 const toArray = <T>(val: T | T[]): T[] => (Array.isArray(val) ? val : [val]);
@@ -61,7 +61,7 @@ function flagTakesArg(
     if (option) return !!option.args;
   }
   // Heuristic: if next arg isn't a flag and isn't a known subcommand, assume it's a flag value
-  if (spec?.subcommands?.length && nextArg && !nextArg.startsWith('-')) {
+  if (spec?.subcommands?.length && nextArg && !nextArg.startsWith("-")) {
     return !isKnownSubcommand(nextArg, spec);
   }
   return false;
@@ -72,7 +72,7 @@ function findFirstSubcommand(args: string[], spec: CommandSpec | null): string |
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (!arg) continue;
-    if (arg.startsWith('-')) {
+    if (arg.startsWith("-")) {
       if (flagTakesArg(arg, args[i + 1], spec)) i++;
       continue;
     }
@@ -96,9 +96,9 @@ export async function buildPrefix(
     const arg = args[i];
     if (!arg || parts.length >= maxDepth) break;
 
-    if (arg.startsWith('-')) {
+    if (arg.startsWith("-")) {
       // Special case: python -c should stop after -c
-      if (arg === '-c' && ['python', 'python3'].includes(command.toLowerCase())) break;
+      if (arg === "-c" && ["python", "python3"].includes(command.toLowerCase())) break;
 
       // Check for isCommand/isModule flags that should be included in prefix
       if (spec?.options) {
@@ -126,7 +126,7 @@ export async function buildPrefix(
     parts.push(arg);
   }
 
-  return parts.join(' ');
+  return parts.join(" ");
 }
 
 async function calculateDepth(
@@ -142,9 +142,9 @@ async function calculateDepth(
   if (DEPTH_RULES[commandLower]) return DEPTH_RULES[commandLower];
   if (!spec) return 2;
 
-  if (spec.options && args.some((arg) => arg?.startsWith('-'))) {
+  if (spec.options && args.some((arg) => arg?.startsWith("-"))) {
     for (const arg of args) {
-      if (!arg?.startsWith('-')) continue;
+      if (!arg?.startsWith("-")) continue;
       const option = spec.options.find((opt) =>
         Array.isArray(opt.name) ? opt.name.includes(arg) : opt.name === arg,
       );
@@ -201,21 +201,21 @@ async function shouldStopAtArg(
   args: string[],
   spec: CommandSpec | null,
 ): Promise<boolean> {
-  if (arg.startsWith('-')) return true;
+  if (arg.startsWith("-")) return true;
 
-  const dotIndex = arg.lastIndexOf('.');
+  const dotIndex = arg.lastIndexOf(".");
   const hasExtension =
-    dotIndex > 0 && dotIndex < arg.length - 1 && !arg.substring(dotIndex + 1).includes(':');
+    dotIndex > 0 && dotIndex < arg.length - 1 && !arg.substring(dotIndex + 1).includes(":");
 
-  const hasFile = arg.includes('/') || hasExtension;
+  const hasFile = arg.includes("/") || hasExtension;
   const hasUrl = URL_PROTOCOLS.some((proto) => arg.startsWith(proto));
 
   if (!hasFile && !hasUrl) return false;
 
   // Check if we're after a -m flag for python modules
-  if (spec?.options && args.length > 0 && args[args.length - 1] === '-m') {
+  if (spec?.options && args.length > 0 && args[args.length - 1] === "-m") {
     const option = spec.options.find((opt) =>
-      Array.isArray(opt.name) ? opt.name.includes('-m') : opt.name === '-m',
+      Array.isArray(opt.name) ? opt.name.includes("-m") : opt.name === "-m",
     );
     if (option?.args && toArray(option.args).some((arg) => arg?.isModule)) {
       return false; // Don't stop at module names

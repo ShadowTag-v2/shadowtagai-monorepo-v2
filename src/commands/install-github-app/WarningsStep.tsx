@@ -1,9 +1,9 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { GITHUB_ACTION_SETUP_DOCS_URL } from '../../constants/github-app.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import type { Warning } from './types.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { GITHUB_ACTION_SETUP_DOCS_URL } from "../../constants/github-app.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import type { Warning } from "./types.js";
 
 interface WarningsStepProps {
   warnings: Warning[];
@@ -13,17 +13,17 @@ export function WarningsStep(t0) {
   const $ = _c(8);
   const { warnings, onContinue } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[0] = t1;
   } else {
     t1 = $[0];
   }
-  useKeybinding('confirm:yes', onContinue, t1);
+  useKeybinding("confirm:yes", onContinue, t1);
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box flexDirection="column" marginBottom={1}>
         <Text bold={true}>{figures.warning} Setup Warnings</Text>
@@ -43,7 +43,7 @@ export function WarningsStep(t0) {
     t3 = $[3];
   }
   let t4;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <Box marginTop={1}>
         <Text bold={true} color="permission">
@@ -56,11 +56,11 @@ export function WarningsStep(t0) {
     t4 = $[4];
   }
   let t5;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Box marginTop={1}>
         <Text dimColor={true}>
-          You can also try the manual setup steps if needed:{' '}
+          You can also try the manual setup steps if needed:{" "}
           <Text color="claude">{GITHUB_ACTION_SETUP_DOCS_URL}</Text>
         </Text>
       </Box>

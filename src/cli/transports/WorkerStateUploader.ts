@@ -1,4 +1,4 @@
-import { sleep } from '../../utils/sleep.js';
+import { sleep } from "../../utils/sleep.js";
 
 /**
  * Coalescing uploader for PUT /worker (session state + metadata).
@@ -111,10 +111,10 @@ function coalescePatches(
 
   for (const [key, value] of Object.entries(overlay)) {
     if (
-      (key === 'external_metadata' || key === 'internal_metadata') &&
+      (key === "external_metadata" || key === "internal_metadata") &&
       merged[key] &&
-      typeof merged[key] === 'object' &&
-      typeof value === 'object' &&
+      typeof merged[key] === "object" &&
+      typeof value === "object" &&
       value !== null
     ) {
       // RFC 7396 merge — overlay keys win, nulls preserved for server

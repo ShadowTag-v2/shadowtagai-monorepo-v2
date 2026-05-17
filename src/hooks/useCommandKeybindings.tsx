@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
-import { useIsModalOverlayActive } from '../context/overlayContext.js';
-import { useOptionalKeybindingContext } from '../keybindings/KeybindingContext.js';
-import { useKeybindings } from '../keybindings/useKeybinding.js';
-import type { PromptInputHelpers } from '../utils/handlePromptSubmit.js';
+import { c as _c } from "react/compiler-runtime";
+import { useIsModalOverlayActive } from "../context/overlayContext.js";
+import { useOptionalKeybindingContext } from "../keybindings/KeybindingContext.js";
+import { useKeybindings } from "../keybindings/useKeybinding.js";
+import type { PromptInputHelpers } from "../utils/handlePromptSubmit.js";
 
 type Props = {
   // onSubmit accepts additional parameters beyond what we pass here,
@@ -41,7 +41,7 @@ export function CommandKeybindingHandlers(t0) {
   bb0: {
     if (!keybindingContext) {
       let t3;
-      if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
         t3 = new Set();
         $[0] = t3;
       } else {
@@ -54,7 +54,7 @@ export function CommandKeybindingHandlers(t0) {
     if ($[1] !== keybindingContext.bindings) {
       actions = new Set();
       for (const binding of keybindingContext.bindings) {
-        if (binding.action?.startsWith('command:')) {
+        if (binding.action?.startsWith("command:")) {
           actions.add(binding.action);
         }
       }
@@ -88,7 +88,7 @@ export function CommandKeybindingHandlers(t0) {
   let t4;
   if ($[6] !== t3) {
     t4 = {
-      context: 'Chat',
+      context: "Chat",
       isActive: t3,
     };
     $[6] = t3;

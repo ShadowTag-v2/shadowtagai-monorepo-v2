@@ -6,28 +6,28 @@
  * MCP server auths. The id_token is cached in the keychain and reused until expiry.
  */
 
-import { randomBytes } from 'node:crypto';
-import { createServer, type Server } from 'node:http';
-import { parse } from 'node:url';
+import { randomBytes } from "node:crypto";
+import { createServer, type Server } from "node:http";
+import { parse } from "node:url";
 import {
   exchangeAuthorization,
   startAuthorization,
-} from '@modelcontextprotocol/sdk/client/auth.js';
+} from "@modelcontextprotocol/sdk/client/auth.js";
 import {
   type OAuthClientInformation,
   type OpenIdProviderDiscoveryMetadata,
   OpenIdProviderDiscoveryMetadataSchema,
-} from '@modelcontextprotocol/sdk/shared/auth.js';
-import xss from 'xss';
-import { openBrowser } from '../../utils/browser.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { toError } from '../../utils/errors.js';
-import { logMCPDebug } from '../../utils/log.js';
-import { getPlatform } from '../../utils/platform.js';
-import { getSecureStorage } from '../../utils/secureStorage/index.js';
-import { getInitialSettings } from '../../utils/settings/settings.js';
-import { jsonParse } from '../../utils/slowOperations.js';
-import { buildRedirectUri, findAvailablePort } from './oauthPort.js';
+} from "@modelcontextprotocol/sdk/shared/auth.js";
+import xss from "xss";
+import { openBrowser } from "../../utils/browser.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { toError } from "../../utils/errors.js";
+import { logMCPDebug } from "../../utils/log.js";
+import { getPlatform } from "../../utils/platform.js";
+import { getSecureStorage } from "../../utils/secureStorage/index.js";
+import { getInitialSettings } from "../../utils/settings/settings.js";
+import { jsonParse } from "../../utils/slowOperations.js";
+import { buildRedirectUri, findAvailablePort } from "./oauthPort.js";
 
 export function isXaaEnabled(): boolean {
   return isEnvTruthy(process.env.CLAUDE_CODE_ENABLE_XAA);
@@ -84,11 +84,11 @@ export type IdpLoginOptions = {
 export function issuerKey(issuer: string): string {
   try {
     const u = new URL(issuer);
-    u.pathname = u.pathname.replace(/\/+$/, '');
+    u.pathname = u.pathname.replace(/\/+$/, "");
     u.host = u.host.toLowerCase();
     return u.toString();
   } catch {
-    return issuer.replace(/\/+$/, '');
+    return issuer.replace(/\/+$/, "");
   }
 }
 
@@ -193,11 +193,11 @@ export function clearIdpClientSecret(idpIssuer: string): void {
 // auth servers, and Keycloak realms. Trailing-slash base + relative path is
 // the fix. Exported because auth.ts needs the same discovery.
 export async function discoverOidc(idpIssuer: string): Promise<OpenIdProviderDiscoveryMetadata> {
-  const base = idpIssuer.endsWith('/') ? idpIssuer : `${idpIssuer}/`;
-  const url = new URL('.well-known/openid-configuration', base);
+  const base = idpIssuer.endsWith("/") ? idpIssuer : `${idpIssuer}/`;
+  const url = new URL(".well-known/openid-configuration", base);
   // eslint-disable-next-line eslint-plugin-n/no-unsupported-features/node-builtins
   const res = await fetch(url, {
-    headers: { Accept: 'application/json' },
+    headers: { Accept: "application/json" },
     signal: AbortSignal.timeout(IDP_REQUEST_TIMEOUT_MS),
   });
   if (!res.ok) {
@@ -217,7 +217,7 @@ export async function discoverOidc(idpIssuer: string): Promise<OpenIdProviderDis
   if (!parsed.success) {
     throw new Error(`XAA IdP: invalid OIDC metadata: ${parsed.error.message}`);
   }
-  if (new URL(parsed.data.token_endpoint).protocol !== 'https:') {
+  if (new URL(parsed.data.token_endpoint).protocol !== "https:") {
     throw new Error(`XAA IdP: refusing non-HTTPS token endpoint: ${parsed.data.token_endpoint}`);
   }
   return parsed.data;
@@ -237,13 +237,13 @@ export async function discoverOidc(idpIssuer: string): Promise<OpenIdProviderDis
  * no privesc. Client-side verification would add code and no security.
  */
 function jwtExp(jwt: string): number | undefined {
-  const parts = jwt.split('.');
+  const parts = jwt.split(".");
   if (parts.length !== 3) return undefined;
   try {
-    const payload = jsonParse(Buffer.from(parts[1]!, 'base64url').toString('utf-8')) as {
+    const payload = jsonParse(Buffer.from(parts[1]!, "base64url").toString("utf-8")) as {
       exp?: number;
     };
-    return typeof payload.exp === 'number' ? payload.exp : undefined;
+    return typeof payload.exp === "number" ? payload.exp : undefined;
   } catch {
     return undefined;
   }
@@ -268,7 +268,7 @@ function waitForCallback(
   const cleanup = () => {
     server?.removeAllListeners();
     // Defensive: removeAllListeners() strips the error handler, so swallow any late error during close
-    server?.on('error', () => {});
+    server?.on("error", () => {});
     server?.close();
     server = null;
     if (timeoutId) {
@@ -276,7 +276,7 @@ function waitForCallback(
       timeoutId = null;
     }
     if (abortSignal && abortHandler) {
-      abortSignal.removeEventListener('abort', abortHandler);
+      abortSignal.removeEventListener("abort", abortHandler);
       abortHandler = null;
     }
   };
@@ -296,17 +296,17 @@ function waitForCallback(
     };
 
     if (abortSignal) {
-      abortHandler = () => rejectOnce(new Error('XAA IdP: login cancelled'));
+      abortHandler = () => rejectOnce(new Error("XAA IdP: login cancelled"));
       if (abortSignal.aborted) {
         abortHandler();
         return;
       }
-      abortSignal.addEventListener('abort', abortHandler, { once: true });
+      abortSignal.addEventListener("abort", abortHandler, { once: true });
     }
 
     server = createServer((req, res) => {
-      const parsed = parse(req.url || '', true);
-      if (parsed.pathname !== '/callback') {
+      const parsed = parse(req.url || "", true);
+      if (parsed.pathname !== "/callback") {
         res.writeHead(404);
         res.end();
         return;
@@ -318,38 +318,38 @@ function waitForCallback(
       if (err) {
         const desc = parsed.query.error_description as string | undefined;
         const safeErr = xss(err);
-        const safeDesc = desc ? xss(desc) : '';
-        res.writeHead(400, { 'Content-Type': 'text/html' });
+        const safeDesc = desc ? xss(desc) : "";
+        res.writeHead(400, { "Content-Type": "text/html" });
         res.end(
           `<html><body><h3>IdP login failed</h3><p>${safeErr}</p><p>${safeDesc}</p></body></html>`,
         );
-        rejectOnce(new Error(`XAA IdP: ${err}${desc ? ` — ${desc}` : ''}`));
+        rejectOnce(new Error(`XAA IdP: ${err}${desc ? ` — ${desc}` : ""}`));
         return;
       }
 
       if (state !== expectedState) {
-        res.writeHead(400, { 'Content-Type': 'text/html' });
-        res.end('<html><body><h3>State mismatch</h3></body></html>');
-        rejectOnce(new Error('XAA IdP: state mismatch (possible CSRF)'));
+        res.writeHead(400, { "Content-Type": "text/html" });
+        res.end("<html><body><h3>State mismatch</h3></body></html>");
+        rejectOnce(new Error("XAA IdP: state mismatch (possible CSRF)"));
         return;
       }
 
       if (!code) {
-        res.writeHead(400, { 'Content-Type': 'text/html' });
-        res.end('<html><body><h3>Missing code</h3></body></html>');
-        rejectOnce(new Error('XAA IdP: callback missing code'));
+        res.writeHead(400, { "Content-Type": "text/html" });
+        res.end("<html><body><h3>Missing code</h3></body></html>");
+        rejectOnce(new Error("XAA IdP: callback missing code"));
         return;
       }
 
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end('<html><body><h3>IdP login complete — you can close this window.</h3></body></html>');
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end("<html><body><h3>IdP login complete — you can close this window.</h3></body></html>");
       resolveOnce(code);
     });
 
-    server.on('error', (err: NodeJS.ErrnoException) => {
-      if (err.code === 'EADDRINUSE') {
+    server.on("error", (err: NodeJS.ErrnoException) => {
+      if (err.code === "EADDRINUSE") {
         const findCmd =
-          getPlatform() === 'windows'
+          getPlatform() === "windows"
             ? `netstat -ano | findstr :${port}`
             : `lsof -ti:${port} -sTCP:LISTEN`;
         rejectOnce(
@@ -362,7 +362,7 @@ function waitForCallback(
       }
     });
 
-    server.listen(port, '127.0.0.1', () => {
+    server.listen(port, "127.0.0.1", () => {
       try {
         onListening();
       } catch (e) {
@@ -371,7 +371,7 @@ function waitForCallback(
     });
     server.unref();
     timeoutId = setTimeout(
-      (rej) => rej(new Error('XAA IdP: login timed out')),
+      (rej) => rej(new Error("XAA IdP: login timed out")),
       IDP_LOGIN_TIMEOUT_MS,
       rejectOnce,
     );
@@ -388,16 +388,16 @@ export async function acquireIdpIdToken(opts: IdpLoginOptions): Promise<string> 
 
   const cached = getCachedIdpIdToken(idpIssuer);
   if (cached) {
-    logMCPDebug('xaa', `Using cached id_token for ${idpIssuer}`);
+    logMCPDebug("xaa", `Using cached id_token for ${idpIssuer}`);
     return cached;
   }
 
-  logMCPDebug('xaa', `No cached id_token for ${idpIssuer}; starting OIDC login`);
+  logMCPDebug("xaa", `No cached id_token for ${idpIssuer}; starting OIDC login`);
 
   const metadata = await discoverOidc(idpIssuer);
   const port = opts.callbackPort ?? (await findAvailablePort());
   const redirectUri = buildRedirectUri(port);
-  const state = randomBytes(32).toString('base64url');
+  const state = randomBytes(32).toString("base64url");
   const clientInformation: OAuthClientInformation = {
     client_id: idpClientId,
     ...(opts.idpClientSecret ? { client_secret: opts.idpClientSecret } : {}),
@@ -407,7 +407,7 @@ export async function acquireIdpIdToken(opts: IdpLoginOptions): Promise<string> 
     metadata,
     clientInformation,
     redirectUrl: redirectUri,
-    scope: 'openid',
+    scope: "openid",
     state,
   });
 
@@ -420,7 +420,7 @@ export async function acquireIdpIdToken(opts: IdpLoginOptions): Promise<string> 
       opts.onAuthorizationUrl(authorizationUrl.toString());
     }
     if (!opts.skipBrowserOpen) {
-      logMCPDebug('xaa', `Opening browser to IdP authorization endpoint`);
+      logMCPDebug("xaa", `Opening browser to IdP authorization endpoint`);
       void openBrowser(authorizationUrl.toString());
     }
   });
@@ -439,7 +439,7 @@ export async function acquireIdpIdToken(opts: IdpLoginOptions): Promise<string> 
       }),
   });
   if (!tokens.id_token) {
-    throw new Error('XAA IdP: token response missing id_token (check scope=openid)');
+    throw new Error("XAA IdP: token response missing id_token (check scope=openid)");
   }
 
   // Prefer the id_token's own exp claim; fall back to expires_in.
@@ -452,7 +452,7 @@ export async function acquireIdpIdToken(opts: IdpLoginOptions): Promise<string> 
 
   saveIdpIdToken(idpIssuer, tokens.id_token, expiresAt);
   logMCPDebug(
-    'xaa',
+    "xaa",
     `Cached id_token for ${idpIssuer} (expires ${new Date(expiresAt).toISOString()})`,
   );
 

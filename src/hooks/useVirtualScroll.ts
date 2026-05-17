@@ -1,4 +1,4 @@
-import type { RefObject } from 'react';
+import type { RefObject } from "react";
 import {
   useCallback,
   useDeferredValue,
@@ -6,9 +6,9 @@ import {
   useMemo,
   useRef,
   useSyncExternalStore,
-} from 'react';
-import type { ScrollBoxHandle } from '../ink/components/ScrollBox.js';
-import type { DOMElement } from '../ink/dom.js';
+} from "react";
+import type { ScrollBoxHandle } from "../ink/components/ScrollBox.js";
+import type { DOMElement } from "../ink/dom.js";
 
 /**
  * Estimated height (rows) for items not yet measured. Intentionally LOW:

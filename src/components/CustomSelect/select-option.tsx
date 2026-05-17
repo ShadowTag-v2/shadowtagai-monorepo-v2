@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { ListItem } from '../design-system/ListItem.js';
+import type { ReactNode } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { ListItem } from "../design-system/ListItem.js";
 export type SelectOptionProps = {
   /**
    * Determines if option is focused.

@@ -12,35 +12,35 @@
  * - API returns empty settings for users without managed settings
  */
 
-import { createHash } from 'node:crypto';
-import { open, unlink } from 'node:fs/promises';
-import axios from 'axios';
-import { getOauthConfig, OAUTH_BETA_HEADER } from '../../constants/oauth.js';
+import { createHash } from "node:crypto";
+import { open, unlink } from "node:fs/promises";
+import axios from "axios";
+import { getOauthConfig, OAUTH_BETA_HEADER } from "../../constants/oauth.js";
 import {
   checkAndRefreshOAuthTokenIfNeeded,
   getAnthropicApiKeyWithSource,
   getClaudeAIOAuthTokens,
-} from '../../utils/auth.js';
-import { registerCleanup } from '../../utils/cleanupRegistry.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { classifyAxiosError, getErrnoCode } from '../../utils/errors.js';
-import { settingsChangeDetector } from '../../utils/settings/changeDetector.js';
-import { type SettingsJson, SettingsSchema } from '../../utils/settings/types.js';
-import { sleep } from '../../utils/sleep.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { getClaudeCodeUserAgent } from '../../utils/userAgent.js';
-import { getRetryDelay } from '../api/withRetry.js';
-import { checkManagedSettingsSecurity, handleSecurityCheckResult } from './securityCheck.jsx';
-import { isRemoteManagedSettingsEligible, resetSyncCache } from './syncCache.js';
+} from "../../utils/auth.js";
+import { registerCleanup } from "../../utils/cleanupRegistry.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { classifyAxiosError, getErrnoCode } from "../../utils/errors.js";
+import { settingsChangeDetector } from "../../utils/settings/changeDetector.js";
+import { type SettingsJson, SettingsSchema } from "../../utils/settings/types.js";
+import { sleep } from "../../utils/sleep.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { getClaudeCodeUserAgent } from "../../utils/userAgent.js";
+import { getRetryDelay } from "../api/withRetry.js";
+import { checkManagedSettingsSecurity, handleSecurityCheckResult } from "./securityCheck.jsx";
+import { isRemoteManagedSettingsEligible, resetSyncCache } from "./syncCache.js";
 import {
   getRemoteManagedSettingsSyncFromCache,
   getSettingsPath,
   setSessionCache,
-} from './syncCacheState.js';
+} from "./syncCacheState.js";
 import {
   type RemoteManagedSettingsFetchResult,
   RemoteManagedSettingsResponseSchema,
-} from './types.js';
+} from "./types.js";
 
 // Constants
 const SETTINGS_TIMEOUT_MS = 10000; // 10 seconds for settings fetch
@@ -81,7 +81,7 @@ export function initializeRemoteManagedSettingsLoadingPromise(): void {
       // This prevents deadlocks in Agent SDK tests and other non-CLI contexts
       setTimeout(() => {
         if (loadingCompleteResolve) {
-          logForDebugging('Remote settings: Loading promise timed out, resolving anyway');
+          logForDebugging("Remote settings: Loading promise timed out, resolving anyway");
           loadingCompleteResolve();
           loadingCompleteResolve = null;
         }
@@ -105,7 +105,7 @@ function sortKeysDeep(obj: unknown): unknown {
   if (Array.isArray(obj)) {
     return obj.map(sortKeysDeep);
   }
-  if (obj !== null && typeof obj === 'object') {
+  if (obj !== null && typeof obj === "object") {
     const sorted: Record<string, unknown> = {};
     for (const key of Object.keys(obj).sort()) {
       sorted[key] = sortKeysDeep((obj as Record<string, unknown>)[key]);
@@ -124,7 +124,7 @@ export function computeChecksumFromSettings(settings: SettingsJson): string {
   const sorted = sortKeysDeep(settings);
   // No spaces after separators to match Python's separators=(",", ":")
   const normalized = jsonStringify(sorted);
-  const hash = createHash('sha256').update(normalized).digest('hex');
+  const hash = createHash("sha256").update(normalized).digest("hex");
   return `sha256:${hash}`;
 }
 
@@ -169,7 +169,7 @@ function getRemoteSettingsAuthHeaders(): {
     if (apiKey) {
       return {
         headers: {
-          'x-api-key': apiKey,
+          "x-api-key": apiKey,
         },
       };
     }
@@ -183,14 +183,14 @@ function getRemoteSettingsAuthHeaders(): {
     return {
       headers: {
         Authorization: `Bearer ${oauthTokens.accessToken}`,
-        'anthropic-beta': OAUTH_BETA_HEADER,
+        "anthropic-beta": OAUTH_BETA_HEADER,
       },
     };
   }
 
   return {
     headers: {},
-    error: 'No authentication available',
+    error: "No authentication available",
   };
 }
 
@@ -255,12 +255,12 @@ async function fetchRemoteManagedSettings(
     const endpoint = getRemoteManagedSettingsEndpoint();
     const headers: Record<string, string> = {
       ...authHeaders.headers,
-      'User-Agent': getClaudeCodeUserAgent(),
+      "User-Agent": getClaudeCodeUserAgent(),
     };
 
     // Add If-None-Match header for ETag-based caching
     if (cachedChecksum) {
-      headers['If-None-Match'] = `"${cachedChecksum}"`;
+      headers["If-None-Match"] = `"${cachedChecksum}"`;
     }
 
     const response = await axios.get(endpoint, {
@@ -274,7 +274,7 @@ async function fetchRemoteManagedSettings(
 
     // Handle 304 Not Modified - cached version is still valid
     if (response.status === 304) {
-      logForDebugging('Remote settings: Using cached settings (304)');
+      logForDebugging("Remote settings: Using cached settings (304)");
       return {
         success: true,
         settings: null, // Signal that cache is valid
@@ -298,7 +298,7 @@ async function fetchRemoteManagedSettings(
       logForDebugging(`Remote settings: Invalid response format - ${parsed.error.message}`);
       return {
         success: false,
-        error: 'Invalid remote settings format',
+        error: "Invalid remote settings format",
       };
     }
 
@@ -310,11 +310,11 @@ async function fetchRemoteManagedSettings(
       );
       return {
         success: false,
-        error: 'Invalid settings structure',
+        error: "Invalid settings structure",
       };
     }
 
-    logForDebugging('Remote settings: Fetched successfully');
+    logForDebugging("Remote settings: Fetched successfully");
     return {
       success: true,
       settings: settingsValidation.data,
@@ -324,20 +324,20 @@ async function fetchRemoteManagedSettings(
     const { kind, status, message } = classifyAxiosError(error);
     if (status === 404) {
       // 404 means no remote settings configured
-      return { success: true, settings: {}, checksum: '' };
+      return { success: true, settings: {}, checksum: "" };
     }
     switch (kind) {
-      case 'auth':
+      case "auth":
         // Auth errors (401, 403) should not be retried - the API key doesn't have access
         return {
           success: false,
-          error: 'Not authorized for remote settings',
+          error: "Not authorized for remote settings",
           skipRetry: true,
         };
-      case 'timeout':
-        return { success: false, error: 'Remote settings request timeout' };
-      case 'network':
-        return { success: false, error: 'Cannot connect to server' };
+      case "timeout":
+        return { success: false, error: "Remote settings request timeout" };
+      case "network":
+        return { success: false, error: "Cannot connect to server" };
       default:
         return { success: false, error: message };
     }
@@ -351,10 +351,10 @@ async function fetchRemoteManagedSettings(
 async function saveSettings(settings: SettingsJson): Promise<void> {
   try {
     const path = getSettingsPath();
-    const handle = await open(path, 'w', 0o600);
+    const handle = await open(path, "w", 0o600);
     try {
       await handle.writeFile(jsonStringify(settings, null, 2), {
-        encoding: 'utf-8',
+        encoding: "utf-8",
       });
       await handle.datasync();
     } finally {
@@ -363,7 +363,7 @@ async function saveSettings(settings: SettingsJson): Promise<void> {
     logForDebugging(`Remote settings: Saved to ${path}`);
   } catch (error) {
     logForDebugging(
-      `Remote settings: Failed to save - ${error instanceof Error ? error.message : 'unknown error'}`,
+      `Remote settings: Failed to save - ${error instanceof Error ? error.message : "unknown error"}`,
     );
     // Ignore save errors - we'll refetch on next startup
   }
@@ -414,7 +414,7 @@ async function fetchAndLoadRemoteManagedSettings(): Promise<SettingsJson | null>
     if (!result.success) {
       // On fetch failure, use stale file if available (graceful degradation)
       if (cachedSettings) {
-        logForDebugging('Remote settings: Using stale cache after fetch failure');
+        logForDebugging("Remote settings: Using stale cache after fetch failure");
         setSessionCache(cachedSettings);
         return cachedSettings;
       }
@@ -424,7 +424,7 @@ async function fetchAndLoadRemoteManagedSettings(): Promise<SettingsJson | null>
 
     // Handle 304 Not Modified - cached settings are still valid
     if (result.settings === null && cachedSettings) {
-      logForDebugging('Remote settings: Cache still valid (304 Not Modified)');
+      logForDebugging("Remote settings: Cache still valid (304 Not Modified)");
       setSessionCache(cachedSettings);
       return cachedSettings;
     }
@@ -438,13 +438,13 @@ async function fetchAndLoadRemoteManagedSettings(): Promise<SettingsJson | null>
       const securityResult = await checkManagedSettingsSecurity(cachedSettings, newSettings);
       if (!handleSecurityCheckResult(securityResult)) {
         // User rejected - don't apply settings, return cached or null
-        logForDebugging('Remote settings: User rejected new settings, using cached settings');
+        logForDebugging("Remote settings: User rejected new settings, using cached settings");
         return cachedSettings;
       }
 
       setSessionCache(newSettings);
       await saveSettings(newSettings);
-      logForDebugging('Remote settings: Applied new settings successfully');
+      logForDebugging("Remote settings: Applied new settings successfully");
       return newSettings;
     }
 
@@ -454,12 +454,12 @@ async function fetchAndLoadRemoteManagedSettings(): Promise<SettingsJson | null>
     try {
       const path = getSettingsPath();
       await unlink(path);
-      logForDebugging('Remote settings: Deleted cached file (404 response)');
+      logForDebugging("Remote settings: Deleted cached file (404 response)");
     } catch (e) {
       const code = getErrnoCode(e);
-      if (code !== 'ENOENT') {
+      if (code !== "ENOENT") {
         logForDebugging(
-          `Remote settings: Failed to delete cached file - ${e instanceof Error ? e.message : 'unknown error'}`,
+          `Remote settings: Failed to delete cached file - ${e instanceof Error ? e.message : "unknown error"}`,
         );
       }
     }
@@ -467,7 +467,7 @@ async function fetchAndLoadRemoteManagedSettings(): Promise<SettingsJson | null>
   } catch {
     // On any error, use stale file if available (graceful degradation)
     if (cachedSettings) {
-      logForDebugging('Remote settings: Using stale cache after error');
+      logForDebugging("Remote settings: Using stale cache after error");
       setSessionCache(cachedSettings);
       return cachedSettings;
     }
@@ -518,7 +518,7 @@ export async function loadRemoteManagedSettings(): Promise<void> {
     // notifyChange resets the settings cache internally before iterating
     // listeners — env vars, telemetry, and permissions update on next read.
     if (settings !== null) {
-      settingsChangeDetector.notifyChange('policySettings');
+      settingsChangeDetector.notifyChange("policySettings");
     }
   } finally {
     // Always resolve the promise, even if fetch failed (fail-open)
@@ -540,17 +540,17 @@ export async function refreshRemoteManagedSettings(): Promise<void> {
 
   // If not enabled, notify that policy settings changed (to empty)
   if (!isRemoteManagedSettingsEligible()) {
-    settingsChangeDetector.notifyChange('policySettings');
+    settingsChangeDetector.notifyChange("policySettings");
     return;
   }
 
   // Try to load new settings (fails open if fetch fails)
   await fetchAndLoadRemoteManagedSettings();
-  logForDebugging('Remote settings: Refreshed after auth change');
+  logForDebugging("Remote settings: Refreshed after auth change");
 
   // Notify listeners. notifyChange resets the settings cache internally;
   // this triggers hot-reload (AppState update, env var application, etc.)
-  settingsChangeDetector.notifyChange('policySettings');
+  settingsChangeDetector.notifyChange("policySettings");
 }
 
 /**
@@ -572,8 +572,8 @@ async function pollRemoteSettings(): Promise<void> {
     const newCache = getRemoteManagedSettingsSyncFromCache();
     const newSettings = newCache ? jsonStringify(newCache) : null;
     if (newSettings !== previousSettings) {
-      logForDebugging('Remote settings: Changed during background poll');
-      settingsChangeDetector.notifyChange('policySettings');
+      logForDebugging("Remote settings: Changed during background poll");
+      settingsChangeDetector.notifyChange("policySettings");
     }
   } catch {
     // Don't fail closed for background polling - just continue

@@ -1,9 +1,9 @@
-import type { BetaContentBlock } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import type { ContentBlock, ContentBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { roughTokenCountEstimation as countTokens } from '../services/tokenEstimation.js';
-import type { AssistantMessage, Message, UserMessage } from '../types/message.js';
-import { normalizeMessagesForAPI } from './messages.js';
-import { jsonStringify } from './slowOperations.js';
+import type { BetaContentBlock } from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
+import type { ContentBlock, ContentBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import { roughTokenCountEstimation as countTokens } from "../services/tokenEstimation.js";
+import type { AssistantMessage, Message, UserMessage } from "../types/message.js";
+import { normalizeMessagesForAPI } from "./messages.js";
+import { jsonStringify } from "./slowOperations.js";
 
 type TokenStats = {
   toolRequests: Map<string, number>;
@@ -35,8 +35,8 @@ export function analyzeContext(messages: Message[]): TokenStats {
   const fileReadStats = new Map<string, { count: number; totalTokens: number }>();
 
   messages.forEach((msg) => {
-    if (msg.type === 'attachment') {
-      const type = msg.attachment.type || 'unknown';
+    if (msg.type === "attachment") {
+      const type = msg.attachment.type || "unknown";
       stats.attachments.set(type, (stats.attachments.get(type) || 0) + 1);
     }
   });
@@ -46,14 +46,14 @@ export function analyzeContext(messages: Message[]): TokenStats {
     const { content } = msg.message;
 
     // Not sure if this path is still used, but adding as a fallback
-    if (typeof content === 'string') {
+    if (typeof content === "string") {
       const tokens = countTokens(content);
       stats.total += tokens;
       // Check if this is a local command output
-      if (msg.type === 'user' && content.includes('local-command-stdout')) {
+      if (msg.type === "user" && content.includes("local-command-stdout")) {
         stats.localCommandOutputs += tokens;
       } else {
-        stats[msg.type === 'user' ? 'humanMessages' : 'assistantMessages'] += tokens;
+        stats[msg.type === "user" ? "humanMessages" : "assistantMessages"] += tokens;
       }
     } else {
       content.forEach((block) =>
@@ -90,32 +90,32 @@ function processBlock(
   stats.total += tokens;
 
   switch (block.type) {
-    case 'text':
+    case "text":
       // Check if this is a local command output
       if (
-        message.type === 'user' &&
-        'text' in block &&
-        block.text.includes('local-command-stdout')
+        message.type === "user" &&
+        "text" in block &&
+        block.text.includes("local-command-stdout")
       ) {
         stats.localCommandOutputs += tokens;
       } else {
-        stats[message.type === 'user' ? 'humanMessages' : 'assistantMessages'] += tokens;
+        stats[message.type === "user" ? "humanMessages" : "assistantMessages"] += tokens;
       }
       break;
 
-    case 'tool_use': {
-      if ('name' in block && 'id' in block) {
-        const toolName = block.name || 'unknown';
+    case "tool_use": {
+      if ("name" in block && "id" in block) {
+        const toolName = block.name || "unknown";
         increment(stats.toolRequests, toolName, tokens);
         toolIds.set(block.id, toolName);
 
         // Track Read tool file paths
         if (
-          toolName === 'Read' &&
-          'input' in block &&
+          toolName === "Read" &&
+          "input" in block &&
           block.input &&
-          typeof block.input === 'object' &&
-          'file_path' in block.input
+          typeof block.input === "object" &&
+          "file_path" in block.input
         ) {
           const path = String((block.input as Record<string, unknown>).file_path);
           readToolPaths.set(block.id, path);
@@ -124,13 +124,13 @@ function processBlock(
       break;
     }
 
-    case 'tool_result': {
-      if ('tool_use_id' in block) {
-        const toolName = toolIds.get(block.tool_use_id) || 'unknown';
+    case "tool_result": {
+      if ("tool_use_id" in block) {
+        const toolName = toolIds.get(block.tool_use_id) || "unknown";
         increment(stats.toolResults, toolName, tokens);
 
         // Track file read tokens
-        if (toolName === 'Read') {
+        if (toolName === "Read") {
           const path = readToolPaths.get(block.tool_use_id);
           if (path) {
             const current = fileReads.get(path) || { count: 0, totalTokens: 0 };
@@ -144,22 +144,22 @@ function processBlock(
       break;
     }
 
-    case 'image':
-    case 'server_tool_use':
-    case 'web_search_tool_result':
-    case 'search_result':
-    case 'document':
-    case 'thinking':
-    case 'redacted_thinking':
-    case 'code_execution_tool_result':
-    case 'mcp_tool_use':
-    case 'mcp_tool_result':
-    case 'container_upload':
-    case 'web_fetch_tool_result':
-    case 'bash_code_execution_tool_result':
-    case 'text_editor_code_execution_tool_result':
-    case 'tool_search_tool_result':
-    case 'compaction':
+    case "image":
+    case "server_tool_use":
+    case "web_search_tool_result":
+    case "search_result":
+    case "document":
+    case "thinking":
+    case "redacted_thinking":
+    case "code_execution_tool_result":
+    case "mcp_tool_use":
+    case "mcp_tool_result":
+    case "container_upload":
+    case "web_fetch_tool_result":
+    case "bash_code_execution_tool_result":
+    case "text_editor_code_execution_tool_result":
+    case "tool_search_tool_result":
+    case "compaction":
       // Don't care about these for now..
       stats.other += tokens;
       break;

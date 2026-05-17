@@ -3,11 +3,11 @@
  * Used by both the CLI `claude agents` handler and the interactive `/agents` command.
  */
 
-import { getDefaultSubagentModel } from '../../utils/model/agent.js';
-import { getSourceDisplayName, type SettingSource } from '../../utils/settings/constants.js';
-import type { AgentDefinition } from './loadAgentsDir.js';
+import { getDefaultSubagentModel } from "../../utils/model/agent.js";
+import { getSourceDisplayName, type SettingSource } from "../../utils/settings/constants.js";
+import type { AgentDefinition } from "./loadAgentsDir.js";
 
-type AgentSource = SettingSource | 'built-in' | 'plugin';
+type AgentSource = SettingSource | "built-in" | "plugin";
 
 export type AgentSourceGroup = {
   label: string;
@@ -19,13 +19,13 @@ export type AgentSourceGroup = {
  * Both the CLI and interactive UI should use this to ensure consistent ordering.
  */
 export const AGENT_SOURCE_GROUPS: AgentSourceGroup[] = [
-  { label: 'User agents', source: 'userSettings' },
-  { label: 'Project agents', source: 'projectSettings' },
-  { label: 'Local agents', source: 'localSettings' },
-  { label: 'Managed agents', source: 'policySettings' },
-  { label: 'Plugin agents', source: 'plugin' },
-  { label: 'CLI arg agents', source: 'flagSettings' },
-  { label: 'Built-in agents', source: 'built-in' },
+  { label: "User agents", source: "userSettings" },
+  { label: "Project agents", source: "projectSettings" },
+  { label: "Local agents", source: "localSettings" },
+  { label: "Managed agents", source: "policySettings" },
+  { label: "Plugin agents", source: "plugin" },
+  { label: "CLI arg agents", source: "flagSettings" },
+  { label: "Built-in agents", source: "built-in" },
 ];
 
 export type ResolvedAgent = AgentDefinition & {
@@ -74,7 +74,7 @@ export function resolveAgentOverrides(
 export function resolveAgentModelDisplay(agent: AgentDefinition): string | undefined {
   const model = agent.model || getDefaultSubagentModel();
   if (!model) return undefined;
-  return model === 'inherit' ? 'inherit' : model;
+  return model === "inherit" ? "inherit" : model;
 }
 
 /**
@@ -90,6 +90,6 @@ export function getOverrideSourceLabel(source: AgentSource): string {
  */
 export function compareAgentsByName(a: AgentDefinition, b: AgentDefinition): number {
   return a.agentType.localeCompare(b.agentType, undefined, {
-    sensitivity: 'base',
+    sensitivity: "base",
   });
 }

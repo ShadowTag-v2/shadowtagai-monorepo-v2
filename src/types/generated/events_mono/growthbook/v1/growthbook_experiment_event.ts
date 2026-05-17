@@ -5,8 +5,8 @@
 // source: events_mono/growthbook/v1/growthbook_experiment_event.proto
 
 /* eslint-disable */
-import { Timestamp } from '../../../google/protobuf/timestamp.js';
-import { PublicApiAuth } from '../../common/v1/auth.js';
+import { Timestamp } from "../../../google/protobuf/timestamp.js";
+import { PublicApiAuth } from "../../common/v1/auth.js";
 
 /**
  * GrowthBook experiment assignment event
@@ -42,42 +42,42 @@ export interface GrowthbookExperimentEvent {
 
 function createBaseGrowthbookExperimentEvent(): GrowthbookExperimentEvent {
   return {
-    event_id: '',
+    event_id: "",
     timestamp: undefined,
-    experiment_id: '',
+    experiment_id: "",
     variation_id: 0,
-    environment: '',
-    user_attributes: '',
-    experiment_metadata: '',
-    device_id: '',
+    environment: "",
+    user_attributes: "",
+    experiment_metadata: "",
+    device_id: "",
     auth: undefined,
-    session_id: '',
-    anonymous_id: '',
-    event_metadata_vars: '',
+    session_id: "",
+    anonymous_id: "",
+    event_metadata_vars: "",
   };
 }
 
 export const GrowthbookExperimentEvent: MessageFns<GrowthbookExperimentEvent> = {
   fromJSON(object: any): GrowthbookExperimentEvent {
     return {
-      event_id: isSet(object.event_id) ? globalThis.String(object.event_id) : '',
+      event_id: isSet(object.event_id) ? globalThis.String(object.event_id) : "",
       timestamp: isSet(object.timestamp) ? fromJsonTimestamp(object.timestamp) : undefined,
-      experiment_id: isSet(object.experiment_id) ? globalThis.String(object.experiment_id) : '',
+      experiment_id: isSet(object.experiment_id) ? globalThis.String(object.experiment_id) : "",
       variation_id: isSet(object.variation_id) ? globalThis.Number(object.variation_id) : 0,
-      environment: isSet(object.environment) ? globalThis.String(object.environment) : '',
+      environment: isSet(object.environment) ? globalThis.String(object.environment) : "",
       user_attributes: isSet(object.user_attributes)
         ? globalThis.String(object.user_attributes)
-        : '',
+        : "",
       experiment_metadata: isSet(object.experiment_metadata)
         ? globalThis.String(object.experiment_metadata)
-        : '',
-      device_id: isSet(object.device_id) ? globalThis.String(object.device_id) : '',
+        : "",
+      device_id: isSet(object.device_id) ? globalThis.String(object.device_id) : "",
       auth: isSet(object.auth) ? PublicApiAuth.fromJSON(object.auth) : undefined,
-      session_id: isSet(object.session_id) ? globalThis.String(object.session_id) : '',
-      anonymous_id: isSet(object.anonymous_id) ? globalThis.String(object.anonymous_id) : '',
+      session_id: isSet(object.session_id) ? globalThis.String(object.session_id) : "",
+      anonymous_id: isSet(object.anonymous_id) ? globalThis.String(object.anonymous_id) : "",
       event_metadata_vars: isSet(object.event_metadata_vars)
         ? globalThis.String(object.event_metadata_vars)
-        : '',
+        : "",
     };
   },
 
@@ -131,21 +131,21 @@ export const GrowthbookExperimentEvent: MessageFns<GrowthbookExperimentEvent> = 
     object: I,
   ): GrowthbookExperimentEvent {
     const message = createBaseGrowthbookExperimentEvent();
-    message.event_id = object.event_id ?? '';
+    message.event_id = object.event_id ?? "";
     message.timestamp = object.timestamp ?? undefined;
-    message.experiment_id = object.experiment_id ?? '';
+    message.experiment_id = object.experiment_id ?? "";
     message.variation_id = object.variation_id ?? 0;
-    message.environment = object.environment ?? '';
-    message.user_attributes = object.user_attributes ?? '';
-    message.experiment_metadata = object.experiment_metadata ?? '';
-    message.device_id = object.device_id ?? '';
+    message.environment = object.environment ?? "";
+    message.user_attributes = object.user_attributes ?? "";
+    message.experiment_metadata = object.experiment_metadata ?? "";
+    message.device_id = object.device_id ?? "";
     message.auth =
       object.auth !== undefined && object.auth !== null
         ? PublicApiAuth.fromPartial(object.auth)
         : undefined;
-    message.session_id = object.session_id ?? '';
-    message.anonymous_id = object.anonymous_id ?? '';
-    message.event_metadata_vars = object.event_metadata_vars ?? '';
+    message.session_id = object.session_id ?? "";
+    message.anonymous_id = object.anonymous_id ?? "";
+    message.event_metadata_vars = object.event_metadata_vars ?? "";
     return message;
   },
 };
@@ -178,7 +178,7 @@ function fromTimestamp(t: Timestamp): Date {
 function fromJsonTimestamp(o: any): Date {
   if (o instanceof globalThis.Date) {
     return o;
-  } else if (typeof o === 'string') {
+  } else if (typeof o === "string") {
     return new globalThis.Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));

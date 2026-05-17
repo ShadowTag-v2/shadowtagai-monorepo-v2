@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useNotifications } from 'src/context/notifications.js';
-import { Text } from 'src/ink.js';
-import { getRateLimitWarning, getUsingOverageText } from 'src/services/claudeAiLimits.js';
-import { useClaudeAiLimits } from 'src/services/claudeAiLimitsHook.js';
-import { getSubscriptionType } from 'src/utils/auth.js';
-import { hasClaudeAiBillingAccess } from 'src/utils/billing.js';
-import { getIsRemoteMode } from '../../bootstrap/state.js';
+import { useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useNotifications } from "src/context/notifications.js";
+import { Text } from "src/ink.js";
+import { getRateLimitWarning, getUsingOverageText } from "src/services/claudeAiLimits.js";
+import { useClaudeAiLimits } from "src/services/claudeAiLimitsHook.js";
+import { getSubscriptionType } from "src/utils/auth.js";
+import { hasClaudeAiBillingAccess } from "src/utils/billing.js";
+import { getIsRemoteMode } from "../../bootstrap/state.js";
 export function useRateLimitWarningNotification(model) {
   const $ = _c(17);
   const { addNotification } = useNotifications();
@@ -32,7 +32,7 @@ export function useRateLimitWarningNotification(model) {
   const usingOverageText = t1;
   const shownWarningRef = useRef(null);
   let t2;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = getSubscriptionType();
     $[5] = t2;
   } else {
@@ -40,14 +40,14 @@ export function useRateLimitWarningNotification(model) {
   }
   const subscriptionType = t2;
   let t3;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = hasClaudeAiBillingAccess();
     $[6] = t3;
   } else {
     t3 = $[6];
   }
   const hasBillingAccess = t3;
-  const isTeamOrEnterprise = subscriptionType === 'team' || subscriptionType === 'enterprise';
+  const isTeamOrEnterprise = subscriptionType === "team" || subscriptionType === "enterprise";
   const [hasShownOverageNotification, setHasShownOverageNotification] = useState(false);
   let t4;
   let t5;
@@ -67,9 +67,9 @@ export function useRateLimitWarningNotification(model) {
         (!isTeamOrEnterprise || hasBillingAccess)
       ) {
         addNotification({
-          key: 'limit-reached',
+          key: "limit-reached",
           text: usingOverageText,
-          priority: 'immediate',
+          priority: "immediate",
         });
         setHasShownOverageNotification(true);
       } else {
@@ -107,13 +107,13 @@ export function useRateLimitWarningNotification(model) {
       if (rateLimitWarning && rateLimitWarning !== shownWarningRef.current) {
         shownWarningRef.current = rateLimitWarning;
         addNotification({
-          key: 'rate-limit-warning',
+          key: "rate-limit-warning",
           jsx: (
             <Text>
               <Text color="warning">{rateLimitWarning}</Text>
             </Text>
           ),
-          priority: 'high',
+          priority: "high",
         });
       }
     };

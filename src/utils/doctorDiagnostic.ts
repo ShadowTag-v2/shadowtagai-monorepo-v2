@@ -1,24 +1,24 @@
-import { readFile, realpath } from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { delimiter, join, posix, win32 } from 'node:path';
-import { execa } from 'execa';
-import { checkGlobalInstallPermissions } from './autoUpdater.js';
-import { isInBundledMode } from './bundledMode.js';
+import { readFile, realpath } from "node:fs/promises";
+import { homedir } from "node:os";
+import { delimiter, join, posix, win32 } from "node:path";
+import { execa } from "execa";
+import { checkGlobalInstallPermissions } from "./autoUpdater.js";
+import { isInBundledMode } from "./bundledMode.js";
 import {
   formatAutoUpdaterDisabledReason,
   getAutoUpdaterDisabledReason,
   getGlobalConfig,
   type InstallMethod,
-} from './config.js';
-import { getCwd } from './cwd.js';
-import { isEnvTruthy } from './envUtils.js';
-import { execFileNoThrow } from './execFileNoThrow.js';
-import { getFsImplementation } from './fsOperations.js';
+} from "./config.js";
+import { getCwd } from "./cwd.js";
+import { isEnvTruthy } from "./envUtils.js";
+import { execFileNoThrow } from "./execFileNoThrow.js";
+import { getFsImplementation } from "./fsOperations.js";
 import {
   getShellType,
   isRunningFromLocalInstallation,
   localInstallationExists,
-} from './localInstaller.js';
+} from "./localInstaller.js";
 import {
   detectApk,
   detectAsdf,
@@ -29,30 +29,30 @@ import {
   detectRpm,
   detectWinget,
   getPackageManager,
-} from './nativeInstaller/packageManagers.js';
-import { getPlatform } from './platform.js';
-import { getRipgrepStatus } from './ripgrep.js';
-import { SandboxManager } from './sandbox/sandbox-adapter.js';
-import { getManagedFilePath } from './settings/managedPath.js';
-import { CUSTOMIZATION_SURFACES } from './settings/types.js';
-import { findClaudeAlias, findValidClaudeAlias, getShellConfigPaths } from './shellConfig.js';
-import { jsonParse } from './slowOperations.js';
-import { which } from './which.js';
+} from "./nativeInstaller/packageManagers.js";
+import { getPlatform } from "./platform.js";
+import { getRipgrepStatus } from "./ripgrep.js";
+import { SandboxManager } from "./sandbox/sandbox-adapter.js";
+import { getManagedFilePath } from "./settings/managedPath.js";
+import { CUSTOMIZATION_SURFACES } from "./settings/types.js";
+import { findClaudeAlias, findValidClaudeAlias, getShellConfigPaths } from "./shellConfig.js";
+import { jsonParse } from "./slowOperations.js";
+import { which } from "./which.js";
 
 export type InstallationType =
-  | 'npm-global'
-  | 'npm-local'
-  | 'native'
-  | 'package-manager'
-  | 'development'
-  | 'unknown';
+  | "npm-global"
+  | "npm-local"
+  | "native"
+  | "package-manager"
+  | "development"
+  | "unknown";
 
 export type DiagnosticInfo = {
   installationType: InstallationType;
   version: string;
   installationPath: string;
   invokedBinary: string;
-  configInstallMethod: InstallMethod | 'not set';
+  configInstallMethod: InstallMethod | "not set";
   autoUpdates: string;
   hasUpdatePermissions: boolean | null;
   multipleInstallations: Array<{ type: string; path: string }>;
@@ -61,17 +61,17 @@ export type DiagnosticInfo = {
   packageManager?: string;
   ripgrepStatus: {
     working: boolean;
-    mode: 'system' | 'builtin' | 'embedded';
+    mode: "system" | "builtin" | "embedded";
     systemPath: string | null;
   };
 };
 
 function getNormalizedPaths(): [invokedPath: string, execPath: string] {
-  let invokedPath = process.argv[1] || '';
-  let execPath = process.execPath || process.argv[0] || '';
+  let invokedPath = process.argv[1] || "";
+  let execPath = process.execPath || process.argv[0] || "";
 
   // On Windows, convert backslashes to forward slashes for consistent path matching
-  if (getPlatform() === 'windows') {
+  if (getPlatform() === "windows") {
     invokedPath = invokedPath.split(win32.sep).join(posix.sep);
     execPath = execPath.split(win32.sep).join(posix.sep);
   }
@@ -80,8 +80,8 @@ function getNormalizedPaths(): [invokedPath: string, execPath: string] {
 }
 
 export async function getCurrentInstallationType(): Promise<InstallationType> {
-  if (process.env.NODE_ENV === 'development') {
-    return 'development';
+  if (process.env.NODE_ENV === "development") {
+    return "development";
   }
 
   const [invokedPath] = getNormalizedPaths();
@@ -99,51 +99,51 @@ export async function getCurrentInstallationType(): Promise<InstallationType> {
       (await detectRpm()) ||
       (await detectApk())
     ) {
-      return 'package-manager';
+      return "package-manager";
     }
-    return 'native';
+    return "native";
   }
 
   // Check if running from local npm installation
   if (isRunningFromLocalInstallation()) {
-    return 'npm-local';
+    return "npm-local";
   }
 
   // Check if we're in a typical npm global location
   const npmGlobalPaths = [
-    '/usr/local/lib/node_modules',
-    '/usr/lib/node_modules',
-    '/opt/homebrew/lib/node_modules',
-    '/opt/homebrew/bin',
-    '/usr/local/bin',
-    '/.nvm/versions/node/', // nvm installations
+    "/usr/local/lib/node_modules",
+    "/usr/lib/node_modules",
+    "/opt/homebrew/lib/node_modules",
+    "/opt/homebrew/bin",
+    "/usr/local/bin",
+    "/.nvm/versions/node/", // nvm installations
   ];
 
   if (npmGlobalPaths.some((path) => invokedPath.includes(path))) {
-    return 'npm-global';
+    return "npm-global";
   }
 
   // Also check for npm/nvm in the path even if not in standard locations
-  if (invokedPath.includes('/npm/') || invokedPath.includes('/nvm/')) {
-    return 'npm-global';
+  if (invokedPath.includes("/npm/") || invokedPath.includes("/nvm/")) {
+    return "npm-global";
   }
 
-  const npmConfigResult = await execa('npm config get prefix', {
+  const npmConfigResult = await execa("npm config get prefix", {
     shell: true,
     reject: false,
   });
   const globalPrefix = npmConfigResult.exitCode === 0 ? npmConfigResult.stdout.trim() : null;
 
   if (globalPrefix && invokedPath.startsWith(globalPrefix)) {
-    return 'npm-global';
+    return "npm-global";
   }
 
   // If we can't determine, return unknown
-  return 'unknown';
+  return "unknown";
 }
 
 async function getInstallationPath(): Promise<string> {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     return getCwd();
   }
 
@@ -157,7 +157,7 @@ async function getInstallationPath(): Promise<string> {
     }
 
     try {
-      const path = await which('claude');
+      const path = await which("claude");
       if (path) {
         return path;
       }
@@ -167,19 +167,19 @@ async function getInstallationPath(): Promise<string> {
 
     // If we can't find it, check common locations
     try {
-      await getFsImplementation().stat(join(homedir(), '.local/bin/claude'));
-      return join(homedir(), '.local/bin/claude');
+      await getFsImplementation().stat(join(homedir(), ".local/bin/claude"));
+      return join(homedir(), ".local/bin/claude");
     } catch {
       // Not found
     }
-    return 'native';
+    return "native";
   }
 
   // For npm installations, use the path of the executable
   try {
-    return process.argv[0] || 'unknown';
+    return process.argv[0] || "unknown";
   } catch {
-    return 'unknown';
+    return "unknown";
   }
 }
 
@@ -187,13 +187,13 @@ export function getInvokedBinary(): string {
   try {
     // For bundled/compiled executables, show the actual binary path
     if (isInBundledMode()) {
-      return process.execPath || 'unknown';
+      return process.execPath || "unknown";
     }
 
     // For npm/development, show the script path
-    return process.argv[1] || 'unknown';
+    return process.argv[1] || "unknown";
   } catch {
-    return 'unknown';
+    return "unknown";
   }
 }
 
@@ -202,25 +202,25 @@ async function detectMultipleInstallations(): Promise<Array<{ type: string; path
   const installations: Array<{ type: string; path: string }> = [];
 
   // Check for local installation
-  const localPath = join(homedir(), '.claude', 'local');
+  const localPath = join(homedir(), ".claude", "local");
   if (await localInstallationExists()) {
-    installations.push({ type: 'npm-local', path: localPath });
+    installations.push({ type: "npm-local", path: localPath });
   }
 
   // Check for global npm installation
-  const packagesToCheck = ['@anthropic-ai/claude-code'];
-  if (MACRO.PACKAGE_URL && MACRO.PACKAGE_URL !== '@anthropic-ai/claude-code') {
+  const packagesToCheck = ["@anthropic-ai/claude-code"];
+  if (MACRO.PACKAGE_URL && MACRO.PACKAGE_URL !== "@anthropic-ai/claude-code") {
     packagesToCheck.push(MACRO.PACKAGE_URL);
   }
-  const npmResult = await execFileNoThrow('npm', ['-g', 'config', 'get', 'prefix']);
+  const npmResult = await execFileNoThrow("npm", ["-g", "config", "get", "prefix"]);
   if (npmResult.code === 0 && npmResult.stdout) {
     const npmPrefix = npmResult.stdout.trim();
-    const isWindows = getPlatform() === 'windows';
+    const isWindows = getPlatform() === "windows";
 
     // First check for active installations via bin/claude
     // Linux / macOS have prefix/bin/claude and prefix/lib/node_modules
     // Windows has prefix/claude and prefix/node_modules
-    const globalBinPath = isWindows ? join(npmPrefix, 'claude') : join(npmPrefix, 'bin', 'claude');
+    const globalBinPath = isWindows ? join(npmPrefix, "claude") : join(npmPrefix, "bin", "claude");
 
     let globalBinExists = false;
     try {
@@ -242,7 +242,7 @@ async function detectMultipleInstallations(): Promise<Array<{ type: string; path
 
         // If the symlink points to a Caskroom directory, it's a Homebrew cask
         // Only skip it if it's the same Homebrew installation we're currently running from
-        if (realPath.includes('/Caskroom/')) {
+        if (realPath.includes("/Caskroom/")) {
           isCurrentHomebrewInstallation = detectHomebrew();
         }
       } catch {
@@ -250,19 +250,19 @@ async function detectMultipleInstallations(): Promise<Array<{ type: string; path
       }
 
       if (!isCurrentHomebrewInstallation) {
-        installations.push({ type: 'npm-global', path: globalBinPath });
+        installations.push({ type: "npm-global", path: globalBinPath });
       }
     } else {
       // If no bin/claude exists, check for orphaned packages (no bin/claude symlink)
       for (const packageName of packagesToCheck) {
         const globalPackagePath = isWindows
-          ? join(npmPrefix, 'node_modules', packageName)
-          : join(npmPrefix, 'lib', 'node_modules', packageName);
+          ? join(npmPrefix, "node_modules", packageName)
+          : join(npmPrefix, "lib", "node_modules", packageName);
 
         try {
           await fs.stat(globalPackagePath);
           installations.push({
-            type: 'npm-global-orphan',
+            type: "npm-global-orphan",
             path: globalPackagePath,
           });
         } catch {
@@ -275,22 +275,22 @@ async function detectMultipleInstallations(): Promise<Array<{ type: string; path
   // Check for native installation
 
   // Check common native installation paths
-  const nativeBinPath = join(homedir(), '.local', 'bin', 'claude');
+  const nativeBinPath = join(homedir(), ".local", "bin", "claude");
   try {
     await fs.stat(nativeBinPath);
-    installations.push({ type: 'native', path: nativeBinPath });
+    installations.push({ type: "native", path: nativeBinPath });
   } catch {
     // Not found
   }
 
   // Also check if config indicates native installation
   const config = getGlobalConfig();
-  if (config.installMethod === 'native') {
-    const nativeDataPath = join(homedir(), '.local', 'share', 'claude');
+  if (config.installMethod === "native") {
+    const nativeDataPath = join(homedir(), ".local", "share", "claude");
     try {
       await fs.stat(nativeDataPath);
-      if (!installations.some((i) => i.type === 'native')) {
-        installations.push({ type: 'native', path: nativeDataPath });
+      if (!installations.some((i) => i.type === "native")) {
+        installations.push({ type: "native", path: nativeDataPath });
       }
     } catch {
       // Not found
@@ -312,30 +312,30 @@ async function detectConfigurationIssues(
   // development-mode early return: this is config correctness, not an
   // install-path check, and it's useful to see during dev testing.
   try {
-    const raw = await readFile(join(getManagedFilePath(), 'managed-settings.json'), 'utf-8');
+    const raw = await readFile(join(getManagedFilePath(), "managed-settings.json"), "utf-8");
     const parsed: unknown = jsonParse(raw);
     const field =
-      parsed && typeof parsed === 'object'
+      parsed && typeof parsed === "object"
         ? (parsed as Record<string, unknown>).strictPluginOnlyCustomization
         : undefined;
-    if (field !== undefined && typeof field !== 'boolean') {
+    if (field !== undefined && typeof field !== "boolean") {
       if (!Array.isArray(field)) {
         // .catch(undefined) in the schema silently drops this, so the rest
         // of managed settings survive — but the admin typed something
         // wrong (an object, a string, etc.).
         warnings.push({
           issue: `managed-settings.json: strictPluginOnlyCustomization has an invalid value (expected true or an array, got ${typeof field})`,
-          fix: `The field is silently ignored (schema .catch rescues it). Set it to true, or an array of: ${CUSTOMIZATION_SURFACES.join(', ')}.`,
+          fix: `The field is silently ignored (schema .catch rescues it). Set it to true, or an array of: ${CUSTOMIZATION_SURFACES.join(", ")}.`,
         });
       } else {
         const unknown = field.filter(
           (x) =>
-            typeof x === 'string' && !(CUSTOMIZATION_SURFACES as readonly string[]).includes(x),
+            typeof x === "string" && !(CUSTOMIZATION_SURFACES as readonly string[]).includes(x),
         );
         if (unknown.length > 0) {
           warnings.push({
-            issue: `managed-settings.json: strictPluginOnlyCustomization has ${unknown.length} value(s) this client doesn't recognize: ${unknown.map(String).join(', ')}`,
-            fix: `These are silently ignored (forwards-compat). Known surfaces for this version: ${CUSTOMIZATION_SURFACES.join(', ')}. Either remove them, or this client is older than the managed-settings intended.`,
+            issue: `managed-settings.json: strictPluginOnlyCustomization has ${unknown.length} value(s) this client doesn't recognize: ${unknown.map(String).join(", ")}`,
+            fix: `These are silently ignored (forwards-compat). Known surfaces for this version: ${CUSTOMIZATION_SURFACES.join(", ")}. Either remove them, or this client is older than the managed-settings intended.`,
           });
         }
       }
@@ -348,20 +348,20 @@ async function detectConfigurationIssues(
   const config = getGlobalConfig();
 
   // Skip most warnings for development mode
-  if (type === 'development') {
+  if (type === "development") {
     return warnings;
   }
 
   // Check if ~/.local/bin is in PATH for native installations
-  if (type === 'native') {
-    const path = process.env.PATH || '';
+  if (type === "native") {
+    const path = process.env.PATH || "";
     const pathDirectories = path.split(delimiter);
     const homeDir = homedir();
-    const localBinPath = join(homeDir, '.local', 'bin');
+    const localBinPath = join(homeDir, ".local", "bin");
 
     // On Windows, convert backslashes to forward slashes for consistent path matching
     let normalizedLocalBinPath = localBinPath;
-    if (getPlatform() === 'windows') {
+    if (getPlatform() === "windows") {
       normalizedLocalBinPath = localBinPath.split(win32.sep).join(posix.sep);
     }
 
@@ -369,21 +369,21 @@ async function detectConfigurationIssues(
     // Also handle trailing slashes that users may have in their PATH
     const localBinInPath = pathDirectories.some((dir) => {
       let normalizedDir = dir;
-      if (getPlatform() === 'windows') {
+      if (getPlatform() === "windows") {
         normalizedDir = dir.split(win32.sep).join(posix.sep);
       }
       // Remove trailing slashes for comparison (handles paths like /home/user/.local/bin/)
-      const trimmedDir = normalizedDir.replace(/\/+$/, '');
-      const trimmedRawDir = dir.replace(/[/\\]+$/, '');
+      const trimmedDir = normalizedDir.replace(/\/+$/, "");
+      const trimmedRawDir = dir.replace(/[/\\]+$/, "");
       return (
         trimmedDir === normalizedLocalBinPath ||
-        trimmedRawDir === '~/.local/bin' ||
-        trimmedRawDir === '$HOME/.local/bin'
+        trimmedRawDir === "~/.local/bin" ||
+        trimmedRawDir === "$HOME/.local/bin"
       );
     });
 
     if (!localBinInPath) {
-      const isWindows = getPlatform() === 'windows';
+      const isWindows = getPlatform() === "windows";
       if (isWindows) {
         // Windows-specific PATH instructions
         const windowsLocalBinPath = localBinPath.split(posix.sep).join(win32.sep);
@@ -397,11 +397,11 @@ async function detectConfigurationIssues(
         const configPaths = getShellConfigPaths();
         const configFile = configPaths[shellType as keyof typeof configPaths];
         const displayPath = configFile
-          ? configFile.replace(homedir(), '~')
-          : 'your shell config file';
+          ? configFile.replace(homedir(), "~")
+          : "your shell config file";
 
         warnings.push({
-          issue: 'Native installation exists but ~/.local/bin is not in your PATH',
+          issue: "Native installation exists but ~/.local/bin is not in your PATH",
           fix: `Run: echo 'export PATH="$HOME/.local/bin:$PATH"' >> ${displayPath} then open a new terminal or run: source ${displayPath}`,
         });
       }
@@ -411,25 +411,25 @@ async function detectConfigurationIssues(
   // Check for configuration mismatches
   // Skip these checks if DISABLE_INSTALLATION_CHECKS is set (e.g., in HFI)
   if (!isEnvTruthy(process.env.DISABLE_INSTALLATION_CHECKS)) {
-    if (type === 'npm-local' && config.installMethod !== 'local') {
+    if (type === "npm-local" && config.installMethod !== "local") {
       warnings.push({
         issue: `Running from local installation but config install method is '${config.installMethod}'`,
-        fix: 'Consider using native installation: claude install',
+        fix: "Consider using native installation: claude install",
       });
     }
 
-    if (type === 'native' && config.installMethod !== 'native') {
+    if (type === "native" && config.installMethod !== "native") {
       warnings.push({
         issue: `Running native installation but config install method is '${config.installMethod}'`,
-        fix: 'Run claude install to update configuration',
+        fix: "Run claude install to update configuration",
       });
     }
   }
 
-  if (type === 'npm-global' && (await localInstallationExists())) {
+  if (type === "npm-global" && (await localInstallationExists())) {
     warnings.push({
-      issue: 'Local installation exists but not being used',
-      fix: 'Consider using native installation: claude install',
+      issue: "Local installation exists but not being used",
+      fix: "Consider using native installation: claude install",
     });
   }
 
@@ -437,9 +437,9 @@ async function detectConfigurationIssues(
   const validAlias = await findValidClaudeAlias();
 
   // Check if running local installation but it's not in PATH
-  if (type === 'npm-local') {
+  if (type === "npm-local") {
     // Check if claude is already accessible via PATH
-    const whichResult = await which('claude');
+    const whichResult = await which("claude");
     const claudeInPath = !!whichResult;
 
     // Only show warning if claude is NOT in PATH AND no valid alias exists
@@ -447,13 +447,13 @@ async function detectConfigurationIssues(
       if (existingAlias) {
         // Alias exists but points to invalid target
         warnings.push({
-          issue: 'Local installation not accessible',
+          issue: "Local installation not accessible",
           fix: `Alias exists but points to invalid target: ${existingAlias}. Update alias: alias claude="~/.claude/local/claude"`,
         });
       } else {
         // No alias exists and not in PATH
         warnings.push({
-          issue: 'Local installation not accessible',
+          issue: "Local installation not accessible",
           fix: 'Create alias: alias claude="~/.claude/local/claude"',
         });
       }
@@ -467,7 +467,7 @@ export function detectLinuxGlobPatternWarnings(): Array<{
   issue: string;
   fix: string;
 }> {
-  if (getPlatform() !== 'linux') {
+  if (getPlatform() !== "linux") {
     return [];
   }
 
@@ -476,7 +476,7 @@ export function detectLinuxGlobPatternWarnings(): Array<{
 
   if (globPatterns.length > 0) {
     // Show first 3 patterns, then indicate if there are more
-    const displayPatterns = globPatterns.slice(0, 3).join(', ');
+    const displayPatterns = globPatterns.slice(0, 3).join(", ");
     const remaining = globPatterns.length - 3;
     const patternList = remaining > 0 ? `${displayPatterns} (${remaining} more)` : displayPatterns;
 
@@ -491,7 +491,7 @@ export function detectLinuxGlobPatternWarnings(): Array<{
 
 export async function getDoctorDiagnostic(): Promise<DiagnosticInfo> {
   const installationType = await getCurrentInstallationType();
-  const version = typeof MACRO !== 'undefined' && MACRO.VERSION ? MACRO.VERSION : 'unknown';
+  const version = typeof MACRO !== "undefined" && MACRO.VERSION ? MACRO.VERSION : "unknown";
   const installationPath = await getInstallationPath();
   const invokedBinary = getInvokedBinary();
   const multipleInstallations = await detectMultipleInstallations();
@@ -501,29 +501,29 @@ export async function getDoctorDiagnostic(): Promise<DiagnosticInfo> {
   warnings.push(...detectLinuxGlobPatternWarnings());
 
   // Add warnings for leftover npm installations when running native
-  if (installationType === 'native') {
+  if (installationType === "native") {
     const npmInstalls = multipleInstallations.filter(
-      (i) => i.type === 'npm-global' || i.type === 'npm-global-orphan' || i.type === 'npm-local',
+      (i) => i.type === "npm-global" || i.type === "npm-global-orphan" || i.type === "npm-local",
     );
 
-    const isWindows = getPlatform() === 'windows';
+    const isWindows = getPlatform() === "windows";
 
     for (const install of npmInstalls) {
-      if (install.type === 'npm-global') {
-        let uninstallCmd = 'npm -g uninstall @anthropic-ai/claude-code';
-        if (MACRO.PACKAGE_URL && MACRO.PACKAGE_URL !== '@anthropic-ai/claude-code') {
+      if (install.type === "npm-global") {
+        let uninstallCmd = "npm -g uninstall @anthropic-ai/claude-code";
+        if (MACRO.PACKAGE_URL && MACRO.PACKAGE_URL !== "@anthropic-ai/claude-code") {
           uninstallCmd += ` && npm -g uninstall ${MACRO.PACKAGE_URL}`;
         }
         warnings.push({
           issue: `Leftover npm global installation at ${install.path}`,
           fix: `Run: ${uninstallCmd}`,
         });
-      } else if (install.type === 'npm-global-orphan') {
+      } else if (install.type === "npm-global-orphan") {
         warnings.push({
           issue: `Orphaned npm global package at ${install.path}`,
           fix: isWindows ? `Run: rmdir /s /q "${install.path}"` : `Run: rm -rf ${install.path}`,
         });
-      } else if (install.type === 'npm-local') {
+      } else if (install.type === "npm-local") {
         warnings.push({
           issue: `Leftover npm local installation at ${install.path}`,
           fix: isWindows ? `Run: rmdir /s /q "${install.path}"` : `Run: rm -rf ${install.path}`,
@@ -535,19 +535,19 @@ export async function getDoctorDiagnostic(): Promise<DiagnosticInfo> {
   const config = getGlobalConfig();
 
   // Get config values for display
-  const configInstallMethod = config.installMethod || 'not set';
+  const configInstallMethod = config.installMethod || "not set";
 
   // Check permissions for global installations
   let hasUpdatePermissions: boolean | null = null;
-  if (installationType === 'npm-global') {
+  if (installationType === "npm-global") {
     const permCheck = await checkGlobalInstallPermissions();
     hasUpdatePermissions = permCheck.hasPermissions;
 
     // Add warning if no permissions
     if (!hasUpdatePermissions && !getAutoUpdaterDisabledReason()) {
       warnings.push({
-        issue: 'Insufficient permissions for auto-updates',
-        fix: 'Do one of: (1) Re-install node without sudo, or (2) Use `claude install` for native installation',
+        issue: "Insufficient permissions for auto-updates",
+        fix: "Do one of: (1) Re-install node without sudo, or (2) Use `claude install` for native installation",
       });
     }
   }
@@ -559,12 +559,12 @@ export async function getDoctorDiagnostic(): Promise<DiagnosticInfo> {
   const ripgrepStatus = {
     working: ripgrepStatusRaw.working ?? true, // Assume working if not yet tested
     mode: ripgrepStatusRaw.mode,
-    systemPath: ripgrepStatusRaw.mode === 'system' ? ripgrepStatusRaw.path : null,
+    systemPath: ripgrepStatusRaw.mode === "system" ? ripgrepStatusRaw.path : null,
   };
 
   // Get package manager info if running from package manager
   const packageManager =
-    installationType === 'package-manager' ? await getPackageManager() : undefined;
+    installationType === "package-manager" ? await getPackageManager() : undefined;
 
   const diagnostic: DiagnosticInfo = {
     installationType,
@@ -574,7 +574,7 @@ export async function getDoctorDiagnostic(): Promise<DiagnosticInfo> {
     configInstallMethod,
     autoUpdates: (() => {
       const reason = getAutoUpdaterDisabledReason();
-      return reason ? `disabled (${formatAutoUpdaterDisabledReason(reason)})` : 'enabled';
+      return reason ? `disabled (${formatAutoUpdaterDisabledReason(reason)})` : "enabled";
     })(),
     hasUpdatePermissions,
     multipleInstallations,

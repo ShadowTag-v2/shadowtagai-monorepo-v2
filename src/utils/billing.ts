@@ -3,9 +3,9 @@ import {
   getAuthTokenSource,
   getSubscriptionType,
   isClaudeAISubscriber,
-} from './auth.js';
-import { getGlobalConfig } from './config.js';
-import { isEnvTruthy } from './envUtils.js';
+} from "./auth.js";
+import { getGlobalConfig } from "./config.js";
+import { isEnvTruthy } from "./envUtils.js";
 
 export function hasConsoleBillingAccess(): boolean {
   // Check if cost reporting is disabled via environment variable
@@ -38,8 +38,8 @@ export function hasConsoleBillingAccess(): boolean {
 
   // Users have billing access if they are admins or billing roles at either workspace or organization level
   return (
-    ['admin', 'billing'].includes(orgRole) ||
-    ['workspace_admin', 'workspace_billing'].includes(workspaceRole)
+    ["admin", "billing"].includes(orgRole) ||
+    ["workspace_admin", "workspace_billing"].includes(workspaceRole)
   );
 }
 
@@ -63,7 +63,7 @@ export function hasClaudeAiBillingAccess(): boolean {
   const subscriptionType = getSubscriptionType();
 
   // Consumer plans (Max/Pro) - individual users always have billing access
-  if (subscriptionType === 'max' || subscriptionType === 'pro') {
+  if (subscriptionType === "max" || subscriptionType === "pro") {
     return true;
   }
 
@@ -71,5 +71,5 @@ export function hasClaudeAiBillingAccess(): boolean {
   const config = getGlobalConfig();
   const orgRole = config.oauthAccount?.organizationRole;
 
-  return !!orgRole && ['admin', 'billing', 'owner', 'primary_owner'].includes(orgRole);
+  return !!orgRole && ["admin", "billing", "owner", "primary_owner"].includes(orgRole);
 }

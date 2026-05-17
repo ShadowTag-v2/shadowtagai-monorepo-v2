@@ -1,14 +1,14 @@
-import { c as _c } from 'react/compiler-runtime';
-import { removeSandboxViolationTags } from 'src/utils/sandbox/sandbox-ui-utils.js';
-import { KeyboardShortcutHint } from '../../components/design-system/KeyboardShortcutHint.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { OutputLine } from '../../components/shell/OutputLine.js';
-import { ShellTimeDisplay } from '../../components/shell/ShellTimeDisplay.js';
-import { Box, Text } from '../../ink.js';
-import type { Out as BashOut } from './BashTool.js';
+import { c as _c } from "react/compiler-runtime";
+import { removeSandboxViolationTags } from "src/utils/sandbox/sandbox-ui-utils.js";
+import { KeyboardShortcutHint } from "../../components/design-system/KeyboardShortcutHint.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { OutputLine } from "../../components/shell/OutputLine.js";
+import { ShellTimeDisplay } from "../../components/shell/ShellTimeDisplay.js";
+import { Box, Text } from "../../ink.js";
+import type { Out as BashOut } from "./BashTool.js";
 
 type Props = {
-  content: Omit<BashOut, 'interrupted'>;
+  content: Omit<BashOut, "interrupted">;
   verbose: boolean;
   timeoutMs?: number;
 };
@@ -57,7 +57,7 @@ function extractCwdResetWarning(stderr: string): {
   // Extract the warning message from capture group 1
   const cwdResetWarning = match[1] ?? null;
   // Remove the warning from stderr (replace the full match)
-  const cleanedStderr = stderr.replace(SHELL_CWD_RESET_PATTERN, '').trim();
+  const cleanedStderr = stderr.replace(SHELL_CWD_RESET_PATTERN, "").trim();
   return {
     cleanedStderr,
     cwdResetWarning,
@@ -74,8 +74,8 @@ export default function BashToolResultMessage(t0) {
     noOutputExpected,
     backgroundTaskId,
   } = t1;
-  const stdout = t2 === undefined ? '' : t2;
-  const stdErrWithViolations = t3 === undefined ? '' : t3;
+  const stdout = t2 === undefined ? "" : t2;
+  const stdErrWithViolations = t3 === undefined ? "" : t3;
   let T0;
   let cwdResetWarning;
   let stderr;
@@ -84,7 +84,7 @@ export default function BashToolResultMessage(t0) {
   let t6;
   let t7;
   if ($[0] !== isImage || $[1] !== stdErrWithViolations || $[2] !== stdout || $[3] !== verbose) {
-    t7 = Symbol.for('react.early_return_sentinel');
+    t7 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const { cleanedStderr: stderrWithoutViolations } =
         extractSandboxViolations(stdErrWithViolations);
@@ -92,7 +92,7 @@ export default function BashToolResultMessage(t0) {
         extractCwdResetWarning(stderrWithoutViolations));
       if (isImage) {
         let t8;
-        if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+        if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
           t8 = (
             <MessageResponse height={1}>
               <Text dimColor={true}>[Image data detected and sent to Claude]</Text>
@@ -106,9 +106,9 @@ export default function BashToolResultMessage(t0) {
         break bb0;
       }
       T0 = Box;
-      t4 = 'column';
+      t4 = "column";
       if ($[12] !== stdout || $[13] !== verbose) {
-        t5 = stdout !== '' ? <OutputLine content={stdout} verbose={verbose} /> : null;
+        t5 = stdout !== "" ? <OutputLine content={stdout} verbose={verbose} /> : null;
         $[12] = stdout;
         $[13] = verbose;
         $[14] = t5;
@@ -116,7 +116,7 @@ export default function BashToolResultMessage(t0) {
         t5 = $[14];
       }
       t6 =
-        stderr.trim() !== '' ? (
+        stderr.trim() !== "" ? (
           <OutputLine content={stderr} verbose={verbose} isError={true} />
         ) : null;
     }
@@ -140,7 +140,7 @@ export default function BashToolResultMessage(t0) {
     t6 = $[9];
     t7 = $[10];
   }
-  if (t7 !== Symbol.for('react.early_return_sentinel')) {
+  if (t7 !== Symbol.for("react.early_return_sentinel")) {
     return t7;
   }
   let t8;
@@ -165,16 +165,16 @@ export default function BashToolResultMessage(t0) {
     $[22] !== stdout
   ) {
     t9 =
-      stdout === '' && stderr.trim() === '' && !cwdResetWarning ? (
+      stdout === "" && stderr.trim() === "" && !cwdResetWarning ? (
         <MessageResponse height={1}>
           <Text dimColor={true}>
             {backgroundTaskId ? (
               <>
-                Running in the background{' '}
-                <KeyboardShortcutHint shortcut={'\u2193'} action="manage" parens={true} />
+                Running in the background{" "}
+                <KeyboardShortcutHint shortcut={"\u2193"} action="manage" parens={true} />
               </>
             ) : (
-              returnCodeInterpretation || (noOutputExpected ? 'Done' : '(No output)')
+              returnCodeInterpretation || (noOutputExpected ? "Done" : "(No output)")
             )}
           </Text>
         </MessageResponse>

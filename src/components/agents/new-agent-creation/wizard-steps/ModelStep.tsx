@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
-import { ModelSelector } from '../../ModelSelector.js';
+import { c as _c } from "react/compiler-runtime";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../../design-system/KeyboardShortcutHint.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
+import { ModelSelector } from "../../ModelSelector.js";
 export function ModelStep() {
   const $ = _c(8);
   const { goNext, goBack, updateWizardData, wizardData } = useWizard();
@@ -24,10 +24,10 @@ export function ModelStep() {
   }
   const handleComplete = t0;
   let t1;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <Byline>
-        <KeyboardShortcutHint shortcut={'\u2191\u2193'} action="navigate" />
+        <KeyboardShortcutHint shortcut={"\u2191\u2193"} action="navigate" />
         <KeyboardShortcutHint shortcut="Enter" action="select" />
         <ConfigurableShortcutHint
           action="confirm:no"

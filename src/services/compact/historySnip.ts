@@ -40,7 +40,7 @@ function groupByApiRound(messages: MessageLike[]): MessageLike[][] {
   let lastAssistantId: string | undefined;
 
   for (const msg of messages) {
-    const isAssistant = msg.role === 'assistant' || msg.type === 'assistant';
+    const isAssistant = msg.role === "assistant" || msg.type === "assistant";
     const msgId = msg.message?.id;
 
     if (isAssistant && msgId !== lastAssistantId && current.length > 0) {
@@ -98,7 +98,7 @@ export function historySnip(messages: MessageLike[], historyLimit: number): Mess
 
   // Build result with snip indicator at the boundary
   const snipIndicator: MessageLike = {
-    role: 'system',
+    role: "system",
     content: `[System: ${snippedMessageCount} older messages across ${snippedGroupCount} API rounds were snipped to preserve context window budget. ${currentTokens} tokens retained.]`,
     historySnipped: true,
   };

@@ -1,10 +1,10 @@
-import type React from 'react';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { TOOL_SUMMARY_MAX_LENGTH } from '../../constants/toolLimits.js';
-import { Box, Text } from '../../ink.js';
-import type { ProgressMessage } from '../../types/message.js';
-import { truncate } from '../../utils/format.js';
-import type { Output, SearchResult, WebSearchProgress } from './WebSearchTool.js';
+import type React from "react";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { TOOL_SUMMARY_MAX_LENGTH } from "../../constants/toolLimits.js";
+import { Box, Text } from "../../ink.js";
+import type { ProgressMessage } from "../../types/message.js";
+import { truncate } from "../../utils/format.js";
+import type { Output, SearchResult, WebSearchProgress } from "./WebSearchTool.js";
 
 function getSearchSummary(results: (SearchResult | string | null | undefined)[]): {
   searchCount: number;
@@ -13,7 +13,7 @@ function getSearchSummary(results: (SearchResult | string | null | undefined)[])
   let searchCount = 0;
   let totalResultCount = 0;
   for (const result of results) {
-    if (result != null && typeof result !== 'string') {
+    if (result != null && typeof result !== "string") {
       searchCount++;
       totalResultCount += result.content?.length ?? 0;
     }
@@ -42,16 +42,16 @@ export function renderToolUseMessage(
   if (!query) {
     return null;
   }
-  let message = '';
+  let message = "";
   if (query) {
     message += `"${query}"`;
   }
   if (verbose) {
     if (allowed_domains && allowed_domains.length > 0) {
-      message += `, only allowing domains: ${allowed_domains.join(', ')}`;
+      message += `, only allowing domains: ${allowed_domains.join(", ")}`;
     }
     if (blocked_domains && blocked_domains.length > 0) {
-      message += `, blocking domains: ${blocked_domains.join(', ')}`;
+      message += `, blocking domains: ${blocked_domains.join(", ")}`;
     }
   }
   return message;
@@ -68,13 +68,13 @@ export function renderToolUseProgressMessage(
   }
   const data = lastProgress.data;
   switch (data.type) {
-    case 'query_update':
+    case "query_update":
       return (
         <MessageResponse>
           <Text dimColor>Searching: {data.query}</Text>
         </MessageResponse>
       );
-    case 'search_results_received':
+    case "search_results_received":
       return (
         <MessageResponse>
           <Text dimColor>
@@ -97,7 +97,7 @@ export function renderToolResultMessage(output: Output): React.ReactNode {
       <MessageResponse height={1}>
         <Text>
           Did {searchCount} search
-          {searchCount !== 1 ? 'es' : ''} in {timeDisplay}
+          {searchCount !== 1 ? "es" : ""} in {timeDisplay}
         </Text>
       </MessageResponse>
     </Box>

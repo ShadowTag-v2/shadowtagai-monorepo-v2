@@ -1,19 +1,19 @@
-import axios from 'axios';
-import memoize from 'lodash-es/memoize.js';
+import axios from "axios";
+import memoize from "lodash-es/memoize.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { getOauthAccountInfo, isConsumerSubscriber } from 'src/utils/auth.js';
-import { logForDebugging } from 'src/utils/debug.js';
-import { gracefulShutdown } from 'src/utils/gracefulShutdown.js';
-import { isEssentialTrafficOnly } from 'src/utils/privacyLevel.js';
-import { writeToStderr } from 'src/utils/process.js';
-import { getOauthConfig } from '../../constants/oauth.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { getAuthHeaders, getUserAgent, withOAuth401Retry } from '../../utils/http.js';
-import { logError } from '../../utils/log.js';
-import { getClaudeCodeUserAgent } from '../../utils/userAgent.js';
+} from "src/services/analytics/index.js";
+import { getOauthAccountInfo, isConsumerSubscriber } from "src/utils/auth.js";
+import { logForDebugging } from "src/utils/debug.js";
+import { gracefulShutdown } from "src/utils/gracefulShutdown.js";
+import { isEssentialTrafficOnly } from "src/utils/privacyLevel.js";
+import { writeToStderr } from "src/utils/process.js";
+import { getOauthConfig } from "../../constants/oauth.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { getAuthHeaders, getUserAgent, withOAuth401Retry } from "../../utils/http.js";
+import { logError } from "../../utils/log.js";
+import { getClaudeCodeUserAgent } from "../../utils/userAgent.js";
 
 // Cache expiration: 24 hours
 const GROVE_CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000;
@@ -61,7 +61,7 @@ export const getGroveSettings = memoize(async (): Promise<ApiResult<AccountSetti
         {
           headers: {
             ...authHeaders.headers,
-            'User-Agent': getClaudeCodeUserAgent(),
+            "User-Agent": getClaudeCodeUserAgent(),
           },
         },
       );
@@ -94,7 +94,7 @@ export async function markGroveNoticeViewed(): Promise<void> {
         {
           headers: {
             ...authHeaders.headers,
-            'User-Agent': getClaudeCodeUserAgent(),
+            "User-Agent": getClaudeCodeUserAgent(),
           },
         },
       );
@@ -126,7 +126,7 @@ export async function updateGroveSettings(groveEnabled: boolean): Promise<void> 
         {
           headers: {
             ...authHeaders.headers,
-            'User-Agent': getClaudeCodeUserAgent(),
+            "User-Agent": getClaudeCodeUserAgent(),
           },
         },
       );
@@ -163,20 +163,20 @@ export async function isQualifiedForGrove(): Promise<boolean> {
   // No cache - trigger background fetch and return false (non-blocking)
   // The Grove dialog won't show this session, but will next time if eligible
   if (!cachedEntry) {
-    logForDebugging('Grove: No cache, fetching config in background (dialog skipped this session)');
+    logForDebugging("Grove: No cache, fetching config in background (dialog skipped this session)");
     void fetchAndStoreGroveConfig(accountId);
     return false;
   }
 
   // Cache exists but is stale - return cached value and refresh in background
   if (now - cachedEntry.timestamp > GROVE_CACHE_EXPIRATION_MS) {
-    logForDebugging('Grove: Cache stale, returning cached data and refreshing in background');
+    logForDebugging("Grove: Cache stale, returning cached data and refreshing in background");
     void fetchAndStoreGroveConfig(accountId);
     return cachedEntry.grove_enabled;
   }
 
   // Cache is fresh - return it immediately
-  logForDebugging('Grove: Using fresh cached config');
+  logForDebugging("Grove: Using fresh cached config");
   return cachedEntry.grove_enabled;
 }
 
@@ -231,7 +231,7 @@ export const getGroveNoticeConfig = memoize(async (): Promise<ApiResult<GroveCon
       return axios.get<GroveConfig>(`${getOauthConfig().BASE_API_URL}/api/claude_code_grove`, {
         headers: {
           ...authHeaders.headers,
-          'User-Agent': getUserAgent(),
+          "User-Agent": getUserAgent(),
         },
         timeout: 3000, // Short timeout - if slow, skip Grove dialog
       });
@@ -310,20 +310,20 @@ export async function checkGroveForNonInteractive(): Promise<void> {
   if (shouldShowGrove) {
     // shouldShowGrove is only true if both API calls succeeded
     const config = configResult.success ? configResult.data : null;
-    logEvent('tengu_grove_print_viewed', {
+    logEvent("tengu_grove_print_viewed", {
       dismissable:
         config?.notice_is_grace_period as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
     if (config === null || config.notice_is_grace_period) {
       // Grace period is still active - show informational message and continue
       writeToStderr(
-        '\nAn update to our Consumer Terms and Privacy Policy will take effect on October 8, 2025. Run `claude` to review the updated terms.\n\n',
+        "\nAn update to our Consumer Terms and Privacy Policy will take effect on October 8, 2025. Run `claude` to review the updated terms.\n\n",
       );
       await markGroveNoticeViewed();
     } else {
       // Grace period has ended - show error message and exit
       writeToStderr(
-        '\n[ACTION REQUIRED] An update to our Consumer Terms and Privacy Policy has taken effect on October 8, 2025. You must run `claude` to review the updated terms.\n\n',
+        "\n[ACTION REQUIRED] An update to our Consumer Terms and Privacy Policy has taken effect on October 8, 2025. You must run `claude` to review the updated terms.\n\n",
       );
       await gracefulShutdown(1);
     }

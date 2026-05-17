@@ -1,8 +1,8 @@
-import { isAbsolute, normalize } from 'node:path';
-import { logForDebugging } from '../debug.js';
-import { isENOENT } from '../errors.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { containsPathTraversal } from '../path.js';
+import { isAbsolute, normalize } from "node:path";
+import { logForDebugging } from "../debug.js";
+import { isENOENT } from "../errors.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { containsPathTraversal } from "../path.js";
 
 const LIMITS = {
   MAX_FILE_SIZE: 512 * 1024 * 1024, // 512MB per file
@@ -111,7 +111,7 @@ export function validateZipFile(
  * when this module is reached via the plugin loader chain.
  */
 export async function unzipFile(zipData: Buffer): Promise<Record<string, Uint8Array>> {
-  const { unzipSync } = await import('fflate');
+  const { unzipSync } = await import("fflate");
   const compressedSize = zipData.length;
 
   const state: ZipValidationState = {
@@ -185,7 +185,7 @@ export function parseZipModes(data: Uint8Array): Record<string, number> {
     const extraLen = buf.readUInt16LE(off + 30);
     const commentLen = buf.readUInt16LE(off + 32);
     const externalAttr = buf.readUInt32LE(off + 38);
-    const name = buf.toString('utf8', off + 46, off + 46 + nameLen);
+    const name = buf.toString("utf8", off + 46, off + 46 + nameLen);
 
     // versionMadeBy high byte = host OS. 3 = Unix. For Unix zips, the high
     // 16 bits of externalAttr hold st_mode (file type + permission bits).

@@ -1,23 +1,23 @@
-import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { c as _c } from 'react/compiler-runtime';
-import { BLACK_CIRCLE } from '../../constants/figures.js';
-import { Box, Text, type TextProps } from '../../ink.js';
-import { extractTag } from '../../utils/messages.js';
+import type { TextBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import { c as _c } from "react/compiler-runtime";
+import { BLACK_CIRCLE } from "../../constants/figures.js";
+import { Box, Text, type TextProps } from "../../ink.js";
+import { extractTag } from "../../utils/messages.js";
 
 type Props = {
   addMargin: boolean;
   param: TextBlockParam;
 };
-function getStatusColor(status: string | null): TextProps['color'] {
+function getStatusColor(status: string | null): TextProps["color"] {
   switch (status) {
-    case 'completed':
-      return 'success';
-    case 'failed':
-      return 'error';
-    case 'killed':
-      return 'warning';
+    case "completed":
+      return "success";
+    case "failed":
+      return "error";
+    case "killed":
+      return "warning";
     default:
-      return 'text';
+      return "text";
   }
 }
 export function UserAgentNotificationMessage(t0) {
@@ -26,7 +26,7 @@ export function UserAgentNotificationMessage(t0) {
   const { text } = t1;
   let t2;
   if ($[0] !== text) {
-    t2 = extractTag(text, 'summary');
+    t2 = extractTag(text, "summary");
     $[0] = text;
     $[1] = t2;
   } else {
@@ -38,7 +38,7 @@ export function UserAgentNotificationMessage(t0) {
   }
   let t3;
   if ($[2] !== text) {
-    const status = extractTag(text, 'status');
+    const status = extractTag(text, "status");
     t3 = getStatusColor(status);
     $[2] = text;
     $[3] = t3;

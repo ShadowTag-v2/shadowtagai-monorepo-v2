@@ -1,6 +1,6 @@
-import React, { Children, isValidElement } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../../ink.js';
+import React, { Children, isValidElement } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../../ink.js";
 
 type Props = {
   /** The items to join with a middot separator */
@@ -41,7 +41,7 @@ export function Byline(t0) {
   let t1;
   let t2;
   if ($[0] !== children) {
-    t2 = Symbol.for('react.early_return_sentinel');
+    t2 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const validChildren = Children.toArray(children);
       if (validChildren.length === 0) {
@@ -57,7 +57,7 @@ export function Byline(t0) {
     t1 = $[1];
     t2 = $[2];
   }
-  if (t2 !== Symbol.for('react.early_return_sentinel')) {
+  if (t2 !== Symbol.for("react.early_return_sentinel")) {
     return t2;
   }
   let t3;

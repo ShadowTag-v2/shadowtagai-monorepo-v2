@@ -44,7 +44,7 @@ export function formatAgentId(agentName: string, teamName: string): string {
  * Returns null if the ID doesn't contain the @ separator.
  */
 export function parseAgentId(agentId: string): { agentName: string; teamName: string } | null {
-  const atIndex = agentId.indexOf('@');
+  const atIndex = agentId.indexOf("@");
   if (atIndex === -1) {
     return null;
   }
@@ -69,7 +69,7 @@ export function generateRequestId(requestType: string, agentId: string): string 
 export function parseRequestId(
   requestId: string,
 ): { requestType: string; timestamp: number; agentId: string } | null {
-  const atIndex = requestId.indexOf('@');
+  const atIndex = requestId.indexOf("@");
   if (atIndex === -1) {
     return null;
   }
@@ -77,7 +77,7 @@ export function parseRequestId(
   const prefix = requestId.slice(0, atIndex);
   const agentId = requestId.slice(atIndex + 1);
 
-  const lastDashIndex = prefix.lastIndexOf('-');
+  const lastDashIndex = prefix.lastIndexOf("-");
   if (lastDashIndex === -1) {
     return null;
   }

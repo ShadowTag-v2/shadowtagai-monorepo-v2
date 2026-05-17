@@ -5,7 +5,7 @@
  * For example, grep returns 1 when no matches are found, which is not an error condition.
  */
 
-import { splitCommand_DEPRECATED } from '../../utils/bash/commands.js';
+import { splitCommand_DEPRECATED } from "../../utils/bash/commands.js";
 
 export type CommandSemantic = (
   exitCode: number,
@@ -30,55 +30,55 @@ const DEFAULT_SEMANTIC: CommandSemantic = (exitCode, _stdout, _stderr) => ({
 const COMMAND_SEMANTICS: Map<string, CommandSemantic> = new Map([
   // grep: 0=matches found, 1=no matches, 2+=error
   [
-    'grep',
+    "grep",
     (exitCode, _stdout, _stderr) => ({
       isError: exitCode >= 2,
-      message: exitCode === 1 ? 'No matches found' : undefined,
+      message: exitCode === 1 ? "No matches found" : undefined,
     }),
   ],
 
   // ripgrep has same semantics as grep
   [
-    'rg',
+    "rg",
     (exitCode, _stdout, _stderr) => ({
       isError: exitCode >= 2,
-      message: exitCode === 1 ? 'No matches found' : undefined,
+      message: exitCode === 1 ? "No matches found" : undefined,
     }),
   ],
 
   // find: 0=success, 1=partial success (some dirs inaccessible), 2+=error
   [
-    'find',
+    "find",
     (exitCode, _stdout, _stderr) => ({
       isError: exitCode >= 2,
-      message: exitCode === 1 ? 'Some directories were inaccessible' : undefined,
+      message: exitCode === 1 ? "Some directories were inaccessible" : undefined,
     }),
   ],
 
   // diff: 0=no differences, 1=differences found, 2+=error
   [
-    'diff',
+    "diff",
     (exitCode, _stdout, _stderr) => ({
       isError: exitCode >= 2,
-      message: exitCode === 1 ? 'Files differ' : undefined,
+      message: exitCode === 1 ? "Files differ" : undefined,
     }),
   ],
 
   // test/[: 0=condition true, 1=condition false, 2+=error
   [
-    'test',
+    "test",
     (exitCode, _stdout, _stderr) => ({
       isError: exitCode >= 2,
-      message: exitCode === 1 ? 'Condition is false' : undefined,
+      message: exitCode === 1 ? "Condition is false" : undefined,
     }),
   ],
 
   // [ is an alias for test
   [
-    '[',
+    "[",
     (exitCode, _stdout, _stderr) => ({
       isError: exitCode >= 2,
-      message: exitCode === 1 ? 'Condition is false' : undefined,
+      message: exitCode === 1 ? "Condition is false" : undefined,
     }),
   ],
 
@@ -100,7 +100,7 @@ function getCommandSemantic(command: string): CommandSemantic {
  * Extract just the command name (first word) from a single command string.
  */
 function extractBaseCommand(command: string): string {
-  return command.trim().split(/\s+/)[0] || '';
+  return command.trim().split(/\s+/)[0] || "";
 }
 
 /**

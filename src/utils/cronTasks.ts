@@ -9,23 +9,23 @@
 // File format:
 //   { "tasks": [{ id, cron, prompt, createdAt, recurring?, permanent? }] }
 
-import { randomUUID } from 'node:crypto';
-import { readFileSync } from 'node:fs';
-import { mkdir, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import {
   addSessionCronTask,
   getProjectRoot,
   getSessionCronTasks,
   removeSessionCronTasks,
-} from '../bootstrap/state.js';
-import { computeNextCronRun, parseCronExpression } from './cron.js';
-import { logForDebugging } from './debug.js';
-import { isFsInaccessible } from './errors.js';
-import { getFsImplementation } from './fsOperations.js';
-import { safeParseJSON } from './json.js';
-import { logError } from './log.js';
-import { jsonStringify } from './slowOperations.js';
+} from "../bootstrap/state.js";
+import { computeNextCronRun, parseCronExpression } from "./cron.js";
+import { logForDebugging } from "./debug.js";
+import { isFsInaccessible } from "./errors.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { safeParseJSON } from "./json.js";
+import { logError } from "./log.js";
+import { jsonStringify } from "./slowOperations.js";
 
 export type CronTask = {
   id: string;
@@ -71,7 +71,7 @@ export type CronTask = {
 
 type CronFile = { tasks: CronTask[] };
 
-const CRON_FILE_REL = join('.claude', 'scheduled_tasks.json');
+const CRON_FILE_REL = join(".claude", "scheduled_tasks.json");
 
 /**
  * Path to the cron file. `dir` defaults to getProjectRoot() — pass it
@@ -92,7 +92,7 @@ export async function readCronTasks(dir?: string): Promise<CronTask[]> {
   const fs = getFsImplementation();
   let raw: string;
   try {
-    raw = await fs.readFile(getCronFilePath(dir), { encoding: 'utf-8' });
+    raw = await fs.readFile(getCronFilePath(dir), { encoding: "utf-8" });
   } catch (e: unknown) {
     if (isFsInaccessible(e)) return [];
     logError(e);
@@ -100,7 +100,7 @@ export async function readCronTasks(dir?: string): Promise<CronTask[]> {
   }
 
   const parsed = safeParseJSON(raw, false);
-  if (!parsed || typeof parsed !== 'object') return [];
+  if (!parsed || typeof parsed !== "object") return [];
   const file = parsed as Partial<CronFile>;
   if (!Array.isArray(file.tasks)) return [];
 
@@ -108,10 +108,10 @@ export async function readCronTasks(dir?: string): Promise<CronTask[]> {
   for (const t of file.tasks) {
     if (
       !t ||
-      typeof t.id !== 'string' ||
-      typeof t.cron !== 'string' ||
-      typeof t.prompt !== 'string' ||
-      typeof t.createdAt !== 'number'
+      typeof t.id !== "string" ||
+      typeof t.cron !== "string" ||
+      typeof t.prompt !== "string" ||
+      typeof t.createdAt !== "number"
     ) {
       logForDebugging(`[ScheduledTasks] skipping malformed task: ${jsonStringify(t)}`);
       continue;
@@ -125,7 +125,7 @@ export async function readCronTasks(dir?: string): Promise<CronTask[]> {
       cron: t.cron,
       prompt: t.prompt,
       createdAt: t.createdAt,
-      ...(typeof t.lastFiredAt === 'number' ? { lastFiredAt: t.lastFiredAt } : {}),
+      ...(typeof t.lastFiredAt === "number" ? { lastFiredAt: t.lastFiredAt } : {}),
       ...(t.recurring ? { recurring: true } : {}),
       ...(t.permanent ? { permanent: true } : {}),
     });
@@ -141,12 +141,12 @@ export function hasCronTasksSync(dir?: string): boolean {
   let raw: string;
   try {
     // eslint-disable-next-line custom-rules/no-sync-fs -- called once from cronScheduler.start()
-    raw = readFileSync(getCronFilePath(dir), 'utf-8');
+    raw = readFileSync(getCronFilePath(dir), "utf-8");
   } catch {
     return false;
   }
   const parsed = safeParseJSON(raw, false);
-  if (!parsed || typeof parsed !== 'object') return false;
+  if (!parsed || typeof parsed !== "object") return false;
   const tasks = (parsed as Partial<CronFile>).tasks;
   return Array.isArray(tasks) && tasks.length > 0;
 }
@@ -158,14 +158,14 @@ export function hasCronTasksSync(dir?: string): boolean {
  */
 export async function writeCronTasks(tasks: CronTask[], dir?: string): Promise<void> {
   const root = dir ?? getProjectRoot();
-  await mkdir(join(root, '.claude'), { recursive: true });
+  await mkdir(join(root, ".claude"), { recursive: true });
   // Strip the runtime-only `durable` flag — everything on disk is durable
   // by definition, and keeping the flag out means readCronTasks() naturally
   // yields durable: undefined without having to set it explicitly.
   const body: CronFile = {
     tasks: tasks.map(({ durable: _durable, ...rest }) => rest),
   };
-  await writeFile(getCronFilePath(root), `${jsonStringify(body, null, 2)}\n`, 'utf-8');
+  await writeFile(getCronFilePath(root), `${jsonStringify(body, null, 2)}\n`, "utf-8");
 }
 
 /**

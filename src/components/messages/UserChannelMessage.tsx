@@ -1,9 +1,9 @@
-import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { c as _c } from 'react/compiler-runtime';
-import { CHANNEL_ARROW } from '../../constants/figures.js';
-import { CHANNEL_TAG } from '../../constants/xml.js';
-import { Box, Text } from '../../ink.js';
-import { truncateToWidth } from '../../utils/format.js';
+import type { TextBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import { c as _c } from "react/compiler-runtime";
+import { CHANNEL_ARROW } from "../../constants/figures.js";
+import { CHANNEL_TAG } from "../../constants/xml.js";
+import { Box, Text } from "../../ink.js";
+import { truncateToWidth } from "../../utils/format.js";
 
 type Props = {
   addMargin: boolean;
@@ -21,7 +21,7 @@ const USER_ATTR_RE = /\buser="([^"]+)"/;
 // addPluginScopeToServers — show just the leaf. Matches the suffix-match
 // logic in isServerInChannels.
 function displayServerName(name: string): string {
-  const i = name.lastIndexOf(':');
+  const i = name.lastIndexOf(":");
   return i === -1 ? name : name.slice(i + 1);
 }
 const TRUNCATE_AT = 60;
@@ -41,7 +41,7 @@ export function UserChannelMessage(t0) {
   let truncated;
   let user;
   if ($[0] !== addMargin || $[1] !== text) {
-    t7 = Symbol.for('react.early_return_sentinel');
+    t7 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const m = CHANNEL_RE.exec(text);
       if (!m) {
@@ -49,22 +49,22 @@ export function UserChannelMessage(t0) {
         break bb0;
       }
       const [, source, attrs, content] = m;
-      user = USER_ATTR_RE.exec(attrs ?? '')?.[1];
-      const body = (content ?? '').trim().replace(/\s+/g, ' ');
+      user = USER_ATTR_RE.exec(attrs ?? "")?.[1];
+      const body = (content ?? "").trim().replace(/\s+/g, " ");
       truncated = truncateToWidth(body, TRUNCATE_AT);
       T2 = Box;
       t6 = addMargin ? 1 : 0;
       T1 = Text;
-      if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
         t4 = <Text color="suggestion">{CHANNEL_ARROW}</Text>;
         $[13] = t4;
       } else {
         t4 = $[13];
       }
-      t5 = ' ';
+      t5 = " ";
       T0 = Text;
       t2 = true;
-      t3 = displayServerName(source ?? '');
+      t3 = displayServerName(source ?? "");
     }
     $[0] = addMargin;
     $[1] = text;
@@ -92,10 +92,10 @@ export function UserChannelMessage(t0) {
     truncated = $[11];
     user = $[12];
   }
-  if (t7 !== Symbol.for('react.early_return_sentinel')) {
+  if (t7 !== Symbol.for("react.early_return_sentinel")) {
     return t7;
   }
-  const t8 = user ? ` \u00b7 ${user}` : '';
+  const t8 = user ? ` \u00b7 ${user}` : "";
   let t9;
   if ($[14] !== T0 || $[15] !== t2 || $[16] !== t3 || $[17] !== t8) {
     t9 = (

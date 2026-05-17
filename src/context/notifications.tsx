@@ -1,9 +1,9 @@
-import type * as React from 'react';
-import { useCallback, useEffect } from 'react';
-import { useAppStateStore, useSetAppState } from 'src/state/AppState.js';
-import type { Theme } from '../utils/theme.js';
+import type * as React from "react";
+import { useCallback, useEffect } from "react";
+import { useAppStateStore, useSetAppState } from "src/state/AppState.js";
+import type { Theme } from "../utils/theme.js";
 
-type Priority = 'low' | 'medium' | 'high' | 'immediate';
+type Priority = "low" | "medium" | "high" | "immediate";
 type BaseNotification = {
   key: string;
   /**
@@ -85,7 +85,7 @@ export function useNotifications(): {
   const addNotification = useCallback<AddNotificationFn>(
     (notif: Notification) => {
       // Handle immediate priority notifications
-      if (notif.priority === 'immediate') {
+      if (notif.priority === "immediate") {
         // Clear any existing timeout since we're showing a new immediate notification
         if (currentTimeoutId) {
           clearTimeout(currentTimeoutId);
@@ -129,7 +129,7 @@ export function useNotifications(): {
               [
                 ...(prev.notifications.current ? [prev.notifications.current] : []),
                 ...prev.notifications.queue,
-              ].filter((_) => _.priority !== 'immediate' && !notif.invalidates?.includes(_.key)),
+              ].filter((_) => _.priority !== "immediate" && !notif.invalidates?.includes(_.key)),
           },
         }));
         return; // IMPORTANT: Exit addNotification for immediate notifications
@@ -212,7 +212,7 @@ export function useNotifications(): {
             current: invalidatesCurrent ? null : prev.notifications.current,
             queue: [
               ...prev.notifications.queue.filter(
-                (_) => _.priority !== 'immediate' && !notif.invalidates?.includes(_.key),
+                (_) => _.priority !== "immediate" && !notif.invalidates?.includes(_.key),
               ),
               notif,
             ],

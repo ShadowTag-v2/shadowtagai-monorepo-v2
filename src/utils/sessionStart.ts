@@ -1,14 +1,14 @@
-import { getMainThreadAgentType } from '../bootstrap/state.js';
-import type { HookResultMessage } from '../types/message.js';
-import { createAttachmentMessage } from './attachments.js';
-import { logForDebugging } from './debug.js';
-import { withDiagnosticsTiming } from './diagLogs.js';
-import { isBareMode } from './envUtils.js';
-import { updateWatchPaths } from './hooks/fileChangedWatcher.js';
-import { shouldAllowManagedHooksOnly } from './hooks/hooksConfigSnapshot.js';
-import { executeSessionStartHooks, executeSetupHooks } from './hooks.js';
-import { logError } from './log.js';
-import { loadPluginHooks } from './plugins/loadPluginHooks.js';
+import { getMainThreadAgentType } from "../bootstrap/state.js";
+import type { HookResultMessage } from "../types/message.js";
+import { createAttachmentMessage } from "./attachments.js";
+import { logForDebugging } from "./debug.js";
+import { withDiagnosticsTiming } from "./diagLogs.js";
+import { isBareMode } from "./envUtils.js";
+import { updateWatchPaths } from "./hooks/fileChangedWatcher.js";
+import { shouldAllowManagedHooksOnly } from "./hooks/hooksConfigSnapshot.js";
+import { executeSessionStartHooks, executeSetupHooks } from "./hooks.js";
+import { logError } from "./log.js";
+import { loadPluginHooks } from "./plugins/loadPluginHooks.js";
 
 type SessionStartHooksOptions = {
   sessionId?: string;
@@ -33,7 +33,7 @@ export function takeInitialUserMessage(): string | undefined {
 
 // Note to CLAUDE: do not add ANY "warmup" logic. It is **CRITICAL** that you do not add extra work on startup.
 export async function processSessionStartHooks(
-  source: 'startup' | 'resume' | 'clear' | 'compact',
+  source: "startup" | "resume" | "clear" | "compact",
   { sessionId, agentType, model, forceSyncExecution }: SessionStartHooksOptions = {},
 ): Promise<HookResultMessage[]> {
   // --bare skips all hooks. executeHooks already early-returns under --bare
@@ -49,7 +49,7 @@ export async function processSessionStartHooks(
   // Skip loading plugin hooks if restricted to managed hooks only
   // Plugin hooks are untrusted external code that should be blocked by policy
   if (shouldAllowManagedHooksOnly()) {
-    logForDebugging('Skipping plugin hooks - allowManagedHooksOnly is enabled');
+    logForDebugging("Skipping plugin hooks - allowManagedHooksOnly is enabled");
   } else {
     // Ensure plugin hooks are loaded before executing SessionStart hooks.
     // loadPluginHooks() may be called early during startup (fire-and-forget, non-blocking)
@@ -57,7 +57,7 @@ export async function processSessionStartHooks(
     // This function is memoized, so if hooks are already loaded, this returns immediately
     // with negligible overhead (just a cache lookup).
     try {
-      await withDiagnosticsTiming('load_plugin_hooks', () => loadPluginHooks());
+      await withDiagnosticsTiming("load_plugin_hooks", () => loadPluginHooks());
     } catch (error) {
       // Log error but don't crash - continue with session start without plugin hooks
       /* eslint-disable no-restricted-syntax -- both branches wrap with context, not a toError case */
@@ -75,40 +75,40 @@ export async function processSessionStartHooks(
 
       // Provide specific guidance based on error type
       const errorMessage = error instanceof Error ? error.message : String(error);
-      let userGuidance = '';
+      let userGuidance = "";
 
       if (
-        errorMessage.includes('Failed to clone') ||
-        errorMessage.includes('network') ||
-        errorMessage.includes('ETIMEDOUT') ||
-        errorMessage.includes('ENOTFOUND')
+        errorMessage.includes("Failed to clone") ||
+        errorMessage.includes("network") ||
+        errorMessage.includes("ETIMEDOUT") ||
+        errorMessage.includes("ENOTFOUND")
       ) {
         userGuidance =
-          'This appears to be a network issue. Check your internet connection and try again.';
+          "This appears to be a network issue. Check your internet connection and try again.";
       } else if (
-        errorMessage.includes('Permission denied') ||
-        errorMessage.includes('EACCES') ||
-        errorMessage.includes('EPERM')
+        errorMessage.includes("Permission denied") ||
+        errorMessage.includes("EACCES") ||
+        errorMessage.includes("EPERM")
       ) {
         userGuidance =
-          'This appears to be a permissions issue. Check file permissions on ~/.claude/plugins/';
+          "This appears to be a permissions issue. Check file permissions on ~/.claude/plugins/";
       } else if (
-        errorMessage.includes('Invalid') ||
-        errorMessage.includes('parse') ||
-        errorMessage.includes('JSON') ||
-        errorMessage.includes('schema')
+        errorMessage.includes("Invalid") ||
+        errorMessage.includes("parse") ||
+        errorMessage.includes("JSON") ||
+        errorMessage.includes("schema")
       ) {
         userGuidance =
-          'This appears to be a configuration issue. Check your plugin settings in .claude/settings.json';
+          "This appears to be a configuration issue. Check your plugin settings in .claude/settings.json";
       } else {
         userGuidance =
-          'Please fix the plugin configuration or remove problematic plugins from your settings.';
+          "Please fix the plugin configuration or remove problematic plugins from your settings.";
       }
 
       logForDebugging(
         `Warning: Failed to load plugin hooks. SessionStart hooks from plugins will not execute. ` +
           `Error: ${errorMessage}. ${userGuidance}`,
-        { level: 'warn' },
+        { level: "warn" },
       );
 
       // Continue execution - plugin hooks won't be available, but project-level hooks
@@ -149,11 +149,11 @@ export async function processSessionStartHooks(
   // If hooks provided additional context, add it as a message
   if (additionalContexts.length > 0) {
     const contextMessage = createAttachmentMessage({
-      type: 'hook_additional_context',
+      type: "hook_additional_context",
       content: additionalContexts,
-      hookName: 'SessionStart',
-      toolUseID: 'SessionStart',
-      hookEvent: 'SessionStart',
+      hookName: "SessionStart",
+      toolUseID: "SessionStart",
+      hookEvent: "SessionStart",
     });
     hookMessages.push(contextMessage);
   }
@@ -162,7 +162,7 @@ export async function processSessionStartHooks(
 }
 
 export async function processSetupHooks(
-  trigger: 'init' | 'maintenance',
+  trigger: "init" | "maintenance",
   { forceSyncExecution }: { forceSyncExecution?: boolean } = {},
 ): Promise<HookResultMessage[]> {
   // Same rationale as processSessionStartHooks above.
@@ -173,7 +173,7 @@ export async function processSetupHooks(
   const additionalContexts: string[] = [];
 
   if (shouldAllowManagedHooksOnly()) {
-    logForDebugging('Skipping plugin hooks - allowManagedHooksOnly is enabled');
+    logForDebugging("Skipping plugin hooks - allowManagedHooksOnly is enabled");
   } else {
     try {
       await loadPluginHooks();
@@ -181,7 +181,7 @@ export async function processSetupHooks(
       const errorMessage = error instanceof Error ? error.message : String(error);
       logForDebugging(
         `Warning: Failed to load plugin hooks. Setup hooks from plugins will not execute. Error: ${errorMessage}`,
-        { level: 'warn' },
+        { level: "warn" },
       );
     }
   }
@@ -202,11 +202,11 @@ export async function processSetupHooks(
 
   if (additionalContexts.length > 0) {
     const contextMessage = createAttachmentMessage({
-      type: 'hook_additional_context',
+      type: "hook_additional_context",
       content: additionalContexts,
-      hookName: 'Setup',
-      toolUseID: 'Setup',
-      hookEvent: 'Setup',
+      hookName: "Setup",
+      toolUseID: "Setup",
+      hookEvent: "Setup",
     });
     hookMessages.push(contextMessage);
   }

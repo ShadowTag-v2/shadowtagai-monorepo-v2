@@ -1,4 +1,4 @@
-import { setMaxListeners } from 'node:events';
+import { setMaxListeners } from "node:events";
 
 /**
  * Default max listeners for standard operations
@@ -45,7 +45,7 @@ function removeAbortHandler(
   const parent = this.deref();
   const handler = weakHandler.deref();
   if (parent && handler) {
-    parent.signal.removeEventListener('abort', handler);
+    parent.signal.removeEventListener("abort", handler);
   }
 }
 
@@ -81,13 +81,13 @@ export function createChildAbortController(
   const weakParent = new WeakRef(parent);
   const handler = propagateAbort.bind(weakParent, weakChild);
 
-  parent.signal.addEventListener('abort', handler, { once: true });
+  parent.signal.addEventListener("abort", handler, { once: true });
 
   // Auto-cleanup: remove parent listener when child is aborted (from any source).
   // Both parent and handler are weakly held — if either has been GC'd or the
   // parent already aborted ({once: true}), the cleanup is a harmless no-op.
   child.signal.addEventListener(
-    'abort',
+    "abort",
     removeAbortHandler.bind(weakParent, new WeakRef(handler)),
     { once: true },
   );

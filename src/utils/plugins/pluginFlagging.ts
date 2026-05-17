@@ -12,16 +12,16 @@
  * with writes.
  */
 
-import { randomBytes } from 'node:crypto';
-import { readFile, rename, unlink, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { logForDebugging } from '../debug.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { logError } from '../log.js';
-import { jsonParse, jsonStringify } from '../slowOperations.js';
-import { getPluginsDirectory } from './pluginDirectories.js';
+import { randomBytes } from "node:crypto";
+import { readFile, rename, unlink, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { logForDebugging } from "../debug.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { logError } from "../log.js";
+import { jsonParse, jsonStringify } from "../slowOperations.js";
+import { getPluginsDirectory } from "./pluginDirectories.js";
 
-const FLAGGED_PLUGINS_FILENAME = 'flagged-plugins.json';
+const FLAGGED_PLUGINS_FILENAME = "flagged-plugins.json";
 
 export type FlaggedPlugin = {
   flaggedAt: string;
@@ -40,10 +40,10 @@ function getFlaggedPluginsPath(): string {
 function parsePluginsData(content: string): Record<string, FlaggedPlugin> {
   const parsed = jsonParse(content) as unknown;
   if (
-    typeof parsed !== 'object' ||
+    typeof parsed !== "object" ||
     parsed === null ||
-    !('plugins' in parsed) ||
-    typeof (parsed as { plugins: unknown }).plugins !== 'object' ||
+    !("plugins" in parsed) ||
+    typeof (parsed as { plugins: unknown }).plugins !== "object" ||
     (parsed as { plugins: unknown }).plugins === null
   ) {
     return {};
@@ -53,14 +53,14 @@ function parsePluginsData(content: string): Record<string, FlaggedPlugin> {
   for (const [id, entry] of Object.entries(plugins)) {
     if (
       entry &&
-      typeof entry === 'object' &&
-      'flaggedAt' in entry &&
-      typeof (entry as { flaggedAt: unknown }).flaggedAt === 'string'
+      typeof entry === "object" &&
+      "flaggedAt" in entry &&
+      typeof (entry as { flaggedAt: unknown }).flaggedAt === "string"
     ) {
       const parsed: FlaggedPlugin = {
         flaggedAt: (entry as { flaggedAt: string }).flaggedAt,
       };
-      if ('seenAt' in entry && typeof (entry as { seenAt: unknown }).seenAt === 'string') {
+      if ("seenAt" in entry && typeof (entry as { seenAt: unknown }).seenAt === "string") {
         parsed.seenAt = (entry as { seenAt: string }).seenAt;
       }
       result[id] = parsed;
@@ -72,7 +72,7 @@ function parsePluginsData(content: string): Record<string, FlaggedPlugin> {
 async function readFromDisk(): Promise<Record<string, FlaggedPlugin>> {
   try {
     const content = await readFile(getFlaggedPluginsPath(), {
-      encoding: 'utf-8',
+      encoding: "utf-8",
     });
     return parsePluginsData(content);
   } catch {
@@ -82,14 +82,14 @@ async function readFromDisk(): Promise<Record<string, FlaggedPlugin>> {
 
 async function writeToDisk(plugins: Record<string, FlaggedPlugin>): Promise<void> {
   const filePath = getFlaggedPluginsPath();
-  const tempPath = `${filePath}.${randomBytes(8).toString('hex')}.tmp`;
+  const tempPath = `${filePath}.${randomBytes(8).toString("hex")}.tmp`;
 
   try {
     await getFsImplementation().mkdir(getPluginsDirectory());
 
     const content = jsonStringify({ plugins }, null, 2);
     await writeFile(tempPath, content, {
-      encoding: 'utf-8',
+      encoding: "utf-8",
       mode: 0o600,
     });
     await rename(tempPath, filePath);

@@ -1,5 +1,5 @@
-import type { BetaUsage as Usage } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import chalk from 'chalk';
+import type { BetaUsage as Usage } from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
+import chalk from "chalk";
 import {
   addToTotalCostState,
   addToTotalLinesChanged,
@@ -26,20 +26,20 @@ import {
   resetStateForTests,
   setCostStateForRestore,
   setHasUnknownModelCost,
-} from './bootstrap/state.js';
-import type { ModelUsage } from './entrypoints/agentSdkTypes.js';
+} from "./bootstrap/state.js";
+import type { ModelUsage } from "./entrypoints/agentSdkTypes.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from './services/analytics/index.js';
-import { getAdvisorUsage } from './utils/advisor.js';
-import { getCurrentProjectConfig, saveCurrentProjectConfig } from './utils/config.js';
-import { getContextWindowForModel, getModelMaxOutputTokens } from './utils/context.js';
-import { isFastModeEnabled } from './utils/fastMode.js';
-import { formatDuration, formatNumber } from './utils/format.js';
-import type { FpsMetrics } from './utils/fpsTracker.js';
-import { getCanonicalName } from './utils/model/model.js';
-import { calculateUSDCost } from './utils/modelCost.js';
+} from "./services/analytics/index.js";
+import { getAdvisorUsage } from "./utils/advisor.js";
+import { getCurrentProjectConfig, saveCurrentProjectConfig } from "./utils/config.js";
+import { getContextWindowForModel, getModelMaxOutputTokens } from "./utils/context.js";
+import { isFastModeEnabled } from "./utils/fastMode.js";
+import { formatDuration, formatNumber } from "./utils/format.js";
+import type { FpsMetrics } from "./utils/fpsTracker.js";
+import { getCanonicalName } from "./utils/model/model.js";
+import { calculateUSDCost } from "./utils/modelCost.js";
 
 export {
   addToTotalLinesChanged,
@@ -173,7 +173,7 @@ function formatCost(cost: number, maxDecimalPlaces: number = 4): string {
 function formatModelUsage(): string {
   const modelUsageMap = getModelUsage();
   if (Object.keys(modelUsageMap).length === 0) {
-    return 'Usage:                 0 input, 0 output, 0 cache read, 0 cache write';
+    return "Usage:                 0 input, 0 output, 0 cache read, 0 cache write";
   }
 
   // Accumulate usage by short name
@@ -201,14 +201,14 @@ function formatModelUsage(): string {
     accumulated.costUSD += usage.costUSD;
   }
 
-  let result = 'Usage by model:';
+  let result = "Usage by model:";
   for (const [shortName, usage] of Object.entries(usageByShortName)) {
     const usageString =
       `  ${formatNumber(usage.inputTokens)} input, ` +
       `${formatNumber(usage.outputTokens)} output, ` +
       `${formatNumber(usage.cacheReadInputTokens)} cache read, ` +
       `${formatNumber(usage.cacheCreationInputTokens)} cache write` +
-      (usage.webSearchRequests > 0 ? `, ${formatNumber(usage.webSearchRequests)} web search` : '') +
+      (usage.webSearchRequests > 0 ? `, ${formatNumber(usage.webSearchRequests)} web search` : "") +
       ` (${formatCost(usage.costUSD)})`;
     result += `\n${`${shortName}:`.padStart(21)}${usageString}`;
   }
@@ -218,7 +218,7 @@ function formatModelUsage(): string {
 export function formatTotalCost(): string {
   const costDisplay =
     formatCost(getTotalCostUSD()) +
-    (hasUnknownModelCost() ? ' (costs may be inaccurate due to usage of unknown models)' : '');
+    (hasUnknownModelCost() ? " (costs may be inaccurate due to usage of unknown models)" : "");
 
   const modelUsageDisplay = formatModelUsage();
 
@@ -226,7 +226,7 @@ export function formatTotalCost(): string {
     `Total cost:            ${costDisplay}\n` +
       `Total duration (API):  ${formatDuration(getTotalAPIDuration())}
 Total duration (wall): ${formatDuration(getTotalDuration())}
-Total code changes:    ${getTotalLinesAdded()} ${getTotalLinesAdded() === 1 ? 'line' : 'lines'} added, ${getTotalLinesRemoved()} ${getTotalLinesRemoved() === 1 ? 'line' : 'lines'} removed
+Total code changes:    ${getTotalLinesAdded()} ${getTotalLinesAdded() === 1 ? "line" : "lines"} added, ${getTotalLinesRemoved()} ${getTotalLinesRemoved() === 1 ? "line" : "lines"} removed
 ${modelUsageDisplay}`,
   );
 }
@@ -263,24 +263,24 @@ export function addToTotalSessionCost(cost: number, usage: Usage, model: string)
   addToTotalCostState(cost, modelUsage, model);
 
   const attrs =
-    isFastModeEnabled() && usage.speed === 'fast' ? { model, speed: 'fast' } : { model };
+    isFastModeEnabled() && usage.speed === "fast" ? { model, speed: "fast" } : { model };
 
   getCostCounter()?.add(cost, attrs);
-  getTokenCounter()?.add(usage.input_tokens, { ...attrs, type: 'input' });
-  getTokenCounter()?.add(usage.output_tokens, { ...attrs, type: 'output' });
+  getTokenCounter()?.add(usage.input_tokens, { ...attrs, type: "input" });
+  getTokenCounter()?.add(usage.output_tokens, { ...attrs, type: "output" });
   getTokenCounter()?.add(usage.cache_read_input_tokens ?? 0, {
     ...attrs,
-    type: 'cacheRead',
+    type: "cacheRead",
   });
   getTokenCounter()?.add(usage.cache_creation_input_tokens ?? 0, {
     ...attrs,
-    type: 'cacheCreation',
+    type: "cacheCreation",
   });
 
   let totalCost = cost;
   for (const advisorUsage of getAdvisorUsage(usage)) {
     const advisorCost = calculateUSDCost(advisorUsage.model, advisorUsage);
-    logEvent('tengu_advisor_tool_token_usage', {
+    logEvent("tengu_advisor_tool_token_usage", {
       advisor_model:
         advisorUsage.model as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       input_tokens: advisorUsage.input_tokens,

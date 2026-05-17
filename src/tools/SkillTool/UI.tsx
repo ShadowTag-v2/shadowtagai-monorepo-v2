@@ -1,44 +1,44 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type * as React from 'react';
-import { SubAgentProvider } from 'src/components/CtrlOToExpand.js';
-import { FallbackToolUseErrorMessage } from 'src/components/FallbackToolUseErrorMessage.js';
-import { FallbackToolUseRejectedMessage } from 'src/components/FallbackToolUseRejectedMessage.js';
-import type { z } from 'zod/v4';
-import type { Command } from '../../commands.js';
-import { Byline } from '../../components/design-system/Byline.js';
-import { Message as MessageComponent } from '../../components/Message.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { Box, Text } from '../../ink.js';
-import type { Tools } from '../../Tool.js';
-import type { ProgressMessage } from '../../types/message.js';
-import { buildSubagentLookups, EMPTY_LOOKUPS } from '../../utils/messages.js';
-import { plural } from '../../utils/stringUtils.js';
-import type { inputSchema, Output, Progress } from './SkillTool.js';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type * as React from "react";
+import { SubAgentProvider } from "src/components/CtrlOToExpand.js";
+import { FallbackToolUseErrorMessage } from "src/components/FallbackToolUseErrorMessage.js";
+import { FallbackToolUseRejectedMessage } from "src/components/FallbackToolUseRejectedMessage.js";
+import type { z } from "zod/v4";
+import type { Command } from "../../commands.js";
+import { Byline } from "../../components/design-system/Byline.js";
+import { Message as MessageComponent } from "../../components/Message.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { Box, Text } from "../../ink.js";
+import type { Tools } from "../../Tool.js";
+import type { ProgressMessage } from "../../types/message.js";
+import { buildSubagentLookups, EMPTY_LOOKUPS } from "../../utils/messages.js";
+import { plural } from "../../utils/stringUtils.js";
+import type { inputSchema, Output, Progress } from "./SkillTool.js";
 
 type Input = z.infer<ReturnType<typeof inputSchema>>;
 const MAX_PROGRESS_MESSAGES_TO_SHOW = 3;
-const INITIALIZING_TEXT = 'Initializing…';
+const INITIALIZING_TEXT = "Initializing…";
 export function renderToolResultMessage(output: Output): React.ReactNode {
   // Handle forked skill result
-  if ('status' in output && output.status === 'forked') {
+  if ("status" in output && output.status === "forked") {
     return (
       <MessageResponse height={1}>
         <Text>
-          <Byline>{['Done']}</Byline>
+          <Byline>{["Done"]}</Byline>
         </Text>
       </MessageResponse>
     );
   }
-  const parts: string[] = ['Successfully loaded skill'];
+  const parts: string[] = ["Successfully loaded skill"];
 
   // Show tools count (only for inline skills)
-  if ('allowedTools' in output && output.allowedTools && output.allowedTools.length > 0) {
+  if ("allowedTools" in output && output.allowedTools && output.allowedTools.length > 0) {
     const count = output.allowedTools.length;
-    parts.push(`${count} ${plural(count, 'tool')} allowed`);
+    parts.push(`${count} ${plural(count, "tool")} allowed`);
   }
 
   // Show model if non-default (only for inline skills)
-  if ('model' in output && output.model) {
+  if ("model" in output && output.model) {
     parts.push(output.model);
   }
   return (
@@ -62,7 +62,7 @@ export function renderToolUseMessage(
   }
   // Look up the command to check if it came from the legacy /commands folder
   const command = commands?.find((c) => c.name === skill);
-  const displayName = command?.loadedFrom === 'commands_DEPRECATED' ? `/${skill}` : skill;
+  const displayName = command?.loadedFrom === "commands_DEPRECATED" ? `/${skill}` : skill;
   return displayName;
 }
 export function renderToolUseProgressMessage(
@@ -115,7 +115,7 @@ export function renderToolUseProgressMessage(
         </SubAgentProvider>
         {hiddenCount > 0 && (
           <Text dimColor>
-            +{hiddenCount} more tool {plural(hiddenCount, 'use')}
+            +{hiddenCount} more tool {plural(hiddenCount, "use")}
           </Text>
         )}
       </Box>
@@ -145,7 +145,7 @@ export function renderToolUseRejectedMessage(
   );
 }
 export function renderToolUseErrorMessage(
-  result: ToolResultBlockParam['content'],
+  result: ToolResultBlockParam["content"],
   {
     progressMessagesForMessage,
     tools,

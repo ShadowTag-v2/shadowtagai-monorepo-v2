@@ -1,25 +1,25 @@
-import chalk from 'chalk';
-import figures from 'figures';
-import type * as React from 'react';
-import { useCallback, useMemo, useState } from 'react';
-import { useSetAppState } from 'src/state/AppState.js';
-import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import type { Tools } from '../../Tool.js';
-import { type AgentColorName, setAgentColor } from '../../tools/AgentTool/agentColorManager.js';
+import chalk from "chalk";
+import figures from "figures";
+import type * as React from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useSetAppState } from "src/state/AppState.js";
+import type { KeyboardEvent } from "../../ink/events/keyboard-event.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import type { Tools } from "../../Tool.js";
+import { type AgentColorName, setAgentColor } from "../../tools/AgentTool/agentColorManager.js";
 import {
   type AgentDefinition,
   getActiveAgentsFromList,
   isCustomAgent,
   isPluginAgent,
-} from '../../tools/AgentTool/loadAgentsDir.js';
-import { editFileInEditor } from '../../utils/promptEditor.js';
-import { getActualAgentFilePath, updateAgentFile } from './agentFileUtils.js';
-import { ColorPicker } from './ColorPicker.js';
-import { ModelSelector } from './ModelSelector.js';
-import { ToolSelector } from './ToolSelector.js';
-import { getAgentSourceDisplayName } from './utils.js';
+} from "../../tools/AgentTool/loadAgentsDir.js";
+import { editFileInEditor } from "../../utils/promptEditor.js";
+import { getActualAgentFilePath, updateAgentFile } from "./agentFileUtils.js";
+import { ColorPicker } from "./ColorPicker.js";
+import { ModelSelector } from "./ModelSelector.js";
+import { ToolSelector } from "./ToolSelector.js";
+import { getAgentSourceDisplayName } from "./utils.js";
 
 type Props = {
   agent: AgentDefinition;
@@ -27,7 +27,7 @@ type Props = {
   onSaved: (message: string) => void;
   onBack: () => void;
 };
-type EditMode = 'menu' | 'edit-tools' | 'edit-color' | 'edit-model';
+type EditMode = "menu" | "edit-tools" | "edit-color" | "edit-model";
 type SaveChanges = {
   tools?: string[];
   color?: AgentColorName;
@@ -35,7 +35,7 @@ type SaveChanges = {
 };
 export function AgentEditor({ agent, tools, onSaved, onBack }: Props): React.ReactNode {
   const setAppState = useSetAppState();
-  const [editMode, setEditMode] = useState<EditMode>('menu');
+  const [editMode, setEditMode] = useState<EditMode>("menu");
   const [selectedMenuIndex, setSelectedMenuIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<AgentColorName | undefined>(
@@ -102,7 +102,7 @@ export function AgentEditor({ agent, tools, onSaved, onBack }: Props): React.Rea
         onSaved(`Updated agent: ${chalk.bold(agent.agentType)}`);
         return true;
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to save agent');
+        setError(err instanceof Error ? err.message : "Failed to save agent");
         return false;
       }
     },
@@ -111,41 +111,41 @@ export function AgentEditor({ agent, tools, onSaved, onBack }: Props): React.Rea
   const menuItems = useMemo(
     () => [
       {
-        label: 'Open in editor',
+        label: "Open in editor",
         action: handleOpenInEditor,
       },
       {
-        label: 'Edit tools',
-        action: () => setEditMode('edit-tools'),
+        label: "Edit tools",
+        action: () => setEditMode("edit-tools"),
       },
       {
-        label: 'Edit model',
-        action: () => setEditMode('edit-model'),
+        label: "Edit model",
+        action: () => setEditMode("edit-model"),
       },
       {
-        label: 'Edit color',
-        action: () => setEditMode('edit-color'),
+        label: "Edit color",
+        action: () => setEditMode("edit-color"),
       },
     ],
     [handleOpenInEditor],
   );
   const handleEscape = useCallback(() => {
     setError(null);
-    if (editMode === 'menu') {
+    if (editMode === "menu") {
       onBack();
     } else {
-      setEditMode('menu');
+      setEditMode("menu");
     }
   }, [editMode, onBack]);
   const handleMenuKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === 'up') {
+      if (e.key === "up") {
         e.preventDefault();
         setSelectedMenuIndex((index) => Math.max(0, index - 1));
-      } else if (e.key === 'down') {
+      } else if (e.key === "down") {
         e.preventDefault();
         setSelectedMenuIndex((index_0) => Math.min(menuItems.length - 1, index_0 + 1));
-      } else if (e.key === 'return') {
+      } else if (e.key === "return") {
         e.preventDefault();
         const selectedItem = menuItems[selectedMenuIndex];
         if (selectedItem) {
@@ -155,8 +155,8 @@ export function AgentEditor({ agent, tools, onSaved, onBack }: Props): React.Rea
     },
     [menuItems, selectedMenuIndex],
   );
-  useKeybinding('confirm:no', handleEscape, {
-    context: 'Confirmation',
+  useKeybinding("confirm:no", handleEscape, {
+    context: "Confirmation",
   });
   const renderMenu = (): React.ReactNode => (
     <Box flexDirection="column" tabIndex={0} autoFocus onKeyDown={handleMenuKeyDown}>
@@ -164,8 +164,8 @@ export function AgentEditor({ agent, tools, onSaved, onBack }: Props): React.Rea
 
       <Box marginTop={1} flexDirection="column">
         {menuItems.map((item, index_1) => (
-          <Text key={item.label} color={index_1 === selectedMenuIndex ? 'suggestion' : undefined}>
-            {index_1 === selectedMenuIndex ? `${figures.pointer} ` : '  '}
+          <Text key={item.label} color={index_1 === selectedMenuIndex ? "suggestion" : undefined}>
+            {index_1 === selectedMenuIndex ? `${figures.pointer} ` : "  "}
             {item.label}
           </Text>
         ))}
@@ -179,41 +179,41 @@ export function AgentEditor({ agent, tools, onSaved, onBack }: Props): React.Rea
     </Box>
   );
   switch (editMode) {
-    case 'menu':
+    case "menu":
       return renderMenu();
-    case 'edit-tools':
+    case "edit-tools":
       return (
         <ToolSelector
           tools={tools}
           initialTools={agent.tools}
           onComplete={async (finalTools) => {
-            setEditMode('menu');
+            setEditMode("menu");
             await handleSave({
               tools: finalTools,
             });
           }}
         />
       );
-    case 'edit-color':
+    case "edit-color":
       return (
         <ColorPicker
           agentName={agent.agentType}
-          currentColor={selectedColor || (agent.color as AgentColorName) || 'automatic'}
+          currentColor={selectedColor || (agent.color as AgentColorName) || "automatic"}
           onConfirm={async (color) => {
             setSelectedColor(color);
-            setEditMode('menu');
+            setEditMode("menu");
             await handleSave({
               color,
             });
           }}
         />
       );
-    case 'edit-model':
+    case "edit-model":
       return (
         <ModelSelector
           initialModel={agent.model}
           onComplete={async (model) => {
-            setEditMode('menu');
+            setEditMode("menu");
             await handleSave({
               model,
             });

@@ -1,6 +1,6 @@
-import { lookup as dnsLookup } from 'node:dns';
-import { isIP } from 'node:net';
-import type { AddressFamily, LookupAddress as AxiosLookupAddress } from 'axios';
+import { lookup as dnsLookup } from "node:dns";
+import { isIP } from "node:net";
+import type { AddressFamily, LookupAddress as AxiosLookupAddress } from "axios";
 
 /**
  * SSRF guard for HTTP hooks.
@@ -53,7 +53,7 @@ export function isBlockedAddress(address: string): boolean {
 }
 
 function isBlockedV4(address: string): boolean {
-  const parts = address.split('.').map(Number);
+  const parts = address.split(".").map(Number);
   const [a, b] = parts;
   if (
     parts.length !== 4 ||
@@ -89,10 +89,10 @@ function isBlockedV6(address: string): boolean {
   const lower = address.toLowerCase();
 
   // ::1 loopback explicitly allowed
-  if (lower === '::1') return false;
+  if (lower === "::1") return false;
 
   // :: unspecified
-  if (lower === '::') return true;
+  if (lower === "::") return true;
 
   // IPv4-mapped IPv6 (0:0:0:0:0:ffff:X:Y in any representation — ::ffff:a.b.c.d,
   // ::ffff:XXXX:YYYY, expanded, or partially expanded). Extract the embedded
@@ -104,15 +104,15 @@ function isBlockedV6(address: string): boolean {
   }
 
   // fc00::/7 — unique local addresses (fc00:: through fdff::)
-  if (lower.startsWith('fc') || lower.startsWith('fd')) {
+  if (lower.startsWith("fc") || lower.startsWith("fd")) {
     return true;
   }
 
   // fe80::/10 — link-local. The /10 means fe80 through febf, but the first
   // hextet is always fe80 in practice (RFC 4291 requires the next 54 bits
   // to be zero). Check both to be safe.
-  const firstHextet = lower.split(':')[0];
-  if (firstHextet && firstHextet.length === 4 && firstHextet >= 'fe80' && firstHextet <= 'febf') {
+  const firstHextet = lower.split(":")[0];
+  if (firstHextet && firstHextet.length === 4 && firstHextet >= "fe80" && firstHextet <= "febf") {
     return true;
   }
 
@@ -129,11 +129,11 @@ function expandIPv6Groups(addr: string): number[] | null {
   // Handle trailing dotted-decimal IPv4 (e.g. ::ffff:169.254.169.254).
   // Replace it with its two hex groups so the rest of the expansion is uniform.
   let tailHextets: number[] = [];
-  if (addr.includes('.')) {
-    const lastColon = addr.lastIndexOf(':');
+  if (addr.includes(".")) {
+    const lastColon = addr.lastIndexOf(":");
     const v4 = addr.slice(lastColon + 1);
     addr = addr.slice(0, lastColon);
-    const octets = v4.split('.').map(Number);
+    const octets = v4.split(".").map(Number);
     if (octets.length !== 4 || octets.some((n) => !Number.isInteger(n) || n < 0 || n > 255)) {
       return null;
     }
@@ -141,24 +141,24 @@ function expandIPv6Groups(addr: string): number[] | null {
   }
 
   // Expand `::` (at most one) into the right number of zero groups.
-  const dbl = addr.indexOf('::');
+  const dbl = addr.indexOf("::");
   let head: string[];
   let tail: string[];
   if (dbl === -1) {
-    head = addr.split(':');
+    head = addr.split(":");
     tail = [];
   } else {
     const headStr = addr.slice(0, dbl);
     const tailStr = addr.slice(dbl + 2);
-    head = headStr === '' ? [] : headStr.split(':');
-    tail = tailStr === '' ? [] : tailStr.split(':');
+    head = headStr === "" ? [] : headStr.split(":");
+    tail = tailStr === "" ? [] : tailStr.split(":");
   }
 
   const target = 8 - tailHextets.length;
   const fill = target - head.length - tail.length;
   if (fill < 0) return null;
 
-  const hex = [...head, ...new Array<string>(fill).fill('0'), ...tail];
+  const hex = [...head, ...new Array<string>(fill).fill("0"), ...tail];
   const nums = hex.map((h) => parseInt(h, 16));
   if (nums.some((n) => Number.isNaN(n) || n < 0 || n > 0xffff)) {
     return null;
@@ -204,7 +204,7 @@ export function ssrfGuardedLookup(
     family?: AddressFamily,
   ) => void,
 ): void {
-  const wantsAll = 'all' in options && options.all === true;
+  const wantsAll = "all" in options && options.all === true;
 
   // If hostname is already an IP literal, validate it directly. dns.lookup
   // would short-circuit too, but checking here gives a clearer error and
@@ -212,7 +212,7 @@ export function ssrfGuardedLookup(
   const ipVersion = isIP(hostname);
   if (ipVersion !== 0) {
     if (isBlockedAddress(hostname)) {
-      callback(ssrfError(hostname, hostname), '');
+      callback(ssrfError(hostname, hostname), "");
       return;
     }
     const family = ipVersion === 6 ? 6 : 4;
@@ -226,13 +226,13 @@ export function ssrfGuardedLookup(
 
   dnsLookup(hostname, { all: true }, (err, addresses) => {
     if (err) {
-      callback(err, '');
+      callback(err, "");
       return;
     }
 
     for (const { address } of addresses) {
       if (isBlockedAddress(address)) {
-        callback(ssrfError(hostname, address), '');
+        callback(ssrfError(hostname, address), "");
         return;
       }
     }
@@ -241,10 +241,10 @@ export function ssrfGuardedLookup(
     if (!first) {
       callback(
         Object.assign(new Error(`ENOTFOUND ${hostname}`), {
-          code: 'ENOTFOUND',
+          code: "ENOTFOUND",
           hostname,
         }),
-        '',
+        "",
       );
       return;
     }
@@ -269,7 +269,7 @@ function ssrfError(hostname: string, address: string): NodeJS.ErrnoException {
     `HTTP hook blocked: ${hostname} resolves to ${address} (private/link-local address). Loopback (127.0.0.1, ::1) is allowed for local dev.`,
   );
   return Object.assign(err, {
-    code: 'ERR_HTTP_HOOK_BLOCKED_ADDRESS',
+    code: "ERR_HTTP_HOOK_BLOCKED_ADDRESS",
     hostname,
     address,
   });

@@ -1,11 +1,11 @@
-import * as path from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { getAllLspServers } from './config.js';
-import { createLSPServerInstance, type LSPServerInstance } from './LSPServerInstance.js';
-import type { ScopedLspServerConfig } from './types.js';
+import * as path from "node:path";
+import { pathToFileURL } from "node:url";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { getAllLspServers } from "./config.js";
+import { createLSPServerInstance, type LSPServerInstance } from "./LSPServerInstance.js";
+import type { ScopedLspServerConfig } from "./types.js";
 /**
  * LSP Server Manager interface returned by createLSPServerManager.
  * Manages multiple LSP server instances and routes requests based on file extensions.
@@ -107,7 +107,7 @@ export function createLSPServerManager(): LSPServerManager {
         // Register handler for workspace/configuration requests from the server
         // Some servers (like TypeScript) send these even when we say we don't support them
         instance.onRequest(
-          'workspace/configuration',
+          "workspace/configuration",
           (params: { items: Array<{ section?: string }> }) => {
             logForDebugging(`LSP: Received workspace/configuration request from ${serverName}`);
             // Return empty/null config for each requested item
@@ -134,7 +134,7 @@ export function createLSPServerManager(): LSPServerManager {
    */
   async function shutdown(): Promise<void> {
     const toStop = Array.from(servers.entries()).filter(
-      ([, s]) => s.state === 'running' || s.state === 'error',
+      ([, s]) => s.state === "running" || s.state === "error",
     );
 
     const results = await Promise.allSettled(toStop.map(([, server]) => server.stop()));
@@ -145,12 +145,12 @@ export function createLSPServerManager(): LSPServerManager {
 
     const errors = results
       .map((r, i) =>
-        r.status === 'rejected' ? `${toStop[i]?.[0]}: ${errorMessage(r.reason)}` : null,
+        r.status === "rejected" ? `${toStop[i]?.[0]}: ${errorMessage(r.reason)}` : null,
       )
       .filter((e): e is string => e !== null);
 
     if (errors.length > 0) {
-      const err = new Error(`Failed to stop ${errors.length} LSP server(s): ${errors.join('; ')}`);
+      const err = new Error(`Failed to stop ${errors.length} LSP server(s): ${errors.join("; ")}`);
       logError(err);
       throw err;
     }
@@ -188,7 +188,7 @@ export function createLSPServerManager(): LSPServerManager {
     const server = getServerForFile(filePath);
     if (!server) return undefined;
 
-    if (server.state === 'stopped' || server.state === 'error') {
+    if (server.state === "stopped" || server.state === "error") {
       try {
         await server.start();
       } catch (error) {
@@ -245,10 +245,10 @@ export function createLSPServerManager(): LSPServerManager {
 
     // Get language ID from server's extensionToLanguage mapping
     const ext = path.extname(filePath).toLowerCase();
-    const languageId = server.config.extensionToLanguage[ext] || 'plaintext';
+    const languageId = server.config.extensionToLanguage[ext] || "plaintext";
 
     try {
-      await server.sendNotification('textDocument/didOpen', {
+      await server.sendNotification("textDocument/didOpen", {
         textDocument: {
           uri: fileUri,
           languageId,
@@ -269,7 +269,7 @@ export function createLSPServerManager(): LSPServerManager {
 
   async function changeFile(filePath: string, content: string): Promise<void> {
     const server = getServerForFile(filePath);
-    if (!server || server.state !== 'running') {
+    if (!server || server.state !== "running") {
       return openFile(filePath, content);
     }
 
@@ -282,7 +282,7 @@ export function createLSPServerManager(): LSPServerManager {
     }
 
     try {
-      await server.sendNotification('textDocument/didChange', {
+      await server.sendNotification("textDocument/didChange", {
         textDocument: {
           uri: fileUri,
           version: 1,
@@ -304,10 +304,10 @@ export function createLSPServerManager(): LSPServerManager {
    */
   async function saveFile(filePath: string): Promise<void> {
     const server = getServerForFile(filePath);
-    if (!server || server.state !== 'running') return;
+    if (!server || server.state !== "running") return;
 
     try {
-      await server.sendNotification('textDocument/didSave', {
+      await server.sendNotification("textDocument/didSave", {
         textDocument: {
           uri: pathToFileURL(path.resolve(filePath)).href,
         },
@@ -330,12 +330,12 @@ export function createLSPServerManager(): LSPServerManager {
    */
   async function closeFile(filePath: string): Promise<void> {
     const server = getServerForFile(filePath);
-    if (!server || server.state !== 'running') return;
+    if (!server || server.state !== "running") return;
 
     const fileUri = pathToFileURL(path.resolve(filePath)).href;
 
     try {
-      await server.sendNotification('textDocument/didClose', {
+      await server.sendNotification("textDocument/didClose", {
         textDocument: {
           uri: fileUri,
         },

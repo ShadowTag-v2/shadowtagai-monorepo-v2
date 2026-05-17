@@ -1,11 +1,11 @@
-import type * as React from 'react';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { OutputLine } from '../../components/shell/OutputLine.js';
-import { Text } from '../../ink.js';
-import type { ToolProgressData } from '../../Tool.js';
-import type { ProgressMessage } from '../../types/message.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import type { Output } from './ListMcpResourcesTool.js';
+import type * as React from "react";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { OutputLine } from "../../components/shell/OutputLine.js";
+import { Text } from "../../ink.js";
+import type { ToolProgressData } from "../../Tool.js";
+import type { ProgressMessage } from "../../types/message.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import type { Output } from "./ListMcpResourcesTool.js";
 export function renderToolUseMessage(
   input: Partial<{
     server?: string;

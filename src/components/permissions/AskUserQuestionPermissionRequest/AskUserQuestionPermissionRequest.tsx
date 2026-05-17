@@ -1,28 +1,28 @@
-import type { Base64ImageSource, ImageBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import { Suspense, use, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useSettings } from '../../../hooks/useSettings.js';
-import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
-import { stringWidth } from '../../../ink/stringWidth.js';
-import { useTheme } from '../../../ink.js';
-import { useKeybindings } from '../../../keybindings/useKeybinding.js';
+import type { Base64ImageSource, ImageBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import { Suspense, use, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useSettings } from "../../../hooks/useSettings.js";
+import { useTerminalSize } from "../../../hooks/useTerminalSize.js";
+import { stringWidth } from "../../../ink/stringWidth.js";
+import { useTheme } from "../../../ink.js";
+import { useKeybindings } from "../../../keybindings/useKeybinding.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../../services/analytics/index.js';
-import { useAppState } from '../../../state/AppState.js';
-import { AskUserQuestionTool } from '../../../tools/AskUserQuestionTool/AskUserQuestionTool.js';
-import { getCliHighlightPromise } from '../../../utils/cliHighlight.js';
-import type { PastedContent } from '../../../utils/config.js';
-import { maybeResizeAndDownsampleImageBlock } from '../../../utils/imageResizer.js';
-import { cacheImagePath, storeImage } from '../../../utils/imageStore.js';
-import { logError } from '../../../utils/log.js';
-import { applyMarkdown } from '../../../utils/markdown.js';
-import { isPlanModeInterviewPhaseEnabled } from '../../../utils/planModeV2.js';
-import { getPlanFilePath } from '../../../utils/plans.js';
-import { QuestionView } from './QuestionView.js';
-import { SubmitQuestionsView } from './SubmitQuestionsView.js';
-import { useMultipleChoiceState } from './use-multiple-choice-state.js';
+} from "../../../services/analytics/index.js";
+import { useAppState } from "../../../state/AppState.js";
+import { AskUserQuestionTool } from "../../../tools/AskUserQuestionTool/AskUserQuestionTool.js";
+import { getCliHighlightPromise } from "../../../utils/cliHighlight.js";
+import type { PastedContent } from "../../../utils/config.js";
+import { maybeResizeAndDownsampleImageBlock } from "../../../utils/imageResizer.js";
+import { cacheImagePath, storeImage } from "../../../utils/imageStore.js";
+import { logError } from "../../../utils/log.js";
+import { applyMarkdown } from "../../../utils/markdown.js";
+import { isPlanModeInterviewPhaseEnabled } from "../../../utils/planModeV2.js";
+import { getPlanFilePath } from "../../../utils/plans.js";
+import { QuestionView } from "./QuestionView.js";
+import { SubmitQuestionsView } from "./SubmitQuestionsView.js";
+import { useMultipleChoiceState } from "./use-multiple-choice-state.js";
 
 const MIN_CONTENT_HEIGHT = 12;
 const MIN_CONTENT_WIDTH = 40;
@@ -59,7 +59,7 @@ export function AskUserQuestionPermissionRequest(props) {
 function AskUserQuestionWithHighlight(props) {
   const $ = _c(4);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = getCliHighlightPromise();
     $[0] = t0;
   } else {
@@ -120,7 +120,7 @@ function AskUserQuestionPermissionRequestBody(t0) {
         for (const opt_0 of q.options) {
           if (opt_0.preview) {
             const rendered = applyMarkdown(opt_0.preview, theme, highlight);
-            const previewLines = rendered.split('\n');
+            const previewLines = rendered.split("\n");
             const isTruncated = previewLines.length > maxPreviewContentLines;
             const displayedLines = isTruncated ? maxPreviewContentLines : previewLines.length;
             maxPreviewBoxHeight = Math.max(
@@ -167,7 +167,7 @@ function AskUserQuestionPermissionRequestBody(t0) {
   const { globalContentHeight, globalContentWidth } = t5;
   const metadataSource = result.success ? result.data.metadata?.source : undefined;
   let t6;
-  if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {};
     $[15] = t6;
   } else {
@@ -176,7 +176,7 @@ function AskUserQuestionPermissionRequestBody(t0) {
   const [pastedContentsByQuestion, setPastedContentsByQuestion] = useState(t6);
   const nextPasteIdRef = useRef(0);
   let t7;
-  if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = function onImagePaste(
       questionText,
       base64Image,
@@ -189,10 +189,10 @@ function AskUserQuestionPermissionRequestBody(t0) {
       const pasteId = nextPasteIdRef.current;
       const newContent = {
         id: pasteId,
-        type: 'image',
+        type: "image",
         content: base64Image,
-        mediaType: mediaType || 'image/png',
-        filename: filename || 'Pasted image',
+        mediaType: mediaType || "image/png",
+        filename: filename || "Pasted image",
         dimensions,
       };
       cacheImagePath(newContent);
@@ -211,7 +211,7 @@ function AskUserQuestionPermissionRequestBody(t0) {
   }
   const onImagePaste = t7;
   let t8;
-  if ($[17] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (questionText_0, id) => {
       setPastedContentsByQuestion((prev_0) => {
         const questionContents = {
@@ -239,7 +239,7 @@ function AskUserQuestionPermissionRequestBody(t0) {
   }
   const allImageAttachments = t9;
   const toolPermissionContextMode = useAppState(_temp4);
-  const isInPlanMode = toolPermissionContextMode === 'plan';
+  const isInPlanMode = toolPermissionContextMode === "plan";
   let t10;
   if ($[20] !== isInPlanMode) {
     t10 = isInPlanMode ? getPlanFilePath() : undefined;
@@ -286,7 +286,7 @@ function AskUserQuestionPermissionRequestBody(t0) {
   ) {
     t12 = () => {
       if (metadataSource) {
-        logEvent('tengu_ask_user_question_rejected', {
+        logEvent("tengu_ask_user_question_rejected", {
           source: metadataSource as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           questionCount: questions.length,
           isInPlanMode,
@@ -327,7 +327,7 @@ function AskUserQuestionPermissionRequestBody(t0) {
           }
           return `- "${q_1.question}"\n  (No answer provided)`;
         })
-        .join('\n');
+        .join("\n");
       const feedback = `The user wants to clarify these questions.
     This means they may have additional information, context or questions for you.
     Take their response into account and then reformulate the questions if appropriate.
@@ -335,7 +335,7 @@ function AskUserQuestionPermissionRequestBody(t0) {
 
     Questions asked:\n${questionsWithAnswers}`;
       if (metadataSource) {
-        logEvent('tengu_ask_user_question_respond_to_claude', {
+        logEvent("tengu_ask_user_question_respond_to_claude", {
           source: metadataSource as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           questionCount: questions.length,
           isInPlanMode,
@@ -380,13 +380,13 @@ function AskUserQuestionPermissionRequestBody(t0) {
           }
           return `- "${q_2.question}"\n  (No answer provided)`;
         })
-        .join('\n');
+        .join("\n");
       const feedback_0 = `The user has indicated they have provided enough answers for the plan interview.
 Stop asking clarifying questions and proceed to finish the plan with the information you have.
 
 Questions asked and answers provided:\n${questionsWithAnswers_0}`;
       if (metadataSource) {
-        logEvent('tengu_ask_user_question_finish_plan_interview', {
+        logEvent("tengu_ask_user_question_finish_plan_interview", {
           source: metadataSource as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           questionCount: questions.length,
           isInPlanMode,
@@ -424,7 +424,7 @@ Questions asked and answers provided:\n${questionsWithAnswers_0}`;
   ) {
     t15 = async (answersToSubmit) => {
       if (metadataSource) {
-        logEvent('tengu_ask_user_question_accepted', {
+        logEvent("tengu_ask_user_question_accepted", {
           source: metadataSource as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           questionCount: questions.length,
           answerCount: Object.keys(answersToSubmit).length,
@@ -492,7 +492,7 @@ Questions asked and answers provided:\n${questionsWithAnswers_0}`;
       let answer_2;
       const isMultiSelect = Array.isArray(label);
       if (isMultiSelect) {
-        answer_2 = label.join(', ');
+        answer_2 = label.join(", ");
       } else {
         if (textInput) {
           const questionImages = Object.values(
@@ -500,11 +500,11 @@ Questions asked and answers provided:\n${questionsWithAnswers_0}`;
           ).filter(_temp5);
           answer_2 = questionImages.length > 0 ? `${textInput} (Image attached)` : textInput;
         } else {
-          if (label === '__other__') {
+          if (label === "__other__") {
             const questionImages_0 = Object.values(
               pastedContentsByQuestion[questionText_1] ?? {},
             ).filter(_temp6);
-            answer_2 = questionImages_0.length > 0 ? '(Image attached)' : label;
+            answer_2 = questionImages_0.length > 0 ? "(Image attached)" : label;
           } else {
             answer_2 = label;
           }
@@ -534,11 +534,11 @@ Questions asked and answers provided:\n${questionsWithAnswers_0}`;
   let t17;
   if ($[62] !== answers || $[63] !== handleCancel || $[64] !== submitAnswers) {
     t17 = function handleFinalResponse(value) {
-      if (value === 'cancel') {
+      if (value === "cancel") {
         handleCancel();
         return;
       }
-      if (value === 'submit') {
+      if (value === "submit") {
         submitAnswers(answers).catch(logError);
       }
     };
@@ -583,8 +583,8 @@ Questions asked and answers provided:\n${questionsWithAnswers_0}`;
   let t20;
   if ($[73] !== handleTabNext || $[74] !== handleTabPrev) {
     t20 = {
-      'tabs:previous': handleTabPrev,
-      'tabs:next': handleTabNext,
+      "tabs:previous": handleTabPrev,
+      "tabs:next": handleTabNext,
     };
     $[73] = handleTabNext;
     $[74] = handleTabPrev;
@@ -596,7 +596,7 @@ Questions asked and answers provided:\n${questionsWithAnswers_0}`;
   let t22;
   if ($[76] !== t21) {
     t22 = {
-      context: 'Tabs',
+      context: "Tabs",
       isActive: t21,
     };
     $[76] = t21;
@@ -746,16 +746,16 @@ Questions asked and answers provided:\n${questionsWithAnswers_0}`;
   return null;
 }
 function _temp6(c_1) {
-  return c_1.type === 'image';
+  return c_1.type === "image";
 }
 function _temp5(c_0) {
-  return c_0.type === 'image';
+  return c_0.type === "image";
 }
 function _temp4(s) {
   return s.toolPermissionContext.mode;
 }
 function _temp3(c) {
-  return c.type === 'image';
+  return c.type === "image";
 }
 function _temp2(contents) {
   return Object.values(contents);
@@ -770,10 +770,10 @@ async function convertImagesToBlocks(
   return Promise.all(
     images.map(async (img) => {
       const block: ImageBlockParam = {
-        type: 'image',
+        type: "image",
         source: {
-          type: 'base64',
-          media_type: (img.mediaType || 'image/png') as Base64ImageSource['media_type'],
+          type: "base64",
+          media_type: (img.mediaType || "image/png") as Base64ImageSource["media_type"],
           data: img.content,
         },
       };

@@ -1,26 +1,26 @@
-import { useCallback, useEffect } from 'react';
-import type { Command } from '../commands.js';
-import { useNotifications } from '../context/notifications.js';
+import { useCallback, useEffect } from "react";
+import type { Command } from "../commands.js";
+import { useNotifications } from "../context/notifications.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import { reinitializeLspServerManager } from '../services/lsp/manager.js';
-import { useAppState, useSetAppState } from '../state/AppState.js';
-import type { AgentDefinition } from '../tools/AgentTool/loadAgentsDir.js';
-import { count } from '../utils/array.js';
-import { logForDebugging } from '../utils/debug.js';
-import { logForDiagnosticsNoPII } from '../utils/diagLogs.js';
-import { toError } from '../utils/errors.js';
-import { logError } from '../utils/log.js';
-import { loadPluginAgents } from '../utils/plugins/loadPluginAgents.js';
-import { getPluginCommands } from '../utils/plugins/loadPluginCommands.js';
-import { loadPluginHooks } from '../utils/plugins/loadPluginHooks.js';
-import { loadPluginLspServers } from '../utils/plugins/lspPluginIntegration.js';
-import { loadPluginMcpServers } from '../utils/plugins/mcpPluginIntegration.js';
-import { detectAndUninstallDelistedPlugins } from '../utils/plugins/pluginBlocklist.js';
-import { getFlaggedPlugins } from '../utils/plugins/pluginFlagging.js';
-import { loadAllPlugins } from '../utils/plugins/pluginLoader.js';
+} from "../services/analytics/index.js";
+import { reinitializeLspServerManager } from "../services/lsp/manager.js";
+import { useAppState, useSetAppState } from "../state/AppState.js";
+import type { AgentDefinition } from "../tools/AgentTool/loadAgentsDir.js";
+import { count } from "../utils/array.js";
+import { logForDebugging } from "../utils/debug.js";
+import { logForDiagnosticsNoPII } from "../utils/diagLogs.js";
+import { toError } from "../utils/errors.js";
+import { logError } from "../utils/log.js";
+import { loadPluginAgents } from "../utils/plugins/loadPluginAgents.js";
+import { getPluginCommands } from "../utils/plugins/loadPluginCommands.js";
+import { loadPluginHooks } from "../utils/plugins/loadPluginHooks.js";
+import { loadPluginLspServers } from "../utils/plugins/lspPluginIntegration.js";
+import { loadPluginMcpServers } from "../utils/plugins/mcpPluginIntegration.js";
+import { detectAndUninstallDelistedPlugins } from "../utils/plugins/pluginBlocklist.js";
+import { getFlaggedPlugins } from "../utils/plugins/pluginFlagging.js";
+import { loadAllPlugins } from "../utils/plugins/pluginLoader.js";
 
 /**
  * Hook to manage plugin state and synchronize with AppState.
@@ -56,10 +56,10 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
       const flagged = getFlaggedPlugins();
       if (Object.keys(flagged).length > 0) {
         addNotification({
-          key: 'plugin-delisted-flagged',
-          text: 'Plugins flagged. Check /plugins',
-          color: 'warning',
-          priority: 'high',
+          key: "plugin-delisted-flagged",
+          text: "Plugins flagged. Check /plugins",
+          color: "warning",
+          priority: "high",
         });
       }
 
@@ -73,8 +73,8 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         errors.push({
-          type: 'generic-error',
-          source: 'plugin-commands',
+          type: "generic-error",
+          source: "plugin-commands",
           error: `Failed to load plugin commands: ${errorMessage}`,
         });
       }
@@ -84,8 +84,8 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         errors.push({
-          type: 'generic-error',
-          source: 'plugin-agents',
+          type: "generic-error",
+          source: "plugin-agents",
           error: `Failed to load plugin agents: ${errorMessage}`,
         });
       }
@@ -95,8 +95,8 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         errors.push({
-          type: 'generic-error',
-          source: 'plugin-hooks',
+          type: "generic-error",
+          source: "plugin-hooks",
           error: `Failed to load plugin hooks: ${errorMessage}`,
         });
       }
@@ -141,19 +141,19 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
       setAppState((prevState) => {
         // Keep existing LSP/non-plugin-loading errors (source 'lsp-manager' or 'plugin:*')
         const existingLspErrors = prevState.plugins.errors.filter(
-          (e) => e.source === 'lsp-manager' || e.source.startsWith('plugin:'),
+          (e) => e.source === "lsp-manager" || e.source.startsWith("plugin:"),
         );
         // Deduplicate: remove existing LSP errors that are also in new errors
         const newErrorKeys = new Set(
           errors.map((e) =>
-            e.type === 'generic-error'
+            e.type === "generic-error"
               ? `generic-error:${e.source}:${e.error}`
               : `${e.type}:${e.source}`,
           ),
         );
         const filteredExisting = existingLspErrors.filter((e) => {
           const key =
-            e.type === 'generic-error'
+            e.type === "generic-error"
               ? `generic-error:${e.source}:${e.error}`
               : `${e.type}:${e.source}`;
           return !newErrorKeys.has(key);
@@ -191,8 +191,8 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
       return {
         enabled_count: enabled.length,
         disabled_count: disabled.length,
-        inline_count: count(enabled, (p) => p.source.endsWith('@inline')),
-        marketplace_count: count(enabled, (p) => !p.source.endsWith('@inline')),
+        inline_count: count(enabled, (p) => p.source.endsWith("@inline")),
+        marketplace_count: count(enabled, (p) => !p.source.endsWith("@inline")),
         error_count: errors.length,
         skill_count: commands.length,
         agent_count: agents.length,
@@ -203,11 +203,11 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
         // Kept separate from base metrics so it doesn't flow into
         // logForDiagnosticsNoPII.
         ant_enabled_names:
-          process.env.USER_TYPE === 'ant' && enabled.length > 0
+          process.env.USER_TYPE === "ant" && enabled.length > 0
             ? (enabled
                 .map((p) => p.name)
                 .sort()
-                .join(',') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS)
+                .join(",") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS)
             : undefined,
       };
     } catch (error) {
@@ -219,11 +219,11 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
       setAppState((prevState) => {
         // Keep existing LSP/non-plugin-loading errors
         const existingLspErrors = prevState.plugins.errors.filter(
-          (e) => e.source === 'lsp-manager' || e.source.startsWith('plugin:'),
+          (e) => e.source === "lsp-manager" || e.source.startsWith("plugin:"),
         );
         const newError = {
-          type: 'generic-error' as const,
-          source: 'plugin-system',
+          type: "generic-error" as const,
+          source: "plugin-system",
           error: errorObj.message,
         };
         return {
@@ -264,13 +264,13 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
         ...baseMetrics,
         has_custom_plugin_cache_dir: !!process.env.CLAUDE_CODE_PLUGIN_CACHE_DIR,
       };
-      logEvent('tengu_plugins_loaded', {
+      logEvent("tengu_plugins_loaded", {
         ...allMetrics,
         ...(ant_enabled_names !== undefined && {
           enabled_names: ant_enabled_names,
         }),
       });
-      logForDiagnosticsNoPII('info', 'tengu_plugins_loaded', allMetrics);
+      logForDiagnosticsNoPII("info", "tengu_plugins_loaded", allMetrics);
     });
   }, [initialPluginLoad, enabled]);
 
@@ -283,10 +283,10 @@ export function useManagePlugins({ enabled = true }: { enabled?: boolean } = {})
   useEffect(() => {
     if (!enabled || !needsRefresh) return;
     addNotification({
-      key: 'plugin-reload-pending',
-      text: 'Plugins changed. Run /reload-plugins to activate.',
-      color: 'suggestion',
-      priority: 'low',
+      key: "plugin-reload-pending",
+      text: "Plugins changed. Run /reload-plugins to activate.",
+      color: "suggestion",
+      priority: "low",
     });
     // Do NOT auto-refresh. Do NOT reset needsRefresh — /reload-plugins
     // consumes it via refreshActivePlugins().

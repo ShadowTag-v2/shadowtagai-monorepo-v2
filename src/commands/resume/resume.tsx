@@ -1,23 +1,23 @@
-import type { UUID } from 'node:crypto';
-import chalk from 'chalk';
-import figures from 'figures';
-import * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { getOriginalCwd, getSessionId } from '../../bootstrap/state.js';
-import type { CommandResultDisplay, ResumeEntrypoint } from '../../commands.js';
-import { LogSelector } from '../../components/LogSelector.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { Spinner } from '../../components/Spinner.js';
-import { useIsInsideModal } from '../../context/modalContext.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { setClipboard } from '../../ink/termio/osc.js';
-import { Box, Text } from '../../ink.js';
-import type { LocalJSXCommandCall } from '../../types/command.js';
-import type { LogOption } from '../../types/logs.js';
-import { agenticSessionSearch } from '../../utils/agenticSessionSearch.js';
-import { checkCrossProjectResume } from '../../utils/crossProjectResume.js';
-import { getWorktreePaths } from '../../utils/getWorktreePaths.js';
-import { logError } from '../../utils/log.js';
+import type { UUID } from "node:crypto";
+import chalk from "chalk";
+import figures from "figures";
+import * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { getOriginalCwd, getSessionId } from "../../bootstrap/state.js";
+import type { CommandResultDisplay, ResumeEntrypoint } from "../../commands.js";
+import { LogSelector } from "../../components/LogSelector.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { Spinner } from "../../components/Spinner.js";
+import { useIsInsideModal } from "../../context/modalContext.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { setClipboard } from "../../ink/termio/osc.js";
+import { Box, Text } from "../../ink.js";
+import type { LocalJSXCommandCall } from "../../types/command.js";
+import type { LogOption } from "../../types/logs.js";
+import { agenticSessionSearch } from "../../utils/agenticSessionSearch.js";
+import { checkCrossProjectResume } from "../../utils/crossProjectResume.js";
+import { getWorktreePaths } from "../../utils/getWorktreePaths.js";
+import { logError } from "../../utils/log.js";
 import {
   getLastSessionLog,
   getSessionIdFromLog,
@@ -27,24 +27,24 @@ import {
   loadFullLog,
   loadSameRepoMessageLogs,
   searchSessionsByCustomTitle,
-} from '../../utils/sessionStorage.js';
-import { validateUuid } from '../../utils/uuid.js';
+} from "../../utils/sessionStorage.js";
+import { validateUuid } from "../../utils/uuid.js";
 
 type ResumeResult =
   | {
-      resultType: 'sessionNotFound';
+      resultType: "sessionNotFound";
       arg: string;
     }
   | {
-      resultType: 'multipleMatches';
+      resultType: "multipleMatches";
       arg: string;
       count: number;
     };
 function resumeHelpMessage(result: ResumeResult): string {
   switch (result.resultType) {
-    case 'sessionNotFound':
+    case "sessionNotFound":
       return `Session ${chalk.bold(result.arg)} was not found.`;
-    case 'multipleMatches':
+    case "multipleMatches":
       return `Found ${result.count} sessions matching ${chalk.bold(result.arg)}. Please use /resume to pick a specific session.`;
   }
 }
@@ -135,12 +135,12 @@ function ResumeCommand({
           : await loadSameRepoMessageLogs(paths);
         const resumable = filterResumableSessions(allLogs, getSessionId());
         if (resumable.length === 0) {
-          onDone('No conversations found to resume');
+          onDone("No conversations found to resume");
           return;
         }
         setLogs(resumable);
       } catch (_err) {
-        onDone('Failed to load conversations');
+        onDone("Failed to load conversations");
       } finally {
         setLoading(false);
       }
@@ -163,7 +163,7 @@ function ResumeCommand({
   async function handleSelect(log: LogOption) {
     const sessionId = validateUuid(getSessionIdFromLog(log));
     if (!sessionId) {
-      onDone('Failed to resume conversation');
+      onDone("Failed to resume conversation");
       return;
     }
 
@@ -176,7 +176,7 @@ function ResumeCommand({
       if (crossProjectCheck.isSameRepoWorktree) {
         // Same repo worktree - can resume directly
         setResuming(true);
-        void onResume(sessionId, fullLog, 'slash_command_picker');
+        void onResume(sessionId, fullLog, "slash_command_picker");
         return;
       }
 
@@ -186,28 +186,28 @@ function ResumeCommand({
 
       // Format the output message
       const message = [
-        '',
-        'This conversation is from a different directory.',
-        '',
-        'To resume, run:',
+        "",
+        "This conversation is from a different directory.",
+        "",
+        "To resume, run:",
         `  ${crossProjectCheck.command}`,
-        '',
-        '(Command copied to clipboard)',
-        '',
-      ].join('\n');
+        "",
+        "(Command copied to clipboard)",
+        "",
+      ].join("\n");
       onDone(message, {
-        display: 'user',
+        display: "user",
       });
       return;
     }
 
     // Same directory - proceed with resume
     setResuming(true);
-    void onResume(sessionId, fullLog, 'slash_command_picker');
+    void onResume(sessionId, fullLog, "slash_command_picker");
   }
   function handleCancel() {
-    onDone('Resume cancelled', {
-      display: 'system',
+    onDone("Resume cancelled", {
+      display: "system",
     });
   }
   if (loading) {
@@ -247,7 +247,7 @@ export const call: LocalJSXCommandCall = async (onDone, context, args) => {
     try {
       await context.resume?.(sessionId, log, entrypoint);
       onDone(undefined, {
-        display: 'skip',
+        display: "skip",
       });
     } catch (error) {
       logError(error as Error);
@@ -265,7 +265,7 @@ export const call: LocalJSXCommandCall = async (onDone, context, args) => {
   const worktreePaths = await getWorktreePaths(getOriginalCwd());
   const logs = await loadSameRepoMessageLogs(worktreePaths);
   if (logs.length === 0) {
-    const message = 'No conversations found to resume.';
+    const message = "No conversations found to resume.";
     return <ResumeError message={message} args={arg} onDone={() => onDone(message)} />;
   }
 
@@ -278,7 +278,7 @@ export const call: LocalJSXCommandCall = async (onDone, context, args) => {
     if (matchingLogs.length > 0) {
       const log = matchingLogs[0]!;
       const fullLog = isLiteLog(log) ? await loadFullLog(log) : log;
-      void onResume(maybeSessionId, fullLog, 'slash_command_session_id');
+      void onResume(maybeSessionId, fullLog, "slash_command_session_id");
       return null;
     }
 
@@ -287,7 +287,7 @@ export const call: LocalJSXCommandCall = async (onDone, context, args) => {
     // firstPrompt extraction fail, causing the session to be dropped).
     const directLog = await getLastSessionLog(maybeSessionId);
     if (directLog) {
-      void onResume(maybeSessionId, directLog, 'slash_command_session_id');
+      void onResume(maybeSessionId, directLog, "slash_command_session_id");
       return null;
     }
   }
@@ -302,7 +302,7 @@ export const call: LocalJSXCommandCall = async (onDone, context, args) => {
       const sessionId = getSessionIdFromLog(log);
       if (sessionId) {
         const fullLog = isLiteLog(log) ? await loadFullLog(log) : log;
-        void onResume(sessionId, fullLog, 'slash_command_title');
+        void onResume(sessionId, fullLog, "slash_command_title");
         return null;
       }
     }
@@ -310,7 +310,7 @@ export const call: LocalJSXCommandCall = async (onDone, context, args) => {
     // Multiple matches - show error
     if (titleMatches.length > 1) {
       const message = resumeHelpMessage({
-        resultType: 'multipleMatches',
+        resultType: "multipleMatches",
         arg,
         count: titleMatches.length,
       });
@@ -320,7 +320,7 @@ export const call: LocalJSXCommandCall = async (onDone, context, args) => {
 
   // No match found - show error
   const message = resumeHelpMessage({
-    resultType: 'sessionNotFound',
+    resultType: "sessionNotFound",
     arg,
   });
   return <ResumeError message={message} args={arg} onDone={() => onDone(message)} />;

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Link, Text } from '../ink.js';
-import { AwsAuthStatusManager } from '../utils/awsAuthStatusManager.js';
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Link, Text } from "../ink.js";
+import { AwsAuthStatusManager } from "../utils/awsAuthStatusManager.js";
 
 const URL_RE = /https?:\/\/\S+/;
 export function AwsAuthStatusBox() {
   const $ = _c(11);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = AwsAuthStatusManager.getInstance().getStatus();
     $[0] = t0;
   } else {
@@ -16,7 +16,7 @@ export function AwsAuthStatusBox() {
   const [status, setStatus] = useState(t0);
   let t1;
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => {
       const unsubscribe = AwsAuthStatusManager.getInstance().subscribe(setStatus);
       return unsubscribe;
@@ -36,7 +36,7 @@ export function AwsAuthStatusBox() {
     return null;
   }
   let t3;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Text bold={true} color="permission">
         Cloud Authentication

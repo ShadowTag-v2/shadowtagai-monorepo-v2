@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import { formatTokens } from '../utils/format.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import { formatTokens } from "../utils/format.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
 
-type IdleReturnAction = 'continue' | 'clear' | 'dismiss' | 'never';
+type IdleReturnAction = "continue" | "clear" | "dismiss" | "never";
 type Props = {
   idleMinutes: number;
   totalInputTokens: number;
@@ -34,14 +34,14 @@ export function IdleReturnDialog(t0) {
   const t3 = `You've been away ${formattedIdle} and this conversation is ${formattedTokens} tokens.`;
   let t4;
   if ($[4] !== onDone) {
-    t4 = () => onDone('dismiss');
+    t4 = () => onDone("dismiss");
     $[4] = onDone;
     $[5] = t4;
   } else {
     t4 = $[5];
   }
   let t5;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Box flexDirection="column">
         <Text>If this is a new task, clearing context will save usage and be faster.</Text>
@@ -52,32 +52,32 @@ export function IdleReturnDialog(t0) {
     t5 = $[6];
   }
   let t6;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {
-      value: 'continue' as const,
-      label: 'Continue this conversation',
+      value: "continue" as const,
+      label: "Continue this conversation",
     };
     $[7] = t6;
   } else {
     t6 = $[7];
   }
   let t7;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = {
-      value: 'clear' as const,
-      label: 'Send message as a new conversation',
+      value: "clear" as const,
+      label: "Send message as a new conversation",
     };
     $[8] = t7;
   } else {
     t7 = $[8];
   }
   let t8;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = [
       t6,
       t7,
       {
-        value: 'never' as const,
+        value: "never" as const,
         label: "Don't ask me again",
       },
     ];
@@ -112,7 +112,7 @@ export function IdleReturnDialog(t0) {
 }
 function formatIdleDuration(minutes: number): string {
   if (minutes < 1) {
-    return '< 1m';
+    return "< 1m";
   }
   if (minutes < 60) {
     return `${Math.floor(minutes)}m`;

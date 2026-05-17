@@ -1,6 +1,6 @@
-import { open } from 'node:fs/promises';
-import * as path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { open } from "node:fs/promises";
+import * as path from "node:path";
+import { pathToFileURL } from "node:url";
 import type {
   CallHierarchyIncomingCall,
   CallHierarchyItem,
@@ -10,27 +10,27 @@ import type {
   Location,
   LocationLink,
   SymbolInformation,
-} from 'vscode-languageserver-types';
-import { z } from 'zod/v4';
+} from "vscode-languageserver-types";
+import { z } from "zod/v4";
 import {
   getInitializationStatus,
   getLspServerManager,
   isLspConnected,
   waitForInitialization,
-} from '../../services/lsp/manager.js';
-import type { ValidationResult } from '../../Tool.js';
-import { buildTool, type ToolDef } from '../../Tool.js';
-import { uniq } from '../../utils/array.js';
-import { getCwd } from '../../utils/cwd.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { isENOENT, toError } from '../../utils/errors.js';
-import { execFileNoThrowWithCwd } from '../../utils/execFileNoThrow.js';
-import { getFsImplementation } from '../../utils/fsOperations.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { logError } from '../../utils/log.js';
-import { expandPath } from '../../utils/path.js';
-import { checkReadPermissionForTool } from '../../utils/permissions/filesystem.js';
-import type { PermissionDecision } from '../../utils/permissions/PermissionResult.js';
+} from "../../services/lsp/manager.js";
+import type { ValidationResult } from "../../Tool.js";
+import { buildTool, type ToolDef } from "../../Tool.js";
+import { uniq } from "../../utils/array.js";
+import { getCwd } from "../../utils/cwd.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { isENOENT, toError } from "../../utils/errors.js";
+import { execFileNoThrowWithCwd } from "../../utils/execFileNoThrow.js";
+import { getFsImplementation } from "../../utils/fsOperations.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { logError } from "../../utils/log.js";
+import { expandPath } from "../../utils/path.js";
+import { checkReadPermissionForTool } from "../../utils/permissions/filesystem.js";
+import type { PermissionDecision } from "../../utils/permissions/PermissionResult.js";
 import {
   formatDocumentSymbolResult,
   formatFindReferencesResult,
@@ -40,15 +40,15 @@ import {
   formatOutgoingCallsResult,
   formatPrepareCallHierarchyResult,
   formatWorkspaceSymbolResult,
-} from './formatters.js';
-import { DESCRIPTION, LSP_TOOL_NAME } from './prompt.js';
-import { lspToolInputSchema } from './schemas.js';
+} from "./formatters.js";
+import { DESCRIPTION, LSP_TOOL_NAME } from "./prompt.js";
+import { lspToolInputSchema } from "./schemas.js";
 import {
   renderToolResultMessage,
   renderToolUseErrorMessage,
   renderToolUseMessage,
   userFacingName,
-} from './UI.js';
+} from "./UI.js";
 
 const MAX_LSP_FILE_SIZE_BYTES = 10_000_000;
 
@@ -60,24 +60,24 @@ const inputSchema = lazySchema(() =>
   z.strictObject({
     operation: z
       .enum([
-        'goToDefinition',
-        'findReferences',
-        'hover',
-        'documentSymbol',
-        'workspaceSymbol',
-        'goToImplementation',
-        'prepareCallHierarchy',
-        'incomingCalls',
-        'outgoingCalls',
+        "goToDefinition",
+        "findReferences",
+        "hover",
+        "documentSymbol",
+        "workspaceSymbol",
+        "goToImplementation",
+        "prepareCallHierarchy",
+        "incomingCalls",
+        "outgoingCalls",
       ])
-      .describe('The LSP operation to perform'),
-    filePath: z.string().describe('The absolute or relative path to the file'),
-    line: z.number().int().positive().describe('The line number (1-based, as shown in editors)'),
+      .describe("The LSP operation to perform"),
+    filePath: z.string().describe("The absolute or relative path to the file"),
+    line: z.number().int().positive().describe("The line number (1-based, as shown in editors)"),
     character: z
       .number()
       .int()
       .positive()
-      .describe('The character offset (1-based, as shown in editors)'),
+      .describe("The character offset (1-based, as shown in editors)"),
   }),
 );
 type InputSchema = ReturnType<typeof inputSchema>;
@@ -86,31 +86,31 @@ const outputSchema = lazySchema(() =>
   z.object({
     operation: z
       .enum([
-        'goToDefinition',
-        'findReferences',
-        'hover',
-        'documentSymbol',
-        'workspaceSymbol',
-        'goToImplementation',
-        'prepareCallHierarchy',
-        'incomingCalls',
-        'outgoingCalls',
+        "goToDefinition",
+        "findReferences",
+        "hover",
+        "documentSymbol",
+        "workspaceSymbol",
+        "goToImplementation",
+        "prepareCallHierarchy",
+        "incomingCalls",
+        "outgoingCalls",
       ])
-      .describe('The LSP operation that was performed'),
-    result: z.string().describe('The formatted result of the LSP operation'),
-    filePath: z.string().describe('The file path the operation was performed on'),
+      .describe("The LSP operation that was performed"),
+    result: z.string().describe("The formatted result of the LSP operation"),
+    filePath: z.string().describe("The file path the operation was performed on"),
     resultCount: z
       .number()
       .int()
       .nonnegative()
       .optional()
-      .describe('Number of results (definitions, references, symbols)'),
+      .describe("Number of results (definitions, references, symbols)"),
     fileCount: z
       .number()
       .int()
       .nonnegative()
       .optional()
-      .describe('Number of files containing results'),
+      .describe("Number of files containing results"),
   }),
 );
 type OutputSchema = ReturnType<typeof outputSchema>;
@@ -120,7 +120,7 @@ export type Input = z.infer<InputSchema>;
 
 export const LSPTool = buildTool({
   name: LSP_TOOL_NAME,
-  searchHint: 'code intelligence (definitions, references, symbols, hover)',
+  searchHint: "code intelligence (definitions, references, symbols, hover)",
   maxResultSizeChars: 100_000,
   isLsp: true,
   async description() {
@@ -162,7 +162,7 @@ export const LSPTool = buildTool({
     const absolutePath = expandPath(input.filePath);
 
     // SECURITY: Skip filesystem operations for UNC paths to prevent NTLM credential leaks.
-    if (absolutePath.startsWith('\\\\') || absolutePath.startsWith('//')) {
+    if (absolutePath.startsWith("\\\\") || absolutePath.startsWith("//")) {
       return { result: true };
     }
 
@@ -218,7 +218,7 @@ export const LSPTool = buildTool({
     // Wait for initialization if it's still pending
     // This prevents returning "no server available" before init completes
     const status = getInitializationStatus();
-    if (status.status === 'pending') {
+    if (status.status === "pending") {
       await waitForInitialization();
     }
 
@@ -226,11 +226,11 @@ export const LSPTool = buildTool({
     const manager = getLspServerManager();
     if (!manager) {
       // Log this system-level failure for tracking
-      logError(new Error('LSP server manager not initialized when tool was called'));
+      logError(new Error("LSP server manager not initialized when tool was called"));
 
       const output: Output = {
         operation: input.operation,
-        result: 'LSP server manager not initialized. This may indicate a startup issue.',
+        result: "LSP server manager not initialized. This may indicate a startup issue.",
         filePath: input.filePath,
       };
       return {
@@ -246,7 +246,7 @@ export const LSPTool = buildTool({
       // Most LSP servers require textDocument/didOpen before operations
       // Only read the file if it's not already open to avoid unnecessary I/O
       if (!manager.isFileOpen(absolutePath)) {
-        const handle = await open(absolutePath, 'r');
+        const handle = await open(absolutePath, "r");
         try {
           const stats = await handle.stat();
           if (stats.size > MAX_LSP_FILE_SIZE_BYTES) {
@@ -257,7 +257,7 @@ export const LSPTool = buildTool({
             };
             return { data: output };
           }
-          const fileContent = await handle.readFile({ encoding: 'utf-8' });
+          const fileContent = await handle.readFile({ encoding: "utf-8" });
           await manager.openFile(absolutePath, fileContent);
         } finally {
           await handle.close();
@@ -286,12 +286,12 @@ export const LSPTool = buildTool({
       // For incomingCalls and outgoingCalls, we need a two-step process:
       // 1. First get CallHierarchyItem(s) from prepareCallHierarchy
       // 2. Then request the actual calls using that item
-      if (input.operation === 'incomingCalls' || input.operation === 'outgoingCalls') {
+      if (input.operation === "incomingCalls" || input.operation === "outgoingCalls") {
         const callItems = result as CallHierarchyItem[];
         if (!callItems || callItems.length === 0) {
           const output: Output = {
             operation: input.operation,
-            result: 'No call hierarchy item found at this position',
+            result: "No call hierarchy item found at this position",
             filePath: input.filePath,
             resultCount: 0,
             fileCount: 0,
@@ -301,9 +301,9 @@ export const LSPTool = buildTool({
 
         // Use the first call hierarchy item to request calls
         const callMethod =
-          input.operation === 'incomingCalls'
-            ? 'callHierarchy/incomingCalls'
-            : 'callHierarchy/outgoingCalls';
+          input.operation === "incomingCalls"
+            ? "callHierarchy/incomingCalls"
+            : "callHierarchy/outgoingCalls";
 
         result = await manager.sendRequest(absolutePath, callMethod, {
           item: callItems[0],
@@ -319,12 +319,12 @@ export const LSPTool = buildTool({
       if (
         result &&
         Array.isArray(result) &&
-        (input.operation === 'findReferences' ||
-          input.operation === 'goToDefinition' ||
-          input.operation === 'goToImplementation' ||
-          input.operation === 'workspaceSymbol')
+        (input.operation === "findReferences" ||
+          input.operation === "goToDefinition" ||
+          input.operation === "goToImplementation" ||
+          input.operation === "workspaceSymbol")
       ) {
-        if (input.operation === 'workspaceSymbol') {
+        if (input.operation === "workspaceSymbol") {
           // SymbolInformation has location.uri — filter by extracting locations
           const symbols = result as SymbolInformation[];
           const locations = symbols.filter((s) => s?.location?.uri).map((s) => s.location);
@@ -381,7 +381,7 @@ export const LSPTool = buildTool({
   mapToolResultToToolResultBlockParam(output, toolUseID) {
     return {
       tool_use_id: toolUseID,
-      type: 'tool_result',
+      type: "tool_result",
       content: output.result,
     };
   },
@@ -402,74 +402,74 @@ function getMethodAndParams(
   };
 
   switch (input.operation) {
-    case 'goToDefinition':
+    case "goToDefinition":
       return {
-        method: 'textDocument/definition',
+        method: "textDocument/definition",
         params: {
           textDocument: { uri },
           position,
         },
       };
-    case 'findReferences':
+    case "findReferences":
       return {
-        method: 'textDocument/references',
+        method: "textDocument/references",
         params: {
           textDocument: { uri },
           position,
           context: { includeDeclaration: true },
         },
       };
-    case 'hover':
+    case "hover":
       return {
-        method: 'textDocument/hover',
+        method: "textDocument/hover",
         params: {
           textDocument: { uri },
           position,
         },
       };
-    case 'documentSymbol':
+    case "documentSymbol":
       return {
-        method: 'textDocument/documentSymbol',
+        method: "textDocument/documentSymbol",
         params: {
           textDocument: { uri },
         },
       };
-    case 'workspaceSymbol':
+    case "workspaceSymbol":
       return {
-        method: 'workspace/symbol',
+        method: "workspace/symbol",
         params: {
-          query: '', // Empty query returns all symbols
+          query: "", // Empty query returns all symbols
         },
       };
-    case 'goToImplementation':
+    case "goToImplementation":
       return {
-        method: 'textDocument/implementation',
-        params: {
-          textDocument: { uri },
-          position,
-        },
-      };
-    case 'prepareCallHierarchy':
-      return {
-        method: 'textDocument/prepareCallHierarchy',
+        method: "textDocument/implementation",
         params: {
           textDocument: { uri },
           position,
         },
       };
-    case 'incomingCalls':
+    case "prepareCallHierarchy":
+      return {
+        method: "textDocument/prepareCallHierarchy",
+        params: {
+          textDocument: { uri },
+          position,
+        },
+      };
+    case "incomingCalls":
       // For incoming/outgoing calls, we first need to prepare the call hierarchy
       // The LSP server will return CallHierarchyItem(s) that we pass to the calls request
       return {
-        method: 'textDocument/prepareCallHierarchy',
+        method: "textDocument/prepareCallHierarchy",
         params: {
           textDocument: { uri },
           position,
         },
       };
-    case 'outgoingCalls':
+    case "outgoingCalls":
       return {
-        method: 'textDocument/prepareCallHierarchy',
+        method: "textDocument/prepareCallHierarchy",
         params: {
           textDocument: { uri },
           position,
@@ -502,7 +502,7 @@ function countUniqueFiles(locations: Location[]): number {
  * Extracts a file path from a file:// URI, decoding percent-encoded characters.
  */
 function uriToFilePath(uri: string): string {
-  let filePath = uri.replace(/^file:\/\//, '');
+  let filePath = uri.replace(/^file:\/\//, "");
   // On Windows, file:///C:/path becomes /C:/path — strip the leading slash
   if (/^\/[A-Za-z]:/.test(filePath)) {
     filePath = filePath.slice(1);
@@ -546,14 +546,14 @@ async function filterGitIgnoredLocations<T extends Location>(
   const BATCH_SIZE = 50;
   for (let i = 0; i < uniquePaths.length; i += BATCH_SIZE) {
     const batch = uniquePaths.slice(i, i + BATCH_SIZE);
-    const result = await execFileNoThrowWithCwd('git', ['check-ignore', ...batch], {
+    const result = await execFileNoThrowWithCwd("git", ["check-ignore", ...batch], {
       cwd,
       preserveOutputOnError: false,
       timeout: 5_000,
     });
 
     if (result.code === 0 && result.stdout) {
-      for (const line of result.stdout.split('\n')) {
+      for (const line of result.stdout.split("\n")) {
         const trimmed = line.trim();
         if (trimmed) {
           ignoredPaths.add(trimmed);
@@ -576,7 +576,7 @@ async function filterGitIgnoredLocations<T extends Location>(
  * Checks if item is LocationLink (has targetUri) vs Location (has uri)
  */
 function isLocationLink(item: Location | LocationLink): item is LocationLink {
-  return 'targetUri' in item;
+  return "targetUri" in item;
 }
 
 /**
@@ -596,12 +596,12 @@ function toLocation(item: Location | LocationLink): Location {
  * Formats LSP result based on operation type and extracts summary counts
  */
 function formatResult(
-  operation: Input['operation'],
+  operation: Input["operation"],
   result: unknown,
   cwd: string,
 ): { formatted: string; resultCount: number; fileCount: number } {
   switch (operation) {
-    case 'goToDefinition': {
+    case "goToDefinition": {
       // Handle both Location and LocationLink formats
       const rawResults = Array.isArray(result)
         ? result
@@ -633,7 +633,7 @@ function formatResult(
         fileCount: countUniqueFiles(validLocations),
       };
     }
-    case 'findReferences': {
+    case "findReferences": {
       const locations = (result as Location[]) || [];
 
       // Log and filter out locations with undefined uris
@@ -654,18 +654,18 @@ function formatResult(
         fileCount: countUniqueFiles(validLocations),
       };
     }
-    case 'hover': {
+    case "hover": {
       return {
         formatted: formatHoverResult(result as Hover | null, cwd),
         resultCount: result ? 1 : 0,
         fileCount: result ? 1 : 0,
       };
     }
-    case 'documentSymbol': {
+    case "documentSymbol": {
       // LSP allows documentSymbol to return either DocumentSymbol[] or SymbolInformation[]
       const symbols = (result as (DocumentSymbol | SymbolInformation)[]) || [];
       // Detect format: DocumentSymbol has 'range', SymbolInformation has 'location'
-      const isDocumentSymbol = symbols.length > 0 && symbols[0] && 'range' in symbols[0];
+      const isDocumentSymbol = symbols.length > 0 && symbols[0] && "range" in symbols[0];
       // Count symbols - DocumentSymbol can have nested children, SymbolInformation is flat
       const count = isDocumentSymbol ? countSymbols(symbols as DocumentSymbol[]) : symbols.length;
       return {
@@ -677,7 +677,7 @@ function formatResult(
         fileCount: symbols.length > 0 ? 1 : 0,
       };
     }
-    case 'workspaceSymbol': {
+    case "workspaceSymbol": {
       const symbols = (result as SymbolInformation[]) || [];
 
       // Log and filter out symbols with undefined location.uri
@@ -699,7 +699,7 @@ function formatResult(
         fileCount: countUniqueFiles(locations),
       };
     }
-    case 'goToImplementation': {
+    case "goToImplementation": {
       // Handle both Location and LocationLink formats (same as goToDefinition)
       const rawResults = Array.isArray(result)
         ? result
@@ -732,7 +732,7 @@ function formatResult(
         fileCount: countUniqueFiles(validLocations),
       };
     }
-    case 'prepareCallHierarchy': {
+    case "prepareCallHierarchy": {
       const items = (result as CallHierarchyItem[]) || [];
       return {
         formatted: formatPrepareCallHierarchyResult(result as CallHierarchyItem[] | null, cwd),
@@ -740,7 +740,7 @@ function formatResult(
         fileCount: items.length > 0 ? countUniqueFilesFromCallItems(items) : 0,
       };
     }
-    case 'incomingCalls': {
+    case "incomingCalls": {
       const calls = (result as CallHierarchyIncomingCall[]) || [];
       return {
         formatted: formatIncomingCallsResult(result as CallHierarchyIncomingCall[] | null, cwd),
@@ -748,7 +748,7 @@ function formatResult(
         fileCount: calls.length > 0 ? countUniqueFilesFromIncomingCalls(calls) : 0,
       };
     }
-    case 'outgoingCalls': {
+    case "outgoingCalls": {
       const calls = (result as CallHierarchyOutgoingCall[]) || [];
       return {
         formatted: formatOutgoingCallsResult(result as CallHierarchyOutgoingCall[] | null, cwd),

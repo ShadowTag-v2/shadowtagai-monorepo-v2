@@ -1,26 +1,26 @@
-import { format } from 'node:util';
-import type { ComputerUseHostAdapter, Logger } from '@ant/computer-use-mcp/types';
-import { logForDebugging } from '../debug.js';
-import { COMPUTER_USE_MCP_SERVER_NAME } from './common.js';
-import { createCliExecutor } from './executor.js';
-import { getChicagoEnabled, getChicagoSubGates } from './gates.js';
-import { requireComputerUseSwift } from './swiftLoader.js';
+import { format } from "node:util";
+import type { ComputerUseHostAdapter, Logger } from "@ant/computer-use-mcp/types";
+import { logForDebugging } from "../debug.js";
+import { COMPUTER_USE_MCP_SERVER_NAME } from "./common.js";
+import { createCliExecutor } from "./executor.js";
+import { getChicagoEnabled, getChicagoSubGates } from "./gates.js";
+import { requireComputerUseSwift } from "./swiftLoader.js";
 
 class DebugLogger implements Logger {
   silly(message: string, ...args: unknown[]): void {
-    logForDebugging(format(message, ...args), { level: 'debug' });
+    logForDebugging(format(message, ...args), { level: "debug" });
   }
   debug(message: string, ...args: unknown[]): void {
-    logForDebugging(format(message, ...args), { level: 'debug' });
+    logForDebugging(format(message, ...args), { level: "debug" });
   }
   info(message: string, ...args: unknown[]): void {
-    logForDebugging(format(message, ...args), { level: 'info' });
+    logForDebugging(format(message, ...args), { level: "info" });
   }
   warn(message: string, ...args: unknown[]): void {
-    logForDebugging(format(message, ...args), { level: 'warn' });
+    logForDebugging(format(message, ...args), { level: "warn" });
   }
   error(message: string, ...args: unknown[]): void {
-    logForDebugging(format(message, ...args), { level: 'error' });
+    logForDebugging(format(message, ...args), { level: "error" });
   }
 }
 

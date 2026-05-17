@@ -7,18 +7,18 @@
  * - 1P/Cloud mode: Query Files API listDirectory for file IDs (rclone handles sync)
  */
 
-import { feature } from 'bun:bundle';
-import { join, relative } from 'node:path';
+import { feature } from "bun:bundle";
+import { join, relative } from "node:path";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { type FilesApiConfig, uploadSessionFiles } from '../../services/api/filesApi.js';
-import { getCwd } from '../cwd.js';
-import { errorMessage } from '../errors.js';
-import { logError } from '../log.js';
-import { getSessionIngressAuthToken } from '../sessionIngressAuth.js';
-import { findModifiedFiles, getEnvironmentKind, logDebug } from './outputsScanner.js';
+} from "../../services/analytics/index.js";
+import { type FilesApiConfig, uploadSessionFiles } from "../../services/api/filesApi.js";
+import { getCwd } from "../cwd.js";
+import { errorMessage } from "../errors.js";
+import { logError } from "../log.js";
+import { getSessionIngressAuthToken } from "../sessionIngressAuth.js";
+import { findModifiedFiles, getEnvironmentKind, logDebug } from "./outputsScanner.js";
 import {
   DEFAULT_UPLOAD_CONCURRENCY,
   type FailedPersistence,
@@ -27,7 +27,7 @@ import {
   OUTPUTS_SUBDIR,
   type PersistedFile,
   type TurnStartTime,
-} from './types.js';
+} from "./types.js";
 
 /**
  * Execute file persistence for modified files in the outputs directory.
@@ -46,7 +46,7 @@ export async function runFilePersistence(
   signal?: AbortSignal,
 ): Promise<FilesPersistedEventData | null> {
   const environmentKind = getEnvironmentKind();
-  if (environmentKind !== 'byoc') {
+  if (environmentKind !== "byoc") {
     return null;
   }
 
@@ -57,7 +57,7 @@ export async function runFilePersistence(
 
   const sessionId = process.env.CLAUDE_CODE_REMOTE_SESSION_ID;
   if (!sessionId) {
-    logError(new Error('File persistence enabled but CLAUDE_CODE_REMOTE_SESSION_ID is not set'));
+    logError(new Error("File persistence enabled but CLAUDE_CODE_REMOTE_SESSION_ID is not set"));
     return null;
   }
 
@@ -70,18 +70,18 @@ export async function runFilePersistence(
 
   // Check if aborted
   if (signal?.aborted) {
-    logDebug('Persistence aborted before processing');
+    logDebug("Persistence aborted before processing");
     return null;
   }
 
   const startTime = Date.now();
-  logEvent('tengu_file_persistence_started', {
+  logEvent("tengu_file_persistence_started", {
     mode: environmentKind as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 
   try {
     let result: FilesPersistedEventData;
-    if (environmentKind === 'byoc') {
+    if (environmentKind === "byoc") {
       result = await executeBYOCPersistence(turnStartTime, config, outputsDir, signal);
     } else {
       result = await executeCloudPersistence();
@@ -93,7 +93,7 @@ export async function runFilePersistence(
     }
 
     const durationMs = Date.now() - startTime;
-    logEvent('tengu_file_persistence_completed', {
+    logEvent("tengu_file_persistence_completed", {
       success_count: result.files.length,
       failure_count: result.failed.length,
       duration_ms: durationMs,
@@ -106,12 +106,12 @@ export async function runFilePersistence(
     logDebug(`File persistence failed: ${error}`);
 
     const durationMs = Date.now() - startTime;
-    logEvent('tengu_file_persistence_completed', {
+    logEvent("tengu_file_persistence_completed", {
       success_count: 0,
       failure_count: 0,
       duration_ms: durationMs,
       mode: environmentKind as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
-      error: 'exception' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      error: "exception" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
 
     return {
@@ -141,7 +141,7 @@ async function executeBYOCPersistence(
   const modifiedFiles = await findModifiedFiles(turnStartTime, outputsDir);
 
   if (modifiedFiles.length === 0) {
-    logDebug('No modified files to persist');
+    logDebug("No modified files to persist");
     return { files: [], failed: [] };
   }
 
@@ -154,7 +154,7 @@ async function executeBYOCPersistence(
   // Enforce file count limit
   if (modifiedFiles.length > FILE_COUNT_LIMIT) {
     logDebug(`File count limit exceeded: ${modifiedFiles.length} > ${FILE_COUNT_LIMIT}`);
-    logEvent('tengu_file_persistence_limit_exceeded', {
+    logEvent("tengu_file_persistence_limit_exceeded", {
       file_count: modifiedFiles.length,
       limit: FILE_COUNT_LIMIT,
     });
@@ -176,7 +176,7 @@ async function executeBYOCPersistence(
     }))
     .filter(({ relativePath }) => {
       // Security: skip files that resolve outside the outputs directory
-      if (relativePath.startsWith('..')) {
+      if (relativePath.startsWith("..")) {
         logDebug(`Skipping file outside outputs directory: ${relativePath}`);
         return false;
       }
@@ -222,7 +222,7 @@ async function executeBYOCPersistence(
  * currently being added for 1P environments.
  */
 function executeCloudPersistence(): FilesPersistedEventData {
-  logDebug('Cloud mode: xattr-based file ID reading not yet implemented');
+  logDebug("Cloud mode: xattr-based file ID reading not yet implemented");
   return { files: [], failed: [] };
 }
 
@@ -253,9 +253,9 @@ export async function executeFilePersistence(
  * not normal Claude Code CLI users.
  */
 export function isFilePersistenceEnabled(): boolean {
-  if (feature('FILE_PERSISTENCE')) {
+  if (feature("FILE_PERSISTENCE")) {
     return (
-      getEnvironmentKind() === 'byoc' &&
+      getEnvironmentKind() === "byoc" &&
       !!getSessionIngressAuthToken() &&
       !!process.env.CLAUDE_CODE_REMOTE_SESSION_ID
     );

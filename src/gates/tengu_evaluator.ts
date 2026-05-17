@@ -17,15 +17,15 @@ import {
   checkGate_CACHED_OR_BLOCKING,
   checkSecurityRestrictionGate,
   getFeatureValue_CACHED_MAY_BE_STALE,
-} from '../services/analytics/growthbook.js';
-import { logForDebugging } from '../utils/debug.js';
+} from "../services/analytics/growthbook.js";
+import { logForDebugging } from "../utils/debug.js";
 import {
   GateCategory,
   getGateDefinition,
   TENGU_GATES,
   type TenguGateDefinition,
   type TenguGateName,
-} from './tengu_registry.js';
+} from "./tengu_registry.js";
 
 // ─── Evaluation Result ─────────────────────────────────────────────
 
@@ -35,7 +35,7 @@ export interface GateEvalResult<T = unknown> {
   /** The resolved value. */
   readonly value: T;
   /** Whether the value came from cache vs blocking fetch. */
-  readonly source: 'cache' | 'blocking' | 'default' | 'override';
+  readonly source: "cache" | "blocking" | "default" | "override";
   /** Timestamp of evaluation. */
   readonly evaluatedAt: number;
   /** Category of the gate. */
@@ -44,7 +44,7 @@ export interface GateEvalResult<T = unknown> {
 
 // ─── Audit Log ─────────────────────────────────────────────────────
 
-const isAnt = process.env.USER_TYPE === 'ant';
+const isAnt = process.env.USER_TYPE === "ant";
 const evaluationLog: GateEvalResult[] = [];
 const MAX_EVAL_LOG = 1000;
 
@@ -83,7 +83,7 @@ export function evaluateGate(name: TenguGateName): boolean {
   const result: GateEvalResult<boolean> = {
     gate: def.key,
     value,
-    source: 'cache',
+    source: "cache",
     evaluatedAt: Date.now(),
     category: def.category,
   };
@@ -105,7 +105,7 @@ export function evaluateFeatureValue<T>(name: TenguGateName): T {
   const result: GateEvalResult<T> = {
     gate: def.key,
     value,
-    source: 'cache',
+    source: "cache",
     evaluatedAt: Date.now(),
     category: def.category,
   };
@@ -134,7 +134,7 @@ export async function evaluateSecurityGate(name: TenguGateName): Promise<boolean
   const result: GateEvalResult<boolean> = {
     gate: def.key,
     value,
-    source: 'blocking',
+    source: "blocking",
     evaluatedAt: Date.now(),
     category: def.category,
   };
@@ -163,7 +163,7 @@ export async function evaluateEntitlementGate(name: TenguGateName): Promise<bool
   const result: GateEvalResult<boolean> = {
     gate: def.key,
     value,
-    source: value ? 'cache' : 'blocking',
+    source: value ? "cache" : "blocking",
     evaluatedAt: Date.now(),
     category: def.category,
   };
@@ -179,9 +179,7 @@ export async function evaluateEntitlementGate(name: TenguGateName): Promise<bool
  * For SECURITY/ENTITLEMENT gates, this awaits all results.
  * For FEATURE/TELEMETRY/INTERNAL gates, this is non-blocking.
  */
-export async function evaluateCategory(
-  category: GateCategory,
-): Promise<Map<string, unknown>> {
+export async function evaluateCategory(category: GateCategory): Promise<Map<string, unknown>> {
   const results = new Map<string, unknown>();
 
   for (const [name, def] of Object.entries(TENGU_GATES)) {
@@ -212,7 +210,7 @@ export async function snapshotAllGates(): Promise<Record<string, Record<string, 
   const snapshot: Record<string, Record<string, unknown>> = {};
 
   for (const category of Object.values(GateCategory)) {
-    if (typeof category !== 'string') continue;
+    if (typeof category !== "string") continue;
     const categoryGates = await evaluateCategory(category as GateCategory);
     const obj: Record<string, unknown> = {};
     for (const [k, v] of categoryGates) {

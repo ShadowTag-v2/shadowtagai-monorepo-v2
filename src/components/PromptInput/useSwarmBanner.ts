@@ -1,22 +1,22 @@
-import * as React from 'react';
-import { useAppState, useAppStateStore } from '../../state/AppState.js';
-import { getActiveAgentForInput, getViewedTeammateTask } from '../../state/selectors.js';
+import * as React from "react";
+import { useAppState, useAppStateStore } from "../../state/AppState.js";
+import { getActiveAgentForInput, getViewedTeammateTask } from "../../state/selectors.js";
 import {
   AGENT_COLOR_TO_THEME_COLOR,
   AGENT_COLORS,
   type AgentColorName,
   getAgentColor,
-} from '../../tools/AgentTool/agentColorManager.js';
-import { getStandaloneAgentName } from '../../utils/standaloneAgent.js';
-import { isInsideTmux } from '../../utils/swarm/backends/detection.js';
+} from "../../tools/AgentTool/agentColorManager.js";
+import { getStandaloneAgentName } from "../../utils/standaloneAgent.js";
+import { isInsideTmux } from "../../utils/swarm/backends/detection.js";
 import {
   getCachedDetectionResult,
   isInProcessEnabled,
-} from '../../utils/swarm/backends/registry.js';
-import { getSwarmSocketName } from '../../utils/swarm/constants.js';
-import { getAgentName, getTeammateColor, getTeamName, isTeammate } from '../../utils/teammate.js';
-import { isInProcessTeammate } from '../../utils/teammateContext.js';
-import type { Theme } from '../../utils/theme.js';
+} from "../../utils/swarm/backends/registry.js";
+import { getSwarmSocketName } from "../../utils/swarm/constants.js";
+import { getAgentName, getTeammateColor, getTeamName, isTeammate } from "../../utils/teammate.js";
+import { isInProcessTeammate } from "../../utils/teammateContext.js";
+import type { Theme } from "../../utils/theme.js";
 
 type SwarmBannerInfo = {
   text: string;
@@ -91,7 +91,7 @@ export function useSwarmBanner(): SwarmBannerInfo {
   // InProcessTeammates, so getViewedTeammateTask misses them. Reverse-lookup the
   // name from agentNameRegistry the same way CoordinatorAgentStatus does.
   const active = getActiveAgentForInput(state);
-  if (active.type === 'named_agent') {
+  if (active.type === "named_agent") {
     const task = active.task;
     let name: string | undefined;
     for (const [n, id] of state.agentNameRegistry) {
@@ -102,7 +102,7 @@ export function useSwarmBanner(): SwarmBannerInfo {
     }
     return {
       text: name ? `@${name}` : task.description,
-      bgColor: getAgentColor(task.agentType) ?? 'cyan_FOR_SUBAGENTS_ONLY',
+      bgColor: getAgentColor(task.agentType) ?? "cyan_FOR_SUBAGENTS_ONLY",
     };
   }
 
@@ -111,7 +111,7 @@ export function useSwarmBanner(): SwarmBannerInfo {
   const standaloneColor = standaloneAgentContext?.color;
   if (standaloneName || standaloneColor) {
     return {
-      text: standaloneName ?? '',
+      text: standaloneName ?? "",
       bgColor: toThemeColor(standaloneColor),
     };
   }
@@ -121,7 +121,7 @@ export function useSwarmBanner(): SwarmBannerInfo {
     const agentDef = state.agentDefinitions.activeAgents.find((a) => a.agentType === agent);
     return {
       text: agent,
-      bgColor: toThemeColor(agentDef?.color, 'promptBorder'),
+      bgColor: toThemeColor(agentDef?.color, "promptBorder"),
     };
   }
 
@@ -130,7 +130,7 @@ export function useSwarmBanner(): SwarmBannerInfo {
 
 function toThemeColor(
   colorName: string | undefined,
-  fallback: keyof Theme = 'cyan_FOR_SUBAGENTS_ONLY',
+  fallback: keyof Theme = "cyan_FOR_SUBAGENTS_ONLY",
 ): keyof Theme {
   return colorName && AGENT_COLORS.includes(colorName as AgentColorName)
     ? AGENT_COLOR_TO_THEME_COLOR[colorName as AgentColorName]

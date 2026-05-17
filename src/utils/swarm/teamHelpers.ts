@@ -1,43 +1,43 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { z } from 'zod/v4';
-import { getSessionCreatedTeams } from '../../bootstrap/state.js';
-import { logForDebugging } from '../debug.js';
-import { getTeamsDir } from '../envUtils.js';
-import { errorMessage, getErrnoCode } from '../errors.js';
-import { execFileNoThrowWithCwd } from '../execFileNoThrow.js';
-import { gitExe } from '../git.js';
-import { lazySchema } from '../lazySchema.js';
-import type { PermissionMode } from '../permissions/PermissionMode.js';
-import { jsonParse, jsonStringify } from '../slowOperations.js';
-import { getTasksDir, notifyTasksUpdated } from '../tasks.js';
-import { getAgentName, getTeamName, isTeammate } from '../teammate.js';
-import { type BackendType, isPaneBackend } from './backends/types.js';
-import { TEAM_LEAD_NAME } from './constants.js';
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { z } from "zod/v4";
+import { getSessionCreatedTeams } from "../../bootstrap/state.js";
+import { logForDebugging } from "../debug.js";
+import { getTeamsDir } from "../envUtils.js";
+import { errorMessage, getErrnoCode } from "../errors.js";
+import { execFileNoThrowWithCwd } from "../execFileNoThrow.js";
+import { gitExe } from "../git.js";
+import { lazySchema } from "../lazySchema.js";
+import type { PermissionMode } from "../permissions/PermissionMode.js";
+import { jsonParse, jsonStringify } from "../slowOperations.js";
+import { getTasksDir, notifyTasksUpdated } from "../tasks.js";
+import { getAgentName, getTeamName, isTeammate } from "../teammate.js";
+import { type BackendType, isPaneBackend } from "./backends/types.js";
+import { TEAM_LEAD_NAME } from "./constants.js";
 
 export const inputSchema = lazySchema(() =>
   z.strictObject({
     operation: z
-      .enum(['spawnTeam', 'cleanup'])
+      .enum(["spawnTeam", "cleanup"])
       .describe(
-        'Operation: spawnTeam to create a team, cleanup to remove team and task directories.',
+        "Operation: spawnTeam to create a team, cleanup to remove team and task directories.",
       ),
     agent_type: z
       .string()
       .optional()
       .describe(
         'Type/role of the team lead (e.g., "researcher", "test-runner"). ' +
-          'Used for team file and inter-agent coordination.',
+          "Used for team file and inter-agent coordination.",
       ),
     team_name: z
       .string()
       .optional()
-      .describe('Name for the new team to create (required for spawnTeam).'),
+      .describe("Name for the new team to create (required for spawnTeam)."),
     description: z
       .string()
       .optional()
-      .describe('Team description/purpose (only used with spawnTeam).'),
+      .describe("Team description/purpose (only used with spawnTeam)."),
   }),
 );
 
@@ -98,7 +98,7 @@ export type Output = SpawnTeamOutput;
  * Replaces all non-alphanumeric characters with hyphens and lowercases.
  */
 export function sanitizeName(name: string): string {
-  return name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+  return name.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
 }
 
 /**
@@ -106,7 +106,7 @@ export function sanitizeName(name: string): string {
  * Replaces @ with - to prevent ambiguity in the agentName@teamName format.
  */
 export function sanitizeAgentName(name: string): string {
-  return name.replace(/@/g, '-');
+  return name.replace(/@/g, "-");
 }
 
 /**
@@ -120,7 +120,7 @@ export function getTeamDir(teamName: string): string {
  * Gets the path to a team's config.json file
  */
 export function getTeamFilePath(teamName: string): string {
-  return join(getTeamDir(teamName), 'config.json');
+  return join(getTeamDir(teamName), "config.json");
 }
 
 /**
@@ -130,10 +130,10 @@ export function getTeamFilePath(teamName: string): string {
 // sync IO: called from sync context
 export function readTeamFile(teamName: string): TeamFile | null {
   try {
-    const content = readFileSync(getTeamFilePath(teamName), 'utf-8');
+    const content = readFileSync(getTeamFilePath(teamName), "utf-8");
     return jsonParse(content) as TeamFile;
   } catch (e) {
-    if (getErrnoCode(e) === 'ENOENT') return null;
+    if (getErrnoCode(e) === "ENOENT") return null;
     logForDebugging(`[TeammateTool] Failed to read team file for ${teamName}: ${errorMessage(e)}`);
     return null;
   }
@@ -144,10 +144,10 @@ export function readTeamFile(teamName: string): TeamFile | null {
  */
 export async function readTeamFileAsync(teamName: string): Promise<TeamFile | null> {
   try {
-    const content = await readFile(getTeamFilePath(teamName), 'utf-8');
+    const content = await readFile(getTeamFilePath(teamName), "utf-8");
     return jsonParse(content) as TeamFile;
   } catch (e) {
-    if (getErrnoCode(e) === 'ENOENT') return null;
+    if (getErrnoCode(e) === "ENOENT") return null;
     logForDebugging(`[TeammateTool] Failed to read team file for ${teamName}: ${errorMessage(e)}`);
     return null;
   }
@@ -182,7 +182,7 @@ export function removeTeammateFromTeamFile(
 ): boolean {
   const identifierStr = identifier.agentId || identifier.name;
   if (!identifierStr) {
-    logForDebugging('[TeammateTool] removeTeammateFromTeamFile called with no identifier');
+    logForDebugging("[TeammateTool] removeTeammateFromTeamFile called with no identifier");
     return false;
   }
 
@@ -436,7 +436,7 @@ export async function setMemberActive(
   member.isActive = isActive;
   await writeTeamFileAsync(teamName, teamFile);
   logForDebugging(
-    `[TeammateTool] Set member ${memberName} in team ${teamName} to ${isActive ? 'active' : 'idle'}`,
+    `[TeammateTool] Set member ${memberName} in team ${teamName} to ${isActive ? "active" : "idle"}`,
   );
 }
 
@@ -447,19 +447,19 @@ export async function setMemberActive(
  */
 async function destroyWorktree(worktreePath: string): Promise<void> {
   // Read the .git file in the worktree to find the main repo
-  const gitFilePath = join(worktreePath, '.git');
+  const gitFilePath = join(worktreePath, ".git");
   let mainRepoPath: string | null = null;
 
   try {
-    const gitFileContent = (await readFile(gitFilePath, 'utf-8')).trim();
+    const gitFileContent = (await readFile(gitFilePath, "utf-8")).trim();
     // The .git file contains something like: gitdir: /path/to/repo/.git/worktrees/worktree-name
     const match = gitFileContent.match(/^gitdir:\s*(.+)$/);
     if (match?.[1]) {
       // Extract the main repo .git directory (go up from .git/worktrees/name to .git)
       const worktreeGitDir = match[1];
       // Go up 2 levels from .git/worktrees/name to get to .git, then get parent for repo root
-      const mainGitDir = join(worktreeGitDir, '..', '..');
-      mainRepoPath = join(mainGitDir, '..');
+      const mainGitDir = join(worktreeGitDir, "..", "..");
+      mainRepoPath = join(mainGitDir, "..");
     }
   } catch {
     // Ignore errors reading .git file (path doesn't exist, not a file, etc.)
@@ -469,7 +469,7 @@ async function destroyWorktree(worktreePath: string): Promise<void> {
   if (mainRepoPath) {
     const result = await execFileNoThrowWithCwd(
       gitExe(),
-      ['worktree', 'remove', '--force', worktreePath],
+      ["worktree", "remove", "--force", worktreePath],
       { cwd: mainRepoPath },
     );
 
@@ -479,7 +479,7 @@ async function destroyWorktree(worktreePath: string): Promise<void> {
     }
 
     // Check if the error is "not a working tree" (already removed)
-    if (result.stderr?.includes('not a working tree')) {
+    if (result.stderr?.includes("not a working tree")) {
       logForDebugging(`[TeammateTool] Worktree already removed: ${worktreePath}`);
       return;
     }
@@ -528,7 +528,7 @@ export async function cleanupSessionTeams(): Promise<void> {
   if (sessionCreatedTeams.size === 0) return;
   const teams = Array.from(sessionCreatedTeams);
   logForDebugging(
-    `cleanupSessionTeams: removing ${teams.length} orphan team dir(s): ${teams.join(', ')}`,
+    `cleanupSessionTeams: removing ${teams.length} orphan team dir(s): ${teams.join(", ")}`,
   );
   // Kill panes first — on SIGINT the teammate processes are still running;
   // deleting directories alone would orphan them in open tmux/iTerm2 panes.
@@ -556,8 +556,8 @@ async function killOrphanedTeammatePanes(teamName: string): Promise<void> {
   if (paneMembers.length === 0) return;
 
   const [{ ensureBackendsRegistered, getBackendByType }, { isInsideTmux }] = await Promise.all([
-    import('./backends/registry.js'),
-    import('./backends/detection.js'),
+    import("./backends/registry.js"),
+    import("./backends/detection.js"),
   ]);
   await ensureBackendsRegistered();
   const useExternalSession = !(await isInsideTmux());

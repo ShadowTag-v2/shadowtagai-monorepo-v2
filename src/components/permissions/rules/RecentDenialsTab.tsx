@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- 'r' is a view-specific key, not a global keybinding
-import { Box, Text, useInput } from '../../../ink.js';
-import { type AutoModeDenial, getAutoModeDenials } from '../../../utils/autoModeDenials.js';
-import { Select } from '../../CustomSelect/select.js';
-import { StatusIcon } from '../../design-system/StatusIcon.js';
-import { useTabHeaderFocus } from '../../design-system/Tabs.js';
+import { Box, Text, useInput } from "../../../ink.js";
+import { type AutoModeDenial, getAutoModeDenials } from "../../../utils/autoModeDenials.js";
+import { Select } from "../../CustomSelect/select.js";
+import { StatusIcon } from "../../design-system/StatusIcon.js";
+import { useTabHeaderFocus } from "../../design-system/Tabs.js";
 
 type Props = {
   onHeaderFocusChange?: (focused: boolean) => void;
@@ -63,7 +63,7 @@ export function RecentDenialsTab(t0) {
   }
   useEffect(t3, t4);
   let t5;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (value) => {
       const idx = Number(value);
       setApproved((prev) => {
@@ -82,7 +82,7 @@ export function RecentDenialsTab(t0) {
   }
   const handleSelect = t5;
   let t6;
-  if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (value_0) => {
       setFocusedIdx(Number(value_0));
     };
@@ -94,7 +94,7 @@ export function RecentDenialsTab(t0) {
   let t7;
   if ($[12] !== focusedIdx) {
     t7 = (input, _key) => {
-      if (input === 'r') {
+      if (input === "r") {
         setRetry((prev_0) => {
           const next_0 = new Set(prev_0);
           if (next_0.has(focusedIdx)) {
@@ -133,7 +133,7 @@ export function RecentDenialsTab(t0) {
   useInput(t7, t9);
   if (denials.length === 0) {
     let t10;
-    if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
       t10 = (
         <Text dimColor={true}>
           No recent denials. Commands denied by the auto mode classifier will appear here.
@@ -151,11 +151,11 @@ export function RecentDenialsTab(t0) {
     if ($[21] !== approved || $[22] !== retry) {
       t11 = (d, idx_0) => {
         const isApproved = approved.has(idx_0);
-        const suffix = retry.has(idx_0) ? ' (retry)' : '';
+        const suffix = retry.has(idx_0) ? " (retry)" : "";
         return {
           label: (
             <Text>
-              <StatusIcon status={isApproved ? 'success' : 'error'} withSpace={true} />
+              <StatusIcon status={isApproved ? "success" : "error"} withSpace={true} />
               {d.display}
               <Text dimColor={true}>{suffix}</Text>
             </Text>
@@ -179,7 +179,7 @@ export function RecentDenialsTab(t0) {
   }
   const options = t10;
   let t11;
-  if ($[24] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[24] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = <Text>Commands recently denied by the auto mode classifier.</Text>;
     $[24] = t11;
   } else {

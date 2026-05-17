@@ -1,8 +1,8 @@
-import { z } from 'zod/v4';
-import { getFeatureValue_DEPRECATED } from '../services/analytics/growthbook.js';
-import { lazySchema } from '../utils/lazySchema.js';
-import { lt } from '../utils/semver.js';
-import { isEnvLessBridgeEnabled } from './bridgeEnabled.js';
+import { z } from "zod/v4";
+import { getFeatureValue_DEPRECATED } from "../services/analytics/growthbook.js";
+import { lazySchema } from "../utils/lazySchema.js";
+import { lt } from "../utils/semver.js";
+import { isEnvLessBridgeEnabled } from "./bridgeEnabled.js";
 
 export type EnvLessBridgeConfig = {
   // withRetry — init-phase backoff (createSession, POST /bridge, recovery /bridge)
@@ -53,7 +53,7 @@ export const DEFAULT_ENV_LESS_BRIDGE_CONFIG: EnvLessBridgeConfig = {
   token_refresh_buffer_ms: 300_000,
   teardown_archive_timeout_ms: 1500,
   connect_timeout_ms: 15_000,
-  min_version: '0.0.0',
+  min_version: "0.0.0",
   should_show_app_upgrade_message: false,
 };
 
@@ -90,13 +90,13 @@ const envLessBridgeConfigSchema = lazySchema(() =>
       .string()
       .refine((v) => {
         try {
-          lt(v, '0.0.0');
+          lt(v, "0.0.0");
           return true;
         } catch {
           return false;
         }
       })
-      .default('0.0.0'),
+      .default("0.0.0"),
     should_show_app_upgrade_message: z.boolean().default(false),
   }),
 );
@@ -114,7 +114,7 @@ const envLessBridgeConfigSchema = lazySchema(() =>
  */
 export async function getEnvLessBridgeConfig(): Promise<EnvLessBridgeConfig> {
   const raw = await getFeatureValue_DEPRECATED<unknown>(
-    'tengu_bridge_repl_v2_config',
+    "tengu_bridge_repl_v2_config",
     DEFAULT_ENV_LESS_BRIDGE_CONFIG,
   );
   const parsed = envLessBridgeConfigSchema().safeParse(raw);

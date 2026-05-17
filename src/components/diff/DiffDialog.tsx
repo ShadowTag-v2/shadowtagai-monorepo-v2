@@ -1,19 +1,19 @@
-import type { StructuredPatchHunk } from 'diff';
-import { useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay } from '../../commands.js';
-import { useRegisterOverlay } from '../../context/overlayContext.js';
-import { type DiffData, useDiffData } from '../../hooks/useDiffData.js';
-import { type TurnDiff, useTurnDiffs } from '../../hooks/useTurnDiffs.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
-import { useShortcutDisplay } from '../../keybindings/useShortcutDisplay.js';
-import type { Message } from '../../types/message.js';
-import { plural } from '../../utils/stringUtils.js';
-import { Byline } from '../design-system/Byline.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { DiffDetailView } from './DiffDetailView.js';
-import { DiffFileList } from './DiffFileList.js';
+import type { StructuredPatchHunk } from "diff";
+import { useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay } from "../../commands.js";
+import { useRegisterOverlay } from "../../context/overlayContext.js";
+import { type DiffData, useDiffData } from "../../hooks/useDiffData.js";
+import { type TurnDiff, useTurnDiffs } from "../../hooks/useTurnDiffs.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
+import { useShortcutDisplay } from "../../keybindings/useShortcutDisplay.js";
+import type { Message } from "../../types/message.js";
+import { plural } from "../../utils/stringUtils.js";
+import { Byline } from "../design-system/Byline.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { DiffDetailView } from "./DiffDetailView.js";
+import { DiffFileList } from "./DiffFileList.js";
 
 type Props = {
   messages: Message[];
@@ -24,13 +24,13 @@ type Props = {
     },
   ) => void;
 };
-type ViewMode = 'list' | 'detail';
+type ViewMode = "list" | "detail";
 type DiffSource =
   | {
-      type: 'current';
+      type: "current";
     }
   | {
-      type: 'turn';
+      type: "turn";
       turn: TurnDiff;
     };
 function turnDiffToDiffData(turn: TurnDiff): DiffData {
@@ -65,13 +65,13 @@ export function DiffDialog(t0) {
   const { messages, onDone } = t0;
   const gitDiffData = useDiffData();
   const turnDiffs = useTurnDiffs(messages);
-  const [viewMode, setViewMode] = useState('list');
+  const [viewMode, setViewMode] = useState("list");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [sourceIndex, setSourceIndex] = useState(0);
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
-      type: 'current',
+      type: "current",
     };
     $[0] = t1;
   } else {
@@ -87,7 +87,7 @@ export function DiffDialog(t0) {
   }
   const sources = t2;
   const currentSource = sources[sourceIndex];
-  const currentTurn = currentSource?.type === 'turn' ? currentSource.turn : null;
+  const currentTurn = currentSource?.type === "turn" ? currentSource.turn : null;
   let t3;
   if ($[3] !== currentTurn || $[4] !== gitDiffData) {
     t3 = currentTurn ? turnDiffToDiffData(currentTurn) : gitDiffData;
@@ -146,21 +146,21 @@ export function DiffDialog(t0) {
     t8 = $[15];
   }
   useEffect(t7, t8);
-  useRegisterOverlay('diff-dialog');
+  useRegisterOverlay("diff-dialog");
   let t10;
   let t9;
   if ($[16] !== sources.length || $[17] !== viewMode) {
     t9 = () => {
-      if (viewMode === 'detail') {
-        setViewMode('list');
+      if (viewMode === "detail") {
+        setViewMode("list");
       } else {
-        if (viewMode === 'list' && sources.length > 1) {
+        if (viewMode === "list" && sources.length > 1) {
           setSourceIndex(_temp2);
         }
       }
     };
     t10 = () => {
-      if (viewMode === 'list' && sources.length > 1) {
+      if (viewMode === "list" && sources.length > 1) {
         setSourceIndex((prev_0) => Math.min(sources.length - 1, prev_0 + 1));
       }
     };
@@ -175,8 +175,8 @@ export function DiffDialog(t0) {
   let t11;
   if ($[20] !== viewMode) {
     t11 = () => {
-      if (viewMode === 'detail') {
-        setViewMode('list');
+      if (viewMode === "detail") {
+        setViewMode("list");
       }
     };
     $[20] = viewMode;
@@ -187,8 +187,8 @@ export function DiffDialog(t0) {
   let t12;
   if ($[22] !== selectedFile || $[23] !== viewMode) {
     t12 = () => {
-      if (viewMode === 'list' && selectedFile) {
-        setViewMode('detail');
+      if (viewMode === "list" && selectedFile) {
+        setViewMode("detail");
       }
     };
     $[22] = selectedFile;
@@ -200,7 +200,7 @@ export function DiffDialog(t0) {
   let t13;
   if ($[25] !== viewMode) {
     t13 = () => {
-      if (viewMode === 'list') {
+      if (viewMode === "list") {
         setSelectedIndex(_temp3);
       }
     };
@@ -212,7 +212,7 @@ export function DiffDialog(t0) {
   let t14;
   if ($[27] !== diffData.files.length || $[28] !== viewMode) {
     t14 = () => {
-      if (viewMode === 'list') {
+      if (viewMode === "list") {
         setSelectedIndex((prev_2) => Math.min(diffData.files.length - 1, prev_2 + 1));
       }
     };
@@ -232,12 +232,12 @@ export function DiffDialog(t0) {
     $[35] !== t9
   ) {
     t15 = {
-      'diff:previousSource': t9,
-      'diff:nextSource': t10,
-      'diff:back': t11,
-      'diff:viewDetails': t12,
-      'diff:previousFile': t13,
-      'diff:nextFile': t14,
+      "diff:previousSource": t9,
+      "diff:nextSource": t10,
+      "diff:back": t11,
+      "diff:viewDetails": t12,
+      "diff:previousFile": t13,
+      "diff:nextFile": t14,
     };
     $[30] = t10;
     $[31] = t11;
@@ -250,9 +250,9 @@ export function DiffDialog(t0) {
     t15 = $[36];
   }
   let t16;
-  if ($[37] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[37] === Symbol.for("react.memo_cache_sentinel")) {
     t16 = {
-      context: 'DiffDialog',
+      context: "DiffDialog",
     };
     $[37] = t16;
   } else {
@@ -263,7 +263,7 @@ export function DiffDialog(t0) {
   if ($[38] !== diffData.stats) {
     t17 = diffData.stats ? (
       <Text dimColor={true}>
-        {diffData.stats.filesCount} {plural(diffData.stats.filesCount, 'file')} changed
+        {diffData.stats.filesCount} {plural(diffData.stats.filesCount, "file")} changed
         {diffData.stats.linesAdded > 0 && (
           <Text color="diffAddedWord"> +{diffData.stats.linesAdded}</Text>
         )}
@@ -278,12 +278,12 @@ export function DiffDialog(t0) {
     t17 = $[39];
   }
   const subtitle = t17;
-  const headerTitle = currentTurn ? `Turn ${currentTurn.turnIndex}` : 'Uncommitted changes';
+  const headerTitle = currentTurn ? `Turn ${currentTurn.turnIndex}` : "Uncommitted changes";
   const headerSubtitle = currentTurn
     ? currentTurn.userPromptPreview
       ? `"${currentTurn.userPromptPreview}"`
-      : ''
-    : '(git diff HEAD)';
+      : ""
+    : "(git diff HEAD)";
   let t18;
   if ($[40] !== sourceIndex || $[41] !== sources) {
     t18 =
@@ -292,10 +292,10 @@ export function DiffDialog(t0) {
           {sourceIndex > 0 && <Text dimColor={true}>◀ </Text>}
           {sources.map((source, i) => {
             const isSelected = i === sourceIndex;
-            const label = source.type === 'current' ? 'Current' : `T${source.turn.turnIndex}`;
+            const label = source.type === "current" ? "Current" : `T${source.turn.turnIndex}`;
             return (
               <Text key={i} dimColor={!isSelected} bold={isSelected}>
-                {i > 0 ? ' \xB7 ' : ''}
+                {i > 0 ? " \xB7 " : ""}
                 {label}
               </Text>
             );
@@ -310,22 +310,22 @@ export function DiffDialog(t0) {
     t18 = $[42];
   }
   const sourceSelector = t18;
-  const dismissShortcut = useShortcutDisplay('diff:dismiss', 'DiffDialog', 'esc');
+  const dismissShortcut = useShortcutDisplay("diff:dismiss", "DiffDialog", "esc");
   let t19;
   bb0: {
     if (diffData.loading) {
-      t19 = 'Loading diff\u2026';
+      t19 = "Loading diff\u2026";
       break bb0;
     }
     if (currentTurn) {
-      t19 = 'No file changes in this turn';
+      t19 = "No file changes in this turn";
       break bb0;
     }
     if (diffData.stats && diffData.stats.filesCount > 0 && diffData.files.length === 0) {
-      t19 = 'Too many files to display details';
+      t19 = "Too many files to display details";
       break bb0;
     }
-    t19 = 'Working tree is clean';
+    t19 = "Working tree is clean";
   }
   const emptyMessage = t19;
   let t20;
@@ -354,11 +354,11 @@ export function DiffDialog(t0) {
   let t22;
   if ($[48] !== onDone || $[49] !== viewMode) {
     t22 = function handleCancel() {
-      if (viewMode === 'detail') {
-        setViewMode('list');
+      if (viewMode === "detail") {
+        setViewMode("list");
       } else {
-        onDone('Diff dialog dismissed', {
-          display: 'system',
+        onDone("Diff dialog dismissed", {
+          display: "system",
         });
       }
     };
@@ -374,7 +374,7 @@ export function DiffDialog(t0) {
     t23 = (exitState) =>
       exitState.pending ? (
         <Text>Press {exitState.keyName} again to exit</Text>
-      ) : viewMode === 'list' ? (
+      ) : viewMode === "list" ? (
         <Byline>
           {sources.length > 1 && <Text>←/→ source</Text>}
           <Text>↑/↓ select</Text>
@@ -412,14 +412,14 @@ export function DiffDialog(t0) {
         <Box marginTop={1}>
           <Text dimColor={true}>{emptyMessage}</Text>
         </Box>
-      ) : viewMode === 'list' ? (
+      ) : viewMode === "list" ? (
         <Box flexDirection="column" marginTop={1}>
           <DiffFileList files={diffData.files} selectedIndex={selectedIndex} />
         </Box>
       ) : (
         <Box flexDirection="column" marginTop={1}>
           <DiffDetailView
-            filePath={selectedFile?.path || ''}
+            filePath={selectedFile?.path || ""}
             hunks={selectedHunks}
             isLargeFile={selectedFile?.isLargeFile}
             isBinary={selectedFile?.isBinary}
@@ -478,7 +478,7 @@ function _temp2(prev) {
 }
 function _temp(turn) {
   return {
-    type: 'turn',
+    type: "turn",
     turn,
   };
 }

@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
 import {
   hookSourceDescriptionDisplayString,
   type IndividualHookConfig,
-} from '../../utils/hooks/hooksSettings.js';
-import { Dialog } from '../design-system/Dialog.js';
+} from "../../utils/hooks/hooksSettings.js";
+import { Dialog } from "../design-system/Dialog.js";
 
 type Props = {
   selectedHook: IndividualHookConfig;
@@ -30,7 +30,7 @@ export function ViewHookMode(t0) {
   if ($[2] !== eventSupportsMatcher || $[3] !== selectedHook.matcher) {
     t2 = eventSupportsMatcher && (
       <Text>
-        Matcher: <Text bold={true}>{selectedHook.matcher || '(all)'}</Text>
+        Matcher: <Text bold={true}>{selectedHook.matcher || "(all)"}</Text>
       </Text>
     );
     $[2] = eventSupportsMatcher;
@@ -155,7 +155,7 @@ export function ViewHookMode(t0) {
   }
   let t13;
   if ($[30] !== selectedHook.config) {
-    t13 = 'statusMessage' in selectedHook.config && selectedHook.config.statusMessage && (
+    t13 = "statusMessage" in selectedHook.config && selectedHook.config.statusMessage && (
       <Text>
         Status message: <Text dimColor={true}>{selectedHook.config.statusMessage}</Text>
       </Text>
@@ -166,7 +166,7 @@ export function ViewHookMode(t0) {
     t13 = $[31];
   }
   let t14;
-  if ($[32] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[32] === Symbol.for("react.memo_cache_sentinel")) {
     t14 = (
       <Text dimColor={true}>
         To modify or remove this hook, edit settings.json directly or ask Claude to help.
@@ -216,16 +216,16 @@ export function ViewHookMode(t0) {
 function _temp() {
   return <Text>Esc to go back</Text>;
 }
-function getContentFieldLabel(config: IndividualHookConfig['config']): string {
+function getContentFieldLabel(config: IndividualHookConfig["config"]): string {
   switch (config.type) {
-    case 'command':
-      return 'Command';
-    case 'prompt':
-      return 'Prompt';
-    case 'agent':
-      return 'Prompt';
-    case 'http':
-      return 'URL';
+    case "command":
+      return "Command";
+    case "prompt":
+      return "Prompt";
+    case "agent":
+      return "Prompt";
+    case "http":
+      return "URL";
   }
 }
 
@@ -233,15 +233,15 @@ function getContentFieldLabel(config: IndividualHookConfig['config']): string {
  * Get the actual content value for a hook's primary field, bypassing
  * statusMessage so the detail view always shows the real command/prompt/URL.
  */
-function getContentFieldValue(config: IndividualHookConfig['config']): string {
+function getContentFieldValue(config: IndividualHookConfig["config"]): string {
   switch (config.type) {
-    case 'command':
+    case "command":
       return config.command;
-    case 'prompt':
+    case "prompt":
       return config.prompt;
-    case 'agent':
+    case "agent":
       return config.prompt;
-    case 'http':
+    case "http":
       return config.url;
   }
 }

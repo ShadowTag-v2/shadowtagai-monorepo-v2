@@ -1,14 +1,14 @@
-import { c as _c } from 'react/compiler-runtime';
-import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
-import { Box, Text } from '../../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import type { HookEvent } from "src/entrypoints/agentSdkTypes.js";
+import { Box, Text } from "../../ink.js";
 import {
   type HookSource,
   hookSourceInlineDisplayString,
   type IndividualHookConfig,
-} from '../../utils/hooks/hooksSettings.js';
-import { plural } from '../../utils/stringUtils.js';
-import { Select } from '../CustomSelect/select.js';
-import { Dialog } from '../design-system/Dialog.js';
+} from "../../utils/hooks/hooksSettings.js";
+import { plural } from "../../utils/stringUtils.js";
+import { Select } from "../CustomSelect/select.js";
+import { Dialog } from "../design-system/Dialog.js";
 
 type MatcherWithSource = {
   matcher: string;
@@ -68,7 +68,7 @@ export function SelectMatcherMode(t0) {
   if (matchersForSelectedEvent.length === 0) {
     const t2 = `${selectedEvent} - Matchers`;
     let t3;
-    if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = (
         <Box flexDirection="column" gap={1}>
           <Text dimColor={true}>No hooks configured for this event.</Text>
@@ -146,12 +146,12 @@ export function SelectMatcherMode(t0) {
   return t6;
 }
 function _temp3(item) {
-  const sourceText = item.sources.map(hookSourceInlineDisplayString).join(', ');
-  const matcherLabel = item.matcher || '(all)';
+  const sourceText = item.sources.map(hookSourceInlineDisplayString).join(", ");
+  const matcherLabel = item.matcher || "(all)";
   return {
     label: `[${sourceText}] ${matcherLabel}`,
     value: item.matcher,
-    description: `${item.hookCount} ${plural(item.hookCount, 'hook')}`,
+    description: `${item.hookCount} ${plural(item.hookCount, "hook")}`,
   };
 }
 function _temp2() {

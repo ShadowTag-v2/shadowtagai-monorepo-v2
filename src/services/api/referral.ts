@@ -1,21 +1,21 @@
-import axios from 'axios';
-import { getOauthConfig } from '../../constants/oauth.js';
+import axios from "axios";
+import { getOauthConfig } from "../../constants/oauth.js";
 import {
   getOauthAccountInfo,
   getSubscriptionType,
   isClaudeAISubscriber,
-} from '../../utils/auth.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { logError } from '../../utils/log.js';
-import { isEssentialTrafficOnly } from '../../utils/privacyLevel.js';
-import { getOAuthHeaders, prepareApiRequest } from '../../utils/teleport/api.js';
+} from "../../utils/auth.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { logError } from "../../utils/log.js";
+import { isEssentialTrafficOnly } from "../../utils/privacyLevel.js";
+import { getOAuthHeaders, prepareApiRequest } from "../../utils/teleport/api.js";
 import type {
   ReferralCampaign,
   ReferralEligibilityResponse,
   ReferralRedemptionsResponse,
   ReferrerRewardInfo,
-} from '../oauth/types.js';
+} from "../oauth/types.js";
 
 // Cache expiration time: 24 hours (eligibility changes only on subscription/experiment changes)
 const CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000;
@@ -24,13 +24,13 @@ const CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000;
 let fetchInProgress: Promise<ReferralEligibilityResponse | null> | null = null;
 
 export async function fetchReferralEligibility(
-  campaign: ReferralCampaign = 'claude_code_guest_pass',
+  campaign: ReferralCampaign = "claude_code_guest_pass",
 ): Promise<ReferralEligibilityResponse> {
   const { accessToken, orgUUID } = await prepareApiRequest();
 
   const headers = {
     ...getOAuthHeaders(accessToken),
-    'x-organization-uuid': orgUUID,
+    "x-organization-uuid": orgUUID,
   };
 
   const url = `${getOauthConfig().BASE_API_URL}/api/oauth/organizations/${orgUUID}/referral/eligibility`;
@@ -45,13 +45,13 @@ export async function fetchReferralEligibility(
 }
 
 export async function fetchReferralRedemptions(
-  campaign: string = 'claude_code_guest_pass',
+  campaign: string = "claude_code_guest_pass",
 ): Promise<ReferralRedemptionsResponse> {
   const { accessToken, orgUUID } = await prepareApiRequest();
 
   const headers = {
     ...getOAuthHeaders(accessToken),
-    'x-organization-uuid': orgUUID,
+    "x-organization-uuid": orgUUID,
   };
 
   const url = `${getOauthConfig().BASE_API_URL}/api/oauth/organizations/${orgUUID}/referral/redemptions`;
@@ -72,7 +72,7 @@ function shouldCheckForPasses(): boolean {
   return !!(
     getOauthAccountInfo()?.organizationUuid &&
     isClaudeAISubscriber() &&
-    getSubscriptionType() === 'max'
+    getSubscriptionType() === "max"
   );
 }
 
@@ -126,14 +126,14 @@ export function checkCachedPassesEligibility(): {
 }
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
-  USD: '$',
-  EUR: '€',
-  GBP: '£',
-  BRL: 'R$',
-  CAD: 'CA$',
-  AUD: 'A$',
-  NZD: 'NZ$',
-  SGD: 'S$',
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+  BRL: "R$",
+  CAD: "CA$",
+  AUD: "A$",
+  NZD: "NZ$",
+  SGD: "S$",
 };
 
 export function formatCreditAmount(reward: ReferrerRewardInfo): string {
@@ -174,7 +174,7 @@ export function getCachedRemainingPasses(): number | null {
 export async function fetchAndStorePassesEligibility(): Promise<ReferralEligibilityResponse | null> {
   // Return existing promise if fetch is already in progress
   if (fetchInProgress) {
-    logForDebugging('Passes: Reusing in-flight eligibility fetch');
+    logForDebugging("Passes: Reusing in-flight eligibility fetch");
     return fetchInProgress;
   }
 
@@ -206,7 +206,7 @@ export async function fetchAndStorePassesEligibility(): Promise<ReferralEligibil
 
       return response;
     } catch (error) {
-      logForDebugging('Failed to fetch and cache passes eligibility');
+      logForDebugging("Failed to fetch and cache passes eligibility");
       logError(error as Error);
       return null;
     } finally {
@@ -244,7 +244,7 @@ export async function getCachedOrFetchPassesEligibility(): Promise<ReferralEligi
   // The passes command won't be available this session, but will be next time
   if (!cachedEntry) {
     logForDebugging(
-      'Passes: No cache, fetching eligibility in background (command unavailable this session)',
+      "Passes: No cache, fetching eligibility in background (command unavailable this session)",
     );
     void fetchAndStorePassesEligibility();
     return null;
@@ -252,14 +252,14 @@ export async function getCachedOrFetchPassesEligibility(): Promise<ReferralEligi
 
   // Cache exists but is stale - return stale cache and trigger background refresh
   if (now - cachedEntry.timestamp > CACHE_EXPIRATION_MS) {
-    logForDebugging('Passes: Cache stale, returning cached data and refreshing in background');
+    logForDebugging("Passes: Cache stale, returning cached data and refreshing in background");
     void fetchAndStorePassesEligibility(); // Background refresh
     const { timestamp, ...response } = cachedEntry;
     return response as ReferralEligibilityResponse;
   }
 
   // Cache is fresh - return it immediately
-  logForDebugging('Passes: Using fresh cached eligibility data');
+  logForDebugging("Passes: Using fresh cached eligibility data");
   const { timestamp, ...response } = cachedEntry;
   return response as ReferralEligibilityResponse;
 }

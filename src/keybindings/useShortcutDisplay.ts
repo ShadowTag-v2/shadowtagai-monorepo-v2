@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import { useOptionalKeybindingContext } from './KeybindingContext.js';
-import type { KeybindingContextName } from './types.js';
+} from "../services/analytics/index.js";
+import { useOptionalKeybindingContext } from "./KeybindingContext.js";
+import type { KeybindingContextName } from "./types.js";
 
 // TODO(keybindings-migration): Remove fallback parameter after migration is complete
 // and we've confirmed no 'keybinding_fallback_used' events are being logged.
@@ -34,7 +34,7 @@ export function useShortcutDisplay(
   const keybindingContext = useOptionalKeybindingContext();
   const resolved = keybindingContext?.getDisplayText(action, context);
   const isFallback = resolved === undefined;
-  const reason = keybindingContext ? 'action_not_found' : 'no_context';
+  const reason = keybindingContext ? "action_not_found" : "no_context";
 
   // Log fallback usage once per mount (not on every render) to avoid
   // flooding analytics with events from frequent re-renders.
@@ -42,7 +42,7 @@ export function useShortcutDisplay(
   useEffect(() => {
     if (isFallback && !hasLoggedRef.current) {
       hasLoggedRef.current = true;
-      logEvent('tengu_keybinding_fallback_used', {
+      logEvent("tengu_keybinding_fallback_used", {
         action: action as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         context: context as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         fallback: fallback as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,

@@ -1,12 +1,12 @@
-import { randomUUID } from 'node:crypto';
-import type { Tool, ToolUseContext } from '../Tool.js';
-import { BashTool } from '../tools/BashTool/BashTool.js';
-import { logForDebugging } from './debug.js';
-import { errorMessage, MalformedCommandError, ShellError } from './errors.js';
-import type { FrontmatterShell } from './frontmatterParser.js';
-import { createAssistantMessage } from './messages.js';
-import { hasPermissionsToUseTool } from './permissions/permissions.js';
-import { processToolResultBlock } from './toolResultStorage.js';
+import { randomUUID } from "node:crypto";
+import type { Tool, ToolUseContext } from "../Tool.js";
+import { BashTool } from "../tools/BashTool/BashTool.js";
+import { logForDebugging } from "./debug.js";
+import { errorMessage, MalformedCommandError, ShellError } from "./errors.js";
+import type { FrontmatterShell } from "./frontmatterParser.js";
+import { createAssistantMessage } from "./messages.js";
+import { hasPermissionsToUseTool } from "./permissions/permissions.js";
+import { processToolResultBlock } from "./toolResultStorage.js";
 
 // Narrow structural slice both BashTool and PowerShellTool satisfy. We can't
 // use the base Tool type: it marks call()'s canUseTool/parentMessage as
@@ -21,7 +21,7 @@ type PromptShellTool = Tool & {
   call(input: { command: string }, context: ToolUseContext): Promise<{ data: ShellOut }>;
 };
 
-import { isPowerShellToolEnabled } from './shell/shellToolUtils.js';
+import { isPowerShellToolEnabled } from "./shell/shellToolUtils.js";
 
 // Lazy: this file is on the startup import chain (main → commands →
 // loadSkillsDir → here). A static import would load PowerShellTool.ts
@@ -34,7 +34,7 @@ const getPowerShellTool = (() => {
   return (): PromptShellTool => {
     if (!cached) {
       cached = (
-        require('../tools/PowerShellTool/PowerShellTool.js') as typeof import('../tools/PowerShellTool/PowerShellTool.js')
+        require("../tools/PowerShellTool/PowerShellTool.js") as typeof import("../tools/PowerShellTool/PowerShellTool.js")
       ).PowerShellTool;
     }
     return cached;
@@ -75,14 +75,14 @@ export async function executeShellCommandsInPrompt(
   // hit BashTool. PowerShell only when the runtime gate allows — a skill
   // author's frontmatter choice doesn't override the user's opt-in/out.
   const shellTool: PromptShellTool =
-    shell === 'powershell' && isPowerShellToolEnabled() ? getPowerShellTool() : BashTool;
+    shell === "powershell" && isPowerShellToolEnabled() ? getPowerShellTool() : BashTool;
 
   // INLINE_PATTERN's lookbehind is ~100x slower than BLOCK_PATTERN on large
   // skill content (265µs vs 2µs @ 17KB). 93% of skills have no !` at all,
   // so gate the expensive scan on a cheap substring check. BLOCK_PATTERN
   // (```!) doesn't require !` in the text, so it's always scanned.
   const blockMatches = text.matchAll(BLOCK_PATTERN);
-  const inlineMatches = text.includes('!`') ? text.matchAll(INLINE_PATTERN) : [];
+  const inlineMatches = text.includes("!`") ? text.matchAll(INLINE_PATTERN) : [];
 
   await Promise.all(
     [...blockMatches, ...inlineMatches].map(async (match) => {
@@ -95,15 +95,15 @@ export async function executeShellCommandsInPrompt(
             { command },
             context,
             createAssistantMessage({ content: [] }),
-            '',
+            "",
           );
 
-          if (permissionResult.behavior !== 'allow') {
+          if (permissionResult.behavior !== "allow") {
             logForDebugging(
               `Shell command permission check failed for command in ${slashCommandName}: ${command}. Error: ${permissionResult.message}`,
             );
             throw new MalformedCommandError(
-              `Shell command permission check failed for pattern "${match[0]}": ${permissionResult.message || 'Permission denied'}`,
+              `Shell command permission check failed for pattern "${match[0]}": ${permissionResult.message || "Permission denied"}`,
             );
           }
 
@@ -112,7 +112,7 @@ export async function executeShellCommandsInPrompt(
           const toolResultBlock = await processToolResultBlock(shellTool, data, randomUUID());
           // Extract the string content from the block
           const output =
-            typeof toolResultBlock.content === 'string'
+            typeof toolResultBlock.content === "string"
               ? toolResultBlock.content
               : formatBashOutput(data.stdout, data.stderr);
           // Function replacer — String.replace interprets $$, $&, $`, $' in
@@ -148,7 +148,7 @@ function formatBashOutput(stdout: string, stderr: string, inline = false): strin
     }
   }
 
-  return parts.join(inline ? ' ' : '\n');
+  return parts.join(inline ? " " : "\n");
 }
 
 function formatBashError(e: unknown, pattern: string, inline = false): never {

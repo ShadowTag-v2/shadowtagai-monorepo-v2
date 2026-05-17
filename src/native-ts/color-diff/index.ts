@@ -17,9 +17,9 @@
  *   getSyntaxTheme always returns the default for the given Claude theme.
  */
 
-import { basename, extname } from 'node:path';
-import { diffArrays } from 'diff';
-import type * as hljsNamespace from 'highlight.js';
+import { basename, extname } from "node:path";
+import { diffArrays } from "diff";
+import type * as hljsNamespace from "highlight.js";
 
 // Lazy: defers loading highlight.js until first render. The full bundle
 // registers 190+ language grammars at require time (~50MB, 100-200ms on
@@ -35,15 +35,15 @@ let cachedHljs: HLJSApi | null = null;
 function hljs(): HLJSApi {
   if (cachedHljs) return cachedHljs;
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const mod = require('highlight.js');
+  const mod = require("highlight.js");
   // highlight.js uses `export =` (CJS). Under bun/ESM the interop wraps it
   // in .default; under node CJS the module IS the API. Check at runtime.
-  cachedHljs = 'default' in mod && mod.default ? mod.default : mod;
+  cachedHljs = "default" in mod && mod.default ? mod.default : mod;
   return cachedHljs!;
 }
 
-import { stringWidth } from '../../ink/stringWidth.js';
-import { logError } from '../../utils/log.js';
+import { stringWidth } from "../../ink/stringWidth.js";
+import { logError } from "../../utils/log.js";
 
 // ---------------------------------------------------------------------------
 // Public API types (match vendor/color-diff-src/index.d.ts)
@@ -75,11 +75,11 @@ export type NativeModule = {
 type Color = { r: number; g: number; b: number; a: number };
 type Style = { foreground: Color; background: Color };
 type Block = [Style, string];
-type ColorMode = 'truecolor' | 'color256' | 'ansi';
+type ColorMode = "truecolor" | "color256" | "ansi";
 
-const RESET = '\x1b[0m';
-const DIM = '\x1b[2m';
-const UNDIM = '\x1b[22m';
+const RESET = "\x1b[0m";
+const DIM = "\x1b[2m";
+const UNDIM = "\x1b[22m";
 
 function rgb(r: number, g: number, b: number): Color {
   return { r, g, b, a: 255 };
@@ -93,9 +93,9 @@ function ansiIdx(index: number): Color {
 const DEFAULT_BG: Color = { r: 0, g: 0, b: 0, a: 1 };
 
 function detectColorMode(theme: string): ColorMode {
-  if (theme.includes('ansi')) return 'ansi';
-  const ct = process.env.COLORTERM ?? '';
-  return ct === 'truecolor' || ct === '24bit' ? 'truecolor' : 'color256';
+  if (theme.includes("ansi")) return "ansi";
+  const ct = process.env.COLORTERM ?? "";
+  return ct === "truecolor" || ct === "24bit" ? "truecolor" : "color256";
 }
 
 // Port of ansi_colours::ansi256_from_rgb — approximates RGB to the xterm-256
@@ -134,10 +134,10 @@ function colorToEscape(c: Color, fg: boolean, mode: ColorMode): string {
     return `\x1b[${fg ? 38 : 48};5;${idx}m`;
   }
   // alpha=1: terminal default
-  if (c.a === 1) return fg ? '\x1b[39m' : '\x1b[49m';
+  if (c.a === 1) return fg ? "\x1b[39m" : "\x1b[49m";
 
   const codeType = fg ? 38 : 48;
-  if (mode === 'truecolor') {
+  if (mode === "truecolor") {
     return `\x1b[${codeType};2;${c.r};${c.g};${c.b}m`;
   }
   return `\x1b[${codeType};5;${ansi256FromRgb(c.r, c.g, c.b)}m`;
@@ -164,7 +164,7 @@ function asTerminalEscaped(
 // Theme
 // ---------------------------------------------------------------------------
 
-type Marker = '+' | '-' | ' ';
+type Marker = "+" | "-" | " ";
 
 type Theme = {
   addLine: Color;
@@ -179,9 +179,9 @@ type Theme = {
 };
 
 function defaultSyntaxThemeName(themeName: string): string {
-  if (themeName.includes('ansi')) return 'ansi';
-  if (themeName.includes('dark')) return 'Monokai Extended';
-  return 'GitHub';
+  if (themeName.includes("ansi")) return "ansi";
+  if (themeName.includes("dark")) return "Monokai Extended";
+  return "GitHub";
 }
 
 // highlight.js scope → syntect Monokai Extended foreground (measured from the
@@ -195,16 +195,16 @@ const MONOKAI_SCOPES: Record<string, Color> = {
   number: rgb(190, 132, 255),
   string: rgb(230, 219, 116),
   title: rgb(166, 226, 46),
-  'title.function': rgb(166, 226, 46),
-  'title.class': rgb(166, 226, 46),
-  'title.class.inherited': rgb(166, 226, 46),
+  "title.function": rgb(166, 226, 46),
+  "title.class": rgb(166, 226, 46),
+  "title.class.inherited": rgb(166, 226, 46),
   params: rgb(253, 151, 31),
   comment: rgb(117, 113, 94),
   meta: rgb(117, 113, 94),
   attr: rgb(166, 226, 46),
   attribute: rgb(166, 226, 46),
   variable: rgb(255, 255, 255),
-  'variable.language': rgb(255, 255, 255),
+  "variable.language": rgb(255, 255, 255),
   property: rgb(255, 255, 255),
   operator: rgb(249, 38, 114),
   punctuation: rgb(248, 248, 242),
@@ -223,16 +223,16 @@ const GITHUB_SCOPES: Record<string, Color> = {
   number: rgb(0, 134, 179),
   string: rgb(24, 54, 145),
   title: rgb(121, 93, 163),
-  'title.function': rgb(121, 93, 163),
-  'title.class': rgb(0, 0, 0),
-  'title.class.inherited': rgb(0, 0, 0),
+  "title.function": rgb(121, 93, 163),
+  "title.class": rgb(0, 0, 0),
+  "title.class.inherited": rgb(0, 0, 0),
   params: rgb(0, 134, 179),
   comment: rgb(150, 152, 150),
   meta: rgb(150, 152, 150),
   attr: rgb(0, 134, 179),
   attribute: rgb(0, 134, 179),
   variable: rgb(0, 134, 179),
-  'variable.language': rgb(0, 134, 179),
+  "variable.language": rgb(0, 134, 179),
   property: rgb(0, 134, 179),
   operator: rgb(167, 29, 93),
   punctuation: rgb(51, 51, 51),
@@ -245,22 +245,22 @@ const GITHUB_SCOPES: Record<string, Color> = {
 // highlight.js lumps these under "keyword"; we re-split so const/function/etc.
 // get the cyan storage color instead of pink.
 const STORAGE_KEYWORDS = new Set([
-  'const',
-  'let',
-  'var',
-  'function',
-  'class',
-  'type',
-  'interface',
-  'enum',
-  'namespace',
-  'module',
-  'def',
-  'fn',
-  'func',
-  'struct',
-  'trait',
-  'impl',
+  "const",
+  "let",
+  "var",
+  "function",
+  "class",
+  "type",
+  "interface",
+  "enum",
+  "namespace",
+  "module",
+  "def",
+  "fn",
+  "func",
+  "struct",
+  "trait",
+  "impl",
 ]);
 
 const ANSI_SCOPES: Record<string, Color> = {
@@ -272,17 +272,17 @@ const ANSI_SCOPES: Record<string, Color> = {
   number: ansiIdx(12),
   string: ansiIdx(10),
   title: ansiIdx(11),
-  'title.function': ansiIdx(11),
-  'title.class': ansiIdx(11),
+  "title.function": ansiIdx(11),
+  "title.class": ansiIdx(11),
   comment: ansiIdx(8),
   meta: ansiIdx(8),
 };
 
 function buildTheme(themeName: string, mode: ColorMode): Theme {
-  const isDark = themeName.includes('dark');
-  const isAnsi = themeName.includes('ansi');
-  const isDaltonized = themeName.includes('daltonized');
-  const tc = mode === 'truecolor';
+  const isDark = themeName.includes("dark");
+  const isAnsi = themeName.includes("ansi");
+  const isDaltonized = themeName.includes("daltonized");
+  const tc = mode === "truecolor";
 
   if (isAnsi) {
     return {
@@ -366,33 +366,33 @@ function defaultStyle(theme: Theme): Style {
 
 function lineBackground(marker: Marker, theme: Theme): Color {
   switch (marker) {
-    case '+':
+    case "+":
       return theme.addLine;
-    case '-':
+    case "-":
       return theme.deleteLine;
-    case ' ':
+    case " ":
       return theme.background;
   }
 }
 
 function wordBackground(marker: Marker, theme: Theme): Color {
   switch (marker) {
-    case '+':
+    case "+":
       return theme.addWord;
-    case '-':
+    case "-":
       return theme.deleteWord;
-    case ' ':
+    case " ":
       return theme.background;
   }
 }
 
 function decorationColor(marker: Marker, theme: Theme): Color {
   switch (marker) {
-    case '+':
+    case "+":
       return theme.addDecoration;
-    case '-':
+    case "-":
       return theme.deleteDecoration;
-    case ' ':
+    case " ":
       return theme.foreground;
   }
 }
@@ -411,11 +411,11 @@ type HljsNode = {
 // Filename-based and extension-based language detection (approximates bat's
 // SyntaxMapping + syntect's find_syntax_by_extension)
 const FILENAME_LANGS: Record<string, string> = {
-  Dockerfile: 'dockerfile',
-  Makefile: 'makefile',
-  Rakefile: 'ruby',
-  Gemfile: 'ruby',
-  CMakeLists: 'cmake',
+  Dockerfile: "dockerfile",
+  Makefile: "makefile",
+  Rakefile: "ruby",
+  Gemfile: "ruby",
+  CMakeLists: "cmake",
 };
 
 function detectLanguage(filePath: string, firstLine: string | null): string | null {
@@ -423,7 +423,7 @@ function detectLanguage(filePath: string, firstLine: string | null): string | nu
   const ext = extname(filePath).slice(1);
 
   // Filename-based lookup (handles Dockerfile, Makefile, CMakeLists.txt, etc.)
-  const stem = base.split('.')[0] ?? '';
+  const stem = base.split(".")[0] ?? "";
   const byName = FILENAME_LANGS[base] ?? FILENAME_LANGS[stem];
   if (byName && hljs().getLanguage(byName)) return byName;
   if (ext) {
@@ -432,26 +432,26 @@ function detectLanguage(filePath: string, firstLine: string | null): string | nu
   }
   // Shebang / first-line detection (strip UTF-8 BOM)
   if (firstLine) {
-    const line = firstLine.startsWith('\ufeff') ? firstLine.slice(1) : firstLine;
-    if (line.startsWith('#!')) {
-      if (line.includes('bash') || line.includes('/sh')) return 'bash';
-      if (line.includes('python')) return 'python';
-      if (line.includes('node')) return 'javascript';
-      if (line.includes('ruby')) return 'ruby';
-      if (line.includes('perl')) return 'perl';
+    const line = firstLine.startsWith("\ufeff") ? firstLine.slice(1) : firstLine;
+    if (line.startsWith("#!")) {
+      if (line.includes("bash") || line.includes("/sh")) return "bash";
+      if (line.includes("python")) return "python";
+      if (line.includes("node")) return "javascript";
+      if (line.includes("ruby")) return "ruby";
+      if (line.includes("perl")) return "perl";
     }
-    if (line.startsWith('<?php')) return 'php';
-    if (line.startsWith('<?xml')) return 'xml';
+    if (line.startsWith("<?php")) return "php";
+    if (line.startsWith("<?xml")) return "xml";
   }
   return null;
 }
 
 function scopeColor(scope: string | undefined, text: string, theme: Theme): Color {
   if (!scope) return theme.foreground;
-  if (scope === 'keyword' && STORAGE_KEYWORDS.has(text.trim())) {
+  if (scope === "keyword" && STORAGE_KEYWORDS.has(text.trim())) {
     return theme.scopes._storage ?? theme.foreground;
   }
-  return theme.scopes[scope] ?? theme.scopes[scope.split('.')[0]!] ?? theme.foreground;
+  return theme.scopes[scope] ?? theme.scopes[scope.split(".")[0]!] ?? theme.foreground;
 }
 
 function flattenHljs(
@@ -460,7 +460,7 @@ function flattenHljs(
   parentScope: string | undefined,
   out: Block[],
 ): void {
-  if (typeof node === 'string') {
+  if (typeof node === "string") {
     const fg = scopeColor(parentScope, node, theme);
     out.push([{ foreground: fg, background: theme.background }, node]);
     return;
@@ -478,12 +478,12 @@ function flattenHljs(
 // scope vs kind) behind a silent gray fallback.
 function hasRootNode(emitter: unknown): emitter is { rootNode: HljsNode } {
   return (
-    typeof emitter === 'object' &&
+    typeof emitter === "object" &&
     emitter !== null &&
-    'rootNode' in emitter &&
-    typeof emitter.rootNode === 'object' &&
+    "rootNode" in emitter &&
+    typeof emitter.rootNode === "object" &&
     emitter.rootNode !== null &&
-    'children' in emitter.rootNode
+    "children" in emitter.rootNode
   );
 }
 
@@ -514,7 +514,7 @@ function highlightLine(
       loggedEmitterShapeError = true;
       logError(
         new Error(
-          `color-diff: hljs emitter shape mismatch (keys: ${Object.keys(result.emitter).join(',')}). Syntax highlighting disabled.`,
+          `color-diff: hljs emitter shape mismatch (keys: ${Object.keys(result.emitter).join(",")}). Syntax highlighting disabled.`,
         ),
       );
     }
@@ -565,12 +565,12 @@ function findAdjacentPairs(markers: Marker[]): [number, number][] {
   const pairs: [number, number][] = [];
   let i = 0;
   while (i < markers.length) {
-    if (markers[i] === '-') {
+    if (markers[i] === "-") {
       const delStart = i;
       let delEnd = i;
-      while (delEnd < markers.length && markers[delEnd] === '-') delEnd++;
+      while (delEnd < markers.length && markers[delEnd] === "-") delEnd++;
       let addEnd = delEnd;
-      while (addEnd < markers.length && markers[addEnd] === '+') addEnd++;
+      while (addEnd < markers.length && markers[addEnd] === "+") addEnd++;
       const delCount = delEnd - delStart;
       const addCount = addEnd - delEnd;
       if (delCount > 0 && addCount > 0) {
@@ -637,7 +637,7 @@ function removeNewlines(h: Highlight): void {
   h.lines = h.lines.map((line) =>
     line.flatMap(([style, text]) =>
       text
-        .split('\n')
+        .split("\n")
         .filter((p) => p.length > 0)
         .map((p): Block => [style, p]),
     ),
@@ -699,13 +699,13 @@ function wrapText(h: Highlight, width: number, theme: Theme): void {
   h.lines = newLines;
 
   // Pad changed lines so background extends to edge
-  if (h.marker && h.marker !== ' ') {
+  if (h.marker && h.marker !== " ") {
     const bg = lineBackground(h.marker, theme);
     const padStyle: Style = { foreground: theme.foreground, background: bg };
     for (const line of h.lines) {
       const curW = line.reduce((s, [, t]) => s + stringWidth(t), 0);
       if (curW < width) {
-        line.push([padStyle, ' '.repeat(width - curW)]);
+        line.push([padStyle, " ".repeat(width - curW)]);
       }
     }
   }
@@ -716,10 +716,10 @@ function addLineNumber(h: Highlight, theme: Theme, maxDigits: number, fullDim: b
     foreground: h.marker ? decorationColor(h.marker, theme) : theme.foreground,
     background: h.marker ? lineBackground(h.marker, theme) : theme.background,
   };
-  const shouldDim = h.marker === null || h.marker === ' ';
+  const shouldDim = h.marker === null || h.marker === " ";
   for (let i = 0; i < h.lines.length; i++) {
     const prefix =
-      i === 0 ? ` ${String(h.lineNumber).padStart(maxDigits)} ` : ' '.repeat(maxDigits + 2);
+      i === 0 ? ` ${String(h.lineNumber).padStart(maxDigits)} ` : " ".repeat(maxDigits + 2);
     const wrapped = shouldDim && !fullDim ? `${DIM}${prefix}${UNDIM}` : prefix;
     h.lines[i]?.unshift([style, wrapped]);
   }
@@ -812,7 +812,7 @@ function maxLineNumber(hunk: Hunk): number {
 }
 
 function parseMarker(s: string): Marker {
-  return s === '+' || s === '-' ? s : ' ';
+  return s === "+" || s === "-" ? s : " ";
 }
 
 export class ColorDiff {
@@ -855,13 +855,13 @@ export class ColorDiff {
       const code = rawLine.slice(1);
       let lineNumber: number;
       switch (marker) {
-        case '+':
+        case "+":
           lineNumber = newLine++;
           break;
-        case '-':
+        case "-":
           lineNumber = oldLine++;
           break;
-        case ' ':
+        case " ":
           lineNumber = newLine;
           oldLine++;
           newLine++;
@@ -886,13 +886,13 @@ export class ColorDiff {
     for (let i = 0; i < entries.length; i++) {
       const { lineNumber, marker, code } = entries[i]!;
       const tokens: Block[] =
-        marker === '-' ? [[defaultStyle(theme), code]] : highlightLine(hlState, code, theme);
+        marker === "-" ? [[defaultStyle(theme), code]] : highlightLine(hlState, code, theme);
 
       const h: Highlight = { marker, lineNumber, lines: [tokens] };
       removeNewlines(h);
       applyBackground(h, theme, ranges[i]!);
       wrapText(h, effectiveWidth, theme);
-      if (mode === 'ansi' && marker === '-') {
+      if (mode === "ansi" && marker === "-") {
         dimContent(h);
       }
       addMarker(h, theme);
@@ -915,9 +915,9 @@ export class ColorFile {
   render(themeName: string, width: number, dim: boolean): string[] | null {
     const mode = detectColorMode(themeName);
     const theme = buildTheme(themeName, mode);
-    const lines = this.code.split('\n');
+    const lines = this.code.split("\n");
     // Rust .lines() drops trailing empty line from trailing \n
-    if (lines.length > 0 && lines[lines.length - 1] === '') lines.pop();
+    if (lines.length > 0 && lines[lines.length - 1] === "") lines.pop();
     const firstLine = lines[0] ?? null;
     const lang = detectLanguage(this.filePath, firstLine);
     const hlState = { lang, stack: null };

@@ -3,11 +3,11 @@
  * These are drop-in replacements for the original functions
  */
 
-import { type ParseEntry, parse as shellQuoteParse, quote as shellQuoteQuote } from 'shell-quote';
-import { logError } from '../log.js';
-import { jsonStringify } from '../slowOperations.js';
+import { type ParseEntry, parse as shellQuoteParse, quote as shellQuoteQuote } from "shell-quote";
+import { logError } from "../log.js";
+import { jsonStringify } from "../slowOperations.js";
 
-export type { ParseEntry } from 'shell-quote';
+export type { ParseEntry } from "shell-quote";
 
 export type ShellParseResult =
   | { success: true; tokens: ParseEntry[] }
@@ -23,7 +23,7 @@ export function tryParseShellCommand(
 ): ShellParseResult {
   try {
     const tokens =
-      typeof env === 'function' ? shellQuoteParse(cmd, env) : shellQuoteParse(cmd, env);
+      typeof env === "function" ? shellQuoteParse(cmd, env) : shellQuoteParse(cmd, env);
     return { success: true, tokens };
   } catch (error) {
     if (error instanceof Error) {
@@ -31,7 +31,7 @@ export function tryParseShellCommand(
     }
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown parse error',
+      error: error instanceof Error ? error.message : "Unknown parse error",
     };
   }
 }
@@ -45,20 +45,20 @@ export function tryQuoteShellArgs(args: unknown[]): ShellQuoteResult {
 
       const type = typeof arg;
 
-      if (type === 'string') {
+      if (type === "string") {
         return arg as string;
       }
-      if (type === 'number' || type === 'boolean') {
+      if (type === "number" || type === "boolean") {
         return String(arg);
       }
 
-      if (type === 'object') {
+      if (type === "object") {
         throw new Error(`Cannot quote argument at index ${index}: object values are not supported`);
       }
-      if (type === 'symbol') {
+      if (type === "symbol") {
         throw new Error(`Cannot quote argument at index ${index}: symbol values are not supported`);
       }
-      if (type === 'function') {
+      if (type === "function") {
         throw new Error(
           `Cannot quote argument at index ${index}: function values are not supported`,
         );
@@ -75,7 +75,7 @@ export function tryQuoteShellArgs(args: unknown[]): ShellQuoteResult {
     }
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown quote error',
+      error: error instanceof Error ? error.message : "Unknown quote error",
     };
   }
 }
@@ -111,7 +111,7 @@ export function hasMalformedTokens(command: string, parsed: ParseEntry[]): boole
   let singleCount = 0;
   for (let i = 0; i < command.length; i++) {
     const c = command[i];
-    if (c === '\\' && !inSingle) {
+    if (c === "\\" && !inSingle) {
       i++;
       continue;
     }
@@ -126,7 +126,7 @@ export function hasMalformedTokens(command: string, parsed: ParseEntry[]): boole
   if (doubleCount % 2 !== 0 || singleCount % 2 !== 0) return true;
 
   for (const entry of parsed) {
-    if (typeof entry !== 'string') continue;
+    if (typeof entry !== "string") continue;
 
     // Check for unbalanced curly braces
     const openBraces = (entry.match(/{/g) || []).length;
@@ -179,7 +179,7 @@ export function hasShellQuoteSingleQuoteBug(command: string): boolean {
     const char = command[i];
 
     // Handle backslash escaping outside of single quotes
-    if (char === '\\' && !inSingleQuote) {
+    if (char === "\\" && !inSingleQuote) {
       // Skip the next character (it's escaped)
       i++;
       continue;
@@ -221,7 +221,7 @@ export function hasShellQuoteSingleQuoteBug(command: string): boolean {
       if (!inSingleQuote) {
         let backslashCount = 0;
         let j = i - 1;
-        while (j >= 0 && command[j] === '\\') {
+        while (j >= 0 && command[j] === "\\") {
           backslashCount++;
           j--;
         }
@@ -260,7 +260,7 @@ export function quote(args: ReadonlyArray<unknown>): string {
 
       const type = typeof arg;
 
-      if (type === 'string' || type === 'number' || type === 'boolean') {
+      if (type === "string" || type === "number" || type === "boolean") {
         return String(arg);
       }
 
@@ -277,6 +277,6 @@ export function quote(args: ReadonlyArray<unknown>): string {
     if (error instanceof Error) {
       logError(error);
     }
-    throw new Error('Failed to quote shell arguments safely');
+    throw new Error("Failed to quote shell arguments safely");
   }
 }

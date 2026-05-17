@@ -16,10 +16,10 @@
  * gateway.NewWebSocketStreamAdapter on the server side.
  */
 
-import { createServer, type Socket as NodeSocket } from 'node:net';
-import { logForDebugging } from '../utils/debug.js';
-import { getWebSocketTLSOptions } from '../utils/mtls.js';
-import { getWebSocketProxyAgent, getWebSocketProxyUrl } from '../utils/proxy.js';
+import { createServer, type Socket as NodeSocket } from "node:net";
+import { logForDebugging } from "../utils/debug.js";
+import { getWebSocketTLSOptions } from "../utils/mtls.js";
+import { getWebSocketProxyAgent, getWebSocketProxyUrl } from "../utils/proxy.js";
 
 // The CCR container runs behind an egress gateway — direct outbound is
 // blocked, so the WS upgrade must go through the same HTTP CONNECT proxy
@@ -28,7 +28,7 @@ import { getWebSocketProxyAgent, getWebSocketProxyUrl } from '../utils/proxy.js'
 // with an explicit agent (same pattern as SessionsWebSocket). Bun's native
 // WebSocket takes a proxy URL directly. Preloaded in startNodeRelay so
 // openTunnel stays synchronous and the CONNECT state machine doesn't race.
-type WSCtor = typeof import('ws').default;
+type WSCtor = typeof import("ws").default;
 let nodeWSCtor: WSCtor | undefined;
 
 // Intersection of the surface openTunnel touches. Both undici's
@@ -36,7 +36,7 @@ let nodeWSCtor: WSCtor | undefined;
 // onX handlers.
 type WebSocketLike = Pick<
   WebSocket,
-  'onopen' | 'onmessage' | 'onerror' | 'onclose' | 'send' | 'close' | 'readyState' | 'binaryType'
+  "onopen" | "onmessage" | "onerror" | "onclose" | "send" | "close" | "readyState" | "binaryType"
 >;
 
 // Envoy per-request buffer cap. Week-1 Datadog payloads won't hit this, but
@@ -150,14 +150,14 @@ export async function startUpstreamProxyRelay(opts: {
   sessionId: string;
   token: string;
 }): Promise<UpstreamProxyRelay> {
-  const authHeader = `Basic ${Buffer.from(`${opts.sessionId}:${opts.token}`).toString('base64')}`;
+  const authHeader = `Basic ${Buffer.from(`${opts.sessionId}:${opts.token}`).toString("base64")}`;
   // WS upgrade itself is auth-gated (proto authn: PRIVATE_API) — the gateway
   // wants the session-ingress JWT on the upgrade request, separate from the
   // Proxy-Authorization that rides inside the tunneled CONNECT.
   const wsAuthHeader = `Bearer ${opts.token}`;
 
   const relay =
-    typeof Bun !== 'undefined'
+    typeof Bun !== "undefined"
       ? startBunRelay(opts.wsUrl, authHeader, wsAuthHeader)
       : await startNodeRelay(opts.wsUrl, authHeader, wsAuthHeader);
 
@@ -179,7 +179,7 @@ function startBunRelay(
 
   // eslint-disable-next-line custom-rules/require-bun-typeof-guard -- caller dispatches on typeof Bun
   const server = Bun.listen<BunState>({
-    hostname: '127.0.0.1',
+    hostname: "127.0.0.1",
     port: 0,
     socket: {
       open(sock) {
@@ -189,7 +189,7 @@ function startBunRelay(
         const st = sock.data;
         const adapter: ClientSocket = {
           write: (payload) => {
-            const bytes = typeof payload === 'string' ? Buffer.from(payload, 'utf8') : payload;
+            const bytes = typeof payload === "string" ? Buffer.from(payload, "utf8") : payload;
             if (st.writeBuf.length > 0) {
               st.writeBuf.push(bytes);
               return;
@@ -236,7 +236,7 @@ export async function startNodeRelay(
   authHeader: string,
   wsAuthHeader: string,
 ): Promise<UpstreamProxyRelay> {
-  nodeWSCtor = (await import('ws')).default;
+  nodeWSCtor = (await import("ws")).default;
   const states = new WeakMap<NodeSocket, ConnState>();
 
   const server = createServer((sock) => {
@@ -247,24 +247,24 @@ export async function startNodeRelay(
     // needed for correctness. Week-1 payloads won't stress the buffer.
     const adapter: ClientSocket = {
       write: (payload) => {
-        sock.write(typeof payload === 'string' ? payload : Buffer.from(payload));
+        sock.write(typeof payload === "string" ? payload : Buffer.from(payload));
       },
       end: () => sock.end(),
     };
-    sock.on('data', (data) => handleData(adapter, st, data, wsUrl, authHeader, wsAuthHeader));
-    sock.on('close', () => cleanupConn(states.get(sock)));
-    sock.on('error', (err) => {
+    sock.on("data", (data) => handleData(adapter, st, data, wsUrl, authHeader, wsAuthHeader));
+    sock.on("close", () => cleanupConn(states.get(sock)));
+    sock.on("error", (err) => {
       logForDebugging(`[upstreamproxy] client socket error: ${err.message}`);
       cleanupConn(states.get(sock));
     });
   });
 
   return new Promise((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(0, '127.0.0.1', () => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
       const addr = server.address();
-      if (addr === null || typeof addr === 'string') {
-        reject(new Error('upstreamproxy: server has no TCP address'));
+      if (addr === null || typeof addr === "string") {
+        reject(new Error("upstreamproxy: server has no TCP address"));
         return;
       }
       resolve({
@@ -292,20 +292,20 @@ function handleData(
   // don't assume that.
   if (!st.ws) {
     st.connectBuf = Buffer.concat([st.connectBuf, data]);
-    const headerEnd = st.connectBuf.indexOf('\r\n\r\n');
+    const headerEnd = st.connectBuf.indexOf("\r\n\r\n");
     if (headerEnd === -1) {
       // Guard against a client that never sends CRLFCRLF.
       if (st.connectBuf.length > 8192) {
-        sock.write('HTTP/1.1 400 Bad Request\r\n\r\n');
+        sock.write("HTTP/1.1 400 Bad Request\r\n\r\n");
         sock.end();
       }
       return;
     }
-    const reqHead = st.connectBuf.subarray(0, headerEnd).toString('utf8');
-    const firstLine = reqHead.split('\r\n')[0] ?? '';
+    const reqHead = st.connectBuf.subarray(0, headerEnd).toString("utf8");
+    const firstLine = reqHead.split("\r\n")[0] ?? "";
     const m = firstLine.match(/^CONNECT\s+(\S+)\s+HTTP\/1\.[01]$/i);
     if (!m) {
-      sock.write('HTTP/1.1 405 Method Not Allowed\r\n\r\n');
+      sock.write("HTTP/1.1 405 Method Not Allowed\r\n\r\n");
       sock.end();
       return;
     }
@@ -341,7 +341,7 @@ function openTunnel(
   // the server protojson.Unmarshals our hand-encoded binary chunks and fails
   // silently with EOF.
   const headers = {
-    'Content-Type': 'application/proto',
+    "Content-Type": "application/proto",
     Authorization: wsAuthHeader,
   };
   let ws: WebSocketLike;
@@ -359,7 +359,7 @@ function openTunnel(
       tls: getWebSocketTLSOptions() || undefined,
     });
   }
-  ws.binaryType = 'arraybuffer';
+  ws.binaryType = "arraybuffer";
   st.ws = ws;
 
   ws.onopen = () => {
@@ -367,7 +367,7 @@ function openTunnel(
     // server can auth the tunnel and know the target host:port. Server
     // responds with its own "HTTP/1.1 200" over the tunnel; we just pipe it.
     const head = `${connectLine}\r\nProxy-Authorization: ${authHeader}\r\n\r\n`;
-    ws.send(encodeChunk(Buffer.from(head, 'utf8')));
+    ws.send(encodeChunk(Buffer.from(head, "utf8")));
     // Flush anything that arrived while the WS handshake was in flight —
     // trailing bytes from the CONNECT packet and any data() callbacks that
     // fired before onopen.
@@ -394,12 +394,12 @@ function openTunnel(
   };
 
   ws.onerror = (ev) => {
-    const msg = 'message' in ev ? String(ev.message) : 'websocket error';
+    const msg = "message" in ev ? String(ev.message) : "websocket error";
     logForDebugging(`[upstreamproxy] ws error: ${msg}`);
     if (st.closed) return;
     st.closed = true;
     if (!st.established) {
-      sock.write('HTTP/1.1 502 Bad Gateway\r\n\r\n');
+      sock.write("HTTP/1.1 502 Bad Gateway\r\n\r\n");
     }
     sock.end();
     cleanupConn(st);

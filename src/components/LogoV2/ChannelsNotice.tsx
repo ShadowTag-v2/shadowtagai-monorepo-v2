@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
 // Conditionally require()'d in LogoV2.tsx behind feature('KAIROS') ||
 // feature('KAIROS_CHANNELS'). No feature() guard here — the whole file
 // tree-shakes via the require pattern when both flags are false (see
 // docs/feature-gating.md). Do NOT import this module statically from
 // unguarded code.
 
-import { type ChannelEntry, getAllowedChannels, getHasDevChannels } from '../../bootstrap/state.js';
-import { Box, Text } from '../../ink.js';
-import { isChannelsEnabled } from '../../services/mcp/channelAllowlist.js';
-import { getEffectiveChannelAllowlist } from '../../services/mcp/channelNotification.js';
-import { getMcpConfigsByScope } from '../../services/mcp/config.js';
-import { getClaudeAIOAuthTokens, getSubscriptionType } from '../../utils/auth.js';
-import { loadInstalledPluginsV2 } from '../../utils/plugins/installedPluginsManager.js';
-import { getSettingsForSource } from '../../utils/settings/settings.js';
+import { type ChannelEntry, getAllowedChannels, getHasDevChannels } from "../../bootstrap/state.js";
+import { Box, Text } from "../../ink.js";
+import { isChannelsEnabled } from "../../services/mcp/channelAllowlist.js";
+import { getEffectiveChannelAllowlist } from "../../services/mcp/channelNotification.js";
+import { getMcpConfigsByScope } from "../../services/mcp/config.js";
+import { getClaudeAIOAuthTokens, getSubscriptionType } from "../../utils/auth.js";
+import { loadInstalledPluginsV2 } from "../../utils/plugins/installedPluginsManager.js";
+import { getSettingsForSource } from "../../utils/settings/settings.js";
 export function ChannelsNotice() {
   const $ = _c(32);
   const [t0] = useState(_temp);
@@ -24,10 +24,10 @@ export function ChannelsNotice() {
   const hasNonDev = channels.some(_temp2);
   const flag =
     getHasDevChannels() && hasNonDev
-      ? 'Channels'
+      ? "Channels"
       : getHasDevChannels()
-        ? '--dangerously-load-development-channels'
-        : '--channels';
+        ? "--dangerously-load-development-channels"
+        : "--channels";
   if (disabled) {
     let t1;
     if ($[0] !== flag || $[1] !== list) {
@@ -43,7 +43,7 @@ export function ChannelsNotice() {
       t1 = $[2];
     }
     let t2;
-    if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = <Text dimColor={true}>Channels are not currently available</Text>;
       $[3] = t2;
     } else {
@@ -79,7 +79,7 @@ export function ChannelsNotice() {
       t1 = $[8];
     }
     let t2;
-    if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = (
         <Text dimColor={true}>
           Channels require claude.ai authentication · run /login, then restart
@@ -120,7 +120,7 @@ export function ChannelsNotice() {
     }
     let t2;
     let t3;
-    if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = <Text dimColor={true}>Inbound messages will be silently dropped</Text>;
       t3 = (
         <Text dimColor={true}>
@@ -231,14 +231,14 @@ function _temp() {
       disabled: false,
       noAuth: false,
       policyBlocked: false,
-      list: '',
+      list: "",
       unmatched: [] as Unmatched[],
     };
   }
-  const l = ch.map(formatEntry).join(', ');
+  const l = ch.map(formatEntry).join(", ");
   const sub = getSubscriptionType();
-  const managed = sub === 'team' || sub === 'enterprise';
-  const policy = getSettingsForSource('policySettings');
+  const managed = sub === "team" || sub === "enterprise";
+  const policy = getSettingsForSource("policySettings");
   const allowlist = getEffectiveChannelAllowlist(sub, policy?.allowedChannelPlugins);
   return {
     channels: ch,
@@ -250,7 +250,7 @@ function _temp() {
   };
 }
 function formatEntry(c: ChannelEntry): string {
-  return c.kind === 'plugin' ? `plugin:${c.name}@${c.marketplace}` : `server:${c.name}`;
+  return c.kind === "plugin" ? `plugin:${c.name}@${c.marketplace}` : `server:${c.name}`;
 }
 type Unmatched = {
   entry: ChannelEntry;
@@ -263,7 +263,7 @@ function findUnmatched(
   // Server-kind: build one Set from all scopes up front. getMcpConfigsByScope
   // is not cached (project scope walks the dir tree); getMcpConfigByName would
   // redo that walk per entry.
-  const scopes = ['enterprise', 'user', 'project', 'local'] as const;
+  const scopes = ["enterprise", "user", "project", "local"] as const;
   const configured = new Set<string>();
   for (const scope of scopes) {
     for (const name of Object.keys(getMcpConfigsByScope(scope).servers)) {
@@ -286,17 +286,17 @@ function findUnmatched(
   // unlisted shows two lines. Server kind checks config + dev flag.
   const out: Unmatched[] = [];
   for (const entry of entries) {
-    if (entry.kind === 'server') {
+    if (entry.kind === "server") {
       if (!configured.has(entry.name)) {
         out.push({
           entry,
-          why: 'no MCP server configured with that name',
+          why: "no MCP server configured with that name",
         });
       }
       if (!entry.dev) {
         out.push({
           entry,
-          why: 'server: entries need --dangerously-load-development-channels',
+          why: "server: entries need --dangerously-load-development-channels",
         });
       }
       continue;
@@ -304,7 +304,7 @@ function findUnmatched(
     if (!installedPluginIds.has(`${entry.name}@${entry.marketplace}`)) {
       out.push({
         entry,
-        why: 'plugin not installed',
+        why: "plugin not installed",
       });
     }
     if (
@@ -314,9 +314,9 @@ function findUnmatched(
       out.push({
         entry,
         why:
-          source === 'org'
+          source === "org"
             ? "not on your org's approved channels list"
-            : 'not on the approved channels allowlist',
+            : "not on the approved channels allowlist",
       });
     }
   }

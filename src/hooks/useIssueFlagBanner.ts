@@ -1,7 +1,7 @@
-import { useMemo, useRef } from 'react';
-import { BASH_TOOL_NAME } from '../tools/BashTool/toolName.js';
-import type { Message } from '../types/message.js';
-import { getUserMessageText } from '../utils/messages.js';
+import { useMemo, useRef } from "react";
+import { BASH_TOOL_NAME } from "../tools/BashTool/toolName.js";
+import type { Message } from "../types/message.js";
+import { getUserMessageText } from "../utils/messages.js";
 
 const EXTERNAL_COMMAND_PATTERNS = [
   /\bcurl\b/,
@@ -44,7 +44,7 @@ const FRICTION_PATTERNS = [
 
 export function isSessionContainerCompatible(messages: Message[]): boolean {
   for (const msg of messages) {
-    if (msg.type !== 'assistant') {
+    if (msg.type !== "assistant") {
       continue;
     }
     const content = msg.message.content;
@@ -52,16 +52,16 @@ export function isSessionContainerCompatible(messages: Message[]): boolean {
       continue;
     }
     for (const block of content) {
-      if (block.type !== 'tool_use' || !('name' in block)) {
+      if (block.type !== "tool_use" || !("name" in block)) {
         continue;
       }
       const toolName = block.name as string;
-      if (toolName.startsWith('mcp__')) {
+      if (toolName.startsWith("mcp__")) {
         return false;
       }
       if (toolName === BASH_TOOL_NAME) {
         const input = (block as { input?: Record<string, unknown> }).input;
-        const command = (input?.command as string) || '';
+        const command = (input?.command as string) || "";
         if (EXTERNAL_COMMAND_PATTERNS.some((p) => p.test(command))) {
           return false;
         }
@@ -74,7 +74,7 @@ export function isSessionContainerCompatible(messages: Message[]): boolean {
 export function hasFrictionSignal(messages: Message[]): boolean {
   for (let i = messages.length - 1; i >= 0; i--) {
     const msg = messages[i]!;
-    if (msg.type !== 'user') {
+    if (msg.type !== "user") {
       continue;
     }
     const text = getUserMessageText(msg);
@@ -90,7 +90,7 @@ const MIN_SUBMIT_COUNT = 3;
 const COOLDOWN_MS = 30 * 60 * 1000;
 
 export function useIssueFlagBanner(messages: Message[], submitCount: number): boolean {
-  if (process.env.USER_TYPE !== 'ant') {
+  if (process.env.USER_TYPE !== "ant") {
     return false;
   }
 

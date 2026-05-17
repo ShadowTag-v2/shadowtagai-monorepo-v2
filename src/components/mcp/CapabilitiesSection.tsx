@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { Byline } from '../design-system/Byline.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { Byline } from "../design-system/Byline.js";
 
 type Props = {
   serverToolsCount: number;
@@ -14,13 +14,13 @@ export function CapabilitiesSection(t0) {
   if ($[0] !== serverPromptsCount || $[1] !== serverResourcesCount || $[2] !== serverToolsCount) {
     capabilities = [];
     if (serverToolsCount > 0) {
-      capabilities.push('tools');
+      capabilities.push("tools");
     }
     if (serverResourcesCount > 0) {
-      capabilities.push('resources');
+      capabilities.push("resources");
     }
     if (serverPromptsCount > 0) {
-      capabilities.push('prompts');
+      capabilities.push("prompts");
     }
     $[0] = serverPromptsCount;
     $[1] = serverResourcesCount;
@@ -30,7 +30,7 @@ export function CapabilitiesSection(t0) {
     capabilities = $[3];
   }
   let t1;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = <Text bold={true}>Capabilities: </Text>;
     $[4] = t1;
   } else {
@@ -38,7 +38,7 @@ export function CapabilitiesSection(t0) {
   }
   let t2;
   if ($[5] !== capabilities) {
-    t2 = capabilities.length > 0 ? <Byline>{capabilities}</Byline> : 'none';
+    t2 = capabilities.length > 0 ? <Byline>{capabilities}</Byline> : "none";
     $[5] = capabilities;
     $[6] = t2;
   } else {

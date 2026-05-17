@@ -6,18 +6,18 @@
 // file + start a 1s check timer → on fire, call onFire(prompt). stop()
 // tears everything down.
 
-import type { FSWatcher } from 'chokidar';
+import type { FSWatcher } from "chokidar";
 import {
   getScheduledTasksEnabled,
   getSessionCronTasks,
   removeSessionCronTasks,
   setScheduledTasksEnabled,
-} from '../bootstrap/state.js';
+} from "../bootstrap/state.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import { cronToHuman } from './cron.js';
+} from "../services/analytics/index.js";
+import { cronToHuman } from "./cron.js";
 import {
   type CronJitterConfig,
   type CronTask,
@@ -30,9 +30,9 @@ import {
   oneShotJitteredNextCronRunMs,
   readCronTasks,
   removeCronTasks,
-} from './cronTasks.js';
-import { releaseSchedulerLock, tryAcquireSchedulerLock } from './cronTasksLock.js';
-import { logForDebugging } from './debug.js';
+} from "./cronTasks.js";
+import { releaseSchedulerLock, tryAcquireSchedulerLock } from "./cronTasksLock.js";
+import { logForDebugging } from "./debug.js";
 
 const CHECK_INTERVAL_MS = 1000;
 const FILE_STABILITY_MS = 300;
@@ -193,11 +193,11 @@ export function createCronScheduler(options: CronSchedulerOptions): CronSchedule
         // removeCronTasks + chokidar reload chain is in progress.
         nextFireAt.set(t.id, Infinity);
       }
-      logEvent('tengu_scheduled_task_missed', {
+      logEvent("tengu_scheduled_task_missed", {
         count: missed.length,
         taskIds: missed
           .map((t) => t.id)
-          .join(',') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+          .join(",") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
       if (onMissed) {
         onMissed(missed);
@@ -252,14 +252,14 @@ export function createCronScheduler(options: CronSchedulerOptions): CronSchedule
           : (oneShotJitteredNextCronRunMs(t.cron, t.createdAt, t.id, jitterCfg) ?? Infinity);
         nextFireAt.set(t.id, next);
         logForDebugging(
-          `[ScheduledTasks] scheduled ${t.id} for ${next === Infinity ? 'never' : new Date(next).toISOString()}`,
+          `[ScheduledTasks] scheduled ${t.id} for ${next === Infinity ? "never" : new Date(next).toISOString()}`,
         );
       }
 
       if (now < next) return;
 
-      logForDebugging(`[ScheduledTasks] firing ${t.id}${t.recurring ? ' (recurring)' : ''}`);
-      logEvent('tengu_scheduled_task_fire', {
+      logForDebugging(`[ScheduledTasks] firing ${t.id}${t.recurring ? " (recurring)" : ""}`);
+      logEvent("tengu_scheduled_task_fire", {
         recurring: t.recurring ?? false,
         taskId: t.id as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
@@ -278,7 +278,7 @@ export function createCronScheduler(options: CronSchedulerOptions): CronSchedule
         logForDebugging(
           `[ScheduledTasks] recurring task ${t.id} aged out (${ageHours}h since creation), deleting after final fire`,
         );
-        logEvent('tengu_scheduled_task_expired', {
+        logEvent("tengu_scheduled_task_expired", {
           taskId: t.id as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           ageHours,
         });
@@ -363,7 +363,7 @@ export function createCronScheduler(options: CronSchedulerOptions): CronSchedule
       enablePoll = null;
     }
 
-    const { default: chokidar } = await import('chokidar');
+    const { default: chokidar } = await import("chokidar");
     if (stopped) return;
 
     // Acquire the per-project scheduler lock. Only the owning session runs
@@ -393,7 +393,7 @@ export function createCronScheduler(options: CronSchedulerOptions): CronSchedule
               }
             }
           })
-          .catch((e) => logForDebugging(String(e), { level: 'error' }));
+          .catch((e) => logForDebugging(String(e), { level: "error" }));
       }, LOCK_PROBE_INTERVAL_MS);
       lockProbeTimer.unref?.();
     }
@@ -407,9 +407,9 @@ export function createCronScheduler(options: CronSchedulerOptions): CronSchedule
       awaitWriteFinish: { stabilityThreshold: FILE_STABILITY_MS },
       ignorePermissionErrors: true,
     });
-    watcher.on('add', () => void load(false));
-    watcher.on('change', () => void load(false));
-    watcher.on('unlink', () => {
+    watcher.on("add", () => void load(false));
+    watcher.on("change", () => void load(false));
+    watcher.on("unlink", () => {
       if (!stopped) {
         tasks = [];
         nextFireAt.clear();
@@ -502,10 +502,10 @@ export function createCronScheduler(options: CronSchedulerOptions): CronSchedule
 export function buildMissedTaskNotification(missed: CronTask[]): string {
   const plural = missed.length > 1;
   const header =
-    `The following one-shot scheduled task${plural ? 's were' : ' was'} missed while Claude was not running. ` +
-    `${plural ? 'They have' : 'It has'} already been removed from .claude/scheduled_tasks.json.\n\n` +
-    `Do NOT execute ${plural ? 'these prompts' : 'this prompt'} yet. ` +
-    `First use the AskUserQuestion tool to ask whether to run ${plural ? 'each one' : 'it'} now. ` +
+    `The following one-shot scheduled task${plural ? "s were" : " was"} missed while Claude was not running. ` +
+    `${plural ? "They have" : "It has"} already been removed from .claude/scheduled_tasks.json.\n\n` +
+    `Do NOT execute ${plural ? "these prompts" : "this prompt"} yet. ` +
+    `First use the AskUserQuestion tool to ask whether to run ${plural ? "each one" : "it"} now. ` +
     `Only execute if the user confirms.`;
 
   const blocks = missed.map((t) => {
@@ -517,9 +517,9 @@ export function buildMissedTaskNotification(missed: CronTask[]): string {
       (max, run) => Math.max(max, run.length),
       0,
     );
-    const fence = '`'.repeat(Math.max(3, longestRun + 1));
+    const fence = "`".repeat(Math.max(3, longestRun + 1));
     return `${meta}\n${fence}\n${t.prompt}\n${fence}`;
   });
 
-  return `${header}\n\n${blocks.join('\n\n')}`;
+  return `${header}\n\n${blocks.join("\n\n")}`;
 }

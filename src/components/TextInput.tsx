@@ -1,20 +1,20 @@
-import { feature } from 'bun:bundle';
-import chalk from 'chalk';
-import type React from 'react';
-import { useMemo, useRef } from 'react';
-import { useVoiceState } from '../context/voice.js';
-import { useClipboardImageHint } from '../hooks/useClipboardImageHint.js';
-import { useSettings } from '../hooks/useSettings.js';
-import { useTextInput } from '../hooks/useTextInput.js';
-import { Box, color, useAnimationFrame, useTerminalFocus, useTheme } from '../ink.js';
-import type { BaseTextInputProps } from '../types/textInputTypes.js';
-import { isEnvTruthy } from '../utils/envUtils.js';
-import type { TextHighlight } from '../utils/textHighlighting.js';
-import { BaseTextInput } from './BaseTextInput.js';
-import { hueToRgb } from './Spinner/utils.js';
+import { feature } from "bun:bundle";
+import chalk from "chalk";
+import type React from "react";
+import { useMemo, useRef } from "react";
+import { useVoiceState } from "../context/voice.js";
+import { useClipboardImageHint } from "../hooks/useClipboardImageHint.js";
+import { useSettings } from "../hooks/useSettings.js";
+import { useTextInput } from "../hooks/useTextInput.js";
+import { Box, color, useAnimationFrame, useTerminalFocus, useTheme } from "../ink.js";
+import type { BaseTextInputProps } from "../types/textInputTypes.js";
+import { isEnvTruthy } from "../utils/envUtils.js";
+import type { TextHighlight } from "../utils/textHighlighting.js";
+import { BaseTextInput } from "./BaseTextInput.js";
+import { hueToRgb } from "./Spinner/utils.js";
 
 // Block characters for waveform bars: space (silent) + 8 rising block elements.
-const BARS = ' \u2581\u2582\u2583\u2584\u2585\u2586\u2587\u2588';
+const BARS = " \u2581\u2582\u2583\u2584\u2585\u2586\u2587\u2588";
 
 // Mini waveform cursor width
 const CURSOR_WAVEFORM_WIDTH = 1;
@@ -45,18 +45,18 @@ export default function TextInput(props: Props): React.ReactNode {
   );
   const settings = useSettings();
   const reducedMotion = settings.prefersReducedMotion ?? false;
-  const voiceState = feature('VOICE_MODE')
+  const voiceState = feature("VOICE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useVoiceState((s) => s.voiceState)
-    : ('idle' as const);
-  const isVoiceRecording = voiceState === 'recording';
-  const audioLevels = feature('VOICE_MODE')
+    : ("idle" as const);
+  const isVoiceRecording = voiceState === "recording";
+  const audioLevels = feature("VOICE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useVoiceState((s_0) => s_0.voiceAudioLevels)
     : [];
   const smoothedRef = useRef<number[]>(new Array(CURSOR_WAVEFORM_WIDTH).fill(0));
   const needsAnimation = isVoiceRecording && !reducedMotion;
-  const [animRef, animTime] = feature('VOICE_MODE')
+  const [animRef, animTime] = feature("VOICE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useAnimationFrame(needsAnimation ? 50 : null)
     : [() => {}, 0];
@@ -110,10 +110,10 @@ export default function TextInput(props: Props): React.ReactNode {
     focus: props.focus,
     mask: props.mask,
     multiline: props.multiline,
-    cursorChar: props.showCursor ? ' ' : '',
+    cursorChar: props.showCursor ? " " : "",
     highlightPastedText: props.highlightPastedText,
     invert,
-    themeText: color('text', theme),
+    themeText: color("text", theme),
     columns: props.columns,
     maxVisibleLines: props.maxVisibleLines,
     onImagePaste: props.onImagePaste,

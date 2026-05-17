@@ -13,54 +13,54 @@
  * (SDK -p mode via query.enableRemoteControl).
  */
 
-import { feature } from 'bun:bundle';
-import { hostname } from 'node:os';
-import { getOriginalCwd, getSessionId } from '../bootstrap/state.js';
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
-import type { SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
-import { getFeatureValue_CACHED_WITH_REFRESH } from '../services/analytics/growthbook.js';
-import { getOrganizationUUID } from '../services/oauth/client.js';
-import { isPolicyAllowed, waitForPolicyLimitsToLoad } from '../services/policyLimits/index.js';
-import type { Message } from '../types/message.js';
+import { feature } from "bun:bundle";
+import { hostname } from "node:os";
+import { getOriginalCwd, getSessionId } from "../bootstrap/state.js";
+import type { SDKMessage } from "../entrypoints/agentSdkTypes.js";
+import type { SDKControlResponse } from "../entrypoints/sdk/controlTypes.js";
+import { getFeatureValue_CACHED_WITH_REFRESH } from "../services/analytics/growthbook.js";
+import { getOrganizationUUID } from "../services/oauth/client.js";
+import { isPolicyAllowed, waitForPolicyLimitsToLoad } from "../services/policyLimits/index.js";
+import type { Message } from "../types/message.js";
 import {
   checkAndRefreshOAuthTokenIfNeeded,
   getClaudeAIOAuthTokens,
   handleOAuth401Error,
-} from '../utils/auth.js';
-import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
-import { logForDebugging } from '../utils/debug.js';
-import { stripDisplayTagsAllowEmpty } from '../utils/displayTags.js';
-import { errorMessage } from '../utils/errors.js';
-import { getBranch, getRemoteUrl } from '../utils/git.js';
-import { toSDKMessages } from '../utils/messages/mappers.js';
+} from "../utils/auth.js";
+import { getGlobalConfig, saveGlobalConfig } from "../utils/config.js";
+import { logForDebugging } from "../utils/debug.js";
+import { stripDisplayTagsAllowEmpty } from "../utils/displayTags.js";
+import { errorMessage } from "../utils/errors.js";
+import { getBranch, getRemoteUrl } from "../utils/git.js";
+import { toSDKMessages } from "../utils/messages/mappers.js";
 import {
   getContentText,
   getMessagesAfterCompactBoundary,
   isSyntheticMessage,
-} from '../utils/messages.js';
-import type { PermissionMode } from '../utils/permissions/PermissionMode.js';
-import { getCurrentSessionTitle } from '../utils/sessionStorage.js';
-import { extractConversationText, generateSessionTitle } from '../utils/sessionTitle.js';
-import { generateShortWordSlug } from '../utils/words.js';
-import { getBridgeAccessToken, getBridgeBaseUrl, getBridgeTokenOverride } from './bridgeConfig.js';
+} from "../utils/messages.js";
+import type { PermissionMode } from "../utils/permissions/PermissionMode.js";
+import { getCurrentSessionTitle } from "../utils/sessionStorage.js";
+import { extractConversationText, generateSessionTitle } from "../utils/sessionTitle.js";
+import { generateShortWordSlug } from "../utils/words.js";
+import { getBridgeAccessToken, getBridgeBaseUrl, getBridgeTokenOverride } from "./bridgeConfig.js";
 import {
   checkBridgeMinVersion,
   isBridgeEnabledBlocking,
   isCseShimEnabled,
   isEnvLessBridgeEnabled,
-} from './bridgeEnabled.js';
+} from "./bridgeEnabled.js";
 import {
   archiveBridgeSession,
   createBridgeSession,
   updateBridgeSessionTitle,
-} from './createSession.js';
-import { logBridgeSkip } from './debugUtils.js';
-import { checkEnvLessBridgeMinVersion } from './envLessBridgeConfig.js';
-import { getPollIntervalConfig } from './pollConfig.js';
-import type { BridgeState, ReplBridgeHandle } from './replBridge.js';
-import { initBridgeCore } from './replBridge.js';
-import { setCseShimGate } from './sessionIdCompat.js';
-import type { BridgeWorkerType } from './types.js';
+} from "./createSession.js";
+import { logBridgeSkip } from "./debugUtils.js";
+import { checkEnvLessBridgeMinVersion } from "./envLessBridgeConfig.js";
+import { getPollIntervalConfig } from "./pollConfig.js";
+import type { BridgeState, ReplBridgeHandle } from "./replBridge.js";
+import { initBridgeCore } from "./replBridge.js";
+import { setCseShimGate } from "./sessionIdCompat.js";
+import type { BridgeWorkerType } from "./types.js";
 
 export type InitBridgeOptions = {
   onInboundMessage?: (msg: SDKMessage) => void | Promise<void>;
@@ -121,7 +121,7 @@ export async function initReplBridge(
 
   // 1. Runtime gate
   if (!(await isBridgeEnabledBlocking())) {
-    logBridgeSkip('not_enabled', '[bridge:repl] Skipping: bridge not enabled');
+    logBridgeSkip("not_enabled", "[bridge:repl] Skipping: bridge not enabled");
     return null;
   }
 
@@ -133,19 +133,19 @@ export async function initReplBridge(
   // policy check so console-auth users get the actionable "/login" hint
   // instead of a misleading policy error from a stale/wrong-org cache.
   if (!getBridgeAccessToken()) {
-    logBridgeSkip('no_oauth', '[bridge:repl] Skipping: no OAuth tokens');
-    onStateChange?.('failed', '/login');
+    logBridgeSkip("no_oauth", "[bridge:repl] Skipping: no OAuth tokens");
+    onStateChange?.("failed", "/login");
     return null;
   }
 
   // 3. Check organization policy — remote control may be disabled
   await waitForPolicyLimitsToLoad();
-  if (!isPolicyAllowed('allow_remote_control')) {
+  if (!isPolicyAllowed("allow_remote_control")) {
     logBridgeSkip(
-      'policy_denied',
-      '[bridge:repl] Skipping: allow_remote_control policy not allowed',
+      "policy_denied",
+      "[bridge:repl] Skipping: allow_remote_control policy not allowed",
     );
-    onStateChange?.('failed', "disabled by your organization's policy");
+    onStateChange?.("failed", "disabled by your organization's policy");
     return null;
   }
 
@@ -206,10 +206,10 @@ export async function initReplBridge(
     const tokens = getClaudeAIOAuthTokens();
     if (tokens && tokens.expiresAt !== null && tokens.expiresAt <= Date.now()) {
       logBridgeSkip(
-        'oauth_expired_unrefreshable',
-        '[bridge:repl] Skipping: OAuth token expired and refresh failed (re-login required)',
+        "oauth_expired_unrefreshable",
+        "[bridge:repl] Skipping: OAuth token expired and refresh failed (re-login required)",
       );
-      onStateChange?.('failed', '/login');
+      onStateChange?.("failed", "/login");
       // Persist for the next process. Increments failCount when re-discovering
       // the same dead token (matched by expiresAt); resets to 1 for a different
       // token. Once count reaches 3, step 2a's early-return fires and this path
@@ -264,11 +264,11 @@ export async function initReplBridge(
       for (let i = initialMessages.length - 1; i >= 0; i--) {
         const msg = initialMessages[i]!;
         if (
-          msg.type !== 'user' ||
+          msg.type !== "user" ||
           msg.isMeta ||
           msg.toolUseResult ||
           msg.isCompactSummary ||
-          (msg.origin && msg.origin.kind !== 'human') ||
+          (msg.origin && msg.origin.kind !== "human") ||
           isSyntheticMessage(msg)
         )
           continue;
@@ -349,7 +349,7 @@ export async function initReplBridge(
   };
 
   const initialHistoryCap = getFeatureValue_CACHED_WITH_REFRESH(
-    'tengu_bridge_initial_history_cap',
+    "tengu_bridge_initial_history_cap",
     200,
     5 * 60 * 1000,
   );
@@ -360,8 +360,8 @@ export async function initReplBridge(
   // archive 404s and sessions stay alive in CCR after /exit.
   const orgUUID = await getOrganizationUUID();
   if (!orgUUID) {
-    logBridgeSkip('no_org_uuid', '[bridge:repl] Skipping: no org UUID');
-    onStateChange?.('failed', '/login');
+    logBridgeSkip("no_org_uuid", "[bridge:repl] Skipping: no org UUID");
+    onStateChange?.("failed", "/login");
     return null;
   }
 
@@ -381,12 +381,12 @@ export async function initReplBridge(
   if (isEnvLessBridgeEnabled() && !perpetual) {
     const versionError = await checkEnvLessBridgeMinVersion();
     if (versionError) {
-      logBridgeSkip('version_too_old', `[bridge:repl] Skipping: ${versionError}`, true);
-      onStateChange?.('failed', 'run `claude update` to upgrade');
+      logBridgeSkip("version_too_old", `[bridge:repl] Skipping: ${versionError}`, true);
+      onStateChange?.("failed", "run `claude update` to upgrade");
       return null;
     }
-    logForDebugging('[bridge:repl] Using env-less bridge path (tengu_bridge_repl_v2)');
-    const { initEnvLessBridgeCore } = await import('./remoteBridgeCore.js');
+    logForDebugging("[bridge:repl] Using env-less bridge path (tengu_bridge_repl_v2)");
+    const { initEnvLessBridgeCore } = await import("./remoteBridgeCore.js");
     return initEnvLessBridgeCore({
       baseUrl,
       orgUUID,
@@ -420,8 +420,8 @@ export async function initReplBridge(
 
   const versionError = checkBridgeMinVersion();
   if (versionError) {
-    logBridgeSkip('version_too_old', `[bridge:repl] Skipping: ${versionError}`);
-    onStateChange?.('failed', 'run `claude update` to upgrade');
+    logBridgeSkip("version_too_old", `[bridge:repl] Skipping: ${versionError}`);
+    onStateChange?.("failed", "run `claude update` to upgrade");
     return null;
   }
 
@@ -430,21 +430,21 @@ export async function initReplBridge(
   const branch = await getBranch();
   const gitRepoUrl = await getRemoteUrl();
   const sessionIngressUrl =
-    process.env.USER_TYPE === 'ant' && process.env.CLAUDE_BRIDGE_SESSION_INGRESS_URL
+    process.env.USER_TYPE === "ant" && process.env.CLAUDE_BRIDGE_SESSION_INGRESS_URL
       ? process.env.CLAUDE_BRIDGE_SESSION_INGRESS_URL
       : baseUrl;
 
   // Assistant-mode sessions advertise a distinct worker_type so the web UI
   // can filter them into a dedicated picker. KAIROS guard keeps the
   // assistant module out of external builds entirely.
-  let workerType: BridgeWorkerType = 'claude_code';
-  if (feature('KAIROS')) {
+  let workerType: BridgeWorkerType = "claude_code";
+  if (feature("KAIROS")) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { isAssistantMode } =
-      require('../assistant/index.js') as typeof import('../assistant/index.js');
+      require("../assistant/index.js") as typeof import("../assistant/index.js");
     /* eslint-enable @typescript-eslint/no-require-imports */
     if (isAssistantMode()) {
-      workerType = 'claude_code_assistant';
+      workerType = "claude_code_assistant";
     }
   }
 
@@ -482,7 +482,7 @@ export async function initReplBridge(
         // straight through. Previously swallowed silently, making archive
         // failures BQ-invisible and undiagnosable from debug logs.
         logForDebugging(`[bridge:repl] archiveBridgeSession threw: ${errorMessage(err)}`, {
-          level: 'error',
+          level: "error",
         });
       }),
     // getCurrentTitle is read on reconnect-after-env-lost to re-title the new
@@ -524,7 +524,7 @@ function deriveTitle(raw: string): string | undefined {
   // Capture group instead of lookbehind — keeps YARR JIT happy.
   const firstSentence = /^(.*?[.!?])\s/.exec(clean)?.[1] ?? clean;
   // Collapse newlines/tabs — titles are single-line in the claude.ai list.
-  const flat = firstSentence.replace(/\s+/g, ' ').trim();
+  const flat = firstSentence.replace(/\s+/g, " ").trim();
   if (!flat) return undefined;
   return flat.length > TITLE_MAX_LEN ? `${flat.slice(0, TITLE_MAX_LEN - 1)}\u2026` : flat;
 }

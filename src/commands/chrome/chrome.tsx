@@ -1,25 +1,25 @@
-import type React from 'react';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Select } from '../../components/CustomSelect/select.js';
-import { Dialog } from '../../components/design-system/Dialog.js';
-import { Box, Text } from '../../ink.js';
-import { useAppState } from '../../state/AppState.js';
-import { isClaudeAISubscriber } from '../../utils/auth.js';
-import { openBrowser } from '../../utils/browser.js';
+import type React from "react";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Select } from "../../components/CustomSelect/select.js";
+import { Dialog } from "../../components/design-system/Dialog.js";
+import { Box, Text } from "../../ink.js";
+import { useAppState } from "../../state/AppState.js";
+import { isClaudeAISubscriber } from "../../utils/auth.js";
+import { openBrowser } from "../../utils/browser.js";
 import {
   CLAUDE_IN_CHROME_MCP_SERVER_NAME,
   openInChrome,
-} from '../../utils/claudeInChrome/common.js';
-import { isChromeExtensionInstalled } from '../../utils/claudeInChrome/setup.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { env } from '../../utils/env.js';
-import { isRunningOnHomespace } from '../../utils/envUtils.js';
+} from "../../utils/claudeInChrome/common.js";
+import { isChromeExtensionInstalled } from "../../utils/claudeInChrome/setup.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { env } from "../../utils/env.js";
+import { isRunningOnHomespace } from "../../utils/envUtils.js";
 
-const CHROME_EXTENSION_URL = 'https://claude.ai/chrome';
-const CHROME_PERMISSIONS_URL = 'https://clau.de/chrome/permissions';
-const CHROME_RECONNECT_URL = 'https://clau.de/chrome/reconnect';
-type MenuAction = 'install-extension' | 'reconnect' | 'manage-permissions' | 'toggle-default';
+const CHROME_EXTENSION_URL = "https://claude.ai/chrome";
+const CHROME_PERMISSIONS_URL = "https://clau.de/chrome/permissions";
+const CHROME_RECONNECT_URL = "https://clau.de/chrome/reconnect";
+type MenuAction = "install-extension" | "reconnect" | "manage-permissions" | "toggle-default";
 type Props = {
   onDone: (result?: string) => void;
   isExtensionInstalled: boolean;
@@ -42,7 +42,7 @@ function ClaudeInChromeMenu(t0) {
   const [showInstallHint, setShowInstallHint] = useState(false);
   const [isExtensionInstalled, setIsExtensionInstalled] = useState(installed);
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = false && isRunningOnHomespace();
     $[0] = t1;
   } else {
@@ -58,9 +58,9 @@ function ClaudeInChromeMenu(t0) {
     t2 = $[2];
   }
   const chromeClient = t2;
-  const isConnected = chromeClient?.type === 'connected';
+  const isConnected = chromeClient?.type === "connected";
   let t3;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = function openUrl(url) {
       if (isHomespace) {
         openBrowser(url);
@@ -77,13 +77,13 @@ function ClaudeInChromeMenu(t0) {
   if ($[4] !== enabledByDefault) {
     t4 = function handleAction(action) {
       switch (action) {
-        case 'install-extension': {
+        case "install-extension": {
           setSelectKey(_temp3);
           setShowInstallHint(true);
           openUrl(CHROME_EXTENSION_URL);
           break;
         }
-        case 'reconnect': {
+        case "reconnect": {
           setSelectKey(_temp4);
           isChromeExtensionInstalled().then((installed_0) => {
             setIsExtensionInstalled(installed_0);
@@ -94,12 +94,12 @@ function ClaudeInChromeMenu(t0) {
           openUrl(CHROME_RECONNECT_URL);
           break;
         }
-        case 'manage-permissions': {
+        case "manage-permissions": {
           setSelectKey(_temp5);
           openUrl(CHROME_PERMISSIONS_URL);
           break;
         }
-        case 'toggle-default': {
+        case "toggle-default": {
           const newValue = !enabledByDefault;
           saveGlobalConfig((current) => ({
             ...current,
@@ -118,13 +118,13 @@ function ClaudeInChromeMenu(t0) {
   let options;
   if ($[6] !== enabledByDefault || $[7] !== isExtensionInstalled) {
     options = [];
-    const requiresExtensionSuffix = isExtensionInstalled ? '' : ' (requires extension)';
+    const requiresExtensionSuffix = isExtensionInstalled ? "" : " (requires extension)";
     if (!isExtensionInstalled && !isHomespace) {
       let t5;
-      if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
         t5 = {
-          label: 'Install Chrome extension',
-          value: 'install-extension',
+          label: "Install Chrome extension",
+          value: "install-extension",
         };
         $[9] = t5;
       } else {
@@ -133,7 +133,7 @@ function ClaudeInChromeMenu(t0) {
       options.push(t5);
     }
     let t5;
-    if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
       t5 = <Text>Manage permissions</Text>;
       $[10] = t5;
     } else {
@@ -148,7 +148,7 @@ function ClaudeInChromeMenu(t0) {
             <Text dimColor={true}>{requiresExtensionSuffix}</Text>
           </>
         ),
-        value: 'manage-permissions',
+        value: "manage-permissions",
       };
       $[11] = requiresExtensionSuffix;
       $[12] = t6;
@@ -156,7 +156,7 @@ function ClaudeInChromeMenu(t0) {
       t6 = $[12];
     }
     let t7;
-    if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
       t7 = <Text>Reconnect extension</Text>;
       $[13] = t7;
     } else {
@@ -171,19 +171,19 @@ function ClaudeInChromeMenu(t0) {
             <Text dimColor={true}>{requiresExtensionSuffix}</Text>
           </>
         ),
-        value: 'reconnect',
+        value: "reconnect",
       };
       $[14] = requiresExtensionSuffix;
       $[15] = t8;
     } else {
       t8 = $[15];
     }
-    const t9 = `Enabled by default: ${enabledByDefault ? 'Yes' : 'No'}`;
+    const t9 = `Enabled by default: ${enabledByDefault ? "Yes" : "No"}`;
     let t10;
     if ($[16] !== t9) {
       t10 = {
         label: t9,
-        value: 'toggle-default',
+        value: "toggle-default",
       };
       $[16] = t9;
       $[17] = t10;
@@ -207,7 +207,7 @@ function ClaudeInChromeMenu(t0) {
     t5 = $[19];
   }
   let t6;
-  if ($[20] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[20] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Text>
         Claude in Chrome works with the Chrome extension to let you control your browser directly
@@ -252,7 +252,7 @@ function ClaudeInChromeMenu(t0) {
         {!isHomespace && (
           <Box flexDirection="column">
             <Text>
-              Status:{' '}
+              Status:{" "}
               {isConnected ? (
                 <Text color="success">Enabled</Text>
               ) : (
@@ -260,7 +260,7 @@ function ClaudeInChromeMenu(t0) {
               )}
             </Text>
             <Text>
-              Extension:{' '}
+              Extension:{" "}
               {isExtensionInstalled ? (
                 <Text color="success">Installed</Text>
               ) : (
@@ -297,7 +297,7 @@ function ClaudeInChromeMenu(t0) {
     t9 = $[32];
   }
   let t10;
-  if ($[33] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[33] === Symbol.for("react.memo_cache_sentinel")) {
     t10 = <Text dimColor={true}>Learn more: https://code.claude.com/docs/en/chrome</Text>;
     $[33] = t10;
   } else {

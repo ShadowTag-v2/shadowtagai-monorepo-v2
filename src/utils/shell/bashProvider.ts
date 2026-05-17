@@ -1,24 +1,24 @@
-import { feature } from 'bun:bundle';
-import { access } from 'node:fs/promises';
-import { tmpdir as osTmpdir } from 'node:os';
-import { join as nativeJoin } from 'node:path';
-import { join as posixJoin } from 'node:path/posix';
-import { rearrangePipeCommand } from '../bash/bashPipeCommand.js';
-import { createAndSaveSnapshot } from '../bash/ShellSnapshot.js';
-import { formatShellPrefixCommand } from '../bash/shellPrefix.js';
-import { quote } from '../bash/shellQuote.js';
+import { feature } from "bun:bundle";
+import { access } from "node:fs/promises";
+import { tmpdir as osTmpdir } from "node:os";
+import { join as nativeJoin } from "node:path";
+import { join as posixJoin } from "node:path/posix";
+import { rearrangePipeCommand } from "../bash/bashPipeCommand.js";
+import { createAndSaveSnapshot } from "../bash/ShellSnapshot.js";
+import { formatShellPrefixCommand } from "../bash/shellPrefix.js";
+import { quote } from "../bash/shellQuote.js";
 import {
   quoteShellCommand,
   rewriteWindowsNullRedirect,
   shouldAddStdinRedirect,
-} from '../bash/shellQuoting.js';
-import { logForDebugging } from '../debug.js';
-import { getPlatform } from '../platform.js';
-import { getSessionEnvironmentScript } from '../sessionEnvironment.js';
-import { getSessionEnvVars } from '../sessionEnvVars.js';
-import { ensureSocketInitialized, getClaudeTmuxEnv, hasTmuxToolBeenUsed } from '../tmuxSocket.js';
-import { windowsPathToPosixPath } from '../windowsPaths.js';
-import type { ShellProvider } from './shellProvider.js';
+} from "../bash/shellQuoting.js";
+import { logForDebugging } from "../debug.js";
+import { getPlatform } from "../platform.js";
+import { getSessionEnvironmentScript } from "../sessionEnvironment.js";
+import { getSessionEnvVars } from "../sessionEnvVars.js";
+import { ensureSocketInitialized, getClaudeTmuxEnv, hasTmuxToolBeenUsed } from "../tmuxSocket.js";
+import { windowsPathToPosixPath } from "../windowsPaths.js";
+import type { ShellProvider } from "./shellProvider.js";
 
 /**
  * Returns a shell command to disable extended glob patterns for security.
@@ -38,14 +38,14 @@ function getDisableExtglobCommand(shellPath: string): string | null {
   if (process.env.CLAUDE_CODE_SHELL_PREFIX) {
     // Redirect both stdout and stderr because zsh's command_not_found_handler
     // writes to stdout instead of stderr
-    return '{ shopt -u extglob || setopt NO_EXTENDED_GLOB; } >/dev/null 2>&1 || true';
+    return "{ shopt -u extglob || setopt NO_EXTENDED_GLOB; } >/dev/null 2>&1 || true";
   }
 
   // No shell prefix - use shell-specific command
-  if (shellPath.includes('bash')) {
-    return 'shopt -u extglob 2>/dev/null || true';
-  } else if (shellPath.includes('zsh')) {
-    return 'setopt NO_EXTENDED_GLOB 2>/dev/null || true';
+  if (shellPath.includes("bash")) {
+    return "shopt -u extglob 2>/dev/null || true";
+  } else if (shellPath.includes("zsh")) {
+    return "setopt NO_EXTENDED_GLOB 2>/dev/null || true";
   }
   // Unknown shell - do nothing, we don't know the right command
   return null;
@@ -66,7 +66,7 @@ export async function createBashShellProvider(
   let lastSnapshotFilePath: string | undefined;
 
   return {
-    type: 'bash',
+    type: "bash",
     shellPath,
     detached: true,
 
@@ -102,7 +102,7 @@ export async function createBashShellProvider(
       currentSandboxTmpDir = opts.sandboxTmpDir;
 
       const tmpdir = osTmpdir();
-      const isWindows = getPlatform() === 'windows';
+      const isWindows = getPlatform() === "windows";
       const shellTmpdir = isWindows ? windowsPathToPosixPath(tmpdir) : tmpdir;
 
       // shellCwdFilePath: POSIX path used inside the bash command (pwd -P >| ...)
@@ -126,7 +126,7 @@ export async function createBashShellProvider(
 
       // Debug logging for heredoc/multiline commands to trace trailer handling
       // Only log when commit attribution is enabled to avoid noise
-      if (feature('COMMIT_ATTRIBUTION') && (command.includes('<<') || command.includes('\n'))) {
+      if (feature("COMMIT_ATTRIBUTION") && (command.includes("<<") || command.includes("\n"))) {
         logForDebugging(
           `Shell: Command before quoting (first 500 chars):\n${command.slice(0, 500)}`,
         );
@@ -140,7 +140,7 @@ export async function createBashShellProvider(
       // rg (with no path arg) waits on the open spawn stdin pipe forever.
       // Applies to sandbox mode too: sandbox wraps the assembled commandString,
       // not the raw command (since PR #9189).
-      if (normalizedCommand.includes('|') && addStdinRedirect) {
+      if (normalizedCommand.includes("|") && addStdinRedirect) {
         quotedCommand = rearrangePipeCommand(normalizedCommand);
       }
 
@@ -151,7 +151,7 @@ export async function createBashShellProvider(
       // vanishes in that window, the `&&` chain still continues.
       if (snapshotFilePath) {
         const finalPath =
-          getPlatform() === 'windows' ? windowsPathToPosixPath(snapshotFilePath) : snapshotFilePath;
+          getPlatform() === "windows" ? windowsPathToPosixPath(snapshotFilePath) : snapshotFilePath;
         commandParts.push(`source ${quote([finalPath])} 2>/dev/null || true`);
       }
 
@@ -173,7 +173,7 @@ export async function createBashShellProvider(
       commandParts.push(`eval ${quotedCommand}`);
       // Use `pwd -P` to get the physical path of the current working directory for consistency with `process.cwd()`
       commandParts.push(`pwd -P >| ${quote([shellCwdFilePath])}`);
-      let commandString = commandParts.join(' && ');
+      let commandString = commandParts.join(" && ");
 
       // Apply CLAUDE_CODE_SHELL_PREFIX if set
       if (process.env.CLAUDE_CODE_SHELL_PREFIX) {
@@ -189,9 +189,9 @@ export async function createBashShellProvider(
     getSpawnArgs(commandString: string): string[] {
       const skipLoginShell = lastSnapshotFilePath !== undefined;
       if (skipLoginShell) {
-        logForDebugging('Spawning shell without login (-l flag skipped)');
+        logForDebugging("Spawning shell without login (-l flag skipped)");
       }
-      return ['-c', ...(skipLoginShell ? [] : ['-l']), commandString];
+      return ["-c", ...(skipLoginShell ? [] : ["-l"]), commandString];
     },
 
     async getEnvironmentOverrides(command: string): Promise<Record<string, string>> {
@@ -204,8 +204,8 @@ export async function createBashShellProvider(
       // commands will use Claude's isolated socket via the TMUX env var override.
       //
       // See tmuxSocket.ts for the full isolation architecture documentation.
-      const commandUsesTmux = command.includes('tmux');
-      if (process.env.USER_TYPE === 'ant' && (hasTmuxToolBeenUsed() || commandUsesTmux)) {
+      const commandUsesTmux = command.includes("tmux");
+      if (process.env.USER_TYPE === "ant" && (hasTmuxToolBeenUsed() || commandUsesTmux)) {
         await ensureSocketInitialized();
       }
       const claudeTmuxEnv = getClaudeTmuxEnv();
@@ -218,7 +218,7 @@ export async function createBashShellProvider(
       }
       if (currentSandboxTmpDir) {
         let posixTmpDir = currentSandboxTmpDir;
-        if (getPlatform() === 'windows') {
+        if (getPlatform() === "windows") {
           posixTmpDir = windowsPathToPosixPath(posixTmpDir);
         }
         env.TMPDIR = posixTmpDir;
@@ -227,7 +227,7 @@ export async function createBashShellProvider(
         // not TMPDIR. Set it to a path inside the sandbox tmp dir so
         // heredocs work in sandboxed zsh commands.
         // Safe to set unconditionally — non-zsh shells ignore TMPPREFIX.
-        env.TMPPREFIX = posixJoin(posixTmpDir, 'zsh');
+        env.TMPPREFIX = posixJoin(posixTmpDir, "zsh");
       }
       // Apply session env vars set via /env (child processes only, not the REPL)
       for (const [key, value] of getSessionEnvVars()) {

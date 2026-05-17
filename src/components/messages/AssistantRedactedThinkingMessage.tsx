@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
 
 type Props = {
   addMargin: boolean;
@@ -10,7 +10,7 @@ export function AssistantRedactedThinkingMessage(t0) {
   const addMargin = t1 === undefined ? false : t1;
   const t2 = addMargin ? 1 : 0;
   let t3;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Text dimColor={true} italic={true}>
         ✻ Thinking…

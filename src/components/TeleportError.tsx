@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
 import {
   checkIsGitClean,
   checkNeedsClaudeAiLogin,
-} from 'src/utils/background/remote/preconditions.js';
-import { gracefulShutdownSync } from 'src/utils/gracefulShutdown.js';
-import { Box, Text } from '../ink.js';
-import { ConsoleOAuthFlow } from './ConsoleOAuthFlow.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
-import { TeleportStash } from './TeleportStash.js';
-export type TeleportLocalErrorType = 'needsLogin' | 'needsGitStash';
+} from "src/utils/background/remote/preconditions.js";
+import { gracefulShutdownSync } from "src/utils/gracefulShutdown.js";
+import { Box, Text } from "../ink.js";
+import { ConsoleOAuthFlow } from "./ConsoleOAuthFlow.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
+import { TeleportStash } from "./TeleportStash.js";
+export type TeleportLocalErrorType = "needsLogin" | "needsGitStash";
 type TeleportErrorProps = {
   onComplete: () => void;
   errorsToIgnore?: ReadonlySet<TeleportLocalErrorType>;
@@ -38,11 +38,11 @@ export function TeleportError(t0) {
         onComplete();
         return;
       }
-      if (filteredErrors.has('needsLogin')) {
-        setCurrentError('needsLogin');
+      if (filteredErrors.has("needsLogin")) {
+        setCurrentError("needsLogin");
       } else {
-        if (filteredErrors.has('needsGitStash')) {
-          setCurrentError('needsGitStash');
+        if (filteredErrors.has("needsGitStash")) {
+          setCurrentError("needsGitStash");
         }
       }
     };
@@ -82,7 +82,7 @@ export function TeleportError(t0) {
   }
   const handleLoginComplete = t5;
   let t6;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = () => {
       setIsLoggingIn(true);
     };
@@ -92,9 +92,9 @@ export function TeleportError(t0) {
   }
   const handleLoginWithClaudeAI = t6;
   let t7;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (value) => {
-      if (value === 'login') {
+      if (value === "login") {
         handleLoginWithClaudeAI();
       } else {
         onCancel();
@@ -120,7 +120,7 @@ export function TeleportError(t0) {
     return null;
   }
   switch (currentError) {
-    case 'needsGitStash': {
+    case "needsGitStash": {
       let t9;
       if ($[12] !== handleStashComplete) {
         t9 = <TeleportStash onStashAndContinue={handleStashComplete} onCancel={onCancel} />;
@@ -131,7 +131,7 @@ export function TeleportError(t0) {
       }
       return t9;
     }
-    case 'needsLogin': {
+    case "needsLogin": {
       if (isLoggingIn) {
         let t9;
         if ($[14] !== handleLoginComplete) {
@@ -150,7 +150,7 @@ export function TeleportError(t0) {
         return t9;
       }
       let t9;
-      if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
         t9 = (
           <Box flexDirection="column">
             <Text dimColor={true}>Teleport requires a Claude.ai account.</Text>
@@ -164,19 +164,19 @@ export function TeleportError(t0) {
         t9 = $[16];
       }
       let t10;
-      if ($[17] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
         t10 = (
           <Dialog title="Log in to Claude" onCancel={onCancel}>
             {t9}
             <Select
               options={[
                 {
-                  label: 'Login with Claude account',
-                  value: 'login',
+                  label: "Login with Claude account",
+                  value: "login",
                 },
                 {
-                  label: 'Exit',
-                  value: 'exit',
+                  label: "Exit",
+                  value: "exit",
                 },
               ]}
               onChange={handleLoginDialogSelect}
@@ -206,10 +206,10 @@ export async function getTeleportErrors(): Promise<Set<TeleportLocalErrorType>> 
     checkIsGitClean(),
   ]);
   if (needsLogin) {
-    errors.add('needsLogin');
+    errors.add("needsLogin");
   }
   if (!isGitClean) {
-    errors.add('needsGitStash');
+    errors.add("needsGitStash");
   }
   return errors;
 }

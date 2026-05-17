@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
 
 type Props = {
   query: string;
@@ -23,12 +23,12 @@ export function SearchBox(t0) {
     cursorOffset,
     borderless: t3,
   } = t0;
-  const placeholder = t1 === undefined ? 'Search\u2026' : t1;
-  const prefix = t2 === undefined ? '\u2315' : t2;
+  const placeholder = t1 === undefined ? "Search\u2026" : t1;
+  const prefix = t2 === undefined ? "\u2315" : t2;
   const borderless = t3 === undefined ? false : t3;
   const offset = cursorOffset ?? query.length;
-  const t4 = borderless ? undefined : 'round';
-  const t5 = isFocused ? 'suggestion' : undefined;
+  const t4 = borderless ? undefined : "round";
+  const t5 = isFocused ? "suggestion" : undefined;
   const t6 = !isFocused;
   const t7 = borderless ? 0 : 1;
   const t8 = !isFocused;
@@ -45,7 +45,7 @@ export function SearchBox(t0) {
         isTerminalFocused ? (
           <>
             <Text>{query.slice(0, offset)}</Text>
-            <Text inverse={true}>{offset < query.length ? query[offset] : ' '}</Text>
+            <Text inverse={true}>{offset < query.length ? query[offset] : " "}</Text>
             {offset < query.length && <Text>{query.slice(offset + 1)}</Text>}
           </>
         ) : (

@@ -1,13 +1,13 @@
-import { toString as qrToString } from 'qrcode';
-import type * as React from 'react';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Pane } from '../../components/design-system/Pane.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import type { LocalJSXCommandOnDone } from '../../types/command.js';
+import { toString as qrToString } from "qrcode";
+import type * as React from "react";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Pane } from "../../components/design-system/Pane.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import type { LocalJSXCommandOnDone } from "../../types/command.js";
 
-type Platform = 'ios' | 'android';
+type Platform = "ios" | "android";
 type Props = {
   onDone: () => void;
 };
@@ -18,21 +18,21 @@ const PLATFORMS: Record<
   }
 > = {
   ios: {
-    url: 'https://apps.apple.com/app/claude-by-anthropic/id6473753684',
+    url: "https://apps.apple.com/app/claude-by-anthropic/id6473753684",
   },
   android: {
-    url: 'https://play.google.com/store/apps/details?id=com.anthropic.claude',
+    url: "https://play.google.com/store/apps/details?id=com.anthropic.claude",
   },
 };
 function MobileQRCode(t0) {
   const $ = _c(52);
   const { onDone } = t0;
-  const [platform, setPlatform] = useState('ios');
+  const [platform, setPlatform] = useState("ios");
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
-      ios: '',
-      android: '',
+      ios: "",
+      android: "",
     };
     $[0] = t1;
   } else {
@@ -43,17 +43,17 @@ function MobileQRCode(t0) {
   const qrCode = qrCodes[platform];
   let t2;
   let t3;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => {
       const generateQRCodes = async function generateQRCodes() {
         const [ios, android] = await Promise.all([
           qrToString(PLATFORMS.ios.url, {
-            type: 'utf8',
-            errorCorrectionLevel: 'L',
+            type: "utf8",
+            errorCorrectionLevel: "L",
           }),
           qrToString(PLATFORMS.android.url, {
-            type: 'utf8',
-            errorCorrectionLevel: 'L',
+            type: "utf8",
+            errorCorrectionLevel: "L",
           }),
         ]);
         setQrCodes({
@@ -83,24 +83,24 @@ function MobileQRCode(t0) {
   }
   const handleClose = t4;
   let t5;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[5] = t5;
   } else {
     t5 = $[5];
   }
-  useKeybinding('confirm:no', handleClose, t5);
+  useKeybinding("confirm:no", handleClose, t5);
   let t6;
   if ($[6] !== onDone) {
     t6 = function handleKeyDown(e) {
-      if (e.key === 'q' || (e.ctrl && e.key === 'c')) {
+      if (e.key === "q" || (e.ctrl && e.key === "c")) {
         e.preventDefault();
         onDone();
         return;
       }
-      if (e.key === 'tab' || e.key === 'left' || e.key === 'right') {
+      if (e.key === "tab" || e.key === "left" || e.key === "right") {
         e.preventDefault();
         setPlatform(_temp2);
       }
@@ -121,14 +121,14 @@ function MobileQRCode(t0) {
   let t8;
   let t9;
   if ($[8] !== handleKeyDown || $[9] !== qrCode) {
-    const lines = qrCode.split('\n').filter(_temp3);
+    const lines = qrCode.split("\n").filter(_temp3);
     T1 = Pane;
     T0 = Box;
-    t7 = 'column';
+    t7 = "column";
     t8 = 0;
     t9 = true;
     t10 = handleKeyDown;
-    if ($[19] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[19] === Symbol.for("react.memo_cache_sentinel")) {
       t11 = <Text> </Text>;
       t12 = <Text> </Text>;
       $[19] = t11;
@@ -162,7 +162,7 @@ function MobileQRCode(t0) {
   }
   let t14;
   let t15;
-  if ($[21] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[21] === Symbol.for("react.memo_cache_sentinel")) {
     t14 = <Text> </Text>;
     t15 = <Text> </Text>;
     $[21] = t14;
@@ -171,8 +171,8 @@ function MobileQRCode(t0) {
     t14 = $[21];
     t15 = $[22];
   }
-  const t16 = platform === 'ios';
-  const t17 = platform === 'ios';
+  const t16 = platform === "ios";
+  const t17 = platform === "ios";
   let t18;
   if ($[23] !== t16 || $[24] !== t17) {
     t18 = (
@@ -187,14 +187,14 @@ function MobileQRCode(t0) {
     t18 = $[25];
   }
   let t19;
-  if ($[26] === Symbol.for('react.memo_cache_sentinel')) {
-    t19 = <Text dimColor={true}>{' / '}</Text>;
+  if ($[26] === Symbol.for("react.memo_cache_sentinel")) {
+    t19 = <Text dimColor={true}>{" / "}</Text>;
     $[26] = t19;
   } else {
     t19 = $[26];
   }
-  const t20 = platform === 'android';
-  const t21 = platform === 'android';
+  const t20 = platform === "android";
+  const t21 = platform === "android";
   let t22;
   if ($[27] !== t20 || $[28] !== t21) {
     t22 = (
@@ -224,7 +224,7 @@ function MobileQRCode(t0) {
     t23 = $[32];
   }
   let t24;
-  if ($[33] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[33] === Symbol.for("react.memo_cache_sentinel")) {
     t24 = <Text dimColor={true}>(tab to switch, esc to close)</Text>;
     $[33] = t24;
   } else {
@@ -307,7 +307,7 @@ function _temp3(line) {
   return line.length > 0;
 }
 function _temp2(prev) {
-  return prev === 'ios' ? 'android' : 'ios';
+  return prev === "ios" ? "android" : "ios";
 }
 function _temp() {}
 export async function call(onDone: LocalJSXCommandOnDone): Promise<React.ReactNode> {

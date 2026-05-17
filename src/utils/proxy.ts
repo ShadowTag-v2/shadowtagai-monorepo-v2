@@ -3,16 +3,16 @@
 // undici is lazy-required inside getProxyAgent/configureGlobalAgents to defer
 // ~1.5MB when no HTTPS_PROXY/mTLS env vars are set (the common case).
 
-import type { LookupOptions } from 'node:dns';
-import type { Agent } from 'node:http';
-import axios, { type AxiosInstance } from 'axios';
-import { HttpsProxyAgent, type HttpsProxyAgentOptions } from 'https-proxy-agent';
-import memoize from 'lodash-es/memoize.js';
-import type * as undici from 'undici';
-import { getCACertificates } from './caCerts.js';
-import { logForDebugging } from './debug.js';
-import { isEnvTruthy } from './envUtils.js';
-import { getMTLSAgent, getMTLSConfig, getTLSFetchOptions, type TLSConfig } from './mtls.js';
+import type { LookupOptions } from "node:dns";
+import type { Agent } from "node:http";
+import axios, { type AxiosInstance } from "axios";
+import { HttpsProxyAgent, type HttpsProxyAgentOptions } from "https-proxy-agent";
+import memoize from "lodash-es/memoize.js";
+import type * as undici from "undici";
+import { getCACertificates } from "./caCerts.js";
+import { logForDebugging } from "./debug.js";
+import { isEnvTruthy } from "./envUtils.js";
+import { getMTLSAgent, getMTLSConfig, getTLSFetchOptions, type TLSConfig } from "./mtls.js";
 
 // Disable fetch keep-alive after a stale-pool ECONNRESET so retries open a
 // fresh TCP connection instead of reusing the dead pooled socket. Sticky for
@@ -40,9 +40,9 @@ export function getAddressFamily(options: LookupOptions): 0 | 4 | 6 {
     case 4:
     case 6:
       return options.family;
-    case 'IPv6':
+    case "IPv6":
       return 6;
-    case 'IPv4':
+    case "IPv4":
     case undefined:
       return 4;
     default:
@@ -88,12 +88,12 @@ export function shouldBypassProxy(
   if (!noProxy) return false;
 
   // Handle wildcard
-  if (noProxy === '*') return true;
+  if (noProxy === "*") return true;
 
   try {
     const url = new URL(urlString);
     const hostname = url.hostname.toLowerCase();
-    const port = url.port || (url.protocol === 'https:' ? '443' : '80');
+    const port = url.port || (url.protocol === "https:" ? "443" : "80");
     const hostWithPort = `${hostname}:${port}`;
 
     // Split by comma or space and trim each entry
@@ -103,12 +103,12 @@ export function shouldBypassProxy(
       pattern = pattern.toLowerCase().trim();
 
       // Check for port-specific match
-      if (pattern.includes(':')) {
+      if (pattern.includes(":")) {
         return hostWithPort === pattern;
       }
 
       // Check for domain suffix match (with or without leading dot)
-      if (pattern.startsWith('.')) {
+      if (pattern.startsWith(".")) {
         // Pattern ".example.com" should match "sub.example.com" and "example.com"
         // but NOT "notexample.com"
         const suffix = pattern;
@@ -191,7 +191,7 @@ export function createAxiosInstance(extra: HttpsProxyAgentOptions<string> = {}):
  */
 export const getProxyAgent = memoize((uri: string): undici.Dispatcher => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const undiciMod = require('undici') as typeof undici;
+  const undiciMod = require("undici") as typeof undici;
   const mtlsConfig = getMTLSConfig();
   const caCerts = getCACertificates();
 
@@ -293,7 +293,7 @@ export function getProxyFetchOptions(opts?: { forAnthropicAPI?: boolean }): {
   // client so MCP/SSE/other callers don't get their requests misrouted.
   if (opts?.forAnthropicAPI) {
     const unixSocket = process.env.ANTHROPIC_UNIX_SOCKET;
-    if (unixSocket && typeof Bun !== 'undefined') {
+    if (unixSocket && typeof Bun !== "undefined") {
       return { ...base, unix: unixSocket };
     }
   }
@@ -302,7 +302,7 @@ export function getProxyFetchOptions(opts?: { forAnthropicAPI?: boolean }): {
 
   // If we have a proxy, use the proxy agent (which includes mTLS config)
   if (proxyUrl) {
-    if (typeof Bun !== 'undefined') {
+    if (typeof Bun !== "undefined") {
       return { ...base, proxy: proxyUrl, ...getTLSFetchOptions() };
     }
     return { ...base, dispatcher: getProxyAgent(proxyUrl) };
@@ -363,7 +363,7 @@ export function configureGlobalAgents(): void {
 
     // Set global dispatcher that now respects NO_PROXY via EnvHttpProxyAgent
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    (require('undici') as typeof undici).setGlobalDispatcher(getProxyAgent(proxyUrl));
+    (require("undici") as typeof undici).setGlobalDispatcher(getProxyAgent(proxyUrl));
   } else if (mtlsAgent) {
     // No proxy but mTLS is configured
     axios.defaults.httpsAgent = mtlsAgent;
@@ -372,7 +372,7 @@ export function configureGlobalAgents(): void {
     const mtlsOptions = getTLSFetchOptions();
     if (mtlsOptions.dispatcher) {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      (require('undici') as typeof undici).setGlobalDispatcher(mtlsOptions.dispatcher);
+      (require("undici") as typeof undici).setGlobalDispatcher(mtlsOptions.dispatcher);
     }
   }
 }
@@ -389,8 +389,8 @@ export async function getAWSClientProxyConfig(): Promise<object> {
   }
 
   const [{ NodeHttpHandler }, { defaultProvider }] = await Promise.all([
-    import('@smithy/node-http-handler'),
-    import('@aws-sdk/credential-provider-node'),
+    import("@smithy/node-http-handler"),
+    import("@aws-sdk/credential-provider-node"),
   ]);
 
   const agent = createHttpsProxyAgent(proxyUrl);
@@ -412,5 +412,5 @@ export async function getAWSClientProxyConfig(): Promise<object> {
  */
 export function clearProxyCache(): void {
   getProxyAgent.cache.clear?.();
-  logForDebugging('Cleared proxy agent cache');
+  logForDebugging("Cleared proxy agent cache");
 }

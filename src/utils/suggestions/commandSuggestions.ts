@@ -1,12 +1,12 @@
-import Fuse from 'fuse.js';
+import Fuse from "fuse.js";
 import {
   type Command,
   formatDescriptionWithSource,
   getCommand,
   getCommandName,
-} from '../../commands.js';
-import type { SuggestionItem } from '../../components/PromptInput/PromptInputFooterSuggestions.js';
-import { getSkillUsageScore } from './skillUsageTracking.js';
+} from "../../commands.js";
+import type { SuggestionItem } from "../../components/PromptInput/PromptInputFooterSuggestions.js";
+import { getSkillUsageScore } from "./skillUsageTracking.js";
 
 // Treat these characters as word separators for command search
 const SEPARATORS = /[:_-]/g;
@@ -39,8 +39,8 @@ function getCommandFuse(commands: Command[]): Fuse<CommandSearchItem> {
       const parts = commandName.split(SEPARATORS).filter(Boolean);
 
       return {
-        descriptionKey: (cmd.description ?? '')
-          .split(' ')
+        descriptionKey: (cmd.description ?? "")
+          .split(" ")
           .map((word) => cleanWord(word))
           .filter(Boolean),
         partKey: parts.length > 1 ? parts : undefined,
@@ -57,19 +57,19 @@ function getCommandFuse(commands: Command[]): Fuse<CommandSearchItem> {
     distance: 100, // increased to allow matching in descriptions
     keys: [
       {
-        name: 'commandName',
+        name: "commandName",
         weight: 3, // Highest priority for command names
       },
       {
-        name: 'partKey',
+        name: "partKey",
         weight: 2, // Next highest priority for command parts
       },
       {
-        name: 'aliasKey',
+        name: "aliasKey",
         weight: 2, // Same high priority for aliases
       },
       {
-        name: 'descriptionKey',
+        name: "descriptionKey",
         weight: 0.5, // Lower priority for descriptions
       },
     ],
@@ -85,11 +85,11 @@ function getCommandFuse(commands: Command[]): Fuse<CommandSearchItem> {
  */
 function isCommandMetadata(metadata: unknown): metadata is Command {
   return (
-    typeof metadata === 'object' &&
+    typeof metadata === "object" &&
     metadata !== null &&
-    'name' in metadata &&
-    typeof (metadata as { name: unknown }).name === 'string' &&
-    'type' in metadata
+    "name" in metadata &&
+    typeof (metadata as { name: unknown }).name === "string" &&
+    "type" in metadata
   );
 }
 
@@ -116,7 +116,7 @@ export function findMidInputSlashCommand(
   cursorOffset: number,
 ): MidInputSlashCommand | null {
   // If input starts with "/", this is start-of-input case (handled elsewhere)
-  if (input.startsWith('/')) {
+  if (input.startsWith("/")) {
     return null;
   }
 
@@ -139,7 +139,7 @@ export function findMidInputSlashCommand(
 
   // Extract the command portion (until whitespace or end)
   const commandMatch = textAfterSlash.match(/^[a-zA-Z0-9_:-]*/);
-  const fullCommand = commandMatch ? commandMatch[0] : '';
+  const fullCommand = commandMatch ? commandMatch[0] : "";
 
   // If cursor is past the command (after a space), don't show ghost text
   if (cursorOffset > slashPos + 1 + fullCommand.length) {
@@ -198,7 +198,7 @@ export function getBestCommandMatch(
  * Checks if input is a command (starts with slash)
  */
 export function isCommandInput(input: string): boolean {
-  return input.startsWith('/');
+  return input.startsWith("/");
 }
 
 /**
@@ -208,9 +208,9 @@ export function isCommandInput(input: string): boolean {
 export function hasCommandArgs(input: string): boolean {
   if (!isCommandInput(input)) return false;
 
-  if (!input.includes(' ')) return false;
+  if (!input.includes(" ")) return false;
 
-  if (input.endsWith(' ')) return false;
+  if (input.endsWith(" ")) return false;
 
   return true;
 }
@@ -232,9 +232,9 @@ export function formatCommand(command: string): string {
  */
 function getCommandId(cmd: Command): string {
   const commandName = getCommandName(cmd);
-  if (cmd.type === 'prompt') {
+  if (cmd.type === "prompt") {
     // For plugin commands, include the repository to disambiguate
-    if (cmd.source === 'plugin' && cmd.pluginInfo?.repository) {
+    if (cmd.source === "plugin" && cmd.pluginInfo?.repository) {
       return `${commandName}:${cmd.source}:${cmd.pluginInfo.repository}`;
     }
     return `${commandName}:${cmd.source}`;
@@ -248,7 +248,7 @@ function getCommandId(cmd: Command): string {
  * Returns the matched alias if found, otherwise undefined.
  */
 function findMatchedAlias(query: string, aliases?: string[]): string | undefined {
-  if (!aliases || aliases.length === 0 || query === '') {
+  if (!aliases || aliases.length === 0 || query === "") {
     return undefined;
   }
   // Check if query is a prefix of any alias (case-insensitive)
@@ -262,19 +262,19 @@ function findMatchedAlias(query: string, aliases?: string[]): string | undefined
 function createCommandSuggestionItem(cmd: Command, matchedAlias?: string): SuggestionItem {
   const commandName = getCommandName(cmd);
   // Only show the alias if the user typed it
-  const aliasText = matchedAlias ? ` (${matchedAlias})` : '';
+  const aliasText = matchedAlias ? ` (${matchedAlias})` : "";
 
-  const isWorkflow = cmd.type === 'prompt' && cmd.kind === 'workflow';
+  const isWorkflow = cmd.type === "prompt" && cmd.kind === "workflow";
   const fullDescription =
     (isWorkflow ? cmd.description : formatDescriptionWithSource(cmd)) +
-    (cmd.type === 'prompt' && cmd.argNames?.length
-      ? ` (arguments: ${cmd.argNames.join(', ')})`
-      : '');
+    (cmd.type === "prompt" && cmd.argNames?.length
+      ? ` (arguments: ${cmd.argNames.join(", ")})`
+      : "");
 
   return {
     id: getCommandId(cmd),
     displayText: `/${commandName}${aliasText}`,
-    tag: isWorkflow ? 'workflow' : undefined,
+    tag: isWorkflow ? "workflow" : undefined,
     description: fullDescription,
     metadata: cmd,
   };
@@ -297,13 +297,13 @@ export function generateCommandSuggestions(input: string, commands: Command[]): 
   const query = input.slice(1).toLowerCase().trim();
 
   // When just typing '/' without additional text
-  if (query === '') {
+  if (query === "") {
     const visibleCommands = commands.filter((cmd) => !cmd.isHidden);
 
     // Find recently used skills (only prompt commands have usage tracking)
     const recentlyUsed: Command[] = [];
     const commandsWithScores = visibleCommands
-      .filter((cmd) => cmd.type === 'prompt')
+      .filter((cmd) => cmd.type === "prompt")
       .map((cmd) => ({
         cmd,
         score: getSkillUsageScore(getCommandName(cmd)),
@@ -332,16 +332,16 @@ export function generateCommandSuggestions(input: string, commands: Command[]): 
         return;
       }
 
-      if (cmd.type === 'local' || cmd.type === 'local-jsx') {
+      if (cmd.type === "local" || cmd.type === "local-jsx") {
         builtinCommands.push(cmd);
       } else if (
-        cmd.type === 'prompt' &&
-        (cmd.source === 'userSettings' || cmd.source === 'localSettings')
+        cmd.type === "prompt" &&
+        (cmd.source === "userSettings" || cmd.source === "localSettings")
       ) {
         userCommands.push(cmd);
-      } else if (cmd.type === 'prompt' && cmd.source === 'projectSettings') {
+      } else if (cmd.type === "prompt" && cmd.source === "projectSettings") {
         projectCommands.push(cmd);
-      } else if (cmd.type === 'prompt' && cmd.source === 'policySettings') {
+      } else if (cmd.type === "prompt" && cmd.source === "policySettings") {
         policyCommands.push(cmd);
       } else {
         otherCommands.push(cmd);
@@ -404,7 +404,7 @@ export function generateCommandSuggestions(input: string, commands: Command[]): 
     const name = r.item.commandName.toLowerCase();
     const aliases = r.item.aliasKey?.map((alias) => alias.toLowerCase()) ?? [];
     const usage =
-      r.item.command.type === 'prompt' ? getSkillUsageScore(getCommandName(r.item.command)) : 0;
+      r.item.command.type === "prompt" ? getSkillUsageScore(getCommandName(r.item.command)) : 0;
     return { r, name, aliases, usage };
   });
 
@@ -494,7 +494,7 @@ export function applyCommandSuggestion(
   // Extract command name and object from string or SuggestionItem metadata
   let commandName: string;
   let commandObj: Command | undefined;
-  if (typeof suggestion === 'string') {
+  if (typeof suggestion === "string") {
     commandName = suggestion;
     commandObj = shouldExecute ? getCommand(commandName, commands) : undefined;
   } else {
@@ -512,7 +512,7 @@ export function applyCommandSuggestion(
 
   // Execute command if requested and it takes no arguments
   if (shouldExecute && commandObj) {
-    if (commandObj.type !== 'prompt' || (commandObj.argNames ?? []).length === 0) {
+    if (commandObj.type !== "prompt" || (commandObj.argNames ?? []).length === 0) {
       onSubmit(newInput, /* isSubmittingSlashCommand */ true);
     }
   }
@@ -520,7 +520,7 @@ export function applyCommandSuggestion(
 
 // Helper function at bottom of file per CLAUDE.md
 function cleanWord(word: string) {
-  return word.toLowerCase().replace(/[^a-z0-9]/g, '');
+  return word.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
 /**
@@ -535,8 +535,8 @@ export function findSlashCommandPositions(text: string): Array<{ start: number; 
   const regex = /(^|[\s])(\/[a-zA-Z][a-zA-Z0-9:\-_]*)/g;
   let match: RegExpExecArray | null = null;
   while ((match = regex.exec(text)) !== null) {
-    const precedingChar = match[1] ?? '';
-    const commandName = match[2] ?? '';
+    const precedingChar = match[1] ?? "";
+    const commandName = match[2] ?? "";
     // Start position is after the whitespace (if any)
     const start = match.index + precedingChar.length;
     positions.push({ start, end: start + commandName.length });

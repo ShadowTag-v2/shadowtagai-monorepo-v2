@@ -1,12 +1,12 @@
-import type { Key } from '../ink.js';
-import type { ParsedBinding, ParsedKeystroke } from './types.js';
+import type { Key } from "../ink.js";
+import type { ParsedBinding, ParsedKeystroke } from "./types.js";
 
 /**
  * Modifier keys from Ink's Key type that we care about for matching.
  * Note: `fn` from Key is intentionally excluded as it's rarely used and
  * not commonly configurable in terminal applications.
  */
-type InkModifiers = Pick<Key, 'ctrl' | 'shift' | 'meta' | 'super'>;
+type InkModifiers = Pick<Key, "ctrl" | "shift" | "meta" | "super">;
 
 /**
  * Extract modifiers from an Ink Key object.
@@ -27,21 +27,21 @@ function getInkModifiers(key: Key): InkModifiers {
  * that match our ParsedKeystroke.key format.
  */
 export function getKeyName(input: string, key: Key): string | null {
-  if (key.escape) return 'escape';
-  if (key.return) return 'enter';
-  if (key.tab) return 'tab';
-  if (key.backspace) return 'backspace';
-  if (key.delete) return 'delete';
-  if (key.upArrow) return 'up';
-  if (key.downArrow) return 'down';
-  if (key.leftArrow) return 'left';
-  if (key.rightArrow) return 'right';
-  if (key.pageUp) return 'pageup';
-  if (key.pageDown) return 'pagedown';
-  if (key.wheelUp) return 'wheelup';
-  if (key.wheelDown) return 'wheeldown';
-  if (key.home) return 'home';
-  if (key.end) return 'end';
+  if (key.escape) return "escape";
+  if (key.return) return "enter";
+  if (key.tab) return "tab";
+  if (key.backspace) return "backspace";
+  if (key.delete) return "delete";
+  if (key.upArrow) return "up";
+  if (key.downArrow) return "down";
+  if (key.leftArrow) return "left";
+  if (key.rightArrow) return "right";
+  if (key.pageUp) return "pageup";
+  if (key.pageDown) return "pagedown";
+  if (key.wheelUp) return "wheelup";
+  if (key.wheelDown) return "wheeldown";
+  if (key.home) return "home";
+  if (key.end) return "end";
   if (input.length === 1) return input.toLowerCase();
   return null;
 }

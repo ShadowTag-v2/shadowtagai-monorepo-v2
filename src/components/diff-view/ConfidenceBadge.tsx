@@ -9,15 +9,15 @@
  *   <0.5  → red    (low confidence, review critical) + pulse animation
  */
 
-'use client';
+"use client";
 
-import styles from './diff-view.module.css';
-import type { ConfidenceBadgeProps } from './types';
+import styles from "./diff-view.module.css";
+import type { ConfidenceBadgeProps } from "./types";
 
 function getConfidenceLabel(confidence: number): string {
-  if (confidence >= 0.8) return 'High';
-  if (confidence >= 0.5) return 'Moderate';
-  return 'Low';
+  if (confidence >= 0.8) return "High";
+  if (confidence >= 0.5) return "Moderate";
+  return "Low";
 }
 
 function getConfidenceClass(confidence: number): string {
@@ -26,12 +26,12 @@ function getConfidenceClass(confidence: number): string {
   return styles.confidenceLow;
 }
 
-export function ConfidenceBadge({ confidence, size = 'md' }: ConfidenceBadgeProps) {
+export function ConfidenceBadge({ confidence, size = "md" }: ConfidenceBadgeProps) {
   const pct = Math.round(confidence * 100);
   const label = getConfidenceLabel(confidence);
   const colorClass = getConfidenceClass(confidence);
-  const sizeClass = size === 'sm' ? styles.confidenceSm : '';
-  const pulseClass = confidence < 0.5 ? styles.confidencePulse : '';
+  const sizeClass = size === "sm" ? styles.confidenceSm : "";
+  const pulseClass = confidence < 0.5 ? styles.confidencePulse : "";
 
   return (
     <span

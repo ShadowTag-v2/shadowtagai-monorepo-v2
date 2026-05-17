@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { useContext } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import * as React from "react";
+import { useContext } from "react";
+import { c as _c } from "react/compiler-runtime";
 
 /**
  * Context to indicate that shell output should be shown in full (not truncated).

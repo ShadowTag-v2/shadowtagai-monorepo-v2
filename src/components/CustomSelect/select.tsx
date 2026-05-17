@@ -1,23 +1,23 @@
-import figures from 'figures';
-import React, { type ReactNode, useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useDeclaredCursor } from '../../ink/hooks/use-declared-cursor.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Ansi, Box, Text } from '../../ink.js';
-import { count } from '../../utils/array.js';
-import type { PastedContent } from '../../utils/config.js';
-import type { ImageDimensions } from '../../utils/imageResizer.js';
-import { SelectInputOption } from './select-input-option.js';
-import { SelectOption } from './select-option.js';
-import { useSelectInput } from './use-select-input.js';
-import { useSelectState } from './use-select-state.js';
+import figures from "figures";
+import React, { type ReactNode, useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useDeclaredCursor } from "../../ink/hooks/use-declared-cursor.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Ansi, Box, Text } from "../../ink.js";
+import { count } from "../../utils/array.js";
+import type { PastedContent } from "../../utils/config.js";
+import type { ImageDimensions } from "../../utils/imageResizer.js";
+import { SelectInputOption } from "./select-input-option.js";
+import { SelectOption } from "./select-option.js";
+import { useSelectInput } from "./use-select-input.js";
+import { useSelectState } from "./use-select-state.js";
 
 // Extract text content from ReactNode for width calculation
 function getTextContent(node: ReactNode): string {
-  if (typeof node === 'string') return node;
-  if (typeof node === 'number') return String(node);
-  if (!node) return '';
-  if (Array.isArray(node)) return node.map(getTextContent).join('');
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (!node) return "";
+  if (Array.isArray(node)) return node.map(getTextContent).join("");
   if (
     React.isValidElement<{
       children?: ReactNode;
@@ -25,7 +25,7 @@ function getTextContent(node: ReactNode): string {
   ) {
     return getTextContent(node.props.children);
   }
-  return '';
+  return "";
 }
 type BaseOption<T> = {
   description?: string;
@@ -36,10 +36,10 @@ type BaseOption<T> = {
 };
 export type OptionWithDescription<T = string> =
   | (BaseOption<T> & {
-      type?: 'text';
+      type?: "text";
     })
   | (BaseOption<T> & {
-      type: 'input';
+      type: "input";
       onChange: (value: string) => void;
       placeholder?: string;
       initialValue?: string;
@@ -143,7 +143,7 @@ export type SelectProps<T> = {
    * - `expanded` uses multiple lines and an empty line between options
    * - `compact-vertical` uses compact index formatting with descriptions below labels
    */
-  readonly layout?: 'compact' | 'expanded' | 'compact-vertical';
+  readonly layout?: "compact" | "expanded" | "compact-vertical";
 
   /**
    * When true, descriptions are rendered inline after the label instead of
@@ -226,7 +226,7 @@ export function Select(t0) {
   const isDisabled = t1 === undefined ? false : t1;
   const hideIndexes = t2 === undefined ? false : t2;
   const visibleOptionCount = t3 === undefined ? 5 : t3;
-  const layout = t4 === undefined ? 'compact' : t4;
+  const layout = t4 === undefined ? "compact" : t4;
   const disableSelection = t5 === undefined ? false : t5;
   const inlineDescriptions = t6 === undefined ? false : t6;
   const [imagesSelected, setImagesSelected] = useState(false);
@@ -236,7 +236,7 @@ export function Select(t0) {
     t7 = () => {
       const initialMap = new Map();
       options.forEach((option) => {
-        if (option.type === 'input' && option.initialValue) {
+        if (option.type === "input" && option.initialValue) {
           initialMap.set(option.value, option.initialValue);
         }
       });
@@ -249,7 +249,7 @@ export function Select(t0) {
   }
   const [inputValues, setInputValues] = useState(t7);
   let t8;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = new Map();
     $[2] = t8;
   } else {
@@ -261,9 +261,9 @@ export function Select(t0) {
   if ($[3] !== inputValues || $[4] !== options) {
     t9 = () => {
       for (const option_0 of options) {
-        if (option_0.type === 'input' && option_0.initialValue !== undefined) {
-          const lastInitial = lastInitialValues.current.get(option_0.value) ?? '';
-          const currentValue = inputValues.get(option_0.value) ?? '';
+        if (option_0.type === "input" && option_0.initialValue !== undefined) {
+          const lastInitial = lastInitialValues.current.get(option_0.value) ?? "";
+          const currentValue = inputValues.get(option_0.value) ?? "";
           const newInitial = option_0.initialValue;
           if (newInitial !== lastInitial && currentValue === lastInitial) {
             setInputValues((prev) => {
@@ -317,7 +317,7 @@ export function Select(t0) {
     t11 = $[14];
   }
   const state = useSelectState(t11);
-  const t12 = disableSelection || (hideIndexes ? 'numeric' : false);
+  const t12 = disableSelection || (hideIndexes ? "numeric" : false);
   let t13;
   if ($[15] !== pastedContents) {
     t13 = () => {
@@ -402,13 +402,13 @@ export function Select(t0) {
     $[47] !== state.visibleOptions ||
     $[48] !== state.visibleToIndex
   ) {
-    t17 = Symbol.for('react.early_return_sentinel');
+    t17 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const styles = {
         container: _temp3,
         highlightedText: _temp4,
       };
-      if (layout === 'expanded') {
+      if (layout === "expanded") {
         let t18;
         if ($[53] !== state.options.length) {
           t18 = state.options.length.toString();
@@ -428,10 +428,10 @@ export function Select(t0) {
               const i = state.visibleFromIndex + index + 1;
               const isFocused = !isDisabled && state.focusedValue === option_1.value;
               const isSelected = state.value === option_1.value;
-              if (option_1.type === 'input') {
+              if (option_1.type === "input") {
                 const inputValue = inputValues.has(option_1.value)
                   ? inputValues.get(option_1.value)
-                  : option_1.initialValue || '';
+                  : option_1.initialValue || "";
                 return (
                   <SelectInputOption
                     key={String(option_1.value)}
@@ -480,7 +480,7 @@ export function Select(t0) {
               }
               let label = option_1.label;
               if (
-                typeof option_1.label === 'string' &&
+                typeof option_1.label === "string" &&
                 highlightText &&
                 option_1.label.includes(highlightText)
               ) {
@@ -498,9 +498,9 @@ export function Select(t0) {
               const optionColor = isOptionDisabled
                 ? undefined
                 : isSelected
-                  ? 'success'
+                  ? "success"
                   : isFocused
-                    ? 'suggestion'
+                    ? "suggestion"
                     : undefined;
               return (
                 <Box key={String(option_1.value)} flexDirection="column" flexShrink={0}>
@@ -532,7 +532,7 @@ export function Select(t0) {
         );
         break bb0;
       }
-      if (layout === 'compact-vertical') {
+      if (layout === "compact-vertical") {
         let t18;
         if ($[55] !== hideIndexes || $[56] !== state.options) {
           t18 = hideIndexes ? 0 : state.options.length.toString().length;
@@ -553,10 +553,10 @@ export function Select(t0) {
               const i_0 = state.visibleFromIndex + index_1 + 1;
               const isFocused_0 = !isDisabled && state.focusedValue === option_2.value;
               const isSelected_0 = state.value === option_2.value;
-              if (option_2.type === 'input') {
+              if (option_2.type === "input") {
                 const inputValue_0 = inputValues.has(option_2.value)
                   ? inputValues.get(option_2.value)
-                  : option_2.initialValue || '';
+                  : option_2.initialValue || "";
                 return (
                   <SelectInputOption
                     key={String(option_2.value)}
@@ -605,7 +605,7 @@ export function Select(t0) {
               }
               let label_0 = option_2.label;
               if (
-                typeof option_2.label === 'string' &&
+                typeof option_2.label === "string" &&
                 highlightText &&
                 option_2.label.includes(highlightText)
               ) {
@@ -637,9 +637,9 @@ export function Select(t0) {
                         isOptionDisabled_0
                           ? undefined
                           : isSelected_0
-                            ? 'success'
+                            ? "success"
                             : isFocused_0
-                              ? 'suggestion'
+                              ? "suggestion"
                               : undefined
                       }
                     >
@@ -654,9 +654,9 @@ export function Select(t0) {
                           isOptionDisabled_0
                             ? undefined
                             : isSelected_0
-                              ? 'success'
+                              ? "success"
                               : isFocused_0
-                                ? 'suggestion'
+                                ? "suggestion"
                                 : undefined
                         }
                       >
@@ -695,7 +695,7 @@ export function Select(t0) {
         const isOptionDisabled_1 = option_3.disabled === true;
         let label_1 = option_3.label;
         if (
-          typeof option_3.label === 'string' &&
+          typeof option_3.label === "string" &&
           highlightText &&
           option_3.label.includes(highlightText)
         ) {
@@ -724,7 +724,7 @@ export function Select(t0) {
         let t19;
         if ($[61] !== hideIndexes || $[62] !== maxIndexWidth_1) {
           t19 = (data) => {
-            if (data.option.type === 'input') {
+            if (data.option.type === "input") {
               return 0;
             }
             const labelText_2 = getTextContent(data.option.label);
@@ -742,7 +742,7 @@ export function Select(t0) {
         let t20;
         if ($[64] !== hideIndexes || $[65] !== maxIndexWidth_1 || $[66] !== maxLabelWidth) {
           t20 = (data_0) => {
-            if (data_0.option.type === 'input') {
+            if (data_0.option.type === "input") {
               return null;
             }
             const labelText_3 = getTextContent(data_0.option.label);
@@ -770,9 +770,9 @@ export function Select(t0) {
                       data_0.isOptionDisabled
                         ? undefined
                         : data_0.isSelected
-                          ? 'success'
+                          ? "success"
                           : data_0.isFocused
-                            ? 'suggestion'
+                            ? "suggestion"
                             : undefined
                     }
                   >
@@ -782,7 +782,7 @@ export function Select(t0) {
                     {data_0.label}
                   </Text>
                   {data_0.isSelected && <Text color="success"> {figures.tick}</Text>}
-                  {padding > 0 && <Text>{' '.repeat(padding)}</Text>}
+                  {padding > 0 && <Text>{" ".repeat(padding)}</Text>}
                 </Box>
                 <Box flexGrow={1} marginLeft={2}>
                   <Text
@@ -792,13 +792,13 @@ export function Select(t0) {
                       data_0.isOptionDisabled
                         ? undefined
                         : data_0.isSelected
-                          ? 'success'
+                          ? "success"
                           : data_0.isFocused
-                            ? 'suggestion'
+                            ? "suggestion"
                             : undefined
                     }
                   >
-                    <Ansi>{data_0.option.description || ' '}</Ansi>
+                    <Ansi>{data_0.option.description || " "}</Ansi>
                   </Text>
                 </Box>
               </TwoColumnRow>
@@ -817,10 +817,10 @@ export function Select(t0) {
       T0 = Box;
       t15 = styles.container();
       t16 = state.visibleOptions.map((option_4, index_4) => {
-        if (option_4.type === 'input') {
+        if (option_4.type === "input") {
           const inputValue_1 = inputValues.has(option_4.value)
             ? inputValues.get(option_4.value)
-            : option_4.initialValue || '';
+            : option_4.initialValue || "";
           const isFirstVisibleOption_2 = option_4.index === state.visibleFromIndex;
           const isLastVisibleOption_2 = option_4.index === state.visibleToIndex - 1;
           const areMoreOptionsBelow_2 = state.visibleToIndex < options.length;
@@ -872,7 +872,7 @@ export function Select(t0) {
         }
         let label_2 = option_4.label;
         if (
-          typeof option_4.label === 'string' &&
+          typeof option_4.label === "string" &&
           highlightText &&
           option_4.label.includes(highlightText)
         ) {
@@ -910,16 +910,16 @@ export function Select(t0) {
                   isOptionDisabled_2
                     ? undefined
                     : isSelected_3
-                      ? 'success'
+                      ? "success"
                       : isFocused_3
-                        ? 'suggestion'
+                        ? "suggestion"
                         : undefined
                 }
               >
                 {label_2}
                 {inlineDescriptions && option_4.description && (
                   <Text dimColor={isOptionDisabled_2 || option_4.dimDescription !== false}>
-                    {' '}
+                    {" "}
                     {option_4.description}
                   </Text>
                 )}
@@ -934,9 +934,9 @@ export function Select(t0) {
                     isOptionDisabled_2
                       ? undefined
                       : isSelected_3
-                        ? 'success'
+                        ? "success"
                         : isFocused_3
-                          ? 'suggestion'
+                          ? "suggestion"
                           : undefined
                   }
                 >
@@ -979,7 +979,7 @@ export function Select(t0) {
     t16 = $[51];
     t17 = $[52];
   }
-  if (t17 !== Symbol.for('react.early_return_sentinel')) {
+  if (t17 !== Symbol.for("react.early_return_sentinel")) {
     return t17;
   }
   let t18;
@@ -1000,19 +1000,19 @@ export function Select(t0) {
 // ListItem, so it declares the native cursor directly. Parks the cursor
 // on the pointer indicator so screen readers / magnifiers track focus.
 function _temp9(c_3) {
-  return c_3.type === 'image';
+  return c_3.type === "image";
 }
 function _temp8(opt_0) {
   return opt_0.description;
 }
 function _temp7(opt) {
-  return opt.type === 'input';
+  return opt.type === "input";
 }
 function _temp6(c_2) {
-  return c_2.type === 'image';
+  return c_2.type === "image";
 }
 function _temp5(c_1) {
-  return c_1.type === 'image';
+  return c_1.type === "image";
 }
 function _temp4() {
   return {
@@ -1021,14 +1021,14 @@ function _temp4() {
 }
 function _temp3() {
   return {
-    flexDirection: 'column' as const,
+    flexDirection: "column" as const,
   };
 }
 function _temp2(c) {
-  return c.type === 'image';
+  return c.type === "image";
 }
 function _temp(c_0) {
-  return c_0.type === 'image';
+  return c_0.type === "image";
 }
 function TwoColumnRow(t0) {
   const $ = _c(5);

@@ -36,8 +36,8 @@
  * - Message IDs are preserved through the entire flow for proper correlation
  */
 
-import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
-import type { JSONRPCMessage } from '@modelcontextprotocol/sdk/types.js';
+import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
+import type { JSONRPCMessage } from "@modelcontextprotocol/sdk/types.js";
 
 /**
  * Callback function to send an MCP message and get the response
@@ -73,7 +73,7 @@ export class SdkControlClientTransport implements Transport {
 
   async send(message: JSONRPCMessage): Promise<void> {
     if (this.isClosed) {
-      throw new Error('Transport is closed');
+      throw new Error("Transport is closed");
     }
 
     // Send the message and wait for the response
@@ -119,7 +119,7 @@ export class SdkControlServerTransport implements Transport {
 
   async send(message: JSONRPCMessage): Promise<void> {
     if (this.isClosed) {
-      throw new Error('Transport is closed');
+      throw new Error("Transport is closed");
     }
 
     // Simply pass the response back through the callback

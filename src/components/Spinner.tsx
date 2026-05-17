@@ -1,50 +1,50 @@
-import { feature } from 'bun:bundle';
-import figures from 'figures';
-import sample from 'lodash-es/sample.js';
-import type * as React from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { Theme } from 'src/utils/theme.js';
+import { feature } from "bun:bundle";
+import figures from "figures";
+import sample from "lodash-es/sample.js";
+import type * as React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { Theme } from "src/utils/theme.js";
 import {
   getCurrentTurnTokenBudget,
   getKairosActive,
   getTurnOutputTokens,
   getUserMsgOptIn,
-} from '../bootstrap/state.js';
+} from "../bootstrap/state.js";
 import {
   computeGlimmerIndex,
   computeShimmerSegments,
   SHIMMER_INTERVAL_MS,
-} from '../bridge/bridgeStatusUtil.js';
-import { TEARDROP_ASTERISK } from '../constants/figures.js';
-import { getSpinnerVerbs } from '../constants/spinnerVerbs.js';
-import { useSettings } from '../hooks/useSettings.js';
-import { useTasksV2 } from '../hooks/useTasksV2.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { stringWidth } from '../ink/stringWidth.js';
+} from "../bridge/bridgeStatusUtil.js";
+import { TEARDROP_ASTERISK } from "../constants/figures.js";
+import { getSpinnerVerbs } from "../constants/spinnerVerbs.js";
+import { useSettings } from "../hooks/useSettings.js";
+import { useTasksV2 } from "../hooks/useTasksV2.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { stringWidth } from "../ink/stringWidth.js";
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { Box, Text, useAnimationFrame } from '../ink.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import { useAppState } from '../state/AppState.js';
-import { getViewedTeammateTask } from '../state/selectors.js';
-import { getAllInProcessTeammateTasks } from '../tasks/InProcessTeammateTask/InProcessTeammateTask.js';
-import { isInProcessTeammateTask } from '../tasks/InProcessTeammateTask/types.js';
-import { isBackgroundTask } from '../tasks/types.js';
-import { activityManager } from '../utils/activityManager.js';
-import { count } from '../utils/array.js';
-import { getGlobalConfig } from '../utils/config.js';
-import { getEffortSuffix } from '../utils/effort.js';
-import { isEnvTruthy } from '../utils/envUtils.js';
-import { formatDuration, formatNumber } from '../utils/format.js';
-import { getMainLoopModel } from '../utils/model/model.js';
-import type { Task } from '../utils/tasks.js';
-import { MessageResponse } from './MessageResponse.js';
-import { getDefaultCharacters, type SpinnerMode } from './Spinner/index.js';
-import { SpinnerAnimationRow } from './Spinner/SpinnerAnimationRow.js';
-import { TeammateSpinnerTree } from './Spinner/TeammateSpinnerTree.js';
-import { TaskListV2 } from './TaskListV2.js';
+import { Box, Text, useAnimationFrame } from "../ink.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import { useAppState } from "../state/AppState.js";
+import { getViewedTeammateTask } from "../state/selectors.js";
+import { getAllInProcessTeammateTasks } from "../tasks/InProcessTeammateTask/InProcessTeammateTask.js";
+import { isInProcessTeammateTask } from "../tasks/InProcessTeammateTask/types.js";
+import { isBackgroundTask } from "../tasks/types.js";
+import { activityManager } from "../utils/activityManager.js";
+import { count } from "../utils/array.js";
+import { getGlobalConfig } from "../utils/config.js";
+import { getEffortSuffix } from "../utils/effort.js";
+import { isEnvTruthy } from "../utils/envUtils.js";
+import { formatDuration, formatNumber } from "../utils/format.js";
+import { getMainLoopModel } from "../utils/model/model.js";
+import type { Task } from "../utils/tasks.js";
+import { MessageResponse } from "./MessageResponse.js";
+import { getDefaultCharacters, type SpinnerMode } from "./Spinner/index.js";
+import { SpinnerAnimationRow } from "./Spinner/SpinnerAnimationRow.js";
+import { TeammateSpinnerTree } from "./Spinner/TeammateSpinnerTree.js";
+import { TaskListV2 } from "./TaskListV2.js";
 
-export type { SpinnerMode } from './Spinner/index.js';
+export type { SpinnerMode } from "./Spinner/index.js";
 
 const DEFAULT_CHARACTERS = getDefaultCharacters();
 const SPINNER_FRAMES = [...DEFAULT_CHARACTERS, ...[...DEFAULT_CHARACTERS].reverse()];
@@ -77,7 +77,7 @@ export function SpinnerWithVerb(props: Props): React.ReactNode {
   const viewingAgentTaskId = useAppState((s_0) => s_0.viewingAgentTaskId);
   // Hoisted to mount-time — this component re-renders at animation framerate.
   const briefEnvEnabled =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature("KAIROS") || feature("KAIROS_BRIEF")
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useMemo(() => isEnvTruthy(process.env.CLAUDE_CODE_BRIEF), [])
       : false;
@@ -86,10 +86,10 @@ export function SpinnerWithVerb(props: Props): React.ReactNode {
   // BriefTool.ts would leak tool-name strings into external builds. Single
   // spinner instance → hooks stay unconditional (two subs, negligible).
   if (
-    (feature('KAIROS') || feature('KAIROS_BRIEF')) &&
+    (feature("KAIROS") || feature("KAIROS_BRIEF")) &&
     (getKairosActive() ||
       (getUserMsgOptIn() &&
-        (briefEnvEnabled || getFeatureValue_CACHED_MAY_BE_STALE('tengu_kairos_brief', false)))) &&
+        (briefEnvEnabled || getFeatureValue_CACHED_MAY_BE_STALE("tengu_kairos_brief", false)))) &&
     isBriefOnly &&
     !viewingAgentTaskId
   ) {
@@ -124,8 +124,8 @@ function SpinnerWithVerbInner({
   const tasks = useAppState((s) => s.tasks);
   const viewingAgentTaskId = useAppState((s_0) => s_0.viewingAgentTaskId);
   const expandedView = useAppState((s_1) => s_1.expandedView);
-  const showExpandedTodos = expandedView === 'tasks';
-  const showSpinnerTree = expandedView === 'teammates';
+  const showExpandedTodos = expandedView === "tasks";
+  const showSpinnerTree = expandedView === "teammates";
   const selectedIPAgentIndex = useAppState((s_2) => s_2.selectedIPAgentIndex);
   const viewSelectionMode = useAppState((s_3) => s_3.viewSelectionMode);
   // Get foregrounded teammate (if viewing a teammate's transcript)
@@ -140,16 +140,16 @@ function SpinnerWithVerbInner({
 
   // Track thinking status: 'thinking' | number (duration in ms) | null
   // Shows each state for minimum 2s to avoid UI jank
-  const [thinkingStatus, setThinkingStatus] = useState<'thinking' | number | null>(null);
+  const [thinkingStatus, setThinkingStatus] = useState<"thinking" | number | null>(null);
   const thinkingStartRef = useRef<number | null>(null);
   useEffect(() => {
     let showDurationTimer: ReturnType<typeof setTimeout> | null = null;
     let clearStatusTimer: ReturnType<typeof setTimeout> | null = null;
-    if (mode === 'thinking') {
+    if (mode === "thinking") {
       // Started thinking
       if (thinkingStartRef.current === null) {
         thinkingStartRef.current = Date.now();
-        setThinkingStatus('thinking');
+        setThinkingStatus("thinking");
       }
     } else if (thinkingStartRef.current !== null) {
       // Stopped thinking - calculate duration and ensure 2s minimum display
@@ -178,7 +178,7 @@ function SpinnerWithVerbInner({
 
   // Find the current in-progress task and next pending task
   const currentTodo = tasksV2?.find(
-    (task) => task.status !== 'pending' && task.status !== 'completed',
+    (task) => task.status !== "pending" && task.status !== "completed",
   );
   const nextTask = findNextPendingTask(tasksV2);
 
@@ -207,7 +207,7 @@ function SpinnerWithVerbInner({
 
   // Check if any running in-process teammates exist (needed for both modes)
   const runningTeammates = getAllInProcessTeammateTasks(tasks).filter(
-    (t) => t.status === 'running',
+    (t) => t.status === "running",
   );
   const hasRunningTeammates = runningTeammates.length > 0;
   const allIdle = hasRunningTeammates && runningTeammates.every((t_0) => t_0.isIdle);
@@ -217,7 +217,7 @@ function SpinnerWithVerbInner({
   let teammateTokens = 0;
   if (!showSpinnerTree) {
     for (const task_0 of Object.values(tasks)) {
-      if (isInProcessTeammateTask(task_0) && task_0.status === 'running') {
+      if (isInProcessTeammateTask(task_0) && task_0.status === "running") {
         if (task_0.progress?.tokenCount) {
           teammateTokens += task_0.progress.tokenCount;
         }
@@ -237,8 +237,8 @@ function SpinnerWithVerbInner({
   // the ref. The tree is only shown when teammates are running; teammate
   // progress updates to s.tasks trigger re-renders that keep this fresh.
   const leaderTokenCount = Math.round(responseLengthRef.current / 4);
-  const defaultColor: keyof Theme = 'claude';
-  const defaultShimmerColor = 'claudeShimmer';
+  const defaultColor: keyof Theme = "claude";
+  const defaultShimmerColor = "claudeShimmer";
   const messageColor = overrideColor ?? defaultColor;
   const shimmerColor = overrideShimmerColor ?? defaultShimmerColor;
 
@@ -248,7 +248,7 @@ function SpinnerWithVerbInner({
   // doesn't trigger re-renders; we pick up updates on the parent's ~25x/turn
   // re-render cadence, same as the old ApiMetricsLine did.
   let _ttftText: string | null = null;
-  if ('external' === 'ant' && apiMetricsRef?.current && apiMetricsRef.current.length > 0) {
+  if ("external" === "ant" && apiMetricsRef?.current && apiMetricsRef.current.length > 0) {
     _ttftText = computeTtftText(apiMetricsRef.current);
   }
 
@@ -261,13 +261,13 @@ function SpinnerWithVerbInner({
         <Box flexDirection="row" flexWrap="wrap" marginTop={1} width="100%">
           <Text dimColor>
             {TEARDROP_ASTERISK} Idle
-            {!allIdle && ' · teammates running'}
+            {!allIdle && " · teammates running"}
           </Text>
         </Box>
         {showSpinnerTree && (
           <TeammateSpinnerTree
             selectedIndex={selectedIPAgentIndex}
-            isInSelectionMode={viewSelectionMode === 'selecting-agent'}
+            isInSelectionMode={viewSelectionMode === "selecting-agent"}
             allIdle={allIdle}
             leaderTokenCount={leaderTokenCount}
             leaderIdleText="Idle"
@@ -290,10 +290,10 @@ function SpinnerWithVerbInner({
         {showSpinnerTree && hasRunningTeammates && (
           <TeammateSpinnerTree
             selectedIndex={selectedIPAgentIndex}
-            isInSelectionMode={viewSelectionMode === 'selecting-agent'}
+            isInSelectionMode={viewSelectionMode === "selecting-agent"}
             allIdle={allIdle}
             leaderVerb={leaderIsIdle ? undefined : leaderVerb}
-            leaderIdleText={leaderIsIdle ? 'Idle' : undefined}
+            leaderIdleText={leaderIsIdle ? "Idle" : undefined}
             leaderTokenCount={leaderTokenCount}
           />
         )}
@@ -311,14 +311,14 @@ function SpinnerWithVerbInner({
   const effectiveTip = contextTipsActive
     ? undefined
     : showClearTip && !nextTask
-      ? 'Use /clear to start fresh when switching topics and free up context'
+      ? "Use /clear to start fresh when switching topics and free up context"
       : showBtwTip && !nextTask
         ? "Use /btw to ask a quick side question without interrupting Claude's current work"
         : spinnerTip;
 
   // Budget text (ant-only) — shown above the tip line
   let budgetText: string | null = null;
-  if (feature('TOKEN_BUDGET')) {
+  if (feature("TOKEN_BUDGET")) {
     const budget = getCurrentTurnTokenBudget();
     if (budget !== null && budget > 0) {
       const tokens = getTurnOutputTokens();
@@ -333,7 +333,7 @@ function SpinnerWithVerbInner({
             ? ` \u00B7 ~${formatDuration(remaining / rate, {
                 mostSignificantOnly: true,
               })}`
-            : '';
+            : "";
         budgetText = `Target: ${formatNumber(tokens)} / ${formatNumber(budget)} (${pct}%)${eta}`;
       }
     }
@@ -365,10 +365,10 @@ function SpinnerWithVerbInner({
       {showSpinnerTree && hasRunningTeammates ? (
         <TeammateSpinnerTree
           selectedIndex={selectedIPAgentIndex}
-          isInSelectionMode={viewSelectionMode === 'selecting-agent'}
+          isInSelectionMode={viewSelectionMode === "selecting-agent"}
           allIdle={allIdle}
           leaderVerb={leaderIsIdle ? undefined : leaderVerb}
-          leaderIdleText={leaderIsIdle ? 'Idle' : undefined}
+          leaderIdleText={leaderIsIdle ? "Idle" : undefined}
           leaderTokenCount={leaderTokenCount}
         />
       ) : showExpandedTodos && tasksV2 && tasksV2.length > 0 ? (
@@ -442,12 +442,12 @@ function BriefSpinner(t0) {
   useEffect(t1, t2);
   const [, time] = useAnimationFrame(reducedMotion ? null : 120);
   const runningCount = useAppState(_temp6);
-  const showConnWarning = connStatus === 'reconnecting' || connStatus === 'disconnected';
-  const connText = connStatus === 'reconnecting' ? 'Reconnecting' : 'Disconnected';
+  const showConnWarning = connStatus === "reconnecting" || connStatus === "disconnected";
+  const connText = connStatus === "reconnecting" ? "Reconnecting" : "Disconnected";
   const dotFrame = Math.floor(time / 300) % 3;
   let t3;
   if ($[3] !== dotFrame || $[4] !== reducedMotion) {
-    t3 = reducedMotion ? '\u2026  ' : '.'.repeat(dotFrame + 1).padEnd(3);
+    t3 = reducedMotion ? "\u2026  " : ".".repeat(dotFrame + 1).padEnd(3);
     $[3] = dotFrame;
     $[4] = reducedMotion;
     $[5] = t3;
@@ -488,7 +488,7 @@ function BriefSpinner(t0) {
   }
   const { before, shimmer, after } = t5;
   const { columns } = useTerminalSize();
-  const rightText = runningCount > 0 ? `${runningCount} in background` : '';
+  const rightText = runningCount > 0 ? `${runningCount} in background` : "";
   let t6;
   if ($[14] !== connText || $[15] !== showConnWarning || $[16] !== verbWidth) {
     t6 = showConnWarning ? stringWidth(connText) : verbWidth;
@@ -534,7 +534,7 @@ function BriefSpinner(t0) {
   if ($[25] !== pad || $[26] !== rightText) {
     t8 = rightText ? (
       <>
-        <Text>{' '.repeat(pad)}</Text>
+        <Text>{" ".repeat(pad)}</Text>
         <Text color="subtle">{rightText}</Text>
       </>
     ) : null;
@@ -572,20 +572,20 @@ function _temp5(s) {
   return s.remoteConnectionStatus;
 }
 function _temp4() {
-  return sample(getSpinnerVerbs()) ?? 'Working';
+  return sample(getSpinnerVerbs()) ?? "Working";
 }
 export function BriefIdleStatus() {
   const $ = _c(9);
   const connStatus = useAppState(_temp7);
   const runningCount = useAppState(_temp8);
   const { columns } = useTerminalSize();
-  const showConnWarning = connStatus === 'reconnecting' || connStatus === 'disconnected';
-  const connText = connStatus === 'reconnecting' ? 'Reconnecting\u2026' : 'Disconnected';
-  const leftText = showConnWarning ? connText : '';
-  const rightText = runningCount > 0 ? `${runningCount} in background` : '';
+  const showConnWarning = connStatus === "reconnecting" || connStatus === "disconnected";
+  const connText = connStatus === "reconnecting" ? "Reconnecting\u2026" : "Disconnected";
+  const leftText = showConnWarning ? connText : "";
+  const rightText = runningCount > 0 ? `${runningCount} in background` : "";
   if (!leftText && !rightText) {
     let t0;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t0 = <Box height={2} />;
       $[0] = t0;
     } else {
@@ -606,7 +606,7 @@ export function BriefIdleStatus() {
   if ($[3] !== pad || $[4] !== rightText) {
     t1 = rightText ? (
       <>
-        <Text>{' '.repeat(pad)}</Text>
+        <Text>{" ".repeat(pad)}</Text>
         <Text color="subtle">{rightText}</Text>
       </>
     ) : null;
@@ -647,7 +647,7 @@ export function Spinner() {
   const [ref, time] = useAnimationFrame(reducedMotion ? null : 120);
   if (reducedMotion) {
     let t0;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t0 = <Text color="text">●</Text>;
       $[0] = t0;
     } else {
@@ -696,11 +696,11 @@ function findNextPendingTask(tasks: Task[] | undefined): Task | undefined {
   if (!tasks) {
     return undefined;
   }
-  const pendingTasks = tasks.filter((t) => t.status === 'pending');
+  const pendingTasks = tasks.filter((t) => t.status === "pending");
   if (pendingTasks.length === 0) {
     return undefined;
   }
-  const unresolvedIds = new Set(tasks.filter((t) => t.status !== 'completed').map((t) => t.id));
+  const unresolvedIds = new Set(tasks.filter((t) => t.status !== "completed").map((t) => t.id));
   return (
     pendingTasks.find((t) => !t.blockedBy.some((id) => unresolvedIds.has(id))) ?? pendingTasks[0]
   );

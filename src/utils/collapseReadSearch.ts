@@ -1,41 +1,41 @@
-import { feature } from 'bun:bundle';
-import type { UUID } from 'node:crypto';
-import { findToolByName, type Tools } from '../Tool.js';
-import { extractBashCommentLabel } from '../tools/BashTool/commentLabel.js';
-import { BASH_TOOL_NAME } from '../tools/BashTool/toolName.js';
-import { FILE_EDIT_TOOL_NAME } from '../tools/FileEditTool/constants.js';
-import { FILE_WRITE_TOOL_NAME } from '../tools/FileWriteTool/prompt.js';
-import { REPL_TOOL_NAME } from '../tools/REPLTool/constants.js';
-import { getReplPrimitiveTools } from '../tools/REPLTool/primitiveTools.js';
+import { feature } from "bun:bundle";
+import type { UUID } from "node:crypto";
+import { findToolByName, type Tools } from "../Tool.js";
+import { extractBashCommentLabel } from "../tools/BashTool/commentLabel.js";
+import { BASH_TOOL_NAME } from "../tools/BashTool/toolName.js";
+import { FILE_EDIT_TOOL_NAME } from "../tools/FileEditTool/constants.js";
+import { FILE_WRITE_TOOL_NAME } from "../tools/FileWriteTool/prompt.js";
+import { REPL_TOOL_NAME } from "../tools/REPLTool/constants.js";
+import { getReplPrimitiveTools } from "../tools/REPLTool/primitiveTools.js";
 import {
   type BranchAction,
   type CommitKind,
   detectGitOperation,
   type PrAction,
-} from '../tools/shared/gitOperationTracking.js';
-import { TOOL_SEARCH_TOOL_NAME } from '../tools/ToolSearchTool/prompt.js';
+} from "../tools/shared/gitOperationTracking.js";
+import { TOOL_SEARCH_TOOL_NAME } from "../tools/ToolSearchTool/prompt.js";
 import type {
   CollapsedReadSearchGroup,
   CollapsibleMessage,
   RenderableMessage,
   StopHookInfo,
   SystemStopHookSummaryMessage,
-} from '../types/message.js';
-import { getDisplayPath } from './file.js';
-import { isFullscreenEnvEnabled } from './fullscreen.js';
+} from "../types/message.js";
+import { getDisplayPath } from "./file.js";
+import { isFullscreenEnvEnabled } from "./fullscreen.js";
 import {
   isAutoManagedMemoryFile,
   isAutoManagedMemoryPattern,
   isMemoryDirectory,
   isShellCommandTargetingMemory,
-} from './memoryFileDetection.js';
+} from "./memoryFileDetection.js";
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const teamMemOps = feature('TEAMMEM')
-  ? (require('./teamMemoryOps.js') as typeof import('./teamMemoryOps.js'))
+const teamMemOps = feature("TEAMMEM")
+  ? (require("./teamMemoryOps.js") as typeof import("./teamMemoryOps.js"))
   : null;
-const SNIP_TOOL_NAME = feature('HISTORY_SNIP')
-  ? (require('../tools/SnipTool/prompt.js') as typeof import('../tools/SnipTool/prompt.js'))
+const SNIP_TOOL_NAME = feature("HISTORY_SNIP")
+  ? (require("../tools/SnipTool/prompt.js") as typeof import("../tools/SnipTool/prompt.js"))
       .SNIP_TOOL_NAME
   : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
@@ -123,12 +123,12 @@ const MAX_HINT_CHARS = 300;
  */
 function commandAsHint(command: string): string {
   const cleaned =
-    '$ ' +
+    "$ " +
     command
-      .split('\n')
-      .map((l) => l.replace(/\s+/g, ' ').trim())
-      .filter((l) => l !== '')
-      .join('\n');
+      .split("\n")
+      .map((l) => l.replace(/\s+/g, " ").trim())
+      .filter((l) => l !== "")
+      .join("\n");
   return cleaned.length > MAX_HINT_CHARS ? `${cleaned.slice(0, MAX_HINT_CHARS - 1)}…` : cleaned;
 }
 
@@ -175,7 +175,7 @@ export function getToolSearchOrReadInfo(
   // (lazy tool schema loading). Neither should break a collapse group or
   // contribute to its count, but both stay visible in verbose mode.
   if (
-    (feature('HISTORY_SNIP') && toolName === SNIP_TOOL_NAME) ||
+    (feature("HISTORY_SNIP") && toolName === SNIP_TOOL_NAME) ||
     (isFullscreenEnvEnabled() && toolName === TOOL_SEARCH_TOOL_NAME)
   ) {
     return {
@@ -244,7 +244,7 @@ export function getSearchOrReadFromContent(
   mcpServerName?: string;
   isBash?: boolean;
 } | null {
-  if (content?.type === 'tool_use' && content.name) {
+  if (content?.type === "tool_use" && content.name) {
     const info = getToolSearchOrReadInfo(content.name, content.input, tools);
     if (info.isCollapsible || info.isREPL) {
       return {
@@ -288,23 +288,23 @@ function getCollapsibleToolInfo(
   mcpServerName?: string;
   isBash?: boolean;
 } | null {
-  if (msg.type === 'assistant') {
+  if (msg.type === "assistant") {
     const content = msg.message.content[0];
     const info = getSearchOrReadFromContent(content, tools);
-    if (info && content?.type === 'tool_use') {
+    if (info && content?.type === "tool_use") {
       return { name: content.name, input: content.input, ...info };
     }
   }
-  if (msg.type === 'grouped_tool_use') {
+  if (msg.type === "grouped_tool_use") {
     // For grouped tool uses, check the first message's input
     const firstContent = msg.messages[0]?.message.content[0];
     const info = getSearchOrReadFromContent(
       firstContent
-        ? { type: 'tool_use', name: msg.toolName, input: firstContent.input }
+        ? { type: "tool_use", name: msg.toolName, input: firstContent.input }
         : undefined,
       tools,
     );
-    if (info && firstContent?.type === 'tool_use') {
+    if (info && firstContent?.type === "tool_use") {
       return { name: msg.toolName, input: firstContent.input, ...info };
     }
   }
@@ -315,9 +315,9 @@ function getCollapsibleToolInfo(
  * Check if a message is assistant text that should break a group.
  */
 function isTextBreaker(msg: RenderableMessage): boolean {
-  if (msg.type === 'assistant') {
+  if (msg.type === "assistant") {
     const content = msg.message.content[0];
-    if (content?.type === 'text' && content.text.trim().length > 0) {
+    if (content?.type === "text" && content.text.trim().length > 0) {
       return true;
     }
   }
@@ -329,16 +329,16 @@ function isTextBreaker(msg: RenderableMessage): boolean {
  * This includes tool uses like Edit, Write, etc.
  */
 function isNonCollapsibleToolUse(msg: RenderableMessage, tools: Tools): boolean {
-  if (msg.type === 'assistant') {
+  if (msg.type === "assistant") {
     const content = msg.message.content[0];
-    if (content?.type === 'tool_use' && !isToolSearchOrRead(content.name, content.input, tools)) {
+    if (content?.type === "tool_use" && !isToolSearchOrRead(content.name, content.input, tools)) {
       return true;
     }
   }
-  if (msg.type === 'grouped_tool_use') {
+  if (msg.type === "grouped_tool_use") {
     const firstContent = msg.messages[0]?.message.content[0];
     if (
-      firstContent?.type === 'tool_use' &&
+      firstContent?.type === "tool_use" &&
       !isToolSearchOrRead(msg.toolName, firstContent.input, tools)
     ) {
       return true;
@@ -349,7 +349,7 @@ function isNonCollapsibleToolUse(msg: RenderableMessage, tools: Tools): boolean 
 
 function isPreToolHookSummary(msg: RenderableMessage): msg is SystemStopHookSummaryMessage {
   return (
-    msg.type === 'system' && msg.subtype === 'stop_hook_summary' && msg.hookLabel === 'PreToolUse'
+    msg.type === "system" && msg.subtype === "stop_hook_summary" && msg.hookLabel === "PreToolUse"
   );
 }
 
@@ -358,19 +358,19 @@ function isPreToolHookSummary(msg: RenderableMessage): msg is SystemStopHookSumm
  * This includes thinking blocks, redacted thinking, attachments, etc.
  */
 function shouldSkipMessage(msg: RenderableMessage): boolean {
-  if (msg.type === 'assistant') {
+  if (msg.type === "assistant") {
     const content = msg.message.content[0];
     // Skip thinking blocks and other non-text, non-tool content
-    if (content?.type === 'thinking' || content?.type === 'redacted_thinking') {
+    if (content?.type === "thinking" || content?.type === "redacted_thinking") {
       return true;
     }
   }
   // Skip attachment messages
-  if (msg.type === 'attachment') {
+  if (msg.type === "attachment") {
     return true;
   }
   // Skip system messages
-  if (msg.type === 'system') {
+  if (msg.type === "system") {
     return true;
   }
   return false;
@@ -380,14 +380,14 @@ function shouldSkipMessage(msg: RenderableMessage): boolean {
  * Type predicate: Check if a message is a collapsible tool use.
  */
 function isCollapsibleToolUse(msg: RenderableMessage, tools: Tools): msg is CollapsibleMessage {
-  if (msg.type === 'assistant') {
+  if (msg.type === "assistant") {
     const content = msg.message.content[0];
-    return content?.type === 'tool_use' && isToolSearchOrRead(content.name, content.input, tools);
+    return content?.type === "tool_use" && isToolSearchOrRead(content.name, content.input, tools);
   }
-  if (msg.type === 'grouped_tool_use') {
+  if (msg.type === "grouped_tool_use") {
     const firstContent = msg.messages[0]?.message.content[0];
     return (
-      firstContent?.type === 'tool_use' &&
+      firstContent?.type === "tool_use" &&
       isToolSearchOrRead(msg.toolName, firstContent.input, tools)
     );
   }
@@ -402,9 +402,9 @@ function isCollapsibleToolResult(
   msg: RenderableMessage,
   collapsibleToolUseIds: Set<string>,
 ): msg is CollapsibleMessage {
-  if (msg.type === 'user') {
+  if (msg.type === "user") {
     const toolResults = msg.message.content.filter(
-      (c): c is { type: 'tool_result'; tool_use_id: string } => c.type === 'tool_result',
+      (c): c is { type: "tool_result"; tool_use_id: string } => c.type === "tool_result",
     );
     // Only return true if there are tool results AND all of them are for collapsible tools
     return (
@@ -418,17 +418,17 @@ function isCollapsibleToolResult(
  * Get all tool use IDs from a single message (handles grouped tool uses).
  */
 function getToolUseIdsFromMessage(msg: RenderableMessage): string[] {
-  if (msg.type === 'assistant') {
+  if (msg.type === "assistant") {
     const content = msg.message.content[0];
-    if (content?.type === 'tool_use') {
+    if (content?.type === "tool_use") {
       return [content.id];
     }
   }
-  if (msg.type === 'grouped_tool_use') {
+  if (msg.type === "grouped_tool_use") {
     return msg.messages
       .map((m) => {
         const content = m.message.content[0];
-        return content.type === 'tool_use' ? content.id : '';
+        return content.type === "tool_use" ? content.id : "";
       })
       .filter(Boolean);
   }
@@ -463,9 +463,9 @@ export function hasAnyToolInProgress(
  */
 export function getDisplayMessageFromCollapsed(
   message: CollapsedReadSearchGroup,
-): Exclude<CollapsibleMessage, { type: 'grouped_tool_use' }> {
+): Exclude<CollapsibleMessage, { type: "grouped_tool_use" }> {
   const firstMsg = message.displayMessage;
-  if (firstMsg.type === 'grouped_tool_use') {
+  if (firstMsg.type === "grouped_tool_use") {
     return firstMsg.displayMessage;
   }
   return firstMsg;
@@ -475,7 +475,7 @@ export function getDisplayMessageFromCollapsed(
  * Count the number of tool uses in a message (handles grouped tool uses).
  */
 function countToolUses(msg: RenderableMessage): number {
-  if (msg.type === 'grouped_tool_use') {
+  if (msg.type === "grouped_tool_use") {
     return msg.messages.length;
   }
   return 1;
@@ -488,18 +488,18 @@ function countToolUses(msg: RenderableMessage): number {
 function getFilePathsFromReadMessage(msg: RenderableMessage): string[] {
   const paths: string[] = [];
 
-  if (msg.type === 'assistant') {
+  if (msg.type === "assistant") {
     const content = msg.message.content[0];
-    if (content?.type === 'tool_use') {
+    if (content?.type === "tool_use") {
       const input = content.input as { file_path?: string } | undefined;
       if (input?.file_path) {
         paths.push(input.file_path);
       }
     }
-  } else if (msg.type === 'grouped_tool_use') {
+  } else if (msg.type === "grouped_tool_use") {
     for (const m of msg.messages) {
       const content = m.message.content[0];
-      if (content?.type === 'tool_use') {
+      if (content?.type === "tool_use") {
         const input = content.input as { file_path?: string } | undefined;
         if (input?.file_path) {
           paths.push(input.file_path);
@@ -517,13 +517,13 @@ function getFilePathsFromReadMessage(msg: RenderableMessage): string[] {
  * in bashCommands (non-search/read bash).
  */
 function scanBashResultForGitOps(msg: CollapsibleMessage, group: GroupAccumulator): void {
-  if (msg.type !== 'user') return;
+  if (msg.type !== "user") return;
   const out = msg.toolUseResult as { stdout?: string; stderr?: string } | undefined;
   if (!out?.stdout && !out?.stderr) return;
   // git push writes the ref update to stderr — scan both streams.
-  const combined = `${out.stdout ?? ''}\n${out.stderr ?? ''}`;
+  const combined = `${out.stdout ?? ""}\n${out.stderr ?? ""}`;
   for (const c of msg.message.content) {
-    if (c.type !== 'tool_result') continue;
+    if (c.type !== "tool_result") continue;
     const command = group.bashCommands?.get(c.tool_use_id);
     if (!command) continue;
     const { commit, push, branch, pr } = detectGitOperation(command, combined);
@@ -598,7 +598,7 @@ function createEmptyGroup(): GroupAccumulator {
     hookCount: 0,
     hookInfos: [],
   };
-  if (feature('TEAMMEM')) {
+  if (feature("TEAMMEM")) {
     group.teamMemorySearchCount = 0;
     group.teamMemoryReadFilePaths = new Set();
     group.teamMemoryWriteCount = 0;
@@ -632,15 +632,15 @@ function createCollapsedGroup(group: GroupAccumulator): CollapsedReadSearchGroup
   const toolMemoryReadCount = group.memoryReadFilePaths.size;
   const memoryReadCount = toolMemoryReadCount + (group.relevantMemories?.length ?? 0);
   // Non-memory read file paths: exclude memory and team memory paths
-  const teamMemReadPaths = feature('TEAMMEM') ? group.teamMemoryReadFilePaths : undefined;
+  const teamMemReadPaths = feature("TEAMMEM") ? group.teamMemoryReadFilePaths : undefined;
   const nonMemReadFilePaths = [...group.readFilePaths].filter(
     (p) => !group.memoryReadFilePaths.has(p) && !(teamMemReadPaths?.has(p) ?? false),
   );
-  const teamMemSearchCount = feature('TEAMMEM') ? (group.teamMemorySearchCount ?? 0) : 0;
-  const teamMemReadCount = feature('TEAMMEM') ? (group.teamMemoryReadFilePaths?.size ?? 0) : 0;
-  const teamMemWriteCount = feature('TEAMMEM') ? (group.teamMemoryWriteCount ?? 0) : 0;
+  const teamMemSearchCount = feature("TEAMMEM") ? (group.teamMemorySearchCount ?? 0) : 0;
+  const teamMemReadCount = feature("TEAMMEM") ? (group.teamMemoryReadFilePaths?.size ?? 0) : 0;
+  const teamMemWriteCount = feature("TEAMMEM") ? (group.teamMemoryWriteCount ?? 0) : 0;
   const result: CollapsedReadSearchGroup = {
-    type: 'collapsed_read_search',
+    type: "collapsed_read_search",
     // Subtract memory + team memory counts so regular counts only reflect non-memory operations
     searchCount: Math.max(0, group.searchCount - group.memorySearchCount - teamMemSearchCount),
     readCount: Math.max(0, totalReadCount - toolMemoryReadCount - teamMemReadCount),
@@ -660,7 +660,7 @@ function createCollapsedGroup(group: GroupAccumulator): CollapsedReadSearchGroup
     uuid: `collapsed-${firstMsg.uuid}` as UUID,
     timestamp: firstMsg.timestamp,
   };
-  if (feature('TEAMMEM')) {
+  if (feature("TEAMMEM")) {
     result.teamMemorySearchCount = teamMemSearchCount;
     result.teamMemoryReadCount = teamMemReadCount;
     result.teamMemoryWriteCount = teamMemWriteCount;
@@ -727,7 +727,7 @@ export function collapseReadSearchGroups(
         // Memory file write/edit — check if it's team memory
         const count = countToolUses(msg);
         if (
-          feature('TEAMMEM') &&
+          feature("TEAMMEM") &&
           teamMemOps?.isTeamMemoryWriteOrEdit(toolInfo.name, toolInfo.input)
         ) {
           currentGroup.teamMemoryWriteCount = (currentGroup.teamMemoryWriteCount ?? 0) + count;
@@ -778,7 +778,7 @@ export function collapseReadSearchGroups(
         const count = countToolUses(msg);
         currentGroup.searchCount += count;
         // Check if the search targets memory files (via path or glob pattern)
-        if (feature('TEAMMEM') && teamMemOps?.isTeamMemorySearch(toolInfo.input)) {
+        if (feature("TEAMMEM") && teamMemOps?.isTeamMemorySearch(toolInfo.input)) {
           currentGroup.teamMemorySearchCount = (currentGroup.teamMemorySearchCount ?? 0) + count;
         } else if (isMemorySearch(toolInfo.input)) {
           currentGroup.memorySearchCount += count;
@@ -795,7 +795,7 @@ export function collapseReadSearchGroups(
         const filePaths = getFilePathsFromReadMessage(msg);
         for (const filePath of filePaths) {
           currentGroup.readFilePaths.add(filePath);
-          if (feature('TEAMMEM') && teamMemOps?.isTeamMemFile(filePath)) {
+          if (feature("TEAMMEM") && teamMemOps?.isTeamMemFile(filePath)) {
             currentGroup.teamMemoryReadFilePaths?.add(filePath);
           } else if (isAutoManagedMemoryFile(filePath)) {
             currentGroup.memoryReadFilePaths.add(filePath);
@@ -835,8 +835,8 @@ export function collapseReadSearchGroups(
       currentGroup.hookInfos.push(...msg.hookInfos);
     } else if (
       currentGroup.messages.length > 0 &&
-      msg.type === 'attachment' &&
-      msg.attachment.type === 'relevant_memories'
+      msg.type === "attachment" &&
+      msg.attachment.type === "relevant_memories"
     ) {
       // Absorb auto-injected memory attachments so "recalled N memories"
       // renders inline with "ran N bash commands" instead of as a separate
@@ -856,7 +856,7 @@ export function collapseReadSearchGroups(
       // ⎿ Loaded lines cluster tightly instead of being split by the badge's marginTop.
       if (
         currentGroup.messages.length > 0 &&
-        !(msg.type === 'attachment' && msg.attachment.type === 'nested_memory')
+        !(msg.type === "attachment" && msg.attachment.type === "nested_memory")
       ) {
         deferredSkippable.push(msg);
       } else {
@@ -913,35 +913,35 @@ export function getSearchReadSummaryText(
     if (memoryReadCount > 0) {
       const verb = isActive
         ? parts.length === 0
-          ? 'Recalling'
-          : 'recalling'
+          ? "Recalling"
+          : "recalling"
         : parts.length === 0
-          ? 'Recalled'
-          : 'recalled';
-      parts.push(`${verb} ${memoryReadCount} ${memoryReadCount === 1 ? 'memory' : 'memories'}`);
+          ? "Recalled"
+          : "recalled";
+      parts.push(`${verb} ${memoryReadCount} ${memoryReadCount === 1 ? "memory" : "memories"}`);
     }
     if (memorySearchCount > 0) {
       const verb = isActive
         ? parts.length === 0
-          ? 'Searching'
-          : 'searching'
+          ? "Searching"
+          : "searching"
         : parts.length === 0
-          ? 'Searched'
-          : 'searched';
+          ? "Searched"
+          : "searched";
       parts.push(`${verb} memories`);
     }
     if (memoryWriteCount > 0) {
       const verb = isActive
         ? parts.length === 0
-          ? 'Writing'
-          : 'writing'
+          ? "Writing"
+          : "writing"
         : parts.length === 0
-          ? 'Wrote'
-          : 'wrote';
-      parts.push(`${verb} ${memoryWriteCount} ${memoryWriteCount === 1 ? 'memory' : 'memories'}`);
+          ? "Wrote"
+          : "wrote";
+      parts.push(`${verb} ${memoryWriteCount} ${memoryWriteCount === 1 ? "memory" : "memories"}`);
     }
     // Team memory operations
-    if (feature('TEAMMEM') && teamMemOps) {
+    if (feature("TEAMMEM") && teamMemOps) {
       teamMemOps.appendTeamMemorySummaryParts(memoryCounts, isActive, parts);
     }
   }
@@ -949,42 +949,42 @@ export function getSearchReadSummaryText(
   if (searchCount > 0) {
     const searchVerb = isActive
       ? parts.length === 0
-        ? 'Searching for'
-        : 'searching for'
+        ? "Searching for"
+        : "searching for"
       : parts.length === 0
-        ? 'Searched for'
-        : 'searched for';
-    parts.push(`${searchVerb} ${searchCount} ${searchCount === 1 ? 'pattern' : 'patterns'}`);
+        ? "Searched for"
+        : "searched for";
+    parts.push(`${searchVerb} ${searchCount} ${searchCount === 1 ? "pattern" : "patterns"}`);
   }
 
   if (readCount > 0) {
     const readVerb = isActive
       ? parts.length === 0
-        ? 'Reading'
-        : 'reading'
+        ? "Reading"
+        : "reading"
       : parts.length === 0
-        ? 'Read'
-        : 'read';
-    parts.push(`${readVerb} ${readCount} ${readCount === 1 ? 'file' : 'files'}`);
+        ? "Read"
+        : "read";
+    parts.push(`${readVerb} ${readCount} ${readCount === 1 ? "file" : "files"}`);
   }
 
   if (listCount > 0) {
     const listVerb = isActive
       ? parts.length === 0
-        ? 'Listing'
-        : 'listing'
+        ? "Listing"
+        : "listing"
       : parts.length === 0
-        ? 'Listed'
-        : 'listed';
-    parts.push(`${listVerb} ${listCount} ${listCount === 1 ? 'directory' : 'directories'}`);
+        ? "Listed"
+        : "listed";
+    parts.push(`${listVerb} ${listCount} ${listCount === 1 ? "directory" : "directories"}`);
   }
 
   if (replCount > 0) {
     const replVerb = isActive ? "REPL'ing" : "REPL'd";
-    parts.push(`${replVerb} ${replCount} ${replCount === 1 ? 'time' : 'times'}`);
+    parts.push(`${replVerb} ${replCount} ${replCount === 1 ? "time" : "times"}`);
   }
 
-  const text = parts.join(', ');
+  const text = parts.join(", ");
   return isActive ? `${text}…` : text;
 }
 

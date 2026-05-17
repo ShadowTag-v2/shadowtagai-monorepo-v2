@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import type { Workflow } from './types.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import type { Workflow } from "./types.js";
 
 interface CreatingStepProps {
   currentWorkflowInstallStep: number;
@@ -31,19 +31,19 @@ export function CreatingStep(t0) {
   ) {
     t2 = skipWorkflow
       ? [
-          'Getting repository information',
+          "Getting repository information",
           secretExists && useExistingSecret
-            ? 'Using existing API key secret'
+            ? "Using existing API key secret"
             : `Setting up ${secretName} secret`,
         ]
       : [
-          'Getting repository information',
-          'Creating branch',
-          selectedWorkflows.length > 1 ? 'Creating workflow files' : 'Creating workflow file',
+          "Getting repository information",
+          "Creating branch",
+          selectedWorkflows.length > 1 ? "Creating workflow files" : "Creating workflow file",
           secretExists && useExistingSecret
-            ? 'Using existing API key secret'
+            ? "Using existing API key secret"
             : `Setting up ${secretName} secret`,
-          'Opening pull request page',
+          "Opening pull request page",
         ];
     $[0] = secretExists;
     $[1] = secretName;
@@ -56,7 +56,7 @@ export function CreatingStep(t0) {
   }
   const progressSteps = t2;
   let t3;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Box flexDirection="column" marginBottom={1}>
         <Text bold={true}>Install GitHub App</Text>
@@ -73,28 +73,28 @@ export function CreatingStep(t0) {
       <Box flexDirection="column" borderStyle="round" paddingX={1}>
         {t3}
         {progressSteps.map((stepText, index) => {
-          let status = 'pending';
+          let status = "pending";
           if (index < currentWorkflowInstallStep) {
-            status = 'completed';
+            status = "completed";
           } else {
             if (index === currentWorkflowInstallStep) {
-              status = 'in-progress';
+              status = "in-progress";
             }
           }
           return (
             <Box key={index}>
               <Text
                 color={
-                  status === 'completed'
-                    ? 'success'
-                    : status === 'in-progress'
-                      ? 'warning'
+                  status === "completed"
+                    ? "success"
+                    : status === "in-progress"
+                      ? "warning"
                       : undefined
                 }
               >
-                {status === 'completed' ? '\u2713 ' : ''}
+                {status === "completed" ? "\u2713 " : ""}
                 {stepText}
-                {status === 'in-progress' ? '\u2026' : ''}
+                {status === "in-progress" ? "\u2026" : ""}
               </Text>
             </Box>
           );

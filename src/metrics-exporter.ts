@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from "express";
 
 /**
  * Prometheus-compatible Metrics Exporter
@@ -16,7 +16,7 @@ const metricsStore = {
 };
 
 export function updateMetric(name: keyof typeof metricsStore, value: number) {
-  if (name === 'http_request_duration_seconds') {
+  if (name === "http_request_duration_seconds") {
     metricsStore[name].push(value);
     // Keep only last 1000 values
     if (metricsStore[name].length > 1000) {
@@ -31,8 +31,8 @@ export function getMetricsHandler(req: Request, res: Response) {
   const lines: string[] = [];
 
   // HTTP Requests Total
-  lines.push('# HELP http_requests_total Total number of HTTP requests');
-  lines.push('# TYPE http_requests_total counter');
+  lines.push("# HELP http_requests_total Total number of HTTP requests");
+  lines.push("# TYPE http_requests_total counter");
   lines.push(`http_requests_total ${metricsStore.http_requests_total}`);
 
   // Request Duration
@@ -42,41 +42,41 @@ export function getMetricsHandler(req: Request, res: Response) {
     const count = durations.length;
     const avg = sum / count;
 
-    lines.push('# HELP http_request_duration_seconds HTTP request duration in seconds');
-    lines.push('# TYPE http_request_duration_seconds summary');
+    lines.push("# HELP http_request_duration_seconds HTTP request duration in seconds");
+    lines.push("# TYPE http_request_duration_seconds summary");
     lines.push(`http_request_duration_seconds_sum ${sum}`);
     lines.push(`http_request_duration_seconds_count ${count}`);
     lines.push(`http_request_duration_seconds_avg ${avg}`);
   }
 
   // Licenses Granted
-  lines.push('# HELP licenses_granted_total Total number of A2A licenses granted');
-  lines.push('# TYPE licenses_granted_total counter');
+  lines.push("# HELP licenses_granted_total Total number of A2A licenses granted");
+  lines.push("# TYPE licenses_granted_total counter");
   lines.push(`licenses_granted_total ${metricsStore.licenses_granted_total}`);
 
   // Webhooks Received
-  lines.push('# HELP webhooks_received_total Total number of Stripe webhooks received');
-  lines.push('# TYPE webhooks_received_total counter');
+  lines.push("# HELP webhooks_received_total Total number of Stripe webhooks received");
+  lines.push("# TYPE webhooks_received_total counter");
   lines.push(`webhooks_received_total ${metricsStore.webhooks_received_total}`);
 
   // Errors
-  lines.push('# HELP errors_total Total number of errors');
-  lines.push('# TYPE errors_total counter');
+  lines.push("# HELP errors_total Total number of errors");
+  lines.push("# TYPE errors_total counter");
   lines.push(`errors_total ${metricsStore.errors_total}`);
 
   // Active Connections
-  lines.push('# HELP active_connections Current number of active connections');
-  lines.push('# TYPE active_connections gauge');
+  lines.push("# HELP active_connections Current number of active connections");
+  lines.push("# TYPE active_connections gauge");
   lines.push(`active_connections ${metricsStore.active_connections}`);
 
-  res.set('Content-Type', 'text/plain; version=0.0.4');
-  res.send(lines.join('\n'));
+  res.set("Content-Type", "text/plain; version=0.0.4");
+  res.send(lines.join("\n"));
 }
 
 // Helper to increment counters
 export const metrics = {
   increment: (name: keyof typeof metricsStore) => {
-    if (typeof metricsStore[name] === 'number') {
+    if (typeof metricsStore[name] === "number") {
       (metricsStore[name] as number)++;
     }
   },

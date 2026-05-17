@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useDoublePress } from '../hooks/useDoublePress.js';
-import { Box, Text } from '../ink.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import { useShortcutDisplay } from '../keybindings/useShortcutDisplay.js';
-import { useAppState, useAppStateStore, useSetAppState } from '../state/AppState.js';
-import { backgroundAll, hasForegroundTasks } from '../tasks/LocalShellTask/LocalShellTask.js';
-import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
-import { env } from '../utils/env.js';
-import { isEnvTruthy } from '../utils/envUtils.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useDoublePress } from "../hooks/useDoublePress.js";
+import { Box, Text } from "../ink.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import { useShortcutDisplay } from "../keybindings/useShortcutDisplay.js";
+import { useAppState, useAppStateStore, useSetAppState } from "../state/AppState.js";
+import { backgroundAll, hasForegroundTasks } from "../tasks/LocalShellTask/LocalShellTask.js";
+import { getGlobalConfig, saveGlobalConfig } from "../utils/config.js";
+import { env } from "../utils/env.js";
+import { isEnvTruthy } from "../utils/envUtils.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
 
 type Props = {
   onBackgroundSession: () => void;
@@ -49,7 +49,7 @@ export function SessionBackgroundHint(t0) {
           saveGlobalConfig(_temp2);
         }
       } else {
-        if (isEnvTruthy('false') && isLoading) {
+        if (isEnvTruthy("false") && isLoading) {
           handleDoublePress();
         }
       }
@@ -65,8 +65,8 @@ export function SessionBackgroundHint(t0) {
   const handleBackground = t1;
   const hasForeground = useAppState(hasForegroundTasks);
   let t2;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
-    t2 = isEnvTruthy('false');
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
+    t2 = isEnvTruthy("false");
     $[5] = t2;
   } else {
     t2 = $[5];
@@ -76,7 +76,7 @@ export function SessionBackgroundHint(t0) {
   let t4;
   if ($[6] !== t3) {
     t4 = {
-      context: 'Task',
+      context: "Task",
       isActive: t3,
     };
     $[6] = t3;
@@ -84,10 +84,10 @@ export function SessionBackgroundHint(t0) {
   } else {
     t4 = $[7];
   }
-  useKeybinding('task:background', handleBackground, t4);
-  const baseShortcut = useShortcutDisplay('task:background', 'Task', 'ctrl+b');
+  useKeybinding("task:background", handleBackground, t4);
+  const baseShortcut = useShortcutDisplay("task:background", "Task", "ctrl+b");
   const shortcut =
-    env.terminal === 'tmux' && baseShortcut === 'ctrl+b' ? 'ctrl+b ctrl+b' : baseShortcut;
+    env.terminal === "tmux" && baseShortcut === "ctrl+b" ? "ctrl+b ctrl+b" : baseShortcut;
   if (!isLoading || !showSessionHint) {
     return null;
   }

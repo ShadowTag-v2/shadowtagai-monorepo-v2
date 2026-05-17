@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../../ink.js';
-import type { CollapsedReadSearchGroup } from '../../types/message.js';
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../../ink.js";
+import type { CollapsedReadSearchGroup } from "../../types/message.js";
 
 /**
  * Plain function (not a React component) so the React Compiler won't
@@ -42,14 +42,14 @@ export function TeamMemCountParts(t0) {
     if (tmReadCount > 0) {
       const verb = isActiveGroup
         ? count === 0
-          ? 'Recalling'
-          : 'recalling'
+          ? "Recalling"
+          : "recalling"
         : count === 0
-          ? 'Recalled'
-          : 'recalled';
+          ? "Recalled"
+          : "recalled";
       if (count > 0) {
         let t2;
-        if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+        if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
           t2 = <Text key="comma-tmr">, </Text>;
           $[6] = t2;
         } else {
@@ -65,7 +65,7 @@ export function TeamMemCountParts(t0) {
       } else {
         t2 = $[8];
       }
-      const t3 = tmReadCount === 1 ? 'memory' : 'memories';
+      const t3 = tmReadCount === 1 ? "memory" : "memories";
       let t4;
       if ($[9] !== t2 || $[10] !== t3 || $[11] !== verb) {
         t4 = (
@@ -86,14 +86,14 @@ export function TeamMemCountParts(t0) {
     if (tmSearchCount > 0) {
       const verb_0 = isActiveGroup
         ? count === 0
-          ? 'Searching'
-          : 'searching'
+          ? "Searching"
+          : "searching"
         : count === 0
-          ? 'Searched'
-          : 'searched';
+          ? "Searched"
+          : "searched";
       if (count > 0) {
         let t2;
-        if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+        if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
           t2 = <Text key="comma-tms">, </Text>;
           $[13] = t2;
         } else {
@@ -116,14 +116,14 @@ export function TeamMemCountParts(t0) {
     if (tmWriteCount > 0) {
       const verb_1 = isActiveGroup
         ? count === 0
-          ? 'Writing'
-          : 'writing'
+          ? "Writing"
+          : "writing"
         : count === 0
-          ? 'Wrote'
-          : 'wrote';
+          ? "Wrote"
+          : "wrote";
       if (count > 0) {
         let t2;
-        if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+        if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
           t2 = <Text key="comma-tmw">, </Text>;
           $[16] = t2;
         } else {
@@ -139,7 +139,7 @@ export function TeamMemCountParts(t0) {
       } else {
         t2 = $[18];
       }
-      const t3 = tmWriteCount === 1 ? 'memory' : 'memories';
+      const t3 = tmWriteCount === 1 ? "memory" : "memories";
       let t4;
       if ($[19] !== t2 || $[20] !== t3 || $[21] !== verb_1) {
         t4 = (

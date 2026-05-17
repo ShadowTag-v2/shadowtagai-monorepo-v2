@@ -1,13 +1,13 @@
-import { appendFile, rename } from 'node:fs/promises';
-import { basename, dirname, join } from 'node:path';
-import { getOriginalCwd, getSessionId } from '../bootstrap/state.js';
-import { createBufferedWriter } from './bufferedWriter.js';
-import { registerCleanup } from './cleanupRegistry.js';
-import { logForDebugging } from './debug.js';
-import { getClaudeConfigHomeDir, isEnvTruthy } from './envUtils.js';
-import { getFsImplementation } from './fsOperations.js';
-import { sanitizePath } from './path.js';
-import { jsonStringify } from './slowOperations.js';
+import { appendFile, rename } from "node:fs/promises";
+import { basename, dirname, join } from "node:path";
+import { getOriginalCwd, getSessionId } from "../bootstrap/state.js";
+import { createBufferedWriter } from "./bufferedWriter.js";
+import { registerCleanup } from "./cleanupRegistry.js";
+import { logForDebugging } from "./debug.js";
+import { getClaudeConfigHomeDir, isEnvTruthy } from "./envUtils.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { sanitizePath } from "./path.js";
+import { jsonStringify } from "./slowOperations.js";
 
 // Mutable recording state — filePath is updated when session ID changes (e.g., --resume)
 const recordingState: { filePath: string | null; timestamp: number } = {
@@ -25,7 +25,7 @@ export function getRecordFilePath(): string | null {
   if (recordingState.filePath !== null) {
     return recordingState.filePath;
   }
-  if (process.env.USER_TYPE !== 'ant') {
+  if (process.env.USER_TYPE !== "ant") {
     return null;
   }
   if (!isEnvTruthy(process.env.CLAUDE_CODE_TERMINAL_RECORDING)) {
@@ -33,7 +33,7 @@ export function getRecordFilePath(): string | null {
   }
   // Record alongside the transcript.
   // Each launch gets its own file so --continue produces multiple recordings.
-  const projectsDir = join(getClaudeConfigHomeDir(), 'projects');
+  const projectsDir = join(getClaudeConfigHomeDir(), "projects");
   const projectDir = join(projectsDir, sanitizePath(getOriginalCwd()));
   recordingState.timestamp = Date.now();
   recordingState.filePath = join(projectDir, `${getSessionId()}-${recordingState.timestamp}.cast`);
@@ -51,15 +51,15 @@ export function _resetRecordingStateForTesting(): void {
  */
 export function getSessionRecordingPaths(): string[] {
   const sessionId = getSessionId();
-  const projectsDir = join(getClaudeConfigHomeDir(), 'projects');
+  const projectsDir = join(getClaudeConfigHomeDir(), "projects");
   const projectDir = join(projectsDir, sanitizePath(getOriginalCwd()));
   try {
     // eslint-disable-next-line custom-rules/no-sync-fs -- called during /share before upload, not in hot path
     const entries = getFsImplementation().readdirSync(projectDir);
     const names = (
-      typeof entries[0] === 'string' ? entries : (entries as { name: string }[]).map((e) => e.name)
+      typeof entries[0] === "string" ? entries : (entries as { name: string }[]).map((e) => e.name)
     ) as string[];
-    const files = names.filter((f) => f.startsWith(sessionId) && f.endsWith('.cast')).sort();
+    const files = names.filter((f) => f.startsWith(sessionId) && f.endsWith(".cast")).sort();
     return files.map((f) => join(projectDir, f));
   } catch {
     return [];
@@ -77,7 +77,7 @@ export async function renameRecordingForSession(): Promise<void> {
   if (!oldPath || recordingState.timestamp === 0) {
     return;
   }
-  const projectsDir = join(getClaudeConfigHomeDir(), 'projects');
+  const projectsDir = join(getClaudeConfigHomeDir(), "projects");
   const projectDir = join(projectsDir, sanitizePath(getOriginalCwd()));
   const newPath = join(projectDir, `${getSessionId()}-${recordingState.timestamp}.cast`);
   if (oldPath === newPath) {
@@ -141,8 +141,8 @@ export function installAsciicastRecorder(): void {
     height: rows,
     timestamp: Math.floor(Date.now() / 1000),
     env: {
-      SHELL: process.env.SHELL || '',
-      TERM: process.env.TERM || '',
+      SHELL: process.env.SHELL || "",
+      TERM: process.env.TERM || "",
     },
   });
 
@@ -184,11 +184,11 @@ export function installAsciicastRecorder(): void {
   ): boolean => {
     // Record the output event
     const elapsed = (performance.now() - startTime) / 1000;
-    const text = typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString('utf-8');
-    writer.write(`${jsonStringify([elapsed, 'o', text])}\n`);
+    const text = typeof chunk === "string" ? chunk : Buffer.from(chunk).toString("utf-8");
+    writer.write(`${jsonStringify([elapsed, "o", text])}\n`);
 
     // Pass through to the real stdout
-    if (typeof encodingOrCb === 'function') {
+    if (typeof encodingOrCb === "function") {
       return originalWrite(chunk, encodingOrCb);
     }
     return originalWrite(chunk, encodingOrCb, cb);
@@ -198,9 +198,9 @@ export function installAsciicastRecorder(): void {
   function onResize(): void {
     const elapsed = (performance.now() - startTime) / 1000;
     const { cols: newCols, rows: newRows } = getTerminalSize();
-    writer.write(`${jsonStringify([elapsed, 'r', `${newCols}x${newRows}`])}\n`);
+    writer.write(`${jsonStringify([elapsed, "r", `${newCols}x${newRows}`])}\n`);
   }
-  process.stdout.on('resize', onResize);
+  process.stdout.on("resize", onResize);
 
   recorder = {
     async flush(): Promise<void> {
@@ -210,7 +210,7 @@ export function installAsciicastRecorder(): void {
     async dispose(): Promise<void> {
       writer.dispose();
       await pendingWrite;
-      process.stdout.removeListener('resize', onResize);
+      process.stdout.removeListener("resize", onResize);
       process.stdout.write = originalWrite;
     },
   };

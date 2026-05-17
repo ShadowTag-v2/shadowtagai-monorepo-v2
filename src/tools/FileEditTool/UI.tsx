@@ -1,26 +1,26 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type { StructuredPatchHunk } from 'diff';
-import type * as React from 'react';
-import { Suspense, use, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { FileEditToolUseRejectedMessage } from 'src/components/FileEditToolUseRejectedMessage.js';
-import { MessageResponse } from 'src/components/MessageResponse.js';
-import { extractTag } from 'src/utils/messages.js';
-import { FallbackToolUseErrorMessage } from '../../components/FallbackToolUseErrorMessage.js';
-import { FileEditToolUpdatedMessage } from '../../components/FileEditToolUpdatedMessage.js';
-import { FilePathLink } from '../../components/FilePathLink.js';
-import { Text } from '../../ink.js';
-import type { Tools } from '../../Tool.js';
-import type { Message, ProgressMessage } from '../../types/message.js';
-import { adjustHunkLineNumbers, CONTEXT_LINES } from '../../utils/diff.js';
-import { FILE_NOT_FOUND_CWD_NOTE, getDisplayPath } from '../../utils/file.js';
-import { logError } from '../../utils/log.js';
-import { getPlansDirectory } from '../../utils/plans.js';
-import { readEditContext } from '../../utils/readEditContext.js';
-import { firstLineOf } from '../../utils/stringUtils.js';
-import type { ThemeName } from '../../utils/theme.js';
-import type { FileEditOutput } from './types.js';
-import { findActualString, getPatchForEdit, preserveQuoteStyle } from './utils.js';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type { StructuredPatchHunk } from "diff";
+import type * as React from "react";
+import { Suspense, use, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { FileEditToolUseRejectedMessage } from "src/components/FileEditToolUseRejectedMessage.js";
+import { MessageResponse } from "src/components/MessageResponse.js";
+import { extractTag } from "src/utils/messages.js";
+import { FallbackToolUseErrorMessage } from "../../components/FallbackToolUseErrorMessage.js";
+import { FileEditToolUpdatedMessage } from "../../components/FileEditToolUpdatedMessage.js";
+import { FilePathLink } from "../../components/FilePathLink.js";
+import { Text } from "../../ink.js";
+import type { Tools } from "../../Tool.js";
+import type { Message, ProgressMessage } from "../../types/message.js";
+import { adjustHunkLineNumbers, CONTEXT_LINES } from "../../utils/diff.js";
+import { FILE_NOT_FOUND_CWD_NOTE, getDisplayPath } from "../../utils/file.js";
+import { logError } from "../../utils/log.js";
+import { getPlansDirectory } from "../../utils/plans.js";
+import { readEditContext } from "../../utils/readEditContext.js";
+import { firstLineOf } from "../../utils/stringUtils.js";
+import type { ThemeName } from "../../utils/theme.js";
+import type { FileEditOutput } from "./types.js";
+import { findActualString, getPatchForEdit, preserveQuoteStyle } from "./utils.js";
 export function userFacingName(
   input:
     | Partial<{
@@ -33,19 +33,19 @@ export function userFacingName(
     | undefined,
 ): string {
   if (!input) {
-    return 'Update';
+    return "Update";
   }
   if (input.file_path?.startsWith(getPlansDirectory())) {
-    return 'Updated plan';
+    return "Updated plan";
   }
   // Hashline edits always modify an existing file (line-ref based)
   if (input.edits != null) {
-    return 'Update';
+    return "Update";
   }
-  if (input.old_string === '') {
-    return 'Create';
+  if (input.old_string === "") {
+    return "Create";
   }
-  return 'Update';
+  return "Update";
 }
 export function getToolUseSummary(
   input:
@@ -79,7 +79,7 @@ export function renderToolUseMessage(
   }
   // For plan files, path is already in userFacingName
   if (file_path.startsWith(getPlansDirectory())) {
-    return '';
+    return "";
   }
   return (
     <FilePathLink filePath={file_path}>
@@ -94,7 +94,7 @@ export function renderToolResultMessage(
     style,
     verbose,
   }: {
-    style?: 'condensed';
+    style?: "condensed";
     verbose: boolean;
   },
 ): React.ReactNode {
@@ -104,11 +104,11 @@ export function renderToolResultMessage(
     <FileEditToolUpdatedMessage
       filePath={filePath}
       structuredPatch={structuredPatch}
-      firstLine={originalFile.split('\n')[0] ?? null}
+      firstLine={originalFile.split("\n")[0] ?? null}
       fileContent={originalFile}
       style={style}
       verbose={verbose}
-      previewHint={isPlanFile ? '/plan to preview' : undefined}
+      previewHint={isPlanFile ? "/plan to preview" : undefined}
     />
   );
 }
@@ -124,7 +124,7 @@ export function renderToolUseRejectedMessage(
     columns: number;
     messages: Message[];
     progressMessagesForMessage: ProgressMessage[];
-    style?: 'condensed';
+    style?: "condensed";
     theme: ThemeName;
     tools: Tools;
     verbose: boolean;
@@ -132,12 +132,12 @@ export function renderToolUseRejectedMessage(
 ): React.ReactElement {
   const { style, verbose } = options;
   const filePath = input.file_path;
-  const oldString = input.old_string ?? '';
-  const newString = input.new_string ?? '';
+  const oldString = input.old_string ?? "";
+  const newString = input.new_string ?? "";
   const replaceAll = input.replace_all ?? false;
 
   // Defensive: if input has an unexpected shape, show a simple rejection message
-  if ('edits' in input && input.edits != null) {
+  if ("edits" in input && input.edits != null) {
     return (
       <FileEditToolUseRejectedMessage
         file_path={filePath}
@@ -147,7 +147,7 @@ export function renderToolUseRejectedMessage(
       />
     );
   }
-  const isNewFile = oldString === '';
+  const isNewFile = oldString === "";
 
   // For new file creation, show content preview instead of diff
   if (isNewFile) {
@@ -173,7 +173,7 @@ export function renderToolUseRejectedMessage(
   );
 }
 export function renderToolUseErrorMessage(
-  result: ToolResultBlockParam['content'],
+  result: ToolResultBlockParam["content"],
   options: {
     progressMessagesForMessage: ProgressMessage[];
     tools: Tools;
@@ -181,10 +181,10 @@ export function renderToolUseErrorMessage(
   },
 ): React.ReactElement {
   const { verbose } = options;
-  if (!verbose && typeof result === 'string' && extractTag(result, 'tool_use_error')) {
-    const errorMessage = extractTag(result, 'tool_use_error');
+  if (!verbose && typeof result === "string" && extractTag(result, "tool_use_error")) {
+    const errorMessage = extractTag(result, "tool_use_error");
     // Show a less scary message for intended behavior
-    if (errorMessage?.includes('File has not been read yet')) {
+    if (errorMessage?.includes("File has not been read yet")) {
       return (
         <MessageResponse>
           <Text dimColor>File must be read first</Text>
@@ -318,7 +318,7 @@ async function loadRejectionDiff(
     // still shows matches *within* the window via getPatchForEdit; we accept
     // losing the all-occurrences view to keep the read bounded.
     const ctx = await readEditContext(filePath, oldString, CONTEXT_LINES);
-    if (ctx === null || ctx.truncated || ctx.content === '') {
+    if (ctx === null || ctx.truncated || ctx.content === "") {
       // ENOENT / not found / truncated — diff just the tool inputs.
       const { patch } = getPatchForEdit({
         filePath,

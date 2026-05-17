@@ -1,1 +1,1 @@
-export * from './coordinatorMode.js';
+export * from "./coordinatorMode.js";

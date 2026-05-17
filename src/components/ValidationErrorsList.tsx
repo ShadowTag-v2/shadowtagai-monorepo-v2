@@ -1,8 +1,8 @@
-import setWith from 'lodash-es/setWith.js';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text, useTheme } from '../ink.js';
-import type { ValidationError } from '../utils/settings/validation.js';
-import { type TreeNode, treeify } from '../utils/treeify.js';
+import setWith from "lodash-es/setWith.js";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text, useTheme } from "../ink.js";
+import type { ValidationError } from "../utils/settings/validation.js";
+import { type TreeNode, treeify } from "../utils/treeify.js";
 
 /**
  * Builds a nested tree structure from dot-notation paths
@@ -13,12 +13,12 @@ function buildNestedTree(errors: ValidationError[]): TreeNode {
   errors.forEach((error) => {
     if (!error.path) {
       // Root level error - use empty string as key
-      tree[''] = error.message;
+      tree[""] = error.message;
       return;
     }
 
     // Try to enhance the path with meaningful values
-    const pathParts = error.path.split('.');
+    const pathParts = error.path.split(".");
     let modifiedPath = error.path;
 
     // If we have an invalid value, try to make the path more readable
@@ -33,12 +33,12 @@ function buildNestedTree(errors: ValidationError[]): TreeNode {
         if (!Number.isNaN(numericPart) && i === pathParts.length - 1) {
           // Format the value for display
           let displayValue: string;
-          if (typeof error.invalidValue === 'string') {
+          if (typeof error.invalidValue === "string") {
             displayValue = `"${error.invalidValue}"`;
           } else if (error.invalidValue === null) {
-            displayValue = 'null';
+            displayValue = "null";
           } else if (error.invalidValue === undefined) {
-            displayValue = 'undefined';
+            displayValue = "undefined";
           } else {
             displayValue = String(error.invalidValue);
           }
@@ -48,7 +48,7 @@ function buildNestedTree(errors: ValidationError[]): TreeNode {
           newPathParts.push(part);
         }
       }
-      modifiedPath = newPathParts.join('.');
+      modifiedPath = newPathParts.join(".");
     }
     setWith(tree, modifiedPath, error.message, Object);
   });
@@ -72,7 +72,7 @@ export function ValidationErrorsList(t0) {
     const errorsByFile = errors.reduce(_temp, {});
     const sortedFiles = Object.keys(errorsByFile).sort();
     T0 = Box;
-    t1 = 'column';
+    t1 = "column";
     t2 = sortedFiles.map((file_0) => {
       const fileErrors = errorsByFile[file_0] || [];
       fileErrors.sort(_temp2);
@@ -80,7 +80,7 @@ export function ValidationErrorsList(t0) {
       const suggestionPairs = new Map();
       fileErrors.forEach((error_0) => {
         if (error_0.suggestion || error_0.docLink) {
-          const key = `${error_0.suggestion || ''}|${error_0.docLink || ''}`;
+          const key = `${error_0.suggestion || ""}|${error_0.docLink || ""}`;
           if (!suggestionPairs.has(key)) {
             suggestionPairs.set(key, {
               suggestion: error_0.suggestion,
@@ -93,9 +93,9 @@ export function ValidationErrorsList(t0) {
         showValues: true,
         themeName,
         treeCharColors: {
-          treeChar: 'inactive',
-          key: 'text',
-          value: 'inactive',
+          treeChar: "inactive",
+          key: "text",
+          value: "inactive",
         },
       });
       return (
@@ -157,10 +157,10 @@ function _temp2(a, b) {
   if (a.path && !b.path) {
     return 1;
   }
-  return (a.path || '').localeCompare(b.path || '');
+  return (a.path || "").localeCompare(b.path || "");
 }
 function _temp(acc, error) {
-  const file = error.file || '(file not specified)';
+  const file = error.file || "(file not specified)";
   if (!acc[file]) {
     acc[file] = [];
   }

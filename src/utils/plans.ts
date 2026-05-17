@@ -1,26 +1,26 @@
-import { randomUUID } from 'node:crypto';
-import { copyFile, writeFile } from 'node:fs/promises';
-import { join, resolve, sep } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
-import type { AgentId, SessionId } from 'src/types/ids.js';
-import type { LogOption } from 'src/types/logs.js';
+import { randomUUID } from "node:crypto";
+import { copyFile, writeFile } from "node:fs/promises";
+import { join, resolve, sep } from "node:path";
+import memoize from "lodash-es/memoize.js";
+import type { AgentId, SessionId } from "src/types/ids.js";
+import type { LogOption } from "src/types/logs.js";
 import type {
   AssistantMessage,
   AttachmentMessage,
   SystemFileSnapshotMessage,
   UserMessage,
-} from 'src/types/message.js';
-import { getPlanSlugCache, getSessionId } from '../bootstrap/state.js';
-import { EXIT_PLAN_MODE_V2_TOOL_NAME } from '../tools/ExitPlanModeTool/constants.js';
-import { getCwd } from './cwd.js';
-import { logForDebugging } from './debug.js';
-import { getClaudeConfigHomeDir } from './envUtils.js';
-import { isENOENT } from './errors.js';
-import { getEnvironmentKind } from './filePersistence/outputsScanner.js';
-import { getFsImplementation } from './fsOperations.js';
-import { logError } from './log.js';
-import { getInitialSettings } from './settings/settings.js';
-import { generateWordSlug } from './words.js';
+} from "src/types/message.js";
+import { getPlanSlugCache, getSessionId } from "../bootstrap/state.js";
+import { EXIT_PLAN_MODE_V2_TOOL_NAME } from "../tools/ExitPlanModeTool/constants.js";
+import { getCwd } from "./cwd.js";
+import { logForDebugging } from "./debug.js";
+import { getClaudeConfigHomeDir } from "./envUtils.js";
+import { isENOENT } from "./errors.js";
+import { getEnvironmentKind } from "./filePersistence/outputsScanner.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { logError } from "./log.js";
+import { getInitialSettings } from "./settings/settings.js";
+import { generateWordSlug } from "./words.js";
 
 const MAX_SLUG_RETRIES = 10;
 
@@ -89,13 +89,13 @@ export const getPlansDirectory = memoize(function getPlansDirectory(): string {
     // Validate path stays within project root to prevent path traversal
     if (!resolved.startsWith(cwd + sep) && resolved !== cwd) {
       logError(new Error(`plansDirectory must be within project root: ${settingsDir}`));
-      plansPath = join(getClaudeConfigHomeDir(), 'plans');
+      plansPath = join(getClaudeConfigHomeDir(), "plans");
     } else {
       plansPath = resolved;
     }
   } else {
     // Default
-    plansPath = join(getClaudeConfigHomeDir(), 'plans');
+    plansPath = join(getClaudeConfigHomeDir(), "plans");
   }
 
   // Ensure directory exists (mkdirSync with recursive: true is a no-op if it exists)
@@ -133,7 +133,7 @@ export function getPlanFilePath(agentId?: AgentId): string {
 export function getPlan(agentId?: AgentId): string | null {
   const filePath = getPlanFilePath(agentId);
   try {
-    return getFsImplementation().readFileSync(filePath, { encoding: 'utf-8' });
+    return getFsImplementation().readFileSync(filePath, { encoding: "utf-8" });
   } catch (error) {
     if (isENOENT(error)) return null;
     logError(error);
@@ -175,7 +175,7 @@ export async function copyPlanForResume(
   // Attempt to read the plan file directly — recovery triggers on ENOENT.
   const planPath = join(getPlansDirectory(), `${slug}.md`);
   try {
-    await getFsImplementation().readFile(planPath, { encoding: 'utf-8' });
+    await getFsImplementation().readFile(planPath, { encoding: "utf-8" });
     return true;
   } catch (e: unknown) {
     if (!isENOENT(e)) {
@@ -191,26 +191,26 @@ export async function copyPlanForResume(
     logForDebugging(`Plan file missing during resume: ${planPath}. Attempting recovery.`);
 
     // Try file snapshot first (written incrementally during session)
-    const snapshotPlan = findFileSnapshotEntry(log.messages, 'plan');
+    const snapshotPlan = findFileSnapshotEntry(log.messages, "plan");
     let recovered: string | null = null;
     if (snapshotPlan && snapshotPlan.content.length > 0) {
       recovered = snapshotPlan.content;
       logForDebugging(`Plan recovered from file snapshot, ${recovered.length} chars`, {
-        level: 'info',
+        level: "info",
       });
     } else {
       // Fall back to searching message history
       recovered = recoverPlanFromMessages(log);
       if (recovered) {
         logForDebugging(`Plan recovered from message history, ${recovered.length} chars`, {
-          level: 'info',
+          level: "info",
         });
       }
     }
 
     if (recovered) {
       try {
-        await writeFile(planPath, recovered, { encoding: 'utf-8' });
+        await writeFile(planPath, recovered, { encoding: "utf-8" });
         return true;
       } catch (writeError) {
         logError(writeError);
@@ -218,7 +218,7 @@ export async function copyPlanForResume(
       }
     }
     logForDebugging(
-      'Plan file recovery failed: no file snapshot or plan content found in message history',
+      "Plan file recovery failed: no file snapshot or plan content found in message history",
     );
     return false;
   }
@@ -277,14 +277,14 @@ function recoverPlanFromMessages(log: LogOption): string | null {
       continue;
     }
 
-    if (msg.type === 'assistant') {
+    if (msg.type === "assistant") {
       const { content } = (msg as AssistantMessage).message;
       if (Array.isArray(content)) {
         for (const block of content) {
-          if (block.type === 'tool_use' && block.name === EXIT_PLAN_MODE_V2_TOOL_NAME) {
+          if (block.type === "tool_use" && block.name === EXIT_PLAN_MODE_V2_TOOL_NAME) {
             const input = block.input as Record<string, unknown> | undefined;
             const plan = input?.plan;
-            if (typeof plan === 'string' && plan.length > 0) {
+            if (typeof plan === "string" && plan.length > 0) {
               return plan;
             }
           }
@@ -292,18 +292,18 @@ function recoverPlanFromMessages(log: LogOption): string | null {
       }
     }
 
-    if (msg.type === 'user') {
+    if (msg.type === "user") {
       const userMsg = msg as UserMessage;
-      if (typeof userMsg.planContent === 'string' && userMsg.planContent.length > 0) {
+      if (typeof userMsg.planContent === "string" && userMsg.planContent.length > 0) {
         return userMsg.planContent;
       }
     }
 
-    if (msg.type === 'attachment') {
+    if (msg.type === "attachment") {
       const attachmentMsg = msg as AttachmentMessage;
-      if (attachmentMsg.attachment?.type === 'plan_file_reference') {
+      if (attachmentMsg.attachment?.type === "plan_file_reference") {
         const plan = (attachmentMsg.attachment as { planContent?: string }).planContent;
-        if (typeof plan === 'string' && plan.length > 0) {
+        if (typeof plan === "string" && plan.length > 0) {
           return plan;
         }
       }
@@ -317,16 +317,16 @@ function recoverPlanFromMessages(log: LogOption): string | null {
  * Scans backwards to find the latest snapshot.
  */
 function findFileSnapshotEntry(
-  messages: LogOption['messages'],
+  messages: LogOption["messages"],
   key: string,
 ): { key: string; path: string; content: string } | undefined {
   for (let i = messages.length - 1; i >= 0; i--) {
     const msg = messages[i];
     if (
-      msg?.type === 'system' &&
-      'subtype' in msg &&
-      msg.subtype === 'file_snapshot' &&
-      'snapshotFiles' in msg
+      msg?.type === "system" &&
+      "subtype" in msg &&
+      msg.subtype === "file_snapshot" &&
+      "snapshotFiles" in msg
     ) {
       const files = msg.snapshotFiles as Array<{
         key: string;
@@ -349,13 +349,13 @@ export async function persistFileSnapshotIfRemote(): Promise<void> {
     return;
   }
   try {
-    const snapshotFiles: SystemFileSnapshotMessage['snapshotFiles'] = [];
+    const snapshotFiles: SystemFileSnapshotMessage["snapshotFiles"] = [];
 
     // Snapshot plan file
     const plan = getPlan();
     if (plan) {
       snapshotFiles.push({
-        key: 'plan',
+        key: "plan",
         path: getPlanFilePath(),
         content: plan,
       });
@@ -366,17 +366,17 @@ export async function persistFileSnapshotIfRemote(): Promise<void> {
     }
 
     const message: SystemFileSnapshotMessage = {
-      type: 'system',
-      subtype: 'file_snapshot',
-      content: 'File snapshot',
-      level: 'info',
+      type: "system",
+      subtype: "file_snapshot",
+      content: "File snapshot",
+      level: "info",
       isMeta: true,
       timestamp: new Date().toISOString(),
       uuid: randomUUID(),
       snapshotFiles,
     };
 
-    const { recordTranscript } = await import('./sessionStorage.js');
+    const { recordTranscript } = await import("./sessionStorage.js");
     await recordTranscript([message]);
   } catch (error) {
     logError(error);

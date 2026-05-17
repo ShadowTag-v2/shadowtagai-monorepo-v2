@@ -1,16 +1,16 @@
-import { useEffect, useRef } from 'react';
-import { logError } from 'src/utils/log.js';
-import { z } from 'zod/v4';
-import type { ConnectedMCPServer, MCPServerConnection } from '../services/mcp/types.js';
-import { getConnectedIdeClient } from '../utils/ide.js';
-import { lazySchema } from '../utils/lazySchema.js';
+import { useEffect, useRef } from "react";
+import { logError } from "src/utils/log.js";
+import { z } from "zod/v4";
+import type { ConnectedMCPServer, MCPServerConnection } from "../services/mcp/types.js";
+import { getConnectedIdeClient } from "../utils/ide.js";
+import { lazySchema } from "../utils/lazySchema.js";
 export type IDEAtMentioned = {
   filePath: string;
   lineStart?: number;
   lineEnd?: number;
 };
 
-const NOTIFICATION_METHOD = 'at_mentioned';
+const NOTIFICATION_METHOD = "at_mentioned";
 
 const AtMentionedSchema = lazySchema(() =>
   z.object({

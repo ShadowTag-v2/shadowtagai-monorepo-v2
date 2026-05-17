@@ -1,27 +1,27 @@
-import { join } from 'node:path';
-import { getCwd } from '../cwd.js';
-import { logForDebugging } from '../debug.js';
-import { logError } from '../log.js';
-import type { SettingSource } from '../settings/constants.js';
+import { join } from "node:path";
+import { getCwd } from "../cwd.js";
+import { logForDebugging } from "../debug.js";
+import { logError } from "../log.js";
+import type { SettingSource } from "../settings/constants.js";
 import {
   getInitialSettings,
   getSettingsForSource,
   updateSettingsForSource,
-} from '../settings/settings.js';
-import { getAddDirEnabledPlugins } from './addDirPluginSettings.js';
+} from "../settings/settings.js";
+import { getAddDirEnabledPlugins } from "./addDirPluginSettings.js";
 import {
   getInMemoryInstalledPlugins,
   migrateFromEnabledPlugins,
-} from './installedPluginsManager.js';
-import { getPluginById } from './marketplaceManager.js';
+} from "./installedPluginsManager.js";
+import { getPluginById } from "./marketplaceManager.js";
 import {
   type ExtendedPluginScope,
   type PersistablePluginScope,
   SETTING_SOURCE_TO_SCOPE,
   scopeToSettingSource,
-} from './pluginIdentifier.js';
-import { cacheAndRegisterPlugin, registerPluginInstallation } from './pluginInstallationHelpers.js';
-import { isLocalPluginSource, type PluginScope } from './schemas.js';
+} from "./pluginIdentifier.js";
+import { cacheAndRegisterPlugin, registerPluginInstallation } from "./pluginInstallationHelpers.js";
+import { isLocalPluginSource, type PluginScope } from "./schemas.js";
 
 /**
  * Checks for enabled plugins across all settings sources, including --add-dir.
@@ -40,7 +40,7 @@ export async function checkEnabledPlugins(): Promise<string[]> {
   // Start with --add-dir plugins (lowest priority)
   const addDirPlugins = getAddDirEnabledPlugins();
   for (const [pluginId, value] of Object.entries(addDirPlugins)) {
-    if (pluginId.includes('@') && value) {
+    if (pluginId.includes("@") && value) {
       enabledPlugins.push(pluginId);
     }
   }
@@ -48,7 +48,7 @@ export async function checkEnabledPlugins(): Promise<string[]> {
   // Merged settings (policy > local > project > user) override --add-dir
   if (settings.enabledPlugins) {
     for (const [pluginId, value] of Object.entries(settings.enabledPlugins)) {
-      if (!pluginId.includes('@')) {
+      if (!pluginId.includes("@")) {
         continue;
       }
       const idx = enabledPlugins.indexOf(pluginId);
@@ -96,11 +96,11 @@ export function getPluginEditableScopes(): Map<string, ExtendedPluginScope> {
   // Process --add-dir directories FIRST (lowest priority, overridden by all standard sources)
   const addDirPlugins = getAddDirEnabledPlugins();
   for (const [pluginId, value] of Object.entries(addDirPlugins)) {
-    if (!pluginId.includes('@')) {
+    if (!pluginId.includes("@")) {
       continue;
     }
     if (value === true) {
-      result.set(pluginId, 'flag'); // 'flag' scope = session-only, no write-back
+      result.set(pluginId, "flag"); // 'flag' scope = session-only, no write-back
     } else if (value === false) {
       result.delete(pluginId);
     }
@@ -111,11 +111,11 @@ export function getPluginEditableScopes(): Map<string, ExtendedPluginScope> {
     scope: ExtendedPluginScope;
     source: SettingSource;
   }> = [
-    { scope: 'managed', source: 'policySettings' },
-    { scope: 'user', source: 'userSettings' },
-    { scope: 'project', source: 'projectSettings' },
-    { scope: 'local', source: 'localSettings' },
-    { scope: 'flag', source: 'flagSettings' },
+    { scope: "managed", source: "policySettings" },
+    { scope: "user", source: "userSettings" },
+    { scope: "project", source: "projectSettings" },
+    { scope: "local", source: "localSettings" },
+    { scope: "flag", source: "flagSettings" },
   ];
 
   for (const { scope, source } of scopeSources) {
@@ -126,7 +126,7 @@ export function getPluginEditableScopes(): Map<string, ExtendedPluginScope> {
 
     for (const [pluginId, value] of Object.entries(settings.enabledPlugins)) {
       // Skip invalid format
-      if (!pluginId.includes('@')) {
+      if (!pluginId.includes("@")) {
         continue;
       }
 
@@ -151,7 +151,7 @@ export function getPluginEditableScopes(): Map<string, ExtendedPluginScope> {
   logForDebugging(
     `Found ${result.size} enabled plugins with scopes: ${Array.from(result.entries())
       .map(([id, scope]) => `${id}(${scope})`)
-      .join(', ')}`,
+      .join(", ")}`,
   );
 
   return result;
@@ -163,7 +163,7 @@ export function getPluginEditableScopes(): Map<string, ExtendedPluginScope> {
  * @returns true if the scope should be persisted to installed_plugins.json
  */
 export function isPersistableScope(scope: ExtendedPluginScope): scope is PersistablePluginScope {
-  return scope !== 'flag';
+  return scope !== "flag";
 }
 
 /**
@@ -243,7 +243,7 @@ export type PluginInstallResult = {
 /**
  * Installation scope type for install functions (excludes 'managed' which is read-only)
  */
-type InstallableScope = Exclude<PluginScope, 'managed'>;
+type InstallableScope = Exclude<PluginScope, "managed">;
 
 /**
  * Installs the selected plugins
@@ -255,10 +255,10 @@ type InstallableScope = Exclude<PluginScope, 'managed'>;
 export async function installSelectedPlugins(
   pluginsToInstall: string[],
   onProgress?: (name: string, index: number, total: number) => void,
-  scope: InstallableScope = 'user',
+  scope: InstallableScope = "user",
 ): Promise<PluginInstallResult> {
   // Get projectPath for non-user scopes
-  const projectPath = scope !== 'user' ? getCwd() : undefined;
+  const projectPath = scope !== "user" ? getCwd() : undefined;
 
   // Get the correct settings source for this scope
   const settingSource = scopeToSettingSource(scope);
@@ -280,7 +280,7 @@ export async function installSelectedPlugins(
       if (!pluginInfo) {
         failed.push({
           name: pluginId,
-          error: 'Plugin not found in any marketplace',
+          error: "Plugin not found in any marketplace",
         });
         continue;
       }

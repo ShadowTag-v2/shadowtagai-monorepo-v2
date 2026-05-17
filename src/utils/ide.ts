@@ -1,43 +1,43 @@
-import { createConnection } from 'node:net';
-import * as os from 'node:os';
-import { basename, join, sep as pathSeparator, resolve } from 'node:path';
-import type { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import axios from 'axios';
-import { execa } from 'execa';
-import capitalize from 'lodash-es/capitalize.js';
-import memoize from 'lodash-es/memoize.js';
-import { logEvent } from 'src/services/analytics/index.js';
-import { getIsScrollDraining, getOriginalCwd } from '../bootstrap/state.js';
-import { callIdeRpc } from '../services/mcp/client.js';
-import type { ConnectedMCPServer, MCPServerConnection } from '../services/mcp/types.js';
-import { getGlobalConfig, saveGlobalConfig } from './config.js';
-import { env } from './env.js';
-import { getClaudeConfigHomeDir, isEnvTruthy } from './envUtils.js';
+import { createConnection } from "node:net";
+import * as os from "node:os";
+import { basename, join, sep as pathSeparator, resolve } from "node:path";
+import type { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import axios from "axios";
+import { execa } from "execa";
+import capitalize from "lodash-es/capitalize.js";
+import memoize from "lodash-es/memoize.js";
+import { logEvent } from "src/services/analytics/index.js";
+import { getIsScrollDraining, getOriginalCwd } from "../bootstrap/state.js";
+import { callIdeRpc } from "../services/mcp/client.js";
+import type { ConnectedMCPServer, MCPServerConnection } from "../services/mcp/types.js";
+import { getGlobalConfig, saveGlobalConfig } from "./config.js";
+import { env } from "./env.js";
+import { getClaudeConfigHomeDir, isEnvTruthy } from "./envUtils.js";
 import {
   execFileNoThrow,
   execFileNoThrowWithCwd,
   execSyncWithDefaults_DEPRECATED,
-} from './execFileNoThrow.js';
-import { getFsImplementation } from './fsOperations.js';
-import { getAncestorPidsAsync } from './genericProcessUtils.js';
-import { isJetBrainsPluginInstalledCached } from './jetbrains.js';
-import { logError } from './log.js';
-import { getPlatform } from './platform.js';
-import { lt } from './semver.js';
+} from "./execFileNoThrow.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { getAncestorPidsAsync } from "./genericProcessUtils.js";
+import { isJetBrainsPluginInstalledCached } from "./jetbrains.js";
+import { logError } from "./log.js";
+import { getPlatform } from "./platform.js";
+import { lt } from "./semver.js";
 
 // Lazy: IdeOnboardingDialog.tsx pulls React/ink; only needed in interactive onboarding path
 /* eslint-disable @typescript-eslint/no-require-imports */
-const ideOnboardingDialog = (): typeof import('src/components/IdeOnboardingDialog.js') =>
-  require('src/components/IdeOnboardingDialog.js');
+const ideOnboardingDialog = (): typeof import("src/components/IdeOnboardingDialog.js") =>
+  require("src/components/IdeOnboardingDialog.js");
 
-import { createAbortController } from './abortController.js';
-import { logForDebugging } from './debug.js';
-import { envDynamic } from './envDynamic.js';
-import { errorMessage, isFsInaccessible } from './errors.js';
+import { createAbortController } from "./abortController.js";
+import { logForDebugging } from "./debug.js";
+import { envDynamic } from "./envDynamic.js";
+import { errorMessage, isFsInaccessible } from "./errors.js";
 /* eslint-enable @typescript-eslint/no-require-imports */
-import { checkWSLDistroMatch, WindowsToWSLConverter } from './idePathConversion.js';
-import { sleep } from './sleep.js';
-import { jsonParse } from './slowOperations.js';
+import { checkWSLDistroMatch, WindowsToWSLConverter } from "./idePathConversion.js";
+import { sleep } from "./sleep.js";
+import { jsonParse } from "./slowOperations.js";
 
 function isProcessRunning(pid: number): boolean {
   try {
@@ -65,7 +65,7 @@ type LockfileJsonContent = {
   workspaceFolders?: string[];
   pid?: number;
   ideName?: string;
-  transport?: 'ws' | 'sse';
+  transport?: "ws" | "sse";
   runningInWindows?: boolean;
   authToken?: string;
 };
@@ -91,27 +91,27 @@ export type DetectedIDEInfo = {
 };
 
 export type IdeType =
-  | 'cursor'
-  | 'windsurf'
-  | 'vscode'
-  | 'pycharm'
-  | 'intellij'
-  | 'webstorm'
-  | 'phpstorm'
-  | 'rubymine'
-  | 'clion'
-  | 'goland'
-  | 'rider'
-  | 'datagrip'
-  | 'appcode'
-  | 'dataspell'
-  | 'aqua'
-  | 'gateway'
-  | 'fleet'
-  | 'androidstudio';
+  | "cursor"
+  | "windsurf"
+  | "vscode"
+  | "pycharm"
+  | "intellij"
+  | "webstorm"
+  | "phpstorm"
+  | "rubymine"
+  | "clion"
+  | "goland"
+  | "rider"
+  | "datagrip"
+  | "appcode"
+  | "dataspell"
+  | "aqua"
+  | "gateway"
+  | "fleet"
+  | "androidstudio";
 
 type IdeConfig = {
-  ideKind: 'vscode' | 'jetbrains';
+  ideKind: "vscode" | "jetbrains";
   displayName: string;
   processKeywordsMac: string[];
   processKeywordsWindows: string[];
@@ -120,143 +120,143 @@ type IdeConfig = {
 
 const supportedIdeConfigs: Record<IdeType, IdeConfig> = {
   cursor: {
-    ideKind: 'vscode',
-    displayName: 'Cursor',
-    processKeywordsMac: ['Cursor Helper', 'Cursor.app'],
-    processKeywordsWindows: ['cursor.exe'],
-    processKeywordsLinux: ['cursor'],
+    ideKind: "vscode",
+    displayName: "Cursor",
+    processKeywordsMac: ["Cursor Helper", "Cursor.app"],
+    processKeywordsWindows: ["cursor.exe"],
+    processKeywordsLinux: ["cursor"],
   },
   windsurf: {
-    ideKind: 'vscode',
-    displayName: 'Windsurf',
-    processKeywordsMac: ['Windsurf Helper', 'Windsurf.app'],
-    processKeywordsWindows: ['windsurf.exe'],
-    processKeywordsLinux: ['windsurf'],
+    ideKind: "vscode",
+    displayName: "Windsurf",
+    processKeywordsMac: ["Windsurf Helper", "Windsurf.app"],
+    processKeywordsWindows: ["windsurf.exe"],
+    processKeywordsLinux: ["windsurf"],
   },
   vscode: {
-    ideKind: 'vscode',
-    displayName: 'VS Code',
-    processKeywordsMac: ['Visual Studio Code', 'Code Helper'],
-    processKeywordsWindows: ['code.exe'],
-    processKeywordsLinux: ['code'],
+    ideKind: "vscode",
+    displayName: "VS Code",
+    processKeywordsMac: ["Visual Studio Code", "Code Helper"],
+    processKeywordsWindows: ["code.exe"],
+    processKeywordsLinux: ["code"],
   },
   intellij: {
-    ideKind: 'jetbrains',
-    displayName: 'IntelliJ IDEA',
-    processKeywordsMac: ['IntelliJ IDEA'],
-    processKeywordsWindows: ['idea64.exe'],
-    processKeywordsLinux: ['idea', 'intellij'],
+    ideKind: "jetbrains",
+    displayName: "IntelliJ IDEA",
+    processKeywordsMac: ["IntelliJ IDEA"],
+    processKeywordsWindows: ["idea64.exe"],
+    processKeywordsLinux: ["idea", "intellij"],
   },
   pycharm: {
-    ideKind: 'jetbrains',
-    displayName: 'PyCharm',
-    processKeywordsMac: ['PyCharm'],
-    processKeywordsWindows: ['pycharm64.exe'],
-    processKeywordsLinux: ['pycharm'],
+    ideKind: "jetbrains",
+    displayName: "PyCharm",
+    processKeywordsMac: ["PyCharm"],
+    processKeywordsWindows: ["pycharm64.exe"],
+    processKeywordsLinux: ["pycharm"],
   },
   webstorm: {
-    ideKind: 'jetbrains',
-    displayName: 'WebStorm',
-    processKeywordsMac: ['WebStorm'],
-    processKeywordsWindows: ['webstorm64.exe'],
-    processKeywordsLinux: ['webstorm'],
+    ideKind: "jetbrains",
+    displayName: "WebStorm",
+    processKeywordsMac: ["WebStorm"],
+    processKeywordsWindows: ["webstorm64.exe"],
+    processKeywordsLinux: ["webstorm"],
   },
   phpstorm: {
-    ideKind: 'jetbrains',
-    displayName: 'PhpStorm',
-    processKeywordsMac: ['PhpStorm'],
-    processKeywordsWindows: ['phpstorm64.exe'],
-    processKeywordsLinux: ['phpstorm'],
+    ideKind: "jetbrains",
+    displayName: "PhpStorm",
+    processKeywordsMac: ["PhpStorm"],
+    processKeywordsWindows: ["phpstorm64.exe"],
+    processKeywordsLinux: ["phpstorm"],
   },
   rubymine: {
-    ideKind: 'jetbrains',
-    displayName: 'RubyMine',
-    processKeywordsMac: ['RubyMine'],
-    processKeywordsWindows: ['rubymine64.exe'],
-    processKeywordsLinux: ['rubymine'],
+    ideKind: "jetbrains",
+    displayName: "RubyMine",
+    processKeywordsMac: ["RubyMine"],
+    processKeywordsWindows: ["rubymine64.exe"],
+    processKeywordsLinux: ["rubymine"],
   },
   clion: {
-    ideKind: 'jetbrains',
-    displayName: 'CLion',
-    processKeywordsMac: ['CLion'],
-    processKeywordsWindows: ['clion64.exe'],
-    processKeywordsLinux: ['clion'],
+    ideKind: "jetbrains",
+    displayName: "CLion",
+    processKeywordsMac: ["CLion"],
+    processKeywordsWindows: ["clion64.exe"],
+    processKeywordsLinux: ["clion"],
   },
   goland: {
-    ideKind: 'jetbrains',
-    displayName: 'GoLand',
-    processKeywordsMac: ['GoLand'],
-    processKeywordsWindows: ['goland64.exe'],
-    processKeywordsLinux: ['goland'],
+    ideKind: "jetbrains",
+    displayName: "GoLand",
+    processKeywordsMac: ["GoLand"],
+    processKeywordsWindows: ["goland64.exe"],
+    processKeywordsLinux: ["goland"],
   },
   rider: {
-    ideKind: 'jetbrains',
-    displayName: 'Rider',
-    processKeywordsMac: ['Rider'],
-    processKeywordsWindows: ['rider64.exe'],
-    processKeywordsLinux: ['rider'],
+    ideKind: "jetbrains",
+    displayName: "Rider",
+    processKeywordsMac: ["Rider"],
+    processKeywordsWindows: ["rider64.exe"],
+    processKeywordsLinux: ["rider"],
   },
   datagrip: {
-    ideKind: 'jetbrains',
-    displayName: 'DataGrip',
-    processKeywordsMac: ['DataGrip'],
-    processKeywordsWindows: ['datagrip64.exe'],
-    processKeywordsLinux: ['datagrip'],
+    ideKind: "jetbrains",
+    displayName: "DataGrip",
+    processKeywordsMac: ["DataGrip"],
+    processKeywordsWindows: ["datagrip64.exe"],
+    processKeywordsLinux: ["datagrip"],
   },
   appcode: {
-    ideKind: 'jetbrains',
-    displayName: 'AppCode',
-    processKeywordsMac: ['AppCode'],
-    processKeywordsWindows: ['appcode.exe'],
-    processKeywordsLinux: ['appcode'],
+    ideKind: "jetbrains",
+    displayName: "AppCode",
+    processKeywordsMac: ["AppCode"],
+    processKeywordsWindows: ["appcode.exe"],
+    processKeywordsLinux: ["appcode"],
   },
   dataspell: {
-    ideKind: 'jetbrains',
-    displayName: 'DataSpell',
-    processKeywordsMac: ['DataSpell'],
-    processKeywordsWindows: ['dataspell64.exe'],
-    processKeywordsLinux: ['dataspell'],
+    ideKind: "jetbrains",
+    displayName: "DataSpell",
+    processKeywordsMac: ["DataSpell"],
+    processKeywordsWindows: ["dataspell64.exe"],
+    processKeywordsLinux: ["dataspell"],
   },
   aqua: {
-    ideKind: 'jetbrains',
-    displayName: 'Aqua',
+    ideKind: "jetbrains",
+    displayName: "Aqua",
     processKeywordsMac: [], // Do not auto-detect since aqua is too common
-    processKeywordsWindows: ['aqua64.exe'],
+    processKeywordsWindows: ["aqua64.exe"],
     processKeywordsLinux: [],
   },
   gateway: {
-    ideKind: 'jetbrains',
-    displayName: 'Gateway',
+    ideKind: "jetbrains",
+    displayName: "Gateway",
     processKeywordsMac: [], // Do not auto-detect since gateway is too common
-    processKeywordsWindows: ['gateway64.exe'],
+    processKeywordsWindows: ["gateway64.exe"],
     processKeywordsLinux: [],
   },
   fleet: {
-    ideKind: 'jetbrains',
-    displayName: 'Fleet',
+    ideKind: "jetbrains",
+    displayName: "Fleet",
     processKeywordsMac: [], // Do not auto-detect since fleet is too common
-    processKeywordsWindows: ['fleet.exe'],
+    processKeywordsWindows: ["fleet.exe"],
     processKeywordsLinux: [],
   },
   androidstudio: {
-    ideKind: 'jetbrains',
-    displayName: 'Android Studio',
-    processKeywordsMac: ['Android Studio'],
-    processKeywordsWindows: ['studio64.exe'],
-    processKeywordsLinux: ['android-studio'],
+    ideKind: "jetbrains",
+    displayName: "Android Studio",
+    processKeywordsMac: ["Android Studio"],
+    processKeywordsWindows: ["studio64.exe"],
+    processKeywordsLinux: ["android-studio"],
   },
 };
 
 export function isVSCodeIde(ide: IdeType | null): boolean {
   if (!ide) return false;
   const config = supportedIdeConfigs[ide];
-  return config && config.ideKind === 'vscode';
+  return config && config.ideKind === "vscode";
 }
 
 export function isJetBrainsIde(ide: IdeType | null): boolean {
   if (!ide) return false;
   const config = supportedIdeConfigs[ide];
-  return config && config.ideKind === 'jetbrains';
+  return config && config.ideKind === "jetbrains";
 }
 
 export const isSupportedVSCodeTerminal = memoize(() => {
@@ -295,7 +295,7 @@ export async function getSortedIdeLockfiles(): Promise<string[]> {
       ideLockFilePaths.map(async (ideLockFilePath) => {
         try {
           const entries = await getFsImplementation().readdir(ideLockFilePath);
-          const lockEntries = entries.filter((file) => file.name.endsWith('.lock'));
+          const lockEntries = entries.filter((file) => file.name.endsWith(".lock"));
           // Stat all lockfiles in parallel; skip ones that fail
           const stats = await Promise.all(
             lockEntries.map(async (file) => {
@@ -334,7 +334,7 @@ export async function getSortedIdeLockfiles(): Promise<string[]> {
 async function readIdeLockfile(path: string): Promise<IdeLockfileInfo | null> {
   try {
     const content = await getFsImplementation().readFile(path, {
-      encoding: 'utf-8',
+      encoding: "utf-8",
     });
 
     let workspaceFolders: string[] = [];
@@ -351,19 +351,19 @@ async function readIdeLockfile(path: string): Promise<IdeLockfileInfo | null> {
       }
       pid = parsedContent.pid;
       ideName = parsedContent.ideName;
-      useWebSocket = parsedContent.transport === 'ws';
+      useWebSocket = parsedContent.transport === "ws";
       runningInWindows = parsedContent.runningInWindows === true;
       authToken = parsedContent.authToken;
     } catch (_) {
       // Older format- just a list of paths.
-      workspaceFolders = content.split('\n').map((line) => line.trim());
+      workspaceFolders = content.split("\n").map((line) => line.trim());
     }
 
     // Extract the port from the filename (e.g., 12345.lock -> 12345)
     const filename = path.split(pathSeparator).pop();
     if (!filename) return null;
 
-    const port = filename.replace('.lock', '');
+    const port = filename.replace(".lock", "");
 
     return {
       workspaceFolders,
@@ -396,16 +396,16 @@ async function checkIdeConnection(host: string, port: number, timeout = 500): Pr
         timeout: timeout,
       });
 
-      socket.on('connect', () => {
+      socket.on("connect", () => {
         socket.destroy();
         void resolve(true);
       });
 
-      socket.on('error', () => {
+      socket.on("error", () => {
         void resolve(false);
       });
 
-      socket.on('timeout', () => {
+      socket.on("timeout", () => {
         socket.destroy();
         void resolve(false);
       });
@@ -423,15 +423,15 @@ async function checkIdeConnection(host: string, port: number, timeout = 500): Pr
  */
 const getWindowsUserProfile = memoize(async (): Promise<string | undefined> => {
   if (process.env.USERPROFILE) return process.env.USERPROFILE;
-  const { stdout, code } = await execFileNoThrow('powershell.exe', [
-    '-NoProfile',
-    '-NonInteractive',
-    '-Command',
-    '$env:USERPROFILE',
+  const { stdout, code } = await execFileNoThrow("powershell.exe", [
+    "-NoProfile",
+    "-NonInteractive",
+    "-Command",
+    "$env:USERPROFILE",
   ]);
   if (code === 0 && stdout.trim()) return stdout.trim();
   logForDebugging(
-    'Unable to get Windows USERPROFILE via PowerShell - IDE detection may be incomplete',
+    "Unable to get Windows USERPROFILE via PowerShell - IDE detection may be incomplete",
   );
   return undefined;
 });
@@ -444,9 +444,9 @@ const getWindowsUserProfile = memoize(async (): Promise<string | undefined> => {
  * stat loop compounded startup latency.
  */
 export async function getIdeLockfilesPaths(): Promise<string[]> {
-  const paths: string[] = [join(getClaudeConfigHomeDir(), 'ide')];
+  const paths: string[] = [join(getClaudeConfigHomeDir(), "ide")];
 
-  if (getPlatform() !== 'wsl') {
+  if (getPlatform() !== "wsl") {
     return paths;
   }
 
@@ -458,13 +458,13 @@ export async function getIdeLockfilesPaths(): Promise<string[]> {
   if (windowsHome) {
     const converter = new WindowsToWSLConverter(process.env.WSL_DISTRO_NAME);
     const wslPath = converter.toLocalPath(windowsHome);
-    paths.push(resolve(wslPath, '.claude', 'ide'));
+    paths.push(resolve(wslPath, ".claude", "ide"));
   }
 
   // Construct the path based on the standard Windows WSL locations
   // This can fail if the current user does not have "List folder contents" permission on C:\Users
   try {
-    const usersDir = '/mnt/c/Users';
+    const usersDir = "/mnt/c/Users";
     const userDirs = await getFsImplementation().readdir(usersDir);
 
     for (const user of userDirs) {
@@ -476,14 +476,14 @@ export async function getIdeLockfilesPaths(): Promise<string[]> {
         continue;
       }
       if (
-        user.name === 'Public' ||
-        user.name === 'Default' ||
-        user.name === 'Default User' ||
-        user.name === 'All Users'
+        user.name === "Public" ||
+        user.name === "Default" ||
+        user.name === "Default User" ||
+        user.name === "All Users"
       ) {
         continue; // Skip system directories
       }
-      paths.push(join(usersDir, user.name, '.claude', 'ide'));
+      paths.push(join(usersDir, user.name, ".claude", "ide"));
     }
   } catch (error: unknown) {
     if (isFsInaccessible(error)) {
@@ -527,7 +527,7 @@ export async function cleanupStaleIdeLockfiles(): Promise<void> {
       if (lockfileInfo.pid) {
         // Check if the process is still running
         if (!isProcessRunning(lockfileInfo.pid)) {
-          if (getPlatform() !== 'wsl') {
+          if (getPlatform() !== "wsl") {
             shouldDelete = true;
           } else {
             // The process id may not be reliable in wsl, so also check the connection
@@ -572,12 +572,12 @@ export async function maybeInstallIDEExtension(
     // Install/update the extension
     const installedVersion = await installIDEExtension(ideType);
     // Only track successful installations
-    logEvent('tengu_ext_installed', {});
+    logEvent("tengu_ext_installed", {});
 
     // Set diff tool config to auto if it has not been set already
     const globalConfig = getGlobalConfig();
     if (!globalConfig.diffTool) {
-      saveGlobalConfig((current) => ({ ...current, diffTool: 'auto' }));
+      saveGlobalConfig((current) => ({ ...current, diffTool: "auto" }));
     }
     return {
       installed: true,
@@ -586,7 +586,7 @@ export async function maybeInstallIDEExtension(
       ideType: ideType,
     };
   } catch (error) {
-    logEvent('tengu_ext_install_error', {});
+    logEvent("tengu_ext_install_error", {});
     // Handle installation errors
     const errorMessage = error instanceof Error ? error.message : String(error);
     logError(error as Error);
@@ -651,7 +651,7 @@ export async function detectIDEs(includeInvalid: boolean): Promise<DetectedIDEIn
     // comparison. macOS returns NFD paths (decomposed Unicode), while IDEs
     // like VS Code report NFC paths (composed Unicode). Without normalization,
     // paths containing accented/CJK characters fail to match.
-    const cwd = getOriginalCwd().normalize('NFC');
+    const cwd = getOriginalCwd().normalize("NFC");
 
     // Get sorted lockfiles (full paths) and read them all in parallel.
     // findAvailableIDE() polls this every 1s for up to 30s; serial I/O here was
@@ -663,7 +663,7 @@ export async function detectIDEs(includeInvalid: boolean): Promise<DetectedIDEIn
     // single-shot per detectIDEs() call; with the workspace-check-first ordering
     // below, this often never fires at all.
     const getAncestors = makeAncestorPidLookup();
-    const needsAncestryCheck = getPlatform() !== 'wsl' && isSupportedTerminal();
+    const needsAncestryCheck = getPlatform() !== "wsl" && isSupportedTerminal();
 
     // Try to find a lockfile that contains our current working directory
     for (const lockfileInfo of lockfileInfos) {
@@ -684,7 +684,7 @@ export async function detectIDEs(includeInvalid: boolean): Promise<DetectedIDEIn
 
           // Handle WSL-specific path conversion and distro matching
           if (
-            getPlatform() === 'wsl' &&
+            getPlatform() === "wsl" &&
             lockfileInfo.runningInWindows &&
             process.env.WSL_DISTRO_NAME
           ) {
@@ -695,7 +695,7 @@ export async function detectIDEs(includeInvalid: boolean): Promise<DetectedIDEIn
 
             // Try both the original path and the converted path
             // This handles cases where the IDE might report either format
-            const resolvedOriginal = resolve(localPath).normalize('NFC');
+            const resolvedOriginal = resolve(localPath).normalize("NFC");
             if (cwd === resolvedOriginal || cwd.startsWith(resolvedOriginal + pathSeparator)) {
               return true;
             }
@@ -705,10 +705,10 @@ export async function detectIDEs(includeInvalid: boolean): Promise<DetectedIDEIn
             localPath = converter.toLocalPath(idePath);
           }
 
-          const resolvedPath = resolve(localPath).normalize('NFC');
+          const resolvedPath = resolve(localPath).normalize("NFC");
 
           // On Windows, normalize paths for case-insensitive drive letter comparison
-          if (getPlatform() === 'windows') {
+          if (getPlatform() === "windows") {
             const normalizedCwd = cwd.replace(/^[a-zA-Z]:/, (match) => match.toUpperCase());
             const normalizedResolvedPath = resolvedPath.replace(/^[a-zA-Z]:/, (match) =>
               match.toUpperCase(),
@@ -750,7 +750,7 @@ export async function detectIDEs(includeInvalid: boolean): Promise<DetectedIDEIn
 
       const ideName =
         lockfileInfo.ideName ??
-        (isSupportedTerminal() ? toIDEDisplayName(envDynamic.terminal) : 'IDE');
+        (isSupportedTerminal() ? toIDEDisplayName(envDynamic.terminal) : "IDE");
 
       const host = await detectHostIP(lockfileInfo.runningInWindows, lockfileInfo.port);
       let url;
@@ -789,7 +789,7 @@ export async function detectIDEs(includeInvalid: boolean): Promise<DetectedIDEIn
 
 export async function maybeNotifyIDEConnected(client: Client) {
   await client.notification({
-    method: 'ide_connected',
+    method: "ide_connected",
     params: {
       pid: process.pid,
     },
@@ -798,18 +798,18 @@ export async function maybeNotifyIDEConnected(client: Client) {
 
 export function hasAccessToIDEExtensionDiffFeature(mcpClients: MCPServerConnection[]): boolean {
   // Check if there's a connected IDE client in the provided MCP clients list
-  return mcpClients.some((client) => client.type === 'connected' && client.name === 'ide');
+  return mcpClients.some((client) => client.type === "connected" && client.name === "ide");
 }
 
 const EXTENSION_ID =
-  process.env.USER_TYPE === 'ant' ? 'anthropic.claude-code-internal' : 'anthropic.claude-code';
+  process.env.USER_TYPE === "ant" ? "anthropic.claude-code-internal" : "anthropic.claude-code";
 
 export async function isIDEExtensionInstalled(ideType: IdeType): Promise<boolean> {
   if (isVSCodeIde(ideType)) {
     const command = await getVSCodeIDECommand(ideType);
     if (command) {
       try {
-        const result = await execFileNoThrowWithCwd(command, ['--list-extensions'], {
+        const result = await execFileNoThrowWithCwd(command, ["--list-extensions"], {
           env: getInstallationEnv(),
         });
         if (result.stdout?.includes(EXTENSION_ID)) {
@@ -830,7 +830,7 @@ async function installIDEExtension(ideType: IdeType): Promise<string | null> {
     const command = await getVSCodeIDECommand(ideType);
 
     if (command) {
-      if (process.env.USER_TYPE === 'ant') {
+      if (process.env.USER_TYPE === "ant") {
         return await installFromArtifactory(command);
       }
       let version = await getInstalledVSCodeExtensionVersion(command);
@@ -840,7 +840,7 @@ async function installIDEExtension(ideType: IdeType): Promise<string | null> {
         await sleep(500);
         const result = await execFileNoThrowWithCwd(
           command,
-          ['--force', '--install-extension', 'anthropic.claude-code'],
+          ["--force", "--install-extension", "anthropic.claude-code"],
           {
             env: getInstallationEnv(),
           },
@@ -864,10 +864,10 @@ function getInstallationEnv(): NodeJS.ProcessEnv | undefined {
   // the `code` command and actually launch the UI.
   // Make this error out if this happens by clearing the DISPLAY
   // environment variable.
-  if (getPlatform() === 'linux') {
+  if (getPlatform() === "linux") {
     return {
       ...process.env,
-      DISPLAY: '',
+      DISPLAY: "",
     };
   }
   return undefined;
@@ -878,13 +878,13 @@ function getClaudeCodeVersion() {
 }
 
 async function getInstalledVSCodeExtensionVersion(command: string): Promise<string | null> {
-  const { stdout } = await execFileNoThrow(command, ['--list-extensions', '--show-versions'], {
+  const { stdout } = await execFileNoThrow(command, ["--list-extensions", "--show-versions"], {
     env: getInstallationEnv(),
   });
-  const lines = stdout?.split('\n') || [];
+  const lines = stdout?.split("\n") || [];
   for (const line of lines) {
-    const [extensionId, version] = line.split('@');
-    if (extensionId === 'anthropic.claude-code' && version) {
+    const [extensionId, version] = line.split("@");
+    if (extensionId === "anthropic.claude-code" && version) {
       return version;
     }
   }
@@ -897,7 +897,7 @@ function getVSCodeIDECommandByParentProcess(): string | null {
 
     // Only supported on OSX, where Cursor has the ability to
     // register itself as the 'code' command.
-    if (platform !== 'macos') {
+    if (platform !== "macos") {
       return null;
     }
 
@@ -917,13 +917,13 @@ function getVSCodeIDECommandByParentProcess(): string | null {
       if (command) {
         // Check for known applications and extract the path up to and including .app
         const appNames = {
-          'Visual Studio Code.app': 'code',
-          'Cursor.app': 'cursor',
-          'Windsurf.app': 'windsurf',
-          'Visual Studio Code - Insiders.app': 'code',
-          'VSCodium.app': 'codium',
+          "Visual Studio Code.app": "code",
+          "Cursor.app": "cursor",
+          "Windsurf.app": "windsurf",
+          "Visual Studio Code - Insiders.app": "code",
+          "VSCodium.app": "codium",
         };
-        const pathToExecutable = '/Contents/MacOS/Electron';
+        const pathToExecutable = "/Contents/MacOS/Electron";
 
         for (const [appName, executableName] of Object.entries(appNames)) {
           const appIndex = command.indexOf(appName + pathToExecutable);
@@ -973,13 +973,13 @@ async function getVSCodeIDECommand(ideType: IdeType): Promise<string | null> {
   // instead of running the CLI. Asking for 'code.cmd' forces cross-spawn/which
   // to skip Code.exe. See microsoft/vscode#299416 (fixed in Insiders) and
   // anthropics/claude-code#30975.
-  const ext = getPlatform() === 'windows' ? '.cmd' : '';
+  const ext = getPlatform() === "windows" ? ".cmd" : "";
   switch (ideType) {
-    case 'vscode':
+    case "vscode":
       return `code${ext}`;
-    case 'cursor':
+    case "cursor":
       return `cursor${ext}`;
-    case 'windsurf':
+    case "windsurf":
       return `windsurf${ext}`;
     default:
       break;
@@ -988,19 +988,19 @@ async function getVSCodeIDECommand(ideType: IdeType): Promise<string | null> {
 }
 
 export async function isCursorInstalled(): Promise<boolean> {
-  const result = await execFileNoThrow('cursor', ['--version']);
+  const result = await execFileNoThrow("cursor", ["--version"]);
   return result.code === 0;
 }
 
 export async function isWindsurfInstalled(): Promise<boolean> {
-  const result = await execFileNoThrow('windsurf', ['--version']);
+  const result = await execFileNoThrow("windsurf", ["--version"]);
   return result.code === 0;
 }
 
 export async function isVSCodeInstalled(): Promise<boolean> {
-  const result = await execFileNoThrow('code', ['--help']);
+  const result = await execFileNoThrow("code", ["--help"]);
   // Check if the output indicates this is actually Visual Studio Code
-  return result.code === 0 && Boolean(result.stdout?.includes('Visual Studio Code'));
+  return result.code === 0 && Boolean(result.stdout?.includes("Visual Studio Code"));
 }
 
 // Cache for IDE detection results
@@ -1014,13 +1014,13 @@ async function detectRunningIDEsImpl(): Promise<IdeType[]> {
 
   try {
     const platform = getPlatform();
-    if (platform === 'macos') {
+    if (platform === "macos") {
       // On macOS, use ps with process name matching
       const result = await execa(
         'ps aux | grep -E "Visual Studio Code|Code Helper|Cursor Helper|Windsurf Helper|IntelliJ IDEA|PyCharm|WebStorm|PhpStorm|RubyMine|CLion|GoLand|Rider|DataGrip|AppCode|DataSpell|Aqua|Gateway|Fleet|Android Studio" | grep -v grep',
         { shell: true, reject: false },
       );
-      const stdout = result.stdout ?? '';
+      const stdout = result.stdout ?? "";
       for (const [ide, config] of Object.entries(supportedIdeConfigs)) {
         for (const keyword of config.processKeywordsMac) {
           if (stdout.includes(keyword)) {
@@ -1029,13 +1029,13 @@ async function detectRunningIDEsImpl(): Promise<IdeType[]> {
           }
         }
       }
-    } else if (platform === 'windows') {
+    } else if (platform === "windows") {
       // On Windows, use tasklist with findstr for multiple patterns
       const result = await execa(
         'tasklist | findstr /I "Code.exe Cursor.exe Windsurf.exe idea64.exe pycharm64.exe webstorm64.exe phpstorm64.exe rubymine64.exe clion64.exe goland64.exe rider64.exe datagrip64.exe appcode.exe dataspell64.exe aqua64.exe gateway64.exe fleet.exe studio64.exe"',
         { shell: true, reject: false },
       );
-      const stdout = result.stdout ?? '';
+      const stdout = result.stdout ?? "";
 
       const normalizedStdout = stdout.toLowerCase();
 
@@ -1047,25 +1047,25 @@ async function detectRunningIDEsImpl(): Promise<IdeType[]> {
           }
         }
       }
-    } else if (platform === 'linux') {
+    } else if (platform === "linux") {
       // On Linux, use ps with process name matching
       const result = await execa(
         'ps aux | grep -E "code|cursor|windsurf|idea|pycharm|webstorm|phpstorm|rubymine|clion|goland|rider|datagrip|dataspell|aqua|gateway|fleet|android-studio" | grep -v grep',
         { shell: true, reject: false },
       );
-      const stdout = result.stdout ?? '';
+      const stdout = result.stdout ?? "";
 
       const normalizedStdout = stdout.toLowerCase();
 
       for (const [ide, config] of Object.entries(supportedIdeConfigs)) {
         for (const keyword of config.processKeywordsLinux) {
           if (normalizedStdout.includes(keyword)) {
-            if (ide !== 'vscode') {
+            if (ide !== "vscode") {
               runningIDEs.push(ide as IdeType);
               break;
             } else if (
-              !normalizedStdout.includes('cursor') &&
-              !normalizedStdout.includes('appcode')
+              !normalizedStdout.includes("cursor") &&
+              !normalizedStdout.includes("appcode")
             ) {
               // Special case conflicting keywords from some of the IDEs.
               runningIDEs.push(ide as IdeType);
@@ -1115,14 +1115,14 @@ export function resetDetectRunningIDEs(): void {
 
 export function getConnectedIdeName(mcpClients: MCPServerConnection[]): string | null {
   const ideClient = mcpClients.find(
-    (client) => client.type === 'connected' && client.name === 'ide',
+    (client) => client.type === "connected" && client.name === "ide",
   );
   return getIdeClientName(ideClient);
 }
 
 export function getIdeClientName(ideClient?: MCPServerConnection): string | null {
   const config = ideClient?.config;
-  return config?.type === 'sse-ide' || config?.type === 'ws-ide'
+  return config?.type === "sse-ide" || config?.type === "ws-ide"
     ? config.ideName
     : isSupportedTerminal()
       ? toIDEDisplayName(envDynamic.terminal)
@@ -1130,22 +1130,22 @@ export function getIdeClientName(ideClient?: MCPServerConnection): string | null
 }
 
 const EDITOR_DISPLAY_NAMES: Record<string, string> = {
-  code: 'VS Code',
-  cursor: 'Cursor',
-  windsurf: 'Windsurf',
-  antigravity: 'Antigravity',
-  vi: 'Vim',
-  vim: 'Vim',
-  nano: 'nano',
-  notepad: 'Notepad',
-  'start /wait notepad': 'Notepad',
-  emacs: 'Emacs',
-  subl: 'Sublime Text',
-  atom: 'Atom',
+  code: "VS Code",
+  cursor: "Cursor",
+  windsurf: "Windsurf",
+  antigravity: "Antigravity",
+  vi: "Vim",
+  vim: "Vim",
+  nano: "nano",
+  notepad: "Notepad",
+  "start /wait notepad": "Notepad",
+  emacs: "Emacs",
+  subl: "Sublime Text",
+  atom: "Atom",
 };
 
 export function toIDEDisplayName(terminal: string | null): string {
-  if (!terminal) return 'IDE';
+  if (!terminal) return "IDE";
 
   const config = supportedIdeConfigs[terminal as IdeType];
   if (config) {
@@ -1159,7 +1159,7 @@ export function toIDEDisplayName(terminal: string | null): string {
   }
 
   // Extract command name from path/arguments (e.g., "/usr/bin/code --wait" -> "code")
-  const command = terminal.split(' ')[0];
+  const command = terminal.split(" ")[0];
   const commandName = command ? basename(command).toLowerCase() : null;
   if (commandName) {
     const mappedName = EDITOR_DISPLAY_NAMES[commandName];
@@ -1189,11 +1189,11 @@ export function getConnectedIdeClient(
   }
 
   const ideClient = mcpClients.find(
-    (client) => client.type === 'connected' && client.name === 'ide',
+    (client) => client.type === "connected" && client.name === "ide",
   );
 
   // Type guard to ensure we return the correct type
-  return ideClient?.type === 'connected' ? ideClient : undefined;
+  return ideClient?.type === "connected" ? ideClient : undefined;
 }
 
 /**
@@ -1202,7 +1202,7 @@ export function getConnectedIdeClient(
  */
 export async function closeOpenDiffs(ideClient: ConnectedMCPServer): Promise<void> {
   try {
-    await callIdeRpc('closeAllDiffTabs', {}, ideClient);
+    await callIdeRpc("closeAllDiffTabs", {}, ideClient);
   } catch (_) {
     // Silently ignore errors when closing diff tabs
     // This prevents exceptions if the IDE doesn't support this operation
@@ -1235,7 +1235,7 @@ export async function initializeIdeIntegration(
             .catch((error) => {
               const ideInstallationStatus: IDEExtensionInstallationStatus = {
                 installed: false,
-                error: error.message || 'Installation failed',
+                error: error.message || "Installation failed",
                 installedVersion: null,
                 ideType: ideType,
               };
@@ -1279,15 +1279,15 @@ const detectHostIP = memoize(
       return process.env.CLAUDE_CODE_IDE_HOST_OVERRIDE;
     }
 
-    if (getPlatform() !== 'wsl' || !isIdeRunningInWindows) {
-      return '127.0.0.1';
+    if (getPlatform() !== "wsl" || !isIdeRunningInWindows) {
+      return "127.0.0.1";
     }
 
     // If we are running under the WSL2 VM but the extension/plugin is running in
     // Windows, then we must use a different IP address to connect to the extension.
     // https://learn.microsoft.com/en-us/windows/wsl/networking
     try {
-      const routeResult = await execa('ip route show | grep -i default', {
+      const routeResult = await execa("ip route show | grep -i default", {
         shell: true,
         reject: false,
       });
@@ -1305,22 +1305,22 @@ const detectHostIP = memoize(
     }
 
     // Fallback to the default if we cannot find anything
-    return '127.0.0.1';
+    return "127.0.0.1";
   },
   (isIdeRunningInWindows, port) => `${isIdeRunningInWindows}:${port}`,
 );
 
 async function installFromArtifactory(command: string): Promise<string> {
   // Read auth token from ~/.npmrc
-  const npmrcPath = join(os.homedir(), '.npmrc');
+  const npmrcPath = join(os.homedir(), ".npmrc");
   let authToken: string | null = null;
   const fs = getFsImplementation();
 
   try {
     const npmrcContent = await fs.readFile(npmrcPath, {
-      encoding: 'utf8',
+      encoding: "utf8",
     });
-    const lines = npmrcContent.split('\n');
+    const lines = npmrcContent.split("\n");
     for (const line of lines) {
       // Look for the artifactory auth token line
       const match = line.match(
@@ -1337,12 +1337,12 @@ async function installFromArtifactory(command: string): Promise<string> {
   }
 
   if (!authToken) {
-    throw new Error('No artifactory auth token found in ~/.npmrc');
+    throw new Error("No artifactory auth token found in ~/.npmrc");
   }
 
   // Fetch the version from artifactory
   const versionUrl =
-    'https://artifactory.infra.ant.dev/artifactory/armorcode-claude-code-internal/claude-vscode-releases/stable';
+    "https://artifactory.infra.ant.dev/artifactory/armorcode-claude-code-internal/claude-vscode-releases/stable";
 
   try {
     const versionResponse = await axios.get(versionUrl, {
@@ -1353,7 +1353,7 @@ async function installFromArtifactory(command: string): Promise<string> {
 
     const version = versionResponse.data.trim();
     if (!version) {
-      throw new Error('No version found in artifactory response');
+      throw new Error("No version found in artifactory response");
     }
 
     // Download the .vsix file from artifactory
@@ -1365,15 +1365,15 @@ async function installFromArtifactory(command: string): Promise<string> {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
-        responseType: 'stream',
+        responseType: "stream",
       });
 
       // Write the downloaded file to disk
       const writeStream = getFsImplementation().createWriteStream(tempVsixPath);
       await new Promise<void>((resolve, reject) => {
         vsixResponse.data.pipe(writeStream);
-        writeStream.on('finish', resolve);
-        writeStream.on('error', reject);
+        writeStream.on("finish", resolve);
+        writeStream.on("error", reject);
       });
 
       // Install the .vsix file
@@ -1382,7 +1382,7 @@ async function installFromArtifactory(command: string): Promise<string> {
 
       const result = await execFileNoThrowWithCwd(
         command,
-        ['--force', '--install-extension', tempVsixPath],
+        ["--force", "--install-extension", tempVsixPath],
         {
           env: getInstallationEnv(),
         },

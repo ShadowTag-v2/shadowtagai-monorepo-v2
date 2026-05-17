@@ -1,15 +1,15 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import type { Tools } from '../../Tool.js';
-import { getAgentColor } from '../../tools/AgentTool/agentColorManager.js';
-import { getMemoryScopeDisplay } from '../../tools/AgentTool/agentMemory.js';
-import { resolveAgentTools } from '../../tools/AgentTool/agentToolUtils.js';
-import { type AgentDefinition, isBuiltInAgent } from '../../tools/AgentTool/loadAgentsDir.js';
-import { getAgentModelDisplay } from '../../utils/model/agent.js';
-import { Markdown } from '../Markdown.js';
-import { getActualRelativeAgentFilePath } from './agentFileUtils.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import type { Tools } from "../../Tool.js";
+import { getAgentColor } from "../../tools/AgentTool/agentColorManager.js";
+import { getMemoryScopeDisplay } from "../../tools/AgentTool/agentMemory.js";
+import { resolveAgentTools } from "../../tools/AgentTool/agentToolUtils.js";
+import { type AgentDefinition, isBuiltInAgent } from "../../tools/AgentTool/loadAgentsDir.js";
+import { getAgentModelDisplay } from "../../utils/model/agent.js";
+import { Markdown } from "../Markdown.js";
+import { getActualRelativeAgentFilePath } from "./agentFileUtils.js";
 
 type Props = {
   agent: AgentDefinition;
@@ -40,19 +40,19 @@ export function AgentDetail(t0) {
   }
   const backgroundColor = t2;
   let t3;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[4] = t3;
   } else {
     t3 = $[4];
   }
-  useKeybinding('confirm:no', onBack, t3);
+  useKeybinding("confirm:no", onBack, t3);
   let t4;
   if ($[5] !== onBack) {
     t4 = (e) => {
-      if (e.key === 'return') {
+      if (e.key === "return") {
         e.preventDefault();
         onBack();
       }
@@ -72,17 +72,17 @@ export function AgentDetail(t0) {
     }
     return (
       <>
-        {resolvedTools.validTools.length > 0 && <Text>{resolvedTools.validTools.join(', ')}</Text>}
+        {resolvedTools.validTools.length > 0 && <Text>{resolvedTools.validTools.join(", ")}</Text>}
         {resolvedTools.invalidTools.length > 0 && (
           <Text color="warning">
-            {figures.warning} Unrecognized: {resolvedTools.invalidTools.join(', ')}
+            {figures.warning} Unrecognized: {resolvedTools.invalidTools.join(", ")}
           </Text>
         )}
       </>
     );
   };
   const T0 = Box;
-  const t5 = 'column';
+  const t5 = "column";
   const t6 = 1;
   const t7 = 0;
   const t8 = true;
@@ -95,7 +95,7 @@ export function AgentDetail(t0) {
     t9 = $[8];
   }
   let t10;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t10 = (
       <Text>
         <Text bold={true}>Description</Text> (tells Claude when to use this agent):
@@ -122,10 +122,10 @@ export function AgentDetail(t0) {
   }
   const T1 = Box;
   let t12;
-  if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
     t12 = (
       <Text>
-        <Text bold={true}>Tools</Text>:{' '}
+        <Text bold={true}>Tools</Text>:{" "}
       </Text>
     );
     $[12] = t12;
@@ -149,7 +149,7 @@ export function AgentDetail(t0) {
     t14 = $[16];
   }
   let t15;
-  if ($[17] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
     t15 = <Text bold={true}>Model</Text>;
     $[17] = t15;
   } else {
@@ -203,7 +203,7 @@ export function AgentDetail(t0) {
   if ($[26] !== agent.hooks) {
     t20 = agent.hooks && Object.keys(agent.hooks).length > 0 && (
       <Text>
-        <Text bold={true}>Hooks</Text>: {Object.keys(agent.hooks).join(', ')}
+        <Text bold={true}>Hooks</Text>: {Object.keys(agent.hooks).join(", ")}
       </Text>
     );
     $[26] = agent.hooks;
@@ -215,8 +215,8 @@ export function AgentDetail(t0) {
   if ($[28] !== agent.skills) {
     t21 = agent.skills && agent.skills.length > 0 && (
       <Text>
-        <Text bold={true}>Skills</Text>:{' '}
-        {agent.skills.length > 10 ? `${agent.skills.length} skills` : agent.skills.join(', ')}
+        <Text bold={true}>Skills</Text>:{" "}
+        {agent.skills.length > 10 ? `${agent.skills.length} skills` : agent.skills.join(", ")}
       </Text>
     );
     $[28] = agent.skills;
@@ -229,10 +229,10 @@ export function AgentDetail(t0) {
     t22 = backgroundColor && (
       <Box>
         <Text>
-          <Text bold={true}>Color</Text>:{' '}
+          <Text bold={true}>Color</Text>:{" "}
           <Text backgroundColor={backgroundColor} color="inverseText">
-            {' '}
-            {agent.agentType}{' '}
+            {" "}
+            {agent.agentType}{" "}
           </Text>
         </Text>
       </Box>

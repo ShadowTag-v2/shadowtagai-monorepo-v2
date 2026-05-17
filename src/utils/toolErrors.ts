@@ -1,6 +1,6 @@
-import type { ZodError } from 'zod/v4';
-import { AbortError, ShellError } from './errors.js';
-import { INTERRUPT_MESSAGE_FOR_TOOL_USE } from './messages.js';
+import type { ZodError } from "zod/v4";
+import { AbortError, ShellError } from "./errors.js";
+import { INTERRUPT_MESSAGE_FOR_TOOL_USE } from "./messages.js";
 
 export function formatError(error: unknown): string {
   if (error instanceof AbortError) {
@@ -10,7 +10,7 @@ export function formatError(error: unknown): string {
     return String(error);
   }
   const parts = getErrorParts(error);
-  const fullMessage = parts.filter(Boolean).join('\n').trim() || 'Command failed with no output';
+  const fullMessage = parts.filter(Boolean).join("\n").trim() || "Command failed with no output";
   if (fullMessage.length <= 10000) {
     return fullMessage;
   }
@@ -24,16 +24,16 @@ export function getErrorParts(error: Error): string[] {
   if (error instanceof ShellError) {
     return [
       `Exit code ${error.code}`,
-      error.interrupted ? INTERRUPT_MESSAGE_FOR_TOOL_USE : '',
+      error.interrupted ? INTERRUPT_MESSAGE_FOR_TOOL_USE : "",
       error.stderr,
       error.stdout,
     ];
   }
   const parts = [error.message];
-  if ('stderr' in error && typeof error.stderr === 'string') {
+  if ("stderr" in error && typeof error.stderr === "string") {
     parts.push(error.stderr);
   }
-  if ('stdout' in error && typeof error.stdout === 'string') {
+  if ("stdout" in error && typeof error.stdout === "string") {
     parts.push(error.stdout);
   }
   return parts;
@@ -44,15 +44,15 @@ export function getErrorParts(error: Error): string[] {
  * e.g., ['todos', 0, 'activeForm'] => 'todos[0].activeForm'
  */
 function formatValidationPath(path: PropertyKey[]): string {
-  if (path.length === 0) return '';
+  if (path.length === 0) return "";
 
   return path.reduce((acc, segment, index) => {
     const segmentStr = String(segment);
-    if (typeof segment === 'number') {
+    if (typeof segment === "number") {
       return `${String(acc)}[${segmentStr}]`;
     }
     return index === 0 ? segmentStr : `${String(acc)}.${segmentStr}`;
-  }, '') as string;
+  }, "") as string;
 }
 
 /**
@@ -64,19 +64,19 @@ function formatValidationPath(path: PropertyKey[]): string {
  */
 export function formatZodValidationError(toolName: string, error: ZodError): string {
   const missingParams = error.issues
-    .filter((err) => err.code === 'invalid_type' && err.message.includes('received undefined'))
+    .filter((err) => err.code === "invalid_type" && err.message.includes("received undefined"))
     .map((err) => formatValidationPath(err.path));
 
   const unexpectedParams = error.issues
-    .filter((err) => err.code === 'unrecognized_keys')
+    .filter((err) => err.code === "unrecognized_keys")
     .flatMap((err) => err.keys);
 
   const typeMismatchParams = error.issues
-    .filter((err) => err.code === 'invalid_type' && !err.message.includes('received undefined'))
+    .filter((err) => err.code === "invalid_type" && !err.message.includes("received undefined"))
     .map((err) => {
       const typeErr = err as { expected: string };
       const receivedMatch = err.message.match(/received (\w+)/);
-      const received = receivedMatch ? receivedMatch[1] : 'unknown';
+      const received = receivedMatch ? receivedMatch[1] : "unknown";
       return {
         param: formatValidationPath(err.path),
         expected: typeErr.expected,
@@ -113,7 +113,7 @@ export function formatZodValidationError(toolName: string, error: ZodError): str
   }
 
   if (errorParts.length > 0) {
-    errorContent = `${toolName} failed due to the following ${errorParts.length > 1 ? 'issues' : 'issue'}:\n${errorParts.join('\n')}`;
+    errorContent = `${toolName} failed due to the following ${errorParts.length > 1 ? "issues" : "issue"}:\n${errorParts.join("\n")}`;
   }
 
   return errorContent;

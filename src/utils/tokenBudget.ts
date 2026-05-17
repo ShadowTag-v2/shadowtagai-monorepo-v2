@@ -6,7 +6,7 @@ const SHORTHAND_START_RE = /^\s*\+(\d+(?:\.\d+)?)\s*(k|m|b)\b/i;
 // instead; callers offset match.index by 1 where position matters.
 const SHORTHAND_END_RE = /\s\+(\d+(?:\.\d+)?)\s*(k|m|b)\s*[.!?]?\s*$/i;
 const VERBOSE_RE = /\b(?:use|spend)\s+(\d+(?:\.\d+)?)\s*(k|m|b)\s*tokens?\b/i;
-const VERBOSE_RE_G = new RegExp(VERBOSE_RE.source, 'gi');
+const VERBOSE_RE_G = new RegExp(VERBOSE_RE.source, "gi");
 
 const MULTIPLIERS: Record<string, number> = {
   k: 1_000,
@@ -61,6 +61,6 @@ export function getBudgetContinuationMessage(
   turnTokens: number,
   budget: number,
 ): string {
-  const fmt = (n: number): string => new Intl.NumberFormat('en-US').format(n);
+  const fmt = (n: number): string => new Intl.NumberFormat("en-US").format(n);
   return `Stopped at ${pct}% of token target (${fmt(turnTokens)} / ${fmt(budget)}). Keep working \u2014 do not summarize.`;
 }

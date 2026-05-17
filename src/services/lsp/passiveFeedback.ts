@@ -1,12 +1,12 @@
-import { fileURLToPath } from 'node:url';
-import type { PublishDiagnosticsParams } from 'vscode-languageserver-protocol';
-import { logForDebugging } from '../../utils/debug.js';
-import { toError } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import type { DiagnosticFile } from '../diagnosticTracking.js';
-import { registerPendingLSPDiagnostic } from './LSPDiagnosticRegistry.js';
-import type { LSPServerManager } from './LSPServerManager.js';
+import { fileURLToPath } from "node:url";
+import type { PublishDiagnosticsParams } from "vscode-languageserver-protocol";
+import { logForDebugging } from "../../utils/debug.js";
+import { toError } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import type { DiagnosticFile } from "../diagnosticTracking.js";
+import { registerPendingLSPDiagnostic } from "./LSPDiagnosticRegistry.js";
+import type { LSPServerManager } from "./LSPServerManager.js";
 
 /**
  * Map LSP severity to Claude diagnostic severity
@@ -15,20 +15,20 @@ import type { LSPServerManager } from './LSPServerManager.js';
  * Accepts numeric severity values (1=Error, 2=Warning, 3=Information, 4=Hint)
  * or undefined, defaulting to 'Error' for invalid/missing values.
  */
-function mapLSPSeverity(lspSeverity: number | undefined): 'Error' | 'Warning' | 'Info' | 'Hint' {
+function mapLSPSeverity(lspSeverity: number | undefined): "Error" | "Warning" | "Info" | "Hint" {
   // LSP DiagnosticSeverity enum:
   // 1 = Error, 2 = Warning, 3 = Information, 4 = Hint
   switch (lspSeverity) {
     case 1:
-      return 'Error';
+      return "Error";
     case 2:
-      return 'Warning';
+      return "Warning";
     case 3:
-      return 'Info';
+      return "Info";
     case 4:
-      return 'Hint';
+      return "Hint";
     default:
-      return 'Error';
+      return "Error";
   }
 }
 
@@ -43,7 +43,7 @@ export function formatDiagnosticsForAttachment(params: PublishDiagnosticsParams)
   let uri: string;
   try {
     // Handle both file:// URIs and plain paths
-    uri = params.uri.startsWith('file://') ? fileURLToPath(params.uri) : params.uri;
+    uri = params.uri.startsWith("file://") ? fileURLToPath(params.uri) : params.uri;
   } catch (error) {
     const err = toError(error);
     logError(err);
@@ -129,10 +129,10 @@ export function registerLSPNotificationHandlers(
   for (const [serverName, serverInstance] of servers.entries()) {
     try {
       // Validate server instance has onNotification method
-      if (!serverInstance || typeof serverInstance.onNotification !== 'function') {
+      if (!serverInstance || typeof serverInstance.onNotification !== "function") {
         const errorMsg = !serverInstance
-          ? 'Server instance is null/undefined'
-          : 'Server instance has no onNotification method';
+          ? "Server instance is null/undefined"
+          : "Server instance has no onNotification method";
 
         registrationErrors.push({ serverName, error: errorMsg });
 
@@ -143,7 +143,7 @@ export function registerLSPNotificationHandlers(
       }
 
       // Errors are isolated to avoid breaking other servers
-      serverInstance.onNotification('textDocument/publishDiagnostics', (params: unknown) => {
+      serverInstance.onNotification("textDocument/publishDiagnostics", (params: unknown) => {
         logForDebugging(
           `[PASSIVE DIAGNOSTICS] Handler invoked for ${serverName}! Params type: ${typeof params}`,
         );
@@ -151,9 +151,9 @@ export function registerLSPNotificationHandlers(
           // Validate params structure before casting
           if (
             !params ||
-            typeof params !== 'object' ||
-            !('uri' in params) ||
-            !('diagnostics' in params)
+            typeof params !== "object" ||
+            !("uri" in params) ||
+            !("diagnostics" in params)
           ) {
             const err = new Error(
               `LSP server ${serverName} sent invalid diagnostic params (missing uri or diagnostics)`,
@@ -209,7 +209,7 @@ export function registerLSPNotificationHandlers(
             // Track consecutive failures and warn after 3+
             const failures = diagnosticFailures.get(serverName) || {
               count: 0,
-              lastError: '',
+              lastError: "",
             };
             failures.count++;
             failures.lastError = err.message;
@@ -235,7 +235,7 @@ export function registerLSPNotificationHandlers(
           // Track consecutive failures and warn after 3+
           const failures = diagnosticFailures.get(serverName) || {
             count: 0,
-            lastError: '',
+            lastError: "",
           };
           failures.count++;
           failures.lastError = err.message;
@@ -274,7 +274,7 @@ export function registerLSPNotificationHandlers(
   // Report overall registration status
   const totalServers = servers.size;
   if (registrationErrors.length > 0) {
-    const failedServers = registrationErrors.map((e) => `${e.serverName} (${e.error})`).join(', ');
+    const failedServers = registrationErrors.map((e) => `${e.serverName} (${e.error})`).join(", ");
     // Log aggregate failures for tracking
     logError(
       new Error(

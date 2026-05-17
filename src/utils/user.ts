@@ -1,11 +1,11 @@
-import { execa } from 'execa';
-import memoize from 'lodash-es/memoize.js';
-import { getSessionId } from '../bootstrap/state.js';
-import { getOauthAccountInfo, getRateLimitTier, getSubscriptionType } from './auth.js';
-import { getGlobalConfig, getOrCreateUserID } from './config.js';
-import { getCwd } from './cwd.js';
-import { type env, getHostPlatformForAnalytics } from './env.js';
-import { isEnvTruthy } from './envUtils.js';
+import { execa } from "execa";
+import memoize from "lodash-es/memoize.js";
+import { getSessionId } from "../bootstrap/state.js";
+import { getOauthAccountInfo, getRateLimitTier, getSubscriptionType } from "./auth.js";
+import { getGlobalConfig, getOrCreateUserID } from "./config.js";
+import { getCwd } from "./cwd.js";
+import { type env, getHostPlatformForAnalytics } from "./env.js";
+import { isEnvTruthy } from "./envUtils.js";
 
 // Cache for email fetched asynchronously at startup
 let cachedEmail: string | undefined | null = null; // null means not fetched yet
@@ -139,7 +139,7 @@ function getEmail(): string | undefined {
   }
 
   // Ant-only fallbacks below (no execSync)
-  if (process.env.USER_TYPE !== 'ant') {
+  if (process.env.USER_TYPE !== "ant") {
     return undefined;
   }
 
@@ -159,7 +159,7 @@ async function getEmailAsync(): Promise<string | undefined> {
   }
 
   // Ant-only fallbacks below
-  if (process.env.USER_TYPE !== 'ant') {
+  if (process.env.USER_TYPE !== "ant") {
     return undefined;
   }
 
@@ -175,7 +175,7 @@ async function getEmailAsync(): Promise<string | undefined> {
  * Memoized so the subprocess only spawns once per process.
  */
 export const getGitEmail = memoize(async (): Promise<string | undefined> => {
-  const result = await execa('git config --get user.email', {
+  const result = await execa("git config --get user.email", {
     shell: true,
     reject: false,
     cwd: getCwd(),

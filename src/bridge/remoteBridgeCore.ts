@@ -28,15 +28,15 @@
  * REPL-only — daemon/print stay on env-based.
  */
 
-import { feature } from 'bun:bundle';
-import axios from 'axios';
-import { createV2ReplTransport, type ReplBridgeTransport } from './replBridgeTransport.js';
-import { buildCCRv2SdkUrl } from './workSecret.js';
-import { toCompatSessionId } from './sessionIdCompat.js';
-import { FlushGate } from './flushGate.js';
-import { createTokenRefreshScheduler } from './jwtUtils.js';
-import { getTrustedDeviceToken } from './trustedDevice.js';
-import { getEnvLessBridgeConfig, type EnvLessBridgeConfig } from './envLessBridgeConfig.js';
+import { feature } from "bun:bundle";
+import axios from "axios";
+import { createV2ReplTransport, type ReplBridgeTransport } from "./replBridgeTransport.js";
+import { buildCCRv2SdkUrl } from "./workSecret.js";
+import { toCompatSessionId } from "./sessionIdCompat.js";
+import { FlushGate } from "./flushGate.js";
+import { createTokenRefreshScheduler } from "./jwtUtils.js";
+import { getTrustedDeviceToken } from "./trustedDevice.js";
+import { getEnvLessBridgeConfig, type EnvLessBridgeConfig } from "./envLessBridgeConfig.js";
 import {
   handleIngressMessage,
   handleServerControlRequest,
@@ -44,36 +44,36 @@ import {
   isEligibleBridgeMessage,
   extractTitleText,
   BoundedUUIDSet,
-} from './bridgeMessaging.js';
-import { logBridgeSkip } from './debugUtils.js';
-import { logForDebugging } from '../utils/debug.js';
-import { logForDiagnosticsNoPII } from '../utils/diagLogs.js';
-import { isInProtectedNamespace } from '../utils/envUtils.js';
-import { errorMessage } from '../utils/errors.js';
-import { sleep } from '../utils/sleep.js';
-import { registerCleanup } from '../utils/cleanupRegistry.js';
+} from "./bridgeMessaging.js";
+import { logBridgeSkip } from "./debugUtils.js";
+import { logForDebugging } from "../utils/debug.js";
+import { logForDiagnosticsNoPII } from "../utils/diagLogs.js";
+import { isInProtectedNamespace } from "../utils/envUtils.js";
+import { errorMessage } from "../utils/errors.js";
+import { sleep } from "../utils/sleep.js";
+import { registerCleanup } from "../utils/cleanupRegistry.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import type { ReplBridgeHandle, BridgeState } from './replBridge.js';
-import type { Message } from '../types/message.js';
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
-import type { SDKControlRequest, SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
-import type { PermissionMode } from '../utils/permissions/PermissionMode.js';
+} from "../services/analytics/index.js";
+import type { ReplBridgeHandle, BridgeState } from "./replBridge.js";
+import type { Message } from "../types/message.js";
+import type { SDKMessage } from "../entrypoints/agentSdkTypes.js";
+import type { SDKControlRequest, SDKControlResponse } from "../entrypoints/sdk/controlTypes.js";
+import type { PermissionMode } from "../utils/permissions/PermissionMode.js";
 
-const ANTHROPIC_VERSION = '2023-06-01';
+const ANTHROPIC_VERSION = "2023-06-01";
 
 // Telemetry discriminator for ws_connected. 'initial' is the default and
 // never passed to rebuildTransport (which can only be called post-init);
 // Exclude<> makes that constraint explicit at both signatures.
-type ConnectCause = 'initial' | 'proactive_refresh' | 'auth_401_recovery';
+type ConnectCause = "initial" | "proactive_refresh" | "auth_401_recovery";
 
 function oauthHeaders(accessToken: string): Record<string, string> {
   return {
     Authorization: `Bearer ${accessToken}`,
-    'Content-Type': 'application/json',
-    'anthropic-version': ANTHROPIC_VERSION,
+    "Content-Type": "application/json",
+    "anthropic-version": ANTHROPIC_VERSION,
   };
 }
 
@@ -155,33 +155,33 @@ export async function initEnvLessBridgeCore(
   // ── 1. Create session (POST /v1/code/sessions, no env_id) ───────────────
   const accessToken = getAccessToken();
   if (!accessToken) {
-    logForDebugging('[remote-bridge] No OAuth token');
+    logForDebugging("[remote-bridge] No OAuth token");
     return null;
   }
 
   const createdSessionId = await withRetry(
     () => createCodeSession(baseUrl, accessToken, title, cfg.http_timeout_ms, tags),
-    'createCodeSession',
+    "createCodeSession",
     cfg,
   );
   if (!createdSessionId) {
-    onStateChange?.('failed', 'Session creation failed — see debug log');
-    logBridgeSkip('v2_session_create_failed', undefined, true);
+    onStateChange?.("failed", "Session creation failed — see debug log");
+    logBridgeSkip("v2_session_create_failed", undefined, true);
     return null;
   }
   const sessionId: string = createdSessionId;
   logForDebugging(`[remote-bridge] Created session ${sessionId}`);
-  logForDiagnosticsNoPII('info', 'bridge_repl_v2_session_created');
+  logForDiagnosticsNoPII("info", "bridge_repl_v2_session_created");
 
   // ── 2. Fetch bridge credentials (POST /bridge → worker_jwt, expires_in, api_base_url) ──
   const credentials = await withRetry(
     () => fetchRemoteCredentials(sessionId, baseUrl, accessToken, cfg.http_timeout_ms),
-    'fetchRemoteCredentials',
+    "fetchRemoteCredentials",
     cfg,
   );
   if (!credentials) {
-    onStateChange?.('failed', 'Remote credentials fetch failed — see debug log');
-    logBridgeSkip('v2_remote_creds_failed', undefined, true);
+    onStateChange?.("failed", "Remote credentials fetch failed — see debug log");
+    logBridgeSkip("v2_remote_creds_failed", undefined, true);
     void archiveSession(sessionId, baseUrl, accessToken, orgUUID, cfg.http_timeout_ms);
     return null;
   }
@@ -212,15 +212,15 @@ export async function initEnvLessBridgeCore(
     });
   } catch (err) {
     logForDebugging(`[remote-bridge] v2 transport setup failed: ${errorMessage(err)}`, {
-      level: 'error',
+      level: "error",
     });
-    onStateChange?.('failed', `Transport setup failed: ${errorMessage(err)}`);
-    logBridgeSkip('v2_transport_setup_failed', undefined, true);
+    onStateChange?.("failed", `Transport setup failed: ${errorMessage(err)}`);
+    logBridgeSkip("v2_transport_setup_failed", undefined, true);
     void archiveSession(sessionId, baseUrl, accessToken, orgUUID, cfg.http_timeout_ms);
     return null;
   }
   logForDebugging(`[remote-bridge] v2 transport created (epoch=${credentials.worker_epoch})`);
-  onStateChange?.('ready');
+  onStateChange?.("ready");
 
   // ── 4. State ────────────────────────────────────────────────────────────
 
@@ -258,7 +258,7 @@ export async function initEnvLessBridgeCore(
   // wireTransportCallbacks; read asynchronously by onConnect. Race-safe
   // because authRecoveryInFlight serializes rebuild callers, and a fresh
   // initEnvLessBridgeCore() call gets a fresh closure defaulting to 'initial'.
-  let connectCause: ConnectCause = 'initial';
+  let connectCause: ConnectCause = "initial";
 
   // Deadline for onConnect after transport.connect(). Cleared by onConnect
   // (connected) and onClose (got a close — not silent). If neither fires
@@ -267,7 +267,7 @@ export async function initEnvLessBridgeCore(
   let connectDeadline: ReturnType<typeof setTimeout> | undefined;
   function onConnectTimeout(cause: ConnectCause): void {
     if (tornDown) return;
-    logEvent('tengu_bridge_repl_connect_timeout', {
+    logEvent("tengu_bridge_repl_connect_timeout", {
       v2: true,
       elapsed_ms: cfg.connect_timeout_ms,
       cause: cause as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -288,7 +288,7 @@ export async function initEnvLessBridgeCore(
       // so truthiness doesn't mean valid. Pass the stale token to onAuth401
       // so handleOAuth401Error's keychain-comparison can detect parallel refresh.
       const stale = getAccessToken();
-      if (onAuth401) await onAuth401(stale ?? '');
+      if (onAuth401) await onAuth401(stale ?? "");
       return getAccessToken() ?? stale;
     },
     onRefresh: (sid, oauthToken) => {
@@ -298,34 +298,34 @@ export async function initEnvLessBridgeCore(
         // entirely — prevents double epoch bump (each /bridge call bumps; if
         // both fetch, the first rebuild gets a stale epoch and 409s).
         if (authRecoveryInFlight || tornDown) {
-          logForDebugging('[remote-bridge] Recovery already in flight, skipping proactive refresh');
+          logForDebugging("[remote-bridge] Recovery already in flight, skipping proactive refresh");
           return;
         }
         authRecoveryInFlight = true;
         try {
           const fresh = await withRetry(
             () => fetchRemoteCredentials(sid, baseUrl, oauthToken, cfg.http_timeout_ms),
-            'fetchRemoteCredentials (proactive)',
+            "fetchRemoteCredentials (proactive)",
             cfg,
           );
           if (!fresh || tornDown) return;
-          await rebuildTransport(fresh, 'proactive_refresh');
-          logForDebugging('[remote-bridge] Transport rebuilt (proactive refresh)');
+          await rebuildTransport(fresh, "proactive_refresh");
+          logForDebugging("[remote-bridge] Transport rebuilt (proactive refresh)");
         } catch (err) {
           logForDebugging(
             `[remote-bridge] Proactive refresh rebuild failed: ${errorMessage(err)}`,
-            { level: 'error' },
+            { level: "error" },
           );
-          logForDiagnosticsNoPII('error', 'bridge_repl_v2_proactive_refresh_failed');
+          logForDiagnosticsNoPII("error", "bridge_repl_v2_proactive_refresh_failed");
           if (!tornDown) {
-            onStateChange?.('failed', `Refresh failed: ${errorMessage(err)}`);
+            onStateChange?.("failed", `Refresh failed: ${errorMessage(err)}`);
           }
         } finally {
           authRecoveryInFlight = false;
         }
       })();
     },
-    label: 'remote',
+    label: "remote",
   });
   refresh.scheduleFromExpiresIn(sessionId, credentials.expires_in);
 
@@ -333,9 +333,9 @@ export async function initEnvLessBridgeCore(
   function wireTransportCallbacks(): void {
     transport.setOnConnect(() => {
       clearTimeout(connectDeadline);
-      logForDebugging('[remote-bridge] v2 transport connected');
-      logForDiagnosticsNoPII('info', 'bridge_repl_v2_transport_connected');
-      logEvent('tengu_bridge_repl_ws_connected', {
+      logForDebugging("[remote-bridge] v2 transport connected");
+      logForDiagnosticsNoPII("info", "bridge_repl_v2_transport_connected");
+      logEvent("tengu_bridge_repl_ws_connected", {
         v2: true,
         cause: connectCause as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
@@ -358,10 +358,10 @@ export async function initEnvLessBridgeCore(
               return;
             }
             drainFlushGate();
-            onStateChange?.('connected');
+            onStateChange?.("connected");
           });
       } else if (!flushGate.active) {
-        onStateChange?.('connected');
+        onStateChange?.("connected");
       }
     });
 
@@ -376,7 +376,7 @@ export async function initEnvLessBridgeCore(
         // user message or turn-end result.
         onPermissionResponse
           ? (res) => {
-              transport.reportState('running');
+              transport.reportState("running");
               onPermissionResponse(res);
             }
           : undefined,
@@ -397,7 +397,7 @@ export async function initEnvLessBridgeCore(
       clearTimeout(connectDeadline);
       if (tornDown) return;
       logForDebugging(`[remote-bridge] v2 transport closed (code=${code})`);
-      logEvent('tengu_bridge_repl_ws_closed', { code, v2: true });
+      logEvent("tengu_bridge_repl_ws_closed", { code, v2: true });
       // onClose fires only for TERMINAL failures: 401 (JWT invalid),
       // 4090 (CCR epoch mismatch), 4091 (CCR init failed), or SSE 10-min
       // reconnect budget exhausted. Transient disconnects are handled
@@ -407,7 +407,7 @@ export async function initEnvLessBridgeCore(
         void recoverFromAuthFailure();
         return;
       }
-      onStateChange?.('failed', `Transport closed (code ${code})`);
+      onStateChange?.("failed", `Transport closed (code ${code})`);
     });
   }
 
@@ -422,7 +422,7 @@ export async function initEnvLessBridgeCore(
   // fetch, and each fetch bumps epoch.
   async function rebuildTransport(
     fresh: RemoteCredentials,
-    cause: Exclude<ConnectCause, 'initial'>,
+    cause: Exclude<ConnectCause, "initial">,
   ): Promise<void> {
     connectCause = cause;
     // Queue writes during rebuild — once /bridge returns, the old transport's
@@ -475,31 +475,31 @@ export async function initEnvLessBridgeCore(
     // any await. Laptop wake fires both paths ~simultaneously.
     if (authRecoveryInFlight) return;
     authRecoveryInFlight = true;
-    onStateChange?.('reconnecting', 'JWT expired — refreshing');
-    logForDebugging('[remote-bridge] 401 on SSE — attempting JWT refresh');
+    onStateChange?.("reconnecting", "JWT expired — refreshing");
+    logForDebugging("[remote-bridge] 401 on SSE — attempting JWT refresh");
     try {
       // Unconditionally try OAuth refresh — getAccessToken() returns expired
       // tokens as non-null strings, so !oauthToken doesn't catch expiry.
       // Pass the stale token so handleOAuth401Error's keychain-comparison
       // can detect if another tab already refreshed.
       const stale = getAccessToken();
-      if (onAuth401) await onAuth401(stale ?? '');
+      if (onAuth401) await onAuth401(stale ?? "");
       const oauthToken = getAccessToken() ?? stale;
       if (!oauthToken || tornDown) {
         if (!tornDown) {
-          onStateChange?.('failed', 'JWT refresh failed: no OAuth token');
+          onStateChange?.("failed", "JWT refresh failed: no OAuth token");
         }
         return;
       }
 
       const fresh = await withRetry(
         () => fetchRemoteCredentials(sessionId, baseUrl, oauthToken, cfg.http_timeout_ms),
-        'fetchRemoteCredentials (recovery)',
+        "fetchRemoteCredentials (recovery)",
         cfg,
       );
       if (!fresh || tornDown) {
         if (!tornDown) {
-          onStateChange?.('failed', 'JWT refresh failed after 401');
+          onStateChange?.("failed", "JWT refresh failed after 401");
         }
         return;
       }
@@ -509,15 +509,15 @@ export async function initEnvLessBridgeCore(
       // (v1 scopes initialFlushDone inside the per-transport closure at
       // replBridge.ts:1027 so it resets naturally; v2 has it at outer scope.)
       initialFlushDone = false;
-      await rebuildTransport(fresh, 'auth_401_recovery');
-      logForDebugging('[remote-bridge] Transport rebuilt after 401');
+      await rebuildTransport(fresh, "auth_401_recovery");
+      logForDebugging("[remote-bridge] Transport rebuilt after 401");
     } catch (err) {
       logForDebugging(`[remote-bridge] 401 recovery failed: ${errorMessage(err)}`, {
-        level: 'error',
+        level: "error",
       });
-      logForDiagnosticsNoPII('error', 'bridge_repl_v2_jwt_refresh_failed');
+      logForDiagnosticsNoPII("error", "bridge_repl_v2_jwt_refresh_failed");
       if (!tornDown) {
-        onStateChange?.('failed', `JWT refresh failed: ${errorMessage(err)}`);
+        onStateChange?.("failed", `JWT refresh failed: ${errorMessage(err)}`);
       }
     } finally {
       authRecoveryInFlight = false;
@@ -543,8 +543,8 @@ export async function initEnvLessBridgeCore(
       ...m,
       session_id: sessionId,
     }));
-    if (msgs.some((m) => m.type === 'user')) {
-      transport.reportState('running');
+    if (msgs.some((m) => m.type === "user")) {
+      transport.reportState("running");
     }
     logForDebugging(`[remote-bridge] Drained ${msgs.length} queued message(s) after flush`);
     void transport.writeBatch(events);
@@ -577,8 +577,8 @@ export async function initEnvLessBridgeCore(
     // is never (only assistant chunks stream post-init). Check eligible (pre-
     // cap), not capped: the cap may truncate to a user message even when the
     // actual trailing message is assistant.
-    if (eligible.at(-1)?.type === 'user') {
-      transport.reportState('running');
+    if (eligible.at(-1)?.type === "user") {
+      transport.reportState("running");
     }
     logForDebugging(`[remote-bridge] Flushing ${events.length} history events`);
     await transport.writeBatch(events);
@@ -603,7 +603,7 @@ export async function initEnvLessBridgeCore(
     // window (typical archive ≈ 100-500ms) to POST the result without an
     // explicit sleep. close() sets closed=true which interrupts drain at the
     // next while-check, so close-before-archive drops the result.
-    transport.reportState('idle');
+    transport.reportState("idle");
     void transport.write(makeResultMessage(sessionId));
 
     let token = getAccessToken();
@@ -625,7 +625,7 @@ export async function initEnvLessBridgeCore(
     // wake); an uncaught throw here would skip transport.close + telemetry.
     if (status === 401 && onAuth401) {
       try {
-        await onAuth401(token ?? '');
+        await onAuth401(token ?? "");
         token = getAccessToken();
         status = await archiveSession(
           sessionId,
@@ -636,7 +636,7 @@ export async function initEnvLessBridgeCore(
         );
       } catch (err) {
         logForDebugging(`[remote-bridge] Teardown 401 retry threw: ${errorMessage(err)}`, {
-          level: 'error',
+          level: "error",
         });
       }
     }
@@ -644,41 +644,41 @@ export async function initEnvLessBridgeCore(
     transport.close();
 
     const archiveStatus: ArchiveTelemetryStatus =
-      status === 'no_token'
-        ? 'skipped_no_token'
-        : status === 'timeout' || status === 'error'
-          ? 'network_error'
+      status === "no_token"
+        ? "skipped_no_token"
+        : status === "timeout" || status === "error"
+          ? "network_error"
           : status >= 500
-            ? 'server_5xx'
+            ? "server_5xx"
             : status >= 400
-              ? 'server_4xx'
-              : 'ok';
+              ? "server_4xx"
+              : "ok";
 
     logForDebugging(`[remote-bridge] Torn down (archive=${status})`);
-    logForDiagnosticsNoPII('info', 'bridge_repl_v2_teardown');
+    logForDiagnosticsNoPII("info", "bridge_repl_v2_teardown");
     logEvent(
-      feature('CCR_MIRROR') && outboundOnly
-        ? 'tengu_ccr_mirror_teardown'
-        : 'tengu_bridge_repl_teardown',
+      feature("CCR_MIRROR") && outboundOnly
+        ? "tengu_ccr_mirror_teardown"
+        : "tengu_bridge_repl_teardown",
       {
         v2: true,
         archive_status: archiveStatus as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
-        archive_ok: typeof status === 'number' && status < 400,
-        archive_http_status: typeof status === 'number' ? status : undefined,
-        archive_timeout: status === 'timeout',
-        archive_no_token: status === 'no_token',
+        archive_ok: typeof status === "number" && status < 400,
+        archive_http_status: typeof status === "number" ? status : undefined,
+        archive_timeout: status === "timeout",
+        archive_no_token: status === "no_token",
       },
     );
   }
   const unregister = registerCleanup(teardown);
 
-  if (feature('CCR_MIRROR') && outboundOnly) {
-    logEvent('tengu_ccr_mirror_started', {
+  if (feature("CCR_MIRROR") && outboundOnly) {
+    logEvent("tengu_ccr_mirror_started", {
       v2: true,
       expires_in_s: credentials.expires_in,
     });
   } else {
-    logEvent('tengu_bridge_repl_started', {
+    logEvent("tengu_bridge_repl_started", {
       has_initial_messages: !!(initialMessages && initialMessages.length > 0),
       v2: true,
       expires_in_s: credentials.expires_in,
@@ -689,7 +689,7 @@ export async function initEnvLessBridgeCore(
   // ── 10. Handle ──────────────────────────────────────────────────────────
   return {
     bridgeSessionId: sessionId,
-    environmentId: '',
+    environmentId: "",
     sessionIngressUrl: credentials.api_base_url,
     writeMessages(messages) {
       const filtered = messages.filter(
@@ -729,8 +729,8 @@ export async function initEnvLessBridgeCore(
       // CCR web session list shows Running instead of stuck on Idle. A user
       // message in the batch marks turn start. CCRClient.reportState dedupes
       // consecutive same-state pushes.
-      if (filtered.some((m) => m.type === 'user')) {
-        transport.reportState('running');
+      if (filtered.some((m) => m.type === "user")) {
+        transport.reportState("running");
       }
       logForDebugging(`[remote-bridge] Sending ${filtered.length} message(s)`);
       void transport.writeBatch(events);
@@ -752,21 +752,21 @@ export async function initEnvLessBridgeCore(
         return;
       }
       const event = { ...request, session_id: sessionId };
-      if (request.request.subtype === 'can_use_tool') {
-        transport.reportState('requires_action');
+      if (request.request.subtype === "can_use_tool") {
+        transport.reportState("requires_action");
       }
       void transport.write(event);
       logForDebugging(`[remote-bridge] Sent control_request request_id=${request.request_id}`);
     },
     sendControlResponse(response: SDKControlResponse) {
       if (authRecoveryInFlight) {
-        logForDebugging('[remote-bridge] Dropping control_response during 401 recovery');
+        logForDebugging("[remote-bridge] Dropping control_response during 401 recovery");
         return;
       }
       const event = { ...response, session_id: sessionId };
-      transport.reportState('running');
+      transport.reportState("running");
       void transport.write(event);
-      logForDebugging('[remote-bridge] Sent control_response');
+      logForDebugging("[remote-bridge] Sent control_response");
     },
     sendControlCancelRequest(requestId: string) {
       if (authRecoveryInFlight) {
@@ -776,23 +776,23 @@ export async function initEnvLessBridgeCore(
         return;
       }
       const event = {
-        type: 'control_cancel_request' as const,
+        type: "control_cancel_request" as const,
         request_id: requestId,
         session_id: sessionId,
       };
       // Hook/classifier/channel/recheck resolved the permission locally —
       // interactiveHandler calls only cancelRequest (no sendResponse) on
       // those paths, so without this the server stays on requires_action.
-      transport.reportState('running');
+      transport.reportState("running");
       void transport.write(event);
       logForDebugging(`[remote-bridge] Sent control_cancel_request request_id=${requestId}`);
     },
     sendResult() {
       if (authRecoveryInFlight) {
-        logForDebugging('[remote-bridge] Dropping result during 401 recovery');
+        logForDebugging("[remote-bridge] Dropping result during 401 recovery");
         return;
       }
-      transport.reportState('idle');
+      transport.reportState("idle");
       void transport.write(makeResultMessage(sessionId));
       logForDebugging(`[remote-bridge] Sent result`);
     },
@@ -833,13 +833,13 @@ async function withRetry<T>(
 export {
   createCodeSession,
   type RemoteCredentials,
-} from './codeSessionApi.js';
+} from "./codeSessionApi.js";
 import {
   createCodeSession,
   fetchRemoteCredentials as fetchRemoteCredentialsRaw,
   type RemoteCredentials,
-} from './codeSessionApi.js';
-import { getBridgeBaseUrlOverride } from './bridgeConfig.js';
+} from "./codeSessionApi.js";
+import { getBridgeBaseUrlOverride } from "./bridgeConfig.js";
 
 // CLI-side wrapper that applies the CLAUDE_BRIDGE_BASE_URL dev override and
 // injects the trusted-device token (both are env/GrowthBook reads that the
@@ -861,18 +861,18 @@ export async function fetchRemoteCredentials(
   return getBridgeBaseUrlOverride() ? { ...creds, api_base_url: baseUrl } : creds;
 }
 
-type ArchiveStatus = number | 'timeout' | 'error' | 'no_token';
+type ArchiveStatus = number | "timeout" | "error" | "no_token";
 
 // Single categorical for BQ `GROUP BY archive_status`. The booleans on
 // _teardown predate this and are redundant with it (except archive_timeout,
 // which distinguishes ECONNABORTED from other network errors — both map to
 // 'network_error' here since the dominant cause in a 1.5s window is timeout).
 type ArchiveTelemetryStatus =
-  | 'ok'
-  | 'skipped_no_token'
-  | 'network_error'
-  | 'server_4xx'
-  | 'server_5xx';
+  | "ok"
+  | "skipped_no_token"
+  | "network_error"
+  | "server_4xx"
+  | "server_5xx";
 
 async function archiveSession(
   sessionId: string,
@@ -881,7 +881,7 @@ async function archiveSession(
   orgUUID: string,
   timeoutMs: number,
 ): Promise<ArchiveStatus> {
-  if (!accessToken) return 'no_token';
+  if (!accessToken) return "no_token";
   // Archive lives at the compat layer (/v1/sessions/*, not /v1/code/sessions).
   // compat.parseSessionID only accepts TagSession (session_*), so retag cse_*.
   // anthropic-beta + x-organization-uuid are required — without them the
@@ -901,8 +901,8 @@ async function archiveSession(
       {
         headers: {
           ...oauthHeaders(accessToken),
-          'anthropic-beta': 'ccr-byoc-2025-07-29',
-          'x-organization-uuid': orgUUID,
+          "anthropic-beta": "ccr-byoc-2025-07-29",
+          "x-organization-uuid": orgUUID,
         },
         timeout: timeoutMs,
         validateStatus: () => true,
@@ -913,6 +913,6 @@ async function archiveSession(
   } catch (err) {
     const msg = errorMessage(err);
     logForDebugging(`[remote-bridge] Archive failed: ${msg}`);
-    return axios.isAxiosError(err) && err.code === 'ECONNABORTED' ? 'timeout' : 'error';
+    return axios.isAxiosError(err) && err.code === "ECONNABORTED" ? "timeout" : "error";
   }
 }

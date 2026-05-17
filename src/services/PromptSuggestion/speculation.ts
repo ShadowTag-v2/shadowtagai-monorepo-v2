@@ -1,72 +1,72 @@
-import { randomUUID } from 'node:crypto';
-import { rm } from 'node:fs';
-import { appendFile, copyFile, mkdir } from 'node:fs/promises';
-import { dirname, isAbsolute, join, relative } from 'node:path';
-import { getCwdState } from '../../bootstrap/state.js';
-import type { CompletionBoundary } from '../../state/AppStateStore.js';
+import { randomUUID } from "node:crypto";
+import { rm } from "node:fs";
+import { appendFile, copyFile, mkdir } from "node:fs/promises";
+import { dirname, isAbsolute, join, relative } from "node:path";
+import { getCwdState } from "../../bootstrap/state.js";
+import type { CompletionBoundary } from "../../state/AppStateStore.js";
 import {
   type AppState,
   IDLE_SPECULATION_STATE,
   type SpeculationResult,
   type SpeculationState,
-} from '../../state/AppStateStore.js';
-import { commandHasAnyCd } from '../../tools/BashTool/bashPermissions.js';
-import { checkReadOnlyConstraints } from '../../tools/BashTool/readOnlyValidation.js';
-import type { SpeculationAcceptMessage } from '../../types/logs.js';
-import type { Message } from '../../types/message.js';
-import { createChildAbortController } from '../../utils/abortController.js';
-import { count } from '../../utils/array.js';
-import { getGlobalConfig } from '../../utils/config.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage } from '../../utils/errors.js';
+} from "../../state/AppStateStore.js";
+import { commandHasAnyCd } from "../../tools/BashTool/bashPermissions.js";
+import { checkReadOnlyConstraints } from "../../tools/BashTool/readOnlyValidation.js";
+import type { SpeculationAcceptMessage } from "../../types/logs.js";
+import type { Message } from "../../types/message.js";
+import { createChildAbortController } from "../../utils/abortController.js";
+import { count } from "../../utils/array.js";
+import { getGlobalConfig } from "../../utils/config.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage } from "../../utils/errors.js";
 import {
   type FileStateCache,
   mergeFileStateCaches,
   READ_FILE_STATE_CACHE_SIZE,
-} from '../../utils/fileStateCache.js';
+} from "../../utils/fileStateCache.js";
 import {
   type CacheSafeParams,
   createCacheSafeParams,
   runForkedAgent,
-} from '../../utils/forkedAgent.js';
-import { formatDuration, formatNumber } from '../../utils/format.js';
-import type { REPLHookContext } from '../../utils/hooks/postSamplingHooks.js';
-import { logError } from '../../utils/log.js';
-import type { SetAppState } from '../../utils/messageQueueManager.js';
+} from "../../utils/forkedAgent.js";
+import { formatDuration, formatNumber } from "../../utils/format.js";
+import type { REPLHookContext } from "../../utils/hooks/postSamplingHooks.js";
+import { logError } from "../../utils/log.js";
+import type { SetAppState } from "../../utils/messageQueueManager.js";
 import {
   createSystemMessage,
   createUserMessage,
   INTERRUPT_MESSAGE,
   INTERRUPT_MESSAGE_FOR_TOOL_USE,
-} from '../../utils/messages.js';
-import { getClaudeTempDir } from '../../utils/permissions/filesystem.js';
-import { extractReadFilesFromMessages } from '../../utils/queryHelpers.js';
-import { getTranscriptPath } from '../../utils/sessionStorage.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
+} from "../../utils/messages.js";
+import { getClaudeTempDir } from "../../utils/permissions/filesystem.js";
+import { extractReadFilesFromMessages } from "../../utils/queryHelpers.js";
+import { getTranscriptPath } from "../../utils/sessionStorage.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../analytics/index.js';
+} from "../analytics/index.js";
 import {
   generateSuggestion,
   getPromptVariant,
   getSuggestionSuppressReason,
   logSuggestionSuppressed,
   shouldFilterSuggestion,
-} from './promptSuggestion.js';
+} from "./promptSuggestion.js";
 
 const MAX_SPECULATION_TURNS = 20;
 const MAX_SPECULATION_MESSAGES = 100;
 
-const WRITE_TOOLS = new Set(['Edit', 'Write', 'NotebookEdit']);
+const WRITE_TOOLS = new Set(["Edit", "Write", "NotebookEdit"]);
 const SAFE_READ_ONLY_TOOLS = new Set([
-  'Read',
-  'Glob',
-  'Grep',
-  'ToolSearch',
-  'LSP',
-  'TaskGet',
-  'TaskList',
+  "Read",
+  "Glob",
+  "Grep",
+  "ToolSearch",
+  "LSP",
+  "TaskGet",
+  "TaskList",
 ]);
 
 function safeRemoveOverlay(overlayPath: string): void {
@@ -74,21 +74,21 @@ function safeRemoveOverlay(overlayPath: string): void {
 }
 
 function getOverlayPath(id: string): string {
-  return join(getClaudeTempDir(), 'speculation', String(process.pid), id);
+  return join(getClaudeTempDir(), "speculation", String(process.pid), id);
 }
 
 function denySpeculation(
   message: string,
   reason: string,
 ): {
-  behavior: 'deny';
+  behavior: "deny";
   message: string;
-  decisionReason: { type: 'other'; reason: string };
+  decisionReason: { type: "other"; reason: string };
 } {
   return {
-    behavior: 'deny',
+    behavior: "deny",
     message,
-    decisionReason: { type: 'other', reason },
+    decisionReason: { type: "other", reason },
   };
 }
 
@@ -112,18 +112,18 @@ async function copyOverlayToMain(
   return allCopied;
 }
 
-export type ActiveSpeculationState = Extract<SpeculationState, { status: 'active' }>;
+export type ActiveSpeculationState = Extract<SpeculationState, { status: "active" }>;
 
 function logSpeculation(
   id: string,
-  outcome: 'accepted' | 'aborted' | 'error',
+  outcome: "accepted" | "aborted" | "error",
   startTime: number,
   suggestionLength: number,
   messages: Message[],
   boundary: CompletionBoundary | null,
   extras?: Record<string, string | number | boolean | undefined>,
 ): void {
-  logEvent('tengu_speculation', {
+  logEvent("tengu_speculation", {
     speculation_id: id as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     outcome: outcome as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     duration_ms: Date.now() - startTime,
@@ -149,20 +149,20 @@ function countToolsInMessages(messages: Message[]): number {
     .flatMap((m) => m.message.content)
     .filter(
       (b): b is { type: string; is_error?: boolean } =>
-        typeof b === 'object' && b !== null && 'type' in b,
+        typeof b === "object" && b !== null && "type" in b,
     );
-  return count(blocks, (b) => b.type === 'tool_result' && !b.is_error);
+  return count(blocks, (b) => b.type === "tool_result" && !b.is_error);
 }
 
 function getBoundaryTool(boundary: CompletionBoundary | null): string | undefined {
   if (!boundary) return undefined;
   switch (boundary.type) {
-    case 'bash':
-      return 'Bash';
-    case 'edit':
-    case 'denied_tool':
+    case "bash":
+      return "Bash";
+    case "edit":
+    case "denied_tool":
       return boundary.toolName;
-    case 'complete':
+    case "complete":
       return undefined;
   }
 }
@@ -170,13 +170,13 @@ function getBoundaryTool(boundary: CompletionBoundary | null): string | undefine
 function getBoundaryDetail(boundary: CompletionBoundary | null): string | undefined {
   if (!boundary) return undefined;
   switch (boundary.type) {
-    case 'bash':
+    case "bash":
       return boundary.command.slice(0, 200);
-    case 'edit':
+    case "edit":
       return boundary.filePath;
-    case 'denied_tool':
+    case "denied_tool":
       return boundary.detail;
-    case 'complete':
+    case "complete":
       return undefined;
   }
 }
@@ -184,26 +184,26 @@ function getBoundaryDetail(boundary: CompletionBoundary | null): string | undefi
 function isUserMessageWithArrayContent(
   m: Message,
 ): m is Message & { message: { content: unknown[] } } {
-  return m.type === 'user' && 'message' in m && Array.isArray(m.message.content);
+  return m.type === "user" && "message" in m && Array.isArray(m.message.content);
 }
 
 export function prepareMessagesForInjection(messages: Message[]): Message[] {
   // Find tool_use IDs that have SUCCESSFUL results (not errors/interruptions)
   // Pending tool_use blocks (no result) and interrupted ones will be stripped
   type ToolResult = {
-    type: 'tool_result';
+    type: "tool_result";
     tool_use_id: string;
     is_error?: boolean;
     content?: unknown;
   };
   const isToolResult = (b: unknown): b is ToolResult =>
-    typeof b === 'object' &&
+    typeof b === "object" &&
     b !== null &&
-    (b as ToolResult).type === 'tool_result' &&
-    typeof (b as ToolResult).tool_use_id === 'string';
+    (b as ToolResult).type === "tool_result" &&
+    typeof (b as ToolResult).tool_use_id === "string";
   const isSuccessful = (b: ToolResult) =>
     !b.is_error &&
-    !(typeof b.content === 'string' && b.content.includes(INTERRUPT_MESSAGE_FOR_TOOL_USE));
+    !(typeof b.content === "string" && b.content.includes(INTERRUPT_MESSAGE_FOR_TOOL_USE));
 
   const toolIdsWithSuccessfulResults = new Set(
     messages
@@ -215,21 +215,21 @@ export function prepareMessagesForInjection(messages: Message[]): Message[] {
   );
 
   const keep = (b: { type: string; id?: string; tool_use_id?: string; text?: string }) =>
-    b.type !== 'thinking' &&
-    b.type !== 'redacted_thinking' &&
-    !(b.type === 'tool_use' && !toolIdsWithSuccessfulResults.has(b.id!)) &&
-    !(b.type === 'tool_result' && !toolIdsWithSuccessfulResults.has(b.tool_use_id!)) &&
+    b.type !== "thinking" &&
+    b.type !== "redacted_thinking" &&
+    !(b.type === "tool_use" && !toolIdsWithSuccessfulResults.has(b.id!)) &&
+    !(b.type === "tool_result" && !toolIdsWithSuccessfulResults.has(b.tool_use_id!)) &&
     // Abort during speculation yields a standalone interrupt user message
     // (query.ts createUserInterruptionMessage). Strip it so it isn't surfaced
     // to the model as real user input.
     !(
-      b.type === 'text' &&
+      b.type === "text" &&
       (b.text === INTERRUPT_MESSAGE || b.text === INTERRUPT_MESSAGE_FOR_TOOL_USE)
     );
 
   return messages
     .map((msg) => {
-      if (!('message' in msg) || !Array.isArray(msg.message.content)) return msg;
+      if (!("message" in msg) || !Array.isArray(msg.message.content)) return msg;
       const content = msg.message.content.filter(keep);
       if (content.length === msg.message.content.length) return msg;
       if (content.length === 0) return null;
@@ -237,7 +237,7 @@ export function prepareMessagesForInjection(messages: Message[]): Message[] {
       // (API rejects these with 400: "text content blocks must contain non-whitespace text")
       const hasNonWhitespaceContent = content.some(
         (b: { type: string; text?: string }) =>
-          b.type !== 'text' || (b.text !== undefined && b.text.trim() !== ''),
+          b.type !== "text" || (b.text !== undefined && b.text.trim() !== ""),
       );
       if (!hasNonWhitespaceContent) return null;
       return { ...msg, message: { ...msg.message, content } } as typeof msg;
@@ -251,19 +251,19 @@ function createSpeculationFeedbackMessage(
   timeSavedMs: number,
   sessionTotalMs: number,
 ): Message | null {
-  if (process.env.USER_TYPE !== 'ant') return null;
+  if (process.env.USER_TYPE !== "ant") return null;
 
   if (messages.length === 0 || timeSavedMs === 0) return null;
 
   const toolUses = countToolsInMessages(messages);
-  const tokens = boundary?.type === 'complete' ? boundary.outputTokens : null;
+  const tokens = boundary?.type === "complete" ? boundary.outputTokens : null;
 
   const parts = [];
   if (toolUses > 0) {
-    parts.push(`Speculated ${toolUses} tool ${toolUses === 1 ? 'use' : 'uses'}`);
+    parts.push(`Speculated ${toolUses} tool ${toolUses === 1 ? "use" : "uses"}`);
   } else {
     const turns = messages.length;
-    parts.push(`Speculated ${turns} ${turns === 1 ? 'turn' : 'turns'}`);
+    parts.push(`Speculated ${turns} ${turns === 1 ? "turn" : "turns"}`);
   }
 
   if (tokens !== null) {
@@ -272,11 +272,11 @@ function createSpeculationFeedbackMessage(
 
   const savedText = `+${formatDuration(timeSavedMs)} saved`;
   const sessionSuffix =
-    sessionTotalMs !== timeSavedMs ? ` (${formatDuration(sessionTotalMs)} this session)` : '';
+    sessionTotalMs !== timeSavedMs ? ` (${formatDuration(sessionTotalMs)} this session)` : "";
 
   return createSystemMessage(
-    `[ANT-ONLY] ${parts.join(' · ')} · ${savedText}${sessionSuffix}`,
-    'warning',
+    `[ANT-ONLY] ${parts.join(" · ")} · ${savedText}${sessionSuffix}`,
+    "warning",
   );
 }
 
@@ -285,7 +285,7 @@ function updateActiveSpeculationState(
   updater: (state: ActiveSpeculationState) => Partial<ActiveSpeculationState>,
 ): void {
   setAppState((prev) => {
-    if (prev.speculation.status !== 'active') return prev;
+    if (prev.speculation.status !== "active") return prev;
     const current = prev.speculation as ActiveSpeculationState;
     const updates = updater(current);
     // Check if any values actually changed to avoid unnecessary re-renders
@@ -302,13 +302,13 @@ function updateActiveSpeculationState(
 
 function resetSpeculationState(setAppState: SetAppState): void {
   setAppState((prev) => {
-    if (prev.speculation.status === 'idle') return prev;
+    if (prev.speculation.status === "idle") return prev;
     return { ...prev, speculation: IDLE_SPECULATION_STATE };
   });
 }
 
 export function isSpeculationEnabled(): boolean {
-  const enabled = process.env.USER_TYPE === 'ant' && (getGlobalConfig().speculationEnabled ?? true);
+  const enabled = process.env.USER_TYPE === "ant" && (getGlobalConfig().speculationEnabled ?? true);
   logForDebugging(`[Speculation] enabled=${enabled}`);
   return enabled;
 }
@@ -359,7 +359,7 @@ async function generatePipelinedSuggestion(
       },
     }));
   } catch (error) {
-    if (error instanceof Error && error.name === 'AbortError') return;
+    if (error instanceof Error && error.name === "AbortError") return;
     logForDebugging(`[Speculation] Pipelined suggestion failed: ${errorMessage(error)}`);
   }
 }
@@ -391,7 +391,7 @@ export async function startSpeculation(
   try {
     await mkdir(overlayPath, { recursive: true });
   } catch {
-    logForDebugging('[Speculation] Failed to create overlay directory');
+    logForDebugging("[Speculation] Failed to create overlay directory");
     return;
   }
 
@@ -400,7 +400,7 @@ export async function startSpeculation(
   setAppState((prev) => ({
     ...prev,
     speculation: {
-      status: 'active',
+      status: "active",
       id,
       abort: () => abortController.abort(),
       startTime,
@@ -431,27 +431,27 @@ export async function startSpeculation(
           const { mode, isBypassPermissionsModeAvailable } = appState.toolPermissionContext;
 
           const canAutoAcceptEdits =
-            mode === 'acceptEdits' ||
-            mode === 'bypassPermissions' ||
-            (mode === 'plan' && isBypassPermissionsModeAvailable);
+            mode === "acceptEdits" ||
+            mode === "bypassPermissions" ||
+            (mode === "plan" && isBypassPermissionsModeAvailable);
 
           if (!canAutoAcceptEdits) {
             logForDebugging(`[Speculation] Stopping at file edit: ${tool.name}`);
-            const editPath = ('file_path' in input ? input.file_path : undefined) as
+            const editPath = ("file_path" in input ? input.file_path : undefined) as
               | string
               | undefined;
             updateActiveSpeculationState(setAppState, () => ({
               boundary: {
-                type: 'edit',
+                type: "edit",
                 toolName: tool.name,
-                filePath: editPath ?? '',
+                filePath: editPath ?? "",
                 completedAt: Date.now(),
               },
             }));
             abortController.abort();
             return denySpeculation(
-              'Speculation paused: file edit requires permission',
-              'speculation_edit_boundary',
+              "Speculation paused: file edit requires permission",
+              "speculation_edit_boundary",
             );
           }
         }
@@ -459,24 +459,24 @@ export async function startSpeculation(
         // Handle file path rewriting for overlay isolation
         if (isWriteTool || isSafeReadOnlyTool) {
           const pathKey =
-            'notebook_path' in input ? 'notebook_path' : 'path' in input ? 'path' : 'file_path';
+            "notebook_path" in input ? "notebook_path" : "path" in input ? "path" : "file_path";
           const filePath = input[pathKey] as string | undefined;
           if (filePath) {
             const rel = relative(cwd, filePath);
-            if (isAbsolute(rel) || rel.startsWith('..')) {
+            if (isAbsolute(rel) || rel.startsWith("..")) {
               if (isWriteTool) {
                 logForDebugging(`[Speculation] Denied ${tool.name}: path outside cwd: ${filePath}`);
                 return denySpeculation(
-                  'Write outside cwd not allowed during speculation',
-                  'speculation_write_outside_root',
+                  "Write outside cwd not allowed during speculation",
+                  "speculation_write_outside_root",
                 );
               }
               return {
-                behavior: 'allow' as const,
+                behavior: "allow" as const,
                 updatedInput: input,
                 decisionReason: {
-                  type: 'other' as const,
-                  reason: 'speculation_read_outside_root',
+                  type: "other" as const,
+                  reason: "speculation_read_outside_root",
                 },
               };
             }
@@ -503,26 +503,26 @@ export async function startSpeculation(
             }
 
             logForDebugging(
-              `[Speculation] ${isWriteTool ? 'Write' : 'Read'} ${filePath} -> ${input[pathKey]}`,
+              `[Speculation] ${isWriteTool ? "Write" : "Read"} ${filePath} -> ${input[pathKey]}`,
             );
 
             return {
-              behavior: 'allow' as const,
+              behavior: "allow" as const,
               updatedInput: input,
               decisionReason: {
-                type: 'other' as const,
-                reason: 'speculation_file_access',
+                type: "other" as const,
+                reason: "speculation_file_access",
               },
             };
           }
           // Read tools without explicit path (e.g. Glob/Grep defaulting to CWD) are safe
           if (isSafeReadOnlyTool) {
             return {
-              behavior: 'allow' as const,
+              behavior: "allow" as const,
               updatedInput: input,
               decisionReason: {
-                type: 'other' as const,
-                reason: 'speculation_read_default_cwd',
+                type: "other" as const,
+                reason: "speculation_read_default_cwd",
               },
             };
           }
@@ -530,32 +530,32 @@ export async function startSpeculation(
         }
 
         // Stop at non-read-only bash commands
-        if (tool.name === 'Bash') {
+        if (tool.name === "Bash") {
           const command =
-            'command' in input && typeof input.command === 'string' ? input.command : '';
+            "command" in input && typeof input.command === "string" ? input.command : "";
           if (
             !command ||
-            checkReadOnlyConstraints({ command }, commandHasAnyCd(command)).behavior !== 'allow'
+            checkReadOnlyConstraints({ command }, commandHasAnyCd(command)).behavior !== "allow"
           ) {
             logForDebugging(
-              `[Speculation] Stopping at bash: ${command.slice(0, 50) || 'missing command'}`,
+              `[Speculation] Stopping at bash: ${command.slice(0, 50) || "missing command"}`,
             );
             updateActiveSpeculationState(setAppState, () => ({
-              boundary: { type: 'bash', command, completedAt: Date.now() },
+              boundary: { type: "bash", command, completedAt: Date.now() },
             }));
             abortController.abort();
             return denySpeculation(
-              'Speculation paused: bash boundary',
-              'speculation_bash_boundary',
+              "Speculation paused: bash boundary",
+              "speculation_bash_boundary",
             );
           }
           // Read-only bash command — allow during speculation
           return {
-            behavior: 'allow' as const,
+            behavior: "allow" as const,
             updatedInput: input,
             decisionReason: {
-              type: 'other' as const,
-              reason: 'speculation_readonly_bash',
+              type: "other" as const,
+              reason: "speculation_readonly_bash",
             },
           };
         }
@@ -563,15 +563,15 @@ export async function startSpeculation(
         // Deny all other tools by default
         logForDebugging(`[Speculation] Stopping at denied tool: ${tool.name}`);
         const detail = String(
-          ('url' in input && input.url) ||
-            ('file_path' in input && input.file_path) ||
-            ('path' in input && input.path) ||
-            ('command' in input && input.command) ||
-            '',
+          ("url" in input && input.url) ||
+            ("file_path" in input && input.file_path) ||
+            ("path" in input && input.path) ||
+            ("command" in input && input.command) ||
+            "",
         ).slice(0, 200);
         updateActiveSpeculationState(setAppState, () => ({
           boundary: {
-            type: 'denied_tool',
+            type: "denied_tool",
             toolName: tool.name,
             detail,
             completedAt: Date.now(),
@@ -580,15 +580,15 @@ export async function startSpeculation(
         abortController.abort();
         return denySpeculation(
           `Tool ${tool.name} not allowed during speculation`,
-          'speculation_unknown_tool',
+          "speculation_unknown_tool",
         );
       },
-      querySource: 'speculation',
-      forkLabel: 'speculation',
+      querySource: "speculation",
+      forkLabel: "speculation",
       maxTurns: MAX_SPECULATION_TURNS,
       overrides: { abortController, requireCanUseTool: true },
       onMessage: (msg) => {
-        if (msg.type === 'assistant' || msg.type === 'user') {
+        if (msg.type === "assistant" || msg.type === "user") {
           messagesRef.current.push(msg);
           if (messagesRef.current.length >= MAX_SPECULATION_MESSAGES) {
             abortController.abort();
@@ -596,7 +596,7 @@ export async function startSpeculation(
           if (isUserMessageWithArrayContent(msg)) {
             const newTools = count(
               msg.message.content as { type: string; is_error?: boolean }[],
-              (b) => b.type === 'tool_result' && !b.is_error,
+              (b) => b.type === "tool_result" && !b.is_error,
             );
             if (newTools > 0) {
               updateActiveSpeculationState(setAppState, (prev) => ({
@@ -612,7 +612,7 @@ export async function startSpeculation(
 
     updateActiveSpeculationState(setAppState, () => ({
       boundary: {
-        type: 'complete' as const,
+        type: "complete" as const,
         completedAt: Date.now(),
         outputTokens: result.totalUsage.output_tokens,
       },
@@ -631,7 +631,7 @@ export async function startSpeculation(
   } catch (error) {
     abortController.abort();
 
-    if (error instanceof Error && error.name === 'AbortError') {
+    if (error instanceof Error && error.name === "AbortError") {
       safeRemoveOverlay(overlayPath);
       resetSpeculationState(setAppState);
       return;
@@ -640,15 +640,15 @@ export async function startSpeculation(
     safeRemoveOverlay(overlayPath);
 
     // eslint-disable-next-line no-restricted-syntax -- custom fallback message, not toError(e)
-    logError(error instanceof Error ? error : new Error('Speculation failed'));
+    logError(error instanceof Error ? error : new Error("Speculation failed"));
 
-    logSpeculation(id, 'error', startTime, suggestionText.length, messagesRef.current, null, {
-      error_type: error instanceof Error ? error.name : 'Unknown',
+    logSpeculation(id, "error", startTime, suggestionText.length, messagesRef.current, null, {
+      error_type: error instanceof Error ? error.name : "Unknown",
       error_message: errorMessage(error).slice(
         0,
         200,
       ) as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
-      error_phase: 'start' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      error_phase: "start" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       is_pipelined: isPipelined,
     });
 
@@ -661,7 +661,7 @@ export async function acceptSpeculation(
   setAppState: (f: (prev: AppState) => AppState) => void,
   cleanMessageCount: number,
 ): Promise<SpeculationResult | null> {
-  if (state.status !== 'active') return null;
+  if (state.status !== "active") return null;
 
   const { id, messagesRef, writtenPathsRef, abort, startTime, suggestionLength, isPipelined } =
     state;
@@ -682,7 +682,7 @@ export async function acceptSpeculation(
 
   setAppState((prev) => {
     // Refine with latest React state if speculation is still active
-    if (prev.speculation.status === 'active' && prev.speculation.boundary) {
+    if (prev.speculation.status === "active" && prev.speculation.boundary) {
       boundary = prev.speculation.boundary;
       const endTime = Math.min(acceptedAt, boundary.completedAt ?? Infinity);
       timeSavedMs = endTime - startTime;
@@ -700,7 +700,7 @@ export async function acceptSpeculation(
       : `[Speculation] Accept ${id}: already complete`,
   );
 
-  logSpeculation(id, 'accepted', startTime, suggestionLength, messages, boundary, {
+  logSpeculation(id, "accepted", startTime, suggestionLength, messages, boundary, {
     message_count: messages.length,
     time_saved_ms: timeSavedMs,
     is_pipelined: isPipelined,
@@ -708,14 +708,14 @@ export async function acceptSpeculation(
 
   if (timeSavedMs > 0) {
     const entry: SpeculationAcceptMessage = {
-      type: 'speculation-accept',
+      type: "speculation-accept",
       timestamp: new Date().toISOString(),
       timeSavedMs,
     };
     void appendFile(getTranscriptPath(), `${jsonStringify(entry)}\n`, {
       mode: 0o600,
     }).catch(() => {
-      logForDebugging('[Speculation] Failed to write speculation-accept to transcript');
+      logForDebugging("[Speculation] Failed to write speculation-accept to transcript");
     });
   }
 
@@ -724,15 +724,15 @@ export async function acceptSpeculation(
 
 export function abortSpeculation(setAppState: SetAppState): void {
   setAppState((prev) => {
-    if (prev.speculation.status !== 'active') return prev;
+    if (prev.speculation.status !== "active") return prev;
 
     const { id, abort, startTime, boundary, suggestionLength, messagesRef, isPipelined } =
       prev.speculation;
 
     logForDebugging(`[Speculation] Aborting ${id}`);
 
-    logSpeculation(id, 'aborted', startTime, suggestionLength, messagesRef.current, boundary, {
-      abort_reason: 'user_typed',
+    logSpeculation(id, "aborted", startTime, suggestionLength, messagesRef.current, boundary, {
+      abort_reason: "user_typed",
       is_pipelined: isPipelined,
     });
 
@@ -785,7 +785,7 @@ export async function handleSpeculationAccept(
 
     const result = await acceptSpeculation(speculationState, setAppState, cleanMessages.length);
 
-    const isComplete = result?.boundary?.type === 'complete';
+    const isComplete = result?.boundary?.type === "complete";
 
     // When speculation didn't complete, the follow-up query needs the
     // conversation to end with a user message. Drop trailing assistant
@@ -793,7 +793,7 @@ export async function handleSpeculationAccept(
     // reject conversations ending with an assistant turn. The model will
     // regenerate this content in the follow-up query.
     if (!isComplete) {
-      const lastNonAssistant = cleanMessages.findLastIndex((m) => m.type !== 'assistant');
+      const lastNonAssistant = cleanMessages.findLastIndex((m) => m.type !== "assistant");
       cleanMessages = cleanMessages.slice(0, lastNonAssistant + 1);
     }
 
@@ -817,7 +817,7 @@ export async function handleSpeculationAccept(
     }
 
     logForDebugging(
-      `[Speculation] ${result?.boundary?.type ?? 'incomplete'}, injected ${cleanMessages.length} messages`,
+      `[Speculation] ${result?.boundary?.type ?? "incomplete"}, injected ${cleanMessages.length} messages`,
     );
 
     // Promote pipelined suggestion if speculation completed fully
@@ -851,22 +851,22 @@ export async function handleSpeculationAccept(
   } catch (error) {
     // Fail open: log error and fall back to normal query flow
     /* eslint-disable no-restricted-syntax -- custom fallback message, not toError(e) */
-    logError(error instanceof Error ? error : new Error('handleSpeculationAccept failed'));
+    logError(error instanceof Error ? error : new Error("handleSpeculationAccept failed"));
     /* eslint-enable no-restricted-syntax */
     logSpeculation(
       speculationState.id,
-      'error',
+      "error",
       speculationState.startTime,
       speculationState.suggestionLength,
       speculationState.messagesRef.current,
       speculationState.boundary,
       {
-        error_type: error instanceof Error ? error.name : 'Unknown',
+        error_type: error instanceof Error ? error.name : "Unknown",
         error_message: errorMessage(error).slice(
           0,
           200,
         ) as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
-        error_phase: 'accept' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+        error_phase: "accept" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         is_pipelined: speculationState.isPipelined,
       },
     );

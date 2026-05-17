@@ -1,16 +1,16 @@
-import { basename } from 'node:path';
-import Fuse from 'fuse.js';
-import type { SuggestionItem } from 'src/components/PromptInput/PromptInputFooterSuggestions.js';
-import { generateFileSuggestions } from 'src/hooks/fileSuggestions.js';
-import type { ServerResource } from 'src/services/mcp/types.js';
-import { getAgentColor } from 'src/tools/AgentTool/agentColorManager.js';
-import type { AgentDefinition } from 'src/tools/AgentTool/loadAgentsDir.js';
-import { truncateToWidth } from 'src/utils/format.js';
-import { logError } from 'src/utils/log.js';
-import type { Theme } from 'src/utils/theme.js';
+import { basename } from "node:path";
+import Fuse from "fuse.js";
+import type { SuggestionItem } from "src/components/PromptInput/PromptInputFooterSuggestions.js";
+import { generateFileSuggestions } from "src/hooks/fileSuggestions.js";
+import type { ServerResource } from "src/services/mcp/types.js";
+import { getAgentColor } from "src/tools/AgentTool/agentColorManager.js";
+import type { AgentDefinition } from "src/tools/AgentTool/loadAgentsDir.js";
+import { truncateToWidth } from "src/utils/format.js";
+import { logError } from "src/utils/log.js";
+import type { Theme } from "src/utils/theme.js";
 
 type FileSuggestionSource = {
-  type: 'file';
+  type: "file";
   displayText: string;
   description?: string;
   path: string;
@@ -19,7 +19,7 @@ type FileSuggestionSource = {
 };
 
 type McpResourceSuggestionSource = {
-  type: 'mcp_resource';
+  type: "mcp_resource";
   displayText: string;
   description: string;
   server: string;
@@ -28,7 +28,7 @@ type McpResourceSuggestionSource = {
 };
 
 type AgentSuggestionSource = {
-  type: 'agent';
+  type: "agent";
   displayText: string;
   description: string;
   agentType: string;
@@ -42,19 +42,19 @@ type SuggestionSource = FileSuggestionSource | McpResourceSuggestionSource | Age
  */
 function createSuggestionFromSource(source: SuggestionSource): SuggestionItem {
   switch (source.type) {
-    case 'file':
+    case "file":
       return {
         id: `file-${source.path}`,
         displayText: source.displayText,
         description: source.description,
       };
-    case 'mcp_resource':
+    case "mcp_resource":
       return {
         id: `mcp-resource-${source.server}__${source.uri}`,
         displayText: source.displayText,
         description: source.description,
       };
-    case 'agent':
+    case "agent":
       return {
         id: `agent-${source.agentType}`,
         displayText: source.displayText,
@@ -82,7 +82,7 @@ function generateAgentSuggestions(
 
   try {
     const agentSources: AgentSuggestionSource[] = agents.map((agent) => ({
-      type: 'agent' as const,
+      type: "agent" as const,
       displayText: `${agent.agentType} (agent)`,
       description: truncateDescription(agent.whenToUse),
       agentType: agent.agentType,
@@ -121,7 +121,7 @@ export async function generateUnifiedSuggestions(
   ]);
 
   const fileSources: FileSuggestionSource[] = fileSuggestions.map((suggestion) => ({
-    type: 'file' as const,
+    type: "file" as const,
     displayText: suggestion.displayText,
     description: suggestion.description,
     path: suggestion.displayText, // Use displayText as path for files
@@ -132,7 +132,7 @@ export async function generateUnifiedSuggestions(
   const mcpSources: McpResourceSuggestionSource[] = Object.values(mcpResources)
     .flat()
     .map((resource) => ({
-      type: 'mcp_resource' as const,
+      type: "mcp_resource" as const,
       displayText: `${resource.server}:${resource.uri}`,
       description: truncateDescription(resource.description || resource.name || resource.uri),
       server: resource.server,
@@ -166,11 +166,11 @@ export async function generateUnifiedSuggestions(
       includeScore: true,
       threshold: 0.6, // Allow more matches through, we'll sort by score
       keys: [
-        { name: 'displayText', weight: 2 },
-        { name: 'name', weight: 3 },
-        { name: 'server', weight: 1 },
-        { name: 'description', weight: 1 },
-        { name: 'agentType', weight: 3 },
+        { name: "displayText", weight: 2 },
+        { name: "name", weight: 3 },
+        { name: "server", weight: 1 },
+        { name: "description", weight: 1 },
+        { name: "agentType", weight: 3 },
       ],
     });
 

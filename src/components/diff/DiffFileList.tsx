@@ -1,10 +1,10 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import type { DiffFile } from '../../hooks/useDiffData.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { Box, Text } from '../../ink.js';
-import { truncateStartToWidth } from '../../utils/format.js';
-import { plural } from '../../utils/stringUtils.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import type { DiffFile } from "../../hooks/useDiffData.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { Box, Text } from "../../ink.js";
+import { truncateStartToWidth } from "../../utils/format.js";
+import { plural } from "../../utils/stringUtils.js";
 
 const MAX_VISIBLE_FILES = 5;
 type Props = {
@@ -55,7 +55,7 @@ export function DiffFileList(t0) {
   const { startIndex, endIndex } = t1;
   if (files.length === 0) {
     let t2;
-    if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = <Text dimColor={true}>No changed files</Text>;
       $[5] = t2;
     } else {
@@ -82,11 +82,11 @@ export function DiffFileList(t0) {
     needsPagination = files.length > MAX_VISIBLE_FILES;
     const maxPathWidth = Math.max(20, columns - 16 - 3 - 4);
     T0 = Box;
-    t2 = 'column';
+    t2 = "column";
     if ($[17] !== hasMoreAbove || $[18] !== needsPagination || $[19] !== startIndex) {
       t3 = needsPagination && (
         <Text dimColor={true}>
-          {hasMoreAbove ? ` ↑ ${startIndex} more ${plural(startIndex, 'file')}` : ' '}
+          {hasMoreAbove ? ` ↑ ${startIndex} more ${plural(startIndex, "file")}` : " "}
         </Text>
       );
       $[17] = hasMoreAbove;
@@ -143,8 +143,8 @@ export function DiffFileList(t0) {
     t5 = needsPagination && (
       <Text dimColor={true}>
         {hasMoreBelow
-          ? ` ↓ ${files.length - endIndex} more ${plural(files.length - endIndex, 'file')}`
-          : ' '}
+          ? ` ↓ ${files.length - endIndex} more ${plural(files.length - endIndex, "file")}`
+          : " "}
       </Text>
     );
     $[25] = endIndex;
@@ -188,9 +188,9 @@ function FileItem(t0) {
     t1 = $[2];
   }
   const displayPath = t1;
-  const pointer = isSelected ? `${figures.pointer} ` : '  ';
+  const pointer = isSelected ? `${figures.pointer} ` : "  ";
   const line = `${pointer}${displayPath}`;
-  const t2 = isSelected ? 'background' : undefined;
+  const t2 = isSelected ? "background" : undefined;
   let t3;
   if ($[3] !== isSelected || $[4] !== line || $[5] !== t2) {
     t3 = (
@@ -206,7 +206,7 @@ function FileItem(t0) {
     t3 = $[6];
   }
   let t4;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Box flexGrow={1} />;
     $[7] = t4;
   } else {
@@ -302,7 +302,7 @@ function FileStats(t0) {
   } else {
     t1 = $[8];
   }
-  const t2 = file.linesAdded > 0 && file.linesRemoved > 0 && ' ';
+  const t2 = file.linesAdded > 0 && file.linesRemoved > 0 && " ";
   let t3;
   if ($[9] !== file.linesRemoved || $[10] !== isSelected) {
     t3 = file.linesRemoved > 0 && (

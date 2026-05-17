@@ -1,27 +1,27 @@
-import { statSync } from 'node:fs';
-import * as path from 'node:path';
-import ignore from 'ignore';
+import { statSync } from "node:fs";
+import * as path from "node:path";
+import ignore from "ignore";
 import {
   CLAUDE_CONFIG_DIRECTORIES,
   loadMarkdownFilesForSubdir,
-} from 'src/utils/markdownConfigLoader.js';
-import type { SuggestionItem } from '../components/PromptInput/PromptInputFooterSuggestions.js';
-import { CHUNK_MS, FileIndex, yieldToEventLoop } from '../native-ts/file-index/index.js';
-import { logEvent } from '../services/analytics/index.js';
-import type { FileSuggestionCommandInput } from '../types/fileSuggestion.js';
-import { getGlobalConfig } from '../utils/config.js';
-import { getCwd } from '../utils/cwd.js';
-import { logForDebugging } from '../utils/debug.js';
-import { errorMessage } from '../utils/errors.js';
-import { execFileNoThrowWithCwd } from '../utils/execFileNoThrow.js';
-import { getFsImplementation } from '../utils/fsOperations.js';
-import { findGitRoot, gitExe } from '../utils/git.js';
-import { createBaseHookInput, executeFileSuggestionCommand } from '../utils/hooks.js';
-import { logError } from '../utils/log.js';
-import { expandPath } from '../utils/path.js';
-import { ripGrep } from '../utils/ripgrep.js';
-import { getInitialSettings } from '../utils/settings/settings.js';
-import { createSignal } from '../utils/signal.js';
+} from "src/utils/markdownConfigLoader.js";
+import type { SuggestionItem } from "../components/PromptInput/PromptInputFooterSuggestions.js";
+import { CHUNK_MS, FileIndex, yieldToEventLoop } from "../native-ts/file-index/index.js";
+import { logEvent } from "../services/analytics/index.js";
+import type { FileSuggestionCommandInput } from "../types/fileSuggestion.js";
+import { getGlobalConfig } from "../utils/config.js";
+import { getCwd } from "../utils/cwd.js";
+import { logForDebugging } from "../utils/debug.js";
+import { errorMessage } from "../utils/errors.js";
+import { execFileNoThrowWithCwd } from "../utils/execFileNoThrow.js";
+import { getFsImplementation } from "../utils/fsOperations.js";
+import { findGitRoot, gitExe } from "../utils/git.js";
+import { createBaseHookInput, executeFileSuggestionCommand } from "../utils/hooks.js";
+import { logError } from "../utils/log.js";
+import { expandPath } from "../utils/path.js";
+import { ripGrep } from "../utils/ripgrep.js";
+import { getInitialSettings } from "../utils/settings/settings.js";
+import { createSignal } from "../utils/signal.js";
 
 // Lazily constructed singleton
 let fileIndex: FileIndex | null = null;
@@ -133,7 +133,7 @@ function getGitIndexMtime(): number | null {
   if (!repoRoot) return null;
   try {
     // eslint-disable-next-line custom-rules/no-sync-fs -- mtimeMs is the operation here, not a pre-check. findGitRoot above already stat-walks synchronously; one more stat is marginal vs spawning git ls-files on every keystroke. Async would force startBackgroundCacheRefresh to become async, breaking the synchronous fileListRefreshPromise contract at the cold-start await site.
-    return statSync(path.join(repoRoot, '.git', 'index')).mtimeMs;
+    return statSync(path.join(repoRoot, ".git", "index")).mtimeMs;
   } catch {
     return null;
   }
@@ -196,7 +196,7 @@ async function loadRipgrepIgnorePatterns(
   }
 
   const fs = getFsImplementation();
-  const ignoreFiles = ['.ignore', '.rgignore'];
+  const ignoreFiles = [".ignore", ".rgignore"];
   const directories = [...new Set([repoRoot, cwd])];
 
   const ig = ignore();
@@ -204,7 +204,7 @@ async function loadRipgrepIgnorePatterns(
 
   const paths = directories.flatMap((dir) => ignoreFiles.map((f) => path.join(dir, f)));
   const contents = await Promise.all(
-    paths.map((p) => fs.readFile(p, { encoding: 'utf8' }).catch(() => null)),
+    paths.map((p) => fs.readFile(p, { encoding: "utf8" }).catch(() => null)),
   );
   for (const [i, content] of contents.entries()) {
     if (content === null) continue;
@@ -250,7 +250,7 @@ async function getFilesUsingGit(
     const lsFilesStart = Date.now();
     const trackedResult = await execFileNoThrowWithCwd(
       gitExe(),
-      ['-c', 'core.quotepath=false', 'ls-files', '--recurse-submodules'],
+      ["-c", "core.quotepath=false", "ls-files", "--recurse-submodules"],
       { timeout: 5000, abortSignal, cwd: repoRoot },
     );
     logForDebugging(`[FileIndex] git ls-files (tracked) took ${Date.now() - lsFilesStart}ms`);
@@ -262,7 +262,7 @@ async function getFilesUsingGit(
       return null;
     }
 
-    const trackedFiles = trackedResult.stdout.trim().split('\n').filter(Boolean);
+    const trackedFiles = trackedResult.stdout.trim().split("\n").filter(Boolean);
 
     // Normalize paths relative to the current working directory
     let normalizedTracked = normalizeGitPaths(trackedFiles, repoRoot, cwd);
@@ -285,7 +285,7 @@ async function getFilesUsingGit(
       `[FileIndex] git ls-files: ${normalizedTracked.length} tracked files in ${duration}ms`,
     );
 
-    logEvent('tengu_file_suggestions_git_ls_files', {
+    logEvent("tengu_file_suggestions_git_ls_files", {
       file_count: normalizedTracked.length,
       tracked_count: normalizedTracked.length,
       untracked_count: 0,
@@ -295,8 +295,8 @@ async function getFilesUsingGit(
     // Start background fetch for untracked files (don't await)
     if (!untrackedFetchPromise) {
       const untrackedArgs = respectGitignore
-        ? ['-c', 'core.quotepath=false', 'ls-files', '--others', '--exclude-standard']
-        : ['-c', 'core.quotepath=false', 'ls-files', '--others'];
+        ? ["-c", "core.quotepath=false", "ls-files", "--others", "--exclude-standard"]
+        : ["-c", "core.quotepath=false", "ls-files", "--others"];
 
       const generation = cacheGeneration;
       untrackedFetchPromise = execFileNoThrowWithCwd(gitExe(), untrackedArgs, {
@@ -308,7 +308,7 @@ async function getFilesUsingGit(
             return; // Cache was cleared; don't merge stale untracked files
           }
           if (untrackedResult.code === 0) {
-            const rawUntrackedFiles = untrackedResult.stdout.trim().split('\n').filter(Boolean);
+            const rawUntrackedFiles = untrackedResult.stdout.trim().split("\n").filter(Boolean);
 
             // Normalize paths BEFORE applying ignore patterns (consistent with tracked files)
             let normalizedUntracked = normalizeGitPaths(rawUntrackedFiles, repoRoot, cwd);
@@ -391,7 +391,7 @@ function collectDirectoryNames(
     // so we stop when dirname stops changing. Checking this before add() keeps
     // the root out of the result set (matching the old path.parse().root guard).
     // This avoids path.parse() which allocates a 5-field object per file.
-    while (currentDir !== '.' && !out.has(currentDir)) {
+    while (currentDir !== "." && !out.has(currentDir)) {
       const parent = path.dirname(currentDir);
       if (parent === currentDir) break;
       out.add(currentDir);
@@ -430,33 +430,33 @@ async function getProjectFiles(
   logForDebugging(`[FileIndex] git ls-files returned null, falling back to ripgrep`);
   const startTime = Date.now();
   const rgArgs = [
-    '--files',
-    '--follow',
-    '--hidden',
-    '--glob',
-    '!.git/',
-    '--glob',
-    '!.svn/',
-    '--glob',
-    '!.hg/',
-    '--glob',
-    '!.bzr/',
-    '--glob',
-    '!.jj/',
-    '--glob',
-    '!.sl/',
+    "--files",
+    "--follow",
+    "--hidden",
+    "--glob",
+    "!.git/",
+    "--glob",
+    "!.svn/",
+    "--glob",
+    "!.hg/",
+    "--glob",
+    "!.bzr/",
+    "--glob",
+    "!.jj/",
+    "--glob",
+    "!.sl/",
   ];
   if (!respectGitignore) {
-    rgArgs.push('--no-ignore-vcs');
+    rgArgs.push("--no-ignore-vcs");
   }
 
-  const files = await ripGrep(rgArgs, '.', abortSignal);
+  const files = await ripGrep(rgArgs, ".", abortSignal);
   const relativePaths = files.map((f) => path.relative(getCwd(), f));
 
   const duration = Date.now() - startTime;
   logForDebugging(`[FileIndex] ripgrep: ${relativePaths.length} files in ${duration}ms`);
 
-  logEvent('tengu_file_suggestions_ripgrep', {
+  logEvent("tengu_file_suggestions_ripgrep", {
     file_count: relativePaths.length,
     duration_ms: duration,
   });
@@ -532,14 +532,14 @@ function findCommonPrefix(a: string, b: string): string {
  * Finds the longest common prefix among an array of suggestion items
  */
 export function findLongestCommonPrefix(suggestions: SuggestionItem[]): string {
-  if (suggestions.length === 0) return '';
+  if (suggestions.length === 0) return "";
 
   const strings = suggestions.map((item) => item.displayText);
   let prefix = strings[0]!;
   for (let i = 1; i < strings.length; i++) {
     const currentString = strings[i]!;
     prefix = findCommonPrefix(prefix, currentString);
-    if (prefix === '') return '';
+    if (prefix === "") return "";
   }
   return prefix;
 }
@@ -657,7 +657,7 @@ export async function generateFileSuggestions(
 
   // Use custom command directly if configured. We don't mix in our config files
   // because the command returns pre-ranked results using its own search logic.
-  if (getInitialSettings().fileSuggestion?.type === 'command') {
+  if (getInitialSettings().fileSuggestion?.type === "command") {
     const input: FileSuggestionCommandInput = {
       ...createBaseHookInput(),
       query: partialPath,
@@ -667,7 +667,7 @@ export async function generateFileSuggestions(
   }
 
   // If the partial path is empty or just a dot, return current directory suggestions
-  if (partialPath === '' || partialPath === '.' || partialPath === './') {
+  if (partialPath === "" || partialPath === "." || partialPath === "./") {
     const topLevelPaths = await getTopLevelPaths();
     startBackgroundCacheRefresh();
     return topLevelPaths.slice(0, MAX_SUGGESTIONS).map(createFileSuggestionItem);
@@ -691,7 +691,7 @@ export async function generateFileSuggestions(
     }
 
     // Handle tilde expansion for home directory
-    if (normalizedPath.startsWith('~')) {
+    if (normalizedPath.startsWith("~")) {
       normalizedPath = expandPath(normalizedPath);
     }
 
@@ -699,9 +699,9 @@ export async function generateFileSuggestions(
 
     const duration = Date.now() - startTime;
     logForDebugging(
-      `[FileIndex] generateFileSuggestions: ${matches.length} results in ${duration}ms (${wasBuilding ? 'partial' : 'full'} index)`,
+      `[FileIndex] generateFileSuggestions: ${matches.length} results in ${duration}ms (${wasBuilding ? "partial" : "full"} index)`,
     );
-    logEvent('tengu_file_suggestions_query', {
+    logEvent("tengu_file_suggestions_query", {
       duration_ms: duration,
       cache_hit: !wasBuilding,
       result_count: matches.length,
@@ -727,7 +727,7 @@ export function applyFileSuggestion(
   setCursorOffset: (offset: number) => void,
 ): void {
   // Extract suggestion text from string or SuggestionItem
-  const suggestionText = typeof suggestion === 'string' ? suggestion : suggestion.displayText;
+  const suggestionText = typeof suggestion === "string" ? suggestion : suggestion.displayText;
 
   // Replace the partial path with the selected file path
   const newInput =

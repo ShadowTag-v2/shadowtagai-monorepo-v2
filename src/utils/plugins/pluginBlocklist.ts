@@ -8,13 +8,13 @@
  * for UI reason/text only. If re-introduced, serve from downloads.claude.ai.
  */
 
-import { uninstallPluginOp } from '../../services/plugins/pluginOperations.js';
-import { logForDebugging } from '../debug.js';
-import { errorMessage } from '../errors.js';
-import { loadInstalledPluginsV2 } from './installedPluginsManager.js';
-import { getMarketplace, loadKnownMarketplacesConfigSafe } from './marketplaceManager.js';
-import { addFlaggedPlugin, getFlaggedPlugins, loadFlaggedPlugins } from './pluginFlagging.js';
-import type { InstalledPluginsFileV2, PluginMarketplace } from './schemas.js';
+import { uninstallPluginOp } from "../../services/plugins/pluginOperations.js";
+import { logForDebugging } from "../debug.js";
+import { errorMessage } from "../errors.js";
+import { loadInstalledPluginsV2 } from "./installedPluginsManager.js";
+import { getMarketplace, loadKnownMarketplacesConfigSafe } from "./marketplaceManager.js";
+import { addFlaggedPlugin, getFlaggedPlugins, loadFlaggedPlugins } from "./pluginFlagging.js";
+import type { InstalledPluginsFileV2, PluginMarketplace } from "./schemas.js";
 
 /**
  * Detect plugins installed from a marketplace that are no longer listed there.
@@ -79,14 +79,14 @@ export async function detectAndUninstallDelistedPlugins(): Promise<string[]> {
         // Skip managed-only plugins — enterprise admin should handle those
         const installations = installedPlugins.plugins[pluginId] ?? [];
         const hasUserInstall = installations.some(
-          (i) => i.scope === 'user' || i.scope === 'project' || i.scope === 'local',
+          (i) => i.scope === "user" || i.scope === "project" || i.scope === "local",
         );
         if (!hasUserInstall) continue;
 
         // Auto-uninstall the delisted plugin from all user-controllable scopes
         for (const installation of installations) {
           const { scope } = installation;
-          if (scope !== 'user' && scope !== 'project' && scope !== 'local') {
+          if (scope !== "user" && scope !== "project" && scope !== "local") {
             continue;
           }
           try {
@@ -94,7 +94,7 @@ export async function detectAndUninstallDelistedPlugins(): Promise<string[]> {
           } catch (error) {
             logForDebugging(
               `Failed to auto-uninstall delisted plugin ${pluginId} from ${scope}: ${errorMessage(error)}`,
-              { level: 'error' },
+              { level: "error" },
             );
           }
         }
@@ -106,7 +106,7 @@ export async function detectAndUninstallDelistedPlugins(): Promise<string[]> {
       // Marketplace may not be available yet — log and continue
       logForDebugging(
         `Failed to check for delisted plugins in "${marketplaceName}": ${errorMessage(error)}`,
-        { level: 'warn' },
+        { level: "warn" },
       );
     }
   }

@@ -1,9 +1,9 @@
-import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { COMMAND_MESSAGE_TAG } from '../../constants/xml.js';
-import { Box, Text } from '../../ink.js';
-import { extractTag } from '../../utils/messages.js';
+import type { TextBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { COMMAND_MESSAGE_TAG } from "../../constants/xml.js";
+import { Box, Text } from "../../ink.js";
+import { extractTag } from "../../utils/messages.js";
 
 type Props = {
   addMargin: boolean;
@@ -24,21 +24,21 @@ export function UserCommandMessage(t0) {
   const commandMessage = t2;
   let t3;
   if ($[2] !== text) {
-    t3 = extractTag(text, 'command-args');
+    t3 = extractTag(text, "command-args");
     $[2] = text;
     $[3] = t3;
   } else {
     t3 = $[3];
   }
   const args = t3;
-  const isSkillFormat = extractTag(text, 'skill-format') === 'true';
+  const isSkillFormat = extractTag(text, "skill-format") === "true";
   if (!commandMessage) {
     return null;
   }
   if (isSkillFormat) {
     const t4 = addMargin ? 1 : 0;
     let t5;
-    if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
       t5 = <Text color="subtle">{figures.pointer} </Text>;
       $[4] = t5;
     } else {
@@ -86,10 +86,10 @@ export function UserCommandMessage(t0) {
   } else {
     t4 = $[12];
   }
-  const content = `/${t4.join(' ')}`;
+  const content = `/${t4.join(" ")}`;
   const t5 = addMargin ? 1 : 0;
   let t6;
-  if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = <Text color="subtle">{figures.pointer} </Text>;
     $[13] = t6;
   } else {

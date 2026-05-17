@@ -1,6 +1,6 @@
-import { realpath, stat } from 'node:fs/promises';
-import { getPlatform } from '../platform.js';
-import { which } from '../which.js';
+import { realpath, stat } from "node:fs/promises";
+import { getPlatform } from "../platform.js";
+import { which } from "../which.js";
 
 async function probePath(p: string): Promise<string | null> {
   try {
@@ -22,21 +22,21 @@ async function probePath(p: string): Promise<string | null> {
  * Windows/macOS, PATH is sufficient.
  */
 export async function findPowerShell(): Promise<string | null> {
-  const pwshPath = await which('pwsh');
+  const pwshPath = await which("pwsh");
   if (pwshPath) {
     // Snap launcher hangs in subprocesses. Prefer the direct binary.
     // Check both the resolved PATH entry and its symlink target: on
     // some distros /usr/bin/pwsh is a symlink to /snap/bin/pwsh, which
     // would bypass a naive startsWith('/snap/') on the which() result.
-    if (getPlatform() === 'linux') {
+    if (getPlatform() === "linux") {
       const resolved = await realpath(pwshPath).catch(() => pwshPath);
-      if (pwshPath.startsWith('/snap/') || resolved.startsWith('/snap/')) {
+      if (pwshPath.startsWith("/snap/") || resolved.startsWith("/snap/")) {
         const direct =
-          (await probePath('/opt/microsoft/powershell/7/pwsh')) ??
-          (await probePath('/usr/bin/pwsh'));
+          (await probePath("/opt/microsoft/powershell/7/pwsh")) ??
+          (await probePath("/usr/bin/pwsh"));
         if (direct) {
           const directResolved = await realpath(direct).catch(() => direct);
-          if (!direct.startsWith('/snap/') && !directResolved.startsWith('/snap/')) {
+          if (!direct.startsWith("/snap/") && !directResolved.startsWith("/snap/")) {
             return direct;
           }
         }
@@ -45,7 +45,7 @@ export async function findPowerShell(): Promise<string | null> {
     return pwshPath;
   }
 
-  const powershellPath = await which('powershell');
+  const powershellPath = await which("powershell");
   if (powershellPath) {
     return powershellPath;
   }
@@ -66,7 +66,7 @@ export function getCachedPowerShellPath(): Promise<string | null> {
   return cachedPowerShellPath;
 }
 
-export type PowerShellEdition = 'core' | 'desktop';
+export type PowerShellEdition = "core" | "desktop";
 
 /**
  * Infers the PowerShell edition from the binary name without spawning.
@@ -92,8 +92,8 @@ export async function getPowerShellEdition(): Promise<PowerShellEdition | null> 
     .split(/[/\\]/)
     .pop()
     ?.toLowerCase()
-    .replace(/\.exe$/, '');
-  return base === 'pwsh' ? 'core' : 'desktop';
+    .replace(/\.exe$/, "");
+  return base === "pwsh" ? "core" : "desktop";
 }
 
 /**

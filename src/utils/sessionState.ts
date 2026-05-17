@@ -1,4 +1,4 @@
-export type SessionState = 'idle' | 'running' | 'requires_action';
+export type SessionState = "idle" | "running" | "requires_action";
 
 /**
  * Context carried with requires_action transitions so downstream
@@ -23,9 +23,9 @@ export type RequiresActionDetails = {
   input?: Record<string, unknown>;
 };
 
-import { isEnvTruthy } from './envUtils.js';
-import type { PermissionMode } from './permissions/PermissionMode.js';
-import { enqueueSdkEvent } from './sdkEventQueue.js';
+import { isEnvTruthy } from "./envUtils.js";
+import type { PermissionMode } from "./permissions/PermissionMode.js";
+import { enqueueSdkEvent } from "./sdkEventQueue.js";
 
 // CCR external_metadata keys — push in onChangeAppState, restore in
 // externalMetadataToAppState.
@@ -72,7 +72,7 @@ export function setPermissionModeChangedListener(cb: PermissionModeChangedListen
 }
 
 let hasPendingAction = false;
-let currentState: SessionState = 'idle';
+let currentState: SessionState = "idle";
 
 export function getSessionState(): SessionState {
   return currentState;
@@ -88,7 +88,7 @@ export function notifySessionStateChanged(
   // Mirror details into external_metadata so GetSession carries the
   // pending-action context without proto changes. Cleared via RFC 7396
   // null on the next non-blocked transition.
-  if (state === 'requires_action' && details) {
+  if (state === "requires_action" && details) {
     hasPendingAction = true;
     metadataListener?.({
       pending_action: details,
@@ -100,7 +100,7 @@ export function notifySessionStateChanged(
 
   // task_summary is written mid-turn by the forked summarizer; clear it at
   // idle so the next turn doesn't briefly show the previous turn's progress.
-  if (state === 'idle') {
+  if (state === "idle") {
     metadataListener?.({ task_summary: null });
   }
 
@@ -115,8 +115,8 @@ export function notifySessionStateChanged(
   // https://anthropic.slack.com/archives/C093BJBD1CP/p1774152406752229
   if (isEnvTruthy(process.env.CLAUDE_CODE_EMIT_SESSION_STATE_EVENTS)) {
     enqueueSdkEvent({
-      type: 'system',
-      subtype: 'session_state_changed',
+      type: "system",
+      subtype: "session_state_changed",
       state,
     });
   }

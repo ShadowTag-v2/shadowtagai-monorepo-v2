@@ -1,31 +1,31 @@
-import chalk from 'chalk';
-import * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay } from '../../commands.js';
-import { ModelPicker } from '../../components/ModelPicker.js';
-import { COMMON_HELP_ARGS, COMMON_INFO_ARGS } from '../../constants/xml.js';
+import chalk from "chalk";
+import * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay } from "../../commands.js";
+import { ModelPicker } from "../../components/ModelPicker.js";
+import { COMMON_HELP_ARGS, COMMON_INFO_ARGS } from "../../constants/xml.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { useAppState, useSetAppState } from '../../state/AppState.js';
-import type { LocalJSXCommandCall } from '../../types/command.js';
-import { isBilledAsExtraUsage } from '../../utils/extraUsage.js';
+} from "../../services/analytics/index.js";
+import { useAppState, useSetAppState } from "../../state/AppState.js";
+import type { LocalJSXCommandCall } from "../../types/command.js";
+import { isBilledAsExtraUsage } from "../../utils/extraUsage.js";
 import {
   clearFastModeCooldown,
   isFastModeAvailable,
   isFastModeEnabled,
   isFastModeSupportedByModel,
-} from '../../utils/fastMode.js';
-import { MODEL_ALIASES } from '../../utils/model/aliases.js';
-import { checkOpus1mAccess, checkSonnet1mAccess } from '../../utils/model/check1mAccess.js';
+} from "../../utils/fastMode.js";
+import { MODEL_ALIASES } from "../../utils/model/aliases.js";
+import { checkOpus1mAccess, checkSonnet1mAccess } from "../../utils/model/check1mAccess.js";
 import {
   getDefaultMainLoopModelSetting,
   isOpus1mMergeEnabled,
   renderDefaultModelSetting,
-} from '../../utils/model/model.js';
-import { isModelAllowed } from '../../utils/model/modelAllowlist.js';
-import { validateModel } from '../../utils/model/validateModel.js';
+} from "../../utils/model/model.js";
+import { isModelAllowed } from "../../utils/model/modelAllowlist.js";
+import { validateModel } from "../../utils/model/validateModel.js";
 
 function ModelPickerWrapper(t0) {
   const $ = _c(17);
@@ -37,12 +37,12 @@ function ModelPickerWrapper(t0) {
   let t1;
   if ($[0] !== mainLoopModel || $[1] !== onDone) {
     t1 = function handleCancel() {
-      logEvent('tengu_model_command_menu', {
-        action: 'cancel' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      logEvent("tengu_model_command_menu", {
+        action: "cancel" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
       const displayModel = renderModelLabel(mainLoopModel);
       onDone(`Kept model as ${chalk.bold(displayModel)}`, {
-        display: 'system',
+        display: "system",
       });
     };
     $[0] = mainLoopModel;
@@ -55,7 +55,7 @@ function ModelPickerWrapper(t0) {
   let t2;
   if ($[3] !== isFastMode || $[4] !== mainLoopModel || $[5] !== onDone || $[6] !== setAppState) {
     t2 = function handleSelect(model, effort) {
-      logEvent('tengu_model_command_menu', {
+      logEvent("tengu_model_command_menu", {
         action: model as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         from_model: mainLoopModel as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         to_model: model as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -170,12 +170,12 @@ function SetModelAndClose({
 }): React.ReactNode {
   const isFastMode = useAppState((s) => s.fastMode);
   const setAppState = useSetAppState();
-  const model = args === 'default' ? null : args;
+  const model = args === "default" ? null : args;
   React.useEffect(() => {
     async function handleModelChange(): Promise<void> {
       if (model && !isModelAllowed(model)) {
         onDone(`Model '${model}' is not available. Your organization restricts model selection.`, {
-          display: 'system',
+          display: "system",
         });
         return;
       }
@@ -185,7 +185,7 @@ function SetModelAndClose({
         onDone(
           `Opus 4.6 with 1M context is not available for your account. Learn more: https://code.claude.com/docs/en/model-config#extended-context-with-1m`,
           {
-            display: 'system',
+            display: "system",
           },
         );
         return;
@@ -194,7 +194,7 @@ function SetModelAndClose({
         onDone(
           `Sonnet 4.6 with 1M context is not available for your account. Learn more: https://code.claude.com/docs/en/model-config#extended-context-with-1m`,
           {
-            display: 'system',
+            display: "system",
           },
         );
         return;
@@ -221,12 +221,12 @@ function SetModelAndClose({
           setModel(model);
         } else {
           onDone(error_0 || `Model '${model}' not found`, {
-            display: 'system',
+            display: "system",
           });
         }
       } catch (error) {
         onDone(`Failed to validate model: ${(error as Error).message}`, {
-          display: 'system',
+          display: "system",
         });
       }
     }
@@ -271,14 +271,14 @@ function isKnownAlias(model: string): boolean {
 function isOpus1mUnavailable(model: string): boolean {
   const m = model.toLowerCase();
   return (
-    !checkOpus1mAccess() && !isOpus1mMergeEnabled() && m.includes('opus') && m.includes('[1m]')
+    !checkOpus1mAccess() && !isOpus1mMergeEnabled() && m.includes("opus") && m.includes("[1m]")
   );
 }
 function isSonnet1mUnavailable(model: string): boolean {
   const m = model.toLowerCase();
   // Warn about Sonnet and Sonnet 4.6, but not Sonnet 4.5 since that had
   // a different access criteria.
-  return !checkSonnet1mAccess() && (m.includes('sonnet[1m]') || m.includes('sonnet-4-6[1m]'));
+  return !checkSonnet1mAccess() && (m.includes("sonnet[1m]") || m.includes("sonnet-4-6[1m]"));
 }
 function ShowModelAndClose(t0) {
   const { onDone } = t0;
@@ -286,7 +286,7 @@ function ShowModelAndClose(t0) {
   const mainLoopModelForSession = useAppState(_temp8);
   const effortValue = useAppState(_temp9);
   const displayModel = renderModelLabel(mainLoopModel);
-  const effortInfo = effortValue !== undefined ? ` (effort: ${effortValue})` : '';
+  const effortInfo = effortValue !== undefined ? ` (effort: ${effortValue})` : "";
   if (mainLoopModelForSession) {
     onDone(
       `Current model: ${chalk.bold(renderModelLabel(mainLoopModelForSession))} (session override from plan mode)\nBase model: ${displayModel}${effortInfo}`,
@@ -306,21 +306,21 @@ function _temp7(s) {
   return s.mainLoopModel;
 }
 export const call: LocalJSXCommandCall = async (onDone, _context, args) => {
-  args = args?.trim() || '';
+  args = args?.trim() || "";
   if (COMMON_INFO_ARGS.includes(args)) {
-    logEvent('tengu_model_command_inline_help', {
+    logEvent("tengu_model_command_inline_help", {
       args: args as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
     return <ShowModelAndClose onDone={onDone} />;
   }
   if (COMMON_HELP_ARGS.includes(args)) {
-    onDone('Run /model to open the model selection menu, or /model [modelName] to set the model.', {
-      display: 'system',
+    onDone("Run /model to open the model selection menu, or /model [modelName] to set the model.", {
+      display: "system",
     });
     return;
   }
   if (args) {
-    logEvent('tengu_model_command_inline', {
+    logEvent("tengu_model_command_inline", {
       args: args as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
     return <SetModelAndClose args={args} onDone={onDone} />;

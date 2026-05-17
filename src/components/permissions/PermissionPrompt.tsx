@@ -1,15 +1,15 @@
-import { type ReactNode, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import type { KeybindingAction } from '../../keybindings/types.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
+import { type ReactNode, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import type { KeybindingAction } from "../../keybindings/types.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { useSetAppState } from '../../state/AppState.js';
-import { Select } from '../CustomSelect/select.js';
-export type FeedbackType = 'accept' | 'reject';
+} from "../../services/analytics/index.js";
+import { useSetAppState } from "../../state/AppState.js";
+import { Select } from "../CustomSelect/select.js";
+export type FeedbackType = "accept" | "reject";
 export type PermissionPromptOption<T extends string> = {
   value: T;
   label: ReactNode;
@@ -31,8 +31,8 @@ export type PermissionPromptProps<T extends string> = {
   toolAnalyticsContext?: ToolAnalyticsContext;
 };
 const DEFAULT_PLACEHOLDERS: Record<FeedbackType, string> = {
-  accept: 'tell Claude what to do next',
-  reject: 'tell Claude what to do differently',
+  accept: "tell Claude what to do next",
+  reject: "tell Claude what to do differently",
 };
 
 /**
@@ -48,10 +48,10 @@ const DEFAULT_PLACEHOLDERS: Record<FeedbackType, string> = {
 export function PermissionPrompt(t0) {
   const $ = _c(54);
   const { options, onSelect, onCancel, question: t1, toolAnalyticsContext } = t0;
-  const question = t1 === undefined ? 'Do you want to proceed?' : t1;
+  const question = t1 === undefined ? "Do you want to proceed?" : t1;
   const setAppState = useSetAppState();
-  const [acceptFeedback, setAcceptFeedback] = useState('');
-  const [rejectFeedback, setRejectFeedback] = useState('');
+  const [acceptFeedback, setAcceptFeedback] = useState("");
+  const [rejectFeedback, setRejectFeedback] = useState("");
   const [acceptInputMode, setAcceptInputMode] = useState(false);
   const [rejectInputMode, setRejectInputMode] = useState(false);
   const [focusedValue, setFocusedValue] = useState(null);
@@ -77,8 +77,8 @@ export function PermissionPrompt(t0) {
   const focusedOption = t2;
   const focusedFeedbackType = focusedOption?.feedbackConfig?.type;
   const showTabHint =
-    (focusedFeedbackType === 'accept' && !acceptInputMode) ||
-    (focusedFeedbackType === 'reject' && !rejectInputMode);
+    (focusedFeedbackType === "accept" && !acceptInputMode) ||
+    (focusedFeedbackType === "reject" && !rejectInputMode);
   let t3;
   if ($[5] !== acceptInputMode || $[6] !== options || $[7] !== rejectInputMode) {
     let t4;
@@ -92,12 +92,12 @@ export function PermissionPrompt(t0) {
           };
         }
         const { type, placeholder } = feedbackConfig;
-        const isInputMode = type === 'accept' ? acceptInputMode : rejectInputMode;
-        const onChange = type === 'accept' ? setAcceptFeedback : setRejectFeedback;
+        const isInputMode = type === "accept" ? acceptInputMode : rejectInputMode;
+        const onChange = type === "accept" ? setAcceptFeedback : setRejectFeedback;
         const defaultPlaceholder = DEFAULT_PLACEHOLDERS[type];
         if (isInputMode) {
           return {
-            type: 'input' as const,
+            type: "input" as const,
             label,
             value,
             placeholder: placeholder ?? defaultPlaceholder,
@@ -144,24 +144,24 @@ export function PermissionPrompt(t0) {
           toolAnalyticsContext?.toolName as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         isMcp: toolAnalyticsContext?.isMcp ?? false,
       };
-      if (type_0 === 'accept') {
+      if (type_0 === "accept") {
         if (acceptInputMode) {
           setAcceptInputMode(false);
-          logEvent('tengu_accept_feedback_mode_collapsed', analyticsProps);
+          logEvent("tengu_accept_feedback_mode_collapsed", analyticsProps);
         } else {
           setAcceptInputMode(true);
           setAcceptFeedbackModeEntered(true);
-          logEvent('tengu_accept_feedback_mode_entered', analyticsProps);
+          logEvent("tengu_accept_feedback_mode_entered", analyticsProps);
         }
       } else {
-        if (type_0 === 'reject') {
+        if (type_0 === "reject") {
           if (rejectInputMode) {
             setRejectInputMode(false);
-            logEvent('tengu_reject_feedback_mode_collapsed', analyticsProps);
+            logEvent("tengu_reject_feedback_mode_collapsed", analyticsProps);
           } else {
             setRejectInputMode(true);
             setRejectFeedbackModeEntered(true);
-            logEvent('tengu_reject_feedback_mode_entered', analyticsProps);
+            logEvent("tengu_reject_feedback_mode_entered", analyticsProps);
           }
         }
       }
@@ -195,7 +195,7 @@ export function PermissionPrompt(t0) {
       let feedback;
       if (option_0.feedbackConfig) {
         const rawFeedback =
-          option_0.feedbackConfig.type === 'accept' ? acceptFeedback : rejectFeedback;
+          option_0.feedbackConfig.type === "accept" ? acceptFeedback : rejectFeedback;
         const trimmedFeedback = rawFeedback.trim();
         if (trimmedFeedback) {
           feedback = trimmedFeedback;
@@ -207,15 +207,15 @@ export function PermissionPrompt(t0) {
           has_instructions: !!trimmedFeedback,
           instructions_length: trimmedFeedback?.length ?? 0,
           entered_feedback_mode:
-            option_0.feedbackConfig.type === 'accept'
+            option_0.feedbackConfig.type === "accept"
               ? acceptFeedbackModeEntered
               : rejectFeedbackModeEntered,
         };
-        if (option_0.feedbackConfig.type === 'accept') {
-          logEvent('tengu_accept_submitted', analyticsProps_0);
+        if (option_0.feedbackConfig.type === "accept") {
+          logEvent("tengu_accept_submitted", analyticsProps_0);
         } else {
-          if (option_0.feedbackConfig.type === 'reject') {
-            logEvent('tengu_reject_submitted', analyticsProps_0);
+          if (option_0.feedbackConfig.type === "reject") {
+            logEvent("tengu_reject_submitted", analyticsProps_0);
           }
         }
       }
@@ -250,9 +250,9 @@ export function PermissionPrompt(t0) {
   }
   const keybindingHandlers = handlers;
   let t6;
-  if ($[30] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[30] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[30] = t6;
   } else {
@@ -262,7 +262,7 @@ export function PermissionPrompt(t0) {
   let t7;
   if ($[31] !== onCancel || $[32] !== setAppState) {
     t7 = () => {
-      logEvent('tengu_permission_request_escape', {});
+      logEvent("tengu_permission_request_escape", {});
       setAppState(_temp);
       onCancel?.();
     };
@@ -275,7 +275,7 @@ export function PermissionPrompt(t0) {
   const handleCancel = t7;
   let t8;
   if ($[34] !== question) {
-    t8 = typeof question === 'string' ? <Text>{question}</Text> : question;
+    t8 = typeof question === "string" ? <Text>{question}</Text> : question;
     $[34] = question;
     $[35] = t8;
   } else {
@@ -292,14 +292,14 @@ export function PermissionPrompt(t0) {
     t9 = (value_2) => {
       const newOption = options.find((opt_4) => opt_4.value === value_2);
       if (
-        newOption?.feedbackConfig?.type !== 'accept' &&
+        newOption?.feedbackConfig?.type !== "accept" &&
         acceptInputMode &&
         !acceptFeedback.trim()
       ) {
         setAcceptInputMode(false);
       }
       if (
-        newOption?.feedbackConfig?.type !== 'reject' &&
+        newOption?.feedbackConfig?.type !== "reject" &&
         rejectInputMode &&
         !rejectFeedback.trim()
       ) {
@@ -343,7 +343,7 @@ export function PermissionPrompt(t0) {
   } else {
     t10 = $[47];
   }
-  const t11 = showTabHint && ' \xB7 Tab to amend';
+  const t11 = showTabHint && " \xB7 Tab to amend";
   let t12;
   if ($[48] !== t11) {
     t12 = (

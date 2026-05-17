@@ -1,12 +1,12 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import type { AdvisorBlock } from '../../utils/advisor.js';
-import { renderModelName } from '../../utils/model/model.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { CtrlOToExpand } from '../CtrlOToExpand.js';
-import { MessageResponse } from '../MessageResponse.js';
-import { ToolUseLoader } from '../ToolUseLoader.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import type { AdvisorBlock } from "../../utils/advisor.js";
+import { renderModelName } from "../../utils/model/model.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { CtrlOToExpand } from "../CtrlOToExpand.js";
+import { MessageResponse } from "../MessageResponse.js";
+import { ToolUseLoader } from "../ToolUseLoader.js";
 
 type Props = {
   block: AdvisorBlock;
@@ -28,7 +28,7 @@ export function AdvisorMessage(t0) {
     verbose,
     advisorModel,
   } = t0;
-  if (block.type === 'server_tool_use') {
+  if (block.type === "server_tool_use") {
     let t1;
     if ($[0] !== block.input) {
       t1 = block.input && Object.keys(block.input).length > 0 ? jsonStringify(block.input) : null;
@@ -69,7 +69,7 @@ export function AdvisorMessage(t0) {
       t6 = $[11];
     }
     let t7;
-    if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
       t7 = <Text bold={true}>Advising</Text>;
       $[12] = t7;
     } else {
@@ -115,7 +115,7 @@ export function AdvisorMessage(t0) {
   }
   let body;
   switch (block.content.type) {
-    case 'advisor_tool_result_error': {
+    case "advisor_tool_result_error": {
       let t1;
       if ($[22] !== block.content.error_code) {
         t1 = <Text color="error">Advisor unavailable ({block.content.error_code})</Text>;
@@ -127,14 +127,14 @@ export function AdvisorMessage(t0) {
       body = t1;
       break;
     }
-    case 'advisor_result': {
+    case "advisor_result": {
       let t1;
       if ($[24] !== block.content.text || $[25] !== verbose) {
         t1 = verbose ? (
           <Text dimColor={true}>{block.content.text}</Text>
         ) : (
           <Text dimColor={true}>
-            {figures.tick} Advisor has reviewed the conversation and will apply the feedback{' '}
+            {figures.tick} Advisor has reviewed the conversation and will apply the feedback{" "}
             <CtrlOToExpand />
           </Text>
         );
@@ -147,9 +147,9 @@ export function AdvisorMessage(t0) {
       body = t1;
       break;
     }
-    case 'advisor_redacted_result': {
+    case "advisor_redacted_result": {
       let t1;
-      if ($[27] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <Text dimColor={true}>
             {figures.tick} Advisor has reviewed the conversation and will apply the feedback

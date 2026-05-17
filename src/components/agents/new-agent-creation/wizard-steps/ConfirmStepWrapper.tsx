@@ -1,18 +1,18 @@
-import chalk from 'chalk';
-import { type ReactNode, useCallback, useState } from 'react';
+import chalk from "chalk";
+import { type ReactNode, useCallback, useState } from "react";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { useSetAppState } from 'src/state/AppState.js';
-import type { Tools } from '../../../../Tool.js';
-import type { AgentDefinition } from '../../../../tools/AgentTool/loadAgentsDir.js';
-import { getActiveAgentsFromList } from '../../../../tools/AgentTool/loadAgentsDir.js';
-import { editFileInEditor } from '../../../../utils/promptEditor.js';
-import { useWizard } from '../../../wizard/index.js';
-import { getNewAgentFilePath, saveAgentToFile } from '../../agentFileUtils.js';
-import type { AgentWizardData } from '../types.js';
-import { ConfirmStep } from './ConfirmStep.js';
+} from "src/services/analytics/index.js";
+import { useSetAppState } from "src/state/AppState.js";
+import type { Tools } from "../../../../Tool.js";
+import type { AgentDefinition } from "../../../../tools/AgentTool/loadAgentsDir.js";
+import { getActiveAgentsFromList } from "../../../../tools/AgentTool/loadAgentsDir.js";
+import { editFileInEditor } from "../../../../utils/promptEditor.js";
+import { useWizard } from "../../../wizard/index.js";
+import { getNewAgentFilePath, saveAgentToFile } from "../../agentFileUtils.js";
+import type { AgentWizardData } from "../types.js";
+import { ConfirmStep } from "./ConfirmStep.js";
 
 type Props = {
   tools: Tools;
@@ -57,15 +57,15 @@ export function ConfirmStepWrapper({ tools, existingAgents, onComplete }: Props)
           });
           await editFileInEditor(filePath);
         }
-        logEvent('tengu_agent_created', {
+        logEvent("tengu_agent_created", {
           agent_type: wizardData.finalAgent.agentType,
-          generation_method: wizardData.wasGenerated ? 'generated' : 'manual',
+          generation_method: wizardData.wasGenerated ? "generated" : "manual",
           source: wizardData.location!,
-          tool_count: wizardData.finalAgent.tools?.length ?? 'all',
+          tool_count: wizardData.finalAgent.tools?.length ?? "all",
           has_custom_model: !!wizardData.finalAgent.model,
           has_custom_color: !!wizardData.finalAgent.color,
           has_memory: !!wizardData.finalAgent.memory,
-          memory_scope: wizardData.finalAgent.memory ?? 'none',
+          memory_scope: wizardData.finalAgent.memory ?? "none",
           ...(openInEditor
             ? {
                 opened_in_editor: true,
@@ -78,7 +78,7 @@ export function ConfirmStepWrapper({ tools, existingAgents, onComplete }: Props)
           : `Created agent: ${chalk.bold(wizardData.finalAgent.agentType)}`;
         onComplete(message);
       } catch (err) {
-        setSaveError(err instanceof Error ? err.message : 'Failed to save agent');
+        setSaveError(err instanceof Error ? err.message : "Failed to save agent");
       }
     },
     [wizardData, onComplete, setAppState],

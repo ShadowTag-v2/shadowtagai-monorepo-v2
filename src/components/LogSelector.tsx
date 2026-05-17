@@ -1,54 +1,54 @@
-import chalk from 'chalk';
-import figures from 'figures';
-import React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { getOriginalCwd, getSessionId } from '../bootstrap/state.js';
-import { useExitOnCtrlCDWithKeybindings } from '../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { useSearchInput } from '../hooks/useSearchInput.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { applyColor } from '../ink/colorize.js';
-import type { Color } from '../ink/styles.js';
-import { Box, Text, useInput, useTerminalFocus, useTheme } from '../ink.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import { logEvent } from '../services/analytics/index.js';
-import type { LogOption, SerializedMessage } from '../types/logs.js';
-import { formatLogMetadata, truncateToWidth } from '../utils/format.js';
-import { getWorktreePaths } from '../utils/getWorktreePaths.js';
-import { getBranch } from '../utils/git.js';
-import { getLogDisplayTitle } from '../utils/log.js';
+import chalk from "chalk";
+import figures from "figures";
+import React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { getOriginalCwd, getSessionId } from "../bootstrap/state.js";
+import { useExitOnCtrlCDWithKeybindings } from "../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { useSearchInput } from "../hooks/useSearchInput.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { applyColor } from "../ink/colorize.js";
+import type { Color } from "../ink/styles.js";
+import { Box, Text, useInput, useTerminalFocus, useTheme } from "../ink.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import { logEvent } from "../services/analytics/index.js";
+import type { LogOption, SerializedMessage } from "../types/logs.js";
+import { formatLogMetadata, truncateToWidth } from "../utils/format.js";
+import { getWorktreePaths } from "../utils/getWorktreePaths.js";
+import { getBranch } from "../utils/git.js";
+import { getLogDisplayTitle } from "../utils/log.js";
 import {
   getFirstMeaningfulUserMessageTextContent,
   getSessionIdFromLog,
   isCustomTitleEnabled,
   saveCustomTitle,
-} from '../utils/sessionStorage.js';
-import { getTheme } from '../utils/theme.js';
-import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js';
-import { Select } from './CustomSelect/select.js';
-import { Byline } from './design-system/Byline.js';
-import { Divider } from './design-system/Divider.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
-import { SearchBox } from './SearchBox.js';
-import { SessionPreview } from './SessionPreview.js';
-import { Spinner } from './Spinner.js';
-import { TagTabs } from './TagTabs.js';
-import TextInput from './TextInput.js';
-import { type TreeNode, TreeSelect } from './ui/TreeSelect.js';
+} from "../utils/sessionStorage.js";
+import { getTheme } from "../utils/theme.js";
+import { ConfigurableShortcutHint } from "./ConfigurableShortcutHint.js";
+import { Select } from "./CustomSelect/select.js";
+import { Byline } from "./design-system/Byline.js";
+import { Divider } from "./design-system/Divider.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
+import { SearchBox } from "./SearchBox.js";
+import { SessionPreview } from "./SessionPreview.js";
+import { Spinner } from "./Spinner.js";
+import { TagTabs } from "./TagTabs.js";
+import TextInput from "./TextInput.js";
+import { type TreeNode, TreeSelect } from "./ui/TreeSelect.js";
 
 type AgenticSearchState =
   | {
-      status: 'idle';
+      status: "idle";
     }
   | {
-      status: 'searching';
+      status: "searching";
     }
   | {
-      status: 'results';
+      status: "results";
       results: LogOption[];
       query: string;
     }
   | {
-      status: 'error';
+      status: "error";
       message: string;
     };
 export type LogSelectorProps = {
@@ -73,7 +73,7 @@ type LogTreeNode = TreeNode<{
   indexInFiltered: number;
 }>;
 function normalizeAndTruncateToWidth(text: string, maxWidth: number): string {
-  const normalized = text.replace(/\s+/g, ' ').trim();
+  const normalized = text.replace(/\s+/g, " ").trim();
   return truncateToWidth(normalized, maxWidth);
 }
 
@@ -114,9 +114,9 @@ function extractSnippet(text: string, query: string, contextChars: number): Snip
   const matchText = text.slice(matchIndex, matchEnd);
   const afterRaw = text.slice(matchEnd, snippetEnd);
   return {
-    before: (snippetStart > 0 ? '…' : '') + beforeRaw.replace(/\s+/g, ' ').trimStart(),
+    before: (snippetStart > 0 ? "…" : "") + beforeRaw.replace(/\s+/g, " ").trimStart(),
     match: matchText.trim(),
-    after: afterRaw.replace(/\s+/g, ' ').trimEnd() + (snippetEnd < text.length ? '…' : ''),
+    after: afterRaw.replace(/\s+/g, " ").trimEnd() + (snippetEnd < text.length ? "…" : ""),
   };
 }
 function buildLogLabel(
@@ -135,9 +135,9 @@ function buildLogLabel(
     isGroupHeader && forkCount > 0 ? PARENT_PREFIX_WIDTH : isChild ? CHILD_PREFIX_WIDTH : 0;
   const sessionCountSuffix =
     isGroupHeader && forkCount > 0
-      ? ` (+${forkCount} other ${forkCount === 1 ? 'session' : 'sessions'})`
-      : '';
-  const sidechainSuffix = log.isSidechain ? ' (sidechain)' : '';
+      ? ` (+${forkCount} other ${forkCount === 1 ? "session" : "sessions"})`
+      : "";
+  const sidechainSuffix = log.isSidechain ? " (sidechain)" : "";
   const maxSummaryWidth =
     maxLabelWidth - prefixWidth - sidechainSuffix.length - sessionCountSuffix.length;
   const truncatedSummary = normalizeAndTruncateToWidth(getLogDisplayTitle(log), maxSummaryWidth);
@@ -152,9 +152,9 @@ function buildLogMetadata(
 ): string {
   const { isChild = false, showProjectPath = false } = options || {};
   // Match the child prefix width for proper alignment
-  const childPadding = isChild ? '    ' : ''; // 4 spaces to match '  ▸ '
+  const childPadding = isChild ? "    " : ""; // 4 spaces to match '  ▸ '
   const baseMetadata = formatLogMetadata(log);
-  const projectSuffix = showProjectPath && log.projectPath ? ` · ${log.projectPath}` : '';
+  const projectSuffix = showProjectPath && log.projectPath ? ` · ${log.projectPath}` : "";
   return childPadding + baseMetadata + projectSuffix;
 }
 export function LogSelector(t0) {
@@ -179,7 +179,7 @@ export function LogSelector(t0) {
   const exitState = useExitOnCtrlCDWithKeybindings(onCancel);
   const isTerminalFocused = useTerminalFocus();
   let t3;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = isCustomTitleEnabled();
     $[0] = t3;
   } else {
@@ -212,17 +212,17 @@ export function LogSelector(t0) {
   const [showAllWorktrees, setShowAllWorktrees] = React.useState(false);
   const [hasMultipleWorktrees, setHasMultipleWorktrees] = React.useState(false);
   let t6;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = getOriginalCwd();
     $[5] = t6;
   } else {
     t6 = $[5];
   }
   const currentCwd = t6;
-  const [renameValue, setRenameValue] = React.useState('');
+  const [renameValue, setRenameValue] = React.useState("");
   const [renameCursorOffset, setRenameCursorOffset] = React.useState(0);
   let t7;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = new Set();
     $[6] = t7;
   } else {
@@ -231,14 +231,14 @@ export function LogSelector(t0) {
   const [expandedGroupSessionIds, setExpandedGroupSessionIds] = React.useState(t7);
   const [focusedNode, setFocusedNode] = React.useState(null);
   const [focusedIndex, setFocusedIndex] = React.useState(1);
-  const [viewMode, setViewMode] = React.useState('list');
+  const [viewMode, setViewMode] = React.useState("list");
   const [previewLog, setPreviewLog] = React.useState(null);
   const prevFocusedIdRef = React.useRef(null);
   const [selectedTagIndex, setSelectedTagIndex] = React.useState(0);
   let t8;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = {
-      status: 'idle',
+      status: "idle",
     };
     $[7] = t8;
   } else {
@@ -247,24 +247,24 @@ export function LogSelector(t0) {
   const [agenticSearchState, setAgenticSearchState] = React.useState(t8);
   const [isAgenticSearchOptionFocused, setIsAgenticSearchOptionFocused] = React.useState(false);
   const agenticSearchAbortRef = React.useRef(null);
-  const t9 = viewMode === 'search' && agenticSearchState.status !== 'searching';
+  const t9 = viewMode === "search" && agenticSearchState.status !== "searching";
   let t10;
   let t11;
   let t12;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t10 = () => {
-      setViewMode('list');
-      logEvent('tengu_session_search_toggled', {
+      setViewMode("list");
+      logEvent("tengu_session_search_toggled", {
         enabled: false,
       });
     };
     t11 = () => {
-      setViewMode('list');
-      logEvent('tengu_session_search_toggled', {
+      setViewMode("list");
+      logEvent("tengu_session_search_toggled", {
         enabled: false,
       });
     };
-    t12 = ['n'];
+    t12 = ["n"];
     $[8] = t10;
     $[9] = t11;
     $[10] = t12;
@@ -273,7 +273,7 @@ export function LogSelector(t0) {
     t11 = $[9];
     t12 = $[10];
   }
-  const t13 = initialSearchQuery || '';
+  const t13 = initialSearchQuery || "";
   let t14;
   if ($[11] !== t13 || $[12] !== t9) {
     t14 = {
@@ -295,13 +295,13 @@ export function LogSelector(t0) {
     cursorOffset: searchCursorOffset,
   } = useSearchInput(t14);
   const deferredSearchQuery = React.useDeferredValue(searchQuery);
-  const [debouncedDeepSearchQuery, setDebouncedDeepSearchQuery] = React.useState('');
+  const [debouncedDeepSearchQuery, setDebouncedDeepSearchQuery] = React.useState("");
   let t15;
   let t16;
   if ($[14] !== deferredSearchQuery) {
     t15 = () => {
       if (!deferredSearchQuery) {
-        setDebouncedDeepSearchQuery('');
+        setDebouncedDeepSearchQuery("");
         return;
       }
       const timeoutId = setTimeout(setDebouncedDeepSearchQuery, 300, deferredSearchQuery);
@@ -320,7 +320,7 @@ export function LogSelector(t0) {
   const [isSearching, setIsSearching] = React.useState(false);
   let t17;
   let t18;
-  if ($[17] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
     t17 = () => {
       getBranch().then((branch) => setCurrentBranch(branch));
       getWorktreePaths(currentCwd).then((paths) => {
@@ -350,7 +350,7 @@ export function LogSelector(t0) {
   const hasTags = uniqueTags.length > 0;
   let t21;
   if ($[21] !== hasTags || $[22] !== uniqueTags) {
-    t21 = hasTags ? ['All', ...uniqueTags] : [];
+    t21 = hasTags ? ["All", ...uniqueTags] : [];
     $[21] = hasTags;
     $[22] = uniqueTags;
     $[23] = t21;
@@ -361,7 +361,7 @@ export function LogSelector(t0) {
   const effectiveTagIndex =
     tagTabs.length > 0 && selectedTagIndex < tagTabs.length ? selectedTagIndex : 0;
   const selectedTab = tagTabs[effectiveTagIndex];
-  const tagFilter = selectedTab === 'All' ? undefined : selectedTab;
+  const tagFilter = selectedTab === "All" ? undefined : selectedTab;
   const tagTabsLines = hasTags ? 1 : 0;
   let filtered = logs;
   if (isResumeWithRenameEnabled) {
@@ -419,7 +419,7 @@ export function LogSelector(t0) {
     let t22;
     if ($[36] !== filtered) {
       let t23;
-      if ($[38] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[38] === Symbol.for("react.memo_cache_sentinel")) {
         t23 = (log_4) => log_4.projectPath === currentCwd;
         $[38] = t23;
       } else {
@@ -445,11 +445,11 @@ export function LogSelector(t0) {
       const query = searchQuery.toLowerCase();
       t23 = baseFilteredLogs.filter((log_5) => {
         const displayedTitle = getLogDisplayTitle(log_5).toLowerCase();
-        const branch_0 = (log_5.gitBranch || '').toLowerCase();
-        const tag = (log_5.tag || '').toLowerCase();
+        const branch_0 = (log_5.gitBranch || "").toLowerCase();
+        const tag = (log_5.tag || "").toLowerCase();
         const prInfo = log_5.prNumber
-          ? `pr #${log_5.prNumber} ${log_5.prRepository || ''}`.toLowerCase()
-          : '';
+          ? `pr #${log_5.prNumber} ${log_5.prRepository || ""}`.toLowerCase()
+          : "";
         return (
           displayedTitle.includes(query) ||
           branch_0.includes(query) ||
@@ -594,7 +594,7 @@ export function LogSelector(t0) {
   const { filteredLogs, snippets } = t27;
   let t28;
   bb1: {
-    if (agenticSearchState.status === 'results' && agenticSearchState.results.length > 0) {
+    if (agenticSearchState.status === "results" && agenticSearchState.results.length > 0) {
       t28 = agenticSearchState.results;
       break bb1;
     }
@@ -606,7 +606,7 @@ export function LogSelector(t0) {
   bb2: {
     if (!isResumeWithRenameEnabled) {
       let t30;
-      if ($[65] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[65] === Symbol.for("react.memo_cache_sentinel")) {
         t30 = [];
         $[65] = t30;
       } else {
@@ -703,7 +703,7 @@ export function LogSelector(t0) {
   bb3: {
     if (isResumeWithRenameEnabled) {
       let t31;
-      if ($[72] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[72] === Symbol.for("react.memo_cache_sentinel")) {
         t31 = [];
         $[72] = t31;
       } else {
@@ -729,11 +729,11 @@ export function LogSelector(t0) {
       ) {
         t32 = (log_9, index_0) => {
           const rawSummary = getLogDisplayTitle(log_9);
-          const summaryWithSidechain = rawSummary + (log_9.isSidechain ? ' (sidechain)' : '');
+          const summaryWithSidechain = rawSummary + (log_9.isSidechain ? " (sidechain)" : "");
           const summary = normalizeAndTruncateToWidth(summaryWithSidechain, maxLabelWidth);
           const baseDescription = formatLogMetadata(log_9);
           const projectSuffix =
-            showAllProjects && log_9.projectPath ? ` · ${log_9.projectPath}` : '';
+            showAllProjects && log_9.projectPath ? ` · ${log_9.projectPath}` : "";
           const snippet_1 = snippets.get(log_9);
           const snippetStr_0 = snippet_1 ? formatSnippet(snippet_1, highlightColor) : null;
           return {
@@ -771,25 +771,25 @@ export function LogSelector(t0) {
   if ($[84] !== displayedLogs || $[85] !== expandedGroupSessionIds || $[86] !== focusedLog) {
     t31 = () => {
       if (!isResumeWithRenameEnabled || !focusedLog) {
-        return '';
+        return "";
       }
       const sessionId_0 = getSessionIdFromLog(focusedLog);
       if (!sessionId_0) {
-        return '';
+        return "";
       }
       const sessionLogs = displayedLogs.filter(
         (log_10) => getSessionIdFromLog(log_10) === sessionId_0,
       );
       const hasMultipleLogs = sessionLogs.length > 1;
       if (!hasMultipleLogs) {
-        return '';
+        return "";
       }
       const isExpanded = expandedGroupSessionIds.has(sessionId_0);
       const isChildNode = sessionLogs.indexOf(focusedLog) > 0;
       if (isChildNode) {
-        return '\u2190 to collapse';
+        return "\u2190 to collapse";
       }
-      return isExpanded ? '\u2190 to collapse' : '\u2192 to expand';
+      return isExpanded ? "\u2190 to collapse" : "\u2192 to expand";
     };
     $[84] = displayedLogs;
     $[85] = expandedGroupSessionIds;
@@ -804,8 +804,8 @@ export function LogSelector(t0) {
     t32 = async () => {
       const sessionId_1 = focusedLog ? getSessionIdFromLog(focusedLog) : undefined;
       if (!focusedLog || !sessionId_1) {
-        setViewMode('list');
-        setRenameValue('');
+        setViewMode("list");
+        setRenameValue("");
         return;
       }
       if (renameValue.trim()) {
@@ -814,8 +814,8 @@ export function LogSelector(t0) {
           onLogsChanged();
         }
       }
-      setViewMode('list');
-      setRenameValue('');
+      setViewMode("list");
+      setRenameValue("");
     };
     $[88] = focusedLog;
     $[89] = onLogsChanged;
@@ -826,10 +826,10 @@ export function LogSelector(t0) {
   }
   const handleRenameSubmit = t32;
   let t33;
-  if ($[92] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[92] === Symbol.for("react.memo_cache_sentinel")) {
     t33 = () => {
-      setViewMode('list');
-      logEvent('tengu_session_search_toggled', {
+      setViewMode("list");
+      logEvent("tengu_session_search_toggled", {
         enabled: false,
       });
     };
@@ -839,10 +839,10 @@ export function LogSelector(t0) {
   }
   const exitSearchMode = t33;
   let t34;
-  if ($[93] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[93] === Symbol.for("react.memo_cache_sentinel")) {
     t34 = () => {
-      setViewMode('search');
-      logEvent('tengu_session_search_toggled', {
+      setViewMode("search");
+      logEvent("tengu_session_search_toggled", {
         enabled: true,
       });
     };
@@ -861,9 +861,9 @@ export function LogSelector(t0) {
       const abortController = new AbortController();
       agenticSearchAbortRef.current = abortController;
       setAgenticSearchState({
-        status: 'searching',
+        status: "searching",
       });
-      logEvent('tengu_agentic_search_started', {
+      logEvent("tengu_agentic_search_started", {
         query_length: searchQuery.length,
       });
       try {
@@ -872,11 +872,11 @@ export function LogSelector(t0) {
           return;
         }
         setAgenticSearchState({
-          status: 'results',
+          status: "results",
           results: results_0,
           query: searchQuery,
         });
-        logEvent('tengu_agentic_search_completed', {
+        logEvent("tengu_agentic_search_completed", {
           query_length: searchQuery.length,
           results_count: results_0.length,
         });
@@ -886,10 +886,10 @@ export function LogSelector(t0) {
           return;
         }
         setAgenticSearchState({
-          status: 'error',
-          message: error instanceof Error ? error.message : 'Search failed',
+          status: "error",
+          message: error instanceof Error ? error.message : "Search failed",
         });
-        logEvent('tengu_agentic_search_error', {
+        logEvent("tengu_agentic_search_error", {
           query_length: searchQuery.length,
         });
       }
@@ -909,13 +909,13 @@ export function LogSelector(t0) {
     $[100] !== searchQuery
   ) {
     t36 = () => {
-      if (agenticSearchState.status !== 'idle' && agenticSearchState.status !== 'searching') {
+      if (agenticSearchState.status !== "idle" && agenticSearchState.status !== "searching") {
         if (
-          (agenticSearchState.status === 'results' && agenticSearchState.query !== searchQuery) ||
-          agenticSearchState.status === 'error'
+          (agenticSearchState.status === "results" && agenticSearchState.query !== searchQuery) ||
+          agenticSearchState.status === "error"
         ) {
           setAgenticSearchState({
-            status: 'idle',
+            status: "idle",
           });
         }
       }
@@ -939,7 +939,7 @@ export function LogSelector(t0) {
   React.useEffect(t36, t37);
   let t38;
   let t39;
-  if ($[105] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[105] === Symbol.for("react.memo_cache_sentinel")) {
     t38 = () => () => {
       agenticSearchAbortRef.current?.abort();
     };
@@ -962,19 +962,19 @@ export function LogSelector(t0) {
     t40 = () => {
       const prevStatus = prevAgenticStatusRef.current;
       prevAgenticStatusRef.current = agenticSearchState.status;
-      if (prevStatus === 'searching' && agenticSearchState.status === 'results') {
+      if (prevStatus === "searching" && agenticSearchState.status === "results") {
         if (isResumeWithRenameEnabled && treeNodes.length > 0) {
           setFocusedNode(treeNodes[0]);
         } else {
           if (!isResumeWithRenameEnabled && displayedLogs.length > 0) {
             const firstLog = displayedLogs[0];
             setFocusedNode({
-              id: '0',
+              id: "0",
               value: {
                 log: firstLog,
                 indexInFiltered: 0,
               },
-              label: '',
+              label: "",
             });
           }
         }
@@ -1014,7 +1014,7 @@ export function LogSelector(t0) {
           log: log_11,
           indexInFiltered: index_1,
         },
-        label: '',
+        label: "",
       });
       setFocusedIndex(index_1 + 1);
     };
@@ -1042,23 +1042,23 @@ export function LogSelector(t0) {
   }
   const handleTreeSelectFocus = t43;
   let t44;
-  if ($[120] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[120] === Symbol.for("react.memo_cache_sentinel")) {
     t44 = () => {
       agenticSearchAbortRef.current?.abort();
       setAgenticSearchState({
-        status: 'idle',
+        status: "idle",
       });
-      logEvent('tengu_agentic_search_cancelled', {});
+      logEvent("tengu_agentic_search_cancelled", {});
     };
     $[120] = t44;
   } else {
     t44 = $[120];
   }
-  const t45 = viewMode !== 'preview' && agenticSearchState.status === 'searching';
+  const t45 = viewMode !== "preview" && agenticSearchState.status === "searching";
   let t46;
   if ($[121] !== t45) {
     t46 = {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: t45,
     };
     $[121] = t45;
@@ -1066,22 +1066,22 @@ export function LogSelector(t0) {
   } else {
     t46 = $[122];
   }
-  useKeybinding('confirm:no', t44, t46);
+  useKeybinding("confirm:no", t44, t46);
   let t47;
-  if ($[123] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[123] === Symbol.for("react.memo_cache_sentinel")) {
     t47 = () => {
-      setViewMode('list');
-      setRenameValue('');
+      setViewMode("list");
+      setRenameValue("");
     };
     $[123] = t47;
   } else {
     t47 = $[123];
   }
-  const t48 = viewMode === 'rename' && agenticSearchState.status !== 'searching';
+  const t48 = viewMode === "rename" && agenticSearchState.status !== "searching";
   let t49;
   if ($[124] !== t48) {
     t49 = {
-      context: 'Settings',
+      context: "Settings",
       isActive: t48,
     };
     $[124] = t48;
@@ -1089,11 +1089,11 @@ export function LogSelector(t0) {
   } else {
     t49 = $[125];
   }
-  useKeybinding('confirm:no', t47, t49);
+  useKeybinding("confirm:no", t47, t49);
   let t50;
   if ($[126] !== onCancel || $[127] !== setSearchQuery) {
     t50 = () => {
-      setSearchQuery('');
+      setSearchQuery("");
       setIsAgenticSearchOptionFocused(false);
       onCancel?.();
     };
@@ -1104,15 +1104,15 @@ export function LogSelector(t0) {
     t50 = $[128];
   }
   const t51 =
-    viewMode !== 'preview' &&
-    viewMode !== 'rename' &&
-    viewMode !== 'search' &&
+    viewMode !== "preview" &&
+    viewMode !== "rename" &&
+    viewMode !== "search" &&
     isAgenticSearchOptionFocused &&
-    agenticSearchState.status !== 'searching';
+    agenticSearchState.status !== "searching";
   let t52;
   if ($[129] !== t51) {
     t52 = {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: t51,
     };
     $[129] = t51;
@@ -1120,7 +1120,7 @@ export function LogSelector(t0) {
   } else {
     t52 = $[130];
   }
-  useKeybinding('confirm:no', t50, t52);
+  useKeybinding("confirm:no", t50, t52);
   let t53;
   if (
     $[131] !== agenticSearchState.status ||
@@ -1141,16 +1141,16 @@ export function LogSelector(t0) {
     $[146] !== viewMode
   ) {
     t53 = (input, key) => {
-      if (viewMode === 'preview') {
+      if (viewMode === "preview") {
         return;
       }
-      if (agenticSearchState.status === 'searching') {
+      if (agenticSearchState.status === "searching") {
         return;
       }
-      if (viewMode === 'rename') {
+      if (viewMode === "rename") {
       } else {
-        if (viewMode === 'search') {
-          if (input.toLowerCase() === 'n' && key.ctrl) {
+        if (viewMode === "search") {
+          if (input.toLowerCase() === "n" && key.ctrl) {
             exitSearchMode();
           } else {
             if (key.return || key.downArrow) {
@@ -1158,7 +1158,7 @@ export function LogSelector(t0) {
                 searchQuery.trim() &&
                 onAgenticSearch &&
                 false &&
-                agenticSearchState.status !== 'results'
+                agenticSearchState.status !== "results"
               ) {
                 setIsAgenticSearchOptionFocused(true);
               }
@@ -1176,7 +1176,7 @@ export function LogSelector(t0) {
                 return;
               } else {
                 if (key.upArrow) {
-                  setViewMode('search');
+                  setViewMode("search");
                   setIsAgenticSearchOptionFocused(false);
                   return;
                 }
@@ -1189,8 +1189,8 @@ export function LogSelector(t0) {
               const current = prev < tagTabs.length ? prev : 0;
               const newIndex = (current + tagTabs.length + offset) % tagTabs.length;
               const newTab = tagTabs[newIndex];
-              logEvent('tengu_session_tag_filter_changed', {
-                is_all: newTab === 'All',
+              logEvent("tengu_session_tag_filter_changed", {
+                is_all: newTab === "All",
                 tag_count: uniqueTags.length,
               });
               return newIndex;
@@ -1199,41 +1199,41 @@ export function LogSelector(t0) {
           }
           const keyIsNotCtrlOrMeta = !key.ctrl && !key.meta;
           const lowerInput = input.toLowerCase();
-          if (lowerInput === 'a' && key.ctrl && onToggleAllProjects) {
+          if (lowerInput === "a" && key.ctrl && onToggleAllProjects) {
             onToggleAllProjects();
-            logEvent('tengu_session_all_projects_toggled', {
+            logEvent("tengu_session_all_projects_toggled", {
               enabled: !showAllProjects,
             });
           } else {
-            if (lowerInput === 'b' && key.ctrl) {
+            if (lowerInput === "b" && key.ctrl) {
               const newEnabled = !branchFilterEnabled;
               setBranchFilterEnabled(newEnabled);
-              logEvent('tengu_session_branch_filter_toggled', {
+              logEvent("tengu_session_branch_filter_toggled", {
                 enabled: newEnabled,
               });
             } else {
-              if (lowerInput === 'w' && key.ctrl && hasMultipleWorktrees) {
+              if (lowerInput === "w" && key.ctrl && hasMultipleWorktrees) {
                 const newValue = !showAllWorktrees;
                 setShowAllWorktrees(newValue);
-                logEvent('tengu_session_worktree_filter_toggled', {
+                logEvent("tengu_session_worktree_filter_toggled", {
                   enabled: newValue,
                 });
               } else {
-                if (lowerInput === '/' && keyIsNotCtrlOrMeta) {
-                  setViewMode('search');
-                  logEvent('tengu_session_search_toggled', {
+                if (lowerInput === "/" && keyIsNotCtrlOrMeta) {
+                  setViewMode("search");
+                  logEvent("tengu_session_search_toggled", {
                     enabled: true,
                   });
                 } else {
-                  if (lowerInput === 'r' && key.ctrl && focusedLog) {
-                    setViewMode('rename');
-                    setRenameValue('');
-                    logEvent('tengu_session_rename_started', {});
+                  if (lowerInput === "r" && key.ctrl && focusedLog) {
+                    setViewMode("rename");
+                    setRenameValue("");
+                    logEvent("tengu_session_rename_started", {});
                   } else {
-                    if (lowerInput === 'v' && key.ctrl && focusedLog) {
+                    if (lowerInput === "v" && key.ctrl && focusedLog) {
                       setPreviewLog(focusedLog);
-                      setViewMode('preview');
-                      logEvent('tengu_session_preview_opened', {
+                      setViewMode("preview");
+                      logEvent("tengu_session_preview_opened", {
                         messageCount: focusedLog.messageCount,
                       });
                     } else {
@@ -1243,9 +1243,9 @@ export function LogSelector(t0) {
                         input.length > 0 &&
                         !/^\s+$/.test(input)
                       ) {
-                        setViewMode('search');
+                        setViewMode("search");
                         setSearchQuery(input);
-                        logEvent('tengu_session_search_toggled', {
+                        logEvent("tengu_session_search_toggled", {
                           enabled: true,
                         });
                       }
@@ -1279,7 +1279,7 @@ export function LogSelector(t0) {
     t53 = $[147];
   }
   let t54;
-  if ($[148] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[148] === Symbol.for("react.memo_cache_sentinel")) {
     t54 = {
       isActive: true,
     };
@@ -1300,7 +1300,7 @@ export function LogSelector(t0) {
       filterIndicators.push(currentBranch);
     }
     if (hasMultipleWorktrees && !showAllWorktrees) {
-      filterIndicators.push('current worktree');
+      filterIndicators.push("current worktree");
     }
     $[149] = branchFilterEnabled;
     $[150] = currentBranch;
@@ -1310,7 +1310,7 @@ export function LogSelector(t0) {
   } else {
     filterIndicators = $[153];
   }
-  const showAdditionalFilterLine = filterIndicators.length > 0 && viewMode !== 'search';
+  const showAdditionalFilterLine = filterIndicators.length > 0 && viewMode !== "search";
   const headerLines = 8 + (showAdditionalFilterLine ? 1 : 0) + tagTabsLines;
   const visibleCount = Math.max(1, Math.floor((maxHeight - headerLines - 2) / 3));
   let t55;
@@ -1345,11 +1345,11 @@ export function LogSelector(t0) {
   if (logs.length === 0) {
     return null;
   }
-  if (viewMode === 'preview' && previewLog && isResumeWithRenameEnabled) {
+  if (viewMode === "preview" && previewLog && isResumeWithRenameEnabled) {
     let t57;
-    if ($[160] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[160] === Symbol.for("react.memo_cache_sentinel")) {
       t57 = () => {
-        setViewMode('list');
+        setViewMode("list");
         setPreviewLog(null);
       };
       $[160] = t57;
@@ -1369,7 +1369,7 @@ export function LogSelector(t0) {
   }
   const t57 = maxHeight - 1;
   let t58;
-  if ($[164] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[164] === Symbol.for("react.memo_cache_sentinel")) {
     t58 = (
       <Box flexShrink={0}>
         <Divider color="suggestion" />
@@ -1380,7 +1380,7 @@ export function LogSelector(t0) {
     t58 = $[164];
   }
   let t59;
-  if ($[165] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[165] === Symbol.for("react.memo_cache_sentinel")) {
     t59 = (
       <Box flexShrink={0}>
         <Text> </Text>
@@ -1413,9 +1413,9 @@ export function LogSelector(t0) {
       <Box flexShrink={0}>
         <Text bold={true} color="suggestion">
           Resume Session
-          {viewMode === 'list' && displayedLogs.length > visibleCount && (
+          {viewMode === "list" && displayedLogs.length > visibleCount && (
             <Text dimColor={true}>
-              {' '}
+              {" "}
               ({focusedIndex} of {displayedLogs.length})
             </Text>
           )}
@@ -1435,7 +1435,7 @@ export function LogSelector(t0) {
   } else {
     t60 = $[175];
   }
-  const t61 = viewMode === 'search';
+  const t61 = viewMode === "search";
   let t62;
   if (
     $[176] !== isTerminalFocused ||
@@ -1461,7 +1461,7 @@ export function LogSelector(t0) {
   }
   let t63;
   if ($[181] !== filterIndicators || $[182] !== viewMode) {
-    t63 = filterIndicators.length > 0 && viewMode !== 'search' && (
+    t63 = filterIndicators.length > 0 && viewMode !== "search" && (
       <Box flexShrink={0} paddingLeft={2}>
         <Text dimColor={true}>
           <Byline>{filterIndicators}</Byline>
@@ -1475,7 +1475,7 @@ export function LogSelector(t0) {
     t63 = $[183];
   }
   let t64;
-  if ($[184] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[184] === Symbol.for("react.memo_cache_sentinel")) {
     t64 = (
       <Box flexShrink={0}>
         <Text> </Text>
@@ -1487,7 +1487,7 @@ export function LogSelector(t0) {
   }
   let t65;
   if ($[185] !== agenticSearchState.status) {
-    t65 = agenticSearchState.status === 'searching' && (
+    t65 = agenticSearchState.status === "searching" && (
       <Box paddingLeft={1} flexShrink={0}>
         <Spinner />
         <Text> Searching…</Text>
@@ -1500,7 +1500,7 @@ export function LogSelector(t0) {
   }
   let t66;
   if ($[187] !== agenticSearchState.results || $[188] !== agenticSearchState.status) {
-    t66 = agenticSearchState.status === 'results' && agenticSearchState.results.length > 0 && (
+    t66 = agenticSearchState.status === "results" && agenticSearchState.results.length > 0 && (
       <Box paddingLeft={1} marginBottom={1} flexShrink={0}>
         <Text dimColor={true} italic={true}>
           Claude found these results:
@@ -1519,7 +1519,7 @@ export function LogSelector(t0) {
     $[191] !== agenticSearchState.status ||
     $[192] !== filteredLogs
   ) {
-    t67 = agenticSearchState.status === 'results' &&
+    t67 = agenticSearchState.status === "results" &&
       agenticSearchState.results.length === 0 &&
       filteredLogs.length === 0 && (
         <Box paddingLeft={1} marginBottom={1} flexShrink={0}>
@@ -1537,7 +1537,7 @@ export function LogSelector(t0) {
   }
   let t68;
   if ($[194] !== agenticSearchState.status || $[195] !== filteredLogs) {
-    t68 = agenticSearchState.status === 'error' && filteredLogs.length === 0 && (
+    t68 = agenticSearchState.status === "error" && filteredLogs.length === 0 && (
       <Box paddingLeft={1} marginBottom={1} flexShrink={0}>
         <Text dimColor={true} italic={true}>
           No matching sessions found.
@@ -1560,16 +1560,16 @@ export function LogSelector(t0) {
     t69 = Boolean(searchQuery.trim()) &&
       onAgenticSearch &&
       false &&
-      agenticSearchState.status !== 'searching' &&
-      agenticSearchState.status !== 'results' &&
-      agenticSearchState.status !== 'error' && (
+      agenticSearchState.status !== "searching" &&
+      agenticSearchState.status !== "results" &&
+      agenticSearchState.status !== "error" && (
         <Box flexShrink={0} flexDirection="column">
           <Box flexDirection="row" gap={1}>
-            <Text color={isAgenticSearchOptionFocused ? 'suggestion' : undefined}>
-              {isAgenticSearchOptionFocused ? figures.pointer : ' '}
+            <Text color={isAgenticSearchOptionFocused ? "suggestion" : undefined}>
+              {isAgenticSearchOptionFocused ? figures.pointer : " "}
             </Text>
             <Text
-              color={isAgenticSearchOptionFocused ? 'suggestion' : undefined}
+              color={isAgenticSearchOptionFocused ? "suggestion" : undefined}
               bold={isAgenticSearchOptionFocused}
             >
               Search deeply using Claude →
@@ -1609,7 +1609,7 @@ export function LogSelector(t0) {
     $[220] !== visibleCount
   ) {
     t70 =
-      agenticSearchState.status === 'searching' ? null : viewMode === 'rename' && focusedLog ? (
+      agenticSearchState.status === "searching" ? null : viewMode === "rename" && focusedLog ? (
         <Box paddingLeft={2} flexDirection="column">
           <Text bold={true}>Rename session:</Text>
           <Box paddingTop={1}>
@@ -1617,7 +1617,7 @@ export function LogSelector(t0) {
               value={renameValue}
               onChange={setRenameValue}
               onSubmit={handleRenameSubmit}
-              placeholder={getLogDisplayTitle(focusedLog, 'Enter new session name')}
+              placeholder={getLogDisplayTitle(focusedLog, "Enter new session name")}
               columns={columns}
               cursorOffset={renameCursorOffset}
               onChangeCursorOffset={setRenameCursorOffset}
@@ -1636,31 +1636,31 @@ export function LogSelector(t0) {
           focusNodeId={focusedNode?.id}
           visibleOptionCount={visibleCount}
           layout="expanded"
-          isDisabled={viewMode === 'search' || isAgenticSearchOptionFocused}
+          isDisabled={viewMode === "search" || isAgenticSearchOptionFocused}
           hideIndexes={false}
           isNodeExpanded={(nodeId) => {
-            if (viewMode === 'search' || branchFilterEnabled) {
+            if (viewMode === "search" || branchFilterEnabled) {
               return true;
             }
             const sessionId_2 =
-              typeof nodeId === 'string' && nodeId.startsWith('group:')
+              typeof nodeId === "string" && nodeId.startsWith("group:")
                 ? nodeId.substring(6)
                 : null;
             return sessionId_2 ? expandedGroupSessionIds.has(sessionId_2) : false;
           }}
           onExpand={(nodeId_0) => {
             const sessionId_3 =
-              typeof nodeId_0 === 'string' && nodeId_0.startsWith('group:')
+              typeof nodeId_0 === "string" && nodeId_0.startsWith("group:")
                 ? nodeId_0.substring(6)
                 : null;
             if (sessionId_3) {
               setExpandedGroupSessionIds((prev_0) => new Set(prev_0).add(sessionId_3));
-              logEvent('tengu_session_group_expanded', {});
+              logEvent("tengu_session_group_expanded", {});
             }
           }}
           onCollapse={(nodeId_1) => {
             const sessionId_4 =
-              typeof nodeId_1 === 'string' && nodeId_1.startsWith('group:')
+              typeof nodeId_1 === "string" && nodeId_1.startsWith("group:")
                 ? nodeId_1.substring(6)
                 : null;
             if (sessionId_4) {
@@ -1688,7 +1688,7 @@ export function LogSelector(t0) {
           onFocus={handleFlatOptionsSelectFocus}
           defaultFocusValue={focusedNode?.id.toString()}
           layout="expanded"
-          isDisabled={viewMode === 'search' || isAgenticSearchOptionFocused}
+          isDisabled={viewMode === "search" || isAgenticSearchOptionFocused}
           onUpFromFirstItem={enterSearchMode}
         />
       );
@@ -1734,7 +1734,7 @@ export function LogSelector(t0) {
       <Box paddingLeft={2}>
         {exitState.pending ? (
           <Text dimColor={true}>Press {exitState.keyName} again to exit</Text>
-        ) : viewMode === 'rename' ? (
+        ) : viewMode === "rename" ? (
           <Text dimColor={true}>
             <Byline>
               <KeyboardShortcutHint shortcut="Enter" action="save" />
@@ -1746,7 +1746,7 @@ export function LogSelector(t0) {
               />
             </Byline>
           </Text>
-        ) : agenticSearchState.status === 'searching' ? (
+        ) : agenticSearchState.status === "searching" ? (
           <Text dimColor={true}>
             <Byline>
               <Text>Searching with Claude…</Text>
@@ -1762,7 +1762,7 @@ export function LogSelector(t0) {
           <Text dimColor={true}>
             <Byline>
               <KeyboardShortcutHint shortcut="Enter" action="search" />
-              <KeyboardShortcutHint shortcut={'\u2193'} action="skip" />
+              <KeyboardShortcutHint shortcut={"\u2193"} action="skip" />
               <ConfigurableShortcutHint
                 action="confirm:no"
                 context="Confirmation"
@@ -1771,10 +1771,10 @@ export function LogSelector(t0) {
               />
             </Byline>
           </Text>
-        ) : viewMode === 'search' ? (
+        ) : viewMode === "search" ? (
           <Text dimColor={true}>
             <Byline>
-              <Text>{isSearching && false ? 'Searching\u2026' : 'Type to Search'}</Text>
+              <Text>{isSearching && false ? "Searching\u2026" : "Type to Search"}</Text>
               <KeyboardShortcutHint shortcut="Enter" action="select" />
               <ConfigurableShortcutHint
                 action="confirm:no"
@@ -1790,14 +1790,14 @@ export function LogSelector(t0) {
               {onToggleAllProjects && (
                 <KeyboardShortcutHint
                   shortcut="Ctrl+A"
-                  action={`show ${showAllProjects ? 'current dir' : 'all projects'}`}
+                  action={`show ${showAllProjects ? "current dir" : "all projects"}`}
                 />
               )}
               {currentBranch && <KeyboardShortcutHint shortcut="Ctrl+B" action="toggle branch" />}
               {hasMultipleWorktrees && (
                 <KeyboardShortcutHint
                   shortcut="Ctrl+W"
-                  action={`show ${showAllWorktrees ? 'current worktree' : 'all worktrees'}`}
+                  action={`show ${showAllWorktrees ? "current worktree" : "all worktrees"}`}
                 />
               )}
               <KeyboardShortcutHint shortcut="Ctrl+V" action="preview" />
@@ -1939,14 +1939,14 @@ function _temp(log) {
 }
 function extractSearchableText(message: SerializedMessage): string {
   // Only extract from user and assistant messages that have content
-  if (message.type !== 'user' && message.type !== 'assistant') {
-    return '';
+  if (message.type !== "user" && message.type !== "assistant") {
+    return "";
   }
-  const content = 'message' in message ? message.message?.content : undefined;
-  if (!content) return '';
+  const content = "message" in message ? message.message?.content : undefined;
+  if (!content) return "";
 
   // Handle string content (simple messages)
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return content;
   }
 
@@ -1954,16 +1954,16 @@ function extractSearchableText(message: SerializedMessage): string {
   if (Array.isArray(content)) {
     return content
       .map((block) => {
-        if (typeof block === 'string') return block;
-        if ('text' in block && typeof block.text === 'string') return block.text;
-        return '';
+        if (typeof block === "string") return block;
+        if ("text" in block && typeof block.text === "string") return block.text;
+        return "";
         // we don't return thinking blocks and tool names here;
         // they're not useful for search, as they can add noise to the fuzzy matching
       })
       .filter(Boolean)
-      .join(' ');
+      .join(" ");
   }
-  return '';
+  return "";
 }
 
 /**
@@ -1978,7 +1978,7 @@ function buildSearchableText(log: LogOption): string {
           ...log.messages.slice(0, DEEP_SEARCH_CROP_SIZE),
           ...log.messages.slice(-DEEP_SEARCH_CROP_SIZE),
         ];
-  const messageText = searchableMessages.map(extractSearchableText).filter(Boolean).join(' ');
+  const messageText = searchableMessages.map(extractSearchableText).filter(Boolean).join(" ");
   const metadata = [
     log.customTitle,
     log.summary,
@@ -1989,7 +1989,7 @@ function buildSearchableText(log: LogOption): string {
     log.prRepository,
   ]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
   const fullText = `${metadata} ${messageText}`.trim();
   return fullText.length > DEEP_SEARCH_MAX_TEXT_LENGTH
     ? fullText.slice(0, DEEP_SEARCH_MAX_TEXT_LENGTH)

@@ -1,35 +1,35 @@
-import { basename } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
-import { isAutoMemoryEnabled } from '../../memdir/paths.js';
-import type { AgentColorName } from '../../tools/AgentTool/agentColorManager.js';
-import { type AgentMemoryScope, loadAgentMemoryPrompt } from '../../tools/AgentTool/agentMemory.js';
-import type { AgentDefinition } from '../../tools/AgentTool/loadAgentsDir.js';
-import { FILE_EDIT_TOOL_NAME } from '../../tools/FileEditTool/constants.js';
-import { FILE_READ_TOOL_NAME } from '../../tools/FileReadTool/prompt.js';
-import { FILE_WRITE_TOOL_NAME } from '../../tools/FileWriteTool/prompt.js';
-import { getPluginErrorMessage } from '../../types/plugin.js';
-import { logForDebugging } from '../debug.js';
-import { EFFORT_LEVELS, parseEffortValue } from '../effort.js';
+import { basename } from "node:path";
+import memoize from "lodash-es/memoize.js";
+import { isAutoMemoryEnabled } from "../../memdir/paths.js";
+import type { AgentColorName } from "../../tools/AgentTool/agentColorManager.js";
+import { type AgentMemoryScope, loadAgentMemoryPrompt } from "../../tools/AgentTool/agentMemory.js";
+import type { AgentDefinition } from "../../tools/AgentTool/loadAgentsDir.js";
+import { FILE_EDIT_TOOL_NAME } from "../../tools/FileEditTool/constants.js";
+import { FILE_READ_TOOL_NAME } from "../../tools/FileReadTool/prompt.js";
+import { FILE_WRITE_TOOL_NAME } from "../../tools/FileWriteTool/prompt.js";
+import { getPluginErrorMessage } from "../../types/plugin.js";
+import { logForDebugging } from "../debug.js";
+import { EFFORT_LEVELS, parseEffortValue } from "../effort.js";
 import {
   coerceDescriptionToString,
   parseFrontmatter,
   parsePositiveIntFromFrontmatter,
-} from '../frontmatterParser.js';
-import { getFsImplementation, isDuplicatePath } from '../fsOperations.js';
+} from "../frontmatterParser.js";
+import { getFsImplementation, isDuplicatePath } from "../fsOperations.js";
 import {
   parseAgentToolsFromFrontmatter,
   parseSlashCommandToolsFromFrontmatter,
-} from '../markdownConfigLoader.js';
-import { loadAllPluginsCacheOnly } from './pluginLoader.js';
+} from "../markdownConfigLoader.js";
+import { loadAllPluginsCacheOnly } from "./pluginLoader.js";
 import {
   loadPluginOptions,
   substitutePluginVariables,
   substituteUserConfigInContent,
-} from './pluginOptionsStorage.js';
-import type { PluginManifest } from './schemas.js';
-import { walkPluginMarkdown } from './walkPluginMarkdown.js';
+} from "./pluginOptionsStorage.js";
+import type { PluginManifest } from "./schemas.js";
+import { walkPluginMarkdown } from "./walkPluginMarkdown.js";
 
-const VALID_MEMORY_SCOPES: AgentMemoryScope[] = ['user', 'project', 'local'];
+const VALID_MEMORY_SCOPES: AgentMemoryScope[] = ["user", "project", "local"];
 
 async function loadAgentsFromDirectory(
   agentsPath: string,
@@ -54,7 +54,7 @@ async function loadAgentsFromDirectory(
       );
       if (agent) agents.push(agent);
     },
-    { logLabel: 'agents' },
+    { logLabel: "agents" },
   );
   return agents;
 }
@@ -73,19 +73,19 @@ async function loadAgentFromFile(
     return null;
   }
   try {
-    const content = await fs.readFile(filePath, { encoding: 'utf-8' });
+    const content = await fs.readFile(filePath, { encoding: "utf-8" });
     const { frontmatter, content: markdownContent } = parseFrontmatter(content, filePath);
 
-    const baseAgentName = (frontmatter.name as string) || basename(filePath).replace(/\.md$/, '');
+    const baseAgentName = (frontmatter.name as string) || basename(filePath).replace(/\.md$/, "");
 
     // Apply namespace prefixing like we do for commands
     const nameParts = [pluginName, ...namespace, baseAgentName];
-    const agentType = nameParts.join(':');
+    const agentType = nameParts.join(":");
 
     // Parse agent metadata from frontmatter
     const whenToUse =
       coerceDescriptionToString(frontmatter.description, agentType) ??
-      coerceDescriptionToString(frontmatter['when-to-use'], agentType) ??
+      coerceDescriptionToString(frontmatter["when-to-use"], agentType) ??
       `Agent from ${pluginName} plugin`;
 
     let tools = parseAgentToolsFromFrontmatter(frontmatter.tools);
@@ -93,12 +93,12 @@ async function loadAgentFromFile(
     const color = frontmatter.color as AgentColorName | undefined;
     const modelRaw = frontmatter.model;
     let model: string | undefined;
-    if (typeof modelRaw === 'string' && modelRaw.trim().length > 0) {
+    if (typeof modelRaw === "string" && modelRaw.trim().length > 0) {
       const trimmed = modelRaw.trim();
-      model = trimmed.toLowerCase() === 'inherit' ? 'inherit' : trimmed;
+      model = trimmed.toLowerCase() === "inherit" ? "inherit" : trimmed;
     }
     const backgroundRaw = frontmatter.background;
-    const background = backgroundRaw === 'true' || backgroundRaw === true ? true : undefined;
+    const background = backgroundRaw === "true" || backgroundRaw === true ? true : undefined;
     // Substitute ${CLAUDE_PLUGIN_ROOT} so agents can reference bundled files,
     // and ${user_config.X} (non-sensitive only) so they can embed configured
     // usernames, endpoints, etc. Sensitive refs resolve to a placeholder.
@@ -122,21 +122,21 @@ async function loadAgentFromFile(
         memory = memoryRaw as AgentMemoryScope;
       } else {
         logForDebugging(
-          `Plugin agent file ${filePath} has invalid memory value '${memoryRaw}'. Valid options: ${VALID_MEMORY_SCOPES.join(', ')}`,
+          `Plugin agent file ${filePath} has invalid memory value '${memoryRaw}'. Valid options: ${VALID_MEMORY_SCOPES.join(", ")}`,
         );
       }
     }
 
     // Parse isolation mode
     const isolationRaw = frontmatter.isolation as string | undefined;
-    const isolation = isolationRaw === 'worktree' ? ('worktree' as const) : undefined;
+    const isolation = isolationRaw === "worktree" ? ("worktree" as const) : undefined;
 
     // Parse effort (string level or integer)
     const effortRaw = frontmatter.effort;
     const effort = effortRaw !== undefined ? parseEffortValue(effortRaw) : undefined;
     if (effortRaw !== undefined && effort === undefined) {
       logForDebugging(
-        `Plugin agent file ${filePath} has invalid effort '${effortRaw}'. Valid options: ${EFFORT_LEVELS.join(', ')} or an integer`,
+        `Plugin agent file ${filePath} has invalid effort '${effortRaw}'. Valid options: ${EFFORT_LEVELS.join(", ")} or an integer`,
       );
     }
 
@@ -148,11 +148,11 @@ async function loadAgentFromFile(
     // still ship hooks and MCP servers at the manifest level — that's the
     // install-time trust boundary. Per-agent declarations would let a single
     // agent file buried in agents/ silently add them.) See PR #22558 review.
-    for (const field of ['permissionMode', 'hooks', 'mcpServers'] as const) {
+    for (const field of ["permissionMode", "hooks", "mcpServers"] as const) {
       if (frontmatter[field] !== undefined) {
         logForDebugging(
           `Plugin agent file ${filePath} sets ${field}, which is ignored for plugin agents. Use .claude/agents/ for this level of control.`,
-          { level: 'warn' },
+          { level: "warn" },
         );
       }
     }
@@ -195,7 +195,7 @@ async function loadAgentFromFile(
         }
         return systemPrompt;
       },
-      source: 'plugin' as const,
+      source: "plugin" as const,
       color,
       model,
       filename: baseAgentName,
@@ -208,7 +208,7 @@ async function loadAgentFromFile(
     } as AgentDefinition;
   } catch (error) {
     logForDebugging(`Failed to load agent from ${filePath}: ${error}`, {
-      level: 'error',
+      level: "error",
     });
     return null;
   }
@@ -220,7 +220,7 @@ export const loadPluginAgents = memoize(async (): Promise<AgentDefinition[]> => 
 
   if (errors.length > 0) {
     logForDebugging(
-      `Plugin loading errors: ${errors.map((e) => getPluginErrorMessage(e)).join(', ')}`,
+      `Plugin loading errors: ${errors.map((e) => getPluginErrorMessage(e)).join(", ")}`,
     );
   }
 
@@ -252,7 +252,7 @@ export const loadPluginAgents = memoize(async (): Promise<AgentDefinition[]> => 
         } catch (error) {
           logForDebugging(
             `Failed to load agents from plugin ${plugin.name} default directory: ${error}`,
-            { level: 'error' },
+            { level: "error" },
           );
         }
       }
@@ -284,7 +284,7 @@ export const loadPluginAgents = memoize(async (): Promise<AgentDefinition[]> => 
                   );
                 }
                 return agents;
-              } else if (stats.isFile() && agentPath.endsWith('.md')) {
+              } else if (stats.isFile() && agentPath.endsWith(".md")) {
                 // Load single agent file
                 const agent = await loadAgentFromFile(
                   agentPath,
@@ -306,7 +306,7 @@ export const loadPluginAgents = memoize(async (): Promise<AgentDefinition[]> => 
             } catch (error) {
               logForDebugging(
                 `Failed to load agents from plugin ${plugin.name} custom path ${agentPath}: ${error}`,
-                { level: 'error' },
+                { level: "error" },
               );
               return [];
             }

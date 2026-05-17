@@ -1,16 +1,16 @@
-import figures from 'figures';
-import type React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Markdown } from '../../components/Markdown.js';
-import { BLACK_CIRCLE } from '../../constants/figures.js';
-import { Box, Text } from '../../ink.js';
-import type { ProgressMessage } from '../../types/message.js';
-import { getDisplayPath } from '../../utils/file.js';
-import { formatFileSize } from '../../utils/format.js';
-import { formatBriefTimestamp } from '../../utils/formatBriefTimestamp.js';
-import type { Output } from './BriefTool.js';
+import figures from "figures";
+import type React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Markdown } from "../../components/Markdown.js";
+import { BLACK_CIRCLE } from "../../constants/figures.js";
+import { Box, Text } from "../../ink.js";
+import type { ProgressMessage } from "../../types/message.js";
+import { getDisplayPath } from "../../utils/file.js";
+import { formatFileSize } from "../../utils/format.js";
+import { formatBriefTimestamp } from "../../utils/formatBriefTimestamp.js";
+import type { Output } from "./BriefTool.js";
 export function renderToolUseMessage(): React.ReactNode {
-  return '';
+  return "";
 }
 export function renderToolResultMessage(
   output: Output,
@@ -45,7 +45,7 @@ export function renderToolResultMessage(
   // label UserPromptMessage applies to user input (#20889). The "N in background"
   // spinner status lives in BriefSpinner (Spinner.tsx) — stateless label here.
   if (options?.isBriefOnly) {
-    const ts = output.sentAt ? formatBriefTimestamp(output.sentAt) : '';
+    const ts = output.sentAt ? formatBriefTimestamp(output.sentAt) : "";
     return (
       <Box flexDirection="column" marginTop={1} paddingLeft={2}>
         <Box flexDirection="row">
@@ -77,7 +77,7 @@ export function renderToolResultMessage(
   );
 }
 type AttachmentListProps = {
-  attachments: Output['attachments'];
+  attachments: Output["attachments"];
 };
 export function AttachmentList(t0) {
   const $ = _c(4);
@@ -111,7 +111,7 @@ function _temp(att) {
   return (
     <Box key={att.path} flexDirection="row">
       <Text dimColor={true}>
-        {figures.pointerSmall} {att.isImage ? '[image]' : '[file]'}{' '}
+        {figures.pointerSmall} {att.isImage ? "[image]" : "[file]"}{" "}
       </Text>
       <Text>{getDisplayPath(att.path)}</Text>
       <Text dimColor={true}> ({formatFileSize(att.size)})</Text>

@@ -1,8 +1,8 @@
-import type * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import type { Theme } from '../../utils/theme.js';
-import type { WorkerBadgeProps } from './WorkerBadge.js';
+import type * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import type { Theme } from "../../utils/theme.js";
+import type { WorkerBadgeProps } from "./WorkerBadge.js";
 
 type Props = {
   title: string;
@@ -13,7 +13,7 @@ type Props = {
 export function PermissionRequestTitle(t0) {
   const $ = _c(13);
   const { title, subtitle, color: t1, workerBadge } = t0;
-  const color = t1 === undefined ? 'permission' : t1;
+  const color = t1 === undefined ? "permission" : t1;
   let t2;
   if ($[0] !== color || $[1] !== title) {
     t2 = (
@@ -31,7 +31,7 @@ export function PermissionRequestTitle(t0) {
   if ($[3] !== workerBadge) {
     t3 = workerBadge && (
       <Text dimColor={true}>
-        {'\xB7 '}@{workerBadge.name}
+        {"\xB7 "}@{workerBadge.name}
       </Text>
     );
     $[3] = workerBadge;
@@ -57,7 +57,7 @@ export function PermissionRequestTitle(t0) {
   if ($[8] !== subtitle) {
     t5 =
       subtitle != null &&
-      (typeof subtitle === 'string' ? (
+      (typeof subtitle === "string" ? (
         <Text dimColor={true} wrap="truncate-start">
           {subtitle}
         </Text>

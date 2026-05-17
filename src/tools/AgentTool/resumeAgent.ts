@@ -1,35 +1,35 @@
-import { promises as fsp } from 'node:fs';
-import { getSdkAgentProgressSummariesEnabled } from '../../bootstrap/state.js';
-import { getSystemPrompt } from '../../constants/prompts.js';
-import { isCoordinatorMode } from '../../coordinator/coordinatorMode.js';
-import type { CanUseToolFn } from '../../hooks/useCanUseTool.js';
-import type { ToolUseContext } from '../../Tool.js';
-import { registerAsyncAgent } from '../../tasks/LocalAgentTask/LocalAgentTask.js';
-import { assembleToolPool } from '../../tools.js';
-import { asAgentId } from '../../types/ids.js';
-import { runWithAgentContext } from '../../utils/agentContext.js';
-import { runWithCwdOverride } from '../../utils/cwd.js';
-import { logForDebugging } from '../../utils/debug.js';
+import { promises as fsp } from "node:fs";
+import { getSdkAgentProgressSummariesEnabled } from "../../bootstrap/state.js";
+import { getSystemPrompt } from "../../constants/prompts.js";
+import { isCoordinatorMode } from "../../coordinator/coordinatorMode.js";
+import type { CanUseToolFn } from "../../hooks/useCanUseTool.js";
+import type { ToolUseContext } from "../../Tool.js";
+import { registerAsyncAgent } from "../../tasks/LocalAgentTask/LocalAgentTask.js";
+import { assembleToolPool } from "../../tools.js";
+import { asAgentId } from "../../types/ids.js";
+import { runWithAgentContext } from "../../utils/agentContext.js";
+import { runWithCwdOverride } from "../../utils/cwd.js";
+import { logForDebugging } from "../../utils/debug.js";
 import {
   createUserMessage,
   filterOrphanedThinkingOnlyMessages,
   filterUnresolvedToolUses,
   filterWhitespaceOnlyAssistantMessages,
-} from '../../utils/messages.js';
-import { getAgentModel } from '../../utils/model/agent.js';
-import { getQuerySourceForAgent } from '../../utils/promptCategory.js';
-import { getAgentTranscript, readAgentMetadata } from '../../utils/sessionStorage.js';
-import { buildEffectiveSystemPrompt } from '../../utils/systemPrompt.js';
-import type { SystemPrompt } from '../../utils/systemPromptType.js';
-import { getTaskOutputPath } from '../../utils/task/diskOutput.js';
-import { getParentSessionId } from '../../utils/teammate.js';
-import { reconstructForSubagentResume } from '../../utils/toolResultStorage.js';
-import { runAsyncAgentLifecycle } from './agentToolUtils.js';
-import { GENERAL_PURPOSE_AGENT } from './built-in/generalPurposeAgent.js';
-import { FORK_AGENT, isForkSubagentEnabled } from './forkSubagent.js';
-import type { AgentDefinition } from './loadAgentsDir.js';
-import { isBuiltInAgent } from './loadAgentsDir.js';
-import { runAgent } from './runAgent.js';
+} from "../../utils/messages.js";
+import { getAgentModel } from "../../utils/model/agent.js";
+import { getQuerySourceForAgent } from "../../utils/promptCategory.js";
+import { getAgentTranscript, readAgentMetadata } from "../../utils/sessionStorage.js";
+import { buildEffectiveSystemPrompt } from "../../utils/systemPrompt.js";
+import type { SystemPrompt } from "../../utils/systemPromptType.js";
+import { getTaskOutputPath } from "../../utils/task/diskOutput.js";
+import { getParentSessionId } from "../../utils/teammate.js";
+import { reconstructForSubagentResume } from "../../utils/toolResultStorage.js";
+import { runAsyncAgentLifecycle } from "./agentToolUtils.js";
+import { GENERAL_PURPOSE_AGENT } from "./built-in/generalPurposeAgent.js";
+import { FORK_AGENT, isForkSubagentEnabled } from "./forkSubagent.js";
+import type { AgentDefinition } from "./loadAgentsDir.js";
+import { isBuiltInAgent } from "./loadAgentsDir.js";
+import { runAgent } from "./runAgent.js";
 
 export type ResumeAgentResult = {
   agentId: string;
@@ -105,7 +105,7 @@ export async function resumeAgentBackground({
     selectedAgent = GENERAL_PURPOSE_AGENT;
   }
 
-  const uiDescription = meta?.description ?? '(resumed)';
+  const uiDescription = meta?.description ?? "(resumed)";
 
   let forkParentSystemPrompt: SystemPrompt | undefined;
   if (isResumedFork) {
@@ -133,7 +133,7 @@ export async function resumeAgentBackground({
       });
     }
     if (!forkParentSystemPrompt) {
-      throw new Error('Cannot resume fork agent: unable to reconstruct parent system prompt');
+      throw new Error("Cannot resume fork agent: unable to reconstruct parent system prompt");
     }
   }
 
@@ -147,7 +147,7 @@ export async function resumeAgentBackground({
 
   const workerPermissionContext = {
     ...appState.toolPermissionContext,
-    mode: selectedAgent.permissionMode ?? 'acceptEdits',
+    mode: selectedAgent.permissionMode ?? "acceptEdits",
   };
   const workerTools = isResumedFork
     ? toolUseContext.options.tools
@@ -198,11 +198,11 @@ export async function resumeAgentBackground({
   const asyncAgentContext = {
     agentId,
     parentSessionId: getParentSessionId(),
-    agentType: 'subagent' as const,
+    agentType: "subagent" as const,
     subagentName: selectedAgent.agentType,
     isBuiltIn: isBuiltInAgent(selectedAgent),
     invokingRequestId,
-    invocationKind: 'resume' as const,
+    invocationKind: "resume" as const,
     invocationEmitted: false,
   };
 

@@ -6,30 +6,30 @@
  * loaded upfront.
  */
 
-import memoize from 'lodash-es/memoize.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
+import memoize from "lodash-es/memoize.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import type { Tool } from '../Tool.js';
-import { type ToolPermissionContext, type Tools, toolMatchesName } from '../Tool.js';
-import type { AgentDefinition } from '../tools/AgentTool/loadAgentsDir.js';
+} from "../services/analytics/index.js";
+import type { Tool } from "../Tool.js";
+import { type ToolPermissionContext, type Tools, toolMatchesName } from "../Tool.js";
+import type { AgentDefinition } from "../tools/AgentTool/loadAgentsDir.js";
 import {
   formatDeferredToolLine,
   isDeferredTool,
   TOOL_SEARCH_TOOL_NAME,
-} from '../tools/ToolSearchTool/prompt.js';
-import type { Message } from '../types/message.js';
-import { countToolDefinitionTokens, TOOL_TOKEN_COUNT_OVERHEAD } from './analyzeContext.js';
-import { count } from './array.js';
-import { getMergedBetas } from './betas.js';
-import { getContextWindowForModel } from './context.js';
-import { logForDebugging } from './debug.js';
-import { isEnvDefinedFalsy, isEnvTruthy } from './envUtils.js';
-import { getAPIProvider, isFirstPartyAnthropicBaseUrl } from './model/providers.js';
-import { jsonStringify } from './slowOperations.js';
-import { zodToJsonSchema } from './zodToJsonSchema.js';
+} from "../tools/ToolSearchTool/prompt.js";
+import type { Message } from "../types/message.js";
+import { countToolDefinitionTokens, TOOL_TOKEN_COUNT_OVERHEAD } from "./analyzeContext.js";
+import { count } from "./array.js";
+import { getMergedBetas } from "./betas.js";
+import { getContextWindowForModel } from "./context.js";
+import { logForDebugging } from "./debug.js";
+import { isEnvDefinedFalsy, isEnvTruthy } from "./envUtils.js";
+import { getAPIProvider, isFirstPartyAnthropicBaseUrl } from "./model/providers.js";
+import { jsonStringify } from "./slowOperations.js";
+import { zodToJsonSchema } from "./zodToJsonSchema.js";
 
 /**
  * Default percentage of context window at which to auto-enable tool search.
@@ -43,7 +43,7 @@ const DEFAULT_AUTO_TOOL_SEARCH_PERCENTAGE = 10; // 10%
  * Returns the percentage clamped to 0-100, or null if not auto:N format or not a number.
  */
 function parseAutoPercentage(value: string): number | null {
-  if (!value.startsWith('auto:')) return null;
+  if (!value.startsWith("auto:")) return null;
 
   const percentStr = value.slice(5);
   const percent = parseInt(percentStr, 10);
@@ -64,7 +64,7 @@ function parseAutoPercentage(value: string): number | null {
  */
 function isAutoToolSearchMode(value: string | undefined): boolean {
   if (!value) return false;
-  return value === 'auto' || value.startsWith('auto:');
+  return value === "auto" || value.startsWith("auto:");
 }
 
 /**
@@ -74,7 +74,7 @@ function getAutoToolSearchPercentage(): number {
   const value = process.env.ENABLE_TOOL_SEARCH;
   if (!value) return DEFAULT_AUTO_TOOL_SEARCH_PERCENTAGE;
 
-  if (value === 'auto') return DEFAULT_AUTO_TOOL_SEARCH_PERCENTAGE;
+  if (value === "auto") return DEFAULT_AUTO_TOOL_SEARCH_PERCENTAGE;
 
   const parsed = parseAutoPercentage(value);
   if (parsed !== null) return parsed;
@@ -138,7 +138,7 @@ const getDeferredToolTokenCount = memoize(
     tools
       .filter((t) => isDeferredTool(t))
       .map((t) => t.name)
-      .join(','),
+      .join(","),
 );
 
 /**
@@ -148,7 +148,7 @@ const getDeferredToolTokenCount = memoize(
  *   - 'tst-auto': auto — tools deferred only when they exceed threshold
  *   - 'standard': tool search disabled — all tools exposed inline
  */
-export type ToolSearchMode = 'tst' | 'tst-auto' | 'standard';
+export type ToolSearchMode = "tst" | "tst-auto" | "standard";
 
 /**
  * Determines the tool search mode from ENABLE_TOOL_SEARCH.
@@ -169,29 +169,29 @@ export function getToolSearchMode(): ToolSearchMode {
   // isToolSearchEnabledOptimistic doesn't cover.
   // github.com/anthropics/claude-code/issues/20031
   if (isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS)) {
-    return 'standard';
+    return "standard";
   }
 
   const value = process.env.ENABLE_TOOL_SEARCH;
 
   // Handle auto:N syntax - check edge cases first
   const autoPercent = value ? parseAutoPercentage(value) : null;
-  if (autoPercent === 0) return 'tst'; // auto:0 = always enabled
-  if (autoPercent === 100) return 'standard';
+  if (autoPercent === 0) return "tst"; // auto:0 = always enabled
+  if (autoPercent === 100) return "standard";
   if (isAutoToolSearchMode(value)) {
-    return 'tst-auto'; // auto or auto:1-99
+    return "tst-auto"; // auto or auto:1-99
   }
 
-  if (isEnvTruthy(value)) return 'tst';
-  if (isEnvDefinedFalsy(process.env.ENABLE_TOOL_SEARCH)) return 'standard';
-  return 'tst'; // default: always defer MCP and shouldDefer tools
+  if (isEnvTruthy(value)) return "tst";
+  if (isEnvDefinedFalsy(process.env.ENABLE_TOOL_SEARCH)) return "standard";
+  return "tst"; // default: always defer MCP and shouldDefer tools
 }
 
 /**
  * Default patterns for models that do NOT support tool_reference.
  * New models are assumed to support tool_reference unless explicitly listed here.
  */
-const DEFAULT_UNSUPPORTED_MODEL_PATTERNS = ['haiku'];
+const DEFAULT_UNSUPPORTED_MODEL_PATTERNS = ["haiku"];
 
 /**
  * Get the list of model patterns that do NOT support tool_reference.
@@ -201,7 +201,7 @@ function getUnsupportedToolReferencePatterns(): string[] {
   try {
     // Try to get from GrowthBook for live configuration
     const patterns = getFeatureValue_CACHED_MAY_BE_STALE<string[] | null>(
-      'tengu_tool_search_unsupported_models',
+      "tengu_tool_search_unsupported_models",
       null,
     );
     if (patterns && Array.isArray(patterns) && patterns.length > 0) {
@@ -259,7 +259,7 @@ let loggedOptimistic = false;
 
 export function isToolSearchEnabledOptimistic(): boolean {
   const mode = getToolSearchMode();
-  if (mode === 'standard') {
+  if (mode === "standard") {
     if (!loggedOptimistic) {
       loggedOptimistic = true;
       logForDebugging(
@@ -288,7 +288,7 @@ export function isToolSearchEnabledOptimistic(): boolean {
   // with getToolSearchMode(), which also treats "" as unset.
   if (
     !process.env.ENABLE_TOOL_SEARCH &&
-    getAPIProvider() === 'firstParty' &&
+    getAPIProvider() === "firstParty" &&
     !isFirstPartyAnthropicBaseUrl()
   ) {
     if (!loggedOptimistic) {
@@ -344,7 +344,7 @@ async function calculateDeferredToolDescriptionChars(
         ? jsonStringify(tool.inputJSONSchema)
         : tool.inputSchema
           ? jsonStringify(zodToJsonSchema(tool.inputSchema))
-          : '';
+          : "";
       return tool.name.length + description.length + inputSchema.length;
     }),
   );
@@ -386,7 +386,7 @@ export async function isToolSearchEnabled(
     reason: string,
     extraProps?: Record<string, number>,
   ): void {
-    logEvent('tengu_tool_search_mode_decision', {
+    logEvent("tengu_tool_search_mode_decision", {
       enabled,
       mode: mode as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       reason: reason as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -396,7 +396,7 @@ export async function isToolSearchEnabled(
       checkedModel: model as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       mcpToolCount,
       userType: (process.env.USER_TYPE ??
-        'external') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+        "external") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       ...extraProps,
     });
   }
@@ -407,7 +407,7 @@ export async function isToolSearchEnabled(
       `Tool search disabled for model '${model}': model does not support tool_reference blocks. ` +
         `This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.`,
     );
-    logModeDecision(false, 'standard', 'model_unsupported');
+    logModeDecision(false, "standard", "model_unsupported");
     return false;
   }
 
@@ -416,18 +416,18 @@ export async function isToolSearchEnabled(
     logForDebugging(
       `Tool search disabled: ToolSearchTool is not available (may have been disallowed via disallowedTools).`,
     );
-    logModeDecision(false, 'standard', 'mcp_search_unavailable');
+    logModeDecision(false, "standard", "mcp_search_unavailable");
     return false;
   }
 
   const mode = getToolSearchMode();
 
   switch (mode) {
-    case 'tst':
-      logModeDecision(true, mode, 'tst_enabled');
+    case "tst":
+      logModeDecision(true, mode, "tst_enabled");
       return true;
 
-    case 'tst-auto': {
+    case "tst-auto": {
       const { enabled, debugDescription, metrics } = await checkAutoThreshold(
         tools,
         getToolPermissionContext,
@@ -437,21 +437,21 @@ export async function isToolSearchEnabled(
 
       if (enabled) {
         logForDebugging(
-          `Auto tool search enabled: ${debugDescription}${source ? ` [source: ${source}]` : ''}`,
+          `Auto tool search enabled: ${debugDescription}${source ? ` [source: ${source}]` : ""}`,
         );
-        logModeDecision(true, mode, 'auto_above_threshold', metrics);
+        logModeDecision(true, mode, "auto_above_threshold", metrics);
         return true;
       }
 
       logForDebugging(
-        `Auto tool search disabled: ${debugDescription}${source ? ` [source: ${source}]` : ''}`,
+        `Auto tool search disabled: ${debugDescription}${source ? ` [source: ${source}]` : ""}`,
       );
-      logModeDecision(false, mode, 'auto_below_threshold', metrics);
+      logModeDecision(false, mode, "auto_below_threshold", metrics);
       return false;
     }
 
-    case 'standard':
-      logModeDecision(false, mode, 'standard_mode');
+    case "standard":
+      logModeDecision(false, mode, "standard_mode");
       return false;
   }
 }
@@ -462,10 +462,10 @@ export async function isToolSearchEnabled(
  */
 export function isToolReferenceBlock(obj: unknown): boolean {
   return (
-    typeof obj === 'object' &&
+    typeof obj === "object" &&
     obj !== null &&
-    'type' in obj &&
-    (obj as { type: unknown }).type === 'tool_reference'
+    "type" in obj &&
+    (obj as { type: unknown }).type === "tool_reference"
   );
 }
 
@@ -474,11 +474,11 @@ export function isToolReferenceBlock(obj: unknown): boolean {
  */
 function isToolReferenceWithName(
   obj: unknown,
-): obj is { type: 'tool_reference'; tool_name: string } {
+): obj is { type: "tool_reference"; tool_name: string } {
   return (
     isToolReferenceBlock(obj) &&
-    'tool_name' in (obj as object) &&
-    typeof (obj as { tool_name: unknown }).tool_name === 'string'
+    "tool_name" in (obj as object) &&
+    typeof (obj as { tool_name: unknown }).tool_name === "string"
   );
 }
 
@@ -487,7 +487,7 @@ function isToolReferenceWithName(
  * Used for extracting tool_reference blocks from ToolSearchTool results.
  */
 type ToolResultBlock = {
-  type: 'tool_result';
+  type: "tool_result";
   content: unknown[];
 };
 
@@ -496,11 +496,11 @@ type ToolResultBlock = {
  */
 function isToolResultBlockWithContent(obj: unknown): obj is ToolResultBlock {
   return (
-    typeof obj === 'object' &&
+    typeof obj === "object" &&
     obj !== null &&
-    'type' in obj &&
-    (obj as { type: unknown }).type === 'tool_result' &&
-    'content' in obj &&
+    "type" in obj &&
+    (obj as { type: unknown }).type === "tool_result" &&
+    "content" in obj &&
     Array.isArray((obj as { content: unknown }).content)
   );
 }
@@ -534,7 +534,7 @@ export function extractDiscoveredToolNames(messages: Message[]): Set<string> {
     // Compact boundary carries the pre-compact discovered set. Inline type
     // check rather than isCompactBoundaryMessage — utils/messages.ts imports
     // from this file, so importing back would be circular.
-    if (msg.type === 'system' && msg.subtype === 'compact_boundary') {
+    if (msg.type === "system" && msg.subtype === "compact_boundary") {
       const carried = msg.compactMetadata?.preCompactDiscoveredTools;
       if (carried) {
         for (const name of carried) discoveredTools.add(name);
@@ -544,7 +544,7 @@ export function extractDiscoveredToolNames(messages: Message[]): Set<string> {
     }
 
     // Only user messages contain tool_result blocks (responses to tool_use)
-    if (msg.type !== 'user') continue;
+    if (msg.type !== "user") continue;
 
     const content = msg.message?.content;
     if (!Array.isArray(content)) continue;
@@ -566,7 +566,7 @@ export function extractDiscoveredToolNames(messages: Message[]): Set<string> {
   if (discoveredTools.size > 0) {
     logForDebugging(
       `Dynamic tool loading: found ${discoveredTools.size} discovered tools in message history` +
-        (carriedFromBoundary > 0 ? ` (${carriedFromBoundary} carried from compact boundary)` : ''),
+        (carriedFromBoundary > 0 ? ` (${carriedFromBoundary} carried from compact boundary)` : ""),
     );
   }
 
@@ -595,11 +595,11 @@ export type DeferredToolsDelta = {
  */
 export type DeferredToolsDeltaScanContext = {
   callSite:
-    | 'attachments_main'
-    | 'attachments_subagent'
-    | 'compact_full'
-    | 'compact_partial'
-    | 'reactive_compact';
+    | "attachments_main"
+    | "attachments_subagent"
+    | "compact_full"
+    | "compact_partial"
+    | "reactive_compact";
   querySource?: string;
 };
 
@@ -610,8 +610,8 @@ export type DeferredToolsDeltaScanContext = {
  */
 export function isDeferredToolsDeltaEnabled(): boolean {
   return (
-    process.env.USER_TYPE === 'ant' ||
-    getFeatureValue_CACHED_MAY_BE_STALE('tengu_glacier_2xr', false)
+    process.env.USER_TYPE === "ant" ||
+    getFeatureValue_CACHED_MAY_BE_STALE("tengu_glacier_2xr", false)
   );
 }
 
@@ -635,10 +635,10 @@ export function getDeferredToolsDelta(
   let dtdCount = 0;
   const attachmentTypesSeen = new Set<string>();
   for (const msg of messages) {
-    if (msg.type !== 'attachment') continue;
+    if (msg.type !== "attachment") continue;
     attachmentCount++;
     attachmentTypesSeen.add(msg.attachment.type);
-    if (msg.attachment.type !== 'deferred_tools_delta') continue;
+    if (msg.attachment.type !== "deferred_tools_delta") continue;
     dtdCount++;
     for (const n of msg.attachment.addedNames) announced.add(n);
     for (const n of msg.attachment.removedNames) announced.delete(n);
@@ -664,7 +664,7 @@ export function getDeferredToolsDelta(
   // subagent first-fires and compact-path scans have EXPECTED prior=0 and
   // dominate the stat. callSite/querySource/attachmentTypesSeen split the
   // buckets so the real main-thread cross-turn failure is isolable in BQ.
-  logEvent('tengu_deferred_tools_pool_change', {
+  logEvent("tengu_deferred_tools_pool_change", {
     addedCount: added.length,
     removedCount: removed.length,
     priorAnnouncedCount: announced.size,
@@ -672,12 +672,12 @@ export function getDeferredToolsDelta(
     attachmentCount,
     dtdCount,
     callSite: (scanContext?.callSite ??
-      'unknown') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      "unknown") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     querySource: (scanContext?.querySource ??
-      'unknown') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      "unknown") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     attachmentTypesSeen: [...attachmentTypesSeen]
       .sort()
-      .join(',') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      .join(",") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 
   return {

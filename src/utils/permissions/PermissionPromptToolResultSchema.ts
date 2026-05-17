@@ -1,16 +1,16 @@
-import type { Tool, ToolUseContext } from 'src/Tool.js';
-import z from 'zod/v4';
-import { logForDebugging } from '../debug.js';
-import { lazySchema } from '../lazySchema.js';
-import type { PermissionDecision, PermissionDecisionReason } from './PermissionResult.js';
-import { applyPermissionUpdates, persistPermissionUpdates } from './PermissionUpdate.js';
-import { permissionUpdateSchema } from './PermissionUpdateSchema.js';
+import type { Tool, ToolUseContext } from "src/Tool.js";
+import z from "zod/v4";
+import { logForDebugging } from "../debug.js";
+import { lazySchema } from "../lazySchema.js";
+import type { PermissionDecision, PermissionDecisionReason } from "./PermissionResult.js";
+import { applyPermissionUpdates, persistPermissionUpdates } from "./PermissionUpdate.js";
+import { permissionUpdateSchema } from "./PermissionUpdateSchema.js";
 
 export const inputSchema = lazySchema(() =>
   z.object({
-    tool_name: z.string().describe('The name of the tool requesting permission'),
-    input: z.record(z.string(), z.unknown()).describe('The input for the tool'),
-    tool_use_id: z.string().optional().describe('The unique tool use request ID'),
+    tool_name: z.string().describe("The name of the tool requesting permission"),
+    input: z.record(z.string(), z.unknown()).describe("The input for the tool"),
+    tool_use_id: z.string().optional().describe("The unique tool use request ID"),
   }),
 );
 
@@ -24,12 +24,12 @@ export type Input = z.infer<ReturnType<typeof inputSchema>>;
 // Malformed values fall through to undefined (same pattern as updatedPermissions
 // below) so a bad string from the SDK host doesn't reject the whole decision.
 const decisionClassificationField = lazySchema(() =>
-  z.enum(['user_temporary', 'user_permanent', 'user_reject']).optional().catch(undefined),
+  z.enum(["user_temporary", "user_permanent", "user_reject"]).optional().catch(undefined),
 );
 
 const PermissionAllowResultSchema = lazySchema(() =>
   z.object({
-    behavior: z.literal('allow'),
+    behavior: z.literal("allow"),
     updatedInput: z.record(z.string(), z.unknown()),
     // SDK hosts may send malformed entries; fall back to undefined rather
     // than rejecting the entire allow decision (anthropics/claude-code#29440)
@@ -38,8 +38,8 @@ const PermissionAllowResultSchema = lazySchema(() =>
       .optional()
       .catch((ctx) => {
         logForDebugging(
-          `Malformed updatedPermissions from SDK host ignored: ${ctx.error.issues[0]?.message ?? 'unknown'}`,
-          { level: 'warn' },
+          `Malformed updatedPermissions from SDK host ignored: ${ctx.error.issues[0]?.message ?? "unknown"}`,
+          { level: "warn" },
         );
         return undefined;
       }),
@@ -50,7 +50,7 @@ const PermissionAllowResultSchema = lazySchema(() =>
 
 const PermissionDenyResultSchema = lazySchema(() =>
   z.object({
-    behavior: z.literal('deny'),
+    behavior: z.literal("deny"),
     message: z.string(),
     interrupt: z.boolean().optional(),
     toolUseID: z.string().optional(),
@@ -74,11 +74,11 @@ export function permissionPromptToolResultToPermissionDecision(
   toolUseContext: ToolUseContext,
 ): PermissionDecision {
   const decisionReason: PermissionDecisionReason = {
-    type: 'permissionPromptTool',
+    type: "permissionPromptTool",
     permissionPromptToolName: tool.name,
     toolResult: result,
   };
-  if (result.behavior === 'allow') {
+  if (result.behavior === "allow") {
     const updatedPermissions = result.updatedPermissions;
     if (updatedPermissions) {
       toolUseContext.setAppState((prev) => ({
@@ -99,7 +99,7 @@ export function permissionPromptToolResultToPermissionDecision(
       updatedInput,
       decisionReason,
     };
-  } else if (result.behavior === 'deny' && result.interrupt) {
+  } else if (result.behavior === "deny" && result.interrupt) {
     logForDebugging(
       `SDK permission prompt deny+interrupt: tool=${tool.name} message=${result.message}`,
     );

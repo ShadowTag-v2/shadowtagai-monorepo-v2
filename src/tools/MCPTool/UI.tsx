@@ -1,21 +1,21 @@
-import { feature } from 'bun:bundle';
-import figures from 'figures';
-import type * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { z } from 'zod/v4';
-import { ProgressBar } from '../../components/design-system/ProgressBar.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { linkifyUrlsInText, OutputLine } from '../../components/shell/OutputLine.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Ansi, Box, Text } from '../../ink.js';
-import type { ToolProgressData } from '../../Tool.js';
-import type { ProgressMessage } from '../../types/message.js';
-import type { MCPProgress } from '../../types/tools.js';
-import { formatNumber } from '../../utils/format.js';
-import { createHyperlink } from '../../utils/hyperlink.js';
-import { getContentSizeEstimate, type MCPToolResult } from '../../utils/mcpValidation.js';
-import { jsonParse, jsonStringify } from '../../utils/slowOperations.js';
-import type { inputSchema } from './MCPTool.js';
+import { feature } from "bun:bundle";
+import figures from "figures";
+import type * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { z } from "zod/v4";
+import { ProgressBar } from "../../components/design-system/ProgressBar.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { linkifyUrlsInText, OutputLine } from "../../components/shell/OutputLine.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Ansi, Box, Text } from "../../ink.js";
+import type { ToolProgressData } from "../../Tool.js";
+import type { ProgressMessage } from "../../types/message.js";
+import type { MCPProgress } from "../../types/tools.js";
+import { formatNumber } from "../../utils/format.js";
+import { createHyperlink } from "../../utils/hyperlink.js";
+import { getContentSizeEstimate, type MCPToolResult } from "../../utils/mcpValidation.js";
+import { jsonParse, jsonStringify } from "../../utils/slowOperations.js";
+import type { inputSchema } from "./MCPTool.js";
 
 // Threshold for displaying warning about large MCP responses
 const MCP_OUTPUT_WARNING_THRESHOLD_TOKENS = 10_000;
@@ -47,17 +47,17 @@ export function renderToolUseMessage(
   },
 ): React.ReactNode {
   if (Object.keys(input).length === 0) {
-    return '';
+    return "";
   }
   return Object.entries(input)
     .map(([key, value]) => {
       let rendered = jsonStringify(value);
-      if (feature('MCP_RICH_OUTPUT') && !verbose && rendered.length > MAX_INPUT_VALUE_CHARS) {
+      if (feature("MCP_RICH_OUTPUT") && !verbose && rendered.length > MAX_INPUT_VALUE_CHARS) {
         rendered = `${rendered.slice(0, MAX_INPUT_VALUE_CHARS).trimEnd()}…`;
       }
       return `${key}: ${rendered}`;
     })
-    .join(', ');
+    .join(", ");
 }
 export function renderToolUseProgressMessage(
   progressMessagesForMessage: ProgressMessage<MCPProgress>[],
@@ -131,7 +131,7 @@ export function renderToolResultMessage(
   let contentElement: React.ReactNode;
   if (Array.isArray(mcpOutput)) {
     const contentBlocks = mcpOutput.map((item, i) => {
-      if (item.type === 'image') {
+      if (item.type === "image") {
         return (
           <Box key={i} justifyContent="space-between" overflowX="hidden" width="100%">
             <MessageResponse height={1}>
@@ -142,10 +142,10 @@ export function renderToolResultMessage(
       }
       // For text blocks and any other block types, extract text if available
       const textContent =
-        item.type === 'text' && 'text' in item && item.text !== null && item.text !== undefined
+        item.type === "text" && "text" in item && item.text !== null && item.text !== undefined
           ? String(item.text)
-          : '';
-      return feature('MCP_RICH_OUTPUT') ? (
+          : "";
+      return feature("MCP_RICH_OUTPUT") ? (
         <MCPTextOutput key={i} content={textContent} verbose={verbose} />
       ) : (
         <OutputLine key={i} content={textContent} verbose={verbose} />
@@ -167,7 +167,7 @@ export function renderToolResultMessage(
       </Box>
     );
   } else {
-    contentElement = feature('MCP_RICH_OUTPUT') ? (
+    contentElement = feature("MCP_RICH_OUTPUT") ? (
       <MCPTextOutput content={mcpOutput} verbose={verbose} />
     ) : (
       <OutputLine content={mcpOutput} verbose={verbose} />
@@ -198,12 +198,12 @@ function MCPTextOutput(t0) {
   const { content, verbose } = t0;
   let t1;
   if ($[0] !== content || $[1] !== verbose) {
-    t1 = Symbol.for('react.early_return_sentinel');
+    t1 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const unwrapped = tryUnwrapTextPayload(content);
       if (unwrapped !== null) {
         const t2 = unwrapped.extras.length > 0 && (
-          <Text dimColor={true}>{unwrapped.extras.map(_temp).join(' \xB7 ')}</Text>
+          <Text dimColor={true}>{unwrapped.extras.map(_temp).join(" \xB7 ")}</Text>
         );
         let t3;
         if ($[3] !== unwrapped || $[4] !== verbose) {
@@ -240,12 +240,12 @@ function MCPTextOutput(t0) {
   } else {
     t1 = $[2];
   }
-  if (t1 !== Symbol.for('react.early_return_sentinel')) {
+  if (t1 !== Symbol.for("react.early_return_sentinel")) {
     return t1;
   }
   let t2;
   if ($[9] !== content) {
-    t2 = Symbol.for('react.early_return_sentinel');
+    t2 = Symbol.for("react.early_return_sentinel");
     bb1: {
       const flat = tryFlattenJson(content);
       if (flat !== null) {
@@ -284,7 +284,7 @@ function MCPTextOutput(t0) {
   } else {
     t2 = $[10];
   }
-  if (t2 !== Symbol.for('react.early_return_sentinel')) {
+  if (t2 !== Symbol.for("react.early_return_sentinel")) {
     return t2;
   }
   let t3;
@@ -322,7 +322,7 @@ function parseJsonEntries(
   },
 ): [string, unknown][] | null {
   const trimmed = content.trim();
-  if (trimmed.length === 0 || trimmed.length > maxChars || trimmed[0] !== '{') {
+  if (trimmed.length === 0 || trimmed.length > maxChars || trimmed[0] !== "{") {
     return null;
   }
   let parsed: unknown;
@@ -331,7 +331,7 @@ function parseJsonEntries(
   } catch {
     return null;
   }
-  if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
+  if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
     return null;
   }
   const entries = Object.entries(parsed);
@@ -354,11 +354,11 @@ export function tryFlattenJson(content: string): [string, string][] | null {
   if (entries === null) return null;
   const result: [string, string][] = [];
   for (const [key, value] of entries) {
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       result.push([key, value]);
-    } else if (value === null || typeof value === 'number' || typeof value === 'boolean') {
+    } else if (value === null || typeof value === "number" || typeof value === "boolean") {
       result.push([key, String(value)]);
-    } else if (typeof value === 'object') {
+    } else if (typeof value === "object") {
       const compact = jsonStringify(value);
       if (compact.length > 120) return null;
       result.push([key, compact]);
@@ -389,17 +389,17 @@ export function tryUnwrapTextPayload(content: string): {
   let body: string | null = null;
   const extras: [string, string][] = [];
   for (const [key, value] of entries) {
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       const t = value.trimEnd();
-      const isDominant = t.length > UNWRAP_MIN_STRING_LEN || (t.includes('\n') && t.length > 50);
+      const isDominant = t.length > UNWRAP_MIN_STRING_LEN || (t.includes("\n") && t.length > 50);
       if (isDominant) {
         if (body !== null) return null; // two big strings — ambiguous
         body = t;
         continue;
       }
       if (t.length > 150) return null;
-      extras.push([key, t.replace(/\s+/g, ' ')]);
-    } else if (value === null || typeof value === 'number' || typeof value === 'boolean') {
+      extras.push([key, t.replace(/\s+/g, " ")]);
+    } else if (value === null || typeof value === "number" || typeof value === "boolean") {
       extras.push([key, String(value)]);
     } else {
       return null; // nested object/array — use flat or pretty-print path
@@ -429,18 +429,18 @@ export function trySlackSendCompact(
 } | null {
   let text: unknown = output;
   if (Array.isArray(output)) {
-    const block = output.find((b) => b.type === 'text');
-    text = block && 'text' in block ? block.text : undefined;
+    const block = output.find((b) => b.type === "text");
+    text = block && "text" in block ? block.text : undefined;
   }
-  if (typeof text !== 'string' || !text.includes('"message_link"')) {
+  if (typeof text !== "string" || !text.includes('"message_link"')) {
     return null;
   }
   const entries = parseJsonEntries(text, {
     maxChars: 2000,
     maxKeys: 6,
   });
-  const url = entries?.find(([k]) => k === 'message_link')?.[1];
-  if (typeof url !== 'string') return null;
+  const url = entries?.find(([k]) => k === "message_link")?.[1];
+  if (typeof url !== "string") return null;
   const m = SLACK_ARCHIVES_RE.exec(url);
   if (!m) return null;
   const inp = input as
@@ -450,9 +450,9 @@ export function trySlackSendCompact(
       }
     | undefined;
   const raw = inp?.channel_id ?? inp?.channel ?? m[1];
-  const label = typeof raw === 'string' && raw ? raw : 'slack';
+  const label = typeof raw === "string" && raw ? raw : "slack";
   return {
-    channel: label.startsWith('#') ? label : `#${label}`,
+    channel: label.startsWith("#") ? label : `#${label}`,
     url,
   };
 }

@@ -1,12 +1,12 @@
-import { toString as qrToString } from 'qrcode';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Pane } from '../../components/design-system/Pane.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import { useAppState } from '../../state/AppState.js';
-import type { LocalJSXCommandCall } from '../../types/command.js';
-import { logForDebugging } from '../../utils/debug.js';
+import { toString as qrToString } from "qrcode";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Pane } from "../../components/design-system/Pane.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import { useAppState } from "../../state/AppState.js";
+import type { LocalJSXCommandCall } from "../../types/command.js";
+import { logForDebugging } from "../../utils/debug.js";
 
 type Props = {
   onDone: () => void;
@@ -15,7 +15,7 @@ function SessionInfo(t0) {
   const $ = _c(19);
   const { onDone } = t0;
   const remoteSessionUrl = useAppState(_temp);
-  const [qrCode, setQrCode] = useState('');
+  const [qrCode, setQrCode] = useState("");
   let t1;
   let t2;
   if ($[0] !== remoteSessionUrl) {
@@ -26,8 +26,8 @@ function SessionInfo(t0) {
       const url = remoteSessionUrl;
       const generateQRCode = async function generateQRCode() {
         const qr = await qrToString(url, {
-          type: 'utf8',
-          errorCorrectionLevel: 'L',
+          type: "utf8",
+          errorCorrectionLevel: "L",
         });
         setQrCode(qr);
       };
@@ -43,18 +43,18 @@ function SessionInfo(t0) {
   }
   useEffect(t1, t2);
   let t3;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[3] = t3;
   } else {
     t3 = $[3];
   }
-  useKeybinding('confirm:no', onDone, t3);
+  useKeybinding("confirm:no", onDone, t3);
   if (!remoteSessionUrl) {
     let t4;
-    if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
       t4 = (
         <Pane>
           <Text color="warning">
@@ -73,10 +73,10 @@ function SessionInfo(t0) {
   let t4;
   let t5;
   if ($[5] !== qrCode) {
-    const lines = qrCode.split('\n').filter(_temp3);
+    const lines = qrCode.split("\n").filter(_temp3);
     const isLoading = lines.length === 0;
     T0 = Pane;
-    if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
       t4 = (
         <Box marginBottom={1}>
           <Text bold={true}>Remote session</Text>
@@ -97,7 +97,7 @@ function SessionInfo(t0) {
     t5 = $[8];
   }
   let t6;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = <Text dimColor={true}>Open in browser: </Text>;
     $[10] = t6;
   } else {
@@ -117,7 +117,7 @@ function SessionInfo(t0) {
     t7 = $[12];
   }
   let t8;
-  if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Box marginTop={1}>
         <Text dimColor={true}>(press esc to close)</Text>
@@ -154,7 +154,7 @@ function _temp3(line) {
   return line.length > 0;
 }
 function _temp2(e) {
-  logForDebugging('QR code generation failed', e);
+  logForDebugging("QR code generation failed", e);
 }
 function _temp(s) {
   return s.remoteSessionUrl;

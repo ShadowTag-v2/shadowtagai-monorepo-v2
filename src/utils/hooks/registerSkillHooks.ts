@@ -1,8 +1,8 @@
-import { HOOK_EVENTS } from 'src/entrypoints/agentSdkTypes.js';
-import type { AppState } from 'src/state/AppState.js';
-import { logForDebugging } from '../debug.js';
-import type { HooksSettings } from '../settings/types.js';
-import { addSessionHook, removeSessionHook } from './sessionHooks.js';
+import { HOOK_EVENTS } from "src/entrypoints/agentSdkTypes.js";
+import type { AppState } from "src/state/AppState.js";
+import { logForDebugging } from "../debug.js";
+import type { HooksSettings } from "../settings/types.js";
+import { addSessionHook, removeSessionHook } from "./sessionHooks.js";
 
 /**
  * Registers hooks from a skill's frontmatter as session hooks.
@@ -46,7 +46,7 @@ export function registerSkillHooks(
           setAppState,
           sessionId,
           eventName,
-          matcher.matcher || '',
+          matcher.matcher || "",
           hook,
           onHookSuccess,
           skillRoot,

@@ -1,35 +1,35 @@
-import { feature } from 'bun:bundle';
-import { basename } from 'node:path';
-import figures from 'figures';
-import sample from 'lodash-es/sample.js';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { BLACK_CIRCLE, REFERENCE_MARK, TEARDROP_ASTERISK } from '../../constants/figures.js';
+import { feature } from "bun:bundle";
+import { basename } from "node:path";
+import figures from "figures";
+import sample from "lodash-es/sample.js";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { BLACK_CIRCLE, REFERENCE_MARK, TEARDROP_ASTERISK } from "../../constants/figures.js";
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { Box, Text } from '../../ink.js';
-import { openPath } from '../../utils/browser.js';
-import { FilePathLink } from '../FilePathLink.js';
-import { MessageResponse } from '../MessageResponse.js';
+import { Box, Text } from "../../ink.js";
+import { openPath } from "../../utils/browser.js";
+import { FilePathLink } from "../FilePathLink.js";
+import { MessageResponse } from "../MessageResponse.js";
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const teamMemSaved = feature('TEAMMEM')
-  ? (require('./teamMemSaved.js') as typeof import('./teamMemSaved.js'))
+const teamMemSaved = feature("TEAMMEM")
+  ? (require("./teamMemSaved.js") as typeof import("./teamMemSaved.js"))
   : null;
 
 /* eslint-enable @typescript-eslint/no-require-imports */
-import { TURN_COMPLETION_VERBS } from '../../constants/turnCompletionVerbs.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import Link from '../../ink/components/Link.js';
-import { useAppStateStore } from '../../state/AppState.js';
-import { getPillLabel } from '../../tasks/pillLabel.js';
-import { isBackgroundTask, type TaskState } from '../../tasks/types.js';
-import type { SystemMessage } from '../../types/message.js';
-import { getGlobalConfig } from '../../utils/config.js';
-import { formatDuration, formatNumber, formatSecondsShort } from '../../utils/format.js';
-import { CtrlOToExpand } from '../CtrlOToExpand.js';
-import ThemedText from '../design-system/ThemedText.js';
-import { useSelectedMessageBg } from '../messageActions.js';
-import { SystemAPIErrorMessage } from './SystemAPIErrorMessage.js';
+import { TURN_COMPLETION_VERBS } from "../../constants/turnCompletionVerbs.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import Link from "../../ink/components/Link.js";
+import { useAppStateStore } from "../../state/AppState.js";
+import { getPillLabel } from "../../tasks/pillLabel.js";
+import { isBackgroundTask, type TaskState } from "../../tasks/types.js";
+import type { SystemMessage } from "../../types/message.js";
+import { getGlobalConfig } from "../../utils/config.js";
+import { formatDuration, formatNumber, formatSecondsShort } from "../../utils/format.js";
+import { CtrlOToExpand } from "../CtrlOToExpand.js";
+import ThemedText from "../design-system/ThemedText.js";
+import { useSelectedMessageBg } from "../messageActions.js";
+import { SystemAPIErrorMessage } from "./SystemAPIErrorMessage.js";
 
 type Props = {
   message: SystemMessage;
@@ -41,7 +41,7 @@ export function SystemTextMessage(t0) {
   const $ = _c(51);
   const { message, addMargin, verbose, isTranscriptMode } = t0;
   const bg = useSelectedMessageBg();
-  if (message.subtype === 'turn_duration') {
+  if (message.subtype === "turn_duration") {
     let t1;
     if ($[0] !== addMargin || $[1] !== message) {
       t1 = <TurnDurationMessage message={message} addMargin={addMargin} />;
@@ -53,7 +53,7 @@ export function SystemTextMessage(t0) {
     }
     return t1;
   }
-  if (message.subtype === 'memory_saved') {
+  if (message.subtype === "memory_saved") {
     let t1;
     if ($[3] !== addMargin || $[4] !== message) {
       t1 = <MemorySavedMessage message={message} addMargin={addMargin} />;
@@ -65,10 +65,10 @@ export function SystemTextMessage(t0) {
     }
     return t1;
   }
-  if (message.subtype === 'away_summary') {
+  if (message.subtype === "away_summary") {
     const t1 = addMargin ? 1 : 0;
     let t2;
-    if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = (
         <Box minWidth={2}>
           <Text dimColor={true}>{REFERENCE_MARK}</Text>
@@ -103,11 +103,11 @@ export function SystemTextMessage(t0) {
     }
     return t4;
   }
-  if (message.subtype === 'agents_killed') {
+  if (message.subtype === "agents_killed") {
     const t1 = addMargin ? 1 : 0;
     let t2;
     let t3;
-    if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = (
         <Box minWidth={2}>
           <Text color="error">{BLACK_CIRCLE}</Text>
@@ -136,10 +136,10 @@ export function SystemTextMessage(t0) {
     }
     return t4;
   }
-  if (message.subtype === 'thinking') {
+  if (message.subtype === "thinking") {
     return null;
   }
-  if (message.subtype === 'bridge_status') {
+  if (message.subtype === "bridge_status") {
     let t1;
     if ($[18] !== addMargin || $[19] !== message) {
       t1 = <BridgeStatusMessage message={message} addMargin={addMargin} />;
@@ -151,7 +151,7 @@ export function SystemTextMessage(t0) {
     }
     return t1;
   }
-  if (message.subtype === 'scheduled_task_fire') {
+  if (message.subtype === "scheduled_task_fire") {
     const t1 = addMargin ? 1 : 0;
     let t2;
     if ($[21] !== message.content) {
@@ -181,11 +181,11 @@ export function SystemTextMessage(t0) {
     }
     return t3;
   }
-  if (message.subtype === 'permission_retry') {
+  if (message.subtype === "permission_retry") {
     const t1 = addMargin ? 1 : 0;
     let t2;
     let t3;
-    if ($[27] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = <Text dimColor={true}>{TEARDROP_ASTERISK} </Text>;
       t3 = <Text>Allowed </Text>;
       $[27] = t2;
@@ -196,7 +196,7 @@ export function SystemTextMessage(t0) {
     }
     let t4;
     if ($[29] !== message.commands) {
-      t4 = message.commands.join(', ');
+      t4 = message.commands.join(", ");
       $[29] = message.commands;
       $[30] = t4;
     } else {
@@ -228,11 +228,11 @@ export function SystemTextMessage(t0) {
     }
     return t6;
   }
-  const isStopHookSummary = message.subtype === 'stop_hook_summary';
-  if (!isStopHookSummary && !verbose && message.level === 'info') {
+  const isStopHookSummary = message.subtype === "stop_hook_summary";
+  if (!isStopHookSummary && !verbose && message.level === "info") {
     return null;
   }
-  if (message.subtype === 'api_error') {
+  if (message.subtype === "api_error") {
     let t1;
     if ($[37] !== message || $[38] !== verbose) {
       t1 = <SystemAPIErrorMessage message={message} verbose={verbose} />;
@@ -244,7 +244,7 @@ export function SystemTextMessage(t0) {
     }
     return t1;
   }
-  if (message.subtype === 'stop_hook_summary') {
+  if (message.subtype === "stop_hook_summary") {
     let t1;
     if (
       $[40] !== addMargin ||
@@ -271,12 +271,12 @@ export function SystemTextMessage(t0) {
     return t1;
   }
   const content = message.content;
-  if (typeof content !== 'string') {
+  if (typeof content !== "string") {
     return null;
   }
-  const t1 = message.level !== 'info';
-  const t2 = message.level === 'warning' ? 'warning' : undefined;
-  const t3 = message.level === 'info';
+  const t1 = message.level !== "info";
+  const t2 = message.level === "warning" ? "warning" : undefined;
+  const t3 = message.level === "info";
   let t4;
   if ($[45] !== addMargin || $[46] !== content || $[47] !== t1 || $[48] !== t2 || $[49] !== t3) {
     t4 = (
@@ -324,7 +324,7 @@ function StopHookSummaryMessage(t0) {
   }
   let t2;
   if ($[3] !== totalDurationMs) {
-    t2 = false && totalDurationMs > 0 ? ` (${formatSecondsShort(totalDurationMs)})` : '';
+    t2 = false && totalDurationMs > 0 ? ` (${formatSecondsShort(totalDurationMs)})` : "";
     $[3] = totalDurationMs;
     $[4] = t2;
   } else {
@@ -332,12 +332,12 @@ function StopHookSummaryMessage(t0) {
   }
   const totalStr = t2;
   if (message.hookLabel) {
-    const t3 = hookCount === 1 ? 'hook' : 'hooks';
+    const t3 = hookCount === 1 ? "hook" : "hooks";
     let t4;
     if ($[5] !== hookCount || $[6] !== message.hookLabel || $[7] !== t3 || $[8] !== totalStr) {
       t4 = (
         <Text dimColor={true}>
-          {'  \u23BF  '}Ran {hookCount} {message.hookLabel} {t3}
+          {"  \u23BF  "}Ran {hookCount} {message.hookLabel} {t3}
           {totalStr}
         </Text>
       );
@@ -376,7 +376,7 @@ function StopHookSummaryMessage(t0) {
   }
   const t3 = addMargin ? 1 : 0;
   let t4;
-  if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <Box minWidth={2}>
         <Text>{BLACK_CIRCLE}</Text>
@@ -395,13 +395,13 @@ function StopHookSummaryMessage(t0) {
   } else {
     t6 = $[18];
   }
-  const t7 = message.hookLabel ?? 'stop';
-  const t8 = hookCount === 1 ? 'hook' : 'hooks';
+  const t7 = message.hookLabel ?? "stop";
+  const t8 = hookCount === 1 ? "hook" : "hooks";
   let t9;
   if ($[19] !== hookInfos || $[20] !== verbose) {
     t9 = !verbose && hookInfos.length > 0 && (
       <>
-        {' '}
+        {" "}
         <CtrlOToExpand />
       </>
     );
@@ -459,7 +459,7 @@ function StopHookSummaryMessage(t0) {
       hookErrors.map((err, idx_1) => (
         <Text key={idx_1}>
           <Text dimColor={true}>⎿  </Text>
-          {message.hookLabel ?? 'Stop'} hook error: {err}
+          {message.hookLabel ?? "Stop"} hook error: {err}
         </Text>
       ));
     $[34] = hookErrors;
@@ -506,21 +506,21 @@ function StopHookSummaryMessage(t0) {
 }
 function _temp3(info_0, idx_0) {
   const durationStr_0 =
-    false && info_0.durationMs !== undefined ? ` (${formatSecondsShort(info_0.durationMs)})` : '';
+    false && info_0.durationMs !== undefined ? ` (${formatSecondsShort(info_0.durationMs)})` : "";
   return (
     <Text key={`cmd-${idx_0}`} dimColor={true}>
-      ⎿  {info_0.command === 'prompt' ? `prompt: ${info_0.promptText || ''}` : info_0.command}
+      ⎿  {info_0.command === "prompt" ? `prompt: ${info_0.promptText || ""}` : info_0.command}
       {durationStr_0}
     </Text>
   );
 }
 function _temp2(info, idx) {
   const durationStr =
-    false && info.durationMs !== undefined ? ` (${formatSecondsShort(info.durationMs)})` : '';
+    false && info.durationMs !== undefined ? ` (${formatSecondsShort(info.durationMs)})` : "";
   return (
     <Text key={`cmd-${idx}`} dimColor={true}>
-      {'     \u23BF '}
-      {info.command === 'prompt' ? `prompt: ${info.promptText || ''}` : info.command}
+      {"     \u23BF "}
+      {info.command === "prompt" ? `prompt: ${info.promptText || ""}` : info.command}
       {durationStr}
     </Text>
   );
@@ -624,7 +624,7 @@ function TurnDurationMessage(t0) {
   }
   const [backgroundTaskSummary] = useState(t1);
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = getGlobalConfig().showTurnDuration ?? true;
     $[2] = t2;
   } else {
@@ -644,7 +644,7 @@ function TurnDurationMessage(t0) {
   let t4;
   bb0: {
     if (!hasBudget) {
-      t4 = '';
+      t4 = "";
       break bb0;
     }
     const tokens = message.budgetTokens;
@@ -664,9 +664,9 @@ function TurnDurationMessage(t0) {
     const usage = t5;
     const nudges =
       message.budgetNudges > 0
-        ? ` \u00B7 ${message.budgetNudges} ${message.budgetNudges === 1 ? 'nudge' : 'nudges'}`
-        : '';
-    t4 = `${showTurnDuration ? ' \xB7 ' : ''}${usage}${nudges}`;
+        ? ` \u00B7 ${message.budgetNudges} ${message.budgetNudges === 1 ? "nudge" : "nudges"}`
+        : "";
+    t4 = `${showTurnDuration ? " \xB7 " : ""}${usage}${nudges}`;
   }
   const budgetSuffix = t4;
   if (!showTurnDuration && !hasBudget) {
@@ -674,7 +674,7 @@ function TurnDurationMessage(t0) {
   }
   const t5 = addMargin ? 1 : 0;
   let t6;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Box minWidth={2}>
         <Text dimColor={true}>{TEARDROP_ASTERISK}</Text>
@@ -720,7 +720,7 @@ function TurnDurationMessage(t0) {
   return t10;
 }
 function _temp4() {
-  return sample(TURN_COMPLETION_VERBS) ?? 'Worked';
+  return sample(TURN_COMPLETION_VERBS) ?? "Worked";
 }
 function MemorySavedMessage(t0) {
   const $ = _c(16);
@@ -729,7 +729,7 @@ function MemorySavedMessage(t0) {
   const { writtenPaths } = message;
   let t1;
   if ($[0] !== message) {
-    t1 = feature('TEAMMEM') ? teamMemSaved.teamMemSavedPart(message) : null;
+    t1 = feature("TEAMMEM") ? teamMemSaved.teamMemSavedPart(message) : null;
     $[0] = message;
     $[1] = t1;
   } else {
@@ -738,7 +738,7 @@ function MemorySavedMessage(t0) {
   const team = t1;
   const privateCount = writtenPaths.length - (team?.count ?? 0);
   const t2 =
-    privateCount > 0 ? `${privateCount} ${privateCount === 1 ? 'memory' : 'memories'}` : null;
+    privateCount > 0 ? `${privateCount} ${privateCount === 1 ? "memory" : "memories"}` : null;
   const t3 = team?.segment;
   let t4;
   if ($[2] !== t2 || $[3] !== t3) {
@@ -752,7 +752,7 @@ function MemorySavedMessage(t0) {
   const parts = t4;
   const t5 = addMargin ? 1 : 0;
   let t6;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Box minWidth={2}>
         <Text dimColor={true}>{BLACK_CIRCLE}</Text>
@@ -762,8 +762,8 @@ function MemorySavedMessage(t0) {
   } else {
     t6 = $[5];
   }
-  const t7 = message.verb ?? 'Saved';
-  const t8 = parts.join(' \xB7 ');
+  const t7 = message.verb ?? "Saved";
+  const t8 = parts.join(" \xB7 ");
   let t9;
   if ($[6] !== t7 || $[7] !== t8) {
     t9 = (
@@ -823,7 +823,7 @@ function MemoryFileRow(t0) {
   }
   let t2;
   let t3;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => setHover(true);
     t3 = () => setHover(false);
     $[2] = t2;
@@ -887,7 +887,7 @@ function _ThinkingMessage(t0) {
   const bg = useSelectedMessageBg();
   const t1 = addMargin ? 1 : 0;
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box minWidth={2}>
         <Text dimColor={true}>{TEARDROP_ASTERISK}</Text>
@@ -928,14 +928,14 @@ function BridgeStatusMessage(t0) {
   const bg = useSelectedMessageBg();
   const t1 = addMargin ? 1 : 0;
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = <Box minWidth={2} />;
     $[0] = t2;
   } else {
     t2 = $[0];
   }
   let t3;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Text>
         <ThemedText color="suggestion">/remote-control</ThemedText> is active. Code in CLI or at

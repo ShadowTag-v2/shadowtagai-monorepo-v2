@@ -1,26 +1,26 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { KeyboardShortcutHint } from '../../components/design-system/KeyboardShortcutHint.js';
-import { FallbackToolUseErrorMessage } from '../../components/FallbackToolUseErrorMessage.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { ShellProgressMessage } from '../../components/shell/ShellProgressMessage.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import { useShortcutDisplay } from '../../keybindings/useShortcutDisplay.js';
-import { useAppStateStore, useSetAppState } from '../../state/AppState.js';
-import type { Tool } from '../../Tool.js';
-import { backgroundAll } from '../../tasks/LocalShellTask/LocalShellTask.js';
-import type { ProgressMessage } from '../../types/message.js';
-import { env } from '../../utils/env.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { getDisplayPath } from '../../utils/file.js';
-import { isFullscreenEnvEnabled } from '../../utils/fullscreen.js';
-import type { ThemeName } from '../../utils/theme.js';
-import type { BashProgress, BashToolInput, Out } from './BashTool.js';
-import BashToolResultMessage from './BashToolResultMessage.js';
-import { extractBashCommentLabel } from './commentLabel.js';
-import { parseSedEditCommand } from './sedEditParser.js';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { KeyboardShortcutHint } from "../../components/design-system/KeyboardShortcutHint.js";
+import { FallbackToolUseErrorMessage } from "../../components/FallbackToolUseErrorMessage.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { ShellProgressMessage } from "../../components/shell/ShellProgressMessage.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import { useShortcutDisplay } from "../../keybindings/useShortcutDisplay.js";
+import { useAppStateStore, useSetAppState } from "../../state/AppState.js";
+import type { Tool } from "../../Tool.js";
+import { backgroundAll } from "../../tasks/LocalShellTask/LocalShellTask.js";
+import type { ProgressMessage } from "../../types/message.js";
+import { env } from "../../utils/env.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { getDisplayPath } from "../../utils/file.js";
+import { isFullscreenEnvEnabled } from "../../utils/fullscreen.js";
+import type { ThemeName } from "../../utils/theme.js";
+import type { BashProgress, BashToolInput, Out } from "./BashTool.js";
+import BashToolResultMessage from "./BashToolResultMessage.js";
+import { extractBashCommentLabel } from "./commentLabel.js";
+import { parseSedEditCommand } from "./sedEditParser.js";
 
 // Constants for command display
 const MAX_COMMAND_DISPLAY_LINES = 2;
@@ -56,18 +56,18 @@ export function BackgroundHint(t0) {
   }
   const handleBackground = t2;
   let t3;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = {
-      context: 'Task',
+      context: "Task",
     };
     $[6] = t3;
   } else {
     t3 = $[6];
   }
-  useKeybinding('task:background', handleBackground, t3);
-  const baseShortcut = useShortcutDisplay('task:background', 'Task', 'ctrl+b');
+  useKeybinding("task:background", handleBackground, t3);
+  const baseShortcut = useShortcutDisplay("task:background", "Task", "ctrl+b");
   const shortcut =
-    env.terminal === 'tmux' && baseShortcut === 'ctrl+b' ? 'ctrl+b ctrl+b (twice)' : baseShortcut;
+    env.terminal === "tmux" && baseShortcut === "ctrl+b" ? "ctrl+b ctrl+b (twice)" : baseShortcut;
   if (isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_BACKGROUND_TASKS)) {
     return null;
   }
@@ -108,7 +108,7 @@ export function renderToolUseMessage(
     return verbose ? sedInfo.filePath : getDisplayPath(sedInfo.filePath);
   }
   if (!verbose) {
-    const lines = command.split('\n');
+    const lines = command.split("\n");
     if (isFullscreenEnvEnabled()) {
       const label = extractBashCommentLabel(command);
       if (label) {
@@ -124,7 +124,7 @@ export function renderToolUseMessage(
 
       // First truncate by lines if needed
       if (needsLineTruncation) {
-        truncated = lines.slice(0, MAX_COMMAND_DISPLAY_LINES).join('\n');
+        truncated = lines.slice(0, MAX_COMMAND_DISPLAY_LINES).join("\n");
       }
 
       // Then truncate by chars if still too long
@@ -194,7 +194,7 @@ export function renderToolResultMessage(
     verbose: boolean;
     theme: ThemeName;
     tools: Tool[];
-    style?: 'condensed';
+    style?: "condensed";
   },
 ): React.ReactNode {
   const lastProgress = progressMessagesForMessage.at(-1);
@@ -202,7 +202,7 @@ export function renderToolResultMessage(
   return <BashToolResultMessage content={content} verbose={verbose} timeoutMs={timeoutMs} />;
 }
 export function renderToolUseErrorMessage(
-  result: ToolResultBlockParam['content'],
+  result: ToolResultBlockParam["content"],
   {
     verbose,
     progressMessagesForMessage: _progressMessagesForMessage,

@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import chalk from "chalk";
 
 type PlaceholderRendererProps = {
   placeholder?: string;
@@ -27,7 +27,7 @@ export function renderPlaceholder({
   if (placeholder) {
     if (hidePlaceholderText) {
       // Voice recording: show only the cursor, no placeholder text
-      renderedPlaceholder = showCursor && focus && terminalFocus ? invert(' ') : '';
+      renderedPlaceholder = showCursor && focus && terminalFocus ? invert(" ") : "";
     } else {
       renderedPlaceholder = chalk.dim(placeholder);
 
@@ -36,7 +36,7 @@ export function renderPlaceholder({
         renderedPlaceholder =
           placeholder.length > 0
             ? invert(placeholder[0]!) + chalk.dim(placeholder.slice(1))
-            : invert(' ');
+            : invert(" ");
       }
     }
   }

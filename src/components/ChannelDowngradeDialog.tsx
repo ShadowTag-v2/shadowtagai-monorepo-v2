@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../ink.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
-export type ChannelDowngradeChoice = 'downgrade' | 'stay' | 'cancel';
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../ink.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
+export type ChannelDowngradeChoice = "downgrade" | "stay" | "cancel";
 type Props = {
   currentVersion: string;
   onChoice: (choice: ChannelDowngradeChoice) => void;
@@ -29,7 +29,7 @@ export function ChannelDowngradeDialog(t0) {
   let t2;
   if ($[2] !== onChoice) {
     t2 = function handleCancel() {
-      onChoice('cancel');
+      onChoice("cancel");
     };
     $[2] = onChoice;
     $[3] = t2;
@@ -51,17 +51,17 @@ export function ChannelDowngradeDialog(t0) {
     t3 = $[5];
   }
   let t4;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Text dimColor={true}>How would you like to handle this?</Text>;
     $[6] = t4;
   } else {
     t4 = $[6];
   }
   let t5;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = {
-      label: 'Allow possible downgrade to stable version',
-      value: 'downgrade' as ChannelDowngradeChoice,
+      label: "Allow possible downgrade to stable version",
+      value: "downgrade" as ChannelDowngradeChoice,
     };
     $[7] = t5;
   } else {
@@ -74,7 +74,7 @@ export function ChannelDowngradeDialog(t0) {
       t5,
       {
         label: t6,
-        value: 'stay' as ChannelDowngradeChoice,
+        value: "stay" as ChannelDowngradeChoice,
       },
     ];
     $[8] = t6;

@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react';
-import { getIsRemoteMode } from '../../bootstrap/state.js';
-import { type Notification, useNotifications } from '../../context/notifications.js';
-import { useAppState } from '../../state/AppState.js';
-import { isInProcessTeammateTask } from '../../tasks/InProcessTeammateTask/types.js';
+import { useEffect, useRef } from "react";
+import { getIsRemoteMode } from "../../bootstrap/state.js";
+import { type Notification, useNotifications } from "../../context/notifications.js";
+import { useAppState } from "../../state/AppState.js";
+import { isInProcessTeammateTask } from "../../tasks/InProcessTeammateTask/types.js";
 
 function parseCount(notif: Notification): number {
-  if (!('text' in notif)) {
+  if (!("text" in notif)) {
     return 1;
   }
   const match = notif.text.match(/^(\d+)/);
@@ -18,9 +18,9 @@ function foldSpawn(acc: Notification, _incoming: Notification): Notification {
 
 function makeSpawnNotif(count: number): Notification {
   return {
-    key: 'teammate-spawn',
-    text: count === 1 ? '1 agent spawned' : `${count} agents spawned`,
-    priority: 'low',
+    key: "teammate-spawn",
+    text: count === 1 ? "1 agent spawned" : `${count} agents spawned`,
+    priority: "low",
     timeoutMs: 5000,
     fold: foldSpawn,
   };
@@ -32,9 +32,9 @@ function foldShutdown(acc: Notification, _incoming: Notification): Notification 
 
 function makeShutdownNotif(count: number): Notification {
   return {
-    key: 'teammate-shutdown',
-    text: count === 1 ? '1 agent shut down' : `${count} agents shut down`,
-    priority: 'low',
+    key: "teammate-shutdown",
+    text: count === 1 ? "1 agent shut down" : `${count} agents shut down`,
+    priority: "low",
     timeoutMs: 5000,
     fold: foldShutdown,
   };
@@ -58,12 +58,12 @@ export function useTeammateLifecycleNotification(): void {
         continue;
       }
 
-      if (task.status === 'running' && !seenRunningRef.current.has(id)) {
+      if (task.status === "running" && !seenRunningRef.current.has(id)) {
         seenRunningRef.current.add(id);
         addNotification(makeSpawnNotif(1));
       }
 
-      if (task.status === 'completed' && !seenCompletedRef.current.has(id)) {
+      if (task.status === "completed" && !seenCompletedRef.current.has(id)) {
         seenCompletedRef.current.add(id);
         addNotification(makeShutdownNotif(1));
       }

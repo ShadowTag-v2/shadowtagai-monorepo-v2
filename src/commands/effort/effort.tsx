@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useMainLoopModel } from '../../hooks/useMainLoopModel.js';
+import * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useMainLoopModel } from "../../hooks/useMainLoopModel.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { useAppState, useSetAppState } from '../../state/AppState.js';
-import type { LocalJSXCommandOnDone } from '../../types/command.js';
+} from "../../services/analytics/index.js";
+import { useAppState, useSetAppState } from "../../state/AppState.js";
+import type { LocalJSXCommandOnDone } from "../../types/command.js";
 import {
   type EffortValue,
   getDisplayedEffortLevel,
@@ -14,10 +14,10 @@ import {
   getEffortValueDescription,
   isEffortLevel,
   toPersistableEffort,
-} from '../../utils/effort.js';
-import { updateSettingsForSource } from '../../utils/settings/settings.js';
+} from "../../utils/effort.js";
+import { updateSettingsForSource } from "../../utils/settings/settings.js";
 
-const COMMON_HELP_ARGS = ['help', '-h', '--help'];
+const COMMON_HELP_ARGS = ["help", "-h", "--help"];
 type EffortCommandResult = {
   message: string;
   effortUpdate?: {
@@ -27,7 +27,7 @@ type EffortCommandResult = {
 function setEffortValue(effortValue: EffortValue): EffortCommandResult {
   const persistable = toPersistableEffort(effortValue);
   if (persistable !== undefined) {
-    const result = updateSettingsForSource('userSettings', {
+    const result = updateSettingsForSource("userSettings", {
       effortLevel: persistable,
     });
     if (result.error) {
@@ -36,7 +36,7 @@ function setEffortValue(effortValue: EffortValue): EffortCommandResult {
       };
     }
   }
-  logEvent('tengu_effort_command', {
+  logEvent("tengu_effort_command", {
     effort: effortValue as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 
@@ -62,7 +62,7 @@ function setEffortValue(effortValue: EffortValue): EffortCommandResult {
     };
   }
   const description = getEffortValueDescription(effortValue);
-  const suffix = persistable !== undefined ? '' : ' (this session only)';
+  const suffix = persistable !== undefined ? "" : " (this session only)";
   return {
     message: `Set effort level to ${effortValue}${suffix}: ${description}`,
     effortUpdate: {
@@ -88,7 +88,7 @@ export function showCurrentEffort(
   };
 }
 function unsetEffortLevel(): EffortCommandResult {
-  const result = updateSettingsForSource('userSettings', {
+  const result = updateSettingsForSource("userSettings", {
     effortLevel: undefined,
   });
   if (result.error) {
@@ -96,8 +96,8 @@ function unsetEffortLevel(): EffortCommandResult {
       message: `Failed to set effort level: ${result.error.message}`,
     };
   }
-  logEvent('tengu_effort_command', {
-    effort: 'auto' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+  logEvent("tengu_effort_command", {
+    effort: "auto" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
   // env=auto/unset (null) matches what /effort auto asks for, so only warn
   // when env is pinning a specific level that will keep overriding.
@@ -112,7 +112,7 @@ function unsetEffortLevel(): EffortCommandResult {
     };
   }
   return {
-    message: 'Effort level set to auto',
+    message: "Effort level set to auto",
     effortUpdate: {
       value: undefined,
     },
@@ -120,7 +120,7 @@ function unsetEffortLevel(): EffortCommandResult {
 }
 export function executeEffort(args: string): EffortCommandResult {
   const normalized = args.toLowerCase();
-  if (normalized === 'auto' || normalized === 'unset') {
+  if (normalized === "auto" || normalized === "unset") {
     return unsetEffortLevel();
   }
   if (!isEffortLevel(normalized)) {
@@ -177,14 +177,14 @@ export async function call(
   _context: unknown,
   args?: string,
 ): Promise<React.ReactNode> {
-  args = args?.trim() || '';
+  args = args?.trim() || "";
   if (COMMON_HELP_ARGS.includes(args)) {
     onDone(
-      'Usage: /effort [low|medium|high|max|auto]\n\nEffort levels:\n- low: Quick, straightforward implementation\n- medium: Balanced approach with standard testing\n- high: Comprehensive implementation with extensive testing\n- max: Maximum capability with deepest reasoning (Opus 4.6 only)\n- auto: Use the default effort level for your model',
+      "Usage: /effort [low|medium|high|max|auto]\n\nEffort levels:\n- low: Quick, straightforward implementation\n- medium: Balanced approach with standard testing\n- high: Comprehensive implementation with extensive testing\n- max: Maximum capability with deepest reasoning (Opus 4.6 only)\n- auto: Use the default effort level for your model",
     );
     return;
   }
-  if (!args || args === 'current' || args === 'status') {
+  if (!args || args === "current" || args === "status") {
     return <ShowCurrentEffort onDone={onDone} />;
   }
   const result = executeEffort(args);

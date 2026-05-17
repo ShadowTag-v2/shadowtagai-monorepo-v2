@@ -1,18 +1,18 @@
-import { getAppStateStore, setAppState } from '../../state/AppState.js';
-import { isTerminalTaskStatus } from '../../Task.js';
+import { getAppStateStore, setAppState } from "../../state/AppState.js";
+import { isTerminalTaskStatus } from "../../Task.js";
 import {
   findTeammateTaskByAgentId,
   injectUserMessageToTeammate,
-} from '../../tasks/InProcessTeammateTask/InProcessTeammateTask.js';
-import { isKairosCronEnabled } from '../../tools/ScheduleCronTool/prompt.js';
-import type { Message } from '../../types/message.js';
-import { getCronJitterConfig } from '../../utils/cronJitterConfig.js';
-import { createCronScheduler } from '../../utils/cronScheduler.js';
-import { removeCronTasks } from '../../utils/cronTasks.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { enqueuePendingNotification } from '../../utils/messageQueueManager.js';
-import { createScheduledTaskFireMessage } from '../../utils/messages.js';
-import { WORKLOAD_CRON } from '../../utils/workloadContext.js';
+} from "../../tasks/InProcessTeammateTask/InProcessTeammateTask.js";
+import { isKairosCronEnabled } from "../../tools/ScheduleCronTool/prompt.js";
+import type { Message } from "../../types/message.js";
+import { getCronJitterConfig } from "../../utils/cronJitterConfig.js";
+import { createCronScheduler } from "../../utils/cronScheduler.js";
+import { removeCronTasks } from "../../utils/cronTasks.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { enqueuePendingNotification } from "../../utils/messageQueueManager.js";
+import { createScheduledTaskFireMessage } from "../../utils/messages.js";
+import { WORKLOAD_CRON } from "../../utils/workloadContext.js";
 
 /**
  * Headless controller for scheduled cron tasks.
@@ -39,8 +39,8 @@ export class ScheduledTasksController {
     const enqueueForLead = (prompt: string) =>
       enqueuePendingNotification({
         value: prompt,
-        mode: 'prompt',
-        priority: 'later',
+        mode: "prompt",
+        priority: "later",
         isMeta: true,
         workload: WORKLOAD_CRON,
       });
@@ -86,13 +86,13 @@ export class ScheduledTasksController {
 
   private formatCronFireTime(d: Date): string {
     return d
-      .toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
+      .toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
       })
-      .replace(/,? at |, /, ' ')
+      .replace(/,? at |, /, " ")
       .replace(/ ([AP]M)/, (_, ampm) => ampm.toLowerCase());
   }
 }

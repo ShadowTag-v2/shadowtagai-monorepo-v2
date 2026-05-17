@@ -1,11 +1,11 @@
-import type { AttachmentMessage, RenderableMessage } from '../types/message.js';
+import type { AttachmentMessage, RenderableMessage } from "../types/message.js";
 
 function isTeammateShutdownAttachment(msg: RenderableMessage): msg is AttachmentMessage {
   return (
-    msg.type === 'attachment' &&
-    msg.attachment.type === 'task_status' &&
-    msg.attachment.taskType === 'in_process_teammate' &&
-    msg.attachment.status === 'completed'
+    msg.type === "attachment" &&
+    msg.attachment.type === "task_status" &&
+    msg.attachment.taskType === "in_process_teammate" &&
+    msg.attachment.status === "completed"
   );
 }
 
@@ -29,11 +29,11 @@ export function collapseTeammateShutdowns(messages: RenderableMessage[]): Render
         result.push(msg);
       } else {
         result.push({
-          type: 'attachment',
+          type: "attachment",
           uuid: msg.uuid,
           timestamp: msg.timestamp,
           attachment: {
-            type: 'teammate_shutdown_batch',
+            type: "teammate_shutdown_batch",
             count,
           },
         });

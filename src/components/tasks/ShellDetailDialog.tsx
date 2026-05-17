@@ -1,17 +1,17 @@
-import { Suspense, use, useDeferredValue, useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { DeepImmutable } from 'src/types/utils.js';
-import type { CommandResultDisplay } from '../../commands.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
-import type { LocalShellTaskState } from '../../tasks/LocalShellTask/guards.js';
-import { formatDuration, formatFileSize, truncateToWidth } from '../../utils/format.js';
-import { tailFile } from '../../utils/fsOperations.js';
-import { getTaskOutputPath } from '../../utils/task/diskOutput.js';
-import { Byline } from '../design-system/Byline.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
+import { Suspense, use, useDeferredValue, useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { DeepImmutable } from "src/types/utils.js";
+import type { CommandResultDisplay } from "../../commands.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
+import type { LocalShellTaskState } from "../../tasks/LocalShellTask/guards.js";
+import { formatDuration, formatFileSize, truncateToWidth } from "../../utils/format.js";
+import { tailFile } from "../../utils/fsOperations.js";
+import { getTaskOutputPath } from "../../utils/task/diskOutput.js";
+import { Byline } from "../design-system/Byline.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { KeyboardShortcutHint } from "../design-system/KeyboardShortcutHint.js";
 
 type Props = {
   shell: DeepImmutable<LocalShellTaskState>;
@@ -44,7 +44,7 @@ async function getTaskOutput(shell: DeepImmutable<LocalShellTaskState>): Promise
     };
   } catch {
     return {
-      content: '',
+      content: "",
       bytesTotal: 0,
     };
   }
@@ -66,7 +66,7 @@ export function ShellDetailDialog(t0) {
   let t2;
   if ($[2] !== shell) {
     t2 = () => {
-      if (shell.status !== 'running') {
+      if (shell.status !== "running") {
         return;
       }
       const timer = setInterval(_temp, 1000, setOutputPromise, shell);
@@ -90,8 +90,8 @@ export function ShellDetailDialog(t0) {
   let t4;
   if ($[7] !== onDone) {
     t4 = () =>
-      onDone('Shell details dismissed', {
-        display: 'system',
+      onDone("Shell details dismissed", {
+        display: "system",
       });
     $[7] = onDone;
     $[8] = t4;
@@ -102,7 +102,7 @@ export function ShellDetailDialog(t0) {
   let t5;
   if ($[9] !== handleClose) {
     t5 = {
-      'confirm:yes': handleClose,
+      "confirm:yes": handleClose,
     };
     $[9] = handleClose;
     $[10] = t5;
@@ -110,9 +110,9 @@ export function ShellDetailDialog(t0) {
     t5 = $[10];
   }
   let t6;
-  if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[11] = t6;
   } else {
@@ -122,17 +122,17 @@ export function ShellDetailDialog(t0) {
   let t7;
   if ($[12] !== onBack || $[13] !== onDone || $[14] !== onKillShell || $[15] !== shell.status) {
     t7 = (e) => {
-      if (e.key === ' ') {
+      if (e.key === " ") {
         e.preventDefault();
-        onDone('Shell details dismissed', {
-          display: 'system',
+        onDone("Shell details dismissed", {
+          display: "system",
         });
       } else {
-        if (e.key === 'left' && onBack) {
+        if (e.key === "left" && onBack) {
           e.preventDefault();
           onBack();
         } else {
-          if (e.key === 'x' && shell.status === 'running' && onKillShell) {
+          if (e.key === "x" && shell.status === "running" && onKillShell) {
             e.preventDefault();
             onKillShell();
           }
@@ -148,7 +148,7 @@ export function ShellDetailDialog(t0) {
     t7 = $[16];
   }
   const handleKeyDown = t7;
-  const isMonitor = shell.kind === 'monitor';
+  const isMonitor = shell.kind === "monitor";
   let t8;
   if ($[17] !== shell.command) {
     t8 = truncateToWidth(shell.command, 280);
@@ -158,7 +158,7 @@ export function ShellDetailDialog(t0) {
     t8 = $[18];
   }
   const displayCommand = t8;
-  const t9 = isMonitor ? 'Monitor details' : 'Shell details';
+  const t9 = isMonitor ? "Monitor details" : "Shell details";
   let t10;
   if ($[19] !== onBack || $[20] !== onKillShell || $[21] !== shell.status) {
     t10 = (exitState) =>
@@ -166,9 +166,9 @@ export function ShellDetailDialog(t0) {
         <Text>Press {exitState.keyName} again to exit</Text>
       ) : (
         <Byline>
-          {onBack && <KeyboardShortcutHint shortcut={'\u2190'} action="go back" />}
+          {onBack && <KeyboardShortcutHint shortcut={"\u2190"} action="go back" />}
           <KeyboardShortcutHint shortcut="Esc/Enter/Space" action="close" />
-          {shell.status === 'running' && onKillShell && (
+          {shell.status === "running" && onKillShell && (
             <KeyboardShortcutHint shortcut="x" action="stop" />
           )}
         </Byline>
@@ -181,7 +181,7 @@ export function ShellDetailDialog(t0) {
     t10 = $[22];
   }
   let t11;
-  if ($[23] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[23] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = <Text bold={true}>Status:</Text>;
     $[23] = t11;
   } else {
@@ -191,13 +191,13 @@ export function ShellDetailDialog(t0) {
   if ($[24] !== shell.result || $[25] !== shell.status) {
     t12 = (
       <Text>
-        {t11}{' '}
-        {shell.status === 'running' ? (
+        {t11}{" "}
+        {shell.status === "running" ? (
           <Text color="background">
             {shell.status}
             {shell.result?.code !== undefined && ` (exit code: ${shell.result.code})`}
           </Text>
-        ) : shell.status === 'completed' ? (
+        ) : shell.status === "completed" ? (
           <Text color="success">
             {shell.status}
             {shell.result?.code !== undefined && ` (exit code: ${shell.result.code})`}
@@ -217,7 +217,7 @@ export function ShellDetailDialog(t0) {
     t12 = $[26];
   }
   let t13;
-  if ($[27] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
     t13 = <Text bold={true}>Runtime:</Text>;
     $[27] = t13;
   } else {
@@ -252,7 +252,7 @@ export function ShellDetailDialog(t0) {
   } else {
     t17 = $[33];
   }
-  const t18 = isMonitor ? 'Script:' : 'Command:';
+  const t18 = isMonitor ? "Script:" : "Command:";
   let t19;
   if ($[34] !== t18) {
     t19 = <Text bold={true}>{t18}</Text>;
@@ -291,14 +291,14 @@ export function ShellDetailDialog(t0) {
     t21 = $[42];
   }
   let t22;
-  if ($[43] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[43] === Symbol.for("react.memo_cache_sentinel")) {
     t22 = <Text bold={true}>Output:</Text>;
     $[43] = t22;
   } else {
     t22 = $[43];
   }
   let t23;
-  if ($[44] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[44] === Symbol.for("react.memo_cache_sentinel")) {
     t23 = <Text dimColor={true}>Loading output…</Text>;
     $[44] = t23;
   } else {
@@ -365,7 +365,7 @@ function ShellOutputContent(t0) {
   const { content, bytesTotal } = use(outputPromise);
   if (!content) {
     let t1;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = <Text dimColor={true}>No output available</Text>;
       $[0] = t1;
     } else {
@@ -379,7 +379,7 @@ function ShellOutputContent(t0) {
     const starts = [];
     let pos = content.length;
     for (let i = 0; i < 10 && pos > 0; i++) {
-      const prev = content.lastIndexOf('\n', pos - 1);
+      const prev = content.lastIndexOf("\n", pos - 1);
       starts.push(prev + 1);
       pos = prev;
     }
@@ -427,7 +427,7 @@ function ShellOutputContent(t0) {
   const t4 = `Showing ${rendered.length} lines`;
   let t5;
   if ($[10] !== bytesTotal || $[11] !== isIncomplete) {
-    t5 = isIncomplete ? ` of ${formatFileSize(bytesTotal)}` : '';
+    t5 = isIncomplete ? ` of ${formatFileSize(bytesTotal)}` : "";
     $[10] = bytesTotal;
     $[11] = isIncomplete;
     $[12] = t5;

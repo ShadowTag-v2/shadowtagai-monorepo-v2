@@ -2,31 +2,31 @@
  * This testing-only tool will always pop up a permission dialog when called by
  * the model.
  */
-import { z } from 'zod/v4';
-import type { Tool } from '../../Tool.js';
-import { buildTool, type ToolDef } from '../../Tool.js';
-import { lazySchema } from '../../utils/lazySchema.js';
+import { z } from "zod/v4";
+import type { Tool } from "../../Tool.js";
+import { buildTool, type ToolDef } from "../../Tool.js";
+import { lazySchema } from "../../utils/lazySchema.js";
 
-const NAME = 'TestingPermission';
+const NAME = "TestingPermission";
 const inputSchema = lazySchema(() => z.strictObject({}));
 type InputSchema = ReturnType<typeof inputSchema>;
 export const TestingPermissionTool: Tool<InputSchema, string> = buildTool({
   name: NAME,
   maxResultSizeChars: 100_000,
   async description() {
-    return 'Test tool that always asks for permission';
+    return "Test tool that always asks for permission";
   },
   async prompt() {
-    return 'Test tool that always asks for permission before executing. Used for end-to-end testing.';
+    return "Test tool that always asks for permission before executing. Used for end-to-end testing.";
   },
   get inputSchema(): InputSchema {
     return inputSchema();
   },
   userFacingName() {
-    return 'TestingPermission';
+    return "TestingPermission";
   },
   isEnabled() {
-    return 'production' === 'test';
+    return "production" === "test";
   },
   isConcurrencySafe() {
     return true;
@@ -37,7 +37,7 @@ export const TestingPermissionTool: Tool<InputSchema, string> = buildTool({
   async checkPermissions() {
     // This tool always requires permission
     return {
-      behavior: 'ask' as const,
+      behavior: "ask" as const,
       message: `Run test?`,
     };
   },
@@ -66,7 +66,7 @@ export const TestingPermissionTool: Tool<InputSchema, string> = buildTool({
   },
   mapToolResultToToolResultBlockParam(result, toolUseID) {
     return {
-      type: 'tool_result',
+      type: "tool_result",
       content: String(result),
       tool_use_id: toolUseID,
     };

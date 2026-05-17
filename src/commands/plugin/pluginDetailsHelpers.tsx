@@ -1,14 +1,14 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 /**
  * Shared helper functions and types for plugin details views
  *
  * Used by both DiscoverPlugins and BrowseMarketplace components.
  */
 
-import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
-import { Byline } from '../../components/design-system/Byline.js';
-import { Box, Text } from '../../ink.js';
-import type { PluginMarketplaceEntry } from '../../utils/plugins/schemas.js';
+import { ConfigurableShortcutHint } from "../../components/ConfigurableShortcutHint.js";
+import { Byline } from "../../components/design-system/Byline.js";
+import { Box, Text } from "../../ink.js";
+import type { PluginMarketplaceEntry } from "../../utils/plugins/schemas.js";
 
 /**
  * Represents a plugin available for installation from a marketplace
@@ -34,10 +34,10 @@ export type PluginDetailsMenuOption = {
 export function extractGitHubRepo(plugin: InstallablePlugin): string | null {
   const isGitHub =
     plugin.entry.source &&
-    typeof plugin.entry.source === 'object' &&
-    'source' in plugin.entry.source &&
-    plugin.entry.source.source === 'github';
-  if (isGitHub && typeof plugin.entry.source === 'object' && 'repo' in plugin.entry.source) {
+    typeof plugin.entry.source === "object" &&
+    "source" in plugin.entry.source &&
+    plugin.entry.source.source === "github";
+  if (isGitHub && typeof plugin.entry.source === "object" && "repo" in plugin.entry.source) {
     return plugin.entry.source.repo;
   }
   return null;
@@ -52,33 +52,33 @@ export function buildPluginDetailsMenuOptions(
 ): PluginDetailsMenuOption[] {
   const options: PluginDetailsMenuOption[] = [
     {
-      label: 'Install for you (user scope)',
-      action: 'install-user',
+      label: "Install for you (user scope)",
+      action: "install-user",
     },
     {
-      label: 'Install for all collaborators on this repository (project scope)',
-      action: 'install-project',
+      label: "Install for all collaborators on this repository (project scope)",
+      action: "install-project",
     },
     {
-      label: 'Install for you, in this repo only (local scope)',
-      action: 'install-local',
+      label: "Install for you, in this repo only (local scope)",
+      action: "install-local",
     },
   ];
   if (hasHomepage) {
     options.push({
-      label: 'Open homepage',
-      action: 'homepage',
+      label: "Open homepage",
+      action: "homepage",
     });
   }
   if (githubRepo) {
     options.push({
-      label: 'View on GitHub',
-      action: 'github',
+      label: "View on GitHub",
+      action: "github",
     });
   }
   options.push({
-    label: 'Back to plugin list',
-    action: 'back',
+    label: "Back to plugin list",
+    action: "back",
   });
   return options;
 }
@@ -108,7 +108,7 @@ export function PluginSelectionKeyHint(t0) {
   let t2;
   let t3;
   let t4;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <ConfigurableShortcutHint
         action="plugin:toggle"

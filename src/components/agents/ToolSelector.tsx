@@ -1,32 +1,32 @@
-import figures from 'figures';
-import React, { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { mcpInfoFromString } from 'src/services/mcp/mcpStringUtils.js';
-import { isMcpTool } from 'src/services/mcp/utils.js';
-import type { Tool, Tools } from 'src/Tool.js';
-import { filterToolsForAgent } from 'src/tools/AgentTool/agentToolUtils.js';
-import { AGENT_TOOL_NAME } from 'src/tools/AgentTool/constants.js';
-import { BashTool } from 'src/tools/BashTool/BashTool.js';
-import { ExitPlanModeV2Tool } from 'src/tools/ExitPlanModeTool/ExitPlanModeV2Tool.js';
-import { FileEditTool } from 'src/tools/FileEditTool/FileEditTool.js';
-import { FileReadTool } from 'src/tools/FileReadTool/FileReadTool.js';
-import { FileWriteTool } from 'src/tools/FileWriteTool/FileWriteTool.js';
-import { GlobTool } from 'src/tools/GlobTool/GlobTool.js';
-import { GrepTool } from 'src/tools/GrepTool/GrepTool.js';
-import { ListMcpResourcesTool } from 'src/tools/ListMcpResourcesTool/ListMcpResourcesTool.js';
-import { NotebookEditTool } from 'src/tools/NotebookEditTool/NotebookEditTool.js';
-import { ReadMcpResourceTool } from 'src/tools/ReadMcpResourceTool/ReadMcpResourceTool.js';
-import { TaskOutputTool } from 'src/tools/TaskOutputTool/TaskOutputTool.js';
-import { TaskStopTool } from 'src/tools/TaskStopTool/TaskStopTool.js';
-import { TodoWriteTool } from 'src/tools/TodoWriteTool/TodoWriteTool.js';
-import { TungstenTool } from 'src/tools/TungstenTool/TungstenTool.js';
-import { WebFetchTool } from 'src/tools/WebFetchTool/WebFetchTool.js';
-import { WebSearchTool } from 'src/tools/WebSearchTool/WebSearchTool.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import { count } from '../../utils/array.js';
-import { plural } from '../../utils/stringUtils.js';
-import { Divider } from '../design-system/Divider.js';
+import figures from "figures";
+import React, { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { mcpInfoFromString } from "src/services/mcp/mcpStringUtils.js";
+import { isMcpTool } from "src/services/mcp/utils.js";
+import type { Tool, Tools } from "src/Tool.js";
+import { filterToolsForAgent } from "src/tools/AgentTool/agentToolUtils.js";
+import { AGENT_TOOL_NAME } from "src/tools/AgentTool/constants.js";
+import { BashTool } from "src/tools/BashTool/BashTool.js";
+import { ExitPlanModeV2Tool } from "src/tools/ExitPlanModeTool/ExitPlanModeV2Tool.js";
+import { FileEditTool } from "src/tools/FileEditTool/FileEditTool.js";
+import { FileReadTool } from "src/tools/FileReadTool/FileReadTool.js";
+import { FileWriteTool } from "src/tools/FileWriteTool/FileWriteTool.js";
+import { GlobTool } from "src/tools/GlobTool/GlobTool.js";
+import { GrepTool } from "src/tools/GrepTool/GrepTool.js";
+import { ListMcpResourcesTool } from "src/tools/ListMcpResourcesTool/ListMcpResourcesTool.js";
+import { NotebookEditTool } from "src/tools/NotebookEditTool/NotebookEditTool.js";
+import { ReadMcpResourceTool } from "src/tools/ReadMcpResourceTool/ReadMcpResourceTool.js";
+import { TaskOutputTool } from "src/tools/TaskOutputTool/TaskOutputTool.js";
+import { TaskStopTool } from "src/tools/TaskStopTool/TaskStopTool.js";
+import { TodoWriteTool } from "src/tools/TodoWriteTool/TodoWriteTool.js";
+import { TungstenTool } from "src/tools/TungstenTool/TungstenTool.js";
+import { WebFetchTool } from "src/tools/WebFetchTool/WebFetchTool.js";
+import { WebSearchTool } from "src/tools/WebSearchTool/WebSearchTool.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import { count } from "../../utils/array.js";
+import { plural } from "../../utils/stringUtils.js";
+import { Divider } from "../design-system/Divider.js";
 
 type Props = {
   tools: Tools;
@@ -49,7 +49,7 @@ type ToolBuckets = {
 function getToolBuckets(): ToolBuckets {
   return {
     READ_ONLY: {
-      name: 'Read-only tools',
+      name: "Read-only tools",
       toolNames: new Set([
         GlobTool.name,
         GrepTool.name,
@@ -65,25 +65,25 @@ function getToolBuckets(): ToolBuckets {
       ]),
     },
     EDIT: {
-      name: 'Edit tools',
+      name: "Edit tools",
       toolNames: new Set([FileEditTool.name, FileWriteTool.name, NotebookEditTool.name]),
     },
     EXECUTION: {
-      name: 'Execution tools',
+      name: "Execution tools",
       toolNames: new Set(
-        [BashTool.name, 'external' === 'ant' ? TungstenTool.name : undefined].filter(
+        [BashTool.name, "external" === "ant" ? TungstenTool.name : undefined].filter(
           (n) => n !== undefined,
         ),
       ),
     },
     MCP: {
-      name: 'MCP tools',
+      name: "MCP tools",
       toolNames: new Set(),
       // Dynamic - no static list
       isMcp: true,
     },
     OTHER: {
-      name: 'Other tools',
+      name: "Other tools",
       toolNames: new Set(), // Dynamic - catch-all for uncategorized tools
     },
   };
@@ -130,7 +130,7 @@ export function ToolSelector(t0) {
   const customAgentTools = t1;
   let t2;
   if ($[2] !== customAgentTools || $[3] !== initialTools) {
-    t2 = !initialTools || initialTools.includes('*') ? customAgentTools.map(_temp) : initialTools;
+    t2 = !initialTools || initialTools.includes("*") ? customAgentTools.map(_temp) : initialTools;
     $[2] = customAgentTools;
     $[3] = initialTools;
     $[4] = t2;
@@ -180,7 +180,7 @@ export function ToolSelector(t0) {
   const isAllSelected =
     validSelectedTools.length === customAgentTools.length && customAgentTools.length > 0;
   let t6;
-  if ($[14] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (toolName) => {
       if (!toolName) {
         return;
@@ -197,7 +197,7 @@ export function ToolSelector(t0) {
   }
   const handleToggleTool = t6;
   let t7;
-  if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (toolNames_0, select) => {
       setSelectedTools((current_0) => {
         if (select) {
@@ -301,8 +301,8 @@ export function ToolSelector(t0) {
   ) {
     navigableItems = [];
     navigableItems.push({
-      id: 'continue',
-      label: 'Continue',
+      id: "continue",
+      label: "Continue",
       action: handleConfirm,
       isContinue: true,
     });
@@ -319,34 +319,34 @@ export function ToolSelector(t0) {
       t10 = $[39];
     }
     navigableItems.push({
-      id: 'bucket-all',
+      id: "bucket-all",
       label: `${isAllSelected ? figures.checkboxOn : figures.checkboxOff} All tools`,
       action: t10,
     });
     const toolBuckets_0 = getToolBuckets();
     const bucketConfigs = [
       {
-        id: 'bucket-readonly',
+        id: "bucket-readonly",
         name: toolBuckets_0.READ_ONLY.name,
         tools: toolsByBucket.readOnly,
       },
       {
-        id: 'bucket-edit',
+        id: "bucket-edit",
         name: toolBuckets_0.EDIT.name,
         tools: toolsByBucket.edit,
       },
       {
-        id: 'bucket-execution',
+        id: "bucket-execution",
         name: toolBuckets_0.EXECUTION.name,
         tools: toolsByBucket.execution,
       },
       {
-        id: 'bucket-mcp',
+        id: "bucket-mcp",
         name: toolBuckets_0.MCP.name,
         tools: toolsByBucket.mcp,
       },
       {
-        id: 'bucket-other',
+        id: "bucket-other",
         name: toolBuckets_0.OTHER.name,
         tools: toolsByBucket.other,
       },
@@ -381,8 +381,8 @@ export function ToolSelector(t0) {
       t12 = $[43];
     }
     navigableItems.push({
-      id: 'toggle-individual',
-      label: showIndividualTools ? 'Hide advanced options' : 'Show advanced options',
+      id: "toggle-individual",
+      label: showIndividualTools ? "Hide advanced options" : "Show advanced options",
       action: t12,
       isToggle: true,
     });
@@ -390,8 +390,8 @@ export function ToolSelector(t0) {
     if (showIndividualTools) {
       if (mcpServerBuckets.length > 0) {
         navigableItems.push({
-          id: 'mcp-servers-header',
-          label: 'MCP Servers:',
+          id: "mcp-servers-header",
+          label: "MCP Servers:",
           action: _temp6,
           isHeader: true,
         });
@@ -401,7 +401,7 @@ export function ToolSelector(t0) {
           const isFullySelected_0 = selected_1 === serverTools.length;
           navigableItems.push({
             id: `mcp-server-${serverName}`,
-            label: `${isFullySelected_0 ? figures.checkboxOn : figures.checkboxOff} ${serverName} (${serverTools.length} ${plural(serverTools.length, 'tool')})`,
+            label: `${isFullySelected_0 ? figures.checkboxOn : figures.checkboxOff} ${serverName} (${serverTools.length} ${plural(serverTools.length, "tool")})`,
             action: () => {
               const toolNames_2 = serverTools.map(_temp7);
               handleToggleTools(toolNames_2, !isFullySelected_0);
@@ -409,15 +409,15 @@ export function ToolSelector(t0) {
           });
         });
         navigableItems.push({
-          id: 'tools-header',
-          label: 'Individual Tools:',
+          id: "tools-header",
+          label: "Individual Tools:",
           action: _temp8,
           isHeader: true,
         });
       }
       customAgentTools.forEach((tool_0) => {
         let displayName = tool_0.name;
-        if (tool_0.name.startsWith('mcp__')) {
+        if (tool_0.name.startsWith("mcp__")) {
           const mcpInfo = mcpInfoFromString(tool_0.name);
           displayName = mcpInfo ? `${mcpInfo.toolName} (${mcpInfo.serverName})` : tool_0.name;
         }
@@ -462,26 +462,26 @@ export function ToolSelector(t0) {
   }
   const handleCancel = t10;
   let t11;
-  if ($[48] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[48] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[48] = t11;
   } else {
     t11 = $[48];
   }
-  useKeybinding('confirm:no', handleCancel, t11);
+  useKeybinding("confirm:no", handleCancel, t11);
   let t12;
   if ($[49] !== focusIndex || $[50] !== navigableItems) {
     t12 = (e) => {
-      if (e.key === 'return') {
+      if (e.key === "return") {
         e.preventDefault();
         const item = navigableItems[focusIndex];
         if (item && !item.isHeader) {
           item.action();
         }
       } else {
-        if (e.key === 'up') {
+        if (e.key === "up") {
           e.preventDefault();
           let newIndex = focusIndex - 1;
           while (newIndex > 0 && navigableItems[newIndex]?.isHeader) {
@@ -489,7 +489,7 @@ export function ToolSelector(t0) {
           }
           setFocusIndex(Math.max(0, newIndex));
         } else {
-          if (e.key === 'down') {
+          if (e.key === "down") {
             e.preventDefault();
             let newIndex_0 = focusIndex + 1;
             while (newIndex_0 < navigableItems.length - 1 && navigableItems[newIndex_0]?.isHeader) {
@@ -507,9 +507,9 @@ export function ToolSelector(t0) {
     t12 = $[51];
   }
   const handleKeyDown = t12;
-  const t13 = focusIndex === 0 ? 'suggestion' : undefined;
+  const t13 = focusIndex === 0 ? "suggestion" : undefined;
   const t14 = focusIndex === 0;
-  const t15 = focusIndex === 0 ? `${figures.pointer} ` : '  ';
+  const t15 = focusIndex === 0 ? `${figures.pointer} ` : "  ";
   let t16;
   if ($[52] !== t13 || $[53] !== t14 || $[54] !== t15) {
     t16 = (
@@ -525,7 +525,7 @@ export function ToolSelector(t0) {
     t16 = $[55];
   }
   let t17;
-  if ($[56] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[56] === Symbol.for("react.memo_cache_sentinel")) {
     t17 = <Divider width={40} />;
     $[56] = t17;
   } else {
@@ -550,11 +550,11 @@ export function ToolSelector(t0) {
           {isToggleButton && <Divider width={40} />}
           {isHeader && index > 0 && <Box marginTop={1} />}
           <Text
-            color={isHeader ? undefined : isCurrentlyFocused ? 'suggestion' : undefined}
+            color={isHeader ? undefined : isCurrentlyFocused ? "suggestion" : undefined}
             dimColor={isHeader}
             bold={isToggleButton && isCurrentlyFocused}
           >
-            {isHeader ? '' : isCurrentlyFocused ? `${figures.pointer} ` : '  '}
+            {isHeader ? "" : isCurrentlyFocused ? `${figures.pointer} ` : "  "}
             {isToggleButton ? `[ ${item_0.label} ]` : item_0.label}
           </Text>
         </React.Fragment>
@@ -567,7 +567,7 @@ export function ToolSelector(t0) {
     t19 = $[61];
   }
   const t20 = isAllSelected
-    ? 'All tools selected'
+    ? "All tools selected"
     : `${selectedSet.size} of ${customAgentTools.length} tools selected`;
   let t21;
   if ($[62] !== t20) {

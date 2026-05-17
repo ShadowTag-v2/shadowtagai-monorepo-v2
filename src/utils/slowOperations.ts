@@ -1,10 +1,10 @@
-import { feature } from 'bun:bundle';
-import type { WriteFileOptions } from 'node:fs';
-import { closeSync, writeFileSync as fsWriteFileSync, fsyncSync, openSync } from 'node:fs';
+import { feature } from "bun:bundle";
+import type { WriteFileOptions } from "node:fs";
+import { closeSync, writeFileSync as fsWriteFileSync, fsyncSync, openSync } from "node:fs";
 // biome-ignore lint: This file IS the cloneDeep wrapper - it must import the original
-import lodashCloneDeep from 'lodash-es/cloneDeep.js';
-import { addSlowOperation } from '../bootstrap/state.js';
-import { logForDebugging } from './debug.js';
+import lodashCloneDeep from "lodash-es/cloneDeep.js";
+import { addSlowOperation } from "../bootstrap/state.js";
+import { logForDebugging } from "./debug.js";
 
 // Extended WriteFileOptions to include 'flush' which is available in Node.js 20.1.0+
 // but not yet in @types/node
@@ -27,10 +27,10 @@ const SLOW_OPERATION_THRESHOLD_MS = (() => {
       return parsed;
     }
   }
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     return 20;
   }
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     return 300;
   }
   return Infinity;
@@ -50,13 +50,13 @@ let isLogging = false;
  * Only called when an operation was actually slow — never on the fast path.
  */
 export function callerFrame(stack: string | undefined): string {
-  if (!stack) return '';
-  for (const line of stack.split('\n')) {
-    if (line.includes('slowOperations')) continue;
+  if (!stack) return "";
+  for (const line of stack.split("\n")) {
+    if (line.includes("slowOperations")) continue;
     const m = line.match(/([^/\\]+?):(\d+):\d+\)?$/);
     if (m) return ` @ ${m[1]}:${m[2]}`;
   }
-  return '';
+  return "";
 }
 
 /**
@@ -67,16 +67,16 @@ export function callerFrame(stack: string | undefined): string {
  */
 function buildDescription(args: IArguments): string {
   const strings = args[0] as TemplateStringsArray;
-  let result = '';
+  let result = "";
   for (let i = 0; i < strings.length; i++) {
     result += strings[i];
     if (i + 1 < args.length) {
       const v = args[i + 1];
       if (Array.isArray(v)) {
         result += `Array[${(v as unknown[]).length}]`;
-      } else if (v !== null && typeof v === 'object') {
+      } else if (v !== null && typeof v === "object") {
         result += `Object{${Object.keys(v as Record<string, unknown>).length} keys}`;
-      } else if (typeof v === 'string') {
+      } else if (typeof v === "string") {
         result += v.length > 80 ? `${v.slice(0, 80)}…` : v;
       } else {
         result += String(v);
@@ -140,7 +140,7 @@ function slowLoggingExternal(): Disposable {
  * const result = structuredClone(value)
  */
 export const slowLogging: (strings: TemplateStringsArray, ...values: unknown[]) => Disposable =
-  feature('SLOW_OPERATION_LOGGING') ? slowLoggingAnt : slowLoggingExternal;
+  feature("SLOW_OPERATION_LOGGING") ? slowLoggingAnt : slowLoggingExternal;
 
 // --- Wrapped operations ---
 
@@ -184,7 +184,7 @@ export const jsonParse: typeof JSON.parse = (text, reviver) => {
   using _ = slowLogging`JSON.parse(${text})`;
   // V8 de-opts JSON.parse when a second argument is passed, even if undefined.
   // Branch explicitly so the common (no-reviver) path stays on the fast path.
-  return typeof reviver === 'undefined' ? JSON.parse(text) : JSON.parse(text, reviver);
+  return typeof reviver === "undefined" ? JSON.parse(text) : JSON.parse(text, reviver);
 };
 
 /**
@@ -231,16 +231,16 @@ export function writeFileSync_DEPRECATED(
 
   // Check if flush is requested (for object-style options)
   const needsFlush =
-    options !== null && typeof options === 'object' && 'flush' in options && options.flush === true;
+    options !== null && typeof options === "object" && "flush" in options && options.flush === true;
 
   if (needsFlush) {
     // Manual flush: open file, write, fsync, close
     const encoding =
-      typeof options === 'object' && 'encoding' in options ? options.encoding : undefined;
-    const mode = typeof options === 'object' && 'mode' in options ? options.mode : undefined;
+      typeof options === "object" && "encoding" in options ? options.encoding : undefined;
+    const mode = typeof options === "object" && "mode" in options ? options.mode : undefined;
     let fd: number | undefined;
     try {
-      fd = openSync(filePath, 'w', mode);
+      fd = openSync(filePath, "w", mode);
       fsWriteFileSync(fd, data, { encoding: encoding ?? undefined });
       fsyncSync(fd);
     } finally {

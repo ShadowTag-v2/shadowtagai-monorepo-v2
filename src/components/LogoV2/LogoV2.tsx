@@ -1,23 +1,23 @@
-import { feature } from 'bun:bundle';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { getDumpPromptsPath } from 'src/services/api/dumpPrompts.js';
-import { getGlobalConfig, saveGlobalConfig } from 'src/utils/config.js';
-import { getDebugLogPath, isDebugMode, isDebugToStdErr } from 'src/utils/debug.js';
-import { isEnvTruthy } from 'src/utils/envUtils.js';
-import { getInitialSettings } from 'src/utils/settings/settings.js';
-import { getStartupPerfLogPath, isDetailedProfilingEnabled } from 'src/utils/startupProfiler.js';
-import { resolveThemeSetting } from 'src/utils/systemTheme.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Box, color, Text } from '../../ink.js';
+import { feature } from "bun:bundle";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { getDumpPromptsPath } from "src/services/api/dumpPrompts.js";
+import { getGlobalConfig, saveGlobalConfig } from "src/utils/config.js";
+import { getDebugLogPath, isDebugMode, isDebugToStdErr } from "src/utils/debug.js";
+import { isEnvTruthy } from "src/utils/envUtils.js";
+import { getInitialSettings } from "src/utils/settings/settings.js";
+import { getStartupPerfLogPath, isDetailedProfilingEnabled } from "src/utils/startupProfiler.js";
+import { resolveThemeSetting } from "src/utils/systemTheme.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Box, color, Text } from "../../ink.js";
 import {
   getSteps,
   incrementProjectOnboardingSeenCount,
   shouldShowProjectOnboarding,
-} from '../../projectOnboardingState.js';
-import { getDisplayPath } from '../../utils/file.js';
-import { truncate } from '../../utils/format.js';
+} from "../../projectOnboardingState.js";
+import { getDisplayPath } from "../../utils/file.js";
+import { truncate } from "../../utils/format.js";
 import {
   calculateLayoutDimensions,
   calculateOptimalLeftWidth,
@@ -27,21 +27,21 @@ import {
   getRecentActivitySync,
   getRecentReleaseNotesSync,
   truncatePath,
-} from '../../utils/logoV2Utils.js';
-import { checkForReleaseNotesSync } from '../../utils/releaseNotes.js';
-import { OffscreenFreeze } from '../OffscreenFreeze.js';
-import { Clawd } from './Clawd.js';
-import { CondensedLogo } from './CondensedLogo.js';
-import { EmergencyTip } from './EmergencyTip.js';
-import { FeedColumn } from './FeedColumn.js';
+} from "../../utils/logoV2Utils.js";
+import { checkForReleaseNotesSync } from "../../utils/releaseNotes.js";
+import { OffscreenFreeze } from "../OffscreenFreeze.js";
+import { Clawd } from "./Clawd.js";
+import { CondensedLogo } from "./CondensedLogo.js";
+import { EmergencyTip } from "./EmergencyTip.js";
+import { FeedColumn } from "./FeedColumn.js";
 import {
   createGuestPassesFeed,
   createProjectOnboardingFeed,
   createRecentActivityFeed,
   createWhatsNewFeed,
-} from './feedConfigs.js';
-import { Opus1mMergeNotice } from './Opus1mMergeNotice.js';
-import { VoiceModeNotice } from './VoiceModeNotice.js';
+} from "./feedConfigs.js";
+import { Opus1mMergeNotice } from "./Opus1mMergeNotice.js";
+import { VoiceModeNotice } from "./VoiceModeNotice.js";
 
 // Conditional require so ChannelsNotice.tsx tree-shakes when both flags are
 // false. A module-scope helper component inside a feature() ternary does NOT
@@ -50,31 +50,31 @@ import { VoiceModeNotice } from './VoiceModeNotice.js';
 // is external: true so it's moot there.
 /* eslint-disable @typescript-eslint/no-require-imports */
 const ChannelsNoticeModule =
-  feature('KAIROS') || feature('KAIROS_CHANNELS')
-    ? (require('./ChannelsNotice.js') as typeof import('./ChannelsNotice.js'))
+  feature("KAIROS") || feature("KAIROS_CHANNELS")
+    ? (require("./ChannelsNotice.js") as typeof import("./ChannelsNotice.js"))
     : null;
 
 /* eslint-enable @typescript-eslint/no-require-imports */
-import { SandboxManager } from 'src/utils/sandbox/sandbox-adapter.js';
-import { useMainLoopModel } from '../../hooks/useMainLoopModel.js';
-import { useAppState } from '../../state/AppState.js';
-import { getEffortSuffix } from '../../utils/effort.js';
-import { renderModelSetting } from '../../utils/model/model.js';
-import { incrementGuestPassesSeenCount, useShowGuestPassesUpsell } from './GuestPassesUpsell.js';
+import { SandboxManager } from "src/utils/sandbox/sandbox-adapter.js";
+import { useMainLoopModel } from "../../hooks/useMainLoopModel.js";
+import { useAppState } from "../../state/AppState.js";
+import { getEffortSuffix } from "../../utils/effort.js";
+import { renderModelSetting } from "../../utils/model/model.js";
+import { incrementGuestPassesSeenCount, useShowGuestPassesUpsell } from "./GuestPassesUpsell.js";
 import {
   createOverageCreditFeed,
   incrementOverageCreditUpsellSeenCount,
   useShowOverageCreditUpsell,
-} from './OverageCreditUpsell.js';
+} from "./OverageCreditUpsell.js";
 
 const LEFT_PANEL_MAX_WIDTH = 50;
 export function LogoV2() {
   const $ = _c(94);
   const activities = getRecentActivitySync();
-  const username = getGlobalConfig().oauthAccount?.displayName ?? '';
+  const username = getGlobalConfig().oauthAccount?.displayName ?? "";
   const { columns } = useTerminalSize();
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = shouldShowProjectOnboarding();
     $[0] = t0;
   } else {
@@ -82,7 +82,7 @@ export function LogoV2() {
   }
   const showOnboarding = t0;
   let t1;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = SandboxManager.isSandboxingEnabled();
     $[1] = t1;
   } else {
@@ -111,7 +111,7 @@ export function LogoV2() {
   });
   const { hasReleaseNotes } = checkForReleaseNotesSync(config.lastReleaseNotesSeen);
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => {
       const currentConfig = getGlobalConfig();
       if (currentConfig.lastReleaseNotesSeen === MACRO.VERSION) {
@@ -136,7 +136,7 @@ export function LogoV2() {
   }
   useEffect(t2, t3);
   let t4;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t4 =
       !hasReleaseNotes && !showOnboarding && !isEnvTruthy(process.env.CLAUDE_CODE_FORCE_FULL_LOGO);
     $[5] = t4;
@@ -211,7 +211,7 @@ export function LogoV2() {
     let t15;
     let t16;
     let t17;
-    if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
       t11 = <CondensedLogo />;
       t12 = <VoiceModeNotice />;
       t13 = <Opus1mMergeNotice />;
@@ -220,7 +220,7 @@ export function LogoV2() {
         <Box paddingLeft={2} flexDirection="column">
           <Text color="warning">Debug mode enabled</Text>
           <Text dimColor={true}>
-            Logging to: {isDebugToStdErr() ? 'stderr' : getDebugLogPath()}
+            Logging to: {isDebugToStdErr() ? "stderr" : getDebugLogPath()}
           </Text>
         </Box>
       );
@@ -271,7 +271,7 @@ export function LogoV2() {
     let t20;
     let t21;
     let t22;
-    if ($[25] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[25] === Symbol.for("react.memo_cache_sentinel")) {
       t19 = false && !process.env.DEMO_VERSION && (
         <Box paddingLeft={2} flexDirection="column">
           <Text dimColor={true}>Use /issue to report model behavior issues</Text>
@@ -326,13 +326,13 @@ export function LogoV2() {
   }
   const layoutMode = getLayoutMode(columns);
   const userTheme = resolveThemeSetting(getGlobalConfig().theme);
-  const borderTitle = ` ${color('claude', userTheme)('Claude Code')} ${color('inactive', userTheme)(`v${version}`)} `;
-  const compactBorderTitle = color('claude', userTheme)(' Claude Code ');
-  if (layoutMode === 'compact') {
+  const borderTitle = ` ${color("claude", userTheme)("Claude Code")} ${color("inactive", userTheme)(`v${version}`)} `;
+  const compactBorderTitle = color("claude", userTheme)(" Claude Code ");
+  if (layoutMode === "compact") {
     let welcomeMessage = formatWelcomeMessage(username);
     if (stringWidth(welcomeMessage) > columns - 4) {
       let t11;
-      if ($[31] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[31] === Symbol.for("react.memo_cache_sentinel")) {
         t11 = formatWelcomeMessage(null);
         $[31] = t11;
       } else {
@@ -348,8 +348,8 @@ export function LogoV2() {
     if ($[32] !== compactBorderTitle) {
       t11 = {
         content: compactBorderTitle,
-        position: 'top',
-        align: 'start',
+        position: "top",
+        align: "start",
         offset: 1,
       };
       $[32] = compactBorderTitle;
@@ -358,7 +358,7 @@ export function LogoV2() {
       t11 = $[33];
     }
     let t12;
-    if ($[34] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[34] === Symbol.for("react.memo_cache_sentinel")) {
       t12 = (
         <Box marginY={1}>
           <Clawd />
@@ -379,7 +379,7 @@ export function LogoV2() {
     let t14;
     let t15;
     let t16;
-    if ($[37] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[37] === Symbol.for("react.memo_cache_sentinel")) {
       t14 = <VoiceModeNotice />;
       t15 = <Opus1mMergeNotice />;
       t16 = ChannelsNoticeModule && <ChannelsNoticeModule.ChannelsNotice />;
@@ -405,7 +405,7 @@ export function LogoV2() {
     }
     let t18;
     let t19;
-    if ($[42] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[42] === Symbol.for("react.memo_cache_sentinel")) {
       t18 = false && <GateOverridesWarning />;
       t19 = false && <ExperimentEnrollmentNotice />;
       $[42] = t18;
@@ -463,15 +463,15 @@ export function LogoV2() {
   );
   const T0 = OffscreenFreeze;
   const T1 = Box;
-  const t11 = 'column';
-  const t12 = 'round';
-  const t13 = 'claude';
+  const t11 = "column";
+  const t12 = "round";
+  const t13 = "claude";
   let t14;
   if ($[44] !== borderTitle) {
     t14 = {
       content: borderTitle,
-      position: 'top',
-      align: 'start',
+      position: "top",
+      align: "start",
       offset: 3,
     };
     $[44] = borderTitle;
@@ -480,7 +480,7 @@ export function LogoV2() {
     t14 = $[45];
   }
   const T2 = Box;
-  const t15 = layoutMode === 'horizontal' ? 'row' : 'column';
+  const t15 = layoutMode === "horizontal" ? "row" : "column";
   const t16 = 1;
   const t17 = 1;
   let t18;
@@ -496,7 +496,7 @@ export function LogoV2() {
     t18 = $[47];
   }
   let t19;
-  if ($[48] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[48] === Symbol.for("react.memo_cache_sentinel")) {
     t19 = <Clawd />;
     $[48] = t19;
   } else {
@@ -556,7 +556,7 @@ export function LogoV2() {
   }
   let t24;
   if ($[60] !== layoutMode) {
-    t24 = layoutMode === 'horizontal' && (
+    t24 = layoutMode === "horizontal" && (
       <Box
         height="100%"
         borderStyle="single"
@@ -572,7 +572,7 @@ export function LogoV2() {
   } else {
     t24 = $[61];
   }
-  const t25 = layoutMode === 'horizontal' && (
+  const t25 = layoutMode === "horizontal" && (
     <FeedColumn
       feeds={
         showOnboarding
@@ -633,14 +633,14 @@ export function LogoV2() {
   let t32;
   let t33;
   let t34;
-  if ($[75] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[75] === Symbol.for("react.memo_cache_sentinel")) {
     t29 = <VoiceModeNotice />;
     t30 = <Opus1mMergeNotice />;
     t31 = ChannelsNoticeModule && <ChannelsNoticeModule.ChannelsNotice />;
     t32 = isDebugMode() && (
       <Box paddingLeft={2} flexDirection="column">
         <Text color="warning">Debug mode enabled</Text>
-        <Text dimColor={true}>Logging to: {isDebugToStdErr() ? 'stderr' : getDebugLogPath()}</Text>
+        <Text dimColor={true}>Logging to: {isDebugToStdErr() ? "stderr" : getDebugLogPath()}</Text>
       </Box>
     );
     t33 = <EmergencyTip />;
@@ -700,7 +700,7 @@ export function LogoV2() {
   let t38;
   let t39;
   let t40;
-  if ($[86] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[86] === Symbol.for("react.memo_cache_sentinel")) {
     t37 = false && !process.env.DEMO_VERSION && (
       <Box paddingLeft={2} flexDirection="column">
         <Text dimColor={true}>Use /issue to report model behavior issues</Text>

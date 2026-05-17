@@ -1,8 +1,8 @@
-import type * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Box, Text } from '../../ink.js';
-import { truncate } from '../../utils/format.js';
+import type * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Box, Text } from "../../ink.js";
+import { truncate } from "../../utils/format.js";
 export type FeedLine = {
   text: string;
   timestamp?: string;
@@ -29,7 +29,7 @@ export function calculateFeedWidth(config: FeedConfig): number {
   } else if (lines.length === 0 && emptyMessage) {
     maxWidth = Math.max(maxWidth, stringWidth(emptyMessage));
   } else {
-    const gap = '  ';
+    const gap = "  ";
     const maxTimestampWidth = Math.max(
       0,
       ...lines.map((line) => (line.timestamp ? stringWidth(line.timestamp) : 0)),
@@ -102,8 +102,8 @@ export function Feed(t0) {
             <Text key={index}>
               {maxTimestampWidth > 0 && (
                 <>
-                  <Text dimColor={true}>{(line_0.timestamp || '').padEnd(maxTimestampWidth)}</Text>
-                  {'  '}
+                  <Text dimColor={true}>{(line_0.timestamp || "").padEnd(maxTimestampWidth)}</Text>
+                  {"  "}
                 </>
               )}
               <Text>{truncate(line_0.text, textWidth)}</Text>

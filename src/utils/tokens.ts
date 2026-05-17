@@ -1,15 +1,15 @@
-import type { BetaUsage as Usage } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import { roughTokenCountEstimationForMessages } from '../services/tokenEstimation.js';
-import type { AssistantMessage, Message } from '../types/message.js';
-import { SYNTHETIC_MESSAGES, SYNTHETIC_MODEL } from './messages.js';
-import { jsonStringify } from './slowOperations.js';
+import type { BetaUsage as Usage } from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
+import { roughTokenCountEstimationForMessages } from "../services/tokenEstimation.js";
+import type { AssistantMessage, Message } from "../types/message.js";
+import { SYNTHETIC_MESSAGES, SYNTHETIC_MODEL } from "./messages.js";
+import { jsonStringify } from "./slowOperations.js";
 
 export function getTokenUsage(message: Message): Usage | undefined {
   if (
-    message?.type === 'assistant' &&
-    'usage' in message.message &&
+    message?.type === "assistant" &&
+    "usage" in message.message &&
     !(
-      message.message.content[0]?.type === 'text' &&
+      message.message.content[0]?.type === "text" &&
       SYNTHETIC_MESSAGES.has(message.message.content[0].text)
     ) &&
     message.message.model !== SYNTHETIC_MODEL
@@ -27,8 +27,8 @@ export function getTokenUsage(message: Message): Usage | undefined {
  */
 function getAssistantMessageId(message: Message): string | undefined {
   if (
-    message?.type === 'assistant' &&
-    'id' in message.message &&
+    message?.type === "assistant" &&
+    "id" in message.message &&
     message.message.model !== SYNTHETIC_MODEL
   ) {
     return message.message.id;
@@ -155,7 +155,7 @@ export function getCurrentUsage(messages: Message[]): {
 export function doesMostRecentAssistantMessageExceed200k(messages: Message[]): boolean {
   const THRESHOLD = 200_000;
 
-  const lastAsst = messages.findLast((m) => m.type === 'assistant');
+  const lastAsst = messages.findLast((m) => m.type === "assistant");
   if (!lastAsst) return false;
   const usage = getTokenUsage(lastAsst);
   return usage ? getTokenCountFromUsage(usage) > THRESHOLD : false;
@@ -177,13 +177,13 @@ export function doesMostRecentAssistantMessageExceed200k(messages: Message[]): b
 export function getAssistantMessageContentLength(message: AssistantMessage): number {
   let contentLength = 0;
   for (const block of message.message.content) {
-    if (block.type === 'text') {
+    if (block.type === "text") {
       contentLength += block.text.length;
-    } else if (block.type === 'thinking') {
+    } else if (block.type === "thinking") {
       contentLength += block.thinking.length;
-    } else if (block.type === 'redacted_thinking') {
+    } else if (block.type === "redacted_thinking") {
       contentLength += block.data.length;
-    } else if (block.type === 'tool_use') {
+    } else if (block.type === "tool_use") {
       contentLength += jsonStringify(block.input).length;
     }
   }

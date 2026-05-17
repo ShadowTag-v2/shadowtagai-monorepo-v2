@@ -9,28 +9,28 @@
  * ZIP creation on install and extraction on load transparently.
  */
 
-import { logEvent } from '../../services/analytics/index.js';
-import { registerCleanup } from '../cleanupRegistry.js';
-import { logForDebugging } from '../debug.js';
-import { withDiagnosticsTiming } from '../diagLogs.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { logError } from '../log.js';
+import { logEvent } from "../../services/analytics/index.js";
+import { registerCleanup } from "../cleanupRegistry.js";
+import { logForDebugging } from "../debug.js";
+import { withDiagnosticsTiming } from "../diagLogs.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { logError } from "../log.js";
 import {
   clearMarketplacesCache,
   getDeclaredMarketplaces,
   registerSeedMarketplaces,
-} from './marketplaceManager.js';
-import { detectAndUninstallDelistedPlugins } from './pluginBlocklist.js';
-import { clearPluginCache } from './pluginLoader.js';
-import { reconcileMarketplaces } from './reconciler.js';
+} from "./marketplaceManager.js";
+import { detectAndUninstallDelistedPlugins } from "./pluginBlocklist.js";
+import { clearPluginCache } from "./pluginLoader.js";
+import { reconcileMarketplaces } from "./reconciler.js";
 import {
   cleanupSessionPluginCache,
   getZipCacheMarketplacesDir,
   getZipCachePluginsDir,
   isMarketplaceSourceSupportedByZipCache,
   isPluginZipCacheEnabled,
-} from './zipCache.js';
-import { syncMarketplacesToZipCache } from './zipCacheAdapters.js';
+} from "./zipCache.js";
+import { syncMarketplacesToZipCache } from "./zipCacheAdapters.js";
 
 /**
  * Install plugins for headless/CCR mode.
@@ -42,7 +42,7 @@ import { syncMarketplacesToZipCache } from './zipCacheAdapters.js';
  */
 export async function installPluginsForHeadless(): Promise<boolean> {
   const zipCacheMode = isPluginZipCacheEnabled();
-  logForDebugging(`installPluginsForHeadless: starting${zipCacheMode ? ' (zip cache mode)' : ''}`);
+  logForDebugging(`installPluginsForHeadless: starting${zipCacheMode ? " (zip cache mode)" : ""}`);
 
   // Register seed marketplaces (CLAUDE_CODE_PLUGIN_SEED_DIR) before diffing.
   // Idempotent; no-op if seed not configured. Without this, findMissingMarketplaces
@@ -56,7 +56,7 @@ export async function installPluginsForHeadless(): Promise<boolean> {
   const seedChanged = await registerSeedMarketplaces();
   if (seedChanged) {
     clearMarketplacesCache();
-    clearPluginCache('headlessPluginInstall: seed marketplaces registered');
+    clearPluginCache("headlessPluginInstall: seed marketplaces registered");
   }
 
   // Ensure zip cache directory structure exists
@@ -85,21 +85,21 @@ export async function installPluginsForHeadless(): Promise<boolean> {
 
   try {
     if (declaredCount === 0) {
-      logForDebugging('installPluginsForHeadless: no marketplaces declared');
+      logForDebugging("installPluginsForHeadless: no marketplaces declared");
     } else {
       // Reconcile declared marketplaces (settings intent + implicit official)
       // with materialized state. Zip cache: skip unsupported source types.
       const reconcileResult = await withDiagnosticsTiming(
-        'headless_marketplace_reconcile',
+        "headless_marketplace_reconcile",
         () =>
           reconcileMarketplaces({
             skip: zipCacheMode
               ? (_name, source) => !isMarketplaceSourceSupportedByZipCache(source)
               : undefined,
             onProgress: (event) => {
-              if (event.type === 'installed') {
+              if (event.type === "installed") {
                 logForDebugging(`installPluginsForHeadless: installed marketplace ${event.name}`);
-              } else if (event.type === 'failed') {
+              } else if (event.type === "failed") {
                 logForDebugging(
                   `installPluginsForHeadless: failed to install marketplace ${event.name}: ${event.error}`,
                 );
@@ -116,7 +116,7 @@ export async function installPluginsForHeadless(): Promise<boolean> {
 
       if (reconcileResult.skipped.length > 0) {
         logForDebugging(
-          `installPluginsForHeadless: skipped ${reconcileResult.skipped.length} marketplace(s) unsupported by zip cache: ${reconcileResult.skipped.join(', ')}`,
+          `installPluginsForHeadless: skipped ${reconcileResult.skipped.length} marketplace(s) unsupported by zip cache: ${reconcileResult.skipped.join(", ")}`,
         );
       }
 
@@ -128,7 +128,7 @@ export async function installPluginsForHeadless(): Promise<boolean> {
       // from the newly-materialized marketplaces.
       if (marketplacesChanged > 0) {
         clearMarketplacesCache();
-        clearPluginCache('headlessPluginInstall: marketplaces reconciled');
+        clearPluginCache("headlessPluginInstall: marketplaces reconciled");
         pluginsChanged = true;
       }
 
@@ -150,7 +150,7 @@ export async function installPluginsForHeadless(): Promise<boolean> {
     }
 
     if (pluginsChanged) {
-      clearPluginCache('headlessPluginInstall: plugins changed');
+      clearPluginCache("headlessPluginInstall: plugins changed");
     }
 
     // Zip cache: register session cleanup for extracted plugin temp dirs
@@ -163,6 +163,6 @@ export async function installPluginsForHeadless(): Promise<boolean> {
     logError(error);
     return false;
   } finally {
-    logEvent('tengu_headless_plugin_install', metrics);
+    logEvent("tengu_headless_plugin_install", metrics);
   }
 }

@@ -1,7 +1,7 @@
-import type { DOMElement } from './dom.js';
-import { ClickEvent } from './events/click-event.js';
-import type { EventHandlerProps } from './events/event-handlers.js';
-import { nodeCache } from './node-cache.js';
+import type { DOMElement } from "./dom.js";
+import { ClickEvent } from "./events/click-event.js";
+import type { EventHandlerProps } from "./events/event-handlers.js";
+import { nodeCache } from "./node-cache.js";
 
 /**
  * Find the deepest DOM element whose rendered rect contains (col, row).
@@ -24,7 +24,7 @@ export function hitTest(node: DOMElement, col: number, row: number): DOMElement 
   // Later siblings paint on top; reversed traversal returns topmost hit.
   for (let i = node.childNodes.length - 1; i >= 0; i--) {
     const child = node.childNodes[i]!;
-    if (child.nodeName === '#text') continue;
+    if (child.nodeName === "#text") continue;
     const hit = hitTest(child, col, row);
     if (hit) return hit;
   }
@@ -51,7 +51,7 @@ export function dispatchClick(
   if (root.focusManager) {
     let focusTarget: DOMElement | undefined = target;
     while (focusTarget) {
-      if (typeof focusTarget.attributes.tabIndex === 'number') {
+      if (typeof focusTarget.attributes.tabIndex === "number") {
         root.focusManager.handleClickFocus(focusTarget);
         break;
       }

@@ -1,30 +1,30 @@
-import { randomUUID } from 'node:crypto';
-import { basename } from 'node:path';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { logEvent } from 'src/services/analytics/index.js';
-import { readFileSync } from 'src/utils/fileRead.js';
-import { expandPath } from 'src/utils/path.js';
-import type { PermissionOption } from '../components/permissions/FilePermissionDialog/permissionOptions.js';
+import { randomUUID } from "node:crypto";
+import { basename } from "node:path";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { logEvent } from "src/services/analytics/index.js";
+import { readFileSync } from "src/utils/fileRead.js";
+import { expandPath } from "src/utils/path.js";
+import type { PermissionOption } from "../components/permissions/FilePermissionDialog/permissionOptions.js";
 import type {
   MCPServerConnection,
   McpSSEIDEServerConfig,
   McpWebSocketIDEServerConfig,
-} from '../services/mcp/types.js';
-import type { ToolUseContext } from '../Tool.js';
-import type { FileEdit } from '../tools/FileEditTool/types.js';
-import { getEditsForPatch, getPatchForEdits } from '../tools/FileEditTool/utils.js';
-import { getGlobalConfig } from '../utils/config.js';
-import { getPatchFromContents } from '../utils/diff.js';
-import { isENOENT } from '../utils/errors.js';
+} from "../services/mcp/types.js";
+import type { ToolUseContext } from "../Tool.js";
+import type { FileEdit } from "../tools/FileEditTool/types.js";
+import { getEditsForPatch, getPatchForEdits } from "../tools/FileEditTool/utils.js";
+import { getGlobalConfig } from "../utils/config.js";
+import { getPatchFromContents } from "../utils/diff.js";
+import { isENOENT } from "../utils/errors.js";
 import {
   callIdeRpc,
   getConnectedIdeClient,
   getConnectedIdeName,
   hasAccessToIDEExtensionDiffFeature,
-} from '../utils/ide.js';
-import { WindowsToWSLConverter } from '../utils/idePathConversion.js';
-import { logError } from '../utils/log.js';
-import { getPlatform } from '../utils/platform.js';
+} from "../utils/ide.js";
+import { WindowsToWSLConverter } from "../utils/idePathConversion.js";
+import { logError } from "../utils/log.js";
+import { getPlatform } from "../utils/platform.js";
 
 type Props = {
   onChange(
@@ -37,7 +37,7 @@ type Props = {
   toolUseContext: ToolUseContext;
   filePath: string;
   edits: FileEdit[];
-  editMode: 'single' | 'multiple';
+  editMode: "single" | "multiple";
 };
 
 export function useDiffInIDE({ onChange, toolUseContext, filePath, edits, editMode }: Props): {
@@ -57,12 +57,12 @@ export function useDiffInIDE({ onChange, toolUseContext, filePath, edits, editMo
 
   const shouldShowDiffInIDE =
     hasAccessToIDEExtensionDiffFeature(toolUseContext.options.mcpClients) &&
-    getGlobalConfig().diffTool === 'auto' &&
+    getGlobalConfig().diffTool === "auto" &&
     // Diffs should only be for file edits.
     // File writes may come through here but are not supported for diffs.
-    !filePath.endsWith('.ipynb');
+    !filePath.endsWith(".ipynb");
 
-  const ideName = getConnectedIdeName(toolUseContext.options.mcpClients) ?? 'IDE';
+  const ideName = getConnectedIdeName(toolUseContext.options.mcpClients) ?? "IDE";
 
   async function showDiff(): Promise<void> {
     if (!shouldShowDiffInIDE) {
@@ -70,7 +70,7 @@ export function useDiffInIDE({ onChange, toolUseContext, filePath, edits, editMo
     }
 
     try {
-      logEvent('tengu_ext_will_show_diff', {});
+      logEvent("tengu_ext_will_show_diff", {});
 
       const { oldContent, newContent } = await showDiffInIDE(
         filePath,
@@ -83,13 +83,13 @@ export function useDiffInIDE({ onChange, toolUseContext, filePath, edits, editMo
         return;
       }
 
-      logEvent('tengu_ext_diff_accepted', {});
+      logEvent("tengu_ext_diff_accepted", {});
 
       const newEdits = computeEditsFromContents(filePath, oldContent, newContent, editMode);
 
       if (newEdits.length === 0) {
         // No changes -- edit was rejected (eg. reverted)
-        logEvent('tengu_ext_diff_rejected', {});
+        logEvent("tengu_ext_diff_rejected", {});
         // We close the tab here because 'no' no longer auto-closes
         const ideClient = getConnectedIdeClient(toolUseContext.options.mcpClients);
         if (ideClient) {
@@ -97,7 +97,7 @@ export function useDiffInIDE({ onChange, toolUseContext, filePath, edits, editMo
           await closeTabInIDE(tabName, ideClient);
         }
         onChange(
-          { type: 'reject' },
+          { type: "reject" },
           {
             file_path: filePath,
             edits: edits,
@@ -108,7 +108,7 @@ export function useDiffInIDE({ onChange, toolUseContext, filePath, edits, editMo
 
       // File was modified - edit was accepted
       onChange(
-        { type: 'accept-once' },
+        { type: "accept-once" },
         {
           file_path: filePath,
           edits: newEdits,
@@ -154,10 +154,10 @@ export function computeEditsFromContents(
   filePath: string,
   oldContent: string,
   newContent: string,
-  editMode: 'single' | 'multiple',
+  editMode: "single" | "multiple",
 ): FileEdit[] {
   // Use unformatted patches, otherwise the edits will be formatted.
-  const singleHunk = editMode === 'single';
+  const singleHunk = editMode === "single";
   const patch = getPatchFromContents({
     filePath,
     oldContent,
@@ -201,7 +201,7 @@ async function showDiffInIDE(
   let isCleanedUp = false;
 
   const oldFilePath = expandPath(file_path);
-  let oldContent = '';
+  let oldContent = "";
   try {
     oldContent = readFileSync(oldFilePath);
   } catch (e: unknown) {
@@ -225,13 +225,13 @@ async function showDiffInIDE(
       logError(e as Error);
     }
 
-    process.off('beforeExit', cleanup);
-    toolUseContext.abortController.signal.removeEventListener('abort', cleanup);
+    process.off("beforeExit", cleanup);
+    toolUseContext.abortController.signal.removeEventListener("abort", cleanup);
   }
 
   // Cleanup if the user hits esc to cancel the tool call - or on exit
-  toolUseContext.abortController.signal.addEventListener('abort', cleanup);
-  process.on('beforeExit', cleanup);
+  toolUseContext.abortController.signal.addEventListener("abort", cleanup);
+  process.on("beforeExit", cleanup);
 
   // Open the diff in the IDE
   const ideClient = getConnectedIdeClient(toolUseContext.options.mcpClients);
@@ -242,8 +242,8 @@ async function showDiffInIDE(
       edits,
     });
 
-    if (!ideClient || ideClient.type !== 'connected') {
-      throw new Error('IDE client not available');
+    if (!ideClient || ideClient.type !== "connected") {
+      throw new Error("IDE client not available");
     }
     let ideOldPath = oldFilePath;
 
@@ -251,13 +251,13 @@ async function showDiffInIDE(
     const ideRunningInWindows =
       (ideClient.config as McpSSEIDEServerConfig | McpWebSocketIDEServerConfig)
         .ideRunningInWindows === true;
-    if (getPlatform() === 'wsl' && ideRunningInWindows && process.env.WSL_DISTRO_NAME) {
+    if (getPlatform() === "wsl" && ideRunningInWindows && process.env.WSL_DISTRO_NAME) {
       const converter = new WindowsToWSLConverter(process.env.WSL_DISTRO_NAME);
       ideOldPath = converter.toIDEPath(oldFilePath);
     }
 
     const rpcResult = await callIdeRpc(
-      'openDiff',
+      "openDiff",
       {
         old_file_path: ideOldPath,
         new_file_path: ideOldPath,
@@ -293,7 +293,7 @@ async function showDiffInIDE(
 
     // Indicates that the tool call completed with none of the expected
     // results. Did the user close the IDE?
-    throw new Error('Not accepted');
+    throw new Error("Not accepted");
   } catch (error) {
     logError(error as Error);
     void cleanup();
@@ -306,47 +306,47 @@ async function closeTabInIDE(
   ideClient?: MCPServerConnection | undefined,
 ): Promise<void> {
   try {
-    if (!ideClient || ideClient.type !== 'connected') {
-      throw new Error('IDE client not available');
+    if (!ideClient || ideClient.type !== "connected") {
+      throw new Error("IDE client not available");
     }
 
     // Use direct RPC to close the tab
-    await callIdeRpc('close_tab', { tab_name: tabName }, ideClient);
+    await callIdeRpc("close_tab", { tab_name: tabName }, ideClient);
   } catch (error) {
     logError(error as Error);
     // Don't throw - this is a cleanup operation
   }
 }
 
-function isClosedMessage(data: unknown): data is { text: 'TAB_CLOSED' } {
+function isClosedMessage(data: unknown): data is { text: "TAB_CLOSED" } {
   return (
     Array.isArray(data) &&
-    typeof data[0] === 'object' &&
+    typeof data[0] === "object" &&
     data[0] !== null &&
-    'type' in data[0] &&
-    data[0].type === 'text' &&
-    'text' in data[0] &&
-    data[0].text === 'TAB_CLOSED'
+    "type" in data[0] &&
+    data[0].type === "text" &&
+    "text" in data[0] &&
+    data[0].text === "TAB_CLOSED"
   );
 }
 
-function isRejectedMessage(data: unknown): data is { text: 'DIFF_REJECTED' } {
+function isRejectedMessage(data: unknown): data is { text: "DIFF_REJECTED" } {
   return (
     Array.isArray(data) &&
-    typeof data[0] === 'object' &&
+    typeof data[0] === "object" &&
     data[0] !== null &&
-    'type' in data[0] &&
-    data[0].type === 'text' &&
-    'text' in data[0] &&
-    data[0].text === 'DIFF_REJECTED'
+    "type" in data[0] &&
+    data[0].type === "text" &&
+    "text" in data[0] &&
+    data[0].text === "DIFF_REJECTED"
   );
 }
 
-function isSaveMessage(data: unknown): data is [{ text: 'FILE_SAVED' }, { text: string }] {
+function isSaveMessage(data: unknown): data is [{ text: "FILE_SAVED" }, { text: string }] {
   return (
     Array.isArray(data) &&
-    data[0]?.type === 'text' &&
-    data[0].text === 'FILE_SAVED' &&
-    typeof data[1].text === 'string'
+    data[0]?.type === "text" &&
+    data[0].text === "FILE_SAVED" &&
+    typeof data[1].text === "string"
   );
 }

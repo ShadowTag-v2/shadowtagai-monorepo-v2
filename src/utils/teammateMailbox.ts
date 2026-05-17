@@ -7,26 +7,26 @@
  * Note: Inboxes are keyed by agent name within a team.
  */
 
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { z } from 'zod/v4';
-import { TEAMMATE_MESSAGE_TAG } from '../constants/xml.js';
-import { PermissionModeSchema } from '../entrypoints/sdk/coreSchemas.js';
-import { SEND_MESSAGE_TOOL_NAME } from '../tools/SendMessageTool/constants.js';
-import type { Message } from '../types/message.js';
-import { generateRequestId } from './agentId.js';
-import { count } from './array.js';
-import { logForDebugging } from './debug.js';
-import { getTeamsDir } from './envUtils.js';
-import { getErrnoCode } from './errors.js';
-import { lazySchema } from './lazySchema.js';
-import * as lockfile from './lockfile.js';
-import { logError } from './log.js';
-import { jsonParse, jsonStringify } from './slowOperations.js';
-import type { BackendType } from './swarm/backends/types.js';
-import { TEAM_LEAD_NAME } from './swarm/constants.js';
-import { sanitizePathComponent } from './tasks.js';
-import { getAgentName, getTeammateColor, getTeamName } from './teammate.js';
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { z } from "zod/v4";
+import { TEAMMATE_MESSAGE_TAG } from "../constants/xml.js";
+import { PermissionModeSchema } from "../entrypoints/sdk/coreSchemas.js";
+import { SEND_MESSAGE_TOOL_NAME } from "../tools/SendMessageTool/constants.js";
+import type { Message } from "../types/message.js";
+import { generateRequestId } from "./agentId.js";
+import { count } from "./array.js";
+import { logForDebugging } from "./debug.js";
+import { getTeamsDir } from "./envUtils.js";
+import { getErrnoCode } from "./errors.js";
+import { lazySchema } from "./lazySchema.js";
+import * as lockfile from "./lockfile.js";
+import { logError } from "./log.js";
+import { jsonParse, jsonStringify } from "./slowOperations.js";
+import type { BackendType } from "./swarm/backends/types.js";
+import { TEAM_LEAD_NAME } from "./swarm/constants.js";
+import { sanitizePathComponent } from "./tasks.js";
+import { getAgentName, getTeammateColor, getTeamName } from "./teammate.js";
 
 // Lock options: retry with backoff so concurrent callers (multiple Claudes
 // in a swarm) wait for the lock instead of failing immediately. The sync
@@ -54,10 +54,10 @@ export type TeammateMessage = {
  * Structure: ~/.claude/teams/{team_name}/inboxes/{agent_name}.json
  */
 export function getInboxPath(agentName: string, teamName?: string): string {
-  const team = teamName || getTeamName() || 'default';
+  const team = teamName || getTeamName() || "default";
   const safeTeam = sanitizePathComponent(team);
   const safeAgentName = sanitizePathComponent(agentName);
-  const inboxDir = join(getTeamsDir(), safeTeam, 'inboxes');
+  const inboxDir = join(getTeamsDir(), safeTeam, "inboxes");
   const fullPath = join(inboxDir, `${safeAgentName}.json`);
   logForDebugging(
     `[TeammateMailbox] getInboxPath: agent=${agentName}, team=${team}, fullPath=${fullPath}`,
@@ -69,9 +69,9 @@ export function getInboxPath(agentName: string, teamName?: string): string {
  * Ensure the inbox directory exists for a team
  */
 async function ensureInboxDir(teamName?: string): Promise<void> {
-  const team = teamName || getTeamName() || 'default';
+  const team = teamName || getTeamName() || "default";
   const safeTeam = sanitizePathComponent(team);
-  const inboxDir = join(getTeamsDir(), safeTeam, 'inboxes');
+  const inboxDir = join(getTeamsDir(), safeTeam, "inboxes");
   await mkdir(inboxDir, { recursive: true });
   logForDebugging(`[TeammateMailbox] Ensured inbox directory: ${inboxDir}`);
 }
@@ -89,13 +89,13 @@ export async function readMailbox(
   logForDebugging(`[TeammateMailbox] readMailbox: path=${inboxPath}`);
 
   try {
-    const content = await readFile(inboxPath, 'utf-8');
+    const content = await readFile(inboxPath, "utf-8");
     const messages = jsonParse(content) as TeammateMessage[];
     logForDebugging(`[TeammateMailbox] readMailbox: read ${messages.length} message(s)`);
     return messages;
   } catch (error) {
     const code = getErrnoCode(error);
-    if (code === 'ENOENT') {
+    if (code === "ENOENT") {
       logForDebugging(`[TeammateMailbox] readMailbox: file does not exist`);
       return [];
     }
@@ -131,7 +131,7 @@ export async function readUnreadMessages(
  */
 export async function writeToMailbox(
   recipientName: string,
-  message: Omit<TeammateMessage, 'read'>,
+  message: Omit<TeammateMessage, "read">,
   teamName?: string,
 ): Promise<void> {
   await ensureInboxDir(teamName);
@@ -145,11 +145,11 @@ export async function writeToMailbox(
 
   // Ensure the inbox file exists before locking (proper-lockfile requires the file to exist)
   try {
-    await writeFile(inboxPath, '[]', { encoding: 'utf-8', flag: 'wx' });
+    await writeFile(inboxPath, "[]", { encoding: "utf-8", flag: "wx" });
     logForDebugging(`[TeammateMailbox] writeToMailbox: created new inbox file`);
   } catch (error) {
     const code = getErrnoCode(error);
-    if (code !== 'EEXIST') {
+    if (code !== "EEXIST") {
       logForDebugging(`[TeammateMailbox] writeToMailbox: failed to create inbox file: ${error}`);
       logError(error);
       return;
@@ -173,7 +173,7 @@ export async function writeToMailbox(
 
     messages.push(newMessage);
 
-    await writeFile(inboxPath, jsonStringify(messages, null, 2), 'utf-8');
+    await writeFile(inboxPath, jsonStringify(messages, null, 2), "utf-8");
     logForDebugging(
       `[TeammateMailbox] Wrote message to ${recipientName}'s inbox from ${message.from}`,
     );
@@ -238,13 +238,13 @@ export async function markMessageAsReadByIndex(
 
     messages[messageIndex] = { ...message, read: true };
 
-    await writeFile(inboxPath, jsonStringify(messages, null, 2), 'utf-8');
+    await writeFile(inboxPath, jsonStringify(messages, null, 2), "utf-8");
     logForDebugging(
       `[TeammateMailbox] markMessageAsReadByIndex: marked message at index ${messageIndex} as read`,
     );
   } catch (error) {
     const code = getErrnoCode(error);
-    if (code === 'ENOENT') {
+    if (code === "ENOENT") {
       logForDebugging(
         `[TeammateMailbox] markMessageAsReadByIndex: file does not exist at ${inboxPath}`,
       );
@@ -302,13 +302,13 @@ export async function markMessagesAsRead(agentName: string, teamName?: string): 
     // messages comes from jsonParse — fresh, unshared objects safe to mutate
     for (const m of messages) m.read = true;
 
-    await writeFile(inboxPath, jsonStringify(messages, null, 2), 'utf-8');
+    await writeFile(inboxPath, jsonStringify(messages, null, 2), "utf-8");
     logForDebugging(
       `[TeammateMailbox] markMessagesAsRead: WROTE ${unreadCount} message(s) as read to ${inboxPath}`,
     );
   } catch (error) {
     const code = getErrnoCode(error);
-    if (code === 'ENOENT') {
+    if (code === "ENOENT") {
       logForDebugging(`[TeammateMailbox] markMessagesAsRead: file does not exist at ${inboxPath}`);
       return;
     }
@@ -333,11 +333,11 @@ export async function clearMailbox(agentName: string, teamName?: string): Promis
   try {
     // flag 'r+' throws ENOENT if the file doesn't exist, so we don't
     // accidentally create an inbox file that wasn't there.
-    await writeFile(inboxPath, '[]', { encoding: 'utf-8', flag: 'r+' });
+    await writeFile(inboxPath, "[]", { encoding: "utf-8", flag: "r+" });
     logForDebugging(`[TeammateMailbox] Cleared inbox for ${agentName}`);
   } catch (error) {
     const code = getErrnoCode(error);
-    if (code === 'ENOENT') {
+    if (code === "ENOENT") {
       return;
     }
     logForDebugging(`Failed to clear inbox for ${agentName}: ${error}`);
@@ -359,26 +359,26 @@ export function formatTeammateMessages(
 ): string {
   return messages
     .map((m) => {
-      const colorAttr = m.color ? ` color="${m.color}"` : '';
-      const summaryAttr = m.summary ? ` summary="${m.summary}"` : '';
+      const colorAttr = m.color ? ` color="${m.color}"` : "";
+      const summaryAttr = m.summary ? ` summary="${m.summary}"` : "";
       return `<${TEAMMATE_MESSAGE_TAG} teammate_id="${m.from}"${colorAttr}${summaryAttr}>\n${m.text}\n</${TEAMMATE_MESSAGE_TAG}>`;
     })
-    .join('\n\n');
+    .join("\n\n");
 }
 
 /**
  * Structured message sent when a teammate becomes idle (via Stop hook)
  */
 export type IdleNotificationMessage = {
-  type: 'idle_notification';
+  type: "idle_notification";
   from: string;
   timestamp: string;
   /** Why the agent went idle */
-  idleReason?: 'available' | 'interrupted' | 'failed';
+  idleReason?: "available" | "interrupted" | "failed";
   /** Brief summary of the last DM sent this turn (if any) */
   summary?: string;
   completedTaskId?: string;
-  completedStatus?: 'resolved' | 'blocked' | 'failed';
+  completedStatus?: "resolved" | "blocked" | "failed";
   failureReason?: string;
 };
 
@@ -388,15 +388,15 @@ export type IdleNotificationMessage = {
 export function createIdleNotification(
   agentId: string,
   options?: {
-    idleReason?: IdleNotificationMessage['idleReason'];
+    idleReason?: IdleNotificationMessage["idleReason"];
     summary?: string;
     completedTaskId?: string;
-    completedStatus?: 'resolved' | 'blocked' | 'failed';
+    completedStatus?: "resolved" | "blocked" | "failed";
     failureReason?: string;
   },
 ): IdleNotificationMessage {
   return {
-    type: 'idle_notification',
+    type: "idle_notification",
     from: agentId,
     timestamp: new Date().toISOString(),
     idleReason: options?.idleReason,
@@ -413,7 +413,7 @@ export function createIdleNotification(
 export function isIdleNotification(messageText: string): IdleNotificationMessage | null {
   try {
     const parsed = jsonParse(messageText);
-    if (parsed && parsed.type === 'idle_notification') {
+    if (parsed && parsed.type === "idle_notification") {
       return parsed as IdleNotificationMessage;
     }
   } catch {
@@ -427,7 +427,7 @@ export function isIdleNotification(messageText: string): IdleNotificationMessage
  * Field names align with SDK `can_use_tool` (snake_case).
  */
 export type PermissionRequestMessage = {
-  type: 'permission_request';
+  type: "permission_request";
   request_id: string;
   agent_id: string;
   tool_name: string;
@@ -443,18 +443,18 @@ export type PermissionRequestMessage = {
  */
 export type PermissionResponseMessage =
   | {
-      type: 'permission_response';
+      type: "permission_response";
       request_id: string;
-      subtype: 'success';
+      subtype: "success";
       response?: {
         updated_input?: Record<string, unknown>;
         permission_updates?: unknown[];
       };
     }
   | {
-      type: 'permission_response';
+      type: "permission_response";
       request_id: string;
-      subtype: 'error';
+      subtype: "error";
       error: string;
     };
 
@@ -471,7 +471,7 @@ export function createPermissionRequestMessage(params: {
   permission_suggestions?: unknown[];
 }): PermissionRequestMessage {
   return {
-    type: 'permission_request',
+    type: "permission_request",
     request_id: params.request_id,
     agent_id: params.agent_id,
     tool_name: params.tool_name,
@@ -487,23 +487,23 @@ export function createPermissionRequestMessage(params: {
  */
 export function createPermissionResponseMessage(params: {
   request_id: string;
-  subtype: 'success' | 'error';
+  subtype: "success" | "error";
   error?: string;
   updated_input?: Record<string, unknown>;
   permission_updates?: unknown[];
 }): PermissionResponseMessage {
-  if (params.subtype === 'error') {
+  if (params.subtype === "error") {
     return {
-      type: 'permission_response',
+      type: "permission_response",
       request_id: params.request_id,
-      subtype: 'error',
-      error: params.error || 'Permission denied',
+      subtype: "error",
+      error: params.error || "Permission denied",
     };
   }
   return {
-    type: 'permission_response',
+    type: "permission_response",
     request_id: params.request_id,
-    subtype: 'success',
+    subtype: "success",
     response: {
       updated_input: params.updated_input,
       permission_updates: params.permission_updates,
@@ -517,7 +517,7 @@ export function createPermissionResponseMessage(params: {
 export function isPermissionRequest(messageText: string): PermissionRequestMessage | null {
   try {
     const parsed = jsonParse(messageText);
-    if (parsed && parsed.type === 'permission_request') {
+    if (parsed && parsed.type === "permission_request") {
       return parsed as PermissionRequestMessage;
     }
   } catch {
@@ -532,7 +532,7 @@ export function isPermissionRequest(messageText: string): PermissionRequestMessa
 export function isPermissionResponse(messageText: string): PermissionResponseMessage | null {
   try {
     const parsed = jsonParse(messageText);
-    if (parsed && parsed.type === 'permission_response') {
+    if (parsed && parsed.type === "permission_response") {
       return parsed as PermissionResponseMessage;
     }
   } catch {
@@ -546,7 +546,7 @@ export function isPermissionResponse(messageText: string): PermissionResponseMes
  * This is triggered when sandbox runtime detects a network access to a non-allowed host
  */
 export type SandboxPermissionRequestMessage = {
-  type: 'sandbox_permission_request';
+  type: "sandbox_permission_request";
   /** Unique identifier for this request */
   requestId: string;
   /** Worker's CLAUDE_CODE_AGENT_ID */
@@ -567,7 +567,7 @@ export type SandboxPermissionRequestMessage = {
  * Sandbox permission response message sent from leader to worker via mailbox
  */
 export type SandboxPermissionResponseMessage = {
-  type: 'sandbox_permission_response';
+  type: "sandbox_permission_response";
   /** ID of the request this responds to */
   requestId: string;
   /** The host that was approved/denied */
@@ -589,7 +589,7 @@ export function createSandboxPermissionRequestMessage(params: {
   host: string;
 }): SandboxPermissionRequestMessage {
   return {
-    type: 'sandbox_permission_request',
+    type: "sandbox_permission_request",
     requestId: params.requestId,
     workerId: params.workerId,
     workerName: params.workerName,
@@ -608,7 +608,7 @@ export function createSandboxPermissionResponseMessage(params: {
   allow: boolean;
 }): SandboxPermissionResponseMessage {
   return {
-    type: 'sandbox_permission_response',
+    type: "sandbox_permission_response",
     requestId: params.requestId,
     host: params.host,
     allow: params.allow,
@@ -624,7 +624,7 @@ export function isSandboxPermissionRequest(
 ): SandboxPermissionRequestMessage | null {
   try {
     const parsed = jsonParse(messageText);
-    if (parsed && parsed.type === 'sandbox_permission_request') {
+    if (parsed && parsed.type === "sandbox_permission_request") {
       return parsed as SandboxPermissionRequestMessage;
     }
   } catch {
@@ -641,7 +641,7 @@ export function isSandboxPermissionResponse(
 ): SandboxPermissionResponseMessage | null {
   try {
     const parsed = jsonParse(messageText);
-    if (parsed && parsed.type === 'sandbox_permission_response') {
+    if (parsed && parsed.type === "sandbox_permission_response") {
       return parsed as SandboxPermissionResponseMessage;
     }
   } catch {
@@ -655,7 +655,7 @@ export function isSandboxPermissionResponse(
  */
 export const PlanApprovalRequestMessageSchema = lazySchema(() =>
   z.object({
-    type: z.literal('plan_approval_request'),
+    type: z.literal("plan_approval_request"),
     from: z.string(),
     timestamp: z.string(),
     planFilePath: z.string(),
@@ -673,7 +673,7 @@ export type PlanApprovalRequestMessage = z.infer<
  */
 export const PlanApprovalResponseMessageSchema = lazySchema(() =>
   z.object({
-    type: z.literal('plan_approval_response'),
+    type: z.literal("plan_approval_response"),
     requestId: z.string(),
     approved: z.boolean(),
     feedback: z.string().optional(),
@@ -691,7 +691,7 @@ export type PlanApprovalResponseMessage = z.infer<
  */
 export const ShutdownRequestMessageSchema = lazySchema(() =>
   z.object({
-    type: z.literal('shutdown_request'),
+    type: z.literal("shutdown_request"),
     requestId: z.string(),
     from: z.string(),
     reason: z.string().optional(),
@@ -706,7 +706,7 @@ export type ShutdownRequestMessage = z.infer<ReturnType<typeof ShutdownRequestMe
  */
 export const ShutdownApprovedMessageSchema = lazySchema(() =>
   z.object({
-    type: z.literal('shutdown_approved'),
+    type: z.literal("shutdown_approved"),
     requestId: z.string(),
     from: z.string(),
     timestamp: z.string(),
@@ -722,7 +722,7 @@ export type ShutdownApprovedMessage = z.infer<ReturnType<typeof ShutdownApproved
  */
 export const ShutdownRejectedMessageSchema = lazySchema(() =>
   z.object({
-    type: z.literal('shutdown_rejected'),
+    type: z.literal("shutdown_rejected"),
     requestId: z.string(),
     from: z.string(),
     reason: z.string(),
@@ -741,7 +741,7 @@ export function createShutdownRequestMessage(params: {
   reason?: string;
 }): ShutdownRequestMessage {
   return {
-    type: 'shutdown_request',
+    type: "shutdown_request",
     requestId: params.requestId,
     from: params.from,
     reason: params.reason,
@@ -759,7 +759,7 @@ export function createShutdownApprovedMessage(params: {
   backendType?: BackendType;
 }): ShutdownApprovedMessage {
   return {
-    type: 'shutdown_approved',
+    type: "shutdown_approved",
     requestId: params.requestId,
     from: params.from,
     timestamp: new Date().toISOString(),
@@ -777,7 +777,7 @@ export function createShutdownRejectedMessage(params: {
   reason: string;
 }): ShutdownRejectedMessage {
   return {
-    type: 'shutdown_rejected',
+    type: "shutdown_rejected",
     requestId: params.requestId,
     from: params.from,
     reason: params.reason,
@@ -805,7 +805,7 @@ export async function sendShutdownRequestToMailbox(
   const senderName = getAgentName() || TEAM_LEAD_NAME;
 
   // Generate a deterministic request ID for this shutdown request
-  const requestId = generateRequestId('shutdown', targetName);
+  const requestId = generateRequestId("shutdown", targetName);
 
   // Create and send the shutdown request message
   const shutdownMessage = createShutdownRequestMessage({
@@ -897,7 +897,7 @@ export function isPlanApprovalResponse(messageText: string): PlanApprovalRespons
  * Task assignment message sent when a task is assigned to a teammate
  */
 export type TaskAssignmentMessage = {
-  type: 'task_assignment';
+  type: "task_assignment";
   taskId: string;
   subject: string;
   description: string;
@@ -911,7 +911,7 @@ export type TaskAssignmentMessage = {
 export function isTaskAssignment(messageText: string): TaskAssignmentMessage | null {
   try {
     const parsed = jsonParse(messageText);
-    if (parsed && parsed.type === 'task_assignment') {
+    if (parsed && parsed.type === "task_assignment") {
       return parsed as TaskAssignmentMessage;
     }
   } catch {
@@ -925,13 +925,13 @@ export function isTaskAssignment(messageText: string): TaskAssignmentMessage | n
  * Broadcasts a permission update that applies to all teammates
  */
 export type TeamPermissionUpdateMessage = {
-  type: 'team_permission_update';
+  type: "team_permission_update";
   /** The permission update to apply */
   permissionUpdate: {
-    type: 'addRules';
+    type: "addRules";
     rules: Array<{ toolName: string; ruleContent?: string }>;
-    behavior: 'allow' | 'deny' | 'ask';
-    destination: 'session';
+    behavior: "allow" | "deny" | "ask";
+    destination: "session";
   };
   /** The directory path that was allowed */
   directoryPath: string;
@@ -945,7 +945,7 @@ export type TeamPermissionUpdateMessage = {
 export function isTeamPermissionUpdate(messageText: string): TeamPermissionUpdateMessage | null {
   try {
     const parsed = jsonParse(messageText);
-    if (parsed && parsed.type === 'team_permission_update') {
+    if (parsed && parsed.type === "team_permission_update") {
       return parsed as TeamPermissionUpdateMessage;
     }
   } catch {
@@ -960,7 +960,7 @@ export function isTeamPermissionUpdate(messageText: string): TeamPermissionUpdat
  */
 export const ModeSetRequestMessageSchema = lazySchema(() =>
   z.object({
-    type: z.literal('mode_set_request'),
+    type: z.literal("mode_set_request"),
     mode: PermissionModeSchema(),
     from: z.string(),
   }),
@@ -976,8 +976,8 @@ export function createModeSetRequestMessage(params: {
   from: string;
 }): ModeSetRequestMessage {
   return {
-    type: 'mode_set_request',
-    mode: params.mode as ModeSetRequestMessage['mode'],
+    type: "mode_set_request",
+    mode: params.mode as ModeSetRequestMessage["mode"],
     from: params.from,
   };
 }
@@ -1009,21 +1009,21 @@ export function isModeSetRequest(messageText: string): ModeSetRequestMessage | n
 export function isStructuredProtocolMessage(messageText: string): boolean {
   try {
     const parsed = jsonParse(messageText);
-    if (!parsed || typeof parsed !== 'object' || !('type' in parsed)) {
+    if (!parsed || typeof parsed !== "object" || !("type" in parsed)) {
       return false;
     }
     const type = (parsed as { type: unknown }).type;
     return (
-      type === 'permission_request' ||
-      type === 'permission_response' ||
-      type === 'sandbox_permission_request' ||
-      type === 'sandbox_permission_response' ||
-      type === 'shutdown_request' ||
-      type === 'shutdown_approved' ||
-      type === 'team_permission_update' ||
-      type === 'mode_set_request' ||
-      type === 'plan_approval_request' ||
-      type === 'plan_approval_response'
+      type === "permission_request" ||
+      type === "permission_response" ||
+      type === "sandbox_permission_request" ||
+      type === "sandbox_permission_response" ||
+      type === "shutdown_request" ||
+      type === "shutdown_approved" ||
+      type === "team_permission_update" ||
+      type === "mode_set_request" ||
+      type === "plan_approval_request" ||
+      type === "plan_approval_response"
     );
   } catch {
     return false;
@@ -1059,10 +1059,10 @@ export async function markMessagesAsReadByPredicate(
       !m.read && predicate(m) ? { ...m, read: true } : m,
     );
 
-    await writeFile(inboxPath, jsonStringify(updatedMessages, null, 2), 'utf-8');
+    await writeFile(inboxPath, jsonStringify(updatedMessages, null, 2), "utf-8");
   } catch (error) {
     const code = getErrnoCode(error);
-    if (code === 'ENOENT') {
+    if (code === "ENOENT") {
       return;
     }
     logError(error);
@@ -1088,27 +1088,27 @@ export function getLastPeerDmSummary(messages: Message[]): string | undefined {
     if (!msg) continue;
 
     // Stop at wake-up boundary: a user prompt (string content), not tool results (array content)
-    if (msg.type === 'user' && typeof msg.message.content === 'string') {
+    if (msg.type === "user" && typeof msg.message.content === "string") {
       break;
     }
 
-    if (msg.type !== 'assistant') continue;
+    if (msg.type !== "assistant") continue;
     for (const block of msg.message.content) {
       if (
-        block.type === 'tool_use' &&
+        block.type === "tool_use" &&
         block.name === SEND_MESSAGE_TOOL_NAME &&
-        typeof block.input === 'object' &&
+        typeof block.input === "object" &&
         block.input !== null &&
-        'to' in block.input &&
-        typeof block.input.to === 'string' &&
-        block.input.to !== '*' &&
+        "to" in block.input &&
+        typeof block.input.to === "string" &&
+        block.input.to !== "*" &&
         block.input.to.toLowerCase() !== TEAM_LEAD_NAME.toLowerCase() &&
-        'message' in block.input &&
-        typeof block.input.message === 'string'
+        "message" in block.input &&
+        typeof block.input.message === "string"
       ) {
         const to = block.input.to;
         const summary =
-          'summary' in block.input && typeof block.input.summary === 'string'
+          "summary" in block.input && typeof block.input.summary === "string"
             ? block.input.summary
             : block.input.message.slice(0, 80);
         return `[to ${to}] ${summary}`;

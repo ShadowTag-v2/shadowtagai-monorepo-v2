@@ -1,12 +1,12 @@
-import figures from 'figures';
-import { useEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { getOriginalCwd } from '../../../bootstrap/state.js';
-import type { CommandResultDisplay } from '../../../commands.js';
-import { Select } from '../../../components/CustomSelect/select.js';
-import { Box, Text } from '../../../ink.js';
-import type { ToolPermissionContext } from '../../../Tool.js';
-import { useTabHeaderFocus } from '../../design-system/Tabs.js';
+import figures from "figures";
+import { useEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { getOriginalCwd } from "../../../bootstrap/state.js";
+import type { CommandResultDisplay } from "../../../commands.js";
+import { Select } from "../../../components/CustomSelect/select.js";
+import { Box, Text } from "../../../ink.js";
+import type { ToolPermissionContext } from "../../../Tool.js";
+import { useTabHeaderFocus } from "../../design-system/Tabs.js";
 
 type Props = {
   onExit: (
@@ -67,7 +67,7 @@ export function WorkspaceTab(t0) {
     $[8] !== onRequestRemoveDirectory
   ) {
     t4 = (selectedValue) => {
-      if (selectedValue === 'add-directory') {
+      if (selectedValue === "add-directory") {
         onRequestAddDirectory();
         return;
       }
@@ -87,8 +87,8 @@ export function WorkspaceTab(t0) {
   let t5;
   if ($[10] !== onExit) {
     t5 = () =>
-      onExit('Workspace dialog dismissed', {
-        display: 'system',
+      onExit("Workspace dialog dismissed", {
+        display: "system",
       });
     $[10] = onExit;
     $[11] = t5;
@@ -100,10 +100,10 @@ export function WorkspaceTab(t0) {
   if ($[12] !== additionalDirectories) {
     opts = additionalDirectories.map(_temp2);
     let t6;
-    if ($[14] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
       t6 = {
         label: `Add directory${figures.ellipsis}`,
-        value: 'add-directory',
+        value: "add-directory",
       };
       $[14] = t6;
     } else {
@@ -117,7 +117,7 @@ export function WorkspaceTab(t0) {
   }
   const options = opts;
   let t6;
-  if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Box flexDirection="row" marginTop={1} marginLeft={2} gap={1}>
         <Text>{`-  ${getOriginalCwd()}`}</Text>

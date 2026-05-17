@@ -1,8 +1,8 @@
-import { type FSWatcher, watch } from 'node:fs';
-import { useEffect, useSyncExternalStore } from 'react';
-import { useAppState, useSetAppState } from '../state/AppState.js';
-import { createSignal } from '../utils/signal.js';
-import type { Task } from '../utils/tasks.js';
+import { type FSWatcher, watch } from "node:fs";
+import { useEffect, useSyncExternalStore } from "react";
+import { useAppState, useSetAppState } from "../state/AppState.js";
+import { createSignal } from "../utils/signal.js";
+import type { Task } from "../utils/tasks.js";
 import {
   getTaskListId,
   getTasksDir,
@@ -10,8 +10,8 @@ import {
   listTasks,
   onTasksUpdated,
   resetTaskList,
-} from '../utils/tasks.js';
-import { isTeamLead } from '../utils/teammate.js';
+} from "../utils/tasks.js";
+import { isTeamLead } from "../utils/teammate.js";
 
 const HIDE_DELAY_MS = 5000;
 const DEBOUNCE_MS = 50;
@@ -118,7 +118,7 @@ class TasksV2Store {
     const current = (await listTasks(taskListId)).filter((t) => !t.metadata?._internal);
     this.#tasks = current;
 
-    const hasIncomplete = current.some((t) => t.status !== 'completed');
+    const hasIncomplete = current.some((t) => t.status !== "completed");
 
     if (hasIncomplete || current.length === 0) {
       // Has unresolved tasks (open/in_progress) or empty — reset hide state
@@ -155,7 +155,7 @@ class TasksV2Store {
     // Verify all tasks are still completed before clearing
     void listTasks(currentId).then(async (tasksToCheck) => {
       const allStillCompleted =
-        tasksToCheck.length > 0 && tasksToCheck.every((t) => t.status === 'completed');
+        tasksToCheck.length > 0 && tasksToCheck.every((t) => t.status === "completed");
       if (allStillCompleted) {
         await resetTaskList(currentId);
         this.#tasks = [];
@@ -235,8 +235,8 @@ export function useTasksV2WithCollapseEffect(): Task[] | undefined {
   useEffect(() => {
     if (!hidden) return;
     setAppState((prev) => {
-      if (prev.expandedView !== 'tasks') return prev;
-      return { ...prev, expandedView: 'none' as const };
+      if (prev.expandedView !== "tasks") return prev;
+      return { ...prev, expandedView: "none" as const };
     });
   }, [hidden, setAppState]);
 

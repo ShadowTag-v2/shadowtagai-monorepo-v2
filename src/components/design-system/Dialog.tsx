@@ -1,16 +1,16 @@
-import type React from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import type React from "react";
+import { c as _c } from "react/compiler-runtime";
 import {
   type ExitState,
   useExitOnCtrlCDWithKeybindings,
-} from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import type { Theme } from '../../utils/theme.js';
-import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
-import { Byline } from './Byline.js';
-import { KeyboardShortcutHint } from './KeyboardShortcutHint.js';
-import { Pane } from './Pane.js';
+} from "../../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import type { Theme } from "../../utils/theme.js";
+import { ConfigurableShortcutHint } from "../ConfigurableShortcutHint.js";
+import { Byline } from "./Byline.js";
+import { KeyboardShortcutHint } from "./KeyboardShortcutHint.js";
+import { Pane } from "./Pane.js";
 
 type DialogProps = {
   title: React.ReactNode;
@@ -44,13 +44,13 @@ export function Dialog(t0) {
     inputGuide,
     isCancelActive: t2,
   } = t0;
-  const color = t1 === undefined ? 'permission' : t1;
+  const color = t1 === undefined ? "permission" : t1;
   const isCancelActive = t2 === undefined ? true : t2;
   const exitState = useExitOnCtrlCDWithKeybindings(undefined, undefined, isCancelActive);
   let t3;
   if ($[0] !== isCancelActive) {
     t3 = {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: isCancelActive,
     };
     $[0] = isCancelActive;
@@ -58,7 +58,7 @@ export function Dialog(t0) {
   } else {
     t3 = $[1];
   }
-  useKeybinding('confirm:no', onCancel, t3);
+  useKeybinding("confirm:no", onCancel, t3);
   let t4;
   if ($[2] !== exitState.keyName || $[3] !== exitState.pending) {
     t4 = exitState.pending ? (

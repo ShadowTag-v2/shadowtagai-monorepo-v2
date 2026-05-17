@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Select } from '../../components/CustomSelect/select.js';
-import { Dialog } from '../../components/design-system/Dialog.js';
-import { Box, Text } from '../../ink.js';
+import { useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Select } from "../../components/CustomSelect/select.js";
+import { Dialog } from "../../components/design-system/Dialog.js";
+import { Box, Text } from "../../ink.js";
 
 type Props = {
   onProceed: (signal: AbortSignal) => Promise<void>;
@@ -13,7 +13,7 @@ export function UltrareviewOverageDialog(t0) {
   const { onProceed, onCancel } = t0;
   const [isLaunching, setIsLaunching] = useState(false);
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = new AbortController();
     $[0] = t1;
   } else {
@@ -23,7 +23,7 @@ export function UltrareviewOverageDialog(t0) {
   let t2;
   if ($[1] !== onCancel || $[2] !== onProceed) {
     t2 = (value) => {
-      if (value === 'proceed') {
+      if (value === "proceed") {
         setIsLaunching(true);
         onProceed(abortControllerRef.current.signal).catch(() => setIsLaunching(false));
       } else {
@@ -50,15 +50,15 @@ export function UltrareviewOverageDialog(t0) {
   }
   const handleCancel = t3;
   let t4;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = [
       {
-        label: 'Proceed with Extra Usage billing',
-        value: 'proceed',
+        label: "Proceed with Extra Usage billing",
+        value: "proceed",
       },
       {
-        label: 'Cancel',
-        value: 'cancel',
+        label: "Cancel",
+        value: "cancel",
       },
     ];
     $[6] = t4;
@@ -67,7 +67,7 @@ export function UltrareviewOverageDialog(t0) {
   }
   const options = t4;
   let t5;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Text>
         Your free ultrareviews for this organization are used. Further reviews bill as Extra Usage

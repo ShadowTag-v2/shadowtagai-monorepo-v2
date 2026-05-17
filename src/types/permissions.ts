@@ -6,33 +6,33 @@
  * to avoid circular dependencies.
  */
 
-import { feature } from 'bun:bundle';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
+import { feature } from "bun:bundle";
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
 
 // ============================================================================
 // Permission Modes
 // ============================================================================
 
 export const EXTERNAL_PERMISSION_MODES = [
-  'acceptEdits',
-  'bypassPermissions',
-  'default',
-  'dontAsk',
-  'plan',
+  "acceptEdits",
+  "bypassPermissions",
+  "default",
+  "dontAsk",
+  "plan",
 ] as const;
 
 export type ExternalPermissionMode = (typeof EXTERNAL_PERMISSION_MODES)[number];
 
 // Exhaustive mode union for typechecking. The user-addressable runtime set
 // is INTERNAL_PERMISSION_MODES below.
-export type InternalPermissionMode = ExternalPermissionMode | 'auto' | 'bubble';
+export type InternalPermissionMode = ExternalPermissionMode | "auto" | "bubble";
 export type PermissionMode = InternalPermissionMode;
 
 // Runtime validation set: modes that are user-addressable (settings.json
 // defaultMode, --permission-mode CLI flag, conversation recovery).
 export const INTERNAL_PERMISSION_MODES = [
   ...EXTERNAL_PERMISSION_MODES,
-  ...(feature('TRANSCRIPT_CLASSIFIER') ? (['auto'] as const) : ([] as const)),
+  ...(feature("TRANSCRIPT_CLASSIFIER") ? (["auto"] as const) : ([] as const)),
 ] as const satisfies readonly PermissionMode[];
 
 export const PERMISSION_MODES = INTERNAL_PERMISSION_MODES;
@@ -41,7 +41,7 @@ export const PERMISSION_MODES = INTERNAL_PERMISSION_MODES;
 // Permission Behaviors
 // ============================================================================
 
-export type PermissionBehavior = 'allow' | 'deny' | 'ask';
+export type PermissionBehavior = "allow" | "deny" | "ask";
 
 // ============================================================================
 // Permission Rules
@@ -52,14 +52,14 @@ export type PermissionBehavior = 'allow' | 'deny' | 'ask';
  * Includes all SettingSource values plus additional rule-specific sources.
  */
 export type PermissionRuleSource =
-  | 'userSettings'
-  | 'projectSettings'
-  | 'localSettings'
-  | 'flagSettings'
-  | 'policySettings'
-  | 'cliArg'
-  | 'command'
-  | 'session';
+  | "userSettings"
+  | "projectSettings"
+  | "localSettings"
+  | "flagSettings"
+  | "policySettings"
+  | "cliArg"
+  | "command"
+  | "session";
 
 /**
  * The value of a permission rule - specifies which tool and optional content
@@ -86,46 +86,46 @@ export type PermissionRule = {
  * Where a permission update should be persisted
  */
 export type PermissionUpdateDestination =
-  | 'userSettings'
-  | 'projectSettings'
-  | 'localSettings'
-  | 'session'
-  | 'cliArg';
+  | "userSettings"
+  | "projectSettings"
+  | "localSettings"
+  | "session"
+  | "cliArg";
 
 /**
  * Update operations for permission configuration
  */
 export type PermissionUpdate =
   | {
-      type: 'addRules';
+      type: "addRules";
       destination: PermissionUpdateDestination;
       rules: PermissionRuleValue[];
       behavior: PermissionBehavior;
     }
   | {
-      type: 'replaceRules';
+      type: "replaceRules";
       destination: PermissionUpdateDestination;
       rules: PermissionRuleValue[];
       behavior: PermissionBehavior;
     }
   | {
-      type: 'removeRules';
+      type: "removeRules";
       destination: PermissionUpdateDestination;
       rules: PermissionRuleValue[];
       behavior: PermissionBehavior;
     }
   | {
-      type: 'setMode';
+      type: "setMode";
       destination: PermissionUpdateDestination;
       mode: ExternalPermissionMode;
     }
   | {
-      type: 'addDirectories';
+      type: "addDirectories";
       destination: PermissionUpdateDestination;
       directories: string[];
     }
   | {
-      type: 'removeDirectories';
+      type: "removeDirectories";
       destination: PermissionUpdateDestination;
       directories: string[];
     };
@@ -172,7 +172,7 @@ export type PermissionMetadata = { command: PermissionCommandMetadata } | undefi
 export type PermissionAllowDecision<
   Input extends { [key: string]: unknown } = { [key: string]: unknown },
 > = {
-  behavior: 'allow';
+  behavior: "allow";
   updatedInput?: Input;
   userModified?: boolean;
   decisionReason?: PermissionDecisionReason;
@@ -197,7 +197,7 @@ export type PendingClassifierCheck = {
 export type PermissionAskDecision<
   Input extends { [key: string]: unknown } = { [key: string]: unknown },
 > = {
-  behavior: 'ask';
+  behavior: "ask";
   message: string;
   updatedInput?: Input;
   decisionReason?: PermissionDecisionReason;
@@ -227,7 +227,7 @@ export type PermissionAskDecision<
  * Result when permission is denied
  */
 export type PermissionDenyDecision = {
-  behavior: 'deny';
+  behavior: "deny";
   message: string;
   decisionReason: PermissionDecisionReason;
   toolUseID?: string;
@@ -248,9 +248,9 @@ export type PermissionResult<
 > =
   | PermissionDecision<Input>
   | {
-      behavior: 'passthrough';
+      behavior: "passthrough";
       message: string;
-      decisionReason?: PermissionDecision<Input>['decisionReason'];
+      decisionReason?: PermissionDecision<Input>["decisionReason"];
       suggestions?: PermissionUpdate[];
       blockedPath?: string;
       /**
@@ -265,47 +265,47 @@ export type PermissionResult<
  */
 export type PermissionDecisionReason =
   | {
-      type: 'rule';
+      type: "rule";
       rule: PermissionRule;
     }
   | {
-      type: 'mode';
+      type: "mode";
       mode: PermissionMode;
     }
   | {
-      type: 'subcommandResults';
+      type: "subcommandResults";
       reasons: Map<string, PermissionResult>;
     }
   | {
-      type: 'permissionPromptTool';
+      type: "permissionPromptTool";
       permissionPromptToolName: string;
       toolResult: unknown;
     }
   | {
-      type: 'hook';
+      type: "hook";
       hookName: string;
       hookSource?: string;
       reason?: string;
     }
   | {
-      type: 'asyncAgent';
+      type: "asyncAgent";
       reason: string;
     }
   | {
-      type: 'sandboxOverride';
-      reason: 'excludedCommand' | 'dangerouslyDisableSandbox';
+      type: "sandboxOverride";
+      reason: "excludedCommand" | "dangerouslyDisableSandbox";
     }
   | {
-      type: 'classifier';
+      type: "classifier";
       classifier: string;
       reason: string;
     }
   | {
-      type: 'workingDir';
+      type: "workingDir";
       reason: string;
     }
   | {
-      type: 'safetyCheck';
+      type: "safetyCheck";
       reason: string;
       // When true, auto mode lets the classifier evaluate this instead of
       // forcing a prompt. True for sensitive-file paths (.claude/, .git/,
@@ -314,7 +314,7 @@ export type PermissionDecisionReason =
       classifierApprovable: boolean;
     }
   | {
-      type: 'other';
+      type: "other";
       reason: string;
     };
 
@@ -325,11 +325,11 @@ export type PermissionDecisionReason =
 export type ClassifierResult = {
   matches: boolean;
   matchedDescription?: string;
-  confidence: 'high' | 'medium' | 'low';
+  confidence: "high" | "medium" | "low";
   reason: string;
 };
 
-export type ClassifierBehavior = 'deny' | 'ask' | 'allow';
+export type ClassifierBehavior = "deny" | "ask" | "allow";
 
 export type ClassifierUsage = {
   inputTokens: number;
@@ -364,7 +364,7 @@ export type YoloClassifierResult = {
   /** Path where error prompts were dumped (only set when unavailable due to API error) */
   errorDumpPath?: string;
   /** Which classifier stage produced the final decision (2-stage XML only) */
-  stage?: 'fast' | 'thinking';
+  stage?: "fast" | "thinking";
   /** Token usage from stage 1 (fast) when stage 2 was also run */
   stage1Usage?: ClassifierUsage;
   /** Duration of stage 1 in ms when stage 2 was also run */
@@ -395,7 +395,7 @@ export type YoloClassifierResult = {
 // Permission Explainer Types
 // ============================================================================
 
-export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH';
+export type RiskLevel = "LOW" | "MEDIUM" | "HIGH";
 
 export type PermissionExplanation = {
   riskLevel: RiskLevel;

@@ -11,26 +11,26 @@
 
 // Mirroring the COMPACTABLE_TOOLS set from microCompact.ts
 const COMPACTABLE_TOOLS = new Set<string>([
-  'Read',
-  'file_read',
-  'Bash',
-  'bash',
-  'Grep',
-  'grep',
-  'Glob',
-  'glob',
-  'WebSearch',
-  'web_search',
-  'WebFetch',
-  'web_fetch',
-  'FileEdit',
-  'file_edit',
-  'FileWrite',
-  'file_write',
+  "Read",
+  "file_read",
+  "Bash",
+  "bash",
+  "Grep",
+  "grep",
+  "Glob",
+  "glob",
+  "WebSearch",
+  "web_search",
+  "WebFetch",
+  "web_fetch",
+  "FileEdit",
+  "file_edit",
+  "FileWrite",
+  "file_write",
 ]);
 
 // Image placeholder replaces image blocks during compaction (~2000 tokens each saved)
-const IMAGE_PLACEHOLDER = '[Image content removed during compaction]';
+const IMAGE_PLACEHOLDER = "[Image content removed during compaction]";
 
 interface ContentBlock {
   type: string;
@@ -47,7 +47,7 @@ interface ContentBlock {
  * (e.g., FileEdit, Task) keep their full output to preserve semantic context.
  */
 function isCompactableToolResult(block: ContentBlock, toolNameMap: Map<string, string>): boolean {
-  if (block.type !== 'tool_result') return false;
+  if (block.type !== "tool_result") return false;
   const toolName = block.tool_use_id ? toolNameMap.get(block.tool_use_id) : undefined;
   return toolName ? COMPACTABLE_TOOLS.has(toolName) : true; // Default to compactable if unknown
 }
@@ -63,7 +63,7 @@ function buildToolNameMap(messages: Record<string, unknown>[]): Map<string, stri
     const content = msg.content;
     if (!Array.isArray(content)) continue;
     for (const block of content as ContentBlock[]) {
-      if (block.type === 'tool_use' && block.id && block.name) {
+      if (block.type === "tool_use" && block.id && block.name) {
         map.set(block.id as string, block.name);
       }
     }
@@ -73,8 +73,8 @@ function buildToolNameMap(messages: Record<string, unknown>[]): Map<string, stri
 
 function normalizeWhitespace(text: string): string {
   return text
-    .replace(/\n{3,}/g, '\n\n')
-    .replace(/[ \t]+$/gm, '')
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]+$/gm, "")
     .trim();
 }
 
@@ -97,12 +97,12 @@ export function apiMicrocompact(
     const role = message.role as string;
 
     // System messages pass through unmodified
-    if (role === 'system') return message;
+    if (role === "system") return message;
 
     const content = message.content;
 
     // String content: just normalize whitespace
-    if (typeof content === 'string') {
+    if (typeof content === "string") {
       return {
         ...message,
         content: normalizeWhitespace(content),
@@ -114,17 +114,17 @@ export function apiMicrocompact(
     if (Array.isArray(content)) {
       const processedContent = (content as ContentBlock[]).map((block) => {
         // Text blocks: normalize whitespace
-        if (block.type === 'text' && typeof block.text === 'string') {
+        if (block.type === "text" && typeof block.text === "string") {
           return { ...block, text: normalizeWhitespace(block.text) };
         }
 
         // Image blocks: replace with placeholder to save tokens
-        if (block.type === 'image') {
-          return { type: 'text', text: IMAGE_PLACEHOLDER };
+        if (block.type === "image") {
+          return { type: "text", text: IMAGE_PLACEHOLDER };
         }
 
         // Tool result blocks: truncate if compactable
-        if (block.type === 'tool_result' && typeof block.content === 'string') {
+        if (block.type === "tool_result" && typeof block.content === "string") {
           if (isCompactableToolResult(block, toolNameMap)) {
             return {
               ...block,

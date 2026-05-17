@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { Box, Text } from '../../ink.js';
-import { Select } from '../CustomSelect/select.js';
-import { PermissionDialog } from '../permissions/PermissionDialog.js';
+import * as React from "react";
+import { Box, Text } from "../../ink.js";
+import { Select } from "../CustomSelect/select.js";
+import { PermissionDialog } from "../permissions/PermissionDialog.js";
 
 type Props = {
   pluginName: string;
   pluginDescription?: string;
   fileExtension: string;
-  onResponse: (response: 'yes' | 'no' | 'never' | 'disable') => void;
+  onResponse: (response: "yes" | "no" | "never" | "disable") => void;
 };
 const AUTO_DISMISS_MS = 30_000;
 export function LspRecommendationMenu({
@@ -22,22 +22,22 @@ export function LspRecommendationMenu({
 
   // 30-second auto-dismiss timer - counts as ignored (no)
   React.useEffect(() => {
-    const timeoutId = setTimeout((ref) => ref.current('no'), AUTO_DISMISS_MS, onResponseRef);
+    const timeoutId = setTimeout((ref) => ref.current("no"), AUTO_DISMISS_MS, onResponseRef);
     return () => clearTimeout(timeoutId);
   }, []);
   function onSelect(value: string): void {
     switch (value) {
-      case 'yes':
-        onResponse('yes');
+      case "yes":
+        onResponse("yes");
         break;
-      case 'no':
-        onResponse('no');
+      case "no":
+        onResponse("no");
         break;
-      case 'never':
-        onResponse('never');
+      case "never":
+        onResponse("never");
         break;
-      case 'disable':
-        onResponse('disable');
+      case "disable":
+        onResponse("disable");
         break;
     }
   }
@@ -48,11 +48,11 @@ export function LspRecommendationMenu({
           Yes, install <Text bold>{pluginName}</Text>
         </Text>
       ),
-      value: 'yes',
+      value: "yes",
     },
     {
-      label: 'No, not now',
-      value: 'no',
+      label: "No, not now",
+      value: "no",
     },
     {
       label: (
@@ -60,11 +60,11 @@ export function LspRecommendationMenu({
           Never for <Text bold>{pluginName}</Text>
         </Text>
       ),
-      value: 'never',
+      value: "never",
     },
     {
-      label: 'Disable all LSP recommendations',
-      value: 'disable',
+      label: "Disable all LSP recommendations",
+      value: "disable",
     },
   ];
   return (
@@ -92,7 +92,7 @@ export function LspRecommendationMenu({
           <Text>Would you like to install this LSP plugin?</Text>
         </Box>
         <Box>
-          <Select options={options} onChange={onSelect} onCancel={() => onResponse('no')} />
+          <Select options={options} onChange={onSelect} onCancel={() => onResponse("no")} />
         </Box>
       </Box>
     </PermissionDialog>

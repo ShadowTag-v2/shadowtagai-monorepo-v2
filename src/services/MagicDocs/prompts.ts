@@ -1,6 +1,6 @@
-import { join } from 'node:path';
-import { getClaudeConfigHomeDir } from '../../utils/envUtils.js';
-import { getFsImplementation } from '../../utils/fsOperations.js';
+import { join } from "node:path";
+import { getClaudeConfigHomeDir } from "../../utils/envUtils.js";
+import { getFsImplementation } from "../../utils/fsOperations.js";
 
 /**
  * Get the Magic Docs update prompt template
@@ -65,10 +65,10 @@ REMEMBER: Only update if there is substantial new information. The Magic Doc hea
  */
 async function loadMagicDocsPrompt(): Promise<string> {
   const fs = getFsImplementation();
-  const promptPath = join(getClaudeConfigHomeDir(), 'magic-docs', 'prompt.md');
+  const promptPath = join(getClaudeConfigHomeDir(), "magic-docs", "prompt.md");
 
   try {
-    return await fs.readFile(promptPath, { encoding: 'utf-8' });
+    return await fs.readFile(promptPath, { encoding: "utf-8" });
   } catch {
     // Silently fall back to default if custom prompt doesn't exist or fails to load
     return getUpdatePromptTemplate();
@@ -108,7 +108,7 @@ The document author has provided specific instructions for how this file should 
 "${instructions}"
 
 These instructions take priority over the general rules below. Make sure your updates align with these specific guidelines.`
-    : '';
+    : "";
 
   // Substitute variables in the prompt
   const variables = {

@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
-import { Box, NoSelect, Text } from '../../../ink.js';
-import { intersperse } from '../../../utils/array.js';
-import { getPatchForDisplay } from '../../../utils/diff.js';
-import { HighlightedCode } from '../../HighlightedCode.js';
-import { StructuredDiff } from '../../StructuredDiff.js';
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../../../hooks/useTerminalSize.js";
+import { Box, NoSelect, Text } from "../../../ink.js";
+import { intersperse } from "../../../utils/array.js";
+import { getPatchForDisplay } from "../../../utils/diff.js";
+import { HighlightedCode } from "../../HighlightedCode.js";
+import { StructuredDiff } from "../../StructuredDiff.js";
 
 type Props = {
   file_path: string;
@@ -47,7 +47,7 @@ export function FileWriteToolDiff(t0) {
   const hunks = t1;
   let t2;
   if ($[4] !== content) {
-    t2 = content.split('\n')[0] ?? null;
+    t2 = content.split("\n")[0] ?? null;
     $[4] = content;
     $[5] = t2;
   } else {
@@ -79,7 +79,7 @@ export function FileWriteToolDiff(t0) {
         _temp,
       )
     ) : (
-      <HighlightedCode code={content || '(No content)'} filePath={file_path} />
+      <HighlightedCode code={content || "(No content)"} filePath={file_path} />
     );
     $[6] = columns;
     $[7] = content;

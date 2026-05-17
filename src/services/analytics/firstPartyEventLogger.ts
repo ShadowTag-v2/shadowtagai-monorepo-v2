@@ -1,22 +1,22 @@
-import { randomUUID } from 'node:crypto';
-import type { AnyValueMap, Logger, logs } from '@opentelemetry/api-logs';
-import { resourceFromAttributes } from '@opentelemetry/resources';
-import { BatchLogRecordProcessor, LoggerProvider } from '@opentelemetry/sdk-logs';
-import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
-import { isEqual } from 'lodash-es';
-import { getOrCreateUserID } from '../../utils/config.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { logError } from '../../utils/log.js';
-import { getPlatform, getWslVersion } from '../../utils/platform.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { profileCheckpoint } from '../../utils/startupProfiler.js';
-import { getCoreUserData } from '../../utils/user.js';
-import { isAnalyticsDisabled } from './config.js';
-import { FirstPartyEventLoggingExporter } from './firstPartyEventLoggingExporter.js';
-import type { GrowthBookUserAttributes } from './growthbook.js';
-import { getDynamicConfig_CACHED_MAY_BE_STALE } from './growthbook.js';
-import { getEventMetadata } from './metadata.js';
-import { isSinkKilled } from './sinkKillswitch.js';
+import { randomUUID } from "node:crypto";
+import type { AnyValueMap, Logger, logs } from "@opentelemetry/api-logs";
+import { resourceFromAttributes } from "@opentelemetry/resources";
+import { BatchLogRecordProcessor, LoggerProvider } from "@opentelemetry/sdk-logs";
+import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from "@opentelemetry/semantic-conventions";
+import { isEqual } from "lodash-es";
+import { getOrCreateUserID } from "../../utils/config.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { logError } from "../../utils/log.js";
+import { getPlatform, getWslVersion } from "../../utils/platform.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { profileCheckpoint } from "../../utils/startupProfiler.js";
+import { getCoreUserData } from "../../utils/user.js";
+import { isAnalyticsDisabled } from "./config.js";
+import { FirstPartyEventLoggingExporter } from "./firstPartyEventLoggingExporter.js";
+import type { GrowthBookUserAttributes } from "./growthbook.js";
+import { getDynamicConfig_CACHED_MAY_BE_STALE } from "./growthbook.js";
+import { getEventMetadata } from "./metadata.js";
+import { isSinkKilled } from "./sinkKillswitch.js";
 
 /**
  * Configuration for sampling individual event types.
@@ -29,7 +29,7 @@ export type EventSamplingConfig = {
   };
 };
 
-const EVENT_SAMPLING_CONFIG_NAME = 'tengu_event_sampling_config';
+const EVENT_SAMPLING_CONFIG_NAME = "tengu_event_sampling_config";
 /**
  * Get the event sampling configuration from GrowthBook.
  * Uses cached value if available, updates cache in background.
@@ -57,7 +57,7 @@ export function shouldSampleEvent(eventName: string): number | null {
   const sampleRate = eventConfig.sample_rate;
 
   // Validate sample rate is in valid range
-  if (typeof sampleRate !== 'number' || sampleRate < 0 || sampleRate > 1) {
+  if (typeof sampleRate !== "number" || sampleRate < 0 || sampleRate > 1) {
     return null;
   }
 
@@ -75,7 +75,7 @@ export function shouldSampleEvent(eventName: string): number | null {
   return Math.random() < sampleRate ? sampleRate : 0;
 }
 
-const BATCH_CONFIG_NAME = 'tengu_1p_event_batch_config';
+const BATCH_CONFIG_NAME = "tengu_1p_event_batch_config";
 type BatchConfig = {
   scheduledDelayMillis?: number;
   maxExportBatchSize?: number;
@@ -107,8 +107,8 @@ export async function shutdown1PEventLogging(): Promise<void> {
   }
   try {
     await firstPartyEventLoggerProvider.shutdown();
-    if (process.env.USER_TYPE === 'ant') {
-      logForDebugging('1P event logging: final shutdown complete');
+    if (process.env.USER_TYPE === "ant") {
+      logForDebugging("1P event logging: final shutdown complete");
     }
   } catch {
     // Ignore shutdown errors
@@ -172,7 +172,7 @@ async function logEventTo1PAsync(
     }
 
     // Debug logging when debug mode is enabled
-    if (process.env.USER_TYPE === 'ant') {
+    if (process.env.USER_TYPE === "ant") {
       logForDebugging(`[ANT-ONLY] 1P event: ${eventName} ${jsonStringify(metadata, null, 0)}`);
     }
 
@@ -182,10 +182,10 @@ async function logEventTo1PAsync(
       attributes,
     });
   } catch (e) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       throw e;
     }
-    if (process.env.USER_TYPE === 'ant') {
+    if (process.env.USER_TYPE === "ant") {
       logError(e as Error);
     }
     // swallow
@@ -207,7 +207,7 @@ export function logEventTo1P(
     return;
   }
 
-  if (!firstPartyEventLogger || isSinkKilled('firstParty')) {
+  if (!firstPartyEventLogger || isSinkKilled("firstParty")) {
     return;
   }
 
@@ -229,7 +229,7 @@ export type GrowthBookExperimentData = {
 // (see starling/starling/cli/cli.py DEFAULT_ENVIRONMENTS). Staging and
 // development environments are not exported to the prod API.
 function getEnvironmentForGrowthBook(): string {
-  return 'production';
+  return "production";
 }
 
 /**
@@ -243,7 +243,7 @@ export function logGrowthBookExperimentTo1P(data: GrowthBookExperimentData): voi
     return;
   }
 
-  if (!firstPartyEventLogger || isSinkKilled('firstParty')) {
+  if (!firstPartyEventLogger || isSinkKilled("firstParty")) {
     return;
   }
 
@@ -252,7 +252,7 @@ export function logGrowthBookExperimentTo1P(data: GrowthBookExperimentData): voi
 
   // Build attributes for GrowthbookExperimentEvent
   const attributes = {
-    event_type: 'GrowthbookExperimentEvent',
+    event_type: "GrowthbookExperimentEvent",
     event_id: randomUUID(),
     experiment_id: data.experimentId,
     variation_id: data.variationId,
@@ -269,14 +269,14 @@ export function logGrowthBookExperimentTo1P(data: GrowthBookExperimentData): voi
     environment: getEnvironmentForGrowthBook(),
   };
 
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     logForDebugging(
       `[ANT-ONLY] 1P GrowthBook experiment: ${data.experimentId} variation=${data.variationId}`,
     );
   }
 
   firstPartyEventLogger.emit({
-    body: 'growthbook_experiment',
+    body: "growthbook_experiment",
     attributes,
   });
 }
@@ -294,12 +294,12 @@ const DEFAULT_MAX_QUEUE_SIZE = 8192;
  * we need for internal analytics (service name, version, platform info).
  */
 export function initialize1PEventLogging(): void {
-  profileCheckpoint('1p_event_logging_start');
+  profileCheckpoint("1p_event_logging_start");
   const enabled = is1PEventLoggingEnabled();
 
   if (!enabled) {
-    if (process.env.USER_TYPE === 'ant') {
-      logForDebugging('1P event logging not enabled');
+    if (process.env.USER_TYPE === "ant") {
+      logForDebugging("1P event logging not enabled");
     }
     return;
   }
@@ -308,7 +308,7 @@ export function initialize1PEventLogging(): void {
   // Uses cached value if available, refreshes in background
   const batchConfig = getBatchConfig();
   lastBatchConfig = batchConfig;
-  profileCheckpoint('1p_event_after_growthbook_config');
+  profileCheckpoint("1p_event_after_growthbook_config");
 
   const scheduledDelayMillis =
     batchConfig.scheduledDelayMillis ||
@@ -324,15 +324,15 @@ export function initialize1PEventLogging(): void {
   // Build our own resource for 1P event logging with minimal attributes
   const platform = getPlatform();
   const attributes: Record<string, string> = {
-    [ATTR_SERVICE_NAME]: 'claude-code',
+    [ATTR_SERVICE_NAME]: "claude-code",
     [ATTR_SERVICE_VERSION]: MACRO.VERSION,
   };
 
   // Add WSL-specific attributes if running on WSL
-  if (platform === 'wsl') {
+  if (platform === "wsl") {
     const wslVersion = getWslVersion();
     if (wslVersion) {
-      attributes['wsl.version'] = wslVersion;
+      attributes["wsl.version"] = wslVersion;
     }
   }
 
@@ -348,7 +348,7 @@ export function initialize1PEventLogging(): void {
     maxAttempts: batchConfig.maxAttempts,
     path: batchConfig.path,
     baseUrl: batchConfig.baseUrl,
-    isKilled: () => isSinkKilled('firstParty'),
+    isKilled: () => isSinkKilled("firstParty"),
   });
   firstPartyEventLoggerProvider = new LoggerProvider({
     resource,
@@ -366,7 +366,7 @@ export function initialize1PEventLogging(): void {
   // because logs.getLogger() returns a logger from the global provider, which is
   // separate and used for customer telemetry.
   firstPartyEventLogger = firstPartyEventLoggerProvider.getLogger(
-    'com.anthropic.claude_code.events',
+    "com.anthropic.claude_code.events",
     MACRO.VERSION,
   );
 }
@@ -398,7 +398,7 @@ export async function reinitialize1PEventLoggingIfConfigChanged(): Promise<void>
     return;
   }
 
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     logForDebugging(`1P event logging: ${BATCH_CONFIG_NAME} changed, reinitializing`);
   }
 

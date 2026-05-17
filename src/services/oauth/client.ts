@@ -1,26 +1,26 @@
 // OAuth client for handling authentication flows with Claude services
-import axios from 'axios';
+import axios from "axios";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
+} from "src/services/analytics/index.js";
 import {
   ALL_OAUTH_SCOPES,
   CLAUDE_AI_INFERENCE_SCOPE,
   CLAUDE_AI_OAUTH_SCOPES,
   getOauthConfig,
-} from '../../constants/oauth.js';
+} from "../../constants/oauth.js";
 import {
   checkAndRefreshOAuthTokenIfNeeded,
   getClaudeAIOAuthTokens,
   hasProfileScope,
   isClaudeAISubscriber,
   saveApiKey,
-} from '../../utils/auth.js';
-import type { AccountInfo } from '../../utils/config.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { getOauthProfileFromOauthToken } from './getOauthProfile.js';
+} from "../../utils/auth.js";
+import type { AccountInfo } from "../../utils/config.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { getOauthProfileFromOauthToken } from "./getOauthProfile.js";
 import type {
   BillingType,
   OAuthProfileResponse,
@@ -29,7 +29,7 @@ import type {
   RateLimitTier,
   SubscriptionType,
   UserRolesResponse,
-} from './types.js';
+} from "./types.js";
 
 /**
  * Check if the user has Claude.ai authentication scope
@@ -40,7 +40,7 @@ export function shouldUseClaudeAIAuth(scopes: string[] | undefined): boolean {
 }
 
 export function parseScopes(scopeString?: string): string[] {
-  return scopeString?.split(' ').filter(Boolean) ?? [];
+  return scopeString?.split(" ").filter(Boolean) ?? [];
 }
 
 export function buildAuthUrl({
@@ -69,34 +69,34 @@ export function buildAuthUrl({
     : getOauthConfig().CONSOLE_AUTHORIZE_URL;
 
   const authUrl = new URL(authUrlBase);
-  authUrl.searchParams.append('code', 'true'); // this tells the login page to show Claude Max upsell
-  authUrl.searchParams.append('client_id', getOauthConfig().CLIENT_ID);
-  authUrl.searchParams.append('response_type', 'code');
+  authUrl.searchParams.append("code", "true"); // this tells the login page to show Claude Max upsell
+  authUrl.searchParams.append("client_id", getOauthConfig().CLIENT_ID);
+  authUrl.searchParams.append("response_type", "code");
   authUrl.searchParams.append(
-    'redirect_uri',
+    "redirect_uri",
     isManual ? getOauthConfig().MANUAL_REDIRECT_URL : `http://localhost:${port}/callback`,
   );
   const scopesToUse = inferenceOnly
     ? [CLAUDE_AI_INFERENCE_SCOPE] // Long-lived inference-only tokens
     : ALL_OAUTH_SCOPES;
-  authUrl.searchParams.append('scope', scopesToUse.join(' '));
-  authUrl.searchParams.append('code_challenge', codeChallenge);
-  authUrl.searchParams.append('code_challenge_method', 'S256');
-  authUrl.searchParams.append('state', state);
+  authUrl.searchParams.append("scope", scopesToUse.join(" "));
+  authUrl.searchParams.append("code_challenge", codeChallenge);
+  authUrl.searchParams.append("code_challenge_method", "S256");
+  authUrl.searchParams.append("state", state);
 
   // Add orgUUID as URL param if provided
   if (orgUUID) {
-    authUrl.searchParams.append('orgUUID', orgUUID);
+    authUrl.searchParams.append("orgUUID", orgUUID);
   }
 
   // Pre-populate email on the login form (standard OIDC parameter)
   if (loginHint) {
-    authUrl.searchParams.append('login_hint', loginHint);
+    authUrl.searchParams.append("login_hint", loginHint);
   }
 
   // Request a specific login method (e.g. 'sso', 'magic_link', 'google')
   if (loginMethod) {
-    authUrl.searchParams.append('login_method', loginMethod);
+    authUrl.searchParams.append("login_method", loginMethod);
   }
 
   return authUrl.toString();
@@ -111,7 +111,7 @@ export async function exchangeCodeForTokens(
   expiresIn?: number,
 ): Promise<OAuthTokenExchangeResponse> {
   const requestBody: Record<string, string | number> = {
-    grant_type: 'authorization_code',
+    grant_type: "authorization_code",
     code: authorizationCode,
     redirect_uri: useManualRedirect
       ? getOauthConfig().MANUAL_REDIRECT_URL
@@ -126,18 +126,18 @@ export async function exchangeCodeForTokens(
   }
 
   const response = await axios.post(getOauthConfig().TOKEN_URL, requestBody, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
     timeout: 15000,
   });
 
   if (response.status !== 200) {
     throw new Error(
       response.status === 401
-        ? 'Authentication failed: Invalid authorization code'
+        ? "Authentication failed: Invalid authorization code"
         : `Token exchange failed (${response.status}): ${response.statusText}`,
     );
   }
-  logEvent('tengu_oauth_token_exchange_success', {});
+  logEvent("tengu_oauth_token_exchange_success", {});
   return response.data;
 }
 
@@ -146,7 +146,7 @@ export async function refreshOAuthToken(
   { scopes: requestedScopes }: { scopes?: string[] } = {},
 ): Promise<OAuthTokens> {
   const requestBody = {
-    grant_type: 'refresh_token',
+    grant_type: "refresh_token",
     refresh_token: refreshToken,
     client_id: getOauthConfig().CLIENT_ID,
     // Request specific scopes, defaulting to the full Claude AI set. The
@@ -154,12 +154,12 @@ export async function refreshOAuthToken(
     // initial authorize granted (see ALLOWED_SCOPE_EXPANSIONS), so this is
     // safe even for tokens issued before scopes were added to the app's
     // registered oauth_scope.
-    scope: (requestedScopes?.length ? requestedScopes : CLAUDE_AI_OAUTH_SCOPES).join(' '),
+    scope: (requestedScopes?.length ? requestedScopes : CLAUDE_AI_OAUTH_SCOPES).join(" "),
   };
 
   try {
     const response = await axios.post(getOauthConfig().TOKEN_URL, requestBody, {
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
       timeout: 15000,
     });
 
@@ -177,7 +177,7 @@ export async function refreshOAuthToken(
     const expiresAt = Date.now() + expiresIn * 1000;
     const scopes = parseScopes(data.scope);
 
-    logEvent('tengu_oauth_token_refresh_success', {});
+    logEvent("tengu_oauth_token_refresh_success", {});
 
     // Skip the extra /api/oauth/profile round-trip when we already have both
     // the global-config profile fields AND the secure-storage subscription data.
@@ -209,7 +209,7 @@ export async function refreshOAuthToken(
       if (profileInfo.displayName !== undefined) {
         updates.displayName = profileInfo.displayName;
       }
-      if (typeof profileInfo.hasExtraUsageEnabled === 'boolean') {
+      if (typeof profileInfo.hasExtraUsageEnabled === "boolean") {
         updates.hasExtraUsageEnabled = profileInfo.hasExtraUsageEnabled;
       }
       if (profileInfo.billingType !== null) {
@@ -252,7 +252,7 @@ export async function refreshOAuthToken(
       axios.isAxiosError(error) && error.response?.data
         ? JSON.stringify(error.response.data)
         : undefined;
-    logEvent('tengu_oauth_token_refresh_failure', {
+    logEvent("tengu_oauth_token_refresh_failure", {
       error: (error as Error).message as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       ...(responseBody && {
         responseBody: responseBody as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -274,7 +274,7 @@ export async function fetchAndStoreUserRoles(accessToken: string): Promise<void>
   const config = getGlobalConfig();
 
   if (!config.oauthAccount) {
-    throw new Error('OAuth account information not found in config');
+    throw new Error("OAuth account information not found in config");
   }
 
   saveGlobalConfig((current) => ({
@@ -289,7 +289,7 @@ export async function fetchAndStoreUserRoles(accessToken: string): Promise<void>
       : current.oauthAccount,
   }));
 
-  logEvent('tengu_oauth_roles_stored', {
+  logEvent("tengu_oauth_roles_stored", {
     org_role: data.organization_role as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 }
@@ -303,16 +303,16 @@ export async function createAndStoreApiKey(accessToken: string): Promise<string 
     const apiKey = response.data?.raw_key;
     if (apiKey) {
       await saveApiKey(apiKey);
-      logEvent('tengu_oauth_api_key', {
-        status: 'success' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      logEvent("tengu_oauth_api_key", {
+        status: "success" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         statusCode: response.status,
       });
       return apiKey;
     }
     return null;
   } catch (error) {
-    logEvent('tengu_oauth_api_key', {
-      status: 'failure' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    logEvent("tengu_oauth_api_key", {
+      status: "failure" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       error: (error instanceof Error
         ? error.message
         : String(error)) as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -348,17 +348,17 @@ export async function fetchProfileInfo(accessToken: string): Promise<{
   // Reuse the logic from fetchSubscriptionType
   let subscriptionType: SubscriptionType | null = null;
   switch (orgType) {
-    case 'claude_max':
-      subscriptionType = 'max';
+    case "claude_max":
+      subscriptionType = "max";
       break;
-    case 'claude_pro':
-      subscriptionType = 'pro';
+    case "claude_pro":
+      subscriptionType = "pro";
       break;
-    case 'claude_enterprise':
-      subscriptionType = 'enterprise';
+    case "claude_enterprise":
+      subscriptionType = "enterprise";
       break;
-    case 'claude_team':
-      subscriptionType = 'team';
+    case "claude_team":
+      subscriptionType = "team";
       break;
     default:
       // Return null for unknown organization types
@@ -393,7 +393,7 @@ export async function fetchProfileInfo(accessToken: string): Promise<{
     result.subscriptionCreatedAt = profile.organization.subscription_created_at;
   }
 
-  logEvent('tengu_oauth_profile_fetch_success', {});
+  logEvent("tengu_oauth_profile_fetch_success", {});
 
   return { ...result, rawProfile: profile };
 }
@@ -468,8 +468,8 @@ export async function populateOAuthAccountInfoIfNeeded(): Promise<boolean> {
     const profile = await getOauthProfileFromOauthToken(tokens.accessToken);
     if (profile) {
       if (hasEnvVars) {
-        logForDebugging('OAuth profile fetch succeeded, overriding env var account info', {
-          level: 'info',
+        logForDebugging("OAuth profile fetch succeeded, overriding env var account info", {
+          level: "info",
         });
       }
       storeOAuthAccountInfo({

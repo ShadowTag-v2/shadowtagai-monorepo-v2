@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react';
-import { logError } from 'src/utils/log.js';
-import { z } from 'zod/v4';
-import type { ConnectedMCPServer, MCPServerConnection } from '../services/mcp/types.js';
-import { getConnectedIdeClient } from '../utils/ide.js';
-import { lazySchema } from '../utils/lazySchema.js';
+import { useEffect, useRef } from "react";
+import { logError } from "src/utils/log.js";
+import { z } from "zod/v4";
+import type { ConnectedMCPServer, MCPServerConnection } from "../services/mcp/types.js";
+import { getConnectedIdeClient } from "../utils/ide.js";
+import { lazySchema } from "../utils/lazySchema.js";
 export type SelectionPoint = {
   line: number;
   character: number;
@@ -28,7 +28,7 @@ export type IDESelection = {
 // Define the selection changed notification schema
 const SelectionChangedSchema = lazySchema(() =>
   z.object({
-    method: z.literal('selection_changed'),
+    method: z.literal("selection_changed"),
     params: z.object({
       selection: z
         .object({

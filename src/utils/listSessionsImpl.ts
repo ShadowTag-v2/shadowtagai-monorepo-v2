@@ -7,11 +7,11 @@
  * initialization or pulling in expensive dependency chains.
  */
 
-import type { Dirent } from 'node:fs';
-import { readdir, stat } from 'node:fs/promises';
-import { basename, join } from 'node:path';
-import { getWorktreePathsPortable } from './getWorktreePathsPortable.js';
-import type { LiteSessionFile } from './sessionStoragePortable.js';
+import type { Dirent } from "node:fs";
+import { readdir, stat } from "node:fs/promises";
+import { basename, join } from "node:path";
+import { getWorktreePathsPortable } from "./getWorktreePathsPortable.js";
+import type { LiteSessionFile } from "./sessionStoragePortable.js";
 import {
   canonicalizePath,
   extractFirstPromptFromHead,
@@ -23,7 +23,7 @@ import {
   readSessionLite,
   sanitizePath,
   validateUuid,
-} from './sessionStoragePortable.js';
+} from "./sessionStoragePortable.js";
 
 /**
  * Session metadata returned by listSessions.
@@ -84,7 +84,7 @@ export function parseSessionInfoFromLite(
   const { head, tail, mtime, size } = lite;
 
   // Check first line for sidechain sessions
-  const firstNewline = head.indexOf('\n');
+  const firstNewline = head.indexOf("\n");
   const firstLine = firstNewline >= 0 ? head.slice(0, firstNewline) : head;
   if (firstLine.includes('"isSidechain":true') || firstLine.includes('"isSidechain": true')) {
     return null;
@@ -92,15 +92,15 @@ export function parseSessionInfoFromLite(
   // User title (customTitle) wins over AI title (aiTitle); distinct
   // field names mean extractLastJsonStringField naturally disambiguates.
   const customTitle =
-    extractLastJsonStringField(tail, 'customTitle') ||
-    extractLastJsonStringField(head, 'customTitle') ||
-    extractLastJsonStringField(tail, 'aiTitle') ||
-    extractLastJsonStringField(head, 'aiTitle') ||
+    extractLastJsonStringField(tail, "customTitle") ||
+    extractLastJsonStringField(head, "customTitle") ||
+    extractLastJsonStringField(tail, "aiTitle") ||
+    extractLastJsonStringField(head, "aiTitle") ||
     undefined;
   const firstPrompt = extractFirstPromptFromHead(head) || undefined;
   // First entry's ISO timestamp → epoch ms. More reliable than
   // stat().birthtime which is unsupported on some filesystems.
-  const firstTimestamp = extractJsonStringField(head, 'timestamp');
+  const firstTimestamp = extractJsonStringField(head, "timestamp");
   let createdAt: number | undefined;
   if (firstTimestamp) {
     const parsed = Date.parse(firstTimestamp);
@@ -111,22 +111,22 @@ export function parseSessionInfoFromLite(
   // Head scan is fallback for sessions without a last-prompt entry.
   const summary =
     customTitle ||
-    extractLastJsonStringField(tail, 'lastPrompt') ||
-    extractLastJsonStringField(tail, 'summary') ||
+    extractLastJsonStringField(tail, "lastPrompt") ||
+    extractLastJsonStringField(tail, "summary") ||
     firstPrompt;
 
   // Skip metadata-only sessions (no title, no summary, no prompt)
   if (!summary) return null;
   const gitBranch =
-    extractLastJsonStringField(tail, 'gitBranch') ||
-    extractJsonStringField(head, 'gitBranch') ||
+    extractLastJsonStringField(tail, "gitBranch") ||
+    extractJsonStringField(head, "gitBranch") ||
     undefined;
-  const sessionCwd = extractJsonStringField(head, 'cwd') || projectPath || undefined;
+  const sessionCwd = extractJsonStringField(head, "cwd") || projectPath || undefined;
   // Type-scope tag extraction to the {"type":"tag"} JSONL line to avoid
   // collision with tool_use inputs containing a `tag` parameter (git tag,
   // Docker tags, cloud resource tags). Mirrors sessionStorage.ts:608.
-  const tagLine = tail.split('\n').findLast((l) => l.startsWith('{"type":"tag"'));
-  const tag = tagLine ? extractLastJsonStringField(tagLine, 'tag') || undefined : undefined;
+  const tagLine = tail.split("\n").findLast((l) => l.startsWith('{"type":"tag"'));
+  const tag = tagLine ? extractLastJsonStringField(tagLine, "tag") || undefined : undefined;
 
   return {
     sessionId,
@@ -174,7 +174,7 @@ export async function listCandidates(
 
   const results = await Promise.all(
     names.map(async (name): Promise<Candidate | null> => {
-      if (!name.endsWith('.jsonl')) return null;
+      if (!name.endsWith(".jsonl")) return null;
       const sessionId = validateUuid(name.slice(0, -6));
       if (!sessionId) return null;
       const filePath = join(projectDir, name);
@@ -327,7 +327,7 @@ async function gatherProjectCandidates(
 
   // Worktree-aware scanning: find all project dirs matching any worktree
   const projectsDir = getProjectsDir();
-  const caseInsensitive = process.platform === 'win32';
+  const caseInsensitive = process.platform === "win32";
 
   // Sort worktree paths by sanitized prefix length (longest first) so
   // more specific matches take priority over shorter ones

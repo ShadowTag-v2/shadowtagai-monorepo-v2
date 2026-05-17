@@ -1,16 +1,16 @@
-import { logForDebugging } from 'src/utils/debug.js';
-import { type DOMElement, markDirty } from './dom.js';
-import type { Frame } from './frame.js';
-import { consumeAbsoluteRemovedFlag } from './node-cache.js';
-import Output from './output.js';
+import { logForDebugging } from "src/utils/debug.js";
+import { type DOMElement, markDirty } from "./dom.js";
+import type { Frame } from "./frame.js";
+import { consumeAbsoluteRemovedFlag } from "./node-cache.js";
+import Output from "./output.js";
 import renderNodeToOutput, {
   getScrollDrainNode,
   getScrollHint,
   resetLayoutShifted,
   resetScrollDrainNode,
   resetScrollHint,
-} from './render-node-to-output.js';
-import { createScreen, type StylePool } from './screen.js';
+} from "./render-node-to-output.js";
+import { createScreen, type StylePool } from "./screen.js";
 
 export type RenderOptions = {
   frontFrame: Frame;
@@ -85,7 +85,7 @@ export default function createRenderer(node: DOMElement, stylePool: StylePool): 
       logForDebugging(
         `alt-screen: yoga height ${yogaHeight} > terminalRows ${terminalRows} — ` +
           `something is rendering outside <AlternateScreen>. Overflow clipped.`,
-        { level: 'warn' },
+        { level: "warn" },
       );
     }
     const screen = backScreen ?? createScreen(width, height, stylePool, charPool, hyperlinkPool);

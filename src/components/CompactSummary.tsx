@@ -1,11 +1,11 @@
-import { c as _c } from 'react/compiler-runtime';
-import { BLACK_CIRCLE } from '../constants/figures.js';
-import { Box, Text } from '../ink.js';
-import type { Screen } from '../screens/REPL.js';
-import type { NormalizedUserMessage } from '../types/message.js';
-import { getUserMessageText } from '../utils/messages.js';
-import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js';
-import { MessageResponse } from './MessageResponse.js';
+import { c as _c } from "react/compiler-runtime";
+import { BLACK_CIRCLE } from "../constants/figures.js";
+import { Box, Text } from "../ink.js";
+import type { Screen } from "../screens/REPL.js";
+import type { NormalizedUserMessage } from "../types/message.js";
+import { getUserMessageText } from "../utils/messages.js";
+import { ConfigurableShortcutHint } from "./ConfigurableShortcutHint.js";
+import { MessageResponse } from "./MessageResponse.js";
 
 type Props = {
   message: NormalizedUserMessage;
@@ -14,10 +14,10 @@ type Props = {
 export function CompactSummary(t0) {
   const $ = _c(24);
   const { message, screen } = t0;
-  const isTranscriptMode = screen === 'transcript';
+  const isTranscriptMode = screen === "transcript";
   let t1;
   if ($[0] !== message) {
-    t1 = getUserMessageText(message) || '';
+    t1 = getUserMessageText(message) || "";
     $[0] = message;
     $[1] = t1;
   } else {
@@ -27,7 +27,7 @@ export function CompactSummary(t0) {
   const metadata = message.summarizeMetadata;
   if (metadata) {
     let t2;
-    if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = (
         <Box minWidth={2}>
           <Text color="text">{BLACK_CIRCLE}</Text>
@@ -38,7 +38,7 @@ export function CompactSummary(t0) {
       t2 = $[2];
     }
     let t3;
-    if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = <Text bold={true}>Summarized conversation</Text>;
       $[3] = t3;
     } else {
@@ -50,14 +50,14 @@ export function CompactSummary(t0) {
         <MessageResponse>
           <Box flexDirection="column">
             <Text dimColor={true}>
-              Summarized {metadata.messagesSummarized} messages{' '}
-              {metadata.direction === 'up_to' ? 'up to this point' : 'from this point'}
+              Summarized {metadata.messagesSummarized} messages{" "}
+              {metadata.direction === "up_to" ? "up to this point" : "from this point"}
             </Text>
             {metadata.userContext && (
               <Text dimColor={true}>
-                Context: {'\u201C'}
+                Context: {"\u201C"}
                 {metadata.userContext}
-                {'\u201D'}
+                {"\u201D"}
               </Text>
             )}
             <Text dimColor={true}>
@@ -114,7 +114,7 @@ export function CompactSummary(t0) {
     return t6;
   }
   let t2;
-  if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box minWidth={2}>
         <Text color="text">{BLACK_CIRCLE}</Text>
@@ -128,7 +128,7 @@ export function CompactSummary(t0) {
   if ($[14] !== isTranscriptMode) {
     t3 = !isTranscriptMode && (
       <Text dimColor={true}>
-        {' '}
+        {" "}
         <ConfigurableShortcutHint
           action="app:toggleTranscript"
           context="Global"

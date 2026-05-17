@@ -1,9 +1,9 @@
-import type * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box } from '../../ink.js';
-import type { Theme } from '../../utils/theme.js';
-import { PermissionRequestTitle } from './PermissionRequestTitle.js';
-import type { WorkerBadgeProps } from './WorkerBadge.js';
+import type * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box } from "../../ink.js";
+import type { Theme } from "../../utils/theme.js";
+import { PermissionRequestTitle } from "./PermissionRequestTitle.js";
+import type { WorkerBadgeProps } from "./WorkerBadge.js";
 
 type Props = {
   title: string;
@@ -27,7 +27,7 @@ export function PermissionDialog(t0) {
     titleRight,
     children,
   } = t0;
-  const color = t1 === undefined ? 'permission' : t1;
+  const color = t1 === undefined ? "permission" : t1;
   const innerPaddingX = t2 === undefined ? 1 : t2;
   let t3;
   if ($[0] !== subtitle || $[1] !== title || $[2] !== titleColor || $[3] !== workerBadge) {

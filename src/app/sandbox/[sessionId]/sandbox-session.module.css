@@ -201,17 +201,17 @@
   transition: background var(--transition-base);
 }
 
-.wsStatus[data-state='connected'] .wsStatusDot {
+.wsStatus[data-state="connected"] .wsStatusDot {
   background: #34d399;
   box-shadow: 0 0 6px rgba(52, 211, 153, 0.5);
 }
 
-.wsStatus[data-state='connecting'] .wsStatusDot {
+.wsStatus[data-state="connecting"] .wsStatusDot {
   background: #fbbf24;
   animation: pulse 1.5s ease-in-out infinite;
 }
 
-.wsStatus[data-state='error'] .wsStatusDot {
+.wsStatus[data-state="error"] .wsStatusDot {
   background: #f87171;
 }
 

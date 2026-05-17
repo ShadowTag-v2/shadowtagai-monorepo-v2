@@ -17,11 +17,8 @@
  * Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
  */
 
-import type {
-  DeploymentResult,
-  FleetHealthReport,
-} from './jules_fleet_orchestrator.js';
-import type { ErrorCorrelation } from './claude_sourcemap_bridge.js';
+import type { ErrorCorrelation } from "./claude_sourcemap_bridge.js";
+import type { DeploymentResult, FleetHealthReport } from "./jules_fleet_orchestrator.js";
 
 // ============================================================================
 // TYPES
@@ -40,12 +37,12 @@ export interface MemoryEntry {
 }
 
 export type MemoryType =
-  | 'deployment'
-  | 'incident'
-  | 'health_report'
-  | 'research'
-  | 'triad_cycle'
-  | 'governance';
+  | "deployment"
+  | "incident"
+  | "health_report"
+  | "research"
+  | "triad_cycle"
+  | "governance";
 
 export interface MemoryCorpus {
   entries: MemoryEntry[];
@@ -62,10 +59,10 @@ export interface ExpirationPolicy {
 }
 
 export interface NotebookLMIngestPlan {
-  type: 'notebooklm_ingest_plan';
+  type: "notebooklm_ingest_plan";
   entries: MemoryEntry[];
   quarantineRequired: boolean;
-  trustLevel: 'internal' | 'external' | 'untrusted';
+  trustLevel: "internal" | "external" | "untrusted";
 }
 
 // ============================================================================
@@ -73,10 +70,10 @@ export interface NotebookLMIngestPlan {
 // ============================================================================
 
 const DEFAULT_EXPIRATION: ExpirationPolicy = {
-  deploymentTtlHours: 168,  // 7 days
-  incidentTtlHours: 720,    // 30 days
-  healthReportTtlHours: 24,  // 1 day
-  researchTtlHours: 336,    // 14 days
+  deploymentTtlHours: 168, // 7 days
+  incidentTtlHours: 720, // 30 days
+  healthReportTtlHours: 24, // 1 day
+  researchTtlHours: 336, // 14 days
 };
 
 // ============================================================================
@@ -117,12 +114,12 @@ export class NotebookLMEpistemicHook {
   recordDeployment(result: DeploymentResult): MemoryEntry {
     const entry: MemoryEntry = {
       id: `mem_deploy_${result.sessionId}`,
-      type: 'deployment',
+      type: "deployment",
       title: `Deployment: ${result.serviceName}`,
       content: this.formatDeploymentContent(result),
       timestamp: new Date().toISOString(),
-      source: 'jules_fleet_orchestrator',
-      tags: ['deployment', result.serviceName, result.state],
+      source: "jules_fleet_orchestrator",
+      tags: ["deployment", result.serviceName, result.state],
       ttlHours: this.expirationPolicy.deploymentTtlHours,
       metadata: {
         sessionId: result.sessionId,
@@ -142,12 +139,12 @@ export class NotebookLMEpistemicHook {
   recordHealthReport(report: FleetHealthReport): MemoryEntry {
     const entry: MemoryEntry = {
       id: `mem_health_${Date.now()}`,
-      type: 'health_report',
+      type: "health_report",
       title: `Fleet Health: ${report.healthy}/${report.totalServices} healthy`,
       content: this.formatHealthContent(report),
       timestamp: report.timestamp,
-      source: 'jules_fleet_orchestrator',
-      tags: ['health', 'fleet'],
+      source: "jules_fleet_orchestrator",
+      tags: ["health", "fleet"],
       ttlHours: this.expirationPolicy.healthReportTtlHours,
       metadata: {
         totalServices: report.totalServices,
@@ -171,12 +168,12 @@ export class NotebookLMEpistemicHook {
   recordIncident(correlation: ErrorCorrelation): MemoryEntry {
     const entry: MemoryEntry = {
       id: `mem_incident_${correlation.correlationId}`,
-      type: 'incident',
+      type: "incident",
       title: `Incident: ${correlation.errorPattern.slice(0, 80)}`,
       content: this.formatIncidentContent(correlation),
       timestamp: correlation.lastSeen,
-      source: 'claude_sourcemap_bridge',
-      tags: ['incident', ...correlation.affectedServices],
+      source: "claude_sourcemap_bridge",
+      tags: ["incident", ...correlation.affectedServices],
       ttlHours: this.expirationPolicy.incidentTtlHours,
       metadata: {
         correlationId: correlation.correlationId,
@@ -206,18 +203,17 @@ export class NotebookLMEpistemicHook {
   }): MemoryEntry {
     const entry: MemoryEntry = {
       id: `mem_triad_${cycleData.cycleId}`,
-      type: 'triad_cycle',
+      type: "triad_cycle",
       title: `Triad: ${cycleData.question.slice(0, 60)}`,
       content: this.formatTriadContent(cycleData),
       timestamp: new Date().toISOString(),
-      source: 'autoresearch_triad',
-      tags: ['research', 'triad'],
+      source: "autoresearch_triad",
+      tags: ["research", "triad"],
       ttlHours: this.expirationPolicy.researchTtlHours,
       metadata: {
         cycleId: cycleData.cycleId,
-        promotionRate: cycleData.mutationCount > 0
-          ? cycleData.promotedCount / cycleData.mutationCount
-          : 0,
+        promotionRate:
+          cycleData.mutationCount > 0 ? cycleData.promotedCount / cycleData.mutationCount : 0,
       },
     };
 
@@ -235,13 +231,13 @@ export class NotebookLMEpistemicHook {
    * Returns a plan for the IPI quarantine pipeline.
    * Internal data bypasses quarantine; external data requires it.
    */
-  planIngest(trustLevel: 'internal' | 'external' = 'internal'): NotebookLMIngestPlan {
+  planIngest(trustLevel: "internal" | "external" = "internal"): NotebookLMIngestPlan {
     this.pruneExpired();
 
     return {
-      type: 'notebooklm_ingest_plan',
+      type: "notebooklm_ingest_plan",
       entries: [...this.corpus.entries],
-      quarantineRequired: trustLevel !== 'internal',
+      quarantineRequired: trustLevel !== "internal",
       trustLevel,
     };
   }
@@ -262,9 +258,7 @@ export class NotebookLMEpistemicHook {
     }
 
     if (options.tags?.length) {
-      entries = entries.filter((e) =>
-        options.tags!.some((tag) => e.tags.includes(tag)),
-      );
+      entries = entries.filter((e) => options.tags!.some((tag) => e.tags.includes(tag)));
     }
 
     if (options.since) {
@@ -315,10 +309,10 @@ export class NotebookLMEpistemicHook {
 **State**: ${result.state}
 **Session**: ${result.sessionId}
 **Duration**: ${result.durationMs}ms
-**PR**: ${result.pullRequestUrl ?? 'N/A'}
+**PR**: ${result.pullRequestUrl ?? "N/A"}
 
 ### Activities
-${result.activities.map((a) => `- [${a.type}] ${a.title ?? a.message ?? ''}`).join('\n')}
+${result.activities.map((a) => `- [${a.type}] ${a.title ?? a.message ?? ""}`).join("\n")}
 `;
   }
 
@@ -329,7 +323,7 @@ ${result.activities.map((a) => `- [${a.type}] ${a.title ?? a.message ?? ''}`).jo
 **Total**: ${report.totalServices} | ✅ ${report.healthy} | ⚠️ ${report.degraded} | ❌ ${report.failed} | 🔄 ${report.deploying}
 
 ### Services
-${report.services.map((s) => `- ${s.name}: ${s.status} (${s.region})`).join('\n')}
+${report.services.map((s) => `- ${s.name}: ${s.status} (${s.region})`).join("\n")}
 `;
   }
 
@@ -339,13 +333,13 @@ ${report.services.map((s) => `- ${s.name}: ${s.status} (${s.region})`).join('\n'
 **Occurrences**: ${correlation.occurrenceCount}
 **First Seen**: ${correlation.firstSeen}
 **Last Seen**: ${correlation.lastSeen}
-**Affected Services**: ${correlation.affectedServices.join(', ')}
+**Affected Services**: ${correlation.affectedServices.join(", ")}
 
 ### Root Cause
-${correlation.deobfuscatedTraces[0]?.rootCauseModule ?? 'Unknown'}
+${correlation.deobfuscatedTraces[0]?.rootCauseModule ?? "Unknown"}
 
 ### Suggested Fix
-${correlation.deobfuscatedTraces[0]?.suggestedFix ?? 'Manual investigation required'}
+${correlation.deobfuscatedTraces[0]?.suggestedFix ?? "Manual investigation required"}
 `;
   }
 
@@ -357,9 +351,10 @@ ${correlation.deobfuscatedTraces[0]?.suggestedFix ?? 'Manual investigation requi
     regressedCount: number;
     elapsedMs: number;
   }): string {
-    const rate = cycleData.mutationCount > 0
-      ? ((cycleData.promotedCount / cycleData.mutationCount) * 100).toFixed(1)
-      : '0.0';
+    const rate =
+      cycleData.mutationCount > 0
+        ? ((cycleData.promotedCount / cycleData.mutationCount) * 100).toFixed(1)
+        : "0.0";
 
     return `## Triad Cycle: ${cycleData.cycleId}
 
@@ -382,7 +377,7 @@ ${correlation.deobfuscatedTraces[0]?.suggestedFix ?? 'Manual investigation requi
     }
 
     return {
-      hook: 'notebooklm_epistemic_hook_v25',
+      hook: "notebooklm_epistemic_hook_v25",
       totalEntries: this.corpus.totalSize,
       lastUpdated: this.corpus.lastUpdated,
       entriesByType,

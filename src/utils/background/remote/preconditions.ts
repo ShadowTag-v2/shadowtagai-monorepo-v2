@@ -1,19 +1,19 @@
-import axios from 'axios';
-import { getOauthConfig } from 'src/constants/oauth.js';
-import { getOrganizationUUID } from 'src/services/oauth/client.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../../services/analytics/growthbook.js';
+import axios from "axios";
+import { getOauthConfig } from "src/constants/oauth.js";
+import { getOrganizationUUID } from "src/services/oauth/client.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../../services/analytics/growthbook.js";
 import {
   checkAndRefreshOAuthTokenIfNeeded,
   getClaudeAIOAuthTokens,
   isClaudeAISubscriber,
-} from '../../auth.js';
-import { getCwd } from '../../cwd.js';
-import { logForDebugging } from '../../debug.js';
-import { detectCurrentRepository } from '../../detectRepository.js';
-import { errorMessage } from '../../errors.js';
-import { findGitRoot, getIsClean } from '../../git.js';
-import { getOAuthHeaders } from '../../teleport/api.js';
-import { fetchEnvironments } from '../../teleport/environments.js';
+} from "../../auth.js";
+import { getCwd } from "../../cwd.js";
+import { logForDebugging } from "../../debug.js";
+import { detectCurrentRepository } from "../../detectRepository.js";
+import { errorMessage } from "../../errors.js";
+import { findGitRoot, getIsClean } from "../../git.js";
+import { getOAuthHeaders } from "../../teleport/api.js";
+import { fetchEnvironments } from "../../teleport/environments.js";
 
 /**
  * Checks if user needs to log in with Claude.ai
@@ -83,20 +83,20 @@ export async function checkGithubAppInstalled(
   try {
     const accessToken = getClaudeAIOAuthTokens()?.accessToken;
     if (!accessToken) {
-      logForDebugging('checkGithubAppInstalled: No access token found, assuming app not installed');
+      logForDebugging("checkGithubAppInstalled: No access token found, assuming app not installed");
       return false;
     }
 
     const orgUUID = await getOrganizationUUID();
     if (!orgUUID) {
-      logForDebugging('checkGithubAppInstalled: No org UUID found, assuming app not installed');
+      logForDebugging("checkGithubAppInstalled: No org UUID found, assuming app not installed");
       return false;
     }
 
     const url = `${getOauthConfig().BASE_API_URL}/api/oauth/organizations/${orgUUID}/code/repos/${owner}/${repo}`;
     const headers = {
       ...getOAuthHeaders(accessToken),
-      'x-organization-uuid': orgUUID,
+      "x-organization-uuid": orgUUID,
     };
 
     logForDebugging(`Checking GitHub app installation for ${owner}/${repo}`);
@@ -120,7 +120,7 @@ export async function checkGithubAppInstalled(
     if (response.status === 200) {
       if (response.data.status) {
         const installed = response.data.status.app_installed;
-        logForDebugging(`GitHub app ${installed ? 'is' : 'is not'} installed on ${owner}/${repo}`);
+        logForDebugging(`GitHub app ${installed ? "is" : "is not"} installed on ${owner}/${repo}`);
         return installed;
       }
       // status is null - app is not installed on this repo
@@ -155,23 +155,23 @@ export async function checkGithubTokenSynced(): Promise<boolean> {
   try {
     const accessToken = getClaudeAIOAuthTokens()?.accessToken;
     if (!accessToken) {
-      logForDebugging('checkGithubTokenSynced: No access token found');
+      logForDebugging("checkGithubTokenSynced: No access token found");
       return false;
     }
 
     const orgUUID = await getOrganizationUUID();
     if (!orgUUID) {
-      logForDebugging('checkGithubTokenSynced: No org UUID found');
+      logForDebugging("checkGithubTokenSynced: No org UUID found");
       return false;
     }
 
     const url = `${getOauthConfig().BASE_API_URL}/api/oauth/organizations/${orgUUID}/sync/github/auth`;
     const headers = {
       ...getOAuthHeaders(accessToken),
-      'x-organization-uuid': orgUUID,
+      "x-organization-uuid": orgUUID,
     };
 
-    logForDebugging('Checking if GitHub token is synced via web-setup');
+    logForDebugging("Checking if GitHub token is synced via web-setup");
 
     const response = await axios.get(url, {
       headers,
@@ -197,7 +197,7 @@ export async function checkGithubTokenSynced(): Promise<boolean> {
   }
 }
 
-type RepoAccessMethod = 'github-app' | 'token-sync' | 'none';
+type RepoAccessMethod = "github-app" | "token-sync" | "none";
 
 /**
  * Tiered check for whether a GitHub repo is accessible for remote operations.
@@ -210,13 +210,13 @@ export async function checkRepoForRemoteAccess(
   repo: string,
 ): Promise<{ hasAccess: boolean; method: RepoAccessMethod }> {
   if (await checkGithubAppInstalled(owner, repo)) {
-    return { hasAccess: true, method: 'github-app' };
+    return { hasAccess: true, method: "github-app" };
   }
   if (
-    getFeatureValue_CACHED_MAY_BE_STALE('tengu_cobalt_lantern', false) &&
+    getFeatureValue_CACHED_MAY_BE_STALE("tengu_cobalt_lantern", false) &&
     (await checkGithubTokenSynced())
   ) {
-    return { hasAccess: true, method: 'token-sync' };
+    return { hasAccess: true, method: "token-sync" };
   }
-  return { hasAccess: false, method: 'none' };
+  return { hasAccess: false, method: "none" };
 }

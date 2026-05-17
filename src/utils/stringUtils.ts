@@ -7,7 +7,7 @@
  * pattern in a RegExp constructor.
  */
 export function escapeRegExp(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 /**
@@ -38,7 +38,7 @@ export function plural(n: number, word: string, pluralWord = `${word}s`): string
  * Used for shebang detection in diff rendering.
  */
 export function firstLineOf(s: string): string {
-  const nl = s.indexOf('\n');
+  const nl = s.indexOf("\n");
   return nl === -1 ? s : s.slice(0, nl);
 }
 
@@ -74,7 +74,7 @@ export function normalizeFullWidthDigits(input: string): string {
  * Useful for accepting input from Japanese/CJK IMEs (U+3000 → U+0020).
  */
 export function normalizeFullWidthSpace(input: string): string {
-  return input.replace(/\u3000/g, ' ');
+  return input.replace(/\u3000/g, " ");
 }
 
 // Keep in-memory accumulation modest to avoid blowing up RSS.
@@ -91,14 +91,14 @@ const MAX_STRING_LENGTH = 2 ** 25;
  */
 export function safeJoinLines(
   lines: string[],
-  delimiter: string = ',',
+  delimiter: string = ",",
   maxSize: number = MAX_STRING_LENGTH,
 ): string {
-  const truncationMarker = '...[truncated]';
-  let result = '';
+  const truncationMarker = "...[truncated]";
+  let result = "";
 
   for (const line of lines) {
-    const delimiterToAdd = result ? delimiter : '';
+    const delimiterToAdd = result ? delimiter : "";
     const fullAddition = delimiterToAdd + line;
 
     if (result.length + fullAddition.length <= maxSize) {
@@ -128,7 +128,7 @@ export function safeJoinLines(
  * the beginning of the output.
  */
 export class EndTruncatingAccumulator {
-  private content: string = '';
+  private content: string = "";
   private isTruncated = false;
   private totalBytesReceived = 0;
 
@@ -144,7 +144,7 @@ export class EndTruncatingAccumulator {
    * @param data The string data to append
    */
   append(data: string | Buffer): void {
-    const str = typeof data === 'string' ? data : data.toString();
+    const str = typeof data === "string" ? data : data.toString();
     this.totalBytesReceived += str.length;
 
     // If already at capacity and truncated, don't modify content
@@ -182,7 +182,7 @@ export class EndTruncatingAccumulator {
    * Clears all accumulated data
    */
   clear(): void {
-    this.content = '';
+    this.content = "";
     this.isTruncated = false;
     this.totalBytesReceived = 0;
   }
@@ -217,9 +217,9 @@ export class EndTruncatingAccumulator {
  * @returns The truncated text with ellipsis if truncated
  */
 export function truncateToLines(text: string, maxLines: number): string {
-  const lines = text.split('\n');
+  const lines = text.split("\n");
   if (lines.length <= maxLines) {
     return text;
   }
-  return `${lines.slice(0, maxLines).join('\n')}…`;
+  return `${lines.slice(0, maxLines).join("\n")}…`;
 }

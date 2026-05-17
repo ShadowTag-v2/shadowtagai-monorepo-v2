@@ -1,8 +1,8 @@
-import { execaSync } from 'execa';
-import { logForDebugging } from '../debug.js';
-import { execFileNoThrow } from '../execFileNoThrow.js';
-import { execSyncWithDefaults_DEPRECATED } from '../execFileNoThrowPortable.js';
-import { jsonParse, jsonStringify } from '../slowOperations.js';
+import { execaSync } from "execa";
+import { logForDebugging } from "../debug.js";
+import { execFileNoThrow } from "../execFileNoThrow.js";
+import { execSyncWithDefaults_DEPRECATED } from "../execFileNoThrowPortable.js";
+import { jsonParse, jsonStringify } from "../slowOperations.js";
 import {
   CREDENTIALS_SERVICE_SUFFIX,
   clearKeychainCache,
@@ -10,8 +10,8 @@ import {
   getUsername,
   KEYCHAIN_CACHE_TTL_MS,
   keychainCacheState,
-} from './macOsKeychainHelpers.js';
-import type { SecureStorage, SecureStorageData } from './types.js';
+} from "./macOsKeychainHelpers.js";
+import type { SecureStorage, SecureStorageData } from "./types.js";
 
 // `security -i` reads stdin with a 4096-byte fgets() buffer (BUFSIZ on darwin).
 // A command line longer than this is truncated mid-argument: the first 4096
@@ -24,7 +24,7 @@ import type { SecureStorage, SecureStorageData } from './types.js';
 const SECURITY_STDIN_LINE_LIMIT = 4096 - 64;
 
 export const macOsKeychainStorage = {
-  name: 'keychain',
+  name: "keychain",
   read(): SecureStorageData | null {
     const prev = keychainCacheState.cache;
     if (Date.now() - prev.cachedAt < KEYCHAIN_CACHE_TTL_MS) {
@@ -53,8 +53,8 @@ export const macOsKeychainStorage = {
     // next user interaction. clearKeychainCache() sets data=null, so
     // explicit invalidation (logout, delete) still reads through.
     if (prev.data !== null) {
-      logForDebugging('[keychain] read failed; serving stale cache', {
-        level: 'warn',
+      logForDebugging("[keychain] read failed; serving stale cache", {
+        level: "warn",
       });
       keychainCacheState.cache = { data: prev.data, cachedAt: Date.now() };
       return prev.data;
@@ -78,8 +78,8 @@ export const macOsKeychainStorage = {
       if (gen === keychainCacheState.generation) {
         // Stale-while-error — mirror read() above.
         if (data === null && prev.data !== null) {
-          logForDebugging('[keychain] readAsync failed; serving stale cache', {
-            level: 'warn',
+          logForDebugging("[keychain] readAsync failed; serving stale cache", {
+            level: "warn",
           });
         }
         const next = data ?? prev.data;
@@ -102,7 +102,7 @@ export const macOsKeychainStorage = {
       const jsonString = jsonStringify(data);
 
       // Convert to hexadecimal to avoid any escaping issues
-      const hexValue = Buffer.from(jsonString, 'utf-8').toString('hex');
+      const hexValue = Buffer.from(jsonString, "utf-8").toString("hex");
 
       // Prefer stdin (`security -i`) so process monitors (CrowdStrike et al.)
       // see only "security -i", not the payload (INC-3028).
@@ -115,20 +115,20 @@ export const macOsKeychainStorage = {
 
       let result;
       if (command.length <= SECURITY_STDIN_LINE_LIMIT) {
-        result = execaSync('security', ['-i'], {
+        result = execaSync("security", ["-i"], {
           input: command,
-          stdio: ['pipe', 'pipe', 'pipe'],
+          stdio: ["pipe", "pipe", "pipe"],
           reject: false,
         });
       } else {
         logForDebugging(
           `Keychain payload (${jsonString.length}B JSON) exceeds security -i stdin limit; using argv`,
-          { level: 'warn' },
+          { level: "warn" },
         );
         result = execaSync(
-          'security',
-          ['add-generic-password', '-U', '-a', username, '-s', storageServiceName, '-X', hexValue],
-          { stdio: ['ignore', 'pipe', 'pipe'], reject: false },
+          "security",
+          ["add-generic-password", "-U", "-a", username, "-s", storageServiceName, "-X", hexValue],
+          { stdio: ["ignore", "pipe", "pipe"], reject: false },
         );
       }
 
@@ -165,8 +165,8 @@ async function doReadAsync(): Promise<SecureStorageData | null> {
     const storageServiceName = getMacOsKeychainStorageServiceName(CREDENTIALS_SERVICE_SUFFIX);
     const username = getUsername();
     const { stdout, code } = await execFileNoThrow(
-      'security',
-      ['find-generic-password', '-a', username, '-w', '-s', storageServiceName],
+      "security",
+      ["find-generic-password", "-a", username, "-w", "-s", storageServiceName],
       { useCwd: false, preserveOutputOnError: false },
     );
     if (code === 0 && stdout) {
@@ -194,15 +194,15 @@ let keychainLockedCache: boolean | undefined;
 export function isMacOsKeychainLocked(): boolean {
   if (keychainLockedCache !== undefined) return keychainLockedCache;
   // Only check on macOS
-  if (process.platform !== 'darwin') {
+  if (process.platform !== "darwin") {
     keychainLockedCache = false;
     return false;
   }
 
   try {
-    const result = execaSync('security', ['show-keychain-info'], {
+    const result = execaSync("security", ["show-keychain-info"], {
       reject: false,
-      stdio: ['ignore', 'pipe', 'pipe'],
+      stdio: ["ignore", "pipe", "pipe"],
     });
     // Exit code 36 indicates the keychain is locked
     keychainLockedCache = result.exitCode === 36;

@@ -1,16 +1,16 @@
-import { feature } from 'bun:bundle';
-import { open } from 'node:fs/promises';
-import { basename, dirname, join, sep } from 'node:path';
-import type { ModelUsage } from 'src/entrypoints/agentSdkTypes.js';
-import type { Entry, TranscriptMessage } from '../types/logs.js';
-import { logForDebugging } from './debug.js';
-import { errorMessage, isENOENT } from './errors.js';
-import { getFsImplementation } from './fsOperations.js';
-import { readJSONLFile } from './json.js';
-import { SYNTHETIC_MODEL } from './messages.js';
-import { getProjectsDir, isTranscriptMessage } from './sessionStorage.js';
-import { SHELL_TOOL_NAMES } from './shell/shellToolUtils.js';
-import { jsonParse } from './slowOperations.js';
+import { feature } from "bun:bundle";
+import { open } from "node:fs/promises";
+import { basename, dirname, join, sep } from "node:path";
+import type { ModelUsage } from "src/entrypoints/agentSdkTypes.js";
+import type { Entry, TranscriptMessage } from "../types/logs.js";
+import { logForDebugging } from "./debug.js";
+import { errorMessage, isENOENT } from "./errors.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { readJSONLFile } from "./json.js";
+import { SYNTHETIC_MODEL } from "./messages.js";
+import { getProjectsDir, isTranscriptMessage } from "./sessionStorage.js";
+import { SHELL_TOOL_NAMES } from "./shell/shellToolUtils.js";
+import { jsonParse } from "./slowOperations.js";
 import {
   getTodayDateString,
   getYesterdayDateString,
@@ -21,7 +21,7 @@ import {
   saveStatsCache,
   toDateString,
   withStatsCacheLock,
-} from './statsCache.js';
+} from "./statsCache.js";
 
 export type DailyActivity = {
   date: string; // YYYY-MM-DD format
@@ -128,7 +128,7 @@ async function processSessionFiles(
   let totalMessages = 0;
   let totalSpeculationTimeSavedMs = 0;
   const modelUsageAgg: { [modelName: string]: ModelUsage } = {};
-  const shotDistributionMap = feature('SHOT_STATS') ? new Map<number, number>() : undefined;
+  const shotDistributionMap = feature("SHOT_STATS") ? new Map<number, number>() : undefined;
   // Track parent sessions that already recorded a shot count (dedup across subagents)
   const sessionsWithShotCount = new Set<string>();
 
@@ -187,13 +187,13 @@ async function processSessionFiles(
         continue;
       }
 
-      const sessionId = basename(sessionFile, '.jsonl');
+      const sessionId = basename(sessionFile, ".jsonl");
       const messages: TranscriptMessage[] = [];
 
       for (const entry of entries) {
         if (isTranscriptMessage(entry)) {
           messages.push(entry);
-        } else if (entry.type === 'speculation-accept') {
+        } else if (entry.type === "speculation-accept") {
           totalSpeculationTimeSavedMs += entry.timeSavedMs;
         }
       }
@@ -207,7 +207,7 @@ async function processSessionFiles(
       // Extract shot count from PR attribution in gh pr create calls (ant-only)
       // This must run before the sidechain filter since subagent transcripts
       // mark all messages as sidechain
-      if (feature('SHOT_STATS') && shotDistributionMap) {
+      if (feature("SHOT_STATS") && shotDistributionMap) {
         const parentSessionId = isSubagentFile
           ? basename(dirname(dirname(sessionFile)))
           : sessionId;
@@ -281,11 +281,11 @@ async function processSessionFiles(
 
       // Process messages for tool usage and model stats
       for (const message of mainMessages) {
-        if (message.type === 'assistant') {
+        if (message.type === "assistant") {
           const content = message.message?.content;
           if (Array.isArray(content)) {
             for (const block of content) {
-              if (block.type === 'tool_use') {
+              if (block.type === "tool_use") {
                 const activity = dailyActivityMap.get(dateKey);
                 if (activity) {
                   activity.toolCallCount++;
@@ -297,7 +297,7 @@ async function processSessionFiles(
           // Track model usage if available (skip synthetic messages)
           if (message.message?.usage) {
             const usage = message.message.usage;
-            const model = message.message.model || 'unknown';
+            const model = message.message.model || "unknown";
 
             // Skip synthetic messages - they are internal and shouldn't appear in stats
             if (model === SYNTHETIC_MODEL) {
@@ -348,7 +348,7 @@ async function processSessionFiles(
     hourCounts: Object.fromEntries(hourCounts),
     totalMessages,
     totalSpeculationTimeSavedMs,
-    ...(feature('SHOT_STATS') && shotDistributionMap
+    ...(feature("SHOT_STATS") && shotDistributionMap
       ? { shotDistribution: Object.fromEntries(shotDistributionMap) }
       : {}),
   };
@@ -382,7 +382,7 @@ async function getAllSessionFiles(): Promise<string[]> {
 
         // Collect main session files (*.jsonl directly in project dir)
         const mainFiles = entries
-          .filter((dirent) => dirent.isFile() && dirent.name.endsWith('.jsonl'))
+          .filter((dirent) => dirent.isFile() && dirent.name.endsWith(".jsonl"))
           .map((dirent) => join(projectDir, dirent.name));
 
         // Collect subagent files from session subdirectories in parallel
@@ -390,15 +390,15 @@ async function getAllSessionFiles(): Promise<string[]> {
         const sessionDirs = entries.filter((dirent) => dirent.isDirectory());
         const subagentResults = await Promise.all(
           sessionDirs.map(async (sessionDir) => {
-            const subagentsDir = join(projectDir, sessionDir.name, 'subagents');
+            const subagentsDir = join(projectDir, sessionDir.name, "subagents");
             try {
               const subagentEntries = await fs.readdir(subagentsDir);
               return subagentEntries
                 .filter(
                   (dirent) =>
                     dirent.isFile() &&
-                    dirent.name.endsWith('.jsonl') &&
-                    dirent.name.startsWith('agent-'),
+                    dirent.name.endsWith(".jsonl") &&
+                    dirent.name.startsWith("agent-"),
                 )
                 .map((dirent) => join(subagentsDir, dirent.name));
             } catch {
@@ -578,7 +578,7 @@ function cacheToStats(
     totalSpeculationTimeSavedMs,
   };
 
-  if (feature('SHOT_STATS')) {
+  if (feature("SHOT_STATS")) {
     const shotDistribution: { [shotCount: number]: number } = {
       ...(cache.shotDistribution || {}),
     };
@@ -621,7 +621,7 @@ export async function aggregateClaudeCodeStats(): Promise<ClaudeCodeStats> {
 
     if (!cache.lastComputedDate) {
       // No cache - process all historical data (everything before today)
-      logForDebugging('Stats cache empty, processing all historical data');
+      logForDebugging("Stats cache empty, processing all historical data");
       const historicalStats = await processSessionFiles(allSessionFiles, {
         toDate: yesterday,
       });
@@ -667,7 +667,7 @@ export async function aggregateClaudeCodeStats(): Promise<ClaudeCodeStats> {
   return cacheToStats(updatedCache, todayStats);
 }
 
-export type StatsDateRange = '7d' | '30d' | 'all';
+export type StatsDateRange = "7d" | "30d" | "all";
 
 /**
  * Aggregates stats for a specific date range.
@@ -676,7 +676,7 @@ export type StatsDateRange = '7d' | '30d' | 'all';
 export async function aggregateClaudeCodeStatsForRange(
   range: StatsDateRange,
 ): Promise<ClaudeCodeStats> {
-  if (range === 'all') {
+  if (range === "all") {
     return aggregateClaudeCodeStats();
   }
 
@@ -687,7 +687,7 @@ export async function aggregateClaudeCodeStatsForRange(
 
   // Calculate fromDate based on range
   const today = new Date();
-  const daysBack = range === '7d' ? 7 : 30;
+  const daysBack = range === "7d" ? 7 : 30;
   const fromDate = new Date(today);
   fromDate.setDate(today.getDate() - daysBack + 1); // +1 to include today
   const fromDateStr = toDateString(fromDate);
@@ -779,7 +779,7 @@ function processedStatsToClaudeCodeStats(stats: ProcessedStats): ClaudeCodeStats
     totalSpeculationTimeSavedMs: stats.totalSpeculationTimeSavedMs,
   };
 
-  if (feature('SHOT_STATS') && stats.shotDistribution) {
+  if (feature("SHOT_STATS") && stats.shotDistribution) {
     result.shotDistribution = stats.shotDistribution;
     const totalWithShots = Object.values(stats.shotDistribution).reduce((sum, n) => sum + n, 0);
     result.oneShotRate =
@@ -887,17 +887,17 @@ const SHOT_COUNT_REGEX = /(\d+)-shotted by/;
  */
 function extractShotCountFromMessages(messages: TranscriptMessage[]): number | null {
   for (const m of messages) {
-    if (m.type !== 'assistant') continue;
+    if (m.type !== "assistant") continue;
     const content = m.message?.content;
     if (!Array.isArray(content)) continue;
     for (const block of content) {
       if (
-        block.type !== 'tool_use' ||
+        block.type !== "tool_use" ||
         !SHELL_TOOL_NAMES.includes(block.name) ||
-        typeof block.input !== 'object' ||
+        typeof block.input !== "object" ||
         block.input === null ||
-        !('command' in block.input) ||
-        typeof block.input.command !== 'string'
+        !("command" in block.input) ||
+        typeof block.input.command !== "string"
       ) {
         continue;
       }
@@ -914,7 +914,7 @@ function extractShotCountFromMessages(messages: TranscriptMessage[]): number | n
 // The canonical dateKey (see processSessionFiles) reads mainMessages[0].timestamp,
 // where mainMessages = entries.filter(isTranscriptMessage).filter(!isSidechain).
 // This peek must extract the same value to be a safe skip optimization.
-const TRANSCRIPT_MESSAGE_TYPES = new Set(['user', 'assistant', 'attachment', 'system', 'progress']);
+const TRANSCRIPT_MESSAGE_TYPES = new Set(["user", "assistant", "attachment", "system", "progress"]);
 
 /**
  * Peeks at the head of a session file to get the session start date.
@@ -933,18 +933,18 @@ const TRANSCRIPT_MESSAGE_TYPES = new Set(['user', 'assistant', 'attachment', 'sy
  */
 export async function readSessionStartDate(filePath: string): Promise<string | null> {
   try {
-    const fd = await open(filePath, 'r');
+    const fd = await open(filePath, "r");
     try {
       const buf = Buffer.allocUnsafe(4096);
       const { bytesRead } = await fd.read(buf, 0, buf.length, 0);
       if (bytesRead === 0) return null;
-      const head = buf.toString('utf8', 0, bytesRead);
+      const head = buf.toString("utf8", 0, bytesRead);
 
       // Only trust complete lines — the 4KB boundary may bisect a JSON entry.
-      const lastNewline = head.lastIndexOf('\n');
+      const lastNewline = head.lastIndexOf("\n");
       if (lastNewline < 0) return null;
 
-      for (const line of head.slice(0, lastNewline).split('\n')) {
+      for (const line of head.slice(0, lastNewline).split("\n")) {
         if (!line) continue;
         let entry: {
           type?: unknown;
@@ -956,10 +956,10 @@ export async function readSessionStartDate(filePath: string): Promise<string | n
         } catch {
           continue;
         }
-        if (typeof entry.type !== 'string') continue;
+        if (typeof entry.type !== "string") continue;
         if (!TRANSCRIPT_MESSAGE_TYPES.has(entry.type)) continue;
         if (entry.isSidechain === true) continue;
-        if (typeof entry.timestamp !== 'string') return null;
+        if (typeof entry.timestamp !== "string") return null;
         const date = new Date(entry.timestamp);
         if (Number.isNaN(date.getTime())) return null;
         return toDateString(date);

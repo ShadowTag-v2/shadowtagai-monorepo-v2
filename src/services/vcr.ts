@@ -1,31 +1,31 @@
-import { createHash, randomUUID, type UUID } from 'node:crypto';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import type { BetaContentBlock } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import isPlainObject from 'lodash-es/isPlainObject.js';
-import mapValues from 'lodash-es/mapValues.js';
-import { addToTotalSessionCost } from 'src/cost-tracker.js';
-import { calculateUSDCost } from 'src/utils/modelCost.js';
+import { createHash, randomUUID, type UUID } from "node:crypto";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import type { BetaContentBlock } from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
+import isPlainObject from "lodash-es/isPlainObject.js";
+import mapValues from "lodash-es/mapValues.js";
+import { addToTotalSessionCost } from "src/cost-tracker.js";
+import { calculateUSDCost } from "src/utils/modelCost.js";
 import type {
   AssistantMessage,
   Message,
   StreamEvent,
   SystemAPIErrorMessage,
   UserMessage,
-} from '../types/message.js';
-import { getCwd } from '../utils/cwd.js';
-import { env } from '../utils/env.js';
-import { getClaudeConfigHomeDir, isEnvTruthy } from '../utils/envUtils.js';
-import { getErrnoCode } from '../utils/errors.js';
-import { normalizeMessagesForAPI } from '../utils/messages.js';
-import { jsonParse, jsonStringify } from '../utils/slowOperations.js';
+} from "../types/message.js";
+import { getCwd } from "../utils/cwd.js";
+import { env } from "../utils/env.js";
+import { getClaudeConfigHomeDir, isEnvTruthy } from "../utils/envUtils.js";
+import { getErrnoCode } from "../utils/errors.js";
+import { normalizeMessagesForAPI } from "../utils/messages.js";
+import { jsonParse, jsonStringify } from "../utils/slowOperations.js";
 
 function shouldUseVCR(): boolean {
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === "test") {
     return true;
   }
 
-  if (process.env.USER_TYPE === 'ant' && isEnvTruthy(process.env.FORCE_VCR)) {
+  if (process.env.USER_TYPE === "ant" && isEnvTruthy(process.env.FORCE_VCR)) {
     return true;
   }
 
@@ -46,7 +46,7 @@ async function withFixture<T>(
   }
 
   // Create hash of input for fixture filename
-  const hash = createHash('sha1').update(jsonStringify(input)).digest('hex').slice(0, 12);
+  const hash = createHash("sha1").update(jsonStringify(input)).digest("hex").slice(0, 12);
   const filename = join(
     process.env.CLAUDE_CODE_TEST_FIXTURES_ROOT ?? getCwd(),
     `fixtures/${fixtureName}-${hash}.json`,
@@ -54,11 +54,11 @@ async function withFixture<T>(
 
   // Fetch cached fixture
   try {
-    const cached = jsonParse(await readFile(filename, { encoding: 'utf8' })) as T;
+    const cached = jsonParse(await readFile(filename, { encoding: "utf8" })) as T;
     return cached;
   } catch (e: unknown) {
     const code = getErrnoCode(e);
-    if (code !== 'ENOENT') {
+    if (code !== "ENOENT") {
       throw e;
     }
   }
@@ -74,7 +74,7 @@ async function withFixture<T>(
 
   await mkdir(dirname(filename), { recursive: true });
   await writeFile(filename, jsonStringify(result, null, 2), {
-    encoding: 'utf8',
+    encoding: "utf8",
   });
 
   return result;
@@ -90,7 +90,7 @@ export async function withVCR(
 
   const messagesForAPI = normalizeMessagesForAPI(
     messages.filter((_) => {
-      if (_.type !== 'user') {
+      if (_.type !== "user") {
         return true;
       }
       if (_.isMeta) {
@@ -106,12 +106,12 @@ export async function withVCR(
   );
   const filename = join(
     process.env.CLAUDE_CODE_TEST_FIXTURES_ROOT ?? getCwd(),
-    `fixtures/${dehydratedInput.map((_) => createHash('sha1').update(jsonStringify(_)).digest('hex').slice(0, 6)).join('-')}.json`,
+    `fixtures/${dehydratedInput.map((_) => createHash("sha1").update(jsonStringify(_)).digest("hex").slice(0, 6)).join("-")}.json`,
   );
 
   // Fetch cached fixture
   try {
-    const cached = jsonParse(await readFile(filename, { encoding: 'utf8' })) as {
+    const cached = jsonParse(await readFile(filename, { encoding: "utf8" })) as {
       output: (AssistantMessage | StreamEvent)[];
     };
     cached.output.forEach(addCachedCostToTotalSessionCost);
@@ -120,7 +120,7 @@ export async function withVCR(
     );
   } catch (e: unknown) {
     const code = getErrnoCode(e);
-    if (code !== 'ENOENT') {
+    if (code !== "ENOENT") {
       throw e;
     }
   }
@@ -148,13 +148,13 @@ export async function withVCR(
       null,
       2,
     ),
-    { encoding: 'utf8' },
+    { encoding: "utf8" },
   );
   return results;
 }
 
 function addCachedCostToTotalSessionCost(message: AssistantMessage | StreamEvent): void {
-  if (message.type === 'stream_event') {
+  if (message.type === "stream_event") {
     return;
   }
   const model = message.message.model;
@@ -164,17 +164,17 @@ function addCachedCostToTotalSessionCost(message: AssistantMessage | StreamEvent
 }
 
 function mapMessages(
-  messages: (UserMessage | AssistantMessage)['message']['content'][],
+  messages: (UserMessage | AssistantMessage)["message"]["content"][],
   f: (s: unknown) => unknown,
-): (UserMessage | AssistantMessage)['message']['content'][] {
+): (UserMessage | AssistantMessage)["message"]["content"][] {
   return messages.map((_) => {
-    if (typeof _ === 'string') {
+    if (typeof _ === "string") {
       return f(_);
     }
     return _.map((_) => {
       switch (_.type) {
-        case 'tool_result':
-          if (typeof _.content === 'string') {
+        case "tool_result":
+          if (typeof _.content === "string") {
             return { ..._, content: f(_.content) };
           }
           if (Array.isArray(_.content)) {
@@ -182,9 +182,9 @@ function mapMessages(
               ..._,
               content: _.content.map((_) => {
                 switch (_.type) {
-                  case 'text':
+                  case "text":
                     return { ..._, text: f(_.text) };
-                  case 'image':
+                  case "image":
                     return _;
                   default:
                     return undefined;
@@ -193,20 +193,20 @@ function mapMessages(
             };
           }
           return _;
-        case 'text':
+        case "text":
           return { ..._, text: f(_.text) };
-        case 'tool_use':
+        case "tool_use":
           return {
             ..._,
             input: mapValuesDeep(_.input as Record<string, unknown>, f),
           };
-        case 'image':
+        case "image":
           return _;
         default:
           return undefined;
       }
     });
-  }) as (UserMessage | AssistantMessage)['message']['content'][];
+  }) as (UserMessage | AssistantMessage)["message"]["content"][];
 }
 
 function mapValuesDeep(
@@ -238,20 +238,20 @@ function mapAssistantMessage(
     // sessionStorage.ts deduplicates messages by UUID, so without unique UUIDs across
     // VCR calls, resumed sessions would treat different responses as duplicates.
     uuid: uuid ?? (`UUID-${index}` as unknown as UUID),
-    requestId: 'REQUEST_ID',
+    requestId: "REQUEST_ID",
     timestamp: message.timestamp,
     message: {
       ...message.message,
       content: message.message.content
         .map((_) => {
           switch (_.type) {
-            case 'text':
+            case "text":
               return {
                 ..._,
                 text: f(_.text) as string,
                 citations: _.citations || [],
               }; // Ensure citations
-            case 'tool_use':
+            case "tool_use":
               return {
                 ..._,
                 input: mapValuesDeep(_.input as Record<string, unknown>, f),
@@ -262,7 +262,7 @@ function mapAssistantMessage(
         })
         .filter(Boolean) as BetaContentBlock[],
     },
-    type: 'assistant',
+    type: "assistant",
   };
 }
 
@@ -272,7 +272,7 @@ function mapMessage(
   index: number,
   uuid?: UUID,
 ): AssistantMessage | SystemAPIErrorMessage | StreamEvent {
-  if (message.type === 'assistant') {
+  if (message.type === "assistant") {
     return mapAssistantMessage(message, f, index, uuid);
   } else {
     return message;
@@ -280,7 +280,7 @@ function mapMessage(
 }
 
 function dehydrateValue(s: unknown): unknown {
-  if (typeof s !== 'string') {
+  if (typeof s !== "string") {
     return s;
   }
   const cwd = getCwd();
@@ -292,47 +292,47 @@ function dehydrateValue(s: unknown): unknown {
     // Note: We intentionally don't replace all forward slashes with path.sep here.
     // That would corrupt XML-like tags (e.g., </system-reminder> -> <\system-reminder>).
     // The [CONFIG_HOME] and [CWD] replacements below handle path normalization.
-    .replaceAll(configHome, '[CONFIG_HOME]')
-    .replaceAll(cwd, '[CWD]')
-    .replace(/Available commands:.+/, 'Available commands: [COMMANDS]');
+    .replaceAll(configHome, "[CONFIG_HOME]")
+    .replaceAll(cwd, "[CWD]")
+    .replace(/Available commands:.+/, "Available commands: [COMMANDS]");
   // On Windows, paths may appear in multiple forms:
   // 1. Forward-slash variants (Git, some Node APIs)
   // 2. JSON-escaped variants (backslashes doubled in serialized JSON within messages)
-  if (process.platform === 'win32') {
-    const cwdFwd = cwd.replaceAll('\\', '/');
-    const configHomeFwd = configHome.replaceAll('\\', '/');
+  if (process.platform === "win32") {
+    const cwdFwd = cwd.replaceAll("\\", "/");
+    const configHomeFwd = configHome.replaceAll("\\", "/");
     // jsonStringify escapes \ to \\ - match paths embedded in JSON strings
     const cwdJsonEscaped = jsonStringify(cwd).slice(1, -1);
     const configHomeJsonEscaped = jsonStringify(configHome).slice(1, -1);
     s1 = s1
-      .replaceAll(cwdJsonEscaped, '[CWD]')
-      .replaceAll(configHomeJsonEscaped, '[CONFIG_HOME]')
-      .replaceAll(cwdFwd, '[CWD]')
-      .replaceAll(configHomeFwd, '[CONFIG_HOME]');
+      .replaceAll(cwdJsonEscaped, "[CWD]")
+      .replaceAll(configHomeJsonEscaped, "[CONFIG_HOME]")
+      .replaceAll(cwdFwd, "[CWD]")
+      .replaceAll(configHomeFwd, "[CONFIG_HOME]");
   }
   // Normalize backslash path separators after placeholders so VCR fixture
   // hashes match across platforms (e.g., [CWD]\foo\bar -> [CWD]/foo/bar)
   // Handle both single backslashes and JSON-escaped double backslashes (\\)
   s1 = s1
-    .replace(/\[CWD\][^\s"'<>]*/g, (match) => match.replaceAll('\\\\', '/').replaceAll('\\', '/'))
+    .replace(/\[CWD\][^\s"'<>]*/g, (match) => match.replaceAll("\\\\", "/").replaceAll("\\", "/"))
     .replace(/\[CONFIG_HOME\][^\s"'<>]*/g, (match) =>
-      match.replaceAll('\\\\', '/').replaceAll('\\', '/'),
+      match.replaceAll("\\\\", "/").replaceAll("\\", "/"),
     );
-  if (s1.includes('Files modified by user:')) {
-    return 'Files modified by user: [FILES]';
+  if (s1.includes("Files modified by user:")) {
+    return "Files modified by user: [FILES]";
   }
   return s1;
 }
 
 function hydrateValue(s: unknown): unknown {
-  if (typeof s !== 'string') {
+  if (typeof s !== "string") {
     return s;
   }
   return s
-    .replaceAll('[NUM]', '1')
-    .replaceAll('[DURATION]', '100')
-    .replaceAll('[CONFIG_HOME]', getClaudeConfigHomeDir())
-    .replaceAll('[CWD]', getCwd());
+    .replaceAll("[NUM]", "1")
+    .replaceAll("[DURATION]", "100")
+    .replaceAll("[CONFIG_HOME]", getClaudeConfigHomeDir())
+    .replaceAll("[CWD]", getCwd());
 }
 
 export async function* withStreamingVCR(
@@ -372,12 +372,12 @@ export async function withTokenCountVCR(
   // working directory (both raw and as a slash→dash project slug in the
   // auto-memory path) and messages carry fresh UUIDs per run; without this,
   // every test run produces a new hash and fixtures never hit in CI.
-  const cwdSlug = getCwd().replace(/[^a-zA-Z0-9]/g, '-');
+  const cwdSlug = getCwd().replace(/[^a-zA-Z0-9]/g, "-");
   const dehydrated = (dehydrateValue(jsonStringify({ messages, tools })) as string)
-    .replaceAll(cwdSlug, '[CWD_SLUG]')
-    .replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, '[UUID]')
-    .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z?/g, '[TIMESTAMP]');
-  const result = await withFixture(dehydrated, 'token-count', async () => ({
+    .replaceAll(cwdSlug, "[CWD_SLUG]")
+    .replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, "[UUID]")
+    .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z?/g, "[TIMESTAMP]");
+  const result = await withFixture(dehydrated, "token-count", async () => ({
     tokenCount: await f(),
   }));
   return result.tokenCount;

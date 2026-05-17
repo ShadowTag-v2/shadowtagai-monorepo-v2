@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Link, Text } from '../ink.js';
-import type { PrReviewState } from '../utils/ghPrStatus.js';
+import { c as _c } from "react/compiler-runtime";
+import { Link, Text } from "../ink.js";
+import type { PrReviewState } from "../utils/ghPrStatus.js";
 
 type Props = {
   number: number;
@@ -93,16 +93,16 @@ export function PrBadge(t0) {
 }
 function getPrStatusColor(
   state?: PrReviewState,
-): 'success' | 'error' | 'warning' | 'merged' | undefined {
+): "success" | "error" | "warning" | "merged" | undefined {
   switch (state) {
-    case 'approved':
-      return 'success';
-    case 'changes_requested':
-      return 'error';
-    case 'pending':
-      return 'warning';
-    case 'merged':
-      return 'merged';
+    case "approved":
+      return "success";
+    case "changes_requested":
+      return "error";
+    case "pending":
+      return "warning";
+    case "merged":
+      return "merged";
     default:
       return undefined;
   }

@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { Theme } from '../../utils/theme.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { useWizard } from './useWizard.js';
-import { WizardNavigationFooter } from './WizardNavigationFooter.js';
+import type { ReactNode } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { Theme } from "../../utils/theme.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { useWizard } from "./useWizard.js";
+import { WizardNavigationFooter } from "./WizardNavigationFooter.js";
 
 type Props = {
   title?: string;
@@ -15,7 +15,7 @@ type Props = {
 export function WizardDialogLayout(t0) {
   const $ = _c(11);
   const { title: titleOverride, color: t1, children, subtitle, footerText } = t0;
-  const color = t1 === undefined ? 'suggestion' : t1;
+  const color = t1 === undefined ? "suggestion" : t1;
   const {
     currentStepIndex,
     totalSteps,
@@ -23,8 +23,8 @@ export function WizardDialogLayout(t0) {
     showStepCounter,
     goBack,
   } = useWizard();
-  const title = titleOverride || providerTitle || 'Wizard';
-  const stepSuffix = showStepCounter !== false ? ` (${currentStepIndex + 1}/${totalSteps})` : '';
+  const title = titleOverride || providerTitle || "Wizard";
+  const stepSuffix = showStepCounter !== false ? ` (${currentStepIndex + 1}/${totalSteps})` : "";
   const t2 = `${title}${stepSuffix}`;
   let t3;
   if ($[0] !== children || $[1] !== color || $[2] !== goBack || $[3] !== subtitle || $[4] !== t2) {

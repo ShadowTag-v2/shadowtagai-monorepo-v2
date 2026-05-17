@@ -1,45 +1,45 @@
-import { feature } from 'bun:bundle';
-import type * as React from 'react';
-import { type ReactNode, useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { type Notification, useNotifications } from 'src/context/notifications.js';
-import { logEvent } from 'src/services/analytics/index.js';
-import { useAppState } from 'src/state/AppState.js';
-import { useVoiceState } from '../../context/voice.js';
-import type { VerificationStatus } from '../../hooks/useApiKeyVerification.js';
-import { useIdeConnectionStatus } from '../../hooks/useIdeConnectionStatus.js';
-import type { IDESelection } from '../../hooks/useIdeSelection.js';
-import { useMainLoopModel } from '../../hooks/useMainLoopModel.js';
-import { useVoiceEnabled } from '../../hooks/useVoiceEnabled.js';
-import { Box, Text } from '../../ink.js';
-import { useClaudeAiLimits } from '../../services/claudeAiLimitsHook.js';
-import { calculateTokenWarningState } from '../../services/compact/autoCompact.js';
-import type { MCPServerConnection } from '../../services/mcp/types.js';
-import type { Message } from '../../types/message.js';
+import { feature } from "bun:bundle";
+import type * as React from "react";
+import { type ReactNode, useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { type Notification, useNotifications } from "src/context/notifications.js";
+import { logEvent } from "src/services/analytics/index.js";
+import { useAppState } from "src/state/AppState.js";
+import { useVoiceState } from "../../context/voice.js";
+import type { VerificationStatus } from "../../hooks/useApiKeyVerification.js";
+import { useIdeConnectionStatus } from "../../hooks/useIdeConnectionStatus.js";
+import type { IDESelection } from "../../hooks/useIdeSelection.js";
+import { useMainLoopModel } from "../../hooks/useMainLoopModel.js";
+import { useVoiceEnabled } from "../../hooks/useVoiceEnabled.js";
+import { Box, Text } from "../../ink.js";
+import { useClaudeAiLimits } from "../../services/claudeAiLimitsHook.js";
+import { calculateTokenWarningState } from "../../services/compact/autoCompact.js";
+import type { MCPServerConnection } from "../../services/mcp/types.js";
+import type { Message } from "../../types/message.js";
 import {
   getApiKeyHelperElapsedMs,
   getConfiguredApiKeyHelper,
   getSubscriptionType,
-} from '../../utils/auth.js';
-import type { AutoUpdaterResult } from '../../utils/autoUpdater.js';
-import { getExternalEditor } from '../../utils/editor.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { formatDuration } from '../../utils/format.js';
-import { setEnvHookNotifier } from '../../utils/hooks/fileChangedWatcher.js';
-import { toIDEDisplayName } from '../../utils/ide.js';
-import { getMessagesAfterCompactBoundary } from '../../utils/messages.js';
-import { tokenCountFromLastAPIResponse } from '../../utils/tokens.js';
-import { AutoUpdaterWrapper } from '../AutoUpdaterWrapper.js';
-import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
-import { IdeStatusIndicator } from '../IdeStatusIndicator.js';
-import { MemoryUsageIndicator } from '../MemoryUsageIndicator.js';
-import { SentryErrorBoundary } from '../SentryErrorBoundary.js';
-import { TokenWarning } from '../TokenWarning.js';
-import { SandboxPromptFooterHint } from './SandboxPromptFooterHint.js';
+} from "../../utils/auth.js";
+import type { AutoUpdaterResult } from "../../utils/autoUpdater.js";
+import { getExternalEditor } from "../../utils/editor.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { formatDuration } from "../../utils/format.js";
+import { setEnvHookNotifier } from "../../utils/hooks/fileChangedWatcher.js";
+import { toIDEDisplayName } from "../../utils/ide.js";
+import { getMessagesAfterCompactBoundary } from "../../utils/messages.js";
+import { tokenCountFromLastAPIResponse } from "../../utils/tokens.js";
+import { AutoUpdaterWrapper } from "../AutoUpdaterWrapper.js";
+import { ConfigurableShortcutHint } from "../ConfigurableShortcutHint.js";
+import { IdeStatusIndicator } from "../IdeStatusIndicator.js";
+import { MemoryUsageIndicator } from "../MemoryUsageIndicator.js";
+import { SentryErrorBoundary } from "../SentryErrorBoundary.js";
+import { TokenWarning } from "../TokenWarning.js";
+import { SandboxPromptFooterHint } from "./SandboxPromptFooterHint.js";
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const VoiceIndicator: typeof import('./VoiceIndicator.js').VoiceIndicator = feature('VOICE_MODE')
-  ? require('./VoiceIndicator.js').VoiceIndicator
+const VoiceIndicator: typeof import("./VoiceIndicator.js").VoiceIndicator = feature("VOICE_MODE")
+  ? require("./VoiceIndicator.js").VoiceIndicator
   : () => null;
 /* eslint-enable @typescript-eslint/no-require-imports */
 
@@ -107,10 +107,10 @@ export function Notifications(t0) {
     t5 = () => {
       setEnvHookNotifier((text, isError) => {
         addNotification({
-          key: 'env-hook',
+          key: "env-hook",
           text,
-          color: isError ? 'error' : undefined,
-          priority: isError ? 'medium' : 'low',
+          color: isError ? "error" : undefined,
+          priority: isError ? "medium" : "low",
           timeoutMs: isError ? 8000 : 5000,
         });
       });
@@ -126,22 +126,22 @@ export function Notifications(t0) {
   }
   useEffect(t5, t6);
   const shouldShowIdeSelection =
-    ideStatus === 'connected' &&
+    ideStatus === "connected" &&
     (ideSelection?.filePath || (ideSelection?.text && ideSelection.lineCount > 0));
   const shouldShowAutoUpdater =
-    !shouldShowIdeSelection || isAutoUpdating || autoUpdaterResult?.status !== 'success';
+    !shouldShowIdeSelection || isAutoUpdating || autoUpdaterResult?.status !== "success";
   const isInOverageMode = claudeAiLimits.isUsingOverage;
   let t7;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = getSubscriptionType();
     $[8] = t7;
   } else {
     t7 = $[8];
   }
   const subscriptionType = t7;
-  const isTeamOrEnterprise = subscriptionType === 'team' || subscriptionType === 'enterprise';
+  const isTeamOrEnterprise = subscriptionType === "team" || subscriptionType === "enterprise";
   let t8;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = getExternalEditor();
     $[9] = t8;
   } else {
@@ -151,8 +151,8 @@ export function Notifications(t0) {
   const shouldShowExternalEditorHint =
     isInputWrapped &&
     !isShowingCompactMessage &&
-    apiKeyStatus !== 'invalid' &&
-    apiKeyStatus !== 'missing' &&
+    apiKeyStatus !== "invalid" &&
+    apiKeyStatus !== "missing" &&
     editor !== undefined;
   let t10;
   let t9;
@@ -163,9 +163,9 @@ export function Notifications(t0) {
   ) {
     t9 = () => {
       if (shouldShowExternalEditorHint && editor) {
-        logEvent('tengu_external_editor_hint_shown', {});
+        logEvent("tengu_external_editor_hint_shown", {});
         addNotification({
-          key: 'external-editor-hint',
+          key: "external-editor-hint",
           jsx: (
             <Text dimColor={true}>
               <ConfigurableShortcutHint
@@ -176,11 +176,11 @@ export function Notifications(t0) {
               />
             </Text>
           ),
-          priority: 'immediate',
+          priority: "immediate",
           timeoutMs: 5000,
         });
       } else {
-        removeNotification('external-editor-hint');
+        removeNotification("external-editor-hint");
       }
     };
     t10 = [shouldShowExternalEditorHint, editor, addNotification, removeNotification];
@@ -194,7 +194,7 @@ export function Notifications(t0) {
     t9 = $[14];
   }
   useEffect(t9, t10);
-  const t11 = isNarrow ? 'flex-start' : 'flex-end';
+  const t11 = isNarrow ? "flex-start" : "flex-end";
   const t12 = isInOverageMode ?? false;
   let t13;
   if (
@@ -333,18 +333,18 @@ function NotificationContent({
   }, []);
 
   // Voice state (VOICE_MODE builds only, runtime-gated by GrowthBook)
-  const voiceState = feature('VOICE_MODE')
+  const voiceState = feature("VOICE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useVoiceState((s) => s.voiceState)
-    : ('idle' as const);
+    : ("idle" as const);
   // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
-  const voiceEnabled = feature('VOICE_MODE') ? useVoiceEnabled() : false;
-  const voiceError = feature('VOICE_MODE')
+  const voiceEnabled = feature("VOICE_MODE") ? useVoiceEnabled() : false;
+  const voiceError = feature("VOICE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useVoiceState((s_0) => s_0.voiceError)
     : null;
   const isBriefOnly =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature("KAIROS") || feature("KAIROS_BRIEF")
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s_1) => s_1.isBriefOnly)
       : false;
@@ -352,9 +352,9 @@ function NotificationContent({
   // When voice is actively recording or processing, replace all
   // notifications with just the voice indicator.
   if (
-    feature('VOICE_MODE') &&
+    feature("VOICE_MODE") &&
     voiceEnabled &&
-    (voiceState === 'recording' || voiceState === 'processing')
+    (voiceState === "recording" || voiceState === "processing")
   ) {
     return <VoiceIndicator voiceState={voiceState} />;
   }
@@ -362,7 +362,7 @@ function NotificationContent({
     <>
       <IdeStatusIndicator ideSelection={ideSelection} mcpClients={mcpClients} />
       {notifications.current &&
-        ('jsx' in notifications.current ? (
+        ("jsx" in notifications.current ? (
           <Text wrap="truncate" key={notifications.current.key}>
             {notifications.current.jsx}
           </Text>
@@ -385,19 +385,19 @@ function NotificationContent({
       {apiKeyHelperSlow && (
         <Box>
           <Text color="warning" wrap="truncate">
-            apiKeyHelper is taking a while{' '}
+            apiKeyHelper is taking a while{" "}
           </Text>
           <Text dimColor wrap="truncate">
             ({apiKeyHelperSlow})
           </Text>
         </Box>
       )}
-      {(apiKeyStatus === 'invalid' || apiKeyStatus === 'missing') && (
+      {(apiKeyStatus === "invalid" || apiKeyStatus === "missing") && (
         <Box>
           <Text color="error" wrap="truncate">
             {isEnvTruthy(process.env.CLAUDE_CODE_REMOTE)
-              ? 'Authentication error · Try again'
-              : 'Not logged in · Run /login'}
+              ? "Authentication error · Try again"
+              : "Not logged in · Run /login"}
           </Text>
         </Box>
       )}
@@ -408,7 +408,7 @@ function NotificationContent({
           </Text>
         </Box>
       )}
-      {apiKeyStatus !== 'invalid' && apiKeyStatus !== 'missing' && verbose && (
+      {apiKeyStatus !== "invalid" && apiKeyStatus !== "missing" && verbose && (
         <Box>
           <Text dimColor wrap="truncate">
             {tokenUsage} tokens
@@ -426,7 +426,7 @@ function NotificationContent({
           showSuccessMessage={!isShowingCompactMessage}
         />
       )}
-      {feature('VOICE_MODE')
+      {feature("VOICE_MODE")
         ? voiceEnabled &&
           voiceError && (
             <Box>

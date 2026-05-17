@@ -1,19 +1,19 @@
-import * as React from 'react';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useInterval } from 'usehooks-ts';
-import { Text } from '../ink.js';
+import * as React from "react";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useInterval } from "usehooks-ts";
+import { Text } from "../ink.js";
 import {
   type AutoUpdaterResult,
   getLatestVersionFromGcs,
   getMaxVersion,
   shouldSkipVersion,
-} from '../utils/autoUpdater.js';
-import { isAutoUpdaterDisabled } from '../utils/config.js';
-import { logForDebugging } from '../utils/debug.js';
-import { getPackageManager } from '../utils/nativeInstaller/packageManagers.js';
-import { gt, gte } from '../utils/semver.js';
-import { getInitialSettings } from '../utils/settings/settings.js';
+} from "../utils/autoUpdater.js";
+import { isAutoUpdaterDisabled } from "../utils/config.js";
+import { logForDebugging } from "../utils/debug.js";
+import { getPackageManager } from "../utils/nativeInstaller/packageManagers.js";
+import { gt, gte } from "../utils/semver.js";
+import { getInitialSettings } from "../utils/settings/settings.js";
 
 type Props = {
   isUpdating: boolean;
@@ -27,16 +27,16 @@ export function PackageManagerAutoUpdater(t0) {
   const $ = _c(10);
   const { verbose } = t0;
   const [updateAvailable, setUpdateAvailable] = useState(false);
-  const [packageManager, setPackageManager] = useState('unknown');
+  const [packageManager, setPackageManager] = useState("unknown");
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = async () => {
       false || false;
       if (isAutoUpdaterDisabled()) {
         return;
       }
       const [channel, pm] = await Promise.all([
-        Promise.resolve(getInitialSettings()?.autoUpdatesChannel ?? 'latest'),
+        Promise.resolve(getInitialSettings()?.autoUpdatesChannel ?? "latest"),
         getPackageManager(),
       ]);
       setPackageManager(pm);
@@ -70,7 +70,7 @@ export function PackageManagerAutoUpdater(t0) {
   const checkForUpdates = t1;
   let t2;
   let t3;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => {
       checkForUpdates();
     };
@@ -87,13 +87,13 @@ export function PackageManagerAutoUpdater(t0) {
     return null;
   }
   const updateCommand =
-    packageManager === 'homebrew'
-      ? 'brew upgrade claude-code'
-      : packageManager === 'winget'
-        ? 'winget upgrade Anthropic.ClaudeCode'
-        : packageManager === 'apk'
-          ? 'apk upgrade claude-code'
-          : 'your package manager update command';
+    packageManager === "homebrew"
+      ? "brew upgrade claude-code"
+      : packageManager === "winget"
+        ? "winget upgrade Anthropic.ClaudeCode"
+        : packageManager === "apk"
+          ? "apk upgrade claude-code"
+          : "your package manager update command";
   let t4;
   if ($[3] !== verbose) {
     t4 = verbose && (

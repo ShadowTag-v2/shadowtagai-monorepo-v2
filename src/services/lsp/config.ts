@@ -1,10 +1,10 @@
-import type { PluginError } from '../../types/plugin.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage, toError } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { getPluginLspServers } from '../../utils/plugins/lspPluginIntegration.js';
-import { loadAllPluginsCacheOnly } from '../../utils/plugins/pluginLoader.js';
-import type { ScopedLspServerConfig } from './types.js';
+import type { PluginError } from "../../types/plugin.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage, toError } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { getPluginLspServers } from "../../utils/plugins/lspPluginIntegration.js";
+import { loadAllPluginsCacheOnly } from "../../utils/plugins/pluginLoader.js";
+import type { ScopedLspServerConfig } from "./types.js";
 
 /**
  * Get all configured LSP servers from plugins.
@@ -34,7 +34,7 @@ export async function getAllLspServers(): Promise<{
           // Defensive: if one plugin throws, don't lose results from the
           // others. The previous serial loop implicitly tolerated this.
           logForDebugging(`Failed to load LSP servers for plugin ${plugin.name}: ${e}`, {
-            level: 'error',
+            level: "error",
           });
           return { plugin, scopedServers: undefined, errors };
         }

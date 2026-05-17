@@ -1,10 +1,10 @@
-import axios from 'axios';
-import { getOauthConfig } from '../../constants/oauth.js';
-import { getOauthAccountInfo } from '../../utils/auth.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { logError } from '../../utils/log.js';
-import { isEssentialTrafficOnly } from '../../utils/privacyLevel.js';
-import { getOAuthHeaders, prepareApiRequest } from '../../utils/teleport/api.js';
+import axios from "axios";
+import { getOauthConfig } from "../../constants/oauth.js";
+import { getOauthAccountInfo } from "../../utils/auth.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { logError } from "../../utils/log.js";
+import { isEssentialTrafficOnly } from "../../utils/privacyLevel.js";
+import { getOAuthHeaders, prepareApiRequest } from "../../utils/teleport/api.js";
 
 export type OverageCreditGrantInfo = {
   available: boolean;
@@ -123,7 +123,7 @@ export async function refreshOverageCreditGrantCache(): Promise<void> {
 export function formatGrantAmount(info: OverageCreditGrantInfo): string | null {
   if (info.amount_minor_units == null || !info.currency) return null;
   // For now only USD; backend may expand later
-  if (info.currency.toUpperCase() === 'USD') {
+  if (info.currency.toUpperCase() === "USD") {
     const dollars = info.amount_minor_units / 100;
     return Number.isInteger(dollars) ? `$${dollars}` : `$${dollars.toFixed(2)}`;
   }

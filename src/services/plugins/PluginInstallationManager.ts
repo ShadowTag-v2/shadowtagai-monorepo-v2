@@ -5,19 +5,19 @@
  * from trusted sources (repository and user settings) without blocking startup.
  */
 
-import type { AppState } from '../../state/AppState.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { logForDiagnosticsNoPII } from '../../utils/diagLogs.js';
-import { logError } from '../../utils/log.js';
+import type { AppState } from "../../state/AppState.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { logForDiagnosticsNoPII } from "../../utils/diagLogs.js";
+import { logError } from "../../utils/log.js";
 import {
   clearMarketplacesCache,
   getDeclaredMarketplaces,
   loadKnownMarketplacesConfig,
-} from '../../utils/plugins/marketplaceManager.js';
-import { clearPluginCache } from '../../utils/plugins/pluginLoader.js';
-import { diffMarketplaces, reconcileMarketplaces } from '../../utils/plugins/reconciler.js';
-import { refreshActivePlugins } from '../../utils/plugins/refresh.js';
-import { logEvent } from '../analytics/index.js';
+} from "../../utils/plugins/marketplaceManager.js";
+import { clearPluginCache } from "../../utils/plugins/pluginLoader.js";
+import { diffMarketplaces, reconcileMarketplaces } from "../../utils/plugins/reconciler.js";
+import { refreshActivePlugins } from "../../utils/plugins/refresh.js";
+import { logEvent } from "../analytics/index.js";
 
 type SetAppState = (f: (prevState: AppState) => AppState) => void;
 
@@ -27,7 +27,7 @@ type SetAppState = (f: (prevState: AppState) => AppState) => void;
 function updateMarketplaceStatus(
   setAppState: SetAppState,
   name: string,
-  status: 'pending' | 'installing' | 'installed' | 'failed',
+  status: "pending" | "installing" | "installed" | "failed",
   error?: string,
 ): void {
   setAppState((prevState) => ({
@@ -57,7 +57,7 @@ function updateMarketplaceStatus(
 export async function performBackgroundPluginInstallations(
   setAppState: SetAppState,
 ): Promise<void> {
-  logForDebugging('performBackgroundPluginInstallations called');
+  logForDebugging("performBackgroundPluginInstallations called");
 
   try {
     // Compute diff upfront for initial UI status (pending spinners)
@@ -77,7 +77,7 @@ export async function performBackgroundPluginInstallations(
         installationStatus: {
           marketplaces: pendingNames.map((name) => ({
             name,
-            status: 'pending' as const,
+            status: "pending" as const,
           })),
           plugins: [],
         },
@@ -93,14 +93,14 @@ export async function performBackgroundPluginInstallations(
     const result = await reconcileMarketplaces({
       onProgress: (event) => {
         switch (event.type) {
-          case 'installing':
-            updateMarketplaceStatus(setAppState, event.name, 'installing');
+          case "installing":
+            updateMarketplaceStatus(setAppState, event.name, "installing");
             break;
-          case 'installed':
-            updateMarketplaceStatus(setAppState, event.name, 'installed');
+          case "installed":
+            updateMarketplaceStatus(setAppState, event.name, "installed");
             break;
-          case 'failed':
-            updateMarketplaceStatus(setAppState, event.name, 'failed', event.error);
+          case "failed":
+            updateMarketplaceStatus(setAppState, event.name, "failed", event.error);
             break;
         }
       },
@@ -112,8 +112,8 @@ export async function performBackgroundPluginInstallations(
       failed_count: result.failed.length,
       up_to_date_count: result.upToDate.length,
     };
-    logEvent('tengu_marketplace_background_install', metrics);
-    logForDiagnosticsNoPII('info', 'tengu_marketplace_background_install', metrics);
+    logEvent("tengu_marketplace_background_install", metrics);
+    logForDiagnosticsNoPII("info", "tengu_marketplace_background_install", metrics);
 
     if (result.installed.length > 0) {
       // New marketplaces were installed — auto-refresh plugins. This fixes
@@ -132,9 +132,9 @@ export async function performBackgroundPluginInstallations(
         // the user can manually run /reload-plugins to recover.
         logError(refreshError);
         logForDebugging(`Auto-refresh failed, falling back to needsRefresh: ${refreshError}`, {
-          level: 'warn',
+          level: "warn",
         });
-        clearPluginCache('performBackgroundPluginInstallations: auto-refresh failed');
+        clearPluginCache("performBackgroundPluginInstallations: auto-refresh failed");
         setAppState((prev) => {
           if (prev.plugins.needsRefresh) return prev;
           return {
@@ -147,7 +147,7 @@ export async function performBackgroundPluginInstallations(
       // Existing marketplaces updated — notify user to run /reload-plugins.
       // Updates are less urgent and the user should choose when to apply them.
       clearMarketplacesCache();
-      clearPluginCache('performBackgroundPluginInstallations: marketplaces reconciled');
+      clearPluginCache("performBackgroundPluginInstallations: marketplaces reconciled");
       setAppState((prev) => {
         if (prev.plugins.needsRefresh) return prev;
         return {

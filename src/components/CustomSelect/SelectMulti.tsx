@@ -1,12 +1,12 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import type { PastedContent } from '../../utils/config.js';
-import type { ImageDimensions } from '../../utils/imageResizer.js';
-import type { OptionWithDescription } from './select.js';
-import { SelectInputOption } from './select-input-option.js';
-import { SelectOption } from './select-option.js';
-import { useMultiSelectState } from './use-multi-select-state.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import type { PastedContent } from "../../utils/config.js";
+import type { ImageDimensions } from "../../utils/imageResizer.js";
+import type { OptionWithDescription } from "./select.js";
+import { SelectInputOption } from "./select-input-option.js";
+import { SelectOption } from "./select-option.js";
+import { useMultiSelectState } from "./use-multi-select-state.js";
 export type SelectMultiProps<T> = {
   readonly isDisabled?: boolean;
   readonly visibleOptionCount?: number;
@@ -164,9 +164,9 @@ export function SelectMulti(t0) {
   ) {
     const maxIndexWidth = options.length.toString().length;
     T1 = Box;
-    t9 = 'column';
+    t9 = "column";
     T0 = Box;
-    t7 = 'column';
+    t7 = "column";
     t8 = state.visibleOptions.map((option, index) => {
       const isOptionFocused =
         !isDisabled && state.focusedValue === option.value && !state.isSubmitFocused;
@@ -176,8 +176,8 @@ export function SelectMulti(t0) {
       const areMoreOptionsBelow = state.visibleToIndex < options.length;
       const areMoreOptionsAbove = state.visibleFromIndex > 0;
       const i = state.visibleFromIndex + index + 1;
-      if (option.type === 'input') {
-        const inputValue = state.inputValues.get(option.value) || '';
+      if (option.type === "input") {
+        const inputValue = state.inputValues.get(option.value) || "";
         return (
           <Box key={String(option.value)} gap={1}>
             <SelectInputOption
@@ -202,8 +202,8 @@ export function SelectMulti(t0) {
               pastedContents={pastedContents}
               onRemoveImage={onRemoveImage}
             >
-              <Text color={isSelected ? 'success' : undefined}>
-                [{isSelected ? figures.tick : ' '}]{' '}
+              <Text color={isSelected ? "success" : undefined}>
+                [{isSelected ? figures.tick : " "}]{" "}
               </Text>
             </SelectInputOption>
           </Box>
@@ -219,10 +219,10 @@ export function SelectMulti(t0) {
             description={option.description}
           >
             {!hideIndexes && <Text dimColor={true}>{`${i}.`.padEnd(maxIndexWidth)}</Text>}
-            <Text color={isSelected ? 'success' : undefined}>
-              [{isSelected ? figures.tick : ' '}]
+            <Text color={isSelected ? "success" : undefined}>
+              [{isSelected ? figures.tick : " "}]
             </Text>
-            <Text color={isOptionFocused ? 'suggestion' : undefined}>{option.label}</Text>
+            <Text color={isOptionFocused ? "suggestion" : undefined}>{option.label}</Text>
           </SelectOption>
         </Box>
       );
@@ -264,7 +264,7 @@ export function SelectMulti(t0) {
       <Box marginTop={0} gap={1}>
         {state.isSubmitFocused ? <Text color="suggestion">{figures.pointer}</Text> : <Text> </Text>}
         <Box marginLeft={3}>
-          <Text color={state.isSubmitFocused ? 'suggestion' : undefined} bold={true}>
+          <Text color={state.isSubmitFocused ? "suggestion" : undefined} bold={true}>
             {submitButtonText}
           </Text>
         </Box>

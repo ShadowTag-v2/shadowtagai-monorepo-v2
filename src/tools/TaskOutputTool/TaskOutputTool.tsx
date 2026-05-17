@@ -1,36 +1,36 @@
-import { c as _c } from 'react/compiler-runtime';
-import { z } from 'zod/v4';
-import { FallbackToolUseErrorMessage } from '../../components/FallbackToolUseErrorMessage.js';
-import { FallbackToolUseRejectedMessage } from '../../components/FallbackToolUseRejectedMessage.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { Box, Text } from '../../ink.js';
-import { useShortcutDisplay } from '../../keybindings/useShortcutDisplay.js';
-import type { TaskType } from '../../Task.js';
-import type { Tool } from '../../Tool.js';
-import { buildTool, type ToolDef } from '../../Tool.js';
-import type { LocalAgentTaskState } from '../../tasks/LocalAgentTask/LocalAgentTask.js';
-import type { LocalShellTaskState } from '../../tasks/LocalShellTask/guards.js';
-import type { RemoteAgentTaskState } from '../../tasks/RemoteAgentTask/RemoteAgentTask.js';
-import type { TaskState } from '../../tasks/types.js';
-import { AbortError } from '../../utils/errors.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { extractTextContent } from '../../utils/messages.js';
-import { semanticBoolean } from '../../utils/semanticBoolean.js';
-import { sleep } from '../../utils/sleep.js';
-import { jsonParse } from '../../utils/slowOperations.js';
-import { countCharInString } from '../../utils/stringUtils.js';
-import { getTaskOutput } from '../../utils/task/diskOutput.js';
-import { updateTaskState } from '../../utils/task/framework.js';
-import { formatTaskOutput } from '../../utils/task/outputFormatting.js';
-import { AgentPromptDisplay, AgentResponseDisplay } from '../AgentTool/UI.js';
-import BashToolResultMessage from '../BashTool/BashToolResultMessage.js';
-import { TASK_OUTPUT_TOOL_NAME } from './constants.js';
+import { c as _c } from "react/compiler-runtime";
+import { z } from "zod/v4";
+import { FallbackToolUseErrorMessage } from "../../components/FallbackToolUseErrorMessage.js";
+import { FallbackToolUseRejectedMessage } from "../../components/FallbackToolUseRejectedMessage.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { Box, Text } from "../../ink.js";
+import { useShortcutDisplay } from "../../keybindings/useShortcutDisplay.js";
+import type { TaskType } from "../../Task.js";
+import type { Tool } from "../../Tool.js";
+import { buildTool, type ToolDef } from "../../Tool.js";
+import type { LocalAgentTaskState } from "../../tasks/LocalAgentTask/LocalAgentTask.js";
+import type { LocalShellTaskState } from "../../tasks/LocalShellTask/guards.js";
+import type { RemoteAgentTaskState } from "../../tasks/RemoteAgentTask/RemoteAgentTask.js";
+import type { TaskState } from "../../tasks/types.js";
+import { AbortError } from "../../utils/errors.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { extractTextContent } from "../../utils/messages.js";
+import { semanticBoolean } from "../../utils/semanticBoolean.js";
+import { sleep } from "../../utils/sleep.js";
+import { jsonParse } from "../../utils/slowOperations.js";
+import { countCharInString } from "../../utils/stringUtils.js";
+import { getTaskOutput } from "../../utils/task/diskOutput.js";
+import { updateTaskState } from "../../utils/task/framework.js";
+import { formatTaskOutput } from "../../utils/task/outputFormatting.js";
+import { AgentPromptDisplay, AgentResponseDisplay } from "../AgentTool/UI.js";
+import BashToolResultMessage from "../BashTool/BashToolResultMessage.js";
+import { TASK_OUTPUT_TOOL_NAME } from "./constants.js";
 
 const inputSchema = lazySchema(() =>
   z.strictObject({
-    task_id: z.string().describe('The task ID to get output from'),
-    block: semanticBoolean(z.boolean().default(true)).describe('Whether to wait for completion'),
-    timeout: z.number().min(0).max(600000).default(30000).describe('Max wait time in ms'),
+    task_id: z.string().describe("The task ID to get output from"),
+    block: semanticBoolean(z.boolean().default(true)).describe("Whether to wait for completion"),
+    timeout: z.number().min(0).max(600000).default(30000).describe("Max wait time in ms"),
   }),
 );
 type InputSchema = ReturnType<typeof inputSchema>;
@@ -50,23 +50,23 @@ type TaskOutput = {
   result?: string;
 };
 type TaskOutputToolOutput = {
-  retrieval_status: 'success' | 'timeout' | 'not_ready';
+  retrieval_status: "success" | "timeout" | "not_ready";
   task: TaskOutput | null;
 };
 
 // Re-export Progress from centralized types to break import cycles
-export type { TaskOutputProgress as Progress } from '../../types/tools.js';
+export type { TaskOutputProgress as Progress } from "../../types/tools.js";
 
 // Get output for any task type
 async function getTaskOutputData(task: TaskState): Promise<TaskOutput> {
   let output: string;
-  if (task.type === 'local_bash') {
+  if (task.type === "local_bash") {
     const bashTask = task as LocalShellTaskState;
     const taskOutputObj = bashTask.shellCommand?.taskOutput;
     if (taskOutputObj) {
       const stdout = await taskOutputObj.getStdout();
       const stderr = taskOutputObj.getStderr();
-      output = [stdout, stderr].filter(Boolean).join('\n');
+      output = [stdout, stderr].filter(Boolean).join("\n");
     } else {
       output = await getTaskOutput(task.id);
     }
@@ -82,14 +82,14 @@ async function getTaskOutputData(task: TaskState): Promise<TaskOutput> {
   };
 
   // Add type-specific fields
-  if (task.type === 'local_bash') {
+  if (task.type === "local_bash") {
     const bashTask = task as LocalShellTaskState;
     return {
       ...baseOutput,
       exitCode: bashTask.result?.code ?? null,
     };
   }
-  if (task.type === 'local_agent') {
+  if (task.type === "local_agent") {
     const agentTask = task as LocalAgentTaskState;
     // Prefer the clean final answer from the in-memory result over the raw
     // JSONL transcript on disk. The disk output is a symlink to the full
@@ -97,7 +97,7 @@ async function getTaskOutputData(task: TaskState): Promise<TaskOutput> {
     // subagent's answer. The in-memory result contains only the final
     // assistant text content blocks.
     const cleanResult = agentTask.result
-      ? extractTextContent(agentTask.result.content, '\n')
+      ? extractTextContent(agentTask.result.content, "\n")
       : undefined;
     return {
       ...baseOutput,
@@ -107,7 +107,7 @@ async function getTaskOutputData(task: TaskState): Promise<TaskOutput> {
       error: agentTask.error,
     };
   }
-  if (task.type === 'remote_agent') {
+  if (task.type === "remote_agent") {
     const remoteTask = task as RemoteAgentTaskState;
     return {
       ...baseOutput,
@@ -137,7 +137,7 @@ async function waitForTaskCompletion(
     if (!task) {
       return null;
     }
-    if (task.status !== 'running' && task.status !== 'pending') {
+    if (task.status !== "running" && task.status !== "pending") {
       return task;
     }
 
@@ -151,25 +151,25 @@ async function waitForTaskCompletion(
 }
 export const TaskOutputTool: Tool<InputSchema, TaskOutputToolOutput> = buildTool({
   name: TASK_OUTPUT_TOOL_NAME,
-  searchHint: 'read output/logs from a background task',
+  searchHint: "read output/logs from a background task",
   maxResultSizeChars: 100_000,
   shouldDefer: true,
   // Backwards-compatible aliases for renamed tools
-  aliases: ['AgentOutputTool', 'BashOutputTool'],
+  aliases: ["AgentOutputTool", "BashOutputTool"],
   userFacingName() {
-    return 'Task Output';
+    return "Task Output";
   },
   get inputSchema(): InputSchema {
     return inputSchema();
   },
   async description() {
-    return '[Deprecated] — prefer Read on the task output file path';
+    return "[Deprecated] — prefer Read on the task output file path";
   },
   isConcurrencySafe(_input) {
     return this.isReadOnly?.(_input) ?? false;
   },
   isEnabled() {
-    return 'external' !== 'ant';
+    return "external" !== "ant";
   },
   isReadOnly(_input) {
     return true;
@@ -192,7 +192,7 @@ export const TaskOutputTool: Tool<InputSchema, TaskOutputToolOutput> = buildTool
     if (!task_id) {
       return {
         result: false,
-        message: 'Task ID is required',
+        message: "Task ID is required",
         errorCode: 1,
       };
     }
@@ -218,7 +218,7 @@ export const TaskOutputTool: Tool<InputSchema, TaskOutputToolOutput> = buildTool
     }
     if (!block) {
       // Non-blocking: return current state
-      if (task.status !== 'running' && task.status !== 'pending') {
+      if (task.status !== "running" && task.status !== "pending") {
         // Mark as notified
         updateTaskState(task_id, toolUseContext.setAppState, (t) => ({
           ...t,
@@ -226,14 +226,14 @@ export const TaskOutputTool: Tool<InputSchema, TaskOutputToolOutput> = buildTool
         }));
         return {
           data: {
-            retrieval_status: 'success' as const,
+            retrieval_status: "success" as const,
             task: await getTaskOutputData(task),
           },
         };
       }
       return {
         data: {
-          retrieval_status: 'not_ready' as const,
+          retrieval_status: "not_ready" as const,
           task: await getTaskOutputData(task),
         },
       };
@@ -244,7 +244,7 @@ export const TaskOutputTool: Tool<InputSchema, TaskOutputToolOutput> = buildTool
       onProgress({
         toolUseID: `task-output-waiting-${Date.now()}`,
         data: {
-          type: 'waiting_for_task',
+          type: "waiting_for_task",
           taskDescription: task.description,
           taskType: task.type,
         },
@@ -259,15 +259,15 @@ export const TaskOutputTool: Tool<InputSchema, TaskOutputToolOutput> = buildTool
     if (!completedTask) {
       return {
         data: {
-          retrieval_status: 'timeout' as const,
+          retrieval_status: "timeout" as const,
           task: null,
         },
       };
     }
-    if (completedTask.status === 'running' || completedTask.status === 'pending') {
+    if (completedTask.status === "running" || completedTask.status === "pending") {
       return {
         data: {
-          retrieval_status: 'timeout' as const,
+          retrieval_status: "timeout" as const,
           task: await getTaskOutputData(completedTask),
         },
       };
@@ -280,7 +280,7 @@ export const TaskOutputTool: Tool<InputSchema, TaskOutputToolOutput> = buildTool
     }));
     return {
       data: {
-        retrieval_status: 'success' as const,
+        retrieval_status: "success" as const,
         task: await getTaskOutputData(completedTask),
       },
     };
@@ -305,16 +305,16 @@ export const TaskOutputTool: Tool<InputSchema, TaskOutputToolOutput> = buildTool
     }
     return {
       tool_use_id: toolUseID,
-      type: 'tool_result' as const,
-      content: parts.join('\n\n'),
+      type: "tool_result" as const,
+      content: parts.join("\n\n"),
     };
   },
   renderToolUseMessage(input) {
     const { block = true } = input;
     if (!block) {
-      return 'non-blocking';
+      return "non-blocking";
     }
-    return '';
+    return "";
   },
   renderToolUseTag(input) {
     if (!input.task_id) {
@@ -334,7 +334,7 @@ export const TaskOutputTool: Tool<InputSchema, TaskOutputToolOutput> = buildTool
       <Box flexDirection="column">
         {progressData?.taskDescription && <Text>&nbsp;&nbsp;{progressData.taskDescription}</Text>}
         <Text>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Waiting for task{' '}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Waiting for task{" "}
           <Text dimColor>(esc to give additional instructions)</Text>
         </Text>
       </Box>
@@ -354,10 +354,10 @@ function TaskOutputResultDisplay(t0) {
   const $ = _c(54);
   const { content, verbose: t1, theme } = t0;
   const verbose = t1 === undefined ? false : t1;
-  const expandShortcut = useShortcutDisplay('app:toggleTranscript', 'Global', 'ctrl+o');
+  const expandShortcut = useShortcutDisplay("app:toggleTranscript", "Global", "ctrl+o");
   let t2;
   if ($[0] !== content) {
-    t2 = typeof content === 'string' ? jsonParse(content) : content;
+    t2 = typeof content === "string" ? jsonParse(content) : content;
     $[0] = content;
     $[1] = t2;
   } else {
@@ -366,7 +366,7 @@ function TaskOutputResultDisplay(t0) {
   const result = t2;
   if (!result.task) {
     let t3;
-    if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = (
         <MessageResponse>
           <Text dimColor={true}>No task output available</Text>
@@ -379,12 +379,12 @@ function TaskOutputResultDisplay(t0) {
     return t3;
   }
   const { task } = result;
-  if (task.task_type === 'local_bash') {
+  if (task.task_type === "local_bash") {
     let t3;
     if ($[3] !== task.error || $[4] !== task.output) {
       t3 = {
         stdout: task.output,
-        stderr: '',
+        stderr: "",
         isImage: false,
         dangerouslyDisableSandbox: true,
         returnCodeInterpretation: task.error,
@@ -407,9 +407,9 @@ function TaskOutputResultDisplay(t0) {
     }
     return t4;
   }
-  if (task.task_type === 'local_agent') {
-    const lineCount = task.result ? countCharInString(task.result, '\n') + 1 : 0;
-    if (result.retrieval_status === 'success') {
+  if (task.task_type === "local_agent") {
+    const lineCount = task.result ? countCharInString(task.result, "\n") + 1 : 0;
+    if (result.retrieval_status === "success") {
       if (verbose) {
         let t3;
         if ($[9] !== lineCount || $[10] !== task.description) {
@@ -440,7 +440,7 @@ function TaskOutputResultDisplay(t0) {
               <AgentResponseDisplay
                 content={[
                   {
-                    type: 'text',
+                    type: "text",
                     text: task.result,
                   },
                 ]}
@@ -517,9 +517,9 @@ function TaskOutputResultDisplay(t0) {
       }
       return t3;
     }
-    if (result.retrieval_status === 'timeout' || task.status === 'running') {
+    if (result.retrieval_status === "timeout" || task.status === "running") {
       let t3;
-      if ($[29] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[29] === Symbol.for("react.memo_cache_sentinel")) {
         t3 = (
           <MessageResponse>
             <Text dimColor={true}>Task is still running…</Text>
@@ -531,9 +531,9 @@ function TaskOutputResultDisplay(t0) {
       }
       return t3;
     }
-    if (result.retrieval_status === 'not_ready') {
+    if (result.retrieval_status === "not_ready") {
       let t3;
-      if ($[30] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[30] === Symbol.for("react.memo_cache_sentinel")) {
         t3 = (
           <MessageResponse>
             <Text dimColor={true}>Task is still running…</Text>
@@ -546,7 +546,7 @@ function TaskOutputResultDisplay(t0) {
       return t3;
     }
     let t3;
-    if ($[31] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[31] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = (
         <MessageResponse>
           <Text dimColor={true}>Task not ready</Text>
@@ -558,7 +558,7 @@ function TaskOutputResultDisplay(t0) {
     }
     return t3;
   }
-  if (task.task_type === 'remote_agent') {
+  if (task.task_type === "remote_agent") {
     let t3;
     if ($[32] !== task.description || $[33] !== task.status) {
       t3 = (
@@ -589,7 +589,7 @@ function TaskOutputResultDisplay(t0) {
     if ($[38] !== expandShortcut || $[39] !== task.output || $[40] !== verbose) {
       t5 = !verbose && task.output && (
         <Text dimColor={true}>
-          {'     '}({expandShortcut} to expand)
+          {"     "}({expandShortcut} to expand)
         </Text>
       );
       $[38] = expandShortcut;

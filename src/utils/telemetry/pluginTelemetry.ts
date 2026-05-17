@@ -11,25 +11,25 @@
  * redacted column can't, without exposing user-defined names.
  */
 
-import { createHash } from 'node:crypto';
-import { sep } from 'node:path';
+import { createHash } from "node:crypto";
+import { sep } from "node:path";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
   logEvent,
-} from '../../services/analytics/index.js';
-import type { LoadedPlugin, PluginError, PluginManifest } from '../../types/plugin.js';
-import { isOfficialMarketplaceName, parsePluginIdentifier } from '../plugins/pluginIdentifier.js';
+} from "../../services/analytics/index.js";
+import type { LoadedPlugin, PluginError, PluginManifest } from "../../types/plugin.js";
+import { isOfficialMarketplaceName, parsePluginIdentifier } from "../plugins/pluginIdentifier.js";
 
 // builtinPlugins.ts:BUILTIN_MARKETPLACE_NAME — inlined to avoid the cycle
 // through commands.js. Marketplace schemas.ts enforces 'builtin' is reserved.
-const BUILTIN_MARKETPLACE_NAME = 'builtin';
+const BUILTIN_MARKETPLACE_NAME = "builtin";
 
 // Fixed salt for plugin_id_hash. Same constant across all repos and emission
 // sites. Not per-org, not rotated — per-org salt would defeat cross-org
 // distinct-count, rotation would break trend lines. Customers can compute the
 // same hash on their known plugin names to reverse-match their own telemetry.
-const PLUGIN_ID_HASH_SALT = 'claude-plugin-telemetry-v1';
+const PLUGIN_ID_HASH_SALT = "claude-plugin-telemetry-v1";
 
 /**
  * Opaque per-plugin aggregation key. Input is the name@marketplace string as
@@ -40,9 +40,9 @@ const PLUGIN_ID_HASH_SALT = 'claude-plugin-telemetry-v1';
  */
 export function hashPluginId(name: string, marketplace?: string): string {
   const key = marketplace ? `${name}@${marketplace.toLowerCase()}` : name;
-  return createHash('sha256')
+  return createHash("sha256")
     .update(key + PLUGIN_ID_HASH_SALT)
-    .digest('hex')
+    .digest("hex")
     .slice(0, 16);
 }
 
@@ -56,17 +56,17 @@ export function hashPluginId(name: string, marketplace?: string): string {
  * - org: enterprise admin-pushed via managed settings (policySettings)
  * - user-local: user added marketplace or local plugin
  */
-export type TelemetryPluginScope = 'official' | 'org' | 'user-local' | 'default-bundle';
+export type TelemetryPluginScope = "official" | "org" | "user-local" | "default-bundle";
 
 export function getTelemetryPluginScope(
   name: string,
   marketplace: string | undefined,
   managedNames: Set<string> | null,
 ): TelemetryPluginScope {
-  if (marketplace === BUILTIN_MARKETPLACE_NAME) return 'default-bundle';
-  if (isOfficialMarketplaceName(marketplace)) return 'official';
-  if (managedNames?.has(name)) return 'org';
-  return 'user-local';
+  if (marketplace === BUILTIN_MARKETPLACE_NAME) return "default-bundle";
+  if (isOfficialMarketplaceName(marketplace)) return "official";
+  if (managedNames?.has(name)) return "org";
+  return "user-local";
 }
 
 /**
@@ -74,29 +74,29 @@ export function getTelemetryPluginScope(
  * — plugin_scope alone doesn't (an official plugin can be user-installed OR
  * org-pushed; both are scope='official').
  */
-export type EnabledVia = 'user-install' | 'org-policy' | 'default-enable' | 'seed-mount';
+export type EnabledVia = "user-install" | "org-policy" | "default-enable" | "seed-mount";
 
 /** How a skill/command invocation was triggered. */
-export type InvocationTrigger = 'user-slash' | 'claude-proactive' | 'nested-skill';
+export type InvocationTrigger = "user-slash" | "claude-proactive" | "nested-skill";
 
 /** Where a skill invocation executes. */
-export type SkillExecutionContext = 'fork' | 'inline' | 'remote';
+export type SkillExecutionContext = "fork" | "inline" | "remote";
 
 /** How a plugin install was initiated. */
-export type InstallSource = 'cli-explicit' | 'ui-discover' | 'ui-suggestion' | 'deep-link';
+export type InstallSource = "cli-explicit" | "ui-discover" | "ui-suggestion" | "deep-link";
 
 export function getEnabledVia(
   plugin: LoadedPlugin,
   managedNames: Set<string> | null,
   seedDirs: string[],
 ): EnabledVia {
-  if (plugin.isBuiltin) return 'default-enable';
-  if (managedNames?.has(plugin.name)) return 'org-policy';
+  if (plugin.isBuiltin) return "default-enable";
+  if (managedNames?.has(plugin.name)) return "org-policy";
   // Trailing sep: /opt/plugins must not match /opt/plugins-extra
   if (seedDirs.some((dir) => plugin.path.startsWith(dir.endsWith(sep) ? dir : dir + sep))) {
-    return 'seed-mount';
+    return "seed-mount";
   }
-  return 'user-install';
+  return "user-install";
 }
 
 /**
@@ -118,7 +118,7 @@ export function buildPluginTelemetryFields(
   const scope = getTelemetryPluginScope(name, marketplace, managedNames);
   // Both official marketplaces and builtin plugins are Anthropic-controlled
   // — safe to expose real names in the redacted columns.
-  const isAnthropicControlled = scope === 'official' || scope === 'default-bundle';
+  const isAnthropicControlled = scope === "official" || scope === "default-bundle";
   return {
     plugin_id_hash: hashPluginId(
       name,
@@ -127,10 +127,10 @@ export function buildPluginTelemetryFields(
     plugin_scope: scope as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     plugin_name_redacted: (isAnthropicControlled
       ? name
-      : 'third-party') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      : "third-party") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     marketplace_name_redacted: (isAnthropicControlled && marketplace
       ? marketplace
-      : 'third-party') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      : "third-party") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     is_official_plugin: isAnthropicControlled,
   };
 }
@@ -164,7 +164,7 @@ export function logPluginsEnabledForSession(
   for (const plugin of plugins) {
     const { marketplace } = parsePluginIdentifier(plugin.repository);
 
-    logEvent('tengu_plugin_enabled_for_session', {
+    logEvent("tengu_plugin_enabled_for_session", {
       _PROTO_plugin_name: plugin.name as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
       ...(marketplace && {
         _PROTO_marketplace_name: marketplace as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
@@ -193,11 +193,11 @@ export function logPluginsEnabledForSession(
  * GROUP BY stays tractable.
  */
 export type PluginCommandErrorCategory =
-  | 'network'
-  | 'not-found'
-  | 'permission'
-  | 'validation'
-  | 'unknown';
+  | "network"
+  | "not-found"
+  | "permission"
+  | "validation"
+  | "unknown";
 
 export function classifyPluginCommandError(error: unknown): PluginCommandErrorCategory {
   const msg = String((error as { message?: unknown })?.message ?? error);
@@ -206,18 +206,18 @@ export function classifyPluginCommandError(error: unknown): PluginCommandErrorCa
       msg,
     )
   ) {
-    return 'network';
+    return "network";
   }
   if (/\b404\b|not found|does not exist|no such plugin/i.test(msg)) {
-    return 'not-found';
+    return "not-found";
   }
   if (/\b40[13]\b|EACCES|EPERM|permission denied|unauthorized/i.test(msg)) {
-    return 'permission';
+    return "permission";
   }
   if (/invalid|malformed|schema|validation|parse error/i.test(msg)) {
-    return 'validation';
+    return "validation";
   }
-  return 'unknown';
+  return "unknown";
 }
 
 /**
@@ -232,8 +232,8 @@ export function logPluginLoadErrors(errors: PluginError[], managedNames: Set<str
     // Not all PluginError variants carry a plugin name (some have pluginId,
     // some are marketplace-level). Use the 'plugin' property if present,
     // fall back to the name parsed from err.source.
-    const pluginName = 'plugin' in err && err.plugin ? err.plugin : name;
-    logEvent('tengu_plugin_load_failed', {
+    const pluginName = "plugin" in err && err.plugin ? err.plugin : name;
+    logEvent("tengu_plugin_load_failed", {
       error_category: err.type as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       _PROTO_plugin_name: pluginName as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
       ...(marketplace && {

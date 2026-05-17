@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useInterval } from 'usehooks-ts';
+import { useState } from "react";
+import { useInterval } from "usehooks-ts";
 
-export type MemoryUsageStatus = 'normal' | 'high' | 'critical';
+export type MemoryUsageStatus = "normal" | "high" | "critical";
 
 export type MemoryUsageInfo = {
   heapUsed: number;
@@ -22,15 +22,15 @@ export function useMemoryUsage(): MemoryUsageInfo | null {
     const heapUsed = process.memoryUsage().heapUsed;
     const status: MemoryUsageStatus =
       heapUsed >= CRITICAL_MEMORY_THRESHOLD
-        ? 'critical'
+        ? "critical"
         : heapUsed >= HIGH_MEMORY_THRESHOLD
-          ? 'high'
-          : 'normal';
+          ? "high"
+          : "normal";
     setMemoryUsage((prev) => {
       // Bail when status is 'normal' — nothing is shown, so heapUsed is
       // irrelevant and we avoid re-rendering the whole Notifications subtree
       // every 10 seconds for the 99%+ of users who never reach 1.5GB.
-      if (status === 'normal') return prev === null ? prev : null;
+      if (status === "normal") return prev === null ? prev : null;
       return { heapUsed, status };
     });
   }, 10_000);

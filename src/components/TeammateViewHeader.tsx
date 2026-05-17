@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import { useAppState } from '../state/AppState.js';
-import { getViewedTeammateTask } from '../state/selectors.js';
-import { toInkColor } from '../utils/ink.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
-import { OffscreenFreeze } from './OffscreenFreeze.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import { useAppState } from "../state/AppState.js";
+import { getViewedTeammateTask } from "../state/selectors.js";
+import { toInkColor } from "../utils/ink.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
+import { OffscreenFreeze } from "./OffscreenFreeze.js";
 
 /**
  * Header shown when viewing a teammate's transcript.
@@ -26,7 +26,7 @@ export function TeammateViewHeader() {
   }
   const nameColor = t0;
   let t1;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = <Text>Viewing </Text>;
     $[2] = t1;
   } else {
@@ -46,10 +46,10 @@ export function TeammateViewHeader() {
     t2 = $[5];
   }
   let t3;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Text dimColor={true}>
-        {' \xB7 '}
+        {" \xB7 "}
         <KeyboardShortcutHint shortcut="esc" action="return" />
       </Text>
     );

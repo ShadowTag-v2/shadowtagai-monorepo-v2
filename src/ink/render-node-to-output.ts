@@ -1,24 +1,24 @@
-import indentString from 'indent-string';
-import { applyTextStyles } from './colorize.js';
-import type { DOMElement } from './dom.js';
-import getMaxWidth from './get-max-width.js';
-import type { Rectangle } from './layout/geometry.js';
-import { LayoutDisplay, LayoutEdge, type LayoutNode } from './layout/node.js';
-import { nodeCache, pendingClears } from './node-cache.js';
-import type Output from './output.js';
-import renderBorder from './render-border.js';
-import type { Screen } from './screen.js';
-import { type StyledSegment, squashTextNodesToSegments } from './squash-text-nodes.js';
-import type { Color } from './styles.js';
-import { isXtermJs } from './terminal.js';
-import { widestLine } from './widest-line.js';
-import wrapText from './wrap-text.js';
+import indentString from "indent-string";
+import { applyTextStyles } from "./colorize.js";
+import type { DOMElement } from "./dom.js";
+import getMaxWidth from "./get-max-width.js";
+import type { Rectangle } from "./layout/geometry.js";
+import { LayoutDisplay, LayoutEdge, type LayoutNode } from "./layout/node.js";
+import { nodeCache, pendingClears } from "./node-cache.js";
+import type Output from "./output.js";
+import renderBorder from "./render-border.js";
+import type { Screen } from "./screen.js";
+import { type StyledSegment, squashTextNodesToSegments } from "./squash-text-nodes.js";
+import type { Color } from "./styles.js";
+import { isXtermJs } from "./terminal.js";
+import { widestLine } from "./widest-line.js";
+import wrapText from "./wrap-text.js";
 
 // Matches detectXtermJsWheel() in ScrollKeybindingHandler.tsx — the curve
 // and drain must agree on terminal detection. TERM_PROGRAM check is the sync
 // fallback; isXtermJs() is the authoritative XTVERSION-probe result.
 function isXtermJsHost(): boolean {
-  return process.env.TERM_PROGRAM === 'vscode' || isXtermJs();
+  return process.env.TERM_PROGRAM === "vscode" || isXtermJs();
 }
 
 // Per-frame scratch: set when any node's yoga position/size differs from
@@ -167,8 +167,8 @@ function drainProportional(node: DOMElement, pending: number, innerHeight: numbe
 // OSC 8 hyperlink escape sequences. Empty params (;;) — ansi-tokenize only
 // recognizes this exact prefix. The id= param (for grouping wrapped lines)
 // is added at terminal-output time in termio/osc.ts link().
-const OSC = '\u001B]';
-const BEL = '\u0007';
+const OSC = "\u001B]";
+const BEL = "\u0007";
 
 function wrapWithOsc8Link(text: string, url: string): string {
   return `${OSC}8;;${url}${BEL}${text}${OSC}8;;${BEL}`;
@@ -204,7 +204,7 @@ function applyStylesToWrappedText(
   originalPlain: string,
   trimEnabled: boolean = false,
 ): string {
-  const lines = wrappedPlain.split('\n');
+  const lines = wrappedPlain.split("\n");
   const resultLines: string[] = [];
 
   let charIndex = 0;
@@ -228,7 +228,7 @@ function applyStylesToWrappedText(
       }
     }
 
-    let styledLine = '';
+    let styledLine = "";
     let runStart = 0;
     let runSegmentIndex = charToSegment[charIndex] ?? 0;
 
@@ -275,7 +275,7 @@ function applyStylesToWrappedText(
     // wrapping-inserted newlines). Without this, charIndex gets out of sync
     // because the newline is in originalPlain/charToSegment but not in the
     // split lines.
-    if (charIndex < originalPlain.length && originalPlain[charIndex] === '\n') {
+    if (charIndex < originalPlain.length && originalPlain[charIndex] === "\n") {
       charIndex++;
     }
 
@@ -299,7 +299,7 @@ function applyStylesToWrappedText(
     }
   }
 
-  return resultLines.join('\n');
+  return resultLines.join("\n");
 }
 
 /**
@@ -317,23 +317,23 @@ function wrapWithSoftWrap(
   maxWidth: number,
   textWrap: Parameters<typeof wrapText>[2],
 ): { wrapped: string; softWrap: boolean[] | undefined } {
-  if (textWrap !== 'wrap' && textWrap !== 'wrap-trim') {
+  if (textWrap !== "wrap" && textWrap !== "wrap-trim") {
     return {
       wrapped: wrapText(plainText, maxWidth, textWrap),
       softWrap: undefined,
     };
   }
-  const origLines = plainText.split('\n');
+  const origLines = plainText.split("\n");
   const outLines: string[] = [];
   const softWrap: boolean[] = [];
   for (const orig of origLines) {
-    const pieces = wrapText(orig, maxWidth, textWrap).split('\n');
+    const pieces = wrapText(orig, maxWidth, textWrap).split("\n");
     for (let i = 0; i < pieces.length; i++) {
       outLines.push(pieces[i]!);
       softWrap.push(i > 0);
     }
   }
-  return { wrapped: outLines.join('\n'), softWrap };
+  return { wrapped: outLines.join("\n"), softWrap };
 }
 
 // If parent container is `<Box>`, text nodes will be treated as separate nodes in
@@ -348,7 +348,7 @@ function applyPaddingToText(node: DOMElement, text: string, softWrap?: boolean[]
   if (yogaNode) {
     const offsetX = yogaNode.getComputedLeft();
     const offsetY = yogaNode.getComputedTop();
-    text = '\n'.repeat(offsetY) + indentString(text, offsetX);
+    text = "\n".repeat(offsetY) + indentString(text, offsetX);
     if (softWrap && offsetY > 0) {
       // Prepend `false` for each padding line so indices stay aligned
       // with text.split('\n'). Mutate in place — caller owns the array.
@@ -421,7 +421,7 @@ function renderNodeToOutput(
     // (best matches in an autocomplete). By clamping to 0, we shift the element
     // down so the top rows are visible and the bottom overflows below — the
     // opaque prop ensures it paints over whatever is underneath.
-    if (y < 0 && node.style.position === 'absolute') {
+    if (y < 0 && node.style.position === "absolute") {
       y = 0;
     }
 
@@ -444,7 +444,7 @@ function renderNodeToOutput(
       const fw = Math.floor(width);
       const fh = Math.floor(height);
       output.blit(prevScreen, fx, fy, fw, fh);
-      if (node.style.position === 'absolute') {
+      if (node.style.position === "absolute") {
         absoluteRectsCur.push(cached);
       }
       // Absolute descendants can paint outside this node's layout bounds
@@ -474,7 +474,7 @@ function renderNodeToOutput(
           width: Math.floor(cached.width),
           height: Math.floor(cached.height),
         },
-        node.style.position === 'absolute',
+        node.style.position === "absolute",
       );
     }
 
@@ -511,7 +511,7 @@ function renderNodeToOutput(
       return;
     }
 
-    if (node.nodeName === 'ink-raw-ansi') {
+    if (node.nodeName === "ink-raw-ansi") {
       // Pre-rendered ANSI content. The producer already wrapped to width and
       // emitted terminal-ready escape codes. Skip squash, measure, wrap, and
       // style re-application — output.write() parses ANSI directly into cells.
@@ -519,14 +519,14 @@ function renderNodeToOutput(
       if (text) {
         output.write(x, y, text);
       }
-    } else if (node.nodeName === 'ink-text') {
+    } else if (node.nodeName === "ink-text") {
       const segments = squashTextNodesToSegments(
         node,
         inheritedBackgroundColor ? { backgroundColor: inheritedBackgroundColor } : undefined,
       );
 
       // First, get plain text to check if wrapping is needed
-      const plainText = segments.map((s) => s.text).join('');
+      const plainText = segments.map((s) => s.text).join("");
 
       if (plainText.length > 0) {
         // Upstream Ink uses getMaxWidth(yogaNode) unclamped here. That
@@ -537,7 +537,7 @@ function renderNodeToOutput(
         // Without this, characters past the screen edge are dropped by
         // setCellAt's bounds check.
         const maxWidth = Math.min(getMaxWidth(yogaNode), output.width - x);
-        const textWrap = node.style.textWrap ?? 'wrap';
+        const textWrap = node.style.textWrap ?? "wrap";
 
         // Check if wrapping is needed
         const needsWrapping = widestLine(plainText) > maxWidth;
@@ -550,7 +550,7 @@ function renderNodeToOutput(
           const w = wrapWithSoftWrap(plainText, maxWidth, textWrap);
           softWrap = w.softWrap;
           text = w.wrapped
-            .split('\n')
+            .split("\n")
             .map((line) => {
               let styled = applyTextStyles(line, segment.styles);
               // Apply OSC 8 hyperlink per-line so each line is independently
@@ -562,7 +562,7 @@ function renderNodeToOutput(
               }
               return styled;
             })
-            .join('\n');
+            .join("\n");
         } else if (needsWrapping) {
           // Multiple segments with wrapping: wrap plain text first, then re-apply
           // each segment's styles based on character positions. This preserves
@@ -575,7 +575,7 @@ function renderNodeToOutput(
             segments,
             charToSegment,
             plainText,
-            textWrap === 'wrap-trim',
+            textWrap === "wrap-trim",
           );
           // Hyperlinks are handled per-run in applyStylesToWrappedText via
           // wrapWithOsc8Link, similar to how styles are applied per-run.
@@ -589,14 +589,14 @@ function renderNodeToOutput(
               }
               return styledText;
             })
-            .join('');
+            .join("");
         }
 
         text = applyPaddingToText(node, text, softWrap);
 
         output.write(x, y, text, softWrap);
       }
-    } else if (node.nodeName === 'ink-box') {
+    } else if (node.nodeName === "ink-box") {
       const boxBackgroundColor = node.style.backgroundColor ?? inheritedBackgroundColor;
 
       // Mark this box's region as non-selectable (fullscreen text
@@ -613,7 +613,7 @@ function renderNodeToOutput(
       // `  ⎿  ` prefix on row 0 or the blank cells under it on row 1+.
       if (node.style.noSelect) {
         const boxX = Math.floor(x);
-        const fromEdge = node.style.noSelect === 'from-left-edge';
+        const fromEdge = node.style.noSelect === "from-left-edge";
         output.noSelect({
           x: fromEdge ? 0 : boxX,
           y: Math.floor(y),
@@ -624,9 +624,9 @@ function renderNodeToOutput(
 
       const overflowX = node.style.overflowX ?? node.style.overflow;
       const overflowY = node.style.overflowY ?? node.style.overflow;
-      const clipHorizontally = overflowX === 'hidden' || overflowX === 'scroll';
-      const clipVertically = overflowY === 'hidden' || overflowY === 'scroll';
-      const isScrollY = overflowY === 'scroll';
+      const clipHorizontally = overflowX === "hidden" || overflowX === "scroll";
+      const clipVertically = overflowY === "hidden" || overflowY === "scroll";
+      const isScrollY = overflowY === "scroll";
 
       const needsClip = clipHorizontally || clipVertically;
       let y1: number | undefined;
@@ -923,7 +923,7 @@ function renderNodeToOutput(
             if (dirtyChildren) {
               const edgeTopLocal = edgeTop - contentY;
               const edgeBottomLocal = edgeBottom + 1 - contentY;
-              const spaces = ' '.repeat(w);
+              const spaces = " ".repeat(w);
               // Track cumulative height change of children iterated so far.
               // A clean child's yogaTop is unchanged iff this is zero (no
               // sibling above it grew/shrank/mounted). When zero, the skip
@@ -982,7 +982,7 @@ function renderNodeToOutput(
                 if (screenY < screenBottom) {
                   const fill = Array(screenBottom - screenY)
                     .fill(spaces)
-                    .join('\n');
+                    .join("\n");
                   output.write(Math.floor(x), screenY, fill);
                   output.clip({
                     x1: undefined,
@@ -1008,7 +1008,7 @@ function renderNodeToOutput(
             // pixels sit at (rect.y - delta) — neither edge render nor the
             // overlay's own re-render covers them. Wipe and re-render
             // ScrollBox content so the diff writes correct cells.
-            const spaces = absoluteRectsPrev.length ? ' '.repeat(w) : '';
+            const spaces = absoluteRectsPrev.length ? " ".repeat(w) : "";
             for (const r of absoluteRectsPrev) {
               if (r.y >= bottom + 1 || r.y + r.height <= top) continue;
               const shiftedTop = Math.max(top, Math.floor(r.y) - delta);
@@ -1018,7 +1018,7 @@ function renderNodeToOutput(
               if (shiftedTop >= shiftedBottom) continue;
               const fill = Array(shiftedBottom - shiftedTop)
                 .fill(spaces)
-                .join('\n');
+                .join("\n");
               output.write(Math.floor(x), shiftedTop, fill);
               output.clip({
                 x1: undefined,
@@ -1106,11 +1106,11 @@ function renderNodeToOutput(
           const innerWidth = Math.floor(width) - borderLeft - borderRight;
           const innerHeight = Math.floor(height) - borderTop - borderBottom;
           if (innerWidth > 0 && innerHeight > 0) {
-            const spaces = ' '.repeat(innerWidth);
+            const spaces = " ".repeat(innerWidth);
             const fillLine = ownBackgroundColor
               ? applyTextStyles(spaces, { backgroundColor: ownBackgroundColor })
               : spaces;
-            const fill = Array(innerHeight).fill(fillLine).join('\n');
+            const fill = Array(innerHeight).fill(fillLine).join("\n");
             output.write(x + borderLeft, y + borderTop, fill);
           }
         }
@@ -1141,14 +1141,14 @@ function renderNodeToOutput(
       // clearing operations. When a child shrinks, it clears its old area,
       // which may overlap with where the parent's border now is.
       renderBorder(x, y, node, output);
-    } else if (node.nodeName === 'ink-root') {
+    } else if (node.nodeName === "ink-root") {
       renderChildren(node, output, x, y, hasRemovedChild, prevScreen, inheritedBackgroundColor);
     }
 
     // Cache layout bounds for dirty tracking
     const rect = { x, y, width, height, top: yogaTop };
     nodeCache.set(node, rect);
-    if (node.style.position === 'absolute') {
+    if (node.style.position === "absolute") {
       absoluteRectsCur.push(rect);
     }
     node.dirty = false;
@@ -1198,7 +1198,7 @@ function renderChildren(
     const childElem = childNode as DOMElement;
     // Capture dirty before rendering — renderNodeToOutput clears the flag
     const wasDirty = childElem.dirty;
-    const isAbsolute = childElem.style.position === 'absolute';
+    const isAbsolute = childElem.style.position === "absolute";
     renderNodeToOutput(childElem, output, {
       offsetX,
       offsetY,
@@ -1225,7 +1225,7 @@ function renderChildren(
 function clipsBothAxes(node: DOMElement): boolean {
   const ox = node.style.overflowX ?? node.style.overflow;
   const oy = node.style.overflowY ?? node.style.overflow;
-  return (ox === 'hidden' || ox === 'scroll') && (oy === 'hidden' || oy === 'scroll');
+  return (ox === "hidden" || ox === "scroll") && (oy === "hidden" || oy === "scroll");
 }
 
 // When Yoga squeezes a box to h=0, the ghost only happens if a sibling
@@ -1273,9 +1273,9 @@ function blitEscapingAbsoluteDescendants(
   const pr = px + pw;
   const pb = py + ph;
   for (const child of node.childNodes) {
-    if (child.nodeName === '#text') continue;
+    if (child.nodeName === "#text") continue;
     const elem = child as DOMElement;
-    if (elem.style.position === 'absolute') {
+    if (elem.style.position === "absolute") {
       const cached = nodeCache.get(elem);
       if (cached) {
         absoluteRectsCur.push(cached);
@@ -1373,7 +1373,7 @@ function renderScrolledChildren(
 function dropSubtreeCache(node: DOMElement): void {
   nodeCache.delete(node);
   for (const child of node.childNodes) {
-    if (child.nodeName !== '#text') {
+    if (child.nodeName !== "#text") {
       dropSubtreeCache(child as DOMElement);
     }
   }

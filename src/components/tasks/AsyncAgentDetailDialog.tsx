@@ -1,19 +1,19 @@
-import { c as _c } from 'react/compiler-runtime';
-import type { DeepImmutable } from 'src/types/utils.js';
-import { useElapsedTime } from '../../hooks/useElapsedTime.js';
-import { Box, Text, useTheme } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
-import { getEmptyToolPermissionContext } from '../../Tool.js';
-import type { LocalAgentTaskState } from '../../tasks/LocalAgentTask/LocalAgentTask.js';
-import { getTools } from '../../tools.js';
-import { formatNumber } from '../../utils/format.js';
-import { extractTag } from '../../utils/messages.js';
-import { Byline } from '../design-system/Byline.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
-import { UserPlanMessage } from '../messages/UserPlanMessage.js';
-import { renderToolActivity } from './renderToolActivity.js';
-import { getTaskStatusColor, getTaskStatusIcon } from './taskStatusUtils.js';
+import { c as _c } from "react/compiler-runtime";
+import type { DeepImmutable } from "src/types/utils.js";
+import { useElapsedTime } from "../../hooks/useElapsedTime.js";
+import { Box, Text, useTheme } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
+import { getEmptyToolPermissionContext } from "../../Tool.js";
+import type { LocalAgentTaskState } from "../../tasks/LocalAgentTask/LocalAgentTask.js";
+import { getTools } from "../../tools.js";
+import { formatNumber } from "../../utils/format.js";
+import { extractTag } from "../../utils/messages.js";
+import { Byline } from "../design-system/Byline.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { KeyboardShortcutHint } from "../design-system/KeyboardShortcutHint.js";
+import { UserPlanMessage } from "../messages/UserPlanMessage.js";
+import { renderToolActivity } from "./renderToolActivity.js";
+import { getTaskStatusColor, getTaskStatusIcon } from "./taskStatusUtils.js";
 
 type Props = {
   agent: DeepImmutable<LocalAgentTaskState>;
@@ -26,7 +26,7 @@ export function AsyncAgentDetailDialog(t0) {
   const { agent, onDone, onKillAgent, onBack } = t0;
   const [theme] = useTheme();
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = getTools(getEmptyToolPermissionContext());
     $[0] = t1;
   } else {
@@ -35,14 +35,14 @@ export function AsyncAgentDetailDialog(t0) {
   const tools = t1;
   const elapsedTime = useElapsedTime(
     agent.startTime,
-    agent.status === 'running',
+    agent.status === "running",
     1000,
     agent.totalPausedMs ?? 0,
   );
   let t2;
   if ($[1] !== onDone) {
     t2 = {
-      'confirm:yes': onDone,
+      "confirm:yes": onDone,
     };
     $[1] = onDone;
     $[2] = t2;
@@ -50,9 +50,9 @@ export function AsyncAgentDetailDialog(t0) {
     t2 = $[2];
   }
   let t3;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[3] = t3;
   } else {
@@ -62,15 +62,15 @@ export function AsyncAgentDetailDialog(t0) {
   let t4;
   if ($[4] !== agent.status || $[5] !== onBack || $[6] !== onDone || $[7] !== onKillAgent) {
     t4 = (e) => {
-      if (e.key === ' ') {
+      if (e.key === " ") {
         e.preventDefault();
         onDone();
       } else {
-        if (e.key === 'left' && onBack) {
+        if (e.key === "left" && onBack) {
           e.preventDefault();
           onBack();
         } else {
-          if (e.key === 'x' && agent.status === 'running' && onKillAgent) {
+          if (e.key === "x" && agent.status === "running" && onKillAgent) {
             e.preventDefault();
             onKillAgent();
           }
@@ -88,7 +88,7 @@ export function AsyncAgentDetailDialog(t0) {
   const handleKeyDown = t4;
   let t5;
   if ($[9] !== agent.prompt) {
-    t5 = extractTag(agent.prompt, 'plan');
+    t5 = extractTag(agent.prompt, "plan");
     $[9] = agent.prompt;
     $[10] = t5;
   } else {
@@ -99,8 +99,8 @@ export function AsyncAgentDetailDialog(t0) {
     agent.prompt.length > 300 ? `${agent.prompt.substring(0, 297)}\u2026` : agent.prompt;
   const tokenCount = agent.result?.totalTokens ?? agent.progress?.tokenCount;
   const toolUseCount = agent.result?.totalToolUseCount ?? agent.progress?.toolUseCount;
-  const t6 = agent.selectedAgent?.agentType ?? 'agent';
-  const t7 = agent.description || 'Async agent';
+  const t6 = agent.selectedAgent?.agentType ?? "agent";
+  const t7 = agent.description || "Async agent";
   let t8;
   if ($[11] !== t6 || $[12] !== t7) {
     t8 = (
@@ -117,15 +117,15 @@ export function AsyncAgentDetailDialog(t0) {
   const title = t8;
   let t9;
   if ($[14] !== agent.status) {
-    t9 = agent.status !== 'running' && (
+    t9 = agent.status !== "running" && (
       <Text color={getTaskStatusColor(agent.status)}>
-        {getTaskStatusIcon(agent.status)}{' '}
-        {agent.status === 'completed'
-          ? 'Completed'
-          : agent.status === 'failed'
-            ? 'Failed'
-            : 'Stopped'}
-        {' \xB7 '}
+        {getTaskStatusIcon(agent.status)}{" "}
+        {agent.status === "completed"
+          ? "Completed"
+          : agent.status === "failed"
+            ? "Failed"
+            : "Stopped"}
+        {" \xB7 "}
       </Text>
     );
     $[14] = agent.status;
@@ -145,8 +145,8 @@ export function AsyncAgentDetailDialog(t0) {
   if ($[18] !== toolUseCount) {
     t11 = toolUseCount !== undefined && toolUseCount > 0 && (
       <>
-        {' '}
-        · {toolUseCount} {toolUseCount === 1 ? 'tool' : 'tools'}
+        {" "}
+        · {toolUseCount} {toolUseCount === 1 ? "tool" : "tools"}
       </>
     );
     $[18] = toolUseCount;
@@ -192,9 +192,9 @@ export function AsyncAgentDetailDialog(t0) {
         <Text>Press {exitState.keyName} again to exit</Text>
       ) : (
         <Byline>
-          {onBack && <KeyboardShortcutHint shortcut={'\u2190'} action="go back" />}
+          {onBack && <KeyboardShortcutHint shortcut={"\u2190"} action="go back" />}
           <KeyboardShortcutHint shortcut="Esc/Enter/Space" action="close" />
-          {agent.status === 'running' && onKillAgent && (
+          {agent.status === "running" && onKillAgent && (
             <KeyboardShortcutHint shortcut="x" action="stop" />
           )}
         </Byline>
@@ -208,7 +208,7 @@ export function AsyncAgentDetailDialog(t0) {
   }
   let t15;
   if ($[31] !== agent.progress || $[32] !== agent.status || $[33] !== theme) {
-    t15 = agent.status === 'running' &&
+    t15 = agent.status === "running" &&
       agent.progress?.recentActivities &&
       agent.progress.recentActivities.length > 0 && (
         <Box flexDirection="column">
@@ -221,7 +221,7 @@ export function AsyncAgentDetailDialog(t0) {
               dimColor={i < agent.progress.recentActivities.length - 1}
               wrap="truncate-end"
             >
-              {i === agent.progress.recentActivities.length - 1 ? '\u203A ' : '  '}
+              {i === agent.progress.recentActivities.length - 1 ? "\u203A " : "  "}
               {renderToolActivity(activity, tools, theme)}
             </Text>
           ))}
@@ -256,7 +256,7 @@ export function AsyncAgentDetailDialog(t0) {
   }
   let t17;
   if ($[38] !== agent.error || $[39] !== agent.status) {
-    t17 = agent.status === 'failed' && agent.error && (
+    t17 = agent.status === "failed" && agent.error && (
       <Box flexDirection="column" marginTop={1}>
         <Text bold={true} color="error">
           Error

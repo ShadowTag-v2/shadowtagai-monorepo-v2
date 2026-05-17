@@ -1,38 +1,38 @@
-import { feature } from 'bun:bundle';
-import type { UUID } from 'node:crypto';
-import chalk from 'chalk';
-import type { RefObject } from 'react';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { every } from 'src/utils/set.js';
-import { getIsRemoteMode } from '../bootstrap/state.js';
-import type { Command } from '../commands.js';
-import { BLACK_CIRCLE } from '../constants/figures.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import type { ScrollBoxHandle } from '../ink/components/ScrollBox.js';
-import { useTerminalNotification } from '../ink/useTerminalNotification.js';
-import { Box, Text } from '../ink.js';
-import { useShortcutDisplay } from '../keybindings/useShortcutDisplay.js';
-import type { Screen } from '../screens/REPL.js';
-import type { Tools } from '../Tool.js';
-import { findToolByName } from '../Tool.js';
-import type { AgentDefinitionsResult } from '../tools/AgentTool/loadAgentsDir.js';
+import { feature } from "bun:bundle";
+import type { UUID } from "node:crypto";
+import chalk from "chalk";
+import type { RefObject } from "react";
+import * as React from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { every } from "src/utils/set.js";
+import { getIsRemoteMode } from "../bootstrap/state.js";
+import type { Command } from "../commands.js";
+import { BLACK_CIRCLE } from "../constants/figures.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import type { ScrollBoxHandle } from "../ink/components/ScrollBox.js";
+import { useTerminalNotification } from "../ink/useTerminalNotification.js";
+import { Box, Text } from "../ink.js";
+import { useShortcutDisplay } from "../keybindings/useShortcutDisplay.js";
+import type { Screen } from "../screens/REPL.js";
+import type { Tools } from "../Tool.js";
+import { findToolByName } from "../Tool.js";
+import type { AgentDefinitionsResult } from "../tools/AgentTool/loadAgentsDir.js";
 import type {
   Message as MessageType,
   NormalizedMessage,
   ProgressMessage as ProgressMessageType,
   RenderableMessage,
-} from '../types/message.js';
-import { type AdvisorBlock, isAdvisorBlock } from '../utils/advisor.js';
-import { collapseBackgroundBashNotifications } from '../utils/collapseBackgroundBashNotifications.js';
-import { collapseHookSummaries } from '../utils/collapseHookSummaries.js';
-import { collapseReadSearchGroups } from '../utils/collapseReadSearch.js';
-import { collapseTeammateShutdowns } from '../utils/collapseTeammateShutdowns.js';
-import { getGlobalConfig } from '../utils/config.js';
-import { isEnvTruthy } from '../utils/envUtils.js';
-import { isFullscreenEnvEnabled } from '../utils/fullscreen.js';
-import { applyGrouping } from '../utils/groupToolUses.js';
+} from "../types/message.js";
+import { type AdvisorBlock, isAdvisorBlock } from "../utils/advisor.js";
+import { collapseBackgroundBashNotifications } from "../utils/collapseBackgroundBashNotifications.js";
+import { collapseHookSummaries } from "../utils/collapseHookSummaries.js";
+import { collapseReadSearchGroups } from "../utils/collapseReadSearch.js";
+import { collapseTeammateShutdowns } from "../utils/collapseTeammateShutdowns.js";
+import { getGlobalConfig } from "../utils/config.js";
+import { isEnvTruthy } from "../utils/envUtils.js";
+import { isFullscreenEnvEnabled } from "../utils/fullscreen.js";
+import { applyGrouping } from "../utils/groupToolUses.js";
 import {
   buildMessageLookups,
   createAssistantMessage,
@@ -47,26 +47,26 @@ import {
   type StreamingThinking,
   type StreamingToolUse,
   shouldShowUserMessage,
-} from '../utils/messages.js';
-import { plural } from '../utils/stringUtils.js';
-import { renderableSearchText } from '../utils/transcriptSearch.js';
-import { Divider } from './design-system/Divider.js';
-import type { UnseenDivider } from './FullscreenLayout.js';
-import { LogoV2 } from './LogoV2/LogoV2.js';
-import { StreamingMarkdown } from './Markdown.js';
-import { hasContentAfterIndex, MessageRow } from './MessageRow.js';
+} from "../utils/messages.js";
+import { plural } from "../utils/stringUtils.js";
+import { renderableSearchText } from "../utils/transcriptSearch.js";
+import { Divider } from "./design-system/Divider.js";
+import type { UnseenDivider } from "./FullscreenLayout.js";
+import { LogoV2 } from "./LogoV2/LogoV2.js";
+import { StreamingMarkdown } from "./Markdown.js";
+import { hasContentAfterIndex, MessageRow } from "./MessageRow.js";
 import {
   InVirtualListContext,
   type MessageActionsNav,
   MessageActionsSelectedContext,
   type MessageActionsState,
-} from './messageActions.js';
-import { AssistantThinkingMessage } from './messages/AssistantThinkingMessage.js';
-import { isNullRenderingAttachment } from './messages/nullRenderingAttachments.js';
-import { OffscreenFreeze } from './OffscreenFreeze.js';
-import type { ToolUseConfirm } from './permissions/PermissionRequest.js';
-import { StatusNotices } from './StatusNotices.js';
-import type { JumpHandle } from './VirtualMessageList.js';
+} from "./messageActions.js";
+import { AssistantThinkingMessage } from "./messages/AssistantThinkingMessage.js";
+import { isNullRenderingAttachment } from "./messages/nullRenderingAttachments.js";
+import { OffscreenFreeze } from "./OffscreenFreeze.js";
+import type { ToolUseConfirm } from "./permissions/PermissionRequest.js";
+import { StatusNotices } from "./StatusNotices.js";
+import type { JumpHandle } from "./VirtualMessageList.js";
 
 // Memoed logo header: this box is the FIRST sibling before all MessageRows
 // in main-screen mode. If it becomes dirty on every Messages re-render,
@@ -80,7 +80,7 @@ const LogoHeader = React.memo(function LogoHeader(t0) {
   const $ = _c(3);
   const { agentDefinitions } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = <LogoV2 />;
     $[0] = t1;
   } else {
@@ -109,20 +109,20 @@ const LogoHeader = React.memo(function LogoHeader(t0) {
 // Dead code elimination: conditional import for proactive mode
 /* eslint-disable @typescript-eslint/no-require-imports */
 const proactiveModule =
-  feature('PROACTIVE') || feature('KAIROS') ? require('../proactive/index.js') : null;
+  feature("PROACTIVE") || feature("KAIROS") ? require("../proactive/index.js") : null;
 const BRIEF_TOOL_NAME: string | null =
-  feature('KAIROS') || feature('KAIROS_BRIEF')
-    ? (require('../tools/BriefTool/prompt.js') as typeof import('../tools/BriefTool/prompt.js'))
+  feature("KAIROS") || feature("KAIROS_BRIEF")
+    ? (require("../tools/BriefTool/prompt.js") as typeof import("../tools/BriefTool/prompt.js"))
         .BRIEF_TOOL_NAME
     : null;
-const SEND_USER_FILE_TOOL_NAME: string | null = feature('KAIROS')
+const SEND_USER_FILE_TOOL_NAME: string | null = feature("KAIROS")
   ? (
-      require('../tools/SendUserFileTool/prompt.js') as typeof import('../tools/SendUserFileTool/prompt.js')
+      require("../tools/SendUserFileTool/prompt.js") as typeof import("../tools/SendUserFileTool/prompt.js")
     ).SEND_USER_FILE_TOOL_NAME
   : null;
 
 /* eslint-enable @typescript-eslint/no-require-imports */
-import { VirtualMessageList } from './VirtualMessageList.js';
+import { VirtualMessageList } from "./VirtualMessageList.js";
 
 /**
  * In brief-only mode, filter messages to show ONLY Brief tool_use blocks,
@@ -161,15 +161,15 @@ export function filterForBriefTool<
     // Exception: api_metrics is per-turn debug noise (TTFT, config writes,
     // hook timing) that defeats the point of brief mode. Still visible in
     // transcript mode (ctrl+o) which bypasses this filter.
-    if (msg.type === 'system') return msg.subtype !== 'api_metrics';
+    if (msg.type === "system") return msg.subtype !== "api_metrics";
     const block = msg.message?.content[0];
-    if (msg.type === 'assistant') {
+    if (msg.type === "assistant") {
       // API error messages (auth failures, rate limits, etc.) must stay visible
       if (msg.isApiErrorMessage) return true;
       // Keep Brief tool_use blocks (renders with standard tool call chrome,
       // and must be in the list so buildMessageLookups can resolve tool results)
-      if (block?.type === 'tool_use' && block.name && nameSet.has(block.name)) {
-        if ('id' in block) {
+      if (block?.type === "tool_use" && block.name && nameSet.has(block.name)) {
+        if ("id" in block) {
           briefToolUseIDs.add(
             (
               block as {
@@ -182,14 +182,14 @@ export function filterForBriefTool<
       }
       return false;
     }
-    if (msg.type === 'user') {
-      if (block?.type === 'tool_result') {
+    if (msg.type === "user") {
+      if (block?.type === "tool_result") {
         return block.tool_use_id !== undefined && briefToolUseIDs.has(block.tool_use_id);
       }
       // Real user input only — drop meta/tick messages.
       return !msg.isMeta;
     }
-    if (msg.type === 'attachment') {
+    if (msg.type === "attachment") {
       // Human input drained mid-turn arrives as a queued_command attachment
       // (query.ts mid-chain drain → getQueuedCommandAttachments). Keep it —
       // it's what the user typed. commandMode === 'prompt' positively
@@ -198,8 +198,8 @@ export function filterForBriefTool<
       // commandMode check is required to exclude them.
       const att = msg.attachment;
       return (
-        att?.type === 'queued_command' &&
-        att.commandMode === 'prompt' &&
+        att?.type === "queued_command" &&
+        att.commandMode === "prompt" &&
         !att.isMeta &&
         att.origin === undefined
       );
@@ -238,14 +238,14 @@ export function dropTextInBriefTurns<
   for (let i = 0; i < messages.length; i++) {
     const msg = messages[i]!;
     const block = msg.message?.content[0];
-    if (msg.type === 'user' && block?.type !== 'tool_result' && !msg.isMeta) {
+    if (msg.type === "user" && block?.type !== "tool_result" && !msg.isMeta) {
       turn++;
       continue;
     }
-    if (msg.type === 'assistant') {
-      if (block?.type === 'text') {
+    if (msg.type === "assistant") {
+      if (block?.type === "text") {
         textIndexToTurn[i] = turn;
-      } else if (block?.type === 'tool_use' && block.name && nameSet.has(block.name)) {
+      } else if (block?.type === "tool_use" && block.name && nameSet.has(block.name)) {
         turnsWithBrief.add(turn);
       }
     }
@@ -302,13 +302,13 @@ type Props = {
   /** Paint an existing DOM subtree to fresh Screen, scan. Element comes
    *  from the main tree (all real providers). Message-relative positions. */
   scanElement?: (
-    el: import('../ink/dom.js').DOMElement,
-  ) => import('../ink/render-to-screen.js').MatchPosition[];
+    el: import("../ink/dom.js").DOMElement,
+  ) => import("../ink/render-to-screen.js").MatchPosition[];
   /** Position-based CURRENT highlight. positions stable (msg-relative),
    *  rowOffset tracks scroll. null clears. */
   setPositions?: (
     state: {
-      positions: import('../ink/render-to-screen.js').MatchPosition[];
+      positions: import("../ink/render-to-screen.js").MatchPosition[];
       rowOffset: number;
       currentIdx: number;
     } | null,
@@ -441,9 +441,9 @@ const MessagesImpl = ({
 }: Props): React.ReactNode => {
   const { columns } = useTerminalSize();
   const toggleShowAllShortcut = useShortcutDisplay(
-    'transcript:toggleShowAll',
-    'Transcript',
-    'Ctrl+E',
+    "transcript:toggleShowAll",
+    "Transcript",
+    "Ctrl+E",
   );
   const normalizedMessages = useMemo(
     () => normalizeMessages(messages).filter(isNotEmptyMessage),
@@ -467,23 +467,23 @@ const MessagesImpl = ({
   const lastThinkingBlockId = useMemo(() => {
     if (!hidePastThinking) return null;
     // If streaming thinking is visible, hide all completed thinking blocks by using a non-matching ID
-    if (isStreamingThinkingVisible) return 'streaming';
+    if (isStreamingThinkingVisible) return "streaming";
     // Iterate backwards to find the last message with a thinking block
     for (let i = normalizedMessages.length - 1; i >= 0; i--) {
       const msg = normalizedMessages[i];
-      if (msg?.type === 'assistant') {
+      if (msg?.type === "assistant") {
         const content = msg.message.content;
         // Find the last thinking block in this message
         for (let j = content.length - 1; j >= 0; j--) {
-          if (content[j]?.type === 'thinking') {
+          if (content[j]?.type === "thinking") {
             return `${msg.uuid}:${j}`;
           }
         }
-      } else if (msg?.type === 'user') {
-        const hasToolResult = msg.message.content.some((block) => block.type === 'tool_result');
+      } else if (msg?.type === "user") {
+        const hasToolResult = msg.message.content.some((block) => block.type === "tool_result");
         if (!hasToolResult) {
           // Reached a previous user turn so don't show stale thinking from before
-          return 'no-thinking';
+          return "no-thinking";
         }
       }
     }
@@ -496,13 +496,13 @@ const MessagesImpl = ({
     // Iterate backwards to find the last user message with bash output
     for (let i_0 = normalizedMessages.length - 1; i_0 >= 0; i_0--) {
       const msg_0 = normalizedMessages[i_0];
-      if (msg_0?.type === 'user') {
+      if (msg_0?.type === "user") {
         const content_0 = msg_0.message.content;
         // Check if any text content is bash output
         for (const block_0 of content_0) {
-          if (block_0.type === 'text') {
+          if (block_0.type === "text") {
             const text = block_0.text;
-            if (text.startsWith('<bash-stdout') || text.startsWith('<bash-stderr')) {
+            if (text.startsWith("<bash-stdout") || text.startsWith("<bash-stderr")) {
               return msg_0.uuid;
             }
           }
@@ -543,7 +543,7 @@ const MessagesImpl = ({
       }),
     [streamingToolUsesWithoutInProgress],
   );
-  const isTranscriptMode = screen === 'transcript';
+  const isTranscriptMode = screen === "transcript";
   // Hoisted to mount-time — this component re-renders on every scroll.
   const disableVirtualScroll = useMemo(
     () => isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL),
@@ -593,7 +593,7 @@ const MessagesImpl = ({
       compactAwareMessages
         .filter(
           (msg_2): msg_2 is Exclude<NormalizedMessage, ProgressMessageType> =>
-            msg_2.type !== 'progress',
+            msg_2.type !== "progress",
         )
         // CC-724: drop attachment messages that AttachmentMessage renders as
         // null (hook_success, hook_additional_context, hook_cancelled, etc.)
@@ -717,19 +717,19 @@ const MessagesImpl = ({
   lookupsRef.current = lookups_0;
   const isItemClickable = useCallback(
     (msg_6: RenderableMessage): boolean => {
-      if (msg_6.type === 'collapsed_read_search') return true;
-      if (msg_6.type === 'assistant') {
+      if (msg_6.type === "collapsed_read_search") return true;
+      if (msg_6.type === "assistant") {
         const b = msg_6.message.content[0] as unknown as AdvisorBlock | undefined;
         return (
           b != null &&
           isAdvisorBlock(b) &&
-          b.type === 'advisor_tool_result' &&
-          b.content.type === 'advisor_result'
+          b.type === "advisor_tool_result" &&
+          b.content.type === "advisor_result"
         );
       }
-      if (msg_6.type !== 'user') return false;
+      if (msg_6.type !== "user") return false;
       const b_0 = msg_6.message.content[0];
-      if (b_0?.type !== 'tool_result' || b_0.is_error || !msg_6.toolUseResult) return false;
+      if (b_0?.type !== "tool_result" || b_0.is_error || !msg_6.toolUseResult) return false;
       const name = lookupsRef.current.toolUseByToolUseID.get(b_0.tool_use_id)?.name;
       const tool = name ? findToolByName(tools, name) : undefined;
       return tool?.isResultTruncated?.(msg_6.toolUseResult as never) ?? false;
@@ -750,7 +750,7 @@ const MessagesImpl = ({
     !getIsRemoteMode() &&
     !(proactiveModule?.isProactiveActive() ?? false);
   useEffect(() => {
-    const state = progressEnabled ? (hasToolsInProgress ? 'indeterminate' : 'completed') : null;
+    const state = progressEnabled ? (hasToolsInProgress ? "indeterminate" : "completed") : null;
     if (prevProgressState.current === state) return;
     prevProgressState.current = state;
     progress(state);
@@ -764,14 +764,14 @@ const MessagesImpl = ({
   );
   const renderMessageRow = (msg_8: RenderableMessage, index: number) => {
     const prevType = index > 0 ? renderableMessages[index - 1]?.type : undefined;
-    const isUserContinuation = msg_8.type === 'user' && prevType === 'user';
+    const isUserContinuation = msg_8.type === "user" && prevType === "user";
     // hasContentAfter is only consumed for collapsed_read_search groups;
     // skip the scan for everything else. streamingText is rendered as a
     // sibling after this map, so it's never in renderableMessages — OR it
     // in explicitly so the group flips to past tense as soon as text starts
     // streaming instead of waiting for the block to finalize.
     const hasContentAfter =
-      msg_8.type === 'collapsed_read_search' &&
+      msg_8.type === "collapsed_read_search" &&
       (!!streamingText ||
         hasContentAfterIndex(renderableMessages, index, tools, streamingToolUseIDs));
     const k_0 = messageKey(msg_8);
@@ -810,7 +810,7 @@ const MessagesImpl = ({
       return [
         <Box key="unseen-divider" marginTop={1}>
           <Divider
-            title={`${unseenDivider.count} new ${plural(unseenDivider.count, 'message')}`}
+            title={`${unseenDivider.count} new ${plural(unseenDivider.count, "message")}`}
             width={columns}
             color="inactive"
           />
@@ -840,9 +840,9 @@ const MessagesImpl = ({
       // If this is a tool_result message and the tool implements
       // extractSearchText, prefer that — it's precise (tool-owned)
       // vs renderableSearchText's field-name heuristic.
-      if (msg_9.type === 'user' && msg_9.toolUseResult && Array.isArray(msg_9.message.content)) {
-        const tr = msg_9.message.content.find((b_1) => b_1.type === 'tool_result');
-        if (tr && 'tool_use_id' in tr) {
+      if (msg_9.type === "user" && msg_9.toolUseResult && Array.isArray(msg_9.message.content)) {
+        const tr = msg_9.message.content.find((b_1) => b_1.type === "tool_result");
+        if (tr && "tool_use_id" in tr) {
           const tu = lookups_0.toolUseByToolUseID.get(tr.tool_use_id);
           const tool_0 = tu && findToolByName(tools, tu.name);
           const extracted = tool_0?.extractSearchText?.(msg_9.toolUseResult as never);
@@ -942,7 +942,7 @@ const MessagesImpl = ({
         <Box marginTop={1}>
           <AssistantThinkingMessage
             param={{
-              type: 'thinking',
+              type: "thinking",
               thinking: streamingThinking.thinking,
             }}
             addMargin={false}
@@ -959,7 +959,7 @@ const MessagesImpl = ({
 /** Key for click-to-expand: tool_use_id where available (so tool_use + its
  *  tool_result expand together), else uuid for groups/thinking. */
 function expandKey(msg: RenderableMessage): string {
-  return (msg.type === 'assistant' || msg.type === 'user' ? getToolUseID(msg) : null) ?? msg.uuid;
+  return (msg.type === "assistant" || msg.type === "user" ? getToolUseID(msg) : null) ?? msg.uuid;
 }
 
 // Custom comparator to prevent unnecessary re-renders during streaming.
@@ -978,19 +978,19 @@ export const Messages = React.memo(MessagesImpl, (prev, next) => {
   const keys = Object.keys(prev) as (keyof typeof prev)[];
   for (const key of keys) {
     if (
-      key === 'onOpenRateLimitOptions' ||
-      key === 'scrollRef' ||
-      key === 'trackStickyPrompt' ||
-      key === 'setCursor' ||
-      key === 'cursorNavRef' ||
-      key === 'jumpRef' ||
-      key === 'onSearchMatchesChange' ||
-      key === 'scanElement' ||
-      key === 'setPositions'
+      key === "onOpenRateLimitOptions" ||
+      key === "scrollRef" ||
+      key === "trackStickyPrompt" ||
+      key === "setCursor" ||
+      key === "cursorNavRef" ||
+      key === "jumpRef" ||
+      key === "onSearchMatchesChange" ||
+      key === "scanElement" ||
+      key === "setPositions"
     )
       continue;
     if (prev[key] !== next[key]) {
-      if (key === 'streamingToolUses') {
+      if (key === "streamingToolUses") {
         const p = prev.streamingToolUses;
         const n = next.streamingToolUses;
         if (
@@ -1000,19 +1000,19 @@ export const Messages = React.memo(MessagesImpl, (prev, next) => {
           continue;
         }
       }
-      if (key === 'inProgressToolUseIDs') {
+      if (key === "inProgressToolUseIDs") {
         if (setsEqual(prev.inProgressToolUseIDs, next.inProgressToolUseIDs)) {
           continue;
         }
       }
-      if (key === 'unseenDivider') {
+      if (key === "unseenDivider") {
         const p = prev.unseenDivider;
         const n = next.unseenDivider;
         if (p?.firstUnseenUuid === n?.firstUnseenUuid && p?.count === n?.count) {
           continue;
         }
       }
-      if (key === 'tools') {
+      if (key === "tools") {
         const p = prev.tools;
         const n = next.tools;
         if (p.length === n.length && p.every((tool, i) => tool.name === n[i]?.name)) {
@@ -1034,16 +1034,16 @@ export function shouldRenderStatically(
   screen: Screen,
   lookups: ReturnType<typeof buildMessageLookups>,
 ): boolean {
-  if (screen === 'transcript') {
+  if (screen === "transcript") {
     return true;
   }
   switch (message.type) {
-    case 'attachment':
-    case 'user':
-    case 'assistant': {
-      if (message.type === 'assistant') {
+    case "attachment":
+    case "user":
+    case "assistant": {
+      if (message.type === "assistant") {
         const block = message.message.content[0];
-        if (block?.type === 'server_tool_use') {
+        if (block?.type === "server_tool_use") {
           return lookups.resolvedToolUseIDs.has(block.id);
         }
       }
@@ -1060,24 +1060,24 @@ export function shouldRenderStatically(
 
       // Check if there are any unresolved PostToolUse hooks for this tool use
       // If so, keep the message transient so the HookProgressMessage can update
-      if (hasUnresolvedHooksFromLookup(toolUseID, 'PostToolUse', lookups)) {
+      if (hasUnresolvedHooksFromLookup(toolUseID, "PostToolUse", lookups)) {
         return false;
       }
       return every(siblingToolUseIDs, lookups.resolvedToolUseIDs);
     }
-    case 'system': {
+    case "system": {
       // api errors always render dynamically, since we hide
       // them as soon as we see another non-error message.
-      return message.subtype !== 'api_error';
+      return message.subtype !== "api_error";
     }
-    case 'grouped_tool_use': {
+    case "grouped_tool_use": {
       const allResolved = message.messages.every((msg) => {
         const content = msg.message.content[0];
-        return content?.type === 'tool_use' && lookups.resolvedToolUseIDs.has(content.id);
+        return content?.type === "tool_use" && lookups.resolvedToolUseIDs.has(content.id);
       });
       return allResolved;
     }
-    case 'collapsed_read_search': {
+    case "collapsed_read_search": {
       // In prompt mode, never mark as static to prevent flicker between API turns
       // (In transcript mode, we already returned true at the top of this function)
       return false;

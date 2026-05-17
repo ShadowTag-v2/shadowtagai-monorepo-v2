@@ -12,25 +12,25 @@
  * exfiltration. This is a UI-level guardrail, not a security boundary.
  */
 
-'use client';
+"use client";
 
-import styles from './diff-view.module.css';
-import type { PrivilegeBadgeProps } from './types';
+import styles from "./diff-view.module.css";
+import type { PrivilegeBadgeProps } from "./types";
 
 const PRIVILEGE_CONFIG: Record<string, { icon: string; label: string; className: string }> = {
   privileged: {
-    icon: '🔒',
-    label: 'Attorney-Client Privilege',
+    icon: "🔒",
+    label: "Attorney-Client Privilege",
     className: styles.privilegeProtected,
   },
   work_product: {
-    icon: '📋',
-    label: 'Work Product',
+    icon: "📋",
+    label: "Work Product",
     className: styles.privilegeWorkProduct,
   },
   public: {
-    icon: '📄',
-    label: 'Public Document',
+    icon: "📄",
+    label: "Public Document",
     className: styles.privilegePublic,
   },
 };

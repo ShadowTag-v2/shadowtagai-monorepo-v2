@@ -1,43 +1,43 @@
-import { logEvent } from 'src/services/analytics/index.js';
-import { extractHeredocs } from '../../utils/bash/heredoc.js';
-import { ParsedCommand } from '../../utils/bash/ParsedCommand.js';
+import { logEvent } from "src/services/analytics/index.js";
+import { extractHeredocs } from "../../utils/bash/heredoc.js";
+import { ParsedCommand } from "../../utils/bash/ParsedCommand.js";
 import {
   hasMalformedTokens,
   hasShellQuoteSingleQuoteBug,
   tryParseShellCommand,
-} from '../../utils/bash/shellQuote.js';
-import type { TreeSitterAnalysis } from '../../utils/bash/treeSitterAnalysis.js';
-import type { PermissionResult } from '../../utils/permissions/PermissionResult.js';
+} from "../../utils/bash/shellQuote.js";
+import type { TreeSitterAnalysis } from "../../utils/bash/treeSitterAnalysis.js";
+import type { PermissionResult } from "../../utils/permissions/PermissionResult.js";
 
 const HEREDOC_IN_SUBSTITUTION = /\$\(.*<</;
 
 // Note: Backtick pattern is handled separately in validateDangerousPatterns
 // to distinguish between escaped and unescaped backticks
 const COMMAND_SUBSTITUTION_PATTERNS = [
-  { pattern: /<\(/, message: 'process substitution <()' },
-  { pattern: />\(/, message: 'process substitution >()' },
-  { pattern: /=\(/, message: 'Zsh process substitution =()' },
+  { pattern: /<\(/, message: "process substitution <()" },
+  { pattern: />\(/, message: "process substitution >()" },
+  { pattern: /=\(/, message: "Zsh process substitution =()" },
   // Zsh EQUALS expansion: =cmd at word start expands to $(which cmd).
   // `=curl evil.com` → `/usr/bin/curl evil.com`, bypassing Bash(curl:*) deny
   // rules since the parser sees `=curl` as the base command, not `curl`.
   // Only matches word-initial = followed by a command-name char (not VAR=val).
   {
     pattern: /(?:^|[\s;&|])=[a-zA-Z_]/,
-    message: 'Zsh equals expansion (=cmd)',
+    message: "Zsh equals expansion (=cmd)",
   },
-  { pattern: /\$\(/, message: '$() command substitution' },
-  { pattern: /\$\{/, message: '${} parameter substitution' },
-  { pattern: /\$\[/, message: '$[] legacy arithmetic expansion' },
-  { pattern: /~\[/, message: 'Zsh-style parameter expansion' },
-  { pattern: /\(e:/, message: 'Zsh-style glob qualifiers' },
-  { pattern: /\(\+/, message: 'Zsh glob qualifier with command execution' },
+  { pattern: /\$\(/, message: "$() command substitution" },
+  { pattern: /\$\{/, message: "${} parameter substitution" },
+  { pattern: /\$\[/, message: "$[] legacy arithmetic expansion" },
+  { pattern: /~\[/, message: "Zsh-style parameter expansion" },
+  { pattern: /\(e:/, message: "Zsh-style glob qualifiers" },
+  { pattern: /\(\+/, message: "Zsh glob qualifier with command execution" },
   {
     pattern: /\}\s*always\s*\{/,
-    message: 'Zsh always block (try/always construct)',
+    message: "Zsh always block (try/always construct)",
   },
   // Defense in depth: Block PowerShell comment syntax even though we don't execute in PowerShell
   // Added as protection against future changes that might introduce PowerShell execution
-  { pattern: /<#/, message: 'PowerShell comment syntax' },
+  { pattern: /<#/, message: "PowerShell comment syntax" },
 ];
 
 // Zsh-specific dangerous commands that can bypass security checks.
@@ -49,28 +49,28 @@ const ZSH_DANGEROUS_COMMANDS = new Set([
   // zsh/zpty (pseudo-terminal command execution),
   // zsh/net/tcp (network exfiltration via ztcp),
   // zsh/files (builtin rm/mv/ln/chmod that bypass binary checks)
-  'zmodload',
+  "zmodload",
   // emulate with -c flag is an eval-equivalent that executes arbitrary code
-  'emulate',
+  "emulate",
   // Zsh module builtins that enable dangerous operations.
   // These require zmodload first, but we block them as defense-in-depth
   // in case zmodload is somehow bypassed or the module is pre-loaded.
-  'sysopen', // Opens files with fine-grained control (zsh/system)
-  'sysread', // Reads from file descriptors (zsh/system)
-  'syswrite', // Writes to file descriptors (zsh/system)
-  'sysseek', // Seeks on file descriptors (zsh/system)
-  'zpty', // Executes commands on pseudo-terminals (zsh/zpty)
-  'ztcp', // Creates TCP connections for exfiltration (zsh/net/tcp)
-  'zsocket', // Creates Unix/TCP sockets (zsh/net/socket)
-  'mapfile', // Not actually a command, but the associative array is set via zmodload
-  'zf_rm', // Builtin rm from zsh/files
-  'zf_mv', // Builtin mv from zsh/files
-  'zf_ln', // Builtin ln from zsh/files
-  'zf_chmod', // Builtin chmod from zsh/files
-  'zf_chown', // Builtin chown from zsh/files
-  'zf_mkdir', // Builtin mkdir from zsh/files
-  'zf_rmdir', // Builtin rmdir from zsh/files
-  'zf_chgrp', // Builtin chgrp from zsh/files
+  "sysopen", // Opens files with fine-grained control (zsh/system)
+  "sysread", // Reads from file descriptors (zsh/system)
+  "syswrite", // Writes to file descriptors (zsh/system)
+  "sysseek", // Seeks on file descriptors (zsh/system)
+  "zpty", // Executes commands on pseudo-terminals (zsh/zpty)
+  "ztcp", // Creates TCP connections for exfiltration (zsh/net/tcp)
+  "zsocket", // Creates Unix/TCP sockets (zsh/net/socket)
+  "mapfile", // Not actually a command, but the associative array is set via zmodload
+  "zf_rm", // Builtin rm from zsh/files
+  "zf_mv", // Builtin mv from zsh/files
+  "zf_ln", // Builtin ln from zsh/files
+  "zf_chmod", // Builtin chmod from zsh/files
+  "zf_chown", // Builtin chown from zsh/files
+  "zf_mkdir", // Builtin mkdir from zsh/files
+  "zf_rmdir", // Builtin rmdir from zsh/files
+  "zf_chgrp", // Builtin chgrp from zsh/files
 ]);
 
 // Numeric identifiers for bash security checks (to avoid logging strings)
@@ -126,9 +126,9 @@ type QuoteExtraction = {
 };
 
 function extractQuotedContent(command: string, isJq = false): QuoteExtraction {
-  let withDoubleQuotes = '';
-  let fullyUnquoted = '';
-  let unquotedKeepQuoteChars = '';
+  let withDoubleQuotes = "";
+  let fullyUnquoted = "";
+  let unquotedKeepQuoteChars = "";
   let inSingleQuote = false;
   let inDoubleQuote = false;
   let escaped = false;
@@ -144,7 +144,7 @@ function extractQuotedContent(command: string, isJq = false): QuoteExtraction {
       continue;
     }
 
-    if (char === '\\' && !inSingleQuote) {
+    if (char === "\\" && !inSingleQuote) {
       escaped = true;
       if (!inSingleQuote) withDoubleQuotes += char;
       if (!inSingleQuote && !inDoubleQuote) fullyUnquoted += char;
@@ -182,9 +182,9 @@ function stripSafeRedirections(content: string): string {
   // Main bashPermissions flow is protected (checkPathConstraints validates the
   // original command), but speculation.ts uses checkReadOnlyConstraints alone.
   return content
-    .replace(/\s+2\s*>&\s*1(?=\s|$)/g, '')
-    .replace(/[012]?\s*>\s*\/dev\/null(?=\s|$)/g, '')
-    .replace(/\s*<\s*\/dev\/null(?=\s|$)/g, '');
+    .replace(/\s+2\s*>&\s*1(?=\s|$)/g, "")
+    .replace(/[012]?\s*>\s*\/dev\/null(?=\s|$)/g, "")
+    .replace(/\s*<\s*\/dev\/null(?=\s|$)/g, "");
 }
 
 /**
@@ -208,13 +208,13 @@ function stripSafeRedirections(content: string): string {
  */
 function hasUnescapedChar(content: string, char: string): boolean {
   if (char.length !== 1) {
-    throw new Error('hasUnescapedChar only works with single characters');
+    throw new Error("hasUnescapedChar only works with single characters");
   }
 
   let i = 0;
   while (i < content.length) {
     // If we see a backslash, skip it and the next character (they form an escape sequence)
-    if (content[i] === '\\' && i + 1 < content.length) {
+    if (content[i] === "\\" && i + 1 < content.length) {
       i += 2; // Skip backslash and escaped character
       continue;
     }
@@ -233,12 +233,12 @@ function hasUnescapedChar(content: string, char: string): boolean {
 function validateEmpty(context: ValidationContext): PermissionResult {
   if (!context.originalCommand.trim()) {
     return {
-      behavior: 'allow',
+      behavior: "allow",
       updatedInput: { command: context.originalCommand },
-      decisionReason: { type: 'other', reason: 'Empty command is safe' },
+      decisionReason: { type: "other", reason: "Empty command is safe" },
     };
   }
-  return { behavior: 'passthrough', message: 'Command is not empty' };
+  return { behavior: "passthrough", message: "Command is not empty" };
 }
 
 function validateIncompleteCommands(context: ValidationContext): PermissionResult {
@@ -246,39 +246,39 @@ function validateIncompleteCommands(context: ValidationContext): PermissionResul
   const trimmed = originalCommand.trim();
 
   if (/^\s*\t/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.INCOMPLETE_COMMANDS,
       subId: 1,
     });
     return {
-      behavior: 'ask',
-      message: 'Command appears to be an incomplete fragment (starts with tab)',
+      behavior: "ask",
+      message: "Command appears to be an incomplete fragment (starts with tab)",
     };
   }
 
-  if (trimmed.startsWith('-')) {
-    logEvent('tengu_bash_security_check_triggered', {
+  if (trimmed.startsWith("-")) {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.INCOMPLETE_COMMANDS,
       subId: 2,
     });
     return {
-      behavior: 'ask',
-      message: 'Command appears to be an incomplete fragment (starts with flags)',
+      behavior: "ask",
+      message: "Command appears to be an incomplete fragment (starts with flags)",
     };
   }
 
   if (/^\s*(&&|\|\||;|>>?|<)/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.INCOMPLETE_COMMANDS,
       subId: 3,
     });
     return {
-      behavior: 'ask',
-      message: 'Command appears to be a continuation line (starts with operator)',
+      behavior: "ask",
+      message: "Command appears to be a continuation line (starts with operator)",
     };
   }
 
-  return { behavior: 'passthrough', message: 'Command appears complete' };
+  return { behavior: "passthrough", message: "Command appears complete" };
 }
 
 /**
@@ -334,7 +334,7 @@ function isSafeHeredoc(command: string): boolean {
         start: match.index,
         operatorEnd: match.index + match[0].length,
         delimiter,
-        isDash: match[1] === '-',
+        isDash: match[1] === "-",
       });
     }
   }
@@ -356,7 +356,7 @@ function isSafeHeredoc(command: string): boolean {
     // horizontal whitespace allowed before the newline). If there's other
     // content (like `; rm -rf /`), this is not a simple safe heredoc.
     const afterOperator = command.slice(operatorEnd);
-    const openLineEnd = afterOperator.indexOf('\n');
+    const openLineEnd = afterOperator.indexOf("\n");
     if (openLineEnd === -1) return false; // No content at all
     const openLineTail = afterOperator.slice(0, openLineEnd);
     if (!/^[ \t]*$/.test(openLineTail)) return false; // Extra content on open line
@@ -364,7 +364,7 @@ function isSafeHeredoc(command: string): boolean {
     // Body starts after the newline
     const bodyStart = operatorEnd + openLineEnd + 1;
     const body = command.slice(bodyStart);
-    const bodyLines = body.split('\n');
+    const bodyLines = body.split("\n");
 
     // Find the FIRST line that closes the heredoc. There are two valid forms:
     //   1. `DELIM` alone on a line (bash-standard), followed by `)` on the
@@ -378,7 +378,7 @@ function isSafeHeredoc(command: string): boolean {
 
     for (let i = 0; i < bodyLines.length; i++) {
       const rawLine = bodyLines[i]!;
-      const line = isDash ? rawLine.replace(/^\t*/, '') : rawLine;
+      const line = isDash ? rawLine.replace(/^\t*/, "") : rawLine;
 
       // Form 1: delimiter alone on a line
       if (line === delimiter) {
@@ -402,7 +402,7 @@ function isSafeHeredoc(command: string): boolean {
           closingLineIdx = i;
           closeParenLineIdx = i;
           // Column is in rawLine (pre-tab-strip), so recompute
-          const tabPrefix = isDash ? (rawLine.match(/^\t*/)?.[0] ?? '') : '';
+          const tabPrefix = isDash ? (rawLine.match(/^\t*/)?.[0] ?? "") : "";
           closeParenColIdx = tabPrefix.length + delimiter.length + parenMatch[1]?.length;
           break;
         }
@@ -501,7 +501,7 @@ function isSafeHeredoc(command: string): boolean {
   // main validator that checks allowlist-safe character patterns.
   // No recursion risk: `remaining` has no `$(... <<` pattern, so the recursive
   // call's validateSafeCommandSubstitution returns passthrough immediately.
-  if (bashCommandIsSafe_DEPRECATED(remaining).behavior !== 'passthrough') return false;
+  if (bashCommandIsSafe_DEPRECATED(remaining).behavior !== "passthrough") return false;
 
   return true;
 }
@@ -520,33 +520,33 @@ export function stripSafeHeredocSubstitutions(command: string): string | null {
   let match;
   const ranges: Array<{ start: number; end: number }> = [];
   while ((match = heredocPattern.exec(command)) !== null) {
-    if (match.index > 0 && command[match.index - 1] === '\\') continue;
+    if (match.index > 0 && command[match.index - 1] === "\\") continue;
     const delimiter = match[2] || match[3];
     if (!delimiter) continue;
-    const isDash = match[1] === '-';
+    const isDash = match[1] === "-";
     const operatorEnd = match.index + match[0].length;
 
     const afterOperator = command.slice(operatorEnd);
-    const openLineEnd = afterOperator.indexOf('\n');
+    const openLineEnd = afterOperator.indexOf("\n");
     if (openLineEnd === -1) continue;
     if (!/^[ \t]*$/.test(afterOperator.slice(0, openLineEnd))) continue;
 
     const bodyStart = operatorEnd + openLineEnd + 1;
-    const bodyLines = command.slice(bodyStart).split('\n');
+    const bodyLines = command.slice(bodyStart).split("\n");
     for (let i = 0; i < bodyLines.length; i++) {
       const rawLine = bodyLines[i]!;
-      const line = isDash ? rawLine.replace(/^\t*/, '') : rawLine;
+      const line = isDash ? rawLine.replace(/^\t*/, "") : rawLine;
       if (line.startsWith(delimiter)) {
         const after = line.slice(delimiter.length);
         let closePos = -1;
         if (/^[ \t]*\)/.test(after)) {
-          const lineStart = bodyStart + bodyLines.slice(0, i).join('\n').length + (i > 0 ? 1 : 0);
-          closePos = command.indexOf(')', lineStart);
-        } else if (after === '') {
+          const lineStart = bodyStart + bodyLines.slice(0, i).join("\n").length + (i > 0 ? 1 : 0);
+          closePos = command.indexOf(")", lineStart);
+        } else if (after === "") {
           const nextLine = bodyLines[i + 1];
           if (nextLine !== undefined && /^[ \t]*\)/.test(nextLine)) {
-            const nextLineStart = bodyStart + bodyLines.slice(0, i + 1).join('\n').length + 1;
-            closePos = command.indexOf(')', nextLineStart);
+            const nextLineStart = bodyStart + bodyLines.slice(0, i + 1).join("\n").length + 1;
+            closePos = command.indexOf(")", nextLineStart);
           }
         }
         if (closePos !== -1) {
@@ -574,40 +574,40 @@ function validateSafeCommandSubstitution(context: ValidationContext): Permission
   const { originalCommand } = context;
 
   if (!HEREDOC_IN_SUBSTITUTION.test(originalCommand)) {
-    return { behavior: 'passthrough', message: 'No heredoc in substitution' };
+    return { behavior: "passthrough", message: "No heredoc in substitution" };
   }
 
   if (isSafeHeredoc(originalCommand)) {
     return {
-      behavior: 'allow',
+      behavior: "allow",
       updatedInput: { command: originalCommand },
       decisionReason: {
-        type: 'other',
-        reason: 'Safe command substitution: cat with quoted/escaped heredoc delimiter',
+        type: "other",
+        reason: "Safe command substitution: cat with quoted/escaped heredoc delimiter",
       },
     };
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'Command substitution needs validation',
+    behavior: "passthrough",
+    message: "Command substitution needs validation",
   };
 }
 
 function validateGitCommit(context: ValidationContext): PermissionResult {
   const { originalCommand, baseCommand } = context;
 
-  if (baseCommand !== 'git' || !/^git\s+commit\s+/.test(originalCommand)) {
-    return { behavior: 'passthrough', message: 'Not a git commit' };
+  if (baseCommand !== "git" || !/^git\s+commit\s+/.test(originalCommand)) {
+    return { behavior: "passthrough", message: "Not a git commit" };
   }
 
   // SECURITY: Backslashes can cause our regex to mis-identify quote boundaries
   // (e.g., `git commit -m "test\"msg" && evil`). Legitimate commit messages
   // virtually never contain backslashes, so bail to the full validator chain.
-  if (originalCommand.includes('\\')) {
+  if (originalCommand.includes("\\")) {
     return {
-      behavior: 'passthrough',
-      message: 'Git commit contains backslash, needs full validation',
+      behavior: "passthrough",
+      message: "Git commit contains backslash, needs full validation",
     };
   }
 
@@ -634,13 +634,13 @@ function validateGitCommit(context: ValidationContext): PermissionResult {
     const [, quote, messageContent, remainder] = messageMatch;
 
     if (quote === '"' && messageContent && /\$\(|`|\$\{/.test(messageContent)) {
-      logEvent('tengu_bash_security_check_triggered', {
+      logEvent("tengu_bash_security_check_triggered", {
         checkId: BASH_SECURITY_CHECK_IDS.GIT_COMMIT_SUBSTITUTION,
         subId: 1,
       });
       return {
-        behavior: 'ask',
-        message: 'Git commit message contains command substitution patterns',
+        behavior: "ask",
+        message: "Git commit message contains command substitution patterns",
       };
     }
 
@@ -663,8 +663,8 @@ function validateGitCommit(context: ValidationContext): PermissionResult {
     //   stdout containing `payload` → RCE on next shell login.
     if (remainder && /[;|&()`]|\$\(|\$\{/.test(remainder)) {
       return {
-        behavior: 'passthrough',
-        message: 'Git commit remainder contains shell metacharacters',
+        behavior: "passthrough",
+        message: "Git commit remainder contains shell metacharacters",
       };
     }
     if (remainder) {
@@ -675,7 +675,7 @@ function validateGitCommit(context: ValidationContext): PermissionResult {
       // SQ). BUT line 584 already bailed on ANY backslash in originalCommand,
       // so we never reach here with backslashes. For backslash-free input,
       // simple quote toggling is correct (no way to escape quotes without \\).
-      let unquoted = '';
+      let unquoted = "";
       let inSQ = false;
       let inDQ = false;
       for (let i = 0; i < remainder.length; i++) {
@@ -692,53 +692,53 @@ function validateGitCommit(context: ValidationContext): PermissionResult {
       }
       if (/[<>]/.test(unquoted)) {
         return {
-          behavior: 'passthrough',
-          message: 'Git commit remainder contains unquoted redirect operator',
+          behavior: "passthrough",
+          message: "Git commit remainder contains unquoted redirect operator",
         };
       }
     }
 
     // Security hardening: block messages starting with dash
     // This catches potential obfuscation patterns like git commit -m "---"
-    if (messageContent?.startsWith('-')) {
-      logEvent('tengu_bash_security_check_triggered', {
+    if (messageContent?.startsWith("-")) {
+      logEvent("tengu_bash_security_check_triggered", {
         checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
         subId: 5,
       });
       return {
-        behavior: 'ask',
-        message: 'Command contains quoted characters in flag names',
+        behavior: "ask",
+        message: "Command contains quoted characters in flag names",
       };
     }
 
     return {
-      behavior: 'allow',
+      behavior: "allow",
       updatedInput: { command: originalCommand },
       decisionReason: {
-        type: 'other',
-        reason: 'Git commit with simple quoted message is allowed',
+        type: "other",
+        reason: "Git commit with simple quoted message is allowed",
       },
     };
   }
 
-  return { behavior: 'passthrough', message: 'Git commit needs validation' };
+  return { behavior: "passthrough", message: "Git commit needs validation" };
 }
 
 function validateJqCommand(context: ValidationContext): PermissionResult {
   const { originalCommand, baseCommand } = context;
 
-  if (baseCommand !== 'jq') {
-    return { behavior: 'passthrough', message: 'Not jq' };
+  if (baseCommand !== "jq") {
+    return { behavior: "passthrough", message: "Not jq" };
   }
 
   if (/\bsystem\s*\(/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.JQ_SYSTEM_FUNCTION,
       subId: 1,
     });
     return {
-      behavior: 'ask',
-      message: 'jq command contains system() function which executes arbitrary commands',
+      behavior: "ask",
+      message: "jq command contains system() function which executes arbitrary commands",
     };
   }
 
@@ -746,30 +746,30 @@ function validateJqCommand(context: ValidationContext): PermissionResult {
   // Only block dangerous flags that could read files into jq variables
   const afterJq = originalCommand.substring(3).trim();
   if (/(?:^|\s)(?:-f\b|--from-file|--rawfile|--slurpfile|-L\b|--library-path)/.test(afterJq)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.JQ_FILE_ARGUMENTS,
       subId: 1,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'jq command contains dangerous flags that could execute code or read arbitrary files',
+        "jq command contains dangerous flags that could execute code or read arbitrary files",
     };
   }
 
-  return { behavior: 'passthrough', message: 'jq command is safe' };
+  return { behavior: "passthrough", message: "jq command is safe" };
 }
 
 function validateShellMetacharacters(context: ValidationContext): PermissionResult {
   const { unquotedContent } = context;
-  const message = 'Command contains shell metacharacters (;, |, or &) in arguments';
+  const message = "Command contains shell metacharacters (;, |, or &) in arguments";
 
   if (/(?:^|\s)["'][^"']*[;&][^"']*["'](?:\s|$)/.test(unquotedContent)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.SHELL_METACHARACTERS,
       subId: 1,
     });
-    return { behavior: 'ask', message };
+    return { behavior: "ask", message };
   }
 
   const globPatterns = [
@@ -779,22 +779,22 @@ function validateShellMetacharacters(context: ValidationContext): PermissionResu
   ];
 
   if (globPatterns.some((p) => p.test(unquotedContent))) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.SHELL_METACHARACTERS,
       subId: 2,
     });
-    return { behavior: 'ask', message };
+    return { behavior: "ask", message };
   }
 
   if (/-regex\s+["'][^"']*[;&][^"']*["']/.test(unquotedContent)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.SHELL_METACHARACTERS,
       subId: 3,
     });
-    return { behavior: 'ask', message };
+    return { behavior: "ask", message };
   }
 
-  return { behavior: 'passthrough', message: 'No metacharacters' };
+  return { behavior: "passthrough", message: "No metacharacters" };
 }
 
 function validateDangerousVariables(context: ValidationContext): PermissionResult {
@@ -804,17 +804,17 @@ function validateDangerousVariables(context: ValidationContext): PermissionResul
     /[<>|]\s*\$[A-Za-z_]/.test(fullyUnquotedContent) ||
     /\$[A-Za-z_][A-Za-z0-9_]*\s*[|<>]/.test(fullyUnquotedContent)
   ) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.DANGEROUS_VARIABLES,
       subId: 1,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains variables in dangerous contexts (redirections or pipes)',
+      behavior: "ask",
+      message: "Command contains variables in dangerous contexts (redirections or pipes)",
     };
   }
 
-  return { behavior: 'passthrough', message: 'No dangerous variables' };
+  return { behavior: "passthrough", message: "No dangerous variables" };
 }
 
 function validateDangerousPatterns(context: ValidationContext): PermissionResult {
@@ -822,53 +822,53 @@ function validateDangerousPatterns(context: ValidationContext): PermissionResult
 
   // Special handling for backticks - check for UNESCAPED backticks only
   // Escaped backticks (e.g., \`) are safe and commonly used in SQL commands
-  if (hasUnescapedChar(unquotedContent, '`')) {
+  if (hasUnescapedChar(unquotedContent, "`")) {
     return {
-      behavior: 'ask',
-      message: 'Command contains backticks (`) for command substitution',
+      behavior: "ask",
+      message: "Command contains backticks (`) for command substitution",
     };
   }
 
   // Other command substitution checks (include double-quoted content)
   for (const { pattern, message } of COMMAND_SUBSTITUTION_PATTERNS) {
     if (pattern.test(unquotedContent)) {
-      logEvent('tengu_bash_security_check_triggered', {
+      logEvent("tengu_bash_security_check_triggered", {
         checkId: BASH_SECURITY_CHECK_IDS.DANGEROUS_PATTERNS_COMMAND_SUBSTITUTION,
         subId: 1,
       });
-      return { behavior: 'ask', message: `Command contains ${message}` };
+      return { behavior: "ask", message: `Command contains ${message}` };
     }
   }
 
-  return { behavior: 'passthrough', message: 'No dangerous patterns' };
+  return { behavior: "passthrough", message: "No dangerous patterns" };
 }
 
 function validateRedirections(context: ValidationContext): PermissionResult {
   const { fullyUnquotedContent } = context;
 
   if (/</.test(fullyUnquotedContent)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.DANGEROUS_PATTERNS_INPUT_REDIRECTION,
       subId: 1,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains input redirection (<) which could read sensitive files',
+      behavior: "ask",
+      message: "Command contains input redirection (<) which could read sensitive files",
     };
   }
 
   if (/>/.test(fullyUnquotedContent)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.DANGEROUS_PATTERNS_OUTPUT_REDIRECTION,
       subId: 1,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains output redirection (>) which could write to arbitrary files',
+      behavior: "ask",
+      message: "Command contains output redirection (>) which could write to arbitrary files",
     };
   }
 
-  return { behavior: 'passthrough', message: 'No redirections' };
+  return { behavior: "passthrough", message: "No redirections" };
 }
 
 function validateNewlines(context: ValidationContext): PermissionResult {
@@ -880,7 +880,7 @@ function validateNewlines(context: ValidationContext): PermissionResult {
 
   // Check for newlines in unquoted content
   if (!/[\n\r]/.test(fullyUnquotedPreStrip)) {
-    return { behavior: 'passthrough', message: 'No newlines' };
+    return { behavior: "passthrough", message: "No newlines" };
   }
 
   // Flag any newline/CR followed by non-whitespace, EXCEPT backslash-newline
@@ -892,19 +892,19 @@ function validateNewlines(context: ValidationContext): PermissionResult {
   // eslint-disable-next-line custom-rules/no-lookbehind-regex -- .test() + gated by /[\n\r]/.test() above
   const looksLikeCommand = /(?<![\s]\\)[\n\r]\s*\S/.test(fullyUnquotedPreStrip);
   if (looksLikeCommand) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.NEWLINES,
       subId: 1,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains newlines that could separate multiple commands',
+      behavior: "ask",
+      message: "Command contains newlines that could separate multiple commands",
     };
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'Newlines appear to be within data',
+    behavior: "passthrough",
+    message: "Newlines appear to be within data",
   };
 }
 
@@ -939,8 +939,8 @@ function validateNewlines(context: ValidationContext): PermissionResult {
 function validateCarriageReturn(context: ValidationContext): PermissionResult {
   const { originalCommand } = context;
 
-  if (!originalCommand.includes('\r')) {
-    return { behavior: 'passthrough', message: 'No carriage return' };
+  if (!originalCommand.includes("\r")) {
+    return { behavior: "passthrough", message: "No carriage return" };
   }
 
   // Check if CR appears outside double quotes. CR outside DQ (including inside
@@ -954,7 +954,7 @@ function validateCarriageReturn(context: ValidationContext): PermissionResult {
       escaped = false;
       continue;
     }
-    if (c === '\\' && !inSingleQuote) {
+    if (c === "\\" && !inSingleQuote) {
       escaped = true;
       continue;
     }
@@ -966,20 +966,20 @@ function validateCarriageReturn(context: ValidationContext): PermissionResult {
       inDoubleQuote = !inDoubleQuote;
       continue;
     }
-    if (c === '\r' && !inDoubleQuote) {
-      logEvent('tengu_bash_security_check_triggered', {
+    if (c === "\r" && !inDoubleQuote) {
+      logEvent("tengu_bash_security_check_triggered", {
         checkId: BASH_SECURITY_CHECK_IDS.NEWLINES,
         subId: 2,
       });
       return {
-        behavior: 'ask',
+        behavior: "ask",
         message:
-          'Command contains carriage return (\\r) which shell-quote and bash tokenize differently',
+          "Command contains carriage return (\\r) which shell-quote and bash tokenize differently",
       };
     }
   }
 
-  return { behavior: 'passthrough', message: 'CR only inside double quotes' };
+  return { behavior: "passthrough", message: "CR only inside double quotes" };
 }
 
 function validateIFSInjection(context: ValidationContext): PermissionResult {
@@ -989,17 +989,17 @@ function validateIFSInjection(context: ValidationContext): PermissionResult {
   // Check for $IFS and ${...IFS...} patterns (including parameter expansions like ${IFS:0:1}, ${#IFS}, etc.)
   // Using ${[^}]*IFS to catch all parameter expansion variations with IFS
   if (/\$IFS|\$\{[^}]*IFS/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.IFS_INJECTION,
       subId: 1,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains IFS variable usage which could bypass security validation',
+      behavior: "ask",
+      message: "Command contains IFS variable usage which could bypass security validation",
     };
   }
 
-  return { behavior: 'passthrough', message: 'No IFS injection detected' };
+  return { behavior: "passthrough", message: "No IFS injection detected" };
 }
 
 // Additional hardening against reading environment variables via /proc filesystem.
@@ -1014,20 +1014,20 @@ function validateProcEnvironAccess(context: ValidationContext): PermissionResult
   // - /proc/1/environ
   // - /proc/*/environ (with any PID)
   if (/\/proc\/.*\/environ/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.PROC_ENVIRON_ACCESS,
       subId: 1,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'Command accesses /proc/*/environ which could expose sensitive environment variables',
+        "Command accesses /proc/*/environ which could expose sensitive environment variables",
     };
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'No /proc/environ access detected',
+    behavior: "passthrough",
+    message: "No /proc/environ access detected",
   };
 }
 
@@ -1051,8 +1051,8 @@ function validateMalformedTokenInjection(context: ValidationContext): Permission
   if (!parseResult.success) {
     // Parse failed - this is handled elsewhere (bashToolHasPermission checks this)
     return {
-      behavior: 'passthrough',
-      message: 'Parse failed, handled elsewhere',
+      behavior: "passthrough",
+      message: "Parse failed, handled elsewhere",
     };
   }
 
@@ -1061,32 +1061,32 @@ function validateMalformedTokenInjection(context: ValidationContext): Permission
   // Check for command separators (;, &&, ||)
   const hasCommandSeparator = parsed.some(
     (entry) =>
-      typeof entry === 'object' &&
+      typeof entry === "object" &&
       entry !== null &&
-      'op' in entry &&
-      (entry.op === ';' || entry.op === '&&' || entry.op === '||'),
+      "op" in entry &&
+      (entry.op === ";" || entry.op === "&&" || entry.op === "||"),
   );
 
   if (!hasCommandSeparator) {
-    return { behavior: 'passthrough', message: 'No command separators' };
+    return { behavior: "passthrough", message: "No command separators" };
   }
 
   // Check for malformed tokens (unbalanced delimiters)
   if (hasMalformedTokens(originalCommand, parsed)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.MALFORMED_TOKEN_INJECTION,
       subId: 1,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'Command contains ambiguous syntax with command separators that could be misinterpreted',
+        "Command contains ambiguous syntax with command separators that could be misinterpreted",
     };
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'No malformed token injection detected',
+    behavior: "passthrough",
+    message: "No malformed token injection detected",
   };
 }
 
@@ -1099,10 +1099,10 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
   // For compound commands (with |, &, ;), we need to check the whole command
   // because the dangerous ANSI-C quoting might be after the operator.
   const hasShellOperators = /[|&;]/.test(originalCommand);
-  if (baseCommand === 'echo' && !hasShellOperators) {
+  if (baseCommand === "echo" && !hasShellOperators) {
     return {
-      behavior: 'passthrough',
-      message: 'echo command is safe and has no dangerous flags',
+      behavior: "passthrough",
+      message: "echo command is safe and has no dangerous flags",
     };
   }
 
@@ -1116,39 +1116,39 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
   // - Zero-width space and other invisible chars => match
   // The pattern requires $' followed by content (can be empty) followed by closing '
   if (/\$'[^']*'/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
       subId: 5,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains ANSI-C quoting which can hide characters',
+      behavior: "ask",
+      message: "Command contains ANSI-C quoting which can hide characters",
     };
   }
 
   // 2. Block locale quoting ($"...")  - can also use escape sequences
   // Same simple pattern as ANSI-C quoting above
   if (/\$"[^"]*"/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
       subId: 6,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains locale quoting which can hide characters',
+      behavior: "ask",
+      message: "Command contains locale quoting which can hide characters",
     };
   }
 
   // 3. Block empty ANSI-C or locale quotes followed by dash
   // $''-exec or $""-exec
   if (/\$['"]{2}\s*-/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
       subId: 9,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains empty special quotes before dash (potential bypass)',
+      behavior: "ask",
+      message: "Command contains empty special quotes before dash (potential bypass)",
     };
   }
 
@@ -1156,13 +1156,13 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
   // This catches: ''-  ""-  ''""-  ""''-  ''""''-  etc.
   // The pattern looks for one or more empty quote pairs followed by optional whitespace and dash
   if (/(?:^|\s)(?:''|"")+\s*-/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
       subId: 7,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains empty quotes before dash (potential bypass)',
+      behavior: "ask",
+      message: "Command contains empty quotes before dash (potential bypass)",
     };
   }
 
@@ -1197,14 +1197,14 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
   // FALSE POSITIVE: Matches `echo '"""-f" text'` (pattern inside single-quoted
   // string). Extremely rare (requires echoing the literal attack). Acceptable.
   if (/(?:""|'')+['"]-/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
       subId: 10,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'Command contains empty quote pair adjacent to quoted dash (potential flag obfuscation)',
+        "Command contains empty quote pair adjacent to quoted dash (potential flag obfuscation)",
     };
   }
 
@@ -1213,14 +1213,14 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
   // not enumerated above (e.g., `"""x"-f` where content between quotes shifts
   // the dash position). Legitimate commands never need `"""x"` when `"x"` works.
   if (/(?:^|\s)['"]{3,}/.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
       subId: 11,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'Command contains consecutive quote characters at word start (potential obfuscation)',
+        "Command contains consecutive quote characters at word start (potential obfuscation)",
     };
   }
 
@@ -1251,7 +1251,7 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
     // line ~1856 before this runs. But we fix the tracker for consistency with
     // the CORRECT implementations elsewhere in this file (hasBackslashEscaped*,
     // extractQuotedContent) which all guard with `!inSingleQuote`.
-    if (currentChar === '\\' && !inSingleQuote) {
+    if (currentChar === "\\" && !inSingleQuote) {
       escaped = true;
       continue;
     }
@@ -1279,7 +1279,7 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
     if (currentChar && nextChar && /\s/.test(currentChar) && /['"`]/.test(nextChar)) {
       const quoteChar = nextChar;
       let j = i + 2; // Start after the opening quote
-      let insideQuote = '';
+      let insideQuote = "";
 
       // Collect content inside the quote
       while (j < originalCommand.length && originalCommand[j] !== quoteChar) {
@@ -1323,7 +1323,7 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
       // The combined segments form a flag if they contain dash(es) followed by alphanumerics.
       const hasFlagCharsInNextQuote =
         // Trigger when: first segment is only dashes OR empty (could be prefix for flag)
-        (insideQuote === '' || /^-+$/.test(insideQuote)) &&
+        (insideQuote === "" || /^-+$/.test(insideQuote)) &&
         charAfterQuote !== undefined &&
         /['"`]/.test(charAfterQuote) &&
         (() => {
@@ -1358,14 +1358,14 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
           // Also check the unquoted char at the end of the chain
           if (pos < originalCommand.length && FLAG_CONTINUATION_CHARS.test(originalCommand[pos]!)) {
             // If we have dashes in combined content, the trailing char completes a flag
-            if (/^-+$/.test(combinedContent) || combinedContent === '') {
+            if (/^-+$/.test(combinedContent) || combinedContent === "") {
               // Check if we're about to form a flag with the following content
               const nextChar = originalCommand[pos]!;
-              if (nextChar === '-') {
+              if (nextChar === "-") {
                 // More dashes, could still form a flag
                 return true;
               }
-              if (/[a-zA-Z0-9\\${`]/.test(nextChar) && combinedContent !== '') {
+              if (/[a-zA-Z0-9\\${`]/.test(nextChar) && combinedContent !== "") {
                 // We have dashes and now alphanumeric/expansion follows
                 return true;
               }
@@ -1382,21 +1382,21 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
         originalCommand[j] === quoteChar &&
         (hasFlagCharsInside || hasFlagCharsContinuing || hasFlagCharsInNextQuote)
       ) {
-        logEvent('tengu_bash_security_check_triggered', {
+        logEvent("tengu_bash_security_check_triggered", {
           checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
           subId: 4,
         });
         return {
-          behavior: 'ask',
-          message: 'Command contains quoted characters in flag names',
+          behavior: "ask",
+          message: "Command contains quoted characters in flag names",
         };
       }
     }
 
     // Look for whitespace followed by dash - this starts a flag
-    if (currentChar && nextChar && /\s/.test(currentChar) && nextChar === '-') {
+    if (currentChar && nextChar && /\s/.test(currentChar) && nextChar === "-") {
       let j = i + 1; // Start at the dash
-      let flagContent = '';
+      let flagContent = "";
 
       // Collect flag content
       while (j < originalCommand.length) {
@@ -1416,7 +1416,7 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
           // flag name: -e, bypassing our blocklist for -exec. By restricting to cut -d,
           // we allow the legitimate use case while preventing obfuscation attacks on other
           // commands where quoted flag values could hide dangerous flag names.
-          if (baseCommand === 'cut' && flagContent === '-d' && /['"`]/.test(flagChar)) {
+          if (baseCommand === "cut" && flagContent === "-d" && /['"`]/.test(flagChar)) {
             // This is cut -d followed by a quoted delimiter - flagContent is already '-d'
             break;
           }
@@ -1435,13 +1435,13 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
       }
 
       if (flagContent.includes('"') || flagContent.includes("'")) {
-        logEvent('tengu_bash_security_check_triggered', {
+        logEvent("tengu_bash_security_check_triggered", {
           checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
           subId: 1,
         });
         return {
-          behavior: 'ask',
-          message: 'Command contains quoted characters in flag names',
+          behavior: "ask",
+          message: "Command contains quoted characters in flag names",
         };
       }
     }
@@ -1450,30 +1450,30 @@ function validateObfuscatedFlags(context: ValidationContext): PermissionResult {
   // Also handle flags that start with quotes: "--"output, '-'-output, etc.
   // Use fullyUnquotedContent to avoid false positives from legitimate quoted content like echo "---"
   if (/\s['"`]-/.test(context.fullyUnquotedContent)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
       subId: 2,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains quoted characters in flag names',
+      behavior: "ask",
+      message: "Command contains quoted characters in flag names",
     };
   }
 
   // Also handles cases like ""--output
   // Use fullyUnquotedContent to avoid false positives from legitimate quoted content
   if (/['"`]{2}-/.test(context.fullyUnquotedContent)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
       subId: 3,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains quoted characters in flag names',
+      behavior: "ask",
+      message: "Command contains quoted characters in flag names",
     };
   }
 
-  return { behavior: 'passthrough', message: 'No obfuscated flags detected' };
+  return { behavior: "passthrough", message: "No obfuscated flags detected" };
 }
 
 /**
@@ -1493,10 +1493,10 @@ function hasBackslashEscapedWhitespace(command: string): boolean {
   for (let i = 0; i < command.length; i++) {
     const char = command[i];
 
-    if (char === '\\' && !inSingleQuote) {
+    if (char === "\\" && !inSingleQuote) {
       if (!inDoubleQuote) {
         const nextChar = command[i + 1];
-        if (nextChar === ' ' || nextChar === '\t') {
+        if (nextChar === " " || nextChar === "\t") {
           return true;
         }
       }
@@ -1521,18 +1521,18 @@ function hasBackslashEscapedWhitespace(command: string): boolean {
 
 function validateBackslashEscapedWhitespace(context: ValidationContext): PermissionResult {
   if (hasBackslashEscapedWhitespace(context.originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.BACKSLASH_ESCAPED_WHITESPACE,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains backslash-escaped whitespace that could alter command parsing',
+      behavior: "ask",
+      message: "Command contains backslash-escaped whitespace that could alter command parsing",
     };
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'No backslash-escaped whitespace',
+    behavior: "passthrough",
+    message: "No backslash-escaped whitespace",
   };
 }
 
@@ -1562,7 +1562,7 @@ function validateBackslashEscapedWhitespace(context: ValidationContext): Permiss
  * in its output (round-trip safe), so they don't trigger the double-parse bug.
  * This allows `find . \( -name x -o -name y \)` to pass without false positives.
  */
-const SHELL_OPERATORS = new Set([';', '|', '&', '<', '>']);
+const SHELL_OPERATORS = new Set([";", "|", "&", "<", ">"]);
 
 function hasBackslashEscapedOperator(command: string): boolean {
   let inSingleQuote = false;
@@ -1587,7 +1587,7 @@ function hasBackslashEscapedOperator(command: string): boolean {
     // fixed for this in commit prior to d000dfe84e): backslash check first,
     // gated only by !inSingleQuote (since backslash IS literal inside '...'),
     // unconditional i++ to skip the escaped char even inside double quotes.
-    if (char === '\\' && !inSingleQuote) {
+    if (char === "\\" && !inSingleQuote) {
       // Only flag \<operator> when OUTSIDE double quotes (inside double quotes,
       // operators like ;|&<> are already not special, so \; is harmless there).
       if (!inDoubleQuote) {
@@ -1633,23 +1633,23 @@ function validateBackslashEscapedOperators(context: ValidationContext): Permissi
   // in the AST, then any \; is just an escaped character in a word argument
   // (e.g., `find . -exec cmd {} \;`). Skip the expensive regex check.
   if (context.treeSitter && !context.treeSitter.hasActualOperatorNodes) {
-    return { behavior: 'passthrough', message: 'No operator nodes in AST' };
+    return { behavior: "passthrough", message: "No operator nodes in AST" };
   }
 
   if (hasBackslashEscapedOperator(context.originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.BACKSLASH_ESCAPED_OPERATORS,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'Command contains a backslash before a shell operator (;, |, &, <, >) which can hide command structure',
+        "Command contains a backslash before a shell operator (;, |, &, <, >) which can hide command structure",
     };
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'No backslash-escaped operators',
+    behavior: "passthrough",
+    message: "No backslash-escaped operators",
   };
 }
 
@@ -1660,7 +1660,7 @@ function validateBackslashEscapedOperators(context: ValidationContext): Permissi
 function isEscapedAtPosition(content: string, pos: number): boolean {
   let backslashCount = 0;
   let i = pos - 1;
-  while (i >= 0 && content[i] === '\\') {
+  while (i >= 0 && content[i] === "\\") {
     backslashCount++;
     i--;
   }
@@ -1709,9 +1709,9 @@ function validateBraceExpansion(context: ValidationContext): PermissionResult {
   let unescapedOpenBraces = 0;
   let unescapedCloseBraces = 0;
   for (let i = 0; i < content.length; i++) {
-    if (content[i] === '{' && !isEscapedAtPosition(content, i)) {
+    if (content[i] === "{" && !isEscapedAtPosition(content, i)) {
       unescapedOpenBraces++;
-    } else if (content[i] === '}' && !isEscapedAtPosition(content, i)) {
+    } else if (content[i] === "}" && !isEscapedAtPosition(content, i)) {
       unescapedCloseBraces++;
     }
   }
@@ -1721,14 +1721,14 @@ function validateBraceExpansion(context: ValidationContext): PermissionResult {
   // (more `{` than `}`) is usually legitimate unclosed/escaped braces like
   // `{foo` or `{a,b\}` where bash doesn't expand anyway.
   if (unescapedOpenBraces > 0 && unescapedCloseBraces > unescapedOpenBraces) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.BRACE_EXPANSION,
       subId: 2,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'Command has excess closing braces after quote stripping, indicating possible brace expansion obfuscation',
+        "Command has excess closing braces after quote stripping, indicating possible brace expansion obfuscation",
     };
   }
 
@@ -1748,14 +1748,14 @@ function validateBraceExpansion(context: ValidationContext): PermissionResult {
     // Look for quoted single-brace patterns: '{', '}', "{",  "}"
     // These are the attack primitive — a brace char wrapped in quotes.
     if (/['"][{}]['"]/.test(orig)) {
-      logEvent('tengu_bash_security_check_triggered', {
+      logEvent("tengu_bash_security_check_triggered", {
         checkId: BASH_SECURITY_CHECK_IDS.BRACE_EXPANSION,
         subId: 3,
       });
       return {
-        behavior: 'ask',
+        behavior: "ask",
         message:
-          'Command contains quoted brace character inside brace context (potential brace expansion obfuscation)',
+          "Command contains quoted brace character inside brace context (potential brace expansion obfuscation)",
       };
     }
   }
@@ -1764,7 +1764,7 @@ function validateBraceExpansion(context: ValidationContext): PermissionResult {
   // We use a manual scan rather than a simple regex lookbehind because
   // lookbehinds can't handle double-escaped backslashes (\\{ is unescaped `{`).
   for (let i = 0; i < content.length; i++) {
-    if (content[i] !== '{') continue;
+    if (content[i] !== "{") continue;
     if (isEscapedAtPosition(content, i)) continue;
 
     // Find matching unescaped `}` by tracking nesting depth.
@@ -1774,9 +1774,9 @@ function validateBraceExpansion(context: ValidationContext): PermissionResult {
     let matchingClose = -1;
     for (let j = i + 1; j < content.length; j++) {
       const ch = content[j];
-      if (ch === '{' && !isEscapedAtPosition(content, j)) {
+      if (ch === "{" && !isEscapedAtPosition(content, j)) {
         depth++;
-      } else if (ch === '}' && !isEscapedAtPosition(content, j)) {
+      } else if (ch === "}" && !isEscapedAtPosition(content, j)) {
         depth--;
         if (depth === 0) {
           matchingClose = j;
@@ -1793,19 +1793,19 @@ function validateBraceExpansion(context: ValidationContext): PermissionResult {
     let innerDepth = 0;
     for (let k = i + 1; k < matchingClose; k++) {
       const ch = content[k];
-      if (ch === '{' && !isEscapedAtPosition(content, k)) {
+      if (ch === "{" && !isEscapedAtPosition(content, k)) {
         innerDepth++;
-      } else if (ch === '}' && !isEscapedAtPosition(content, k)) {
+      } else if (ch === "}" && !isEscapedAtPosition(content, k)) {
         innerDepth--;
       } else if (innerDepth === 0) {
-        if (ch === ',' || (ch === '.' && k + 1 < matchingClose && content[k + 1] === '.')) {
-          logEvent('tengu_bash_security_check_triggered', {
+        if (ch === "," || (ch === "." && k + 1 < matchingClose && content[k + 1] === ".")) {
+          logEvent("tengu_bash_security_check_triggered", {
             checkId: BASH_SECURITY_CHECK_IDS.BRACE_EXPANSION,
             subId: 1,
           });
           return {
-            behavior: 'ask',
-            message: 'Command contains brace expansion that could alter command parsing',
+            behavior: "ask",
+            message: "Command contains brace expansion that could alter command parsing",
           };
         }
       }
@@ -1815,8 +1815,8 @@ function validateBraceExpansion(context: ValidationContext): PermissionResult {
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'No brace expansion detected',
+    behavior: "passthrough",
+    message: "No brace expansion detected",
   };
 }
 
@@ -1830,16 +1830,16 @@ const UNICODE_WS_RE = /[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\
 function validateUnicodeWhitespace(context: ValidationContext): PermissionResult {
   const { originalCommand } = context;
   if (UNICODE_WS_RE.test(originalCommand)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.UNICODE_WHITESPACE,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'Command contains Unicode whitespace characters that could cause parsing inconsistencies',
+        "Command contains Unicode whitespace characters that could cause parsing inconsistencies",
     };
   }
-  return { behavior: 'passthrough', message: 'No Unicode whitespace' };
+  return { behavior: "passthrough", message: "No Unicode whitespace" };
 }
 
 function validateMidWordHash(context: ValidationContext): PermissionResult {
@@ -1867,7 +1867,7 @@ function validateMidWordHash(context: ValidationContext): PermissionResult {
   // so that it checks the correct 2-char window.
   const joined = unquotedKeepQuoteChars.replace(/\\+\n/g, (match) => {
     const backslashCount = match.length - 1;
-    return backslashCount % 2 === 1 ? '\\'.repeat(backslashCount - 1) : match;
+    return backslashCount % 2 === 1 ? "\\".repeat(backslashCount - 1) : match;
   });
   if (
     // eslint-disable-next-line custom-rules/no-lookbehind-regex -- .test() with atom search: fast when # absent
@@ -1875,15 +1875,15 @@ function validateMidWordHash(context: ValidationContext): PermissionResult {
     // eslint-disable-next-line custom-rules/no-lookbehind-regex -- same as above
     /\S(?<!\$\{)#/.test(joined)
   ) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.MID_WORD_HASH,
     });
     return {
-      behavior: 'ask',
-      message: 'Command contains mid-word # which is parsed differently by shell-quote vs bash',
+      behavior: "ask",
+      message: "Command contains mid-word # which is parsed differently by shell-quote vs bash",
     };
   }
-  return { behavior: 'passthrough', message: 'No mid-word hash' };
+  return { behavior: "passthrough", message: "No mid-word hash" };
 }
 
 /**
@@ -1920,8 +1920,8 @@ function validateCommentQuoteDesync(context: ValidationContext): PermissionResul
   // regardless of whether the command contains a comment.
   if (context.treeSitter) {
     return {
-      behavior: 'passthrough',
-      message: 'Tree-sitter quote context is authoritative',
+      behavior: "passthrough",
+      message: "Tree-sitter quote context is authoritative",
     };
   }
 
@@ -1948,7 +1948,7 @@ function validateCommentQuoteDesync(context: ValidationContext): PermissionResul
       continue;
     }
 
-    if (char === '\\') {
+    if (char === "\\") {
       escaped = true;
       continue;
     }
@@ -1971,20 +1971,20 @@ function validateCommentQuoteDesync(context: ValidationContext): PermissionResul
 
     // Unquoted `#` — in bash, this starts a comment. Check if the rest of
     // the line contains quote characters that would desync other trackers.
-    if (char === '#') {
-      const lineEnd = originalCommand.indexOf('\n', i);
+    if (char === "#") {
+      const lineEnd = originalCommand.indexOf("\n", i);
       const commentText = originalCommand.slice(
         i + 1,
         lineEnd === -1 ? originalCommand.length : lineEnd,
       );
       if (/['"]/.test(commentText)) {
-        logEvent('tengu_bash_security_check_triggered', {
+        logEvent("tengu_bash_security_check_triggered", {
           checkId: BASH_SECURITY_CHECK_IDS.COMMENT_QUOTE_DESYNC,
         });
         return {
-          behavior: 'ask',
+          behavior: "ask",
           message:
-            'Command contains quote characters inside a # comment which can desync quote tracking',
+            "Command contains quote characters inside a # comment which can desync quote tracking",
         };
       }
       // Skip to end of line (rest is comment)
@@ -1993,7 +1993,7 @@ function validateCommentQuoteDesync(context: ValidationContext): PermissionResul
     }
   }
 
-  return { behavior: 'passthrough', message: 'No comment quote desync' };
+  return { behavior: "passthrough", message: "No comment quote desync" };
 }
 
 /**
@@ -2035,8 +2035,8 @@ function validateQuotedNewline(context: ValidationContext): PermissionResult {
   // Fast path: must have both a newline byte AND a # character somewhere.
   // stripCommentLines only strips lines where trim().startsWith('#'), so
   // no # means no possible trigger.
-  if (!originalCommand.includes('\n') || !originalCommand.includes('#')) {
-    return { behavior: 'passthrough', message: 'No newline or no hash' };
+  if (!originalCommand.includes("\n") || !originalCommand.includes("#")) {
+    return { behavior: "passthrough", message: "No newline or no hash" };
   }
 
   // Track quote state. Mirrors extractQuotedContent / validateCommentQuoteDesync:
@@ -2057,7 +2057,7 @@ function validateQuotedNewline(context: ValidationContext): PermissionResult {
       continue;
     }
 
-    if (char === '\\' && !inSingleQuote) {
+    if (char === "\\" && !inSingleQuote) {
       escaped = true;
       continue;
     }
@@ -2076,25 +2076,25 @@ function validateQuotedNewline(context: ValidationContext): PermissionResult {
     // inside a quoted string. Check if that line would be stripped by
     // stripCommentLines — i.e., after trim(), does it start with `#`?
     // This exactly mirrors: lines.filter(l => !l.trim().startsWith('#'))
-    if (char === '\n' && (inSingleQuote || inDoubleQuote)) {
+    if (char === "\n" && (inSingleQuote || inDoubleQuote)) {
       const lineStart = i + 1;
-      const nextNewline = originalCommand.indexOf('\n', lineStart);
+      const nextNewline = originalCommand.indexOf("\n", lineStart);
       const lineEnd = nextNewline === -1 ? originalCommand.length : nextNewline;
       const nextLine = originalCommand.slice(lineStart, lineEnd);
-      if (nextLine.trim().startsWith('#')) {
-        logEvent('tengu_bash_security_check_triggered', {
+      if (nextLine.trim().startsWith("#")) {
+        logEvent("tengu_bash_security_check_triggered", {
           checkId: BASH_SECURITY_CHECK_IDS.QUOTED_NEWLINE,
         });
         return {
-          behavior: 'ask',
+          behavior: "ask",
           message:
-            'Command contains a quoted newline followed by a #-prefixed line, which can hide arguments from line-based permission checks',
+            "Command contains a quoted newline followed by a #-prefixed line, which can hide arguments from line-based permission checks",
         };
       }
     }
   }
 
-  return { behavior: 'passthrough', message: 'No quoted newline-hash pattern' };
+  return { behavior: "passthrough", message: "No quoted newline-hash pattern" };
 }
 
 /**
@@ -2112,10 +2112,10 @@ function validateZshDangerousCommands(context: ValidationContext): PermissionRes
   // Extract the base command from the original command, stripping leading
   // whitespace, env var assignments, and Zsh precommand modifiers.
   // e.g., "FOO=bar command builtin zmodload" -> "zmodload"
-  const ZSH_PRECOMMAND_MODIFIERS = new Set(['command', 'builtin', 'noglob', 'nocorrect']);
+  const ZSH_PRECOMMAND_MODIFIERS = new Set(["command", "builtin", "noglob", "nocorrect"]);
   const trimmed = originalCommand.trim();
   const tokens = trimmed.split(/\s+/);
-  let baseCmd = '';
+  let baseCmd = "";
   for (const token of tokens) {
     // Skip env var assignments (VAR=value)
     if (/^[A-Za-z_]\w*=/.test(token)) continue;
@@ -2126,12 +2126,12 @@ function validateZshDangerousCommands(context: ValidationContext): PermissionRes
   }
 
   if (ZSH_DANGEROUS_COMMANDS.has(baseCmd)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.ZSH_DANGEROUS_COMMANDS,
       subId: 1,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message: `Command uses Zsh-specific '${baseCmd}' which can bypass security checks`,
     };
   }
@@ -2139,20 +2139,20 @@ function validateZshDangerousCommands(context: ValidationContext): PermissionRes
   // Check for `fc -e` which allows executing arbitrary commands via editor
   // fc without -e is safe (just lists history), but -e specifies an editor
   // to run on the command, effectively an eval
-  if (baseCmd === 'fc' && /\s-\S*e/.test(trimmed)) {
-    logEvent('tengu_bash_security_check_triggered', {
+  if (baseCmd === "fc" && /\s-\S*e/.test(trimmed)) {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.ZSH_DANGEROUS_COMMANDS,
       subId: 2,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message: "Command uses 'fc -e' which can execute arbitrary commands via editor",
     };
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'No Zsh dangerous commands',
+    behavior: "passthrough",
+    message: "No Zsh dangerous commands",
   };
 }
 
@@ -2174,13 +2174,13 @@ export function bashCommandIsSafe_DEPRECATED(command: string): PermissionResult 
   // and other non-printable chars are silently dropped by bash but confuse our
   // validators, allowing metacharacters adjacent to them to slip through.
   if (CONTROL_CHAR_RE.test(command)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.CONTROL_CHARACTERS,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'Command contains non-printable control characters that could be used to bypass security checks',
+        "Command contains non-printable control characters that could be used to bypass security checks",
       isBashSecurityCheckForMisparsing: true,
     };
   }
@@ -2189,8 +2189,8 @@ export function bashCommandIsSafe_DEPRECATED(command: string): PermissionResult 
   // of backslashes inside single quotes. Must run before shell-quote parsing.
   if (hasShellQuoteSingleQuoteBug(command)) {
     return {
-      behavior: 'ask',
-      message: 'Command contains single-quoted backslash pattern that could bypass security checks',
+      behavior: "ask",
+      message: "Command contains single-quoted backslash pattern that could bypass security checks",
       isBashSecurityCheckForMisparsing: true,
     };
   }
@@ -2204,10 +2204,10 @@ export function bashCommandIsSafe_DEPRECATED(command: string): PermissionResult 
   // goes through all validators — which is the safe direction.
   const { processedCommand } = extractHeredocs(command, { quotedOnly: true });
 
-  const baseCommand = command.split(' ')[0] || '';
+  const baseCommand = command.split(" ")[0] || "";
   const { withDoubleQuotes, fullyUnquoted, unquotedKeepQuoteChars } = extractQuotedContent(
     processedCommand,
-    baseCommand === 'jq',
+    baseCommand === "jq",
   );
 
   const context: ValidationContext = {
@@ -2228,17 +2228,17 @@ export function bashCommandIsSafe_DEPRECATED(command: string): PermissionResult 
 
   for (const validator of earlyValidators) {
     const result = validator(context);
-    if (result.behavior === 'allow') {
+    if (result.behavior === "allow") {
       return {
-        behavior: 'passthrough',
+        behavior: "passthrough",
         message:
-          result.decisionReason?.type === 'other' || result.decisionReason?.type === 'safetyCheck'
+          result.decisionReason?.type === "other" || result.decisionReason?.type === "safetyCheck"
             ? result.decisionReason.reason
-            : 'Command allowed',
+            : "Command allowed",
       };
     }
-    if (result.behavior !== 'passthrough') {
-      return result.behavior === 'ask'
+    if (result.behavior !== "passthrough") {
+      return result.behavior === "ask"
         ? { ...result, isBashSecurityCheckForMisparsing: true as const }
         : result;
     }
@@ -2302,7 +2302,7 @@ export function bashCommandIsSafe_DEPRECATED(command: string): PermissionResult 
   let deferredNonMisparsingResult: PermissionResult | null = null;
   for (const validator of validators) {
     const result = validator(context);
-    if (result.behavior === 'ask') {
+    if (result.behavior === "ask") {
       if (nonMisparsingValidators.has(validator)) {
         if (deferredNonMisparsingResult === null) {
           deferredNonMisparsingResult = result;
@@ -2317,8 +2317,8 @@ export function bashCommandIsSafe_DEPRECATED(command: string): PermissionResult 
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'Command passed all security checks',
+    behavior: "passthrough",
+    message: "Command passed all security checks",
   };
 }
 
@@ -2350,32 +2350,32 @@ export async function bashCommandIsSafeAsync_DEPRECATED(
   // The early checks (control chars, shell-quote bug) don't benefit from
   // tree-sitter, so we run them identically.
   if (CONTROL_CHAR_RE.test(command)) {
-    logEvent('tengu_bash_security_check_triggered', {
+    logEvent("tengu_bash_security_check_triggered", {
       checkId: BASH_SECURITY_CHECK_IDS.CONTROL_CHARACTERS,
     });
     return {
-      behavior: 'ask',
+      behavior: "ask",
       message:
-        'Command contains non-printable control characters that could be used to bypass security checks',
+        "Command contains non-printable control characters that could be used to bypass security checks",
       isBashSecurityCheckForMisparsing: true,
     };
   }
 
   if (hasShellQuoteSingleQuoteBug(command)) {
     return {
-      behavior: 'ask',
-      message: 'Command contains single-quoted backslash pattern that could bypass security checks',
+      behavior: "ask",
+      message: "Command contains single-quoted backslash pattern that could bypass security checks",
       isBashSecurityCheckForMisparsing: true,
     };
   }
 
   const { processedCommand } = extractHeredocs(command, { quotedOnly: true });
 
-  const baseCommand = command.split(' ')[0] || '';
+  const baseCommand = command.split(" ")[0] || "";
 
   // Use tree-sitter quote context for more accurate analysis
   const tsQuote = tsAnalysis.quoteContext;
-  const regexQuote = extractQuotedContent(processedCommand, baseCommand === 'jq');
+  const regexQuote = extractQuotedContent(processedCommand, baseCommand === "jq");
 
   // Use tree-sitter quote context as primary, but keep regex as reference
   // for divergence logging
@@ -2414,7 +2414,7 @@ export async function bashCommandIsSafeAsync_DEPRECATED(
       if (onDivergence) {
         onDivergence();
       } else {
-        logEvent('tengu_tree_sitter_security_divergence', {
+        logEvent("tengu_tree_sitter_security_divergence", {
           quoteContextDivergence: true,
         });
       }
@@ -2430,17 +2430,17 @@ export async function bashCommandIsSafeAsync_DEPRECATED(
 
   for (const validator of earlyValidators) {
     const result = validator(context);
-    if (result.behavior === 'allow') {
+    if (result.behavior === "allow") {
       return {
-        behavior: 'passthrough',
+        behavior: "passthrough",
         message:
-          result.decisionReason?.type === 'other' || result.decisionReason?.type === 'safetyCheck'
+          result.decisionReason?.type === "other" || result.decisionReason?.type === "safetyCheck"
             ? result.decisionReason.reason
-            : 'Command allowed',
+            : "Command allowed",
       };
     }
-    if (result.behavior !== 'passthrough') {
-      return result.behavior === 'ask'
+    if (result.behavior !== "passthrough") {
+      return result.behavior === "ask"
         ? { ...result, isBashSecurityCheckForMisparsing: true as const }
         : result;
     }
@@ -2473,7 +2473,7 @@ export async function bashCommandIsSafeAsync_DEPRECATED(
   let deferredNonMisparsingResult: PermissionResult | null = null;
   for (const validator of validators) {
     const result = validator(context);
-    if (result.behavior === 'ask') {
+    if (result.behavior === "ask") {
       if (nonMisparsingValidators.has(validator)) {
         if (deferredNonMisparsingResult === null) {
           deferredNonMisparsingResult = result;
@@ -2488,7 +2488,7 @@ export async function bashCommandIsSafeAsync_DEPRECATED(
   }
 
   return {
-    behavior: 'passthrough',
-    message: 'Command passed all security checks',
+    behavior: "passthrough",
+    message: "Command passed all security checks",
   };
 }

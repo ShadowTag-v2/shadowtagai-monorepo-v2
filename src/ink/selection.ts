@@ -10,9 +10,9 @@
  * the cursor is now). The rendered highlight normalizes to start ≤ end.
  */
 
-import { clamp } from './layout/geometry.js';
-import type { Screen, StylePool } from './screen.js';
-import { CellWidth, cellAt, cellAtIndex, setCellStyleId } from './screen.js';
+import { clamp } from "./layout/geometry.js";
+import type { Screen, StylePool } from "./screen.js";
+import { CellWidth, cellAt, cellAtIndex, setCellStyleId } from "./screen.js";
 
 type Point = { col: number; row: number };
 
@@ -28,7 +28,7 @@ export type SelectionState = {
    *  current mouse position so the original word/line stays selected
    *  even when dragging backward past it. Null ⇔ char mode. The kind
    *  tells extendSelection whether to snap to word or line boundaries. */
-  anchorSpan: { lo: Point; hi: Point; kind: 'word' | 'line' } | null;
+  anchorSpan: { lo: Point; hi: Point; kind: "word" | "line" } | null;
   /** Text from rows that scrolled out ABOVE the viewport during
    *  drag-to-scroll. The screen buffer only holds the current viewport,
    *  so without this accumulator, dragging down past the bottom edge
@@ -140,7 +140,7 @@ const WORD_CHAR = /[\p{L}\p{N}_/.\-+~\\]/u;
  * selects the whitespace run.
  */
 function charClass(c: string): 0 | 1 | 2 {
-  if (c === ' ' || c === '') return 0;
+  if (c === " " || c === "") return 0;
   if (WORD_CHAR.test(c)) return 1;
   return 2;
 }
@@ -232,13 +232,13 @@ export function selectWordAt(s: SelectionState, screen: Screen, col: number, row
   s.anchor = lo;
   s.focus = hi;
   s.isDragging = true;
-  s.anchorSpan = { lo, hi, kind: 'word' };
+  s.anchorSpan = { lo, hi, kind: "word" };
 }
 
 // Printable ASCII minus terminal URL delimiters. Restricting to single-
 // codeunit ASCII keeps cell-count === string-index, so the column-span
 // check below is exact (no wide-char/grapheme drift).
-const URL_BOUNDARY = new Set([...'<>"\'` ']);
+const URL_BOUNDARY = new Set([..."<>\"'` "]);
 function isUrlChar(c: string): boolean {
   if (c.length !== 1) return false;
   const code = c.charCodeAt(0);
@@ -287,7 +287,7 @@ export function findPlainTextUrlAt(screen: Screen, col: number, row: number): st
     hi = next;
   }
 
-  let token = '';
+  let token = "";
   for (let i = lo; i <= hi; i++) token += cellAt(screen, i, row)?.char;
 
   // 1 cell = 1 char across [lo, hi] (ASCII-only run), so string index =
@@ -310,10 +310,10 @@ export function findPlainTextUrlAt(screen: Screen, col: number, row: number): st
 
   // Strip trailing sentence punctuation. For closers () ] }, only strip
   // if unbalanced — `/wiki/Foo_(bar)` keeps `)`, `/arr[0]` keeps `]`.
-  const OPENER: Record<string, string> = { ')': '(', ']': '[', '}': '{' };
+  const OPENER: Record<string, string> = { ")": "(", "]": "[", "}": "{" };
   while (url.length > 0) {
     const last = url.at(-1)!;
-    if ('.,;:!?'.includes(last)) {
+    if (".,;:!?".includes(last)) {
       url = url.slice(0, -1);
       continue;
     }
@@ -350,7 +350,7 @@ export function selectLineAt(s: SelectionState, screen: Screen, row: number): vo
   s.anchor = lo;
   s.focus = hi;
   s.isDragging = true;
-  s.anchorSpan = { lo, hi, kind: 'line' };
+  s.anchorSpan = { lo, hi, kind: "line" };
 }
 
 /**
@@ -365,7 +365,7 @@ export function extendSelection(s: SelectionState, screen: Screen, col: number, 
   const span = s.anchorSpan;
   let mLo: Point;
   let mHi: Point;
-  if (span.kind === 'word') {
+  if (span.kind === "word") {
     const b = wordBoundsAt(screen, col, row);
     mLo = { col: b ? b.lo : col, row };
     mHi = { col: b ? b.hi : col, row };
@@ -391,7 +391,7 @@ export function extendSelection(s: SelectionState, screen: Screen, col: number, 
 
 /** Semantic keyboard focus moves. See moveSelectionFocus in ink.tsx for
  *  how screen bounds + row-wrap are applied. */
-export type FocusMove = 'left' | 'right' | 'up' | 'down' | 'lineStart' | 'lineEnd';
+export type FocusMove = "left" | "right" | "up" | "down" | "lineStart" | "lineEnd";
 
 /**
  * Set focus to (col, row) for keyboard selection extension (shift+arrow).
@@ -655,7 +655,7 @@ function extractRowText(screen: Screen, row: number, colStart: number, colEnd: n
   const rowOff = row * screen.width;
   const contentEnd = row + 1 < screen.height ? screen.softWrap[row + 1]! : 0;
   const lastCol = contentEnd > 0 ? Math.min(colEnd, contentEnd - 1) : colEnd;
-  let line = '';
+  let line = "";
   for (let col = colStart; col <= lastCol; col++) {
     // Skip cells marked noSelect (gutters, line numbers, diff sigils).
     // Check before cellAt to avoid the decode cost for excluded cells.
@@ -669,7 +669,7 @@ function extractRowText(screen: Screen, row: number, colStart: number, colEnd: n
     }
     line += cell.char;
   }
-  return contentEnd > 0 ? line : line.replace(/\s+$/, '');
+  return contentEnd > 0 ? line : line.replace(/\s+$/, "");
 }
 
 /** Accumulator for selected text that merges soft-wrapped rows back
@@ -697,7 +697,7 @@ function joinRows(lines: string[], text: string, sw: boolean | undefined): void 
  */
 export function getSelectedText(s: SelectionState, screen: Screen): string {
   const b = selectionBounds(s);
-  if (!b) return '';
+  if (!b) return "";
   const { start, end } = b;
   const sw = screen.softWrap;
   const lines: string[] = [];
@@ -716,7 +716,7 @@ export function getSelectedText(s: SelectionState, screen: Screen): string {
     joinRows(lines, s.scrolledOffBelow[i]!, s.scrolledOffBelowSW[i]);
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -740,7 +740,7 @@ export function captureScrolledRows(
   screen: Screen,
   firstRow: number,
   lastRow: number,
-  side: 'above' | 'below',
+  side: "above" | "below",
 ): void {
   const b = selectionBounds(s);
   if (!b || firstRow > lastRow) return;
@@ -762,7 +762,7 @@ export function captureScrolledRows(
     capturedSW.push(sw[row]! > 0);
   }
 
-  if (side === 'above') {
+  if (side === "above") {
     // Newest rows go at the bottom of the above-accumulator (closest to
     // the on-screen content in reading order).
     s.scrolledOffAbove.push(...captured);

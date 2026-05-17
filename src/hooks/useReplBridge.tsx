@@ -1,40 +1,40 @@
-import { feature } from 'bun:bundle';
-import type React from 'react';
-import { useCallback, useEffect, useRef } from 'react';
-import { setMainLoopModelOverride } from '../bootstrap/state.js';
+import { feature } from "bun:bundle";
+import type React from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { setMainLoopModelOverride } from "../bootstrap/state.js";
 import {
   type BridgePermissionCallbacks,
   type BridgePermissionResponse,
   isBridgePermissionResponse,
-} from '../bridge/bridgePermissionCallbacks.js';
-import { buildBridgeConnectUrl } from '../bridge/bridgeStatusUtil.js';
-import { extractInboundMessageFields } from '../bridge/inboundMessages.js';
-import type { BridgeState, ReplBridgeHandle } from '../bridge/replBridge.js';
-import { setReplBridgeHandle } from '../bridge/replBridgeHandle.js';
-import type { Command } from '../commands.js';
-import { getSlashCommandToolSkills, isBridgeSafeCommand } from '../commands.js';
-import { getRemoteSessionUrl } from '../constants/product.js';
-import { useNotifications } from '../context/notifications.js';
-import type { PermissionMode, SDKMessage } from '../entrypoints/agentSdkTypes.js';
-import type { SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
-import { Text } from '../ink.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import { useAppState, useAppStateStore, useSetAppState } from '../state/AppState.js';
-import type { Message } from '../types/message.js';
-import { getCwd } from '../utils/cwd.js';
-import { logForDebugging } from '../utils/debug.js';
-import { errorMessage } from '../utils/errors.js';
-import { enqueue } from '../utils/messageQueueManager.js';
-import { buildSystemInitMessage } from '../utils/messages/systemInit.js';
-import { createBridgeStatusMessage, createSystemMessage } from '../utils/messages.js';
+} from "../bridge/bridgePermissionCallbacks.js";
+import { buildBridgeConnectUrl } from "../bridge/bridgeStatusUtil.js";
+import { extractInboundMessageFields } from "../bridge/inboundMessages.js";
+import type { BridgeState, ReplBridgeHandle } from "../bridge/replBridge.js";
+import { setReplBridgeHandle } from "../bridge/replBridgeHandle.js";
+import type { Command } from "../commands.js";
+import { getSlashCommandToolSkills, isBridgeSafeCommand } from "../commands.js";
+import { getRemoteSessionUrl } from "../constants/product.js";
+import { useNotifications } from "../context/notifications.js";
+import type { PermissionMode, SDKMessage } from "../entrypoints/agentSdkTypes.js";
+import type { SDKControlResponse } from "../entrypoints/sdk/controlTypes.js";
+import { Text } from "../ink.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import { useAppState, useAppStateStore, useSetAppState } from "../state/AppState.js";
+import type { Message } from "../types/message.js";
+import { getCwd } from "../utils/cwd.js";
+import { logForDebugging } from "../utils/debug.js";
+import { errorMessage } from "../utils/errors.js";
+import { enqueue } from "../utils/messageQueueManager.js";
+import { buildSystemInitMessage } from "../utils/messages/systemInit.js";
+import { createBridgeStatusMessage, createSystemMessage } from "../utils/messages.js";
 import {
   getAutoModeUnavailableNotification,
   getAutoModeUnavailableReason,
   isAutoModeGateEnabled,
   isBypassPermissionsModeDisabled,
   transitionPermissionMode,
-} from '../utils/permissions/permissionSetup.js';
-import { getLeaderToolUseConfirmQueue } from '../utils/swarm/leaderPermissionBridge.js';
+} from "../utils/permissions/permissionSetup.js";
+import { getLeaderToolUseConfirmQueue } from "../utils/swarm/leaderPermissionBridge.js";
 
 /** How long after a failure before replBridgeEnabled is auto-cleared (stops retries). */
 export const BRIDGE_FAILURE_DISMISS_MS = 10_000;
@@ -91,19 +91,19 @@ export function useReplBridge(
   messagesRef.current = messages;
   const store = useAppStateStore();
   const { addNotification } = useNotifications();
-  const replBridgeEnabled = feature('BRIDGE_MODE')
+  const replBridgeEnabled = feature("BRIDGE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useAppState((s) => s.replBridgeEnabled)
     : false;
-  const replBridgeConnected = feature('BRIDGE_MODE')
+  const replBridgeConnected = feature("BRIDGE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useAppState((s_0) => s_0.replBridgeConnected)
     : false;
-  const replBridgeOutboundOnly = feature('BRIDGE_MODE')
+  const replBridgeOutboundOnly = feature("BRIDGE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useAppState((s_1) => s_1.replBridgeOutboundOnly)
     : false;
-  const replBridgeInitialName = feature('BRIDGE_MODE')
+  const replBridgeInitialName = feature("BRIDGE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useAppState((s_2) => s_2.replBridgeInitialName)
     : undefined;
@@ -115,20 +115,20 @@ export function useReplBridge(
     // feature() check must use positive pattern for dead code elimination —
     // negative pattern (if (!feature(...)) return) does NOT eliminate
     // dynamic imports below.
-    if (feature('BRIDGE_MODE')) {
+    if (feature("BRIDGE_MODE")) {
       if (!replBridgeEnabled) return;
       const outboundOnly = replBridgeOutboundOnly;
       function notifyBridgeFailed(detail?: string): void {
         if (outboundOnly) return;
         addNotification({
-          key: 'bridge-failed',
+          key: "bridge-failed",
           jsx: (
             <>
               <Text color="error">Remote Control failed</Text>
               {detail && <Text dimColor> · {detail}</Text>}
             </>
           ),
-          priority: 'immediate',
+          priority: "immediate",
         });
       }
       if (consecutiveFailuresRef.current >= MAX_CONSECUTIVE_INIT_FAILURES) {
@@ -137,7 +137,7 @@ export function useReplBridge(
         );
         // Clear replBridgeEnabled so /remote-control doesn't mistakenly show
         // BridgeDisconnectDialog for a bridge that never connected.
-        const fuseHint = 'disabled after repeated failures · restart to retry';
+        const fuseHint = "disabled after repeated failures · restart to retry";
         notifyBridgeFailed(fuseHint);
         setAppState((prev) => {
           if (prev.replBridgeError === fuseHint && !prev.replBridgeEnabled) return prev;
@@ -161,19 +161,19 @@ export function useReplBridge(
           // server may tear down the freshly-created environment.
           if (teardownPromiseRef.current) {
             logForDebugging(
-              '[bridge:repl] Hook: waiting for previous teardown to complete before re-init',
+              "[bridge:repl] Hook: waiting for previous teardown to complete before re-init",
             );
             await teardownPromiseRef.current;
             teardownPromiseRef.current = undefined;
             logForDebugging(
-              '[bridge:repl] Hook: previous teardown complete, proceeding with re-init',
+              "[bridge:repl] Hook: previous teardown complete, proceeding with re-init",
             );
           }
           if (cancelled) return;
 
           // Dynamic import so the module is tree-shaken in external builds
-          const { initReplBridge } = await import('../bridge/initReplBridge.js');
-          const { shouldShowAppUpgradeMessage } = await import('../bridge/envLessBridgeConfig.js');
+          const { initReplBridge } = await import("../bridge/initReplBridge.js");
+          const { shouldShowAppUpgradeMessage } = await import("../bridge/envLessBridgeConfig.js");
 
           // Assistant mode: perpetual bridge session — claude.ai shows one
           // continuous conversation across CLI restarts instead of a new
@@ -185,8 +185,8 @@ export function useReplBridge(
           // crashes. Non-assistant bridges clear the pointer on teardown
           // (crash-recovery only).
           let perpetual = false;
-          if (feature('KAIROS')) {
-            const { isAssistantMode } = await import('../assistant/index.js');
+          if (feature("KAIROS")) {
+            const { isAssistantMode } = await import("../assistant/index.js");
             perpetual = isAssistantMode();
           }
 
@@ -205,26 +205,26 @@ export function useReplBridge(
               const { uuid } = fields;
 
               // Dynamic import keeps the bridge code out of non-BRIDGE_MODE builds.
-              const { resolveAndPrepend } = await import('../bridge/inboundAttachments.js');
+              const { resolveAndPrepend } = await import("../bridge/inboundAttachments.js");
               let sanitized = fields.content;
-              if (feature('KAIROS_GITHUB_WEBHOOKS')) {
+              if (feature("KAIROS_GITHUB_WEBHOOKS")) {
                 /* eslint-disable @typescript-eslint/no-require-imports */
                 const { sanitizeInboundWebhookContent } =
-                  require('../bridge/webhookSanitizer.js') as typeof import('../bridge/webhookSanitizer.js');
+                  require("../bridge/webhookSanitizer.js") as typeof import("../bridge/webhookSanitizer.js");
                 /* eslint-enable @typescript-eslint/no-require-imports */
                 sanitized = sanitizeInboundWebhookContent(fields.content);
               }
               const content = await resolveAndPrepend(msg, sanitized);
               const preview =
-                typeof content === 'string'
+                typeof content === "string"
                   ? content.slice(0, 80)
                   : `[${content.length} content blocks]`;
               logForDebugging(
-                `[bridge:repl] Injecting inbound user message: ${preview}${uuid ? ` uuid=${uuid}` : ''}`,
+                `[bridge:repl] Injecting inbound user message: ${preview}${uuid ? ` uuid=${uuid}` : ""}`,
               );
               enqueue({
                 value: content,
-                mode: 'prompt' as const,
+                mode: "prompt" as const,
                 uuid,
                 // skipSlashCommands stays true as defense-in-depth —
                 // processUserInputBase overrides it internally when bridgeOrigin
@@ -236,7 +236,7 @@ export function useReplBridge(
               });
             } catch (e) {
               logForDebugging(`[bridge:repl] handleInboundMessage failed: ${e}`, {
-                level: 'error',
+                level: "error",
               });
             }
           }
@@ -246,11 +246,11 @@ export function useReplBridge(
             if (cancelled) return;
             if (outboundOnly) {
               logForDebugging(
-                `[bridge:repl] Mirror state=${state}${detail_0 ? ` detail=${detail_0}` : ''}`,
+                `[bridge:repl] Mirror state=${state}${detail_0 ? ` detail=${detail_0}` : ""}`,
               );
               // Sync replBridgeConnected so the forwarding effect starts/stops
               // writing as the transport comes up or dies.
-              if (state === 'failed') {
+              if (state === "failed") {
                 setAppState((prev_3) => {
                   if (!prev_3.replBridgeConnected) return prev_3;
                   return {
@@ -258,7 +258,7 @@ export function useReplBridge(
                     replBridgeConnected: false,
                   };
                 });
-              } else if (state === 'ready' || state === 'connected') {
+              } else if (state === "ready" || state === "connected") {
                 setAppState((prev_4) => {
                   if (prev_4.replBridgeConnected) return prev_4;
                   return {
@@ -271,10 +271,10 @@ export function useReplBridge(
             }
             const handle = handleRef.current;
             switch (state) {
-              case 'ready':
+              case "ready":
                 setAppState((prev_9) => {
                   const connectUrl =
-                    handle && handle.environmentId !== ''
+                    handle && handle.environmentId !== ""
                       ? buildBridgeConnectUrl(handle.environmentId, handle.sessionIngressUrl)
                       : prev_9.replBridgeConnectUrl;
                   const sessionUrl = handle
@@ -306,7 +306,7 @@ export function useReplBridge(
                   };
                 });
                 break;
-              case 'connected': {
+              case "connected": {
                 setAppState((prev_8) => {
                   if (prev_8.replBridgeSessionActive) return prev_8;
                   return {
@@ -323,7 +323,7 @@ export function useReplBridge(
                 // to put system/init on the REPL-bridge wire. Skills load is
                 // async (memoized, cheap after REPL startup); fire-and-forget
                 // so the connected-state transition isn't blocked.
-                if (getFeatureValue_CACHED_MAY_BE_STALE('tengu_bridge_system_init', false)) {
+                if (getFeatureValue_CACHED_MAY_BE_STALE("tengu_bridge_system_init", false)) {
                   void (async () => {
                     try {
                       const skills = await getSlashCommandToolSkills(getCwd());
@@ -358,7 +358,7 @@ export function useReplBridge(
                       logForDebugging(
                         `[bridge:repl] Failed to send system/init: ${errorMessage(err_0)}`,
                         {
-                          level: 'error',
+                          level: "error",
                         },
                       );
                     }
@@ -366,7 +366,7 @@ export function useReplBridge(
                 }
                 break;
               }
-              case 'reconnecting':
+              case "reconnecting":
                 setAppState((prev_7) => {
                   if (prev_7.replBridgeReconnecting) return prev_7;
                   return {
@@ -376,7 +376,7 @@ export function useReplBridge(
                   };
                 });
                 break;
-              case 'failed':
+              case "failed":
                 // Clear any previous failure dismiss timer
                 clearTimeout(failureTimeoutRef.current);
                 notifyBridgeFailed(detail_0);
@@ -426,7 +426,7 @@ export function useReplBridge(
             // Extract the permission decision from the control_response payload
             const inner = msg_0.response;
             if (
-              inner.subtype === 'success' &&
+              inner.subtype === "success" &&
               inner.response &&
               isBridgePermissionResponse(inner.response)
             ) {
@@ -435,14 +435,14 @@ export function useReplBridge(
           }
           const handle_0 = await initReplBridge({
             outboundOnly,
-            tags: outboundOnly ? ['ccr-mirror'] : undefined,
+            tags: outboundOnly ? ["ccr-mirror"] : undefined,
             onInboundMessage: handleInboundMessage,
             onPermissionResponse: handlePermissionResponse,
             onInterrupt() {
               abortControllerRef.current?.abort();
             },
             onSetModel(model) {
-              const resolved = model === 'default' ? null : (model ?? null);
+              const resolved = model === "default" ? null : (model ?? null);
               setMainLoopModelOverride(resolved);
               setAppState((prev_10) => {
                 if (prev_10.mainLoopModelForSession === resolved) return prev_10;
@@ -473,29 +473,29 @@ export function useReplBridge(
               // These mirror print.ts handleSetPermissionMode; the bridge
               // can't import the checks directly (bootstrap-isolation), so
               // it relies on this verdict to emit the error response.
-              if (mode === 'bypassPermissions') {
+              if (mode === "bypassPermissions") {
                 if (isBypassPermissionsModeDisabled()) {
                   return {
                     ok: false,
                     error:
-                      'Cannot set permission mode to bypassPermissions because it is disabled by settings or configuration',
+                      "Cannot set permission mode to bypassPermissions because it is disabled by settings or configuration",
                   };
                 }
                 if (!store.getState().toolPermissionContext.isBypassPermissionsModeAvailable) {
                   return {
                     ok: false,
                     error:
-                      'Cannot set permission mode to bypassPermissions because the session was not launched with --dangerously-skip-permissions',
+                      "Cannot set permission mode to bypassPermissions because the session was not launched with --dangerously-skip-permissions",
                   };
                 }
               }
-              if (feature('TRANSCRIPT_CLASSIFIER') && mode === 'auto' && !isAutoModeGateEnabled()) {
+              if (feature("TRANSCRIPT_CLASSIFIER") && mode === "auto" && !isAutoModeGateEnabled()) {
                 const reason = getAutoModeUnavailableReason();
                 return {
                   ok: false,
                   error: reason
                     ? `Cannot set permission mode to auto: ${getAutoModeUnavailableNotification(reason)}`
-                    : 'Cannot set permission mode to auto',
+                    : "Cannot set permission mode to auto",
                 };
               }
               // Guards passed — apply via the centralized transition so
@@ -537,7 +537,7 @@ export function useReplBridge(
             // Tear down the handle to avoid leaking resources (poll loop,
             // WebSocket, registered environment, cleanup callback).
             logForDebugging(
-              `[bridge:repl] Hook: init cancelled during flight, tearing down${handle_0 ? ` env=${handle_0.environmentId}` : ''}`,
+              `[bridge:repl] Hook: init cancelled during flight, tearing down${handle_0 ? ` env=${handle_0.environmentId}` : ""}`,
             );
             if (handle_0) {
               void handle_0.teardown();
@@ -556,7 +556,7 @@ export function useReplBridge(
             clearTimeout(failureTimeoutRef.current);
             setAppState((prev_13) => ({
               ...prev_13,
-              replBridgeError: prev_13.replBridgeError ?? 'check debug logs for details',
+              replBridgeError: prev_13.replBridgeError ?? "check debug logs for details",
             }));
             failureTimeoutRef.current = setTimeout(() => {
               if (cancelled) return;
@@ -611,10 +611,10 @@ export function useReplBridge(
                 blockedPath,
               ) {
                 handle_0.sendControlRequest({
-                  type: 'control_request',
+                  type: "control_request",
                   request_id: requestId_0,
                   request: {
-                    subtype: 'can_use_tool',
+                    subtype: "can_use_tool",
                     tool_name: toolName,
                     input,
                     tool_use_id: toolUseId,
@@ -637,9 +637,9 @@ export function useReplBridge(
                   ...response,
                 };
                 handle_0.sendControlResponse({
-                  type: 'control_response',
+                  type: "control_response",
                   response: {
-                    subtype: 'success',
+                    subtype: "success",
                     request_id: requestId_1,
                     response: payload,
                   },
@@ -662,7 +662,7 @@ export function useReplBridge(
             const url = getRemoteSessionUrl(handle_0.bridgeSessionId, handle_0.sessionIngressUrl);
             // environmentId === '' signals the v2 env-less path. buildBridgeConnectUrl
             // builds an env-specific connect URL, which doesn't exist without an env.
-            const hasEnv = handle_0.environmentId !== '';
+            const hasEnv = handle_0.environmentId !== "";
             const connectUrl_0 = hasEnv
               ? buildBridgeConnectUrl(handle_0.environmentId, handle_0.sessionIngressUrl)
               : undefined;
@@ -694,7 +694,7 @@ export function useReplBridge(
               createBridgeStatusMessage(
                 url,
                 upgradeNudge
-                  ? 'Please upgrade to the latest version of the Claude mobile app to see your Remote Control sessions.'
+                  ? "Please upgrade to the latest version of the Claude mobile app to see your Remote Control sessions."
                   : undefined,
               ),
             ]);
@@ -734,7 +734,7 @@ export function useReplBridge(
           if (!outboundOnly) {
             setMessages((prev_2) => [
               ...prev_2,
-              createSystemMessage(`Remote Control failed to connect: ${errMsg}`, 'warning'),
+              createSystemMessage(`Remote Control failed to connect: ${errMsg}`, "warning"),
             ]);
           }
         }
@@ -792,7 +792,7 @@ export function useReplBridge(
   // so any messages that arrived before the bridge was ready get written.
   useEffect(() => {
     // Positive feature() guard — see first useEffect comment
-    if (feature('BRIDGE_MODE')) {
+    if (feature("BRIDGE_MODE")) {
       if (!replBridgeConnected) return;
       const handle_1 = handleRef.current;
       if (!handle_1) return;
@@ -813,9 +813,9 @@ export function useReplBridge(
         const msg_1 = messages[i];
         if (
           msg_1 &&
-          (msg_1.type === 'user' ||
-            msg_1.type === 'assistant' ||
-            (msg_1.type === 'system' && msg_1.subtype === 'local_command'))
+          (msg_1.type === "user" ||
+            msg_1.type === "assistant" ||
+            (msg_1.type === "system" && msg_1.subtype === "local_command"))
         ) {
           newMessages.push(msg_1);
         }
@@ -827,7 +827,7 @@ export function useReplBridge(
     }
   }, [messages, replBridgeConnected]);
   const sendBridgeResult = useCallback(() => {
-    if (feature('BRIDGE_MODE')) {
+    if (feature("BRIDGE_MODE")) {
       handleRef.current?.sendResult();
     }
   }, []);

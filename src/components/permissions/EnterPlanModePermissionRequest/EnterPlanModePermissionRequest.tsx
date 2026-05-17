@@ -1,14 +1,14 @@
-import { c as _c } from 'react/compiler-runtime';
-import { handlePlanModeTransition } from '../../../bootstrap/state.js';
-import { Box, Text } from '../../../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import { handlePlanModeTransition } from "../../../bootstrap/state.js";
+import { Box, Text } from "../../../ink.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../../services/analytics/index.js';
-import { useAppState } from '../../../state/AppState.js';
-import { isPlanModeInterviewPhaseEnabled } from '../../../utils/planModeV2.js';
-import { Select } from '../../CustomSelect/index.js';
-import { PermissionDialog } from '../PermissionDialog.js';
+} from "../../../services/analytics/index.js";
+import { useAppState } from "../../../state/AppState.js";
+import { isPlanModeInterviewPhaseEnabled } from "../../../utils/planModeV2.js";
+import { Select } from "../../CustomSelect/index.js";
+import { PermissionDialog } from "../PermissionDialog.js";
 export function EnterPlanModePermissionRequest(t0) {
   const $ = _c(18);
   const { toolUseConfirm, onDone, onReject, workerBadge } = t0;
@@ -21,18 +21,18 @@ export function EnterPlanModePermissionRequest(t0) {
     $[3] !== toolUseConfirm
   ) {
     t1 = function handleResponse(value) {
-      if (value === 'yes') {
-        logEvent('tengu_plan_enter', {
+      if (value === "yes") {
+        logEvent("tengu_plan_enter", {
           interviewPhaseEnabled: isPlanModeInterviewPhaseEnabled(),
-          entryMethod: 'tool' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+          entryMethod: "tool" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         });
-        handlePlanModeTransition(toolPermissionContextMode, 'plan');
+        handlePlanModeTransition(toolPermissionContextMode, "plan");
         onDone();
         toolUseConfirm.onAllow({}, [
           {
-            type: 'setMode',
-            mode: 'plan',
-            destination: 'session',
+            type: "setMode",
+            mode: "plan",
+            destination: "session",
           },
         ]);
       } else {
@@ -51,7 +51,7 @@ export function EnterPlanModePermissionRequest(t0) {
   }
   const handleResponse = t1;
   let t2;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Text>Claude wants to enter plan mode to explore and design an implementation approach.</Text>
     );
@@ -60,7 +60,7 @@ export function EnterPlanModePermissionRequest(t0) {
     t2 = $[5];
   }
   let t3;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Box marginTop={1} flexDirection="column">
         <Text dimColor={true}>In plan mode, Claude will:</Text>
@@ -75,7 +75,7 @@ export function EnterPlanModePermissionRequest(t0) {
     t3 = $[6];
   }
   let t4;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <Box marginTop={1}>
         <Text dimColor={true}>No code changes will be made until you approve the plan.</Text>
@@ -86,22 +86,22 @@ export function EnterPlanModePermissionRequest(t0) {
     t4 = $[7];
   }
   let t5;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = {
-      label: 'Yes, enter plan mode',
-      value: 'yes' as const,
+      label: "Yes, enter plan mode",
+      value: "yes" as const,
     };
     $[8] = t5;
   } else {
     t5 = $[8];
   }
   let t6;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = [
       t5,
       {
-        label: 'No, start implementing now',
-        value: 'no' as const,
+        label: "No, start implementing now",
+        value: "no" as const,
       },
     ];
     $[9] = t6;
@@ -110,7 +110,7 @@ export function EnterPlanModePermissionRequest(t0) {
   }
   let t7;
   if ($[10] !== handleResponse) {
-    t7 = () => handleResponse('no');
+    t7 = () => handleResponse("no");
     $[10] = handleResponse;
     $[11] = t7;
   } else {

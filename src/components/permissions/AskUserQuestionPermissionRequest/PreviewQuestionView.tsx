@@ -1,21 +1,21 @@
-import figures from 'figures';
-import type React from 'react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
-import type { KeyboardEvent } from '../../../ink/events/keyboard-event.js';
-import { Box, Text } from '../../../ink.js';
-import { useKeybinding, useKeybindings } from '../../../keybindings/useKeybinding.js';
-import { useAppState } from '../../../state/AppState.js';
-import type { Question } from '../../../tools/AskUserQuestionTool/AskUserQuestionTool.js';
-import { getExternalEditor } from '../../../utils/editor.js';
-import { toIDEDisplayName } from '../../../utils/ide.js';
-import { editPromptInEditor } from '../../../utils/promptEditor.js';
-import { Divider } from '../../design-system/Divider.js';
-import TextInput from '../../TextInput.js';
-import { PermissionRequestTitle } from '../PermissionRequestTitle.js';
-import { PreviewBox } from './PreviewBox.js';
-import { QuestionNavigationBar } from './QuestionNavigationBar.js';
-import type { QuestionState } from './use-multiple-choice-state.js';
+import figures from "figures";
+import type React from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { useTerminalSize } from "../../../hooks/useTerminalSize.js";
+import type { KeyboardEvent } from "../../../ink/events/keyboard-event.js";
+import { Box, Text } from "../../../ink.js";
+import { useKeybinding, useKeybindings } from "../../../keybindings/useKeybinding.js";
+import { useAppState } from "../../../state/AppState.js";
+import type { Question } from "../../../tools/AskUserQuestionTool/AskUserQuestionTool.js";
+import { getExternalEditor } from "../../../utils/editor.js";
+import { toIDEDisplayName } from "../../../utils/ide.js";
+import { editPromptInEditor } from "../../../utils/promptEditor.js";
+import { Divider } from "../../design-system/Divider.js";
+import TextInput from "../../TextInput.js";
+import { PermissionRequestTitle } from "../PermissionRequestTitle.js";
+import { PreviewBox } from "./PreviewBox.js";
+import { QuestionNavigationBar } from "./QuestionNavigationBar.js";
+import type { QuestionState } from "./use-multiple-choice-state.js";
 
 type Props = {
   question: Question;
@@ -67,7 +67,7 @@ export function PreviewQuestionView({
   onRespondToClaude,
   onFinishPlanInterview,
 }: Props): React.ReactNode {
-  const isInPlanMode = useAppState((s) => s.toolPermissionContext.mode) === 'plan';
+  const isInPlanMode = useAppState((s) => s.toolPermissionContext.mode) === "plan";
   const [isFooterFocused, setIsFooterFocused] = useState(false);
   const [footerIndex, setFooterIndex] = useState(0);
   const [isInNotesInput, setIsInNotesInput] = useState(false);
@@ -93,7 +93,7 @@ export function PreviewQuestionView({
   }
   const focusedOption = allOptions[focusedIndex];
   const selectedValue = questionState?.selectedValue as string | undefined;
-  const notesValue = questionState?.textInputValue || '';
+  const notesValue = questionState?.textInputValue || "";
   const handleSelectOption = useCallback(
     (index: number) => {
       const option = allOptions[index];
@@ -111,12 +111,12 @@ export function PreviewQuestionView({
     [allOptions, questionText, onUpdateQuestionState, onAnswer],
   );
   const handleNavigate = useCallback(
-    (direction: 'up' | 'down' | number) => {
+    (direction: "up" | "down" | number) => {
       if (isInNotesInput) return;
       let newIndex: number;
-      if (typeof direction === 'number') {
+      if (typeof direction === "number") {
         newIndex = direction;
-      } else if (direction === 'up') {
+      } else if (direction === "up") {
         newIndex = focusedIndex > 0 ? focusedIndex - 1 : focusedIndex;
       } else {
         newIndex = focusedIndex < allOptions.length - 1 ? focusedIndex + 1 : focusedIndex;
@@ -130,9 +130,9 @@ export function PreviewQuestionView({
 
   // Handle ctrl+g to open external editor for notes
   useKeybinding(
-    'chat:externalEditor',
+    "chat:externalEditor",
     async () => {
-      const currentValue = questionState?.textInputValue || '';
+      const currentValue = questionState?.textInputValue || "";
       const result = await editPromptInEditor(currentValue);
       if (result.content !== null && result.content !== currentValue) {
         onUpdateQuestionState(
@@ -145,7 +145,7 @@ export function PreviewQuestionView({
       }
     },
     {
-      context: 'Chat',
+      context: "Chat",
       isActive: isInNotesInput && !!editor,
     },
   );
@@ -157,11 +157,11 @@ export function PreviewQuestionView({
   // listener ordering in the event emitter.
   useKeybindings(
     {
-      'tabs:previous': () => onTabPrev?.(),
-      'tabs:next': () => onTabNext?.(),
+      "tabs:previous": () => onTabPrev?.(),
+      "tabs:next": () => onTabNext?.(),
     },
     {
-      context: 'Tabs',
+      context: "Tabs",
       isActive: !isInNotesInput && !isFooterFocused,
     },
   );
@@ -187,7 +187,7 @@ export function PreviewQuestionView({
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (isFooterFocused) {
-        if (e.key === 'up' || (e.ctrl && e.key === 'p')) {
+        if (e.key === "up" || (e.ctrl && e.key === "p")) {
           e.preventDefault();
           if (footerIndex === 0) {
             handleUpFromFooter();
@@ -196,14 +196,14 @@ export function PreviewQuestionView({
           }
           return;
         }
-        if (e.key === 'down' || (e.ctrl && e.key === 'n')) {
+        if (e.key === "down" || (e.ctrl && e.key === "n")) {
           e.preventDefault();
           if (isInPlanMode && footerIndex === 0) {
             setFooterIndex(1);
           }
           return;
         }
-        if (e.key === 'return') {
+        if (e.key === "return") {
           e.preventDefault();
           if (footerIndex === 0) {
             onRespondToClaude();
@@ -212,7 +212,7 @@ export function PreviewQuestionView({
           }
           return;
         }
-        if (e.key === 'escape') {
+        if (e.key === "escape") {
           e.preventDefault();
           onCancel();
         }
@@ -220,7 +220,7 @@ export function PreviewQuestionView({
       }
       if (isInNotesInput) {
         // In notes input mode, handle escape to exit back to option navigation
-        if (e.key === 'escape') {
+        if (e.key === "escape") {
           e.preventDefault();
           handleNotesExit();
         }
@@ -228,31 +228,31 @@ export function PreviewQuestionView({
       }
 
       // Handle option navigation (vertical)
-      if (e.key === 'up' || (e.ctrl && e.key === 'p')) {
+      if (e.key === "up" || (e.ctrl && e.key === "p")) {
         e.preventDefault();
         if (focusedIndex > 0) {
-          handleNavigate('up');
+          handleNavigate("up");
         }
-      } else if (e.key === 'down' || (e.ctrl && e.key === 'n')) {
+      } else if (e.key === "down" || (e.ctrl && e.key === "n")) {
         e.preventDefault();
         if (focusedIndex === allOptions.length - 1) {
           // At bottom of options, go to footer
           handleDownFromPreview();
         } else {
-          handleNavigate('down');
+          handleNavigate("down");
         }
-      } else if (e.key === 'return') {
+      } else if (e.key === "return") {
         e.preventDefault();
         handleSelectOption(focusedIndex);
-      } else if (e.key === 'n' && !e.ctrl && !e.meta) {
+      } else if (e.key === "n" && !e.ctrl && !e.meta) {
         // Press 'n' to focus the notes input
         e.preventDefault();
         setIsInNotesInput(true);
         onTextInputFocus(true);
-      } else if (e.key === 'escape') {
+      } else if (e.key === "escape") {
         e.preventDefault();
         onCancel();
-      } else if (e.key.length === 1 && e.key >= '1' && e.key <= '9') {
+      } else if (e.key.length === 1 && e.key >= "1" && e.key <= "9") {
         e.preventDefault();
         const idx_0 = parseInt(e.key, 10) - 1;
         if (idx_0 < allOptions.length) {
@@ -313,7 +313,7 @@ export function PreviewQuestionView({
           answers={answers}
           hideSubmitTab={hideSubmitTab}
         />
-        <PermissionRequestTitle title={question.question} color={'text'} />
+        <PermissionRequestTitle title={question.question} color={"text"} />
 
         <Box flexDirection="column" minHeight={minContentHeight}>
           {/* Side-by-side layout: options on left, preview on right */}
@@ -328,10 +328,10 @@ export function PreviewQuestionView({
                     {isFocused ? <Text color="suggestion">{figures.pointer}</Text> : <Text> </Text>}
                     <Text dimColor> {index_0 + 1}.</Text>
                     <Text
-                      color={isSelected ? 'success' : isFocused ? 'suggestion' : undefined}
+                      color={isSelected ? "success" : isFocused ? "suggestion" : undefined}
                       bold={isFocused}
                     >
-                      {' '}
+                      {" "}
                       {option_0.label}
                     </Text>
                     {isSelected && <Text color="success"> {figures.tick}</Text>}
@@ -343,7 +343,7 @@ export function PreviewQuestionView({
             {/* Right panel: preview + notes */}
             <Box flexDirection="column" flexGrow={1}>
               <PreviewBox
-                content={previewContent || 'No preview available'}
+                content={previewContent || "No preview available"}
                 maxLines={previewMaxLines}
                 minWidth={minContentWidth}
                 maxWidth={previewMaxWidth}
@@ -373,7 +373,7 @@ export function PreviewQuestionView({
                   />
                 ) : (
                   <Text dimColor italic>
-                    {notesValue || 'press n to add notes'}
+                    {notesValue || "press n to add notes"}
                   </Text>
                 )}
               </Box>
@@ -389,7 +389,7 @@ export function PreviewQuestionView({
               ) : (
                 <Text> </Text>
               )}
-              <Text color={isFooterFocused && footerIndex === 0 ? 'suggestion' : undefined}>
+              <Text color={isFooterFocused && footerIndex === 0 ? "suggestion" : undefined}>
                 Chat about this
               </Text>
             </Box>
@@ -400,7 +400,7 @@ export function PreviewQuestionView({
                 ) : (
                   <Text> </Text>
                 )}
-                <Text color={isFooterFocused && footerIndex === 1 ? 'suggestion' : undefined}>
+                <Text color={isFooterFocused && footerIndex === 1 ? "suggestion" : undefined}>
                   Skip interview and plan immediately
                 </Text>
               </Box>

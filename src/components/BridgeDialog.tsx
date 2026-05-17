@@ -1,23 +1,23 @@
-import { basename } from 'node:path';
-import { toString as qrToString } from 'qrcode';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { getOriginalCwd } from '../bootstrap/state.js';
+import { basename } from "node:path";
+import { toString as qrToString } from "qrcode";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { getOriginalCwd } from "../bootstrap/state.js";
 import {
   buildActiveFooterText,
   buildIdleFooterText,
   FAILED_FOOTER_TEXT,
   getBridgeStatus,
-} from '../bridge/bridgeStatusUtil.js';
-import { BRIDGE_FAILED_INDICATOR, BRIDGE_READY_INDICATOR } from '../constants/figures.js';
-import { useRegisterOverlay } from '../context/overlayContext.js';
+} from "../bridge/bridgeStatusUtil.js";
+import { BRIDGE_FAILED_INDICATOR, BRIDGE_READY_INDICATOR } from "../constants/figures.js";
+import { useRegisterOverlay } from "../context/overlayContext.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- raw 'd' key for disconnect, not a configurable keybinding action
-import { Box, Text, useInput } from '../ink.js';
-import { useKeybindings } from '../keybindings/useKeybinding.js';
-import { useAppState, useSetAppState } from '../state/AppState.js';
-import { saveGlobalConfig } from '../utils/config.js';
-import { getBranch } from '../utils/git.js';
-import { Dialog } from './design-system/Dialog.js';
+import { Box, Text, useInput } from "../ink.js";
+import { useKeybindings } from "../keybindings/useKeybinding.js";
+import { useAppState, useSetAppState } from "../state/AppState.js";
+import { saveGlobalConfig } from "../utils/config.js";
+import { getBranch } from "../utils/git.js";
+import { Dialog } from "./design-system/Dialog.js";
 
 type Props = {
   onDone: () => void;
@@ -25,7 +25,7 @@ type Props = {
 export function BridgeDialog(t0) {
   const $ = _c(87);
   const { onDone } = t0;
-  useRegisterOverlay('bridge-dialog');
+  useRegisterOverlay("bridge-dialog");
   const connected = useAppState(_temp);
   const sessionActive = useAppState(_temp2);
   const reconnecting = useAppState(_temp3);
@@ -38,10 +38,10 @@ export function BridgeDialog(t0) {
   const verbose = useAppState(_temp0);
   const setAppState = useSetAppState();
   const [showQR, setShowQR] = useState(false);
-  const [qrText, setQrText] = useState('');
-  const [branchName, setBranchName] = useState('');
+  const [qrText, setQrText] = useState("");
+  const [branchName, setBranchName] = useState("");
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = basename(getOriginalCwd());
     $[0] = t1;
   } else {
@@ -50,7 +50,7 @@ export function BridgeDialog(t0) {
   const repoName = t1;
   let t2;
   let t3;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => {
       getBranch().then(setBranchName).catch(_temp1);
     };
@@ -68,16 +68,16 @@ export function BridgeDialog(t0) {
   if ($[3] !== displayUrl || $[4] !== showQR) {
     t4 = () => {
       if (!showQR || !displayUrl) {
-        setQrText('');
+        setQrText("");
         return;
       }
       qrToString(displayUrl, {
-        type: 'utf8',
-        errorCorrectionLevel: 'L',
+        type: "utf8",
+        errorCorrectionLevel: "L",
         small: true,
       })
         .then(setQrText)
-        .catch(() => setQrText(''));
+        .catch(() => setQrText(""));
     };
     t5 = [showQR, displayUrl];
     $[3] = displayUrl;
@@ -90,7 +90,7 @@ export function BridgeDialog(t0) {
   }
   useEffect(t4, t5);
   let t6;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = () => {
       setShowQR(_temp10);
     };
@@ -101,8 +101,8 @@ export function BridgeDialog(t0) {
   let t7;
   if ($[8] !== onDone) {
     t7 = {
-      'confirm:yes': onDone,
-      'confirm:toggle': t6,
+      "confirm:yes": onDone,
+      "confirm:toggle": t6,
     };
     $[8] = onDone;
     $[9] = t7;
@@ -110,9 +110,9 @@ export function BridgeDialog(t0) {
     t7 = $[9];
   }
   let t8;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[10] = t8;
   } else {
@@ -122,7 +122,7 @@ export function BridgeDialog(t0) {
   let t9;
   if ($[11] !== explicit || $[12] !== onDone || $[13] !== setAppState) {
     t9 = (input) => {
-      if (input === 'd') {
+      if (input === "d") {
         if (explicit) {
           saveGlobalConfig(_temp11);
         }
@@ -181,7 +181,7 @@ export function BridgeDialog(t0) {
     $[31] !== statusLabel ||
     $[32] !== verbose
   ) {
-    const qrLines = qrText ? qrText.split('\n').filter(_temp13) : [];
+    const qrLines = qrText ? qrText.split("\n").filter(_temp13) : [];
     let contextParts;
     if ($[43] !== branchName) {
       contextParts = [];
@@ -196,7 +196,7 @@ export function BridgeDialog(t0) {
     } else {
       contextParts = $[44];
     }
-    const contextSuffix = contextParts.length > 0 ? ` \xB7 ${contextParts.join(' \xB7 ')}` : '';
+    const contextSuffix = contextParts.length > 0 ? ` \xB7 ${contextParts.join(" \xB7 ")}` : "";
     let t18;
     if ($[45] !== displayUrl || $[46] !== error || $[47] !== sessionActive) {
       t18 = error
@@ -215,11 +215,11 @@ export function BridgeDialog(t0) {
     }
     footerText = t18;
     T1 = Dialog;
-    t15 = 'Remote Control';
+    t15 = "Remote Control";
     t16 = onDone;
     t17 = true;
     T0 = Box;
-    t11 = 'column';
+    t11 = "column";
     t12 = 1;
     let t19;
     if ($[49] !== indicator || $[50] !== statusColor || $[51] !== statusLabel) {
@@ -345,7 +345,7 @@ export function BridgeDialog(t0) {
     t18 = $[72];
   }
   let t19;
-  if ($[73] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[73] === Symbol.for("react.memo_cache_sentinel")) {
     t19 = <Text dimColor={true}>d to disconnect · space for QR code · Enter/Esc to close</Text>;
     $[73] = t19;
   } else {

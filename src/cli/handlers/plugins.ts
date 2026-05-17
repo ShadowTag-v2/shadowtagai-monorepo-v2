@@ -4,14 +4,14 @@
  */
 /* eslint-disable custom-rules/no-process-exit -- CLI subcommand handlers intentionally exit */
 
-import { basename, dirname } from 'node:path';
-import figures from 'figures';
-import { setUseCoworkPlugins } from '../../bootstrap/state.js';
+import { basename, dirname } from "node:path";
+import figures from "figures";
+import { setUseCoworkPlugins } from "../../bootstrap/state.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
   logEvent,
-} from '../../services/analytics/index.js';
+} from "../../services/analytics/index.js";
 import {
   disableAllPlugins,
   disablePlugin,
@@ -21,20 +21,20 @@ import {
   updatePluginCli,
   VALID_INSTALLABLE_SCOPES,
   VALID_UPDATE_SCOPES,
-} from '../../services/plugins/pluginCliCommands.js';
-import { getPluginErrorMessage } from '../../types/plugin.js';
-import { errorMessage } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { clearAllCaches } from '../../utils/plugins/cacheUtils.js';
-import { getInstallCounts } from '../../utils/plugins/installCounts.js';
+} from "../../services/plugins/pluginCliCommands.js";
+import { getPluginErrorMessage } from "../../types/plugin.js";
+import { errorMessage } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { clearAllCaches } from "../../utils/plugins/cacheUtils.js";
+import { getInstallCounts } from "../../utils/plugins/installCounts.js";
 import {
   isPluginInstalled,
   loadInstalledPluginsV2,
-} from '../../utils/plugins/installedPluginsManager.js';
+} from "../../utils/plugins/installedPluginsManager.js";
 import {
   createPluginId,
   loadMarketplacesWithGracefulDegradation,
-} from '../../utils/plugins/marketplaceHelpers.js';
+} from "../../utils/plugins/marketplaceHelpers.js";
 import {
   addMarketplaceSource,
   loadKnownMarketplacesConfig,
@@ -42,23 +42,23 @@ import {
   refreshMarketplace,
   removeMarketplaceSource,
   saveMarketplaceToSettings,
-} from '../../utils/plugins/marketplaceManager.js';
-import { loadPluginMcpServers } from '../../utils/plugins/mcpPluginIntegration.js';
-import { parseMarketplaceInput } from '../../utils/plugins/parseMarketplaceInput.js';
+} from "../../utils/plugins/marketplaceManager.js";
+import { loadPluginMcpServers } from "../../utils/plugins/mcpPluginIntegration.js";
+import { parseMarketplaceInput } from "../../utils/plugins/parseMarketplaceInput.js";
 import {
   parsePluginIdentifier,
   scopeToSettingSource,
-} from '../../utils/plugins/pluginIdentifier.js';
-import { loadAllPlugins } from '../../utils/plugins/pluginLoader.js';
-import type { PluginSource } from '../../utils/plugins/schemas.js';
+} from "../../utils/plugins/pluginIdentifier.js";
+import { loadAllPlugins } from "../../utils/plugins/pluginLoader.js";
+import type { PluginSource } from "../../utils/plugins/schemas.js";
 import {
   type ValidationResult,
   validateManifest,
   validatePluginContents,
-} from '../../utils/plugins/validatePlugin.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { plural } from '../../utils/stringUtils.js';
-import { cliError, cliOk } from '../exit.js';
+} from "../../utils/plugins/validatePlugin.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { plural } from "../../utils/stringUtils.js";
+import { cliError, cliOk } from "../exit.js";
 
 // Re-export for main.tsx to reference in option definitions
 export { VALID_INSTALLABLE_SCOPES, VALID_UPDATE_SCOPES };
@@ -75,26 +75,26 @@ function printValidationResult(result: ValidationResult): void {
   if (result.errors.length > 0) {
     // biome-ignore lint/suspicious/noConsole:: intentional console output
     console.log(
-      `${figures.cross} Found ${result.errors.length} ${plural(result.errors.length, 'error')}:\n`,
+      `${figures.cross} Found ${result.errors.length} ${plural(result.errors.length, "error")}:\n`,
     );
     result.errors.forEach((error) => {
       // biome-ignore lint/suspicious/noConsole:: intentional console output
       console.log(`  ${figures.pointer} ${error.path}: ${error.message}`);
     });
     // biome-ignore lint/suspicious/noConsole:: intentional console output
-    console.log('');
+    console.log("");
   }
   if (result.warnings.length > 0) {
     // biome-ignore lint/suspicious/noConsole:: intentional console output
     console.log(
-      `${figures.warning} Found ${result.warnings.length} ${plural(result.warnings.length, 'warning')}:\n`,
+      `${figures.warning} Found ${result.warnings.length} ${plural(result.warnings.length, "warning")}:\n`,
     );
     result.warnings.forEach((warning) => {
       // biome-ignore lint/suspicious/noConsole:: intentional console output
       console.log(`  ${figures.pointer} ${warning.path}: ${warning.message}`);
     });
     // biome-ignore lint/suspicious/noConsole:: intentional console output
-    console.log('');
+    console.log("");
   }
 }
 
@@ -116,9 +116,9 @@ export async function pluginValidateHandler(
     // hooks). Works whether the user passed a directory or the plugin.json
     // path directly.
     let contentResults: ValidationResult[] = [];
-    if (result.fileType === 'plugin') {
+    if (result.fileType === "plugin") {
       const manifestDir = dirname(result.filePath);
-      if (basename(manifestDir) === '.claude-plugin') {
+      if (basename(manifestDir) === ".claude-plugin") {
         contentResults = await validatePluginContents(dirname(manifestDir));
         for (const r of contentResults) {
           // biome-ignore lint/suspicious/noConsole:: intentional console output
@@ -158,10 +158,10 @@ export async function pluginListHandler(options: {
   cowork?: boolean;
 }): Promise<void> {
   if (options.cowork) setUseCoworkPlugins(true);
-  logEvent('tengu_plugin_list_command', {});
+  logEvent("tengu_plugin_list_command", {});
 
   const installedData = loadInstalledPluginsV2();
-  const { getPluginEditableScopes } = await import('../../utils/plugins/pluginStartupCheck.js');
+  const { getPluginEditableScopes } = await import("../../utils/plugins/pluginStartupCheck.js");
   const enabledPlugins = getPluginEditableScopes();
 
   const pluginIds = Object.keys(installedData.plugins);
@@ -177,13 +177,13 @@ export async function pluginListHandler(options: {
     errors: loadErrors,
   } = await loadAllPlugins();
   const allLoadedPlugins = [...loadedEnabled, ...loadedDisabled];
-  const inlinePlugins = allLoadedPlugins.filter((p) => p.source.endsWith('@inline'));
+  const inlinePlugins = allLoadedPlugins.filter((p) => p.source.endsWith("@inline"));
   // Path-level inline failures (dir doesn't exist, parse error before
   // manifest is read) use source='inline[N]'. Plugin-level errors after
   // manifest read use source='name@inline'. Collect both for the session
   // section — these are otherwise invisible since they have no pluginId.
   const inlineLoadErrors = loadErrors.filter(
-    (e) => e.source.endsWith('@inline') || e.source.startsWith('inline['),
+    (e) => e.source.endsWith("@inline") || e.source.startsWith("inline["),
   );
 
   if (options.json) {
@@ -210,7 +210,7 @@ export async function pluginListHandler(options: {
       // Find loading errors for this plugin
       const pluginName = parsePluginIdentifier(pluginId).name;
       const pluginErrors = loadErrors
-        .filter((e) => e.source === pluginId || ('plugin' in e && e.plugin === pluginName))
+        .filter((e) => e.source === pluginId || ("plugin" in e && e.plugin === pluginName))
         .map(getPluginErrorMessage);
 
       for (const installation of installations) {
@@ -228,7 +228,7 @@ export async function pluginListHandler(options: {
 
         plugins.push({
           id: pluginId,
-          version: installation.version || 'unknown',
+          version: installation.version || "unknown",
           scope: installation.scope,
           enabled: enabledPlugins.has(pluginId),
           installPath: installation.installPath,
@@ -252,12 +252,12 @@ export async function pluginListHandler(options: {
     for (const p of inlinePlugins) {
       const servers = p.mcpServers || (await loadPluginMcpServers(p));
       const pErrors = inlineLoadErrors
-        .filter((e) => e.source === p.source || ('plugin' in e && e.plugin === p.name))
+        .filter((e) => e.source === p.source || ("plugin" in e && e.plugin === p.name))
         .map(getPluginErrorMessage);
       plugins.push({
         id: p.source,
-        version: p.manifest.version ?? 'unknown',
-        scope: 'session',
+        version: p.manifest.version ?? "unknown",
+        scope: "session",
         enabled: p.enabled !== false,
         installPath: p.path,
         mcpServers: servers && Object.keys(servers).length > 0 ? servers : undefined,
@@ -267,13 +267,13 @@ export async function pluginListHandler(options: {
     // Path-level inline failures (--plugin-dir /nonexistent): no LoadedPlugin
     // exists so the loop above can't surface them. Mirror the human-path
     // handling so JSON consumers see the failure instead of silent omission.
-    for (const e of inlineLoadErrors.filter((e) => e.source.startsWith('inline['))) {
+    for (const e of inlineLoadErrors.filter((e) => e.source.startsWith("inline["))) {
       plugins.push({
         id: e.source,
-        version: 'unknown',
-        scope: 'session',
+        version: "unknown",
+        scope: "session",
         enabled: false,
-        installPath: 'path' in e ? e.path : '',
+        installPath: "path" in e ? e.path : "",
         errors: [getPluginErrorMessage(e)],
       });
     }
@@ -331,13 +331,13 @@ export async function pluginListHandler(options: {
     // points at a nonexistent path). Don't early-exit over them — fall
     // through to the session section so the failure is visible.
     if (inlineLoadErrors.length === 0) {
-      cliOk('No plugins installed. Use `claude plugin install` to install a plugin.');
+      cliOk("No plugins installed. Use `claude plugin install` to install a plugin.");
     }
   }
 
   if (pluginIds.length > 0) {
     // biome-ignore lint/suspicious/noConsole:: intentional console output
-    console.log('Installed plugins:\n');
+    console.log("Installed plugins:\n");
   }
 
   for (const pluginId of pluginIds.sort()) {
@@ -347,7 +347,7 @@ export async function pluginListHandler(options: {
     // Find loading errors for this plugin
     const pluginName = parsePluginIdentifier(pluginId).name;
     const pluginErrors = loadErrors.filter(
-      (e) => e.source === pluginId || ('plugin' in e && e.plugin === pluginName),
+      (e) => e.source === pluginId || ("plugin" in e && e.plugin === pluginName),
     );
 
     for (const installation of installations) {
@@ -358,7 +358,7 @@ export async function pluginListHandler(options: {
           : isEnabled
             ? `${figures.tick} enabled`
             : `${figures.cross} disabled`;
-      const version = installation.version || 'unknown';
+      const version = installation.version || "unknown";
       const scope = installation.scope;
 
       // biome-ignore lint/suspicious/noConsole:: intentional console output
@@ -374,25 +374,25 @@ export async function pluginListHandler(options: {
         console.log(`    Error: ${getPluginErrorMessage(error)}`);
       }
       // biome-ignore lint/suspicious/noConsole:: intentional console output
-      console.log('');
+      console.log("");
     }
   }
 
   if (inlinePlugins.length > 0 || inlineLoadErrors.length > 0) {
     // biome-ignore lint/suspicious/noConsole:: intentional console output
-    console.log('Session-only plugins (--plugin-dir):\n');
+    console.log("Session-only plugins (--plugin-dir):\n");
     for (const p of inlinePlugins) {
       // Same dirName≠manifestName fallback as the JSON path above — error
       // sources use the dir basename but p.source uses the manifest name.
       const pErrors = inlineLoadErrors.filter(
-        (e) => e.source === p.source || ('plugin' in e && e.plugin === p.name),
+        (e) => e.source === p.source || ("plugin" in e && e.plugin === p.name),
       );
       const status =
         pErrors.length > 0 ? `${figures.cross} loaded with errors` : `${figures.tick} loaded`;
       // biome-ignore lint/suspicious/noConsole:: intentional console output
       console.log(`  ${figures.pointer} ${p.source}`);
       // biome-ignore lint/suspicious/noConsole:: intentional console output
-      console.log(`    Version: ${p.manifest.version ?? 'unknown'}`);
+      console.log(`    Version: ${p.manifest.version ?? "unknown"}`);
       // biome-ignore lint/suspicious/noConsole:: intentional console output
       console.log(`    Path: ${p.path}`);
       // biome-ignore lint/suspicious/noConsole:: intentional console output
@@ -402,11 +402,11 @@ export async function pluginListHandler(options: {
         console.log(`    Error: ${getPluginErrorMessage(e)}`);
       }
       // biome-ignore lint/suspicious/noConsole:: intentional console output
-      console.log('');
+      console.log("");
     }
     // Path-level failures: no LoadedPlugin object exists. Show them so
     // `--plugin-dir /typo` doesn't just silently produce nothing.
-    for (const e of inlineLoadErrors.filter((e) => e.source.startsWith('inline['))) {
+    for (const e of inlineLoadErrors.filter((e) => e.source.startsWith("inline["))) {
       // biome-ignore lint/suspicious/noConsole:: intentional console output
       console.log(
         `  ${figures.pointer} ${e.source}: ${figures.cross} ${getPluginErrorMessage(e)}\n`,
@@ -432,13 +432,13 @@ export async function marketplaceAddHandler(
       );
     }
 
-    if ('error' in parsed) {
+    if ("error" in parsed) {
       cliError(`${figures.cross} ${parsed.error}`);
     }
 
     // Validate scope
-    const scope = options.scope ?? 'user';
-    if (scope !== 'user' && scope !== 'project' && scope !== 'local') {
+    const scope = options.scope ?? "user";
+    if (scope !== "user" && scope !== "project" && scope !== "local") {
       cliError(`${figures.cross} Invalid scope '${scope}'. Use: user, project, or local`);
     }
     const settingSource = scopeToSettingSource(scope);
@@ -446,7 +446,7 @@ export async function marketplaceAddHandler(
     let marketplaceSource = parsed;
 
     if (options.sparse && options.sparse.length > 0) {
-      if (marketplaceSource.source === 'github' || marketplaceSource.source === 'git') {
+      if (marketplaceSource.source === "github" || marketplaceSource.source === "git") {
         marketplaceSource = {
           ...marketplaceSource,
           sparsePaths: options.sparse,
@@ -459,7 +459,7 @@ export async function marketplaceAddHandler(
     }
 
     // biome-ignore lint/suspicious/noConsole:: intentional console output
-    console.log('Adding marketplace...');
+    console.log("Adding marketplace...");
 
     const { name, alreadyMaterialized, resolvedSource } = await addMarketplaceSource(
       marketplaceSource,
@@ -475,11 +475,11 @@ export async function marketplaceAddHandler(
     clearAllCaches();
 
     let sourceType = marketplaceSource.source;
-    if (marketplaceSource.source === 'github') {
+    if (marketplaceSource.source === "github") {
       sourceType =
         marketplaceSource.repo as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
     }
-    logEvent('tengu_marketplace_added', {
+    logEvent("tengu_marketplace_added", {
       source_type: sourceType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
 
@@ -489,7 +489,7 @@ export async function marketplaceAddHandler(
         : `${figures.tick} Successfully added marketplace: ${name} (declared in ${scope} settings)`,
     );
   } catch (error) {
-    handleMarketplaceError(error, 'add marketplace');
+    handleMarketplaceError(error, "add marketplace");
   }
 }
 
@@ -510,11 +510,11 @@ export async function marketplaceListHandler(options: {
         return {
           name,
           source: source?.source,
-          ...(source?.source === 'github' && { repo: source.repo }),
-          ...(source?.source === 'git' && { url: source.url }),
-          ...(source?.source === 'url' && { url: source.url }),
-          ...(source?.source === 'directory' && { path: source.path }),
-          ...(source?.source === 'file' && { path: source.path }),
+          ...(source?.source === "github" && { repo: source.repo }),
+          ...(source?.source === "git" && { url: source.url }),
+          ...(source?.source === "url" && { url: source.url }),
+          ...(source?.source === "directory" && { path: source.path }),
+          ...(source?.source === "file" && { path: source.path }),
           installLocation: marketplace?.installLocation,
         };
       });
@@ -522,11 +522,11 @@ export async function marketplaceListHandler(options: {
     }
 
     if (names.length === 0) {
-      cliOk('No marketplaces configured');
+      cliOk("No marketplaces configured");
     }
 
     // biome-ignore lint/suspicious/noConsole:: intentional console output
-    console.log('Configured marketplaces:\n');
+    console.log("Configured marketplaces:\n");
     names.forEach((name) => {
       const marketplace = config[name];
       // biome-ignore lint/suspicious/noConsole:: intentional console output
@@ -534,30 +534,30 @@ export async function marketplaceListHandler(options: {
 
       if (marketplace?.source) {
         const src = marketplace.source;
-        if (src.source === 'github') {
+        if (src.source === "github") {
           // biome-ignore lint/suspicious/noConsole:: intentional console output
           console.log(`    Source: GitHub (${src.repo})`);
-        } else if (src.source === 'git') {
+        } else if (src.source === "git") {
           // biome-ignore lint/suspicious/noConsole:: intentional console output
           console.log(`    Source: Git (${src.url})`);
-        } else if (src.source === 'url') {
+        } else if (src.source === "url") {
           // biome-ignore lint/suspicious/noConsole:: intentional console output
           console.log(`    Source: URL (${src.url})`);
-        } else if (src.source === 'directory') {
+        } else if (src.source === "directory") {
           // biome-ignore lint/suspicious/noConsole:: intentional console output
           console.log(`    Source: Directory (${src.path})`);
-        } else if (src.source === 'file') {
+        } else if (src.source === "file") {
           // biome-ignore lint/suspicious/noConsole:: intentional console output
           console.log(`    Source: File (${src.path})`);
         }
       }
       // biome-ignore lint/suspicious/noConsole:: intentional console output
-      console.log('');
+      console.log("");
     });
 
     cliOk();
   } catch (error) {
-    handleMarketplaceError(error, 'list marketplaces');
+    handleMarketplaceError(error, "list marketplaces");
   }
 }
 
@@ -571,13 +571,13 @@ export async function marketplaceRemoveHandler(
     await removeMarketplaceSource(name);
     clearAllCaches();
 
-    logEvent('tengu_marketplace_removed', {
+    logEvent("tengu_marketplace_removed", {
       marketplace_name: name as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
 
     cliOk(`${figures.tick} Successfully removed marketplace: ${name}`);
   } catch (error) {
-    handleMarketplaceError(error, 'remove marketplace');
+    handleMarketplaceError(error, "remove marketplace");
   }
 }
 
@@ -599,7 +599,7 @@ export async function marketplaceUpdateHandler(
 
       clearAllCaches();
 
-      logEvent('tengu_marketplace_updated', {
+      logEvent("tengu_marketplace_updated", {
         marketplace_name: name as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
 
@@ -609,7 +609,7 @@ export async function marketplaceUpdateHandler(
       const marketplaceNames = Object.keys(config);
 
       if (marketplaceNames.length === 0) {
-        cliOk('No marketplaces configured');
+        cliOk("No marketplaces configured");
       }
 
       // biome-ignore lint/suspicious/noConsole:: intentional console output
@@ -618,7 +618,7 @@ export async function marketplaceUpdateHandler(
       await refreshAllMarketplaces();
       clearAllCaches();
 
-      logEvent('tengu_marketplace_updated_all', {
+      logEvent("tengu_marketplace_updated_all", {
         count:
           marketplaceNames.length as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
@@ -626,7 +626,7 @@ export async function marketplaceUpdateHandler(
       cliOk(`${figures.tick} Successfully updated ${marketplaceNames.length} marketplace(s)`);
     }
   } catch (error) {
-    handleMarketplaceError(error, 'update marketplace(s)');
+    handleMarketplaceError(error, "update marketplace(s)");
   }
 }
 
@@ -636,19 +636,19 @@ export async function pluginInstallHandler(
   options: { scope?: string; cowork?: boolean },
 ): Promise<void> {
   if (options.cowork) setUseCoworkPlugins(true);
-  const scope = options.scope || 'user';
-  if (options.cowork && scope !== 'user') {
-    cliError('--cowork can only be used with user scope');
+  const scope = options.scope || "user";
+  if (options.cowork && scope !== "user") {
+    cliError("--cowork can only be used with user scope");
   }
   if (!VALID_INSTALLABLE_SCOPES.includes(scope as (typeof VALID_INSTALLABLE_SCOPES)[number])) {
-    cliError(`Invalid scope: ${scope}. Must be one of: ${VALID_INSTALLABLE_SCOPES.join(', ')}.`);
+    cliError(`Invalid scope: ${scope}. Must be one of: ${VALID_INSTALLABLE_SCOPES.join(", ")}.`);
   }
   // _PROTO_* routes to PII-tagged plugin_name/marketplace_name BQ columns.
   // Unredacted plugin arg was previously logged to general-access
   // additional_metadata for all users — dropped in favor of the privileged
   // column route. marketplace may be undefined (fires before resolution).
   const { name, marketplace } = parsePluginIdentifier(plugin);
-  logEvent('tengu_plugin_install_command', {
+  logEvent("tengu_plugin_install_command", {
     _PROTO_plugin_name: name as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
     ...(marketplace && {
       _PROTO_marketplace_name: marketplace as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
@@ -656,7 +656,7 @@ export async function pluginInstallHandler(
     scope: scope as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 
-  await installPlugin(plugin, scope as 'user' | 'project' | 'local');
+  await installPlugin(plugin, scope as "user" | "project" | "local");
 }
 
 // plugin uninstall (lines 5738–5769)
@@ -665,15 +665,15 @@ export async function pluginUninstallHandler(
   options: { scope?: string; cowork?: boolean; keepData?: boolean },
 ): Promise<void> {
   if (options.cowork) setUseCoworkPlugins(true);
-  const scope = options.scope || 'user';
-  if (options.cowork && scope !== 'user') {
-    cliError('--cowork can only be used with user scope');
+  const scope = options.scope || "user";
+  if (options.cowork && scope !== "user") {
+    cliError("--cowork can only be used with user scope");
   }
   if (!VALID_INSTALLABLE_SCOPES.includes(scope as (typeof VALID_INSTALLABLE_SCOPES)[number])) {
-    cliError(`Invalid scope: ${scope}. Must be one of: ${VALID_INSTALLABLE_SCOPES.join(', ')}.`);
+    cliError(`Invalid scope: ${scope}. Must be one of: ${VALID_INSTALLABLE_SCOPES.join(", ")}.`);
   }
   const { name, marketplace } = parsePluginIdentifier(plugin);
-  logEvent('tengu_plugin_uninstall_command', {
+  logEvent("tengu_plugin_uninstall_command", {
     _PROTO_plugin_name: name as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
     ...(marketplace && {
       _PROTO_marketplace_name: marketplace as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
@@ -681,7 +681,7 @@ export async function pluginUninstallHandler(
     scope: scope as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 
-  await uninstallPlugin(plugin, scope as 'user' | 'project' | 'local', options.keepData);
+  await uninstallPlugin(plugin, scope as "user" | "project" | "local", options.keepData);
 }
 
 // plugin enable (lines 5783–5818)
@@ -696,27 +696,27 @@ export async function pluginEnableHandler(
       !VALID_INSTALLABLE_SCOPES.includes(options.scope as (typeof VALID_INSTALLABLE_SCOPES)[number])
     ) {
       cliError(
-        `Invalid scope "${options.scope}". Valid scopes: ${VALID_INSTALLABLE_SCOPES.join(', ')}`,
+        `Invalid scope "${options.scope}". Valid scopes: ${VALID_INSTALLABLE_SCOPES.join(", ")}`,
       );
     }
     scope = options.scope as (typeof VALID_INSTALLABLE_SCOPES)[number];
   }
-  if (options.cowork && scope !== undefined && scope !== 'user') {
-    cliError('--cowork can only be used with user scope');
+  if (options.cowork && scope !== undefined && scope !== "user") {
+    cliError("--cowork can only be used with user scope");
   }
 
   // --cowork always operates at user scope
   if (options.cowork && scope === undefined) {
-    scope = 'user';
+    scope = "user";
   }
 
   const { name, marketplace } = parsePluginIdentifier(plugin);
-  logEvent('tengu_plugin_enable_command', {
+  logEvent("tengu_plugin_enable_command", {
     _PROTO_plugin_name: name as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
     ...(marketplace && {
       _PROTO_marketplace_name: marketplace as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
     }),
-    scope: (scope ?? 'auto') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    scope: (scope ?? "auto") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 
   await enablePlugin(plugin, scope);
@@ -728,23 +728,23 @@ export async function pluginDisableHandler(
   options: { scope?: string; cowork?: boolean; all?: boolean },
 ): Promise<void> {
   if (options.all && plugin) {
-    cliError('Cannot use --all with a specific plugin');
+    cliError("Cannot use --all with a specific plugin");
   }
 
   if (!options.all && !plugin) {
-    cliError('Please specify a plugin name or use --all to disable all plugins');
+    cliError("Please specify a plugin name or use --all to disable all plugins");
   }
 
   if (options.cowork) setUseCoworkPlugins(true);
 
   if (options.all) {
     if (options.scope) {
-      cliError('Cannot use --scope with --all');
+      cliError("Cannot use --scope with --all");
     }
 
     // No _PROTO_plugin_name here — --all disables all plugins.
     // Distinguishable from the specific-plugin branch by plugin_name IS NULL.
-    logEvent('tengu_plugin_disable_command', {});
+    logEvent("tengu_plugin_disable_command", {});
 
     await disableAllPlugins();
     return;
@@ -756,27 +756,27 @@ export async function pluginDisableHandler(
       !VALID_INSTALLABLE_SCOPES.includes(options.scope as (typeof VALID_INSTALLABLE_SCOPES)[number])
     ) {
       cliError(
-        `Invalid scope "${options.scope}". Valid scopes: ${VALID_INSTALLABLE_SCOPES.join(', ')}`,
+        `Invalid scope "${options.scope}". Valid scopes: ${VALID_INSTALLABLE_SCOPES.join(", ")}`,
       );
     }
     scope = options.scope as (typeof VALID_INSTALLABLE_SCOPES)[number];
   }
-  if (options.cowork && scope !== undefined && scope !== 'user') {
-    cliError('--cowork can only be used with user scope');
+  if (options.cowork && scope !== undefined && scope !== "user") {
+    cliError("--cowork can only be used with user scope");
   }
 
   // --cowork always operates at user scope
   if (options.cowork && scope === undefined) {
-    scope = 'user';
+    scope = "user";
   }
 
   const { name, marketplace } = parsePluginIdentifier(plugin!);
-  logEvent('tengu_plugin_disable_command', {
+  logEvent("tengu_plugin_disable_command", {
     _PROTO_plugin_name: name as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
     ...(marketplace && {
       _PROTO_marketplace_name: marketplace as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
     }),
-    scope: (scope ?? 'auto') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    scope: (scope ?? "auto") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 
   await disablePlugin(plugin!, scope);
@@ -789,22 +789,22 @@ export async function pluginUpdateHandler(
 ): Promise<void> {
   if (options.cowork) setUseCoworkPlugins(true);
   const { name, marketplace } = parsePluginIdentifier(plugin);
-  logEvent('tengu_plugin_update_command', {
+  logEvent("tengu_plugin_update_command", {
     _PROTO_plugin_name: name as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
     ...(marketplace && {
       _PROTO_marketplace_name: marketplace as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
     }),
   });
 
-  let scope: (typeof VALID_UPDATE_SCOPES)[number] = 'user';
+  let scope: (typeof VALID_UPDATE_SCOPES)[number] = "user";
   if (options.scope) {
     if (!VALID_UPDATE_SCOPES.includes(options.scope as (typeof VALID_UPDATE_SCOPES)[number])) {
-      cliError(`Invalid scope "${options.scope}". Valid scopes: ${VALID_UPDATE_SCOPES.join(', ')}`);
+      cliError(`Invalid scope "${options.scope}". Valid scopes: ${VALID_UPDATE_SCOPES.join(", ")}`);
     }
     scope = options.scope as (typeof VALID_UPDATE_SCOPES)[number];
   }
-  if (options.cowork && scope !== 'user') {
-    cliError('--cowork can only be used with user scope');
+  if (options.cowork && scope !== "user") {
+    cliError("--cowork can only be used with user scope");
   }
 
   await updatePluginCli(plugin, scope);

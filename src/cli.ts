@@ -16,15 +16,15 @@
  *   npx tsx src/cli.ts --help
  */
 
-import { Command } from 'commander';
-import { registerBughunterCommand } from './commands/bughunter.js';
-import { registerCompactCommand } from './commands/compact-cmd.js';
-import { registerDreamCommand } from './commands/dream.js';
-import { registerUltraplanCommand } from './commands/ultraplan.js';
+import { Command } from "commander";
+import { registerBughunterCommand } from "./commands/bughunter.js";
+import { registerCompactCommand } from "./commands/compact-cmd.js";
+import { registerDreamCommand } from "./commands/dream.js";
+import { registerUltraplanCommand } from "./commands/ultraplan.js";
 
 const program = new Command();
 
-program.name('agnt').description('ShadowTag Agent Runtime CLI — AGNT v11.2').version('11.2.0');
+program.name("agnt").description("ShadowTag Agent Runtime CLI — AGNT v11.2").version("11.2.0");
 
 // Register all commands
 registerBughunterCommand(program);

@@ -10,24 +10,24 @@
  * but users can disable it per-marketplace.
  */
 
-import { updatePluginOp } from '../../services/plugins/pluginOperations.js';
-import { shouldSkipPluginAutoupdate } from '../config.js';
-import { logForDebugging } from '../debug.js';
-import { errorMessage } from '../errors.js';
-import { logError } from '../log.js';
+import { updatePluginOp } from "../../services/plugins/pluginOperations.js";
+import { shouldSkipPluginAutoupdate } from "../config.js";
+import { logForDebugging } from "../debug.js";
+import { errorMessage } from "../errors.js";
+import { logError } from "../log.js";
 import {
   getPendingUpdatesDetails,
   hasPendingUpdates,
   isInstallationRelevantToCurrentProject,
   loadInstalledPluginsFromDisk,
-} from './installedPluginsManager.js';
+} from "./installedPluginsManager.js";
 import {
   getDeclaredMarketplaces,
   loadKnownMarketplacesConfig,
   refreshMarketplace,
-} from './marketplaceManager.js';
-import { parsePluginIdentifier } from './pluginIdentifier.js';
-import { isMarketplaceAutoUpdate, type PluginScope } from './schemas.js';
+} from "./marketplaceManager.js";
+import { parsePluginIdentifier } from "./pluginIdentifier.js";
+import { isMarketplaceAutoUpdate, type PluginScope } from "./schemas.js";
 
 /**
  * Callback type for notifying when plugins have been updated
@@ -116,12 +116,12 @@ async function updatePlugin(
         );
       } else if (!result.alreadyUpToDate) {
         logForDebugging(`Plugin autoupdate: failed to update ${pluginId}: ${result.message}`, {
-          level: 'warn',
+          level: "warn",
         });
       }
     } catch (error) {
       logForDebugging(`Plugin autoupdate: error updating ${pluginId}: ${errorMessage(error)}`, {
-        level: 'warn',
+        level: "warn",
       });
     }
   }
@@ -183,7 +183,7 @@ export async function updatePluginsForMarketplaces(
 
   return results
     .filter(
-      (r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled' && r.value !== null,
+      (r): r is PromiseFulfilledResult<string> => r.status === "fulfilled" && r.value !== null,
     )
     .map((r) => r.value);
 }
@@ -214,7 +214,7 @@ async function updatePlugins(autoUpdateEnabledMarketplaces: Set<string>): Promis
 export function autoUpdateMarketplacesAndPluginsInBackground(): void {
   void (async () => {
     if (shouldSkipPluginAutoupdate()) {
-      logForDebugging('Plugin autoupdate: skipped (auto-updater disabled)');
+      logForDebugging("Plugin autoupdate: skipped (auto-updater disabled)");
       return;
     }
 
@@ -236,21 +236,21 @@ export function autoUpdateMarketplacesAndPluginsInBackground(): void {
           } catch (error) {
             logForDebugging(
               `Plugin autoupdate: failed to refresh marketplace ${name}: ${errorMessage(error)}`,
-              { level: 'warn' },
+              { level: "warn" },
             );
           }
         }),
       );
 
       // Log any refresh failures
-      const failures = refreshResults.filter((r) => r.status === 'rejected');
+      const failures = refreshResults.filter((r) => r.status === "rejected");
       if (failures.length > 0) {
         logForDebugging(`Plugin autoupdate: ${failures.length} marketplace refresh(es) failed`, {
-          level: 'warn',
+          level: "warn",
         });
       }
 
-      logForDebugging('Plugin autoupdate: checking installed plugins');
+      logForDebugging("Plugin autoupdate: checking installed plugins");
       const updatedPlugins = await updatePlugins(autoUpdateEnabledMarketplaces);
 
       if (updatedPlugins.length > 0) {

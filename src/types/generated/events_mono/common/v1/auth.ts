@@ -14,7 +14,7 @@ export interface PublicApiAuth {
 }
 
 function createBasePublicApiAuth(): PublicApiAuth {
-  return { account_id: 0, organization_uuid: '', account_uuid: '' };
+  return { account_id: 0, organization_uuid: "", account_uuid: "" };
 }
 
 export const PublicApiAuth: MessageFns<PublicApiAuth> = {
@@ -23,8 +23,8 @@ export const PublicApiAuth: MessageFns<PublicApiAuth> = {
       account_id: isSet(object.account_id) ? globalThis.Number(object.account_id) : 0,
       organization_uuid: isSet(object.organization_uuid)
         ? globalThis.String(object.organization_uuid)
-        : '',
-      account_uuid: isSet(object.account_uuid) ? globalThis.String(object.account_uuid) : '',
+        : "",
+      account_uuid: isSet(object.account_uuid) ? globalThis.String(object.account_uuid) : "",
     };
   },
 
@@ -48,8 +48,8 @@ export const PublicApiAuth: MessageFns<PublicApiAuth> = {
   fromPartial<I extends Exact<DeepPartial<PublicApiAuth>, I>>(object: I): PublicApiAuth {
     const message = createBasePublicApiAuth();
     message.account_id = object.account_id ?? 0;
-    message.organization_uuid = object.organization_uuid ?? '';
-    message.account_uuid = object.account_uuid ?? '';
+    message.organization_uuid = object.organization_uuid ?? "";
+    message.account_uuid = object.account_uuid ?? "";
     return message;
   },
 };

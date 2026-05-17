@@ -4,8 +4,8 @@
  * Functions for finding text object boundaries (iw, aw, i", a(, etc.)
  */
 
-import { isVimPunctuation, isVimWhitespace, isVimWordChar } from '../utils/Cursor.js';
-import { getGraphemeSegmenter } from '../utils/intl.js';
+import { isVimPunctuation, isVimWhitespace, isVimWordChar } from "../utils/Cursor.js";
+import { getGraphemeSegmenter } from "../utils/intl.js";
 
 export type TextObjectRange = { start: number; end: number } | null;
 
@@ -13,19 +13,19 @@ export type TextObjectRange = { start: number; end: number } | null;
  * Delimiter pairs for text objects.
  */
 const PAIRS: Record<string, [string, string]> = {
-  '(': ['(', ')'],
-  ')': ['(', ')'],
-  b: ['(', ')'],
-  '[': ['[', ']'],
-  ']': ['[', ']'],
-  '{': ['{', '}'],
-  '}': ['{', '}'],
-  B: ['{', '}'],
-  '<': ['<', '>'],
-  '>': ['<', '>'],
+  "(": ["(", ")"],
+  ")": ["(", ")"],
+  b: ["(", ")"],
+  "[": ["[", "]"],
+  "]": ["[", "]"],
+  "{": ["{", "}"],
+  "}": ["{", "}"],
+  B: ["{", "}"],
+  "<": ["<", ">"],
+  ">": ["<", ">"],
   '"': ['"', '"'],
   "'": ["'", "'"],
-  '`': ['`', '`'],
+  "`": ["`", "`"],
 };
 
 /**
@@ -37,8 +37,8 @@ export function findTextObject(
   objectType: string,
   isInner: boolean,
 ): TextObjectRange {
-  if (objectType === 'w') return findWordObject(text, offset, isInner, isVimWordChar);
-  if (objectType === 'W')
+  if (objectType === "w") return findWordObject(text, offset, isInner, isVimWordChar);
+  if (objectType === "W")
     return findWordObject(text, offset, isInner, (ch) => !isVimWhitespace(ch));
 
   const pair = PAIRS[objectType];
@@ -101,7 +101,7 @@ function findWordObject(
 ): TextObjectRange {
   const { graphemes, graphemeIdx } = findGraphemeIndex(text, offset);
 
-  const graphemeAt = (idx: number): string => graphemes[idx]?.segment ?? '';
+  const graphemeAt = (idx: number): string => graphemes[idx]?.segment ?? "";
   const offsetAt = (idx: number): number =>
     idx < graphemes.length ? graphemes[idx]?.index : text.length;
   const isWs = (idx: number): boolean => isVimWhitespace(graphemeAt(idx));
@@ -142,8 +142,8 @@ function findQuoteObject(
   quote: string,
   isInner: boolean,
 ): TextObjectRange {
-  const lineStart = text.lastIndexOf('\n', offset - 1) + 1;
-  const lineEnd = text.indexOf('\n', offset);
+  const lineStart = text.lastIndexOf("\n", offset - 1) + 1;
+  const lineEnd = text.indexOf("\n", offset);
   const effectiveEnd = lineEnd === -1 ? text.length : lineEnd;
   const line = text.slice(lineStart, effectiveEnd);
   const posInLine = offset - lineStart;

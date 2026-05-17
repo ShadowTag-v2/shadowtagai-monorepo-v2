@@ -1,59 +1,59 @@
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { feature } from 'bun:bundle';
-import { c as _c } from 'react/compiler-runtime';
+import { feature } from "bun:bundle";
+import { c as _c } from "react/compiler-runtime";
 
 // Dead code elimination: conditional import for COORDINATOR_MODE
 /* eslint-disable @typescript-eslint/no-require-imports */
-const coordinatorModule = feature('COORDINATOR_MODE')
-  ? (require('../../coordinator/coordinatorMode.js') as typeof import('../../coordinator/coordinatorMode.js'))
+const coordinatorModule = feature("COORDINATOR_MODE")
+  ? (require("../../coordinator/coordinatorMode.js") as typeof import("../../coordinator/coordinatorMode.js"))
   : undefined;
-import figures from 'figures';
-import type * as React from 'react';
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { useAppState, useAppStateStore } from 'src/state/AppState.js';
-import { getIsRemoteMode } from '../../bootstrap/state.js';
-import { useVoiceState } from '../../context/voice.js';
-import { usePrStatus } from '../../hooks/usePrStatus.js';
-import { useTasksV2 } from '../../hooks/useTasksV2.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { useVoiceEnabled } from '../../hooks/useVoiceEnabled.js';
-import { useHasSelection, useSelection } from '../../ink/hooks/use-selection.js';
-import { isXtermJs } from '../../ink/terminal.js';
+import figures from "figures";
+import type * as React from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useAppState, useAppStateStore } from "src/state/AppState.js";
+import { getIsRemoteMode } from "../../bootstrap/state.js";
+import { useVoiceState } from "../../context/voice.js";
+import { usePrStatus } from "../../hooks/usePrStatus.js";
+import { useTasksV2 } from "../../hooks/useTasksV2.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { useVoiceEnabled } from "../../hooks/useVoiceEnabled.js";
+import { useHasSelection, useSelection } from "../../ink/hooks/use-selection.js";
+import { isXtermJs } from "../../ink/terminal.js";
 /* eslint-enable @typescript-eslint/no-require-imports */
-import { Box, Link, Text } from '../../ink.js';
-import { useShortcutDisplay } from '../../keybindings/useShortcutDisplay.js';
-import type { ToolPermissionContext } from '../../Tool.js';
-import { isPanelAgentTask } from '../../tasks/LocalAgentTask/LocalAgentTask.js';
-import { isBackgroundTask } from '../../tasks/types.js';
-import type { PromptInputMode, VimMode } from '../../types/textInputTypes.js';
-import { isAgentSwarmsEnabled } from '../../utils/agentSwarmsEnabled.js';
-import { count } from '../../utils/array.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { formatDuration } from '../../utils/format.js';
-import { isFullscreenEnvEnabled } from '../../utils/fullscreen.js';
+import { Box, Link, Text } from "../../ink.js";
+import { useShortcutDisplay } from "../../keybindings/useShortcutDisplay.js";
+import type { ToolPermissionContext } from "../../Tool.js";
+import { isPanelAgentTask } from "../../tasks/LocalAgentTask/LocalAgentTask.js";
+import { isBackgroundTask } from "../../tasks/types.js";
+import type { PromptInputMode, VimMode } from "../../types/textInputTypes.js";
+import { isAgentSwarmsEnabled } from "../../utils/agentSwarmsEnabled.js";
+import { count } from "../../utils/array.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { formatDuration } from "../../utils/format.js";
+import { isFullscreenEnvEnabled } from "../../utils/fullscreen.js";
 import {
   getModeColor,
   isDefaultMode,
   permissionModeSymbol,
   permissionModeTitle,
-} from '../../utils/permissions/PermissionMode.js';
-import { getPlatform } from '../../utils/platform.js';
-import { isInProcessEnabled } from '../../utils/swarm/backends/registry.js';
-import { getVisibleAgentTasks } from '../CoordinatorAgentStatus.js';
-import { Byline } from '../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
-import { PrBadge } from '../PrBadge.js';
-import { BackgroundTaskStatus } from '../tasks/BackgroundTaskStatus.js';
-import { shouldHideTasksFooter } from '../tasks/taskStatusUtils.js';
-import { TeamStatus } from '../teams/TeamStatus.js';
-import HistorySearchInput from './HistorySearchInput.js';
-import { isVimModeEnabled } from './utils.js';
-import { VoiceWarmupHint } from './VoiceIndicator.js';
+} from "../../utils/permissions/PermissionMode.js";
+import { getPlatform } from "../../utils/platform.js";
+import { isInProcessEnabled } from "../../utils/swarm/backends/registry.js";
+import { getVisibleAgentTasks } from "../CoordinatorAgentStatus.js";
+import { Byline } from "../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../design-system/KeyboardShortcutHint.js";
+import { PrBadge } from "../PrBadge.js";
+import { BackgroundTaskStatus } from "../tasks/BackgroundTaskStatus.js";
+import { shouldHideTasksFooter } from "../tasks/taskStatusUtils.js";
+import { TeamStatus } from "../teams/TeamStatus.js";
+import HistorySearchInput from "./HistorySearchInput.js";
+import { isVimModeEnabled } from "./utils.js";
+import { VoiceWarmupHint } from "./VoiceIndicator.js";
 
 // Dead code elimination: conditional import for proactive mode
 /* eslint-disable @typescript-eslint/no-require-imports */
 const proactiveModule =
-  feature('PROACTIVE') || feature('KAIROS') ? require('../../proactive/index.js') : null;
+  feature("PROACTIVE") || feature("KAIROS") ? require("../../proactive/index.js") : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
 const NO_OP_SUBSCRIBE = (_cb: () => void) => () => {};
 const NULL = () => null;
@@ -174,7 +174,7 @@ export function PromptInputFooterLeftSide(t0) {
   }
   if (isPasting) {
     let t1;
-    if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = (
         <Text dimColor={true} key="pasting-message">
           Pasting text…
@@ -188,7 +188,7 @@ export function PromptInputFooterLeftSide(t0) {
   }
   let t1;
   if ($[3] !== isSearching || $[4] !== vimMode) {
-    t1 = isVimModeEnabled() && vimMode === 'INSERT' && !isSearching;
+    t1 = isVimModeEnabled() && vimMode === "INSERT" && !isSearching;
     $[3] = isSearching;
     $[4] = vimMode;
     $[5] = t1;
@@ -310,7 +310,7 @@ function ModeIndicator({
   onOpenTasksDialog,
 }: ModeIndicatorProps): React.ReactNode {
   const { columns } = useTerminalSize();
-  const modeCycleShortcut = useShortcutDisplay('chat:cycleMode', 'Chat', 'shift+tab');
+  const modeCycleShortcut = useShortcutDisplay("chat:cycleMode", "Chat", "shift+tab");
   const tasks = useAppState((s) => s.tasks);
   const teamContext = useAppState((s_0) => s_0.teamContext);
   // Set once in initialState (main.tsx --remote mode) and never mutated — lazy
@@ -320,10 +320,10 @@ function ModeIndicator({
   const viewSelectionMode = useAppState((s_1) => s_1.viewSelectionMode);
   const viewingAgentTaskId = useAppState((s_2) => s_2.viewingAgentTaskId);
   const expandedView = useAppState((s_3) => s_3.expandedView);
-  const showSpinnerTree = expandedView === 'teammates';
+  const showSpinnerTree = expandedView === "teammates";
   const prStatus = usePrStatus(isLoading, isPrStatusEnabled());
   const hasTmuxSession = useAppState(
-    (s_4) => 'external' === 'ant' && s_4.tungstenActiveSession !== undefined,
+    (s_4) => "external" === "ant" && s_4.tungstenActiveSession !== undefined,
   );
   const nextTickAt = useSyncExternalStore(
     proactiveModule?.subscribeToProactiveChanges ?? NO_OP_SUBSCRIBE,
@@ -331,51 +331,51 @@ function ModeIndicator({
     NULL,
   );
   // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
-  const voiceEnabled = feature('VOICE_MODE') ? useVoiceEnabled() : false;
-  const voiceState = feature('VOICE_MODE')
+  const voiceEnabled = feature("VOICE_MODE") ? useVoiceEnabled() : false;
+  const voiceState = feature("VOICE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useVoiceState((s_5) => s_5.voiceState)
-    : ('idle' as const);
-  const voiceWarmingUp = feature('VOICE_MODE')
+    : ("idle" as const);
+  const voiceWarmingUp = feature("VOICE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useVoiceState((s_6) => s_6.voiceWarmingUp)
     : false;
   const hasSelection = useHasSelection();
   const selGetState = useSelection().getState;
   const hasNextTick = nextTickAt !== null;
-  const isCoordinator = feature('COORDINATOR_MODE')
+  const isCoordinator = feature("COORDINATOR_MODE")
     ? coordinatorModule?.isCoordinatorMode() === true
     : false;
   const runningTaskCount = useMemo(
     () =>
       count(
         Object.values(tasks),
-        (t) => isBackgroundTask(t) && !('external' === 'ant' && isPanelAgentTask(t)),
+        (t) => isBackgroundTask(t) && !("external" === "ant" && isPanelAgentTask(t)),
       ),
     [tasks],
   );
   const tasksV2 = useTasksV2();
   const hasTaskItems = tasksV2 !== undefined && tasksV2.length > 0;
-  const escShortcut = useShortcutDisplay('chat:cancel', 'Chat', 'esc').toLowerCase();
-  const todosShortcut = useShortcutDisplay('app:toggleTodos', 'Global', 'ctrl+t');
-  const killAgentsShortcut = useShortcutDisplay('chat:killAgents', 'Chat', 'ctrl+x ctrl+k');
-  const voiceKeyShortcut = feature('VOICE_MODE')
+  const escShortcut = useShortcutDisplay("chat:cancel", "Chat", "esc").toLowerCase();
+  const todosShortcut = useShortcutDisplay("app:toggleTodos", "Global", "ctrl+t");
+  const killAgentsShortcut = useShortcutDisplay("chat:killAgents", "Chat", "ctrl+x ctrl+k");
+  const voiceKeyShortcut = feature("VOICE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
-      useShortcutDisplay('voice:pushToTalk', 'Chat', 'Space')
-    : '';
+      useShortcutDisplay("voice:pushToTalk", "Chat", "Space")
+    : "";
   // Captured at mount so the hint doesn't flicker mid-session if another
   // CC instance increments the counter. Incremented once via useEffect the
   // first time voice is enabled in this session — approximates "hint was
   // shown" without tracking the exact render-time condition (which depends
   // on parts/hintParts computed after the early-return hooks boundary).
-  const [voiceHintUnderCap] = feature('VOICE_MODE')
+  const [voiceHintUnderCap] = feature("VOICE_MODE")
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useState(() => (getGlobalConfig().voiceFooterHintSeenCount ?? 0) < MAX_VOICE_HINT_SHOWS)
     : [false];
   // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
-  const voiceHintIncrementedRef = feature('VOICE_MODE') ? useRef(false) : null;
+  const voiceHintIncrementedRef = feature("VOICE_MODE") ? useRef(false) : null;
   useEffect(() => {
-    if (feature('VOICE_MODE')) {
+    if (feature("VOICE_MODE")) {
       if (!voiceEnabled || !voiceHintUnderCap) return;
       if (voiceHintIncrementedRef?.current) return;
       if (voiceHintIncrementedRef) voiceHintIncrementedRef.current = true;
@@ -390,7 +390,7 @@ function ModeIndicator({
     }
   }, [voiceEnabled, voiceHintUnderCap, voiceHintIncrementedRef?.current, voiceHintIncrementedRef]);
   const isKillAgentsConfirmShowing = useAppState(
-    (s_7) => s_7.notifications.current?.key === 'kill-agents-confirm',
+    (s_7) => s_7.notifications.current?.key === "kill-agents-confirm",
   );
 
   // Derive team info from teamContext (no filesystem I/O needed)
@@ -400,17 +400,17 @@ function ModeIndicator({
     isAgentSwarmsEnabled() &&
     !isInProcessEnabled() &&
     teamContext !== undefined &&
-    count(Object.values(teamContext.teammates), (t_0) => t_0.name !== 'team-lead') > 0;
-  if (mode === 'bash') {
+    count(Object.values(teamContext.teammates), (t_0) => t_0.name !== "team-lead") > 0;
+  if (mode === "bash") {
     return <Text color="bashBorder">! for bash mode</Text>;
   }
   const currentMode = toolPermissionContext?.mode;
   const hasActiveMode = !isDefaultMode(currentMode);
   const viewedTask = viewingAgentTaskId ? tasks[viewingAgentTaskId] : undefined;
   const isViewingTeammate =
-    viewSelectionMode === 'viewing-agent' && viewedTask?.type === 'in_process_teammate';
+    viewSelectionMode === "viewing-agent" && viewedTask?.type === "in_process_teammate";
   const isViewingCompletedTeammate =
-    isViewingTeammate && viewedTask != null && viewedTask.status !== 'running';
+    isViewingTeammate && viewedTask != null && viewedTask.status !== "running";
   const hasBackgroundTasks = runningTaskCount > 0 || isViewingTeammate;
 
   // Count primary items (permission mode or coordinator mode, background tasks, and teams)
@@ -437,7 +437,7 @@ function ModeIndicator({
   const hasInProcessTeammates =
     !showSpinnerTree &&
     hasBackgroundTasks &&
-    Object.values(tasks).some((t_1) => t_1.type === 'in_process_teammate');
+    Object.values(tasks).some((t_1) => t_1.type === "in_process_teammate");
   const hasTeammatePills = hasInProcessTeammates || (!showSpinnerTree && isViewingTeammate);
 
   // In remote mode (`claude assistant`, --teleport) the agent runs elsewhere;
@@ -450,7 +450,7 @@ function ModeIndicator({
         {permissionModeSymbol(currentMode)} {permissionModeTitle(currentMode).toLowerCase()} on
         {shouldShowModeHint && (
           <Text dimColor>
-            {' '}
+            {" "}
             <KeyboardShortcutHint shortcut={modeCycleShortcut} action="cycle" parens />
           </Text>
         )}
@@ -472,7 +472,7 @@ function ModeIndicator({
     // its click-target Box isn't nested inside the <Text wrap="truncate">
     // wrapper (reconciler throws on Box-in-Text).
     // Tmux pill (ant-only) — appears right after tasks in nav order
-    ...('external' === 'ant' && hasTmuxSession
+    ...("external" === "ant" && hasTmuxSession
       ? [<TungstenPill key="tmux" selected={tmuxSelected} />]
       : []),
     ...(isAgentSwarmsEnabled() && hasTeams
@@ -498,10 +498,10 @@ function ModeIndicator({
 
   // Check if any in-process teammates exist (for hint text cycling)
   const hasAnyInProcessTeammates = Object.values(tasks).some(
-    (t_2) => t_2.type === 'in_process_teammate' && t_2.status === 'running',
+    (t_2) => t_2.type === "in_process_teammate" && t_2.status === "running",
   );
   const hasRunningAgentTasks = Object.values(tasks).some(
-    (t_3) => t_3.type === 'local_agent' && t_3.status === 'running',
+    (t_3) => t_3.type === "local_agent" && t_3.status === "running",
   );
 
   // Get hint parts separately for potential second-line rendering
@@ -524,7 +524,7 @@ function ModeIndicator({
         <KeyboardShortcutHint shortcut={escShortcut} action="return to team lead" />
       </Text>,
     );
-  } else if ((feature('PROACTIVE') || feature('KAIROS')) && hasNextTick) {
+  } else if ((feature("PROACTIVE") || feature("KAIROS")) && hasNextTick) {
     parts.push(<ProactiveCountdown key="proactive" />);
   } else if (!hasTeammatePills && showHint) {
     parts.push(...hintParts);
@@ -560,7 +560,7 @@ function ModeIndicator({
   }
 
   // Add "↓ to manage tasks" hint when panel has visible rows
-  const hasCoordinatorTasks = 'external' === 'ant' && getVisibleAgentTasks(tasks).length > 0;
+  const hasCoordinatorTasks = "external" === "ant" && getVisibleAgentTasks(tasks).length > 0;
 
   // Tasks pill renders as a Box sibling (not a parts entry) so its
   // click-target Box isn't nested inside <Text wrap="truncate"> — the
@@ -593,7 +593,7 @@ function ModeIndicator({
 
   // Warmup hint takes priority — when the user is actively holding
   // the activation key, show feedback regardless of other hints.
-  if (feature('VOICE_MODE') && voiceEnabled && voiceWarmingUp) {
+  if (feature("VOICE_MODE") && voiceEnabled && voiceWarmingUp) {
     parts.push(<VoiceWarmupHint key="voice-warmup" />);
   } else if (isFullscreenEnvEnabled() && selectionHintHasContent) {
     // xterm.js (VS Code/Cursor/Windsurf) force-selection modifier is
@@ -606,7 +606,7 @@ function ModeIndicator({
     // option+click hint they just tried.
     // Non-reactive getState() read is safe: lastPressHadAlt is immutable
     // while hasSelection is true (set pre-drag, cleared with selection).
-    const isMac = getPlatform() === 'macos';
+    const isMac = getPlatform() === "macos";
     const altClickFailed = isMac && (selGetState()?.lastPressHadAlt ?? false);
     parts.push(
       <Text dimColor key="selection-copy">
@@ -617,7 +617,7 @@ function ModeIndicator({
               <Text>set macOptionClickForcesSelection in VS Code settings</Text>
             ) : (
               <KeyboardShortcutHint
-                shortcut={isMac ? 'option+click' : 'shift+click'}
+                shortcut={isMac ? "option+click" : "shift+click"}
                 action="native select"
               />
             ))}
@@ -625,11 +625,11 @@ function ModeIndicator({
       </Text>,
     );
   } else if (
-    feature('VOICE_MODE') &&
+    feature("VOICE_MODE") &&
     parts.length > 0 &&
     showHint &&
     voiceEnabled &&
-    voiceState === 'idle' &&
+    voiceState === "idle" &&
     hintParts.length === 0 &&
     voiceHintUnderCap
   ) {
@@ -693,7 +693,7 @@ function getSpinnerHintParts(
   todosShortcut: string,
   killAgentsShortcut: string,
   hasTaskItems: boolean,
-  expandedView: 'none' | 'tasks' | 'teammates',
+  expandedView: "none" | "tasks" | "teammates",
   hasTeammates: boolean,
   hasRunningAgentTasks: boolean,
   isKillAgentsConfirmShowing: boolean,
@@ -702,18 +702,18 @@ function getSpinnerHintParts(
   if (hasTeammates) {
     // Cycling: none → tasks → teammates → none
     switch (expandedView) {
-      case 'none':
-        toggleAction = 'show tasks';
+      case "none":
+        toggleAction = "show tasks";
         break;
-      case 'tasks':
-        toggleAction = 'show teammates';
+      case "tasks":
+        toggleAction = "show teammates";
         break;
-      case 'teammates':
-        toggleAction = 'hide';
+      case "teammates":
+        toggleAction = "hide";
         break;
     }
   } else {
-    toggleAction = expandedView === 'tasks' ? 'hide tasks' : 'show tasks';
+    toggleAction = expandedView === "tasks" ? "hide tasks" : "show tasks";
   }
 
   // Show the toggle hint only when there are task items to display or

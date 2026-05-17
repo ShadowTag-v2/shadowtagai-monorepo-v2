@@ -1,26 +1,26 @@
-import { feature } from 'bun:bundle';
-import type * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { resetCostState } from '../../bootstrap/state.js';
-import { clearTrustedDeviceToken, enrollTrustedDevice } from '../../bridge/trustedDevice.js';
-import type { LocalJSXCommandContext } from '../../commands.js';
-import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
-import { ConsoleOAuthFlow } from '../../components/ConsoleOAuthFlow.js';
-import { Dialog } from '../../components/design-system/Dialog.js';
-import { useMainLoopModel } from '../../hooks/useMainLoopModel.js';
-import { Text } from '../../ink.js';
-import { refreshGrowthBookAfterAuthChange } from '../../services/analytics/growthbook.js';
-import { refreshPolicyLimits } from '../../services/policyLimits/index.js';
-import { refreshRemoteManagedSettings } from '../../services/remoteManagedSettings/index.js';
-import type { LocalJSXCommandOnDone } from '../../types/command.js';
-import { stripSignatureBlocks } from '../../utils/messages.js';
+import { feature } from "bun:bundle";
+import type * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { resetCostState } from "../../bootstrap/state.js";
+import { clearTrustedDeviceToken, enrollTrustedDevice } from "../../bridge/trustedDevice.js";
+import type { LocalJSXCommandContext } from "../../commands.js";
+import { ConfigurableShortcutHint } from "../../components/ConfigurableShortcutHint.js";
+import { ConsoleOAuthFlow } from "../../components/ConsoleOAuthFlow.js";
+import { Dialog } from "../../components/design-system/Dialog.js";
+import { useMainLoopModel } from "../../hooks/useMainLoopModel.js";
+import { Text } from "../../ink.js";
+import { refreshGrowthBookAfterAuthChange } from "../../services/analytics/growthbook.js";
+import { refreshPolicyLimits } from "../../services/policyLimits/index.js";
+import { refreshRemoteManagedSettings } from "../../services/remoteManagedSettings/index.js";
+import type { LocalJSXCommandOnDone } from "../../types/command.js";
+import { stripSignatureBlocks } from "../../utils/messages.js";
 import {
   checkAndDisableAutoModeIfNeeded,
   checkAndDisableBypassPermissionsIfNeeded,
   resetAutoModeGateCheck,
   resetBypassPermissionsCheck,
-} from '../../utils/permissions/bypassPermissionsKillswitch.js';
-import { resetUserCache } from '../../utils/user.js';
+} from "../../utils/permissions/bypassPermissionsKillswitch.js";
+import { resetUserCache } from "../../utils/user.js";
 export async function call(
   onDone: LocalJSXCommandOnDone,
   context: LocalJSXCommandContext,
@@ -57,7 +57,7 @@ export async function call(
             appState.toolPermissionContext,
             context.setAppState,
           );
-          if (feature('TRANSCRIPT_CLASSIFIER')) {
+          if (feature("TRANSCRIPT_CLASSIFIER")) {
             resetAutoModeGateCheck();
             void checkAndDisableAutoModeIfNeeded(
               appState.toolPermissionContext,
@@ -71,7 +71,7 @@ export async function call(
             authVersion: prev.authVersion + 1,
           }));
         }
-        onDone(success ? 'Login successful' : 'Login interrupted');
+        onDone(success ? "Login successful" : "Login interrupted");
       }}
     />
   );

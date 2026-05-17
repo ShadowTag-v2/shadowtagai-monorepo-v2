@@ -1,8 +1,8 @@
-import type { BetaUsage as Usage } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import type { AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS } from 'src/services/analytics/index.js';
-import { logEvent } from 'src/services/analytics/index.js';
-import { setHasUnknownModelCost } from '../bootstrap/state.js';
-import { isFastModeEnabled } from './fastMode.js';
+import type { BetaUsage as Usage } from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
+import type { AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS } from "src/services/analytics/index.js";
+import { logEvent } from "src/services/analytics/index.js";
+import { setHasUnknownModelCost } from "../bootstrap/state.js";
+import { isFastModeEnabled } from "./fastMode.js";
 import {
   CLAUDE_3_5_HAIKU_CONFIG,
   CLAUDE_3_5_V2_SONNET_CONFIG,
@@ -15,13 +15,13 @@ import {
   CLAUDE_SONNET_4_5_CONFIG,
   CLAUDE_SONNET_4_6_CONFIG,
   CLAUDE_SONNET_4_CONFIG,
-} from './model/configs.js';
+} from "./model/configs.js";
 import {
   firstPartyNameToCanonical,
   getCanonicalName,
   getDefaultMainLoopModelSetting,
   type ModelShortName,
-} from './model/model.js';
+} from "./model/model.js";
 
 // @see https://platform.claude.com/docs/en/about-claude/pricing
 export type ModelCosts = {
@@ -133,7 +133,7 @@ export function getModelCosts(model: string, usage: Usage): ModelCosts {
 
   // Check if this is an Opus 4.6 model with fast mode active.
   if (shortName === firstPartyNameToCanonical(CLAUDE_OPUS_4_6_CONFIG.firstParty)) {
-    const isFastMode = usage.speed === 'fast';
+    const isFastMode = usage.speed === "fast";
     return getOpus46CostTier(isFastMode);
   }
 
@@ -148,7 +148,7 @@ export function getModelCosts(model: string, usage: Usage): ModelCosts {
 }
 
 function trackUnknownModelCost(model: string, shortName: ModelShortName): void {
-  logEvent('tengu_unknown_model_cost', {
+  logEvent("tengu_unknown_model_cost", {
     model: model as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     shortName: shortName as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });

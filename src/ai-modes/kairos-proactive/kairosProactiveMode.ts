@@ -1,31 +1,31 @@
-import { feature } from 'bun:bundle';
-import { logEvent } from '../../services/analytics/index.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
+import { feature } from "bun:bundle";
+import { logEvent } from "../../services/analytics/index.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
 
 export function isKairosMode(): boolean {
-  if (feature('KAIROS_MODE')) {
+  if (feature("KAIROS_MODE")) {
     return isEnvTruthy(process.env.CLAUDE_CODE_KAIROS_MODE);
   }
   return false;
 }
 
-export function matchSessionMode(sessionMode: 'kairos' | 'normal' | undefined): string | undefined {
+export function matchSessionMode(sessionMode: "kairos" | "normal" | undefined): string | undefined {
   if (!sessionMode) return undefined;
 
   const currentIsKairos = isKairosMode();
-  const sessionIsKairos = sessionMode === 'kairos';
+  const sessionIsKairos = sessionMode === "kairos";
 
   if (currentIsKairos === sessionIsKairos) return undefined;
 
   if (sessionIsKairos) {
-    process.env.CLAUDE_CODE_KAIROS_MODE = '1';
+    process.env.CLAUDE_CODE_KAIROS_MODE = "1";
   } else {
     delete process.env.CLAUDE_CODE_KAIROS_MODE;
   }
 
-  logEvent('tengu_kairos_mode_switched', { to: sessionMode as any });
+  logEvent("tengu_kairos_mode_switched", { to: sessionMode as any });
 
-  return sessionIsKairos ? 'Entered KAIROS proactive mode.' : 'Exited KAIROS proactive mode.';
+  return sessionIsKairos ? "Entered KAIROS proactive mode." : "Exited KAIROS proactive mode.";
 }
 
 export function getKairosSystemPrompt(): string {

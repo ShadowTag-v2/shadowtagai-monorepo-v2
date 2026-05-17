@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../ink.js';
-import { saveGlobalConfig } from '../utils/config.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../ink.js";
+import { saveGlobalConfig } from "../utils/config.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
 
 type Props = {
   customApiKeyTruncated: string;
@@ -15,7 +15,7 @@ export function ApproveApiKey(t0) {
   if ($[0] !== customApiKeyTruncated || $[1] !== onDone) {
     t1 = function onChange(value) {
       switch (value) {
-        case 'yes': {
+        case "yes": {
           saveGlobalConfig((current_0) => ({
             ...current_0,
             customApiKeyResponses: {
@@ -29,7 +29,7 @@ export function ApproveApiKey(t0) {
           onDone(true);
           break;
         }
-        case 'no': {
+        case "no": {
           saveGlobalConfig((current) => ({
             ...current,
             customApiKeyResponses: {
@@ -50,14 +50,14 @@ export function ApproveApiKey(t0) {
   const onChange = t1;
   let t2;
   if ($[3] !== onChange) {
-    t2 = () => onChange('no');
+    t2 = () => onChange("no");
     $[3] = onChange;
     $[4] = t2;
   } else {
     t2 = $[4];
   }
   let t3;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = <Text bold={true}>ANTHROPIC_API_KEY</Text>;
     $[5] = t3;
   } else {
@@ -77,24 +77,24 @@ export function ApproveApiKey(t0) {
     t4 = $[7];
   }
   let t5;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = <Text>Do you want to use this API key?</Text>;
     $[8] = t5;
   } else {
     t5 = $[8];
   }
   let t6;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {
-      label: 'Yes',
-      value: 'yes',
+      label: "Yes",
+      value: "yes",
     };
     $[9] = t6;
   } else {
     t6 = $[9];
   }
   let t7;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = [
       t6,
       {
@@ -103,7 +103,7 @@ export function ApproveApiKey(t0) {
             No (<Text bold={true}>recommended</Text>)
           </Text>
         ),
-        value: 'no',
+        value: "no",
       },
     ];
     $[10] = t7;
@@ -117,8 +117,8 @@ export function ApproveApiKey(t0) {
         defaultValue="no"
         defaultFocusValue="no"
         options={t7}
-        onChange={(value_0) => onChange(value_0 as 'yes' | 'no')}
-        onCancel={() => onChange('no')}
+        onChange={(value_0) => onChange(value_0 as "yes" | "no")}
+        onCancel={() => onChange("no")}
       />
     );
     $[11] = onChange;

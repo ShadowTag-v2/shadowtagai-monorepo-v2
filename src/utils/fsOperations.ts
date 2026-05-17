@@ -1,4 +1,4 @@
-import * as fs from 'node:fs';
+import * as fs from "node:fs";
 import {
   mkdir as mkdirPromise,
   open,
@@ -9,11 +9,11 @@ import {
   rm as rmPromise,
   stat as statPromise,
   unlink as unlinkPromise,
-} from 'node:fs/promises';
-import { homedir } from 'node:os';
-import * as nodePath from 'node:path';
-import { getErrnoCode } from './errors.js';
-import { slowLogging } from './slowOperations.js';
+} from "node:fs/promises";
+import { homedir } from "node:os";
+import * as nodePath from "node:path";
+import { getErrnoCode } from "./errors.js";
+import { slowLogging } from "./slowOperations.js";
 
 /**
  * Simplified filesystem operations interface based on Node.js fs module.
@@ -78,7 +78,7 @@ export type FsOperations = {
   /** Creates hard link */
   linkSync(target: string, path: string): void;
   /** Creates symbolic link */
-  symlinkSync(target: string, path: string, type?: 'dir' | 'file' | 'junction'): void;
+  symlinkSync(target: string, path: string, type?: "dir" | "file" | "junction"): void;
   /** Reads symbolic link */
   readlinkSync(path: string): string;
   /** Resolves symbolic links and returns the canonical pathname */
@@ -134,7 +134,7 @@ export function safeResolvePath(
 ): { resolvedPath: string; isSymlink: boolean; isCanonical: boolean } {
   // Block UNC paths before any filesystem access to prevent network
   // requests (DNS/SMB) during validation on Windows
-  if (filePath.startsWith('//') || filePath.startsWith('\\\\')) {
+  if (filePath.startsWith("//") || filePath.startsWith("\\\\")) {
     return { resolvedPath: filePath, isSymlink: false, isCanonical: false };
   }
 
@@ -271,10 +271,10 @@ export function getPathsForPermissionCheck(inputPath: string): string[] {
   // Expand tilde notation defensively - tools should do this in getPath(),
   // but we normalize here as defense in depth for permission checking
   let path = inputPath;
-  if (path === '~') {
-    path = homedir().normalize('NFC');
-  } else if (path.startsWith('~/')) {
-    path = nodePath.join(homedir().normalize('NFC'), path.slice(2));
+  if (path === "~") {
+    path = homedir().normalize("NFC");
+  } else if (path.startsWith("~/")) {
+    path = nodePath.join(homedir().normalize("NFC"), path.slice(2));
   }
 
   const pathSet = new Set<string>();
@@ -285,7 +285,7 @@ export function getPathsForPermissionCheck(inputPath: string): string[] {
 
   // Block UNC paths before any filesystem access to prevent network
   // requests (DNS/SMB) during validation on Windows
-  if (path.startsWith('//') || path.startsWith('\\\\')) {
+  if (path.startsWith("//") || path.startsWith("\\\\")) {
     return Array.from(pathSet);
   }
 
@@ -402,7 +402,7 @@ export const NodeFsOperations: FsOperations = {
       // Bun's directoryExistsAt misclassifies DIRECTORY+READONLY as not-a-dir
       // (bun-internal src/sys.zig existsAtType). The dir exists; ignore.
       // https://github.com/anthropics/claude-code/issues/30924
-      if (getErrnoCode(e) !== 'EEXIST') throw e;
+      if (getErrnoCode(e) !== "EEXIST") throw e;
     }
   },
 
@@ -438,7 +438,7 @@ export const NodeFsOperations: FsOperations = {
     using _ = slowLogging`fs.readSync(${fsPath}, ${options.length} bytes)`;
     let fd: number | undefined;
     try {
-      fd = fs.openSync(fsPath, 'r');
+      fd = fs.openSync(fsPath, "r");
       const buffer = Buffer.alloc(options.length);
       const bytesRead = fs.readSync(fd, buffer, 0, options.length, 0);
       return { buffer, bytesRead };
@@ -453,7 +453,7 @@ export const NodeFsOperations: FsOperations = {
     // TOCTOU race between existence check and open. Fall back to normal append if exists.
     if (options?.mode !== undefined) {
       try {
-        const fd = fs.openSync(path, 'ax', options.mode);
+        const fd = fs.openSync(path, "ax", options.mode);
         try {
           fs.appendFileSync(fd, data);
         } finally {
@@ -461,7 +461,7 @@ export const NodeFsOperations: FsOperations = {
         }
         return;
       } catch (e) {
-        if (getErrnoCode(e) !== 'EEXIST') throw e;
+        if (getErrnoCode(e) !== "EEXIST") throw e;
         // File exists — fall through to normal append
       }
     }
@@ -488,7 +488,7 @@ export const NodeFsOperations: FsOperations = {
     fs.linkSync(target, path);
   },
 
-  symlinkSync(target: string, path: string, type?: 'dir' | 'file' | 'junction') {
+  symlinkSync(target: string, path: string, type?: "dir" | "file" | "junction") {
     using _ = slowLogging`fs.symlinkSync(${target} → ${path})`;
     fs.symlinkSync(target, path, type);
   },
@@ -500,7 +500,7 @@ export const NodeFsOperations: FsOperations = {
 
   realpathSync(path: string) {
     using _ = slowLogging`fs.realpathSync(${path})`;
-    return fs.realpathSync(path).normalize('NFC');
+    return fs.realpathSync(path).normalize("NFC");
   },
 
   mkdirSync(dirPath, options) {
@@ -519,7 +519,7 @@ export const NodeFsOperations: FsOperations = {
       // Bun's directoryExistsAt misclassifies DIRECTORY+READONLY as not-a-dir
       // (bun-internal src/sys.zig existsAtType). The dir exists; ignore.
       // https://github.com/anthropics/claude-code/issues/30924
-      if (getErrnoCode(e) !== 'EEXIST') throw e;
+      if (getErrnoCode(e) !== "EEXIST") throw e;
     }
   },
 
@@ -557,7 +557,7 @@ export const NodeFsOperations: FsOperations = {
     if (maxBytes === undefined) {
       return readFilePromise(fsPath);
     }
-    const handle = await open(fsPath, 'r');
+    const handle = await open(fsPath, "r");
     try {
       const { size } = await handle.stat();
       const readSize = Math.min(size, maxBytes);
@@ -619,7 +619,7 @@ export async function readFileRange(
   offset: number,
   maxBytes: number,
 ): Promise<ReadFileRangeResult | null> {
-  await using fh = await open(path, 'r');
+  await using fh = await open(path, "r");
   const size = (await fh.stat()).size;
   if (size <= offset) {
     return null;
@@ -642,7 +642,7 @@ export async function readFileRange(
   }
 
   return {
-    content: buffer.toString('utf8', 0, totalRead),
+    content: buffer.toString("utf8", 0, totalRead),
     bytesRead: totalRead,
     bytesTotal: size,
   };
@@ -653,10 +653,10 @@ export async function readFileRange(
  * Returns the whole file if it's smaller than maxBytes.
  */
 export async function tailFile(path: string, maxBytes: number): Promise<ReadFileRangeResult> {
-  await using fh = await open(path, 'r');
+  await using fh = await open(path, "r");
   const size = (await fh.stat()).size;
   if (size === 0) {
-    return { content: '', bytesRead: 0, bytesTotal: 0 };
+    return { content: "", bytesRead: 0, bytesTotal: 0 };
   }
   const offset = Math.max(0, size - maxBytes);
   const bytesToRead = size - offset;
@@ -677,7 +677,7 @@ export async function tailFile(path: string, maxBytes: number): Promise<ReadFile
   }
 
   return {
-    content: buffer.toString('utf8', 0, totalRead),
+    content: buffer.toString("utf8", 0, totalRead),
     bytesRead: totalRead,
     bytesTotal: size,
   };
@@ -691,7 +691,7 @@ export async function tailFile(path: string, maxBytes: number): Promise<ReadFile
  */
 export async function* readLinesReverse(path: string): AsyncGenerator<string, void, undefined> {
   const CHUNK_SIZE = 1024 * 4;
-  const fileHandle = await open(path, 'r');
+  const fileHandle = await open(path, "r");
   try {
     const stats = await fileHandle.stat();
     let position = stats.size;
@@ -716,7 +716,7 @@ export async function* readLinesReverse(path: string): AsyncGenerator<string, vo
       }
 
       remainder = Buffer.from(combined.subarray(0, firstNewline));
-      const lines = combined.toString('utf8', firstNewline + 1).split('\n');
+      const lines = combined.toString("utf8", firstNewline + 1).split("\n");
 
       for (let i = lines.length - 1; i >= 0; i--) {
         const line = lines[i]!;
@@ -727,7 +727,7 @@ export async function* readLinesReverse(path: string): AsyncGenerator<string, vo
     }
 
     if (remainder.length > 0) {
-      yield remainder.toString('utf8');
+      yield remainder.toString("utf8");
     }
   } finally {
     await fileHandle.close();

@@ -1,4 +1,4 @@
-import memoize from 'lodash-es/memoize.js';
+import memoize from "lodash-es/memoize.js";
 
 export type DebugFilter = {
   include: string[];
@@ -14,12 +14,12 @@ export type DebugFilter = {
  * - undefined/empty -> no filtering (show all)
  */
 export const parseDebugFilter = memoize((filterString?: string): DebugFilter | null => {
-  if (!filterString || filterString.trim() === '') {
+  if (!filterString || filterString.trim() === "") {
     return null;
   }
 
   const filters = filterString
-    .split(',')
+    .split(",")
     .map((f) => f.trim())
     .filter(Boolean);
 
@@ -29,8 +29,8 @@ export const parseDebugFilter = memoize((filterString?: string): DebugFilter | n
   }
 
   // Check for mixed inclusive/exclusive filters
-  const hasExclusive = filters.some((f) => f.startsWith('!'));
-  const hasInclusive = filters.some((f) => !f.startsWith('!'));
+  const hasExclusive = filters.some((f) => f.startsWith("!"));
+  const hasInclusive = filters.some((f) => !f.startsWith("!"));
 
   if (hasExclusive && hasInclusive) {
     // For now, we'll treat this as an error case and show all messages
@@ -41,7 +41,7 @@ export const parseDebugFilter = memoize((filterString?: string): DebugFilter | n
   }
 
   // Clean up filters (remove ! prefix) and normalize
-  const cleanFilters = filters.map((f) => f.replace(/^!/, '').toLowerCase());
+  const cleanFilters = filters.map((f) => f.replace(/^!/, "").toLowerCase());
 
   return {
     include: hasExclusive ? [] : cleanFilters,
@@ -66,7 +66,7 @@ export function extractDebugCategories(message: string): string[] {
   // Pattern 3: MCP server "servername" - Check this first to avoid false positives
   const mcpMatch = message.match(/^MCP server ["']([^"']+)["']/);
   if (mcpMatch?.[1]) {
-    categories.push('mcp');
+    categories.push("mcp");
     categories.push(mcpMatch[1].toLowerCase());
   } else {
     // Pattern 1: "category: message" (simple prefix) - only if not MCP pattern
@@ -84,8 +84,8 @@ export function extractDebugCategories(message: string): string[] {
 
   // Pattern 4: Check for additional categories in the message
   // e.g., "[ANT-ONLY] 1P event: tengu_timer" should match both "ant-only" and "1p"
-  if (message.toLowerCase().includes('1p event:')) {
-    categories.push('1p');
+  if (message.toLowerCase().includes("1p event:")) {
+    categories.push("1p");
   }
 
   // Pattern 5: Look for secondary categories after the first pattern
@@ -94,7 +94,7 @@ export function extractDebugCategories(message: string): string[] {
   if (secondaryMatch?.[1]) {
     const secondary = secondaryMatch[1].trim().toLowerCase();
     // Only add if it's a reasonable category name (not too long, no spaces)
-    if (secondary.length < 30 && !secondary.includes(' ')) {
+    if (secondary.length < 30 && !secondary.includes(" ")) {
       categories.push(secondary);
     }
   }

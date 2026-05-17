@@ -1,16 +1,16 @@
-import { feature } from 'bun:bundle';
-import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type React from 'react';
-import { useContext, useMemo } from 'react';
-import { getKairosActive, getUserMsgOptIn } from '../../bootstrap/state.js';
-import { Box } from '../../ink.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
-import { useAppState } from '../../state/AppState.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { logError } from '../../utils/log.js';
-import { countCharInString } from '../../utils/stringUtils.js';
-import { MessageActionsSelectedContext } from '../messageActions.js';
-import { HighlightedThinkingText } from './HighlightedThinkingText.js';
+import { feature } from "bun:bundle";
+import type { TextBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type React from "react";
+import { useContext, useMemo } from "react";
+import { getKairosActive, getUserMsgOptIn } from "../../bootstrap/state.js";
+import { Box } from "../../ink.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../services/analytics/growthbook.js";
+import { useAppState } from "../../state/AppState.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { logError } from "../../utils/log.js";
+import { countCharInString } from "../../utils/stringUtils.js";
+import { MessageActionsSelectedContext } from "../messageActions.js";
+import { HighlightedThinkingText } from "./HighlightedThinkingText.js";
 
 type Props = {
   addMargin: boolean;
@@ -49,27 +49,27 @@ export function UserPromptMessage({
   // to avoid pulling BriefTool.ts → prompt.ts tool-name strings into
   // external builds.
   const isBriefOnly =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature("KAIROS") || feature("KAIROS_BRIEF")
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s) => s.isBriefOnly)
       : false;
   const viewingAgentTaskId =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature("KAIROS") || feature("KAIROS_BRIEF")
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s_0) => s_0.viewingAgentTaskId)
       : null;
   // Hoisted to mount-time — per-message component, re-renders on every scroll.
   const briefEnvEnabled =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature("KAIROS") || feature("KAIROS_BRIEF")
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useMemo(() => isEnvTruthy(process.env.CLAUDE_CODE_BRIEF), [])
       : false;
   const useBriefLayout =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature("KAIROS") || feature("KAIROS_BRIEF")
       ? (getKairosActive() ||
           (getUserMsgOptIn() &&
             (briefEnvEnabled ||
-              getFeatureValue_CACHED_MAY_BE_STALE('tengu_kairos_brief', false)))) &&
+              getFeatureValue_CACHED_MAY_BE_STALE("tengu_kairos_brief", false)))) &&
         isBriefOnly &&
         !isTranscriptMode &&
         !viewingAgentTaskId
@@ -81,12 +81,12 @@ export function UserPromptMessage({
     const head = text.slice(0, TRUNCATE_HEAD_CHARS);
     const tail = text.slice(-TRUNCATE_TAIL_CHARS);
     const hiddenLines =
-      countCharInString(text, '\n', TRUNCATE_HEAD_CHARS) - countCharInString(tail, '\n');
+      countCharInString(text, "\n", TRUNCATE_HEAD_CHARS) - countCharInString(tail, "\n");
     return `${head}\n… +${hiddenLines} lines …\n${tail}`;
   }, [text]);
   const isSelected = useContext(MessageActionsSelectedContext);
   if (!text) {
-    logError(new Error('No content found in user prompt message'));
+    logError(new Error("No content found in user prompt message"));
     return null;
   }
   return (
@@ -95,10 +95,10 @@ export function UserPromptMessage({
       marginTop={addMargin ? 1 : 0}
       backgroundColor={
         isSelected
-          ? 'messageActionsBackground'
+          ? "messageActionsBackground"
           : useBriefLayout
             ? undefined
-            : 'userMessageBackground'
+            : "userMessageBackground"
       }
       paddingRight={useBriefLayout ? 0 : 1}
     >

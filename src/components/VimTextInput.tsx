@@ -1,12 +1,12 @@
-import chalk from 'chalk';
-import React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useClipboardImageHint } from '../hooks/useClipboardImageHint.js';
-import { useVimInput } from '../hooks/useVimInput.js';
-import { Box, color, useTerminalFocus, useTheme } from '../ink.js';
-import type { VimTextInputProps } from '../types/textInputTypes.js';
-import type { TextHighlight } from '../utils/textHighlighting.js';
-import { BaseTextInput } from './BaseTextInput.js';
+import chalk from "chalk";
+import React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useClipboardImageHint } from "../hooks/useClipboardImageHint.js";
+import { useVimInput } from "../hooks/useVimInput.js";
+import { Box, color, useTerminalFocus, useTheme } from "../ink.js";
+import type { VimTextInputProps } from "../types/textInputTypes.js";
+import type { TextHighlight } from "../utils/textHighlighting.js";
+import { BaseTextInput } from "./BaseTextInput.js";
 export type Props = VimTextInputProps & {
   highlights?: TextHighlight[];
 };
@@ -27,12 +27,12 @@ export default function VimTextInput(props) {
   const t9 = props.focus;
   const t10 = props.mask;
   const t11 = props.multiline;
-  const t12 = props.showCursor ? ' ' : '';
+  const t12 = props.showCursor ? " " : "";
   const t13 = props.highlightPastedText;
   const t14 = isTerminalFocused ? chalk.inverse : _temp;
   let t15;
   if ($[0] !== theme) {
-    t15 = color('text', theme);
+    t15 = color("text", theme);
     $[0] = theme;
     $[1] = t15;
   } else {

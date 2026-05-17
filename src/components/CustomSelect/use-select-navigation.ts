@@ -1,7 +1,7 @@
-import { isDeepStrictEqual } from 'node:util';
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
-import OptionMap from './option-map.js';
-import type { OptionWithDescription } from './select.js';
+import { isDeepStrictEqual } from "node:util";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import OptionMap from "./option-map.js";
+import type { OptionWithDescription } from "./select.js";
 
 type State<T> = {
   /**
@@ -39,34 +39,34 @@ type Action<T> =
   | ResetAction<T>;
 
 type SetFocusAction<T> = {
-  type: 'set-focus';
+  type: "set-focus";
   value: T;
 };
 
 type FocusNextOptionAction = {
-  type: 'focus-next-option';
+  type: "focus-next-option";
 };
 
 type FocusPreviousOptionAction = {
-  type: 'focus-previous-option';
+  type: "focus-previous-option";
 };
 
 type FocusNextPageAction = {
-  type: 'focus-next-page';
+  type: "focus-next-page";
 };
 
 type FocusPreviousPageAction = {
-  type: 'focus-previous-page';
+  type: "focus-previous-page";
 };
 
 type ResetAction<T> = {
-  type: 'reset';
+  type: "reset";
   state: State<T>;
 };
 
 const reducer = <T>(state: State<T>, action: Action<T>): State<T> => {
   switch (action.type) {
-    case 'focus-next-option': {
+    case "focus-next-option": {
       if (state.focusedValue === undefined) {
         return state;
       }
@@ -115,7 +115,7 @@ const reducer = <T>(state: State<T>, action: Action<T>): State<T> => {
       };
     }
 
-    case 'focus-previous-option': {
+    case "focus-previous-option": {
       if (state.focusedValue === undefined) {
         return state;
       }
@@ -166,7 +166,7 @@ const reducer = <T>(state: State<T>, action: Action<T>): State<T> => {
       };
     }
 
-    case 'focus-next-page': {
+    case "focus-next-page": {
       if (state.focusedValue === undefined) {
         return state;
       }
@@ -206,7 +206,7 @@ const reducer = <T>(state: State<T>, action: Action<T>): State<T> => {
       };
     }
 
-    case 'focus-previous-page': {
+    case "focus-previous-page": {
       if (state.focusedValue === undefined) {
         return state;
       }
@@ -249,11 +249,11 @@ const reducer = <T>(state: State<T>, action: Action<T>): State<T> => {
       };
     }
 
-    case 'reset': {
+    case "reset": {
       return action.state;
     }
 
-    case 'set-focus': {
+    case "set-focus": {
       // Early return if already focused on this value
       if (state.focusedValue === action.value) {
         return state;
@@ -398,12 +398,12 @@ const createDefaultState = <T>({
   options,
   initialFocusValue,
   currentViewport,
-}: Pick<UseSelectNavigationProps<T>, 'visibleOptionCount' | 'options'> & {
+}: Pick<UseSelectNavigationProps<T>, "visibleOptionCount" | "options"> & {
   initialFocusValue?: T;
   currentViewport?: { visibleFromIndex: number; visibleToIndex: number };
 }): State<T> => {
   const visibleOptionCount =
-    typeof customVisibleOptionCount === 'number'
+    typeof customVisibleOptionCount === "number"
       ? Math.min(customVisibleOptionCount, options.length)
       : options.length;
 
@@ -486,7 +486,7 @@ export function useSelectNavigation<T>({
 
   if (options !== lastOptions && !isDeepStrictEqual(options, lastOptions)) {
     dispatch({
-      type: 'reset',
+      type: "reset",
       state: createDefaultState({
         visibleOptionCount,
         options,
@@ -503,32 +503,32 @@ export function useSelectNavigation<T>({
 
   const focusNextOption = useCallback(() => {
     dispatch({
-      type: 'focus-next-option',
+      type: "focus-next-option",
     });
   }, []);
 
   const focusPreviousOption = useCallback(() => {
     dispatch({
-      type: 'focus-previous-option',
+      type: "focus-previous-option",
     });
   }, []);
 
   const focusNextPage = useCallback(() => {
     dispatch({
-      type: 'focus-next-page',
+      type: "focus-next-page",
     });
   }, []);
 
   const focusPreviousPage = useCallback(() => {
     dispatch({
-      type: 'focus-previous-page',
+      type: "focus-previous-page",
     });
   }, []);
 
   const focusOption = useCallback((value: T | undefined) => {
     if (value !== undefined) {
       dispatch({
-        type: 'set-focus',
+        type: "set-focus",
         value,
       });
     }
@@ -561,7 +561,7 @@ export function useSelectNavigation<T>({
 
   const isInInput = useMemo(() => {
     const focusedOption = options.find((opt) => opt.value === validatedFocusedValue);
-    return focusedOption?.type === 'input';
+    return focusedOption?.type === "input";
   }, [validatedFocusedValue, options]);
 
   // Call onFocus with the validated value (what's actually displayed),
@@ -577,7 +577,7 @@ export function useSelectNavigation<T>({
   useEffect(() => {
     if (focusValue !== undefined) {
       dispatch({
-        type: 'set-focus',
+        type: "set-focus",
         value: focusValue,
       });
     }

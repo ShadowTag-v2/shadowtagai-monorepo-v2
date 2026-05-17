@@ -1,28 +1,28 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Select } from 'src/components/CustomSelect/index.js';
-import { Box, Text } from '../../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import { Select } from "src/components/CustomSelect/index.js";
+import { Box, Text } from "../../ink.js";
 
 interface ExistingWorkflowStepProps {
   repoName: string;
-  onSelectAction: (action: 'update' | 'skip' | 'exit') => void;
+  onSelectAction: (action: "update" | "skip" | "exit") => void;
 }
 export function ExistingWorkflowStep(t0) {
   const $ = _c(16);
   const { repoName, onSelectAction } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = [
       {
-        label: 'Update workflow file with latest version',
-        value: 'update',
+        label: "Update workflow file with latest version",
+        value: "update",
       },
       {
-        label: 'Skip workflow update (configure secrets only)',
-        value: 'skip',
+        label: "Skip workflow update (configure secrets only)",
+        value: "skip",
       },
       {
-        label: 'Exit without making changes',
-        value: 'exit',
+        label: "Exit without making changes",
+        value: "exit",
       },
     ];
     $[0] = t1;
@@ -33,7 +33,7 @@ export function ExistingWorkflowStep(t0) {
   let t2;
   if ($[1] !== onSelectAction) {
     t2 = (value) => {
-      onSelectAction(value as 'update' | 'skip' | 'exit');
+      onSelectAction(value as "update" | "skip" | "exit");
     };
     $[1] = onSelectAction;
     $[2] = t2;
@@ -44,7 +44,7 @@ export function ExistingWorkflowStep(t0) {
   let t3;
   if ($[3] !== onSelectAction) {
     t3 = () => {
-      onSelectAction('exit');
+      onSelectAction("exit");
     };
     $[3] = onSelectAction;
     $[4] = t3;
@@ -53,7 +53,7 @@ export function ExistingWorkflowStep(t0) {
   }
   const handleCancel = t3;
   let t4;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Text bold={true}>Existing Workflow Found</Text>;
     $[5] = t4;
   } else {
@@ -73,11 +73,11 @@ export function ExistingWorkflowStep(t0) {
     t5 = $[7];
   }
   let t6;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Box flexDirection="column" marginBottom={1}>
         <Text>
-          A Claude workflow file already exists at{' '}
+          A Claude workflow file already exists at{" "}
           <Text color="claude">.github/workflows/claude.yml</Text>
         </Text>
         <Text dimColor={true}>What would you like to do?</Text>
@@ -101,11 +101,11 @@ export function ExistingWorkflowStep(t0) {
     t7 = $[11];
   }
   let t8;
-  if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Box marginTop={1}>
         <Text dimColor={true}>
-          View the latest workflow template at:{' '}
+          View the latest workflow template at:{" "}
           <Text color="claude">
             https://github.com/anthropics/claude-code-action/blob/main/examples/claude.yml
           </Text>

@@ -1,9 +1,9 @@
-import { z } from 'zod/v4';
-import { buildTool, type ToolDef } from '../../Tool.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { getTaskListId, isTodoV2Enabled, listTasks, TaskStatusSchema } from '../../utils/tasks.js';
-import { TASK_LIST_TOOL_NAME } from './constants.js';
-import { DESCRIPTION, getPrompt } from './prompt.js';
+import { z } from "zod/v4";
+import { buildTool, type ToolDef } from "../../Tool.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { getTaskListId, isTodoV2Enabled, listTasks, TaskStatusSchema } from "../../utils/tasks.js";
+import { TASK_LIST_TOOL_NAME } from "./constants.js";
+import { DESCRIPTION, getPrompt } from "./prompt.js";
 
 const inputSchema = lazySchema(() => z.strictObject({}));
 type InputSchema = ReturnType<typeof inputSchema>;
@@ -27,7 +27,7 @@ export type Output = z.infer<OutputSchema>;
 
 export const TaskListTool = buildTool({
   name: TASK_LIST_TOOL_NAME,
-  searchHint: 'list all tasks',
+  searchHint: "list all tasks",
   maxResultSizeChars: 100_000,
   async description() {
     return DESCRIPTION;
@@ -42,7 +42,7 @@ export const TaskListTool = buildTool({
     return outputSchema();
   },
   userFacingName() {
-    return 'TaskList';
+    return "TaskList";
   },
   shouldDefer: true,
   isEnabled() {
@@ -64,7 +64,7 @@ export const TaskListTool = buildTool({
 
     // Build a set of resolved task IDs for filtering
     const resolvedTaskIds = new Set(
-      allTasks.filter((t) => t.status === 'completed').map((t) => t.id),
+      allTasks.filter((t) => t.status === "completed").map((t) => t.id),
     );
 
     const tasks = allTasks.map((task) => ({
@@ -86,24 +86,24 @@ export const TaskListTool = buildTool({
     if (tasks.length === 0) {
       return {
         tool_use_id: toolUseID,
-        type: 'tool_result',
-        content: 'No tasks found',
+        type: "tool_result",
+        content: "No tasks found",
       };
     }
 
     const lines = tasks.map((task) => {
-      const owner = task.owner ? ` (${task.owner})` : '';
+      const owner = task.owner ? ` (${task.owner})` : "";
       const blocked =
         task.blockedBy.length > 0
-          ? ` [blocked by ${task.blockedBy.map((id) => `#${id}`).join(', ')}]`
-          : '';
+          ? ` [blocked by ${task.blockedBy.map((id) => `#${id}`).join(", ")}]`
+          : "";
       return `#${task.id} [${task.status}] ${task.subject}${owner}${blocked}`;
     });
 
     return {
       tool_use_id: toolUseID,
-      type: 'tool_result',
-      content: lines.join('\n'),
+      type: "tool_result",
+      content: lines.join("\n"),
     };
   },
 } satisfies ToolDef<InputSchema, Output>);

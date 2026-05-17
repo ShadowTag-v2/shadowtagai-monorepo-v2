@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { useAppState, useSetAppState } from '../state/AppState.js';
-import { exitTeammateView } from '../state/teammateViewHelpers.js';
-import { isInProcessTeammateTask } from '../tasks/InProcessTeammateTask/types.js';
+import { useEffect } from "react";
+import { useAppState, useSetAppState } from "../state/AppState.js";
+import { exitTeammateView } from "../state/teammateViewHelpers.js";
+import { isInProcessTeammateTask } from "../tasks/InProcessTeammateTask/types.js";
 
 /**
  * Auto-exits teammate viewing mode when the viewed teammate
@@ -42,10 +42,10 @@ export function useTeammateViewAutoExit(): void {
     // Auto-exit if teammate is killed, stopped, has error, or is no longer running
     // This handles shutdown scenarios where teammate becomes inactive
     if (
-      viewedStatus === 'killed' ||
-      viewedStatus === 'failed' ||
+      viewedStatus === "killed" ||
+      viewedStatus === "failed" ||
       viewedError ||
-      (viewedStatus !== 'running' && viewedStatus !== 'completed' && viewedStatus !== 'pending')
+      (viewedStatus !== "running" && viewedStatus !== "completed" && viewedStatus !== "pending")
     ) {
       exitTeammateView(setAppState);
       return;

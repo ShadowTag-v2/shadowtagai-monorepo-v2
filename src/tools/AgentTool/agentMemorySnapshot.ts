@@ -1,15 +1,15 @@
-import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { z } from 'zod/v4';
-import { getCwd } from '../../utils/cwd.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { jsonParse, jsonStringify } from '../../utils/slowOperations.js';
-import { type AgentMemoryScope, getAgentMemoryDir } from './agentMemory.js';
+import { mkdir, readdir, readFile, unlink, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { z } from "zod/v4";
+import { getCwd } from "../../utils/cwd.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { jsonParse, jsonStringify } from "../../utils/slowOperations.js";
+import { type AgentMemoryScope, getAgentMemoryDir } from "./agentMemory.js";
 
-const SNAPSHOT_BASE = 'agent-memory-snapshots';
-const SNAPSHOT_JSON = 'snapshot.json';
-const SYNCED_JSON = '.snapshot-synced.json';
+const SNAPSHOT_BASE = "agent-memory-snapshots";
+const SNAPSHOT_JSON = "snapshot.json";
+const SYNCED_JSON = ".snapshot-synced.json";
 
 const snapshotMetaSchema = lazySchema(() =>
   z.object({
@@ -29,7 +29,7 @@ type SyncedMeta = z.infer<ReturnType<typeof syncedMetaSchema>>;
  * e.g., <cwd>/.claude/agent-memory-snapshots/<agentType>/
  */
 export function getSnapshotDirForAgent(agentType: string): string {
-  return join(getCwd(), '.claude', SNAPSHOT_BASE, agentType);
+  return join(getCwd(), ".claude", SNAPSHOT_BASE, agentType);
 }
 
 function getSnapshotJsonPath(agentType: string): string {
@@ -42,7 +42,7 @@ function getSyncedJsonPath(agentType: string, scope: AgentMemoryScope): string {
 
 async function readJsonFile<T>(path: string, schema: z.ZodType<T>): Promise<T | null> {
   try {
-    const content = await readFile(path, { encoding: 'utf-8' });
+    const content = await readFile(path, { encoding: "utf-8" });
     const result = schema.safeParse(jsonParse(content));
     return result.success ? result.data : null;
   } catch {
@@ -61,7 +61,7 @@ async function copySnapshotToLocal(agentType: string, scope: AgentMemoryScope): 
     for (const dirent of files) {
       if (!dirent.isFile() || dirent.name === SNAPSHOT_JSON) continue;
       const content = await readFile(join(snapshotMemDir, dirent.name), {
-        encoding: 'utf-8',
+        encoding: "utf-8",
       });
       await writeFile(join(localMemDir, dirent.name), content);
     }
@@ -93,13 +93,13 @@ export async function checkAgentMemorySnapshot(
   agentType: string,
   scope: AgentMemoryScope,
 ): Promise<{
-  action: 'none' | 'initialize' | 'prompt-update';
+  action: "none" | "initialize" | "prompt-update";
   snapshotTimestamp?: string;
 }> {
   const snapshotMeta = await readJsonFile(getSnapshotJsonPath(agentType), snapshotMetaSchema());
 
   if (!snapshotMeta) {
-    return { action: 'none' };
+    return { action: "none" };
   }
 
   const localMemDir = getAgentMemoryDir(agentType, scope);
@@ -107,25 +107,25 @@ export async function checkAgentMemorySnapshot(
   let hasLocalMemory = false;
   try {
     const dirents = await readdir(localMemDir, { withFileTypes: true });
-    hasLocalMemory = dirents.some((d) => d.isFile() && d.name.endsWith('.md'));
+    hasLocalMemory = dirents.some((d) => d.isFile() && d.name.endsWith(".md"));
   } catch {
     // Directory doesn't exist
   }
 
   if (!hasLocalMemory) {
-    return { action: 'initialize', snapshotTimestamp: snapshotMeta.updatedAt };
+    return { action: "initialize", snapshotTimestamp: snapshotMeta.updatedAt };
   }
 
   const syncedMeta = await readJsonFile(getSyncedJsonPath(agentType, scope), syncedMetaSchema());
 
   if (!syncedMeta || new Date(snapshotMeta.updatedAt) > new Date(syncedMeta.syncedFrom)) {
     return {
-      action: 'prompt-update',
+      action: "prompt-update",
       snapshotTimestamp: snapshotMeta.updatedAt,
     };
   }
 
-  return { action: 'none' };
+  return { action: "none" };
 }
 
 /**
@@ -155,7 +155,7 @@ export async function replaceFromSnapshot(
   try {
     const existing = await readdir(localMemDir, { withFileTypes: true });
     for (const dirent of existing) {
-      if (dirent.isFile() && dirent.name.endsWith('.md')) {
+      if (dirent.isFile() && dirent.name.endsWith(".md")) {
         await unlink(join(localMemDir, dirent.name));
       }
     }

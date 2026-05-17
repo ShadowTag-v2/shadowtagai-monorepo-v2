@@ -1,29 +1,29 @@
-import { feature } from 'bun:bundle';
-import { z } from 'zod/v4';
+import { feature } from "bun:bundle";
+import { z } from "zod/v4";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { buildTool, type ToolDef } from '../../Tool.js';
+} from "../../services/analytics/index.js";
+import { buildTool, type ToolDef } from "../../Tool.js";
 import {
   type GlobalConfig,
   getGlobalConfig,
   getRemoteControlAtStartup,
   saveGlobalConfig,
-} from '../../utils/config.js';
-import { errorMessage } from '../../utils/errors.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { logError } from '../../utils/log.js';
-import { getInitialSettings, updateSettingsForSource } from '../../utils/settings/settings.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { CONFIG_TOOL_NAME } from './constants.js';
-import { DESCRIPTION, generatePrompt } from './prompt.js';
-import { getConfig, getOptionsForSetting, getPath, isSupported } from './supportedSettings.js';
+} from "../../utils/config.js";
+import { errorMessage } from "../../utils/errors.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { logError } from "../../utils/log.js";
+import { getInitialSettings, updateSettingsForSource } from "../../utils/settings/settings.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { CONFIG_TOOL_NAME } from "./constants.js";
+import { DESCRIPTION, generatePrompt } from "./prompt.js";
+import { getConfig, getOptionsForSetting, getPath, isSupported } from "./supportedSettings.js";
 import {
   renderToolResultMessage,
   renderToolUseMessage,
   renderToolUseRejectedMessage,
-} from './UI.js';
+} from "./UI.js";
 
 const inputSchema = lazySchema(() =>
   z.strictObject({
@@ -33,7 +33,7 @@ const inputSchema = lazySchema(() =>
     value: z
       .union([z.string(), z.boolean(), z.number()])
       .optional()
-      .describe('The new value. Omit to get current value.'),
+      .describe("The new value. Omit to get current value."),
   }),
 );
 type InputSchema = ReturnType<typeof inputSchema>;
@@ -41,7 +41,7 @@ type InputSchema = ReturnType<typeof inputSchema>;
 const outputSchema = lazySchema(() =>
   z.object({
     success: z.boolean(),
-    operation: z.enum(['get', 'set']).optional(),
+    operation: z.enum(["get", "set"]).optional(),
     setting: z.string().optional(),
     value: z.unknown().optional(),
     previousValue: z.unknown().optional(),
@@ -56,7 +56,7 @@ export type Output = z.infer<OutputSchema>;
 
 export const ConfigTool = buildTool({
   name: CONFIG_TOOL_NAME,
-  searchHint: 'get or set Claude Code settings (theme, model)',
+  searchHint: "get or set Claude Code settings (theme, model)",
   maxResultSizeChars: 100_000,
   async description() {
     return DESCRIPTION;
@@ -71,7 +71,7 @@ export const ConfigTool = buildTool({
     return outputSchema();
   },
   userFacingName() {
-    return 'Config';
+    return "Config";
   },
   shouldDefer: true,
   isConcurrencySafe() {
@@ -86,10 +86,10 @@ export const ConfigTool = buildTool({
   async checkPermissions(input: Input) {
     // Auto-allow reading configs
     if (input.value === undefined) {
-      return { behavior: 'allow' as const, updatedInput: input };
+      return { behavior: "allow" as const, updatedInput: input };
     }
     return {
-      behavior: 'ask' as const,
+      behavior: "ask" as const,
       message: `Set ${input.setting} to ${jsonStringify(input.value)}`,
     };
   },
@@ -101,8 +101,8 @@ export const ConfigTool = buildTool({
     // Voice settings are registered at build-time (feature('VOICE_MODE')), but
     // must also be gated at runtime. When the kill-switch is on, treat
     // voiceEnabled as an unknown setting so no voice-specific strings leak.
-    if (feature('VOICE_MODE') && setting === 'voiceEnabled') {
-      const { isVoiceGrowthBookEnabled } = await import('../../voice/voiceModeEnabled.js');
+    if (feature("VOICE_MODE") && setting === "voiceEnabled") {
+      const { isVoiceGrowthBookEnabled } = await import("../../voice/voiceModeEnabled.js");
       if (!isVoiceGrowthBookEnabled()) {
         return {
           data: { success: false, error: `Unknown setting: "${setting}"` },
@@ -123,7 +123,7 @@ export const ConfigTool = buildTool({
       const currentValue = getValue(config.source, path);
       const displayValue = config.formatOnRead ? config.formatOnRead(currentValue) : currentValue;
       return {
-        data: { success: true, operation: 'get', setting, value: displayValue },
+        data: { success: true, operation: "get", setting, value: displayValue },
       };
     }
 
@@ -132,9 +132,9 @@ export const ConfigTool = buildTool({
     // Handle "default" — unset the config key so it falls back to the
     // platform-aware default (determined by the bridge feature gate).
     if (
-      setting === 'remoteControlAtStartup' &&
-      typeof value === 'string' &&
-      value.toLowerCase().trim() === 'default'
+      setting === "remoteControlAtStartup" &&
+      typeof value === "string" &&
+      value.toLowerCase().trim() === "default"
     ) {
       saveGlobalConfig((prev) => {
         if (prev.remoteControlAtStartup === undefined) return prev;
@@ -155,7 +155,7 @@ export const ConfigTool = buildTool({
       return {
         data: {
           success: true,
-          operation: 'set',
+          operation: "set",
           setting,
           value: resolved,
         },
@@ -165,17 +165,17 @@ export const ConfigTool = buildTool({
     let finalValue: unknown = value;
 
     // Coerce and validate boolean values
-    if (config.type === 'boolean') {
-      if (typeof value === 'string') {
+    if (config.type === "boolean") {
+      if (typeof value === "string") {
         const lower = value.toLowerCase().trim();
-        if (lower === 'true') finalValue = true;
-        else if (lower === 'false') finalValue = false;
+        if (lower === "true") finalValue = true;
+        else if (lower === "false") finalValue = false;
       }
-      if (typeof finalValue !== 'boolean') {
+      if (typeof finalValue !== "boolean") {
         return {
           data: {
             success: false,
-            operation: 'set',
+            operation: "set",
             setting,
             error: `${setting} requires true or false.`,
           },
@@ -189,9 +189,9 @@ export const ConfigTool = buildTool({
       return {
         data: {
           success: false,
-          operation: 'set',
+          operation: "set",
           setting,
-          error: `Invalid value "${value}". Options: ${options.join(', ')}`,
+          error: `Invalid value "${value}". Options: ${options.join(", ")}`,
         },
       };
     }
@@ -203,7 +203,7 @@ export const ConfigTool = buildTool({
         return {
           data: {
             success: false,
-            operation: 'set',
+            operation: "set",
             setting,
             error: result.error,
           },
@@ -212,29 +212,29 @@ export const ConfigTool = buildTool({
     }
 
     // Pre-flight checks for voice mode
-    if (feature('VOICE_MODE') && setting === 'voiceEnabled' && finalValue === true) {
-      const { isVoiceModeEnabled } = await import('../../voice/voiceModeEnabled.js');
+    if (feature("VOICE_MODE") && setting === "voiceEnabled" && finalValue === true) {
+      const { isVoiceModeEnabled } = await import("../../voice/voiceModeEnabled.js");
       if (!isVoiceModeEnabled()) {
-        const { isAnthropicAuthEnabled } = await import('../../utils/auth.js');
+        const { isAnthropicAuthEnabled } = await import("../../utils/auth.js");
         return {
           data: {
             success: false,
             error: !isAnthropicAuthEnabled()
-              ? 'Voice mode requires a Claude.ai account. Please run /login to sign in.'
-              : 'Voice mode is not available.',
+              ? "Voice mode requires a Claude.ai account. Please run /login to sign in."
+              : "Voice mode is not available.",
           },
         };
       }
-      const { isVoiceStreamAvailable } = await import('../../services/voiceStreamSTT.js');
+      const { isVoiceStreamAvailable } = await import("../../services/voiceStreamSTT.js");
       const { checkRecordingAvailability, checkVoiceDependencies, requestMicrophonePermission } =
-        await import('../../services/voice.js');
+        await import("../../services/voice.js");
 
       const recording = await checkRecordingAvailability();
       if (!recording.available) {
         return {
           data: {
             success: false,
-            error: recording.reason ?? 'Voice mode is not available in this environment.',
+            error: recording.reason ?? "Voice mode is not available in this environment.",
           },
         };
       }
@@ -242,7 +242,7 @@ export const ConfigTool = buildTool({
         return {
           data: {
             success: false,
-            error: 'Voice mode requires a Claude.ai account. Please run /login to sign in.',
+            error: "Voice mode requires a Claude.ai account. Please run /login to sign in.",
           },
         };
       }
@@ -252,19 +252,19 @@ export const ConfigTool = buildTool({
           data: {
             success: false,
             error:
-              'No audio recording tool found.' +
-              (deps.installCommand ? ` Run: ${deps.installCommand}` : ''),
+              "No audio recording tool found." +
+              (deps.installCommand ? ` Run: ${deps.installCommand}` : ""),
           },
         };
       }
       if (!(await requestMicrophonePermission())) {
         let guidance: string;
-        if (process.platform === 'win32') {
-          guidance = 'Settings \u2192 Privacy \u2192 Microphone';
-        } else if (process.platform === 'linux') {
+        if (process.platform === "win32") {
+          guidance = "Settings \u2192 Privacy \u2192 Microphone";
+        } else if (process.platform === "linux") {
           guidance = "your system's audio settings";
         } else {
-          guidance = 'System Settings \u2192 Privacy & Security \u2192 Microphone';
+          guidance = "System Settings \u2192 Privacy & Security \u2192 Microphone";
         }
         return {
           data: {
@@ -279,15 +279,15 @@ export const ConfigTool = buildTool({
 
     // 4. Write to storage
     try {
-      if (config.source === 'global') {
+      if (config.source === "global") {
         const key = path[0];
         if (!key) {
           return {
             data: {
               success: false,
-              operation: 'set',
+              operation: "set",
               setting,
-              error: 'Invalid setting path',
+              error: "Invalid setting path",
             },
           };
         }
@@ -297,12 +297,12 @@ export const ConfigTool = buildTool({
         });
       } else {
         const update = buildNestedObject(path, finalValue);
-        const result = updateSettingsForSource('userSettings', update);
+        const result = updateSettingsForSource("userSettings", update);
         if (result.error) {
           return {
             data: {
               success: false,
-              operation: 'set',
+              operation: "set",
               setting,
               error: result.error.message,
             },
@@ -313,9 +313,9 @@ export const ConfigTool = buildTool({
       // 5a. Voice needs notifyChange so applySettingsChange resyncs
       // AppState.settings (useVoiceEnabled reads settings.voiceEnabled)
       // and the settings cache resets for the next /voice read.
-      if (feature('VOICE_MODE') && setting === 'voiceEnabled') {
-        const { settingsChangeDetector } = await import('../../utils/settings/changeDetector.js');
-        settingsChangeDetector.notifyChange('userSettings');
+      if (feature("VOICE_MODE") && setting === "voiceEnabled") {
+        const { settingsChangeDetector } = await import("../../utils/settings/changeDetector.js");
+        settingsChangeDetector.notifyChange("userSettings");
       }
 
       // 5b. Sync to AppState if needed for immediate UI effect
@@ -330,7 +330,7 @@ export const ConfigTool = buildTool({
       // Sync remoteControlAtStartup to AppState so the bridge reacts
       // immediately (the config key differs from the AppState field name,
       // so the generic appStateKey mechanism can't handle this).
-      if (setting === 'remoteControlAtStartup') {
+      if (setting === "remoteControlAtStartup") {
         const resolved = getRemoteControlAtStartup();
         context.setAppState((prev) => {
           if (prev.replBridgeEnabled === resolved && !prev.replBridgeOutboundOnly) return prev;
@@ -342,7 +342,7 @@ export const ConfigTool = buildTool({
         });
       }
 
-      logEvent('tengu_config_tool_changed', {
+      logEvent("tengu_config_tool_changed", {
         setting: setting as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         value: String(finalValue) as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
@@ -350,7 +350,7 @@ export const ConfigTool = buildTool({
       return {
         data: {
           success: true,
-          operation: 'set',
+          operation: "set",
           setting,
           previousValue,
           newValue: finalValue,
@@ -361,7 +361,7 @@ export const ConfigTool = buildTool({
       return {
         data: {
           success: false,
-          operation: 'set',
+          operation: "set",
           setting,
           error: errorMessage(error),
         },
@@ -370,30 +370,30 @@ export const ConfigTool = buildTool({
   },
   mapToolResultToToolResultBlockParam(content: Output, toolUseID: string) {
     if (content.success) {
-      if (content.operation === 'get') {
+      if (content.operation === "get") {
         return {
           tool_use_id: toolUseID,
-          type: 'tool_result' as const,
+          type: "tool_result" as const,
           content: `${content.setting} = ${jsonStringify(content.value)}`,
         };
       }
       return {
         tool_use_id: toolUseID,
-        type: 'tool_result' as const,
+        type: "tool_result" as const,
         content: `Set ${content.setting} to ${jsonStringify(content.newValue)}`,
       };
     }
     return {
       tool_use_id: toolUseID,
-      type: 'tool_result' as const,
+      type: "tool_result" as const,
       content: `Error: ${content.error}`,
       is_error: true,
     };
   },
 } satisfies ToolDef<InputSchema, Output>);
 
-function getValue(source: 'global' | 'settings', path: string[]): unknown {
-  if (source === 'global') {
+function getValue(source: "global" | "settings", path: string[]): unknown {
+  if (source === "global") {
     const config = getGlobalConfig();
     const key = path[0];
     if (!key) return undefined;
@@ -402,7 +402,7 @@ function getValue(source: 'global' | 'settings', path: string[]): unknown {
   const settings = getInitialSettings();
   let current: unknown = settings;
   for (const key of path) {
-    if (current && typeof current === 'object' && key in current) {
+    if (current && typeof current === "object" && key in current) {
       current = (current as Record<string, unknown>)[key];
     } else {
       return undefined;

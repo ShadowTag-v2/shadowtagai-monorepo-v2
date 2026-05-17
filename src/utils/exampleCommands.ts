@@ -1,12 +1,12 @@
-import memoize from 'lodash-es/memoize.js';
-import sample from 'lodash-es/sample.js';
-import { getCwd } from '../utils/cwd.js';
-import { getCurrentProjectConfig, saveCurrentProjectConfig } from './config.js';
-import { env } from './env.js';
-import { execFileNoThrowWithCwd } from './execFileNoThrow.js';
-import { getIsGit, gitExe } from './git.js';
-import { logError } from './log.js';
-import { getGitEmail } from './user.js';
+import memoize from "lodash-es/memoize.js";
+import sample from "lodash-es/sample.js";
+import { getCwd } from "../utils/cwd.js";
+import { getCurrentProjectConfig, saveCurrentProjectConfig } from "./config.js";
+import { env } from "./env.js";
+import { execFileNoThrowWithCwd } from "./execFileNoThrow.js";
+import { getIsGit, gitExe } from "./git.js";
+import { logError } from "./log.js";
+import { getGitEmail } from "./user.js";
 
 // Patterns that mark a file as non-core (auto-generated, dependency, or config).
 // Used to filter example-command filename suggestions deterministically
@@ -45,7 +45,7 @@ export function countAndSortItems(items: string[], topN: number = 20): string {
     .sort((a, b) => b[1] - a[1])
     .slice(0, topN)
     .map(([item, count]) => `${count.toString().padStart(6)} ${item}`)
-    .join('\n');
+    .join("\n");
 }
 
 /**
@@ -66,10 +66,10 @@ export function pickDiverseCoreFiles(sortedPaths: string[], want: number): strin
     for (const p of sortedPaths) {
       if (picked.length >= want) break;
       if (!isCoreFile(p)) continue;
-      const lastSep = Math.max(p.lastIndexOf('/'), p.lastIndexOf('\\'));
+      const lastSep = Math.max(p.lastIndexOf("/"), p.lastIndexOf("\\"));
       const base = lastSep >= 0 ? p.slice(lastSep + 1) : p;
       if (!base || seenBasenames.has(base)) continue;
-      const dir = lastSep >= 0 ? p.slice(0, lastSep) : '.';
+      const dir = lastSep >= 0 ? p.slice(0, lastSep) : ".";
       if ((dirTally.get(dir) ?? 0) >= cap) continue;
       picked.push(base);
       seenBasenames.add(base);
@@ -81,19 +81,19 @@ export function pickDiverseCoreFiles(sortedPaths: string[], want: number): strin
 }
 
 async function getFrequentlyModifiedFiles(): Promise<string[]> {
-  if (process.env.NODE_ENV === 'test') return [];
-  if (env.platform === 'win32') return [];
+  if (process.env.NODE_ENV === "test") return [];
+  if (env.platform === "win32") return [];
   if (!(await getIsGit())) return [];
 
   try {
     // Collect frequently-modified files, preferring the user's own commits.
     const userEmail = await getGitEmail();
 
-    const logArgs = ['log', '-n', '1000', '--pretty=format:', '--name-only', '--diff-filter=M'];
+    const logArgs = ["log", "-n", "1000", "--pretty=format:", "--name-only", "--diff-filter=M"];
 
     const counts = new Map<string, number>();
     const tallyInto = (stdout: string) => {
-      for (const line of stdout.split('\n')) {
+      for (const line of stdout.split("\n")) {
         const f = line.trim();
         if (f) counts.set(f, (counts.get(f) ?? 0) + 1);
       }
@@ -101,7 +101,7 @@ async function getFrequentlyModifiedFiles(): Promise<string[]> {
 
     if (userEmail) {
       const { stdout } = await execFileNoThrowWithCwd(
-        'git',
+        "git",
         [...logArgs, `--author=${userEmail}`],
         { cwd: getCwd() },
       );
@@ -133,17 +133,17 @@ export const getExampleCommandFromCache = memoize(() => {
   const projectConfig = getCurrentProjectConfig();
   const frequentFile = projectConfig.exampleFiles?.length
     ? sample(projectConfig.exampleFiles)
-    : '<filepath>';
+    : "<filepath>";
 
   const commands = [
-    'fix lint errors',
-    'fix typecheck errors',
+    "fix lint errors",
+    "fix typecheck errors",
     `how does ${frequentFile} work?`,
     `refactor ${frequentFile}`,
-    'how do I log an error?',
+    "how do I log an error?",
     `edit ${frequentFile} to...`,
     `write a test for ${frequentFile}`,
-    'create a util logging.py that...',
+    "create a util logging.py that...",
   ];
 
   return `Try "${sample(commands)}"`;

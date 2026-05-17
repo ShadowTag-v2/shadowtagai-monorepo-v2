@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { PromptInputHelpMenu } from '../PromptInput/PromptInputHelpMenu.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { PromptInputHelpMenu } from "../PromptInput/PromptInputHelpMenu.js";
 export function General() {
   const $ = _c(2);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = (
       <Box>
         <Text>
@@ -18,7 +18,7 @@ export function General() {
     t0 = $[0];
   }
   let t1;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <Box flexDirection="column" paddingY={1} gap={1}>
         {t0}

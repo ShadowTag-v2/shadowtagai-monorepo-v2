@@ -1,14 +1,14 @@
-import { basename, relative } from 'node:path';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import { getCwd } from '../utils/cwd.js';
-import { isSupportedVSCodeTerminal } from '../utils/ide.js';
-import { Select } from './CustomSelect/index.js';
-import { Pane } from './design-system/Pane.js';
+import { basename, relative } from "node:path";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import { getCwd } from "../utils/cwd.js";
+import { isSupportedVSCodeTerminal } from "../utils/ide.js";
+import { Select } from "./CustomSelect/index.js";
+import { Pane } from "./design-system/Pane.js";
 import type {
   PermissionOption,
   PermissionOptionWithLabel,
-} from './permissions/FilePermissionDialog/permissionOptions.js';
+} from "./permissions/FilePermissionDialog/permissionOptions.js";
 
 type Props<A> = {
   filePath: string;
@@ -58,7 +58,7 @@ export function ShowInIDEPrompt(t0) {
   if ($[2] !== symlinkTarget) {
     t2 = symlinkTarget && (
       <Text color="warning">
-        {relative(getCwd(), symlinkTarget).startsWith('..')
+        {relative(getCwd(), symlinkTarget).startsWith("..")
           ? `This will modify ${symlinkTarget} (outside working directory) via a symlink`
           : `Symlink target: ${symlinkTarget}`}
       </Text>
@@ -69,7 +69,7 @@ export function ShowInIDEPrompt(t0) {
     t2 = $[3];
   }
   let t3;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = isSupportedVSCodeTerminal() && <Text dimColor={true}>Save file to continue…</Text>;
     $[4] = t3;
   } else {
@@ -106,12 +106,12 @@ export function ShowInIDEPrompt(t0) {
     t6 = (value) => {
       const selected = options.find((opt) => opt.value === value);
       if (selected) {
-        if (selected.option.type === 'reject') {
+        if (selected.option.type === "reject") {
           const trimmedFeedback = rejectFeedback.trim();
           onChange(selected.option, input, trimmedFeedback || undefined);
           return;
         }
-        if (selected.option.type === 'accept-once') {
+        if (selected.option.type === "accept-once") {
           const trimmedFeedback_0 = acceptFeedback.trim();
           onChange(selected.option, input, trimmedFeedback_0 || undefined);
           return;
@@ -133,7 +133,7 @@ export function ShowInIDEPrompt(t0) {
     t7 = () =>
       onChange(
         {
-          type: 'reject',
+          type: "reject",
         },
         input,
       );
@@ -193,8 +193,8 @@ export function ShowInIDEPrompt(t0) {
     t10 = $[28];
   }
   const t11 =
-    ((focusedOption === 'yes' && !yesInputMode) || (focusedOption === 'no' && !noInputMode)) &&
-    ' \xB7 Tab to amend';
+    ((focusedOption === "yes" && !yesInputMode) || (focusedOption === "no" && !noInputMode)) &&
+    " \xB7 Tab to amend";
   let t12;
   if ($[29] !== t11) {
     t12 = (

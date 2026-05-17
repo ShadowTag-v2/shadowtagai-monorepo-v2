@@ -1,18 +1,18 @@
-import { feature } from 'bun:bundle';
-import chalk from 'chalk';
-import { c as _c } from 'react/compiler-runtime';
-import { Ansi, Box, Text } from '../../ink.js';
-import { useAppState } from '../../state/AppState.js';
+import { feature } from "bun:bundle";
+import chalk from "chalk";
+import { c as _c } from "react/compiler-runtime";
+import { Ansi, Box, Text } from "../../ink.js";
+import { useAppState } from "../../state/AppState.js";
 import type {
   PermissionDecision,
   PermissionDecisionReason,
-} from '../../utils/permissions/PermissionResult.js';
-import { permissionRuleValueToString } from '../../utils/permissions/permissionRuleParser.js';
-import type { Theme } from '../../utils/theme.js';
-import ThemedText from '../design-system/ThemedText.js';
+} from "../../utils/permissions/PermissionResult.js";
+import { permissionRuleValueToString } from "../../utils/permissions/permissionRuleParser.js";
+import type { Theme } from "../../utils/theme.js";
+import ThemedText from "../design-system/ThemedText.js";
 export type PermissionRuleExplanationProps = {
   permissionResult: PermissionDecision;
-  toolType: 'tool' | 'command' | 'edit' | 'read';
+  toolType: "tool" | "command" | "edit" | "read";
 };
 type DecisionReasonStrings = {
   reasonString: string;
@@ -22,20 +22,20 @@ type DecisionReasonStrings = {
 };
 function stringsForDecisionReason(
   reason: PermissionDecisionReason | undefined,
-  toolType: 'tool' | 'command' | 'edit' | 'read',
+  toolType: "tool" | "command" | "edit" | "read",
 ): DecisionReasonStrings | null {
   if (!reason) {
     return null;
   }
   if (
-    (feature('BASH_CLASSIFIER') || feature('TRANSCRIPT_CLASSIFIER')) &&
-    reason.type === 'classifier'
+    (feature("BASH_CLASSIFIER") || feature("TRANSCRIPT_CLASSIFIER")) &&
+    reason.type === "classifier"
   ) {
-    if (reason.classifier === 'auto-mode') {
+    if (reason.classifier === "auto-mode") {
       return {
         reasonString: `Auto mode classifier requires confirmation for this ${toolType}.\n${reason.reason}`,
         configString: undefined,
-        themeColor: 'error',
+        themeColor: "error",
       };
     }
     return {
@@ -44,30 +44,30 @@ function stringsForDecisionReason(
     };
   }
   switch (reason.type) {
-    case 'rule':
+    case "rule":
       return {
         reasonString: `Permission rule ${chalk.bold(permissionRuleValueToString(reason.rule.ruleValue))} requires confirmation for this ${toolType}.`,
         configString:
-          reason.rule.source === 'policySettings' ? undefined : '/permissions to update rules',
+          reason.rule.source === "policySettings" ? undefined : "/permissions to update rules",
       };
-    case 'hook': {
-      const hookReasonString = reason.reason ? `:\n${reason.reason}` : '.';
-      const sourceLabel = reason.hookSource ? ` ${chalk.dim(`[${reason.hookSource}]`)}` : '';
+    case "hook": {
+      const hookReasonString = reason.reason ? `:\n${reason.reason}` : ".";
+      const sourceLabel = reason.hookSource ? ` ${chalk.dim(`[${reason.hookSource}]`)}` : "";
       return {
         reasonString: `Hook ${chalk.bold(reason.hookName)} requires confirmation for this ${toolType}${hookReasonString}${sourceLabel}`,
-        configString: '/hooks to update',
+        configString: "/hooks to update",
       };
     }
-    case 'safetyCheck':
-    case 'other':
+    case "safetyCheck":
+    case "other":
       return {
         reasonString: reason.reason,
         configString: undefined,
       };
-    case 'workingDir':
+    case "workingDir":
       return {
         reasonString: reason.reason,
-        configString: '/permissions to update rules',
+        configString: "/permissions to update rules",
       };
     default:
       return null;
@@ -93,8 +93,8 @@ export function PermissionRuleExplanation(t0) {
   }
   const themeColor =
     strings.themeColor ??
-    (permissionResult?.decisionReason?.type === 'hook' && permissionMode === 'auto'
-      ? 'warning'
+    (permissionResult?.decisionReason?.type === "hook" && permissionMode === "auto"
+      ? "warning"
       : undefined);
   let t3;
   if ($[3] !== strings.reasonString || $[4] !== themeColor) {

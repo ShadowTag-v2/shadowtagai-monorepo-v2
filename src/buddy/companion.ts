@@ -1,4 +1,4 @@
-import { getGlobalConfig } from '../utils/config.js';
+import { getGlobalConfig } from "../utils/config.js";
 import {
   type Companion,
   type CompanionBones,
@@ -10,7 +10,7 @@ import {
   SPECIES,
   STAT_NAMES,
   type StatName,
-} from './types.js';
+} from "./types.js";
 
 // Mulberry32 — tiny seeded PRNG, good enough for picking ducks
 function mulberry32(seed: number): () => number {
@@ -25,7 +25,7 @@ function mulberry32(seed: number): () => number {
 }
 
 function hashString(s: string): number {
-  if (typeof Bun !== 'undefined') {
+  if (typeof Bun !== "undefined") {
     return Number(BigInt(Bun.hash(s)) & 0xffffffffn);
   }
   let h = 2166136261;
@@ -47,7 +47,7 @@ function rollRarity(rng: () => number): Rarity {
     roll -= RARITY_WEIGHTS[rarity];
     if (roll < 0) return rarity;
   }
-  return 'common';
+  return "common";
 }
 
 const RARITY_FLOOR: Record<Rarity, number> = {
@@ -78,7 +78,7 @@ function rollStats(rng: () => number, rarity: Rarity): Record<StatName, number> 
   return stats;
 }
 
-const SALT = 'friend-2026-401';
+const SALT = "friend-2026-401";
 
 export type Roll = {
   bones: CompanionBones;
@@ -91,7 +91,7 @@ function rollFrom(rng: () => number): Roll {
     rarity,
     species: pick(rng, SPECIES),
     eye: pick(rng, EYES),
-    hat: rarity === 'common' ? 'none' : pick(rng, HATS),
+    hat: rarity === "common" ? "none" : pick(rng, HATS),
     shiny: rng() < 0.01,
     stats: rollStats(rng, rarity),
   };
@@ -115,7 +115,7 @@ export function rollWithSeed(seed: string): Roll {
 
 export function companionUserId(): string {
   const config = getGlobalConfig();
-  return config.oauthAccount?.accountUuid ?? config.userID ?? 'anon';
+  return config.oauthAccount?.accountUuid ?? config.userID ?? "anon";
 }
 
 // Regenerate bones from userId, merge with stored soul. Bones never persist

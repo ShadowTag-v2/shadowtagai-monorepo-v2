@@ -23,8 +23,8 @@
  * See PR discussion 2956440848.
  */
 
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../analytics/growthbook.js';
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../analytics/growthbook.js";
 
 /**
  * GrowthBook runtime gate — separate from the channels gate (tengu_harbor)
@@ -34,11 +34,11 @@ import { getFeatureValue_CACHED_MAY_BE_STALE } from '../analytics/growthbook.js'
  * don't apply until restart.
  */
 export function isChannelPermissionRelayEnabled(): boolean {
-  return getFeatureValue_CACHED_MAY_BE_STALE('tengu_harbor_permissions', false);
+  return getFeatureValue_CACHED_MAY_BE_STALE("tengu_harbor_permissions", false);
 }
 
 export type ChannelPermissionResponse = {
-  behavior: 'allow' | 'deny';
+  behavior: "allow" | "deny";
   /** Which channel server the reply came from (e.g., "plugin:telegram:tg"). */
   fromServer: string;
 };
@@ -50,7 +50,7 @@ export type ChannelPermissionCallbacks = {
    *  (notifications/claude/channel/permission). Returns true if the ID
    *  was pending — the server parsed the user's reply and emitted
    *  {request_id, behavior}; we just match against the map. */
-  resolve(requestId: string, behavior: 'allow' | 'deny', fromServer: string): boolean;
+  resolve(requestId: string, behavior: "allow" | "deny", fromServer: string): boolean;
 };
 
 /**
@@ -68,7 +68,7 @@ export type ChannelPermissionCallbacks = {
 export const PERMISSION_REPLY_RE = /^\s*(y|yes|n|no)\s+([a-km-z]{5})\s*$/i;
 
 // 25-letter alphabet: a-z minus 'l' (looks like 1/I). 25^5 ≈ 9.8M space.
-const ID_ALPHABET = 'abcdefghijkmnopqrstuvwxyz';
+const ID_ALPHABET = "abcdefghijkmnopqrstuvwxyz";
 
 // Substring blocklist — 5 random letters can spell things (Kenneth, in the
 // launch thread: "this is why i bias to numbers, hard to have anything worse
@@ -76,30 +76,30 @@ const ID_ALPHABET = 'abcdefghijkmnopqrstuvwxyz';
 // tier. If a generated ID contains any of these, re-hash with a salt.
 // prettier-ignore
 const ID_AVOID_SUBSTRINGS = [
-  'fuck',
-  'shit',
-  'cunt',
-  'cock',
-  'dick',
-  'twat',
-  'piss',
-  'crap',
-  'bitch',
-  'whore',
-  'ass',
-  'tit',
-  'cum',
-  'fag',
-  'dyke',
-  'nig',
-  'kike',
-  'rape',
-  'nazi',
-  'damn',
-  'poo',
-  'pee',
-  'wank',
-  'anus',
+  "fuck",
+  "shit",
+  "cunt",
+  "cock",
+  "dick",
+  "twat",
+  "piss",
+  "crap",
+  "bitch",
+  "whore",
+  "ass",
+  "tit",
+  "cum",
+  "fag",
+  "dyke",
+  "nig",
+  "kike",
+  "rape",
+  "nazi",
+  "damn",
+  "poo",
+  "pee",
+  "wank",
+  "anus",
 ];
 
 function hashToId(input: string): string {
@@ -112,7 +112,7 @@ function hashToId(input: string): string {
     h = Math.imul(h, 0x01000193);
   }
   h = h >>> 0;
-  let s = '';
+  let s = "";
   for (let i = 0; i < 5; i++) {
     s += ID_ALPHABET[h % 25];
     h = Math.floor(h / 25);
@@ -155,7 +155,7 @@ export function truncateForPreview(input: unknown): string {
     const s = jsonStringify(input);
     return s.length > 200 ? `${s.slice(0, 200)}…` : s;
   } catch {
-    return '(unserializable)';
+    return "(unserializable)";
   }
 }
 
@@ -173,13 +173,13 @@ export function filterPermissionRelayClients<
     name: string;
     capabilities?: { experimental?: Record<string, unknown> };
   },
->(clients: readonly T[], isInAllowlist: (name: string) => boolean): (T & { type: 'connected' })[] {
+>(clients: readonly T[], isInAllowlist: (name: string) => boolean): (T & { type: "connected" })[] {
   return clients.filter(
-    (c): c is T & { type: 'connected' } =>
-      c.type === 'connected' &&
+    (c): c is T & { type: "connected" } =>
+      c.type === "connected" &&
       isInAllowlist(c.name) &&
-      c.capabilities?.experimental?.['claude/channel'] !== undefined &&
-      c.capabilities?.experimental?.['claude/channel/permission'] !== undefined,
+      c.capabilities?.experimental?.["claude/channel"] !== undefined &&
+      c.capabilities?.experimental?.["claude/channel/permission"] !== undefined,
   );
 }
 

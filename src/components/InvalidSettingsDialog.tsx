@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../ink.js';
-import type { ValidationError } from '../utils/settings/validation.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
-import { ValidationErrorsList } from './ValidationErrorsList.js';
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../ink.js";
+import type { ValidationError } from "../utils/settings/validation.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
+import { ValidationErrorsList } from "./ValidationErrorsList.js";
 
 type Props = {
   settingsErrors: ValidationError[];
@@ -21,7 +21,7 @@ export function InvalidSettingsDialog(t0) {
   let t1;
   if ($[0] !== onContinue || $[1] !== onExit) {
     t1 = function handleSelect(value) {
-      if (value === 'exit') {
+      if (value === "exit") {
         onExit();
       } else {
         onContinue();
@@ -43,7 +43,7 @@ export function InvalidSettingsDialog(t0) {
     t2 = $[4];
   }
   let t3;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Text dimColor={true}>
         Files with errors are skipped entirely, not just the invalid settings.
@@ -54,15 +54,15 @@ export function InvalidSettingsDialog(t0) {
     t3 = $[5];
   }
   let t4;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = [
       {
-        label: 'Exit and fix manually',
-        value: 'exit',
+        label: "Exit and fix manually",
+        value: "exit",
       },
       {
-        label: 'Continue without these settings',
-        value: 'continue',
+        label: "Continue without these settings",
+        value: "continue",
       },
     ];
     $[6] = t4;

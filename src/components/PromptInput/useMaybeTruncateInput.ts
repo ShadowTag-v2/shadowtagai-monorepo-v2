@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import type { PastedContent } from 'src/utils/config.js';
-import { maybeTruncateInput } from './inputPaste.js';
+import { useEffect, useState } from "react";
+import type { PastedContent } from "src/utils/config.js";
+import { maybeTruncateInput } from "./inputPaste.js";
 
 type Props = {
   input: string;
@@ -47,7 +47,7 @@ export function useMaybeTruncateInput({
 
   // Reset hasInitializedInput when input is cleared (e.g., after submission)
   useEffect(() => {
-    if (input === '') {
+    if (input === "") {
       setHasAppliedTruncationToInput(false);
     }
   }, [input]);

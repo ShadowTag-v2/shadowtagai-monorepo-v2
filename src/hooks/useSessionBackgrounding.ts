@@ -7,9 +7,9 @@
  * - Syncing foregrounded task messages/state to main view
  */
 
-import { useCallback, useEffect, useRef } from 'react';
-import { useAppState, useSetAppState } from '../state/AppState.js';
-import type { Message } from '../types/message.js';
+import { useCallback, useEffect, useRef } from "react";
+import { useAppState, useSetAppState } from "../state/AppState.js";
+import type { Message } from "../types/message.js";
 
 type UseSessionBackgroundingProps = {
   setMessages: (messages: Message[] | ((prev: Message[]) => Message[])) => void;
@@ -81,7 +81,7 @@ export function useSessionBackgrounding({
       return;
     }
 
-    if (!foregroundedTask || foregroundedTask.type !== 'local_agent') {
+    if (!foregroundedTask || foregroundedTask.type !== "local_agent") {
       setAppState((prev) => ({ ...prev, foregroundedTaskId: undefined }));
       resetLoadingState();
       lastSyncedMessagesLengthRef.current = 0;
@@ -96,7 +96,7 @@ export function useSessionBackgrounding({
       setMessages([...taskMessages]);
     }
 
-    if (foregroundedTask.status === 'running') {
+    if (foregroundedTask.status === "running") {
       // Check if the task was aborted (user pressed Escape)
       const taskAbortController = foregroundedTask.abortController;
       if (taskAbortController?.signal.aborted) {

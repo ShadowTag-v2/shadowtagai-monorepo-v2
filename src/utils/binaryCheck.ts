@@ -1,5 +1,5 @@
-import { logForDebugging } from './debug.js';
-import { which } from './which.js';
+import { logForDebugging } from "./debug.js";
+import { which } from "./which.js";
 
 // Session cache to avoid repeated checks
 const binaryCache = new Map<string, boolean>();
@@ -14,7 +14,7 @@ const binaryCache = new Map<string, boolean>();
 export async function isBinaryInstalled(command: string): Promise<boolean> {
   // Edge case: empty or whitespace-only command
   if (!command?.trim()) {
-    logForDebugging('[binaryCheck] Empty command provided, returning false');
+    logForDebugging("[binaryCheck] Empty command provided, returning false");
     return false;
   }
 
@@ -36,7 +36,7 @@ export async function isBinaryInstalled(command: string): Promise<boolean> {
   // Cache the result
   binaryCache.set(trimmedCommand, exists);
 
-  logForDebugging(`[binaryCheck] Binary '${trimmedCommand}' ${exists ? 'found' : 'not found'}`);
+  logForDebugging(`[binaryCheck] Binary '${trimmedCommand}' ${exists ? "found" : "not found"}`);
 
   return exists;
 }

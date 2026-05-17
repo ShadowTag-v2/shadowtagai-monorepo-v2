@@ -3,11 +3,11 @@
  * Used for managing claude aliases and PATH entries
  */
 
-import { open, readFile, stat } from 'node:fs/promises';
-import { homedir as osHomedir } from 'node:os';
-import { join } from 'node:path';
-import { isFsInaccessible } from './errors.js';
-import { getLocalClaudePath } from './localInstaller.js';
+import { open, readFile, stat } from "node:fs/promises";
+import { homedir as osHomedir } from "node:os";
+import { join } from "node:path";
+import { isFsInaccessible } from "./errors.js";
+import { getLocalClaudePath } from "./localInstaller.js";
 
 export const CLAUDE_ALIAS_REGEX = /^\s*alias\s+claude\s*=/;
 
@@ -28,9 +28,9 @@ export function getShellConfigPaths(options?: ShellConfigOptions): Record<string
   const env = options?.env ?? process.env;
   const zshConfigDir = env.ZDOTDIR || home;
   return {
-    zsh: join(zshConfigDir, '.zshrc'),
-    bash: join(home, '.bashrc'),
-    fish: join(home, '.config/fish/config.fish'),
+    zsh: join(zshConfigDir, ".zshrc"),
+    bash: join(home, ".bashrc"),
+    fish: join(home, ".config/fish/config.fish"),
   };
 }
 
@@ -78,8 +78,8 @@ export function filterClaudeAliases(lines: string[]): {
  */
 export async function readFileLines(filePath: string): Promise<string[] | null> {
   try {
-    const content = await readFile(filePath, { encoding: 'utf8' });
-    return content.split('\n');
+    const content = await readFile(filePath, { encoding: "utf8" });
+    return content.split("\n");
   } catch (e: unknown) {
     if (isFsInaccessible(e)) return null;
     throw e;
@@ -90,9 +90,9 @@ export async function readFileLines(filePath: string): Promise<string[] | null> 
  * Write lines back to a file
  */
 export async function writeFileLines(filePath: string, lines: string[]): Promise<void> {
-  const fh = await open(filePath, 'w');
+  const fh = await open(filePath, "w");
   try {
-    await fh.writeFile(lines.join('\n'), { encoding: 'utf8' });
+    await fh.writeFile(lines.join("\n"), { encoding: "utf8" });
     await fh.datasync();
   } finally {
     await fh.close();
@@ -137,7 +137,7 @@ export async function findValidClaudeAlias(options?: ShellConfigOptions): Promis
   const home = options?.homedir ?? osHomedir();
 
   // Expand ~ to home directory
-  const expandedPath = aliasTarget.startsWith('~') ? aliasTarget.replace('~', home) : aliasTarget;
+  const expandedPath = aliasTarget.startsWith("~") ? aliasTarget.replace("~", home) : aliasTarget;
 
   // Check if the target exists and is executable
   try {

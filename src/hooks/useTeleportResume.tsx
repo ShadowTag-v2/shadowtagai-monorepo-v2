@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { setTeleportedSessionInfo } from 'src/bootstrap/state.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { setTeleportedSessionInfo } from "src/bootstrap/state.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { errorMessage, TeleportOperationError } from '../utils/errors.js';
-import { teleportResumeCodeSession } from '../utils/teleport.js';
+} from "src/services/analytics/index.js";
+import { errorMessage, TeleportOperationError } from "../utils/errors.js";
+import { teleportResumeCodeSession } from "../utils/teleport.js";
 export type TeleportResumeError = {
   message: string;
   formattedMessage?: string;
   isOperationError: boolean;
 };
-export type TeleportSource = 'cliArg' | 'localCommand';
+export type TeleportSource = "cliArg" | "localCommand";
 export function useTeleportResume(source) {
   const $ = _c(8);
   const [isResuming, setIsResuming] = useState(false);
@@ -24,7 +24,7 @@ export function useTeleportResume(source) {
       setIsResuming(true);
       setError(null);
       setSelectedSession(session);
-      logEvent('tengu_teleport_resume_session', {
+      logEvent("tengu_teleport_resume_session", {
         source: source as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         session_id: session.id as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
@@ -55,7 +55,7 @@ export function useTeleportResume(source) {
   }
   const resumeSession = t0;
   let t1;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => {
       setError(null);
     };

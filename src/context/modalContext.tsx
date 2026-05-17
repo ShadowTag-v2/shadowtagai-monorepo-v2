@@ -1,6 +1,6 @@
-import { createContext, type RefObject, useContext } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { ScrollBoxHandle } from '../ink/components/ScrollBox.js';
+import { createContext, type RefObject, useContext } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { ScrollBoxHandle } from "../ink/components/ScrollBox.js";
 
 /**
  * Set by FullscreenLayout when rendering content in its `modal` slot —

@@ -1,22 +1,22 @@
-import figures from 'figures';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useDebounceCallback } from 'usehooks-ts';
+import figures from "figures";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useDebounceCallback } from "usehooks-ts";
 import {
   addDirHelpMessage,
   validateDirectoryForWorkspace,
-} from '../../../commands/add-dir/validation.js';
-import TextInput from '../../../components/TextInput.js';
-import { Box, Text } from '../../../ink.js';
-import { useKeybinding } from '../../../keybindings/useKeybinding.js';
-import type { ToolPermissionContext } from '../../../Tool.js';
-import { getDirectoryCompletions } from '../../../utils/suggestions/directoryCompletion.js';
-import { ConfigurableShortcutHint } from '../../ConfigurableShortcutHint.js';
-import { Select } from '../../CustomSelect/select.js';
-import { Byline } from '../../design-system/Byline.js';
-import { Dialog } from '../../design-system/Dialog.js';
-import { KeyboardShortcutHint } from '../../design-system/KeyboardShortcutHint.js';
-import { PromptInputFooterSuggestions } from '../../PromptInput/PromptInputFooterSuggestions.js';
+} from "../../../commands/add-dir/validation.js";
+import TextInput from "../../../components/TextInput.js";
+import { Box, Text } from "../../../ink.js";
+import { useKeybinding } from "../../../keybindings/useKeybinding.js";
+import type { ToolPermissionContext } from "../../../Tool.js";
+import { getDirectoryCompletions } from "../../../utils/suggestions/directoryCompletion.js";
+import { ConfigurableShortcutHint } from "../../ConfigurableShortcutHint.js";
+import { Select } from "../../CustomSelect/select.js";
+import { Byline } from "../../design-system/Byline.js";
+import { Dialog } from "../../design-system/Dialog.js";
+import { KeyboardShortcutHint } from "../../design-system/KeyboardShortcutHint.js";
+import { PromptInputFooterSuggestions } from "../../PromptInput/PromptInputFooterSuggestions.js";
 
 type Props = {
   onAddDirectory: (path: string, remember?: boolean) => void;
@@ -24,28 +24,28 @@ type Props = {
   permissionContext: ToolPermissionContext;
   directoryPath?: string; // When directoryPath is provided, show selection options instead of input
 };
-type RememberDirectoryOption = 'yes-session' | 'yes-remember' | 'no';
+type RememberDirectoryOption = "yes-session" | "yes-remember" | "no";
 const REMEMBER_DIRECTORY_OPTIONS: Array<{
   value: RememberDirectoryOption;
   label: string;
 }> = [
   {
-    value: 'yes-session',
-    label: 'Yes, for this session',
+    value: "yes-session",
+    label: "Yes, for this session",
   },
   {
-    value: 'yes-remember',
-    label: 'Yes, and remember this directory',
+    value: "yes-remember",
+    label: "Yes, and remember this directory",
   },
   {
-    value: 'no',
-    label: 'No',
+    value: "no",
+    label: "No",
   },
 ];
 function PermissionDescription() {
   const $ = _c(1);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = (
       <Text dimColor={true}>
         Claude Code will be able to read files in this directory and make edits when auto-accept
@@ -70,7 +70,7 @@ function DirectoryDisplay(t0) {
     t1 = $[1];
   }
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = <PermissionDescription />;
     $[2] = t2;
   } else {
@@ -95,7 +95,7 @@ function DirectoryInput(t0) {
   const $ = _c(14);
   const { value, onChange, onSubmit, error, suggestions, selectedSuggestion } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = <Text>Enter the path to the directory:</Text>;
     $[0] = t1;
   } else {
@@ -171,10 +171,10 @@ function _temp() {}
 export function AddWorkspaceDirectory(t0) {
   const $ = _c(34);
   const { onAddDirectory, onCancel, permissionContext, directoryPath } = t0;
-  const [directoryInput, setDirectoryInput] = useState('');
+  const [directoryInput, setDirectoryInput] = useState("");
   const [error, setError] = useState(null);
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = [];
     $[0] = t1;
   } else {
@@ -183,7 +183,7 @@ export function AddWorkspaceDirectory(t0) {
   const [suggestions, setSuggestions] = useState(t1);
   const [selectedSuggestion, setSelectedSuggestion] = useState(0);
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = async (path) => {
       if (!path) {
         setSuggestions([]);
@@ -217,7 +217,7 @@ export function AddWorkspaceDirectory(t0) {
   }
   useEffect(t3, t4);
   let t5;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (suggestion) => {
       const newPath = `${suggestion.id}/`;
       setDirectoryInput(newPath);
@@ -232,7 +232,7 @@ export function AddWorkspaceDirectory(t0) {
   if ($[7] !== onAddDirectory || $[8] !== permissionContext) {
     t6 = async (newPath_0) => {
       const result = await validateDirectoryForWorkspace(newPath_0, permissionContext);
-      if (result.resultType === 'success') {
+      if (result.resultType === "success") {
         onAddDirectory(result.absolutePath, false);
       } else {
         setError(addDirHelpMessage(result));
@@ -246,20 +246,20 @@ export function AddWorkspaceDirectory(t0) {
   }
   const handleSubmit = t6;
   let t7;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = {
-      context: 'Settings',
+      context: "Settings",
     };
     $[10] = t7;
   } else {
     t7 = $[10];
   }
-  useKeybinding('confirm:no', onCancel, t7);
+  useKeybinding("confirm:no", onCancel, t7);
   let t8;
   if ($[11] !== handleSubmit || $[12] !== selectedSuggestion || $[13] !== suggestions) {
     t8 = (e) => {
       if (suggestions.length > 0) {
-        if (e.key === 'tab') {
+        if (e.key === "tab") {
           e.preventDefault();
           const suggestion_0 = suggestions[selectedSuggestion];
           if (suggestion_0) {
@@ -267,7 +267,7 @@ export function AddWorkspaceDirectory(t0) {
           }
           return;
         }
-        if (e.key === 'return') {
+        if (e.key === "return") {
           e.preventDefault();
           const suggestion_1 = suggestions[selectedSuggestion];
           if (suggestion_1) {
@@ -275,12 +275,12 @@ export function AddWorkspaceDirectory(t0) {
           }
           return;
         }
-        if (e.key === 'up' || (e.ctrl && e.key === 'p')) {
+        if (e.key === "up" || (e.ctrl && e.key === "p")) {
           e.preventDefault();
           setSelectedSuggestion((prev) => (prev <= 0 ? suggestions.length - 1 : prev - 1));
           return;
         }
-        if (e.key === 'down' || (e.ctrl && e.key === 'n')) {
+        if (e.key === "down" || (e.ctrl && e.key === "n")) {
           e.preventDefault();
           setSelectedSuggestion((prev_0) => (prev_0 >= suggestions.length - 1 ? 0 : prev_0 + 1));
           return;
@@ -303,15 +303,15 @@ export function AddWorkspaceDirectory(t0) {
       }
       const selectionValue = value as RememberDirectoryOption;
       switch (selectionValue) {
-        case 'yes-session': {
+        case "yes-session": {
           onAddDirectory(directoryPath, false);
           break;
         }
-        case 'yes-remember': {
+        case "yes-remember": {
           onAddDirectory(directoryPath, true);
           break;
         }
-        case 'no': {
+        case "no": {
           onCancel();
         }
       }
@@ -341,7 +341,7 @@ export function AddWorkspaceDirectory(t0) {
         <Select
           options={REMEMBER_DIRECTORY_OPTIONS}
           onChange={handleSelect}
-          onCancel={() => handleSelect('no')}
+          onCancel={() => handleSelect("no")}
         />
       </Box>
     ) : (

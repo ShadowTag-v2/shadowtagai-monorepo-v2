@@ -1,18 +1,18 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { CtrlOToExpand } from '../../components/CtrlOToExpand.js';
-import { FallbackToolUseErrorMessage } from '../../components/FallbackToolUseErrorMessage.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { Box, Text } from '../../ink.js';
-import { getDisplayPath } from '../../utils/file.js';
-import { extractTag } from '../../utils/messages.js';
-import type { Input, Output } from './LSPTool.js';
-import { getSymbolAtPosition } from './symbolContext.js';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { CtrlOToExpand } from "../../components/CtrlOToExpand.js";
+import { FallbackToolUseErrorMessage } from "../../components/FallbackToolUseErrorMessage.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { Box, Text } from "../../ink.js";
+import { getDisplayPath } from "../../utils/file.js";
+import { extractTag } from "../../utils/messages.js";
+import type { Input, Output } from "./LSPTool.js";
+import { getSymbolAtPosition } from "./symbolContext.js";
 
 // Lookup map for operation-specific labels
 const OPERATION_LABELS: Record<
-  Input['operation'],
+  Input["operation"],
   {
     singular: string;
     plural: string;
@@ -20,41 +20,41 @@ const OPERATION_LABELS: Record<
   }
 > = {
   goToDefinition: {
-    singular: 'definition',
-    plural: 'definitions',
+    singular: "definition",
+    plural: "definitions",
   },
   findReferences: {
-    singular: 'reference',
-    plural: 'references',
+    singular: "reference",
+    plural: "references",
   },
   documentSymbol: {
-    singular: 'symbol',
-    plural: 'symbols',
+    singular: "symbol",
+    plural: "symbols",
   },
   workspaceSymbol: {
-    singular: 'symbol',
-    plural: 'symbols',
+    singular: "symbol",
+    plural: "symbols",
   },
   hover: {
-    singular: 'hover info',
-    plural: 'hover info',
-    special: 'available',
+    singular: "hover info",
+    plural: "hover info",
+    special: "available",
   },
   goToImplementation: {
-    singular: 'implementation',
-    plural: 'implementations',
+    singular: "implementation",
+    plural: "implementations",
   },
   prepareCallHierarchy: {
-    singular: 'call item',
-    plural: 'call items',
+    singular: "call item",
+    plural: "call items",
   },
   incomingCalls: {
-    singular: 'caller',
-    plural: 'callers',
+    singular: "caller",
+    plural: "callers",
   },
   outgoingCalls: {
-    singular: 'callee',
-    plural: 'callees',
+    singular: "callee",
+    plural: "callees",
   },
 };
 
@@ -67,8 +67,8 @@ function LSPResultSummary(t0) {
   let t1;
   if ($[0] !== operation) {
     t1 = OPERATION_LABELS[operation] || {
-      singular: 'result',
-      plural: 'results',
+      singular: "result",
+      plural: "results",
     };
     $[0] = operation;
     $[1] = t1;
@@ -85,7 +85,7 @@ function LSPResultSummary(t0) {
     $[5] !== resultCount
   ) {
     t2 =
-      operation === 'hover' && resultCount > 0 && labelConfig.special ? (
+      operation === "hover" && resultCount > 0 && labelConfig.special ? (
         <Text>Hover info {labelConfig.special}</Text>
       ) : (
         <Text>
@@ -107,7 +107,7 @@ function LSPResultSummary(t0) {
     t3 =
       fileCount > 1 ? (
         <Text>
-          {' '}
+          {" "}
           across <Text bold={true}>{fileCount} </Text>files
         </Text>
       ) : null;
@@ -119,7 +119,7 @@ function LSPResultSummary(t0) {
   const secondaryText = t3;
   if (verbose) {
     let t4;
-    if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
       t4 = <Text dimColor={true}>  ⎿  </Text>;
       $[9] = t4;
     } else {
@@ -198,7 +198,7 @@ function LSPResultSummary(t0) {
   return t5;
 }
 export function userFacingName(): string {
-  return 'LSP';
+  return "LSP";
 }
 export function renderToolUseMessage(
   input: Partial<Input>,
@@ -216,10 +216,10 @@ export function renderToolUseMessage(
   // For position-based operations (goToDefinition, findReferences, hover, goToImplementation),
   // show the symbol at the position for better context
   if (
-    (input.operation === 'goToDefinition' ||
-      input.operation === 'findReferences' ||
-      input.operation === 'hover' ||
-      input.operation === 'goToImplementation') &&
+    (input.operation === "goToDefinition" ||
+      input.operation === "findReferences" ||
+      input.operation === "hover" ||
+      input.operation === "goToImplementation") &&
     input.filePath &&
     input.line !== undefined &&
     input.character !== undefined
@@ -236,7 +236,7 @@ export function renderToolUseMessage(
       parts.push(`file: "${displayPath}"`);
       parts.push(`position: ${input.line}:${input.character}`);
     }
-    return parts.join(', ');
+    return parts.join(", ");
   }
 
   // For other operations (documentSymbol, workspaceSymbol),
@@ -246,17 +246,17 @@ export function renderToolUseMessage(
     const displayPath = verbose ? input.filePath : getDisplayPath(input.filePath);
     parts.push(`file: "${displayPath}"`);
   }
-  return parts.join(', ');
+  return parts.join(", ");
 }
 export function renderToolUseErrorMessage(
-  result: ToolResultBlockParam['content'],
+  result: ToolResultBlockParam["content"],
   {
     verbose,
   }: {
     verbose: boolean;
   },
 ): React.ReactNode {
-  if (!verbose && typeof result === 'string' && extractTag(result, 'tool_use_error')) {
+  if (!verbose && typeof result === "string" && extractTag(result, "tool_use_error")) {
     return (
       <MessageResponse>
         <Text color="error">LSP operation failed</Text>

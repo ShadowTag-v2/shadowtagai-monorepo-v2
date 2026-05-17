@@ -1,8 +1,8 @@
-import { logEvent } from '../services/analytics/index.js';
-import { logForDebugging } from '../utils/debug.js';
-import { logForDiagnosticsNoPII } from '../utils/diagLogs.js';
-import { errorMessage } from '../utils/errors.js';
-import { jsonParse } from '../utils/slowOperations.js';
+import { logEvent } from "../services/analytics/index.js";
+import { logForDebugging } from "../utils/debug.js";
+import { logForDiagnosticsNoPII } from "../utils/diagLogs.js";
+import { errorMessage } from "../utils/errors.js";
+import { jsonParse } from "../utils/slowOperations.js";
 
 /** Format a millisecond duration as a human-readable string (e.g. "5m 30s"). */
 function formatDuration(ms: number): string {
@@ -19,11 +19,11 @@ function formatDuration(ms: number): string {
  * token is malformed or the payload is not valid JSON.
  */
 export function decodeJwtPayload(token: string): unknown | null {
-  const jwt = token.startsWith('sk-ant-si-') ? token.slice('sk-ant-si-'.length) : token;
-  const parts = jwt.split('.');
+  const jwt = token.startsWith("sk-ant-si-") ? token.slice("sk-ant-si-".length) : token;
+  const parts = jwt.split(".");
   if (parts.length !== 3 || !parts[1]) return null;
   try {
-    return jsonParse(Buffer.from(parts[1], 'base64url').toString('utf8'));
+    return jsonParse(Buffer.from(parts[1], "base64url").toString("utf8"));
   } catch {
     return null;
   }
@@ -37,9 +37,9 @@ export function decodeJwtExpiry(token: string): number | null {
   const payload = decodeJwtPayload(token);
   if (
     payload !== null &&
-    typeof payload === 'object' &&
-    'exp' in payload &&
-    typeof payload.exp === 'number'
+    typeof payload === "object" &&
+    "exp" in payload &&
+    typeof payload.exp === "number"
   ) {
     return payload.exp;
   }
@@ -164,7 +164,7 @@ export function createTokenRefreshScheduler({
     } catch (err) {
       logForDebugging(
         `[${label}:token] getAccessToken threw for sessionId=${sessionId}: ${errorMessage(err)}`,
-        { level: 'error' },
+        { level: "error" },
       );
     }
 
@@ -182,9 +182,9 @@ export function createTokenRefreshScheduler({
       failureCounts.set(sessionId, failures);
       logForDebugging(
         `[${label}:token] No OAuth token available for refresh, sessionId=${sessionId} (failure ${failures}/${MAX_REFRESH_FAILURES})`,
-        { level: 'error' },
+        { level: "error" },
       );
-      logForDiagnosticsNoPII('error', 'bridge_token_refresh_no_oauth');
+      logForDiagnosticsNoPII("error", "bridge_token_refresh_no_oauth");
       // Schedule a retry so the refresh chain can recover if the token
       // becomes available again (e.g. transient cache clear during refresh).
       // Cap retries to avoid spamming on genuine failures.
@@ -201,7 +201,7 @@ export function createTokenRefreshScheduler({
     logForDebugging(
       `[${label}:token] Refreshing token for sessionId=${sessionId}: new token prefix=${oauthToken.slice(0, 15)}…`,
     );
-    logEvent('tengu_bridge_token_refreshed', {});
+    logEvent("tengu_bridge_token_refreshed", {});
     onRefresh(sessionId, oauthToken);
 
     // Schedule a follow-up refresh so long-running sessions stay authenticated.

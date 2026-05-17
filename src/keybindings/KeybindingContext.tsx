@@ -1,12 +1,12 @@
-import React, { createContext, type RefObject, useContext, useLayoutEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { Key } from '../ink.js';
+import React, { createContext, type RefObject, useContext, useLayoutEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { Key } from "../ink.js";
 import {
   type ChordResolveResult,
   getBindingDisplayText,
   resolveKeyWithChordState,
-} from './resolver.js';
-import type { KeybindingContextName, ParsedBinding, ParsedKeystroke } from './types.js';
+} from "./resolver.js";
+import type { KeybindingContextName, ParsedBinding, ParsedKeystroke } from "./types.js";
 
 /** Handler registration for action callbacks */
 type HandlerRegistration = {
@@ -200,7 +200,7 @@ function _temp() {}
 export function useKeybindingContext() {
   const ctx = useContext(KeybindingContext);
   if (!ctx) {
-    throw new Error('useKeybindingContext must be used within KeybindingProvider');
+    throw new Error("useKeybindingContext must be used within KeybindingProvider");
   }
   return ctx;
 }

@@ -17,17 +17,17 @@
  * @see https://nodejs.org/api/deprecations.html#DEP0180
  */
 
-const SUPPRESSED_CODES = new Set(['DEP0040', 'DEP0180']);
+const SUPPRESSED_CODES = new Set(["DEP0040", "DEP0180"]);
 
 const originalEmit = process.emit;
 
 process.emit = function (event, ...args) {
-  if (event === 'warning') {
+  if (event === "warning") {
     const warning = args[0];
     if (
       warning &&
-      typeof warning === 'object' &&
-      warning.name === 'DeprecationWarning' &&
+      typeof warning === "object" &&
+      warning.name === "DeprecationWarning" &&
       SUPPRESSED_CODES.has(warning.code)
     ) {
       return false;

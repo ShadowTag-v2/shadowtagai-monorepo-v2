@@ -1,14 +1,14 @@
-import { marked, type Token, type Tokens } from 'marked';
-import type React from 'react';
-import { Suspense, use, useRef } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useSettings } from '../hooks/useSettings.js';
-import { Ansi, Box, useTheme } from '../ink.js';
-import { getCliHighlightPromise } from '../utils/cliHighlight.js';
-import { hashContent } from '../utils/hash.js';
-import { configureMarked, formatToken } from '../utils/markdown.js';
-import { stripPromptXMLTags } from '../utils/messages.js';
-import { MarkdownTable } from './MarkdownTable.js';
+import { marked, type Token, type Tokens } from "marked";
+import type React from "react";
+import { Suspense, use, useRef } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useSettings } from "../hooks/useSettings.js";
+import { Ansi, Box, useTheme } from "../ink.js";
+import { getCliHighlightPromise } from "../utils/cliHighlight.js";
+import { hashContent } from "../utils/hash.js";
+import { configureMarked, formatToken } from "../utils/markdown.js";
+import { stripPromptXMLTags } from "../utils/messages.js";
+import { MarkdownTable } from "./MarkdownTable.js";
 
 type Props = {
   children: string;
@@ -44,12 +44,12 @@ function cachedLexer(content: string): Token[] {
   if (!hasMarkdownSyntax(content)) {
     return [
       {
-        type: 'paragraph',
+        type: "paragraph",
         raw: content,
         text: content,
         tokens: [
           {
-            type: 'text',
+            type: "text",
             raw: content,
             text: content,
           },
@@ -112,7 +112,7 @@ export function Markdown(props) {
 function MarkdownWithHighlight(props) {
   const $ = _c(4);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = getCliHighlightPromise();
     $[0] = t0;
   } else {
@@ -139,7 +139,7 @@ function MarkdownBody(t0) {
   if ($[0] !== children || $[1] !== dimColor || $[2] !== highlight || $[3] !== theme) {
     const tokens = cachedLexer(stripPromptXMLTags(children));
     elements = [];
-    let nonTableContent = '';
+    let nonTableContent = "";
     const flushNonTableContent = function flushNonTableContent() {
       if (nonTableContent) {
         elements.push(
@@ -147,11 +147,11 @@ function MarkdownBody(t0) {
             {nonTableContent.trim()}
           </Ansi>,
         );
-        nonTableContent = '';
+        nonTableContent = "";
       }
     };
     for (const token of tokens) {
-      if (token.type === 'table') {
+      if (token.type === "table") {
         flushNonTableContent();
         elements.push(
           <MarkdownTable
@@ -209,7 +209,7 @@ export function StreamingMarkdown({ children }: StreamingProps): React.ReactNode
   // the ref mutation is idempotent under StrictMode double-render — but the
   // compiler can't prove that, and memoizing around the ref reads would
   // break the algorithm (stale boundary). Opt out.
-  'use no memo';
+  "use no memo";
 
   configureMarked();
 
@@ -218,11 +218,11 @@ export function StreamingMarkdown({ children }: StreamingProps): React.ReactNode
   // of stripped(N), but the startsWith reset below handles that with a
   // one-time re-lex on the smaller stripped string.
   const stripped = stripPromptXMLTags(children);
-  const stablePrefixRef = useRef('');
+  const stablePrefixRef = useRef("");
 
   // Reset if text was replaced (defensive; normally unmount handles this)
   if (!stripped.startsWith(stablePrefixRef.current)) {
-    stablePrefixRef.current = '';
+    stablePrefixRef.current = "";
   }
 
   // Lex only from current boundary — O(unstable length), not O(full text)
@@ -231,7 +231,7 @@ export function StreamingMarkdown({ children }: StreamingProps): React.ReactNode
 
   // Last non-space token is the growing block; everything before is final
   let lastContentIdx = tokens.length - 1;
-  while (lastContentIdx >= 0 && tokens[lastContentIdx]?.type === 'space') {
+  while (lastContentIdx >= 0 && tokens[lastContentIdx]?.type === "space") {
     lastContentIdx--;
   }
   let advance = 0;

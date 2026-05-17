@@ -1,29 +1,29 @@
-import { feature } from 'bun:bundle';
-import { z } from 'zod/v4';
-import { isReplBridgeActive } from '../../bootstrap/state.js';
-import { getReplBridgeHandle } from '../../bridge/replBridgeHandle.js';
-import type { Tool, ToolUseContext } from '../../Tool.js';
-import { buildTool, type ToolDef } from '../../Tool.js';
-import { findTeammateTaskByAgentId } from '../../tasks/InProcessTeammateTask/InProcessTeammateTask.js';
+import { feature } from "bun:bundle";
+import { z } from "zod/v4";
+import { isReplBridgeActive } from "../../bootstrap/state.js";
+import { getReplBridgeHandle } from "../../bridge/replBridgeHandle.js";
+import type { Tool, ToolUseContext } from "../../Tool.js";
+import { buildTool, type ToolDef } from "../../Tool.js";
+import { findTeammateTaskByAgentId } from "../../tasks/InProcessTeammateTask/InProcessTeammateTask.js";
 import {
   isLocalAgentTask,
   queuePendingMessage,
-} from '../../tasks/LocalAgentTask/LocalAgentTask.js';
-import { isMainSessionTask } from '../../tasks/LocalMainSessionTask.js';
-import { toAgentId } from '../../types/ids.js';
-import { generateRequestId } from '../../utils/agentId.js';
-import { isAgentSwarmsEnabled } from '../../utils/agentSwarmsEnabled.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage } from '../../utils/errors.js';
-import { truncate } from '../../utils/format.js';
-import { gracefulShutdown } from '../../utils/gracefulShutdown.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { parseAddress } from '../../utils/peerAddress.js';
-import { semanticBoolean } from '../../utils/semanticBoolean.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import type { BackendType } from '../../utils/swarm/backends/types.js';
-import { TEAM_LEAD_NAME } from '../../utils/swarm/constants.js';
-import { readTeamFileAsync } from '../../utils/swarm/teamHelpers.js';
+} from "../../tasks/LocalAgentTask/LocalAgentTask.js";
+import { isMainSessionTask } from "../../tasks/LocalMainSessionTask.js";
+import { toAgentId } from "../../types/ids.js";
+import { generateRequestId } from "../../utils/agentId.js";
+import { isAgentSwarmsEnabled } from "../../utils/agentSwarmsEnabled.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage } from "../../utils/errors.js";
+import { truncate } from "../../utils/format.js";
+import { gracefulShutdown } from "../../utils/gracefulShutdown.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { parseAddress } from "../../utils/peerAddress.js";
+import { semanticBoolean } from "../../utils/semanticBoolean.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import type { BackendType } from "../../utils/swarm/backends/types.js";
+import { TEAM_LEAD_NAME } from "../../utils/swarm/constants.js";
+import { readTeamFileAsync } from "../../utils/swarm/teamHelpers.js";
 import {
   getAgentId,
   getAgentName,
@@ -31,32 +31,32 @@ import {
   getTeamName,
   isTeamLead,
   isTeammate,
-} from '../../utils/teammate.js';
+} from "../../utils/teammate.js";
 import {
   createShutdownApprovedMessage,
   createShutdownRejectedMessage,
   createShutdownRequestMessage,
   writeToMailbox,
-} from '../../utils/teammateMailbox.js';
-import { resumeAgentBackground } from '../AgentTool/resumeAgent.js';
-import { SEND_MESSAGE_TOOL_NAME } from './constants.js';
-import { DESCRIPTION, getPrompt } from './prompt.js';
-import { renderToolResultMessage, renderToolUseMessage } from './UI.js';
+} from "../../utils/teammateMailbox.js";
+import { resumeAgentBackground } from "../AgentTool/resumeAgent.js";
+import { SEND_MESSAGE_TOOL_NAME } from "./constants.js";
+import { DESCRIPTION, getPrompt } from "./prompt.js";
+import { renderToolResultMessage, renderToolUseMessage } from "./UI.js";
 
 const StructuredMessage = lazySchema(() =>
-  z.discriminatedUnion('type', [
+  z.discriminatedUnion("type", [
     z.object({
-      type: z.literal('shutdown_request'),
+      type: z.literal("shutdown_request"),
       reason: z.string().optional(),
     }),
     z.object({
-      type: z.literal('shutdown_response'),
+      type: z.literal("shutdown_response"),
       request_id: z.string(),
       approve: semanticBoolean(),
       reason: z.string().optional(),
     }),
     z.object({
-      type: z.literal('plan_approval_response'),
+      type: z.literal("plan_approval_response"),
       request_id: z.string(),
       approve: semanticBoolean(),
       feedback: z.string().optional(),
@@ -69,7 +69,7 @@ const inputSchema = lazySchema(() =>
     to: z
       .string()
       .describe(
-        feature('UDS_INBOX')
+        feature("UDS_INBOX")
           ? 'Recipient: teammate name, "*" for broadcast, "uds:<socket-path>" for a local peer, or "bridge:<session-id>" for a Remote Control peer (use ListPeers to discover)'
           : 'Recipient: teammate name, or "*" for broadcast to all teammates',
       ),
@@ -77,9 +77,9 @@ const inputSchema = lazySchema(() =>
       .string()
       .optional()
       .describe(
-        'A 5-10 word summary shown as a preview in the UI (required when message is a string)',
+        "A 5-10 word summary shown as a preview in the UI (required when message is a string)",
       ),
-    message: z.union([z.string().describe('Plain text message content'), StructuredMessage()]),
+    message: z.union([z.string().describe("Plain text message content"), StructuredMessage()]),
   }),
 );
 type InputSchema = ReturnType<typeof inputSchema>;
@@ -136,7 +136,7 @@ function findTeammateColor(
   const teammates = appState.teamContext?.teammates;
   if (!teammates) return undefined;
   for (const teammate of Object.values(teammates)) {
-    if ('name' in teammate && (teammate as { name: string }).name === name) {
+    if ("name" in teammate && (teammate as { name: string }).name === name) {
       return teammate.color;
     }
   }
@@ -151,7 +151,7 @@ async function handleMessage(
 ): Promise<{ data: MessageOutput }> {
   const appState = context.getAppState();
   const teamName = getTeamName(appState.teamContext);
-  const senderName = getAgentName() || (isTeammate() ? 'teammate' : TEAM_LEAD_NAME);
+  const senderName = getAgentName() || (isTeammate() ? "teammate" : TEAM_LEAD_NAME);
   const senderColor = getTeammateColor();
 
   await writeToMailbox(
@@ -194,7 +194,7 @@ async function handleBroadcast(
 
   if (!teamName) {
     throw new Error(
-      'Not in a team context. Create a team with Teammate spawnTeam first, or set CLAUDE_CODE_TEAM_NAME.',
+      "Not in a team context. Create a team with Teammate spawnTeam first, or set CLAUDE_CODE_TEAM_NAME.",
     );
   }
 
@@ -203,9 +203,9 @@ async function handleBroadcast(
     throw new Error(`Team "${teamName}" does not exist`);
   }
 
-  const senderName = getAgentName() || (isTeammate() ? 'teammate' : TEAM_LEAD_NAME);
+  const senderName = getAgentName() || (isTeammate() ? "teammate" : TEAM_LEAD_NAME);
   if (!senderName) {
-    throw new Error('Cannot broadcast: sender name is required. Set CLAUDE_CODE_AGENT_NAME.');
+    throw new Error("Cannot broadcast: sender name is required. Set CLAUDE_CODE_AGENT_NAME.");
   }
 
   const senderColor = getTeammateColor();
@@ -222,7 +222,7 @@ async function handleBroadcast(
     return {
       data: {
         success: true,
-        message: 'No teammates to broadcast to (you are the only team member)',
+        message: "No teammates to broadcast to (you are the only team member)",
         recipients: [],
       },
     };
@@ -245,12 +245,12 @@ async function handleBroadcast(
   return {
     data: {
       success: true,
-      message: `Message broadcast to ${recipients.length} teammate(s): ${recipients.join(', ')}`,
+      message: `Message broadcast to ${recipients.length} teammate(s): ${recipients.join(", ")}`,
       recipients,
       routing: {
         sender: senderName,
         senderColor,
-        target: '@team',
+        target: "@team",
         summary,
         content,
       },
@@ -266,7 +266,7 @@ async function handleShutdownRequest(
   const appState = context.getAppState();
   const teamName = getTeamName(appState.teamContext);
   const senderName = getAgentName() || TEAM_LEAD_NAME;
-  const requestId = generateRequestId('shutdown', targetName);
+  const requestId = generateRequestId("shutdown", targetName);
 
   const shutdownMessage = createShutdownRequestMessage({
     requestId,
@@ -301,7 +301,7 @@ async function handleShutdownApproval(
 ): Promise<{ data: ResponseOutput }> {
   const teamName = getTeamName();
   const agentId = getAgentId();
-  const agentName = getAgentName() || 'teammate';
+  const agentName = getAgentName() || "teammate";
 
   logForDebugging(
     `[SendMessageTool] handleShutdownApproval: teamName=${teamName}, agentId=${agentId}, agentName=${agentName}`,
@@ -338,7 +338,7 @@ async function handleShutdownApproval(
     teamName,
   );
 
-  if (ownBackendType === 'in-process') {
+  if (ownBackendType === "in-process") {
     logForDebugging(
       `[SendMessageTool] In-process teammate ${agentName} approving shutdown - signaling abort`,
     );
@@ -378,7 +378,7 @@ async function handleShutdownApproval(
     }
 
     setImmediate(async () => {
-      await gracefulShutdown(0, 'other');
+      await gracefulShutdown(0, "other");
     });
   }
 
@@ -396,7 +396,7 @@ async function handleShutdownRejection(
   reason: string,
 ): Promise<{ data: ResponseOutput }> {
   const teamName = getTeamName();
-  const agentName = getAgentName() || 'teammate';
+  const agentName = getAgentName() || "teammate";
 
   const rejectedMessage = createShutdownRejectedMessage({
     requestId,
@@ -434,15 +434,15 @@ async function handlePlanApproval(
 
   if (!isTeamLead(appState.teamContext)) {
     throw new Error(
-      'Only the team lead can approve plans. Teammates cannot approve their own or other plans.',
+      "Only the team lead can approve plans. Teammates cannot approve their own or other plans.",
     );
   }
 
   const leaderMode = appState.toolPermissionContext.mode;
-  const modeToInherit = leaderMode === 'plan' ? 'default' : leaderMode;
+  const modeToInherit = leaderMode === "plan" ? "default" : leaderMode;
 
   const approvalResponse = {
-    type: 'plan_approval_response',
+    type: "plan_approval_response",
     requestId,
     approved: true,
     timestamp: new Date().toISOString(),
@@ -479,12 +479,12 @@ async function handlePlanRejection(
 
   if (!isTeamLead(appState.teamContext)) {
     throw new Error(
-      'Only the team lead can reject plans. Teammates cannot reject their own or other plans.',
+      "Only the team lead can reject plans. Teammates cannot reject their own or other plans.",
     );
   }
 
   const rejectionResponse = {
-    type: 'plan_approval_response',
+    type: "plan_approval_response",
     requestId,
     approved: false,
     feedback,
@@ -512,11 +512,11 @@ async function handlePlanRejection(
 
 export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTool({
   name: SEND_MESSAGE_TOOL_NAME,
-  searchHint: 'send messages to agent teammates (swarm protocol)',
+  searchHint: "send messages to agent teammates (swarm protocol)",
   maxResultSizeChars: 100_000,
 
   userFacingName() {
-    return 'SendMessage';
+    return "SendMessage";
   },
 
   get inputSchema(): InputSchema {
@@ -529,21 +529,21 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
   },
 
   isReadOnly(input) {
-    return typeof input.message === 'string';
+    return typeof input.message === "string";
   },
 
   backfillObservableInput(input) {
-    if ('type' in input) return;
-    if (typeof input.to !== 'string') return;
+    if ("type" in input) return;
+    if (typeof input.to !== "string") return;
 
-    if (input.to === '*') {
-      input.type = 'broadcast';
-      if (typeof input.message === 'string') input.content = input.message;
-    } else if (typeof input.message === 'string') {
-      input.type = 'message';
+    if (input.to === "*") {
+      input.type = "broadcast";
+      if (typeof input.message === "string") input.content = input.message;
+    } else if (typeof input.message === "string") {
+      input.type = "message";
       input.recipient = input.to;
       input.content = input.message;
-    } else if (typeof input.message === 'object' && input.message !== null) {
+    } else if (typeof input.message === "object" && input.message !== null) {
       const msg = input.message as {
         type?: string;
         request_id?: string;
@@ -561,68 +561,68 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
   },
 
   toAutoClassifierInput(input) {
-    if (typeof input.message === 'string') {
+    if (typeof input.message === "string") {
       return `to ${input.to}: ${input.message}`;
     }
     switch (input.message.type) {
-      case 'shutdown_request':
+      case "shutdown_request":
         return `shutdown_request to ${input.to}`;
-      case 'shutdown_response':
-        return `shutdown_response ${input.message.approve ? 'approve' : 'reject'} ${input.message.request_id}`;
-      case 'plan_approval_response':
-        return `plan_approval ${input.message.approve ? 'approve' : 'reject'} to ${input.to}`;
+      case "shutdown_response":
+        return `shutdown_response ${input.message.approve ? "approve" : "reject"} ${input.message.request_id}`;
+      case "plan_approval_response":
+        return `plan_approval ${input.message.approve ? "approve" : "reject"} to ${input.to}`;
     }
   },
 
   async checkPermissions(input, _context) {
-    if (feature('UDS_INBOX') && parseAddress(input.to).scheme === 'bridge') {
+    if (feature("UDS_INBOX") && parseAddress(input.to).scheme === "bridge") {
       return {
-        behavior: 'ask' as const,
+        behavior: "ask" as const,
         message: `Send a message to Remote Control session ${input.to}? It arrives as a user prompt on the receiving Claude (possibly another machine) via Anthropic's servers.`,
         // safetyCheck (not mode) — permissions.ts guards this before both
         // bypassPermissions (step 1g) and auto-mode's allowlist/classifier.
         // Cross-machine prompt injection must stay bypass-immune.
         decisionReason: {
-          type: 'safetyCheck',
-          reason: 'Cross-machine bridge message requires explicit user consent',
+          type: "safetyCheck",
+          reason: "Cross-machine bridge message requires explicit user consent",
           classifierApprovable: false,
         },
       };
     }
-    return { behavior: 'allow' as const, updatedInput: input };
+    return { behavior: "allow" as const, updatedInput: input };
   },
 
   async validateInput(input, _context) {
     if (input.to.trim().length === 0) {
       return {
         result: false,
-        message: 'to must not be empty',
+        message: "to must not be empty",
         errorCode: 9,
       };
     }
     const addr = parseAddress(input.to);
-    if ((addr.scheme === 'bridge' || addr.scheme === 'uds') && addr.target.trim().length === 0) {
+    if ((addr.scheme === "bridge" || addr.scheme === "uds") && addr.target.trim().length === 0) {
       return {
         result: false,
-        message: 'address target must not be empty',
+        message: "address target must not be empty",
         errorCode: 9,
       };
     }
-    if (input.to.includes('@')) {
+    if (input.to.includes("@")) {
       return {
         result: false,
         message: 'to must be a bare teammate name or "*" — there is only one team per session',
         errorCode: 9,
       };
     }
-    if (feature('UDS_INBOX') && parseAddress(input.to).scheme === 'bridge') {
+    if (feature("UDS_INBOX") && parseAddress(input.to).scheme === "bridge") {
       // Structured-message rejection first — it's the permanent constraint.
       // Showing "not connected" first would make the user reconnect only to
       // hit this error on retry.
-      if (typeof input.message !== 'string') {
+      if (typeof input.message !== "string") {
         return {
           result: false,
-          message: 'structured messages cannot be sent cross-session — only plain text',
+          message: "structured messages cannot be sent cross-session — only plain text",
           errorCode: 9,
         };
       }
@@ -634,49 +634,49 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
         return {
           result: false,
           message:
-            'Remote Control is not connected — cannot send to a bridge: target. Reconnect with /remote-control first.',
+            "Remote Control is not connected — cannot send to a bridge: target. Reconnect with /remote-control first.",
           errorCode: 9,
         };
       }
       return { result: true };
     }
     if (
-      feature('UDS_INBOX') &&
-      parseAddress(input.to).scheme === 'uds' &&
-      typeof input.message === 'string'
+      feature("UDS_INBOX") &&
+      parseAddress(input.to).scheme === "uds" &&
+      typeof input.message === "string"
     ) {
       // UDS cross-session send: summary isn't rendered (UI.tsx returns null
       // for string messages), so don't require it. Structured messages fall
       // through to the rejection below.
       return { result: true };
     }
-    if (typeof input.message === 'string') {
+    if (typeof input.message === "string") {
       if (!input.summary || input.summary.trim().length === 0) {
         return {
           result: false,
-          message: 'summary is required when message is a string',
+          message: "summary is required when message is a string",
           errorCode: 9,
         };
       }
       return { result: true };
     }
 
-    if (input.to === '*') {
+    if (input.to === "*") {
       return {
         result: false,
         message: 'structured messages cannot be broadcast (to: "*")',
         errorCode: 9,
       };
     }
-    if (feature('UDS_INBOX') && parseAddress(input.to).scheme !== 'other') {
+    if (feature("UDS_INBOX") && parseAddress(input.to).scheme !== "other") {
       return {
         result: false,
-        message: 'structured messages cannot be sent cross-session — only plain text',
+        message: "structured messages cannot be sent cross-session — only plain text",
         errorCode: 9,
       };
     }
 
-    if (input.message.type === 'shutdown_response' && input.to !== TEAM_LEAD_NAME) {
+    if (input.message.type === "shutdown_response" && input.to !== TEAM_LEAD_NAME) {
       return {
         result: false,
         message: `shutdown_response must be sent to "${TEAM_LEAD_NAME}"`,
@@ -685,13 +685,13 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
     }
 
     if (
-      input.message.type === 'shutdown_response' &&
+      input.message.type === "shutdown_response" &&
       !input.message.approve &&
       (!input.message.reason || input.message.reason.trim().length === 0)
     ) {
       return {
         result: false,
-        message: 'reason is required when rejecting a shutdown request',
+        message: "reason is required when rejecting a shutdown request",
         errorCode: 9,
       };
     }
@@ -710,10 +710,10 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
   mapToolResultToToolResultBlockParam(data, toolUseID) {
     return {
       tool_use_id: toolUseID,
-      type: 'tool_result' as const,
+      type: "tool_result" as const,
       content: [
         {
-          type: 'text' as const,
+          type: "text" as const,
           text: jsonStringify(data),
         },
       ],
@@ -721,9 +721,9 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
   },
 
   async call(input, context, canUseTool, assistantMessage) {
-    if (feature('UDS_INBOX') && typeof input.message === 'string') {
+    if (feature("UDS_INBOX") && typeof input.message === "string") {
       const addr = parseAddress(input.to);
-      if (addr.scheme === 'bridge') {
+      if (addr.scheme === "bridge") {
         // Re-check handle — checkPermissions blocks on user approval (can be
         // minutes). validateInput's check is stale if the bridge dropped
         // during the prompt wait; without this, from="unknown" ships.
@@ -738,7 +738,7 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
         }
         /* eslint-disable @typescript-eslint/no-require-imports */
         const { postInterClaudeMessage } =
-          require('../../bridge/peerSessions.js') as typeof import('../../bridge/peerSessions.js');
+          require("../../bridge/peerSessions.js") as typeof import("../../bridge/peerSessions.js");
         /* eslint-enable @typescript-eslint/no-require-imports */
         const result = await postInterClaudeMessage(addr.target, input.message);
         const preview = input.summary || truncate(input.message, 50);
@@ -747,14 +747,14 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
             success: result.ok,
             message: result.ok
               ? `“${preview}” → ${input.to}`
-              : `Failed to send to ${input.to}: ${result.error ?? 'unknown'}`,
+              : `Failed to send to ${input.to}: ${result.error ?? "unknown"}`,
           },
         };
       }
-      if (addr.scheme === 'uds') {
+      if (addr.scheme === "uds") {
         /* eslint-disable @typescript-eslint/no-require-imports */
         const { sendToUdsSocket } =
-          require('../../utils/udsClient.js') as typeof import('../../utils/udsClient.js');
+          require("../../utils/udsClient.js") as typeof import("../../utils/udsClient.js");
         /* eslint-enable @typescript-eslint/no-require-imports */
         try {
           await sendToUdsSocket(addr.target, input.message);
@@ -778,14 +778,14 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
 
     // Route to in-process subagent by name or raw agentId before falling
     // through to ambient-team resolution. Stopped agents are auto-resumed.
-    if (typeof input.message === 'string' && input.to !== '*') {
+    if (typeof input.message === "string" && input.to !== "*") {
       const appState = context.getAppState();
       const registered = appState.agentNameRegistry.get(input.to);
       const agentId = registered ?? toAgentId(input.to);
       if (agentId) {
         const task = appState.tasks[agentId];
         if (isLocalAgentTask(task) && !isMainSessionTask(task)) {
-          if (task.status === 'running') {
+          if (task.status === "running") {
             queuePendingMessage(
               agentId,
               input.message,
@@ -852,33 +852,33 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> = buildTo
       }
     }
 
-    if (typeof input.message === 'string') {
-      if (input.to === '*') {
+    if (typeof input.message === "string") {
+      if (input.to === "*") {
         return handleBroadcast(input.message, input.summary, context);
       }
       return handleMessage(input.to, input.message, input.summary, context);
     }
 
-    if (input.to === '*') {
-      throw new Error('structured messages cannot be broadcast');
+    if (input.to === "*") {
+      throw new Error("structured messages cannot be broadcast");
     }
 
     switch (input.message.type) {
-      case 'shutdown_request':
+      case "shutdown_request":
         return handleShutdownRequest(input.to, input.message.reason, context);
-      case 'shutdown_response':
+      case "shutdown_response":
         if (input.message.approve) {
           return handleShutdownApproval(input.message.request_id, context);
         }
         return handleShutdownRejection(input.message.request_id, input.message.reason!);
-      case 'plan_approval_response':
+      case "plan_approval_response":
         if (input.message.approve) {
           return handlePlanApproval(input.to, input.message.request_id, context);
         }
         return handlePlanRejection(
           input.to,
           input.message.request_id,
-          input.message.feedback ?? 'Plan needs revision',
+          input.message.feedback ?? "Plan needs revision",
           context,
         );
     }

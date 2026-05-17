@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { useInterval } from 'usehooks-ts';
-import { useUpdateNotification } from '../hooks/useUpdateNotification.js';
-import { Box, Text } from '../ink.js';
+} from "src/services/analytics/index.js";
+import { useInterval } from "usehooks-ts";
+import { useUpdateNotification } from "../hooks/useUpdateNotification.js";
+import { Box, Text } from "../ink.js";
 import {
   type AutoUpdaterResult,
   getLatestVersion,
@@ -14,14 +14,14 @@ import {
   type InstallStatus,
   installGlobalPackage,
   shouldSkipVersion,
-} from '../utils/autoUpdater.js';
-import { getGlobalConfig, isAutoUpdaterDisabled } from '../utils/config.js';
-import { logForDebugging } from '../utils/debug.js';
-import { getCurrentInstallationType } from '../utils/doctorDiagnostic.js';
-import { installOrUpdateClaudePackage, localInstallationExists } from '../utils/localInstaller.js';
-import { removeInstalledSymlink } from '../utils/nativeInstaller/index.js';
-import { gt, gte } from '../utils/semver.js';
-import { getInitialSettings } from '../utils/settings/settings.js';
+} from "../utils/autoUpdater.js";
+import { getGlobalConfig, isAutoUpdaterDisabled } from "../utils/config.js";
+import { logForDebugging } from "../utils/debug.js";
+import { getCurrentInstallationType } from "../utils/doctorDiagnostic.js";
+import { installOrUpdateClaudePackage, localInstallationExists } from "../utils/localInstaller.js";
+import { removeInstalledSymlink } from "../utils/nativeInstaller/index.js";
+import { gt, gte } from "../utils/semver.js";
+import { getInitialSettings } from "../utils/settings/settings.js";
 
 type Props = {
   isUpdating: boolean;
@@ -60,12 +60,12 @@ export function AutoUpdater({
     if (isUpdatingRef.current) {
       return;
     }
-    if ('production' === 'test' || 'production' === 'development') {
-      logForDebugging('AutoUpdater: Skipping update check in test/dev environment');
+    if ("production" === "test" || "production" === "development") {
+      logForDebugging("AutoUpdater: Skipping update check in test/dev environment");
       return;
     }
     const currentVersion = MACRO.VERSION;
-    const channel = getInitialSettings()?.autoUpdatesChannel ?? 'latest';
+    const channel = getInitialSettings()?.autoUpdatesChannel ?? "latest";
     let latestVersion = await getLatestVersion(channel);
     const isDisabled = isAutoUpdaterDisabled();
 
@@ -106,7 +106,7 @@ export function AutoUpdater({
       // Remove native installer symlink since we're using JS-based updates
       // But only if user hasn't migrated to native installation
       const config = getGlobalConfig();
-      if (config.installMethod !== 'native') {
+      if (config.installMethod !== "native") {
         await removeInstalledSymlink();
       }
 
@@ -115,35 +115,35 @@ export function AutoUpdater({
       logForDebugging(`AutoUpdater: Detected installation type: ${installationType}`);
 
       // Skip update for development builds
-      if (installationType === 'development') {
-        logForDebugging('AutoUpdater: Cannot auto-update development build');
+      if (installationType === "development") {
+        logForDebugging("AutoUpdater: Cannot auto-update development build");
         onChangeIsUpdating(false);
         return;
       }
 
       // Choose the appropriate update method based on what's actually running
       let installStatus: InstallStatus;
-      let updateMethod: 'local' | 'global';
-      if (installationType === 'npm-local') {
+      let updateMethod: "local" | "global";
+      if (installationType === "npm-local") {
         // Use local update for local installations
-        logForDebugging('AutoUpdater: Using local update method');
-        updateMethod = 'local';
+        logForDebugging("AutoUpdater: Using local update method");
+        updateMethod = "local";
         installStatus = await installOrUpdateClaudePackage(channel);
-      } else if (installationType === 'npm-global') {
+      } else if (installationType === "npm-global") {
         // Use global update for global installations
-        logForDebugging('AutoUpdater: Using global update method');
-        updateMethod = 'global';
+        logForDebugging("AutoUpdater: Using global update method");
+        updateMethod = "global";
         installStatus = await installGlobalPackage();
-      } else if (installationType === 'native') {
+      } else if (installationType === "native") {
         // This shouldn't happen - native should use NativeAutoUpdater
-        logForDebugging('AutoUpdater: Unexpected native installation in non-native updater');
+        logForDebugging("AutoUpdater: Unexpected native installation in non-native updater");
         onChangeIsUpdating(false);
         return;
       } else {
         // Fallback to config-based detection for unknown types
         logForDebugging(`AutoUpdater: Unknown installation type, falling back to config`);
-        const isMigrated = config.installMethod === 'local';
-        updateMethod = isMigrated ? 'local' : 'global';
+        const isMigrated = config.installMethod === "local";
+        updateMethod = isMigrated ? "local" : "global";
         if (isMigrated) {
           installStatus = await installOrUpdateClaudePackage(channel);
         } else {
@@ -151,23 +151,23 @@ export function AutoUpdater({
         }
       }
       onChangeIsUpdating(false);
-      if (installStatus === 'success') {
-        logEvent('tengu_auto_updater_success', {
+      if (installStatus === "success") {
+        logEvent("tengu_auto_updater_success", {
           fromVersion: currentVersion as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           toVersion: latestVersion as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           durationMs: Date.now() - startTime,
-          wasMigrated: updateMethod === 'local',
+          wasMigrated: updateMethod === "local",
           installationType:
             installationType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         });
       } else {
-        logEvent('tengu_auto_updater_fail', {
+        logEvent("tengu_auto_updater_fail", {
           fromVersion: currentVersion as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           attemptedVersion:
             latestVersion as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           status: installStatus as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           durationMs: Date.now() - startTime,
-          wasMigrated: updateMethod === 'local',
+          wasMigrated: updateMethod === "local",
           installationType:
             installationType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         });
@@ -211,7 +211,7 @@ export function AutoUpdater({
           </Text>
         </Box>
       ) : (
-        autoUpdaterResult?.status === 'success' &&
+        autoUpdaterResult?.status === "success" &&
         showSuccessMessage &&
         updateSemver && (
           <Text color="success" wrap="truncate">
@@ -219,10 +219,10 @@ export function AutoUpdater({
           </Text>
         )
       )}
-      {(autoUpdaterResult?.status === 'install_failed' ||
-        autoUpdaterResult?.status === 'no_permissions') && (
+      {(autoUpdaterResult?.status === "install_failed" ||
+        autoUpdaterResult?.status === "no_permissions") && (
         <Text color="error" wrap="truncate">
-          ✗ Auto-update failed &middot; Try <Text bold>claude doctor</Text> or{' '}
+          ✗ Auto-update failed &middot; Try <Text bold>claude doctor</Text> or{" "}
           <Text bold>
             {hasLocalInstall
               ? `cd ~/.claude/local && npm update ${MACRO.PACKAGE_URL}`

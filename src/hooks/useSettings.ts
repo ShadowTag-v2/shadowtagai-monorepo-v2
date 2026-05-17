@@ -1,10 +1,10 @@
-import { type AppState, useAppState } from '../state/AppState.js';
+import { type AppState, useAppState } from "../state/AppState.js";
 
 /**
  * Settings type as stored in AppState (DeepImmutable wrapped).
  * Use this type when you need to annotate variables that hold settings from useSettings().
  */
-export type ReadonlySettings = AppState['settings'];
+export type ReadonlySettings = AppState["settings"];
 
 /**
  * React hook to access current settings from AppState.

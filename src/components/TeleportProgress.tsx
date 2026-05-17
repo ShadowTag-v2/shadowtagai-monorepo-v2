@@ -1,42 +1,42 @@
-import figures from 'figures';
-import type * as React from 'react';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { Root } from '../ink.js';
-import { Box, Text, useAnimationFrame } from '../ink.js';
-import { AppStateProvider } from '../state/AppState.js';
+import figures from "figures";
+import type * as React from "react";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { Root } from "../ink.js";
+import { Box, Text, useAnimationFrame } from "../ink.js";
+import { AppStateProvider } from "../state/AppState.js";
 import {
   checkOutTeleportedSessionBranch,
   processMessagesForTeleportResume,
   type TeleportProgressStep,
   type TeleportResult,
   teleportResumeCodeSession,
-} from '../utils/teleport.js';
+} from "../utils/teleport.js";
 
 type Props = {
   currentStep: TeleportProgressStep;
   sessionId?: string;
 };
-const SPINNER_FRAMES = ['◐', '◓', '◑', '◒'];
+const SPINNER_FRAMES = ["◐", "◓", "◑", "◒"];
 const STEPS: {
   key: TeleportProgressStep;
   label: string;
 }[] = [
   {
-    key: 'validating',
-    label: 'Validating session',
+    key: "validating",
+    label: "Validating session",
   },
   {
-    key: 'fetching_logs',
-    label: 'Fetching session logs',
+    key: "fetching_logs",
+    label: "Fetching session logs",
   },
   {
-    key: 'fetching_branch',
-    label: 'Getting branch info',
+    key: "fetching_branch",
+    label: "Getting branch info",
   },
   {
-    key: 'checking_out',
-    label: 'Checking out branch',
+    key: "checking_out",
+    label: "Checking out branch",
   },
 ];
 export function TeleportProgress(t0) {
@@ -90,11 +90,11 @@ export function TeleportProgress(t0) {
       let color;
       if (isComplete) {
         icon = figures.tick;
-        color = 'green';
+        color = "green";
       } else {
         if (isCurrent) {
           icon = SPINNER_FRAMES[frame];
-          color = 'claude';
+          color = "claude";
         } else {
           icon = figures.circle;
           color = undefined;
@@ -159,7 +159,7 @@ export async function teleportWithProgress(root: Root, sessionId: string): Promi
   // Capture the setState function from the rendered component
   let setStep: (step: TeleportProgressStep) => void = () => {};
   function TeleportProgressWrapper(): React.ReactNode {
-    const [step, _setStep] = useState<TeleportProgressStep>('validating');
+    const [step, _setStep] = useState<TeleportProgressStep>("validating");
     setStep = _setStep;
     return <TeleportProgress currentStep={step} sessionId={sessionId} />;
   }
@@ -169,7 +169,7 @@ export async function teleportWithProgress(root: Root, sessionId: string): Promi
     </AppStateProvider>,
   );
   const result = await teleportResumeCodeSession(sessionId, setStep);
-  setStep('checking_out');
+  setStep("checking_out");
   const { branchName, branchError } = await checkOutTeleportedSessionBranch(result.branch);
   return {
     messages: processMessagesForTeleportResume(result.log, branchError),

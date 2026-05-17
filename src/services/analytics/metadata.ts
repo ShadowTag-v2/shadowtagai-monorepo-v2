@@ -6,36 +6,36 @@
  * event metadata across all analytics systems (Datadog, 1P).
  */
 
-import { extname } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
-import { env, getHostPlatformForAnalytics } from '../../utils/env.js';
-import { envDynamic } from '../../utils/envDynamic.js';
-import { getModelBetas } from '../../utils/betas.js';
-import { getMainLoopModel } from '../../utils/model/model.js';
+import { extname } from "node:path";
+import memoize from "lodash-es/memoize.js";
+import { env, getHostPlatformForAnalytics } from "../../utils/env.js";
+import { envDynamic } from "../../utils/envDynamic.js";
+import { getModelBetas } from "../../utils/betas.js";
+import { getMainLoopModel } from "../../utils/model/model.js";
 import {
   getSessionId,
   getIsInteractive,
   getKairosActive,
   getClientType,
   getParentSessionId as getParentSessionIdFromState,
-} from '../../bootstrap/state.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { isOfficialMcpUrl } from '../mcp/officialRegistry.js';
-import { isClaudeAISubscriber, getSubscriptionType } from '../../utils/auth.js';
-import { getRepoRemoteHash } from '../../utils/git.js';
-import { getWslVersion, getLinuxDistroInfo, detectVcs } from '../../utils/platform.js';
-import type { CoreUserData } from 'src/utils/user.js';
-import { getAgentContext } from '../../utils/agentContext.js';
-import type { EnvironmentMetadata } from '../../types/generated/events_mono/claude_code/v1/claude_code_internal_event.js';
-import type { PublicApiAuth } from '../../types/generated/events_mono/common/v1/auth.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
+} from "../../bootstrap/state.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { isOfficialMcpUrl } from "../mcp/officialRegistry.js";
+import { isClaudeAISubscriber, getSubscriptionType } from "../../utils/auth.js";
+import { getRepoRemoteHash } from "../../utils/git.js";
+import { getWslVersion, getLinuxDistroInfo, detectVcs } from "../../utils/platform.js";
+import type { CoreUserData } from "src/utils/user.js";
+import { getAgentContext } from "../../utils/agentContext.js";
+import type { EnvironmentMetadata } from "../../types/generated/events_mono/claude_code/v1/claude_code_internal_event.js";
+import type { PublicApiAuth } from "../../types/generated/events_mono/common/v1/auth.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
 import {
   getAgentId,
   getParentSessionId as getTeammateParentSessionId,
   getTeamName,
   isTeammate,
-} from '../../utils/teammate.js';
-import { feature } from 'bun:bundle';
+} from "../../utils/teammate.js";
+import { feature } from "bun:bundle";
 
 /**
  * Marker type for verifying analytics metadata doesn't contain sensitive data
@@ -66,8 +66,8 @@ export type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS = never;
 export function sanitizeToolNameForAnalytics(
   toolName: string,
 ): AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS {
-  if (toolName.startsWith('mcp__')) {
-    return 'mcp_tool' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
+  if (toolName.startsWith("mcp__")) {
+    return "mcp_tool" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
   }
   return toolName as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
 }
@@ -99,10 +99,10 @@ export function isAnalyticsToolDetailsLoggingEnabled(
   mcpServerType: string | undefined,
   mcpServerBaseUrl: string | undefined,
 ): boolean {
-  if (process.env.CLAUDE_CODE_ENTRYPOINT === 'local-agent') {
+  if (process.env.CLAUDE_CODE_ENTRYPOINT === "local-agent") {
     return true;
   }
-  if (mcpServerType === 'claudeai-proxy') {
+  if (mcpServerType === "claudeai-proxy") {
     return true;
   }
   if (mcpServerBaseUrl && isOfficialMcpUrl(mcpServerBaseUrl)) {
@@ -123,10 +123,10 @@ export function isAnalyticsToolDetailsLoggingEnabled(
  */
 /* eslint-disable @typescript-eslint/no-require-imports */
 const BUILTIN_MCP_SERVER_NAMES: ReadonlySet<string> = new Set(
-  feature('CHICAGO_MCP')
+  feature("CHICAGO_MCP")
     ? [
         (
-          require('../../utils/computerUse/common.js') as typeof import('../../utils/computerUse/common.js')
+          require("../../utils/computerUse/common.js") as typeof import("../../utils/computerUse/common.js")
         ).COMPUTER_USE_MCP_SERVER_NAME,
       ]
     : [],
@@ -175,19 +175,19 @@ export function extractMcpToolDetails(toolName: string):
       mcpToolName: AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
     }
   | undefined {
-  if (!toolName.startsWith('mcp__')) {
+  if (!toolName.startsWith("mcp__")) {
     return undefined;
   }
 
   // Format: mcp__<server>__<tool>
-  const parts = toolName.split('__');
+  const parts = toolName.split("__");
   if (parts.length < 3) {
     return undefined;
   }
 
   const serverName = parts[1];
   // Tool name may contain __ so rejoin remaining parts
-  const mcpToolName = parts.slice(2).join('__');
+  const mcpToolName = parts.slice(2).join("__");
 
   if (!serverName || !mcpToolName) {
     return undefined;
@@ -210,15 +210,15 @@ export function extractSkillName(
   toolName: string,
   input: unknown,
 ): AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS | undefined {
-  if (toolName !== 'Skill') {
+  if (toolName !== "Skill") {
     return undefined;
   }
 
   if (
-    typeof input === 'object' &&
+    typeof input === "object" &&
     input !== null &&
-    'skill' in input &&
-    typeof (input as { skill: unknown }).skill === 'string'
+    "skill" in input &&
+    typeof (input as { skill: unknown }).skill === "string"
   ) {
     return (input as { skill: string })
       .skill as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
@@ -234,22 +234,22 @@ const TOOL_INPUT_MAX_COLLECTION_ITEMS = 20;
 const TOOL_INPUT_MAX_DEPTH = 2;
 
 function truncateToolInputValue(value: unknown, depth = 0): unknown {
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     if (value.length > TOOL_INPUT_STRING_TRUNCATE_AT) {
       return `${value.slice(0, TOOL_INPUT_STRING_TRUNCATE_TO)}…[${value.length} chars]`;
     }
     return value;
   }
   if (
-    typeof value === 'number' ||
-    typeof value === 'boolean' ||
+    typeof value === "number" ||
+    typeof value === "boolean" ||
     value === null ||
     value === undefined
   ) {
     return value;
   }
   if (depth >= TOOL_INPUT_MAX_DEPTH) {
-    return '<nested>';
+    return "<nested>";
   }
   if (Array.isArray(value)) {
     const mapped = value
@@ -260,16 +260,16 @@ function truncateToolInputValue(value: unknown, depth = 0): unknown {
     }
     return mapped;
   }
-  if (typeof value === 'object') {
+  if (typeof value === "object") {
     const entries = Object.entries(value as Record<string, unknown>)
       // Skip internal marker keys (e.g. _simulatedSedEdit re-introduced by
       // SedEditPermissionRequest) so they don't leak into telemetry.
-      .filter(([k]) => !k.startsWith('_'));
+      .filter(([k]) => !k.startsWith("_"));
     const mapped = entries
       .slice(0, TOOL_INPUT_MAX_COLLECTION_ITEMS)
       .map(([k, v]) => [k, truncateToolInputValue(v, depth + 1)]);
     if (entries.length > TOOL_INPUT_MAX_COLLECTION_ITEMS) {
-      mapped.push(['…', `${entries.length} keys`]);
+      mapped.push(["…", `${entries.length} keys`]);
     }
     return Object.fromEntries(mapped);
   }
@@ -316,13 +316,13 @@ export function getFileExtensionForAnalytics(
   filePath: string,
 ): AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS | undefined {
   const ext = extname(filePath).toLowerCase();
-  if (!ext || ext === '.') {
+  if (!ext || ext === ".") {
     return undefined;
   }
 
   const extension = ext.slice(1); // remove leading dot
   if (extension.length > MAX_FILE_EXTENSION_LENGTH) {
-    return 'other' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
+    return "other" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
   }
 
   return extension as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
@@ -330,23 +330,23 @@ export function getFileExtensionForAnalytics(
 
 /** Allow list of commands we extract file extensions from. */
 const FILE_COMMANDS = new Set([
-  'rm',
-  'mv',
-  'cp',
-  'touch',
-  'mkdir',
-  'chmod',
-  'chown',
-  'cat',
-  'head',
-  'tail',
-  'sort',
-  'stat',
-  'diff',
-  'wc',
-  'grep',
-  'rg',
-  'sed',
+  "rm",
+  "mv",
+  "cp",
+  "touch",
+  "mkdir",
+  "chmod",
+  "chown",
+  "cat",
+  "head",
+  "tail",
+  "sort",
+  "stat",
+  "diff",
+  "wc",
+  "grep",
+  "rg",
+  "sed",
 ]);
 
 /** Regex to split bash commands on compound operators (&&, ||, ;, |). */
@@ -365,7 +365,7 @@ export function getFileExtensionsFromBashCommand(
   command: string,
   simulatedSedEditFilePath?: string,
 ): AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS | undefined {
-  if (!command.includes('.') && !simulatedSedEditFilePath) return undefined;
+  if (!command.includes(".") && !simulatedSedEditFilePath) return undefined;
 
   let result: string | undefined;
   const seen = new Set<string>();
@@ -384,7 +384,7 @@ export function getFileExtensionsFromBashCommand(
     if (tokens.length < 2) continue;
 
     const firstToken = tokens[0]!;
-    const slashIdx = firstToken.lastIndexOf('/');
+    const slashIdx = firstToken.lastIndexOf("/");
     const baseCmd = slashIdx >= 0 ? firstToken.slice(slashIdx + 1) : firstToken;
     if (!FILE_COMMANDS.has(baseCmd)) continue;
 
@@ -478,13 +478,13 @@ export type EventMetadata = {
   // Swarm/team agent identification for analytics attribution
   agentId?: string; // CLAUDE_CODE_AGENT_ID (format: agentName@teamName) or subagent UUID
   parentSessionId?: string; // CLAUDE_CODE_PARENT_SESSION_ID (team lead's session)
-  agentType?: 'teammate' | 'subagent' | 'standalone'; // Distinguishes swarm teammates, Agent tool subagents, and standalone agents
+  agentType?: "teammate" | "subagent" | "standalone"; // Distinguishes swarm teammates, Agent tool subagents, and standalone agents
   teamName?: string; // Team name for swarm agents (from env var or AsyncLocalStorage)
   subscriptionType?: string; // OAuth subscription tier (max, pro, enterprise, team)
   rh?: string; // Hashed repo remote URL (first 16 chars of SHA256), for joining with server-side data
   kairosActive?: true; // KAIROS assistant mode active (ant-only; set in main.tsx after gate check)
-  skillMode?: 'discovery' | 'coach' | 'discovery_and_coach'; // Which skill surfacing mechanism(s) are gated on (ant-only; for BQ session segmentation)
-  observerMode?: 'backseat' | 'skillcoach' | 'both'; // Which observer classifiers are gated on (ant-only; for BQ cohort splits on tengu_backseat_* events)
+  skillMode?: "discovery" | "coach" | "discovery_and_coach"; // Which skill surfacing mechanism(s) are gated on (ant-only; for BQ session segmentation)
+  observerMode?: "backseat" | "skillcoach" | "both"; // Which observer classifiers are gated on (ant-only; for BQ cohort splits on tengu_backseat_* events)
 };
 
 /**
@@ -506,7 +506,7 @@ export type EnrichMetadataOptions = {
 function getAgentIdentification(): {
   agentId?: string;
   parentSessionId?: string;
-  agentType?: 'teammate' | 'subagent' | 'standalone';
+  agentType?: "teammate" | "subagent" | "standalone";
   teamName?: string;
 } {
   // Check AsyncLocalStorage first (for subagents running in same process)
@@ -517,7 +517,7 @@ function getAgentIdentification(): {
       parentSessionId: agentContext.parentSessionId,
       agentType: agentContext.agentType,
     };
-    if (agentContext.agentType === 'teammate') {
+    if (agentContext.agentType === "teammate") {
       result.teamName = agentContext.teamName;
     }
     return result;
@@ -530,9 +530,9 @@ function getAgentIdentification(): {
   const isSwarmAgent = isTeammate();
   // For standalone agents (have agent ID but not a teammate), set agentType to 'standalone'
   const agentType = isSwarmAgent
-    ? ('teammate' as const)
+    ? ("teammate" as const)
     : agentId
-      ? ('standalone' as const)
+      ? ("standalone" as const)
       : undefined;
   if (agentId || agentType || parentSessionId || teamName) {
     return {
@@ -580,19 +580,19 @@ const buildEnvContext = memoize(async (): Promise<EnvContext> => {
     arch: env.arch,
     nodeVersion: env.nodeVersion,
     terminal: envDynamic.terminal,
-    packageManagers: packageManagers.join(','),
-    runtimes: runtimes.join(','),
+    packageManagers: packageManagers.join(","),
+    runtimes: runtimes.join(","),
     isRunningWithBun: env.isRunningWithBun(),
     isCi: isEnvTruthy(process.env.CI),
     isClaubbit: isEnvTruthy(process.env.CLAUBBIT),
     isClaudeCodeRemote: isEnvTruthy(process.env.CLAUDE_CODE_REMOTE),
-    isLocalAgentMode: process.env.CLAUDE_CODE_ENTRYPOINT === 'local-agent',
+    isLocalAgentMode: process.env.CLAUDE_CODE_ENTRYPOINT === "local-agent",
     isConductor: env.isConductor(),
     ...(process.env.CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE && {
       remoteEnvironmentType: process.env.CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE,
     }),
     // Gated by feature flag to prevent leaking "coworkerType" string in external builds
-    ...(feature('COWORKER_TYPE_TELEMETRY')
+    ...(feature("COWORKER_TYPE_TELEMETRY")
       ? process.env.CLAUDE_CODE_COWORKER_TYPE
         ? { coworkerType: process.env.CLAUDE_CODE_COWORKER_TYPE }
         : {}
@@ -617,13 +617,13 @@ const buildEnvContext = memoize(async (): Promise<EnvContext> => {
       githubEventName: process.env.GITHUB_EVENT_NAME,
       githubActionsRunnerEnvironment: process.env.RUNNER_ENVIRONMENT,
       githubActionsRunnerOs: process.env.RUNNER_OS,
-      githubActionRef: process.env.GITHUB_ACTION_PATH?.includes('claude-code-action/')
-        ? process.env.GITHUB_ACTION_PATH.split('claude-code-action/')[1]
+      githubActionRef: process.env.GITHUB_ACTION_PATH?.includes("claude-code-action/")
+        ? process.env.GITHUB_ACTION_PATH.split("claude-code-action/")[1]
         : undefined,
     }),
     ...(getWslVersion() && { wslVersion: getWslVersion() }),
     ...(linuxDistroInfo ?? {}),
-    ...(vcs.length > 0 ? { vcs: vcs.join(',') } : {}),
+    ...(vcs.length > 0 ? { vcs: vcs.join(",") } : {}),
   };
 });
 
@@ -683,14 +683,14 @@ export async function getEventMetadata(
   options: EnrichMetadataOptions = {},
 ): Promise<EventMetadata> {
   const model = options.model ? String(options.model) : getMainLoopModel();
-  const betas = typeof options.betas === 'string' ? options.betas : getModelBetas(model).join(',');
+  const betas = typeof options.betas === "string" ? options.betas : getModelBetas(model).join(",");
   const [envContext, repoRemoteHash] = await Promise.all([buildEnvContext(), getRepoRemoteHash()]);
   const processMetrics = buildProcessMetrics();
 
   const metadata: EventMetadata = {
     model,
     sessionId: getSessionId(),
-    userType: process.env.USER_TYPE || '',
+    userType: process.env.USER_TYPE || "",
     ...(betas.length > 0 ? { betas: betas } : {}),
     envContext,
     ...(process.env.CLAUDE_CODE_ENTRYPOINT && {
@@ -702,9 +702,9 @@ export async function getEventMetadata(
     isInteractive: String(getIsInteractive()),
     clientType: getClientType(),
     ...(processMetrics && { processMetrics }),
-    sweBenchRunId: process.env.SWE_BENCH_RUN_ID || '',
-    sweBenchInstanceId: process.env.SWE_BENCH_INSTANCE_ID || '',
-    sweBenchTaskId: process.env.SWE_BENCH_TASK_ID || '',
+    sweBenchRunId: process.env.SWE_BENCH_RUN_ID || "",
+    sweBenchInstanceId: process.env.SWE_BENCH_INSTANCE_ID || "",
+    sweBenchTaskId: process.env.SWE_BENCH_TASK_ID || "",
     // Swarm/team agent identification
     // Priority: AsyncLocalStorage context (subagents) > env vars (swarm teammates)
     ...getAgentIdentification(),
@@ -715,7 +715,7 @@ export async function getEventMetadata(
     // Assistant mode tag — lives outside memoized buildEnvContext() because
     // setKairosActive() runs at main.tsx:~1648, after the first event may
     // have already fired and memoized the env. Read fresh per-event instead.
-    ...(feature('KAIROS') && getKairosActive() ? { kairosActive: true as const } : {}),
+    ...(feature("KAIROS") && getKairosActive() ? { kairosActive: true as const } : {}),
     // Repo remote hash for joining with server-side repo bundle data
     ...(repoRemoteHash && { rh: repoRemoteHash }),
   };
@@ -741,7 +741,7 @@ export type FirstPartyEventLoggingCoreMetadata = {
   // Swarm/team agent identification
   agent_id?: string;
   parent_session_id?: string;
-  agent_type?: 'teammate' | 'subagent' | 'standalone';
+  agent_type?: "teammate" | "subagent" | "standalone";
   team_name?: string;
 };
 
@@ -795,7 +795,7 @@ export function to1PEventFormat(
     platform_raw: envContext.platformRaw,
     arch: envContext.arch,
     node_version: envContext.nodeVersion,
-    terminal: envContext.terminal || 'unknown',
+    terminal: envContext.terminal || "unknown",
     package_managers: envContext.packageManagers,
     runtimes: envContext.runtimes,
     is_running_with_bun: envContext.isRunningWithBun,
@@ -816,7 +816,7 @@ export function to1PEventFormat(
   if (envContext.remoteEnvironmentType) {
     env.remote_environment_type = envContext.remoteEnvironmentType;
   }
-  if (feature('COWORKER_TYPE_TELEMETRY') && envContext.coworkerType) {
+  if (feature("COWORKER_TYPE_TELEMETRY") && envContext.coworkerType) {
     env.coworker_type = envContext.coworkerType;
   }
   if (envContext.claudeCodeContainerId) {
@@ -827,7 +827,7 @@ export function to1PEventFormat(
   }
   if (envContext.tags) {
     env.tags = envContext.tags
-      .split(',')
+      .split(",")
       .map((t) => t.trim())
       .filter(Boolean);
   }
@@ -867,7 +867,7 @@ export function to1PEventFormat(
     session_id: coreFields.sessionId,
     model: coreFields.model,
     user_type: coreFields.userType,
-    is_interactive: coreFields.isInteractive === 'true',
+    is_interactive: coreFields.isInteractive === "true",
     client_type: coreFields.clientType,
   };
 
@@ -930,7 +930,7 @@ export function to1PEventFormat(
   return {
     env,
     ...(processMetrics && {
-      process: Buffer.from(jsonStringify(processMetrics)).toString('base64'),
+      process: Buffer.from(jsonStringify(processMetrics)).toString("base64"),
     }),
     ...(auth && { auth }),
     core,

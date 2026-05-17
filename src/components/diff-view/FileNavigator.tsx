@@ -10,20 +10,20 @@
  *   - Keyboard navigable (Tab through, Space to toggle)
  */
 
-'use client';
+"use client";
 
-import { ConfidenceBadge } from './ConfidenceBadge';
-import styles from './diff-view.module.css';
-import { PrivilegeBadge } from './PrivilegeBadge';
-import type { FileNavigatorProps } from './types';
+import { ConfidenceBadge } from "./ConfidenceBadge";
+import styles from "./diff-view.module.css";
+import { PrivilegeBadge } from "./PrivilegeBadge";
+import type { FileNavigatorProps } from "./types";
 
 function extractFilename(path: string): string {
-  return path.split('/').pop() || path;
+  return path.split("/").pop() || path;
 }
 
 function extractDirectory(path: string): string {
-  const parts = path.split('/');
-  return parts.length > 1 ? `${parts.slice(0, -1).join('/')}/` : '';
+  const parts = path.split("/");
+  return parts.length > 1 ? `${parts.slice(0, -1).join("/")}/` : "";
 }
 
 export function FileNavigator({
@@ -52,7 +52,7 @@ export function FileNavigator({
           return (
             <div
               key={file.path}
-              className={`${styles.fileItem} ${isActive ? styles.fileItemActive : ''}`}
+              className={`${styles.fileItem} ${isActive ? styles.fileItemActive : ""}`}
               role="option"
               aria-selected={isActive}
               tabIndex={0}
@@ -81,7 +81,7 @@ export function FileNavigator({
                   <PrivilegeBadge status={file.privilegeStatus} />
                   <ConfidenceBadge confidence={file.aiConfidence} size="sm" />
                   <span className={styles.hunkCount}>
-                    {file.hunkCount} hunk{file.hunkCount !== 1 ? 's' : ''}
+                    {file.hunkCount} hunk{file.hunkCount !== 1 ? "s" : ""}
                   </span>
                 </span>
               </button>

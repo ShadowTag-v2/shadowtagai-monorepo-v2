@@ -1,40 +1,40 @@
-import figures from 'figures';
-import type * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import figures from "figures";
+import type * as React from "react";
+import { useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
-import { Byline } from '../../components/design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../components/design-system/KeyboardShortcutHint.js';
+} from "src/services/analytics/index.js";
+import { ConfigurableShortcutHint } from "../../components/ConfigurableShortcutHint.js";
+import { Byline } from "../../components/design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../components/design-system/KeyboardShortcutHint.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- useInput needed for marketplace-specific u/r shortcuts and y/n confirmation not in keybinding schema
-import { Box, Text, useInput } from '../../ink.js';
-import { useKeybinding, useKeybindings } from '../../keybindings/useKeybinding.js';
-import type { LoadedPlugin } from '../../types/plugin.js';
-import { count } from '../../utils/array.js';
-import { shouldSkipPluginAutoupdate } from '../../utils/config.js';
-import { errorMessage } from '../../utils/errors.js';
-import { clearAllCaches } from '../../utils/plugins/cacheUtils.js';
+import { Box, Text, useInput } from "../../ink.js";
+import { useKeybinding, useKeybindings } from "../../keybindings/useKeybinding.js";
+import type { LoadedPlugin } from "../../types/plugin.js";
+import { count } from "../../utils/array.js";
+import { shouldSkipPluginAutoupdate } from "../../utils/config.js";
+import { errorMessage } from "../../utils/errors.js";
+import { clearAllCaches } from "../../utils/plugins/cacheUtils.js";
 import {
   createPluginId,
   formatMarketplaceLoadingErrors,
   getMarketplaceSourceDisplay,
   loadMarketplacesWithGracefulDegradation,
-} from '../../utils/plugins/marketplaceHelpers.js';
+} from "../../utils/plugins/marketplaceHelpers.js";
 import {
   loadKnownMarketplacesConfig,
   refreshMarketplace,
   removeMarketplaceSource,
   setMarketplaceAutoUpdate,
-} from '../../utils/plugins/marketplaceManager.js';
-import { updatePluginsForMarketplaces } from '../../utils/plugins/pluginAutoupdate.js';
-import { loadAllPlugins } from '../../utils/plugins/pluginLoader.js';
-import { isMarketplaceAutoUpdate } from '../../utils/plugins/schemas.js';
-import { getSettingsForSource, updateSettingsForSource } from '../../utils/settings/settings.js';
-import { plural } from '../../utils/stringUtils.js';
-import type { ViewState } from './types.js';
+} from "../../utils/plugins/marketplaceManager.js";
+import { updatePluginsForMarketplaces } from "../../utils/plugins/pluginAutoupdate.js";
+import { loadAllPlugins } from "../../utils/plugins/pluginLoader.js";
+import { isMarketplaceAutoUpdate } from "../../utils/plugins/schemas.js";
+import { getSettingsForSource, updateSettingsForSource } from "../../utils/settings/settings.js";
+import { plural } from "../../utils/stringUtils.js";
+import type { ViewState } from "./types.js";
 
 type Props = {
   setViewState: (state: ViewState) => void;
@@ -43,11 +43,11 @@ type Props = {
   setResult: (result: string | null) => void;
   exitState: {
     pending: boolean;
-    keyName: 'Ctrl-C' | 'Ctrl-D' | null;
+    keyName: "Ctrl-C" | "Ctrl-D" | null;
   };
   onManageComplete?: () => void | Promise<void>;
   targetMarketplace?: string;
-  action?: 'update' | 'remove';
+  action?: "update" | "remove";
 };
 type MarketplaceState = {
   name: string;
@@ -59,7 +59,7 @@ type MarketplaceState = {
   pendingRemove?: boolean;
   autoUpdate?: boolean;
 };
-type InternalViewState = 'list' | 'details' | 'confirm-remove';
+type InternalViewState = "list" | "details" | "confirm-remove";
 export function ManageMarketplaces({
   setViewState,
   error,
@@ -77,7 +77,7 @@ export function ManageMarketplaces({
   const [processError, setProcessError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [progressMessage, setProgressMessage] = useState<string | null>(null);
-  const [internalView, setInternalView] = useState<InternalViewState>('list');
+  const [internalView, setInternalView] = useState<InternalViewState>("list");
   const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceState | null>(null);
   const [detailsMenuIndex, setDetailsMenuIndex] = useState(0);
   const hasAttemptedAutoAction = useRef(false);
@@ -112,8 +112,8 @@ export function ManageMarketplaces({
 
         // Sort: claude-plugin-directory first, then alphabetically
         states.sort((a, b) => {
-          if (a.name === 'claude-plugin-directory') return -1;
-          if (b.name === 'claude-plugin-directory') return 1;
+          if (a.name === "claude-plugin-directory") return -1;
+          if (b.name === "claude-plugin-directory") return 1;
           return a.name.localeCompare(b.name);
         });
         setMarketplaceStates(states);
@@ -122,7 +122,7 @@ export function ManageMarketplaces({
         const successCount = count(marketplaces, (m) => m.data !== null);
         const errorResult = formatMarketplaceLoadingErrors(failures, successCount);
         if (errorResult) {
-          if (errorResult.type === 'warning') {
+          if (errorResult.type === "warning") {
             setProcessError(errorResult.message);
           } else {
             throw new Error(errorResult.message);
@@ -139,9 +139,9 @@ export function ManageMarketplaces({
               // Mark the action as pending and execute
               setSelectedIndex(targetIndex + 1); // +1 because "Add Marketplace" is at index 0
               const newStates = [...states];
-              if (action === 'update') {
+              if (action === "update") {
                 newStates[targetIndex]!.pendingUpdate = true;
-              } else if (action === 'remove') {
+              } else if (action === "remove") {
                 newStates[targetIndex]!.pendingRemove = true;
               }
               setMarketplaceStates(newStates);
@@ -151,7 +151,7 @@ export function ManageMarketplaces({
               // No action - just show the details view for this marketplace
               setSelectedIndex(targetIndex + 1); // +1 because "Add Marketplace" is at index 0
               setSelectedMarketplace(targetState);
-              setInternalView('details');
+              setInternalView("details");
             }
           } else if (setError) {
             setError(`Marketplace not found: ${targetMarketplace}`);
@@ -159,9 +159,9 @@ export function ManageMarketplaces({
         }
       } catch (err) {
         if (setError) {
-          setError(err instanceof Error ? err.message : 'Failed to load marketplaces');
+          setError(err instanceof Error ? err.message : "Failed to load marketplaces");
         }
-        setProcessError(err instanceof Error ? err.message : 'Failed to load marketplaces');
+        setProcessError(err instanceof Error ? err.message : "Failed to load marketplaces");
       } finally {
         setLoading(false);
       }
@@ -189,13 +189,13 @@ export function ManageMarketplaces({
   // Apply all pending changes
   const applyChanges = async (states?: MarketplaceState[]) => {
     const statesToProcess = states || marketplaceStates;
-    const wasInDetailsView = internalView === 'details';
+    const wasInDetailsView = internalView === "details";
     setIsProcessing(true);
     setProcessError(null);
     setSuccessMessage(null);
     setProgressMessage(null);
     try {
-      const settings = getSettingsForSource('userSettings');
+      const settings = getSettingsForSource("userSettings");
       let updatedCount = 0;
       let removedCount = 0;
       const refreshedMarketplaces = new Set<string>();
@@ -212,7 +212,7 @@ export function ManageMarketplaces({
               // Mark as disabled/uninstalled
               newEnabledPlugins[pluginId] = false;
             }
-            updateSettingsForSource('userSettings', {
+            updateSettingsForSource("userSettings", {
               enabledPlugins: newEnabledPlugins,
             });
           }
@@ -220,7 +220,7 @@ export function ManageMarketplaces({
           // Then remove the marketplace
           await removeMarketplaceSource(state.name);
           removedCount++;
-          logEvent('tengu_marketplace_removed', {
+          logEvent("tengu_marketplace_removed", {
             marketplace_name:
               state.name as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
             plugins_uninstalled: state.installedPlugins?.length || 0,
@@ -236,7 +236,7 @@ export function ManageMarketplaces({
           });
           updatedCount++;
           refreshedMarketplaces.add(state.name.toLowerCase());
-          logEvent('tengu_marketplace_updated', {
+          logEvent("tengu_marketplace_updated", {
             marketplace_name:
               state.name as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           });
@@ -289,8 +289,8 @@ export function ManageMarketplaces({
 
       // Sort: claude-plugin-directory first, then alphabetically
       newStates.sort((a, b) => {
-        if (a.name === 'claude-plugin-directory') return -1;
-        if (b.name === 'claude-plugin-directory') return 1;
+        if (a.name === "claude-plugin-directory") return -1;
+        if (b.name === "claude-plugin-directory") return 1;
         return a.name.localeCompare(b.name);
       });
       setMarketplaceStates(newStates);
@@ -308,15 +308,15 @@ export function ManageMarketplaces({
       if (updatedCount > 0) {
         const pluginPart =
           updatedPluginCount > 0
-            ? ` (${updatedPluginCount} ${plural(updatedPluginCount, 'plugin')} bumped)`
-            : '';
-        actions.push(`Updated ${updatedCount} ${plural(updatedCount, 'marketplace')}${pluginPart}`);
+            ? ` (${updatedPluginCount} ${plural(updatedPluginCount, "plugin")} bumped)`
+            : "";
+        actions.push(`Updated ${updatedCount} ${plural(updatedCount, "marketplace")}${pluginPart}`);
       }
       if (removedCount > 0) {
-        actions.push(`Removed ${removedCount} ${plural(removedCount, 'marketplace')}`);
+        actions.push(`Removed ${removedCount} ${plural(removedCount, "marketplace")}`);
       }
       if (actions.length > 0) {
-        const successMsg = `${figures.tick} ${actions.join(', ')}`;
+        const successMsg = `${figures.tick} ${actions.join(", ")}`;
         // If we were in details view, stay there and show success
         if (wasInDetailsView) {
           setSuccessMessage(successMsg);
@@ -324,12 +324,12 @@ export function ManageMarketplaces({
           // Otherwise show result and exit to menu
           setResult(successMsg);
           setTimeout(setViewState, 2000, {
-            type: 'menu' as const,
+            type: "menu" as const,
           });
         }
       } else if (!wasInDetailsView) {
         setViewState({
-          type: 'menu',
+          type: "menu",
         });
       }
     } catch (err) {
@@ -377,27 +377,27 @@ export function ManageMarketplaces({
     }> = [
       {
         label: `Browse plugins (${marketplace.pluginCount ?? 0})`,
-        value: 'browse',
+        value: "browse",
       },
       {
-        label: 'Update marketplace',
+        label: "Update marketplace",
         secondaryLabel: marketplace.lastUpdated
           ? `(last updated ${new Date(marketplace.lastUpdated).toLocaleDateString()})`
           : undefined,
-        value: 'update',
+        value: "update",
       },
     ];
 
     // Only show auto-update toggle if auto-updater is not globally disabled
     if (!shouldSkipPluginAutoupdate()) {
       options.push({
-        label: marketplace.autoUpdate ? 'Disable auto-update' : 'Enable auto-update',
-        value: 'toggle-auto-update',
+        label: marketplace.autoUpdate ? "Disable auto-update" : "Enable auto-update",
+        value: "toggle-auto-update",
       });
     }
     options.push({
-      label: 'Remove marketplace',
-      value: 'remove',
+      label: "Remove marketplace",
+      value: "remove",
     });
     return options;
   };
@@ -430,26 +430,26 @@ export function ManageMarketplaces({
           : prev,
       );
     } catch (err) {
-      setProcessError(err instanceof Error ? err.message : 'Failed to update setting');
+      setProcessError(err instanceof Error ? err.message : "Failed to update setting");
     }
   };
 
   // Escape in details or confirm-remove view - go back to list
   useKeybinding(
-    'confirm:no',
+    "confirm:no",
     () => {
-      setInternalView('list');
+      setInternalView("list");
       setDetailsMenuIndex(0);
     },
     {
-      context: 'Confirmation',
-      isActive: !isProcessing && (internalView === 'details' || internalView === 'confirm-remove'),
+      context: "Confirmation",
+      isActive: !isProcessing && (internalView === "details" || internalView === "confirm-remove"),
     },
   );
 
   // Escape in list view with pending changes - clear pending changes
   useKeybinding(
-    'confirm:no',
+    "confirm:no",
     () => {
       setMarketplaceStates((prev) =>
         prev.map((state) => ({
@@ -461,38 +461,38 @@ export function ManageMarketplaces({
       setSelectedIndex(0);
     },
     {
-      context: 'Confirmation',
-      isActive: !isProcessing && internalView === 'list' && hasPendingChanges(),
+      context: "Confirmation",
+      isActive: !isProcessing && internalView === "list" && hasPendingChanges(),
     },
   );
 
   // Escape in list view without pending changes - exit to parent menu
   useKeybinding(
-    'confirm:no',
+    "confirm:no",
     () => {
       setViewState({
-        type: 'menu',
+        type: "menu",
       });
     },
     {
-      context: 'Confirmation',
-      isActive: !isProcessing && internalView === 'list' && !hasPendingChanges(),
+      context: "Confirmation",
+      isActive: !isProcessing && internalView === "list" && !hasPendingChanges(),
     },
   );
 
   // List view — navigation (up/down/enter via configurable keybindings)
   useKeybindings(
     {
-      'select:previous': () => setSelectedIndex((prev) => Math.max(0, prev - 1)),
-      'select:next': () => {
+      "select:previous": () => setSelectedIndex((prev) => Math.max(0, prev - 1)),
+      "select:next": () => {
         const totalItems = marketplaceStates.length + 1;
         setSelectedIndex((prev) => Math.min(totalItems - 1, prev + 1));
       },
-      'select:accept': () => {
+      "select:accept": () => {
         const marketplaceIndex = selectedIndex - 1;
         if (selectedIndex === 0) {
           setViewState({
-            type: 'add-marketplace',
+            type: "add-marketplace",
           });
         } else if (hasPendingChanges()) {
           void applyChanges();
@@ -500,15 +500,15 @@ export function ManageMarketplaces({
           const marketplace = marketplaceStates[marketplaceIndex];
           if (marketplace) {
             setSelectedMarketplace(marketplace);
-            setInternalView('details');
+            setInternalView("details");
             setDetailsMenuIndex(0);
           }
         }
       },
     },
     {
-      context: 'Select',
-      isActive: !isProcessing && internalView === 'list',
+      context: "Select",
+      isActive: !isProcessing && internalView === "list",
     },
   );
 
@@ -516,7 +516,7 @@ export function ManageMarketplaces({
   useInput(
     (input) => {
       const marketplaceIndex = selectedIndex - 1;
-      if ((input === 'u' || input === 'U') && marketplaceIndex >= 0) {
+      if ((input === "u" || input === "U") && marketplaceIndex >= 0) {
         setMarketplaceStates((prev) =>
           prev.map((state, idx) =>
             idx === marketplaceIndex
@@ -528,37 +528,37 @@ export function ManageMarketplaces({
               : state,
           ),
         );
-      } else if ((input === 'r' || input === 'R') && marketplaceIndex >= 0) {
+      } else if ((input === "r" || input === "R") && marketplaceIndex >= 0) {
         const marketplace = marketplaceStates[marketplaceIndex];
         if (marketplace) {
           setSelectedMarketplace(marketplace);
-          setInternalView('confirm-remove');
+          setInternalView("confirm-remove");
         }
       }
     },
     {
-      isActive: !isProcessing && internalView === 'list',
+      isActive: !isProcessing && internalView === "list",
     },
   );
 
   // Details view — navigation
   useKeybindings(
     {
-      'select:previous': () => setDetailsMenuIndex((prev) => Math.max(0, prev - 1)),
-      'select:next': () => {
+      "select:previous": () => setDetailsMenuIndex((prev) => Math.max(0, prev - 1)),
+      "select:next": () => {
         const menuOptions = buildDetailsMenuOptions(selectedMarketplace);
         setDetailsMenuIndex((prev) => Math.min(menuOptions.length - 1, prev + 1));
       },
-      'select:accept': () => {
+      "select:accept": () => {
         if (!selectedMarketplace) return;
         const menuOptions = buildDetailsMenuOptions(selectedMarketplace);
         const selectedOption = menuOptions[detailsMenuIndex];
-        if (selectedOption?.value === 'browse') {
+        if (selectedOption?.value === "browse") {
           setViewState({
-            type: 'browse-marketplace',
+            type: "browse-marketplace",
             targetMarketplace: selectedMarketplace.name,
           });
-        } else if (selectedOption?.value === 'update') {
+        } else if (selectedOption?.value === "update") {
           const newStates = marketplaceStates.map((state) =>
             state.name === selectedMarketplace.name
               ? {
@@ -569,31 +569,31 @@ export function ManageMarketplaces({
           );
           setMarketplaceStates(newStates);
           void applyChanges(newStates);
-        } else if (selectedOption?.value === 'toggle-auto-update') {
+        } else if (selectedOption?.value === "toggle-auto-update") {
           void handleToggleAutoUpdate(selectedMarketplace);
-        } else if (selectedOption?.value === 'remove') {
-          setInternalView('confirm-remove');
+        } else if (selectedOption?.value === "remove") {
+          setInternalView("confirm-remove");
         }
       },
     },
     {
-      context: 'Select',
-      isActive: !isProcessing && internalView === 'details',
+      context: "Select",
+      isActive: !isProcessing && internalView === "details",
     },
   );
 
   // Confirm-remove view — y/n input
   useInput(
     (input) => {
-      if (input === 'y' || input === 'Y') {
+      if (input === "y" || input === "Y") {
         void confirmRemove();
-      } else if (input === 'n' || input === 'N') {
-        setInternalView('list');
+      } else if (input === "n" || input === "N") {
+        setInternalView("list");
         setSelectedMarketplace(null);
       }
     },
     {
-      isActive: !isProcessing && internalView === 'confirm-remove',
+      isActive: !isProcessing && internalView === "confirm-remove",
     },
   );
   if (loading) {
@@ -641,7 +641,7 @@ export function ManageMarketplaces({
   }
 
   // Show confirmation dialog
-  if (internalView === 'confirm-remove' && selectedMarketplace) {
+  if (internalView === "confirm-remove" && selectedMarketplace) {
     const pluginCount = selectedMarketplace.installedPlugins?.length || 0;
     return (
       <Box flexDirection="column">
@@ -652,7 +652,7 @@ export function ManageMarketplaces({
           {pluginCount > 0 && (
             <Box marginTop={1}>
               <Text color="warning">
-                This will also uninstall {pluginCount} {plural(pluginCount, 'plugin')} from this
+                This will also uninstall {pluginCount} {plural(pluginCount, "plugin")} from this
                 marketplace:
               </Text>
             </Box>
@@ -678,7 +678,7 @@ export function ManageMarketplaces({
   }
 
   // Show marketplace details
-  if (internalView === 'details' && selectedMarketplace) {
+  if (internalView === "details" && selectedMarketplace) {
     // Check if this marketplace is currently being processed
     // Check pendingUpdate first so we show updating state immediately when user presses Enter
     const isUpdating = selectedMarketplace.pendingUpdate || isProcessing;
@@ -689,8 +689,8 @@ export function ManageMarketplaces({
         <Text dimColor>{selectedMarketplace.source}</Text>
         <Box marginTop={1}>
           <Text>
-            {selectedMarketplace.pluginCount || 0} available{' '}
-            {plural(selectedMarketplace.pluginCount || 0, 'plugin')}
+            {selectedMarketplace.pluginCount || 0} available{" "}
+            {plural(selectedMarketplace.pluginCount || 0, "plugin")}
           </Text>
         </Box>
 
@@ -746,8 +746,8 @@ export function ManageMarketplaces({
               const isSelected = idx === detailsMenuIndex;
               return (
                 <Box key={option.value}>
-                  <Text color={isSelected ? 'suggestion' : undefined}>
-                    {isSelected ? figures.pointer : ' '} {option.label}
+                  <Text color={isSelected ? "suggestion" : undefined}>
+                    {isSelected ? figures.pointer : " "} {option.label}
                   </Text>
                   {option.secondaryLabel && <Text dimColor> {option.secondaryLabel}</Text>}
                 </Box>
@@ -802,10 +802,10 @@ export function ManageMarketplaces({
 
       {/* Add Marketplace option */}
       <Box flexDirection="row" gap={1} marginBottom={1}>
-        <Text color={selectedIndex === 0 ? 'suggestion' : undefined}>
-          {selectedIndex === 0 ? figures.pointer : ' '} +
+        <Text color={selectedIndex === 0 ? "suggestion" : undefined}>
+          {selectedIndex === 0 ? figures.pointer : " "} +
         </Text>
-        <Text bold color={selectedIndex === 0 ? 'suggestion' : undefined}>
+        <Text bold color={selectedIndex === 0 ? "suggestion" : undefined}>
           Add Marketplace
         </Text>
       </Box>
@@ -817,22 +817,22 @@ export function ManageMarketplaces({
 
           // Build status indicators
           const indicators: string[] = [];
-          if (state.pendingUpdate) indicators.push('UPDATE');
-          if (state.pendingRemove) indicators.push('REMOVE');
+          if (state.pendingUpdate) indicators.push("UPDATE");
+          if (state.pendingRemove) indicators.push("REMOVE");
           return (
             <Box key={state.name} flexDirection="row" gap={1} marginBottom={1}>
-              <Text color={isSelected ? 'suggestion' : undefined}>
-                {isSelected ? figures.pointer : ' '}{' '}
+              <Text color={isSelected ? "suggestion" : undefined}>
+                {isSelected ? figures.pointer : " "}{" "}
                 {state.pendingRemove ? figures.cross : figures.bullet}
               </Text>
               <Box flexDirection="column" flexGrow={1}>
                 <Box flexDirection="row" gap={1}>
                   <Text bold strikethrough={state.pendingRemove} dimColor={state.pendingRemove}>
-                    {state.name === 'claude-plugins-official' && <Text color="claude">✻ </Text>}
+                    {state.name === "claude-plugins-official" && <Text color="claude">✻ </Text>}
                     {state.name}
-                    {state.name === 'claude-plugins-official' && <Text color="claude"> ✻</Text>}
+                    {state.name === "claude-plugins-official" && <Text color="claude"> ✻</Text>}
                   </Text>
-                  {indicators.length > 0 && <Text color="warning">[{indicators.join(', ')}]</Text>}
+                  {indicators.length > 0 && <Text color="warning">[{indicators.join(", ")}]</Text>}
                 </Box>
                 <Text dimColor>{state.source}</Text>
                 <Text dimColor>
@@ -858,12 +858,12 @@ export function ManageMarketplaces({
           </Text>
           {updateCount > 0 && (
             <Text>
-              • Update {updateCount} {plural(updateCount, 'marketplace')}
+              • Update {updateCount} {plural(updateCount, "marketplace")}
             </Text>
           )}
           {removeCount > 0 && (
             <Text color="warning">
-              • Remove {removeCount} {plural(removeCount, 'marketplace')}
+              • Remove {removeCount} {plural(removeCount, "marketplace")}
             </Text>
           )}
         </Box>
@@ -888,7 +888,7 @@ export function ManageMarketplaces({
   );
 }
 type ManageMarketplacesKeyHintsProps = {
-  exitState: Props['exitState'];
+  exitState: Props["exitState"];
   hasPendingActions: boolean;
 };
 function ManageMarketplacesKeyHints(t0) {
@@ -957,7 +957,7 @@ function ManageMarketplacesKeyHints(t0) {
   } else {
     t4 = $[9];
   }
-  const t5 = hasPendingActions ? 'cancel' : 'go back';
+  const t5 = hasPendingActions ? "cancel" : "go back";
   let t6;
   if ($[10] !== t5) {
     t6 = (

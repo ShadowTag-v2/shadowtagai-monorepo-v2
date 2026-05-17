@@ -1,9 +1,9 @@
-import { feature } from 'bun:bundle';
-import { APIError } from '@anthropic-ai/sdk';
+import { feature } from "bun:bundle";
+import { APIError } from "@anthropic-ai/sdk";
 import type {
   BetaStopReason,
   BetaUsage as Usage,
-} from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
+} from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
 import {
   addToTotalDurationState,
   consumePostCompaction,
@@ -12,38 +12,38 @@ import {
   getTeleportedSessionInfo,
   markFirstTeleportMessageLogged,
   setLastApiCompletionTimestamp,
-} from 'src/bootstrap/state.js';
-import type { QueryChainTracking } from 'src/Tool.js';
-import { isConnectorTextBlock } from 'src/types/connectorText.js';
-import type { AssistantMessage } from 'src/types/message.js';
-import { logForDebugging } from 'src/utils/debug.js';
-import type { EffortLevel } from 'src/utils/effort.js';
-import { logError } from 'src/utils/log.js';
-import { getAPIProviderForStatsig } from 'src/utils/model/providers.js';
-import type { PermissionMode } from 'src/utils/permissions/PermissionMode.js';
-import { jsonStringify } from 'src/utils/slowOperations.js';
-import { logOTelEvent } from 'src/utils/telemetry/events.js';
+} from "src/bootstrap/state.js";
+import type { QueryChainTracking } from "src/Tool.js";
+import { isConnectorTextBlock } from "src/types/connectorText.js";
+import type { AssistantMessage } from "src/types/message.js";
+import { logForDebugging } from "src/utils/debug.js";
+import type { EffortLevel } from "src/utils/effort.js";
+import { logError } from "src/utils/log.js";
+import { getAPIProviderForStatsig } from "src/utils/model/providers.js";
+import type { PermissionMode } from "src/utils/permissions/PermissionMode.js";
+import { jsonStringify } from "src/utils/slowOperations.js";
+import { logOTelEvent } from "src/utils/telemetry/events.js";
 import {
   endLLMRequestSpan,
   isBetaTracingEnabled,
   type Span,
-} from 'src/utils/telemetry/sessionTracing.js';
-import type { NonNullableUsage } from '../../entrypoints/sdk/sdkUtilityTypes.js';
-import { consumeInvokingRequestId } from '../../utils/agentContext.js';
+} from "src/utils/telemetry/sessionTracing.js";
+import type { NonNullableUsage } from "../../entrypoints/sdk/sdkUtilityTypes.js";
+import { consumeInvokingRequestId } from "../../utils/agentContext.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../analytics/index.js';
-import { sanitizeToolNameForAnalytics } from '../analytics/metadata.js';
-import { EMPTY_USAGE } from './emptyUsage.js';
-import { classifyAPIError } from './errors.js';
-import { extractConnectionErrorDetails } from './errorUtils.js';
+} from "../analytics/index.js";
+import { sanitizeToolNameForAnalytics } from "../analytics/metadata.js";
+import { EMPTY_USAGE } from "./emptyUsage.js";
+import { classifyAPIError } from "./errors.js";
+import { extractConnectionErrorDetails } from "./errorUtils.js";
 
 export type { NonNullableUsage };
 export { EMPTY_USAGE };
 
 // Strategy used for global prompt caching
-export type GlobalCacheStrategy = 'tool_based' | 'system_prompt' | 'none';
+export type GlobalCacheStrategy = "tool_based" | "system_prompt" | "none";
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof APIError) {
@@ -54,39 +54,39 @@ function getErrorMessage(error: unknown): string {
 }
 
 type KnownGateway =
-  | 'litellm'
-  | 'helicone'
-  | 'portkey'
-  | 'cloudflare-ai-gateway'
-  | 'kong'
-  | 'braintrust'
-  | 'databricks';
+  | "litellm"
+  | "helicone"
+  | "portkey"
+  | "cloudflare-ai-gateway"
+  | "kong"
+  | "braintrust"
+  | "databricks";
 
 // Gateway fingerprints for detecting AI gateways from response headers
 const GATEWAY_FINGERPRINTS: Partial<Record<KnownGateway, { prefixes: string[] }>> = {
   // https://docs.litellm.ai/docs/proxy/response_headers
   litellm: {
-    prefixes: ['x-litellm-'],
+    prefixes: ["x-litellm-"],
   },
   // https://docs.helicone.ai/helicone-headers/header-directory
   helicone: {
-    prefixes: ['helicone-'],
+    prefixes: ["helicone-"],
   },
   // https://portkey.ai/docs/api-reference/response-schema
   portkey: {
-    prefixes: ['x-portkey-'],
+    prefixes: ["x-portkey-"],
   },
   // https://developers.cloudflare.com/ai-gateway/evaluations/add-human-feedback-api/
-  'cloudflare-ai-gateway': {
-    prefixes: ['cf-aig-'],
+  "cloudflare-ai-gateway": {
+    prefixes: ["cf-aig-"],
   },
   // https://developer.konghq.com/ai-gateway/ — X-Kong-Upstream-Latency, X-Kong-Proxy-Latency
   kong: {
-    prefixes: ['x-kong-'],
+    prefixes: ["x-kong-"],
   },
   // https://www.braintrust.dev/docs/guides/proxy — x-bt-used-endpoint, x-bt-cached
   braintrust: {
-    prefixes: ['x-bt-'],
+    prefixes: ["x-bt-"],
   },
 };
 
@@ -95,7 +95,7 @@ const GATEWAY_FINGERPRINTS: Partial<Record<KnownGateway, { prefixes: string[] }>
 // distinctive response header.
 const GATEWAY_HOST_SUFFIXES: Partial<Record<KnownGateway, string[]>> = {
   // https://docs.databricks.com/aws/en/ai-gateway/
-  databricks: ['.cloud.databricks.com', '.azuredatabricks.net', '.gcp.databricks.com'],
+  databricks: [".cloud.databricks.com", ".azuredatabricks.net", ".gcp.databricks.com"],
 };
 
 function detectGateway({
@@ -182,12 +182,12 @@ export function logAPIQuery({
   permissionMode?: PermissionMode;
   querySource: string;
   queryTracking?: QueryChainTracking;
-  thinkingType?: 'adaptive' | 'enabled' | 'disabled';
+  thinkingType?: "adaptive" | "enabled" | "disabled";
   effortValue?: EffortLevel | null;
   fastMode?: boolean;
   previousRequestId?: string | null;
 }): void {
-  logEvent('tengu_api_query', {
+  logEvent("tengu_api_query", {
     model: model as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     messagesLength,
     temperature: temperature,
@@ -195,7 +195,7 @@ export function logAPIQuery({
     buildAgeMins: getBuildAgeMinutes(),
     ...(betas?.length
       ? {
-          betas: betas.join(',') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+          betas: betas.join(",") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         }
       : {}),
     permissionMode: permissionMode as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -271,10 +271,10 @@ export function logAPIError({
   // Log detailed connection error info to debug logs (visible via --debug)
   const connectionDetails = extractConnectionErrorDetails(error);
   if (connectionDetails) {
-    const sslLabel = connectionDetails.isSSLError ? ' (SSL error)' : '';
+    const sslLabel = connectionDetails.isSSLError ? " (SSL error)" : "";
     logForDebugging(
       `Connection error details: code=${connectionDetails.code}${sslLabel}, message=${connectionDetails.message}`,
-      { level: 'error' },
+      { level: "error" },
     );
   }
 
@@ -283,12 +283,12 @@ export function logAPIError({
   if (clientRequestId) {
     logForDebugging(
       `API error x-client-request-id=${clientRequestId} (give this to the API team for server-log lookup)`,
-      { level: 'error' },
+      { level: "error" },
     );
   }
 
   logError(error as Error);
-  logEvent('tengu_api_error', {
+  logEvent("tengu_api_error", {
     model: model as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     error: errStr as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     status: status as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -346,13 +346,13 @@ export function logAPIError({
   });
 
   // Log API error event for OTLP
-  void logOTelEvent('api_error', {
+  void logOTelEvent("api_error", {
     model: model,
     error: errStr,
     status_code: String(status),
     duration_ms: String(durationMs),
     attempt: String(attempt),
-    speed: fastMode ? 'fast' : 'normal',
+    speed: fastMode ? "fast" : "normal",
   });
 
   // Pass the span to correctly match responses to requests when beta tracing is enabled
@@ -366,7 +366,7 @@ export function logAPIError({
   // Log first error for teleported sessions (reliability tracking)
   const teleportInfo = getTeleportedSessionInfo();
   if (teleportInfo?.isTeleported && !teleportInfo.hasLoggedFirstMessage) {
-    logEvent('tengu_teleport_first_message_error', {
+    logEvent("tengu_teleport_first_message_error", {
       session_id:
         teleportInfo.sessionId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       error_type: errorType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -430,7 +430,7 @@ function logAPISuccess({
 }): void {
   const isNonInteractiveSession = getIsNonInteractiveSession();
   const isPostCompaction = consumePostCompaction();
-  const hasPrintFlag = process.argv.includes('-p') || process.argv.includes('--print');
+  const hasPrintFlag = process.argv.includes("-p") || process.argv.includes("--print");
 
   const now = Date.now();
   const lastCompletion = getLastApiCompletionTimestamp();
@@ -438,7 +438,7 @@ function logAPISuccess({
 
   const invocation = consumeInvokingRequestId();
 
-  logEvent('tengu_api_success', {
+  logEvent("tengu_api_success", {
     model: model as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     ...(preNormalizedModel !== model
       ? {
@@ -448,7 +448,7 @@ function logAPISuccess({
       : {}),
     ...(betas?.length
       ? {
-          betas: betas.join(',') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+          betas: betas.join(",") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         }
       : {}),
     messageCount,
@@ -526,7 +526,7 @@ function logAPISuccess({
     // Log cache_deleted_input_tokens for cache editing analysis. Casts needed
     // because the field is intentionally not on NonNullableUsage (excluded from
     // external builds). Set by updateUsage() when cache editing is active.
-    ...(feature('CACHED_MICROCOMPACT') &&
+    ...(feature("CACHED_MICROCOMPACT") &&
     ((usage as unknown as { cache_deleted_input_tokens?: number }).cache_deleted_input_tokens ??
       0) > 0
       ? {
@@ -627,16 +627,16 @@ export function logAPISuccessAndDuration({
 
     for (const msg of newMessages) {
       for (const block of msg.message.content) {
-        if (block.type === 'text') {
+        if (block.type === "text") {
           textLen += block.text.length;
-        } else if (feature('CONNECTOR_TEXT') && isConnectorTextBlock(block)) {
+        } else if (feature("CONNECTOR_TEXT") && isConnectorTextBlock(block)) {
           connectorCount++;
-        } else if (block.type === 'thinking') {
+        } else if (block.type === "thinking") {
           thinkingLen += block.thinking.length;
         } else if (
-          block.type === 'tool_use' ||
-          block.type === 'server_tool_use' ||
-          block.type === 'mcp_tool_use'
+          block.type === "tool_use" ||
+          block.type === "server_tool_use" ||
+          block.type === "mcp_tool_use"
         ) {
           const inputLen = jsonStringify(block.input).length;
           const sanitizedName = sanitizeToolNameForAnalytics(block.name);
@@ -684,7 +684,7 @@ export function logAPISuccessAndDuration({
     betas,
   });
   // Log API request event for OTLP
-  void logOTelEvent('api_request', {
+  void logOTelEvent("api_request", {
     model,
     input_tokens: String(usage.input_tokens),
     output_tokens: String(usage.output_tokens),
@@ -692,7 +692,7 @@ export function logAPISuccessAndDuration({
     cache_creation_tokens: String(usage.cache_creation_input_tokens),
     cost_usd: String(costUSD),
     duration_ms: String(durationMs),
-    speed: fastMode ? 'fast' : 'normal',
+    speed: fastMode ? "fast" : "normal",
   });
 
   // Extract model output, thinking output, and tool call flag when beta tracing is enabled
@@ -706,25 +706,25 @@ export function logAPISuccessAndDuration({
       newMessages
         .flatMap((m) =>
           m.message.content
-            .filter((c) => c.type === 'text')
-            .map((c) => (c as { type: 'text'; text: string }).text),
+            .filter((c) => c.type === "text")
+            .map((c) => (c as { type: "text"; text: string }).text),
         )
-        .join('\n') || undefined;
+        .join("\n") || undefined;
 
     // Thinking output - Ant-only (build-time gated)
-    if (process.env.USER_TYPE === 'ant') {
+    if (process.env.USER_TYPE === "ant") {
       thinkingOutput =
         newMessages
           .flatMap((m) =>
             m.message.content
-              .filter((c) => c.type === 'thinking')
-              .map((c) => (c as { type: 'thinking'; thinking: string }).thinking),
+              .filter((c) => c.type === "thinking")
+              .map((c) => (c as { type: "thinking"; thinking: string }).thinking),
           )
-          .join('\n') || undefined;
+          .join("\n") || undefined;
     }
 
     // Check if any tool_use blocks were in the output
-    hasToolCall = newMessages.some((m) => m.message.content.some((c) => c.type === 'tool_use'));
+    hasToolCall = newMessages.some((m) => m.message.content.some((c) => c.type === "tool_use"));
   }
 
   // Pass the span to correctly match responses to requests when beta tracing is enabled
@@ -746,7 +746,7 @@ export function logAPISuccessAndDuration({
   // Log first successful message for teleported sessions (reliability tracking)
   const teleportInfo = getTeleportedSessionInfo();
   if (teleportInfo?.isTeleported && !teleportInfo.hasLoggedFirstMessage) {
-    logEvent('tengu_teleport_first_message_success', {
+    logEvent("tengu_teleport_first_message_success", {
       session_id:
         teleportInfo.sessionId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });

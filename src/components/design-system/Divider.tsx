@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Ansi, Text } from '../../ink.js';
-import type { Theme } from '../../utils/theme.js';
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Ansi, Text } from "../../ink.js";
+import type { Theme } from "../../utils/theme.js";
 
 type DividerProps = {
   /**
@@ -66,7 +66,7 @@ type DividerProps = {
 export function Divider(t0) {
   const $ = _c(21);
   const { width, color, char: t1, padding: t2, title } = t0;
-  const char = t1 === undefined ? '\u2500' : t1;
+  const char = t1 === undefined ? "\u2500" : t1;
   const padding = t2 === undefined ? 0 : t2;
   const { columns: terminalWidth } = useTerminalSize();
   const effectiveWidth = Math.max(0, (width ?? terminalWidth) - padding);

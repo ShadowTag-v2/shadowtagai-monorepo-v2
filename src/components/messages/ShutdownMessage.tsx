@@ -1,13 +1,13 @@
-import type * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
+import type * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
 import {
   isShutdownApproved,
   isShutdownRejected,
   isShutdownRequest,
   type ShutdownRejectedMessage,
   type ShutdownRequestMessage,
-} from '../../utils/teammateMailbox.js';
+} from "../../utils/teammateMailbox.js";
 
 type ShutdownRequestProps = {
   request: ShutdownRequestMessage;
@@ -111,7 +111,7 @@ export function ShutdownRejectedDisplay(t0) {
     t2 = $[3];
   }
   let t3;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Box marginTop={1}>
         <Text dimColor={true}>
@@ -178,7 +178,7 @@ export function tryRenderShutdownMessage(content: string): React.ReactNode | nul
 export function getShutdownMessageSummary(content: string): string | null {
   const request = isShutdownRequest(content);
   if (request) {
-    return `[Shutdown Request from ${request.from}]${request.reason ? ` ${request.reason}` : ''}`;
+    return `[Shutdown Request from ${request.from}]${request.reason ? ` ${request.reason}` : ""}`;
   }
   const approved = isShutdownApproved(content);
   if (approved) {

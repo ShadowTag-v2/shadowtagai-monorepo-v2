@@ -1,17 +1,17 @@
-import { randomUUID } from 'node:crypto';
-import { type RefObject, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { randomUUID } from "node:crypto";
+import { type RefObject, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import {
   createHistoryAuthCtx,
   fetchLatestEvents,
   fetchOlderEvents,
   type HistoryAuthCtx,
   type HistoryPage,
-} from '../assistant/sessionHistory.js';
-import type { ScrollBoxHandle } from '../ink/components/ScrollBox.js';
-import type { RemoteSessionConfig } from '../remote/RemoteSessionManager.js';
-import { convertSDKMessage } from '../remote/sdkMessageAdapter.js';
-import type { Message, SystemInformationalMessage } from '../types/message.js';
-import { logForDebugging } from '../utils/debug.js';
+} from "../assistant/sessionHistory.js";
+import type { ScrollBoxHandle } from "../ink/components/ScrollBox.js";
+import type { RemoteSessionConfig } from "../remote/RemoteSessionManager.js";
+import { convertSDKMessage } from "../remote/sdkMessageAdapter.js";
+import type { Message, SystemInformationalMessage } from "../types/message.js";
+import { logForDebugging } from "../utils/debug.js";
 
 type Props = {
   /** Gated on viewerOnly — non-viewer sessions have no remote history to page. */
@@ -35,9 +35,9 @@ const PREFETCH_THRESHOLD_ROWS = 40;
  *  events convert to zero visible messages (everything filtered). */
 const MAX_FILL_PAGES = 10;
 
-const SENTINEL_LOADING = 'loading older messages…';
-const SENTINEL_LOADING_FAILED = 'failed to load older messages — scroll up to retry';
-const SENTINEL_START = 'start of session';
+const SENTINEL_LOADING = "loading older messages…";
+const SENTINEL_LOADING_FAILED = "failed to load older messages — scroll up to retry";
+const SENTINEL_START = "start of session";
 
 /** Convert a HistoryPage to REPL Message[] using the same opts as viewer mode. */
 function pageToMessages(page: HistoryPage): Message[] {
@@ -47,7 +47,7 @@ function pageToMessages(page: HistoryPage): Message[] {
       convertUserTextMessages: true,
       convertToolResults: true,
     });
-    if (c.type === 'message') out.push(c.message);
+    if (c.type === "message") out.push(c.message);
   }
   return out;
 }
@@ -88,13 +88,13 @@ export function useAssistantHistory({ config, setMessages, scrollRef, onPrepend 
 
   function mkSentinel(text: string): SystemInformationalMessage {
     return {
-      type: 'system',
-      subtype: 'informational',
+      type: "system",
+      subtype: "informational",
       content: text,
       isMeta: false,
       timestamp: new Date().toISOString(),
       uuid: sentinelUuidRef.current,
-      level: 'info',
+      level: "info",
     };
   }
 
@@ -120,7 +120,7 @@ export function useAssistantHistory({ config, setMessages, scrollRef, onPrepend 
       });
 
       logForDebugging(
-        `[useAssistantHistory] ${isInitial ? 'initial' : 'older'} page: ${msgs.length} msgs (raw ${page.events.length}), hasMore=${page.hasMore}`,
+        `[useAssistantHistory] ${isInitial ? "initial" : "older"} page: ${msgs.length} msgs (raw ${page.events.length}), hasMore=${page.hasMore}`,
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps -- scrollRef is a stable ref; mkSentinel reads refs only

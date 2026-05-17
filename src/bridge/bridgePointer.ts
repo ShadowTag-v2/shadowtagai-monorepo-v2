@@ -1,12 +1,12 @@
-import { mkdir, readFile, stat, unlink, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { z } from 'zod/v4';
-import { logForDebugging } from '../utils/debug.js';
-import { isENOENT } from '../utils/errors.js';
-import { getWorktreePathsPortable } from '../utils/getWorktreePathsPortable.js';
-import { lazySchema } from '../utils/lazySchema.js';
-import { getProjectsDir, sanitizePath } from '../utils/sessionStoragePortable.js';
-import { jsonParse, jsonStringify } from '../utils/slowOperations.js';
+import { mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { z } from "zod/v4";
+import { logForDebugging } from "../utils/debug.js";
+import { isENOENT } from "../utils/errors.js";
+import { getWorktreePathsPortable } from "../utils/getWorktreePathsPortable.js";
+import { lazySchema } from "../utils/lazySchema.js";
+import { getProjectsDir, sanitizePath } from "../utils/sessionStoragePortable.js";
+import { jsonParse, jsonStringify } from "../utils/slowOperations.js";
 
 /**
  * Upper bound on worktree fanout. git worktree list is naturally bounded
@@ -40,14 +40,14 @@ const BridgePointerSchema = lazySchema(() =>
   z.object({
     sessionId: z.string(),
     environmentId: z.string(),
-    source: z.enum(['standalone', 'repl']),
+    source: z.enum(["standalone", "repl"]),
   }),
 );
 
 export type BridgePointer = z.infer<ReturnType<typeof BridgePointerSchema>>;
 
 export function getBridgePointerPath(dir: string): string {
-  return join(getProjectsDir(), sanitizePath(dir), 'bridge-pointer.json');
+  return join(getProjectsDir(), sanitizePath(dir), "bridge-pointer.json");
 }
 
 /**
@@ -60,10 +60,10 @@ export async function writeBridgePointer(dir: string, pointer: BridgePointer): P
   const path = getBridgePointerPath(dir);
   try {
     await mkdir(dirname(path), { recursive: true });
-    await writeFile(path, jsonStringify(pointer), 'utf8');
+    await writeFile(path, jsonStringify(pointer), "utf8");
     logForDebugging(`[bridge:pointer] wrote ${path}`);
   } catch (err: unknown) {
-    logForDebugging(`[bridge:pointer] write failed: ${err}`, { level: 'warn' });
+    logForDebugging(`[bridge:pointer] write failed: ${err}`, { level: "warn" });
   }
 }
 
@@ -84,7 +84,7 @@ export async function readBridgePointer(
     // stat for mtime (staleness anchor), then read. Two syscalls, but both
     // are needed — mtime IS the data we return, not a TOCTOU guard.
     mtimeMs = (await stat(path)).mtimeMs;
-    raw = await readFile(path, 'utf8');
+    raw = await readFile(path, "utf8");
   } catch {
     return null;
   }
@@ -189,7 +189,7 @@ export async function clearBridgePointer(dir: string): Promise<void> {
   } catch (err: unknown) {
     if (!isENOENT(err)) {
       logForDebugging(`[bridge:pointer] clear failed: ${err}`, {
-        level: 'warn',
+        level: "warn",
       });
     }
   }

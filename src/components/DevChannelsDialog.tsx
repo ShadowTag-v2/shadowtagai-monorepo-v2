@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
-import type { ChannelEntry } from '../bootstrap/state.js';
-import { Box, Text } from '../ink.js';
-import { gracefulShutdownSync } from '../utils/gracefulShutdown.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
+import { c as _c } from "react/compiler-runtime";
+import type { ChannelEntry } from "../bootstrap/state.js";
+import { Box, Text } from "../ink.js";
+import { gracefulShutdownSync } from "../utils/gracefulShutdown.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
 
 type Props = {
   channels: ChannelEntry[];
@@ -16,11 +16,11 @@ export function DevChannelsDialog(t0) {
   if ($[0] !== onAccept) {
     t1 = function onChange(value) {
       switch (value) {
-        case 'accept': {
+        case "accept": {
           onAccept();
           break;
         }
-        case 'exit': {
+        case "exit": {
           gracefulShutdownSync(1);
         }
       }
@@ -34,7 +34,7 @@ export function DevChannelsDialog(t0) {
   const handleEscape = _temp;
   let t2;
   let t3;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Text>
         --dangerously-load-development-channels is for local channel development only. Do not use
@@ -50,7 +50,7 @@ export function DevChannelsDialog(t0) {
   }
   let t4;
   if ($[4] !== channels) {
-    t4 = channels.map(_temp2).join(', ');
+    t4 = channels.map(_temp2).join(", ");
     $[4] = channels;
     $[5] = t4;
   } else {
@@ -71,15 +71,15 @@ export function DevChannelsDialog(t0) {
     t5 = $[7];
   }
   let t6;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = [
       {
-        label: 'I am using this for local development',
-        value: 'accept',
+        label: "I am using this for local development",
+        value: "accept",
       },
       {
-        label: 'Exit',
-        value: 'exit',
+        label: "Exit",
+        value: "exit",
       },
     ];
     $[8] = t6;
@@ -88,7 +88,7 @@ export function DevChannelsDialog(t0) {
   }
   let t7;
   if ($[9] !== onChange) {
-    t7 = <Select options={t6} onChange={(value_0) => onChange(value_0 as 'accept' | 'exit')} />;
+    t7 = <Select options={t6} onChange={(value_0) => onChange(value_0 as "accept" | "exit")} />;
     $[9] = onChange;
     $[10] = t7;
   } else {
@@ -111,7 +111,7 @@ export function DevChannelsDialog(t0) {
   return t8;
 }
 function _temp2(c) {
-  return c.kind === 'plugin' ? `plugin:${c.name}@${c.marketplace}` : `server:${c.name}`;
+  return c.kind === "plugin" ? `plugin:${c.name}@${c.marketplace}` : `server:${c.name}`;
 }
 function _temp() {
   gracefulShutdownSync(0);

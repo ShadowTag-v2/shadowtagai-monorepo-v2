@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { Markdown } from '../Markdown.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { Markdown } from "../Markdown.js";
 
 type Props = {
   addMargin: boolean;
@@ -11,7 +11,7 @@ export function UserPlanMessage(t0) {
   const { addMargin, planContent } = t0;
   const t1 = addMargin ? 1 : 0;
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box marginBottom={1}>
         <Text bold={true} color="planMode">

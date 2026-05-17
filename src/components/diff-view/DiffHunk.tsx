@@ -12,10 +12,10 @@
  * Privileged content gets `user-select: none` to prevent clipboard exfiltration.
  */
 
-'use client';
+"use client";
 
-import styles from './diff-view.module.css';
-import type { DiffHunk as DiffHunkType } from './types';
+import styles from "./diff-view.module.css";
+import type { DiffHunk as DiffHunkType } from "./types";
 
 interface DiffHunkProps {
   hunk: DiffHunkType;
@@ -38,25 +38,25 @@ export function DiffHunk({ hunk, isPrivileged, index }: DiffHunkProps) {
       </div>
 
       <table
-        className={`${styles.hunkTable} ${isPrivileged ? styles.noSelect : ''}`}
+        className={`${styles.hunkTable} ${isPrivileged ? styles.noSelect : ""}`}
         role="presentation"
       >
         <tbody>
           {hunk.changes.map((change, i) => {
             const lineClass =
-              change.type === 'add'
+              change.type === "add"
                 ? styles.lineAdd
-                : change.type === 'delete'
+                : change.type === "delete"
                   ? styles.lineDelete
                   : styles.lineContext;
 
-            const prefix = change.type === 'add' ? '+' : change.type === 'delete' ? '-' : ' ';
+            const prefix = change.type === "add" ? "+" : change.type === "delete" ? "-" : " ";
 
             return (
               <tr
                 key={`${hunk.oldStart}-${i}`}
                 className={lineClass}
-                aria-label={`${change.type === 'add' ? 'Added' : change.type === 'delete' ? 'Deleted' : 'Context'} line ${change.lineNumber}`}
+                aria-label={`${change.type === "add" ? "Added" : change.type === "delete" ? "Deleted" : "Context"} line ${change.lineNumber}`}
               >
                 <td className={styles.lineNumber} aria-hidden="true">
                   {change.lineNumber}
@@ -65,7 +65,7 @@ export function DiffHunk({ hunk, isPrivileged, index }: DiffHunkProps) {
                   {prefix}
                 </td>
                 <td className={styles.lineContent}>
-                  <code>{change.content || '\u00A0'}</code>
+                  <code>{change.content || "\u00A0"}</code>
                 </td>
               </tr>
             );

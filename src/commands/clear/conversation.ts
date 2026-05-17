@@ -2,43 +2,43 @@
  * Conversation clearing utility.
  * This module has heavier dependencies and should be lazy-loaded when possible.
  */
-import { feature } from 'bun:bundle';
-import { randomUUID, type UUID } from 'node:crypto';
+import { feature } from "bun:bundle";
+import { randomUUID, type UUID } from "node:crypto";
 import {
   getLastMainRequestId,
   getOriginalCwd,
   getSessionId,
   regenerateSessionId,
-} from '../../bootstrap/state.js';
+} from "../../bootstrap/state.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import type { AppState } from '../../state/AppState.js';
-import { isInProcessTeammateTask } from '../../tasks/InProcessTeammateTask/types.js';
+} from "../../services/analytics/index.js";
+import type { AppState } from "../../state/AppState.js";
+import { isInProcessTeammateTask } from "../../tasks/InProcessTeammateTask/types.js";
 import {
   isLocalAgentTask,
   type LocalAgentTaskState,
-} from '../../tasks/LocalAgentTask/LocalAgentTask.js';
-import { isLocalShellTask } from '../../tasks/LocalShellTask/guards.js';
-import { asAgentId } from '../../types/ids.js';
-import type { Message } from '../../types/message.js';
-import { createEmptyAttributionState } from '../../utils/commitAttribution.js';
-import type { FileStateCache } from '../../utils/fileStateCache.js';
-import { executeSessionEndHooks, getSessionEndHookTimeoutMs } from '../../utils/hooks.js';
-import { logError } from '../../utils/log.js';
-import { clearAllPlanSlugs } from '../../utils/plans.js';
-import { setCwd } from '../../utils/Shell.js';
-import { processSessionStartHooks } from '../../utils/sessionStart.js';
+} from "../../tasks/LocalAgentTask/LocalAgentTask.js";
+import { isLocalShellTask } from "../../tasks/LocalShellTask/guards.js";
+import { asAgentId } from "../../types/ids.js";
+import type { Message } from "../../types/message.js";
+import { createEmptyAttributionState } from "../../utils/commitAttribution.js";
+import type { FileStateCache } from "../../utils/fileStateCache.js";
+import { executeSessionEndHooks, getSessionEndHookTimeoutMs } from "../../utils/hooks.js";
+import { logError } from "../../utils/log.js";
+import { clearAllPlanSlugs } from "../../utils/plans.js";
+import { setCwd } from "../../utils/Shell.js";
+import { processSessionStartHooks } from "../../utils/sessionStart.js";
 import {
   clearSessionMetadata,
   getAgentTranscriptPath,
   resetSessionFilePointer,
   saveWorktreeState,
-} from '../../utils/sessionStorage.js';
-import { evictTaskOutput, initTaskOutputAsSymlink } from '../../utils/task/diskOutput.js';
-import { getCurrentWorktreeSession } from '../../utils/worktree.js';
-import { clearSessionCaches } from './caches.js';
+} from "../../utils/sessionStorage.js";
+import { evictTaskOutput, initTaskOutputAsSymlink } from "../../utils/task/diskOutput.js";
+import { getCurrentWorktreeSession } from "../../utils/worktree.js";
+import { clearSessionCaches } from "./caches.js";
 
 export async function clearConversation({
   setMessages,
@@ -60,7 +60,7 @@ export async function clearConversation({
   // Execute SessionEnd hooks before clearing (bounded by
   // CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS, default 1.5s)
   const sessionEndTimeoutMs = getSessionEndHookTimeoutMs();
-  await executeSessionEndHooks('clear', {
+  await executeSessionEndHooks("clear", {
     getAppState,
     setAppState,
     signal: AbortSignal.timeout(sessionEndTimeoutMs),
@@ -70,8 +70,8 @@ export async function clearConversation({
   // Signal to inference that this conversation's cache can be evicted.
   const lastRequestId = getLastMainRequestId();
   if (lastRequestId) {
-    logEvent('tengu_cache_eviction_hint', {
-      scope: 'conversation_clear' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    logEvent("tengu_cache_eviction_hint", {
+      scope: "conversation_clear" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       last_request_id: lastRequestId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
   }
@@ -84,8 +84,8 @@ export async function clearConversation({
   // LocalMainSessionTask.ts startBackgroundSession.
   const preservedAgentIds = new Set<string>();
   const preservedLocalAgents: LocalAgentTaskState[] = [];
-  const shouldKillTask = (task: AppState['tasks'][string]): boolean =>
-    'isBackgrounded' in task && task.isBackgrounded === false;
+  const shouldKillTask = (task: AppState["tasks"][string]): boolean =>
+    "isBackgrounded" in task && task.isBackgrounded === false;
   if (getAppState) {
     for (const task of Object.values(getAppState().tasks)) {
       if (shouldKillTask(task)) continue;
@@ -101,9 +101,9 @@ export async function clearConversation({
   setMessages(() => []);
 
   // Clear context-blocked flag so proactive ticks resume after /clear
-  if (feature('PROACTIVE') || feature('KAIROS')) {
+  if (feature("PROACTIVE") || feature("KAIROS")) {
     /* eslint-disable @typescript-eslint/no-require-imports */
-    const { setContextBlocked } = require('../../proactive/index.js');
+    const { setContextBlocked } = require("../../proactive/index.js");
     /* eslint-enable @typescript-eslint/no-require-imports */
     setContextBlocked(false);
   }
@@ -128,7 +128,7 @@ export async function clearConversation({
     setAppState((prev) => {
       // Partition tasks using the same predicate computed above:
       // kill+remove foreground tasks, preserve everything else.
-      const nextTasks: AppState['tasks'] = {};
+      const nextTasks: AppState["tasks"] = {};
       for (const [taskId, task] of Object.entries(prev.tasks)) {
         if (!shouldKillTask(task)) {
           nextTasks[taskId] = task;
@@ -136,7 +136,7 @@ export async function clearConversation({
         }
         // Foreground task: kill it and drop from state
         try {
-          if (task.status === 'running') {
+          if (task.status === "running") {
             if (isLocalShellTask(task)) {
               task.shellCommand?.kill();
               task.shellCommand?.cleanup();
@@ -144,10 +144,10 @@ export async function clearConversation({
                 clearTimeout(task.cleanupTimeoutId);
               }
             }
-            if ('abortController' in task) {
+            if ("abortController" in task) {
               task.abortController?.abort();
             }
-            if ('unregisterCleanup' in task) {
+            if ("unregisterCleanup" in task) {
               task.unregisterCleanup?.();
             }
           }
@@ -194,7 +194,7 @@ export async function clearConversation({
   // Set the old session as parent for analytics lineage tracking
   regenerateSessionId({ setCurrentAsParent: true });
   // Update the environment variable so subprocesses use the new session ID
-  if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_SESSION_ID) {
+  if (process.env.USER_TYPE === "ant" && process.env.CLAUDE_CODE_SESSION_ID) {
     process.env.CLAUDE_CODE_SESSION_ID = getSessionId();
   }
   await resetSessionFilePointer();
@@ -208,7 +208,7 @@ export async function clearConversation({
   // Main-session tasks use the same per-agent path (they write via
   // recordSidechainTranscript to getAgentTranscriptPath), so no special case.
   for (const task of preservedLocalAgents) {
-    if (task.status !== 'running') continue;
+    if (task.status !== "running") continue;
     void initTaskOutputAsSymlink(task.id, getAgentTranscriptPath(asAgentId(task.agentId)));
   }
 
@@ -216,12 +216,12 @@ export async function clearConversation({
   // knows what the new post-clear session was in. clearSessionMetadata
   // wiped both from the cache, but the process is still in the same mode
   // and (if applicable) the same worktree directory.
-  if (feature('COORDINATOR_MODE')) {
+  if (feature("COORDINATOR_MODE")) {
     /* eslint-disable @typescript-eslint/no-require-imports */
-    const { saveMode } = require('../../utils/sessionStorage.js');
-    const { isCoordinatorMode } = require('../../coordinator/coordinatorMode.js');
+    const { saveMode } = require("../../utils/sessionStorage.js");
+    const { isCoordinatorMode } = require("../../coordinator/coordinatorMode.js");
     /* eslint-enable @typescript-eslint/no-require-imports */
-    saveMode(isCoordinatorMode() ? 'coordinator' : 'normal');
+    saveMode(isCoordinatorMode() ? "coordinator" : "normal");
   }
   const worktreeSession = getCurrentWorktreeSession();
   if (worktreeSession) {
@@ -229,7 +229,7 @@ export async function clearConversation({
   }
 
   // Execute SessionStart hooks after clearing
-  const hookMessages = await processSessionStartHooks('clear');
+  const hookMessages = await processSessionStartHooks("clear");
 
   // Update messages with hook results
   if (hookMessages.length > 0) {

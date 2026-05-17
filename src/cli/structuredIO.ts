@@ -1,62 +1,62 @@
-import { feature } from 'bun:bundle';
-import { randomUUID } from 'node:crypto';
-import type { ElicitResult, JSONRPCMessage } from '@modelcontextprotocol/sdk/types.js';
-import type { AssistantMessage } from 'src//types/message.js';
+import { feature } from "bun:bundle";
+import { randomUUID } from "node:crypto";
+import type { ElicitResult, JSONRPCMessage } from "@modelcontextprotocol/sdk/types.js";
+import type { AssistantMessage } from "src//types/message.js";
 import type {
   HookInput,
   HookJSONOutput,
   PermissionUpdate,
   SDKMessage,
   SDKUserMessage,
-} from 'src/entrypoints/agentSdkTypes.js';
-import { SDKControlElicitationResponseSchema } from 'src/entrypoints/sdk/controlSchemas.js';
+} from "src/entrypoints/agentSdkTypes.js";
+import { SDKControlElicitationResponseSchema } from "src/entrypoints/sdk/controlSchemas.js";
 import type {
   SDKControlRequest,
   SDKControlResponse,
   StdinMessage,
   StdoutMessage,
-} from 'src/entrypoints/sdk/controlTypes.js';
-import type { CanUseToolFn } from 'src/hooks/useCanUseTool.js';
-import type { Tool, ToolUseContext } from 'src/Tool.js';
-import { type HookCallback, hookJSONOutputSchema } from 'src/types/hooks.js';
-import { logForDebugging } from 'src/utils/debug.js';
-import { logForDiagnosticsNoPII } from 'src/utils/diagLogs.js';
-import { AbortError } from 'src/utils/errors.js';
+} from "src/entrypoints/sdk/controlTypes.js";
+import type { CanUseToolFn } from "src/hooks/useCanUseTool.js";
+import type { Tool, ToolUseContext } from "src/Tool.js";
+import { type HookCallback, hookJSONOutputSchema } from "src/types/hooks.js";
+import { logForDebugging } from "src/utils/debug.js";
+import { logForDiagnosticsNoPII } from "src/utils/diagLogs.js";
+import { AbortError } from "src/utils/errors.js";
 import {
   type Output as PermissionToolOutput,
   permissionPromptToolResultToPermissionDecision,
   outputSchema as permissionToolOutputSchema,
-} from 'src/utils/permissions/PermissionPromptToolResultSchema.js';
+} from "src/utils/permissions/PermissionPromptToolResultSchema.js";
 import type {
   PermissionDecision,
   PermissionDecisionReason,
-} from 'src/utils/permissions/PermissionResult.js';
-import { hasPermissionsToUseTool } from 'src/utils/permissions/permissions.js';
-import { writeToStdout } from 'src/utils/process.js';
-import { jsonStringify } from 'src/utils/slowOperations.js';
-import { z } from 'zod/v4';
-import { notifyCommandLifecycle } from '../utils/commandLifecycle.js';
-import { normalizeControlMessageKeys } from '../utils/controlMessageCompat.js';
-import { executePermissionRequestHooks } from '../utils/hooks.js';
+} from "src/utils/permissions/PermissionResult.js";
+import { hasPermissionsToUseTool } from "src/utils/permissions/permissions.js";
+import { writeToStdout } from "src/utils/process.js";
+import { jsonStringify } from "src/utils/slowOperations.js";
+import { z } from "zod/v4";
+import { notifyCommandLifecycle } from "../utils/commandLifecycle.js";
+import { normalizeControlMessageKeys } from "../utils/controlMessageCompat.js";
+import { executePermissionRequestHooks } from "../utils/hooks.js";
 import {
   applyPermissionUpdates,
   persistPermissionUpdates,
-} from '../utils/permissions/PermissionUpdate.js';
+} from "../utils/permissions/PermissionUpdate.js";
 import {
   notifySessionStateChanged,
   type RequiresActionDetails,
   type SessionExternalMetadata,
-} from '../utils/sessionState.js';
-import { jsonParse } from '../utils/slowOperations.js';
-import { Stream } from '../utils/stream.js';
-import { ndjsonSafeStringify } from './ndjsonSafeStringify.js';
+} from "../utils/sessionState.js";
+import { jsonParse } from "../utils/slowOperations.js";
+import { Stream } from "../utils/stream.js";
+import { ndjsonSafeStringify } from "./ndjsonSafeStringify.js";
 
 /**
  * Synthetic tool name used when forwarding sandbox network permission
  * requests via the can_use_tool control_request protocol. SDK hosts
  * see this as a normal tool permission prompt.
  */
-export const SANDBOX_NETWORK_ACCESS_TOOL_NAME = 'SandboxNetworkAccess';
+export const SANDBOX_NETWORK_ACCESS_TOOL_NAME = "SandboxNetworkAccess";
 
 function serializeDecisionReason(reason: PermissionDecisionReason | undefined): string | undefined {
   if (!reason) {
@@ -64,23 +64,23 @@ function serializeDecisionReason(reason: PermissionDecisionReason | undefined): 
   }
 
   if (
-    (feature('BASH_CLASSIFIER') || feature('TRANSCRIPT_CLASSIFIER')) &&
-    reason.type === 'classifier'
+    (feature("BASH_CLASSIFIER") || feature("TRANSCRIPT_CLASSIFIER")) &&
+    reason.type === "classifier"
   ) {
     return reason.reason;
   }
   switch (reason.type) {
-    case 'rule':
-    case 'mode':
-    case 'subcommandResults':
-    case 'permissionPromptTool':
+    case "rule":
+    case "mode":
+    case "subcommandResults":
+    case "permissionPromptTool":
       return undefined;
-    case 'hook':
-    case 'asyncAgent':
-    case 'sandboxOverride':
-    case 'workingDir':
-    case 'safetyCheck':
-    case 'other':
+    case "hook":
+    case "asyncAgent":
+    case "sandboxOverride":
+    case "workingDir":
+    case "safetyCheck":
+    case "other":
       return reason.reason;
   }
 }
@@ -166,7 +166,7 @@ export class StructuredIO {
    * messages for the same tool are ignored by the orphan handler.
    */
   private trackResolvedToolUseId(request: SDKControlRequest): void {
-    if (request.request.subtype === 'can_use_tool') {
+    if (request.request.subtype === "can_use_tool") {
       this.resolvedToolUseIds.add(request.request.tool_use_id);
       if (this.resolvedToolUseIds.size > MAX_RESOLVED_TOOL_USE_IDS) {
         // Evict the oldest entry (Sets iterate in insertion order)
@@ -196,16 +196,16 @@ export class StructuredIO {
   prependUserMessage(content: string): void {
     this.prependedLines.push(
       `${jsonStringify({
-        type: 'user',
-        session_id: '',
-        message: { role: 'user', content },
+        type: "user",
+        session_id: "",
+        message: { role: "user", content },
         parent_tool_use_id: null,
       } satisfies SDKUserMessage)}\n`,
     );
   }
 
   private async *read() {
-    let content = '';
+    let content = "";
 
     // Called once before for-await (an empty this.input otherwise skips the
     // loop body entirely), then again per block. prependedLines re-check is
@@ -214,16 +214,16 @@ export class StructuredIO {
     const splitAndProcess = async function* (this: StructuredIO) {
       for (;;) {
         if (this.prependedLines.length > 0) {
-          content = this.prependedLines.join('') + content;
+          content = this.prependedLines.join("") + content;
           this.prependedLines = [];
         }
-        const newline = content.indexOf('\n');
+        const newline = content.indexOf("\n");
         if (newline === -1) break;
         const line = content.slice(0, newline);
         content = content.slice(newline + 1);
         const message = await this.processLine(line);
         if (message) {
-          logForDiagnosticsNoPII('info', 'cli_stdin_message_parsed', {
+          logForDiagnosticsNoPII("info", "cli_stdin_message_parsed", {
             type: message.type,
           });
           yield message;
@@ -246,14 +246,14 @@ export class StructuredIO {
     this.inputClosed = true;
     for (const request of this.pendingRequests.values()) {
       // Reject all pending requests if the input stream
-      request.reject(new Error('Tool permission stream closed before response received'));
+      request.reject(new Error("Tool permission stream closed before response received"));
     }
   }
 
   getPendingPermissionRequests() {
     return Array.from(this.pendingRequests.values())
       .map((entry) => entry.request)
-      .filter((pr) => pr.request.subtype === 'can_use_tool');
+      .filter((pr) => pr.request.subtype === "can_use_tool");
   }
 
   setUnexpectedResponseCallback(callback: (response: SDKControlResponse) => Promise<void>): void {
@@ -277,10 +277,10 @@ export class StructuredIO {
     this.pendingRequests.delete(requestId);
     // Cancel the SDK consumer's canUseTool callback — the bridge won.
     void this.write({
-      type: 'control_cancel_request',
+      type: "control_cancel_request",
       request_id: requestId,
     });
-    if (response.response.subtype === 'error') {
+    if (response.response.subtype === "error") {
       request.reject(new Error(response.response.error));
     } else {
       const result = response.response.response;
@@ -321,11 +321,11 @@ export class StructuredIO {
     }
     try {
       const message = normalizeControlMessageKeys(jsonParse(line)) as StdinMessage | SDKMessage;
-      if (message.type === 'keep_alive') {
+      if (message.type === "keep_alive") {
         // Silently ignore keep-alive messages
         return undefined;
       }
-      if (message.type === 'update_environment_variables') {
+      if (message.type === "update_environment_variables") {
         // Apply environment variable updates directly to process.env.
         // Used by bridge session runner for auth token refresh
         // (CLAUDE_CODE_SESSION_ACCESS_TOKEN) which must be readable
@@ -334,18 +334,18 @@ export class StructuredIO {
         for (const [key, value] of Object.entries(message.variables)) {
           process.env[key] = value;
         }
-        logForDebugging(`[structuredIO] applied update_environment_variables: ${keys.join(', ')}`);
+        logForDebugging(`[structuredIO] applied update_environment_variables: ${keys.join(", ")}`);
         return undefined;
       }
-      if (message.type === 'control_response') {
+      if (message.type === "control_response") {
         // Close lifecycle for every control_response, including duplicates
         // and orphans — orphans don't yield to print.ts's main loop, so this
         // is the only path that sees them. uuid is server-injected into the
         // payload.
         const uuid =
-          'uuid' in message && typeof message.uuid === 'string' ? message.uuid : undefined;
+          "uuid" in message && typeof message.uuid === "string" ? message.uuid : undefined;
         if (uuid) {
-          notifyCommandLifecycle(uuid, 'completed');
+          notifyCommandLifecycle(uuid, "completed");
         }
         const request = this.pendingRequests.get(message.response.request_id);
         if (!request) {
@@ -355,9 +355,9 @@ export class StructuredIO {
           // re-processing them would push duplicate assistant messages into
           // the conversation, causing API 400 errors.
           const responsePayload =
-            message.response.subtype === 'success' ? message.response.response : undefined;
+            message.response.subtype === "success" ? message.response.response : undefined;
           const toolUseID = responsePayload?.toolUseID;
-          if (typeof toolUseID === 'string' && this.resolvedToolUseIds.has(toolUseID)) {
+          if (typeof toolUseID === "string" && this.resolvedToolUseIds.has(toolUseID)) {
             logForDebugging(
               `Ignoring duplicate control_response for already-resolved toolUseID=${toolUseID} request_id=${message.response.request_id}`,
             );
@@ -372,11 +372,11 @@ export class StructuredIO {
         this.pendingRequests.delete(message.response.request_id);
         // Notify the bridge when the SDK consumer resolves a can_use_tool
         // request, so it can cancel the stale permission prompt on claude.ai.
-        if (request.request.request.subtype === 'can_use_tool' && this.onControlRequestResolved) {
+        if (request.request.request.subtype === "can_use_tool" && this.onControlRequestResolved) {
           this.onControlRequestResolved(message.response.request_id);
         }
 
-        if (message.response.subtype === 'error') {
+        if (message.response.subtype === "error") {
           request.reject(new Error(message.response.error));
           return undefined;
         }
@@ -397,26 +397,26 @@ export class StructuredIO {
         return undefined;
       }
       if (
-        message.type !== 'user' &&
-        message.type !== 'control_request' &&
-        message.type !== 'assistant' &&
-        message.type !== 'system'
+        message.type !== "user" &&
+        message.type !== "control_request" &&
+        message.type !== "assistant" &&
+        message.type !== "system"
       ) {
         logForDebugging(`Ignoring unknown message type: ${message.type}`, {
-          level: 'warn',
+          level: "warn",
         });
         return undefined;
       }
-      if (message.type === 'control_request') {
+      if (message.type === "control_request") {
         if (!message.request) {
           exitWithMessage(`Error: Missing request on control_request`);
         }
         return message;
       }
-      if (message.type === 'assistant' || message.type === 'system') {
+      if (message.type === "assistant" || message.type === "system") {
         return message;
       }
-      if (message.message.role !== 'user') {
+      if (message.message.role !== "user") {
         exitWithMessage(`Error: Expected message role 'user', got '${message.message.role}'`);
       }
       return message;
@@ -433,29 +433,29 @@ export class StructuredIO {
   }
 
   private async sendRequest<Response>(
-    request: SDKControlRequest['request'],
+    request: SDKControlRequest["request"],
     schema: z.Schema,
     signal?: AbortSignal,
     requestId: string = randomUUID(),
   ): Promise<Response> {
     const message: SDKControlRequest = {
-      type: 'control_request',
+      type: "control_request",
       request_id: requestId,
       request,
     };
     if (this.inputClosed) {
-      throw new Error('Stream closed');
+      throw new Error("Stream closed");
     }
     if (signal?.aborted) {
-      throw new Error('Request aborted');
+      throw new Error("Request aborted");
     }
     this.outbound.enqueue(message);
-    if (request.subtype === 'can_use_tool' && this.onControlRequestSent) {
+    if (request.subtype === "can_use_tool" && this.onControlRequestSent) {
       this.onControlRequestSent(message);
     }
     const aborted = () => {
       this.outbound.enqueue({
-        type: 'control_cancel_request',
+        type: "control_cancel_request",
         request_id: requestId,
       });
       // Immediately reject the outstanding promise, without
@@ -469,7 +469,7 @@ export class StructuredIO {
       }
     };
     if (signal) {
-      signal.addEventListener('abort', aborted, {
+      signal.addEventListener("abort", aborted, {
         once: true,
       });
     }
@@ -477,7 +477,7 @@ export class StructuredIO {
       return await new Promise<Response>((resolve, reject) => {
         this.pendingRequests.set(requestId, {
           request: {
-            type: 'control_request',
+            type: "control_request",
             request_id: requestId,
             request,
           },
@@ -490,7 +490,7 @@ export class StructuredIO {
       });
     } finally {
       if (signal) {
-        signal.removeEventListener('abort', aborted);
+        signal.removeEventListener("abort", aborted);
       }
       this.pendingRequests.delete(requestId);
     }
@@ -509,7 +509,7 @@ export class StructuredIO {
         forceDecision ??
         (await hasPermissionsToUseTool(tool, input, toolUseContext, assistantMessage, toolUseID));
       // If the tool is allowed or denied, return the result
-      if (mainPermissionResult.behavior === 'allow' || mainPermissionResult.behavior === 'deny') {
+      if (mainPermissionResult.behavior === "allow" || mainPermissionResult.behavior === "deny") {
         return mainPermissionResult;
       }
 
@@ -525,7 +525,7 @@ export class StructuredIO {
       const parentSignal = toolUseContext.abortController.signal;
       // Forward parent abort to our local controller
       const onParentAbort = () => hookAbortController.abort();
-      parentSignal.addEventListener('abort', onParentAbort, { once: true });
+      parentSignal.addEventListener("abort", onParentAbort, { once: true });
 
       try {
         // Start the hook evaluation (runs in background)
@@ -535,14 +535,14 @@ export class StructuredIO {
           input,
           toolUseContext,
           mainPermissionResult.suggestions,
-        ).then((decision) => ({ source: 'hook' as const, decision }));
+        ).then((decision) => ({ source: "hook" as const, decision }));
 
         // Start the SDK permission prompt immediately (don't wait for hooks)
         const requestId = randomUUID();
         onPermissionPrompt?.(buildRequiresActionDetails(tool, input, toolUseID, requestId));
         const sdkPromise = this.sendRequest<PermissionToolOutput>(
           {
-            subtype: 'can_use_tool',
+            subtype: "can_use_tool",
             tool_name: tool.name,
             input,
             permission_suggestions: mainPermissionResult.suggestions,
@@ -554,14 +554,14 @@ export class StructuredIO {
           permissionToolOutputSchema(),
           hookAbortController.signal,
           requestId,
-        ).then((result) => ({ source: 'sdk' as const, result }));
+        ).then((result) => ({ source: "sdk" as const, result }));
 
         // Race: hook completion vs SDK prompt response.
         // The hook promise always resolves (never rejects), returning
         // undefined if no hook made a decision.
         const winner = await Promise.race([hookPromise, sdkPromise]);
 
-        if (winner.source === 'hook') {
+        if (winner.source === "hook") {
           if (winner.decision) {
             // Hook decided — abort the pending SDK request.
             // Suppress the expected AbortError rejection from sdkPromise.
@@ -590,7 +590,7 @@ export class StructuredIO {
       } catch (error) {
         return permissionPromptToolResultToPermissionDecision(
           {
-            behavior: 'deny',
+            behavior: "deny",
             message: `Tool permission request failed: ${error}`,
             toolUseID,
           },
@@ -602,16 +602,16 @@ export class StructuredIO {
         // Only transition back to 'running' if no other permission prompts
         // are pending (concurrent tool execution can have multiple in-flight).
         if (this.getPendingPermissionRequests().length === 0) {
-          notifySessionStateChanged('running');
+          notifySessionStateChanged("running");
         }
-        parentSignal.removeEventListener('abort', onParentAbort);
+        parentSignal.removeEventListener("abort", onParentAbort);
       }
     };
   }
 
   createHookCallback(callbackId: string, timeout?: number): HookCallback {
     return {
-      type: 'callback',
+      type: "callback",
       timeout,
       callback: async (
         input: HookInput,
@@ -621,7 +621,7 @@ export class StructuredIO {
         try {
           const result = await this.sendRequest<HookJSONOutput>(
             {
-              subtype: 'hook_callback',
+              subtype: "hook_callback",
               callback_id: callbackId,
               input,
               tool_use_id: toolUseID || undefined,
@@ -647,14 +647,14 @@ export class StructuredIO {
     message: string,
     requestedSchema?: Record<string, unknown>,
     signal?: AbortSignal,
-    mode?: 'form' | 'url',
+    mode?: "form" | "url",
     url?: string,
     elicitationId?: string,
   ): Promise<ElicitResult> {
     try {
       const result = await this.sendRequest<ElicitResult>(
         {
-          subtype: 'elicitation',
+          subtype: "elicitation",
           mcp_server_name: serverName,
           message,
           mode,
@@ -667,7 +667,7 @@ export class StructuredIO {
       );
       return result;
     } catch {
-      return { action: 'cancel' as const };
+      return { action: "cancel" as const };
     }
   }
 
@@ -684,7 +684,7 @@ export class StructuredIO {
       try {
         const result = await this.sendRequest<PermissionToolOutput>(
           {
-            subtype: 'can_use_tool',
+            subtype: "can_use_tool",
             tool_name: SANDBOX_NETWORK_ACCESS_TOOL_NAME,
             input: { host: hostPattern.host },
             tool_use_id: randomUUID(),
@@ -692,7 +692,7 @@ export class StructuredIO {
           },
           permissionToolOutputSchema(),
         );
-        return result.behavior === 'allow';
+        return result.behavior === "allow";
       } catch {
         // If the request fails (stream closed, abort, etc.), deny the connection
         return false;
@@ -706,7 +706,7 @@ export class StructuredIO {
   async sendMcpMessage(serverName: string, message: JSONRPCMessage): Promise<JSONRPCMessage> {
     const response = await this.sendRequest<{ mcp_response: JSONRPCMessage }>(
       {
-        subtype: 'mcp_message',
+        subtype: "mcp_message",
         server_name: serverName,
         message,
       },
@@ -753,11 +753,11 @@ async function executePermissionRequestHooksForSDK(
   for await (const hookResult of hookGenerator) {
     if (
       hookResult.permissionRequestResult &&
-      (hookResult.permissionRequestResult.behavior === 'allow' ||
-        hookResult.permissionRequestResult.behavior === 'deny')
+      (hookResult.permissionRequestResult.behavior === "allow" ||
+        hookResult.permissionRequestResult.behavior === "deny")
     ) {
       const decision = hookResult.permissionRequestResult;
-      if (decision.behavior === 'allow') {
+      if (decision.behavior === "allow") {
         const finalInput = decision.updatedInput || input;
 
         // Apply permission updates if provided by hook ("always allow")
@@ -777,22 +777,22 @@ async function executePermissionRequestHooksForSDK(
         }
 
         return {
-          behavior: 'allow',
+          behavior: "allow",
           updatedInput: finalInput,
           userModified: false,
           decisionReason: {
-            type: 'hook',
-            hookName: 'PermissionRequest',
+            type: "hook",
+            hookName: "PermissionRequest",
           },
         };
       } else {
         // Hook denied the permission
         return {
-          behavior: 'deny',
-          message: decision.message || 'Permission denied by PermissionRequest hook',
+          behavior: "deny",
+          message: decision.message || "Permission denied by PermissionRequest hook",
           decisionReason: {
-            type: 'hook',
-            hookName: 'PermissionRequest',
+            type: "hook",
+            hookName: "PermissionRequest",
           },
         };
       }

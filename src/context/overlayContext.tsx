@@ -12,13 +12,13 @@
  * The hook automatically registers on mount and unregisters on unmount,
  * so no manual cleanup or state management is needed.
  */
-import { useContext, useEffect, useLayoutEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import instances from '../ink/instances.js';
-import { AppStoreContext, useAppState } from '../state/AppState.js';
+import { useContext, useEffect, useLayoutEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import instances from "../ink/instances.js";
+import { AppStoreContext, useAppState } from "../state/AppState.js";
 
 // Non-modal overlays that shouldn't disable TextInput focus
-const NON_MODAL_OVERLAYS = new Set(['autocomplete']);
+const NON_MODAL_OVERLAYS = new Set(["autocomplete"]);
 
 /**
  * Hook to register a component as an active overlay.

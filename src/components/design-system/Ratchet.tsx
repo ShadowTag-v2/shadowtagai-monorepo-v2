@@ -1,18 +1,18 @@
-import type React from 'react';
-import { useLayoutEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { useTerminalViewport } from '../../ink/hooks/use-terminal-viewport.js';
-import { Box, measureElement } from '../../ink.js';
+import type React from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { useTerminalViewport } from "../../ink/hooks/use-terminal-viewport.js";
+import { Box, measureElement } from "../../ink.js";
 
 type Props = {
   children: React.ReactNode;
-  lock?: 'always' | 'offscreen';
+  lock?: "always" | "offscreen";
 };
 export function Ratchet(t0) {
   const $ = _c(10);
   const { children, lock: t1 } = t0;
-  const lock = t1 === undefined ? 'always' : t1;
+  const lock = t1 === undefined ? "always" : t1;
   const [viewportRef, t2] = useTerminalViewport();
   const { isVisible } = t2;
   const { rows } = useTerminalSize();
@@ -30,7 +30,7 @@ export function Ratchet(t0) {
     t3 = $[1];
   }
   const outerRef = t3;
-  const engaged = lock === 'always' || !isVisible;
+  const engaged = lock === "always" || !isVisible;
   let t4;
   if ($[2] !== rows) {
     t4 = () => {

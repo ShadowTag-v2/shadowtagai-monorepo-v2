@@ -1,15 +1,15 @@
-import { logEvent } from 'src/services/analytics/index.js';
-import { openBrowser } from '../../utils/browser.js';
-import { AuthCodeListener } from './auth-code-listener.js';
-import * as client from './client.js';
-import * as crypto from './crypto.js';
+import { logEvent } from "src/services/analytics/index.js";
+import { openBrowser } from "../../utils/browser.js";
+import { AuthCodeListener } from "./auth-code-listener.js";
+import * as client from "./client.js";
+import * as crypto from "./crypto.js";
 import type {
   OAuthProfileResponse,
   OAuthTokenExchangeResponse,
   OAuthTokens,
   RateLimitTier,
   SubscriptionType,
-} from './types.js';
+} from "./types.js";
 
 /**
  * OAuth service that handles the OAuth 2.0 authorization code flow with PKCE.
@@ -83,7 +83,7 @@ export class OAuthService {
 
     // Check if the automatic flow is still active (has a pending response)
     const isAutomaticFlow = this.authCodeListener?.hasPendingResponse() ?? false;
-    logEvent('tengu_oauth_auth_code_received', { automatic: isAutomaticFlow });
+    logEvent("tengu_oauth_auth_code_received", { automatic: isAutomaticFlow });
 
     try {
       // Exchange authorization code for tokens

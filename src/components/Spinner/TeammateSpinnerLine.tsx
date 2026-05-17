@@ -1,18 +1,18 @@
-import figures from 'figures';
-import sample from 'lodash-es/sample.js';
-import type * as React from 'react';
-import { useRef, useState } from 'react';
-import { getSpinnerVerbs } from '../../constants/spinnerVerbs.js';
-import { TURN_COMPLETION_VERBS } from '../../constants/turnCompletionVerbs.js';
-import { useElapsedTime } from '../../hooks/useElapsedTime.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Box, Text } from '../../ink.js';
-import type { InProcessTeammateTaskState } from '../../tasks/InProcessTeammateTask/types.js';
-import { summarizeRecentActivities } from '../../utils/collapseReadSearch.js';
-import { formatDuration, formatNumber, truncateToWidth } from '../../utils/format.js';
-import { toInkColor } from '../../utils/ink.js';
-import { TEAMMATE_SELECT_HINT } from './teammateSelectHint.js';
+import figures from "figures";
+import sample from "lodash-es/sample.js";
+import type * as React from "react";
+import { useRef, useState } from "react";
+import { getSpinnerVerbs } from "../../constants/spinnerVerbs.js";
+import { TURN_COMPLETION_VERBS } from "../../constants/turnCompletionVerbs.js";
+import { useElapsedTime } from "../../hooks/useElapsedTime.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Box, Text } from "../../ink.js";
+import type { InProcessTeammateTaskState } from "../../tasks/InProcessTeammateTask/types.js";
+import { summarizeRecentActivities } from "../../utils/collapseReadSearch.js";
+import { formatDuration, formatNumber, truncateToWidth } from "../../utils/format.js";
+import { toInkColor } from "../../utils/ink.js";
+import { TEAMMATE_SELECT_HINT } from "./teammateSelectHint.js";
 
 type Props = {
   teammate: InProcessTeammateTaskState;
@@ -27,7 +27,7 @@ type Props = {
  * Extract the last 3 lines of content from a teammate's conversation.
  * Shows recent activity from any message type (user or assistant).
  */
-function getMessagePreview(messages: InProcessTeammateTaskState['messages']): string[] {
+function getMessagePreview(messages: InProcessTeammateTaskState["messages"]): string[] {
   if (!messages?.length) return [];
   const allLines: string[] = [];
   const maxLineLength = 80;
@@ -38,7 +38,7 @@ function getMessagePreview(messages: InProcessTeammateTaskState['messages']): st
     // Only process messages that have content (user/assistant messages)
     if (
       !msg ||
-      (msg.type !== 'user' && msg.type !== 'assistant') ||
+      (msg.type !== "user" && msg.type !== "assistant") ||
       !msg.message?.content?.length
     ) {
       continue;
@@ -46,10 +46,10 @@ function getMessagePreview(messages: InProcessTeammateTaskState['messages']): st
     const content = msg.message.content;
     for (const block of content) {
       if (allLines.length >= 3) break;
-      if (!block || typeof block !== 'object') continue;
-      if ('type' in block && block.type === 'tool_use' && 'name' in block) {
+      if (!block || typeof block !== "object") continue;
+      if ("type" in block && block.type === "tool_use" && "name" in block) {
         // Try to show meaningful info from tool input
-        const input = 'input' in block ? (block.input as Record<string, unknown>) : null;
+        const input = "input" in block ? (block.input as Record<string, unknown>) : null;
         let toolLine = `Using ${block.name}…`;
         if (input) {
           // Look for common descriptive fields
@@ -60,12 +60,12 @@ function getMessagePreview(messages: InProcessTeammateTaskState['messages']): st
             (input.query as string | undefined) ||
             (input.pattern as string | undefined);
           if (desc) {
-            toolLine = desc.split('\n')[0] ?? toolLine;
+            toolLine = desc.split("\n")[0] ?? toolLine;
           }
         }
         allLines.push(truncateToWidth(toolLine, maxLineLength));
-      } else if ('type' in block && block.type === 'text' && 'text' in block) {
-        const textLines = (block.text as string).split('\n').filter((l) => l.trim());
+      } else if ("type" in block && block.type === "text" && "text" in block) {
+        const textLines = (block.text as string).split("\n").filter((l) => l.trim());
         // Take from end of text (most recent lines)
         for (let j = textLines.length - 1; j >= 0 && allLines.length < 3; j--) {
           const line = textLines[j];
@@ -90,7 +90,7 @@ export function TeammateSpinnerLine({
   const [randomVerb] = useState(() => teammate.spinnerVerb ?? sample(getSpinnerVerbs()));
   const [pastTenseVerb] = useState(() => teammate.pastTenseVerb ?? sample(TURN_COMPLETION_VERBS));
   const isHighlighted = isSelected || isForegrounded;
-  const treeChar = isHighlighted ? (isLast ? '╘═' : '╞═') : isLast ? '└─' : '├─';
+  const treeChar = isHighlighted ? (isLast ? "╘═" : "╞═") : isLast ? "└─" : "├─";
   const nameColor = toInkColor(teammate.identity.color);
   const { columns } = useTerminalSize();
 
@@ -145,11 +145,11 @@ export function TeammateSpinnerLine({
   // Get stats from progress
   const toolUseCount = teammate.progress?.toolUseCount ?? 0;
   const tokenCount = teammate.progress?.tokenCount ?? 0;
-  const statsText = ` · ${toolUseCount} tool ${toolUseCount === 1 ? 'use' : 'uses'} · ${formatNumber(tokenCount)} tokens`;
+  const statsText = ` · ${toolUseCount} tool ${toolUseCount === 1 ? "use" : "uses"} · ${formatNumber(tokenCount)} tokens`;
   const statsWidth = stringWidth(statsText);
   const selectHintText = ` · ${TEAMMATE_SELECT_HINT}`;
   const selectHintWidth = stringWidth(selectHintText);
-  const viewHintText = ' · enter to view';
+  const viewHintText = " · enter to view";
   const viewHintWidth = stringWidth(viewHintText);
 
   // Progressive responsive layout:
@@ -218,33 +218,33 @@ export function TeammateSpinnerLine({
     if (isHighlighted) {
       return null;
     }
-    return <Text dimColor>{activityText?.endsWith('…') ? activityText : `${activityText}…`}</Text>;
+    return <Text dimColor>{activityText?.endsWith("…") ? activityText : `${activityText}…`}</Text>;
   };
 
   // Get preview lines if enabled
   const previewLines = showPreview ? getMessagePreview(teammate.messages) : [];
 
   // Tree continuation character for preview lines
-  const previewTreeChar = isLast ? '   ' : '│  ';
+  const previewTreeChar = isLast ? "   " : "│  ";
   return (
     <Box flexDirection="column">
       <Box paddingLeft={3}>
         {/* Selection indicator: pointer when selected, otherwise space */}
-        <Text color={isSelected ? 'suggestion' : undefined} bold={isSelected}>
-          {isSelected ? figures.pointer : ' '}
+        <Text color={isSelected ? "suggestion" : undefined} bold={isSelected}>
+          {isSelected ? figures.pointer : " "}
         </Text>
         <Text dimColor={!isSelected}>{treeChar} </Text>
         {/* Agent name: hidden on very narrow screens */}
         {showName && (
-          <Text color={isSelected ? 'suggestion' : nameColor}>@{teammate.identity.agentName}</Text>
+          <Text color={isSelected ? "suggestion" : nameColor}>@{teammate.identity.agentName}</Text>
         )}
         {showName && <Text dimColor={!isSelected}>: </Text>}
         {renderStatus()}
         {/* Stats: only shown when selected and terminal is wide enough */}
         {showStats && (
           <Text dimColor>
-            {' '}
-            · {toolUseCount} tool {toolUseCount === 1 ? 'use' : 'uses'} · {formatNumber(tokenCount)}{' '}
+            {" "}
+            · {toolUseCount} tool {toolUseCount === 1 ? "use" : "uses"} · {formatNumber(tokenCount)}{" "}
             tokens
           </Text>
         )}

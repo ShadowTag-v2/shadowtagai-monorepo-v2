@@ -1,9 +1,9 @@
-import { performBackgroundPluginInstallations } from '../../services/plugins/PluginInstallationManager.js';
-import type { AppState } from '../../state/AppState.js';
-import { checkHasTrustDialogAccepted } from '../config.js';
-import { logForDebugging } from '../debug.js';
-import { clearMarketplacesCache, registerSeedMarketplaces } from './marketplaceManager.js';
-import { clearPluginCache } from './pluginLoader.js';
+import { performBackgroundPluginInstallations } from "../../services/plugins/PluginInstallationManager.js";
+import type { AppState } from "../../state/AppState.js";
+import { checkHasTrustDialogAccepted } from "../config.js";
+import { logForDebugging } from "../debug.js";
+import { clearMarketplacesCache, registerSeedMarketplaces } from "./marketplaceManager.js";
+import { clearPluginCache } from "./pluginLoader.js";
 
 type SetAppState = (f: (prevState: AppState) => AppState) => void;
 
@@ -23,15 +23,15 @@ type SetAppState = (f: (prevState: AppState) => AppState) => void;
  * @param setAppState Function to update app state with installation progress
  */
 export async function performStartupChecks(setAppState: SetAppState): Promise<void> {
-  logForDebugging('performStartupChecks called');
+  logForDebugging("performStartupChecks called");
 
   // Check if the current directory has been trusted
   if (!checkHasTrustDialogAccepted()) {
-    logForDebugging('Trust not accepted for current directory - skipping plugin installations');
+    logForDebugging("Trust not accepted for current directory - skipping plugin installations");
     return;
   }
   try {
-    logForDebugging('Starting background plugin installations');
+    logForDebugging("Starting background plugin installations");
 
     // Register seed marketplaces (CLAUDE_CODE_PLUGIN_SEED_DIR) before diffing.
     // Idempotent; no-op if seed not configured. Without this, background install
@@ -43,7 +43,7 @@ export async function performStartupChecks(setAppState: SetAppState): Promise<vo
     const seedChanged = await registerSeedMarketplaces();
     if (seedChanged) {
       clearMarketplacesCache();
-      clearPluginCache('performStartupChecks: seed marketplaces changed');
+      clearPluginCache("performStartupChecks: seed marketplaces changed");
       // Set needsRefresh so useManagePlugins notifies the user to run
       // /reload-plugins. Without this signal, the initial plugin-load
       // (which raced and cached "marketplace not found") would persist

@@ -1,28 +1,28 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { extraUsage as extraUsageCommand } from 'src/commands/extra-usage/index.js';
-import { formatCost } from 'src/cost-tracker.js';
-import { getSubscriptionType } from 'src/utils/auth.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { extraUsage as extraUsageCommand } from "src/commands/extra-usage/index.js";
+import { formatCost } from "src/cost-tracker.js";
+import { getSubscriptionType } from "src/utils/auth.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
 import {
   type ExtraUsage,
   fetchUtilization,
   type RateLimit,
   type Utilization,
-} from '../../services/api/usage.js';
-import { formatResetText } from '../../utils/format.js';
-import { logError } from '../../utils/log.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
-import { Byline } from '../design-system/Byline.js';
-import { ProgressBar } from '../design-system/ProgressBar.js';
+} from "../../services/api/usage.js";
+import { formatResetText } from "../../utils/format.js";
+import { logError } from "../../utils/log.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { ConfigurableShortcutHint } from "../ConfigurableShortcutHint.js";
+import { Byline } from "../design-system/Byline.js";
+import { ProgressBar } from "../design-system/ProgressBar.js";
 import {
   isEligibleForOverageCreditGrant,
   OverageCreditUpsell,
-} from '../LogoV2/OverageCreditUpsell.js';
+} from "../LogoV2/OverageCreditUpsell.js";
 
 type LimitBarProps = {
   title: string;
@@ -236,7 +236,7 @@ export function Usage(): React.ReactNode {
         ? jsonStringify(axiosError.response.data)
         : undefined;
       setError(
-        responseBody ? `Failed to load usage data: ${responseBody}` : 'Failed to load usage data',
+        responseBody ? `Failed to load usage data: ${responseBody}` : "Failed to load usage data",
       );
     } finally {
       setIsLoading(false);
@@ -246,12 +246,12 @@ export function Usage(): React.ReactNode {
     void loadUtilization();
   }, [loadUtilization]);
   useKeybinding(
-    'settings:retry',
+    "settings:retry",
     () => {
       void loadUtilization();
     },
     {
-      context: 'Settings',
+      context: "Settings",
       isActive: !!error && !isLoading,
     },
   );
@@ -300,20 +300,20 @@ export function Usage(): React.ReactNode {
   // which labels it "Sonnet limit" in that case.
   const subscriptionType = getSubscriptionType();
   const showSonnetBar =
-    subscriptionType === 'max' || subscriptionType === 'team' || subscriptionType === null;
+    subscriptionType === "max" || subscriptionType === "team" || subscriptionType === null;
   const limits = [
     {
-      title: 'Current session',
+      title: "Current session",
       limit: utilization.five_hour,
     },
     {
-      title: 'Current week (all models)',
+      title: "Current week (all models)",
       limit: utilization.seven_day,
     },
     ...(showSonnetBar
       ? [
           {
-            title: 'Current week (Sonnet only)',
+            title: "Current week (Sonnet only)",
             limit: utilization.seven_day_sonnet,
           },
         ]
@@ -351,19 +351,19 @@ type ExtraUsageSectionProps = {
   extraUsage: ExtraUsage;
   maxWidth: number;
 };
-const EXTRA_USAGE_SECTION_TITLE = 'Extra usage';
+const EXTRA_USAGE_SECTION_TITLE = "Extra usage";
 function ExtraUsageSection(t0) {
   const $ = _c(20);
   const { extraUsage, maxWidth } = t0;
   const subscriptionType = getSubscriptionType();
-  const isProOrMax = subscriptionType === 'pro' || subscriptionType === 'max';
+  const isProOrMax = subscriptionType === "pro" || subscriptionType === "max";
   if (!isProOrMax) {
     return false;
   }
   if (!extraUsage.is_enabled) {
     if (extraUsageCommand.isEnabled()) {
       let t1;
-      if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <Box flexDirection="column">
             <Text bold={true}>{EXTRA_USAGE_SECTION_TITLE}</Text>
@@ -380,7 +380,7 @@ function ExtraUsageSection(t0) {
   }
   if (extraUsage.monthly_limit === null) {
     let t1;
-    if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = (
         <Box flexDirection="column">
           <Text bold={true}>{EXTRA_USAGE_SECTION_TITLE}</Text>
@@ -393,7 +393,7 @@ function ExtraUsageSection(t0) {
     }
     return t1;
   }
-  if (typeof extraUsage.used_credits !== 'number' || typeof extraUsage.utilization !== 'number') {
+  if (typeof extraUsage.used_credits !== "number" || typeof extraUsage.utilization !== "number") {
     return null;
   }
   const t1 = extraUsage.used_credits / 100;

@@ -1,11 +1,11 @@
-import { extname } from 'node:path';
-import { Suspense, use } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Ansi, Text } from '../../ink.js';
-import { getCliHighlightPromise } from '../../utils/cliHighlight.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { convertLeadingTabsToSpaces } from '../../utils/file.js';
-import { hashPair } from '../../utils/hash.js';
+import { extname } from "node:path";
+import { Suspense, use } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Ansi, Text } from "../../ink.js";
+import { getCliHighlightPromise } from "../../utils/cliHighlight.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { convertLeadingTabsToSpaces } from "../../utils/file.js";
+import { hashPair } from "../../utils/hash.js";
 
 type Props = {
   code: string;
@@ -125,7 +125,7 @@ function Highlighted(t0) {
   const $ = _c(10);
   const { codeWithSpaces, language } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = getCliHighlightPromise();
     $[0] = t1;
   } else {
@@ -139,7 +139,7 @@ function Highlighted(t0) {
         t2 = codeWithSpaces;
         break bb0;
       }
-      let highlightLang = 'markdown';
+      let highlightLang = "markdown";
       if (language) {
         if (hl.supportsLanguage(language)) {
           highlightLang = language;
@@ -153,13 +153,13 @@ function Highlighted(t0) {
         t2 = cachedHighlight(hl, codeWithSpaces, highlightLang);
       } catch (t3) {
         const e = t3;
-        if (e instanceof Error && e.message.includes('Unknown language')) {
+        if (e instanceof Error && e.message.includes("Unknown language")) {
           logForDebugging(
             `Language not supported while highlighting code, falling back to markdown: ${e}`,
           );
           let t4;
           if ($[5] !== codeWithSpaces || $[6] !== hl) {
-            t4 = cachedHighlight(hl, codeWithSpaces, 'markdown');
+            t4 = cachedHighlight(hl, codeWithSpaces, "markdown");
             $[5] = codeWithSpaces;
             $[6] = hl;
             $[7] = t4;

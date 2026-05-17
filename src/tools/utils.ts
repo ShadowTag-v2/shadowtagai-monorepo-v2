@@ -3,7 +3,7 @@ import type {
   AttachmentMessage,
   SystemMessage,
   UserMessage,
-} from 'src/types/message.js';
+} from "src/types/message.js";
 
 /**
  * Tags user messages with a sourceToolUseID so they stay transient until the tool resolves.
@@ -17,7 +17,7 @@ export function tagMessagesWithToolUseID(
     return messages;
   }
   return messages.map((m) => {
-    if (m.type === 'user') {
+    if (m.type === "user") {
       return { ...m, sourceToolUseID: toolUseID };
     }
     return m;
@@ -32,7 +32,7 @@ export function getToolUseIDFromParentMessage(
   toolName: string,
 ): string | undefined {
   const toolUseBlock = parentMessage.message.content.find(
-    (block) => block.type === 'tool_use' && block.name === toolName,
+    (block) => block.type === "tool_use" && block.name === toolName,
   );
-  return toolUseBlock && toolUseBlock.type === 'tool_use' ? toolUseBlock.id : undefined;
+  return toolUseBlock && toolUseBlock.type === "tool_use" ? toolUseBlock.id : undefined;
 }

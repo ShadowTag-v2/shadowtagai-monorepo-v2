@@ -1,10 +1,10 @@
-import { logEvent } from 'src/services/analytics/index.js';
-import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
-import { logError } from '../utils/log.js';
+import { logEvent } from "src/services/analytics/index.js";
+import { getGlobalConfig, saveGlobalConfig } from "../utils/config.js";
+import { logError } from "../utils/log.js";
 import {
   hasSkipDangerousModePermissionPrompt,
   updateSettingsForSource,
-} from '../utils/settings/settings.js';
+} from "../utils/settings/settings.js";
 
 /**
  * Migration: Move bypassPermissionsModeAccepted from global config to settings.json
@@ -20,15 +20,15 @@ export function migrateBypassPermissionsAcceptedToSettings(): void {
 
   try {
     if (!hasSkipDangerousModePermissionPrompt()) {
-      updateSettingsForSource('userSettings', {
+      updateSettingsForSource("userSettings", {
         skipDangerousModePermissionPrompt: true,
       });
     }
 
-    logEvent('tengu_migrate_bypass_permissions_accepted', {});
+    logEvent("tengu_migrate_bypass_permissions_accepted", {});
 
     saveGlobalConfig((current) => {
-      if (!('bypassPermissionsModeAccepted' in current)) return current;
+      if (!("bypassPermissionsModeAccepted" in current)) return current;
       const { bypassPermissionsModeAccepted: _, ...updatedConfig } = current;
       return updatedConfig;
     });

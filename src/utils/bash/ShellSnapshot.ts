@@ -1,23 +1,23 @@
-import { execFile } from 'node:child_process';
-import { mkdir, stat } from 'node:fs/promises';
-import * as os from 'node:os';
-import { join } from 'node:path';
-import { execa } from 'execa';
-import { logEvent } from 'src/services/analytics/index.js';
-import { registerCleanup } from '../cleanupRegistry.js';
-import { getCwd } from '../cwd.js';
-import { logForDebugging } from '../debug.js';
-import { embeddedSearchToolsBinaryPath, hasEmbeddedSearchTools } from '../embeddedTools.js';
-import { getClaudeConfigHomeDir } from '../envUtils.js';
-import { pathExists } from '../file.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { logError } from '../log.js';
-import { getPlatform } from '../platform.js';
-import { ripgrepCommand } from '../ripgrep.js';
-import { subprocessEnv } from '../subprocessEnv.js';
-import { quote } from './shellQuote.js';
+import { execFile } from "node:child_process";
+import { mkdir, stat } from "node:fs/promises";
+import * as os from "node:os";
+import { join } from "node:path";
+import { execa } from "execa";
+import { logEvent } from "src/services/analytics/index.js";
+import { registerCleanup } from "../cleanupRegistry.js";
+import { getCwd } from "../cwd.js";
+import { logForDebugging } from "../debug.js";
+import { embeddedSearchToolsBinaryPath, hasEmbeddedSearchTools } from "../embeddedTools.js";
+import { getClaudeConfigHomeDir } from "../envUtils.js";
+import { pathExists } from "../file.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { logError } from "../log.js";
+import { getPlatform } from "../platform.js";
+import { ripgrepCommand } from "../ripgrep.js";
+import { subprocessEnv } from "../subprocessEnv.js";
+import { quote } from "./shellQuote.js";
 
-const LITERAL_BACKSLASH = '\\';
+const LITERAL_BACKSLASH = "\\";
 const SNAPSHOT_CREATION_TIMEOUT = 10000; // 10 seconds
 
 /**
@@ -36,22 +36,22 @@ function createArgv0ShellFunction(
   prependArgs: string[] = [],
 ): string {
   const quotedPath = quote([binaryPath]);
-  const argSuffix = prependArgs.length > 0 ? `${prependArgs.join(' ')} "$@"` : '"$@"';
+  const argSuffix = prependArgs.length > 0 ? `${prependArgs.join(" ")} "$@"` : '"$@"';
   return [
     `function ${funcName} {`,
-    '  if [[ -n $ZSH_VERSION ]]; then',
+    "  if [[ -n $ZSH_VERSION ]]; then",
     `    ARGV0=${argv0} ${quotedPath} ${argSuffix}`,
     '  elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then',
     // On Windows (git bash), exec -a does not work, so use ARGV0 env var instead
     // The bun binary reads from ARGV0 natively to set argv[0]
     `    ARGV0=${argv0} ${quotedPath} ${argSuffix}`,
-    '  elif [[ $BASHPID != $$ ]]; then',
+    "  elif [[ $BASHPID != $$ ]]; then",
     `    exec -a ${argv0} ${quotedPath} ${argSuffix}`,
-    '  else',
+    "  else",
     `    (exec -a ${argv0} ${quotedPath} ${argSuffix})`,
-    '  fi',
-    '}',
-  ].join('\n');
+    "  fi",
+    "}",
+  ].join("\n");
 }
 
 /**
@@ -59,7 +59,7 @@ function createArgv0ShellFunction(
  * @returns Object with type and the shell snippet to use
  */
 export function createRipgrepShellIntegration(): {
-  type: 'alias' | 'function';
+  type: "alias" | "function";
   snippet: string;
 } {
   const rgCommand = ripgrepCommand();
@@ -67,8 +67,8 @@ export function createRipgrepShellIntegration(): {
   // For embedded ripgrep (bun-internal), we need a shell function that sets argv0
   if (rgCommand.argv0) {
     return {
-      type: 'function',
-      snippet: createArgv0ShellFunction('rg', rgCommand.argv0, rgCommand.rgPath),
+      type: "function",
+      snippet: createArgv0ShellFunction("rg", rgCommand.argv0, rgCommand.rgPath),
     };
   }
 
@@ -76,16 +76,16 @@ export function createRipgrepShellIntegration(): {
   const quotedPath = quote([rgCommand.rgPath]);
   const quotedArgs = rgCommand.rgArgs.map((arg) => quote([arg]));
   const aliasTarget =
-    rgCommand.rgArgs.length > 0 ? `${quotedPath} ${quotedArgs.join(' ')}` : quotedPath;
+    rgCommand.rgArgs.length > 0 ? `${quotedPath} ${quotedArgs.join(" ")}` : quotedPath;
 
-  return { type: 'alias', snippet: aliasTarget };
+  return { type: "alias", snippet: aliasTarget };
 }
 
 /**
  * VCS directories to exclude from grep searches. Matches the list in
  * GrepTool (see GrepTool.ts: VCS_DIRECTORIES_TO_EXCLUDE).
  */
-const VCS_DIRECTORIES_TO_EXCLUDE = ['.git', '.svn', '.hg', '.bzr', '.jj', '.sl'] as const;
+const VCS_DIRECTORIES_TO_EXCLUDE = [".git", ".svn", ".hg", ".bzr", ".jj", ".sl"] as const;
 
 /**
  * Creates shell integration for `find` and `grep`, backed by bfs and ugrep
@@ -145,25 +145,25 @@ export function createFindGrepShellIntegration(): string | null {
     // bash expands aliases before function lookup — so a renaming alias
     // would silently bypass the embedded bfs/ugrep dispatch. Clear them first
     // (same fix the rg integration uses).
-    'unalias find 2>/dev/null || true',
-    'unalias grep 2>/dev/null || true',
-    createArgv0ShellFunction('find', 'bfs', binaryPath, ['-regextype', 'findutils-default']),
-    createArgv0ShellFunction('grep', 'ugrep', binaryPath, [
-      '-G',
-      '--ignore-files',
-      '--hidden',
-      '-I',
+    "unalias find 2>/dev/null || true",
+    "unalias grep 2>/dev/null || true",
+    createArgv0ShellFunction("find", "bfs", binaryPath, ["-regextype", "findutils-default"]),
+    createArgv0ShellFunction("grep", "ugrep", binaryPath, [
+      "-G",
+      "--ignore-files",
+      "--hidden",
+      "-I",
       ...VCS_DIRECTORIES_TO_EXCLUDE.map((d) => `--exclude-dir=${d}`),
     ]),
-  ].join('\n');
+  ].join("\n");
 }
 
 function getConfigFile(shellPath: string): string {
-  const fileName = shellPath.includes('zsh')
-    ? '.zshrc'
-    : shellPath.includes('bash')
-      ? '.bashrc'
-      : '.profile';
+  const fileName = shellPath.includes("zsh")
+    ? ".zshrc"
+    : shellPath.includes("bash")
+      ? ".bashrc"
+      : ".profile";
 
   const configPath = join(os.homedir(), fileName);
 
@@ -175,9 +175,9 @@ function getConfigFile(shellPath: string): string {
  * This content is derived from the user's shell configuration file
  */
 function getUserSnapshotContent(configFile: string): string {
-  const isZsh = configFile.endsWith('.zshrc');
+  const isZsh = configFile.endsWith(".zshrc");
 
-  let content = '';
+  let content = "";
 
   // User functions
   if (isZsh) {
@@ -249,9 +249,9 @@ function getUserSnapshotContent(configFile: string): string {
 async function getClaudeCodeSnapshotContent(): Promise<string> {
   // Get the appropriate PATH based on platform
   let pathValue = process.env.PATH;
-  if (getPlatform() === 'windows') {
+  if (getPlatform() === "windows") {
     // On Windows with git-bash, read the Cygwin PATH
-    const cygwinResult = await execa('echo $PATH', {
+    const cygwinResult = await execa("echo $PATH", {
       shell: true,
       reject: false,
     });
@@ -263,7 +263,7 @@ async function getClaudeCodeSnapshotContent(): Promise<string> {
 
   const rgIntegration = createRipgrepShellIntegration();
 
-  let content = '';
+  let content = "";
 
   // Check if rg is available, if not create an alias/function to bundled ripgrep
   // We use a subshell to unalias rg before checking, so that user aliases like
@@ -275,7 +275,7 @@ async function getClaudeCodeSnapshotContent(): Promise<string> {
       echo "if ! (unalias rg 2>/dev/null; command -v rg) >/dev/null 2>&1; then" >> "$SNAPSHOT_FILE"
   `;
 
-  if (rgIntegration.type === 'function') {
+  if (rgIntegration.type === "function") {
     // For embedded ripgrep, write the function definition using heredoc
     content += `
       cat >> "$SNAPSHOT_FILE" << 'RIPGREP_FUNC_END'
@@ -313,7 +313,7 @@ FIND_GREP_FUNC_END
   content += `
 
       # Add PATH to the file
-      echo "export PATH=${quote([pathValue || ''])}" >> "$SNAPSHOT_FILE"
+      echo "export PATH=${quote([pathValue || ""])}" >> "$SNAPSHOT_FILE"
   `;
 
   return content;
@@ -328,7 +328,7 @@ async function getSnapshotScript(
   configFileExists: boolean,
 ): Promise<string> {
   const configFile = getConfigFile(shellPath);
-  const isZsh = configFile.endsWith('.zshrc');
+  const isZsh = configFile.endsWith(".zshrc");
 
   // Generate the user content and Claude Code content
   const userContent = configFileExists
@@ -336,11 +336,11 @@ async function getSnapshotScript(
     : !isZsh
       ? // we need to manually force alias expansion in bash - normally `getUserSnapshotContent` takes care of this
         'echo "shopt -s expand_aliases" >> "$SNAPSHOT_FILE"'
-      : '';
+      : "";
   const claudeCodeContent = await getClaudeCodeSnapshotContent();
 
   const script = `SNAPSHOT_FILE=${quote([snapshotFilePath])}
-      ${configFileExists ? `source "${configFile}" < /dev/null` : '# No user config file to source'}
+      ${configFileExists ? `source "${configFile}" < /dev/null` : "# No user config file to source"}
 
       # First, create/clear the snapshot file
       echo "# Snapshot file" >| "$SNAPSHOT_FILE"
@@ -391,7 +391,7 @@ async function getSnapshotScript(
  * @returns Promise that resolves to the snapshot file path or undefined if creation failed
  */
 export const createAndSaveSnapshot = async (binShell: string): Promise<string | undefined> => {
-  const shellType = binShell.includes('zsh') ? 'zsh' : binShell.includes('bash') ? 'bash' : 'sh';
+  const shellType = binShell.includes("zsh") ? "zsh" : binShell.includes("bash") ? "bash" : "sh";
 
   logForDebugging(`Creating shell snapshot for ${shellType} (${binShell})`);
 
@@ -410,7 +410,7 @@ export const createAndSaveSnapshot = async (binShell: string): Promise<string | 
       // Create unique snapshot path with timestamp and random ID
       const timestamp = Date.now();
       const randomId = Math.random().toString(36).substring(2, 8);
-      const snapshotsDir = join(getClaudeConfigHomeDir(), 'shell-snapshots');
+      const snapshotsDir = join(getClaudeConfigHomeDir(), "shell-snapshots");
       logForDebugging(`Snapshots directory: ${snapshotsDir}`);
       const shellSnapshotPath = join(
         snapshotsDir,
@@ -425,19 +425,19 @@ export const createAndSaveSnapshot = async (binShell: string): Promise<string | 
       logForDebugging(`Execution timeout: ${SNAPSHOT_CREATION_TIMEOUT}ms`);
       execFile(
         binShell,
-        ['-c', '-l', snapshotScript],
+        ["-c", "-l", snapshotScript],
         {
           env: {
             ...((process.env.CLAUDE_CODE_DONT_INHERIT_ENV
               ? {}
               : subprocessEnv()) as typeof process.env),
             SHELL: binShell,
-            GIT_EDITOR: 'true',
-            CLAUDECODE: '1',
+            GIT_EDITOR: "true",
+            CLAUDECODE: "1",
           },
           timeout: SNAPSHOT_CREATION_TIMEOUT,
           maxBuffer: 1024 * 1024, // 1MB buffer
-          encoding: 'utf8',
+          encoding: "utf8",
         },
         async (error, stdout, stderr) => {
           if (error) {
@@ -472,7 +472,7 @@ export const createAndSaveSnapshot = async (binShell: string): Promise<string | 
             const signalNumber = execError?.signal
               ? os.constants.signals[execError.signal as keyof typeof os.constants.signals]
               : undefined;
-            logEvent('tengu_shell_snapshot_failed', {
+            logEvent("tengu_shell_snapshot_failed", {
               stderr_length: stderr?.length || 0,
               has_error_code: !!execError?.code,
               error_signal_number: signalNumber,
@@ -512,7 +512,7 @@ export const createAndSaveSnapshot = async (binShell: string): Promise<string | 
                   `Parent directory does not exist or is not accessible: ${snapshotsDir}`,
                 );
               }
-              logEvent('tengu_shell_unknown_error', {});
+              logEvent("tengu_shell_unknown_error", {});
               resolve(undefined);
             }
           }
@@ -524,7 +524,7 @@ export const createAndSaveSnapshot = async (binShell: string): Promise<string | 
         logForDebugging(`Error stack trace: ${error.stack}`);
       }
       logError(error);
-      logEvent('tengu_shell_snapshot_error', {});
+      logEvent("tengu_shell_snapshot_error", {});
       resolve(undefined);
     }
   });

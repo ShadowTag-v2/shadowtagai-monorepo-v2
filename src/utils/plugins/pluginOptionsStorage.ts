@@ -12,14 +12,14 @@
  * import from MCP-specific code.
  */
 
-import memoize from 'lodash-es/memoize.js';
-import type { LoadedPlugin } from '../../types/plugin.js';
-import { logForDebugging } from '../debug.js';
-import { logError } from '../log.js';
-import { getSecureStorage } from '../secureStorage/index.js';
-import { getSettings_DEPRECATED, updateSettingsForSource } from '../settings/settings.js';
-import { type UserConfigSchema, type UserConfigValues, validateUserConfig } from './mcpbHandler.js';
-import { getPluginDataDir } from './pluginDirectories.js';
+import memoize from "lodash-es/memoize.js";
+import type { LoadedPlugin } from "../../types/plugin.js";
+import { logForDebugging } from "../debug.js";
+import { logError } from "../log.js";
+import { getSecureStorage } from "../secureStorage/index.js";
+import { getSettings_DEPRECATED, updateSettingsForSource } from "../settings/settings.js";
+import { type UserConfigSchema, type UserConfigValues, validateUserConfig } from "./mcpbHandler.js";
+import { getPluginDataDir } from "./pluginDirectories.js";
 
 export type PluginOptionValues = UserConfigValues;
 export type PluginOptionSchema = UserConfigSchema;
@@ -129,7 +129,7 @@ export function savePluginOptions(
     }
     if (result.warning) {
       logForDebugging(`Plugin secrets save warning: ${result.warning}`, {
-        level: 'warn',
+        level: "warn",
       });
     }
   }
@@ -162,7 +162,7 @@ export function savePluginOptions(
       ...nonSensitive,
       ...scrubbed,
     } as PluginOptionValues;
-    const result = updateSettingsForSource('userSettings', settings);
+    const result = updateSettingsForSource("userSettings", settings);
     if (result.error) {
       logError(result.error);
       throw new Error(`Failed to save plugin options for ${pluginId}: ${result.error.message}`);
@@ -206,13 +206,13 @@ export function deletePluginOptions(pluginId: string): void {
     // for the undefined value, and Partial-of-X overlaps with X so the cast
     // is a narrowing TS accepts (same approach as marketplaceManager.ts:1795).
     const pluginConfigs: Partial<PluginConfigs> = { [pluginId]: undefined };
-    const { error } = updateSettingsForSource('userSettings', {
+    const { error } = updateSettingsForSource("userSettings", {
       pluginConfigs: pluginConfigs as PluginConfigs,
     });
     if (error) {
       logForDebugging(
         `deletePluginOptions: failed to clear settings.pluginConfigs[${pluginId}]: ${error.message}`,
-        { level: 'warn' },
+        { level: "warn" },
       );
     }
   }
@@ -238,7 +238,7 @@ export function deletePluginOptions(pluginId: string): void {
       if (!result.success) {
         logForDebugging(
           `deletePluginOptions: failed to clear pluginSecrets for ${pluginId} from keychain`,
-          { level: 'warn' },
+          { level: "warn" },
         );
       }
     }
@@ -299,7 +299,7 @@ export function substitutePluginVariables(
   value: string,
   plugin: { path: string; source?: string },
 ): string {
-  const normalize = (p: string) => (process.platform === 'win32' ? p.replace(/\\/g, '/') : p);
+  const normalize = (p: string) => (process.platform === "win32" ? p.replace(/\\/g, "/") : p);
   let out = value.replace(/\$\{CLAUDE_PLUGIN_ROOT\}/g, () => normalize(plugin.path));
   // source can be absent (e.g. hooks where pluginRoot is a skill root without
   // a plugin context). In that case ${CLAUDE_PLUGIN_DATA} is left literal.

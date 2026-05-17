@@ -1,29 +1,29 @@
-import { PassThrough } from 'node:stream';
-import { URL } from 'node:url';
-import type { StdoutMessage } from 'src/entrypoints/sdk/controlTypes.js';
-import { getSessionId } from '../bootstrap/state.js';
-import { getPollIntervalConfig } from '../bridge/pollConfig.js';
-import { registerCleanup } from '../utils/cleanupRegistry.js';
-import { setCommandLifecycleListener } from '../utils/commandLifecycle.js';
-import { isDebugMode, logForDebugging } from '../utils/debug.js';
-import { logForDiagnosticsNoPII } from '../utils/diagLogs.js';
-import { isEnvTruthy } from '../utils/envUtils.js';
-import { errorMessage } from '../utils/errors.js';
-import { gracefulShutdown } from '../utils/gracefulShutdown.js';
-import { logError } from '../utils/log.js';
-import { writeToStdout } from '../utils/process.js';
-import { getSessionIngressAuthToken } from '../utils/sessionIngressAuth.js';
+import { PassThrough } from "node:stream";
+import { URL } from "node:url";
+import type { StdoutMessage } from "src/entrypoints/sdk/controlTypes.js";
+import { getSessionId } from "../bootstrap/state.js";
+import { getPollIntervalConfig } from "../bridge/pollConfig.js";
+import { registerCleanup } from "../utils/cleanupRegistry.js";
+import { setCommandLifecycleListener } from "../utils/commandLifecycle.js";
+import { isDebugMode, logForDebugging } from "../utils/debug.js";
+import { logForDiagnosticsNoPII } from "../utils/diagLogs.js";
+import { isEnvTruthy } from "../utils/envUtils.js";
+import { errorMessage } from "../utils/errors.js";
+import { gracefulShutdown } from "../utils/gracefulShutdown.js";
+import { logError } from "../utils/log.js";
+import { writeToStdout } from "../utils/process.js";
+import { getSessionIngressAuthToken } from "../utils/sessionIngressAuth.js";
 import {
   setSessionMetadataChangedListener,
   setSessionStateChangedListener,
-} from '../utils/sessionState.js';
-import { setInternalEventReader, setInternalEventWriter } from '../utils/sessionStorage.js';
-import { ndjsonSafeStringify } from './ndjsonSafeStringify.js';
-import { StructuredIO } from './structuredIO.js';
-import { CCRClient, CCRInitError } from './transports/ccrClient.js';
-import { SSETransport } from './transports/SSETransport.js';
-import type { Transport } from './transports/Transport.js';
-import { getTransportForUrl } from './transports/transportUtils.js';
+} from "../utils/sessionState.js";
+import { setInternalEventReader, setInternalEventWriter } from "../utils/sessionStorage.js";
+import { ndjsonSafeStringify } from "./ndjsonSafeStringify.js";
+import { StructuredIO } from "./structuredIO.js";
+import { CCRClient, CCRInitError } from "./transports/ccrClient.js";
+import { SSETransport } from "./transports/SSETransport.js";
+import type { Transport } from "./transports/Transport.js";
+import { getTransportForUrl } from "./transports/transportUtils.js";
 
 /**
  * Bidirectional streaming for SDK mode with session tracking
@@ -43,7 +43,7 @@ export class RemoteIO extends StructuredIO {
     initialPrompt?: AsyncIterable<string>,
     replayUserMessages?: boolean,
   ) {
-    const inputStream = new PassThrough({ encoding: 'utf8' });
+    const inputStream = new PassThrough({ encoding: "utf8" });
     super(inputStream, replayUserMessages);
     this.inputStream = inputStream;
     this.url = new URL(streamUrl);
@@ -54,15 +54,15 @@ export class RemoteIO extends StructuredIO {
     if (sessionToken) {
       headers.Authorization = `Bearer ${sessionToken}`;
     } else {
-      logForDebugging('[remote-io] No session ingress token available', {
-        level: 'error',
+      logForDebugging("[remote-io] No session ingress token available", {
+        level: "error",
       });
     }
 
     // Add environment runner version if available (set by Environment Manager)
     const erVersion = process.env.CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION;
     if (erVersion) {
-      headers['x-environment-runner-version'] = erVersion;
+      headers["x-environment-runner-version"] = erVersion;
     }
 
     // Provide a callback that re-reads the session token dynamically.
@@ -76,7 +76,7 @@ export class RemoteIO extends StructuredIO {
       }
       const freshErVersion = process.env.CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION;
       if (freshErVersion) {
-        h['x-environment-runner-version'] = freshErVersion;
+        h["x-environment-runner-version"] = freshErVersion;
       }
       return h;
     };
@@ -85,12 +85,12 @@ export class RemoteIO extends StructuredIO {
     this.transport = getTransportForUrl(this.url, headers, getSessionId(), refreshHeaders);
 
     // Set up data callback
-    this.isBridge = process.env.CLAUDE_CODE_ENVIRONMENT_KIND === 'bridge';
+    this.isBridge = process.env.CLAUDE_CODE_ENVIRONMENT_KIND === "bridge";
     this.isDebug = isDebugMode();
     this.transport.setOnData((data: string) => {
       this.inputStream.write(data);
       if (this.isBridge && this.isDebug) {
-        writeToStdout(data.endsWith('\n') ? data : `${data}\n`);
+        writeToStdout(data.endsWith("\n") ? data : `${data}\n`);
       }
     });
 
@@ -111,17 +111,17 @@ export class RemoteIO extends StructuredIO {
       // different files — assert the invariant so a future decoupling
       // fails loudly here instead of confusingly inside CCRClient.
       if (!(this.transport instanceof SSETransport)) {
-        throw new Error('CCR v2 requires SSETransport; check getTransportForUrl');
+        throw new Error("CCR v2 requires SSETransport; check getTransportForUrl");
       }
       this.ccrClient = new CCRClient(this.transport, this.url);
       const init = this.ccrClient.initialize();
       this.restoredWorkerState = init.catch(() => null);
       init.catch((error: unknown) => {
-        logForDiagnosticsNoPII('error', 'cli_worker_lifecycle_init_failed', {
-          reason: error instanceof CCRInitError ? error.reason : 'unknown',
+        logForDiagnosticsNoPII("error", "cli_worker_lifecycle_init_failed", {
+          reason: error instanceof CCRInitError ? error.reason : "unknown",
         });
         logError(new Error(`CCRClient initialization failed: ${errorMessage(error)}`));
-        void gracefulShutdown(1, 'other');
+        void gracefulShutdown(1, "other");
       });
       registerCleanup(async () => this.ccrClient?.close());
 
@@ -141,8 +141,8 @@ export class RemoteIO extends StructuredIO {
       );
 
       const LIFECYCLE_TO_DELIVERY = {
-        started: 'processing',
-        completed: 'processed',
+        started: "processing",
+        completed: "processed",
       } as const;
       setCommandLifecycleListener((uuid, state) => {
         this.ccrClient?.reportDelivery(uuid, LIFECYCLE_TO_DELIVERY[state]);
@@ -172,8 +172,8 @@ export class RemoteIO extends StructuredIO {
     const keepAliveIntervalMs = getPollIntervalConfig().session_keepalive_interval_v2_ms;
     if (this.isBridge && keepAliveIntervalMs > 0) {
       this.keepAliveTimer = setInterval(() => {
-        logForDebugging('[remote-io] keep_alive sent');
-        void this.write({ type: 'keep_alive' }).catch((err) => {
+        logForDebugging("[remote-io] keep_alive sent");
+        void this.write({ type: "keep_alive" }).catch((err) => {
           logForDebugging(`[remote-io] keep_alive write failed: ${errorMessage(err)}`);
         });
       }, keepAliveIntervalMs);
@@ -193,7 +193,7 @@ export class RemoteIO extends StructuredIO {
       const stream = this.inputStream;
       void (async () => {
         for await (const chunk of initialPrompt) {
-          stream.write(`${String(chunk).replace(/\n$/, '')}\n`);
+          stream.write(`${String(chunk).replace(/\n$/, "")}\n`);
         }
       })();
     }
@@ -220,7 +220,7 @@ export class RemoteIO extends StructuredIO {
       await this.transport.write(message);
     }
     if (this.isBridge) {
-      if (message.type === 'control_request' || this.isDebug) {
+      if (message.type === "control_request" || this.isDebug) {
         writeToStdout(`${ndjsonSafeStringify(message)}\n`);
       }
     }

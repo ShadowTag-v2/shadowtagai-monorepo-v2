@@ -6,13 +6,13 @@ import {
   TASK_NOTIFICATION_TAG,
   TASK_TYPE_TAG,
   TOOL_USE_ID_TAG,
-} from '../../constants/xml.js';
-import type { AppState } from '../../state/AppState.js';
-import { isTerminalTaskStatus, type TaskStatus, type TaskType } from '../../Task.js';
-import type { TaskState } from '../../tasks/types.js';
-import { enqueuePendingNotification } from '../messageQueueManager.js';
-import { enqueueSdkEvent } from '../sdkEventQueue.js';
-import { getTaskOutputDelta, getTaskOutputPath } from './diskOutput.js';
+} from "../../constants/xml.js";
+import type { AppState } from "../../state/AppState.js";
+import { isTerminalTaskStatus, type TaskStatus, type TaskType } from "../../Task.js";
+import type { TaskState } from "../../tasks/types.js";
+import { enqueuePendingNotification } from "../messageQueueManager.js";
+import { enqueueSdkEvent } from "../sdkEventQueue.js";
+import { getTaskOutputDelta, getTaskOutputPath } from "./diskOutput.js";
 
 // Standard polling interval for all tasks
 export const POLL_INTERVAL_MS = 1000;
@@ -25,7 +25,7 @@ export const PANEL_GRACE_MS = 30_000;
 
 // Attachment type for task status updates
 export type TaskAttachment = {
-  type: 'task_status';
+  type: "task_status";
   taskId: string;
   toolUseId?: string;
   taskType: TaskType;
@@ -81,7 +81,7 @@ export function registerTask(task: TaskState, setAppState: SetAppState): void {
     // transcript across the replace (the user's just-appended prompt lives
     // in messages and isn't on disk yet).
     const merged =
-      existing && 'retain' in existing
+      existing && "retain" in existing
         ? {
             ...task,
             retain: existing.retain,
@@ -98,14 +98,14 @@ export function registerTask(task: TaskState, setAppState: SetAppState): void {
   if (isReplacement) return;
 
   enqueueSdkEvent({
-    type: 'system',
-    subtype: 'task_started',
+    type: "system",
+    subtype: "task_started",
     task_id: task.id,
     tool_use_id: task.toolUseId,
     description: task.description,
     task_type: task.type,
-    workflow_name: 'workflowName' in task ? (task.workflowName as string | undefined) : undefined,
-    prompt: 'prompt' in task ? (task.prompt as string) : undefined,
+    workflow_name: "workflowName" in task ? (task.workflowName as string | undefined) : undefined,
+    prompt: "prompt" in task ? (task.prompt as string) : undefined,
   });
 }
 
@@ -125,7 +125,7 @@ export function evictTerminalTask(taskId: string, setAppState: SetAppState): voi
     // 'retain' in task narrows to LocalAgentTaskState (the only type with
     // that field); evictAfter is optional so 'evictAfter' in task would
     // miss tasks that haven't had it set yet.
-    if ('retain' in task && (task.evictAfter ?? Infinity) > Date.now()) {
+    if ("retain" in task && (task.evictAfter ?? Infinity) > Date.now()) {
       return prev;
     }
     const { [taskId]: _, ...remainingTasks } = prev.tasks;
@@ -138,7 +138,7 @@ export function evictTerminalTask(taskId: string, setAppState: SetAppState): voi
  */
 export function getRunningTasks(state: AppState): TaskState[] {
   const tasks = state.tasks ?? {};
-  return Object.values(tasks).filter((task) => task.status === 'running');
+  return Object.values(tasks).filter((task) => task.status === "running");
 }
 
 /**
@@ -161,22 +161,22 @@ export async function generateTaskAttachments(state: AppState): Promise<{
   for (const taskState of Object.values(tasks)) {
     if (taskState.notified) {
       switch (taskState.status) {
-        case 'completed':
-        case 'failed':
-        case 'killed':
+        case "completed":
+        case "failed":
+        case "killed":
           // Evict terminal tasks — they've been consumed and can be GC'd
           evictedTaskIds.push(taskState.id);
           continue;
-        case 'pending':
+        case "pending":
           // Keep in map — hasn't run yet, but parent already knows about it
           continue;
-        case 'running':
+        case "running":
           // Fall through to running logic below
           break;
       }
     }
 
-    if (taskState.status === 'running') {
+    if (taskState.status === "running") {
       const delta = await getTaskOutputDelta(taskState.id, taskState.outputOffset);
       if (delta.content) {
         updatedTaskOffsets[taskState.id] = delta.newOffset;
@@ -213,7 +213,7 @@ export function applyTaskOffsetsAndEvictions(
       const fresh = newTasks[id];
       // Re-check status on fresh state — task may have completed during the
       // await. If it's no longer running, the offset update is moot.
-      if (fresh?.status === 'running') {
+      if (fresh?.status === "running") {
         newTasks[id] = { ...fresh, outputOffset: updatedTaskOffsets[id]! };
         changed = true;
       }
@@ -225,7 +225,7 @@ export function applyTaskOffsetsAndEvictions(
       if (!fresh || !isTerminalTaskStatus(fresh.status) || !fresh.notified) {
         continue;
       }
-      if ('retain' in fresh && (fresh.evictAfter ?? Infinity) > Date.now()) {
+      if ("retain" in fresh && (fresh.evictAfter ?? Infinity) > Date.now()) {
         continue;
       }
       delete newTasks[id];
@@ -263,7 +263,7 @@ function enqueueTaskNotification(attachment: TaskAttachment): void {
   const outputPath = getTaskOutputPath(attachment.taskId);
   const toolUseIdLine = attachment.toolUseId
     ? `\n<${TOOL_USE_ID_TAG}>${attachment.toolUseId}</${TOOL_USE_ID_TAG}>`
-    : '';
+    : "";
   const message = `<${TASK_NOTIFICATION_TAG}>
 <${TASK_ID_TAG}>${attachment.taskId}</${TASK_ID_TAG}>${toolUseIdLine}
 <${TASK_TYPE_TAG}>${attachment.taskType}</${TASK_TYPE_TAG}>
@@ -272,7 +272,7 @@ function enqueueTaskNotification(attachment: TaskAttachment): void {
 <${SUMMARY_TAG}>Task "${attachment.description}" ${statusText}</${SUMMARY_TAG}>
 </${TASK_NOTIFICATION_TAG}>`;
 
-  enqueuePendingNotification({ value: message, mode: 'task-notification' });
+  enqueuePendingNotification({ value: message, mode: "task-notification" });
 }
 
 /**
@@ -280,15 +280,15 @@ function enqueueTaskNotification(attachment: TaskAttachment): void {
  */
 function getStatusText(status: TaskStatus): string {
   switch (status) {
-    case 'completed':
-      return 'completed successfully';
-    case 'failed':
-      return 'failed';
-    case 'killed':
-      return 'was stopped';
-    case 'running':
-      return 'is running';
-    case 'pending':
-      return 'is pending';
+    case "completed":
+      return "completed successfully";
+    case "failed":
+      return "failed";
+    case "killed":
+      return "was stopped";
+    case "running":
+      return "is running";
+    case "pending":
+      return "is pending";
   }
 }

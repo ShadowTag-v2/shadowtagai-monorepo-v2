@@ -1,10 +1,10 @@
-import { EFFORT_HIGH, EFFORT_LOW, EFFORT_MAX, EFFORT_MEDIUM } from '../constants/figures.js';
+import { EFFORT_HIGH, EFFORT_LOW, EFFORT_MAX, EFFORT_MEDIUM } from "../constants/figures.js";
 import {
   type EffortLevel,
   type EffortValue,
   getDisplayedEffortLevel,
   modelSupportsEffort,
-} from '../utils/effort.js';
+} from "../utils/effort.js";
 
 /**
  * Build the text for the effort-changed notification, e.g. "◐ medium · /effort".
@@ -21,13 +21,13 @@ export function getEffortNotificationText(
 
 export function effortLevelToSymbol(level: EffortLevel): string {
   switch (level) {
-    case 'low':
+    case "low":
       return EFFORT_LOW;
-    case 'medium':
+    case "medium":
       return EFFORT_MEDIUM;
-    case 'high':
+    case "high":
       return EFFORT_HIGH;
-    case 'max':
+    case "max":
       return EFFORT_MAX;
     default:
       // Defensive: level can originate from remote config. If an unknown

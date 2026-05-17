@@ -1,9 +1,9 @@
-import { PassThrough } from 'node:stream';
-import type * as React from 'react';
-import { useLayoutEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import stripAnsi from 'strip-ansi';
-import { render, useApp } from '../ink.js';
+import { PassThrough } from "node:stream";
+import type * as React from "react";
+import { useLayoutEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import stripAnsi from "strip-ansi";
+import { render, useApp } from "../ink.js";
 
 // This is a workaround for the fact that Ink doesn't support multiple <Static>
 // components in the same render tree. Instead of using a <Static> we just render
@@ -47,8 +47,8 @@ function RenderOnceAndExit(t0) {
 }
 
 // DEC synchronized update markers used by terminals
-const SYNC_START = '\x1B[?2026h';
-const SYNC_END = '\x1B[?2026l';
+const SYNC_START = "\x1B[?2026h";
+const SYNC_END = "\x1B[?2026l";
 
 /**
  * Extracts content from the first complete frame in Ink's output.
@@ -69,7 +69,7 @@ function extractFirstFrame(output: string): string {
  */
 export function renderToAnsiString(node: React.ReactNode, columns?: number): Promise<string> {
   return new Promise(async (resolve) => {
-    let output = '';
+    let output = "";
 
     // Capture all writes. Set .columns so Ink (ink.tsx:~165) picks up a
     // chosen width instead of PassThrough's undefined → 80 fallback —
@@ -83,7 +83,7 @@ export function renderToAnsiString(node: React.ReactNode, columns?: number): Pro
         }
       ).columns = columns;
     }
-    stream.on('data', (chunk) => {
+    stream.on("data", (chunk) => {
       output += chunk.toString();
     });
 

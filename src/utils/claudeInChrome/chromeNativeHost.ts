@@ -6,27 +6,27 @@
  * previously implemented as a Rust NAPI binding but now in pure TypeScript.
  */
 
-import { appendFile, chmod, mkdir, readdir, rmdir, stat, unlink } from 'node:fs/promises';
-import { createServer, type Server, type Socket } from 'node:net';
-import { homedir, platform } from 'node:os';
-import { join } from 'node:path';
-import { z } from 'zod';
-import { lazySchema } from '../lazySchema.js';
-import { jsonParse, jsonStringify } from '../slowOperations.js';
-import { getSecureSocketPath, getSocketDir } from './common.js';
+import { appendFile, chmod, mkdir, readdir, rmdir, stat, unlink } from "node:fs/promises";
+import { createServer, type Server, type Socket } from "node:net";
+import { homedir, platform } from "node:os";
+import { join } from "node:path";
+import { z } from "zod";
+import { lazySchema } from "../lazySchema.js";
+import { jsonParse, jsonStringify } from "../slowOperations.js";
+import { getSecureSocketPath, getSocketDir } from "./common.js";
 
-const VERSION = '1.0.0';
+const VERSION = "1.0.0";
 const MAX_MESSAGE_SIZE = 1024 * 1024; // 1MB - Max message size that can be sent to Chrome
 
 const LOG_FILE =
-  process.env.USER_TYPE === 'ant'
-    ? join(homedir(), '.claude', 'debug', 'chrome-native-host.txt')
+  process.env.USER_TYPE === "ant"
+    ? join(homedir(), ".claude", "debug", "chrome-native-host.txt")
     : undefined;
 
 function log(message: string, ...args: unknown[]): void {
   if (LOG_FILE) {
     const timestamp = new Date().toISOString();
-    const formattedArgs = args.length > 0 ? ` ${jsonStringify(args)}` : '';
+    const formattedArgs = args.length > 0 ? ` ${jsonStringify(args)}` : "";
     const logLine = `[${timestamp}] [Claude Chrome Native Host] ${message}${formattedArgs}\n`;
     // Fire-and-forget: logging is best-effort and callers (including event
     // handlers) don't await
@@ -40,7 +40,7 @@ function log(message: string, ...args: unknown[]): void {
  * Send a message to stdout (Chrome native messaging protocol)
  */
 export function sendChromeMessage(message: string): void {
-  const jsonBytes = Buffer.from(message, 'utf-8');
+  const jsonBytes = Buffer.from(message, "utf-8");
   const lengthBuffer = Buffer.alloc(4);
   lengthBuffer.writeUInt32LE(jsonBytes.length, 0);
 
@@ -49,7 +49,7 @@ export function sendChromeMessage(message: string): void {
 }
 
 export async function runChromeNativeHost(): Promise<void> {
-  log('Initializing...');
+  log("Initializing...");
 
   const host = new ChromeNativeHost();
   const messageReader = new ChromeMessageReader();
@@ -106,7 +106,7 @@ class ChromeNativeHost {
 
     this.socketPath = getSecureSocketPath();
 
-    if (platform() !== 'win32') {
+    if (platform() !== "win32") {
       const socketDir = getSocketDir();
 
       // Migrate legacy socket: if socket dir path exists as a file/socket, remove it
@@ -131,10 +131,10 @@ class ChromeNativeHost {
       try {
         const files = await readdir(socketDir);
         for (const file of files) {
-          if (!file.endsWith('.sock')) {
+          if (!file.endsWith(".sock")) {
             continue;
           }
-          const pid = parseInt(file.replace('.sock', ''), 10);
+          const pid = parseInt(file.replace(".sock", ""), 10);
           if (Number.isNaN(pid)) {
             continue;
           }
@@ -160,24 +160,24 @@ class ChromeNativeHost {
 
     await new Promise<void>((resolve, reject) => {
       this.server?.listen(this.socketPath!, () => {
-        log('Socket server listening for connections');
+        log("Socket server listening for connections");
         this.running = true;
         resolve();
       });
 
-      this.server?.on('error', (err) => {
-        log('Socket server error:', err);
+      this.server?.on("error", (err) => {
+        log("Socket server error:", err);
         reject(err);
       });
     });
 
     // Set permissions on Unix (after listen resolves so socket file exists)
-    if (platform() !== 'win32') {
+    if (platform() !== "win32") {
       try {
         await chmod(this.socketPath!, 0o600);
-        log('Socket permissions set to 0600');
+        log("Socket permissions set to 0600");
       } catch (e) {
-        log('Failed to set socket permissions:', e);
+        log("Failed to set socket permissions:", e);
       }
     }
   }
@@ -202,10 +202,10 @@ class ChromeNativeHost {
     }
 
     // Cleanup socket file
-    if (platform() !== 'win32' && this.socketPath) {
+    if (platform() !== "win32" && this.socketPath) {
       try {
         await unlink(this.socketPath);
-        log('Cleaned up socket file');
+        log("Cleaned up socket file");
       } catch {
         // ENOENT is fine, ignore
       }
@@ -216,7 +216,7 @@ class ChromeNativeHost {
         const remaining = await readdir(socketDir);
         if (remaining.length === 0) {
           await rmdir(socketDir);
-          log('Removed empty socket directory');
+          log("Removed empty socket directory");
         }
       } catch {
         // Ignore
@@ -239,22 +239,22 @@ class ChromeNativeHost {
     try {
       rawMessage = jsonParse(messageJson);
     } catch (e) {
-      log('Invalid JSON from Chrome:', (e as Error).message);
+      log("Invalid JSON from Chrome:", (e as Error).message);
       sendChromeMessage(
         jsonStringify({
-          type: 'error',
-          error: 'Invalid message format',
+          type: "error",
+          error: "Invalid message format",
         }),
       );
       return;
     }
     const parsed = messageSchema().safeParse(rawMessage);
     if (!parsed.success) {
-      log('Invalid message from Chrome:', parsed.error.message);
+      log("Invalid message from Chrome:", parsed.error.message);
       sendChromeMessage(
         jsonStringify({
-          type: 'error',
-          error: 'Invalid message format',
+          type: "error",
+          error: "Invalid message format",
         }),
       );
       return;
@@ -264,33 +264,33 @@ class ChromeNativeHost {
     log(`Handling Chrome message type: ${message.type}`);
 
     switch (message.type) {
-      case 'ping':
-        log('Responding to ping');
+      case "ping":
+        log("Responding to ping");
 
         sendChromeMessage(
           jsonStringify({
-            type: 'pong',
+            type: "pong",
             timestamp: Date.now(),
           }),
         );
         break;
 
-      case 'get_status':
+      case "get_status":
         sendChromeMessage(
           jsonStringify({
-            type: 'status_response',
+            type: "status_response",
             native_host_version: VERSION,
           }),
         );
         break;
 
-      case 'tool_response': {
+      case "tool_response": {
         if (this.mcpClients.size > 0) {
           log(`Forwarding tool response to ${this.mcpClients.size} MCP clients`);
 
           // Extract the data portion (everything except 'type')
           const { type: _, ...data } = message;
-          const responseData = Buffer.from(jsonStringify(data), 'utf-8');
+          const responseData = Buffer.from(jsonStringify(data), "utf-8");
           const lengthBuffer = Buffer.alloc(4);
           lengthBuffer.writeUInt32LE(responseData.length, 0);
           const responseMsg = Buffer.concat([lengthBuffer, responseData]);
@@ -306,13 +306,13 @@ class ChromeNativeHost {
         break;
       }
 
-      case 'notification': {
+      case "notification": {
         if (this.mcpClients.size > 0) {
           log(`Forwarding notification to ${this.mcpClients.size} MCP clients`);
 
           // Extract the data portion (everything except 'type')
           const { type: _, ...data } = message;
-          const notificationData = Buffer.from(jsonStringify(data), 'utf-8');
+          const notificationData = Buffer.from(jsonStringify(data), "utf-8");
           const lengthBuffer = Buffer.alloc(4);
           lengthBuffer.writeUInt32LE(notificationData.length, 0);
           const notificationMsg = Buffer.concat([lengthBuffer, notificationData]);
@@ -333,7 +333,7 @@ class ChromeNativeHost {
 
         sendChromeMessage(
           jsonStringify({
-            type: 'error',
+            type: "error",
             error: `Unknown message type: ${message.type}`,
           }),
         );
@@ -354,11 +354,11 @@ class ChromeNativeHost {
     // Notify Chrome of connection
     sendChromeMessage(
       jsonStringify({
-        type: 'mcp_connected',
+        type: "mcp_connected",
       }),
     );
 
-    socket.on('data', (data: Buffer) => {
+    socket.on("data", (data: Buffer) => {
       client.buffer = Buffer.concat([client.buffer, data]);
 
       // Process complete messages
@@ -379,13 +379,13 @@ class ChromeNativeHost {
         client.buffer = client.buffer.slice(4 + length);
 
         try {
-          const request = jsonParse(messageBytes.toString('utf-8')) as ToolRequest;
+          const request = jsonParse(messageBytes.toString("utf-8")) as ToolRequest;
           log(`Forwarding tool request from MCP client ${clientId}: ${request.method}`);
 
           // Forward to Chrome
           sendChromeMessage(
             jsonStringify({
-              type: 'tool_request',
+              type: "tool_request",
               method: request.method,
               params: request.params,
             }),
@@ -396,18 +396,18 @@ class ChromeNativeHost {
       }
     });
 
-    socket.on('error', (err) => {
+    socket.on("error", (err) => {
       log(`MCP client ${clientId} error: ${err}`);
     });
 
-    socket.on('close', () => {
+    socket.on("close", () => {
       log(`MCP client ${clientId} disconnected. Remaining clients: ${this.mcpClients.size - 1}`);
       this.mcpClients.delete(clientId);
 
       // Notify Chrome of disconnection
       sendChromeMessage(
         jsonStringify({
-          type: 'mcp_disconnected',
+          type: "mcp_disconnected",
         }),
       );
     });
@@ -424,12 +424,12 @@ class ChromeMessageReader {
   private closed = false;
 
   constructor() {
-    process.stdin.on('data', (chunk: Buffer) => {
+    process.stdin.on("data", (chunk: Buffer) => {
       this.buffer = Buffer.concat([this.buffer, chunk]);
       this.tryProcessMessage();
     });
 
-    process.stdin.on('end', () => {
+    process.stdin.on("end", () => {
       this.closed = true;
       if (this.pendingResolve) {
         this.pendingResolve(null);
@@ -437,7 +437,7 @@ class ChromeMessageReader {
       }
     });
 
-    process.stdin.on('error', () => {
+    process.stdin.on("error", () => {
       this.closed = true;
       if (this.pendingResolve) {
         this.pendingResolve(null);
@@ -474,7 +474,7 @@ class ChromeMessageReader {
     const messageBytes = this.buffer.subarray(4, 4 + length);
     this.buffer = this.buffer.subarray(4 + length);
 
-    const message = messageBytes.toString('utf-8');
+    const message = messageBytes.toString("utf-8");
     this.pendingResolve(message);
     this.pendingResolve = null;
   }
@@ -490,7 +490,7 @@ class ChromeMessageReader {
       if (length > 0 && length <= MAX_MESSAGE_SIZE && this.buffer.length >= 4 + length) {
         const messageBytes = this.buffer.subarray(4, 4 + length);
         this.buffer = this.buffer.subarray(4 + length);
-        return messageBytes.toString('utf-8');
+        return messageBytes.toString("utf-8");
       }
     }
 

@@ -1,35 +1,35 @@
-import { readFileSync } from '../fileRead.js';
-import { getFsImplementation, safeResolvePath } from '../fsOperations.js';
-import { safeParseJSON } from '../json.js';
-import { logError } from '../log.js';
+import { readFileSync } from "../fileRead.js";
+import { getFsImplementation, safeResolvePath } from "../fsOperations.js";
+import { safeParseJSON } from "../json.js";
+import { logError } from "../log.js";
 import {
   type EditableSettingSource,
   getEnabledSettingSources,
   type SettingSource,
-} from '../settings/constants.js';
+} from "../settings/constants.js";
 import {
   getSettingsFilePathForSource,
   getSettingsForSource,
   updateSettingsForSource,
-} from '../settings/settings.js';
-import type { SettingsJson } from '../settings/types.js';
+} from "../settings/settings.js";
+import type { SettingsJson } from "../settings/types.js";
 import type {
   PermissionBehavior,
   PermissionRule,
   PermissionRuleSource,
   PermissionRuleValue,
-} from './PermissionRule.js';
+} from "./PermissionRule.js";
 import {
   permissionRuleValueFromString,
   permissionRuleValueToString,
-} from './permissionRuleParser.js';
+} from "./permissionRuleParser.js";
 
 /**
  * Returns true if allowManagedPermissionRulesOnly is enabled in managed settings (policySettings).
  * When enabled, only permission rules from managed settings are respected.
  */
 export function shouldAllowManagedPermissionRulesOnly(): boolean {
-  return getSettingsForSource('policySettings')?.allowManagedPermissionRulesOnly === true;
+  return getSettingsForSource("policySettings")?.allowManagedPermissionRulesOnly === true;
 }
 
 /**
@@ -40,7 +40,7 @@ export function shouldShowAlwaysAllowOptions(): boolean {
   return !shouldAllowManagedPermissionRulesOnly();
 }
 
-const SUPPORTED_RULE_BEHAVIORS = ['allow', 'deny', 'ask'] as const satisfies PermissionBehavior[];
+const SUPPORTED_RULE_BEHAVIORS = ["allow", "deny", "ask"] as const satisfies PermissionBehavior[];
 
 /**
  * Lenient version of getSettingsForSource that doesn't fail on ANY validation errors.
@@ -62,14 +62,14 @@ function getSettingsForSourceLenient_FOR_EDITING_ONLY_NOT_FOR_READING(
   try {
     const { resolvedPath } = safeResolvePath(getFsImplementation(), filePath);
     const content = readFileSync(resolvedPath);
-    if (content.trim() === '') {
+    if (content.trim() === "") {
       return {};
     }
 
     const data = safeParseJSON(content, false);
     // Return raw parsed JSON without validation to preserve all existing settings
     // This is safe because we're only using this for reading/appending, not for execution
-    return data && typeof data === 'object' ? (data as SettingsJson) : null;
+    return data && typeof data === "object" ? (data as SettingsJson) : null;
   } catch {
     return null;
   }
@@ -113,7 +113,7 @@ function settingsJsonToRules(
 export function loadAllPermissionRulesFromDisk(): PermissionRule[] {
   // If allowManagedPermissionRulesOnly is set, only use managed permission rules
   if (shouldAllowManagedPermissionRulesOnly()) {
-    return getPermissionRulesForSource('policySettings');
+    return getPermissionRulesForSource("policySettings");
   }
 
   // Otherwise, load from all enabled sources (backwards compatible)
@@ -141,9 +141,9 @@ export type PermissionRuleFromEditableSettings = PermissionRule & {
 
 // Editable sources that can be modified (excludes policySettings and flagSettings)
 const EDITABLE_SOURCES: EditableSettingSource[] = [
-  'userSettings',
-  'projectSettings',
-  'localSettings',
+  "userSettings",
+  "projectSettings",
+  "localSettings",
 ];
 
 /**

@@ -35,18 +35,18 @@ import type {
   ResolvePrepareCaptureResult,
   RunningApp,
   ScreenshotResult,
-} from '@ant/computer-use-mcp';
+} from "@ant/computer-use-mcp";
 
-import { API_RESIZE_PARAMS, targetImageSize } from '@ant/computer-use-mcp';
-import { logForDebugging } from '../debug.js';
-import { errorMessage } from '../errors.js';
-import { execFileNoThrow } from '../execFileNoThrow.js';
-import { sleep } from '../sleep.js';
-import { CLI_CU_CAPABILITIES, CLI_HOST_BUNDLE_ID, getTerminalBundleId } from './common.js';
-import { drainRunLoop } from './drainRunLoop.js';
-import { notifyExpectedEscape } from './escHotkey.js';
-import { requireComputerUseInput } from './inputLoader.js';
-import { requireComputerUseSwift } from './swiftLoader.js';
+import { API_RESIZE_PARAMS, targetImageSize } from "@ant/computer-use-mcp";
+import { logForDebugging } from "../debug.js";
+import { errorMessage } from "../errors.js";
+import { execFileNoThrow } from "../execFileNoThrow.js";
+import { sleep } from "../sleep.js";
+import { CLI_CU_CAPABILITIES, CLI_HOST_BUNDLE_ID, getTerminalBundleId } from "./common.js";
+import { drainRunLoop } from "./drainRunLoop.js";
+import { notifyExpectedEscape } from "./escHotkey.js";
+import { requireComputerUseInput } from "./inputLoader.js";
+import { requireComputerUseSwift } from "./swiftLoader.js";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -64,7 +64,7 @@ function computeTargetDims(
 }
 
 async function readClipboardViaPbpaste(): Promise<string> {
-  const { stdout, code } = await execFileNoThrow('pbpaste', [], {
+  const { stdout, code } = await execFileNoThrow("pbpaste", [], {
     useCwd: false,
   });
   if (code !== 0) {
@@ -74,7 +74,7 @@ async function readClipboardViaPbpaste(): Promise<string> {
 }
 
 async function writeClipboardViaPbcopy(text: string): Promise<void> {
-  const { code } = await execFileNoThrow('pbcopy', [], {
+  const { code } = await execFileNoThrow("pbcopy", [], {
     input: text,
     useCwd: false,
   });
@@ -93,7 +93,7 @@ type Input = ReturnType<typeof requireComputerUseInput>;
 function isBareEscape(parts: readonly string[]): boolean {
   if (parts.length !== 1) return false;
   const lower = parts[0]?.toLowerCase();
-  return lower === 'escape' || lower === 'esc';
+  return lower === "escape" || lower === "esc";
 }
 
 /**
@@ -124,7 +124,7 @@ async function releasePressed(input: Input, pressed: string[]): Promise<void> {
   let k: string | undefined;
   while ((k = pressed.pop()) !== undefined) {
     try {
-      await input.key(k, 'release');
+      await input.key(k, "release");
     } catch {
       // Swallow — best-effort release.
     }
@@ -143,7 +143,7 @@ async function withModifiers<T>(input: Input, mods: string[], fn: () => Promise<
   const pressed: string[] = [];
   try {
     for (const m of mods) {
-      await input.key(m, 'press');
+      await input.key(m, "press");
       pressed.push(m);
     }
     return await fn();
@@ -170,22 +170,22 @@ async function typeViaClipboard(input: Input, text: string): Promise<void> {
   try {
     saved = await readClipboardViaPbpaste();
   } catch {
-    logForDebugging('[computer-use] pbpaste before paste failed; proceeding without restore');
+    logForDebugging("[computer-use] pbpaste before paste failed; proceeding without restore");
   }
 
   try {
     await writeClipboardViaPbcopy(text);
     if ((await readClipboardViaPbpaste()) !== text) {
-      throw new Error('Clipboard write did not round-trip.');
+      throw new Error("Clipboard write did not round-trip.");
     }
-    await input.keys(['command', 'v']);
+    await input.keys(["command", "v"]);
     await sleep(100);
   } finally {
-    if (typeof saved === 'string') {
+    if (typeof saved === "string") {
       try {
         await writeClipboardViaPbcopy(saved);
       } catch {
-        logForDebugging('[computer-use] clipboard restore after paste failed');
+        logForDebugging("[computer-use] clipboard restore after paste failed");
       }
     }
   }
@@ -246,7 +246,7 @@ export function createCliExecutor(opts: {
   getMouseAnimationEnabled: () => boolean;
   getHideBeforeActionEnabled: () => boolean;
 }): ComputerExecutor {
-  if (process.platform !== 'darwin') {
+  if (process.platform !== "darwin") {
     throw new Error(
       `createCliExecutor called on ${process.platform}. Computer control is macOS-only.`,
     );
@@ -272,7 +272,7 @@ export function createCliExecutor(opts: {
   logForDebugging(
     terminalBundleId
       ? `[computer-use] terminal ${terminalBundleId} → surrogate host (hide-exempt, activate-skip, screenshot-excluded)`
-      : '[computer-use] terminal not detected; falling back to sentinel host',
+      : "[computer-use] terminal not detected; falling back to sentinel host",
   );
 
   return {
@@ -307,7 +307,7 @@ export function createCliExecutor(opts: {
         } catch (err) {
           logForDebugging(
             `[computer-use] prepareForAction failed; continuing to action: ${errorMessage(err)}`,
-            { level: 'warn' },
+            { level: "warn" },
           );
           return [];
         }
@@ -414,7 +414,7 @@ export function createCliExecutor(opts: {
      */
     async key(keySequence: string, repeat?: number): Promise<void> {
       const input = requireComputerUseInput();
-      const parts = keySequence.split('+').filter((p) => p.length > 0);
+      const parts = keySequence.split("+").filter((p) => p.length > 0);
       // Bare-only: the CGEventTap checks event.flags.isEmpty so ctrl+escape
       // etc. pass through without aborting.
       const isEsc = isBareEscape(parts);
@@ -455,7 +455,7 @@ export function createCliExecutor(opts: {
             if (isBareEscape([k])) {
               notifyExpectedEscape();
             }
-            await input.key(k, 'press');
+            await input.key(k, "press");
             pressed.push(k);
           }
         });
@@ -498,7 +498,7 @@ export function createCliExecutor(opts: {
     async click(
       x: number,
       y: number,
-      button: 'left' | 'right' | 'middle',
+      button: "left" | "right" | "middle",
       count: 1 | 2 | 3,
       modifiers?: string[],
     ): Promise<void> {
@@ -506,19 +506,19 @@ export function createCliExecutor(opts: {
       await moveAndSettle(input, x, y);
       if (modifiers && modifiers.length > 0) {
         await drainRunLoop(() =>
-          withModifiers(input, modifiers, () => input.mouseButton(button, 'click', count)),
+          withModifiers(input, modifiers, () => input.mouseButton(button, "click", count)),
         );
       } else {
-        await input.mouseButton(button, 'click', count);
+        await input.mouseButton(button, "click", count);
       }
     },
 
     async mouseDown(): Promise<void> {
-      await requireComputerUseInput().mouseButton('left', 'press');
+      await requireComputerUseInput().mouseButton("left", "press");
     },
 
     async mouseUp(): Promise<void> {
-      await requireComputerUseInput().mouseButton('left', 'release');
+      await requireComputerUseInput().mouseButton("left", "release");
     },
 
     async getCursorPosition(): Promise<{ x: number; y: number }> {
@@ -542,12 +542,12 @@ export function createCliExecutor(opts: {
       if (from !== undefined) {
         await moveAndSettle(input, from.x, from.y);
       }
-      await input.mouseButton('left', 'press');
+      await input.mouseButton("left", "press");
       await sleep(MOVE_SETTLE_MS);
       try {
         await animatedMove(input, to.x, to.y, getMouseAnimationEnabled());
       } finally {
-        await input.mouseButton('left', 'release');
+        await input.mouseButton("left", "release");
       }
     },
 
@@ -559,10 +559,10 @@ export function createCliExecutor(opts: {
       const input = requireComputerUseInput();
       await moveAndSettle(input, x, y);
       if (dy !== 0) {
-        await input.mouseScroll(dy, 'vertical');
+        await input.mouseScroll(dy, "vertical");
       }
       if (dx !== 0) {
-        await input.mouseScroll(dx, 'horizontal');
+        await input.mouseScroll(dx, "horizontal");
       }
     },
 

@@ -5,51 +5,51 @@
  * Handles both semicolon (;) and colon (:) separated parameters.
  */
 
-import type { NamedColor, TextStyle, UnderlineStyle } from './types.js';
-import { defaultStyle } from './types.js';
+import type { NamedColor, TextStyle, UnderlineStyle } from "./types.js";
+import { defaultStyle } from "./types.js";
 
 const NAMED_COLORS: NamedColor[] = [
-  'black',
-  'red',
-  'green',
-  'yellow',
-  'blue',
-  'magenta',
-  'cyan',
-  'white',
-  'brightBlack',
-  'brightRed',
-  'brightGreen',
-  'brightYellow',
-  'brightBlue',
-  'brightMagenta',
-  'brightCyan',
-  'brightWhite',
+  "black",
+  "red",
+  "green",
+  "yellow",
+  "blue",
+  "magenta",
+  "cyan",
+  "white",
+  "brightBlack",
+  "brightRed",
+  "brightGreen",
+  "brightYellow",
+  "brightBlue",
+  "brightMagenta",
+  "brightCyan",
+  "brightWhite",
 ];
 
 const UNDERLINE_STYLES: UnderlineStyle[] = [
-  'none',
-  'single',
-  'double',
-  'curly',
-  'dotted',
-  'dashed',
+  "none",
+  "single",
+  "double",
+  "curly",
+  "dotted",
+  "dashed",
 ];
 
 type Param = { value: number | null; subparams: number[]; colon: boolean };
 
 function parseParams(str: string): Param[] {
-  if (str === '') return [{ value: 0, subparams: [], colon: false }];
+  if (str === "") return [{ value: 0, subparams: [], colon: false }];
 
   const result: Param[] = [];
   let current: Param = { value: null, subparams: [], colon: false };
-  let num = '';
+  let num = "";
   let inSub = false;
 
   for (let i = 0; i <= str.length; i++) {
     const c = str[i];
-    if (c === ';' || c === undefined) {
-      const n = num === '' ? null : parseInt(num, 10);
+    if (c === ";" || c === undefined) {
+      const n = num === "" ? null : parseInt(num, 10);
       if (inSub) {
         if (n !== null) current.subparams.push(n);
       } else {
@@ -57,10 +57,10 @@ function parseParams(str: string): Param[] {
       }
       result.push(current);
       current = { value: null, subparams: [], colon: false };
-      num = '';
+      num = "";
       inSub = false;
-    } else if (c === ':') {
-      const n = num === '' ? null : parseInt(num, 10);
+    } else if (c === ":") {
+      const n = num === "" ? null : parseInt(num, 10);
       if (!inSub) {
         current.value = n;
         current.colon = true;
@@ -68,8 +68,8 @@ function parseParams(str: string): Param[] {
       } else {
         if (n !== null) current.subparams.push(n);
       }
-      num = '';
-    } else if (c >= '0' && c <= '9') {
+      num = "";
+    } else if (c >= "0" && c <= "9") {
       num += c;
     }
   }
@@ -150,7 +150,7 @@ export function applySGR(paramStr: string, style: TextStyle): TextStyle {
       continue;
     }
     if (code === 4) {
-      s.underline = p.colon ? (UNDERLINE_STYLES[p.subparams[0]!] ?? 'single') : 'single';
+      s.underline = p.colon ? (UNDERLINE_STYLES[p.subparams[0]!] ?? "single") : "single";
       i++;
       continue;
     }
@@ -175,7 +175,7 @@ export function applySGR(paramStr: string, style: TextStyle): TextStyle {
       continue;
     }
     if (code === 21) {
-      s.underline = 'double';
+      s.underline = "double";
       i++;
       continue;
     }
@@ -191,7 +191,7 @@ export function applySGR(paramStr: string, style: TextStyle): TextStyle {
       continue;
     }
     if (code === 24) {
-      s.underline = 'none';
+      s.underline = "none";
       i++;
       continue;
     }
@@ -227,32 +227,32 @@ export function applySGR(paramStr: string, style: TextStyle): TextStyle {
     }
 
     if (code >= 30 && code <= 37) {
-      s.fg = { type: 'named', name: NAMED_COLORS[code - 30]! };
+      s.fg = { type: "named", name: NAMED_COLORS[code - 30]! };
       i++;
       continue;
     }
     if (code === 39) {
-      s.fg = { type: 'default' };
+      s.fg = { type: "default" };
       i++;
       continue;
     }
     if (code >= 40 && code <= 47) {
-      s.bg = { type: 'named', name: NAMED_COLORS[code - 40]! };
+      s.bg = { type: "named", name: NAMED_COLORS[code - 40]! };
       i++;
       continue;
     }
     if (code === 49) {
-      s.bg = { type: 'default' };
+      s.bg = { type: "default" };
       i++;
       continue;
     }
     if (code >= 90 && code <= 97) {
-      s.fg = { type: 'named', name: NAMED_COLORS[code - 90 + 8]! };
+      s.fg = { type: "named", name: NAMED_COLORS[code - 90 + 8]! };
       i++;
       continue;
     }
     if (code >= 100 && code <= 107) {
-      s.bg = { type: 'named', name: NAMED_COLORS[code - 100 + 8]! };
+      s.bg = { type: "named", name: NAMED_COLORS[code - 100 + 8]! };
       i++;
       continue;
     }
@@ -260,16 +260,16 @@ export function applySGR(paramStr: string, style: TextStyle): TextStyle {
     if (code === 38) {
       const c = parseExtendedColor(params, i);
       if (c) {
-        s.fg = 'index' in c ? { type: 'indexed', index: c.index } : { type: 'rgb', ...c };
-        i += p.colon ? 1 : 'index' in c ? 3 : 5;
+        s.fg = "index" in c ? { type: "indexed", index: c.index } : { type: "rgb", ...c };
+        i += p.colon ? 1 : "index" in c ? 3 : 5;
         continue;
       }
     }
     if (code === 48) {
       const c = parseExtendedColor(params, i);
       if (c) {
-        s.bg = 'index' in c ? { type: 'indexed', index: c.index } : { type: 'rgb', ...c };
-        i += p.colon ? 1 : 'index' in c ? 3 : 5;
+        s.bg = "index" in c ? { type: "indexed", index: c.index } : { type: "rgb", ...c };
+        i += p.colon ? 1 : "index" in c ? 3 : 5;
         continue;
       }
     }
@@ -277,13 +277,13 @@ export function applySGR(paramStr: string, style: TextStyle): TextStyle {
       const c = parseExtendedColor(params, i);
       if (c) {
         s.underlineColor =
-          'index' in c ? { type: 'indexed', index: c.index } : { type: 'rgb', ...c };
-        i += p.colon ? 1 : 'index' in c ? 3 : 5;
+          "index" in c ? { type: "indexed", index: c.index } : { type: "rgb", ...c };
+        i += p.colon ? 1 : "index" in c ? 3 : 5;
         continue;
       }
     }
     if (code === 59) {
-      s.underlineColor = { type: 'default' };
+      s.underlineColor = { type: "default" };
       i++;
       continue;
     }

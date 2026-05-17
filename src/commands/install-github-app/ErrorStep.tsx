@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { GITHUB_ACTION_SETUP_DOCS_URL } from '../../constants/github-app.js';
-import { Box, Text } from '../../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import { GITHUB_ACTION_SETUP_DOCS_URL } from "../../constants/github-app.js";
+import { Box, Text } from "../../ink.js";
 
 interface ErrorStepProps {
   error: string | undefined;
@@ -11,7 +11,7 @@ export function ErrorStep(t0) {
   const $ = _c(15);
   const { error, errorReason, errorInstructions } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <Box flexDirection="column" marginBottom={1}>
         <Text bold={true}>Install GitHub App</Text>
@@ -55,11 +55,11 @@ export function ErrorStep(t0) {
     t4 = $[6];
   }
   let t5;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Box marginTop={1}>
         <Text dimColor={true}>
-          For manual setup instructions, see:{' '}
+          For manual setup instructions, see:{" "}
           <Text color="claude">{GITHUB_ACTION_SETUP_DOCS_URL}</Text>
         </Text>
       </Box>
@@ -87,7 +87,7 @@ export function ErrorStep(t0) {
     t6 = $[11];
   }
   let t7;
-  if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Box marginLeft={3}>
         <Text dimColor={true}>Press any key to exit</Text>

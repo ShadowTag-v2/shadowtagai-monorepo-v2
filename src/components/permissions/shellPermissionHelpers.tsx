@@ -1,14 +1,14 @@
-import { basename, sep } from 'node:path';
-import type { ReactNode } from 'react';
-import { getOriginalCwd } from '../../bootstrap/state.js';
-import { Text } from '../../ink.js';
-import type { PermissionUpdate } from '../../utils/permissions/PermissionUpdateSchema.js';
-import { permissionRuleExtractPrefix } from '../../utils/permissions/shellRuleMatching.js';
+import { basename, sep } from "node:path";
+import type { ReactNode } from "react";
+import { getOriginalCwd } from "../../bootstrap/state.js";
+import { Text } from "../../ink.js";
+import type { PermissionUpdate } from "../../utils/permissions/PermissionUpdateSchema.js";
+import { permissionRuleExtractPrefix } from "../../utils/permissions/shellRuleMatching.js";
 
 function commandListDisplay(commands: string[]): ReactNode {
   switch (commands.length) {
     case 0:
-      return '';
+      return "";
     case 1:
       return <Text bold>{commands[0]}</Text>;
     case 2:
@@ -20,7 +20,7 @@ function commandListDisplay(commands: string[]): ReactNode {
     default:
       return (
         <Text>
-          <Text bold>{commands.slice(0, -1).join(', ')}</Text>, and{' '}
+          <Text bold>{commands.slice(0, -1).join(", ")}</Text>, and{" "}
           <Text bold>{commands.slice(-1)[0]}</Text>
         </Text>
       );
@@ -28,14 +28,14 @@ function commandListDisplay(commands: string[]): ReactNode {
 }
 function commandListDisplayTruncated(commands: string[]): ReactNode {
   // Check if the plain text representation would be too long
-  const plainText = commands.join(', ');
+  const plainText = commands.join(", ");
   if (plainText.length > 50) {
-    return 'similar';
+    return "similar";
   }
   return commandListDisplay(commands);
 }
 function formatPathList(paths: string[]): ReactNode {
-  if (paths.length === 0) return '';
+  if (paths.length === 0) return "";
 
   // Extract directory names from paths
   const names = paths.map((p) => basename(p) || p);
@@ -79,19 +79,19 @@ export function generateShellSuggestionsLabel(
   commandTransform?: (command: string) => string,
 ): ReactNode | null {
   // Collect all rules for display
-  const allRules = suggestions.filter((s) => s.type === 'addRules').flatMap((s) => s.rules || []);
+  const allRules = suggestions.filter((s) => s.type === "addRules").flatMap((s) => s.rules || []);
 
   // Separate Read rules from shell rules
-  const readRules = allRules.filter((r) => r.toolName === 'Read');
+  const readRules = allRules.filter((r) => r.toolName === "Read");
   const shellRules = allRules.filter((r) => r.toolName === shellToolName);
 
   // Get directory info
   const directories = suggestions
-    .filter((s) => s.type === 'addDirectories')
+    .filter((s) => s.type === "addDirectories")
     .flatMap((s) => s.directories || []);
 
   // Extract paths from Read rules (keep separate from directories)
-  const readPaths = readRules.map((r) => r.ruleContent?.replace('/**', '') || '').filter((p) => p);
+  const readPaths = readRules.map((r) => r.ruleContent?.replace("/**", "") || "").filter((p) => p);
 
   // Extract shell command prefixes, optionally transforming for display
   const shellCommands = [
@@ -149,7 +149,7 @@ export function generateShellSuggestionsLabel(
     return (
       <Text>
         {"Yes, and don't ask again for "}
-        {commandListDisplayTruncated(shellCommands)} commands in{' '}
+        {commandListDisplayTruncated(shellCommands)} commands in{" "}
         <Text bold>{getOriginalCwd()}</Text>
       </Text>
     );
@@ -174,14 +174,14 @@ export function generateShellSuggestionsLabel(
     if (allPaths.length === 1 && shellCommands.length === 1) {
       return (
         <Text>
-          Yes, and allow access to {formatPathList(allPaths)} and{' '}
+          Yes, and allow access to {formatPathList(allPaths)} and{" "}
           {commandListDisplayTruncated(shellCommands)} commands
         </Text>
       );
     }
     return (
       <Text>
-        Yes, and allow {formatPathList(allPaths)} access and{' '}
+        Yes, and allow {formatPathList(allPaths)} access and{" "}
         {commandListDisplayTruncated(shellCommands)} commands
       </Text>
     );

@@ -1,22 +1,22 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useDynamicConfig } from 'src/hooks/useDynamicConfig.js';
-import { isFeedbackSurveyDisabled } from 'src/services/analytics/config.js';
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useDynamicConfig } from "src/hooks/useDynamicConfig.js";
+import { isFeedbackSurveyDisabled } from "src/services/analytics/config.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { isPolicyAllowed } from '../../services/policyLimits/index.js';
-import type { Message } from '../../types/message.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { getLastAssistantMessage } from '../../utils/messages.js';
-import { getMainLoopModel } from '../../utils/model/model.js';
-import { getInitialSettings } from '../../utils/settings/settings.js';
-import { logOTelEvent } from '../../utils/telemetry/events.js';
-import { submitTranscriptShare, type TranscriptShareTrigger } from './submitTranscriptShare.js';
-import type { TranscriptShareResponse } from './TranscriptSharePrompt.js';
-import { useSurveyState } from './useSurveyState.js';
-import type { FeedbackSurveyResponse, FeedbackSurveyType } from './utils.js';
+} from "src/services/analytics/index.js";
+import { isPolicyAllowed } from "../../services/policyLimits/index.js";
+import type { Message } from "../../types/message.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { getLastAssistantMessage } from "../../utils/messages.js";
+import { getMainLoopModel } from "../../utils/model/model.js";
+import { getInitialSettings } from "../../utils/settings/settings.js";
+import { logOTelEvent } from "../../utils/telemetry/events.js";
+import { submitTranscriptShare, type TranscriptShareTrigger } from "./submitTranscriptShare.js";
+import type { TranscriptShareResponse } from "./TranscriptSharePrompt.js";
+import { useSurveyState } from "./useSurveyState.js";
+import type { FeedbackSurveyResponse, FeedbackSurveyType } from "./utils.js";
 
 type FeedbackSurveyConfig = {
   minTimeBeforeFeedbackMs: number;
@@ -38,7 +38,7 @@ const DEFAULT_FEEDBACK_SURVEY_CONFIG: FeedbackSurveyConfig = {
   minUserTurnsBeforeFeedback: 5,
   minUserTurnsBetweenFeedback: 10,
   hideThanksAfterMs: 3000,
-  onForModels: ['*'],
+  onForModels: ["*"],
   probability: 0.005,
 };
 const DEFAULT_TRANSCRIPT_ASK_CONFIG: TranscriptAskConfig = {
@@ -48,16 +48,16 @@ export function useFeedbackSurvey(
   messages: Message[],
   isLoading: boolean,
   submitCount: number,
-  surveyType: FeedbackSurveyType = 'session',
+  surveyType: FeedbackSurveyType = "session",
   hasActivePrompt: boolean = false,
 ): {
-  state: 'closed' | 'open' | 'thanks' | 'transcript_prompt' | 'submitting' | 'submitted';
+  state: "closed" | "open" | "thanks" | "transcript_prompt" | "submitting" | "submitted";
   lastResponse: FeedbackSurveyResponse | null;
   handleSelect: (selected: FeedbackSurveyResponse) => boolean;
   handleTranscriptSelect: (selected: TranscriptShareResponse) => void;
 } {
-  const lastAssistantMessageIdRef = useRef('unknown');
-  lastAssistantMessageIdRef.current = getLastAssistantMessage(messages)?.message?.id || 'unknown';
+  const lastAssistantMessageIdRef = useRef("unknown");
+  lastAssistantMessageIdRef.current = getLastAssistantMessage(messages)?.message?.id || "unknown";
   const [feedbackSurvey, setFeedbackSurvey] = useState<{
     timeLastShown: number | null;
     submitCountAtLastAppearance: number | null;
@@ -66,15 +66,15 @@ export function useFeedbackSurvey(
     submitCountAtLastAppearance: null,
   }));
   const config = useDynamicConfig<FeedbackSurveyConfig>(
-    'tengu_feedback_survey_config',
+    "tengu_feedback_survey_config",
     DEFAULT_FEEDBACK_SURVEY_CONFIG,
   );
   const badTranscriptAskConfig = useDynamicConfig<TranscriptAskConfig>(
-    'tengu_bad_survey_transcript_ask_config',
+    "tengu_bad_survey_transcript_ask_config",
     DEFAULT_TRANSCRIPT_ASK_CONFIG,
   );
   const goodTranscriptAskConfig = useDynamicConfig<TranscriptAskConfig>(
-    'tengu_good_survey_transcript_ask_config',
+    "tengu_good_survey_transcript_ask_config",
     DEFAULT_TRANSCRIPT_ASK_CONFIG,
   );
   const settingsRate = getInitialSettings().feedbackSurveyRate;
@@ -116,15 +116,15 @@ export function useFeedbackSurvey(
   const onOpen = useCallback(
     (appearanceId: string) => {
       updateLastShownTime(Date.now(), submitCountRef.current);
-      logEvent('tengu_feedback_survey_event', {
-        event_type: 'appeared' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      logEvent("tengu_feedback_survey_event", {
+        event_type: "appeared" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         appearance_id: appearanceId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         last_assistant_message_id:
           lastAssistantMessageIdRef.current as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         survey_type: surveyType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
-      void logOTelEvent('feedback_survey', {
-        event_type: 'appeared',
+      void logOTelEvent("feedback_survey", {
+        event_type: "appeared",
         appearance_id: appearanceId,
         survey_type: surveyType,
       });
@@ -134,16 +134,16 @@ export function useFeedbackSurvey(
   const onSelect = useCallback(
     (appearanceId_0: string, selected: FeedbackSurveyResponse) => {
       updateLastShownTime(Date.now(), submitCountRef.current);
-      logEvent('tengu_feedback_survey_event', {
-        event_type: 'responded' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      logEvent("tengu_feedback_survey_event", {
+        event_type: "responded" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         appearance_id: appearanceId_0 as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         response: selected as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         last_assistant_message_id:
           lastAssistantMessageIdRef.current as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         survey_type: surveyType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
-      void logOTelEvent('feedback_survey', {
-        event_type: 'responded',
+      void logOTelEvent("feedback_survey", {
+        event_type: "responded",
         appearance_id: appearanceId_0,
         response: selected,
         survey_type: surveyType,
@@ -154,7 +154,7 @@ export function useFeedbackSurvey(
   const shouldShowTranscriptPrompt = useCallback(
     (selected_0: FeedbackSurveyResponse) => {
       // Only bad and good ratings trigger the transcript ask
-      if (selected_0 !== 'bad' && selected_0 !== 'good') {
+      if (selected_0 !== "bad" && selected_0 !== "good") {
         return false;
       }
 
@@ -164,13 +164,13 @@ export function useFeedbackSurvey(
       }
 
       // Don't show if product feedback is blocked by org policy (ZDR)
-      if (!isPolicyAllowed('allow_product_feedback')) {
+      if (!isPolicyAllowed("allow_product_feedback")) {
         return false;
       }
 
       // Probability gate from GrowthBook config (separate per rating)
       const probability =
-        selected_0 === 'bad'
+        selected_0 === "bad"
           ? badTranscriptAskConfig.probability
           : goodTranscriptAskConfig.probability;
       return Math.random() <= probability;
@@ -180,18 +180,18 @@ export function useFeedbackSurvey(
   const onTranscriptPromptShown = useCallback(
     (appearanceId_1: string, surveyResponse: FeedbackSurveyResponse) => {
       const trigger: TranscriptShareTrigger =
-        surveyResponse === 'good' ? 'good_feedback_survey' : 'bad_feedback_survey';
-      logEvent('tengu_feedback_survey_event', {
+        surveyResponse === "good" ? "good_feedback_survey" : "bad_feedback_survey";
+      logEvent("tengu_feedback_survey_event", {
         event_type:
-          'transcript_prompt_appeared' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+          "transcript_prompt_appeared" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         appearance_id: appearanceId_1 as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         last_assistant_message_id:
           lastAssistantMessageIdRef.current as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         survey_type: surveyType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         trigger: trigger as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
-      void logOTelEvent('feedback_survey', {
-        event_type: 'transcript_prompt_appeared',
+      void logOTelEvent("feedback_survey", {
+        event_type: "transcript_prompt_appeared",
         appearance_id: appearanceId_1,
         survey_type: surveyType,
       });
@@ -205,8 +205,8 @@ export function useFeedbackSurvey(
       surveyResponse_0: FeedbackSurveyResponse | null,
     ): Promise<boolean> => {
       const trigger_0: TranscriptShareTrigger =
-        surveyResponse_0 === 'good' ? 'good_feedback_survey' : 'bad_feedback_survey';
-      logEvent('tengu_feedback_survey_event', {
+        surveyResponse_0 === "good" ? "good_feedback_survey" : "bad_feedback_survey";
+      logEvent("tengu_feedback_survey_event", {
         event_type:
           `transcript_share_${selected_1}` as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         appearance_id: appearanceId_2 as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -215,18 +215,18 @@ export function useFeedbackSurvey(
         survey_type: surveyType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         trigger: trigger_0 as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
-      if (selected_1 === 'dont_ask_again') {
+      if (selected_1 === "dont_ask_again") {
         saveGlobalConfig((current_0) => ({
           ...current_0,
           transcriptShareDismissed: true,
         }));
       }
-      if (selected_1 === 'yes') {
+      if (selected_1 === "yes") {
         const result = await submitTranscriptShare(messagesRef.current, trigger_0, appearanceId_2);
-        logEvent('tengu_feedback_survey_event', {
+        logEvent("tengu_feedback_survey_event", {
           event_type: (result.success
-            ? 'transcript_share_submitted'
-            : 'transcript_share_failed') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+            ? "transcript_share_submitted"
+            : "transcript_share_failed") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           appearance_id:
             appearanceId_2 as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           trigger: trigger_0 as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -250,13 +250,13 @@ export function useFeedbackSurvey(
     if (config.onForModels.length === 0) {
       return false;
     }
-    if (config.onForModels.includes('*')) {
+    if (config.onForModels.includes("*")) {
       return true;
     }
     return config.onForModels.includes(currentModel);
   }, [config.onForModels, currentModel]);
   const shouldOpen = useMemo(() => {
-    if (state !== 'closed') {
+    if (state !== "closed") {
       return false;
     }
     if (isLoading) {
@@ -283,7 +283,7 @@ export function useFeedbackSurvey(
     }
 
     // Check if product feedback is allowed by org policy
-    if (!isPolicyAllowed('allow_product_feedback')) {
+    if (!isPolicyAllowed("allow_product_feedback")) {
       return false;
     }
 

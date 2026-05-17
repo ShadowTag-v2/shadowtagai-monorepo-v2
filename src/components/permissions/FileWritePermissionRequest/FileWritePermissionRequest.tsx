@@ -1,18 +1,18 @@
-import { basename, relative } from 'node:path';
-import { c as _c } from 'react/compiler-runtime';
-import type { z } from 'zod/v4';
-import { Text } from '../../../ink.js';
-import { FileWriteTool } from '../../../tools/FileWriteTool/FileWriteTool.js';
-import { getCwd } from '../../../utils/cwd.js';
-import { isENOENT } from '../../../utils/errors.js';
-import { readFileSync } from '../../../utils/fileRead.js';
-import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js';
+import { basename, relative } from "node:path";
+import { c as _c } from "react/compiler-runtime";
+import type { z } from "zod/v4";
+import { Text } from "../../../ink.js";
+import { FileWriteTool } from "../../../tools/FileWriteTool/FileWriteTool.js";
+import { getCwd } from "../../../utils/cwd.js";
+import { isENOENT } from "../../../utils/errors.js";
+import { readFileSync } from "../../../utils/fileRead.js";
+import { FilePermissionDialog } from "../FilePermissionDialog/FilePermissionDialog.js";
 import {
   createSingleEditDiffConfig,
   type FileEdit,
   type IDEDiffSupport,
-} from '../FilePermissionDialog/ideDiffConfig.js';
-import { FileWriteToolDiff } from './FileWriteToolDiff.js';
+} from "../FilePermissionDialog/ideDiffConfig.js";
+import { FileWriteToolDiff } from "./FileWriteToolDiff.js";
 
 type FileWriteToolInput = z.infer<typeof FileWriteTool.inputSchema>;
 const ideDiffSupport: IDEDiffSupport<FileWriteToolInput> = {
@@ -22,7 +22,7 @@ const ideDiffSupport: IDEDiffSupport<FileWriteToolInput> = {
       oldContent = readFileSync(input.file_path);
     } catch (e) {
       if (!isENOENT(e)) throw e;
-      oldContent = '';
+      oldContent = "";
     }
     return createSingleEditDiffConfig(
       input.file_path,
@@ -68,10 +68,10 @@ export function FileWritePermissionRequest(props) {
         throw e;
       }
       let t3;
-      if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
         t3 = {
           fileExists: false,
-          oldContent: '',
+          oldContent: "",
         };
         $[4] = t3;
       } else {
@@ -85,13 +85,13 @@ export function FileWritePermissionRequest(props) {
     t1 = $[3];
   }
   const { fileExists, oldContent } = t1;
-  const actionText = fileExists ? 'overwrite' : 'create';
+  const actionText = fileExists ? "overwrite" : "create";
   const t2 = props.toolUseConfirm;
   const t3 = props.toolUseContext;
   const t4 = props.onDone;
   const t5 = props.onReject;
   const t6 = props.workerBadge;
-  const t7 = fileExists ? 'Overwrite file' : 'Create file';
+  const t7 = fileExists ? "Overwrite file" : "Create file";
   let t8;
   if ($[5] !== file_path) {
     t8 = relative(getCwd(), file_path);

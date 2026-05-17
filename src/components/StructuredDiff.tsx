@@ -1,12 +1,12 @@
-import type { StructuredPatchHunk } from 'diff';
-import { memo } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useSettings } from '../hooks/useSettings.js';
-import { Box, NoSelect, RawAnsi, useTheme } from '../ink.js';
-import { isFullscreenEnvEnabled } from '../utils/fullscreen.js';
-import sliceAnsi from '../utils/sliceAnsi.js';
-import { expectColorDiff } from './StructuredDiff/colorDiff.js';
-import { StructuredDiffFallback } from './StructuredDiff/Fallback.js';
+import type { StructuredPatchHunk } from "diff";
+import { memo } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useSettings } from "../hooks/useSettings.js";
+import { Box, NoSelect, RawAnsi, useTheme } from "../ink.js";
+import { isFullscreenEnvEnabled } from "../utils/fullscreen.js";
+import sliceAnsi from "../utils/sliceAnsi.js";
+import { expectColorDiff } from "./StructuredDiff/colorDiff.js";
+import { StructuredDiffFallback } from "./StructuredDiff/Fallback.js";
 
 type Props = {
   patch: StructuredPatchHunk;
@@ -71,7 +71,7 @@ function renderColorDiff(
   // RawAnsi(width<=0) is untested.
   const rawGutterWidth = splitGutter ? computeGutterWidth(patch) : 0;
   const gutterWidth = rawGutterWidth > 0 && rawGutterWidth < width ? rawGutterWidth : 0;
-  const key = `${theme}|${width}|${dim ? 1 : 0}|${gutterWidth}|${firstLine ?? ''}|${filePath}`;
+  const key = `${theme}|${width}|${dim ? 1 : 0}|${gutterWidth}|${firstLine ?? ""}|${filePath}`;
   let perHunk = RENDER_CACHE.get(patch);
   const hit = perHunk?.get(key);
   if (hit) return hit;

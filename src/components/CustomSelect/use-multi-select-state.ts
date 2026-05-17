@@ -1,12 +1,12 @@
-import { isDeepStrictEqual } from 'node:util';
-import { useCallback, useState } from 'react';
-import { useRegisterOverlay } from '../../context/overlayContext.js';
-import type { InputEvent } from '../../ink/events/input-event.js';
+import { isDeepStrictEqual } from "node:util";
+import { useCallback, useState } from "react";
+import { useRegisterOverlay } from "../../context/overlayContext.js";
+import type { InputEvent } from "../../ink/events/input-event.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- raw space/arrow multiselect input
-import { useInput } from '../../ink.js';
-import { normalizeFullWidthDigits, normalizeFullWidthSpace } from '../../utils/stringUtils.js';
-import type { OptionWithDescription } from './select.js';
-import { useSelectNavigation } from './use-select-navigation.js';
+import { useInput } from "../../ink.js";
+import { normalizeFullWidthDigits, normalizeFullWidthSpace } from "../../utils/stringUtils.js";
+import type { OptionWithDescription } from "./select.js";
+import { useSelectNavigation } from "./use-select-navigation.js";
 
 export type UseMultiSelectStateProps<T> = {
   /**
@@ -180,7 +180,7 @@ export function useMultiSelectState<T>({
   const [inputValues, setInputValues] = useState<Map<T, string>>(() => {
     const initialMap = new Map<T, string>();
     options.forEach((option) => {
-      if (option.type === 'input' && option.initialValue) {
+      if (option.type === "input" && option.initialValue) {
         initialMap.set(option.value, option.initialValue);
       }
     });
@@ -189,7 +189,7 @@ export function useMultiSelectState<T>({
 
   const updateSelectedValues = useCallback(
     (values: T[] | ((prev: T[]) => T[])) => {
-      const newValues = typeof values === 'function' ? values(selectedValues) : values;
+      const newValues = typeof values === "function" ? values(selectedValues) : values;
       setSelectedValues(newValues);
       onChange?.(newValues);
     },
@@ -206,7 +206,7 @@ export function useMultiSelectState<T>({
 
   // Automatically register as an overlay.
   // This ensures CancelRequestHandler won't intercept Escape when the multi-select is active.
-  useRegisterOverlay('multi-select');
+  useRegisterOverlay("multi-select");
 
   const updateInputValue = useCallback(
     (value: T, inputValue: string) => {
@@ -218,7 +218,7 @@ export function useMultiSelectState<T>({
 
       // Find the option and call its onChange
       const option = options.find((opt) => opt.value === value);
-      if (option && option.type === 'input') {
+      if (option && option.type === "input") {
         option.onChange(inputValue);
       }
 
@@ -242,7 +242,7 @@ export function useMultiSelectState<T>({
     (input, key, event: InputEvent) => {
       const normalizedInput = normalizeFullWidthDigits(input);
       const focusedOption = options.find((opt) => opt.value === navigation.focusedValue);
-      const isInInput = focusedOption?.type === 'input';
+      const isInInput = focusedOption?.type === "input";
 
       // When in input field, only allow navigation keys
       if (isInInput) {
@@ -252,7 +252,7 @@ export function useMultiSelectState<T>({
           key.escape ||
           key.tab ||
           key.return ||
-          (key.ctrl && (input === 'n' || input === 'p' || key.return));
+          (key.ctrl && (input === "n" || input === "p" || key.return));
         if (!isAllowedKey) return;
       }
 
@@ -287,8 +287,8 @@ export function useMultiSelectState<T>({
       // Handle arrow down / Ctrl+N / j
       if (
         key.downArrow ||
-        (key.ctrl && input === 'n') ||
-        (!key.ctrl && !key.shift && input === 'j')
+        (key.ctrl && input === "n") ||
+        (!key.ctrl && !key.shift && input === "j")
       ) {
         if (isSubmitFocused && onDownFromLastItem) {
           onDownFromLastItem();
@@ -315,8 +315,8 @@ export function useMultiSelectState<T>({
       // Handle arrow up / Ctrl+P / k
       if (
         key.upArrow ||
-        (key.ctrl && input === 'p') ||
-        (!key.ctrl && !key.shift && input === 'k')
+        (key.ctrl && input === "p") ||
+        (!key.ctrl && !key.shift && input === "k")
       ) {
         if (submitButtonText && onSubmit && isSubmitFocused) {
           setIsSubmitFocused(false);
@@ -341,7 +341,7 @@ export function useMultiSelectState<T>({
       }
 
       // Handle Enter or Space for selection/submit
-      if (key.return || normalizeFullWidthSpace(input) === ' ') {
+      if (key.return || normalizeFullWidthSpace(input) === " ") {
         // Ctrl+Enter from input field submits
         if (key.ctrl && key.return && isInInput && onSubmit) {
           onSubmit(selectedValues);

@@ -1,18 +1,18 @@
-import type { StdoutMessage } from 'src/entrypoints/sdk/controlTypes.js';
-import type WsWebSocket from 'ws';
-import { logEvent } from '../../services/analytics/index.js';
-import { CircularBuffer } from '../../utils/CircularBuffer.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { logForDiagnosticsNoPII } from '../../utils/diagLogs.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { getWebSocketTLSOptions } from '../../utils/mtls.js';
-import { getWebSocketProxyAgent, getWebSocketProxyUrl } from '../../utils/proxy.js';
+import type { StdoutMessage } from "src/entrypoints/sdk/controlTypes.js";
+import type WsWebSocket from "ws";
+import { logEvent } from "../../services/analytics/index.js";
+import { CircularBuffer } from "../../utils/CircularBuffer.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { logForDiagnosticsNoPII } from "../../utils/diagLogs.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { getWebSocketTLSOptions } from "../../utils/mtls.js";
+import { getWebSocketProxyAgent, getWebSocketProxyUrl } from "../../utils/proxy.js";
 import {
   registerSessionActivityCallback,
   unregisterSessionActivityCallback,
-} from '../../utils/sessionActivity.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import type { Transport } from './Transport.js';
+} from "../../utils/sessionActivity.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import type { Transport } from "./Transport.js";
 
 const KEEP_ALIVE_FRAME = '{"type":"keep_alive"}\n';
 
@@ -54,7 +54,7 @@ export type WebSocketTransportOptions = {
   isBridge?: boolean;
 };
 
-type WebSocketTransportState = 'idle' | 'connected' | 'reconnecting' | 'closing' | 'closed';
+type WebSocketTransportState = "idle" | "connected" | "reconnecting" | "closing" | "closed";
 
 // Common interface between globalThis.WebSocket and ws.WebSocket
 type WebSocketLike = {
@@ -67,7 +67,7 @@ export class WebSocketTransport implements Transport {
   private ws: WebSocketLike | null = null;
   private lastSentId: string | null = null;
   protected url: URL;
-  protected state: WebSocketTransportState = 'idle';
+  protected state: WebSocketTransportState = "idle";
   protected onData?: (data: string) => void;
   private onCloseCallback?: (closeCode?: number) => void;
   private onConnectCallback?: () => void;
@@ -125,27 +125,27 @@ export class WebSocketTransport implements Transport {
   }
 
   public async connect(): Promise<void> {
-    if (this.state !== 'idle' && this.state !== 'reconnecting') {
+    if (this.state !== "idle" && this.state !== "reconnecting") {
       logForDebugging(`WebSocketTransport: Cannot connect, current state is ${this.state}`, {
-        level: 'error',
+        level: "error",
       });
-      logForDiagnosticsNoPII('error', 'cli_websocket_connect_failed');
+      logForDiagnosticsNoPII("error", "cli_websocket_connect_failed");
       return;
     }
-    this.state = 'reconnecting';
+    this.state = "reconnecting";
 
     this.connectStartTime = Date.now();
     logForDebugging(`WebSocketTransport: Opening ${this.url.href}`);
-    logForDiagnosticsNoPII('info', 'cli_websocket_connect_opening');
+    logForDiagnosticsNoPII("info", "cli_websocket_connect_opening");
 
     // Start with provided headers and add runtime headers
     const headers = { ...this.headers };
     if (this.lastSentId) {
-      headers['X-Last-Request-Id'] = this.lastSentId;
+      headers["X-Last-Request-Id"] = this.lastSentId;
       logForDebugging(`WebSocketTransport: Adding X-Last-Request-Id header: ${this.lastSentId}`);
     }
 
-    if (typeof Bun !== 'undefined') {
+    if (typeof Bun !== "undefined") {
       // Bun's WebSocket supports headers/proxy options but the DOM typings don't
       // eslint-disable-next-line eslint-plugin-n/no-unsupported-features/node-builtins
       const ws = new globalThis.WebSocket(this.url.href, {
@@ -156,15 +156,15 @@ export class WebSocketTransport implements Transport {
       this.ws = ws;
       this.isBunWs = true;
 
-      ws.addEventListener('open', this.onBunOpen);
-      ws.addEventListener('message', this.onBunMessage);
-      ws.addEventListener('error', this.onBunError);
+      ws.addEventListener("open", this.onBunOpen);
+      ws.addEventListener("message", this.onBunMessage);
+      ws.addEventListener("error", this.onBunError);
       // eslint-disable-next-line eslint-plugin-n/no-unsupported-features/node-builtins
-      ws.addEventListener('close', this.onBunClose);
+      ws.addEventListener("close", this.onBunClose);
       // 'pong' is Bun-specific — not in DOM typings.
-      ws.addEventListener('pong', this.onPong);
+      ws.addEventListener("pong", this.onPong);
     } else {
-      const { default: WS } = await import('ws');
+      const { default: WS } = await import("ws");
       const ws = new WS(this.url.href, {
         headers,
         agent: getWebSocketProxyAgent(this.url.href),
@@ -173,11 +173,11 @@ export class WebSocketTransport implements Transport {
       this.ws = ws;
       this.isBunWs = false;
 
-      ws.on('open', this.onNodeOpen);
-      ws.on('message', this.onNodeMessage);
-      ws.on('error', this.onNodeError);
-      ws.on('close', this.onNodeClose);
-      ws.on('pong', this.onPong);
+      ws.on("open", this.onNodeOpen);
+      ws.on("message", this.onNodeMessage);
+      ws.on("error", this.onNodeError);
+      ws.on("close", this.onNodeClose);
+      ws.on("pong", this.onPong);
     }
   }
 
@@ -192,14 +192,14 @@ export class WebSocketTransport implements Transport {
     // Bun's WebSocket doesn't expose upgrade response headers,
     // so replay all buffered messages. The server deduplicates by UUID.
     if (this.lastSentId) {
-      this.replayBufferedMessages('');
+      this.replayBufferedMessages("");
     }
   };
 
   private onBunMessage = (event: MessageEvent) => {
-    const message = typeof event.data === 'string' ? event.data : String(event.data);
+    const message = typeof event.data === "string" ? event.data : String(event.data);
     this.lastActivityTime = Date.now();
-    logForDiagnosticsNoPII('info', 'cli_websocket_message_received', {
+    logForDiagnosticsNoPII("info", "cli_websocket_message_received", {
       length: message.length,
     });
     if (this.onData) {
@@ -208,10 +208,10 @@ export class WebSocketTransport implements Transport {
   };
 
   private onBunError = () => {
-    logForDebugging('WebSocketTransport: Error', {
-      level: 'error',
+    logForDebugging("WebSocketTransport: Error", {
+      level: "error",
     });
-    logForDiagnosticsNoPII('error', 'cli_websocket_connect_error');
+    logForDiagnosticsNoPII("error", "cli_websocket_connect_error");
     // close event fires after error — let it call handleConnectionError
   };
 
@@ -220,9 +220,9 @@ export class WebSocketTransport implements Transport {
     const isClean = event.code === 1000 || event.code === 1001;
     logForDebugging(
       `WebSocketTransport: Closed: ${event.code}`,
-      isClean ? undefined : { level: 'error' },
+      isClean ? undefined : { level: "error" },
     );
-    logForDiagnosticsNoPII('error', 'cli_websocket_connect_closed');
+    logForDiagnosticsNoPII("error", "cli_websocket_connect_closed");
     this.handleConnectionError(event.code);
   };
 
@@ -240,8 +240,8 @@ export class WebSocketTransport implements Transport {
       upgradeReq?: { headers?: Record<string, string> };
     };
     const upgradeResponse = nws.upgradeReq;
-    if (upgradeResponse?.headers?.['x-last-request-id']) {
-      const serverLastId = upgradeResponse.headers['x-last-request-id'];
+    if (upgradeResponse?.headers?.["x-last-request-id"]) {
+      const serverLastId = upgradeResponse.headers["x-last-request-id"];
       this.replayBufferedMessages(serverLastId);
     }
   };
@@ -249,7 +249,7 @@ export class WebSocketTransport implements Transport {
   private onNodeMessage = (data: Buffer) => {
     const message = data.toString();
     this.lastActivityTime = Date.now();
-    logForDiagnosticsNoPII('info', 'cli_websocket_message_received', {
+    logForDiagnosticsNoPII("info", "cli_websocket_message_received", {
       length: message.length,
     });
     if (this.onData) {
@@ -259,9 +259,9 @@ export class WebSocketTransport implements Transport {
 
   private onNodeError = (err: Error) => {
     logForDebugging(`WebSocketTransport: Error: ${err.message}`, {
-      level: 'error',
+      level: "error",
     });
-    logForDiagnosticsNoPII('error', 'cli_websocket_connect_error');
+    logForDiagnosticsNoPII("error", "cli_websocket_connect_error");
     // close event fires after error — let it call handleConnectionError
   };
 
@@ -269,9 +269,9 @@ export class WebSocketTransport implements Transport {
     const isClean = code === 1000 || code === 1001;
     logForDebugging(
       `WebSocketTransport: Closed: ${code}`,
-      isClean ? undefined : { level: 'error' },
+      isClean ? undefined : { level: "error" },
     );
-    logForDiagnosticsNoPII('error', 'cli_websocket_connect_closed');
+    logForDiagnosticsNoPII("error", "cli_websocket_connect_closed");
     this.handleConnectionError(code);
   };
 
@@ -283,15 +283,15 @@ export class WebSocketTransport implements Transport {
 
   private handleOpenEvent(): void {
     const connectDuration = Date.now() - this.connectStartTime;
-    logForDebugging('WebSocketTransport: Connected');
-    logForDiagnosticsNoPII('info', 'cli_websocket_connect_connected', {
+    logForDebugging("WebSocketTransport: Connected");
+    logForDiagnosticsNoPII("info", "cli_websocket_connect_connected", {
       duration_ms: connectDuration,
     });
 
     // Reconnect success — capture attempt count + downtime before resetting.
     // reconnectStartTime is null on first connect, non-null on reopen.
     if (this.isBridge && this.reconnectStartTime !== null) {
-      logEvent('tengu_ws_transport_reconnected', {
+      logEvent("tengu_ws_transport_reconnected", {
         attempts: this.reconnectAttempts,
         downtimeMs: Date.now() - this.reconnectStartTime,
       });
@@ -301,7 +301,7 @@ export class WebSocketTransport implements Transport {
     this.reconnectStartTime = null;
     this.lastReconnectAttemptTime = null;
     this.lastActivityTime = Date.now();
-    this.state = 'connected';
+    this.state = "connected";
     this.onConnectCallback?.();
 
     // Start periodic pings to detect dead connections
@@ -312,14 +312,14 @@ export class WebSocketTransport implements Transport {
 
     // Register callback for session activity signals
     registerSessionActivityCallback(() => {
-      void this.write({ type: 'keep_alive' });
+      void this.write({ type: "keep_alive" });
     });
   }
 
   protected sendLine(line: string): boolean {
-    if (!this.ws || this.state !== 'connected') {
-      logForDebugging('WebSocketTransport: Not connected');
-      logForDiagnosticsNoPII('info', 'cli_websocket_send_not_connected');
+    if (!this.ws || this.state !== "connected") {
+      logForDebugging("WebSocketTransport: Not connected");
+      logForDiagnosticsNoPII("info", "cli_websocket_send_not_connected");
       return false;
     }
 
@@ -329,9 +329,9 @@ export class WebSocketTransport implements Transport {
       return true;
     } catch (error) {
       logForDebugging(`WebSocketTransport: Failed to send: ${error}`, {
-        level: 'error',
+        level: "error",
       });
-      logForDiagnosticsNoPII('error', 'cli_websocket_send_error');
+      logForDiagnosticsNoPII("error", "cli_websocket_send_error");
       // Don't null this.ws here — let doDisconnect() (via handleConnectionError)
       // handle cleanup so listeners are removed before the WS is released.
       this.handleConnectionError();
@@ -348,20 +348,20 @@ export class WebSocketTransport implements Transport {
   private removeWsListeners(ws: WebSocketLike): void {
     if (this.isBunWs) {
       const nws = ws as unknown as globalThis.WebSocket;
-      nws.removeEventListener('open', this.onBunOpen);
-      nws.removeEventListener('message', this.onBunMessage);
-      nws.removeEventListener('error', this.onBunError);
+      nws.removeEventListener("open", this.onBunOpen);
+      nws.removeEventListener("message", this.onBunMessage);
+      nws.removeEventListener("error", this.onBunError);
       // eslint-disable-next-line eslint-plugin-n/no-unsupported-features/node-builtins
-      nws.removeEventListener('close', this.onBunClose);
+      nws.removeEventListener("close", this.onBunClose);
       // 'pong' is Bun-specific — not in DOM typings
-      nws.removeEventListener('pong' as 'message', this.onPong);
+      nws.removeEventListener("pong" as "message", this.onPong);
     } else {
       const nws = ws as unknown as WsWebSocket;
-      nws.off('open', this.onNodeOpen);
-      nws.off('message', this.onNodeMessage);
-      nws.off('error', this.onNodeError);
-      nws.off('close', this.onNodeClose);
-      nws.off('pong', this.onPong);
+      nws.off("open", this.onNodeOpen);
+      nws.off("message", this.onNodeMessage);
+      nws.off("error", this.onNodeError);
+      nws.off("close", this.onNodeClose);
+      nws.off("pong", this.onPong);
     }
   }
 
@@ -385,27 +385,27 @@ export class WebSocketTransport implements Transport {
   private handleConnectionError(closeCode?: number): void {
     logForDebugging(
       `WebSocketTransport: Disconnected from ${this.url.href}` +
-        (closeCode != null ? ` (code ${closeCode})` : ''),
+        (closeCode != null ? ` (code ${closeCode})` : ""),
     );
-    logForDiagnosticsNoPII('info', 'cli_websocket_disconnected');
+    logForDiagnosticsNoPII("info", "cli_websocket_disconnected");
     if (this.isBridge) {
       // Fire on every close — including intermediate ones during a reconnect
       // storm (those never surface to the onCloseCallback consumer). For the
       // Cloudflare-5min-idle hypothesis: cluster msSinceLastActivity; if the
       // peak sits at ~300s with closeCode 1006, that's the proxy RST.
-      logEvent('tengu_ws_transport_closed', {
+      logEvent("tengu_ws_transport_closed", {
         closeCode,
         msSinceLastActivity: this.lastActivityTime > 0 ? Date.now() - this.lastActivityTime : -1,
         // 'connected' = healthy drop (the Cloudflare case); 'reconnecting' =
         // connect-rejection mid-storm. State isn't mutated until the branches
         // below, so this reads the pre-close value.
-        wasConnected: this.state === 'connected',
+        wasConnected: this.state === "connected",
         reconnectAttempts: this.reconnectAttempts,
       });
     }
     this.doDisconnect();
 
-    if (this.state === 'closing' || this.state === 'closed') return;
+    if (this.state === "closing" || this.state === "closed") return;
 
     // Permanent codes: don't retry — server has definitively ended the session.
     // Exception: 4003 (unauthorized) can be retried when refreshHeaders is
@@ -418,20 +418,20 @@ export class WebSocketTransport implements Transport {
         Object.assign(this.headers, freshHeaders);
         headersRefreshed = true;
         logForDebugging(
-          'WebSocketTransport: 4003 received but headers refreshed, scheduling reconnect',
+          "WebSocketTransport: 4003 received but headers refreshed, scheduling reconnect",
         );
-        logForDiagnosticsNoPII('info', 'cli_websocket_4003_token_refreshed');
+        logForDiagnosticsNoPII("info", "cli_websocket_4003_token_refreshed");
       }
     }
 
     if (closeCode != null && PERMANENT_CLOSE_CODES.has(closeCode) && !headersRefreshed) {
       logForDebugging(`WebSocketTransport: Permanent close code ${closeCode}, not reconnecting`, {
-        level: 'error',
+        level: "error",
       });
-      logForDiagnosticsNoPII('error', 'cli_websocket_permanent_close', {
+      logForDiagnosticsNoPII("error", "cli_websocket_permanent_close", {
         closeCode,
       });
-      this.state = 'closed';
+      this.state = "closed";
       this.onCloseCallback?.(closeCode);
       return;
     }
@@ -439,7 +439,7 @@ export class WebSocketTransport implements Transport {
     // When autoReconnect is disabled, go straight to closed state.
     // The caller (e.g. REPL bridge poll loop) handles recovery.
     if (!this.autoReconnect) {
-      this.state = 'closed';
+      this.state = "closed";
       this.onCloseCallback?.(closeCode);
       return;
     }
@@ -462,7 +462,7 @@ export class WebSocketTransport implements Transport {
       logForDebugging(
         `WebSocketTransport: Detected system sleep (${Math.round((now - this.lastReconnectAttemptTime) / 1000)}s gap), resetting reconnection budget`,
       );
-      logForDiagnosticsNoPII('info', 'cli_websocket_sleep_detected', {
+      logForDiagnosticsNoPII("info", "cli_websocket_sleep_detected", {
         gapMs: now - this.lastReconnectAttemptTime,
       });
       this.reconnectStartTime = now;
@@ -483,10 +483,10 @@ export class WebSocketTransport implements Transport {
       if (!headersRefreshed && this.refreshHeaders) {
         const freshHeaders = this.refreshHeaders();
         Object.assign(this.headers, freshHeaders);
-        logForDebugging('WebSocketTransport: Refreshed headers for reconnect');
+        logForDebugging("WebSocketTransport: Refreshed headers for reconnect");
       }
 
-      this.state = 'reconnecting';
+      this.state = "reconnecting";
       this.reconnectAttempts++;
 
       const baseDelay = Math.min(
@@ -499,11 +499,11 @@ export class WebSocketTransport implements Transport {
       logForDebugging(
         `WebSocketTransport: Reconnecting in ${Math.round(delay)}ms (attempt ${this.reconnectAttempts}, ${Math.round(elapsed / 1000)}s elapsed)`,
       );
-      logForDiagnosticsNoPII('error', 'cli_websocket_reconnect_attempt', {
+      logForDiagnosticsNoPII("error", "cli_websocket_reconnect_attempt", {
         reconnectAttempts: this.reconnectAttempts,
       });
       if (this.isBridge) {
-        logEvent('tengu_ws_transport_reconnecting', {
+        logEvent("tengu_ws_transport_reconnecting", {
           attempt: this.reconnectAttempts,
           elapsedMs: elapsed,
           delayMs: Math.round(delay),
@@ -517,13 +517,13 @@ export class WebSocketTransport implements Transport {
     } else {
       logForDebugging(
         `WebSocketTransport: Reconnection time budget exhausted after ${Math.round(elapsed / 1000)}s for ${this.url.href}`,
-        { level: 'error' },
+        { level: "error" },
       );
-      logForDiagnosticsNoPII('error', 'cli_websocket_reconnect_exhausted', {
+      logForDiagnosticsNoPII("error", "cli_websocket_reconnect_exhausted", {
         reconnectAttempts: this.reconnectAttempts,
         elapsedMs: elapsed,
       });
-      this.state = 'closed';
+      this.state = "closed";
 
       // Notify close callback
       if (this.onCloseCallback) {
@@ -546,7 +546,7 @@ export class WebSocketTransport implements Transport {
     // Unregister session activity callback
     unregisterSessionActivityCallback();
 
-    this.state = 'closing';
+    this.state = "closing";
     this.doDisconnect();
   }
 
@@ -558,7 +558,7 @@ export class WebSocketTransport implements Transport {
     let startIndex = 0;
     if (lastId) {
       const lastConfirmedIndex = messages.findIndex(
-        (message) => 'uuid' in message && message.uuid === lastId,
+        (message) => "uuid" in message && message.uuid === lastId,
       );
       if (lastConfirmedIndex >= 0) {
         // Server confirmed messages up to lastConfirmedIndex — evict them
@@ -573,7 +573,7 @@ export class WebSocketTransport implements Transport {
         logForDebugging(
           `WebSocketTransport: Evicted ${startIndex} confirmed messages, ${remaining.length} remaining`,
         );
-        logForDiagnosticsNoPII('info', 'cli_websocket_evicted_confirmed_messages', {
+        logForDiagnosticsNoPII("info", "cli_websocket_evicted_confirmed_messages", {
           evicted: startIndex,
           remaining: remaining.length,
         });
@@ -582,13 +582,13 @@ export class WebSocketTransport implements Transport {
 
     const messagesToReplay = messages.slice(startIndex);
     if (messagesToReplay.length === 0) {
-      logForDebugging('WebSocketTransport: No new messages to replay');
-      logForDiagnosticsNoPII('info', 'cli_websocket_no_messages_to_replay');
+      logForDebugging("WebSocketTransport: No new messages to replay");
+      logForDiagnosticsNoPII("info", "cli_websocket_no_messages_to_replay");
       return;
     }
 
     logForDebugging(`WebSocketTransport: Replaying ${messagesToReplay.length} buffered messages`);
-    logForDiagnosticsNoPII('info', 'cli_websocket_messages_to_replay', {
+    logForDiagnosticsNoPII("info", "cli_websocket_messages_to_replay", {
       count: messagesToReplay.length,
     });
 
@@ -607,11 +607,11 @@ export class WebSocketTransport implements Transport {
   }
 
   isConnectedStatus(): boolean {
-    return this.state === 'connected';
+    return this.state === "connected";
   }
 
   isClosedStatus(): boolean {
-    return this.state === 'closed';
+    return this.state === "closed";
   }
 
   setOnData(callback: (data: string) => void): void {
@@ -631,19 +631,19 @@ export class WebSocketTransport implements Transport {
   }
 
   async write(message: StdoutMessage): Promise<void> {
-    if ('uuid' in message && typeof message.uuid === 'string') {
+    if ("uuid" in message && typeof message.uuid === "string") {
       this.messageBuffer.add(message);
       this.lastSentId = message.uuid;
     }
 
     const line = `${jsonStringify(message)}\n`;
 
-    if (this.state !== 'connected') {
+    if (this.state !== "connected") {
       // Message buffered for replay when connected (if it has a UUID)
       return;
     }
 
-    const sessionLabel = this.sessionId ? ` session=${this.sessionId}` : '';
+    const sessionLabel = this.sessionId ? ` session=${this.sessionId}` : "";
     const detailLabel = this.getControlMessageDetailLabel(message);
 
     logForDebugging(
@@ -654,16 +654,16 @@ export class WebSocketTransport implements Transport {
   }
 
   private getControlMessageDetailLabel(message: StdoutMessage): string {
-    if (message.type === 'control_request') {
+    if (message.type === "control_request") {
       const { request_id, request } = message;
-      const toolName = request.subtype === 'can_use_tool' ? request.tool_name : '';
-      return ` subtype=${request.subtype} request_id=${request_id}${toolName ? ` tool=${toolName}` : ''}`;
+      const toolName = request.subtype === "can_use_tool" ? request.tool_name : "";
+      return ` subtype=${request.subtype} request_id=${request_id}${toolName ? ` tool=${toolName}` : ""}`;
     }
-    if (message.type === 'control_response') {
+    if (message.type === "control_response") {
       const { subtype, request_id } = message.response;
       return ` subtype=${subtype} request_id=${request_id}`;
     }
-    return '';
+    return "";
   }
 
   private startPingInterval(): void {
@@ -676,7 +676,7 @@ export class WebSocketTransport implements Transport {
     // Send ping periodically to detect dead connections.
     // If the previous ping got no pong, treat the connection as dead.
     this.pingInterval = setInterval(() => {
-      if (this.state === 'connected' && this.ws) {
+      if (this.state === "connected" && this.ws) {
         const now = Date.now();
         const gap = now - lastTickTime;
         lastTickTime = now;
@@ -697,16 +697,16 @@ export class WebSocketTransport implements Transport {
           logForDebugging(
             `WebSocketTransport: ${Math.round(gap / 1000)}s tick gap detected — process was suspended, forcing reconnect`,
           );
-          logForDiagnosticsNoPII('info', 'cli_websocket_sleep_detected_on_ping', { gapMs: gap });
+          logForDiagnosticsNoPII("info", "cli_websocket_sleep_detected_on_ping", { gapMs: gap });
           this.handleConnectionError();
           return;
         }
 
         if (!this.pongReceived) {
-          logForDebugging('WebSocketTransport: No pong received, connection appears dead', {
-            level: 'error',
+          logForDebugging("WebSocketTransport: No pong received, connection appears dead", {
+            level: "error",
           });
-          logForDiagnosticsNoPII('error', 'cli_websocket_pong_timeout');
+          logForDiagnosticsNoPII("error", "cli_websocket_pong_timeout");
           this.handleConnectionError();
           return;
         }
@@ -716,9 +716,9 @@ export class WebSocketTransport implements Transport {
           this.ws.ping?.();
         } catch (error) {
           logForDebugging(`WebSocketTransport: Ping failed: ${error}`, {
-            level: 'error',
+            level: "error",
           });
-          logForDiagnosticsNoPII('error', 'cli_websocket_ping_failed');
+          logForDiagnosticsNoPII("error", "cli_websocket_ping_failed");
         }
       }
     }, DEFAULT_PING_INTERVAL);
@@ -740,16 +740,16 @@ export class WebSocketTransport implements Transport {
     }
 
     this.keepAliveInterval = setInterval(() => {
-      if (this.state === 'connected' && this.ws) {
+      if (this.state === "connected" && this.ws) {
         try {
           this.ws.send(KEEP_ALIVE_FRAME);
           this.lastActivityTime = Date.now();
-          logForDebugging('WebSocketTransport: Sent periodic keep_alive data frame');
+          logForDebugging("WebSocketTransport: Sent periodic keep_alive data frame");
         } catch (error) {
           logForDebugging(`WebSocketTransport: Periodic keep_alive failed: ${error}`, {
-            level: 'error',
+            level: "error",
           });
-          logForDiagnosticsNoPII('error', 'cli_websocket_keepalive_failed');
+          logForDiagnosticsNoPII("error", "cli_websocket_keepalive_failed");
         }
       }
     }, DEFAULT_KEEPALIVE_INTERVAL);

@@ -1,6 +1,6 @@
-import { join } from 'node:path';
-import { logForDebugging } from '../debug.js';
-import { getFsImplementation } from '../fsOperations.js';
+import { join } from "node:path";
+import { logForDebugging } from "../debug.js";
+import { getFsImplementation } from "../fsOperations.js";
 
 const SKILL_MD_RE = /^skill\.md$/i;
 
@@ -24,7 +24,7 @@ export async function walkPluginMarkdown(
   opts: { stopAtSkillDir?: boolean; logLabel?: string } = {},
 ): Promise<void> {
   const fs = getFsImplementation();
-  const label = opts.logLabel ?? 'plugin';
+  const label = opts.logLabel ?? "plugin";
 
   async function scan(dirPath: string, namespace: string[]): Promise<void> {
     try {
@@ -34,7 +34,7 @@ export async function walkPluginMarkdown(
         // Skill directory: collect .md files here, don't recurse.
         await Promise.all(
           entries.map((entry) =>
-            entry.isFile() && entry.name.toLowerCase().endsWith('.md')
+            entry.isFile() && entry.name.toLowerCase().endsWith(".md")
               ? onFile(join(dirPath, entry.name), namespace)
               : undefined,
           ),
@@ -48,14 +48,14 @@ export async function walkPluginMarkdown(
           if (entry.isDirectory()) {
             return scan(fullPath, [...namespace, entry.name]);
           }
-          if (entry.isFile() && entry.name.toLowerCase().endsWith('.md')) {
+          if (entry.isFile() && entry.name.toLowerCase().endsWith(".md")) {
             return onFile(fullPath, namespace);
           }
           return undefined;
         }),
       );
     } catch (error) {
-      logForDebugging(`Failed to scan ${label} directory ${dirPath}: ${error}`, { level: 'error' });
+      logForDebugging(`Failed to scan ${label} directory ${dirPath}: ${error}`, { level: "error" });
     }
   }
 

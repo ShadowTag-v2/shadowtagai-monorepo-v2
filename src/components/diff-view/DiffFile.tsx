@@ -10,14 +10,14 @@
  *   - All hunks from the file diff
  */
 
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { ConfidenceBadge } from './ConfidenceBadge';
-import { DiffHunk } from './DiffHunk';
-import styles from './diff-view.module.css';
-import { PrivilegeBadge } from './PrivilegeBadge';
-import type { DiffFile as DiffFileType } from './types';
+import { useState } from "react";
+import { ConfidenceBadge } from "./ConfidenceBadge";
+import { DiffHunk } from "./DiffHunk";
+import styles from "./diff-view.module.css";
+import { PrivilegeBadge } from "./PrivilegeBadge";
+import type { DiffFile as DiffFileType } from "./types";
 
 interface DiffFileProps {
   file: DiffFileType;
@@ -26,20 +26,20 @@ interface DiffFileProps {
 }
 
 function extractFilename(path: string): string {
-  return path.split('/').pop() || path;
+  return path.split("/").pop() || path;
 }
 
 export function DiffFile({ file, defaultExpanded = true }: DiffFileProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
-  const isPrivileged = file.privilegeStatus === 'privileged';
+  const isPrivileged = file.privilegeStatus === "privileged";
   const filename = extractFilename(file.path);
 
   const addCount = file.hunks.reduce(
-    (sum, h) => sum + h.changes.filter((c) => c.type === 'add').length,
+    (sum, h) => sum + h.changes.filter((c) => c.type === "add").length,
     0,
   );
   const deleteCount = file.hunks.reduce(
-    (sum, h) => sum + h.changes.filter((c) => c.type === 'delete').length,
+    (sum, h) => sum + h.changes.filter((c) => c.type === "delete").length,
     0,
   );
 
@@ -53,7 +53,7 @@ export function DiffFile({ file, defaultExpanded = true }: DiffFileProps) {
         aria-controls={`diff-content-${file.path}`}
       >
         <span className={styles.expandIcon} aria-hidden="true">
-          {isExpanded ? '▼' : '▶'}
+          {isExpanded ? "▼" : "▶"}
         </span>
 
         <span className={styles.fileHeaderPath}>

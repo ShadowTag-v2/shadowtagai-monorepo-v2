@@ -1,32 +1,32 @@
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { sanitizeToolNameForAnalytics } from 'src/services/analytics/metadata.js';
-import type z from 'zod/v4';
-import type { CanUseToolFn } from '../../hooks/useCanUseTool.js';
-import type { AnyObject, Tool, ToolUseContext } from '../../Tool.js';
-import type { HookProgress } from '../../types/hooks.js';
-import type { AssistantMessage, AttachmentMessage, ProgressMessage } from '../../types/message.js';
-import type { PermissionDecision } from '../../types/permissions.js';
-import { createAttachmentMessage } from '../../utils/attachments.js';
-import { logForDebugging } from '../../utils/debug.js';
+} from "src/services/analytics/index.js";
+import { sanitizeToolNameForAnalytics } from "src/services/analytics/metadata.js";
+import type z from "zod/v4";
+import type { CanUseToolFn } from "../../hooks/useCanUseTool.js";
+import type { AnyObject, Tool, ToolUseContext } from "../../Tool.js";
+import type { HookProgress } from "../../types/hooks.js";
+import type { AssistantMessage, AttachmentMessage, ProgressMessage } from "../../types/message.js";
+import type { PermissionDecision } from "../../types/permissions.js";
+import { createAttachmentMessage } from "../../utils/attachments.js";
+import { logForDebugging } from "../../utils/debug.js";
 import {
   executePostToolHooks,
   executePostToolUseFailureHooks,
   executePreToolHooks,
   getPreToolHookBlockingMessage,
-} from '../../utils/hooks.js';
-import { logError } from '../../utils/log.js';
+} from "../../utils/hooks.js";
+import { logError } from "../../utils/log.js";
 import {
   getRuleBehaviorDescription,
   type PermissionDecisionReason,
   type PermissionResult,
-} from '../../utils/permissions/PermissionResult.js';
-import { checkRuleBasedPermissions } from '../../utils/permissions/permissions.js';
-import { formatError } from '../../utils/toolErrors.js';
-import { isMcpTool } from '../mcp/utils.js';
-import type { McpServerType, MessageUpdateLazy } from './toolExecution.js';
+} from "../../utils/permissions/PermissionResult.js";
+import { checkRuleBasedPermissions } from "../../utils/permissions/permissions.js";
+import { formatError } from "../../utils/toolErrors.js";
+import { isMcpTool } from "../mcp/utils.js";
+import type { McpServerType, MessageUpdateLazy } from "./toolExecution.js";
 
 export type PostToolUseHooksResult<Output> =
   | MessageUpdateLazy<AttachmentMessage | ProgressMessage<HookProgress>>
@@ -62,10 +62,10 @@ export async function* runPostToolUseHooks<Input extends AnyObject, Output>(
         // Check if we were aborted during hook execution
         // IMPORTANT: We emit a cancelled event per hook
         if (
-          result.message?.type === 'attachment' &&
-          result.message.attachment.type === 'hook_cancelled'
+          result.message?.type === "attachment" &&
+          result.message.attachment.type === "hook_cancelled"
         ) {
-          logEvent('tengu_post_tool_hooks_cancelled', {
+          logEvent("tengu_post_tool_hooks_cancelled", {
             toolName: sanitizeToolNameForAnalytics(tool.name),
 
             queryChainId: toolUseContext.queryTracking
@@ -74,10 +74,10 @@ export async function* runPostToolUseHooks<Input extends AnyObject, Output>(
           });
           yield {
             message: createAttachmentMessage({
-              type: 'hook_cancelled',
+              type: "hook_cancelled",
               hookName: `PostToolUse:${tool.name}`,
               toolUseID,
-              hookEvent: 'PostToolUse',
+              hookEvent: "PostToolUse",
             }),
           };
           continue;
@@ -91,8 +91,8 @@ export async function* runPostToolUseHooks<Input extends AnyObject, Output>(
         if (
           result.message &&
           !(
-            result.message.type === 'attachment' &&
-            result.message.attachment.type === 'hook_blocking_error'
+            result.message.type === "attachment" &&
+            result.message.attachment.type === "hook_blocking_error"
           )
         ) {
           yield { message: result.message };
@@ -101,10 +101,10 @@ export async function* runPostToolUseHooks<Input extends AnyObject, Output>(
         if (result.blockingError) {
           yield {
             message: createAttachmentMessage({
-              type: 'hook_blocking_error',
+              type: "hook_blocking_error",
               hookName: `PostToolUse:${tool.name}`,
               toolUseID: toolUseID,
-              hookEvent: 'PostToolUse',
+              hookEvent: "PostToolUse",
               blockingError: result.blockingError,
             }),
           };
@@ -114,11 +114,11 @@ export async function* runPostToolUseHooks<Input extends AnyObject, Output>(
         if (result.preventContinuation) {
           yield {
             message: createAttachmentMessage({
-              type: 'hook_stopped_continuation',
-              message: result.stopReason || 'Execution stopped by PostToolUse hook',
+              type: "hook_stopped_continuation",
+              message: result.stopReason || "Execution stopped by PostToolUse hook",
               hookName: `PostToolUse:${tool.name}`,
               toolUseID: toolUseID,
-              hookEvent: 'PostToolUse',
+              hookEvent: "PostToolUse",
             }),
           };
           return;
@@ -128,11 +128,11 @@ export async function* runPostToolUseHooks<Input extends AnyObject, Output>(
         if (result.additionalContexts && result.additionalContexts.length > 0) {
           yield {
             message: createAttachmentMessage({
-              type: 'hook_additional_context',
+              type: "hook_additional_context",
               content: result.additionalContexts,
               hookName: `PostToolUse:${tool.name}`,
               toolUseID: toolUseID,
-              hookEvent: 'PostToolUse',
+              hookEvent: "PostToolUse",
             }),
           };
         }
@@ -146,7 +146,7 @@ export async function* runPostToolUseHooks<Input extends AnyObject, Output>(
         }
       } catch (error) {
         const postToolDurationMs = Date.now() - postToolStartTime;
-        logEvent('tengu_post_tool_hook_error', {
+        logEvent("tengu_post_tool_hook_error", {
           messageID: messageId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           toolName: sanitizeToolNameForAnalytics(tool.name),
           isMcp: tool.isMcp ?? false,
@@ -169,11 +169,11 @@ export async function* runPostToolUseHooks<Input extends AnyObject, Output>(
         });
         yield {
           message: createAttachmentMessage({
-            type: 'hook_error_during_execution',
+            type: "hook_error_during_execution",
             content: formatError(error),
             hookName: `PostToolUse:${tool.name}`,
             toolUseID: toolUseID,
-            hookEvent: 'PostToolUse',
+            hookEvent: "PostToolUse",
           }),
         };
       }
@@ -213,10 +213,10 @@ export async function* runPostToolUseFailureHooks<Input extends AnyObject>(
       try {
         // Check if we were aborted during hook execution
         if (
-          result.message?.type === 'attachment' &&
-          result.message.attachment.type === 'hook_cancelled'
+          result.message?.type === "attachment" &&
+          result.message.attachment.type === "hook_cancelled"
         ) {
-          logEvent('tengu_post_tool_failure_hooks_cancelled', {
+          logEvent("tengu_post_tool_failure_hooks_cancelled", {
             toolName: sanitizeToolNameForAnalytics(tool.name),
             queryChainId: toolUseContext.queryTracking
               ?.chainId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -224,10 +224,10 @@ export async function* runPostToolUseFailureHooks<Input extends AnyObject>(
           });
           yield {
             message: createAttachmentMessage({
-              type: 'hook_cancelled',
+              type: "hook_cancelled",
               hookName: `PostToolUseFailure:${tool.name}`,
               toolUseID,
-              hookEvent: 'PostToolUseFailure',
+              hookEvent: "PostToolUseFailure",
             }),
           };
           continue;
@@ -238,8 +238,8 @@ export async function* runPostToolUseFailureHooks<Input extends AnyObject>(
         if (
           result.message &&
           !(
-            result.message.type === 'attachment' &&
-            result.message.attachment.type === 'hook_blocking_error'
+            result.message.type === "attachment" &&
+            result.message.attachment.type === "hook_blocking_error"
           )
         ) {
           yield { message: result.message };
@@ -248,10 +248,10 @@ export async function* runPostToolUseFailureHooks<Input extends AnyObject>(
         if (result.blockingError) {
           yield {
             message: createAttachmentMessage({
-              type: 'hook_blocking_error',
+              type: "hook_blocking_error",
               hookName: `PostToolUseFailure:${tool.name}`,
               toolUseID: toolUseID,
-              hookEvent: 'PostToolUseFailure',
+              hookEvent: "PostToolUseFailure",
               blockingError: result.blockingError,
             }),
           };
@@ -261,17 +261,17 @@ export async function* runPostToolUseFailureHooks<Input extends AnyObject>(
         if (result.additionalContexts && result.additionalContexts.length > 0) {
           yield {
             message: createAttachmentMessage({
-              type: 'hook_additional_context',
+              type: "hook_additional_context",
               content: result.additionalContexts,
               hookName: `PostToolUseFailure:${tool.name}`,
               toolUseID: toolUseID,
-              hookEvent: 'PostToolUseFailure',
+              hookEvent: "PostToolUseFailure",
             }),
           };
         }
       } catch (hookError) {
         const postToolDurationMs = Date.now() - postToolStartTime;
-        logEvent('tengu_post_tool_failure_hook_error', {
+        logEvent("tengu_post_tool_failure_hook_error", {
           messageID: messageId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           toolName: sanitizeToolNameForAnalytics(tool.name),
           isMcp: tool.isMcp ?? false,
@@ -293,11 +293,11 @@ export async function* runPostToolUseFailureHooks<Input extends AnyObject>(
         });
         yield {
           message: createAttachmentMessage({
-            type: 'hook_error_during_execution',
+            type: "hook_error_during_execution",
             content: formatError(hookError),
             hookName: `PostToolUseFailure:${tool.name}`,
             toolUseID: toolUseID,
-            hookEvent: 'PostToolUseFailure',
+            hookEvent: "PostToolUseFailure",
           }),
         };
       }
@@ -333,7 +333,7 @@ export async function resolveHookPermissionDecision(
   const requiresInteraction = tool.requiresUserInteraction?.();
   const requireCanUseTool = toolUseContext.requireCanUseTool;
 
-  if (hookPermissionResult?.behavior === 'allow') {
+  if (hookPermissionResult?.behavior === "allow") {
     const hookInput = hookPermissionResult.updatedInput ?? input;
 
     // Hook provided updatedInput for an interactive tool — the hook IS the
@@ -360,7 +360,7 @@ export async function resolveHookPermissionDecision(
       );
       return { decision: hookPermissionResult, input: hookInput };
     }
-    if (ruleCheck.behavior === 'deny') {
+    if (ruleCheck.behavior === "deny") {
       logForDebugging(
         `Hook approved tool use for ${tool.name}, but deny rule overrides: ${ruleCheck.message}`,
       );
@@ -374,16 +374,16 @@ export async function resolveHookPermissionDecision(
     };
   }
 
-  if (hookPermissionResult?.behavior === 'deny') {
+  if (hookPermissionResult?.behavior === "deny") {
     logForDebugging(`Hook denied tool use for ${tool.name}`);
     return { decision: hookPermissionResult, input };
   }
 
   // No hook decision or 'ask' — normal permission flow, possibly with
   // forceDecision so the dialog shows the hook's ask message.
-  const forceDecision = hookPermissionResult?.behavior === 'ask' ? hookPermissionResult : undefined;
+  const forceDecision = hookPermissionResult?.behavior === "ask" ? hookPermissionResult : undefined;
   const askInput =
-    hookPermissionResult?.behavior === 'ask' && hookPermissionResult.updatedInput
+    hookPermissionResult?.behavior === "ask" && hookPermissionResult.updatedInput
       ? hookPermissionResult.updatedInput
       : input;
   return {
@@ -410,19 +410,19 @@ export async function* runPreToolUseHooks(
   _mcpServerBaseUrl: string | undefined,
 ): AsyncGenerator<
   | {
-      type: 'message';
+      type: "message";
       message: MessageUpdateLazy<AttachmentMessage | ProgressMessage<HookProgress>>;
     }
-  | { type: 'hookPermissionResult'; hookPermissionResult: PermissionResult }
-  | { type: 'hookUpdatedInput'; updatedInput: Record<string, unknown> }
-  | { type: 'preventContinuation'; shouldPreventContinuation: boolean }
-  | { type: 'stopReason'; stopReason: string }
+  | { type: "hookPermissionResult"; hookPermissionResult: PermissionResult }
+  | { type: "hookUpdatedInput"; updatedInput: Record<string, unknown> }
+  | { type: "preventContinuation"; shouldPreventContinuation: boolean }
+  | { type: "stopReason"; stopReason: string }
   | {
-      type: 'additionalContext';
+      type: "additionalContext";
       message: MessageUpdateLazy<AttachmentMessage>;
     }
   // stop execution
-  | { type: 'stop' }
+  | { type: "stop" }
 > {
   const hookStartTime = Date.now();
   try {
@@ -441,7 +441,7 @@ export async function* runPreToolUseHooks(
     )) {
       try {
         if (result.message) {
-          yield { type: 'message', message: { message: result.message } };
+          yield { type: "message", message: { message: result.message } };
         }
         if (result.blockingError) {
           const denialMessage = getPreToolHookBlockingMessage(
@@ -449,12 +449,12 @@ export async function* runPreToolUseHooks(
             result.blockingError,
           );
           yield {
-            type: 'hookPermissionResult',
+            type: "hookPermissionResult",
             hookPermissionResult: {
-              behavior: 'deny',
+              behavior: "deny",
               message: denialMessage,
               decisionReason: {
-                type: 'hook',
+                type: "hook",
                 hookName: `PreToolUse:${tool.name}`,
                 reason: denialMessage,
               },
@@ -464,36 +464,36 @@ export async function* runPreToolUseHooks(
         // Check if hook wants to prevent continuation
         if (result.preventContinuation) {
           yield {
-            type: 'preventContinuation',
+            type: "preventContinuation",
             shouldPreventContinuation: true,
           };
           if (result.stopReason) {
-            yield { type: 'stopReason', stopReason: result.stopReason };
+            yield { type: "stopReason", stopReason: result.stopReason };
           }
         }
         // Check for hook-defined permission behavior
         if (result.permissionBehavior !== undefined) {
           logForDebugging(`Hook result has permissionBehavior=${result.permissionBehavior}`);
           const decisionReason: PermissionDecisionReason = {
-            type: 'hook',
+            type: "hook",
             hookName: `PreToolUse:${tool.name}`,
             hookSource: result.hookSource,
             reason: result.hookPermissionDecisionReason,
           };
-          if (result.permissionBehavior === 'allow') {
+          if (result.permissionBehavior === "allow") {
             yield {
-              type: 'hookPermissionResult',
+              type: "hookPermissionResult",
               hookPermissionResult: {
-                behavior: 'allow',
+                behavior: "allow",
                 updatedInput: result.updatedInput,
                 decisionReason,
               },
             };
-          } else if (result.permissionBehavior === 'ask') {
+          } else if (result.permissionBehavior === "ask") {
             yield {
-              type: 'hookPermissionResult',
+              type: "hookPermissionResult",
               hookPermissionResult: {
-                behavior: 'ask',
+                behavior: "ask",
                 updatedInput: result.updatedInput,
                 message:
                   result.hookPermissionDecisionReason ||
@@ -504,7 +504,7 @@ export async function* runPreToolUseHooks(
           } else {
             // deny - updatedInput is irrelevant since tool won't run
             yield {
-              type: 'hookPermissionResult',
+              type: "hookPermissionResult",
               hookPermissionResult: {
                 behavior: result.permissionBehavior,
                 message:
@@ -520,7 +520,7 @@ export async function* runPreToolUseHooks(
         // This allows hooks to modify input while letting normal permission flow continue
         if (result.updatedInput && result.permissionBehavior === undefined) {
           yield {
-            type: 'hookUpdatedInput',
+            type: "hookUpdatedInput",
             updatedInput: result.updatedInput,
           };
         }
@@ -528,14 +528,14 @@ export async function* runPreToolUseHooks(
         // If hooks provided additional context, add it as a message
         if (result.additionalContexts && result.additionalContexts.length > 0) {
           yield {
-            type: 'additionalContext',
+            type: "additionalContext",
             message: {
               message: createAttachmentMessage({
-                type: 'hook_additional_context',
+                type: "hook_additional_context",
                 content: result.additionalContexts,
                 hookName: `PreToolUse:${tool.name}`,
                 toolUseID,
-                hookEvent: 'PreToolUse',
+                hookEvent: "PreToolUse",
               }),
             },
           };
@@ -543,7 +543,7 @@ export async function* runPreToolUseHooks(
 
         // Check if we were aborted during hook execution
         if (toolUseContext.abortController.signal.aborted) {
-          logEvent('tengu_pre_tool_hooks_cancelled', {
+          logEvent("tengu_pre_tool_hooks_cancelled", {
             toolName: sanitizeToolNameForAnalytics(tool.name),
 
             queryChainId: toolUseContext.queryTracking
@@ -551,23 +551,23 @@ export async function* runPreToolUseHooks(
             queryDepth: toolUseContext.queryTracking?.depth,
           });
           yield {
-            type: 'message',
+            type: "message",
             message: {
               message: createAttachmentMessage({
-                type: 'hook_cancelled',
+                type: "hook_cancelled",
                 hookName: `PreToolUse:${tool.name}`,
                 toolUseID,
-                hookEvent: 'PreToolUse',
+                hookEvent: "PreToolUse",
               }),
             },
           };
-          yield { type: 'stop' };
+          yield { type: "stop" };
           return;
         }
       } catch (error) {
         logError(error);
         const durationMs = Date.now() - hookStartTime;
-        logEvent('tengu_pre_tool_hook_error', {
+        logEvent("tengu_pre_tool_hook_error", {
           messageID: messageId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           toolName: sanitizeToolNameForAnalytics(tool.name),
           isMcp: tool.isMcp ?? false,
@@ -589,23 +589,23 @@ export async function* runPreToolUseHooks(
             : {}),
         });
         yield {
-          type: 'message',
+          type: "message",
           message: {
             message: createAttachmentMessage({
-              type: 'hook_error_during_execution',
+              type: "hook_error_during_execution",
               content: formatError(error),
               hookName: `PreToolUse:${tool.name}`,
               toolUseID: toolUseID,
-              hookEvent: 'PreToolUse',
+              hookEvent: "PreToolUse",
             }),
           },
         };
-        yield { type: 'stop' };
+        yield { type: "stop" };
       }
     }
   } catch (error) {
     logError(error);
-    yield { type: 'stop' };
+    yield { type: "stop" };
     return;
   }
 }

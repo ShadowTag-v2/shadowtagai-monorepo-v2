@@ -1,10 +1,10 @@
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import { loadKeybindingsSync } from './loadUserBindings.js';
-import { getBindingDisplayText } from './resolver.js';
-import type { KeybindingContextName } from './types.js';
+} from "../services/analytics/index.js";
+import { loadKeybindingsSync } from "./loadUserBindings.js";
+import { getBindingDisplayText } from "./resolver.js";
+import type { KeybindingContextName } from "./types.js";
 
 // TODO(keybindings-migration): Remove fallback parameter after migration is
 // complete and we've confirmed no 'keybinding_fallback_used' events are being
@@ -46,11 +46,11 @@ export function getShortcutDisplay(
     const key = `${action}:${context}`;
     if (!LOGGED_FALLBACKS.has(key)) {
       LOGGED_FALLBACKS.add(key);
-      logEvent('tengu_keybinding_fallback_used', {
+      logEvent("tengu_keybinding_fallback_used", {
         action: action as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         context: context as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         fallback: fallback as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
-        reason: 'action_not_found' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+        reason: "action_not_found" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
     }
     return fallback;

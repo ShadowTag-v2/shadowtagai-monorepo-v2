@@ -1,11 +1,11 @@
-import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { dirname, join } from 'node:path';
-import { getCwd } from '../cwd.js';
-import { getErrnoCode } from '../errors.js';
-import { execFileNoThrowWithCwd } from '../execFileNoThrow.js';
-import { dirIsInGitRepo } from '../git.js';
-import { logError } from '../log.js';
+import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { dirname, join } from "node:path";
+import { getCwd } from "../cwd.js";
+import { getErrnoCode } from "../errors.js";
+import { execFileNoThrowWithCwd } from "../execFileNoThrow.js";
+import { dirIsInGitRepo } from "../git.js";
+import { logError } from "../log.js";
 
 /**
  * Checks if a path is ignored by git (via `git check-ignore`).
@@ -21,7 +21,7 @@ import { logError } from '../log.js';
  * @param cwd The working directory to run git from
  */
 export async function isPathGitignored(filePath: string, cwd: string): Promise<boolean> {
-  const { code } = await execFileNoThrowWithCwd('git', ['check-ignore', filePath], {
+  const { code } = await execFileNoThrowWithCwd("git", ["check-ignore", filePath], {
     preserveOutputOnError: false,
     cwd,
   });
@@ -34,7 +34,7 @@ export async function isPathGitignored(filePath: string, cwd: string): Promise<b
  * @returns The path to the global gitignore file
  */
 export function getGlobalGitignorePath(): string {
-  return join(homedir(), '.config', 'git', 'ignore');
+  return join(homedir(), ".config", "git", "ignore");
 }
 
 /**
@@ -55,7 +55,7 @@ export async function addFileGlobRuleToGitignore(
     // First check if the pattern is already ignored by any gitignore file (including global)
     const gitignoreEntry = `**/${filename}`;
     // For directory patterns (ending with /), check with a sample file inside
-    const testPath = filename.endsWith('/') ? `${filename}sample-file.txt` : filename;
+    const testPath = filename.endsWith("/") ? `${filename}sample-file.txt` : filename;
     if (await isPathGitignored(testPath, cwd)) {
       // File is already ignored by existing patterns (local or global)
       return;
@@ -70,16 +70,16 @@ export async function addFileGlobRuleToGitignore(
 
     // Add the entry to the global gitignore
     try {
-      const content = await readFile(globalGitignorePath, { encoding: 'utf-8' });
+      const content = await readFile(globalGitignorePath, { encoding: "utf-8" });
       if (content.includes(gitignoreEntry)) {
         return; // Pattern already exists, don't add again
       }
       await appendFile(globalGitignorePath, `\n${gitignoreEntry}\n`);
     } catch (e: unknown) {
       const code = getErrnoCode(e);
-      if (code === 'ENOENT') {
+      if (code === "ENOENT") {
         // Create global gitignore with entry
-        await writeFile(globalGitignorePath, `${gitignoreEntry}\n`, 'utf-8');
+        await writeFile(globalGitignorePath, `${gitignoreEntry}\n`, "utf-8");
       } else {
         throw e;
       }

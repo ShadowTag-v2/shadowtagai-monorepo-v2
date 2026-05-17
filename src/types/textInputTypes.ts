@@ -1,13 +1,13 @@
-import type { UUID } from 'node:crypto';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import type React from 'react';
-import type { PermissionResult } from '../entrypoints/agentSdkTypes.js';
-import type { Key } from '../ink.js';
-import type { PastedContent } from '../utils/config.js';
-import type { ImageDimensions } from '../utils/imageResizer.js';
-import type { TextHighlight } from '../utils/textHighlighting.js';
-import type { AgentId } from './ids.js';
-import type { AssistantMessage, MessageOrigin } from './message.js';
+import type { UUID } from "node:crypto";
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import type React from "react";
+import type { PermissionResult } from "../entrypoints/agentSdkTypes.js";
+import type { Key } from "../ink.js";
+import type { PastedContent } from "../utils/config.js";
+import type { ImageDimensions } from "../utils/imageResizer.js";
+import type { TextHighlight } from "../utils/textHighlighting.js";
+import type { AgentId } from "./ids.js";
+import type { AssistantMessage, MessageOrigin } from "./message.js";
 
 /**
  * Inline ghost text for mid-input command autocomplete
@@ -219,7 +219,7 @@ export type VimTextInputProps = BaseTextInputProps & {
 /**
  * Vim editor modes
  */
-export type VimMode = 'INSERT' | 'NORMAL';
+export type VimMode = "INSERT" | "NORMAL";
 
 /**
  * Common properties for input hook results
@@ -262,7 +262,7 @@ export type VimInputState = BaseInputState & {
 /**
  * Input modes for the prompt
  */
-export type PromptInputMode = 'bash' | 'prompt' | 'orphaned-permission' | 'task-notification';
+export type PromptInputMode = "bash" | "prompt" | "orphaned-permission" | "task-notification";
 
 export type EditablePromptInputMode = Exclude<PromptInputMode, `${string}-notification`>;
 
@@ -284,7 +284,7 @@ export type EditablePromptInputMode = Exclude<PromptInputMode, `${string}-notifi
  * The SleepTool is only available in proactive mode, so "wakes SleepTool"
  * is a no-op in normal mode.
  */
-export type QueuePriority = 'now' | 'next' | 'later';
+export type QueuePriority = "now" | "next" | "later";
 
 /**
  * Queued command type
@@ -358,7 +358,7 @@ export type QueuedCommand = {
  * ID list stay in sync.
  */
 export function isValidImagePaste(c: PastedContent): boolean {
-  return c.type === 'image' && c.content.length > 0;
+  return c.type === "image" && c.content.length > 0;
 }
 
 /** Extract image paste IDs from a QueuedCommand's pastedContents. */

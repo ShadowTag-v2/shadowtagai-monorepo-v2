@@ -6,30 +6,30 @@
 // audio module (macOS) or SoX for recording, and Anthropic's voice_stream
 // endpoint (conversation_engine) for STT.
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSetVoiceState } from '../context/voice.js';
-import { useTerminalFocus } from '../ink/hooks/use-terminal-focus.js';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useSetVoiceState } from "../context/voice.js";
+import { useTerminalFocus } from "../ink/hooks/use-terminal-focus.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import { getVoiceKeyterms } from '../services/voiceKeyterms.js';
+} from "../services/analytics/index.js";
+import { getVoiceKeyterms } from "../services/voiceKeyterms.js";
 import {
   connectVoiceStream,
   type FinalizeSource,
   isVoiceStreamAvailable,
   type VoiceStreamConnection,
-} from '../services/voiceStreamSTT.js';
-import { logForDebugging } from '../utils/debug.js';
-import { toError } from '../utils/errors.js';
-import { getSystemLocaleLanguage } from '../utils/intl.js';
-import { logError } from '../utils/log.js';
-import { getInitialSettings } from '../utils/settings/settings.js';
-import { sleep } from '../utils/sleep.js';
+} from "../services/voiceStreamSTT.js";
+import { logForDebugging } from "../utils/debug.js";
+import { toError } from "../utils/errors.js";
+import { getSystemLocaleLanguage } from "../utils/intl.js";
+import { logError } from "../utils/log.js";
+import { getInitialSettings } from "../utils/settings/settings.js";
+import { sleep } from "../utils/sleep.js";
 
 // ─── Language normalization ─────────────────────────────────────────────
 
-const DEFAULT_STT_LANGUAGE = 'en';
+const DEFAULT_STT_LANGUAGE = "en";
 
 // Maps language names (English and native) to BCP-47 codes supported by
 // the voice_stream Deepgram backend.  Keys must be lowercase.
@@ -40,77 +40,77 @@ const DEFAULT_STT_LANGUAGE = 'en';
 // 1008 "Unsupported language" and voice breaks.  Unsupported languages
 // fall back to DEFAULT_STT_LANGUAGE so recording still works.
 const LANGUAGE_NAME_TO_CODE: Record<string, string> = {
-  english: 'en',
-  spanish: 'es',
-  español: 'es',
-  espanol: 'es',
-  french: 'fr',
-  français: 'fr',
-  francais: 'fr',
-  japanese: 'ja',
-  日本語: 'ja',
-  german: 'de',
-  deutsch: 'de',
-  portuguese: 'pt',
-  português: 'pt',
-  portugues: 'pt',
-  italian: 'it',
-  italiano: 'it',
-  korean: 'ko',
-  한국어: 'ko',
-  hindi: 'hi',
-  हिन्दी: 'hi',
-  हिंदी: 'hi',
-  indonesian: 'id',
-  'bahasa indonesia': 'id',
-  bahasa: 'id',
-  russian: 'ru',
-  русский: 'ru',
-  polish: 'pl',
-  polski: 'pl',
-  turkish: 'tr',
-  türkçe: 'tr',
-  turkce: 'tr',
-  dutch: 'nl',
-  nederlands: 'nl',
-  ukrainian: 'uk',
-  українська: 'uk',
-  greek: 'el',
-  ελληνικά: 'el',
-  czech: 'cs',
-  čeština: 'cs',
-  cestina: 'cs',
-  danish: 'da',
-  dansk: 'da',
-  swedish: 'sv',
-  svenska: 'sv',
-  norwegian: 'no',
-  norsk: 'no',
+  english: "en",
+  spanish: "es",
+  español: "es",
+  espanol: "es",
+  french: "fr",
+  français: "fr",
+  francais: "fr",
+  japanese: "ja",
+  日本語: "ja",
+  german: "de",
+  deutsch: "de",
+  portuguese: "pt",
+  português: "pt",
+  portugues: "pt",
+  italian: "it",
+  italiano: "it",
+  korean: "ko",
+  한국어: "ko",
+  hindi: "hi",
+  हिन्दी: "hi",
+  हिंदी: "hi",
+  indonesian: "id",
+  "bahasa indonesia": "id",
+  bahasa: "id",
+  russian: "ru",
+  русский: "ru",
+  polish: "pl",
+  polski: "pl",
+  turkish: "tr",
+  türkçe: "tr",
+  turkce: "tr",
+  dutch: "nl",
+  nederlands: "nl",
+  ukrainian: "uk",
+  українська: "uk",
+  greek: "el",
+  ελληνικά: "el",
+  czech: "cs",
+  čeština: "cs",
+  cestina: "cs",
+  danish: "da",
+  dansk: "da",
+  swedish: "sv",
+  svenska: "sv",
+  norwegian: "no",
+  norsk: "no",
 };
 
 // Subset of the GrowthBook speech_to_text_voice_stream_config allowlist.
 // Sending a code not in the server allowlist closes the connection.
 const SUPPORTED_LANGUAGE_CODES = new Set([
-  'en',
-  'es',
-  'fr',
-  'ja',
-  'de',
-  'pt',
-  'it',
-  'ko',
-  'hi',
-  'id',
-  'ru',
-  'pl',
-  'tr',
-  'nl',
-  'uk',
-  'el',
-  'cs',
-  'da',
-  'sv',
-  'no',
+  "en",
+  "es",
+  "fr",
+  "ja",
+  "de",
+  "pt",
+  "it",
+  "ko",
+  "hi",
+  "id",
+  "ru",
+  "pl",
+  "tr",
+  "nl",
+  "uk",
+  "el",
+  "cs",
+  "da",
+  "sv",
+  "no",
 ]);
 
 // Normalize a language preference string (from settings.language) to a
@@ -128,7 +128,7 @@ export function normalizeLanguageForSTT(language: string | undefined): {
   if (SUPPORTED_LANGUAGE_CODES.has(lower)) return { code: lower };
   const fromName = LANGUAGE_NAME_TO_CODE[lower];
   if (fromName) return { code: fromName };
-  const base = lower.split('-')[0];
+  const base = lower.split("-")[0];
   if (base && SUPPORTED_LANGUAGE_CODES.has(base)) return { code: base };
   return { code: DEFAULT_STT_LANGUAGE, fellBackFrom: language };
 }
@@ -137,10 +137,10 @@ export function normalizeLanguageForSTT(language: string | undefined): {
 // audio-capture-napi dependency) until voice input is actually activated.
 // On macOS, loading the native audio module can trigger a TCC microphone
 // permission prompt — we must avoid that until voice input is actually enabled.
-type VoiceModule = typeof import('../services/voice.js');
+type VoiceModule = typeof import("../services/voice.js");
 let voiceModule: VoiceModule | null = null;
 
-type VoiceState = 'idle' | 'recording' | 'processing';
+type VoiceState = "idle" | "recording" | "processing";
 
 type UseVoiceOptions = {
   onTranscript: (text: string) => void;
@@ -202,10 +202,10 @@ export function useVoice({
   enabled,
   focusMode,
 }: UseVoiceOptions): UseVoiceReturn {
-  const [state, setState] = useState<VoiceState>('idle');
-  const stateRef = useRef<VoiceState>('idle');
+  const [state, setState] = useState<VoiceState>("idle");
+  const stateRef = useRef<VoiceState>("idle");
   const connectionRef = useRef<VoiceStreamConnection | null>(null);
-  const accumulatedRef = useRef('');
+  const accumulatedRef = useRef("");
   const onTranscriptRef = useRef(onTranscript);
   const onErrorRef = useRef(onError);
   const cleanupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -305,17 +305,17 @@ export function useVoice({
       connectionRef.current.close();
       connectionRef.current = null;
     }
-    accumulatedRef.current = '';
+    accumulatedRef.current = "";
     audioLevelsRef.current = [];
     fullAudioRef.current = [];
     setVoiceState((prev) => {
-      if (prev.voiceInterimTranscript === '' && !prev.voiceAudioLevels.length) return prev;
-      return { ...prev, voiceInterimTranscript: '', voiceAudioLevels: [] };
+      if (prev.voiceInterimTranscript === "" && !prev.voiceAudioLevels.length) return prev;
+      return { ...prev, voiceInterimTranscript: "", voiceAudioLevels: [] };
     });
   }, [setVoiceState]);
 
   function finishRecording(): void {
-    logForDebugging('[voice] finishRecording: stopping recording, transitioning to processing');
+    logForDebugging("[voice] finishRecording: stopping recording, transitioning to processing");
     // Session ending — stale any in-flight attempt so its late onError
     // (conn 2 responding after user released key) doesn't double-fire on
     // top of the "check network" message below.
@@ -327,7 +327,7 @@ export function useVoice({
     // for sessions WITH speech; focusTriggered enables filtering sessions WITHOUT.
     const focusTriggered = focusTriggeredRef.current;
     focusTriggeredRef.current = false;
-    updateState('processing');
+    updateState("processing");
     voiceModule?.stopRecording();
     // Capture duration BEFORE the finalize round-trip so that the WebSocket
     // wait time is not included (otherwise a quick tap looks like > 2s).
@@ -350,7 +350,7 @@ export function useVoice({
     // session's gen and every staleness check would be a no-op.
     const myGen = sessionGenRef.current;
     const isStale = () => sessionGenRef.current !== myGen;
-    logForDebugging('[voice] Recording stopped');
+    logForDebugging("[voice] Recording stopped");
 
     // Send finalize and wait for the WebSocket to close before reading the
     // accumulated transcript.  The close handler promotes any unreported
@@ -369,12 +369,12 @@ export function useVoice({
         // backoff clears the same-pod rapid-reconnect race (same gap as the
         // early-error retry path below).
         if (
-          finalizeSource === 'no_data_timeout' &&
+          finalizeSource === "no_data_timeout" &&
           hadAudioSignal &&
           wsConnected &&
           !focusTriggered &&
           focusFlushedChars === 0 &&
-          accumulatedRef.current.trim() === '' &&
+          accumulatedRef.current.trim() === "" &&
           !silentDropRetriedRef.current &&
           fullAudioRef.current.length > 0
         ) {
@@ -382,7 +382,7 @@ export function useVoice({
           logForDebugging(
             `[voice] Silent-drop detected (no_data_timeout, ${String(fullAudioRef.current.length)} chunks); replaying on fresh connection`,
           );
-          logEvent('tengu_voice_silent_drop_replay', {
+          logEvent("tengu_voice_silent_drop_replay", {
             recordingDurationMs,
             chunkCount: fullAudioRef.current.length,
           });
@@ -402,7 +402,7 @@ export function useVoice({
                 onTranscript: (t, isFinal) => {
                   if (isStale()) return;
                   if (isFinal && t.trim()) {
-                    if (accumulatedRef.current) accumulatedRef.current += ' ';
+                    if (accumulatedRef.current) accumulatedRef.current += " ";
                     accumulatedRef.current += t.trim();
                   }
                 },
@@ -460,7 +460,7 @@ export function useVoice({
         // fallthrough and !conn (no-OAuth) paths bypass this → don't compute
         // COUNT(completed)/COUNT(started) as a success rate; the silent-drop
         // denominator (completed events only) is internally consistent.
-        logEvent('tengu_voice_recording_completed', {
+        logEvent("tengu_voice_recording_completed", {
           transcriptChars: text.length + focusFlushedChars,
           recordingDurationMs,
           hadAudioSignal,
@@ -485,27 +485,27 @@ export function useVoice({
           if (!wsConnected) {
             // WS never connected → audio never reached backend. Not a silent
             // drop; a connection failure (slow OAuth refresh, network, etc).
-            onErrorRef.current?.('Voice connection failed. Check your network and try again.');
+            onErrorRef.current?.("Voice connection failed. Check your network and try again.");
           } else if (!hadAudioSignal) {
             // Distinguish silent mic (capture issue) from speech not recognized.
             onErrorRef.current?.(
-              'No audio detected from microphone. Check that the correct input device is selected and that Claude Code has microphone access.',
+              "No audio detected from microphone. Check that the correct input device is selected and that Claude Code has microphone access.",
             );
           } else {
-            onErrorRef.current?.('No speech detected.');
+            onErrorRef.current?.("No speech detected.");
           }
         }
 
-        accumulatedRef.current = '';
+        accumulatedRef.current = "";
         setVoiceState((prev) => {
-          if (prev.voiceInterimTranscript === '') return prev;
-          return { ...prev, voiceInterimTranscript: '' };
+          if (prev.voiceInterimTranscript === "") return prev;
+          return { ...prev, voiceInterimTranscript: "" };
         });
-        updateState('idle');
+        updateState("idle");
       })
       .catch((err) => {
         logError(toError(err));
-        if (!isStale()) updateState('idle');
+        if (!isStale()) updateState("idle");
       });
   }
 
@@ -517,7 +517,7 @@ export function useVoice({
   // dlopen still blocks. The first voice keypress pays the dlopen cost instead.
   useEffect(() => {
     if (enabled && !voiceModule) {
-      void import('../services/voice.js').then((mod) => {
+      void import("../services/voice.js").then((mod) => {
         voiceModule = mod;
       });
     }
@@ -534,8 +534,8 @@ export function useVoice({
     focusSilenceTimerRef.current = setTimeout(
       (focusSilenceTimerRef, stateRef, focusTriggeredRef, silenceTimedOutRef, finishRecording) => {
         focusSilenceTimerRef.current = null;
-        if (stateRef.current === 'recording' && focusTriggeredRef.current) {
-          logForDebugging('[voice] Focus silence timeout — tearing down session');
+        if (stateRef.current === "recording" && focusTriggeredRef.current) {
+          logForDebugging("[voice] Focus silence timeout — tearing down session");
           silenceTimedOutRef.current = true;
           finishRecording();
         }
@@ -557,19 +557,19 @@ export function useVoice({
     if (!enabled || !focusMode) {
       // Focus mode was disabled while a focus-driven recording was active —
       // stop the recording so it doesn't linger until the silence timer fires.
-      if (focusTriggeredRef.current && stateRef.current === 'recording') {
-        logForDebugging('[voice] Focus mode disabled during recording, finishing');
+      if (focusTriggeredRef.current && stateRef.current === "recording") {
+        logForDebugging("[voice] Focus mode disabled during recording, finishing");
         finishRecording();
       }
       return;
     }
     let cancelled = false;
-    if (isFocused && stateRef.current === 'idle' && !silenceTimedOutRef.current) {
+    if (isFocused && stateRef.current === "idle" && !silenceTimedOutRef.current) {
       const beginFocusRecording = (): void => {
         // Re-check conditions — state or enabled/focusMode may have changed
         // during the await (effect cleanup sets cancelled).
-        if (cancelled || stateRef.current !== 'idle' || silenceTimedOutRef.current) return;
-        logForDebugging('[voice] Focus gained, starting recording session');
+        if (cancelled || stateRef.current !== "idle" || silenceTimedOutRef.current) return;
+        logForDebugging("[voice] Focus gained, starting recording session");
         focusTriggeredRef.current = true;
         void startRecordingSession();
         armFocusSilenceTimer();
@@ -579,7 +579,7 @@ export function useVoice({
       } else {
         // Voice module is loading (async import resolves from cache as a
         // microtask). Wait for it before starting the recording session.
-        void import('../services/voice.js').then((mod) => {
+        void import("../services/voice.js").then((mod) => {
           voiceModule = mod;
           beginFocusRecording();
         });
@@ -588,8 +588,8 @@ export function useVoice({
       // Clear the silence timeout flag on blur so the next focus
       // cycle re-arms recording.
       silenceTimedOutRef.current = false;
-      if (stateRef.current === 'recording') {
-        logForDebugging('[voice] Focus lost, finishing recording');
+      if (stateRef.current === "recording") {
+        logForDebugging("[voice] Focus lost, finishing recording");
         finishRecording();
       }
     }
@@ -601,7 +601,7 @@ export function useVoice({
   // ── Start a new recording session (voice_stream connect + audio) ──
   async function startRecordingSession(): Promise<void> {
     if (!voiceModule) {
-      onErrorRef.current?.('Voice module not loaded yet. Try again in a moment.');
+      onErrorRef.current?.("Voice module not loaded yet. Try again in a moment.");
       return;
     }
 
@@ -612,9 +612,9 @@ export function useVoice({
     //   and space auto-repeat leaks into the text input (100% repro)
     // - handleKeyEvent's `currentState === 'idle'` re-entry check below
     // If an await runs first, both see stale 'idle'. See PR #20873 review.
-    updateState('recording');
+    updateState("recording");
     recordingStartRef.current = Date.now();
-    accumulatedRef.current = '';
+    accumulatedRef.current = "";
     seenRepeatRef.current = false;
     hasAudioSignalRef.current = false;
     retryUsedRef.current = false;
@@ -627,14 +627,14 @@ export function useVoice({
     // ── Pre-check: can we actually record audio? ──────────────
     const availability = await voiceModule.checkRecordingAvailability();
     if (!availability.available) {
-      logForDebugging(`[voice] Recording not available: ${availability.reason ?? 'unknown'}`);
-      onErrorRef.current?.(availability.reason ?? 'Audio recording is not available.');
+      logForDebugging(`[voice] Recording not available: ${availability.reason ?? "unknown"}`);
+      onErrorRef.current?.(availability.reason ?? "Audio recording is not available.");
       cleanup();
-      updateState('idle');
+      updateState("idle");
       return;
     }
 
-    logForDebugging('[voice] Starting recording session, connecting voice stream');
+    logForDebugging("[voice] Starting recording session, connecting voice stream");
     // Clear any previous error
     setVoiceState((prev) => {
       if (!prev.voiceError) return prev;
@@ -648,7 +648,7 @@ export function useVoice({
 
     // Start recording IMMEDIATELY — audio is buffered until the WebSocket
     // opens, eliminating the 1-2s latency from waiting for OAuth + WS connect.
-    logForDebugging('[voice] startRecording: buffering audio while WebSocket connects');
+    logForDebugging("[voice] startRecording: buffering audio while WebSocket connects");
     audioLevelsRef.current = [];
     const started = await voiceModule.startRecording(
       (chunk: Buffer) => {
@@ -682,7 +682,7 @@ export function useVoice({
       },
       () => {
         // External end (e.g. device error) - treat as stop
-        if (stateRef.current === 'recording') {
+        if (stateRef.current === "recording") {
           finishRecording();
         }
       },
@@ -690,22 +690,22 @@ export function useVoice({
     );
 
     if (!started) {
-      logError(new Error('[voice] Recording failed — no audio tool found'));
+      logError(new Error("[voice] Recording failed — no audio tool found"));
       onErrorRef.current?.(
-        'Failed to start audio capture. Check that your microphone is accessible.',
+        "Failed to start audio capture. Check that your microphone is accessible.",
       );
       cleanup();
-      updateState('idle');
+      updateState("idle");
       setVoiceState((prev) => ({
         ...prev,
-        voiceError: 'Recording failed — no audio tool found',
+        voiceError: "Recording failed — no audio tool found",
       }));
       return;
     }
 
     const rawLanguage = getInitialSettings().language;
     const stt = normalizeLanguageForSTT(rawLanguage);
-    logEvent('tengu_voice_recording_started', {
+    logEvent("tengu_voice_recording_started", {
       focusTriggered: focusTriggeredRef.current,
       sttLanguage: stt.code as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       sttLanguageIsDefault: !rawLanguage?.trim(),
@@ -753,16 +753,16 @@ export function useVoice({
                 onTranscriptRef.current(text.trim());
                 focusFlushedCharsRef.current += text.trim().length;
                 setVoiceState((prev) => {
-                  if (prev.voiceInterimTranscript === '') return prev;
-                  return { ...prev, voiceInterimTranscript: '' };
+                  if (prev.voiceInterimTranscript === "") return prev;
+                  return { ...prev, voiceInterimTranscript: "" };
                 });
-                accumulatedRef.current = '';
+                accumulatedRef.current = "";
                 // User is actively speaking — reset the silence timer.
                 armFocusSilenceTimer();
               } else {
                 // Hold-to-talk: accumulate final transcripts separated by spaces
                 if (accumulatedRef.current) {
-                  accumulatedRef.current += ' ';
+                  accumulatedRef.current += " ";
                 }
                 accumulatedRef.current += text.trim();
                 logForDebugging(
@@ -786,7 +786,7 @@ export function useVoice({
               // Show accumulated finals + current interim as live preview
               const interim = text.trim();
               const preview = accumulatedRef.current
-                ? accumulatedRef.current + (interim ? ` ${interim}` : '')
+                ? accumulatedRef.current + (interim ? ` ${interim}` : "")
                 : interim;
               setVoiceState((prev) => {
                 if (prev.voiceInterimTranscript === preview) return prev;
@@ -815,18 +815,18 @@ export function useVoice({
             // they've ended. Fatal errors (Cloudflare bot challenge, auth
             // rejection) are the same failure on every retry attempt, so
             // fall through to surface the message.
-            if (!opts?.fatal && !sawTranscript && stateRef.current === 'recording') {
+            if (!opts?.fatal && !sawTranscript && stateRef.current === "recording") {
               if (!retryUsedRef.current) {
                 retryUsedRef.current = true;
                 logForDebugging(
                   `[voice] early voice_stream error (pre-transcript), retrying once: ${error}`,
                 );
-                logEvent('tengu_voice_stream_early_retry', {});
+                logEvent("tengu_voice_stream_early_retry", {});
                 connectionRef.current = null;
                 attemptGenRef.current++;
                 setTimeout(
                   (stateRef, attemptConnect, keyterms) => {
-                    if (stateRef.current === 'recording') {
+                    if (stateRef.current === "recording") {
                       attemptConnect(keyterms);
                     }
                   },
@@ -847,7 +847,7 @@ export function useVoice({
             audioBuffer.length = 0;
             focusTriggeredRef.current = false;
             cleanup();
-            updateState('idle');
+            updateState("idle");
           },
           onClose: () => {
             // no-op; lifecycle handled by cleanup()
@@ -857,7 +857,7 @@ export function useVoice({
             // still the current session. A zombie late-connecting WS from
             // an abandoned session can pass the 'recording' check if the
             // user has since started a new session.
-            if (isStale() || stateRef.current !== 'recording') {
+            if (isStale() || stateRef.current !== "recording") {
               conn.close();
               return;
             }
@@ -907,7 +907,7 @@ export function useVoice({
               releaseTimerRef.current = setTimeout(
                 (releaseTimerRef, stateRef, finishRecording) => {
                   releaseTimerRef.current = null;
-                  if (stateRef.current === 'recording') {
+                  if (stateRef.current === "recording") {
                     finishRecording();
                   }
                 },
@@ -929,20 +929,20 @@ export function useVoice({
           return;
         }
         if (!conn) {
-          logForDebugging('[voice] Failed to connect to voice_stream (no OAuth token?)');
+          logForDebugging("[voice] Failed to connect to voice_stream (no OAuth token?)");
           onErrorRef.current?.(
-            'Voice mode requires a Claude.ai account. Please run /login to sign in.',
+            "Voice mode requires a Claude.ai account. Please run /login to sign in.",
           );
           // Clear the audio buffer on failure
           audioBuffer.length = 0;
           cleanup();
-          updateState('idle');
+          updateState("idle");
           return;
         }
 
         // Safety check: if the user released the key before connectVoiceStream
         // resolved (but after onReady already ran), close the connection.
-        if (stateRef.current !== 'recording') {
+        if (stateRef.current !== "recording") {
           audioBuffer.length = 0;
           conn.close();
           return;
@@ -975,7 +975,7 @@ export function useVoice({
       }
       if (focusMode && silenceTimedOutRef.current) {
         // Focus session timed out due to silence — keypress re-arms it.
-        logForDebugging('[voice] Re-arming focus recording after silence timeout');
+        logForDebugging("[voice] Re-arming focus recording after silence timeout");
         silenceTimedOutRef.current = false;
         focusTriggeredRef.current = true;
         void startRecordingSession();
@@ -986,25 +986,25 @@ export function useVoice({
       const currentState = stateRef.current;
 
       // Ignore keypresses while processing
-      if (currentState === 'processing') {
+      if (currentState === "processing") {
         return;
       }
 
-      if (currentState === 'idle') {
-        logForDebugging('[voice] handleKeyEvent: idle, starting recording session immediately');
+      if (currentState === "idle") {
+        logForDebugging("[voice] handleKeyEvent: idle, starting recording session immediately");
         void startRecordingSession();
         // Fallback: if no auto-repeat arrives within REPEAT_FALLBACK_MS,
         // arm the release timer anyway (the user likely tapped and released).
         repeatFallbackTimerRef.current = setTimeout(
           (repeatFallbackTimerRef, stateRef, seenRepeatRef, releaseTimerRef, finishRecording) => {
             repeatFallbackTimerRef.current = null;
-            if (stateRef.current === 'recording' && !seenRepeatRef.current) {
-              logForDebugging('[voice] No auto-repeat seen, arming release timer via fallback');
+            if (stateRef.current === "recording" && !seenRepeatRef.current) {
+              logForDebugging("[voice] No auto-repeat seen, arming release timer via fallback");
               seenRepeatRef.current = true;
               releaseTimerRef.current = setTimeout(
                 (releaseTimerRef, stateRef, finishRecording) => {
                   releaseTimerRef.current = null;
-                  if (stateRef.current === 'recording') {
+                  if (stateRef.current === "recording") {
                     finishRecording();
                   }
                 },
@@ -1022,7 +1022,7 @@ export function useVoice({
           releaseTimerRef,
           finishRecording,
         );
-      } else if (currentState === 'recording') {
+      } else if (currentState === "recording") {
         // Second+ keypress while recording — auto-repeat has started.
         seenRepeatRef.current = true;
         if (repeatFallbackTimerRef.current) {
@@ -1039,11 +1039,11 @@ export function useVoice({
       // Only arm the release timer once auto-repeat has been seen.
       // The OS key repeat delay is ~500ms on macOS; without this gate
       // the 200ms timer fires before repeat starts, causing a false release.
-      if (stateRef.current === 'recording' && seenRepeatRef.current) {
+      if (stateRef.current === "recording" && seenRepeatRef.current) {
         releaseTimerRef.current = setTimeout(
           (releaseTimerRef, stateRef, finishRecording) => {
             releaseTimerRef.current = null;
-            if (stateRef.current === 'recording') {
+            if (stateRef.current === "recording") {
               finishRecording();
             }
           },
@@ -1059,9 +1059,9 @@ export function useVoice({
 
   // Cleanup only when disabled or unmounted - NOT on state changes
   useEffect(() => {
-    if (!enabled && stateRef.current !== 'idle') {
+    if (!enabled && stateRef.current !== "idle") {
       cleanup();
-      updateState('idle');
+      updateState("idle");
     }
     return () => {
       cleanup();

@@ -10,23 +10,23 @@
  * for extracted plugins used during a single session.
  */
 
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { logForDebugging } from '../debug.js';
-import { jsonParse, jsonStringify } from '../slowOperations.js';
-import { loadKnownMarketplacesConfigSafe } from './marketplaceManager.js';
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { logForDebugging } from "../debug.js";
+import { jsonParse, jsonStringify } from "../slowOperations.js";
+import { loadKnownMarketplacesConfigSafe } from "./marketplaceManager.js";
 import {
   type KnownMarketplacesFile,
   KnownMarketplacesFileSchema,
   type PluginMarketplace,
   PluginMarketplaceSchema,
-} from './schemas.js';
+} from "./schemas.js";
 import {
   atomicWriteToZipCache,
   getMarketplaceJsonRelativePath,
   getPluginZipCachePath,
   getZipCacheKnownMarketplacesPath,
-} from './zipCache.js';
+} from "./zipCache.js";
 
 // ── Metadata I/O ──
 
@@ -37,11 +37,11 @@ import {
  */
 export async function readZipCacheKnownMarketplaces(): Promise<KnownMarketplacesFile> {
   try {
-    const content = await readFile(getZipCacheKnownMarketplacesPath(), 'utf-8');
+    const content = await readFile(getZipCacheKnownMarketplacesPath(), "utf-8");
     const parsed = KnownMarketplacesFileSchema().safeParse(jsonParse(content));
     if (!parsed.success) {
       logForDebugging(`Invalid known_marketplaces.json in zip cache: ${parsed.error.message}`, {
-        level: 'error',
+        level: "error",
       });
       return {};
     }
@@ -73,7 +73,7 @@ export async function readMarketplaceJson(
   const relPath = getMarketplaceJsonRelativePath(marketplaceName);
   const fullPath = join(zipCachePath, relPath);
   try {
-    const content = await readFile(fullPath, 'utf-8');
+    const content = await readFile(fullPath, "utf-8");
     const parsed = jsonParse(content);
     const result = PluginMarketplaceSchema().safeParse(parsed);
     if (result.success) {
@@ -111,13 +111,13 @@ export async function saveMarketplaceJsonToZipCache(
  */
 async function readMarketplaceJsonContent(dir: string): Promise<string | null> {
   const candidates = [
-    join(dir, '.claude-plugin', 'marketplace.json'),
-    join(dir, 'marketplace.json'),
+    join(dir, ".claude-plugin", "marketplace.json"),
+    join(dir, "marketplace.json"),
     dir, // For URL sources, installLocation IS the marketplace JSON file
   ];
   for (const candidate of candidates) {
     try {
-      return await readFile(candidate, 'utf-8');
+      return await readFile(candidate, "utf-8");
     } catch {
       // ENOENT (doesn't exist) or EISDIR (directory) — try next
     }

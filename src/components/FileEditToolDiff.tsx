@@ -1,15 +1,15 @@
-import type { StructuredPatchHunk } from 'diff';
-import { Suspense, use, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { Box, Text } from '../ink.js';
-import type { FileEdit } from '../tools/FileEditTool/types.js';
-import { findActualString, preserveQuoteStyle } from '../tools/FileEditTool/utils.js';
-import { adjustHunkLineNumbers, CONTEXT_LINES, getPatchForDisplay } from '../utils/diff.js';
-import { logError } from '../utils/log.js';
-import { CHUNK_SIZE, openForScan, readCapped, scanForContext } from '../utils/readEditContext.js';
-import { firstLineOf } from '../utils/stringUtils.js';
-import { StructuredDiffList } from './StructuredDiffList.js';
+import type { StructuredPatchHunk } from "diff";
+import { Suspense, use, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { Box, Text } from "../ink.js";
+import type { FileEdit } from "../tools/FileEditTool/types.js";
+import { findActualString, preserveQuoteStyle } from "../tools/FileEditTool/utils.js";
+import { adjustHunkLineNumbers, CONTEXT_LINES, getPatchForDisplay } from "../utils/diff.js";
+import { logError } from "../utils/log.js";
+import { CHUNK_SIZE, openForScan, readCapped, scanForContext } from "../utils/readEditContext.js";
+import { firstLineOf } from "../utils/stringUtils.js";
+import { StructuredDiffList } from "./StructuredDiffList.js";
 
 type Props = {
   file_path: string;
@@ -33,7 +33,7 @@ export function FileEditToolDiff(props) {
   }
   const [dataPromise] = useState(t0);
   let t1;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = <DiffFrame placeholder={true} />;
     $[3] = t1;
   } else {
@@ -142,7 +142,7 @@ async function loadDiffData(file_path: string, edits: FileEdit[]): Promise<DiffD
       // replacements — structuredPatch needs before/after strings. replace_all
       // routes through the chunked path below (shows first-occurrence window;
       // matches within the slice still replace via edit.replace_all).
-      if (!single || single.old_string === '') {
+      if (!single || single.old_string === "") {
         const file = await readCapped(handle);
         if (file === null) return diffToolInputsOnly(file_path, valid);
         const normalized = valid.map((e) => normalizeEdit(file, e));
@@ -157,7 +157,7 @@ async function loadDiffData(file_path: string, edits: FileEdit[]): Promise<DiffD
         };
       }
       const ctx = await scanForContext(handle, single.old_string, CONTEXT_LINES);
-      if (ctx.truncated || ctx.content === '') {
+      if (ctx.truncated || ctx.content === "") {
         return diffToolInputsOnly(file_path, [single]);
       }
       const normalized = normalizeEdit(ctx.content, single);

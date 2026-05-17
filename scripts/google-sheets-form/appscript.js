@@ -15,7 +15,7 @@ const scriptProp = PropertiesService.getScriptProperties();
  */
 function _initialSetup() {
   const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  scriptProp.setProperty('key', activeSpreadsheet.getId());
+  scriptProp.setProperty("key", activeSpreadsheet.getId());
 }
 
 /**
@@ -27,10 +27,10 @@ function _doPost(e) {
   lock.tryLock(10000);
 
   try {
-    const doc = SpreadsheetApp.openById(scriptProp.getProperty('key'));
+    const doc = SpreadsheetApp.openById(scriptProp.getProperty("key"));
 
     // Route to correct sheet based on hidden "sheet_name" field
-    const sheetName = e.parameter.sheet_name || 'Sheet1';
+    const sheetName = e.parameter.sheet_name || "Sheet1";
     let sheet = doc.getSheetByName(sheetName);
 
     // Auto-create the sheet if it doesn't exist
@@ -38,15 +38,15 @@ function _doPost(e) {
       sheet = doc.insertSheet(sheetName);
       // Set default headers
       const defaultHeaders = [
-        'id',
-        'timestamp',
-        'name',
-        'email',
-        'firm',
-        'organization',
-        'inquiry_type',
-        'message',
-        'source',
+        "id",
+        "timestamp",
+        "name",
+        "email",
+        "firm",
+        "organization",
+        "inquiry_type",
+        "message",
+        "source",
       ];
       sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
     }
@@ -55,15 +55,15 @@ function _doPost(e) {
     const nextRow = sheet.getLastRow() + 1;
 
     const newRow = headers.map((header) => {
-      if (header === 'id') return Utilities.getUuid();
-      if (header === 'timestamp') return new Date().toISOString();
-      return sanitize(e.parameter[header] || '');
+      if (header === "id") return Utilities.getUuid();
+      if (header === "timestamp") return new Date().toISOString();
+      return sanitize(e.parameter[header] || "");
     });
 
     sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
 
     // Format as plain text to prevent formula injection
-    sheet.getRange(nextRow, 1, 1, newRow.length).setNumberFormat('@');
+    sheet.getRange(nextRow, 1, 1, newRow.length).setNumberFormat("@");
 
     // ── Email notification ──
     sendNotification(e.parameter, sheetName, nextRow);
@@ -73,7 +73,7 @@ function _doPost(e) {
 
     return ContentService.createTextOutput(
       JSON.stringify({
-        result: 'success',
+        result: "success",
         row: nextRow,
       }),
     ).setMimeType(ContentService.MimeType.JSON);
@@ -83,7 +83,7 @@ function _doPost(e) {
 
     return ContentService.createTextOutput(
       JSON.stringify({
-        result: 'error',
+        result: "error",
         error: err.toString(),
       }),
     ).setMimeType(ContentService.MimeType.JSON);
@@ -98,8 +98,8 @@ function _doPost(e) {
  * CSV/formula injection in Google Sheets.
  */
 function sanitize(value) {
-  if (typeof value !== 'string') return value;
-  const dangerousChars = ['=', '+', '-', '@'];
+  if (typeof value !== "string") return value;
+  const dangerousChars = ["=", "+", "-", "@"];
   if (dangerousChars.some((c) => value.startsWith(c))) {
     return `'${value}`;
   }
@@ -113,14 +113,14 @@ function sanitize(value) {
 function sendNotification(params, sheetName, row) {
   // ── CONFIGURE THESE ──
   const recipients = {
-    KovelAI: 'founder@kovelai.com',
-    ShadowTagAI: 'founder@shadowtagai.com',
+    KovelAI: "founder@kovelai.com",
+    ShadowTagAI: "founder@shadowtagai.com",
   };
 
-  const recipient = recipients[sheetName] || 'founder@kovelai.com';
-  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTagAI' : 'KovelAI';
+  const recipient = recipients[sheetName] || "founder@kovelai.com";
+  const senderName = sheetName === "ShadowTagAI" ? "ShadowTagAI" : "KovelAI";
 
-  const subject = `${senderName} — New ${params.inquiry_type || 'Contact'} Inquiry from ${params.name || 'Unknown'}`;
+  const subject = `${senderName} — New ${params.inquiry_type || "Contact"} Inquiry from ${params.name || "Unknown"}`;
 
   const body = `
     <div style="font-family: 'Inter', -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #e0e0e0; padding: 32px; border-radius: 12px;">
@@ -129,11 +129,11 @@ function sendNotification(params, sheetName, row) {
         <p style="color: #999; margin: 4px 0 0; font-size: 12px;">Row ${row} • ${new Date().toLocaleString()}</p>
       </div>
       <table style="width: 100%; border-collapse: collapse;">
-        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Name</td><td style="padding: 8px 0; color: #fff;">${params.name || '—'}</td></tr>
-        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Email</td><td style="padding: 8px 0; color: #c9a96e;">${params.email || '—'}</td></tr>
-        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Firm / Org</td><td style="padding: 8px 0; color: #fff;">${params.firm || params.organization || '—'}</td></tr>
-        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Type</td><td style="padding: 8px 0; color: #fff;">${params.inquiry_type || 'General'}</td></tr>
-        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; vertical-align: top;">Message</td><td style="padding: 8px 0; color: #fff; white-space: pre-wrap;">${params.message || '—'}</td></tr>
+        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Name</td><td style="padding: 8px 0; color: #fff;">${params.name || "—"}</td></tr>
+        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Email</td><td style="padding: 8px 0; color: #c9a96e;">${params.email || "—"}</td></tr>
+        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Firm / Org</td><td style="padding: 8px 0; color: #fff;">${params.firm || params.organization || "—"}</td></tr>
+        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Type</td><td style="padding: 8px 0; color: #fff;">${params.inquiry_type || "General"}</td></tr>
+        <tr><td style="padding: 8px 0; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; vertical-align: top;">Message</td><td style="padding: 8px 0; color: #fff; white-space: pre-wrap;">${params.message || "—"}</td></tr>
       </table>
       <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #333; font-size: 11px; color: #666;">
         Auto-forwarded via Google Apps Script • <a href="https://docs.google.com/spreadsheets" style="color: #c9a96e;">Open Spreadsheet</a>
@@ -157,15 +157,15 @@ function sendNotification(params, sheetName, row) {
 function sendAutoReply(params, sheetName) {
   if (!params.email) return;
 
-  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTagAI' : 'KovelAI';
-  const replyFrom = sheetName === 'ShadowTagAI' ? 'ShadowTagAI' : 'KovelAI';
+  const senderName = sheetName === "ShadowTagAI" ? "ShadowTagAI" : "KovelAI";
+  const replyFrom = sheetName === "ShadowTagAI" ? "ShadowTagAI" : "KovelAI";
 
   const subject = `Thank you for contacting ${senderName}`;
 
   const body = `
     <div style="font-family: 'Inter', -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #e0e0e0; padding: 32px; border-radius: 12px;">
       <div style="border-bottom: 2px solid #c9a96e; padding-bottom: 16px; margin-bottom: 24px;">
-        <h2 style="color: #c9a96e; margin: 0; font-size: 20px;">Thank You, ${params.name || 'there'}</h2>
+        <h2 style="color: #c9a96e; margin: 0; font-size: 20px;">Thank You, ${params.name || "there"}</h2>
       </div>
       <p style="color: #e0e0e0; line-height: 1.6;">
         We have received your inquiry and a member of our team will respond within 24 hours during business days.
@@ -195,10 +195,10 @@ function sendAutoReply(params, sheetName) {
 function sendErrorNotification(err, sheetName) {
   try {
     MailApp.sendEmail({
-      to: 'founder@kovelai.com',
-      subject: `[${sheetName || 'FormScript'}] Error in form submission`,
+      to: "founder@kovelai.com",
+      subject: `[${sheetName || "FormScript"}] Error in form submission`,
       body: `Form submission error:\n${err.toString()}`,
-      name: 'Form Script Alert',
+      name: "Form Script Alert",
     });
   } catch (_mailErr) {}
 }

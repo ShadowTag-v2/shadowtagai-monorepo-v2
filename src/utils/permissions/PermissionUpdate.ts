@@ -1,22 +1,22 @@
-import { posix } from 'node:path';
-import type { ToolPermissionContext } from '../../Tool.js';
+import { posix } from "node:path";
+import type { ToolPermissionContext } from "../../Tool.js";
 // Types extracted to src/types/permissions.ts to break import cycles
 import type {
   AdditionalWorkingDirectory,
   WorkingDirectorySource,
-} from '../../types/permissions.js';
-import { logForDebugging } from '../debug.js';
-import type { EditableSettingSource } from '../settings/constants.js';
-import { getSettingsForSource, updateSettingsForSource } from '../settings/settings.js';
-import { jsonStringify } from '../slowOperations.js';
-import { toPosixPath } from './filesystem.js';
-import type { PermissionRuleValue } from './PermissionRule.js';
-import type { PermissionUpdate, PermissionUpdateDestination } from './PermissionUpdateSchema.js';
+} from "../../types/permissions.js";
+import { logForDebugging } from "../debug.js";
+import type { EditableSettingSource } from "../settings/constants.js";
+import { getSettingsForSource, updateSettingsForSource } from "../settings/settings.js";
+import { jsonStringify } from "../slowOperations.js";
+import { toPosixPath } from "./filesystem.js";
+import type { PermissionRuleValue } from "./PermissionRule.js";
+import type { PermissionUpdate, PermissionUpdateDestination } from "./PermissionUpdateSchema.js";
 import {
   permissionRuleValueFromString,
   permissionRuleValueToString,
-} from './permissionRuleParser.js';
-import { addPermissionRulesToSettings } from './permissionsLoader.js';
+} from "./permissionRuleParser.js";
+import { addPermissionRulesToSettings } from "./permissionsLoader.js";
 
 // Re-export for backwards compatibility
 export type { AdditionalWorkingDirectory, WorkingDirectorySource };
@@ -26,7 +26,7 @@ export function extractRules(updates: PermissionUpdate[] | undefined): Permissio
 
   return updates.flatMap((update) => {
     switch (update.type) {
-      case 'addRules':
+      case "addRules":
         return update.rules;
       default:
         return [];
@@ -49,14 +49,14 @@ export function applyPermissionUpdate(
   update: PermissionUpdate,
 ): ToolPermissionContext {
   switch (update.type) {
-    case 'setMode':
+    case "setMode":
       logForDebugging(`Applying permission update: Setting mode to '${update.mode}'`);
       return {
         ...context,
         mode: update.mode,
       };
 
-    case 'addRules': {
+    case "addRules": {
       const ruleStrings = update.rules.map((rule) => permissionRuleValueToString(rule));
       logForDebugging(
         `Applying permission update: Adding ${update.rules.length} ${update.behavior} rule(s) to destination '${update.destination}': ${jsonStringify(ruleStrings)}`,
@@ -64,11 +64,11 @@ export function applyPermissionUpdate(
 
       // Determine which collection to update based on behavior
       const ruleKind =
-        update.behavior === 'allow'
-          ? 'alwaysAllowRules'
-          : update.behavior === 'deny'
-            ? 'alwaysDenyRules'
-            : 'alwaysAskRules';
+        update.behavior === "allow"
+          ? "alwaysAllowRules"
+          : update.behavior === "deny"
+            ? "alwaysDenyRules"
+            : "alwaysAskRules";
 
       return {
         ...context,
@@ -79,7 +79,7 @@ export function applyPermissionUpdate(
       };
     }
 
-    case 'replaceRules': {
+    case "replaceRules": {
       const ruleStrings = update.rules.map((rule) => permissionRuleValueToString(rule));
       logForDebugging(
         `Replacing all ${update.behavior} rules for destination '${update.destination}' with ${update.rules.length} rule(s): ${jsonStringify(ruleStrings)}`,
@@ -87,11 +87,11 @@ export function applyPermissionUpdate(
 
       // Determine which collection to update based on behavior
       const ruleKind =
-        update.behavior === 'allow'
-          ? 'alwaysAllowRules'
-          : update.behavior === 'deny'
-            ? 'alwaysDenyRules'
-            : 'alwaysAskRules';
+        update.behavior === "allow"
+          ? "alwaysAllowRules"
+          : update.behavior === "deny"
+            ? "alwaysDenyRules"
+            : "alwaysAskRules";
 
       return {
         ...context,
@@ -102,9 +102,9 @@ export function applyPermissionUpdate(
       };
     }
 
-    case 'addDirectories': {
+    case "addDirectories": {
       logForDebugging(
-        `Applying permission update: Adding ${update.directories.length} director${update.directories.length === 1 ? 'y' : 'ies'} with destination '${update.destination}': ${jsonStringify(update.directories)}`,
+        `Applying permission update: Adding ${update.directories.length} director${update.directories.length === 1 ? "y" : "ies"} with destination '${update.destination}': ${jsonStringify(update.directories)}`,
       );
       const newAdditionalDirs = new Map(context.additionalWorkingDirectories);
       for (const directory of update.directories) {
@@ -119,7 +119,7 @@ export function applyPermissionUpdate(
       };
     }
 
-    case 'removeRules': {
+    case "removeRules": {
       const ruleStrings = update.rules.map((rule) => permissionRuleValueToString(rule));
       logForDebugging(
         `Applying permission update: Removing ${update.rules.length} ${update.behavior} rule(s) from source '${update.destination}': ${jsonStringify(ruleStrings)}`,
@@ -127,11 +127,11 @@ export function applyPermissionUpdate(
 
       // Determine which collection to update based on behavior
       const ruleKind =
-        update.behavior === 'allow'
-          ? 'alwaysAllowRules'
-          : update.behavior === 'deny'
-            ? 'alwaysDenyRules'
-            : 'alwaysAskRules';
+        update.behavior === "allow"
+          ? "alwaysAllowRules"
+          : update.behavior === "deny"
+            ? "alwaysDenyRules"
+            : "alwaysAskRules";
 
       // Filter out the rules to be removed
       const existingRules = context[ruleKind][update.destination] || [];
@@ -147,9 +147,9 @@ export function applyPermissionUpdate(
       };
     }
 
-    case 'removeDirectories': {
+    case "removeDirectories": {
       logForDebugging(
-        `Applying permission update: Removing ${update.directories.length} director${update.directories.length === 1 ? 'y' : 'ies'}: ${jsonStringify(update.directories)}`,
+        `Applying permission update: Removing ${update.directories.length} director${update.directories.length === 1 ? "y" : "ies"}: ${jsonStringify(update.directories)}`,
       );
       const newAdditionalDirs = new Map(context.additionalWorkingDirectories);
       for (const directory of update.directories) {
@@ -188,9 +188,9 @@ export function supportsPersistence(
   destination: PermissionUpdateDestination,
 ): destination is EditableSettingSource {
   return (
-    destination === 'localSettings' ||
-    destination === 'userSettings' ||
-    destination === 'projectSettings'
+    destination === "localSettings" ||
+    destination === "userSettings" ||
+    destination === "projectSettings"
   );
 }
 
@@ -204,7 +204,7 @@ export function persistPermissionUpdate(update: PermissionUpdate): void {
   logForDebugging(`Persisting permission update: ${update.type} to source '${update.destination}'`);
 
   switch (update.type) {
-    case 'addRules': {
+    case "addRules": {
       logForDebugging(
         `Persisting ${update.rules.length} ${update.behavior} rule(s) to ${update.destination}`,
       );
@@ -218,9 +218,9 @@ export function persistPermissionUpdate(update: PermissionUpdate): void {
       break;
     }
 
-    case 'addDirectories': {
+    case "addDirectories": {
       logForDebugging(
-        `Persisting ${update.directories.length} director${update.directories.length === 1 ? 'y' : 'ies'} to ${update.destination}`,
+        `Persisting ${update.directories.length} director${update.directories.length === 1 ? "y" : "ies"} to ${update.destination}`,
       );
       const existingSettings = getSettingsForSource(update.destination);
       const existingDirs = existingSettings?.permissions?.additionalDirectories || [];
@@ -239,7 +239,7 @@ export function persistPermissionUpdate(update: PermissionUpdate): void {
       break;
     }
 
-    case 'removeRules': {
+    case "removeRules": {
       // Handle rule removal
       logForDebugging(
         `Removing ${update.rules.length} ${update.behavior} rule(s) from ${update.destination}`,
@@ -264,9 +264,9 @@ export function persistPermissionUpdate(update: PermissionUpdate): void {
       break;
     }
 
-    case 'removeDirectories': {
+    case "removeDirectories": {
       logForDebugging(
-        `Removing ${update.directories.length} director${update.directories.length === 1 ? 'y' : 'ies'} from ${update.destination}`,
+        `Removing ${update.directories.length} director${update.directories.length === 1 ? "y" : "ies"} from ${update.destination}`,
       );
       const existingSettings = getSettingsForSource(update.destination);
       const existingDirs = existingSettings?.permissions?.additionalDirectories || [];
@@ -283,7 +283,7 @@ export function persistPermissionUpdate(update: PermissionUpdate): void {
       break;
     }
 
-    case 'setMode': {
+    case "setMode": {
       logForDebugging(`Persisting mode '${update.mode}' to ${update.destination}`);
       updateSettingsForSource(update.destination, {
         permissions: {
@@ -293,7 +293,7 @@ export function persistPermissionUpdate(update: PermissionUpdate): void {
       break;
     }
 
-    case 'replaceRules': {
+    case "replaceRules": {
       logForDebugging(
         `Replacing all ${update.behavior} rules in ${update.destination} with ${update.rules.length} rule(s)`,
       );
@@ -327,13 +327,13 @@ export function persistPermissionUpdates(updates: PermissionUpdate[]): void {
  */
 export function createReadRuleSuggestion(
   dirPath: string,
-  destination: PermissionUpdateDestination = 'session',
+  destination: PermissionUpdateDestination = "session",
 ): PermissionUpdate | undefined {
   // Convert to POSIX format for pattern matching (handles Windows internally)
   const pathForPattern = toPosixPath(dirPath);
 
   // Root directory is too broad to be a reasonable permission target
-  if (pathForPattern === '/') {
+  if (pathForPattern === "/") {
     return undefined;
   }
 
@@ -343,14 +343,14 @@ export function createReadRuleSuggestion(
     : `${pathForPattern}/**`;
 
   return {
-    type: 'addRules',
+    type: "addRules",
     rules: [
       {
-        toolName: 'Read',
+        toolName: "Read",
         ruleContent,
       },
     ],
-    behavior: 'allow',
+    behavior: "allow",
     destination,
   };
 }

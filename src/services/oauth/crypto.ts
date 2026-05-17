@@ -1,7 +1,7 @@
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, randomBytes } from "node:crypto";
 
 function base64URLEncode(buffer: Buffer): string {
-  return buffer.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  return buffer.toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 
 export function generateCodeVerifier(): string {
@@ -9,7 +9,7 @@ export function generateCodeVerifier(): string {
 }
 
 export function generateCodeChallenge(verifier: string): string {
-  const hash = createHash('sha256');
+  const hash = createHash("sha256");
   hash.update(verifier);
   return base64URLEncode(hash.digest());
 }

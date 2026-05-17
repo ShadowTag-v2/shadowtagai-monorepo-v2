@@ -1,44 +1,44 @@
-import { randomUUID, type UUID } from 'node:crypto';
-import type { ContentBlockParam, TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import figures from 'figures';
-import type * as React from 'react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import { randomUUID, type UUID } from "node:crypto";
+import type { ContentBlockParam, TextBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import figures from "figures";
+import type * as React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { useAppState } from 'src/state/AppState.js';
+} from "src/services/analytics/index.js";
+import { useAppState } from "src/state/AppState.js";
 import {
   type DiffStats,
   fileHistoryCanRestore,
   fileHistoryEnabled,
   fileHistoryGetDiffStats,
-} from 'src/utils/fileHistory.js';
-import { logError } from 'src/utils/log.js';
-import { useExitOnCtrlCDWithKeybindings } from '../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { Box, Text } from '../ink.js';
-import { useKeybinding, useKeybindings } from '../keybindings/useKeybinding.js';
-import type { Message, PartialCompactDirection, UserMessage } from '../types/message.js';
-import { stripDisplayTags } from '../utils/displayTags.js';
+} from "src/utils/fileHistory.js";
+import { logError } from "src/utils/log.js";
+import { useExitOnCtrlCDWithKeybindings } from "../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { Box, Text } from "../ink.js";
+import { useKeybinding, useKeybindings } from "../keybindings/useKeybinding.js";
+import type { Message, PartialCompactDirection, UserMessage } from "../types/message.js";
+import { stripDisplayTags } from "../utils/displayTags.js";
 import {
   createUserMessage,
   extractTag,
   isEmptyMessageText,
   isSyntheticMessage,
   isToolUseResultMessage,
-} from '../utils/messages.js';
-import { type OptionWithDescription, Select } from './CustomSelect/select.js';
-import { Spinner } from './Spinner.js';
+} from "../utils/messages.js";
+import { type OptionWithDescription, Select } from "./CustomSelect/select.js";
+import { Spinner } from "./Spinner.js";
 
 function isTextBlock(block: ContentBlockParam): block is TextBlockParam {
-  return block.type === 'text';
+  return block.type === "text";
 }
 
-import * as path from 'node:path';
-import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
-import type { FileEditOutput } from 'src/tools/FileEditTool/types.js';
-import type { Output as FileWriteToolOutput } from 'src/tools/FileWriteTool/FileWriteTool.js';
+import * as path from "node:path";
+import { useTerminalSize } from "src/hooks/useTerminalSize.js";
+import type { FileEditOutput } from "src/tools/FileEditTool/types.js";
+import type { Output as FileWriteToolOutput } from "src/tools/FileWriteTool/FileWriteTool.js";
 import {
   BASH_STDERR_TAG,
   BASH_STDOUT_TAG,
@@ -48,22 +48,22 @@ import {
   TASK_NOTIFICATION_TAG,
   TEAMMATE_MESSAGE_TAG,
   TICK_TAG,
-} from '../constants/xml.js';
-import { count } from '../utils/array.js';
-import { formatRelativeTimeAgo, truncate } from '../utils/format.js';
-import { Divider } from './design-system/Divider.js';
+} from "../constants/xml.js";
+import { count } from "../utils/array.js";
+import { formatRelativeTimeAgo, truncate } from "../utils/format.js";
+import { Divider } from "./design-system/Divider.js";
 
 type RestoreOption =
-  | 'both'
-  | 'conversation'
-  | 'code'
-  | 'summarize'
-  | 'summarize_up_to'
-  | 'nevermind';
+  | "both"
+  | "conversation"
+  | "code"
+  | "summarize"
+  | "summarize_up_to"
+  | "nevermind";
 function isSummarizeOption(
   option: RestoreOption | null,
-): option is 'summarize' | 'summarize_up_to' {
-  return option === 'summarize' || option === 'summarize_up_to';
+): option is "summarize" | "summarize_up_to" {
+  return option === "summarize" || option === "summarize_up_to";
 }
 type Props = {
   messages: Message[];
@@ -100,7 +100,7 @@ export function MessageSelector({
       ...messages.filter(selectableUserMessagesFilter),
       {
         ...createUserMessage({
-          content: '',
+          content: "",
         }),
         uuid: currentUUID,
       } as UserMessage,
@@ -134,67 +134,67 @@ export function MessageSelector({
   }, [preselectedMessage, isFileHistoryEnabled, fileHistory]);
   const [isRestoring, setIsRestoring] = useState(false);
   const [restoringOption, setRestoringOption] = useState<RestoreOption | null>(null);
-  const [selectedRestoreOption, setSelectedRestoreOption] = useState<RestoreOption>('both');
+  const [selectedRestoreOption, setSelectedRestoreOption] = useState<RestoreOption>("both");
   // Per-option feedback state; Select's internal inputValues Map persists
   // per-option text independently, so sharing one variable would desync.
-  const [summarizeFromFeedback, setSummarizeFromFeedback] = useState('');
-  const [summarizeUpToFeedback, setSummarizeUpToFeedback] = useState('');
+  const [summarizeFromFeedback, setSummarizeFromFeedback] = useState("");
+  const [summarizeUpToFeedback, setSummarizeUpToFeedback] = useState("");
 
   // Generate options with summarize as input type for inline context
   function getRestoreOptions(canRestoreCode: boolean): OptionWithDescription<RestoreOption>[] {
     const baseOptions: OptionWithDescription<RestoreOption>[] = canRestoreCode
       ? [
           {
-            value: 'both',
-            label: 'Restore code and conversation',
+            value: "both",
+            label: "Restore code and conversation",
           },
           {
-            value: 'conversation',
-            label: 'Restore conversation',
+            value: "conversation",
+            label: "Restore conversation",
           },
           {
-            value: 'code',
-            label: 'Restore code',
+            value: "code",
+            label: "Restore code",
           },
         ]
       : [
           {
-            value: 'conversation',
-            label: 'Restore conversation',
+            value: "conversation",
+            label: "Restore conversation",
           },
         ];
     const summarizeInputProps = {
-      type: 'input' as const,
-      placeholder: 'add context (optional)',
-      initialValue: '',
+      type: "input" as const,
+      placeholder: "add context (optional)",
+      initialValue: "",
       allowEmptySubmitToCancel: true,
       showLabelWithValue: true,
-      labelValueSeparator: ': ',
+      labelValueSeparator: ": ",
     };
     baseOptions.push({
-      value: 'summarize',
-      label: 'Summarize from here',
+      value: "summarize",
+      label: "Summarize from here",
       ...summarizeInputProps,
       onChange: setSummarizeFromFeedback,
     });
-    if ('external' === 'ant') {
+    if ("external" === "ant") {
       baseOptions.push({
-        value: 'summarize_up_to',
-        label: 'Summarize up to here',
+        value: "summarize_up_to",
+        label: "Summarize up to here",
         ...summarizeInputProps,
         onChange: setSummarizeUpToFeedback,
       });
     }
     baseOptions.push({
-      value: 'nevermind',
-      label: 'Never mind',
+      value: "nevermind",
+      label: "Never mind",
     });
     return baseOptions;
   }
 
   // Log when selector is opened
   useEffect(() => {
-    logEvent('tengu_message_selector_opened', {});
+    logEvent("tengu_message_selector_opened", {});
   }, []);
 
   // Helper to restore conversation without confirmation
@@ -214,7 +214,7 @@ export function MessageSelector({
   async function handleSelect(message_0: UserMessage) {
     const index = messages.indexOf(message_0);
     const indexFromEnd = messages.length - 1 - index;
-    logEvent('tengu_message_selector_selected', {
+    logEvent("tengu_message_selector_selected", {
       index_from_end: indexFromEnd,
       message_type: message_0.type as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       is_current_prompt: false,
@@ -234,14 +234,14 @@ export function MessageSelector({
     setDiffStatsForRestore(diffStats);
   }
   async function onSelectRestoreOption(option: RestoreOption) {
-    logEvent('tengu_message_selector_restore_option_selected', {
+    logEvent("tengu_message_selector_restore_option_selected", {
       option: option as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
     if (!messageToRestore) {
-      setError('Message not found.');
+      setError("Message not found.");
       return;
     }
-    if (option === 'nevermind') {
+    if (option === "nevermind") {
       if (preselectedMessage) onClose();
       else setMessageToRestore(undefined);
       return;
@@ -252,9 +252,9 @@ export function MessageSelector({
       setRestoringOption(option);
       setError(undefined);
       try {
-        const direction = option === 'summarize_up_to' ? 'up_to' : 'from';
+        const direction = option === "summarize_up_to" ? "up_to" : "from";
         const feedback =
-          (direction === 'up_to' ? summarizeUpToFeedback : summarizeFromFeedback).trim() ||
+          (direction === "up_to" ? summarizeUpToFeedback : summarizeFromFeedback).trim() ||
           undefined;
         await onSummarize(messageToRestore, feedback, direction);
         setIsRestoring(false);
@@ -275,7 +275,7 @@ export function MessageSelector({
     setError(undefined);
     let codeError: Error | null = null;
     let conversationError: Error | null = null;
-    if (option === 'code' || option === 'both') {
+    if (option === "code" || option === "both") {
       try {
         await onRestoreCode(messageToRestore);
       } catch (error_2) {
@@ -283,7 +283,7 @@ export function MessageSelector({
         logError(codeError);
       }
     }
-    if (option === 'conversation' || option === 'both') {
+    if (option === "conversation" || option === "both") {
       try {
         await onRestoreMessage(messageToRestore);
       } catch (error_3) {
@@ -313,7 +313,7 @@ export function MessageSelector({
       setMessageToRestore(undefined);
       return;
     }
-    logEvent('tengu_message_selector_cancelled', {});
+    logEvent("tengu_message_selector_cancelled", {});
     onClose();
   }, [onClose, messageToRestore, preselectedMessage]);
   const moveUp = useCallback(() => setSelectedIndex((prev) => Math.max(0, prev - 1)), []);
@@ -334,22 +334,22 @@ export function MessageSelector({
   }, [messageOptions, selectedIndex, handleSelect]);
 
   // Escape to close - uses Confirmation context where escape is bound
-  useKeybinding('confirm:no', handleEscape, {
-    context: 'Confirmation',
+  useKeybinding("confirm:no", handleEscape, {
+    context: "Confirmation",
     isActive: !messageToRestore,
   });
 
   // Message selector navigation keybindings
   useKeybindings(
     {
-      'messageSelector:up': moveUp,
-      'messageSelector:down': moveDown,
-      'messageSelector:top': jumpToTop,
-      'messageSelector:bottom': jumpToBottom,
-      'messageSelector:select': handleSelectCurrent,
+      "messageSelector:up": moveUp,
+      "messageSelector:down": moveDown,
+      "messageSelector:top": jumpToTop,
+      "messageSelector:bottom": jumpToBottom,
+      "messageSelector:select": handleSelectCurrent,
     },
     {
-      context: 'MessageSelector',
+      context: "MessageSelector",
       isActive: !isRestoring && !error && !messageToRestore && hasMessagesToSelect,
     },
   );
@@ -407,7 +407,7 @@ export function MessageSelector({
         {!error && messageToRestore && hasMessagesToSelect && (
           <>
             <Text>
-              Confirm you want to restore {!diffStatsForRestore && 'the conversation '}to the point
+              Confirm you want to restore {!diffStatsForRestore && "the conversation "}to the point
               before you sent this message:
             </Text>
             <Box
@@ -437,7 +437,7 @@ export function MessageSelector({
               <Select
                 isDisabled={isRestoring}
                 options={getRestoreOptions(!!canRestoreCode_0)}
-                defaultFocusValue={canRestoreCode_0 ? 'both' : 'conversation'}
+                defaultFocusValue={canRestoreCode_0 ? "both" : "conversation"}
                 onFocus={(value) => setSelectedRestoreOption(value as RestoreOption)}
                 onChange={(value_0) => onSelectRestoreOption(value_0 as RestoreOption)}
                 onCancel={() => (preselectedMessage ? onClose() : setMessageToRestore(undefined))}
@@ -480,17 +480,17 @@ export function MessageSelector({
                       <Box width={2} minWidth={2}>
                         {isSelected ? (
                           <Text color="permission" bold>
-                            {figures.pointer}{' '}
+                            {figures.pointer}{" "}
                           </Text>
                         ) : (
-                          <Text>{'  '}</Text>
+                          <Text>{"  "}</Text>
                         )}
                       </Box>
                       <Box flexDirection="column">
                         <Box flexShrink={1} height={1} overflow="hidden">
                           <UserMessageOption
                             userMessage={msg}
-                            color={isSelected ? 'suggestion' : undefined}
+                            color={isSelected ? "suggestion" : undefined}
                             isCurrent={isCurrent}
                             paddingRight={10}
                           />
@@ -529,7 +529,7 @@ export function MessageSelector({
             {exitState.pending ? (
               <>Press {exitState.keyName} again to exit</>
             ) : (
-              <>{!error && hasMessagesToSelect && 'Enter to continue · '}Esc to exit</>
+              <>{!error && hasMessagesToSelect && "Enter to continue · "}Esc to exit</>
             )}
           </Text>
         )}
@@ -539,23 +539,23 @@ export function MessageSelector({
 }
 function getRestoreOptionConversationText(option: RestoreOption): string {
   switch (option) {
-    case 'summarize':
-      return 'Messages after this point will be summarized.';
-    case 'summarize_up_to':
-      return 'Preceding messages will be summarized. This and subsequent messages will remain unchanged — you will stay at the end of the conversation.';
-    case 'both':
-    case 'conversation':
-      return 'The conversation will be forked.';
-    case 'code':
-    case 'nevermind':
-      return 'The conversation will be unchanged.';
+    case "summarize":
+      return "Messages after this point will be summarized.";
+    case "summarize_up_to":
+      return "Preceding messages will be summarized. This and subsequent messages will remain unchanged — you will stay at the end of the conversation.";
+    case "both":
+    case "conversation":
+      return "The conversation will be forked.";
+    case "code":
+    case "nevermind":
+      return "The conversation will be unchanged.";
   }
 }
 function RestoreOptionDescription(t0) {
   const $ = _c(11);
   const { selectedRestoreOption, canRestoreCode, diffStatsForRestore } = t0;
   const showCodeRestore =
-    canRestoreCode && (selectedRestoreOption === 'both' || selectedRestoreOption === 'code');
+    canRestoreCode && (selectedRestoreOption === "both" || selectedRestoreOption === "code");
   let t1;
   if ($[0] !== selectedRestoreOption) {
     t1 = getRestoreOptionConversationText(selectedRestoreOption);
@@ -612,7 +612,7 @@ function RestoreCodeConfirmation(t0) {
   }
   if (!diffStatsForRestore.filesChanged?.[0]) {
     let t1;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = <Text dimColor={true}>The code has not changed (nothing will be restored).</Text>;
       $[0] = t1;
     } else {
@@ -625,7 +625,7 @@ function RestoreCodeConfirmation(t0) {
   if (numFilesChanged === 1) {
     let t1;
     if ($[1] !== diffStatsForRestore.filesChanged[0]) {
-      t1 = path.basename(diffStatsForRestore.filesChanged[0] || '');
+      t1 = path.basename(diffStatsForRestore.filesChanged[0] || "");
       $[1] = diffStatsForRestore.filesChanged[0];
       $[2] = t1;
     } else {
@@ -636,7 +636,7 @@ function RestoreCodeConfirmation(t0) {
     if (numFilesChanged === 2) {
       let t1;
       if ($[3] !== diffStatsForRestore.filesChanged[0]) {
-        t1 = path.basename(diffStatsForRestore.filesChanged[0] || '');
+        t1 = path.basename(diffStatsForRestore.filesChanged[0] || "");
         $[3] = diffStatsForRestore.filesChanged[0];
         $[4] = t1;
       } else {
@@ -645,7 +645,7 @@ function RestoreCodeConfirmation(t0) {
       const file1 = t1;
       let t2;
       if ($[5] !== diffStatsForRestore.filesChanged[1]) {
-        t2 = path.basename(diffStatsForRestore.filesChanged[1] || '');
+        t2 = path.basename(diffStatsForRestore.filesChanged[1] || "");
         $[5] = diffStatsForRestore.filesChanged[1];
         $[6] = t2;
       } else {
@@ -656,7 +656,7 @@ function RestoreCodeConfirmation(t0) {
     } else {
       let t1;
       if ($[7] !== diffStatsForRestore.filesChanged[0]) {
-        t1 = path.basename(diffStatsForRestore.filesChanged[0] || '');
+        t1 = path.basename(diffStatsForRestore.filesChanged[0] || "");
         $[7] = diffStatsForRestore.filesChanged[0];
         $[8] = t1;
       } else {
@@ -750,7 +750,7 @@ function UserMessageOption(t0) {
     return t1;
   }
   const content = userMessage.message.content;
-  const lastBlock = typeof content === 'string' ? null : content[content.length - 1];
+  const lastBlock = typeof content === "string" ? null : content[content.length - 1];
   let T0;
   let T1;
   let t1;
@@ -767,14 +767,14 @@ function UserMessageOption(t0) {
     $[7] !== lastBlock ||
     $[8] !== paddingRight
   ) {
-    t6 = Symbol.for('react.early_return_sentinel');
+    t6 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const rawMessageText =
-        typeof content === 'string'
+        typeof content === "string"
           ? content.trim()
           : lastBlock && isTextBlock(lastBlock)
             ? lastBlock.text.trim()
-            : '(no prompt)';
+            : "(no prompt)";
       const messageText = stripDisplayTags(rawMessageText);
       if (isEmptyMessageText(messageText)) {
         let t7;
@@ -795,11 +795,11 @@ function UserMessageOption(t0) {
         t6 = t7;
         break bb0;
       }
-      if (messageText.includes('<bash-input>')) {
-        const input = extractTag(messageText, 'bash-input');
+      if (messageText.includes("<bash-input>")) {
+        const input = extractTag(messageText, "bash-input");
         if (input) {
           let t7;
-          if ($[20] === Symbol.for('react.memo_cache_sentinel')) {
+          if ($[20] === Symbol.for("react.memo_cache_sentinel")) {
             t7 = <Text color="bashBorder">!</Text>;
             $[20] = t7;
           } else {
@@ -809,7 +809,7 @@ function UserMessageOption(t0) {
             <Box flexDirection="row" width="100%">
               {t7}
               <Text color={color} dimColor={dimColor}>
-                {' '}
+                {" "}
                 {input}
               </Text>
             </Box>
@@ -819,8 +819,8 @@ function UserMessageOption(t0) {
       }
       if (messageText.includes(`<${COMMAND_MESSAGE_TAG}>`)) {
         const commandMessage = extractTag(messageText, COMMAND_MESSAGE_TAG);
-        const args = extractTag(messageText, 'command-args');
-        const isSkillFormat = extractTag(messageText, 'skill-format') === 'true';
+        const args = extractTag(messageText, "command-args");
+        const isSkillFormat = extractTag(messageText, "skill-format") === "true";
         if (commandMessage) {
           if (isSkillFormat) {
             t6 = (
@@ -844,14 +844,14 @@ function UserMessageOption(t0) {
         }
       }
       T1 = Box;
-      t4 = 'row';
-      t5 = '100%';
+      t4 = "row";
+      t5 = "100%";
       T0 = Text;
       t1 = color;
       t2 = dimColor;
       t3 = paddingRight
         ? truncate(messageText, columns - paddingRight, true)
-        : messageText.slice(0, 500).split('\n').slice(0, 4).join('\n');
+        : messageText.slice(0, 500).split("\n").slice(0, 4).join("\n");
     }
     $[3] = color;
     $[4] = columns;
@@ -877,7 +877,7 @@ function UserMessageOption(t0) {
     t5 = $[15];
     t6 = $[16];
   }
-  if (t6 !== Symbol.for('react.early_return_sentinel')) {
+  if (t6 !== Symbol.for("react.early_return_sentinel")) {
     return t6;
   }
   let t7;
@@ -947,12 +947,12 @@ function computeDiffStatsBetweenMessages(
       filesChanged.push(result.filePath);
     }
     try {
-      if ('type' in result && result.type === 'create') {
+      if ("type" in result && result.type === "create") {
         insertions += result.content.split(/\r?\n/).length;
       } else {
         for (const hunk of result.structuredPatch) {
-          const additions = count(hunk.lines, (line) => line.startsWith('+'));
-          const removals = count(hunk.lines, (line) => line.startsWith('-'));
+          const additions = count(hunk.lines, (line) => line.startsWith("+"));
+          const removals = count(hunk.lines, (line) => line.startsWith("-"));
           insertions += additions;
           deletions += removals;
         }
@@ -966,12 +966,12 @@ function computeDiffStatsBetweenMessages(
   };
 }
 export function selectableUserMessagesFilter(message: Message): message is UserMessage {
-  if (message.type !== 'user') {
+  if (message.type !== "user") {
     return false;
   }
   if (
     Array.isArray(message.message.content) &&
-    message.message.content[0]?.type === 'tool_result'
+    message.message.content[0]?.type === "tool_result"
   ) {
     return false;
   }
@@ -985,13 +985,13 @@ export function selectableUserMessagesFilter(message: Message): message is UserM
     return false;
   }
   const content = message.message.content;
-  const lastBlock = typeof content === 'string' ? null : content[content.length - 1];
+  const lastBlock = typeof content === "string" ? null : content[content.length - 1];
   const messageText =
-    typeof content === 'string'
+    typeof content === "string"
       ? content.trim()
       : lastBlock && isTextBlock(lastBlock)
         ? lastBlock.text.trim()
-        : '';
+        : "";
 
   // Filter out non-user-authored messages (command outputs, task notifications, ticks).
   if (
@@ -1021,17 +1021,17 @@ export function messagesAfterAreOnlySynthetic(messages: Message[], fromIndex: nu
     // Skip known non-meaningful message types
     if (isSyntheticMessage(msg)) continue;
     if (isToolUseResultMessage(msg)) continue;
-    if (msg.type === 'progress') continue;
-    if (msg.type === 'system') continue;
-    if (msg.type === 'attachment') continue;
-    if (msg.type === 'user' && msg.isMeta) continue;
+    if (msg.type === "progress") continue;
+    if (msg.type === "system") continue;
+    if (msg.type === "attachment") continue;
+    if (msg.type === "user" && msg.isMeta) continue;
 
     // Assistant with actual content = meaningful
-    if (msg.type === 'assistant') {
+    if (msg.type === "assistant") {
       const content = msg.message.content;
       if (Array.isArray(content)) {
         const hasMeaningfulContent = content.some(
-          (block) => (block.type === 'text' && block.text.trim()) || block.type === 'tool_use',
+          (block) => (block.type === "text" && block.text.trim()) || block.type === "tool_use",
         );
         if (hasMeaningfulContent) return false;
       }
@@ -1039,7 +1039,7 @@ export function messagesAfterAreOnlySynthetic(messages: Message[], fromIndex: nu
     }
 
     // User messages that aren't synthetic or meta = meaningful
-    if (msg.type === 'user') {
+    if (msg.type === "user") {
       return false;
     }
 

@@ -1,28 +1,28 @@
-import * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { Command } from '../commands.js';
-import { Box } from '../ink.js';
-import type { Screen } from '../screens/REPL.js';
-import type { Tools } from '../Tool.js';
-import type { RenderableMessage } from '../types/message.js';
+import * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { Command } from "../commands.js";
+import { Box } from "../ink.js";
+import type { Screen } from "../screens/REPL.js";
+import type { Tools } from "../Tool.js";
+import type { RenderableMessage } from "../types/message.js";
 import {
   getDisplayMessageFromCollapsed,
   getToolSearchOrReadInfo,
   getToolUseIdsFromCollapsedGroup,
   hasAnyToolInProgress,
-} from '../utils/collapseReadSearch.js';
+} from "../utils/collapseReadSearch.js";
 import {
   type buildMessageLookups,
   EMPTY_STRING_SET,
   getProgressMessagesFromLookup,
   getSiblingToolUseIDsFromLookup,
   getToolUseID,
-} from '../utils/messages.js';
-import { hasThinkingContent, Message } from './Message.js';
-import { MessageModel } from './MessageModel.js';
-import { shouldRenderStatically } from './Messages.js';
-import { MessageTimestamp } from './MessageTimestamp.js';
-import { OffscreenFreeze } from './OffscreenFreeze.js';
+} from "../utils/messages.js";
+import { hasThinkingContent, Message } from "./Message.js";
+import { MessageModel } from "./MessageModel.js";
+import { shouldRenderStatically } from "./Messages.js";
+import { MessageTimestamp } from "./MessageTimestamp.js";
+import { OffscreenFreeze } from "./OffscreenFreeze.js";
 export type Props = {
   message: RenderableMessage;
   /** Whether the previous message in renderableMessages is also a user message. */
@@ -66,12 +66,12 @@ export function hasContentAfterIndex(
 ): boolean {
   for (let i = index + 1; i < messages.length; i++) {
     const msg = messages[i];
-    if (msg?.type === 'assistant') {
+    if (msg?.type === "assistant") {
       const content = msg.message.content[0];
-      if (content?.type === 'thinking' || content?.type === 'redacted_thinking') {
+      if (content?.type === "thinking" || content?.type === "redacted_thinking") {
         continue;
       }
-      if (content?.type === 'tool_use') {
+      if (content?.type === "tool_use") {
         if (getToolSearchOrReadInfo(content.name, content.input, tools).isCollapsible) {
           continue;
         }
@@ -84,19 +84,19 @@ export function hasContentAfterIndex(
       }
       return true;
     }
-    if (msg?.type === 'system' || msg?.type === 'attachment') {
+    if (msg?.type === "system" || msg?.type === "attachment") {
       continue;
     }
     // Tool results arrive while the collapsed group is still being built
-    if (msg?.type === 'user') {
+    if (msg?.type === "user") {
       const content = msg.message.content[0];
-      if (content?.type === 'tool_result') {
+      if (content?.type === "tool_result") {
         continue;
       }
     }
     // Collapsible grouped_tool_use messages arrive transiently before being
     // merged into the current collapsed group on the next render cycle
-    if (msg?.type === 'grouped_tool_use') {
+    if (msg?.type === "grouped_tool_use") {
       const firstInput = msg.messages[0]?.message.content[0]?.input;
       if (getToolSearchOrReadInfo(msg.toolName, firstInput, tools).isCollapsible) {
         continue;
@@ -126,9 +126,9 @@ function MessageRowImpl(t0) {
     isLoading,
     lookups,
   } = t0;
-  const isTranscriptMode = screen === 'transcript';
-  const isGrouped = msg.type === 'grouped_tool_use';
-  const isCollapsed = msg.type === 'collapsed_read_search';
+  const isTranscriptMode = screen === "transcript";
+  const isGrouped = msg.type === "grouped_tool_use";
+  const isCollapsed = msg.type === "collapsed_read_search";
   let t1;
   if (
     $[0] !== hasContentAfter ||
@@ -214,7 +214,7 @@ function MessageRowImpl(t0) {
         if ($[26] !== inProgressToolUseIDs) {
           t6 = (m) => {
             const content = m.message.content[0];
-            return content?.type === 'tool_use' && inProgressToolUseIDs.has(content.id);
+            return content?.type === "tool_use" && inProgressToolUseIDs.has(content.id);
           };
           $[26] = inProgressToolUseIDs;
           $[27] = t6;
@@ -260,7 +260,7 @@ function MessageRowImpl(t0) {
   if ($[34] !== displayMsg || $[35] !== isTranscriptMode) {
     t5 =
       isTranscriptMode &&
-      displayMsg.type === 'assistant' &&
+      displayMsg.type === "assistant" &&
       displayMsg.message.content.some(_temp) &&
       (displayMsg.timestamp || displayMsg.message.model);
     $[34] = displayMsg;
@@ -386,19 +386,19 @@ function MessageRowImpl(t0) {
  * Exported for testing.
  */
 function _temp(c) {
-  return c.type === 'text';
+  return c.type === "text";
 }
 export function isMessageStreaming(
   msg: RenderableMessage,
   streamingToolUseIDs: Set<string>,
 ): boolean {
-  if (msg.type === 'grouped_tool_use') {
+  if (msg.type === "grouped_tool_use") {
     return msg.messages.some((m) => {
       const content = m.message.content[0];
-      return content?.type === 'tool_use' && streamingToolUseIDs.has(content.id);
+      return content?.type === "tool_use" && streamingToolUseIDs.has(content.id);
     });
   }
-  if (msg.type === 'collapsed_read_search') {
+  if (msg.type === "collapsed_read_search") {
     const toolIds = getToolUseIdsFromCollapsedGroup(msg);
     return toolIds.some((id) => streamingToolUseIDs.has(id));
   }
@@ -411,19 +411,19 @@ export function isMessageStreaming(
  * Exported for testing.
  */
 export function allToolsResolved(msg: RenderableMessage, resolvedToolUseIDs: Set<string>): boolean {
-  if (msg.type === 'grouped_tool_use') {
+  if (msg.type === "grouped_tool_use") {
     return msg.messages.every((m) => {
       const content = m.message.content[0];
-      return content?.type === 'tool_use' && resolvedToolUseIDs.has(content.id);
+      return content?.type === "tool_use" && resolvedToolUseIDs.has(content.id);
     });
   }
-  if (msg.type === 'collapsed_read_search') {
+  if (msg.type === "collapsed_read_search") {
     const toolIds = getToolUseIdsFromCollapsedGroup(msg);
     return toolIds.every((id) => resolvedToolUseIDs.has(id));
   }
-  if (msg.type === 'assistant') {
+  if (msg.type === "assistant") {
     const block = msg.message.content[0];
-    if (block?.type === 'server_tool_use') {
+    if (block?.type === "server_tool_use") {
       return resolvedToolUseIDs.has(block.id);
     }
   }
@@ -448,7 +448,7 @@ export function areMessageRowPropsEqual(prev: Props, next: Props): boolean {
   if (prev.verbose !== next.verbose) return false;
 
   // collapsed_read_search is never static in prompt mode (matches shouldRenderStatically)
-  if (prev.message.type === 'collapsed_read_search' && next.screen !== 'transcript') {
+  if (prev.message.type === "collapsed_read_search" && next.screen !== "transcript") {
     return false;
   }
 

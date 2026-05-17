@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { useContext } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, NoSelect, Text } from '../ink.js';
-import { Ratchet } from './design-system/Ratchet.js';
+import * as React from "react";
+import { useContext } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, NoSelect, Text } from "../ink.js";
+import { Ratchet } from "./design-system/Ratchet.js";
 
 type Props = {
   children: React.ReactNode;
@@ -16,10 +16,10 @@ export function MessageResponse(t0) {
     return children;
   }
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <NoSelect fromLeftEdge={true} flexShrink={0}>
-        <Text dimColor={true}>{'  '}⎿  </Text>
+        <Text dimColor={true}>{"  "}⎿  </Text>
       </NoSelect>
     );
     $[0] = t1;

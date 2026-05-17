@@ -6,11 +6,11 @@
  * affect the teammate mode for the current session.
  */
 
-import { getGlobalConfig } from '../../../utils/config.js';
-import { logForDebugging } from '../../../utils/debug.js';
-import { logError } from '../../../utils/log.js';
+import { getGlobalConfig } from "../../../utils/config.js";
+import { logForDebugging } from "../../../utils/debug.js";
+import { logError } from "../../../utils/log.js";
 
-export type TeammateMode = 'auto' | 'tmux' | 'in-process';
+export type TeammateMode = "auto" | "tmux" | "in-process";
 
 // Module-level variable to hold the captured mode at startup
 let initialTeammateMode: TeammateMode | null = null;
@@ -57,7 +57,7 @@ export function captureTeammateModeSnapshot(): void {
     logForDebugging(`[TeammateModeSnapshot] Captured from CLI override: ${initialTeammateMode}`);
   } else {
     const config = getGlobalConfig();
-    initialTeammateMode = config.teammateMode ?? 'auto';
+    initialTeammateMode = config.teammateMode ?? "auto";
     logForDebugging(`[TeammateModeSnapshot] Captured from config: ${initialTeammateMode}`);
   }
 }
@@ -71,11 +71,11 @@ export function getTeammateModeFromSnapshot(): TeammateMode {
     // This indicates an initialization bug - capture should happen in setup()
     logError(
       new Error(
-        'getTeammateModeFromSnapshot called before capture - this indicates an initialization bug',
+        "getTeammateModeFromSnapshot called before capture - this indicates an initialization bug",
       ),
     );
     captureTeammateModeSnapshot();
   }
   // Fallback to 'auto' if somehow still null (shouldn't happen, but safe)
-  return initialTeammateMode ?? 'auto';
+  return initialTeammateMode ?? "auto";
 }

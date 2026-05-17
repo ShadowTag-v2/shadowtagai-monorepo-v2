@@ -24,7 +24,7 @@ const XML_TAG_BLOCK_PATTERN = /<([a-z][\w-]*)(?:\s[^>]*)?>[\s\S]*?<\/\1>\n?/g;
  * (better to show something than nothing).
  */
 export function stripDisplayTags(text: string): string {
-  const result = text.replace(XML_TAG_BLOCK_PATTERN, '').trim();
+  const result = text.replace(XML_TAG_BLOCK_PATTERN, "").trim();
   return result || text;
 }
 
@@ -35,7 +35,7 @@ export function stripDisplayTags(text: string): string {
  * to skip pure-XML messages during bridge title derivation.
  */
 export function stripDisplayTagsAllowEmpty(text: string): string {
-  return text.replace(XML_TAG_BLOCK_PATTERN, '').trim();
+  return text.replace(XML_TAG_BLOCK_PATTERN, "").trim();
 }
 
 const IDE_CONTEXT_TAGS_PATTERN = /<(ide_opened_file|ide_selection)(?:\s[^>]*)?>[\s\S]*?<\/\1>\n?/g;
@@ -46,5 +46,5 @@ const IDE_CONTEXT_TAGS_PATTERN = /<(ide_opened_file|ide_selection)(?:\s[^>]*)?>[
  * including lowercase HTML like `<code>foo</code>` while dropping IDE noise.
  */
 export function stripIdeContextTags(text: string): string {
-  return text.replace(IDE_CONTEXT_TAGS_PATTERN, '').trim();
+  return text.replace(IDE_CONTEXT_TAGS_PATTERN, "").trim();
 }

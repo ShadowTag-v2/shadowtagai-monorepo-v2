@@ -18,14 +18,14 @@
  *   - Every interaction is logged for telemetry
  */
 
-'use client';
+"use client";
 
-import { useCallback, useMemo, useState } from 'react';
-import { DecisionBar } from './DecisionBar';
-import { DiffFile } from './DiffFile';
-import styles from './diff-view.module.css';
-import { FileNavigator } from './FileNavigator';
-import type { CommitAction, DiffViewProps } from './types';
+import { useCallback, useMemo, useState } from "react";
+import { DecisionBar } from "./DecisionBar";
+import { DiffFile } from "./DiffFile";
+import styles from "./diff-view.module.css";
+import { FileNavigator } from "./FileNavigator";
+import type { CommitAction, DiffViewProps } from "./types";
 
 export function DiffView({
   sessionId,
@@ -58,14 +58,14 @@ export function DiffView({
     setActiveFile(path);
     // Scroll to file element
     const el = document.getElementById(`diff-content-${path}`);
-    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
   const handleDecision = useCallback(
     async (action: CommitAction) => {
       setIsSubmitting(true);
       try {
-        const files = action === 'partial_accept' ? Array.from(selectedFiles) : undefined;
+        const files = action === "partial_accept" ? Array.from(selectedFiles) : undefined;
         onDecision(action, files);
       } finally {
         setIsSubmitting(false);
@@ -135,9 +135,9 @@ export function DiffView({
         selectedCount={selectedFiles.size}
         totalCount={diffs.length}
         isPartialMode={isPartialMode}
-        onAccept={() => handleDecision('accept')}
-        onReject={() => handleDecision('reject')}
-        onPartialAccept={() => handleDecision('partial_accept')}
+        onAccept={() => handleDecision("accept")}
+        onReject={() => handleDecision("reject")}
+        onPartialAccept={() => handleDecision("partial_accept")}
         isSubmitting={isSubmitting}
       />
     </main>

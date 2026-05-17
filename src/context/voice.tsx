@@ -1,18 +1,18 @@
-import type React from 'react';
-import { createContext, useContext, useState, useSyncExternalStore } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { createStore, type Store } from '../state/store.js';
+import type React from "react";
+import { createContext, useContext, useState, useSyncExternalStore } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { createStore, type Store } from "../state/store.js";
 export type VoiceState = {
-  voiceState: 'idle' | 'recording' | 'processing';
+  voiceState: "idle" | "recording" | "processing";
   voiceError: string | null;
   voiceInterimTranscript: string;
   voiceAudioLevels: number[];
   voiceWarmingUp: boolean;
 };
 const DEFAULT_STATE: VoiceState = {
-  voiceState: 'idle',
+  voiceState: "idle",
   voiceError: null,
-  voiceInterimTranscript: '',
+  voiceInterimTranscript: "",
   voiceAudioLevels: [],
   voiceWarmingUp: false,
 };
@@ -42,7 +42,7 @@ function _temp() {
 function useVoiceStore() {
   const store = useContext(VoiceContext);
   if (!store) {
-    throw new Error('useVoiceState must be used within a VoiceProvider');
+    throw new Error("useVoiceState must be used within a VoiceProvider");
   }
   return store;
 }

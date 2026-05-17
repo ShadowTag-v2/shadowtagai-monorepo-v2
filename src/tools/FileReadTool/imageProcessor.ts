@@ -1,5 +1,5 @@
-import type { Buffer } from 'node:buffer';
-import { isInBundledMode } from '../../utils/bundledMode.js';
+import type { Buffer } from "node:buffer";
+import { isInBundledMode } from "../../utils/bundledMode.js";
 
 export type SharpInstance = {
   metadata(): Promise<{ width: number; height: number; format: string }>;
@@ -39,20 +39,20 @@ export async function getImageProcessor(): Promise<SharpFunction> {
     // Try to load the native image processor first
     try {
       // Use the native image processor module
-      const imageProcessor = await import('image-processor-napi');
+      const imageProcessor = await import("image-processor-napi");
       const sharp = imageProcessor.sharp || imageProcessor.default;
       imageProcessorModule = { default: sharp };
       return sharp;
     } catch {
       // Fall back to sharp if native module is not available
       // biome-ignore lint/suspicious/noConsole: intentional warning
-      console.warn('Native image processor not available, falling back to sharp');
+      console.warn("Native image processor not available, falling back to sharp");
     }
   }
 
   // Use sharp for non-bundled builds or as fallback.
   // Single structural cast: our SharpFunction is a subset of sharp's actual type surface.
-  const imported = (await import('sharp')) as unknown as MaybeDefault<SharpFunction>;
+  const imported = (await import("sharp")) as unknown as MaybeDefault<SharpFunction>;
   const sharp = unwrapDefault(imported);
   imageProcessorModule = { default: sharp };
   return sharp;
@@ -68,7 +68,7 @@ export async function getImageCreator(): Promise<SharpCreator> {
     return imageCreatorModule.default;
   }
 
-  const imported = (await import('sharp')) as unknown as MaybeDefault<SharpCreator>;
+  const imported = (await import("sharp")) as unknown as MaybeDefault<SharpCreator>;
   const sharp = unwrapDefault(imported);
   imageCreatorModule = { default: sharp };
   return sharp;
@@ -78,5 +78,5 @@ export async function getImageCreator(): Promise<SharpCreator> {
 type MaybeDefault<T> = T | { default: T };
 
 function unwrapDefault<T extends (...args: never[]) => unknown>(mod: MaybeDefault<T>): T {
-  return typeof mod === 'function' ? mod : mod.default;
+  return typeof mod === "function" ? mod : mod.default;
 }

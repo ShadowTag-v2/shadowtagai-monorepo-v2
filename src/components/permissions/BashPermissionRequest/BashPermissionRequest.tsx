@@ -1,50 +1,50 @@
-import { feature } from 'bun:bundle';
-import figures from 'figures';
-import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text, useTheme } from '../../../ink.js';
-import { useKeybinding } from '../../../keybindings/useKeybinding.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../../services/analytics/growthbook.js';
+import { feature } from "bun:bundle";
+import figures from "figures";
+import type React from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text, useTheme } from "../../../ink.js";
+import { useKeybinding } from "../../../keybindings/useKeybinding.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../../services/analytics/growthbook.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../../services/analytics/index.js';
-import { sanitizeToolNameForAnalytics } from '../../../services/analytics/metadata.js';
-import { useAppState } from '../../../state/AppState.js';
-import { BashTool } from '../../../tools/BashTool/BashTool.js';
+} from "../../../services/analytics/index.js";
+import { sanitizeToolNameForAnalytics } from "../../../services/analytics/metadata.js";
+import { useAppState } from "../../../state/AppState.js";
+import { BashTool } from "../../../tools/BashTool/BashTool.js";
 import {
   getFirstWordPrefix,
   getSimpleCommandPrefix,
-} from '../../../tools/BashTool/bashPermissions.js';
-import { getDestructiveCommandWarning } from '../../../tools/BashTool/destructiveCommandWarning.js';
-import { parseSedEditCommand } from '../../../tools/BashTool/sedEditParser.js';
-import { shouldUseSandbox } from '../../../tools/BashTool/shouldUseSandbox.js';
-import { getCompoundCommandPrefixesStatic } from '../../../utils/bash/prefix.js';
+} from "../../../tools/BashTool/bashPermissions.js";
+import { getDestructiveCommandWarning } from "../../../tools/BashTool/destructiveCommandWarning.js";
+import { parseSedEditCommand } from "../../../tools/BashTool/sedEditParser.js";
+import { shouldUseSandbox } from "../../../tools/BashTool/shouldUseSandbox.js";
+import { getCompoundCommandPrefixesStatic } from "../../../utils/bash/prefix.js";
 import {
   createPromptRuleContent,
   generateGenericDescription,
   getBashPromptAllowDescriptions,
   isClassifierPermissionsEnabled,
-} from '../../../utils/permissions/bashClassifier.js';
-import { extractRules } from '../../../utils/permissions/PermissionUpdate.js';
-import type { PermissionUpdate } from '../../../utils/permissions/PermissionUpdateSchema.js';
-import { SandboxManager } from '../../../utils/sandbox/sandbox-adapter.js';
-import { Select } from '../../CustomSelect/select.js';
-import { ShimmerChar } from '../../Spinner/ShimmerChar.js';
-import { useShimmerAnimation } from '../../Spinner/useShimmerAnimation.js';
-import { type UnaryEvent, usePermissionRequestLogging } from '../hooks.js';
-import { PermissionDecisionDebugInfo } from '../PermissionDecisionDebugInfo.js';
-import { PermissionDialog } from '../PermissionDialog.js';
-import { PermissionExplainerContent, usePermissionExplainerUI } from '../PermissionExplanation.js';
-import type { PermissionRequestProps } from '../PermissionRequest.js';
-import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js';
-import { SedEditPermissionRequest } from '../SedEditPermissionRequest/SedEditPermissionRequest.js';
-import { useShellPermissionFeedback } from '../useShellPermissionFeedback.js';
-import { logUnaryPermissionEvent } from '../utils.js';
-import { bashToolUseOptions } from './bashToolUseOptions.js';
+} from "../../../utils/permissions/bashClassifier.js";
+import { extractRules } from "../../../utils/permissions/PermissionUpdate.js";
+import type { PermissionUpdate } from "../../../utils/permissions/PermissionUpdateSchema.js";
+import { SandboxManager } from "../../../utils/sandbox/sandbox-adapter.js";
+import { Select } from "../../CustomSelect/select.js";
+import { ShimmerChar } from "../../Spinner/ShimmerChar.js";
+import { useShimmerAnimation } from "../../Spinner/useShimmerAnimation.js";
+import { type UnaryEvent, usePermissionRequestLogging } from "../hooks.js";
+import { PermissionDecisionDebugInfo } from "../PermissionDecisionDebugInfo.js";
+import { PermissionDialog } from "../PermissionDialog.js";
+import { PermissionExplainerContent, usePermissionExplainerUI } from "../PermissionExplanation.js";
+import type { PermissionRequestProps } from "../PermissionRequest.js";
+import { PermissionRuleExplanation } from "../PermissionRuleExplanation.js";
+import { SedEditPermissionRequest } from "../SedEditPermissionRequest/SedEditPermissionRequest.js";
+import { useShellPermissionFeedback } from "../useShellPermissionFeedback.js";
+import { logUnaryPermissionEvent } from "../utils.js";
+import { bashToolUseOptions } from "./bashToolUseOptions.js";
 
-const CHECKING_TEXT = 'Attempting to auto-approve\u2026';
+const CHECKING_TEXT = "Attempting to auto-approve\u2026";
 
 // Isolates the 20fps shimmer clock from BashPermissionRequestInner. Before this
 // extraction, useShimmerAnimation lived inside the 535-line Inner body, so every
@@ -54,9 +54,9 @@ const CHECKING_TEXT = 'Attempting to auto-approve\u2026';
 // JSX tree was reconstructed 20-60 times per classifier check.
 function ClassifierCheckingSubtitle() {
   const $ = _c(6);
-  const [ref, glimmerIndex] = useShimmerAnimation('requesting', CHECKING_TEXT, false);
+  const [ref, glimmerIndex] = useShimmerAnimation("requesting", CHECKING_TEXT, false);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = [...CHECKING_TEXT];
     $[0] = t0;
   } else {
@@ -228,7 +228,7 @@ function BashPermissionRequestInner({
     explainerVisible: explainerState.visible,
   });
   const [showPermissionDebug, setShowPermissionDebug] = useState(false);
-  const [classifierDescription, setClassifierDescription] = useState(description || '');
+  const [classifierDescription, setClassifierDescription] = useState(description || "");
   // Track whether the initial description (from prop or async generation) was empty.
   // Once we receive a non-empty description, this stays false.
   const [initialClassifierDescriptionEmpty, setInitialClassifierDescriptionEmpty] = useState(
@@ -264,7 +264,7 @@ function BashPermissionRequestInner({
   // from the backend rule. When compound with 2+ rules, editablePrefix stays
   // undefined so bashToolUseOptions falls through to yes-apply-suggestions,
   // which saves all per-subcommand rules atomically.
-  const isCompound = toolUseConfirm.permissionResult.decisionReason?.type === 'subcommandResults';
+  const isCompound = toolUseConfirm.permissionResult.decisionReason?.type === "subcommandResults";
 
   // Editable prefix — initialize synchronously with the best prefix we can
   // extract without tree-sitter, then refine via tree-sitter for compound
@@ -280,7 +280,7 @@ function BashPermissionRequestInner({
       // Single rule → seed the editable input so the user can refine it.
       // Multiple/zero rules → undefined → yes-apply-suggestions handles it.
       const backendBashRules = extractRules(
-        'suggestions' in toolUseConfirm.permissionResult
+        "suggestions" in toolUseConfirm.permissionResult
           ? toolUseConfirm.permissionResult.suggestions
           : undefined,
       ).filter((r) => r.toolName === BashTool.name && r.ruleContent);
@@ -325,7 +325,7 @@ function BashPermissionRequestInner({
   // sufficient — no latch/ref needed. The feature() ternary keeps the property
   // read out of external builds (forbidden-string check).
   const [classifierWasChecking] = useState(
-    feature('BASH_CLASSIFIER') ? !!toolUseConfirm.classifierCheckInProgress : false,
+    feature("BASH_CLASSIFIER") ? !!toolUseConfirm.classifierCheckInProgress : false,
   );
 
   // These derive solely from the tool input (fixed for the dialog lifetime).
@@ -340,7 +340,7 @@ function BashPermissionRequestInner({
     isSandboxed: isSandboxed_0,
   } = useMemo(() => {
     const destructiveWarning = getFeatureValue_CACHED_MAY_BE_STALE(
-      'tengu_destructive_command_warning',
+      "tengu_destructive_command_warning",
       false,
     )
       ? getDestructiveCommandWarning(command)
@@ -355,8 +355,8 @@ function BashPermissionRequestInner({
   }, [command, toolUseConfirm.input]);
   const unaryEvent = useMemo<UnaryEvent>(
     () => ({
-      completion_type: 'tool_use_single',
-      language_name: 'none',
+      completion_type: "tool_use_single",
+      language_name: "none",
     }),
     [],
   );
@@ -369,7 +369,7 @@ function BashPermissionRequestInner({
     () =>
       bashToolUseOptions({
         suggestions:
-          toolUseConfirm.permissionResult.behavior === 'ask'
+          toolUseConfirm.permissionResult.behavior === "ask"
             ? toolUseConfirm.permissionResult.suggestions
             : undefined,
         decisionReason: toolUseConfirm.permissionResult.decisionReason,
@@ -402,59 +402,59 @@ function BashPermissionRequestInner({
   const handleToggleDebug = useCallback(() => {
     setShowPermissionDebug((prev) => !prev);
   }, []);
-  useKeybinding('permission:toggleDebug', handleToggleDebug, {
-    context: 'Confirmation',
+  useKeybinding("permission:toggleDebug", handleToggleDebug, {
+    context: "Confirmation",
   });
 
   // Allow Esc to dismiss the checkmark after auto-approval
   const handleDismissCheckmark = useCallback(() => {
     toolUseConfirm.onDismissCheckmark?.();
   }, [toolUseConfirm]);
-  useKeybinding('confirm:no', handleDismissCheckmark, {
-    context: 'Confirmation',
-    isActive: feature('BASH_CLASSIFIER') ? !!toolUseConfirm.classifierAutoApproved : false,
+  useKeybinding("confirm:no", handleDismissCheckmark, {
+    context: "Confirmation",
+    isActive: feature("BASH_CLASSIFIER") ? !!toolUseConfirm.classifierAutoApproved : false,
   });
   function onSelect(value_0: string) {
     // Map options to numeric values for analytics (strings not allowed in logEvent)
     let optionIndex: Record<string, number> = {
       yes: 1,
-      'yes-apply-suggestions': 2,
-      'yes-prefix-edited': 2,
+      "yes-apply-suggestions": 2,
+      "yes-prefix-edited": 2,
       no: 3,
     };
-    if (feature('BASH_CLASSIFIER')) {
+    if (feature("BASH_CLASSIFIER")) {
       optionIndex = {
         yes: 1,
-        'yes-apply-suggestions': 2,
-        'yes-prefix-edited': 2,
-        'yes-classifier-reviewed': 3,
+        "yes-apply-suggestions": 2,
+        "yes-prefix-edited": 2,
+        "yes-classifier-reviewed": 3,
         no: 4,
       };
     }
-    logEvent('tengu_permission_request_option_selected', {
+    logEvent("tengu_permission_request_option_selected", {
       option_index: optionIndex[value_0],
       explainer_visible: explainerState.visible,
     });
     const toolNameForAnalytics = sanitizeToolNameForAnalytics(
       toolUseConfirm.tool.name,
     ) as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
-    if (value_0 === 'yes-prefix-edited') {
-      const trimmedPrefix = (editablePrefix ?? '').trim();
-      logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
+    if (value_0 === "yes-prefix-edited") {
+      const trimmedPrefix = (editablePrefix ?? "").trim();
+      logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "accept");
       if (!trimmedPrefix) {
         toolUseConfirm.onAllow(toolUseConfirm.input, []);
       } else {
         const prefixUpdates: PermissionUpdate[] = [
           {
-            type: 'addRules',
+            type: "addRules",
             rules: [
               {
                 toolName: BashTool.name,
                 ruleContent: trimmedPrefix,
               },
             ],
-            behavior: 'allow',
-            destination: 'localSettings',
+            behavior: "allow",
+            destination: "localSettings",
           },
         ];
         toolUseConfirm.onAllow(toolUseConfirm.input, prefixUpdates);
@@ -462,23 +462,23 @@ function BashPermissionRequestInner({
       onDone();
       return;
     }
-    if (feature('BASH_CLASSIFIER') && value_0 === 'yes-classifier-reviewed') {
+    if (feature("BASH_CLASSIFIER") && value_0 === "yes-classifier-reviewed") {
       const trimmedDescription = classifierDescription.trim();
-      logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
+      logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "accept");
       if (!trimmedDescription) {
         toolUseConfirm.onAllow(toolUseConfirm.input, []);
       } else {
         const permissionUpdates: PermissionUpdate[] = [
           {
-            type: 'addRules',
+            type: "addRules",
             rules: [
               {
                 toolName: BashTool.name,
                 ruleContent: createPromptRuleContent(trimmedDescription),
               },
             ],
-            behavior: 'allow',
-            destination: 'session',
+            behavior: "allow",
+            destination: "session",
           },
         ];
         toolUseConfirm.onAllow(toolUseConfirm.input, permissionUpdates);
@@ -487,11 +487,11 @@ function BashPermissionRequestInner({
       return;
     }
     switch (value_0) {
-      case 'yes': {
+      case "yes": {
         const trimmedFeedback_0 = acceptFeedback.trim();
-        logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
+        logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "accept");
         // Log accept submission with feedback context
-        logEvent('tengu_accept_submitted', {
+        logEvent("tengu_accept_submitted", {
           toolName: toolNameForAnalytics,
           isMcp: toolUseConfirm.tool.isMcp ?? false,
           has_instructions: !!trimmedFeedback_0,
@@ -502,22 +502,22 @@ function BashPermissionRequestInner({
         onDone();
         break;
       }
-      case 'yes-apply-suggestions': {
-        logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
+      case "yes-apply-suggestions": {
+        logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "accept");
         // Extract suggestions if present (works for both 'ask' and 'passthrough' behaviors)
         const permissionUpdates_0 =
-          'suggestions' in toolUseConfirm.permissionResult
+          "suggestions" in toolUseConfirm.permissionResult
             ? toolUseConfirm.permissionResult.suggestions || []
             : [];
         toolUseConfirm.onAllow(toolUseConfirm.input, permissionUpdates_0);
         onDone();
         break;
       }
-      case 'no': {
+      case "no": {
         const trimmedFeedback = rejectFeedback.trim();
 
         // Log reject submission with feedback context
-        logEvent('tengu_reject_submitted', {
+        logEvent("tengu_reject_submitted", {
           toolName: toolNameForAnalytics,
           isMcp: toolUseConfirm.tool.isMcp ?? false,
           has_instructions: !!trimmedFeedback,
@@ -531,7 +531,7 @@ function BashPermissionRequestInner({
       }
     }
   }
-  const classifierSubtitle = feature('BASH_CLASSIFIER') ? (
+  const classifierSubtitle = feature("BASH_CLASSIFIER") ? (
     toolUseConfirm.classifierAutoApproved ? (
       <Text>
         <Text color="success">{figures.tick} Auto-approved</Text>
@@ -552,7 +552,7 @@ function BashPermissionRequestInner({
   return (
     <PermissionDialog
       workerBadge={workerBadge}
-      title={sandboxingEnabled_0 && !isSandboxed_0 ? 'Bash command (unsandboxed)' : 'Bash command'}
+      title={sandboxingEnabled_0 && !isSandboxed_0 ? "Bash command (unsandboxed)" : "Bash command"}
       subtitle={classifierSubtitle}
     >
       <Box flexDirection="column" paddingX={2} paddingY={1}>
@@ -598,7 +598,7 @@ function BashPermissionRequestInner({
                 <Text
                   color="warning"
                   dimColor={
-                    feature('BASH_CLASSIFIER') ? toolUseConfirm.classifierAutoApproved : false
+                    feature("BASH_CLASSIFIER") ? toolUseConfirm.classifierAutoApproved : false
                   }
                 >
                   {destructiveWarning_0}
@@ -606,13 +606,13 @@ function BashPermissionRequestInner({
               </Box>
             )}
             <Text
-              dimColor={feature('BASH_CLASSIFIER') ? toolUseConfirm.classifierAutoApproved : false}
+              dimColor={feature("BASH_CLASSIFIER") ? toolUseConfirm.classifierAutoApproved : false}
             >
               Do you want to proceed?
             </Text>
             <Select
               options={
-                feature('BASH_CLASSIFIER')
+                feature("BASH_CLASSIFIER")
                   ? toolUseConfirm.classifierAutoApproved
                     ? options.map((o) => ({
                         ...o,
@@ -622,7 +622,7 @@ function BashPermissionRequestInner({
                   : options
               }
               isDisabled={
-                feature('BASH_CLASSIFIER') ? toolUseConfirm.classifierAutoApproved : false
+                feature("BASH_CLASSIFIER") ? toolUseConfirm.classifierAutoApproved : false
               }
               inlineDescriptions
               onChange={onSelect}
@@ -634,11 +634,11 @@ function BashPermissionRequestInner({
           <Box justifyContent="space-between" marginTop={1}>
             <Text dimColor>
               Esc to cancel
-              {((focusedOption === 'yes' && !yesInputMode) ||
-                (focusedOption === 'no' && !noInputMode)) &&
-                ' · Tab to amend'}
+              {((focusedOption === "yes" && !yesInputMode) ||
+                (focusedOption === "no" && !noInputMode)) &&
+                " · Tab to amend"}
               {explainerState.enabled &&
-                ` · ctrl+e to ${explainerState.visible ? 'hide' : 'explain'}`}
+                ` · ctrl+e to ${explainerState.visible ? "hide" : "explain"}`}
             </Text>
             {toolUseContext.options.debug && <Text dimColor>Ctrl+d to show debug info</Text>}
           </Box>

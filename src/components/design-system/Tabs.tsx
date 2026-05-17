@@ -1,13 +1,13 @@
-import type React from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useIsInsideModal, useModalScrollRef } from '../../context/modalContext.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import ScrollBox from '../../ink/components/ScrollBox.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
-import type { Theme } from '../../utils/theme.js';
+import type React from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useIsInsideModal, useModalScrollRef } from "../../context/modalContext.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import ScrollBox from "../../ink/components/ScrollBox.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
+import type { Theme } from "../../utils/theme.js";
 
 type TabsProps = {
   children: Array<React.ReactElement<TabProps>>;
@@ -101,7 +101,7 @@ export function Tabs(t0) {
   const modalScrollRef = useModalScrollRef();
   const [headerFocused, setHeaderFocused] = useState(initialHeaderFocused);
   let t3;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = () => setHeaderFocused(true);
     $[0] = t3;
   } else {
@@ -109,7 +109,7 @@ export function Tabs(t0) {
   }
   const focusHeader = t3;
   let t4;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = () => setHeaderFocused(false);
     $[1] = t4;
   } else {
@@ -118,7 +118,7 @@ export function Tabs(t0) {
   const blurHeader = t4;
   const [optInCount, setOptInCount] = useState(0);
   let t5;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = () => {
       setOptInCount(_temp2);
       return () => setOptInCount(_temp3);
@@ -143,7 +143,7 @@ export function Tabs(t0) {
   let t7;
   if ($[3] !== t6) {
     t7 = {
-      context: 'Tabs',
+      context: "Tabs",
       isActive: t6,
     };
     $[3] = t6;
@@ -153,8 +153,8 @@ export function Tabs(t0) {
   }
   useKeybindings(
     {
-      'tabs:next': () => handleTabChange(1),
-      'tabs:previous': () => handleTabChange(-1),
+      "tabs:next": () => handleTabChange(1),
+      "tabs:previous": () => handleTabChange(-1),
     },
     t7,
   );
@@ -164,7 +164,7 @@ export function Tabs(t0) {
       if (!headerFocused || !optedIn || hidden) {
         return;
       }
-      if (e.key === 'down') {
+      if (e.key === "down") {
         e.preventDefault();
         setHeaderFocused(false);
       }
@@ -181,7 +181,7 @@ export function Tabs(t0) {
   let t10;
   if ($[9] !== t9) {
     t10 = {
-      context: 'Tabs',
+      context: "Tabs",
       isActive: t9,
     };
     $[9] = t9;
@@ -191,11 +191,11 @@ export function Tabs(t0) {
   }
   useKeybindings(
     {
-      'tabs:next': () => {
+      "tabs:next": () => {
         handleTabChange(1);
         setHeaderFocused(true);
       },
-      'tabs:previous': () => {
+      "tabs:previous": () => {
         handleTabChange(-1);
         setHeaderFocused(true);
       },
@@ -208,7 +208,7 @@ export function Tabs(t0) {
   const spacerWidth = useFullWidth ? Math.max(0, terminalWidth - usedWidth) : 0;
   const contentWidth = useFullWidth ? terminalWidth : undefined;
   const T0 = Box;
-  const t11 = 'column';
+  const t11 = "column";
   const t12 = 0;
   const t13 = true;
   const t14 = modalScrollRef ? 0 : undefined;
@@ -227,16 +227,16 @@ export function Tabs(t0) {
           <Text
             key={id}
             backgroundColor={hasColorCursor ? color : undefined}
-            color={hasColorCursor ? 'inverseText' : undefined}
+            color={hasColorCursor ? "inverseText" : undefined}
             inverse={isCurrent && !hasColorCursor}
             bold={isCurrent}
           >
-            {' '}
-            {title_0}{' '}
+            {" "}
+            {title_0}{" "}
           </Text>
         );
       })}
-      {spacerWidth > 0 && <Text>{' '.repeat(spacerWidth)}</Text>}
+      {spacerWidth > 0 && <Text>{" ".repeat(spacerWidth)}</Text>}
     </Box>
   );
   let t17;
@@ -264,7 +264,7 @@ export function Tabs(t0) {
         width={contentWidth}
         marginTop={hidden ? 0 : 1}
         height={contentHeight}
-        overflowY={contentHeight !== undefined ? 'hidden' : undefined}
+        overflowY={contentHeight !== undefined ? "hidden" : undefined}
       >
         {children}
       </Box>

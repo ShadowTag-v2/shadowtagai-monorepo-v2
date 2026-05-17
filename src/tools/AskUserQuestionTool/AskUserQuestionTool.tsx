@@ -1,39 +1,39 @@
-import { feature } from 'bun:bundle';
-import { c as _c } from 'react/compiler-runtime';
-import { getAllowedChannels, getQuestionPreviewFormat } from 'src/bootstrap/state.js';
-import { MessageResponse } from 'src/components/MessageResponse.js';
-import { BLACK_CIRCLE } from 'src/constants/figures.js';
-import { getModeColor } from 'src/utils/permissions/PermissionMode.js';
-import { z } from 'zod/v4';
-import { Box, Text } from '../../ink.js';
-import type { Tool } from '../../Tool.js';
-import { buildTool, type ToolDef } from '../../Tool.js';
-import { lazySchema } from '../../utils/lazySchema.js';
+import { feature } from "bun:bundle";
+import { c as _c } from "react/compiler-runtime";
+import { getAllowedChannels, getQuestionPreviewFormat } from "src/bootstrap/state.js";
+import { MessageResponse } from "src/components/MessageResponse.js";
+import { BLACK_CIRCLE } from "src/constants/figures.js";
+import { getModeColor } from "src/utils/permissions/PermissionMode.js";
+import { z } from "zod/v4";
+import { Box, Text } from "../../ink.js";
+import type { Tool } from "../../Tool.js";
+import { buildTool, type ToolDef } from "../../Tool.js";
+import { lazySchema } from "../../utils/lazySchema.js";
 import {
   ASK_USER_QUESTION_TOOL_CHIP_WIDTH,
   ASK_USER_QUESTION_TOOL_NAME,
   ASK_USER_QUESTION_TOOL_PROMPT,
   DESCRIPTION,
   PREVIEW_FEATURE_PROMPT,
-} from './prompt.js';
+} from "./prompt.js";
 
 const questionOptionSchema = lazySchema(() =>
   z.object({
     label: z
       .string()
       .describe(
-        'The display text for this option that the user will see and select. Should be concise (1-5 words) and clearly describe the choice.',
+        "The display text for this option that the user will see and select. Should be concise (1-5 words) and clearly describe the choice.",
       ),
     description: z
       .string()
       .describe(
-        'Explanation of what this option means or what will happen if chosen. Useful for providing context about trade-offs or implications.',
+        "Explanation of what this option means or what will happen if chosen. Useful for providing context about trade-offs or implications.",
       ),
     preview: z
       .string()
       .optional()
       .describe(
-        'Optional preview content rendered when this option is focused. Use for mockups, code snippets, or visual comparisons that help users compare options. See the tool description for the expected content format.',
+        "Optional preview content rendered when this option is focused. Use for mockups, code snippets, or visual comparisons that help users compare options. See the tool description for the expected content format.",
       ),
   }),
 );
@@ -60,7 +60,7 @@ const questionSchema = lazySchema(() =>
       .boolean()
       .default(false)
       .describe(
-        'Set to true to allow the user to select multiple options instead of just one. Use when choices are not mutually exclusive.',
+        "Set to true to allow the user to select multiple options instead of just one. Use when choices are not mutually exclusive.",
       ),
   }),
 );
@@ -69,14 +69,14 @@ const annotationsSchema = lazySchema(() => {
     preview: z
       .string()
       .optional()
-      .describe('The preview content of the selected option, if the question used previews.'),
-    notes: z.string().optional().describe('Free-text notes the user added to their selection.'),
+      .describe("The preview content of the selected option, if the question used previews."),
+    notes: z.string().optional().describe("Free-text notes the user added to their selection."),
   });
   return z
     .record(z.string(), annotationSchema)
     .optional()
     .describe(
-      'Optional per-question annotations from the user (e.g., notes on preview selections). Keyed by question text.',
+      "Optional per-question annotations from the user (e.g., notes on preview selections). Keyed by question text.",
     );
 });
 const UNIQUENESS_REFINE = {
@@ -100,13 +100,13 @@ const UNIQUENESS_REFINE = {
     }
     return true;
   },
-  message: 'Question texts must be unique, option labels must be unique within each question',
+  message: "Question texts must be unique, option labels must be unique within each question",
 } as const;
 const commonFields = lazySchema(() => ({
   answers: z
     .record(z.string(), z.string())
     .optional()
-    .describe('User answers collected by the permission component'),
+    .describe("User answers collected by the permission component"),
   annotations: annotationsSchema(),
   metadata: z
     .object({
@@ -118,7 +118,7 @@ const commonFields = lazySchema(() => ({
         ),
     })
     .optional()
-    .describe('Optional metadata for tracking and analytics purposes. Not displayed to user.'),
+    .describe("Optional metadata for tracking and analytics purposes. Not displayed to user."),
 }));
 const inputSchema = lazySchema(() =>
   z
@@ -127,7 +127,7 @@ const inputSchema = lazySchema(() =>
         .array(questionSchema())
         .min(1)
         .max(4)
-        .describe('Questions to ask the user (1-4 questions)'),
+        .describe("Questions to ask the user (1-4 questions)"),
       ...commonFields(),
     })
     .refine(UNIQUENESS_REFINE.check, {
@@ -137,11 +137,11 @@ const inputSchema = lazySchema(() =>
 type InputSchema = ReturnType<typeof inputSchema>;
 const outputSchema = lazySchema(() =>
   z.object({
-    questions: z.array(questionSchema()).describe('The questions that were asked'),
+    questions: z.array(questionSchema()).describe("The questions that were asked"),
     answers: z
       .record(z.string(), z.string())
       .describe(
-        'The answers provided by the user (question text -> answer string; multi-select answers are comma-separated)',
+        "The answers provided by the user (question text -> answer string; multi-select answers are comma-separated)",
       ),
     annotations: annotationsSchema(),
   }),
@@ -159,10 +159,10 @@ function AskUserQuestionResultMessage(t0) {
   const $ = _c(3);
   const { answers } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <Box flexDirection="row">
-        <Text color={getModeColor('default')}>{BLACK_CIRCLE} </Text>
+        <Text color={getModeColor("default")}>{BLACK_CIRCLE} </Text>
         <Text>User answered Claude's questions:</Text>
       </Box>
     );
@@ -197,7 +197,7 @@ function _temp(t0) {
 }
 export const AskUserQuestionTool: Tool<InputSchema, Output> = buildTool({
   name: ASK_USER_QUESTION_TOOL_NAME,
-  searchHint: 'prompt the user with a multiple-choice question',
+  searchHint: "prompt the user with a multiple-choice question",
   maxResultSizeChars: 100_000,
   shouldDefer: true,
   async description() {
@@ -219,7 +219,7 @@ export const AskUserQuestionTool: Tool<InputSchema, Output> = buildTool({
     return outputSchema();
   },
   userFacingName() {
-    return '';
+    return "";
   },
   isEnabled() {
     // When --channels is active the user is likely on Telegram/Discord, not
@@ -227,7 +227,7 @@ export const AskUserQuestionTool: Tool<InputSchema, Output> = buildTool({
     // the keyboard. Channel permission relay already skips
     // requiresUserInteraction() tools (interactiveHandler.ts) so there's
     // no alternate approval path.
-    if ((feature('KAIROS') || feature('KAIROS_CHANNELS')) && getAllowedChannels().length > 0) {
+    if ((feature("KAIROS") || feature("KAIROS_CHANNELS")) && getAllowedChannels().length > 0) {
       return false;
     }
     return true;
@@ -239,13 +239,13 @@ export const AskUserQuestionTool: Tool<InputSchema, Output> = buildTool({
     return true;
   },
   toAutoClassifierInput(input) {
-    return input.questions.map((q) => q.question).join(' | ');
+    return input.questions.map((q) => q.question).join(" | ");
   },
   requiresUserInteraction() {
     return true;
   },
   async validateInput({ questions }) {
-    if (getQuestionPreviewFormat() !== 'html') {
+    if (getQuestionPreviewFormat() !== "html") {
       return {
         result: true,
       };
@@ -268,8 +268,8 @@ export const AskUserQuestionTool: Tool<InputSchema, Output> = buildTool({
   },
   async checkPermissions(input) {
     return {
-      behavior: 'ask' as const,
-      message: 'Answer questions?',
+      behavior: "ask" as const,
+      message: "Answer questions?",
       updatedInput: input,
     };
   },
@@ -285,7 +285,7 @@ export const AskUserQuestionTool: Tool<InputSchema, Output> = buildTool({
   renderToolUseRejectedMessage() {
     return (
       <Box flexDirection="row" marginTop={1}>
-        <Text color={getModeColor('default')}>{BLACK_CIRCLE}&nbsp;</Text>
+        <Text color={getModeColor("default")}>{BLACK_CIRCLE}&nbsp;</Text>
         <Text>User declined to answer questions</Text>
       </Box>
     );
@@ -315,11 +315,11 @@ export const AskUserQuestionTool: Tool<InputSchema, Output> = buildTool({
         if (annotation?.notes) {
           parts.push(`user notes: ${annotation.notes}`);
         }
-        return parts.join(' ');
+        return parts.join(" ");
       })
-      .join(', ');
+      .join(", ");
     return {
-      type: 'tool_result',
+      type: "tool_result",
       content: `User has answered your questions: ${answersText}. You can now continue with the user's answers in mind.`,
       tool_use_id: toolUseID,
     };
@@ -332,13 +332,13 @@ export const AskUserQuestionTool: Tool<InputSchema, Output> = buildTool({
 function validateHtmlPreview(preview: string | undefined): string | null {
   if (preview === undefined) return null;
   if (/<\s*(html|body|!doctype)\b/i.test(preview)) {
-    return 'preview must be an HTML fragment, not a full document (no <html>, <body>, or <!DOCTYPE>)';
+    return "preview must be an HTML fragment, not a full document (no <html>, <body>, or <!DOCTYPE>)";
   }
   // SDK consumers typically set this via innerHTML — disallow executable/style
   // tags so a preview can't run code or restyle the host page. Inline event
   // handlers (onclick etc.) are still possible; consumers should sanitize.
   if (/<\s*(script|style)\b/i.test(preview)) {
-    return 'preview must not contain <script> or <style> tags. Use inline styles via the style attribute if needed.';
+    return "preview must not contain <script> or <style> tags. Use inline styles via the style attribute if needed.";
   }
   if (!/<[a-z][^>]*>/i.test(preview)) {
     return 'preview must contain HTML (previewFormat is set to "html"). Wrap content in a tag like <div> or <pre>.';

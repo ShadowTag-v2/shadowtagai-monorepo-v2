@@ -2,18 +2,18 @@ import type {
   AsyncHookJSONOutput,
   HookEvent,
   SyncHookJSONOutput,
-} from 'src/entrypoints/agentSdkTypes.js';
-import { logForDebugging } from '../debug.js';
-import type { ShellCommand } from '../ShellCommand.js';
-import { invalidateSessionEnvCache } from '../sessionEnvironment.js';
-import { jsonParse, jsonStringify } from '../slowOperations.js';
-import { emitHookResponse, startHookProgressInterval } from './hookEvents.js';
+} from "src/entrypoints/agentSdkTypes.js";
+import { logForDebugging } from "../debug.js";
+import type { ShellCommand } from "../ShellCommand.js";
+import { invalidateSessionEnvCache } from "../sessionEnvironment.js";
+import { jsonParse, jsonStringify } from "../slowOperations.js";
+import { emitHookResponse, startHookProgressInterval } from "./hookEvents.js";
 
 export type PendingAsyncHook = {
   processId: string;
   hookId: string;
   hookName: string;
-  hookEvent: HookEvent | 'StatusLine' | 'FileSuggestion';
+  hookEvent: HookEvent | "StatusLine" | "FileSuggestion";
   toolName?: string;
   pluginId?: string;
   startTime: number;
@@ -42,7 +42,7 @@ export function registerPendingAsyncHook({
   hookId: string;
   asyncResponse: AsyncHookJSONOutput;
   hookName: string;
-  hookEvent: HookEvent | 'StatusLine' | 'FileSuggestion';
+  hookEvent: HookEvent | "StatusLine" | "FileSuggestion";
   command: string;
   shellCommand: ShellCommand;
   toolName?: string;
@@ -59,7 +59,7 @@ export function registerPendingAsyncHook({
     getOutput: async () => {
       const taskOutput = pendingHooks.get(processId)?.shellCommand?.taskOutput;
       if (!taskOutput) {
-        return { stdout: '', stderr: '', output: '' };
+        return { stdout: "", stderr: "", output: "" };
       }
       const stdout = await taskOutput.getStdout();
       const stderr = taskOutput.getStderr();
@@ -89,12 +89,12 @@ export function getPendingAsyncHooks(): PendingAsyncHook[] {
 async function finalizeHook(
   hook: PendingAsyncHook,
   exitCode: number,
-  outcome: 'success' | 'error' | 'cancelled',
+  outcome: "success" | "error" | "cancelled",
 ): Promise<void> {
   hook.stopProgressInterval();
   const taskOutput = hook.shellCommand?.taskOutput;
-  const stdout = taskOutput ? await taskOutput.getStdout() : '';
-  const stderr = taskOutput?.getStderr() ?? '';
+  const stdout = taskOutput ? await taskOutput.getStdout() : "";
+  const stderr = taskOutput?.getStderr() ?? "";
   hook.shellCommand?.cleanup();
   emitHookResponse({
     hookId: hook.hookId,
@@ -113,7 +113,7 @@ export async function checkForAsyncHookResponses(): Promise<
     processId: string;
     response: SyncHookJSONOutput;
     hookName: string;
-    hookEvent: HookEvent | 'StatusLine' | 'FileSuggestion';
+    hookEvent: HookEvent | "StatusLine" | "FileSuggestion";
     toolName?: string;
     pluginId?: string;
     stdout: string;
@@ -125,7 +125,7 @@ export async function checkForAsyncHookResponses(): Promise<
     processId: string;
     response: SyncHookJSONOutput;
     hookName: string;
-    hookEvent: HookEvent | 'StatusLine' | 'FileSuggestion';
+    hookEvent: HookEvent | "StatusLine" | "FileSuggestion";
     toolName?: string;
     pluginId?: string;
     stdout: string;
@@ -141,8 +141,8 @@ export async function checkForAsyncHookResponses(): Promise<
 
   const settled = await Promise.allSettled(
     hooks.map(async (hook) => {
-      const stdout = (await hook.shellCommand?.taskOutput.getStdout()) ?? '';
-      const stderr = hook.shellCommand?.taskOutput.getStderr() ?? '';
+      const stdout = (await hook.shellCommand?.taskOutput.getStdout()) ?? "";
+      const stderr = hook.shellCommand?.taskOutput.getStderr() ?? "";
       logForDebugging(
         `Hooks: Checking hook ${hook.processId} (${hook.hookName}) - attachmentSent: ${hook.responseAttachmentSent}, stdout length: ${stdout.length}`,
       );
@@ -152,22 +152,22 @@ export async function checkForAsyncHookResponses(): Promise<
           `Hooks: Hook ${hook.processId} has no shell command, removing from registry`,
         );
         hook.stopProgressInterval();
-        return { type: 'remove' as const, processId: hook.processId };
+        return { type: "remove" as const, processId: hook.processId };
       }
 
       logForDebugging(`Hooks: Hook shell status ${hook.shellCommand.status}`);
 
-      if (hook.shellCommand.status === 'killed') {
+      if (hook.shellCommand.status === "killed") {
         logForDebugging(
           `Hooks: Hook ${hook.processId} is ${hook.shellCommand.status}, removing from registry`,
         );
         hook.stopProgressInterval();
         hook.shellCommand.cleanup();
-        return { type: 'remove' as const, processId: hook.processId };
+        return { type: "remove" as const, processId: hook.processId };
       }
 
-      if (hook.shellCommand.status !== 'completed') {
-        return { type: 'skip' as const };
+      if (hook.shellCommand.status !== "completed") {
+        return { type: "skip" as const };
       }
 
       if (hook.responseAttachmentSent || !stdout.trim()) {
@@ -175,10 +175,10 @@ export async function checkForAsyncHookResponses(): Promise<
           `Hooks: Skipping hook ${hook.processId} - already delivered/sent or no stdout`,
         );
         hook.stopProgressInterval();
-        return { type: 'remove' as const, processId: hook.processId };
+        return { type: "remove" as const, processId: hook.processId };
       }
 
-      const lines = stdout.split('\n');
+      const lines = stdout.split("\n");
       logForDebugging(`Hooks: Processing ${lines.length} lines of stdout for ${hook.processId}`);
 
       const execResult = await hook.shellCommand.result;
@@ -186,11 +186,11 @@ export async function checkForAsyncHookResponses(): Promise<
 
       let response: SyncHookJSONOutput = {};
       for (const line of lines) {
-        if (line.trim().startsWith('{')) {
+        if (line.trim().startsWith("{")) {
           logForDebugging(`Hooks: Found JSON line: ${line.trim().substring(0, 100)}...`);
           try {
             const parsed = jsonParse(line.trim());
-            if (!('async' in parsed)) {
+            if (!("async" in parsed)) {
               logForDebugging(
                 `Hooks: Found sync response from ${hook.processId}: ${jsonStringify(parsed)}`,
               );
@@ -204,12 +204,12 @@ export async function checkForAsyncHookResponses(): Promise<
       }
 
       hook.responseAttachmentSent = true;
-      await finalizeHook(hook, exitCode, exitCode === 0 ? 'success' : 'error');
+      await finalizeHook(hook, exitCode, exitCode === 0 ? "success" : "error");
 
       return {
-        type: 'response' as const,
+        type: "response" as const,
         processId: hook.processId,
-        isSessionStart: hook.hookEvent === 'SessionStart',
+        isSessionStart: hook.hookEvent === "SessionStart",
         payload: {
           processId: hook.processId,
           response,
@@ -229,16 +229,16 @@ export async function checkForAsyncHookResponses(): Promise<
   // already-applied side effects (responseAttachmentSent, finalizeHook) from others.
   let sessionStartCompleted = false;
   for (const s of settled) {
-    if (s.status !== 'fulfilled') {
+    if (s.status !== "fulfilled") {
       logForDebugging(`Hooks: checkForAsyncHookResponses callback rejected: ${s.reason}`, {
-        level: 'error',
+        level: "error",
       });
       continue;
     }
     const r = s.value;
-    if (r.type === 'remove') {
+    if (r.type === "remove") {
       pendingHooks.delete(r.processId);
-    } else if (r.type === 'response') {
+    } else if (r.type === "response") {
       responses.push(r.payload);
       pendingHooks.delete(r.processId);
       if (r.isSessionStart) sessionStartCompleted = true;
@@ -269,14 +269,14 @@ export async function finalizePendingAsyncHooks(): Promise<void> {
   const hooks = Array.from(pendingHooks.values());
   await Promise.all(
     hooks.map(async (hook) => {
-      if (hook.shellCommand?.status === 'completed') {
+      if (hook.shellCommand?.status === "completed") {
         const result = await hook.shellCommand.result;
-        await finalizeHook(hook, result.code, result.code === 0 ? 'success' : 'error');
+        await finalizeHook(hook, result.code, result.code === 0 ? "success" : "error");
       } else {
-        if (hook.shellCommand && hook.shellCommand.status !== 'killed') {
+        if (hook.shellCommand && hook.shellCommand.status !== "killed") {
           hook.shellCommand.kill();
         }
-        await finalizeHook(hook, 1, 'cancelled');
+        await finalizeHook(hook, 1, "cancelled");
       }
     }),
   );

@@ -1,13 +1,13 @@
-import { feature } from 'bun:bundle';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { getModeFromInput, getValueFromInput } from '../components/PromptInput/inputModes.js';
-import { makeHistoryReader } from '../history.js';
-import { KeyboardEvent } from '../ink/events/keyboard-event.js';
+import { feature } from "bun:bundle";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { getModeFromInput, getValueFromInput } from "../components/PromptInput/inputModes.js";
+import { makeHistoryReader } from "../history.js";
+import { KeyboardEvent } from "../ink/events/keyboard-event.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- backward-compat bridge until consumers wire handleKeyDown to <Box onKeyDown>
-import { useInput } from '../ink.js';
-import { useKeybinding, useKeybindings } from '../keybindings/useKeybinding.js';
-import type { PromptInputMode } from '../types/textInputTypes.js';
-import type { HistoryEntry } from '../utils/config.js';
+import { useInput } from "../ink.js";
+import { useKeybinding, useKeybindings } from "../keybindings/useKeybinding.js";
+import type { PromptInputMode } from "../types/textInputTypes.js";
+import type { HistoryEntry } from "../utils/config.js";
 
 export function useHistorySearch(
   onAcceptHistory: (entry: HistoryEntry) => void,
@@ -19,8 +19,8 @@ export function useHistorySearch(
   currentMode: PromptInputMode,
   isSearching: boolean,
   setIsSearching: (isSearching: boolean) => void,
-  setPastedContents: (pastedContents: HistoryEntry['pastedContents']) => void,
-  currentPastedContents: HistoryEntry['pastedContents'],
+  setPastedContents: (pastedContents: HistoryEntry["pastedContents"]) => void,
+  currentPastedContents: HistoryEntry["pastedContents"],
 ): {
   historyQuery: string;
   setHistoryQuery: (query: string) => void;
@@ -28,13 +28,13 @@ export function useHistorySearch(
   historyFailedMatch: boolean;
   handleKeyDown: (e: KeyboardEvent) => void;
 } {
-  const [historyQuery, setHistoryQuery] = useState('');
+  const [historyQuery, setHistoryQuery] = useState("");
   const [historyFailedMatch, setHistoryFailedMatch] = useState(false);
-  const [originalInput, setOriginalInput] = useState('');
+  const [originalInput, setOriginalInput] = useState("");
   const [originalCursorOffset, setOriginalCursorOffset] = useState(0);
-  const [originalMode, setOriginalMode] = useState<PromptInputMode>('prompt');
+  const [originalMode, setOriginalMode] = useState<PromptInputMode>("prompt");
   const [originalPastedContents, setOriginalPastedContents] = useState<
-    HistoryEntry['pastedContents']
+    HistoryEntry["pastedContents"]
   >({});
   const [historyMatch, setHistoryMatch] = useState<HistoryEntry | undefined>(undefined);
   const historyReader = useRef<AsyncGenerator<HistoryEntry> | undefined>(undefined);
@@ -52,11 +52,11 @@ export function useHistorySearch(
 
   const reset = useCallback((): void => {
     setIsSearching(false);
-    setHistoryQuery('');
+    setHistoryQuery("");
     setHistoryFailedMatch(false);
-    setOriginalInput('');
+    setOriginalInput("");
     setOriginalCursorOffset(0);
-    setOriginalMode('prompt');
+    setOriginalMode("prompt");
     setOriginalPastedContents({});
     setHistoryMatch(undefined);
     closeHistoryReader();
@@ -213,24 +213,24 @@ export function useHistorySearch(
   ]);
 
   // Gated off under HISTORY_PICKER — the modal dialog owns ctrl+r there.
-  useKeybinding('history:search', handleStartSearch, {
-    context: 'Global',
-    isActive: feature('HISTORY_PICKER') ? false : !isSearching,
+  useKeybinding("history:search", handleStartSearch, {
+    context: "Global",
+    isActive: feature("HISTORY_PICKER") ? false : !isSearching,
   });
 
   // History search context keybindings (only active when searching)
   const historySearchHandlers = useMemo(
     () => ({
-      'historySearch:next': handleNextMatch,
-      'historySearch:accept': handleAccept,
-      'historySearch:cancel': handleCancel,
-      'historySearch:execute': handleExecute,
+      "historySearch:next": handleNextMatch,
+      "historySearch:accept": handleAccept,
+      "historySearch:cancel": handleCancel,
+      "historySearch:execute": handleExecute,
     }),
     [handleNextMatch, handleAccept, handleCancel, handleExecute],
   );
 
   useKeybindings(historySearchHandlers, {
-    context: 'HistorySearch',
+    context: "HistorySearch",
     isActive: isSearching,
   });
 
@@ -239,7 +239,7 @@ export function useHistorySearch(
   // well (backspace only cancels when query is empty)
   const handleKeyDown = (e: KeyboardEvent): void => {
     if (!isSearching) return;
-    if (e.key === 'backspace' && historyQuery === '') {
+    if (e.key === "backspace" && historyQuery === "") {
       e.preventDefault();
       handleCancel();
     }

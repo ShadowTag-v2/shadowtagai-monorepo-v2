@@ -1,19 +1,19 @@
-import type { Key } from '../ink.js';
-import { getKeyName, matchesBinding } from './match.js';
-import { chordToString } from './parser.js';
-import type { KeybindingContextName, ParsedBinding, ParsedKeystroke } from './types.js';
+import type { Key } from "../ink.js";
+import { getKeyName, matchesBinding } from "./match.js";
+import { chordToString } from "./parser.js";
+import type { KeybindingContextName, ParsedBinding, ParsedKeystroke } from "./types.js";
 
 export type ResolveResult =
-  | { type: 'match'; action: string }
-  | { type: 'none' }
-  | { type: 'unbound' };
+  | { type: "match"; action: string }
+  | { type: "none" }
+  | { type: "unbound" };
 
 export type ChordResolveResult =
-  | { type: 'match'; action: string }
-  | { type: 'none' }
-  | { type: 'unbound' }
-  | { type: 'chord_started'; pending: ParsedKeystroke[] }
-  | { type: 'chord_cancelled' };
+  | { type: "match"; action: string }
+  | { type: "none" }
+  | { type: "unbound" }
+  | { type: "chord_started"; pending: ParsedKeystroke[] }
+  | { type: "chord_cancelled" };
 
 /**
  * Resolve a key input to an action.
@@ -46,14 +46,14 @@ export function resolveKey(
   }
 
   if (!match) {
-    return { type: 'none' };
+    return { type: "none" };
   }
 
   if (match.action === null) {
-    return { type: 'unbound' };
+    return { type: "unbound" };
   }
 
-  return { type: 'match', action: match.action };
+  return { type: "match", action: match.action };
 }
 
 /**
@@ -157,16 +157,16 @@ export function resolveKeyWithChordState(
 ): ChordResolveResult {
   // Cancel chord on escape
   if (key.escape && pending !== null) {
-    return { type: 'chord_cancelled' };
+    return { type: "chord_cancelled" };
   }
 
   // Build current keystroke
   const currentKeystroke = buildKeystroke(input, key);
   if (!currentKeystroke) {
     if (pending !== null) {
-      return { type: 'chord_cancelled' };
+      return { type: "chord_cancelled" };
     }
-    return { type: 'none' };
+    return { type: "none" };
   }
 
   // Build the full chord sequence to test
@@ -197,7 +197,7 @@ export function resolveKeyWithChordState(
   // If this keystroke could start a longer chord, prefer that
   // (even if there's an exact single-key match)
   if (hasLongerChords) {
-    return { type: 'chord_started', pending: testChord };
+    return { type: "chord_started", pending: testChord };
   }
 
   // Check for exact matches (last one wins)
@@ -210,15 +210,15 @@ export function resolveKeyWithChordState(
 
   if (exactMatch) {
     if (exactMatch.action === null) {
-      return { type: 'unbound' };
+      return { type: "unbound" };
     }
-    return { type: 'match', action: exactMatch.action };
+    return { type: "match", action: exactMatch.action };
   }
 
   // No match and no potential longer chords
   if (pending !== null) {
-    return { type: 'chord_cancelled' };
+    return { type: "chord_cancelled" };
   }
 
-  return { type: 'none' };
+  return { type: "none" };
 }

@@ -1,16 +1,16 @@
-import React, { type Ref, useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { Except } from 'type-fest';
-import type { DOMElement } from '../dom.js';
-import type { Styles } from '../styles.js';
-import Box from './Box.js';
+import React, { type Ref, useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { Except } from "type-fest";
+import type { DOMElement } from "../dom.js";
+import type { Styles } from "../styles.js";
+import Box from "./Box.js";
 
 type ButtonState = {
   focused: boolean;
   hovered: boolean;
   active: boolean;
 };
-export type Props = Except<Styles, 'textWrap'> & {
+export type Props = Except<Styles, "textWrap"> & {
   ref?: Ref<DOMElement>;
   /**
    * Called when the button is activated via Enter, Space, or click.
@@ -66,7 +66,7 @@ function Button(t0) {
   const activeTimer = useRef(null);
   let t2;
   let t3;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => () => {
       if (activeTimer.current) {
         clearTimeout(activeTimer.current);
@@ -83,7 +83,7 @@ function Button(t0) {
   let t4;
   if ($[9] !== onAction) {
     t4 = (e) => {
-      if (e.key === 'return' || e.key === ' ') {
+      if (e.key === "return" || e.key === " ") {
         e.preventDefault();
         setIsActive(true);
         onAction();
@@ -111,7 +111,7 @@ function Button(t0) {
   }
   const handleClick = t5;
   let t6;
-  if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (_e_0) => setIsFocused(true);
     $[13] = t6;
   } else {
@@ -119,7 +119,7 @@ function Button(t0) {
   }
   const handleFocus = t6;
   let t7;
-  if ($[14] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (_e_1) => setIsFocused(false);
     $[14] = t7;
   } else {
@@ -127,7 +127,7 @@ function Button(t0) {
   }
   const handleBlur = t7;
   let t8;
-  if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = () => setIsHovered(true);
     $[15] = t8;
   } else {
@@ -135,7 +135,7 @@ function Button(t0) {
   }
   const handleMouseEnter = t8;
   let t9;
-  if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = () => setIsHovered(false);
     $[16] = t9;
   } else {
@@ -149,7 +149,7 @@ function Button(t0) {
       hovered: isHovered,
       active: isActive,
     };
-    t10 = typeof children === 'function' ? children(state) : children;
+    t10 = typeof children === "function" ? children(state) : children;
     $[17] = children;
     $[18] = isActive;
     $[19] = isFocused;

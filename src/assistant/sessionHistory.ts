@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { getOauthConfig } from '../constants/oauth.js';
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
-import { logForDebugging } from '../utils/debug.js';
-import { getOAuthHeaders, prepareApiRequest } from '../utils/teleport/api.js';
+import axios from "axios";
+import { getOauthConfig } from "../constants/oauth.js";
+import type { SDKMessage } from "../entrypoints/agentSdkTypes.js";
+import { logForDebugging } from "../utils/debug.js";
+import { getOAuthHeaders, prepareApiRequest } from "../utils/teleport/api.js";
 
 export const HISTORY_PAGE_SIZE = 100;
 
@@ -34,8 +34,8 @@ export async function createHistoryAuthCtx(sessionId: string): Promise<HistoryAu
     baseUrl: `${getOauthConfig().BASE_API_URL}/v1/sessions/${sessionId}/events`,
     headers: {
       ...getOAuthHeaders(accessToken),
-      'anthropic-beta': 'ccr-byoc-2025-07-29',
-      'x-organization-uuid': orgUUID,
+      "anthropic-beta": "ccr-byoc-2025-07-29",
+      "x-organization-uuid": orgUUID,
     },
   };
 }
@@ -54,7 +54,7 @@ async function fetchPage(
     })
     .catch(() => null);
   if (!resp || resp.status !== 200) {
-    logForDebugging(`[${label}] HTTP ${resp?.status ?? 'error'}`);
+    logForDebugging(`[${label}] HTTP ${resp?.status ?? "error"}`);
     return null;
   }
   return {
@@ -72,7 +72,7 @@ export async function fetchLatestEvents(
   ctx: HistoryAuthCtx,
   limit = HISTORY_PAGE_SIZE,
 ): Promise<HistoryPage | null> {
-  return fetchPage(ctx, { limit, anchor_to_latest: true }, 'fetchLatestEvents');
+  return fetchPage(ctx, { limit, anchor_to_latest: true }, "fetchLatestEvents");
 }
 
 /** Older page: events immediately before `beforeId` cursor. */
@@ -81,5 +81,5 @@ export async function fetchOlderEvents(
   beforeId: string,
   limit = HISTORY_PAGE_SIZE,
 ): Promise<HistoryPage | null> {
-  return fetchPage(ctx, { limit, before_id: beforeId }, 'fetchOlderEvents');
+  return fetchPage(ctx, { limit, before_id: beforeId }, "fetchOlderEvents");
 }

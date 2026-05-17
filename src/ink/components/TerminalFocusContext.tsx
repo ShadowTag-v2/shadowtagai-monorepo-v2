@@ -1,11 +1,11 @@
-import { createContext, useSyncExternalStore } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import { createContext, useSyncExternalStore } from "react";
+import { c as _c } from "react/compiler-runtime";
 import {
   getTerminalFocused,
   getTerminalFocusState,
   subscribeTerminalFocus,
   type TerminalFocusState,
-} from '../terminal-focus-state.js';
+} from "../terminal-focus-state.js";
 
 export type { TerminalFocusState };
 export type TerminalFocusContextProps = {
@@ -14,11 +14,11 @@ export type TerminalFocusContextProps = {
 };
 const TerminalFocusContext = createContext<TerminalFocusContextProps>({
   isTerminalFocused: true,
-  terminalFocusState: 'unknown',
+  terminalFocusState: "unknown",
 });
 
 // eslint-disable-next-line custom-rules/no-top-level-side-effects
-TerminalFocusContext.displayName = 'TerminalFocusContext';
+TerminalFocusContext.displayName = "TerminalFocusContext";
 
 // Separate component so App.tsx doesn't re-render on focus changes.
 // Children are a stable prop reference, so they don't re-render either —

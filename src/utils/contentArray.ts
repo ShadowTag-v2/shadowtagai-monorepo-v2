@@ -25,9 +25,9 @@ export function insertBlockAfterToolResults(content: unknown[], block: unknown):
     const item = content[i];
     if (
       item &&
-      typeof item === 'object' &&
-      'type' in item &&
-      (item as { type: string }).type === 'tool_result'
+      typeof item === "object" &&
+      "type" in item &&
+      (item as { type: string }).type === "tool_result"
     ) {
       lastToolResultIndex = i;
     }
@@ -38,7 +38,7 @@ export function insertBlockAfterToolResults(content: unknown[], block: unknown):
     content.splice(insertPos, 0, block);
     // Append a text continuation if the inserted block is now last
     if (insertPos === content.length - 1) {
-      content.push({ type: 'text', text: '.' });
+      content.push({ type: "text", text: "." });
     }
   } else {
     // No tool_result blocks — insert before the last block

@@ -8,19 +8,19 @@
 // Pattern mirrors computerUseLock.ts: O_EXCL atomic create, PID liveness
 // probe, stale-lock recovery, cleanup-on-exit.
 
-import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { z } from 'zod/v4';
-import { getProjectRoot, getSessionId } from '../bootstrap/state.js';
-import { registerCleanup } from './cleanupRegistry.js';
-import { logForDebugging } from './debug.js';
-import { getErrnoCode } from './errors.js';
-import { isProcessRunning } from './genericProcessUtils.js';
-import { safeParseJSON } from './json.js';
-import { lazySchema } from './lazySchema.js';
-import { jsonStringify } from './slowOperations.js';
+import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { z } from "zod/v4";
+import { getProjectRoot, getSessionId } from "../bootstrap/state.js";
+import { registerCleanup } from "./cleanupRegistry.js";
+import { logForDebugging } from "./debug.js";
+import { getErrnoCode } from "./errors.js";
+import { isProcessRunning } from "./genericProcessUtils.js";
+import { safeParseJSON } from "./json.js";
+import { lazySchema } from "./lazySchema.js";
+import { jsonStringify } from "./slowOperations.js";
 
-const LOCK_FILE_REL = join('.claude', 'scheduled_tasks.lock');
+const LOCK_FILE_REL = join(".claude", "scheduled_tasks.lock");
 
 const schedulerLockSchema = lazySchema(() =>
   z.object({
@@ -53,7 +53,7 @@ function getLockPath(dir?: string): string {
 async function readLock(dir?: string): Promise<SchedulerLock | undefined> {
   let raw: string;
   try {
-    raw = await readFile(getLockPath(dir), 'utf8');
+    raw = await readFile(getLockPath(dir), "utf8");
   } catch {
     return undefined;
   }
@@ -65,21 +65,21 @@ async function tryCreateExclusive(lock: SchedulerLock, dir?: string): Promise<bo
   const path = getLockPath(dir);
   const body = jsonStringify(lock);
   try {
-    await writeFile(path, body, { flag: 'wx' });
+    await writeFile(path, body, { flag: "wx" });
     return true;
   } catch (e: unknown) {
     const code = getErrnoCode(e);
-    if (code === 'EEXIST') return false;
-    if (code === 'ENOENT') {
+    if (code === "EEXIST") return false;
+    if (code === "ENOENT") {
       // .claude/ doesn't exist yet — create it and retry once. In steady
       // state the dir already exists (scheduled_tasks.json lives there),
       // so this path is hit at most once.
       await mkdir(dirname(path), { recursive: true });
       try {
-        await writeFile(path, body, { flag: 'wx' });
+        await writeFile(path, body, { flag: "wx" });
         return true;
       } catch (retryErr: unknown) {
-        if (getErrnoCode(retryErr) === 'EEXIST') return false;
+        if (getErrnoCode(retryErr) === "EEXIST") return false;
         throw retryErr;
       }
     }
@@ -177,7 +177,7 @@ export async function releaseSchedulerLock(opts?: SchedulerLockOptions): Promise
   if (!existing || existing.sessionId !== sessionId) return;
   try {
     await unlink(getLockPath(dir));
-    logForDebugging('[ScheduledTasks] released scheduler lock');
+    logForDebugging("[ScheduledTasks] released scheduler lock");
   } catch {
     // Already gone.
   }

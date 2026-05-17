@@ -1,21 +1,21 @@
-import * as fs from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { join } from 'node:path';
-import { logEvent } from '../services/analytics/index.js';
-import { CACHE_PATHS } from './cachePaths.js';
-import { logForDebugging } from './debug.js';
-import { getClaudeConfigHomeDir } from './envUtils.js';
-import { type FsOperations, getFsImplementation } from './fsOperations.js';
-import { cleanupOldImageCaches } from './imageStore.js';
-import * as lockfile from './lockfile.js';
-import { logError } from './log.js';
-import { cleanupOldVersions } from './nativeInstaller/index.js';
-import { cleanupOldPastes } from './pasteStore.js';
-import { getProjectsDir } from './sessionStorage.js';
-import { getSettingsWithAllErrors } from './settings/allErrors.js';
-import { getSettings_DEPRECATED, rawSettingsContainsKey } from './settings/settings.js';
-import { TOOL_RESULTS_SUBDIR } from './toolResultStorage.js';
-import { cleanupStaleAgentWorktrees } from './worktree.js';
+import * as fs from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
+import { logEvent } from "../services/analytics/index.js";
+import { CACHE_PATHS } from "./cachePaths.js";
+import { logForDebugging } from "./debug.js";
+import { getClaudeConfigHomeDir } from "./envUtils.js";
+import { type FsOperations, getFsImplementation } from "./fsOperations.js";
+import { cleanupOldImageCaches } from "./imageStore.js";
+import * as lockfile from "./lockfile.js";
+import { logError } from "./log.js";
+import { cleanupOldVersions } from "./nativeInstaller/index.js";
+import { cleanupOldPastes } from "./pasteStore.js";
+import { getProjectsDir } from "./sessionStorage.js";
+import { getSettingsWithAllErrors } from "./settings/allErrors.js";
+import { getSettings_DEPRECATED, rawSettingsContainsKey } from "./settings/settings.js";
+import { TOOL_RESULTS_SUBDIR } from "./toolResultStorage.js";
+import { cleanupStaleAgentWorktrees } from "./worktree.js";
 
 const DEFAULT_CLEANUP_PERIOD_DAYS = 30;
 
@@ -40,8 +40,8 @@ export function addCleanupResults(a: CleanupResult, b: CleanupResult): CleanupRe
 
 export function convertFileNameToDate(filename: string): Date {
   const isoStr = filename
-    .split('.')[0]
-    ?.replace(/T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z/, 'T$1:$2:$3.$4Z');
+    .split(".")[0]
+    ?.replace(/T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z/, "T$1:$2:$3.$4Z");
   return new Date(isoStr);
 }
 
@@ -75,7 +75,7 @@ async function cleanupOldFilesInDirectory(
     }
   } catch (error: unknown) {
     // Ignore if directory doesn't exist
-    if (error instanceof Error && 'code' in error && error.code !== 'ENOENT') {
+    if (error instanceof Error && "code" in error && error.code !== "ENOENT") {
       logError(error);
     }
   }
@@ -102,7 +102,7 @@ export async function cleanupOldMessageFiles(): Promise<CleanupResult> {
     }
 
     const mcpLogDirs = dirents
-      .filter((dirent) => dirent.isDirectory() && dirent.name.startsWith('mcp-logs-'))
+      .filter((dirent) => dirent.isDirectory() && dirent.name.startsWith("mcp-logs-"))
       .map((dirent) => join(baseCachePath, dirent.name));
 
     for (const mcpLogDir of mcpLogDirs) {
@@ -114,7 +114,7 @@ export async function cleanupOldMessageFiles(): Promise<CleanupResult> {
       await tryRmdir(mcpLogDir, fsImpl);
     }
   } catch (error: unknown) {
-    if (error instanceof Error && 'code' in error && error.code !== 'ENOENT') {
+    if (error instanceof Error && "code" in error && error.code !== "ENOENT") {
       logError(error);
     }
   }
@@ -171,7 +171,7 @@ export async function cleanupOldSessionFiles(): Promise<CleanupResult> {
 
     for (const entry of entries) {
       if (entry.isFile()) {
-        if (!entry.name.endsWith('.jsonl') && !entry.name.endsWith('.cast')) {
+        if (!entry.name.endsWith(".jsonl") && !entry.name.endsWith(".cast")) {
           continue;
         }
         try {
@@ -275,8 +275,8 @@ async function cleanupSingleDirectory(
 }
 
 export function cleanupOldPlanFiles(): Promise<CleanupResult> {
-  const plansDir = join(getClaudeConfigHomeDir(), 'plans');
-  return cleanupSingleDirectory(plansDir, '.md');
+  const plansDir = join(getClaudeConfigHomeDir(), "plans");
+  return cleanupSingleDirectory(plansDir, ".md");
 }
 
 export async function cleanupOldFileHistoryBackups(): Promise<CleanupResult> {
@@ -286,7 +286,7 @@ export async function cleanupOldFileHistoryBackups(): Promise<CleanupResult> {
 
   try {
     const configDir = getClaudeConfigHomeDir();
-    const fileHistoryStorageDir = join(configDir, 'file-history');
+    const fileHistoryStorageDir = join(configDir, "file-history");
 
     let dirents;
     try {
@@ -331,7 +331,7 @@ export async function cleanupOldSessionEnvDirs(): Promise<CleanupResult> {
 
   try {
     const configDir = getClaudeConfigHomeDir();
-    const sessionEnvBaseDir = join(configDir, 'session-env');
+    const sessionEnvBaseDir = join(configDir, "session-env");
 
     let dirents;
     try {
@@ -374,7 +374,7 @@ export async function cleanupOldDebugLogs(): Promise<CleanupResult> {
   const cutoffDate = getCutoffDate();
   const result: CleanupResult = { messages: 0, errors: 0 };
   const fsImpl = getFsImplementation();
-  const debugDir = join(getClaudeConfigHomeDir(), 'debug');
+  const debugDir = join(getClaudeConfigHomeDir(), "debug");
 
   let dirents;
   try {
@@ -385,7 +385,7 @@ export async function cleanupOldDebugLogs(): Promise<CleanupResult> {
 
   for (const dirent of dirents) {
     // Preserve the 'latest' symlink
-    if (!dirent.isFile() || !dirent.name.endsWith('.txt') || dirent.name === 'latest') {
+    if (!dirent.isFile() || !dirent.name.endsWith(".txt") || dirent.name === "latest") {
       continue;
     }
     try {
@@ -409,12 +409,12 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
  * Only runs once per day for Ant users.
  */
 export async function cleanupNpmCacheForAnthropicPackages(): Promise<void> {
-  const markerPath = join(getClaudeConfigHomeDir(), '.npm-cache-cleanup');
+  const markerPath = join(getClaudeConfigHomeDir(), ".npm-cache-cleanup");
 
   try {
     const stat = await fs.stat(markerPath);
     if (Date.now() - stat.mtimeMs < ONE_DAY_MS) {
-      logForDebugging('npm cache cleanup: skipping, ran recently');
+      logForDebugging("npm cache cleanup: skipping, ran recently");
       return;
     }
   } catch {
@@ -424,19 +424,19 @@ export async function cleanupNpmCacheForAnthropicPackages(): Promise<void> {
   try {
     await lockfile.lock(markerPath, { retries: 0, realpath: false });
   } catch {
-    logForDebugging('npm cache cleanup: skipping, lock held');
+    logForDebugging("npm cache cleanup: skipping, lock held");
     return;
   }
 
-  logForDebugging('npm cache cleanup: starting');
+  logForDebugging("npm cache cleanup: starting");
 
-  const npmCachePath = join(homedir(), '.npm', '_cacache');
+  const npmCachePath = join(homedir(), ".npm", "_cacache");
 
   const NPM_CACHE_RETENTION_COUNT = 5;
 
   const startTime = Date.now();
   try {
-    const cacache = await import('cacache');
+    const cacache = await import("cacache");
     const cutoff = startTime - ONE_DAY_MS;
 
     // Stream index entries and collect all Anthropic package entries.
@@ -449,7 +449,7 @@ export async function cleanupNpmCacheForAnthropicPackages(): Promise<void> {
       key: string;
       time: number;
     }>) {
-      if (entry.key.includes('@anthropic-ai/claude-')) {
+      if (entry.key.includes("@anthropic-ai/claude-")) {
         anthropicEntries.push({ key: entry.key, time: entry.time });
       }
     }
@@ -457,7 +457,7 @@ export async function cleanupNpmCacheForAnthropicPackages(): Promise<void> {
     // Group by package name (everything before the last @version separator)
     const byPackage = new Map<string, { key: string; time: number }[]>();
     for (const entry of anthropicEntries) {
-      const atVersionIdx = entry.key.lastIndexOf('@');
+      const atVersionIdx = entry.key.lastIndexOf("@");
       const pkgName = atVersionIdx > 0 ? entry.key.slice(0, atVersionIdx) : entry.key;
       const existing = byPackage.get(pkgName) ?? [];
       existing.push(entry);
@@ -488,14 +488,14 @@ export async function cleanupNpmCacheForAnthropicPackages(): Promise<void> {
     } else {
       logForDebugging(`npm cache cleanup: completed in ${durationMs}ms`);
     }
-    logEvent('tengu_npm_cache_cleanup', {
+    logEvent("tengu_npm_cache_cleanup", {
       success: true,
       durationMs,
       entriesRemoved: keysToRemove.length,
     });
   } catch (error) {
     logError(error as Error);
-    logEvent('tengu_npm_cache_cleanup', {
+    logEvent("tengu_npm_cache_cleanup", {
       success: false,
       durationMs: Date.now() - startTime,
     });
@@ -511,12 +511,12 @@ export async function cleanupNpmCacheForAnthropicPackages(): Promise<void> {
  * The regular cleanupOldVersions() should still be used for installer flows.
  */
 export async function cleanupOldVersionsThrottled(): Promise<void> {
-  const markerPath = join(getClaudeConfigHomeDir(), '.version-cleanup');
+  const markerPath = join(getClaudeConfigHomeDir(), ".version-cleanup");
 
   try {
     const stat = await fs.stat(markerPath);
     if (Date.now() - stat.mtimeMs < ONE_DAY_MS) {
-      logForDebugging('version cleanup: skipping, ran recently');
+      logForDebugging("version cleanup: skipping, ran recently");
       return;
     }
   } catch {
@@ -526,11 +526,11 @@ export async function cleanupOldVersionsThrottled(): Promise<void> {
   try {
     await lockfile.lock(markerPath, { retries: 0, realpath: false });
   } catch {
-    logForDebugging('version cleanup: skipping, lock held');
+    logForDebugging("version cleanup: skipping, lock held");
     return;
   }
 
-  logForDebugging('version cleanup: starting (throttled)');
+  logForDebugging("version cleanup: starting (throttled)");
 
   try {
     await cleanupOldVersions();
@@ -547,9 +547,9 @@ export async function cleanupOldMessageFilesInBackground(): Promise<void> {
   // skip cleanup entirely rather than falling back to the default (30 days).
   // This prevents accidentally deleting files when the user intended a different retention period.
   const { errors } = getSettingsWithAllErrors();
-  if (errors.length > 0 && rawSettingsContainsKey('cleanupPeriodDays')) {
+  if (errors.length > 0 && rawSettingsContainsKey("cleanupPeriodDays")) {
     logForDebugging(
-      'Skipping cleanup: settings have validation errors but cleanupPeriodDays was explicitly set. Fix settings errors to enable cleanup.',
+      "Skipping cleanup: settings have validation errors but cleanupPeriodDays was explicitly set. Fix settings errors to enable cleanup.",
     );
     return;
   }
@@ -564,9 +564,9 @@ export async function cleanupOldMessageFilesInBackground(): Promise<void> {
   await cleanupOldPastes(getCutoffDate());
   const removedWorktrees = await cleanupStaleAgentWorktrees(getCutoffDate());
   if (removedWorktrees > 0) {
-    logEvent('tengu_worktree_cleanup', { removed: removedWorktrees });
+    logEvent("tengu_worktree_cleanup", { removed: removedWorktrees });
   }
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     await cleanupNpmCacheForAnthropicPackages();
   }
 }

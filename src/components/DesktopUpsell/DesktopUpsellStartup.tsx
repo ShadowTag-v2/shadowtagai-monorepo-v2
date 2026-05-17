@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { getDynamicConfig_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
-import { logEvent } from '../../services/analytics/index.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { Select } from '../CustomSelect/select.js';
-import { DesktopHandoff } from '../DesktopHandoff.js';
-import { PermissionDialog } from '../permissions/PermissionDialog.js';
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { getDynamicConfig_CACHED_MAY_BE_STALE } from "../../services/analytics/growthbook.js";
+import { logEvent } from "../../services/analytics/index.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { Select } from "../CustomSelect/select.js";
+import { DesktopHandoff } from "../DesktopHandoff.js";
+import { PermissionDialog } from "../permissions/PermissionDialog.js";
 
 type DesktopUpsellConfig = {
   enable_shortcut_tip: boolean;
@@ -17,10 +17,10 @@ const DESKTOP_UPSELL_DEFAULT: DesktopUpsellConfig = {
   enable_startup_dialog: false,
 };
 export function getDesktopUpsellConfig(): DesktopUpsellConfig {
-  return getDynamicConfig_CACHED_MAY_BE_STALE('tengu_desktop_upsell', DESKTOP_UPSELL_DEFAULT);
+  return getDynamicConfig_CACHED_MAY_BE_STALE("tengu_desktop_upsell", DESKTOP_UPSELL_DEFAULT);
 }
 function isSupportedPlatform(): boolean {
-  return process.platform === 'darwin' || (process.platform === 'win32' && process.arch === 'x64');
+  return process.platform === "darwin" || (process.platform === "win32" && process.arch === "x64");
 }
 export function shouldShowDesktopUpsellStartup(): boolean {
   if (!isSupportedPlatform()) return false;
@@ -30,7 +30,7 @@ export function shouldShowDesktopUpsellStartup(): boolean {
   if ((config.desktopUpsellSeenCount ?? 0) >= 3) return false;
   return true;
 }
-type DesktopUpsellSelection = 'try' | 'not-now' | 'never';
+type DesktopUpsellSelection = "try" | "not-now" | "never";
 type Props = {
   onDone: () => void;
 };
@@ -39,7 +39,7 @@ export function DesktopUpsellStartup(t0) {
   const { onDone } = t0;
   const [showHandoff, setShowHandoff] = useState(false);
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = [];
     $[0] = t1;
   } else {
@@ -61,16 +61,16 @@ export function DesktopUpsellStartup(t0) {
   if ($[3] !== onDone) {
     t2 = function handleSelect(value) {
       switch (value) {
-        case 'try': {
+        case "try": {
           setShowHandoff(true);
           return;
         }
-        case 'never': {
+        case "never": {
           saveGlobalConfig(_temp2);
           onDone();
           return;
         }
-        case 'not-now': {
+        case "not-now": {
           onDone();
           return;
         }
@@ -83,33 +83,33 @@ export function DesktopUpsellStartup(t0) {
   }
   const handleSelect = t2;
   let t3;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = {
-      label: 'Open in Claude Code Desktop',
-      value: 'try' as const,
+      label: "Open in Claude Code Desktop",
+      value: "try" as const,
     };
     $[5] = t3;
   } else {
     t3 = $[5];
   }
   let t4;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = {
-      label: 'Not now',
-      value: 'not-now' as const,
+      label: "Not now",
+      value: "not-now" as const,
     };
     $[6] = t4;
   } else {
     t4 = $[6];
   }
   let t5;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = [
       t3,
       t4,
       {
         label: "Don't ask again",
-        value: 'never' as const,
+        value: "never" as const,
       },
     ];
     $[7] = t5;
@@ -118,7 +118,7 @@ export function DesktopUpsellStartup(t0) {
   }
   const options = t5;
   let t6;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Box marginBottom={1}>
         <Text>
@@ -132,7 +132,7 @@ export function DesktopUpsellStartup(t0) {
   }
   let t7;
   if ($[9] !== handleSelect) {
-    t7 = () => handleSelect('not-now');
+    t7 = () => handleSelect("not-now");
     $[9] = handleSelect;
     $[10] = t7;
   } else {
@@ -176,7 +176,7 @@ function _temp() {
       desktopUpsellSeenCount: newCount,
     };
   });
-  logEvent('tengu_desktop_upsell_shown', {
+  logEvent("tengu_desktop_upsell_shown", {
     seen_count: newCount,
   });
 }

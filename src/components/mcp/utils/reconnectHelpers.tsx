@@ -1,6 +1,6 @@
-import type { Command } from '../../../commands.js';
-import type { MCPServerConnection, ServerResource } from '../../../services/mcp/types.js';
-import type { Tool } from '../../../Tool.js';
+import type { Command } from "../../../commands.js";
+import type { MCPServerConnection, ServerResource } from "../../../services/mcp/types.js";
+import type { Tool } from "../../../Tool.js";
 export interface ReconnectResult {
   message: string;
   success: boolean;
@@ -19,17 +19,17 @@ export function handleReconnectResult(
   serverName: string,
 ): ReconnectResult {
   switch (result.client.type) {
-    case 'connected':
+    case "connected":
       return {
         message: `Reconnected to ${serverName}.`,
         success: true,
       };
-    case 'needs-auth':
+    case "needs-auth":
       return {
         message: `${serverName} requires authentication. Use the 'Authenticate' option.`,
         success: false,
       };
-    case 'failed':
+    case "failed":
       return {
         message: `Failed to reconnect to ${serverName}.`,
         success: false,

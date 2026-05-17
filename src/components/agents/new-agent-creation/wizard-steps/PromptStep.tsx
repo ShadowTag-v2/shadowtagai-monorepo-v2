@@ -1,30 +1,30 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../../../ink.js';
-import { useKeybinding } from '../../../../keybindings/useKeybinding.js';
-import { editPromptInEditor } from '../../../../utils/promptEditor.js';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
-import TextInput from '../../../TextInput.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../../../ink.js";
+import { useKeybinding } from "../../../../keybindings/useKeybinding.js";
+import { editPromptInEditor } from "../../../../utils/promptEditor.js";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../../design-system/KeyboardShortcutHint.js";
+import TextInput from "../../../TextInput.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
 export function PromptStep() {
   const $ = _c(20);
   const { goNext, goBack, updateWizardData, wizardData } = useWizard();
-  const [systemPrompt, setSystemPrompt] = useState(wizardData.systemPrompt || '');
+  const [systemPrompt, setSystemPrompt] = useState(wizardData.systemPrompt || "");
   const [cursorOffset, setCursorOffset] = useState(systemPrompt.length);
   const [error, setError] = useState(null);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = {
-      context: 'Settings',
+      context: "Settings",
     };
     $[0] = t0;
   } else {
     t0 = $[0];
   }
-  useKeybinding('confirm:no', goBack, t0);
+  useKeybinding("confirm:no", goBack, t0);
   let t1;
   if ($[1] !== systemPrompt) {
     t1 = async () => {
@@ -41,21 +41,21 @@ export function PromptStep() {
   }
   const handleExternalEditor = t1;
   let t2;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = {
-      context: 'Chat',
+      context: "Chat",
     };
     $[3] = t2;
   } else {
     t2 = $[3];
   }
-  useKeybinding('chat:externalEditor', handleExternalEditor, t2);
+  useKeybinding("chat:externalEditor", handleExternalEditor, t2);
   let t3;
   if ($[4] !== goNext || $[5] !== systemPrompt || $[6] !== updateWizardData) {
     t3 = () => {
       const trimmedPrompt = systemPrompt.trim();
       if (!trimmedPrompt) {
-        setError('System prompt is required');
+        setError("System prompt is required");
         return;
       }
       setError(null);
@@ -73,7 +73,7 @@ export function PromptStep() {
   }
   const handleSubmit = t3;
   let t4;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <Byline>
         <KeyboardShortcutHint shortcut="Type" action="enter text" />
@@ -98,7 +98,7 @@ export function PromptStep() {
   }
   let t5;
   let t6;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = <Text>Enter the system prompt for your agent:</Text>;
     t6 = <Text dimColor={true}>Be comprehensive for best results</Text>;
     $[9] = t5;

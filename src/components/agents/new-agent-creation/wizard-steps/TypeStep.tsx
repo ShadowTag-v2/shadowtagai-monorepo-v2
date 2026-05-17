@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../../../ink.js';
-import { useKeybinding } from '../../../../keybindings/useKeybinding.js';
-import type { AgentDefinition } from '../../../../tools/AgentTool/loadAgentsDir.js';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
-import TextInput from '../../../TextInput.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
-import { validateAgentType } from '../../validateAgent.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../../../ink.js";
+import { useKeybinding } from "../../../../keybindings/useKeybinding.js";
+import type { AgentDefinition } from "../../../../tools/AgentTool/loadAgentsDir.js";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../../design-system/KeyboardShortcutHint.js";
+import TextInput from "../../../TextInput.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
+import { validateAgentType } from "../../validateAgent.js";
 
 type Props = {
   existingAgents: AgentDefinition[];
@@ -17,19 +17,19 @@ type Props = {
 export function TypeStep(_props) {
   const $ = _c(15);
   const { goNext, goBack, updateWizardData, wizardData } = useWizard();
-  const [agentType, setAgentType] = useState(wizardData.agentType || '');
+  const [agentType, setAgentType] = useState(wizardData.agentType || "");
   const [error, setError] = useState(null);
   const [cursorOffset, setCursorOffset] = useState(agentType.length);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = {
-      context: 'Settings',
+      context: "Settings",
     };
     $[0] = t0;
   } else {
     t0 = $[0];
   }
-  useKeybinding('confirm:no', goBack, t0);
+  useKeybinding("confirm:no", goBack, t0);
   let t1;
   if ($[1] !== goNext || $[2] !== updateWizardData) {
     t1 = (value) => {
@@ -53,7 +53,7 @@ export function TypeStep(_props) {
   }
   const handleSubmit = t1;
   let t2;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Byline>
         <KeyboardShortcutHint shortcut="Type" action="enter text" />
@@ -71,7 +71,7 @@ export function TypeStep(_props) {
     t2 = $[4];
   }
   let t3;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = <Text>Enter a unique identifier for your agent:</Text>;
     $[5] = t3;
   } else {

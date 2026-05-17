@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../../ink.js';
-import { useAppState } from '../../state/AppState.js';
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../../ink.js";
+import { useAppState } from "../../state/AppState.js";
 
 type Props = {
   teamsSelected: boolean;
@@ -43,8 +43,8 @@ export function TeamStatus(t0) {
     t2 = $[4];
   }
   const hint = t2;
-  const statusText = `${totalTeammates} ${totalTeammates === 1 ? 'teammate' : 'teammates'}`;
-  const t3 = teamsSelected ? 'selected' : 'normal';
+  const statusText = `${totalTeammates} ${totalTeammates === 1 ? "teammate" : "teammates"}`;
+  const t3 = teamsSelected ? "selected" : "normal";
   let t4;
   if ($[5] !== statusText || $[6] !== t3 || $[7] !== teamsSelected) {
     t4 = (
@@ -84,7 +84,7 @@ export function TeamStatus(t0) {
   return t6;
 }
 function _temp2(t) {
-  return t.name !== 'team-lead';
+  return t.name !== "team-lead";
 }
 function _temp(s) {
   return s.teamContext;

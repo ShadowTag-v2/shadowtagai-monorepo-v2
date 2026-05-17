@@ -1,15 +1,15 @@
-import { join } from 'node:path';
-import { expandEnvVarsInString } from '../../services/mcp/envExpansion.js';
+import { join } from "node:path";
+import { expandEnvVarsInString } from "../../services/mcp/envExpansion.js";
 import {
   type McpServerConfig,
   McpServerConfigSchema,
   type ScopedMcpServerConfig,
-} from '../../services/mcp/types.js';
-import type { LoadedPlugin, PluginError } from '../../types/plugin.js';
-import { logForDebugging } from '../debug.js';
-import { errorMessage, isENOENT } from '../errors.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { jsonParse } from '../slowOperations.js';
+} from "../../services/mcp/types.js";
+import type { LoadedPlugin, PluginError } from "../../types/plugin.js";
+import { logForDebugging } from "../debug.js";
+import { errorMessage, isENOENT } from "../errors.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { jsonParse } from "../slowOperations.js";
 import {
   isMcpbSource,
   loadMcpbFile,
@@ -18,14 +18,14 @@ import {
   type UserConfigSchema,
   type UserConfigValues,
   validateUserConfig,
-} from './mcpbHandler.js';
-import { getPluginDataDir } from './pluginDirectories.js';
+} from "./mcpbHandler.js";
+import { getPluginDataDir } from "./pluginDirectories.js";
 import {
   getPluginStorageId,
   loadPluginOptions,
   substitutePluginVariables,
   substituteUserConfigVariables,
-} from './pluginOptionsStorage.js';
+} from "./pluginOptionsStorage.js";
 
 /**
  * Load MCP servers from an MCPB file
@@ -47,7 +47,7 @@ async function loadMcpServersFromMcpb(
     });
 
     // Check if MCPB needs user configuration
-    if ('status' in result && result.status === 'needs-config') {
+    if ("status" in result && result.status === "needs-config") {
       // User config needed - this is normal for unconfigured plugins
       // Don't load the MCP server yet - user can configure via /plugin menu
       logForDebugging(
@@ -74,25 +74,25 @@ async function loadMcpServersFromMcpb(
   } catch (error) {
     const errorMsg = errorMessage(error);
     logForDebugging(`Failed to load MCPB ${mcpbPath}: ${errorMsg}`, {
-      level: 'error',
+      level: "error",
     });
 
     // Use plugin@repository as source (consistent with other plugin errors)
     const source = `${plugin.name}@${plugin.repository}`;
 
     // Determine error type based on error message
-    const isUrl = mcpbPath.startsWith('http');
-    if (isUrl && (errorMsg.includes('download') || errorMsg.includes('network'))) {
+    const isUrl = mcpbPath.startsWith("http");
+    if (isUrl && (errorMsg.includes("download") || errorMsg.includes("network"))) {
       errors.push({
-        type: 'mcpb-download-failed',
+        type: "mcpb-download-failed",
         source,
         plugin: plugin.name,
         url: mcpbPath,
         reason: errorMsg,
       });
-    } else if (errorMsg.includes('manifest') || errorMsg.includes('user configuration')) {
+    } else if (errorMsg.includes("manifest") || errorMsg.includes("user configuration")) {
       errors.push({
-        type: 'mcpb-invalid-manifest',
+        type: "mcpb-invalid-manifest",
         source,
         plugin: plugin.name,
         mcpbPath,
@@ -100,7 +100,7 @@ async function loadMcpServersFromMcpb(
       });
     } else {
       errors.push({
-        type: 'mcpb-extract-failed',
+        type: "mcpb-extract-failed",
         source,
         plugin: plugin.name,
         mcpbPath,
@@ -124,7 +124,7 @@ export async function loadPluginMcpServers(
   let servers: Record<string, McpServerConfig> = {};
 
   // Check for .mcp.json in plugin directory first (lowest priority)
-  const defaultMcpServers = await loadMcpServersFromFile(plugin.path, '.mcp.json');
+  const defaultMcpServers = await loadMcpServersFromFile(plugin.path, ".mcp.json");
   if (defaultMcpServers) {
     servers = { ...servers, ...defaultMcpServers };
   }
@@ -134,7 +134,7 @@ export async function loadPluginMcpServers(
     const mcpServersSpec = plugin.manifest.mcpServers;
 
     // Handle different mcpServers formats
-    if (typeof mcpServersSpec === 'string') {
+    if (typeof mcpServersSpec === "string") {
       // Check if it's an MCPB file
       if (isMcpbSource(mcpServersSpec)) {
         const mcpbServers = await loadMcpServersFromMcpb(plugin, mcpServersSpec, errors);
@@ -155,7 +155,7 @@ export async function loadPluginMcpServers(
       const results = await Promise.all(
         mcpServersSpec.map(async (spec) => {
           try {
-            if (typeof spec === 'string') {
+            if (typeof spec === "string") {
               // Check if it's an MCPB file
               if (isMcpbSource(spec)) {
                 return await loadMcpServersFromMcpb(plugin, spec, errors);
@@ -170,7 +170,7 @@ export async function loadPluginMcpServers(
             // others. The previous serial loop implicitly tolerated this.
             logForDebugging(
               `Failed to load MCP servers from spec for plugin ${plugin.name}: ${e}`,
-              { level: 'error' },
+              { level: "error" },
             );
             return null;
           }
@@ -204,13 +204,13 @@ async function loadMcpServersFromFile(
 
   let content: string;
   try {
-    content = await fs.readFile(filePath, { encoding: 'utf-8' });
+    content = await fs.readFile(filePath, { encoding: "utf-8" });
   } catch (e: unknown) {
     if (isENOENT(e)) {
       return null;
     }
     logForDebugging(`Failed to load MCP servers from ${filePath}: ${e}`, {
-      level: 'error',
+      level: "error",
     });
     return null;
   }
@@ -230,7 +230,7 @@ async function loadMcpServersFromFile(
       } else {
         logForDebugging(
           `Invalid MCP server config for ${name} in ${filePath}: ${result.error.message}`,
-          { level: 'error' },
+          { level: "error" },
         );
       }
     }
@@ -238,7 +238,7 @@ async function loadMcpServersFromFile(
     return validatedServers;
   } catch (error) {
     logForDebugging(`Failed to load MCP servers from ${filePath}: ${error}`, {
-      level: 'error',
+      level: "error",
     });
     return null;
   }
@@ -327,7 +327,7 @@ export function addPluginScopeToServers(
     const scopedName = `plugin:${pluginName}:${name}`;
     const scoped: ScopedMcpServerConfig = {
       ...config,
-      scope: 'dynamic', // Use dynamic scope for plugin servers
+      scope: "dynamic", // Use dynamic scope for plugin servers
       pluginSource,
     };
     scopedServers[scopedName] = scoped;
@@ -372,7 +372,7 @@ export async function extractMcpServersFromPlugins(
           );
         } catch (err) {
           errors?.push({
-            type: 'generic-error',
+            type: "generic-error",
             source: name,
             plugin: plugin.name,
             error: errorMessage(err),
@@ -467,7 +467,7 @@ export function resolvePluginMcpEnvironment(
   // Handle different server types
   switch (config.type) {
     case undefined:
-    case 'stdio': {
+    case "stdio": {
       const stdioConfig = { ...config };
 
       // Resolve command path
@@ -487,7 +487,7 @@ export function resolvePluginMcpEnvironment(
         ...(stdioConfig.env || {}),
       };
       for (const [key, value] of Object.entries(resolvedEnv)) {
-        if (key !== 'CLAUDE_PLUGIN_ROOT' && key !== 'CLAUDE_PLUGIN_DATA') {
+        if (key !== "CLAUDE_PLUGIN_ROOT" && key !== "CLAUDE_PLUGIN_DATA") {
           resolvedEnv[key] = resolveValue(value);
         }
       }
@@ -497,9 +497,9 @@ export function resolvePluginMcpEnvironment(
       break;
     }
 
-    case 'sse':
-    case 'http':
-    case 'ws': {
+    case "sse":
+    case "http":
+    case "ws": {
       const remoteConfig = { ...config };
 
       // Resolve URL
@@ -521,10 +521,10 @@ export function resolvePluginMcpEnvironment(
     }
 
     // For other types (sse-ide, ws-ide, sdk, claudeai-proxy), pass through unchanged
-    case 'sse-ide':
-    case 'ws-ide':
-    case 'sdk':
-    case 'claudeai-proxy':
+    case "sse-ide":
+    case "ws-ide":
+    case "sdk":
+    case "claudeai-proxy":
       resolved = config;
       break;
   }
@@ -532,16 +532,16 @@ export function resolvePluginMcpEnvironment(
   // Log and track missing variables if any were found and errors array provided
   if (errors && allMissingVars.length > 0) {
     const uniqueMissingVars = [...new Set(allMissingVars)];
-    const varList = uniqueMissingVars.join(', ');
+    const varList = uniqueMissingVars.join(", ");
 
     logForDebugging(`Missing environment variables in plugin MCP config: ${varList}`, {
-      level: 'warn',
+      level: "warn",
     });
 
     // Add error to the errors array if plugin and server names are provided
     if (pluginName && serverName) {
       errors.push({
-        type: 'mcp-config-invalid',
+        type: "mcp-config-invalid",
         source: `plugin:${pluginName}`,
         plugin: pluginName,
         serverName,
@@ -592,7 +592,7 @@ export async function getPluginMcpServers(
       );
     } catch (err) {
       errors?.push({
-        type: 'generic-error',
+        type: "generic-error",
         source: name,
         plugin: plugin.name,
         error: errorMessage(err),

@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import { getDisplayPath } from '../utils/file.js';
-import { removePathFromRepo, validateRepoAtPath } from '../utils/githubRepoPathMapping.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
-import { Spinner } from './Spinner.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import { getDisplayPath } from "../utils/file.js";
+import { removePathFromRepo, validateRepoAtPath } from "../utils/githubRepoPathMapping.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
+import { Spinner } from "./Spinner.js";
 
 type Props = {
   targetRepo: string;
@@ -27,7 +27,7 @@ export function TeleportRepoMismatchDialog(t0) {
     $[3] !== targetRepo
   ) {
     t1 = async (value) => {
-      if (value === 'cancel') {
+      if (value === "cancel") {
         onCancel();
         return;
       }
@@ -58,10 +58,10 @@ export function TeleportRepoMismatchDialog(t0) {
   let t2;
   if ($[5] !== availablePaths) {
     let t3;
-    if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = {
-        label: 'Cancel',
-        value: 'cancel',
+        label: "Cancel",
+        value: "cancel",
       };
       $[7] = t3;
     } else {

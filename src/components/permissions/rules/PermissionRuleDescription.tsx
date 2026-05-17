@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../../../ink.js';
-import { BashTool } from '../../../tools/BashTool/BashTool.js';
-import type { PermissionRuleValue } from '../../../utils/permissions/PermissionRule.js';
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../../../ink.js";
+import { BashTool } from "../../../tools/BashTool/BashTool.js";
+import type { PermissionRuleValue } from "../../../utils/permissions/PermissionRule.js";
 
 type RuleSubtitleProps = {
   ruleValue: PermissionRuleValue;
@@ -12,7 +12,7 @@ export function PermissionRuleDescription(t0) {
   switch (ruleValue.toolName) {
     case BashTool.name: {
       if (ruleValue.ruleContent) {
-        if (ruleValue.ruleContent.endsWith(':*')) {
+        if (ruleValue.ruleContent.endsWith(":*")) {
           let t1;
           if ($[0] !== ruleValue.ruleContent) {
             t1 = ruleValue.ruleContent.slice(0, -2);
@@ -51,7 +51,7 @@ export function PermissionRuleDescription(t0) {
         }
       } else {
         let t1;
-        if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+        if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
           t1 = <Text dimColor={true}>Any Bash command</Text>;
           $[6] = t1;
         } else {

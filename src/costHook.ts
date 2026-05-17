@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { formatTotalCost, saveCurrentSessionCosts } from './cost-tracker.js';
-import { hasConsoleBillingAccess } from './utils/billing.js';
-import type { FpsMetrics } from './utils/fpsTracker.js';
+import { useEffect } from "react";
+import { formatTotalCost, saveCurrentSessionCosts } from "./cost-tracker.js";
+import { hasConsoleBillingAccess } from "./utils/billing.js";
+import type { FpsMetrics } from "./utils/fpsTracker.js";
 
 export function useCostSummary(getFpsMetrics?: () => FpsMetrics | undefined): void {
   useEffect(() => {
@@ -12,9 +12,9 @@ export function useCostSummary(getFpsMetrics?: () => FpsMetrics | undefined): vo
 
       saveCurrentSessionCosts(getFpsMetrics?.());
     };
-    process.on('exit', f);
+    process.on("exit", f);
     return () => {
-      process.off('exit', f);
+      process.off("exit", f);
     };
   }, [getFpsMetrics]);
 }

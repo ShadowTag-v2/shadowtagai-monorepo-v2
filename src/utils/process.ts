@@ -1,6 +1,6 @@
 function handleEPIPE(stream: NodeJS.WriteStream): (err: NodeJS.ErrnoException) => void {
   return (err: NodeJS.ErrnoException) => {
-    if (err.code === 'EPIPE') {
+    if (err.code === "EPIPE") {
       stream.destroy();
     }
   };
@@ -8,8 +8,8 @@ function handleEPIPE(stream: NodeJS.WriteStream): (err: NodeJS.ErrnoException) =
 
 // Prevents memory leak when pipe is broken (e.g., `claude -p | head -1`)
 export function registerProcessOutputErrorHandlers(): void {
-  process.stdout.on('error', handleEPIPE(process.stdout));
-  process.stderr.on('error', handleEPIPE(process.stderr));
+  process.stdout.on("error", handleEPIPE(process.stdout));
+  process.stderr.on("error", handleEPIPE(process.stderr));
 }
 
 function writeOut(stream: NodeJS.WriteStream, data: string): void {
@@ -49,15 +49,15 @@ export function peekForStdinData(stream: NodeJS.EventEmitter, ms: number): Promi
   return new Promise<boolean>((resolve) => {
     const done = (timedOut: boolean) => {
       clearTimeout(peek);
-      stream.off('end', onEnd);
-      stream.off('data', onFirstData);
+      stream.off("end", onEnd);
+      stream.off("data", onFirstData);
       void resolve(timedOut);
     };
     const onEnd = () => done(false);
     const onFirstData = () => clearTimeout(peek);
     // eslint-disable-next-line no-restricted-syntax -- not a sleep: races timeout against stream end/data events
     const peek = setTimeout(done, ms, true);
-    stream.once('end', onEnd);
-    stream.once('data', onFirstData);
+    stream.once("end", onEnd);
+    stream.once("data", onFirstData);
   });
 }

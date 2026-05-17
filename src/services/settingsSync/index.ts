@@ -9,38 +9,38 @@
  * Backend API: anthropic/anthropic#218817
  */
 
-import { feature } from 'bun:bundle';
-import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { dirname } from 'node:path';
-import axios from 'axios';
-import pickBy from 'lodash-es/pickBy.js';
-import { getIsInteractive } from '../../bootstrap/state.js';
+import { feature } from "bun:bundle";
+import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
+import axios from "axios";
+import pickBy from "lodash-es/pickBy.js";
+import { getIsInteractive } from "../../bootstrap/state.js";
 import {
   CLAUDE_AI_INFERENCE_SCOPE,
   getOauthConfig,
   OAUTH_BETA_HEADER,
-} from '../../constants/oauth.js';
-import { checkAndRefreshOAuthTokenIfNeeded, getClaudeAIOAuthTokens } from '../../utils/auth.js';
-import { clearMemoryFileCaches } from '../../utils/claudemd.js';
-import { getMemoryPath } from '../../utils/config.js';
-import { logForDiagnosticsNoPII } from '../../utils/diagLogs.js';
-import { classifyAxiosError } from '../../utils/errors.js';
-import { getRepoRemoteHash } from '../../utils/git.js';
-import { getAPIProvider, isFirstPartyAnthropicBaseUrl } from '../../utils/model/providers.js';
-import { markInternalWrite } from '../../utils/settings/internalWrites.js';
-import { getSettingsFilePathForSource } from '../../utils/settings/settings.js';
-import { resetSettingsCache } from '../../utils/settings/settingsCache.js';
-import { sleep } from '../../utils/sleep.js';
-import { getClaudeCodeUserAgent } from '../../utils/userAgent.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../analytics/growthbook.js';
-import { logEvent } from '../analytics/index.js';
-import { getRetryDelay } from '../api/withRetry.js';
+} from "../../constants/oauth.js";
+import { checkAndRefreshOAuthTokenIfNeeded, getClaudeAIOAuthTokens } from "../../utils/auth.js";
+import { clearMemoryFileCaches } from "../../utils/claudemd.js";
+import { getMemoryPath } from "../../utils/config.js";
+import { logForDiagnosticsNoPII } from "../../utils/diagLogs.js";
+import { classifyAxiosError } from "../../utils/errors.js";
+import { getRepoRemoteHash } from "../../utils/git.js";
+import { getAPIProvider, isFirstPartyAnthropicBaseUrl } from "../../utils/model/providers.js";
+import { markInternalWrite } from "../../utils/settings/internalWrites.js";
+import { getSettingsFilePathForSource } from "../../utils/settings/settings.js";
+import { resetSettingsCache } from "../../utils/settings/settingsCache.js";
+import { sleep } from "../../utils/sleep.js";
+import { getClaudeCodeUserAgent } from "../../utils/userAgent.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../analytics/growthbook.js";
+import { logEvent } from "../analytics/index.js";
+import { getRetryDelay } from "../api/withRetry.js";
 import {
   type SettingsSyncFetchResult,
   type SettingsSyncUploadResult,
   SYNC_KEYS,
   UserSyncDataSchema,
-} from './types.js';
+} from "./types.js";
 
 const SETTINGS_SYNC_TIMEOUT_MS = 10000; // 10 seconds
 const DEFAULT_MAX_RETRIES = 3;
@@ -54,21 +54,21 @@ const MAX_FILE_SIZE_BYTES = 500 * 1024; // 500 KB per file (matches backend limi
 export async function uploadUserSettingsInBackground(): Promise<void> {
   try {
     if (
-      !feature('UPLOAD_USER_SETTINGS') ||
-      !getFeatureValue_CACHED_MAY_BE_STALE('tengu_enable_settings_sync_push', false) ||
+      !feature("UPLOAD_USER_SETTINGS") ||
+      !getFeatureValue_CACHED_MAY_BE_STALE("tengu_enable_settings_sync_push", false) ||
       !getIsInteractive() ||
       !isUsingOAuth()
     ) {
-      logForDiagnosticsNoPII('info', 'settings_sync_upload_skipped');
-      logEvent('tengu_settings_sync_upload_skipped_ineligible', {});
+      logForDiagnosticsNoPII("info", "settings_sync_upload_skipped");
+      logEvent("tengu_settings_sync_upload_skipped_ineligible", {});
       return;
     }
 
-    logForDiagnosticsNoPII('info', 'settings_sync_upload_starting');
+    logForDiagnosticsNoPII("info", "settings_sync_upload_starting");
     const result = await fetchUserSettings();
     if (!result.success) {
-      logForDiagnosticsNoPII('warn', 'settings_sync_upload_fetch_failed');
-      logEvent('tengu_settings_sync_upload_fetch_failed', {});
+      logForDiagnosticsNoPII("warn", "settings_sync_upload_fetch_failed");
+      logEvent("tengu_settings_sync_upload_fetch_failed", {});
       return;
     }
 
@@ -79,22 +79,22 @@ export async function uploadUserSettingsInBackground(): Promise<void> {
 
     const entryCount = Object.keys(changedEntries).length;
     if (entryCount === 0) {
-      logForDiagnosticsNoPII('info', 'settings_sync_upload_no_changes');
-      logEvent('tengu_settings_sync_upload_skipped', {});
+      logForDiagnosticsNoPII("info", "settings_sync_upload_no_changes");
+      logEvent("tengu_settings_sync_upload_skipped", {});
       return;
     }
 
     const uploadResult = await uploadUserSettings(changedEntries);
     if (uploadResult.success) {
-      logForDiagnosticsNoPII('info', 'settings_sync_upload_success');
-      logEvent('tengu_settings_sync_upload_success', { entryCount });
+      logForDiagnosticsNoPII("info", "settings_sync_upload_success");
+      logEvent("tengu_settings_sync_upload_success", { entryCount });
     } else {
-      logForDiagnosticsNoPII('warn', 'settings_sync_upload_failed');
-      logEvent('tengu_settings_sync_upload_failed', { entryCount });
+      logForDiagnosticsNoPII("warn", "settings_sync_upload_failed");
+      logEvent("tengu_settings_sync_upload_failed", { entryCount });
     }
   } catch {
     // Fail-open: log unexpected errors but don't block startup
-    logForDiagnosticsNoPII('error', 'settings_sync_unexpected_error');
+    logForDiagnosticsNoPII("error", "settings_sync_unexpected_error");
   }
 }
 
@@ -143,41 +143,41 @@ export function redownloadUserSettings(): Promise<boolean> {
 }
 
 async function doDownloadUserSettings(maxRetries = DEFAULT_MAX_RETRIES): Promise<boolean> {
-  if (feature('DOWNLOAD_USER_SETTINGS')) {
+  if (feature("DOWNLOAD_USER_SETTINGS")) {
     try {
-      if (!getFeatureValue_CACHED_MAY_BE_STALE('tengu_strap_foyer', false) || !isUsingOAuth()) {
-        logForDiagnosticsNoPII('info', 'settings_sync_download_skipped');
-        logEvent('tengu_settings_sync_download_skipped', {});
+      if (!getFeatureValue_CACHED_MAY_BE_STALE("tengu_strap_foyer", false) || !isUsingOAuth()) {
+        logForDiagnosticsNoPII("info", "settings_sync_download_skipped");
+        logEvent("tengu_settings_sync_download_skipped", {});
         return false;
       }
 
-      logForDiagnosticsNoPII('info', 'settings_sync_download_starting');
+      logForDiagnosticsNoPII("info", "settings_sync_download_starting");
       const result = await fetchUserSettings(maxRetries);
       if (!result.success) {
-        logForDiagnosticsNoPII('warn', 'settings_sync_download_fetch_failed');
-        logEvent('tengu_settings_sync_download_fetch_failed', {});
+        logForDiagnosticsNoPII("warn", "settings_sync_download_fetch_failed");
+        logEvent("tengu_settings_sync_download_fetch_failed", {});
         return false;
       }
 
       if (result.isEmpty) {
-        logForDiagnosticsNoPII('info', 'settings_sync_download_empty');
-        logEvent('tengu_settings_sync_download_empty', {});
+        logForDiagnosticsNoPII("info", "settings_sync_download_empty");
+        logEvent("tengu_settings_sync_download_empty", {});
         return false;
       }
 
       const entries = result.data?.content.entries;
       const projectId = await getRepoRemoteHash();
       const entryCount = Object.keys(entries).length;
-      logForDiagnosticsNoPII('info', 'settings_sync_download_applying', {
+      logForDiagnosticsNoPII("info", "settings_sync_download_applying", {
         entryCount,
       });
       await applyRemoteEntriesToLocal(entries, projectId);
-      logEvent('tengu_settings_sync_download_success', { entryCount });
+      logEvent("tengu_settings_sync_download_success", { entryCount });
       return true;
     } catch {
       // Fail-open: log error but don't block CCR startup
-      logForDiagnosticsNoPII('error', 'settings_sync_download_error');
-      logEvent('tengu_settings_sync_download_error', {});
+      logForDiagnosticsNoPII("error", "settings_sync_download_error");
+      logEvent("tengu_settings_sync_download_error", {});
       return false;
     }
   }
@@ -193,7 +193,7 @@ async function doDownloadUserSettings(maxRetries = DEFAULT_MAX_RETRIES): Promise
  * download a no-op there. Upload is independently guarded by getIsInteractive().
  */
 function isUsingOAuth(): boolean {
-  if (getAPIProvider() !== 'firstParty' || !isFirstPartyAnthropicBaseUrl()) {
+  if (getAPIProvider() !== "firstParty" || !isFirstPartyAnthropicBaseUrl()) {
     return false;
   }
 
@@ -214,14 +214,14 @@ function getSettingsSyncAuthHeaders(): {
     return {
       headers: {
         Authorization: `Bearer ${oauthTokens.accessToken}`,
-        'anthropic-beta': OAUTH_BETA_HEADER,
+        "anthropic-beta": OAUTH_BETA_HEADER,
       },
     };
   }
 
   return {
     headers: {},
-    error: 'No OAuth token available',
+    error: "No OAuth token available",
   };
 }
 
@@ -240,7 +240,7 @@ async function fetchUserSettingsOnce(): Promise<SettingsSyncFetchResult> {
 
     const headers: Record<string, string> = {
       ...authHeaders.headers,
-      'User-Agent': getClaudeCodeUserAgent(),
+      "User-Agent": getClaudeCodeUserAgent(),
     };
 
     const endpoint = getSettingsSyncEndpoint();
@@ -252,7 +252,7 @@ async function fetchUserSettingsOnce(): Promise<SettingsSyncFetchResult> {
 
     // 404 means no settings exist yet
     if (response.status === 404) {
-      logForDiagnosticsNoPII('info', 'settings_sync_fetch_empty');
+      logForDiagnosticsNoPII("info", "settings_sync_fetch_empty");
       return {
         success: true,
         isEmpty: true,
@@ -261,14 +261,14 @@ async function fetchUserSettingsOnce(): Promise<SettingsSyncFetchResult> {
 
     const parsed = UserSyncDataSchema().safeParse(response.data);
     if (!parsed.success) {
-      logForDiagnosticsNoPII('warn', 'settings_sync_fetch_invalid_format');
+      logForDiagnosticsNoPII("warn", "settings_sync_fetch_invalid_format");
       return {
         success: false,
-        error: 'Invalid settings sync response format',
+        error: "Invalid settings sync response format",
       };
     }
 
-    logForDiagnosticsNoPII('info', 'settings_sync_fetch_success');
+    logForDiagnosticsNoPII("info", "settings_sync_fetch_success");
     return {
       success: true,
       data: parsed.data,
@@ -277,16 +277,16 @@ async function fetchUserSettingsOnce(): Promise<SettingsSyncFetchResult> {
   } catch (error) {
     const { kind, message } = classifyAxiosError(error);
     switch (kind) {
-      case 'auth':
+      case "auth":
         return {
           success: false,
-          error: 'Not authorized for settings sync',
+          error: "Not authorized for settings sync",
           skipRetry: true,
         };
-      case 'timeout':
-        return { success: false, error: 'Settings sync request timeout' };
-      case 'network':
-        return { success: false, error: 'Cannot connect to server' };
+      case "timeout":
+        return { success: false, error: "Settings sync request timeout" };
+      case "network":
+        return { success: false, error: "Cannot connect to server" };
       default:
         return { success: false, error: message };
     }
@@ -314,7 +314,7 @@ async function fetchUserSettings(
     }
 
     const delayMs = getRetryDelay(attempt);
-    logForDiagnosticsNoPII('info', 'settings_sync_retry', {
+    logForDiagnosticsNoPII("info", "settings_sync_retry", {
       attempt,
       maxRetries,
       delayMs,
@@ -341,8 +341,8 @@ async function uploadUserSettings(
 
     const headers: Record<string, string> = {
       ...authHeaders.headers,
-      'User-Agent': getClaudeCodeUserAgent(),
-      'Content-Type': 'application/json',
+      "User-Agent": getClaudeCodeUserAgent(),
+      "Content-Type": "application/json",
     };
 
     const endpoint = getSettingsSyncEndpoint();
@@ -355,7 +355,7 @@ async function uploadUserSettings(
       },
     );
 
-    logForDiagnosticsNoPII('info', 'settings_sync_uploaded', {
+    logForDiagnosticsNoPII("info", "settings_sync_uploaded", {
       entryCount: Object.keys(entries).length,
     });
     return {
@@ -364,10 +364,10 @@ async function uploadUserSettings(
       lastModified: response.data?.lastModified,
     };
   } catch (error) {
-    logForDiagnosticsNoPII('warn', 'settings_sync_upload_error');
+    logForDiagnosticsNoPII("warn", "settings_sync_upload_error");
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -380,11 +380,11 @@ async function tryReadFileForSync(filePath: string): Promise<string | null> {
   try {
     const stats = await stat(filePath);
     if (stats.size > MAX_FILE_SIZE_BYTES) {
-      logForDiagnosticsNoPII('info', 'settings_sync_file_too_large');
+      logForDiagnosticsNoPII("info", "settings_sync_file_too_large");
       return null;
     }
 
-    const content = await readFile(filePath, 'utf8');
+    const content = await readFile(filePath, "utf8");
     // Check for empty/whitespace-only without allocating a trimmed copy
     if (!content || /^\s*$/.test(content)) {
       return null;
@@ -402,7 +402,7 @@ async function buildEntriesFromLocalFiles(
   const entries: Record<string, string> = {};
 
   // Global user settings
-  const userSettingsPath = getSettingsFilePathForSource('userSettings');
+  const userSettingsPath = getSettingsFilePathForSource("userSettings");
   if (userSettingsPath) {
     const content = await tryReadFileForSync(userSettingsPath);
     if (content) {
@@ -411,7 +411,7 @@ async function buildEntriesFromLocalFiles(
   }
 
   // Global user memory
-  const userMemoryPath = getMemoryPath('User');
+  const userMemoryPath = getMemoryPath("User");
   const userMemoryContent = await tryReadFileForSync(userMemoryPath);
   if (userMemoryContent) {
     entries[SYNC_KEYS.USER_MEMORY] = userMemoryContent;
@@ -420,7 +420,7 @@ async function buildEntriesFromLocalFiles(
   // Project-specific files (only if we have a project ID from git remote)
   if (projectId) {
     // Project local settings
-    const localSettingsPath = getSettingsFilePathForSource('localSettings');
+    const localSettingsPath = getSettingsFilePathForSource("localSettings");
     if (localSettingsPath) {
       const content = await tryReadFileForSync(localSettingsPath);
       if (content) {
@@ -429,7 +429,7 @@ async function buildEntriesFromLocalFiles(
     }
 
     // Project local memory
-    const localMemoryPath = getMemoryPath('Local');
+    const localMemoryPath = getMemoryPath("Local");
     const localMemoryContent = await tryReadFileForSync(localMemoryPath);
     if (localMemoryContent) {
       entries[SYNC_KEYS.projectMemory(projectId)] = localMemoryContent;
@@ -446,11 +446,11 @@ async function writeFileForSync(filePath: string, content: string): Promise<bool
       await mkdir(parentDir, { recursive: true });
     }
 
-    await writeFile(filePath, content, 'utf8');
-    logForDiagnosticsNoPII('info', 'settings_sync_file_written');
+    await writeFile(filePath, content, "utf8");
+    logForDiagnosticsNoPII("info", "settings_sync_file_written");
     return true;
   } catch {
-    logForDiagnosticsNoPII('warn', 'settings_sync_file_write_failed');
+    logForDiagnosticsNoPII("warn", "settings_sync_file_write_failed");
     return false;
   }
 }
@@ -473,9 +473,9 @@ async function applyRemoteEntriesToLocal(
 
   // Helper to check size limit (defense-in-depth, matches backend limit)
   const exceedsSizeLimit = (content: string, _path: string): boolean => {
-    const sizeBytes = Buffer.byteLength(content, 'utf8');
+    const sizeBytes = Buffer.byteLength(content, "utf8");
     if (sizeBytes > MAX_FILE_SIZE_BYTES) {
-      logForDiagnosticsNoPII('info', 'settings_sync_file_too_large', {
+      logForDiagnosticsNoPII("info", "settings_sync_file_too_large", {
         sizeBytes,
         maxBytes: MAX_FILE_SIZE_BYTES,
       });
@@ -487,7 +487,7 @@ async function applyRemoteEntriesToLocal(
   // Apply global user settings
   const userSettingsContent = entries[SYNC_KEYS.USER_SETTINGS];
   if (userSettingsContent) {
-    const userSettingsPath = getSettingsFilePathForSource('userSettings');
+    const userSettingsPath = getSettingsFilePathForSource("userSettings");
     if (userSettingsPath && !exceedsSizeLimit(userSettingsContent, userSettingsPath)) {
       // Mark as internal write to prevent spurious change detection
       markInternalWrite(userSettingsPath);
@@ -501,7 +501,7 @@ async function applyRemoteEntriesToLocal(
   // Apply global user memory
   const userMemoryContent = entries[SYNC_KEYS.USER_MEMORY];
   if (userMemoryContent) {
-    const userMemoryPath = getMemoryPath('User');
+    const userMemoryPath = getMemoryPath("User");
     if (!exceedsSizeLimit(userMemoryContent, userMemoryPath)) {
       if (await writeFileForSync(userMemoryPath, userMemoryContent)) {
         appliedCount++;
@@ -515,7 +515,7 @@ async function applyRemoteEntriesToLocal(
     const projectSettingsKey = SYNC_KEYS.projectSettings(projectId);
     const projectSettingsContent = entries[projectSettingsKey];
     if (projectSettingsContent) {
-      const localSettingsPath = getSettingsFilePathForSource('localSettings');
+      const localSettingsPath = getSettingsFilePathForSource("localSettings");
       if (localSettingsPath && !exceedsSizeLimit(projectSettingsContent, localSettingsPath)) {
         // Mark as internal write to prevent spurious change detection
         markInternalWrite(localSettingsPath);
@@ -529,7 +529,7 @@ async function applyRemoteEntriesToLocal(
     const projectMemoryKey = SYNC_KEYS.projectMemory(projectId);
     const projectMemoryContent = entries[projectMemoryKey];
     if (projectMemoryContent) {
-      const localMemoryPath = getMemoryPath('Local');
+      const localMemoryPath = getMemoryPath("Local");
       if (!exceedsSizeLimit(projectMemoryContent, localMemoryPath)) {
         if (await writeFileForSync(localMemoryPath, projectMemoryContent)) {
           appliedCount++;
@@ -547,7 +547,7 @@ async function applyRemoteEntriesToLocal(
     clearMemoryFileCaches();
   }
 
-  logForDiagnosticsNoPII('info', 'settings_sync_applied', {
+  logForDiagnosticsNoPII("info", "settings_sync_applied", {
     appliedCount,
   });
 }

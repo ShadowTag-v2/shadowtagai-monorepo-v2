@@ -1,16 +1,16 @@
-import { feature } from 'bun:bundle';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from 'src/ink.js';
-import { getPlatform } from 'src/utils/platform.js';
-import { isKeybindingCustomizationEnabled } from '../../keybindings/loadUserBindings.js';
-import { useShortcutDisplay } from '../../keybindings/useShortcutDisplay.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
-import { isFastModeAvailable, isFastModeEnabled } from '../../utils/fastMode.js';
-import { getNewlineInstructions } from './utils.js';
+import { feature } from "bun:bundle";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "src/ink.js";
+import { getPlatform } from "src/utils/platform.js";
+import { isKeybindingCustomizationEnabled } from "../../keybindings/loadUserBindings.js";
+import { useShortcutDisplay } from "../../keybindings/useShortcutDisplay.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../services/analytics/growthbook.js";
+import { isFastModeAvailable, isFastModeEnabled } from "../../utils/fastMode.js";
+import { getNewlineInstructions } from "./utils.js";
 
 /** Format a shortcut for display in the help menu (e.g., "ctrl+o" → "ctrl + o") */
 function formatShortcut(shortcut: string): string {
-  return shortcut.replace(/\+/g, ' + ');
+  return shortcut.replace(/\+/g, " + ");
 }
 type Props = {
   dimColor?: boolean;
@@ -21,7 +21,7 @@ type Props = {
 export function PromptInputHelpMenu(props) {
   const $ = _c(99);
   const { dimColor, fixedWidth, gap, paddingX } = props;
-  const t0 = useShortcutDisplay('app:toggleTranscript', 'Global', 'ctrl+o');
+  const t0 = useShortcutDisplay("app:toggleTranscript", "Global", "ctrl+o");
   let t1;
   if ($[0] !== t0) {
     t1 = formatShortcut(t0);
@@ -31,7 +31,7 @@ export function PromptInputHelpMenu(props) {
     t1 = $[1];
   }
   const transcriptShortcut = t1;
-  const t2 = useShortcutDisplay('app:toggleTodos', 'Global', 'ctrl+t');
+  const t2 = useShortcutDisplay("app:toggleTodos", "Global", "ctrl+t");
   let t3;
   if ($[2] !== t2) {
     t3 = formatShortcut(t2);
@@ -41,7 +41,7 @@ export function PromptInputHelpMenu(props) {
     t3 = $[3];
   }
   const todosShortcut = t3;
-  const t4 = useShortcutDisplay('chat:undo', 'Chat', 'ctrl+_');
+  const t4 = useShortcutDisplay("chat:undo", "Chat", "ctrl+_");
   let t5;
   if ($[4] !== t4) {
     t5 = formatShortcut(t4);
@@ -51,7 +51,7 @@ export function PromptInputHelpMenu(props) {
     t5 = $[5];
   }
   const undoShortcut = t5;
-  const t6 = useShortcutDisplay('chat:stash', 'Chat', 'ctrl+s');
+  const t6 = useShortcutDisplay("chat:stash", "Chat", "ctrl+s");
   let t7;
   if ($[6] !== t6) {
     t7 = formatShortcut(t6);
@@ -61,7 +61,7 @@ export function PromptInputHelpMenu(props) {
     t7 = $[7];
   }
   const stashShortcut = t7;
-  const t8 = useShortcutDisplay('chat:cycleMode', 'Chat', 'shift+tab');
+  const t8 = useShortcutDisplay("chat:cycleMode", "Chat", "shift+tab");
   let t9;
   if ($[8] !== t8) {
     t9 = formatShortcut(t8);
@@ -71,7 +71,7 @@ export function PromptInputHelpMenu(props) {
     t9 = $[9];
   }
   const cycleModeShortcut = t9;
-  const t10 = useShortcutDisplay('chat:modelPicker', 'Chat', 'alt+p');
+  const t10 = useShortcutDisplay("chat:modelPicker", "Chat", "alt+p");
   let t11;
   if ($[10] !== t10) {
     t11 = formatShortcut(t10);
@@ -81,7 +81,7 @@ export function PromptInputHelpMenu(props) {
     t11 = $[11];
   }
   const modelPickerShortcut = t11;
-  const t12 = useShortcutDisplay('chat:fastMode', 'Chat', 'alt+o');
+  const t12 = useShortcutDisplay("chat:fastMode", "Chat", "alt+o");
   let t13;
   if ($[12] !== t12) {
     t13 = formatShortcut(t12);
@@ -91,7 +91,7 @@ export function PromptInputHelpMenu(props) {
     t13 = $[13];
   }
   const fastModeShortcut = t13;
-  const t14 = useShortcutDisplay('chat:externalEditor', 'Chat', 'ctrl+g');
+  const t14 = useShortcutDisplay("chat:externalEditor", "Chat", "ctrl+g");
   let t15;
   if ($[14] !== t14) {
     t15 = formatShortcut(t14);
@@ -101,7 +101,7 @@ export function PromptInputHelpMenu(props) {
     t15 = $[15];
   }
   const externalEditorShortcut = t15;
-  const t16 = useShortcutDisplay('app:toggleTerminal', 'Global', 'meta+j');
+  const t16 = useShortcutDisplay("app:toggleTerminal", "Global", "meta+j");
   let t17;
   if ($[16] !== t16) {
     t17 = formatShortcut(t16);
@@ -111,7 +111,7 @@ export function PromptInputHelpMenu(props) {
     t17 = $[17];
   }
   const terminalShortcut = t17;
-  const t18 = useShortcutDisplay('chat:imagePaste', 'Chat', 'ctrl+v');
+  const t18 = useShortcutDisplay("chat:imagePaste", "Chat", "ctrl+v");
   let t19;
   if ($[18] !== t18) {
     t19 = formatShortcut(t18);
@@ -123,8 +123,8 @@ export function PromptInputHelpMenu(props) {
   const imagePasteShortcut = t19;
   let t20;
   if ($[20] !== dimColor || $[21] !== terminalShortcut) {
-    t20 = feature('TERMINAL_PANEL') ? (
-      getFeatureValue_CACHED_MAY_BE_STALE('tengu_terminal_panel', false) ? (
+    t20 = feature("TERMINAL_PANEL") ? (
+      getFeatureValue_CACHED_MAY_BE_STALE("tengu_terminal_panel", false) ? (
         <Box>
           <Text dimColor={dimColor}>{terminalShortcut} for terminal</Text>
         </Box>
@@ -178,7 +178,7 @@ export function PromptInputHelpMenu(props) {
   if ($[29] !== dimColor) {
     t25 = (
       <Box>
-        <Text dimColor={dimColor}>{'& for background'}</Text>
+        <Text dimColor={dimColor}>{"& for background"}</Text>
       </Box>
     );
     $[29] = dimColor;
@@ -244,7 +244,7 @@ export function PromptInputHelpMenu(props) {
     t30 = (
       <Box>
         <Text dimColor={dimColor}>
-          {cycleModeShortcut} {false ? 'to cycle modes' : 'to auto-accept edits'}
+          {cycleModeShortcut} {false ? "to cycle modes" : "to auto-accept edits"}
         </Text>
       </Box>
     );
@@ -281,7 +281,7 @@ export function PromptInputHelpMenu(props) {
     t32 = $[50];
   }
   let t33;
-  if ($[51] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[51] === Symbol.for("react.memo_cache_sentinel")) {
     t33 = getNewlineInstructions();
     $[51] = t33;
   } else {
@@ -345,7 +345,7 @@ export function PromptInputHelpMenu(props) {
   }
   let t37;
   if ($[65] !== dimColor) {
-    t37 = getPlatform() !== 'windows' && (
+    t37 = getPlatform() !== "windows" && (
       <Box>
         <Text dimColor={dimColor}>ctrl + z to suspend</Text>
       </Box>

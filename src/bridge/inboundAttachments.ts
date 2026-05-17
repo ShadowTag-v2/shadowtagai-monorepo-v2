@@ -10,17 +10,17 @@
  * skips that attachment. The message still reaches Claude, just without @path.
  */
 
-import { randomUUID } from 'node:crypto';
-import { mkdir, writeFile } from 'node:fs/promises';
-import { basename, join } from 'node:path';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import axios from 'axios';
-import { z } from 'zod/v4';
-import { getSessionId } from '../bootstrap/state.js';
-import { logForDebugging } from '../utils/debug.js';
-import { getClaudeConfigHomeDir } from '../utils/envUtils.js';
-import { lazySchema } from '../utils/lazySchema.js';
-import { getBridgeAccessToken, getBridgeBaseUrl } from './bridgeConfig.js';
+import { randomUUID } from "node:crypto";
+import { mkdir, writeFile } from "node:fs/promises";
+import { basename, join } from "node:path";
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import axios from "axios";
+import { z } from "zod/v4";
+import { getSessionId } from "../bootstrap/state.js";
+import { logForDebugging } from "../utils/debug.js";
+import { getClaudeConfigHomeDir } from "../utils/envUtils.js";
+import { lazySchema } from "../utils/lazySchema.js";
+import { getBridgeAccessToken, getBridgeBaseUrl } from "./bridgeConfig.js";
 
 const DOWNLOAD_TIMEOUT_MS = 30_000;
 
@@ -40,7 +40,7 @@ export type InboundAttachment = z.infer<ReturnType<typeof attachmentSchema>>;
 
 /** Pull file_attachments off a loosely-typed inbound message. */
 export function extractInboundAttachments(msg: unknown): InboundAttachment[] {
-  if (typeof msg !== 'object' || msg === null || !('file_attachments' in msg)) {
+  if (typeof msg !== "object" || msg === null || !("file_attachments" in msg)) {
     return [];
   }
   const parsed = attachmentsArraySchema().safeParse(msg.file_attachments);
@@ -53,12 +53,12 @@ export function extractInboundAttachments(msg: unknown): InboundAttachment[] {
  * composer controls it.
  */
 function sanitizeFileName(name: string): string {
-  const base = basename(name).replace(/[^a-zA-Z0-9._-]/g, '_');
-  return base || 'attachment';
+  const base = basename(name).replace(/[^a-zA-Z0-9._-]/g, "_");
+  return base || "attachment";
 }
 
 function uploadsDir(): string {
-  return join(getClaudeConfigHomeDir(), 'uploads', getSessionId());
+  return join(getClaudeConfigHomeDir(), "uploads", getSessionId());
 }
 
 /**
@@ -68,7 +68,7 @@ function uploadsDir(): string {
 async function resolveOne(att: InboundAttachment): Promise<string | undefined> {
   const token = getBridgeAccessToken();
   if (!token) {
-    debug('skip: no oauth token');
+    debug("skip: no oauth token");
     return undefined;
   }
 
@@ -81,7 +81,7 @@ async function resolveOne(att: InboundAttachment): Promise<string | undefined> {
     const url = `${getBridgeBaseUrl()}/api/oauth/files/${encodeURIComponent(att.file_uuid)}/content`;
     const response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
-      responseType: 'arraybuffer',
+      responseType: "arraybuffer",
       timeout: DOWNLOAD_TIMEOUT_MS,
       validateStatus: () => true,
     });
@@ -100,7 +100,7 @@ async function resolveOne(att: InboundAttachment): Promise<string | undefined> {
   const safeName = sanitizeFileName(att.file_name);
   const prefix = (att.file_uuid.slice(0, 8) || randomUUID().slice(0, 8)).replace(
     /[^a-zA-Z0-9_-]/g,
-    '_',
+    "_",
   );
   const dir = uploadsDir();
   const outPath = join(dir, `${prefix}-${safeName}`);
@@ -122,14 +122,14 @@ async function resolveOne(att: InboundAttachment): Promise<string | undefined> {
  * @path refs. Empty string if none resolved.
  */
 export async function resolveInboundAttachments(attachments: InboundAttachment[]): Promise<string> {
-  if (attachments.length === 0) return '';
+  if (attachments.length === 0) return "";
   debug(`resolving ${attachments.length} attachment(s)`);
   const paths = await Promise.all(attachments.map(resolveOne));
   const ok = paths.filter((p): p is string => p !== undefined);
-  if (ok.length === 0) return '';
+  if (ok.length === 0) return "";
   // Quoted form — extractAtMentionedFiles truncates unquoted @refs at the
   // first space, which breaks any home dir with spaces (/Users/John Smith/).
-  return `${ok.map((p) => `@"${p}"`).join(' ')} `;
+  return `${ok.map((p) => `@"${p}"`).join(" ")} `;
 }
 
 /**
@@ -143,16 +143,16 @@ export function prependPathRefs(
   prefix: string,
 ): string | Array<ContentBlockParam> {
   if (!prefix) return content;
-  if (typeof content === 'string') return prefix + content;
-  const i = content.findLastIndex((b) => b.type === 'text');
+  if (typeof content === "string") return prefix + content;
+  const i = content.findLastIndex((b) => b.type === "text");
   if (i !== -1) {
     const b = content[i]!;
-    if (b.type === 'text') {
+    if (b.type === "text") {
       return [...content.slice(0, i), { ...b, text: prefix + b.text }, ...content.slice(i + 1)];
     }
   }
   // No text block — append one at the end so it's last.
-  return [...content, { type: 'text', text: prefix.trimEnd() }];
+  return [...content, { type: "text", text: prefix.trimEnd() }];
 }
 
 /**

@@ -1,35 +1,35 @@
-import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BROWSER_TOOLS } from '@ant/claude-for-chrome-mcp';
+import { chmod, mkdir, readFile, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { BROWSER_TOOLS } from "@ant/claude-for-chrome-mcp";
 import {
   getIsInteractive,
   getIsNonInteractiveSession,
   getSessionBypassPermissionsMode,
-} from '../../bootstrap/state.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
-import type { ScopedMcpServerConfig } from '../../services/mcp/types.js';
-import { isInBundledMode } from '../bundledMode.js';
-import { getGlobalConfig, saveGlobalConfig } from '../config.js';
-import { logForDebugging } from '../debug.js';
-import { getClaudeConfigHomeDir, isEnvDefinedFalsy, isEnvTruthy } from '../envUtils.js';
-import { execFileNoThrowWithCwd } from '../execFileNoThrow.js';
-import { getPlatform } from '../platform.js';
-import { jsonStringify } from '../slowOperations.js';
+} from "../../bootstrap/state.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../services/analytics/growthbook.js";
+import type { ScopedMcpServerConfig } from "../../services/mcp/types.js";
+import { isInBundledMode } from "../bundledMode.js";
+import { getGlobalConfig, saveGlobalConfig } from "../config.js";
+import { logForDebugging } from "../debug.js";
+import { getClaudeConfigHomeDir, isEnvDefinedFalsy, isEnvTruthy } from "../envUtils.js";
+import { execFileNoThrowWithCwd } from "../execFileNoThrow.js";
+import { getPlatform } from "../platform.js";
+import { jsonStringify } from "../slowOperations.js";
 import {
   CLAUDE_IN_CHROME_MCP_SERVER_NAME,
   getAllBrowserDataPaths,
   getAllNativeMessagingHostsDirs,
   getAllWindowsRegistryKeys,
   openInChrome,
-} from './common.js';
-import { getChromeSystemPrompt } from './prompt.js';
-import { isChromeExtensionInstalledPortable } from './setupPortable.js';
+} from "./common.js";
+import { getChromeSystemPrompt } from "./prompt.js";
+import { isChromeExtensionInstalledPortable } from "./setupPortable.js";
 
-const CHROME_EXTENSION_RECONNECT_URL = 'https://clau.de/chrome/reconnect';
+const CHROME_EXTENSION_RECONNECT_URL = "https://clau.de/chrome/reconnect";
 
-const NATIVE_HOST_IDENTIFIER = 'com.anthropic.claude_code_browser_extension';
+const NATIVE_HOST_IDENTIFIER = "com.anthropic.claude_code_browser_extension";
 const NATIVE_HOST_MANIFEST_NAME = `${NATIVE_HOST_IDENTIFIER}.json`;
 
 export function shouldEnableClaudeInChrome(chromeFlag?: boolean): boolean {
@@ -73,8 +73,8 @@ export function shouldAutoEnableClaudeInChrome(): boolean {
   shouldAutoEnable =
     getIsInteractive() &&
     isChromeExtensionInstalled_CACHED_MAY_BE_STALE() &&
-    (process.env.USER_TYPE === 'ant' ||
-      getFeatureValue_CACHED_MAY_BE_STALE('tengu_chrome_auto_enable', false));
+    (process.env.USER_TYPE === "ant" ||
+      getFeatureValue_CACHED_MAY_BE_STALE("tengu_chrome_auto_enable", false));
 
   return shouldAutoEnable;
 }
@@ -94,7 +94,7 @@ export function setupClaudeInChrome(): {
 
   const env: Record<string, string> = {};
   if (getSessionBypassPermissionsMode()) {
-    env.CLAUDE_CHROME_PERMISSION_MODE = 'skip_all_permission_checks';
+    env.CLAUDE_CHROME_PERMISSION_MODE = "skip_all_permission_checks";
   }
   const hasEnv = Object.keys(env).length > 0;
 
@@ -108,17 +108,17 @@ export function setupClaudeInChrome(): {
       .then((manifestBinaryPath) => installChromeNativeHostManifest(manifestBinaryPath))
       .catch((e) =>
         logForDebugging(`[Claude in Chrome] Failed to install native host: ${e}`, {
-          level: 'error',
+          level: "error",
         }),
       );
 
     return {
       mcpConfig: {
         [CLAUDE_IN_CHROME_MCP_SERVER_NAME]: {
-          type: 'stdio' as const,
+          type: "stdio" as const,
           command: process.execPath,
-          args: ['--claude-in-chrome-mcp'],
-          scope: 'dynamic' as const,
+          args: ["--claude-in-chrome-mcp"],
+          scope: "dynamic" as const,
           ...(hasEnv && { env }),
         },
       },
@@ -127,23 +127,23 @@ export function setupClaudeInChrome(): {
     };
   } else {
     const __filename = fileURLToPath(import.meta.url);
-    const __dirname = join(__filename, '..');
-    const cliPath = join(__dirname, 'cli.js');
+    const __dirname = join(__filename, "..");
+    const cliPath = join(__dirname, "cli.js");
 
     void createWrapperScript(`"${process.execPath}" "${cliPath}" --chrome-native-host`)
       .then((manifestBinaryPath) => installChromeNativeHostManifest(manifestBinaryPath))
       .catch((e) =>
         logForDebugging(`[Claude in Chrome] Failed to install native host: ${e}`, {
-          level: 'error',
+          level: "error",
         }),
       );
 
     const mcpConfig = {
       [CLAUDE_IN_CHROME_MCP_SERVER_NAME]: {
-        type: 'stdio' as const,
+        type: "stdio" as const,
         command: process.execPath,
-        args: [`${cliPath}`, '--claude-in-chrome-mcp'],
-        scope: 'dynamic' as const,
+        args: [`${cliPath}`, "--claude-in-chrome-mcp"],
+        scope: "dynamic" as const,
         ...(hasEnv && { env }),
       },
     };
@@ -163,11 +163,11 @@ export function setupClaudeInChrome(): {
 function getNativeMessagingHostsDirs(): string[] {
   const platform = getPlatform();
 
-  if (platform === 'windows') {
+  if (platform === "windows") {
     // Windows uses a single location with registry entries pointing to it
     const home = homedir();
-    const appData = process.env.APPDATA || join(home, 'AppData', 'Local');
-    return [join(appData, 'Claude Code', 'ChromeNativeHost')];
+    const appData = process.env.APPDATA || join(home, "AppData", "Local");
+    return [join(appData, "Claude Code", "ChromeNativeHost")];
   }
 
   // macOS and Linux: return all browser native messaging directories
@@ -177,20 +177,20 @@ function getNativeMessagingHostsDirs(): string[] {
 export async function installChromeNativeHostManifest(manifestBinaryPath: string): Promise<void> {
   const manifestDirs = getNativeMessagingHostsDirs();
   if (manifestDirs.length === 0) {
-    throw Error('Claude in Chrome Native Host not supported on this platform');
+    throw Error("Claude in Chrome Native Host not supported on this platform");
   }
 
   const manifest = {
     name: NATIVE_HOST_IDENTIFIER,
-    description: 'Claude Code Browser Extension Native Host',
+    description: "Claude Code Browser Extension Native Host",
     path: manifestBinaryPath,
-    type: 'stdio',
+    type: "stdio",
     allowed_origins: [
       `chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/`, // PROD_EXTENSION_ID
-      ...(process.env.USER_TYPE === 'ant'
+      ...(process.env.USER_TYPE === "ant"
         ? [
-            'chrome-extension://dihbgbndebgnbjfmelmegjepbnkhlgni/', // DEV_EXTENSION_ID
-            'chrome-extension://dngcpimnedloihjnnfngkgjoidhnaolf/', // ANT_EXTENSION_ID
+            "chrome-extension://dihbgbndebgnbjfmelmegjepbnkhlgni/", // DEV_EXTENSION_ID
+            "chrome-extension://dngcpimnedloihjnnfngkgjoidhnaolf/", // ANT_EXTENSION_ID
           ]
         : []),
     ],
@@ -204,7 +204,7 @@ export async function installChromeNativeHostManifest(manifestBinaryPath: string
     const manifestPath = join(manifestDir, NATIVE_HOST_MANIFEST_NAME);
 
     // Check if content matches to avoid unnecessary writes
-    const existingContent = await readFile(manifestPath, 'utf-8').catch(() => null);
+    const existingContent = await readFile(manifestPath, "utf-8").catch(() => null);
     if (existingContent === manifestContent) {
       continue;
     }
@@ -221,7 +221,7 @@ export async function installChromeNativeHostManifest(manifestBinaryPath: string
   }
 
   // Windows requires registry entries pointing to the manifest for each browser
-  if (getPlatform() === 'windows') {
+  if (getPlatform() === "windows") {
     const manifestPath = join(manifestDirs[0]!, NATIVE_HOST_MANIFEST_NAME);
     registerWindowsNativeHosts(manifestPath);
   }
@@ -253,15 +253,15 @@ function registerWindowsNativeHosts(manifestPath: string): void {
     const fullKey = `${key}\\${NATIVE_HOST_IDENTIFIER}`;
     // Use reg.exe to add the registry entry
     // https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging
-    void execFileNoThrowWithCwd('reg', [
-      'add',
+    void execFileNoThrowWithCwd("reg", [
+      "add",
       fullKey,
-      '/ve', // Set the default (unnamed) value
-      '/t',
-      'REG_SZ',
-      '/d',
+      "/ve", // Set the default (unnamed) value
+      "/t",
+      "REG_SZ",
+      "/d",
       manifestPath,
-      '/f', // Force overwrite without prompt
+      "/f", // Force overwrite without prompt
     ]).then((result) => {
       if (result.code === 0) {
         logForDebugging(
@@ -285,14 +285,14 @@ function registerWindowsNativeHosts(manifestPath: string): void {
  */
 async function createWrapperScript(command: string): Promise<string> {
   const platform = getPlatform();
-  const chromeDir = join(getClaudeConfigHomeDir(), 'chrome');
+  const chromeDir = join(getClaudeConfigHomeDir(), "chrome");
   const wrapperPath =
-    platform === 'windows'
-      ? join(chromeDir, 'chrome-native-host.bat')
-      : join(chromeDir, 'chrome-native-host');
+    platform === "windows"
+      ? join(chromeDir, "chrome-native-host.bat")
+      : join(chromeDir, "chrome-native-host");
 
   const scriptContent =
-    platform === 'windows'
+    platform === "windows"
       ? `@echo off
 REM Chrome native host wrapper script
 REM Generated by Claude Code - do not edit manually
@@ -305,7 +305,7 @@ exec ${command}
 `;
 
   // Check if content matches to avoid unnecessary writes
-  const existingContent = await readFile(wrapperPath, 'utf-8').catch(() => null);
+  const existingContent = await readFile(wrapperPath, "utf-8").catch(() => null);
   if (existingContent === scriptContent) {
     return wrapperPath;
   }
@@ -313,7 +313,7 @@ exec ${command}
   await mkdir(chromeDir, { recursive: true });
   await writeFile(wrapperPath, scriptContent);
 
-  if (platform !== 'windows') {
+  if (platform !== "windows") {
     await chmod(wrapperPath, 0o755);
   }
 

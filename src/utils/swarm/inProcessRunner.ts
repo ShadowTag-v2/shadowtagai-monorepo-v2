@@ -9,81 +9,81 @@
  * - Cleanup on completion or abort
  */
 
-import { feature } from 'bun:bundle';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import { getSystemPrompt } from '../../constants/prompts.js';
-import { TEAMMATE_MESSAGE_TAG } from '../../constants/xml.js';
-import type { CanUseToolFn } from '../../hooks/useCanUseTool.js';
+import { feature } from "bun:bundle";
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import { getSystemPrompt } from "../../constants/prompts.js";
+import { TEAMMATE_MESSAGE_TAG } from "../../constants/xml.js";
+import type { CanUseToolFn } from "../../hooks/useCanUseTool.js";
 import {
   processMailboxPermissionResponse,
   registerPermissionCallback,
   unregisterPermissionCallback,
-} from '../../hooks/useSwarmPermissionPoller.js';
+} from "../../hooks/useSwarmPermissionPoller.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { getAutoCompactThreshold } from '../../services/compact/autoCompact.js';
+} from "../../services/analytics/index.js";
+import { getAutoCompactThreshold } from "../../services/compact/autoCompact.js";
 import {
   buildPostCompactMessages,
   compactConversation,
   ERROR_MESSAGE_USER_ABORT,
-} from '../../services/compact/compact.js';
-import { resetMicrocompactState } from '../../services/compact/microCompact.js';
-import type { AppState } from '../../state/AppState.js';
-import type { Tool, ToolUseContext } from '../../Tool.js';
-import { appendTeammateMessage } from '../../tasks/InProcessTeammateTask/InProcessTeammateTask.js';
+} from "../../services/compact/compact.js";
+import { resetMicrocompactState } from "../../services/compact/microCompact.js";
+import type { AppState } from "../../state/AppState.js";
+import type { Tool, ToolUseContext } from "../../Tool.js";
+import { appendTeammateMessage } from "../../tasks/InProcessTeammateTask/InProcessTeammateTask.js";
 import type {
   InProcessTeammateTaskState,
   TeammateIdentity,
-} from '../../tasks/InProcessTeammateTask/types.js';
-import { appendCappedMessage } from '../../tasks/InProcessTeammateTask/types.js';
+} from "../../tasks/InProcessTeammateTask/types.js";
+import { appendCappedMessage } from "../../tasks/InProcessTeammateTask/types.js";
 import {
   createActivityDescriptionResolver,
   createProgressTracker,
   getProgressUpdate,
   updateProgressFromMessage,
-} from '../../tasks/LocalAgentTask/LocalAgentTask.js';
-import type { CustomAgentDefinition } from '../../tools/AgentTool/loadAgentsDir.js';
-import { runAgent } from '../../tools/AgentTool/runAgent.js';
-import { awaitClassifierAutoApproval } from '../../tools/BashTool/bashPermissions.js';
-import { BASH_TOOL_NAME } from '../../tools/BashTool/toolName.js';
-import { SEND_MESSAGE_TOOL_NAME } from '../../tools/SendMessageTool/constants.js';
-import { TASK_CREATE_TOOL_NAME } from '../../tools/TaskCreateTool/constants.js';
-import { TASK_GET_TOOL_NAME } from '../../tools/TaskGetTool/constants.js';
-import { TASK_LIST_TOOL_NAME } from '../../tools/TaskListTool/constants.js';
-import { TASK_UPDATE_TOOL_NAME } from '../../tools/TaskUpdateTool/constants.js';
-import { TEAM_CREATE_TOOL_NAME } from '../../tools/TeamCreateTool/constants.js';
-import { TEAM_DELETE_TOOL_NAME } from '../../tools/TeamDeleteTool/constants.js';
-import type { Message } from '../../types/message.js';
-import type { PermissionDecision } from '../../types/permissions.js';
-import { createAssistantAPIErrorMessage, createUserMessage } from '../../utils/messages.js';
-import { evictTaskOutput } from '../../utils/task/diskOutput.js';
-import { evictTerminalTask } from '../../utils/task/framework.js';
-import { tokenCountWithEstimation } from '../../utils/tokens.js';
-import { createAbortController } from '../abortController.js';
-import { type AgentContext, runWithAgentContext } from '../agentContext.js';
-import { count } from '../array.js';
-import { logForDebugging } from '../debug.js';
-import { cloneFileStateCache } from '../fileStateCache.js';
+} from "../../tasks/LocalAgentTask/LocalAgentTask.js";
+import type { CustomAgentDefinition } from "../../tools/AgentTool/loadAgentsDir.js";
+import { runAgent } from "../../tools/AgentTool/runAgent.js";
+import { awaitClassifierAutoApproval } from "../../tools/BashTool/bashPermissions.js";
+import { BASH_TOOL_NAME } from "../../tools/BashTool/toolName.js";
+import { SEND_MESSAGE_TOOL_NAME } from "../../tools/SendMessageTool/constants.js";
+import { TASK_CREATE_TOOL_NAME } from "../../tools/TaskCreateTool/constants.js";
+import { TASK_GET_TOOL_NAME } from "../../tools/TaskGetTool/constants.js";
+import { TASK_LIST_TOOL_NAME } from "../../tools/TaskListTool/constants.js";
+import { TASK_UPDATE_TOOL_NAME } from "../../tools/TaskUpdateTool/constants.js";
+import { TEAM_CREATE_TOOL_NAME } from "../../tools/TeamCreateTool/constants.js";
+import { TEAM_DELETE_TOOL_NAME } from "../../tools/TeamDeleteTool/constants.js";
+import type { Message } from "../../types/message.js";
+import type { PermissionDecision } from "../../types/permissions.js";
+import { createAssistantAPIErrorMessage, createUserMessage } from "../../utils/messages.js";
+import { evictTaskOutput } from "../../utils/task/diskOutput.js";
+import { evictTerminalTask } from "../../utils/task/framework.js";
+import { tokenCountWithEstimation } from "../../utils/tokens.js";
+import { createAbortController } from "../abortController.js";
+import { type AgentContext, runWithAgentContext } from "../agentContext.js";
+import { count } from "../array.js";
+import { logForDebugging } from "../debug.js";
+import { cloneFileStateCache } from "../fileStateCache.js";
 import {
   SUBAGENT_REJECT_MESSAGE,
   SUBAGENT_REJECT_MESSAGE_WITH_REASON_PREFIX,
-} from '../messages.js';
-import type { ModelAlias } from '../model/aliases.js';
+} from "../messages.js";
+import type { ModelAlias } from "../model/aliases.js";
 import {
   applyPermissionUpdates,
   persistPermissionUpdates,
-} from '../permissions/PermissionUpdate.js';
-import type { PermissionUpdate } from '../permissions/PermissionUpdateSchema.js';
-import { hasPermissionsToUseTool } from '../permissions/permissions.js';
-import { emitTaskTerminatedSdk } from '../sdkEventQueue.js';
-import { sleep } from '../sleep.js';
-import { jsonStringify } from '../slowOperations.js';
-import { asSystemPrompt } from '../systemPromptType.js';
-import { claimTask, listTasks, type Task, updateTask } from '../tasks.js';
-import type { TeammateContext } from '../teammateContext.js';
-import { runWithTeammateContext } from '../teammateContext.js';
+} from "../permissions/PermissionUpdate.js";
+import type { PermissionUpdate } from "../permissions/PermissionUpdateSchema.js";
+import { hasPermissionsToUseTool } from "../permissions/permissions.js";
+import { emitTaskTerminatedSdk } from "../sdkEventQueue.js";
+import { sleep } from "../sleep.js";
+import { jsonStringify } from "../slowOperations.js";
+import { asSystemPrompt } from "../systemPromptType.js";
+import { claimTask, listTasks, type Task, updateTask } from "../tasks.js";
+import type { TeammateContext } from "../teammateContext.js";
+import { runWithTeammateContext } from "../teammateContext.js";
 import {
   createIdleNotification,
   getLastPeerDmSummary,
@@ -92,16 +92,16 @@ import {
   markMessageAsReadByIndex,
   readMailbox,
   writeToMailbox,
-} from '../teammateMailbox.js';
-import { unregisterAgent as unregisterPerfettoAgent } from '../telemetry/perfettoTracing.js';
-import { createContentReplacementState } from '../toolResultStorage.js';
-import { TEAM_LEAD_NAME } from './constants.js';
+} from "../teammateMailbox.js";
+import { unregisterAgent as unregisterPerfettoAgent } from "../telemetry/perfettoTracing.js";
+import { createContentReplacementState } from "../toolResultStorage.js";
+import { TEAM_LEAD_NAME } from "./constants.js";
 import {
   getLeaderSetToolPermissionContext,
   getLeaderToolUseConfirmQueue,
-} from './leaderPermissionBridge.js';
-import { createPermissionRequest, sendPermissionRequestViaMailbox } from './permissionSync.js';
-import { TEAMMATE_SYSTEM_PROMPT_ADDENDUM } from './teammatePromptAddendum.js';
+} from "./leaderPermissionBridge.js";
+import { createPermissionRequest, sendPermissionRequestViaMailbox } from "./permissionSync.js";
+import { TEAMMATE_SYSTEM_PROMPT_ADDENDUM } from "./teammatePromptAddendum.js";
 
 type SetAppStateFn = (updater: (prev: AppState) => AppState) => void;
 
@@ -130,7 +130,7 @@ function createInProcessCanUseTool(
       (await hasPermissionsToUseTool(tool, input, toolUseContext, assistantMessage, toolUseID));
 
     // Pass through allow/deny decisions directly
-    if (result.behavior !== 'ask') {
+    if (result.behavior !== "ask") {
       return result;
     }
 
@@ -138,7 +138,7 @@ function createInProcessCanUseTool(
     // Agents await the classifier result (rather than racing it against user
     // interaction like the main agent).
     if (
-      feature('BASH_CLASSIFIER') &&
+      feature("BASH_CLASSIFIER") &&
       tool.name === BASH_TOOL_NAME &&
       result.pendingClassifierCheck
     ) {
@@ -149,7 +149,7 @@ function createInProcessCanUseTool(
       );
       if (classifierDecision) {
         return {
-          behavior: 'allow',
+          behavior: "allow",
           updatedInput: input as Record<string, unknown>,
           decisionReason: classifierDecision,
         };
@@ -158,7 +158,7 @@ function createInProcessCanUseTool(
 
     // Check if aborted before showing UI
     if (abortController.signal.aborted) {
-      return { behavior: 'ask', message: SUBAGENT_REJECT_MESSAGE };
+      return { behavior: "ask", message: SUBAGENT_REJECT_MESSAGE };
     }
 
     const appState = toolUseContext.getAppState();
@@ -170,7 +170,7 @@ function createInProcessCanUseTool(
     });
 
     if (abortController.signal.aborted) {
-      return { behavior: 'ask', message: SUBAGENT_REJECT_MESSAGE };
+      return { behavior: "ask", message: SUBAGENT_REJECT_MESSAGE };
     }
 
     const setToolUseConfirmQueue = getLeaderToolUseConfirmQueue();
@@ -191,11 +191,11 @@ function createInProcessCanUseTool(
           if (decisionMade) return;
           decisionMade = true;
           reportPermissionWait();
-          resolve({ behavior: 'ask', message: SUBAGENT_REJECT_MESSAGE });
+          resolve({ behavior: "ask", message: SUBAGENT_REJECT_MESSAGE });
           setToolUseConfirmQueue((queue) => queue.filter((item) => item.toolUseID !== toolUseID));
         };
 
-        abortController.signal.addEventListener('abort', onAbortListener, {
+        abortController.signal.addEventListener("abort", onAbortListener, {
           once: true,
         });
 
@@ -219,9 +219,9 @@ function createInProcessCanUseTool(
             onAbort() {
               if (decisionMade) return;
               decisionMade = true;
-              abortController.signal.removeEventListener('abort', onAbortListener);
+              abortController.signal.removeEventListener("abort", onAbortListener);
               reportPermissionWait();
-              resolve({ behavior: 'ask', message: SUBAGENT_REJECT_MESSAGE });
+              resolve({ behavior: "ask", message: SUBAGENT_REJECT_MESSAGE });
             },
             async onAllow(
               updatedInput: Record<string, unknown>,
@@ -231,7 +231,7 @@ function createInProcessCanUseTool(
             ) {
               if (decisionMade) return;
               decisionMade = true;
-              abortController.signal.removeEventListener('abort', onAbortListener);
+              abortController.signal.removeEventListener("abort", onAbortListener);
               reportPermissionWait();
               persistPermissionUpdates(permissionUpdates);
               // Write back permission updates to the leader's shared context
@@ -253,7 +253,7 @@ function createInProcessCanUseTool(
               }
               const trimmedFeedback = feedback?.trim();
               resolve({
-                behavior: 'allow',
+                behavior: "allow",
                 updatedInput,
                 userModified: false,
                 acceptFeedback: trimmedFeedback || undefined,
@@ -263,12 +263,12 @@ function createInProcessCanUseTool(
             onReject(feedback?: string, contentBlocks?: ContentBlockParam[]) {
               if (decisionMade) return;
               decisionMade = true;
-              abortController.signal.removeEventListener('abort', onAbortListener);
+              abortController.signal.removeEventListener("abort", onAbortListener);
               reportPermissionWait();
               const message = feedback
                 ? `${SUBAGENT_REJECT_MESSAGE_WITH_REASON_PREFIX}${feedback}`
                 : SUBAGENT_REJECT_MESSAGE;
-              resolve({ behavior: 'ask', message, contentBlocks });
+              resolve({ behavior: "ask", message, contentBlocks });
             },
             async recheckPermission() {
               if (decisionMade) return;
@@ -279,9 +279,9 @@ function createInProcessCanUseTool(
                 assistantMessage,
                 toolUseID,
               );
-              if (freshResult.behavior === 'allow') {
+              if (freshResult.behavior === "allow") {
                 decisionMade = true;
-                abortController.signal.removeEventListener('abort', onAbortListener);
+                abortController.signal.removeEventListener("abort", onAbortListener);
                 reportPermissionWait();
                 setToolUseConfirmQueue((queue) =>
                   queue.filter((item) => item.toolUseID !== toolUseID),
@@ -327,7 +327,7 @@ function createInProcessCanUseTool(
           const finalInput =
             updatedInput && Object.keys(updatedInput).length > 0 ? updatedInput : input;
           resolve({
-            behavior: 'allow',
+            behavior: "allow",
             updatedInput: finalInput,
             userModified: false,
             ...(contentBlocks && contentBlocks.length > 0 && { contentBlocks }),
@@ -338,7 +338,7 @@ function createInProcessCanUseTool(
           const message = feedback
             ? `${SUBAGENT_REJECT_MESSAGE_WITH_REASON_PREFIX}${feedback}`
             : SUBAGENT_REJECT_MESSAGE;
-          resolve({ behavior: 'ask', message, contentBlocks });
+          resolve({ behavior: "ask", message, contentBlocks });
         },
       });
 
@@ -350,7 +350,7 @@ function createInProcessCanUseTool(
         async (abortController, cleanup, resolve, identity, request) => {
           if (abortController.signal.aborted) {
             cleanup();
-            resolve({ behavior: 'ask', message: SUBAGENT_REJECT_MESSAGE });
+            resolve({ behavior: "ask", message: SUBAGENT_REJECT_MESSAGE });
             return;
           }
 
@@ -361,17 +361,17 @@ function createInProcessCanUseTool(
               const parsed = isPermissionResponse(msg.text);
               if (parsed && parsed.request_id === request.id) {
                 await markMessageAsReadByIndex(identity.agentName, identity.teamName, i);
-                if (parsed.subtype === 'success') {
+                if (parsed.subtype === "success") {
                   processMailboxPermissionResponse({
                     requestId: parsed.request_id,
-                    decision: 'approved',
+                    decision: "approved",
                     updatedInput: parsed.response?.updated_input,
                     permissionUpdates: parsed.response?.permission_updates,
                   });
                 } else {
                   processMailboxPermissionResponse({
                     requestId: parsed.request_id,
-                    decision: 'rejected',
+                    decision: "rejected",
                     feedback: parsed.error,
                   });
                 }
@@ -390,17 +390,17 @@ function createInProcessCanUseTool(
 
       const onAbortListener = () => {
         cleanup();
-        resolve({ behavior: 'ask', message: SUBAGENT_REJECT_MESSAGE });
+        resolve({ behavior: "ask", message: SUBAGENT_REJECT_MESSAGE });
       };
 
-      abortController.signal.addEventListener('abort', onAbortListener, {
+      abortController.signal.addEventListener("abort", onAbortListener, {
         once: true,
       });
 
       function cleanup() {
         clearInterval(pollInterval);
         unregisterPermissionCallback(request.id);
-        abortController.signal.removeEventListener('abort', onAbortListener);
+        abortController.signal.removeEventListener("abort", onAbortListener);
       }
     });
   };
@@ -416,8 +416,8 @@ function formatAsTeammateMessage(
   color?: string,
   summary?: string,
 ): string {
-  const colorAttr = color ? ` color="${color}"` : '';
-  const summaryAttr = summary ? ` summary="${summary}"` : '';
+  const colorAttr = color ? ` color="${color}"` : "";
+  const summaryAttr = summary ? ` summary="${summary}"` : "";
   return `<${TEAMMATE_MESSAGE_TAG} teammate_id="${from}"${colorAttr}${summaryAttr}>\n${content}\n</${TEAMMATE_MESSAGE_TAG}>`;
 }
 
@@ -444,7 +444,7 @@ export type InProcessRunnerConfig = {
   /** Optional system prompt override for this teammate */
   systemPrompt?: string;
   /** How to apply the system prompt: 'replace' or 'append' to default */
-  systemPromptMode?: 'default' | 'replace' | 'append';
+  systemPromptMode?: "default" | "replace" | "append";
   /** Tool permissions to auto-allow for this teammate */
   allowedTools?: string[];
   /** Whether this teammate can show permission prompts for unlisted tools.
@@ -479,7 +479,7 @@ function updateTaskState(
 ): void {
   setAppState((prev) => {
     const task = prev.tasks[taskId];
-    if (!task || task.type !== 'in_process_teammate') {
+    if (!task || task.type !== "in_process_teammate") {
       return prev;
     }
     const updated = updater(task);
@@ -527,10 +527,10 @@ async function sendIdleNotification(
   agentColor: string | undefined,
   teamName: string,
   options?: {
-    idleReason?: 'available' | 'interrupted' | 'failed';
+    idleReason?: "available" | "interrupted" | "failed";
     summary?: string;
     completedTaskId?: string;
-    completedStatus?: 'resolved' | 'blocked' | 'failed';
+    completedStatus?: "resolved" | "blocked" | "failed";
     failureReason?: string;
   },
 ): Promise<void> {
@@ -544,10 +544,10 @@ async function sendIdleNotification(
  * A task is available if it's pending, has no owner, and is not blocked.
  */
 function findAvailableTask(tasks: Task[]): Task | undefined {
-  const unresolvedTaskIds = new Set(tasks.filter((t) => t.status !== 'completed').map((t) => t.id));
+  const unresolvedTaskIds = new Set(tasks.filter((t) => t.status !== "completed").map((t) => t.id));
 
   return tasks.find((task) => {
-    if (task.status !== 'pending') return false;
+    if (task.status !== "pending") return false;
     if (task.owner) return false;
     return task.blockedBy.every((id) => !unresolvedTaskIds.has(id));
   });
@@ -592,7 +592,7 @@ async function tryClaimNextTask(
     }
 
     // Also set status to in_progress so the UI reflects it immediately
-    await updateTask(taskListId, availableTask.id, { status: 'in_progress' });
+    await updateTask(taskListId, availableTask.id, { status: "in_progress" });
 
     logForDebugging(
       `[inProcessRunner] Claimed task #${availableTask.id}: ${availableTask.subject}`,
@@ -610,19 +610,19 @@ async function tryClaimNextTask(
  */
 type WaitResult =
   | {
-      type: 'shutdown_request';
+      type: "shutdown_request";
       request: ReturnType<typeof isShutdownRequest>;
       originalMessage: string;
     }
   | {
-      type: 'new_message';
+      type: "new_message";
       message: string;
       from: string;
       color?: string;
       summary?: string;
     }
   | {
-      type: 'aborted';
+      type: "aborted";
     };
 
 /**
@@ -654,12 +654,12 @@ async function waitForNextPromptOrShutdown(
     // Check for in-memory pending messages on every iteration (from transcript viewing)
     const appState = getAppState();
     const task = appState.tasks[taskId];
-    if (task && task.type === 'in_process_teammate' && task.pendingUserMessages.length > 0) {
+    if (task && task.type === "in_process_teammate" && task.pendingUserMessages.length > 0) {
       const message = task.pendingUserMessages[0]!; // Safe: checked length > 0
       // Pop the message from the queue
       setAppState((prev) => {
         const prevTask = prev.tasks[taskId];
-        if (!prevTask || prevTask.type !== 'in_process_teammate') {
+        if (!prevTask || prevTask.type !== "in_process_teammate") {
           return prev;
         }
         return {
@@ -677,9 +677,9 @@ async function waitForNextPromptOrShutdown(
         `[inProcessRunner] ${identity.agentName} found pending user message (poll #${pollCount})`,
       );
       return {
-        type: 'new_message',
+        type: "new_message",
         message,
-        from: 'user',
+        from: "user",
       };
     }
 
@@ -694,7 +694,7 @@ async function waitForNextPromptOrShutdown(
       logForDebugging(
         `[inProcessRunner] ${identity.agentName} aborted while waiting (poll #${pollCount})`,
       );
-      return { type: 'aborted' };
+      return { type: "aborted" };
     }
 
     // Check for messages in mailbox
@@ -730,7 +730,7 @@ async function waitForNextPromptOrShutdown(
         );
         await markMessageAsReadByIndex(identity.agentName, identity.teamName, shutdownIndex);
         return {
-          type: 'shutdown_request',
+          type: "shutdown_request",
           request: shutdownParsed,
           originalMessage: msg.text,
         };
@@ -764,7 +764,7 @@ async function waitForNextPromptOrShutdown(
           );
           await markMessageAsReadByIndex(identity.agentName, identity.teamName, selectedIndex);
           return {
-            type: 'new_message',
+            type: "new_message",
             message: msg.text,
             from: msg.from,
             color: msg.color,
@@ -781,9 +781,9 @@ async function waitForNextPromptOrShutdown(
     const taskPrompt = await tryClaimNextTask(taskListId, identity.agentName);
     if (taskPrompt) {
       return {
-        type: 'new_message',
+        type: "new_message",
         message: taskPrompt,
-        from: 'task-list',
+        from: "task-list",
       };
     }
   }
@@ -791,7 +791,7 @@ async function waitForNextPromptOrShutdown(
   logForDebugging(
     `[inProcessRunner] ${identity.agentName} exiting poll loop (abort=${abortController.signal.aborted}, polls=${pollCount})`,
   );
-  return { type: 'aborted' };
+  return { type: "aborted" };
 }
 
 /**
@@ -839,15 +839,15 @@ export async function runInProcessTeammate(
     agentColor: identity.color,
     planModeRequired: identity.planModeRequired,
     isTeamLead: false,
-    agentType: 'teammate',
+    agentType: "teammate",
     invokingRequestId,
-    invocationKind: 'spawn',
+    invocationKind: "spawn",
     invocationEmitted: false,
   };
 
   // Build system prompt based on systemPromptMode
   let teammateSystemPrompt: string;
-  if (systemPromptMode === 'replace' && systemPrompt) {
+  if (systemPromptMode === "replace" && systemPrompt) {
     teammateSystemPrompt = systemPrompt;
   } else {
     const fullSystemPromptParts = await getSystemPrompt(
@@ -868,8 +868,8 @@ export async function runInProcessTeammate(
 
       // Log agent memory loaded event for in-process teammates
       if (agentDefinition.memory) {
-        logEvent('tengu_agent_memory_loaded', {
-          ...(process.env.USER_TYPE === 'ant'
+        logEvent("tengu_agent_memory_loaded", {
+          ...(process.env.USER_TYPE === "ant"
             ? {
                 agent_type:
                   agentDefinition.agentType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -878,17 +878,17 @@ export async function runInProcessTeammate(
           scope:
             agentDefinition.memory as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           source:
-            'in-process-teammate' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+            "in-process-teammate" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         });
       }
     }
 
     // Append mode: add provided system prompt after default
-    if (systemPromptMode === 'append' && systemPrompt) {
+    if (systemPromptMode === "append" && systemPrompt) {
       systemPromptParts.push(systemPrompt);
     }
 
-    teammateSystemPrompt = systemPromptParts.join('\n');
+    teammateSystemPrompt = systemPromptParts.join("\n");
   }
 
   // Resolve agent definition - use full system prompt with teammate addendum
@@ -914,9 +914,9 @@ export async function runInProcessTeammate(
             TASK_UPDATE_TOOL_NAME,
           ]),
         ]
-      : ['*'],
-    source: 'projectSettings',
-    permissionMode: 'default',
+      : ["*"],
+    source: "projectSettings",
+    permissionMode: "default",
     // Propagate model from custom agent definition so getAgentModel()
     // can use it as a fallback when no tool-level model is specified
     ...(agentDefinition?.model ? { model: agentDefinition.model } : {}),
@@ -925,7 +925,7 @@ export async function runInProcessTeammate(
   // All messages across all prompts
   const allMessages: Message[] = [];
   // Wrap initial prompt with XML for proper styling in transcript view
-  const wrappedInitialPrompt = formatAsTeammateMessage('team-lead', prompt, undefined, description);
+  const wrappedInitialPrompt = formatAsTeammateMessage("team-lead", prompt, undefined, description);
   let currentPrompt = wrappedInitialPrompt;
   let shouldExit = false;
 
@@ -1052,9 +1052,9 @@ export async function runInProcessTeammate(
       const currentAppState = toolUseContext.getAppState();
       const currentTask = currentAppState.tasks[taskId];
       const currentPermissionMode =
-        currentTask && currentTask.type === 'in_process_teammate'
+        currentTask && currentTask.type === "in_process_teammate"
           ? currentTask.permissionMode
-          : 'default';
+          : "default";
       const iterationAgentDefinition = {
         ...resolvedAgentDefinition,
         permissionMode: currentPermissionMode,
@@ -1069,7 +1069,7 @@ export async function runInProcessTeammate(
           // Mark task as running (not idle)
           updateTaskState(
             taskId,
-            (task) => ({ ...task, status: 'running', isIdle: false }),
+            (task) => ({ ...task, status: "running", isIdle: false }),
             setAppState,
           );
 
@@ -1100,7 +1100,7 @@ export async function runInProcessTeammate(
             isAsync: true,
             canShowPermissionPrompts: allowPermissionPrompts ?? true,
             forkContextMessages,
-            querySource: 'agent:custom',
+            querySource: "agent:custom",
             override: { abortController: currentWorkAbortController },
             model: model as ModelAlias | undefined,
             preserveToolUseResults: true,
@@ -1139,20 +1139,20 @@ export async function runInProcessTeammate(
               (task) => {
                 // Track in-progress tool use IDs for animation in transcript view
                 let inProgressToolUseIDs = task.inProgressToolUseIDs;
-                if (message.type === 'assistant') {
+                if (message.type === "assistant") {
                   for (const block of message.message.content) {
-                    if (block.type === 'tool_use') {
+                    if (block.type === "tool_use") {
                       inProgressToolUseIDs = new Set([...(inProgressToolUseIDs ?? []), block.id]);
                     }
                   }
-                } else if (message.type === 'user') {
+                } else if (message.type === "user") {
                   const content = message.message.content;
                   if (Array.isArray(content)) {
                     for (const block of content) {
                       if (
-                        typeof block === 'object' &&
-                        'type' in block &&
-                        block.type === 'tool_result'
+                        typeof block === "object" &&
+                        "type" in block &&
+                        block.type === "tool_result"
                       ) {
                         if (inProgressToolUseIDs) {
                           inProgressToolUseIDs = new Set(inProgressToolUseIDs);
@@ -1213,7 +1213,7 @@ export async function runInProcessTeammate(
       // Check if already idle before updating (to skip duplicate notification)
       const prevAppState = toolUseContext.getAppState();
       const prevTask = prevAppState.tasks[taskId];
-      const wasAlreadyIdle = prevTask?.type === 'in_process_teammate' && prevTask.isIdle;
+      const wasAlreadyIdle = prevTask?.type === "in_process_teammate" && prevTask.isIdle;
 
       // Mark task as idle (NOT completed) and notify any waiters
       updateTaskState(
@@ -1233,7 +1233,7 @@ export async function runInProcessTeammate(
       // Only send idle notification on transition to idle (not if already idle)
       if (!wasAlreadyIdle) {
         await sendIdleNotification(identity.agentName, identity.color, identity.teamName, {
-          idleReason: workWasAborted ? 'interrupted' : 'available',
+          idleReason: workWasAborted ? "interrupted" : "available",
           summary: getLastPeerDmSummary(allMessages),
         });
       } else {
@@ -1255,7 +1255,7 @@ export async function runInProcessTeammate(
       );
 
       switch (waitResult.type) {
-        case 'shutdown_request':
+        case "shutdown_request":
           // Pass shutdown request to model for decision
           // Format as teammate-message for consistency with how tmux teammates receive it
           // The model will use approveShutdown or rejectShutdown tool
@@ -1263,21 +1263,21 @@ export async function runInProcessTeammate(
             `[inProcessRunner] ${identity.agentId} received shutdown request - passing to model`,
           );
           currentPrompt = formatAsTeammateMessage(
-            waitResult.request?.from || 'team-lead',
+            waitResult.request?.from || "team-lead",
             waitResult.originalMessage,
           );
           // Add shutdown request to task.messages for transcript display
           appendTeammateMessage(taskId, createUserMessage({ content: currentPrompt }), setAppState);
           break;
 
-        case 'new_message':
+        case "new_message":
           // New prompt from leader or teammate
           logForDebugging(
             `[inProcessRunner] ${identity.agentId} received new message from ${waitResult.from}`,
           );
           // Messages from the user should be plain text (not wrapped in XML)
           // Messages from other teammates get XML wrapper for identification
-          if (waitResult.from === 'user') {
+          if (waitResult.from === "user") {
             currentPrompt = waitResult.message;
           } else {
             currentPrompt = formatAsTeammateMessage(
@@ -1297,7 +1297,7 @@ export async function runInProcessTeammate(
           }
           break;
 
-        case 'aborted':
+        case "aborted":
           logForDebugging(`[inProcessRunner] ${identity.agentId} aborted while waiting`);
           shouldExit = true;
           break;
@@ -1313,7 +1313,7 @@ export async function runInProcessTeammate(
         // killInProcessTeammate may have already set status:killed +
         // notified:true + cleared fields. Don't overwrite (would flip
         // killed → completed and double-emit the SDK bookend).
-        if (task.status !== 'running') {
+        if (task.status !== "running") {
           alreadyTerminal = true;
           return task;
         }
@@ -1322,7 +1322,7 @@ export async function runInProcessTeammate(
         task.unregisterCleanup?.();
         return {
           ...task,
-          status: 'completed' as const,
+          status: "completed" as const,
           notified: true,
           endTime: Date.now(),
           messages: task.messages?.length ? [task.messages.at(-1)!] : undefined,
@@ -1342,7 +1342,7 @@ export async function runInProcessTeammate(
     // notified:true pre-set → no XML notification → print.ts won't emit
     // the SDK task_notification. Close the task_started bookend directly.
     if (!alreadyTerminal) {
-      emitTaskTerminatedSdk(taskId, 'completed', {
+      emitTaskTerminatedSdk(taskId, "completed", {
         toolUseId,
         summary: identity.agentId,
       });
@@ -1351,7 +1351,7 @@ export async function runInProcessTeammate(
     unregisterPerfettoAgent(identity.agentId);
     return { success: true, messages: allMessages };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
     logForDebugging(`[inProcessRunner] Agent ${identity.agentId} failed: ${errorMessage}`);
 
@@ -1361,7 +1361,7 @@ export async function runInProcessTeammate(
     updateTaskState(
       taskId,
       (task) => {
-        if (task.status !== 'running') {
+        if (task.status !== "running") {
           alreadyTerminal = true;
           return task;
         }
@@ -1370,7 +1370,7 @@ export async function runInProcessTeammate(
         task.unregisterCleanup?.();
         return {
           ...task,
-          status: 'failed' as const,
+          status: "failed" as const,
           notified: true,
           error: errorMessage,
           isIdle: true,
@@ -1391,7 +1391,7 @@ export async function runInProcessTeammate(
     evictTerminalTask(taskId, setAppState);
     // notified:true pre-set → no XML notification → close SDK bookend directly.
     if (!alreadyTerminal) {
-      emitTaskTerminatedSdk(taskId, 'failed', {
+      emitTaskTerminatedSdk(taskId, "failed", {
         toolUseId,
         summary: identity.agentId,
       });
@@ -1399,8 +1399,8 @@ export async function runInProcessTeammate(
 
     // Send idle notification with failure via file-based mailbox
     await sendIdleNotification(identity.agentName, identity.color, identity.teamName, {
-      idleReason: 'failed',
-      completedStatus: 'failed',
+      idleReason: "failed",
+      completedStatus: "failed",
       failureReason: errorMessage,
     });
 

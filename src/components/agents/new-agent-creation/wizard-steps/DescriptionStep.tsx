@@ -1,30 +1,30 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../../../ink.js';
-import { useKeybinding } from '../../../../keybindings/useKeybinding.js';
-import { editPromptInEditor } from '../../../../utils/promptEditor.js';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
-import TextInput from '../../../TextInput.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../../../ink.js";
+import { useKeybinding } from "../../../../keybindings/useKeybinding.js";
+import { editPromptInEditor } from "../../../../utils/promptEditor.js";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../../design-system/KeyboardShortcutHint.js";
+import TextInput from "../../../TextInput.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
 export function DescriptionStep() {
   const $ = _c(18);
   const { goNext, goBack, updateWizardData, wizardData } = useWizard();
-  const [whenToUse, setWhenToUse] = useState(wizardData.whenToUse || '');
+  const [whenToUse, setWhenToUse] = useState(wizardData.whenToUse || "");
   const [cursorOffset, setCursorOffset] = useState(whenToUse.length);
   const [error, setError] = useState(null);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = {
-      context: 'Settings',
+      context: "Settings",
     };
     $[0] = t0;
   } else {
     t0 = $[0];
   }
-  useKeybinding('confirm:no', goBack, t0);
+  useKeybinding("confirm:no", goBack, t0);
   let t1;
   if ($[1] !== whenToUse) {
     t1 = async () => {
@@ -41,21 +41,21 @@ export function DescriptionStep() {
   }
   const handleExternalEditor = t1;
   let t2;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = {
-      context: 'Chat',
+      context: "Chat",
     };
     $[3] = t2;
   } else {
     t2 = $[3];
   }
-  useKeybinding('chat:externalEditor', handleExternalEditor, t2);
+  useKeybinding("chat:externalEditor", handleExternalEditor, t2);
   let t3;
   if ($[4] !== goNext || $[5] !== updateWizardData) {
     t3 = (value) => {
       const trimmedValue = value.trim();
       if (!trimmedValue) {
-        setError('Description is required');
+        setError("Description is required");
         return;
       }
       setError(null);
@@ -72,7 +72,7 @@ export function DescriptionStep() {
   }
   const handleSubmit = t3;
   let t4;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <Byline>
         <KeyboardShortcutHint shortcut="Type" action="enter text" />
@@ -96,7 +96,7 @@ export function DescriptionStep() {
     t4 = $[7];
   }
   let t5;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = <Text>When should Claude use this agent?</Text>;
     $[8] = t5;
   } else {

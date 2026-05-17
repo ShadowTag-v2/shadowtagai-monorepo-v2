@@ -1,24 +1,24 @@
-import chalk from 'chalk';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay } from '../../commands.js';
-import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { useMergedTools } from '../../hooks/useMergedTools.js';
-import { Box, Text } from '../../ink.js';
-import { useAppState, useSetAppState } from '../../state/AppState.js';
-import type { Tools } from '../../Tool.js';
-import { resolveAgentOverrides } from '../../tools/AgentTool/agentDisplay.js';
-import { getActiveAgentsFromList } from '../../tools/AgentTool/loadAgentsDir.js';
-import { toError } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { Select } from '../CustomSelect/select.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { AgentDetail } from './AgentDetail.js';
-import { AgentEditor } from './AgentEditor.js';
-import { AgentNavigationFooter } from './AgentNavigationFooter.js';
-import { AgentsList } from './AgentsList.js';
-import { deleteAgentFromFile } from './agentFileUtils.js';
-import { CreateAgentWizard } from './new-agent-creation/CreateAgentWizard.js';
+import chalk from "chalk";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay } from "../../commands.js";
+import { useExitOnCtrlCDWithKeybindings } from "../../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { useMergedTools } from "../../hooks/useMergedTools.js";
+import { Box, Text } from "../../ink.js";
+import { useAppState, useSetAppState } from "../../state/AppState.js";
+import type { Tools } from "../../Tool.js";
+import { resolveAgentOverrides } from "../../tools/AgentTool/agentDisplay.js";
+import { getActiveAgentsFromList } from "../../tools/AgentTool/loadAgentsDir.js";
+import { toError } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { Select } from "../CustomSelect/select.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { AgentDetail } from "./AgentDetail.js";
+import { AgentEditor } from "./AgentEditor.js";
+import { AgentNavigationFooter } from "./AgentNavigationFooter.js";
+import { AgentsList } from "./AgentsList.js";
+import { deleteAgentFromFile } from "./agentFileUtils.js";
+import { CreateAgentWizard } from "./new-agent-creation/CreateAgentWizard.js";
 
 type Props = {
   tools: Tools;
@@ -33,10 +33,10 @@ export function AgentsMenu(t0) {
   const $ = _c(157);
   const { tools, onExit } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
-      mode: 'list-agents',
-      source: 'all',
+      mode: "list-agents",
+      source: "all",
     };
     $[0] = t1;
   } else {
@@ -49,7 +49,7 @@ export function AgentsMenu(t0) {
   const setAppState = useSetAppState();
   const { allAgents, activeAgents: agents } = agentDefinitions;
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = [];
     $[1] = t2;
   } else {
@@ -126,7 +126,7 @@ export function AgentsMenu(t0) {
     $[23] !== t9
   ) {
     t10 = {
-      'built-in': t3,
+      "built-in": t3,
       userSettings: t4,
       projectSettings: t5,
       policySettings: t6,
@@ -149,12 +149,12 @@ export function AgentsMenu(t0) {
   }
   const agentsBySource = t10;
   let t11;
-  if ($[25] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[25] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = (message) => {
       setChanges((prev) => [...prev, message]);
       setModeState({
-        mode: 'list-agents',
-        source: 'all',
+        mode: "list-agents",
+        source: "all",
       });
     };
     $[25] = t11;
@@ -182,8 +182,8 @@ export function AgentsMenu(t0) {
         });
         setChanges((prev_0) => [...prev_0, `Deleted agent: ${chalk.bold(agent.agentType)}`]);
         setModeState({
-          mode: 'list-agents',
-          source: 'all',
+          mode: "list-agents",
+          source: "all",
         });
       } catch (t13) {
         const error = t13;
@@ -197,13 +197,13 @@ export function AgentsMenu(t0) {
   }
   const handleAgentDeleted = t12;
   switch (modeState.mode) {
-    case 'list-agents': {
+    case "list-agents": {
       let t13;
       if ($[28] !== agentsBySource || $[29] !== modeState.source) {
         t13 =
-          modeState.source === 'all'
+          modeState.source === "all"
             ? [
-                ...agentsBySource['built-in'],
+                ...agentsBySource["built-in"],
                 ...agentsBySource.userSettings,
                 ...agentsBySource.projectSettings,
                 ...agentsBySource.localSettings,
@@ -234,9 +234,9 @@ export function AgentsMenu(t0) {
       if ($[34] !== changes || $[35] !== onExit) {
         t15 = () => {
           const exitMessage =
-            changes.length > 0 ? `Agent changes:\n${changes.join('\n')}` : undefined;
-          onExit(exitMessage ?? 'Agents dialog dismissed', {
-            display: changes.length === 0 ? 'system' : undefined,
+            changes.length > 0 ? `Agent changes:\n${changes.join("\n")}` : undefined;
+          onExit(exitMessage ?? "Agents dialog dismissed", {
+            display: changes.length === 0 ? "system" : undefined,
           });
         };
         $[34] = changes;
@@ -249,7 +249,7 @@ export function AgentsMenu(t0) {
       if ($[37] !== modeState) {
         t16 = (agent_0) =>
           setModeState({
-            mode: 'agent-menu',
+            mode: "agent-menu",
             agent: agent_0,
             previousMode: modeState,
           });
@@ -259,10 +259,10 @@ export function AgentsMenu(t0) {
         t16 = $[38];
       }
       let t17;
-      if ($[39] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[39] === Symbol.for("react.memo_cache_sentinel")) {
         t17 = () =>
           setModeState({
-            mode: 'create-agent',
+            mode: "create-agent",
           });
         $[39] = t17;
       } else {
@@ -296,7 +296,7 @@ export function AgentsMenu(t0) {
         t18 = $[45];
       }
       let t19;
-      if ($[46] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[46] === Symbol.for("react.memo_cache_sentinel")) {
         t19 = <AgentNavigationFooter />;
         $[46] = t19;
       } else {
@@ -317,13 +317,13 @@ export function AgentsMenu(t0) {
       }
       return t20;
     }
-    case 'create-agent': {
+    case "create-agent": {
       let t13;
-      if ($[49] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[49] === Symbol.for("react.memo_cache_sentinel")) {
         t13 = () =>
           setModeState({
-            mode: 'list-agents',
-            source: 'all',
+            mode: "list-agents",
+            source: "all",
           });
         $[49] = t13;
       } else {
@@ -347,7 +347,7 @@ export function AgentsMenu(t0) {
       }
       return t14;
     }
-    case 'agent-menu': {
+    case "agent-menu": {
       let t13;
       if (
         $[53] !== allAgents ||
@@ -375,14 +375,14 @@ export function AgentsMenu(t0) {
       const freshAgent_1 = t13;
       const agentToUse = freshAgent_1 || modeState.agent;
       const isEditable =
-        agentToUse.source !== 'built-in' &&
-        agentToUse.source !== 'plugin' &&
-        agentToUse.source !== 'flagSettings';
+        agentToUse.source !== "built-in" &&
+        agentToUse.source !== "plugin" &&
+        agentToUse.source !== "flagSettings";
       let t14;
-      if ($[60] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[60] === Symbol.for("react.memo_cache_sentinel")) {
         t14 = {
-          label: 'View agent',
-          value: 'view',
+          label: "View agent",
+          value: "view",
         };
         $[60] = t14;
       } else {
@@ -393,12 +393,12 @@ export function AgentsMenu(t0) {
         t15 = isEditable
           ? [
               {
-                label: 'Edit agent',
-                value: 'edit',
+                label: "Edit agent",
+                value: "edit",
               },
               {
-                label: 'Delete agent',
-                value: 'delete',
+                label: "Delete agent",
+                value: "delete",
               },
             ]
           : [];
@@ -408,10 +408,10 @@ export function AgentsMenu(t0) {
         t15 = $[62];
       }
       let t16;
-      if ($[63] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[63] === Symbol.for("react.memo_cache_sentinel")) {
         t16 = {
-          label: 'Back',
-          value: 'back',
+          label: "Back",
+          value: "back",
         };
         $[63] = t16;
       } else {
@@ -430,31 +430,31 @@ export function AgentsMenu(t0) {
       if ($[66] !== agentToUse || $[67] !== modeState) {
         t18 = (value_0) => {
           switch (value_0) {
-            case 'view': {
+            case "view": {
               setModeState({
-                mode: 'view-agent',
+                mode: "view-agent",
                 agent: agentToUse,
                 previousMode: modeState.previousMode,
               });
               break;
             }
-            case 'edit': {
+            case "edit": {
               setModeState({
-                mode: 'edit-agent',
+                mode: "edit-agent",
                 agent: agentToUse,
                 previousMode: modeState,
               });
               break;
             }
-            case 'delete': {
+            case "delete": {
               setModeState({
-                mode: 'delete-confirm',
+                mode: "delete-confirm",
                 agent: agentToUse,
                 previousMode: modeState,
               });
               break;
             }
-            case 'back': {
+            case "back": {
               setModeState(modeState.previousMode);
             }
           }
@@ -533,7 +533,7 @@ export function AgentsMenu(t0) {
         t24 = $[85];
       }
       let t25;
-      if ($[86] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[86] === Symbol.for("react.memo_cache_sentinel")) {
         t25 = <AgentNavigationFooter />;
         $[86] = t25;
       } else {
@@ -554,7 +554,7 @@ export function AgentsMenu(t0) {
       }
       return t26;
     }
-    case 'view-agent': {
+    case "view-agent": {
       let t13;
       if ($[89] !== allAgents || $[90] !== modeState.agent) {
         let t14;
@@ -579,7 +579,7 @@ export function AgentsMenu(t0) {
       if ($[94] !== agentToDisplay || $[95] !== modeState.previousMode) {
         t14 = () =>
           setModeState({
-            mode: 'agent-menu',
+            mode: "agent-menu",
             agent: agentToDisplay,
             previousMode: modeState.previousMode,
           });
@@ -593,7 +593,7 @@ export function AgentsMenu(t0) {
       if ($[97] !== agentToDisplay || $[98] !== modeState.previousMode) {
         t15 = () =>
           setModeState({
-            mode: 'agent-menu',
+            mode: "agent-menu",
             agent: agentToDisplay,
             previousMode: modeState.previousMode,
           });
@@ -641,7 +641,7 @@ export function AgentsMenu(t0) {
         t17 = $[108];
       }
       let t18;
-      if ($[109] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[109] === Symbol.for("react.memo_cache_sentinel")) {
         t18 = <AgentNavigationFooter instructions="Press Enter or Esc to go back" />;
         $[109] = t18;
       } else {
@@ -662,17 +662,17 @@ export function AgentsMenu(t0) {
       }
       return t19;
     }
-    case 'delete-confirm': {
+    case "delete-confirm": {
       let t13;
-      if ($[112] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[112] === Symbol.for("react.memo_cache_sentinel")) {
         t13 = [
           {
-            label: 'Yes, delete',
-            value: 'yes',
+            label: "Yes, delete",
+            value: "yes",
           },
           {
-            label: 'No, cancel',
-            value: 'no',
+            label: "No, cancel",
+            value: "no",
           },
         ];
         $[112] = t13;
@@ -683,7 +683,7 @@ export function AgentsMenu(t0) {
       let t14;
       if ($[113] !== modeState) {
         t14 = () => {
-          if ('previousMode' in modeState) {
+          if ("previousMode" in modeState) {
             setModeState(modeState.previousMode);
           }
         };
@@ -696,7 +696,7 @@ export function AgentsMenu(t0) {
       if ($[115] !== modeState.agent.agentType) {
         t15 = (
           <Text>
-            Are you sure you want to delete the agent{' '}
+            Are you sure you want to delete the agent{" "}
             <Text bold={true}>{modeState.agent.agentType}</Text>?
           </Text>
         );
@@ -720,10 +720,10 @@ export function AgentsMenu(t0) {
       let t17;
       if ($[119] !== handleAgentDeleted || $[120] !== modeState) {
         t17 = (value) => {
-          if (value === 'yes') {
+          if (value === "yes") {
             handleAgentDeleted(modeState.agent);
           } else {
-            if ('previousMode' in modeState) {
+            if ("previousMode" in modeState) {
               setModeState(modeState.previousMode);
             }
           }
@@ -737,7 +737,7 @@ export function AgentsMenu(t0) {
       let t18;
       if ($[122] !== modeState) {
         t18 = () => {
-          if ('previousMode' in modeState) {
+          if ("previousMode" in modeState) {
             setModeState(modeState.previousMode);
           }
         };
@@ -777,10 +777,10 @@ export function AgentsMenu(t0) {
         t20 = $[131];
       }
       let t21;
-      if ($[132] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[132] === Symbol.for("react.memo_cache_sentinel")) {
         t21 = (
           <AgentNavigationFooter
-            instructions={'Press \u2191\u2193 to navigate, Enter to select, Esc to cancel'}
+            instructions={"Press \u2191\u2193 to navigate, Enter to select, Esc to cancel"}
           />
         );
         $[132] = t21;
@@ -802,7 +802,7 @@ export function AgentsMenu(t0) {
       }
       return t22;
     }
-    case 'edit-agent': {
+    case "edit-agent": {
       let t13;
       if ($[135] !== allAgents || $[136] !== modeState.agent) {
         let t14;
@@ -873,7 +873,7 @@ export function AgentsMenu(t0) {
         t19 = $[153];
       }
       let t20;
-      if ($[154] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[154] === Symbol.for("react.memo_cache_sentinel")) {
         t20 = <AgentNavigationFooter />;
         $[154] = t20;
       } else {
@@ -900,25 +900,25 @@ export function AgentsMenu(t0) {
   }
 }
 function _temp0(a_5) {
-  return a_5.source === 'plugin';
+  return a_5.source === "plugin";
 }
 function _temp9(a_4) {
-  return a_4.source === 'flagSettings';
+  return a_4.source === "flagSettings";
 }
 function _temp8(a_3) {
-  return a_3.source === 'localSettings';
+  return a_3.source === "localSettings";
 }
 function _temp7(a_2) {
-  return a_2.source === 'policySettings';
+  return a_2.source === "policySettings";
 }
 function _temp6(a_1) {
-  return a_1.source === 'projectSettings';
+  return a_1.source === "projectSettings";
 }
 function _temp5(a_0) {
-  return a_0.source === 'userSettings';
+  return a_0.source === "userSettings";
 }
 function _temp4(a) {
-  return a.source === 'built-in';
+  return a.source === "built-in";
 }
 function _temp3(s_1) {
   return s_1.toolPermissionContext;

@@ -1,11 +1,11 @@
-import { c as _c } from 'react/compiler-runtime';
-import type { Tools } from '../../../../Tool.js';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
-import { ToolSelector } from '../../ToolSelector.js';
+import { c as _c } from "react/compiler-runtime";
+import type { Tools } from "../../../../Tool.js";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../../design-system/KeyboardShortcutHint.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
+import { ToolSelector } from "../../ToolSelector.js";
 
 type Props = {
   tools: Tools;
@@ -31,11 +31,11 @@ export function ToolsStep(t0) {
   const handleComplete = t1;
   const initialTools = wizardData.selectedTools;
   let t2;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Byline>
         <KeyboardShortcutHint shortcut="Enter" action="toggle selection" />
-        <KeyboardShortcutHint shortcut={'\u2191\u2193'} action="navigate" />
+        <KeyboardShortcutHint shortcut={"\u2191\u2193"} action="navigate" />
         <ConfigurableShortcutHint
           action="confirm:no"
           context="Confirmation"

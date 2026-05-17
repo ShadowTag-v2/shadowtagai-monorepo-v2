@@ -1,21 +1,21 @@
-import { APIUserAbortError } from '@anthropic-ai/sdk';
-import { type ReactNode, useCallback, useRef, useState } from 'react';
-import { useMainLoopModel } from '../../../../hooks/useMainLoopModel.js';
-import { Box, Text } from '../../../../ink.js';
-import { useKeybinding } from '../../../../keybindings/useKeybinding.js';
-import { createAbortController } from '../../../../utils/abortController.js';
-import { editPromptInEditor } from '../../../../utils/promptEditor.js';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { Spinner } from '../../../Spinner.js';
-import TextInput from '../../../TextInput.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
-import { generateAgent } from '../../generateAgent.js';
-import type { AgentWizardData } from '../types.js';
+import { APIUserAbortError } from "@anthropic-ai/sdk";
+import { type ReactNode, useCallback, useRef, useState } from "react";
+import { useMainLoopModel } from "../../../../hooks/useMainLoopModel.js";
+import { Box, Text } from "../../../../ink.js";
+import { useKeybinding } from "../../../../keybindings/useKeybinding.js";
+import { createAbortController } from "../../../../utils/abortController.js";
+import { editPromptInEditor } from "../../../../utils/promptEditor.js";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { Spinner } from "../../../Spinner.js";
+import TextInput from "../../../TextInput.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
+import { generateAgent } from "../../generateAgent.js";
+import type { AgentWizardData } from "../types.js";
 export function GenerateStep(): ReactNode {
   const { updateWizardData, goBack, goToStep, wizardData } = useWizard<AgentWizardData>();
-  const [prompt, setPrompt] = useState(wizardData.generationPrompt || '');
+  const [prompt, setPrompt] = useState(wizardData.generationPrompt || "");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [cursorOffset, setCursorOffset] = useState(prompt.length);
@@ -28,13 +28,13 @@ export function GenerateStep(): ReactNode {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
       setIsGenerating(false);
-      setError('Generation cancelled');
+      setError("Generation cancelled");
     }
   }, []);
 
   // Use Settings context so 'n' key doesn't cancel (allows typing 'n' in prompt input)
-  useKeybinding('confirm:no', handleCancelGeneration, {
-    context: 'Settings',
+  useKeybinding("confirm:no", handleCancelGeneration, {
+    context: "Settings",
     isActive: isGenerating,
   });
   const handleExternalEditor = useCallback(async () => {
@@ -44,35 +44,35 @@ export function GenerateStep(): ReactNode {
       setCursorOffset(result.content.length);
     }
   }, [prompt]);
-  useKeybinding('chat:externalEditor', handleExternalEditor, {
-    context: 'Chat',
+  useKeybinding("chat:externalEditor", handleExternalEditor, {
+    context: "Chat",
     isActive: !isGenerating,
   });
 
   // Go back when escape pressed while not generating
   const handleGoBack = useCallback(() => {
     updateWizardData({
-      generationPrompt: '',
-      agentType: '',
-      systemPrompt: '',
-      whenToUse: '',
+      generationPrompt: "",
+      agentType: "",
+      systemPrompt: "",
+      whenToUse: "",
       generatedAgent: undefined,
       wasGenerated: false,
     });
-    setPrompt('');
+    setPrompt("");
     setError(null);
     goBack();
   }, [updateWizardData, goBack]);
 
   // Use Settings context so 'n' key doesn't cancel (allows typing 'n' in prompt input)
-  useKeybinding('confirm:no', handleGoBack, {
-    context: 'Settings',
+  useKeybinding("confirm:no", handleGoBack, {
+    context: "Settings",
     isActive: !isGenerating,
   });
   const handleGenerate = async (): Promise<void> => {
     const trimmedPrompt = prompt.trim();
     if (!trimmedPrompt) {
-      setError('Please describe what the agent should do');
+      setError("Please describe what the agent should do");
       return;
     }
     setError(null);
@@ -102,8 +102,8 @@ export function GenerateStep(): ReactNode {
       // Don't show error if it was cancelled (already set in escape handler)
       if (err instanceof APIUserAbortError) {
         // User cancelled - no error to show
-      } else if (err instanceof Error && !err.message.includes('No assistant message found')) {
-        setError(err.message || 'Failed to generate agent');
+      } else if (err instanceof Error && !err.message.includes("No assistant message found")) {
+        setError(err.message || "Failed to generate agent");
       }
       updateWizardData({
         isGenerating: false,
@@ -114,7 +114,7 @@ export function GenerateStep(): ReactNode {
     }
   };
   const subtitle =
-    'Describe what this agent should do and when it should be used (be comprehensive for best results)';
+    "Describe what this agent should do and when it should be used (be comprehensive for best results)";
   if (isGenerating) {
     return (
       <WizardDialogLayout

@@ -1,21 +1,21 @@
-import { feature } from 'bun:bundle';
-import { useEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useNotifications } from '../context/notifications.js';
-import { Text } from '../ink.js';
-import { getGlobalConfig } from '../utils/config.js';
-import { getRainbowColor } from '../utils/thinking.js';
+import { feature } from "bun:bundle";
+import { useEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useNotifications } from "../context/notifications.js";
+import { Text } from "../ink.js";
+import { getGlobalConfig } from "../utils/config.js";
+import { getRainbowColor } from "../utils/thinking.js";
 
 // Local date, not UTC — 24h rolling wave across timezones. Sustained Twitter
 // buzz instead of a single UTC-midnight spike, gentler on soul-gen load.
 // Teaser window: April 1-7, 2026 only. Command stays live forever after.
 export function isBuddyTeaserWindow(): boolean {
-  if ('external' === 'ant') return true;
+  if ("external" === "ant") return true;
   const d = new Date();
   return d.getFullYear() === 2026 && d.getMonth() === 3 && d.getDate() <= 7;
 }
 export function isBuddyLive(): boolean {
-  if ('external' === 'ant') return true;
+  if ("external" === "ant") return true;
   const d = new Date();
   return d.getFullYear() > 2026 || (d.getFullYear() === 2026 && d.getMonth() >= 3);
 }
@@ -49,7 +49,7 @@ export function useBuddyNotification() {
   let t1;
   if ($[0] !== addNotification || $[1] !== removeNotification) {
     t0 = () => {
-      if (!feature('BUDDY')) {
+      if (!feature("BUDDY")) {
         return;
       }
       const config = getGlobalConfig();
@@ -57,12 +57,12 @@ export function useBuddyNotification() {
         return;
       }
       addNotification({
-        key: 'buddy-teaser',
+        key: "buddy-teaser",
         jsx: <RainbowText text="/buddy" />,
-        priority: 'immediate',
+        priority: "immediate",
         timeoutMs: 15000,
       });
-      return () => removeNotification('buddy-teaser');
+      return () => removeNotification("buddy-teaser");
     };
     t1 = [addNotification, removeNotification];
     $[0] = addNotification;
@@ -79,7 +79,7 @@ export function findBuddyTriggerPositions(text: string): Array<{
   start: number;
   end: number;
 }> {
-  if (!feature('BUDDY')) return [];
+  if (!feature("BUDDY")) return [];
   const triggers: Array<{
     start: number;
     end: number;

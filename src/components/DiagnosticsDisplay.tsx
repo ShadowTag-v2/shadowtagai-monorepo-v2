@@ -1,17 +1,17 @@
-import { relative } from 'node:path';
-import React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import { DiagnosticTrackingService } from '../services/diagnosticTracking.js';
-import type { Attachment } from '../utils/attachments.js';
-import { getCwd } from '../utils/cwd.js';
-import { CtrlOToExpand } from './CtrlOToExpand.js';
-import { MessageResponse } from './MessageResponse.js';
+import { relative } from "node:path";
+import React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import { DiagnosticTrackingService } from "../services/diagnosticTracking.js";
+import type { Attachment } from "../utils/attachments.js";
+import { getCwd } from "../utils/cwd.js";
+import { CtrlOToExpand } from "./CtrlOToExpand.js";
+import { MessageResponse } from "./MessageResponse.js";
 
 type DiagnosticsAttachment = Extract<
   Attachment,
   {
-    type: 'diagnostics';
+    type: "diagnostics";
   }
 >;
 type DiagnosticsDisplayProps = {
@@ -61,10 +61,10 @@ export function DiagnosticsDisplay(t0) {
     } else {
       t2 = $[7];
     }
-    const t3 = totalIssues === 1 ? 'issue' : 'issues';
-    const t4 = fileCount === 1 ? 'file' : 'files';
+    const t3 = totalIssues === 1 ? "issue" : "issues";
+    const t4 = fileCount === 1 ? "file" : "files";
     let t5;
-    if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
       t5 = <CtrlOToExpand />;
       $[8] = t5;
     } else {
@@ -96,14 +96,14 @@ function _temp3(file_0, fileIndex) {
       <MessageResponse>
         <Text dimColor={true} wrap="wrap">
           <Text bold={true}>
-            {relative(getCwd(), file_0.uri.replace('file://', '').replace('_claude_fs_right:', ''))}
-          </Text>{' '}
+            {relative(getCwd(), file_0.uri.replace("file://", "").replace("_claude_fs_right:", ""))}
+          </Text>{" "}
           <Text dimColor={true}>
-            {file_0.uri.startsWith('file://')
-              ? '(file://)'
-              : file_0.uri.startsWith('_claude_fs_right:')
-                ? '(claude_fs_right)'
-                : `(${file_0.uri.split(':')[0]})`}
+            {file_0.uri.startsWith("file://")
+              ? "(file://)"
+              : file_0.uri.startsWith("_claude_fs_right:")
+                ? "(claude_fs_right)"
+                : `(${file_0.uri.split(":")[0]})`}
           </Text>
           :
         </Text>
@@ -116,14 +116,14 @@ function _temp2(diagnostic, diagIndex) {
   return (
     <MessageResponse key={diagIndex}>
       <Text dimColor={true} wrap="wrap">
-        {'  '}
+        {"  "}
         {DiagnosticTrackingService.getSeveritySymbol(diagnostic.severity)}
-        {' [Line '}
+        {" [Line "}
         {diagnostic.range.start.line + 1}:{diagnostic.range.start.character + 1}
-        {'] '}
+        {"] "}
         {diagnostic.message}
-        {diagnostic.code ? ` [${diagnostic.code}]` : ''}
-        {diagnostic.source ? ` (${diagnostic.source})` : ''}
+        {diagnostic.code ? ` [${diagnostic.code}]` : ""}
+        {diagnostic.source ? ` (${diagnostic.source})` : ""}
       </Text>
     </MessageResponse>
   );

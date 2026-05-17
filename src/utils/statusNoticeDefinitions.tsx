@@ -1,32 +1,32 @@
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { Box, Text } from '../ink.js';
-import type * as React from 'react';
+import { Box, Text } from "../ink.js";
+import type * as React from "react";
 import {
   getLargeMemoryFiles,
   MAX_MEMORY_CHARACTER_COUNT,
   type MemoryFileInfo,
-} from './claudemd.js';
-import figures from 'figures';
-import { getCwd } from './cwd.js';
-import { relative } from 'node:path';
-import { formatNumber } from './format.js';
-import type { getGlobalConfig } from './config.js';
+} from "./claudemd.js";
+import figures from "figures";
+import { getCwd } from "./cwd.js";
+import { relative } from "node:path";
+import { formatNumber } from "./format.js";
+import type { getGlobalConfig } from "./config.js";
 import {
   getAnthropicApiKeyWithSource,
   getApiKeyFromConfigOrMacOSKeychain,
   getAuthTokenSource,
   isClaudeAISubscriber,
-} from './auth.js';
-import type { AgentDefinitionsResult } from '../tools/AgentTool/loadAgentsDir.js';
+} from "./auth.js";
+import type { AgentDefinitionsResult } from "../tools/AgentTool/loadAgentsDir.js";
 import {
   getAgentDescriptionsTotalTokens,
   AGENT_DESCRIPTIONS_THRESHOLD,
-} from './statusNoticeHelpers.js';
-import { isSupportedJetBrainsTerminal, toIDEDisplayName, getTerminalIdeType } from './ide.js';
-import { isJetBrainsPluginInstalledCachedSync } from './jetbrains.js';
+} from "./statusNoticeHelpers.js";
+import { isSupportedJetBrainsTerminal, toIDEDisplayName, getTerminalIdeType } from "./ide.js";
+import { isJetBrainsPluginInstalledCachedSync } from "./jetbrains.js";
 
 // Types
-export type StatusNoticeType = 'warning' | 'info';
+export type StatusNoticeType = "warning" | "info";
 export type StatusNoticeContext = {
   config: ReturnType<typeof getGlobalConfig>;
   agentDefinitions?: AgentDefinitionsResult;
@@ -41,8 +41,8 @@ export type StatusNoticeDefinition = {
 
 // Individual notice definitions
 const largeMemoryFilesNotice: StatusNoticeDefinition = {
-  id: 'large-memory-files',
-  type: 'warning',
+  id: "large-memory-files",
+  type: "warning",
   isActive: (ctx) => getLargeMemoryFiles(ctx.memoryFiles).length > 0,
   render: (ctx) => {
     const largeMemoryFiles = getLargeMemoryFiles(ctx.memoryFiles);
@@ -57,7 +57,7 @@ const largeMemoryFilesNotice: StatusNoticeDefinition = {
               <Text color="warning">{figures.warning}</Text>
               <Text color="warning">
                 Large <Text bold>{displayPath}</Text> will impact performance (
-                {formatNumber(file.content.length)} chars &gt;{' '}
+                {formatNumber(file.content.length)} chars &gt;{" "}
                 {formatNumber(MAX_MEMORY_CHARACTER_COUNT)})<Text dimColor> · /memory to edit</Text>
               </Text>
             </Box>
@@ -68,13 +68,13 @@ const largeMemoryFilesNotice: StatusNoticeDefinition = {
   },
 };
 const claudeAiSubscriberExternalTokenNotice: StatusNoticeDefinition = {
-  id: 'claude-ai-external-token',
-  type: 'warning',
+  id: "claude-ai-external-token",
+  type: "warning",
   isActive: () => {
     const authTokenInfo = getAuthTokenSource();
     return (
       isClaudeAISubscriber() &&
-      (authTokenInfo.source === 'ANTHROPIC_AUTH_TOKEN' || authTokenInfo.source === 'apiKeyHelper')
+      (authTokenInfo.source === "ANTHROPIC_AUTH_TOKEN" || authTokenInfo.source === "apiKeyHelper")
     );
   },
   render: () => {
@@ -91,15 +91,15 @@ const claudeAiSubscriberExternalTokenNotice: StatusNoticeDefinition = {
   },
 };
 const apiKeyConflictNotice: StatusNoticeDefinition = {
-  id: 'api-key-conflict',
-  type: 'warning',
+  id: "api-key-conflict",
+  type: "warning",
   isActive: () => {
     const { source: apiKeySource } = getAnthropicApiKeyWithSource({
       skipRetrievingKeyFromApiKeyHelper: true,
     });
     return (
       !!getApiKeyFromConfigOrMacOSKeychain() &&
-      (apiKeySource === 'ANTHROPIC_API_KEY' || apiKeySource === 'apiKeyHelper')
+      (apiKeySource === "ANTHROPIC_API_KEY" || apiKeySource === "apiKeyHelper")
     );
   },
   render: () => {
@@ -110,7 +110,7 @@ const apiKeyConflictNotice: StatusNoticeDefinition = {
       <Box flexDirection="row" marginTop={1}>
         <Text color="warning">{figures.warning}</Text>
         <Text color="warning">
-          Auth conflict: Using {apiKeySource} instead of Anthropic Console key. Either unset{' '}
+          Auth conflict: Using {apiKeySource} instead of Anthropic Console key. Either unset{" "}
           {apiKeySource}, or run `claude /logout`.
         </Text>
       </Box>
@@ -118,17 +118,17 @@ const apiKeyConflictNotice: StatusNoticeDefinition = {
   },
 };
 const bothAuthMethodsNotice: StatusNoticeDefinition = {
-  id: 'both-auth-methods',
-  type: 'warning',
+  id: "both-auth-methods",
+  type: "warning",
   isActive: () => {
     const { source: apiKeySource } = getAnthropicApiKeyWithSource({
       skipRetrievingKeyFromApiKeyHelper: true,
     });
     const authTokenInfo = getAuthTokenSource();
     return (
-      apiKeySource !== 'none' &&
-      authTokenInfo.source !== 'none' &&
-      !(apiKeySource === 'apiKeyHelper' && authTokenInfo.source === 'apiKeyHelper')
+      apiKeySource !== "none" &&
+      authTokenInfo.source !== "none" &&
+      !(apiKeySource === "apiKeyHelper" && authTokenInfo.source === "apiKeyHelper")
     );
   },
   render: () => {
@@ -147,18 +147,18 @@ const bothAuthMethodsNotice: StatusNoticeDefinition = {
         </Box>
         <Box flexDirection="column" marginLeft={3}>
           <Text color="warning">
-            · Trying to use{' '}
-            {authTokenInfo.source === 'claude.ai' ? 'claude.ai' : authTokenInfo.source}?{' '}
-            {apiKeySource === 'ANTHROPIC_API_KEY'
+            · Trying to use{" "}
+            {authTokenInfo.source === "claude.ai" ? "claude.ai" : authTokenInfo.source}?{" "}
+            {apiKeySource === "ANTHROPIC_API_KEY"
               ? 'Unset the ANTHROPIC_API_KEY environment variable, or claude /logout then say "No" to the API key approval before login.'
-              : apiKeySource === 'apiKeyHelper'
-                ? 'Unset the apiKeyHelper setting.'
-                : 'claude /logout'}
+              : apiKeySource === "apiKeyHelper"
+                ? "Unset the apiKeyHelper setting."
+                : "claude /logout"}
           </Text>
           <Text color="warning">
-            · Trying to use {apiKeySource}?{' '}
-            {authTokenInfo.source === 'claude.ai'
-              ? 'claude /logout to sign out of claude.ai.'
+            · Trying to use {apiKeySource}?{" "}
+            {authTokenInfo.source === "claude.ai"
+              ? "claude /logout to sign out of claude.ai."
               : `Unset the ${authTokenInfo.source} environment variable.`}
           </Text>
         </Box>
@@ -167,8 +167,8 @@ const bothAuthMethodsNotice: StatusNoticeDefinition = {
   },
 };
 const largeAgentDescriptionsNotice: StatusNoticeDefinition = {
-  id: 'large-agent-descriptions',
-  type: 'warning',
+  id: "large-agent-descriptions",
+  type: "warning",
   isActive: (context) => {
     const totalTokens = getAgentDescriptionsTotalTokens(context.agentDefinitions);
     return totalTokens > AGENT_DESCRIPTIONS_THRESHOLD;
@@ -188,8 +188,8 @@ const largeAgentDescriptionsNotice: StatusNoticeDefinition = {
   },
 };
 const jetbrainsPluginNotice: StatusNoticeDefinition = {
-  id: 'jetbrains-plugin-install',
-  type: 'info',
+  id: "jetbrains-plugin-install",
+  type: "info",
   isActive: (context) => {
     // Only show if running in JetBrains built-in terminal
     if (!isSupportedJetBrainsTerminal()) {
@@ -211,7 +211,7 @@ const jetbrainsPluginNotice: StatusNoticeDefinition = {
       <Box flexDirection="row" gap={1} marginLeft={1}>
         <Text color="ide">{figures.arrowUp}</Text>
         <Text>
-          Install the <Text color="ide">{ideName}</Text> plugin from the JetBrains Marketplace:{' '}
+          Install the <Text color="ide">{ideName}</Text> plugin from the JetBrains Marketplace:{" "}
           <Text bold>https://docs.claude.com/s/claude-code-jetbrains</Text>
         </Text>
       </Box>

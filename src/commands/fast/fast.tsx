@@ -1,17 +1,17 @@
-import type * as React from 'react';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { LocalJSXCommandContext } from '../../commands.js';
-import { Dialog } from '../../components/design-system/Dialog.js';
-import { FastIcon, getFastIconString } from '../../components/FastIcon.js';
-import { Box, Link, Text } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
+import type * as React from "react";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { LocalJSXCommandContext } from "../../commands.js";
+import { Dialog } from "../../components/design-system/Dialog.js";
+import { FastIcon, getFastIconString } from "../../components/FastIcon.js";
+import { Box, Link, Text } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { type AppState, useAppState, useSetAppState } from '../../state/AppState.js';
-import type { LocalJSXCommandOnDone } from '../../types/command.js';
+} from "../../services/analytics/index.js";
+import { type AppState, useAppState, useSetAppState } from "../../state/AppState.js";
+import type { LocalJSXCommandOnDone } from "../../types/command.js";
 import {
   clearFastModeCooldown,
   FAST_MODE_MODEL_DISPLAY,
@@ -21,17 +21,17 @@ import {
   isFastModeEnabled,
   isFastModeSupportedByModel,
   prefetchFastModeStatus,
-} from '../../utils/fastMode.js';
-import { formatDuration } from '../../utils/format.js';
-import { formatModelPricing, getOpus46CostTier } from '../../utils/modelCost.js';
-import { updateSettingsForSource } from '../../utils/settings/settings.js';
+} from "../../utils/fastMode.js";
+import { formatDuration } from "../../utils/format.js";
+import { formatModelPricing, getOpus46CostTier } from "../../utils/modelCost.js";
+import { updateSettingsForSource } from "../../utils/settings/settings.js";
 
 function applyFastMode(
   enable: boolean,
   setAppState: (f: (prev: AppState) => AppState) => void,
 ): void {
   clearFastModeCooldown();
-  updateSettingsForSource('userSettings', {
+  updateSettingsForSource("userSettings", {
     fastMode: enable ? true : undefined,
   });
   if (enable) {
@@ -64,17 +64,17 @@ export function FastModePicker(t0) {
   const setAppState = useSetAppState();
   const [enableFastMode, setEnableFastMode] = useState(initialFastMode ?? false);
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = getFastModeRuntimeState();
     $[0] = t1;
   } else {
     t1 = $[0];
   }
   const runtimeState = t1;
-  const isCooldown = runtimeState.status === 'cooldown';
+  const isCooldown = runtimeState.status === "cooldown";
   const isUnavailable = unavailableReason !== null;
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = formatModelPricing(getOpus46CostTier(true));
     $[1] = t2;
   } else {
@@ -94,19 +94,19 @@ export function FastModePicker(t0) {
         return;
       }
       applyFastMode(enableFastMode, setAppState);
-      logEvent('tengu_fast_mode_toggled', {
+      logEvent("tengu_fast_mode_toggled", {
         enabled: enableFastMode,
-        source: 'picker' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+        source: "picker" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
       if (enableFastMode) {
         const fastIcon = getFastIconString(enableFastMode);
         const modelUpdated = !isFastModeSupportedByModel(model)
           ? ` · model set to ${FAST_MODE_MODEL_DISPLAY}`
-          : '';
+          : "";
         onDone(`${fastIcon} Fast mode ON${modelUpdated} · ${pricing}`);
       } else {
         setAppState(_temp3);
-        onDone('Fast mode OFF');
+        onDone("Fast mode OFF");
       }
     };
     $[2] = enableFastMode;
@@ -131,16 +131,16 @@ export function FastModePicker(t0) {
         if (initialFastMode) {
           applyFastMode(false, setAppState);
         }
-        onDone('Fast mode OFF', {
-          display: 'system',
+        onDone("Fast mode OFF", {
+          display: "system",
         });
         return;
       }
       const message = initialFastMode
         ? `${getFastIconString()} Kept Fast mode ON`
-        : 'Kept Fast mode OFF';
+        : "Kept Fast mode OFF";
       onDone(message, {
-        display: 'system',
+        display: "system",
       });
     };
     $[8] = initialFastMode;
@@ -169,12 +169,12 @@ export function FastModePicker(t0) {
   let t6;
   if ($[15] !== handleConfirm || $[16] !== handleToggle) {
     t6 = {
-      'confirm:yes': handleConfirm,
-      'confirm:nextField': handleToggle,
-      'confirm:next': handleToggle,
-      'confirm:previous': handleToggle,
-      'confirm:cycleMode': handleToggle,
-      'confirm:toggle': handleToggle,
+      "confirm:yes": handleConfirm,
+      "confirm:nextField": handleToggle,
+      "confirm:next": handleToggle,
+      "confirm:previous": handleToggle,
+      "confirm:cycleMode": handleToggle,
+      "confirm:toggle": handleToggle,
     };
     $[15] = handleConfirm;
     $[16] = handleToggle;
@@ -183,9 +183,9 @@ export function FastModePicker(t0) {
     t6 = $[17];
   }
   let t7;
-  if ($[18] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[18] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[18] = t7;
   } else {
@@ -193,7 +193,7 @@ export function FastModePicker(t0) {
   }
   useKeybindings(t6, t7);
   let t8;
-  if ($[19] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[19] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Text>
         <FastIcon cooldown={isCooldown} /> Fast mode (research preview)
@@ -230,19 +230,19 @@ export function FastModePicker(t0) {
         <Box flexDirection="column" gap={0} marginLeft={2}>
           <Box flexDirection="row" gap={2}>
             <Text bold={true}>Fast mode</Text>
-            <Text color={enableFastMode ? 'fastMode' : undefined} bold={enableFastMode}>
-              {enableFastMode ? 'ON ' : 'OFF'}
+            <Text color={enableFastMode ? "fastMode" : undefined} bold={enableFastMode}>
+              {enableFastMode ? "ON " : "OFF"}
             </Text>
             <Text dimColor={true}>{pricing}</Text>
           </Box>
         </Box>
-        {isCooldown && runtimeState.status === 'cooldown' && (
+        {isCooldown && runtimeState.status === "cooldown" && (
           <Box marginLeft={2}>
             <Text color="warning">
-              {runtimeState.reason === 'overloaded'
-                ? 'Fast mode overloaded and is temporarily unavailable'
+              {runtimeState.reason === "overloaded"
+                ? "Fast mode overloaded and is temporarily unavailable"
                 : "You've hit your fast limit"}
-              {' \xB7 resets in '}
+              {" \xB7 resets in "}
               {formatDuration(runtimeState.resetAt - Date.now(), {
                 hideTrailingZeros: true,
               })}
@@ -258,10 +258,10 @@ export function FastModePicker(t0) {
     t10 = $[24];
   }
   let t11;
-  if ($[25] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[25] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = (
       <Text dimColor={true}>
-        Learn more:{' '}
+        Learn more:{" "}
         <Link url="https://code.claude.com/docs/en/fast-mode">
           https://code.claude.com/docs/en/fast-mode
         </Link>
@@ -320,15 +320,15 @@ async function handleFastModeShortcut(
   }
   const { mainLoopModel } = getAppState();
   applyFastMode(enable, setAppState);
-  logEvent('tengu_fast_mode_toggled', {
+  logEvent("tengu_fast_mode_toggled", {
     enabled: enable,
-    source: 'shortcut' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+    source: "shortcut" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
   if (enable) {
     const fastIcon = getFastIconString(true);
     const modelUpdated = !isFastModeSupportedByModel(mainLoopModel)
       ? ` · model set to ${FAST_MODE_MODEL_DISPLAY}`
-      : '';
+      : "";
     const pricing = formatModelPricing(getOpus46CostTier(true));
     return `${fastIcon} Fast mode ON${modelUpdated} · ${pricing}`;
   } else {
@@ -349,9 +349,9 @@ export async function call(
   // If a startup prefetch is already in flight, this awaits it.
   await prefetchFastModeStatus();
   const arg = args?.trim().toLowerCase();
-  if (arg === 'on' || arg === 'off') {
+  if (arg === "on" || arg === "off") {
     const result = await handleFastModeShortcut(
-      arg === 'on',
+      arg === "on",
       context.getAppState,
       context.setAppState,
     );
@@ -359,9 +359,9 @@ export async function call(
     return null;
   }
   const unavailableReason = getFastModeUnavailableReason();
-  logEvent('tengu_fast_mode_picker_shown', {
+  logEvent("tengu_fast_mode_picker_shown", {
     unavailable_reason: (unavailableReason ??
-      '') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      "") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
   return <FastModePicker onDone={onDone} unavailableReason={unavailableReason} />;
 }

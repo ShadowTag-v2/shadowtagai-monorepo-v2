@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { BLACK_CIRCLE, BULLET_OPERATOR } from '../constants/figures.js';
-import { Box, Text } from '../ink.js';
-import type { SkillUpdate } from '../utils/hooks/skillImprovement.js';
-import { normalizeFullWidthDigits } from '../utils/stringUtils.js';
-import { isValidResponseInput } from './FeedbackSurvey/FeedbackSurveyView.js';
-import type { FeedbackSurveyResponse } from './FeedbackSurvey/utils.js';
+import { useEffect, useRef } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { BLACK_CIRCLE, BULLET_OPERATOR } from "../constants/figures.js";
+import { Box, Text } from "../ink.js";
+import type { SkillUpdate } from "../utils/hooks/skillImprovement.js";
+import { normalizeFullWidthDigits } from "../utils/stringUtils.js";
+import { isValidResponseInput } from "./FeedbackSurvey/FeedbackSurveyView.js";
+import type { FeedbackSurveyResponse } from "./FeedbackSurvey/utils.js";
 
 type Props = {
   isOpen: boolean;
@@ -61,7 +61,7 @@ type ViewProps = {
 };
 
 // Only 1 (apply) and 0 (dismiss) are valid for this survey
-const VALID_INPUTS = ['0', '1'] as const;
+const VALID_INPUTS = ["0", "1"] as const;
 function isValidInput(input: string): boolean {
   return (VALID_INPUTS as readonly string[]).includes(input);
 }
@@ -77,7 +77,7 @@ function SkillImprovementSurveyView(t0) {
         const lastChar = normalizeFullWidthDigits(inputValue.slice(-1));
         if (isValidInput(lastChar)) {
           setInputValue(inputValue.slice(0, -1));
-          onSelect(lastChar === '1' ? 'good' : 'dismissed');
+          onSelect(lastChar === "1" ? "good" : "dismissed");
         }
       }
     };
@@ -93,7 +93,7 @@ function SkillImprovementSurveyView(t0) {
   }
   useEffect(t1, t2);
   let t3;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = <Text color="ansi:cyan">{BLACK_CIRCLE} </Text>;
     $[5] = t3;
   } else {
@@ -133,7 +133,7 @@ function SkillImprovementSurveyView(t0) {
     t6 = $[11];
   }
   let t7;
-  if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Box width={12}>
         <Text>
@@ -146,7 +146,7 @@ function SkillImprovementSurveyView(t0) {
     t7 = $[12];
   }
   let t8;
-  if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Box marginLeft={2} marginTop={1}>
         {t7}

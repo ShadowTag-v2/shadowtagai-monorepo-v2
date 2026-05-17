@@ -1,25 +1,25 @@
-import { Suspense, use, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import { logEvent } from '../../services/analytics/index.js';
-import type { Message } from '../../types/message.js';
+import { Suspense, use, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import { logEvent } from "../../services/analytics/index.js";
+import type { Message } from "../../types/message.js";
 import {
   generatePermissionExplanation,
   isPermissionExplainerEnabled,
   type PermissionExplanation as PermissionExplanationType,
   type RiskLevel,
-} from '../../utils/permissions/permissionExplainer.js';
-import { ShimmerChar } from '../Spinner/ShimmerChar.js';
-import { useShimmerAnimation } from '../Spinner/useShimmerAnimation.js';
+} from "../../utils/permissions/permissionExplainer.js";
+import { ShimmerChar } from "../Spinner/ShimmerChar.js";
+import { useShimmerAnimation } from "../Spinner/useShimmerAnimation.js";
 
-const LOADING_MESSAGE = 'Loading explanation…';
+const LOADING_MESSAGE = "Loading explanation…";
 function ShimmerLoadingText() {
   const $ = _c(7);
-  const [ref, glimmerIndex] = useShimmerAnimation('responding', LOADING_MESSAGE, false);
+  const [ref, glimmerIndex] = useShimmerAnimation("responding", LOADING_MESSAGE, false);
   let t0;
   if ($[0] !== glimmerIndex) {
-    t0 = LOADING_MESSAGE.split('').map((char, index) => (
+    t0 = LOADING_MESSAGE.split("").map((char, index) => (
       <ShimmerChar
         key={index}
         char={char}
@@ -53,24 +53,24 @@ function ShimmerLoadingText() {
   }
   return t2;
 }
-function getRiskColor(riskLevel: RiskLevel): 'success' | 'warning' | 'error' {
+function getRiskColor(riskLevel: RiskLevel): "success" | "warning" | "error" {
   switch (riskLevel) {
-    case 'LOW':
-      return 'success';
-    case 'MEDIUM':
-      return 'warning';
-    case 'HIGH':
-      return 'error';
+    case "LOW":
+      return "success";
+    case "MEDIUM":
+      return "warning";
+    case "HIGH":
+      return "error";
   }
 }
 function getRiskLabel(riskLevel: RiskLevel): string {
   switch (riskLevel) {
-    case 'LOW':
-      return 'Low risk';
-    case 'MEDIUM':
-      return 'Med risk';
-    case 'HIGH':
-      return 'High risk';
+    case "LOW":
+      return "Low risk";
+    case "MEDIUM":
+      return "Med risk";
+    case "HIGH":
+      return "High risk";
   }
 }
 type PermissionExplanationProps = {
@@ -109,7 +109,7 @@ function createExplanationPromise(
 export function usePermissionExplainerUI(props) {
   const $ = _c(9);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = isPermissionExplainerEnabled();
     $[0] = t0;
   } else {
@@ -122,7 +122,7 @@ export function usePermissionExplainerUI(props) {
   if ($[1] !== promise || $[2] !== props || $[3] !== visible) {
     t1 = () => {
       if (!visible) {
-        logEvent('tengu_permission_explainer_shortcut_used', {});
+        logEvent("tengu_permission_explainer_shortcut_used", {});
         if (!promise) {
           setPromise(createExplanationPromise(props));
         }
@@ -137,16 +137,16 @@ export function usePermissionExplainerUI(props) {
     t1 = $[4];
   }
   let t2;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: enabled,
     };
     $[5] = t2;
   } else {
     t2 = $[5];
   }
-  useKeybinding('confirm:toggleExplanation', t1, t2);
+  useKeybinding("confirm:toggleExplanation", t1, t2);
   let t3;
   if ($[6] !== promise || $[7] !== visible) {
     t3 = {
@@ -176,7 +176,7 @@ function ExplanationResult(t0) {
   const explanation = use(promise);
   if (!explanation) {
     let t1;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = (
         <Box marginTop={1}>
           <Text dimColor={true}>Explanation unavailable</Text>
@@ -286,7 +286,7 @@ export function PermissionExplainerContent(t0) {
     return null;
   }
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <Box marginTop={1}>
         <ShimmerLoadingText />

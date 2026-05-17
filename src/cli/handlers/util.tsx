@@ -1,26 +1,26 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 /**
  * Miscellaneous subcommand handlers — extracted from main.tsx for lazy loading.
  * setup-token, doctor, install
  */
 /* eslint-disable custom-rules/no-process-exit -- CLI subcommand handlers intentionally exit */
 
-import { cwd } from 'node:process';
-import React from 'react';
-import { WelcomeV2 } from '../../components/LogoV2/WelcomeV2.js';
-import { useManagePlugins } from '../../hooks/useManagePlugins.js';
-import type { Root } from '../../ink.js';
-import { Box, Text } from '../../ink.js';
-import { KeybindingSetup } from '../../keybindings/KeybindingProviderSetup.js';
-import { logEvent } from '../../services/analytics/index.js';
-import { MCPConnectionManager } from '../../services/mcp/MCPConnectionManager.js';
-import { AppStateProvider } from '../../state/AppState.js';
-import { onChangeAppState } from '../../state/onChangeAppState.js';
-import { isAnthropicAuthEnabled } from '../../utils/auth.js';
+import { cwd } from "node:process";
+import React from "react";
+import { WelcomeV2 } from "../../components/LogoV2/WelcomeV2.js";
+import { useManagePlugins } from "../../hooks/useManagePlugins.js";
+import type { Root } from "../../ink.js";
+import { Box, Text } from "../../ink.js";
+import { KeybindingSetup } from "../../keybindings/KeybindingProviderSetup.js";
+import { logEvent } from "../../services/analytics/index.js";
+import { MCPConnectionManager } from "../../services/mcp/MCPConnectionManager.js";
+import { AppStateProvider } from "../../state/AppState.js";
+import { onChangeAppState } from "../../state/onChangeAppState.js";
+import { isAnthropicAuthEnabled } from "../../utils/auth.js";
 export async function setupTokenHandler(root: Root): Promise<void> {
-  logEvent('tengu_setup_token_command', {});
+  logEvent("tengu_setup_token_command", {});
   const showAuthWarning = !isAnthropicAuthEnabled();
-  const { ConsoleOAuthFlow } = await import('../../components/ConsoleOAuthFlow.js');
+  const { ConsoleOAuthFlow } = await import("../../components/ConsoleOAuthFlow.js");
   await new Promise<void>((resolve) => {
     root.render(
       <AppStateProvider onChangeAppState={onChangeAppState}>
@@ -56,7 +56,7 @@ export async function setupTokenHandler(root: Root): Promise<void> {
 
 // DoctorWithPlugins wrapper + doctor handler
 const DoctorLazy = React.lazy(() =>
-  import('../../screens/Doctor.js').then((m) => ({
+  import("../../screens/Doctor.js").then((m) => ({
     default: m.Doctor,
   })),
 );
@@ -79,7 +79,7 @@ function DoctorWithPlugins(t0) {
   return t1;
 }
 export async function doctorHandler(root: Root): Promise<void> {
-  logEvent('tengu_doctor_command', {});
+  logEvent("tengu_doctor_command", {});
   await new Promise<void>((resolve) => {
     root.render(
       <AppStateProvider>
@@ -106,17 +106,17 @@ export async function installHandler(
     force?: boolean;
   },
 ): Promise<void> {
-  const { setup } = await import('../../setup.js');
-  await setup(cwd(), 'default', false, false, undefined, false);
-  const { install } = await import('../../commands/install.js');
+  const { setup } = await import("../../setup.js");
+  await setup(cwd(), "default", false, false, undefined, false);
+  const { install } = await import("../../commands/install.js");
   await new Promise<void>((resolve) => {
     const args: string[] = [];
     if (target) args.push(target);
-    if (options.force) args.push('--force');
+    if (options.force) args.push("--force");
     void install.call(
       (result) => {
         void resolve();
-        process.exit(result.includes('failed') ? 1 : 0);
+        process.exit(result.includes("failed") ? 1 : 0);
       },
       {},
       args,

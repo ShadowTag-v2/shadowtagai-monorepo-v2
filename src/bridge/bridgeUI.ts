@@ -1,12 +1,12 @@
-import chalk from 'chalk';
-import { toString as qrToString } from 'qrcode';
+import chalk from "chalk";
+import { toString as qrToString } from "qrcode";
 import {
   BRIDGE_FAILED_INDICATOR,
   BRIDGE_READY_INDICATOR,
   BRIDGE_SPINNER_FRAMES,
-} from '../constants/figures.js';
-import { stringWidth } from '../ink/stringWidth.js';
-import { logForDebugging } from '../utils/debug.js';
+} from "../constants/figures.js";
+import { stringWidth } from "../ink/stringWidth.js";
+import { logForDebugging } from "../utils/debug.js";
 import {
   buildActiveFooterText,
   buildBridgeConnectUrl,
@@ -19,19 +19,19 @@ import {
   timestamp,
   truncatePrompt,
   wrapWithOsc8Link,
-} from './bridgeStatusUtil.js';
-import type { BridgeConfig, BridgeLogger, SessionActivity, SpawnMode } from './types.js';
+} from "./bridgeStatusUtil.js";
+import type { BridgeConfig, BridgeLogger, SessionActivity, SpawnMode } from "./types.js";
 
 const QR_OPTIONS = {
-  type: 'utf8' as const,
-  errorCorrectionLevel: 'L' as const,
+  type: "utf8" as const,
+  errorCorrectionLevel: "L" as const,
   small: true,
 };
 
 /** Generate a QR code and return its lines. */
 async function generateQr(url: string): Promise<string[]> {
   const qr = await qrToString(url, QR_OPTIONS);
-  return qr.split('\n').filter((line: string) => line.length > 0);
+  return qr.split("\n").filter((line: string) => line.length > 0);
 }
 
 export function createBridgeLogger(options: {
@@ -45,16 +45,16 @@ export function createBridgeLogger(options: {
   let statusLineCount = 0;
 
   // Status state machine
-  let currentState: StatusState = 'idle';
-  let currentStateText = 'Ready';
-  let repoName = '';
-  let branch = '';
-  let debugLogPath = '';
+  let currentState: StatusState = "idle";
+  let currentStateText = "Ready";
+  let repoName = "";
+  let branch = "";
+  let debugLogPath = "";
 
   // Connect URL (built in printBanner with correct base for staging/prod)
-  let connectUrl = '';
-  let cachedIngressUrl = '';
-  let cachedEnvironmentId = '';
+  let connectUrl = "";
+  let cachedIngressUrl = "";
+  let cachedEnvironmentId = "";
   let activeSessionUrl: string | null = null;
 
   // QR code lines for the current URL
@@ -69,8 +69,8 @@ export function createBridgeLogger(options: {
   let sessionActive = 0;
   let sessionMax = 1;
   // Spawn mode shown in the session-count line + gates the `w` hint
-  let spawnModeDisplay: 'same-dir' | 'worktree' | null = null;
-  let spawnMode: SpawnMode = 'single-session';
+  let spawnModeDisplay: "same-dir" | "worktree" | null = null;
+  let spawnMode: SpawnMode = "single-session";
 
   // Per-session display info for the multi-session bullet list (keyed by compat sessionId)
   const sessionDisplayInfo = new Map<
@@ -92,7 +92,7 @@ export function createBridgeLogger(options: {
     const cols = process.stdout.columns || 80; // non-React CLI context
     let count = 0;
     // Split on newlines to get logical lines
-    for (const logical of text.split('\n')) {
+    for (const logical of text.split("\n")) {
       if (logical.length === 0) {
         // Empty segment between consecutive \n — counts as 1 row
         count++;
@@ -103,7 +103,7 @@ export function createBridgeLogger(options: {
     }
     // The trailing \n in "line\n" produces an empty last element — don't count it
     // because the cursor sits at the start of the next line, not a new visual row.
-    if (text.endsWith('\n')) {
+    if (text.endsWith("\n")) {
       count--;
     }
     return count;
@@ -121,7 +121,7 @@ export function createBridgeLogger(options: {
     logForDebugging(`[bridge:ui] clearStatusLines count=${statusLineCount}`);
     // Move cursor up to the start of the status block, then erase everything below
     write(`\x1b[${statusLineCount}A`); // cursor up N lines
-    write('\x1b[J'); // erase from cursor to end of screen
+    write("\x1b[J"); // erase from cursor to end of screen
     statusLineCount = 0;
   }
 
@@ -139,7 +139,7 @@ export function createBridgeLogger(options: {
         renderStatusLine();
       })
       .catch((e) => {
-        logForDebugging(`QR code generation failed: ${e}`, { level: 'error' });
+        logForDebugging(`QR code generation failed: ${e}`, { level: "error" });
       });
   }
 
@@ -148,14 +148,14 @@ export function createBridgeLogger(options: {
     clearStatusLines();
 
     const frame = BRIDGE_SPINNER_FRAMES[connectingTick % BRIDGE_SPINNER_FRAMES.length]!;
-    let suffix = '';
+    let suffix = "";
     if (repoName) {
-      suffix += chalk.dim(' \u00b7 ') + chalk.dim(repoName);
+      suffix += chalk.dim(" \u00b7 ") + chalk.dim(repoName);
     }
     if (branch) {
-      suffix += chalk.dim(' \u00b7 ') + chalk.dim(branch);
+      suffix += chalk.dim(" \u00b7 ") + chalk.dim(branch);
     }
-    writeStatus(`${chalk.yellow(frame)} ${chalk.yellow('Connecting')}${suffix}\n`);
+    writeStatus(`${chalk.yellow(frame)} ${chalk.yellow("Connecting")}${suffix}\n`);
   }
 
   /** Start the connecting spinner. Stopped by first updateIdleStatus(). */
@@ -186,14 +186,14 @@ export function createBridgeLogger(options: {
 
   /** Build the repo · branch suffix for the status indicator. */
   function buildRepoSuffix(): string {
-    let suffix = '';
+    let suffix = "";
     if (repoName) {
-      suffix += chalk.dim(' \u00b7 ') + chalk.dim(repoName);
+      suffix += chalk.dim(" \u00b7 ") + chalk.dim(repoName);
     }
     // In worktree mode each session gets its own branch, so showing the
     // bridge's branch would be misleading.
-    if (branch && spawnMode !== 'worktree') {
-      suffix += chalk.dim(' \u00b7 ') + chalk.dim(branch);
+    if (branch && spawnMode !== "worktree") {
+      suffix += chalk.dim(" \u00b7 ") + chalk.dim(branch);
     }
     return suffix;
   }
@@ -202,18 +202,18 @@ export function createBridgeLogger(options: {
   function renderSessionBlock(): void {
     if (sessionMax > 1) {
       const modeHint =
-        spawnMode === 'worktree'
-          ? 'New sessions will be created in an isolated worktree'
-          : 'New sessions will be created in the current directory';
+        spawnMode === "worktree"
+          ? "New sessions will be created in an isolated worktree"
+          : "New sessions will be created in the current directory";
       writeStatus(
         `    ${chalk.dim(`Capacity: ${sessionActive}/${sessionMax} \u00b7 ${modeHint}`)}\n`,
       );
       for (const [, info] of sessionDisplayInfo) {
-        const titleText = info.title ? truncatePrompt(info.title, 35) : chalk.dim('Attached');
+        const titleText = info.title ? truncatePrompt(info.title, 35) : chalk.dim("Attached");
         const titleLinked = wrapWithOsc8Link(titleText, info.url);
         const act = info.activity;
-        const showAct = act && act.type !== 'result' && act.type !== 'error';
-        const actText = showAct ? chalk.dim(` ${truncatePrompt(act.summary, 40)}`) : '';
+        const showAct = act && act.type !== "result" && act.type !== "error";
+        const actText = showAct ? chalk.dim(` ${truncatePrompt(act.summary, 40)}`) : "";
         writeStatus(`    ${titleLinked}${actText}
 `);
       }
@@ -224,9 +224,9 @@ export function createBridgeLogger(options: {
   function renderModeBlock(isIdle: boolean): void {
     if (sessionMax === 1) {
       const modeText =
-        spawnMode === 'single-session'
-          ? 'Single session \u00b7 exits when complete'
-          : spawnMode === 'worktree'
+        spawnMode === "single-session"
+          ? "Single session \u00b7 exits when complete"
+          : spawnMode === "worktree"
             ? `Capacity: ${sessionActive}/1 \u00b7 New sessions will be created in an isolated worktree`
             : `Capacity: ${sessionActive}/1 \u00b7 New sessions will be created in the current directory`;
       writeStatus(`    ${chalk.dim(modeText)}\n`);
@@ -248,19 +248,19 @@ export function createBridgeLogger(options: {
     const url = activeSessionUrl ?? connectUrl;
     if (!url) return;
 
-    writeStatus('\n');
+    writeStatus("\n");
     const footerText = isIdle ? buildIdleFooterText(url) : buildActiveFooterText(url);
     const qrHint = qrVisible
-      ? chalk.dim.italic('space to hide QR code')
-      : chalk.dim.italic('space to show QR code');
-    const toggleHint = spawnModeDisplay ? chalk.dim.italic(' \u00b7 w to toggle spawn mode') : '';
+      ? chalk.dim.italic("space to hide QR code")
+      : chalk.dim.italic("space to show QR code");
+    const toggleHint = spawnModeDisplay ? chalk.dim.italic(" \u00b7 w to toggle spawn mode") : "";
     writeStatus(`${chalk.dim(footerText)}\n`);
     writeStatus(`${qrHint}${toggleHint}\n`);
   }
 
   /** Render and write the current status lines based on state. */
   function renderStatusLine(): void {
-    if (currentState === 'reconnecting' || currentState === 'failed') {
+    if (currentState === "reconnecting" || currentState === "failed") {
       // These states are handled separately (updateReconnectingStatus /
       // updateFailedStatus). Return before clearing so callers like toggleQr
       // and setSpawnModeDisplay don't blank the display during these states.
@@ -269,7 +269,7 @@ export function createBridgeLogger(options: {
 
     clearStatusLines();
 
-    const isIdle = currentState === 'idle';
+    const isIdle = currentState === "idle";
 
     renderQrBlock();
 
@@ -279,8 +279,8 @@ export function createBridgeLogger(options: {
     const stateText = (isIdle ? chalk.green : chalk.cyan)(currentStateText);
     const suffix = buildRepoSuffix();
 
-    if (process.env.USER_TYPE === 'ant' && debugLogPath) {
-      writeStatus(`${chalk.yellow('[ANT-ONLY] Logs:')} ${chalk.dim(debugLogPath)}\n`);
+    if (process.env.USER_TYPE === "ant" && debugLogPath) {
+      writeStatus(`${chalk.yellow("[ANT-ONLY] Logs:")} ${chalk.dim(debugLogPath)}\n`);
     }
     writeStatus(`${indicatorColor(indicator)} ${stateText}${suffix}\n`);
 
@@ -300,16 +300,16 @@ export function createBridgeLogger(options: {
         write(`${chalk.dim(`Remote Control`)} v${MACRO.VERSION}\n`);
       }
       if (verbose) {
-        if (config.spawnMode !== 'single-session') {
+        if (config.spawnMode !== "single-session") {
           write(`${chalk.dim(`Spawn mode: `)}${config.spawnMode}\n`);
           write(`${chalk.dim(`Max concurrent sessions: `)}${config.maxSessions}\n`);
         }
         write(`${chalk.dim(`Environment ID: `)}${environmentId}\n`);
       }
       if (config.sandbox) {
-        write(`${chalk.dim(`Sandbox: `)}${chalk.green('Enabled')}\n`);
+        write(`${chalk.dim(`Sandbox: `)}${chalk.green("Enabled")}\n`);
       }
-      write('\n');
+      write("\n");
 
       // Start connecting spinner — first updateIdleStatus() will stop it
       startConnecting();
@@ -328,14 +328,14 @@ export function createBridgeLogger(options: {
     logSessionComplete(sessionId: string, durationMs: number): void {
       printLog(
         chalk.dim(`[${timestamp()}]`) +
-          ` Session ${chalk.green('completed')} (${formatDuration(durationMs)}) ${chalk.dim(sessionId)}\n`,
+          ` Session ${chalk.green("completed")} (${formatDuration(durationMs)}) ${chalk.dim(sessionId)}\n`,
       );
     },
 
     logSessionFailed(sessionId: string, error: string): void {
       printLog(
         chalk.dim(`[${timestamp()}]`) +
-          ` Session ${chalk.red('failed')}: ${error} ${chalk.dim(sessionId)}\n`,
+          ` Session ${chalk.red("failed")}: ${error} ${chalk.dim(sessionId)}\n`,
       );
     },
 
@@ -356,7 +356,7 @@ export function createBridgeLogger(options: {
     logReconnected(disconnectedMs: number): void {
       printLog(
         chalk.dim(`[${timestamp()}]`) +
-          ` ${chalk.green('Reconnected')} after ${formatDuration(disconnectedMs)}\n`,
+          ` ${chalk.green("Reconnected")} after ${formatDuration(disconnectedMs)}\n`,
       );
     },
 
@@ -372,8 +372,8 @@ export function createBridgeLogger(options: {
     updateIdleStatus(): void {
       stopConnecting();
 
-      currentState = 'idle';
-      currentStateText = 'Ready';
+      currentState = "idle";
+      currentStateText = "Ready";
       lastToolSummary = null;
       lastToolTime = 0;
       activeSessionUrl = null;
@@ -383,8 +383,8 @@ export function createBridgeLogger(options: {
 
     setAttached(sessionId: string): void {
       stopConnecting();
-      currentState = 'attached';
-      currentStateText = 'Connected';
+      currentState = "attached";
+      currentStateText = "Connected";
       lastToolSummary = null;
       lastToolTime = 0;
       // Multi-session: keep footer/QR on the environment connect URL so users
@@ -399,7 +399,7 @@ export function createBridgeLogger(options: {
     updateReconnectingStatus(delayStr: string, elapsedStr: string): void {
       stopConnecting();
       clearStatusLines();
-      currentState = 'reconnecting';
+      currentState = "reconnecting";
 
       // QR code above the status line
       if (qrVisible) {
@@ -411,25 +411,25 @@ export function createBridgeLogger(options: {
       const frame = BRIDGE_SPINNER_FRAMES[connectingTick % BRIDGE_SPINNER_FRAMES.length]!;
       connectingTick++;
       writeStatus(
-        `${chalk.yellow(frame)} ${chalk.yellow('Reconnecting')} ${chalk.dim('\u00b7')} ${chalk.dim(`retrying in ${delayStr}`)} ${chalk.dim('\u00b7')} ${chalk.dim(`disconnected ${elapsedStr}`)}\n`,
+        `${chalk.yellow(frame)} ${chalk.yellow("Reconnecting")} ${chalk.dim("\u00b7")} ${chalk.dim(`retrying in ${delayStr}`)} ${chalk.dim("\u00b7")} ${chalk.dim(`disconnected ${elapsedStr}`)}\n`,
       );
     },
 
     updateFailedStatus(error: string): void {
       stopConnecting();
       clearStatusLines();
-      currentState = 'failed';
+      currentState = "failed";
 
-      let suffix = '';
+      let suffix = "";
       if (repoName) {
-        suffix += chalk.dim(' \u00b7 ') + chalk.dim(repoName);
+        suffix += chalk.dim(" \u00b7 ") + chalk.dim(repoName);
       }
       if (branch) {
-        suffix += chalk.dim(' \u00b7 ') + chalk.dim(branch);
+        suffix += chalk.dim(" \u00b7 ") + chalk.dim(branch);
       }
 
       writeStatus(
-        `${chalk.red(BRIDGE_FAILED_INDICATOR)} ${chalk.red('Remote Control Failed')}${suffix}\n`,
+        `${chalk.red(BRIDGE_FAILED_INDICATOR)} ${chalk.red("Remote Control Failed")}${suffix}\n`,
       );
       writeStatus(`${chalk.dim(FAILED_FOOTER_TEXT)}\n`);
 
@@ -445,7 +445,7 @@ export function createBridgeLogger(options: {
       _trail: string[],
     ): void {
       // Cache tool activity for the second status line
-      if (activity.type === 'tool_start') {
+      if (activity.type === "tool_start") {
         lastToolSummary = activity.summary;
         lastToolTime = Date.now();
       }
@@ -471,7 +471,7 @@ export function createBridgeLogger(options: {
       // on its own cadence, and the next tick will pick up the new values.
     },
 
-    setSpawnModeDisplay(mode: 'same-dir' | 'worktree' | null): void {
+    setSpawnModeDisplay(mode: "same-dir" | "worktree" | null): void {
       if (spawnModeDisplay === mode) return;
       spawnModeDisplay = mode;
       // Also sync the #21118-added spawnMode so the next render shows correct
@@ -497,10 +497,10 @@ export function createBridgeLogger(options: {
       info.title = title;
       // Guard against reconnecting/failed — renderStatusLine clears then returns
       // early for those states, which would erase the spinner/error.
-      if (currentState === 'reconnecting' || currentState === 'failed') return;
+      if (currentState === "reconnecting" || currentState === "failed") return;
       if (sessionMax === 1) {
         // Single-session: show title in the main status line too.
-        currentState = 'titled';
+        currentState = "titled";
         currentStateText = truncatePrompt(title, 40);
       }
       renderStatusLine();
@@ -513,7 +513,7 @@ export function createBridgeLogger(options: {
     refreshDisplay(): void {
       // Skip during reconnecting/failed — renderStatusLine clears then returns
       // early for those states, which would erase the spinner/error.
-      if (currentState === 'reconnecting' || currentState === 'failed') return;
+      if (currentState === "reconnecting" || currentState === "failed") return;
       renderStatusLine();
     },
   };

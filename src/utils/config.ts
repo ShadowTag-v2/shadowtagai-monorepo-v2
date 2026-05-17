@@ -1,46 +1,46 @@
-import { feature } from 'bun:bundle';
-import { randomBytes } from 'node:crypto';
-import { unwatchFile, watchFile } from 'node:fs';
-import { basename, dirname, join, resolve } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
-import pickBy from 'lodash-es/pickBy.js';
-import { getOriginalCwd, getSessionTrustAccepted } from '../bootstrap/state.js';
-import { getAutoMemEntrypoint } from '../memdir/paths.js';
-import { logEvent } from '../services/analytics/index.js';
-import type { McpServerConfig } from '../services/mcp/types.js';
-import type { BillingType, ReferralEligibilityResponse } from '../services/oauth/types.js';
-import { getCwd } from '../utils/cwd.js';
-import { registerCleanup } from './cleanupRegistry.js';
-import { logForDebugging } from './debug.js';
-import { logForDiagnosticsNoPII } from './diagLogs.js';
-import { getGlobalClaudeFile } from './env.js';
-import { getClaudeConfigHomeDir, isEnvTruthy } from './envUtils.js';
-import { ConfigParseError, getErrnoCode } from './errors.js';
-import { writeFileSyncAndFlush_DEPRECATED } from './file.js';
-import { getFsImplementation } from './fsOperations.js';
-import { findCanonicalGitRoot } from './git.js';
-import { safeParseJSON } from './json.js';
-import { stripBOM } from './jsonRead.js';
-import * as lockfile from './lockfile.js';
-import { logError } from './log.js';
-import type { MemoryType } from './memory/types.js';
-import { normalizePathForConfigKey } from './path.js';
-import { getEssentialTrafficOnlyReason } from './privacyLevel.js';
-import { getManagedFilePath } from './settings/managedPath.js';
-import type { ThemeSetting } from './theme.js';
+import { feature } from "bun:bundle";
+import { randomBytes } from "node:crypto";
+import { unwatchFile, watchFile } from "node:fs";
+import { basename, dirname, join, resolve } from "node:path";
+import memoize from "lodash-es/memoize.js";
+import pickBy from "lodash-es/pickBy.js";
+import { getOriginalCwd, getSessionTrustAccepted } from "../bootstrap/state.js";
+import { getAutoMemEntrypoint } from "../memdir/paths.js";
+import { logEvent } from "../services/analytics/index.js";
+import type { McpServerConfig } from "../services/mcp/types.js";
+import type { BillingType, ReferralEligibilityResponse } from "../services/oauth/types.js";
+import { getCwd } from "../utils/cwd.js";
+import { registerCleanup } from "./cleanupRegistry.js";
+import { logForDebugging } from "./debug.js";
+import { logForDiagnosticsNoPII } from "./diagLogs.js";
+import { getGlobalClaudeFile } from "./env.js";
+import { getClaudeConfigHomeDir, isEnvTruthy } from "./envUtils.js";
+import { ConfigParseError, getErrnoCode } from "./errors.js";
+import { writeFileSyncAndFlush_DEPRECATED } from "./file.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { findCanonicalGitRoot } from "./git.js";
+import { safeParseJSON } from "./json.js";
+import { stripBOM } from "./jsonRead.js";
+import * as lockfile from "./lockfile.js";
+import { logError } from "./log.js";
+import type { MemoryType } from "./memory/types.js";
+import { normalizePathForConfigKey } from "./path.js";
+import { getEssentialTrafficOnlyReason } from "./privacyLevel.js";
+import { getManagedFilePath } from "./settings/managedPath.js";
+import type { ThemeSetting } from "./theme.js";
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const teamMemPaths = feature('TEAMMEM')
-  ? (require('../memdir/teamMemPaths.js') as typeof import('../memdir/teamMemPaths.js'))
+const teamMemPaths = feature("TEAMMEM")
+  ? (require("../memdir/teamMemPaths.js") as typeof import("../memdir/teamMemPaths.js"))
   : null;
-const ccrAutoConnect = feature('CCR_AUTO_CONNECT')
-  ? (require('../bridge/bridgeEnabled.js') as typeof import('../bridge/bridgeEnabled.js'))
+const ccrAutoConnect = feature("CCR_AUTO_CONNECT")
+  ? (require("../bridge/bridgeEnabled.js") as typeof import("../bridge/bridgeEnabled.js"))
   : null;
 
 /* eslint-enable @typescript-eslint/no-require-imports */
-import type { ImageDimensions } from './imageResizer.js';
-import type { ModelOption } from './model/modelOptions.js';
-import { jsonParse, jsonStringify } from './slowOperations.js';
+import type { ImageDimensions } from "./imageResizer.js";
+import type { ModelOption } from "./model/modelOptions.js";
+import { jsonParse, jsonStringify } from "./slowOperations.js";
 
 // Re-entrancy guard: prevents getConfig → logEvent → getGlobalConfig → getConfig
 // infinite recursion when the config file is corrupted. logEvent's sampling check
@@ -50,7 +50,7 @@ let insideGetConfig = false;
 // Image dimension info for coordinate mapping (only set when image was resized)
 export type PastedContent = {
   id: number; // Sequential numeric ID
-  type: 'text' | 'image';
+  type: "text" | "image";
   content: string;
   mediaType?: string; // e.g., 'image/png', 'image/jpeg'
   filename?: string; // Display name for images in attachment slot
@@ -68,7 +68,7 @@ export interface HistoryEntry {
   pastedContents: Record<number, PastedContent>;
 }
 
-export type ReleaseChannel = 'stable' | 'latest';
+export type ReleaseChannel = "stable" | "latest";
 
 export type ProjectConfig = {
   allowedTools: string[];
@@ -129,7 +129,7 @@ export type ProjectConfig = {
     hookBased?: boolean;
   };
   /** Spawn mode for `claude remote-control` multi-session. Set by first-run dialog or `w` toggle. */
-  remoteControlSpawnMode?: 'same-dir' | 'worktree';
+  remoteControlSpawnMode?: "same-dir" | "worktree";
 };
 
 const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
@@ -144,14 +144,14 @@ const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   hasClaudeMdExternalIncludesWarningShown: false,
 };
 
-export type InstallMethod = 'local' | 'native' | 'global' | 'unknown';
+export type InstallMethod = "local" | "native" | "global" | "unknown";
 
 export {
   EDITOR_MODES,
   NOTIFICATION_CHANNELS,
-} from './configConstants.js';
+} from "./configConstants.js";
 
-import type { EDITOR_MODES, NOTIFICATION_CHANNELS } from './configConstants.js';
+import type { EDITOR_MODES, NOTIFICATION_CHANNELS } from "./configConstants.js";
 
 export type NotificationChannel = (typeof NOTIFICATION_CHANNELS)[number];
 
@@ -171,9 +171,9 @@ export type AccountInfo = {
 };
 
 // TODO: 'emacs' is kept for backward compatibility - remove after a few releases
-export type EditorMode = 'emacs' | (typeof EDITOR_MODES)[number];
+export type EditorMode = "emacs" | (typeof EDITOR_MODES)[number];
 
-export type DiffTool = 'terminal' | 'auto';
+export type DiffTool = "terminal" | "auto";
 
 export type OutputStyle = string;
 
@@ -264,7 +264,7 @@ export type GlobalConfig = {
   };
 
   // /buddy companion soul — bones regenerated from userId on read. See src/buddy/.
-  companion?: import('../buddy/types.js').StoredCompanion;
+  companion?: import("../buddy/types.js").StoredCompanion;
   companionMuted?: boolean;
 
   // Feedback survey tracking
@@ -474,10 +474,10 @@ export type GlobalConfig = {
   officialMarketplaceAutoInstallAttempted?: boolean; // Whether auto-install was attempted
   officialMarketplaceAutoInstalled?: boolean; // Whether auto-install succeeded
   officialMarketplaceAutoInstallFailReason?:
-    | 'policy_blocked'
-    | 'git_unavailable'
-    | 'gcs_unavailable'
-    | 'unknown'; // Reason for failure if applicable
+    | "policy_blocked"
+    | "git_unavailable"
+    | "gcs_unavailable"
+    | "unknown"; // Reason for failure if applicable
   officialMarketplaceAutoInstallRetryCount?: number; // Number of retry attempts
   officialMarketplaceAutoInstallLastAttemptTime?: number; // Timestamp of last attempt
   officialMarketplaceAutoInstallNextRetryTime?: number; // Earliest time to retry again
@@ -514,7 +514,7 @@ export type GlobalConfig = {
   permissionExplainerEnabled?: boolean; // Enable Haiku-generated explanations for permission requests (default: true)
 
   // Teammate spawn mode: 'auto' | 'tmux' | 'in-process'
-  teammateMode?: 'auto' | 'tmux' | 'in-process'; // How to spawn teammates (default: 'auto')
+  teammateMode?: "auto" | "tmux" | "in-process"; // How to spawn teammates (default: 'auto')
   // Model for new teammates when the tool call doesn't pass one.
   // undefined = hardcoded Opus (backward-compat); null = leader's model; string = model alias/ID.
   teammateDefaultModel?: string | null;
@@ -577,17 +577,17 @@ function createDefaultGlobalConfig(): GlobalConfig {
     numStartups: 0,
     installMethod: undefined,
     autoUpdates: undefined,
-    theme: 'dark',
-    preferredNotifChannel: 'auto',
+    theme: "dark",
+    preferredNotifChannel: "auto",
     verbose: false,
-    editorMode: 'normal',
+    editorMode: "normal",
     autoCompactEnabled: true,
     showTurnDuration: true,
     hasSeenTasksHint: false,
     hasUsedStash: false,
     hasUsedBackgroundTask: false,
     queuedCommandUpHintCount: 0,
-    diffTool: 'auto',
+    diffTool: "auto",
     customApiKeyResponses: {
       approved: [],
       rejected: [],
@@ -615,44 +615,44 @@ function createDefaultGlobalConfig(): GlobalConfig {
 export const DEFAULT_GLOBAL_CONFIG: GlobalConfig = createDefaultGlobalConfig();
 
 export const GLOBAL_CONFIG_KEYS = [
-  'apiKeyHelper',
-  'installMethod',
-  'autoUpdates',
-  'autoUpdatesProtectedForNative',
-  'theme',
-  'verbose',
-  'preferredNotifChannel',
-  'shiftEnterKeyBindingInstalled',
-  'editorMode',
-  'hasUsedBackslashReturn',
-  'autoCompactEnabled',
-  'showTurnDuration',
-  'diffTool',
-  'env',
-  'tipsHistory',
-  'todoFeatureEnabled',
-  'showExpandedTodos',
-  'messageIdleNotifThresholdMs',
-  'autoConnectIde',
-  'autoInstallIdeExtension',
-  'fileCheckpointingEnabled',
-  'terminalProgressBarEnabled',
-  'showStatusInTerminalTab',
-  'taskCompleteNotifEnabled',
-  'inputNeededNotifEnabled',
-  'agentPushNotifEnabled',
-  'respectGitignore',
-  'claudeInChromeDefaultEnabled',
-  'hasCompletedClaudeInChromeOnboarding',
-  'lspRecommendationDisabled',
-  'lspRecommendationNeverPlugins',
-  'lspRecommendationIgnoredCount',
-  'copyFullResponse',
-  'copyOnSelect',
-  'permissionExplainerEnabled',
-  'prStatusFooterEnabled',
-  'remoteControlAtStartup',
-  'remoteDialogSeen',
+  "apiKeyHelper",
+  "installMethod",
+  "autoUpdates",
+  "autoUpdatesProtectedForNative",
+  "theme",
+  "verbose",
+  "preferredNotifChannel",
+  "shiftEnterKeyBindingInstalled",
+  "editorMode",
+  "hasUsedBackslashReturn",
+  "autoCompactEnabled",
+  "showTurnDuration",
+  "diffTool",
+  "env",
+  "tipsHistory",
+  "todoFeatureEnabled",
+  "showExpandedTodos",
+  "messageIdleNotifThresholdMs",
+  "autoConnectIde",
+  "autoInstallIdeExtension",
+  "fileCheckpointingEnabled",
+  "terminalProgressBarEnabled",
+  "showStatusInTerminalTab",
+  "taskCompleteNotifEnabled",
+  "inputNeededNotifEnabled",
+  "agentPushNotifEnabled",
+  "respectGitignore",
+  "claudeInChromeDefaultEnabled",
+  "hasCompletedClaudeInChromeOnboarding",
+  "lspRecommendationDisabled",
+  "lspRecommendationNeverPlugins",
+  "lspRecommendationIgnoredCount",
+  "copyFullResponse",
+  "copyOnSelect",
+  "permissionExplainerEnabled",
+  "prStatusFooterEnabled",
+  "remoteControlAtStartup",
+  "remoteDialogSeen",
 ] as const;
 
 export type GlobalConfigKey = (typeof GLOBAL_CONFIG_KEYS)[number];
@@ -662,9 +662,9 @@ export function isGlobalConfigKey(key: string): key is GlobalConfigKey {
 }
 
 export const PROJECT_CONFIG_KEYS = [
-  'allowedTools',
-  'hasTrustDialogAccepted',
-  'hasCompletedProjectOnboarding',
+  "allowedTools",
+  "hasTrustDialogAccepted",
+  "hasCompletedProjectOnboarding",
 ] as const;
 
 export type ProjectConfigKey = (typeof PROJECT_CONFIG_KEYS)[number];
@@ -721,7 +721,7 @@ function computeTrustDialogAccepted(): boolean {
       return true;
     }
 
-    const parentPath = normalizePathForConfigKey(resolve(currentPath, '..'));
+    const parentPath = normalizePathForConfigKey(resolve(currentPath, ".."));
     // Stop if we've reached the root (when parent is same as current)
     if (parentPath === currentPath) {
       break;
@@ -744,7 +744,7 @@ export function isPathTrusted(dir: string): boolean {
   let currentPath = normalizePathForConfigKey(resolve(dir));
   while (true) {
     if (config.projects?.[currentPath]?.hasTrustDialogAccepted) return true;
-    const parentPath = normalizePathForConfigKey(resolve(currentPath, '..'));
+    const parentPath = normalizePathForConfigKey(resolve(currentPath, ".."));
     if (parentPath === currentPath) return false;
     currentPath = parentPath;
   }
@@ -783,7 +783,7 @@ function wouldLoseAuthState(fresh: {
 }
 
 export function saveGlobalConfig(updater: (currentConfig: GlobalConfig) => GlobalConfig): void {
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === "test") {
     const config = updater(TEST_GLOBAL_CONFIG_FOR_TESTING);
     // Skip if no changes (same reference returned)
     if (config === TEST_GLOBAL_CONFIG_FOR_TESTING) {
@@ -819,7 +819,7 @@ export function saveGlobalConfig(updater: (currentConfig: GlobalConfig) => Globa
     }
   } catch (error) {
     logForDebugging(`Failed to save config with lock: ${error}`, {
-      level: 'error',
+      level: "error",
     });
     // Fall back to non-locked version on error. This fallback is a race
     // window: if another process is mid-write (or the file got truncated),
@@ -828,10 +828,10 @@ export function saveGlobalConfig(updater: (currentConfig: GlobalConfig) => Globa
     const currentConfig = getConfig(getGlobalClaudeFile(), createDefaultGlobalConfig);
     if (wouldLoseAuthState(currentConfig)) {
       logForDebugging(
-        'saveGlobalConfig fallback: re-read config is missing auth that cache has; refusing to write. See GH #3117.',
-        { level: 'error' },
+        "saveGlobalConfig fallback: re-read config is missing auth that cache has; refusing to write. See GH #3117.",
+        { level: "error" },
       );
-      logEvent('tengu_config_auth_loss_prevented', {});
+      logEvent("tengu_config_auth_loss_prevented", {});
       return;
     }
     const config = updater(currentConfig);
@@ -872,7 +872,7 @@ export const CONFIG_WRITE_DISPLAY_THRESHOLD = 20;
 function reportConfigCacheStats(): void {
   const total = configCacheHits + configCacheMisses;
   if (total > 0) {
-    logEvent('tengu_config_cache_stats', {
+    logEvent("tengu_config_cache_stats", {
       cache_hits: configCacheHits,
       cache_misses: configCacheMisses,
       hit_rate: configCacheHits / total,
@@ -901,34 +901,34 @@ function migrateConfigFields(config: GlobalConfig): GlobalConfig {
   // autoUpdaterStatus is removed from the type but may exist in old configs
   const legacy = config as GlobalConfig & {
     autoUpdaterStatus?:
-      | 'migrated'
-      | 'installed'
-      | 'disabled'
-      | 'enabled'
-      | 'no_permissions'
-      | 'not_configured';
+      | "migrated"
+      | "installed"
+      | "disabled"
+      | "enabled"
+      | "no_permissions"
+      | "not_configured";
   };
 
   // Determine install method and auto-update preference from old field
-  let installMethod: InstallMethod = 'unknown';
+  let installMethod: InstallMethod = "unknown";
   let autoUpdates = config.autoUpdates ?? true; // Default to enabled unless explicitly disabled
 
   switch (legacy.autoUpdaterStatus) {
-    case 'migrated':
-      installMethod = 'local';
+    case "migrated":
+      installMethod = "local";
       break;
-    case 'installed':
-      installMethod = 'native';
+    case "installed":
+      installMethod = "native";
       break;
-    case 'disabled':
+    case "disabled":
       // When disabled, we don't know the install method
       autoUpdates = false;
       break;
-    case 'enabled':
-    case 'no_permissions':
-    case 'not_configured':
+    case "enabled":
+    case "no_permissions":
+    case "not_configured":
       // These imply global installation
-      installMethod = 'global';
+      installMethod = "global";
       break;
     case undefined:
       // No old status, keep defaults
@@ -978,7 +978,7 @@ let freshnessWatcherStarted = false;
 // fs.watchFile polls stat on the libuv threadpool and only calls us when mtime
 // changed — a stalled stat never blocks the main thread.
 function startGlobalConfigFreshnessWatcher(): void {
-  if (freshnessWatcherStarted || process.env.NODE_ENV === 'test') return;
+  if (freshnessWatcherStarted || process.env.NODE_ENV === "test") return;
   freshnessWatcherStarted = true;
   const file = getGlobalClaudeFile();
   watchFile(file, { interval: CONFIG_FRESHNESS_POLL_MS, persistent: false }, (curr) => {
@@ -988,13 +988,13 @@ function startGlobalConfigFreshnessWatcher(): void {
     // (initial callback or deletion) — the <= handles that too.
     if (curr.mtimeMs <= globalConfigCache.mtime) return;
     void getFsImplementation()
-      .readFile(file, { encoding: 'utf-8' })
+      .readFile(file, { encoding: "utf-8" })
       .then((content) => {
         // A write-through may have advanced the cache while we were reading;
         // don't regress to the stale snapshot watchFile stat'd.
         if (curr.mtimeMs <= globalConfigCache.mtime) return;
         const parsed = safeParseJSON(stripBOM(content));
-        if (parsed === null || typeof parsed !== 'object') return;
+        if (parsed === null || typeof parsed !== "object") return;
         globalConfigCache = {
           config: migrateConfigFields({
             ...createDefaultGlobalConfig(),
@@ -1021,7 +1021,7 @@ function writeThroughGlobalConfigCache(config: GlobalConfig): void {
 }
 
 export function getGlobalConfig(): GlobalConfig {
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === "test") {
     return TEST_GLOBAL_CONFIG_FOR_TESTING;
   }
 
@@ -1067,21 +1067,21 @@ export function getGlobalConfig(): GlobalConfig {
 export function getRemoteControlAtStartup(): boolean {
   const explicit = getGlobalConfig().remoteControlAtStartup;
   if (explicit !== undefined) return explicit;
-  if (feature('CCR_AUTO_CONNECT')) {
+  if (feature("CCR_AUTO_CONNECT")) {
     if (ccrAutoConnect?.getCcrAutoConnectDefault()) return true;
   }
   return false;
 }
 
-export function getCustomApiKeyStatus(truncatedApiKey: string): 'approved' | 'rejected' | 'new' {
+export function getCustomApiKeyStatus(truncatedApiKey: string): "approved" | "rejected" | "new" {
   const config = getGlobalConfig();
   if (config.customApiKeyResponses?.approved?.includes(truncatedApiKey)) {
-    return 'approved';
+    return "approved";
   }
   if (config.customApiKeyResponses?.rejected?.includes(truncatedApiKey)) {
-    return 'rejected';
+    return "rejected";
   }
-  return 'new';
+  return "new";
 }
 
 function saveConfig<A extends object>(file: string, config: A, defaultConfig: A): void {
@@ -1098,7 +1098,7 @@ function saveConfig<A extends object>(file: string, config: A, defaultConfig: A)
   );
   // Write config file with secure permissions - mode only applies to new files
   writeFileSyncAndFlush_DEPRECATED(file, jsonStringify(filteredConfig, null, 2), {
-    encoding: 'utf-8',
+    encoding: "utf-8",
     mode: 0o600,
   });
   if (file === getGlobalClaudeFile()) {
@@ -1134,15 +1134,15 @@ function saveConfigWithLock<A extends object>(
         // Default onCompromised throws from a setTimeout callback, which
         // becomes an unhandled exception. Log instead -- the lock being
         // stolen (e.g. after a 10s event-loop stall) is recoverable.
-        logForDebugging(`Config lock compromised: ${err}`, { level: 'error' });
+        logForDebugging(`Config lock compromised: ${err}`, { level: "error" });
       },
     });
     const lockTime = Date.now() - startTime;
     if (lockTime > 100) {
       logForDebugging(
-        'Lock acquisition took longer than expected - another Claude instance may be running',
+        "Lock acquisition took longer than expected - another Claude instance may be running",
       );
-      logEvent('tengu_config_lock_contention', {
+      logEvent("tengu_config_lock_contention", {
         lock_time_ms: lockTime,
       });
     }
@@ -1156,7 +1156,7 @@ function saveConfigWithLock<A extends object>(
           currentStats.mtimeMs !== lastReadFileStats.mtime ||
           currentStats.size !== lastReadFileStats.size
         ) {
-          logEvent('tengu_config_stale_write', {
+          logEvent("tengu_config_stale_write", {
             read_mtime: lastReadFileStats.mtime,
             write_mtime: currentStats.mtimeMs,
             read_size: lastReadFileStats.size,
@@ -1165,7 +1165,7 @@ function saveConfigWithLock<A extends object>(
         }
       } catch (e) {
         const code = getErrnoCode(e);
-        if (code !== 'ENOENT') {
+        if (code !== "ENOENT") {
           throw e;
         }
         // File doesn't exist yet, no stale check needed
@@ -1178,10 +1178,10 @@ function saveConfigWithLock<A extends object>(
     const currentConfig = getConfig(file, createDefault);
     if (file === getGlobalClaudeFile() && wouldLoseAuthState(currentConfig)) {
       logForDebugging(
-        'saveConfigWithLock: re-read config is missing auth that cache has; refusing to write to avoid wiping ~/.claude.json. See GH #3117.',
-        { level: 'error' },
+        "saveConfigWithLock: re-read config is missing auth that cache has; refusing to write to avoid wiping ~/.claude.json. See GH #3117.",
+        { level: "error" },
       );
-      logEvent('tengu_config_auth_loss_prevented', {});
+      logEvent("tengu_config_auth_loss_prevented", {});
       return false;
     }
 
@@ -1212,7 +1212,7 @@ function saveConfigWithLock<A extends object>(
         fs.mkdirSync(backupDir);
       } catch (mkdirErr) {
         const mkdirCode = getErrnoCode(mkdirErr);
-        if (mkdirCode !== 'EEXIST') {
+        if (mkdirCode !== "EEXIST") {
           throw mkdirErr;
         }
       }
@@ -1230,7 +1230,7 @@ function saveConfigWithLock<A extends object>(
 
       const mostRecentBackup = existingBackups[0];
       const mostRecentTimestamp = mostRecentBackup
-        ? Number(mostRecentBackup.split('.backup.').pop())
+        ? Number(mostRecentBackup.split(".backup.").pop())
         : 0;
       const shouldCreateBackup =
         Number.isNaN(mostRecentTimestamp) ||
@@ -1261,9 +1261,9 @@ function saveConfigWithLock<A extends object>(
       }
     } catch (e) {
       const code = getErrnoCode(e);
-      if (code !== 'ENOENT') {
+      if (code !== "ENOENT") {
         logForDebugging(`Failed to backup config: ${e}`, {
-          level: 'error',
+          level: "error",
         });
       }
       // No file to backup or backup failed, continue with write
@@ -1271,7 +1271,7 @@ function saveConfigWithLock<A extends object>(
 
     // Write config file with secure permissions - mode only applies to new files
     writeFileSyncAndFlush_DEPRECATED(file, jsonStringify(filteredConfig, null, 2), {
-      encoding: 'utf-8',
+      encoding: "utf-8",
       mode: 0o600,
     });
     if (file === getGlobalClaudeFile()) {
@@ -1295,7 +1295,7 @@ export function enableConfigs(): void {
   }
 
   const startTime = Date.now();
-  logForDiagnosticsNoPII('info', 'enable_configs_started');
+  logForDiagnosticsNoPII("info", "enable_configs_started");
 
   // Any reads to configuration before this flag is set show an console warning
   // to prevent us from adding config reading during module initialization
@@ -1303,7 +1303,7 @@ export function enableConfigs(): void {
   // We only check the global config because currently all the configs share a file
   getConfig(getGlobalClaudeFile(), createDefaultGlobalConfig, true /* throw on invalid */);
 
-  logForDiagnosticsNoPII('info', 'enable_configs_completed', {
+  logForDiagnosticsNoPII("info", "enable_configs_completed", {
     duration_ms: Date.now() - startTime,
   });
 }
@@ -1313,7 +1313,7 @@ export function enableConfigs(): void {
  * Uses ~/.claude/backups/ to keep the home directory clean.
  */
 function getConfigBackupDir(): string {
-  return join(getClaudeConfigHomeDir(), 'backups');
+  return join(getClaudeConfigHomeDir(), "backups");
 }
 
 /**
@@ -1373,15 +1373,15 @@ function findMostRecentBackup(file: string): string | null {
 
 function getConfig<A>(file: string, createDefault: () => A, throwOnInvalid?: boolean): A {
   // Log a warning if config is accessed before it's allowed
-  if (!configReadingAllowed && process.env.NODE_ENV !== 'test') {
-    throw new Error('Config accessed before allowed.');
+  if (!configReadingAllowed && process.env.NODE_ENV !== "test") {
+    throw new Error("Config accessed before allowed.");
   }
 
   const fs = getFsImplementation();
 
   try {
     const fileContent = fs.readFileSync(file, {
-      encoding: 'utf-8',
+      encoding: "utf-8",
     });
     try {
       // Strip BOM before parsing - PowerShell 5.x adds BOM to UTF-8 files
@@ -1398,7 +1398,7 @@ function getConfig<A>(file: string, createDefault: () => A, throwOnInvalid?: boo
   } catch (error) {
     // Handle file not found - check for backup and return default
     const errCode = getErrnoCode(error);
-    if (errCode === 'ENOENT') {
+    if (errCode === "ENOENT") {
       const backupPath = findMostRecentBackup(file);
       if (backupPath) {
         process.stderr.write(
@@ -1418,7 +1418,7 @@ function getConfig<A>(file: string, createDefault: () => A, throwOnInvalid?: boo
     // Log config parse errors so users know what happened
     if (error instanceof ConfigParseError) {
       logForDebugging(`Config file corrupted, resetting to defaults: ${error.message}`, {
-        level: 'error',
+        level: "error",
       });
 
       // Guard: logEvent → shouldSampleEvent → getGlobalConfig → getConfig
@@ -1439,7 +1439,7 @@ function getConfig<A>(file: string, createDefault: () => A, throwOnInvalid?: boo
           } catch {
             // No backup
           }
-          logEvent('tengu_config_parse_error', {
+          logEvent("tengu_config_parse_error", {
             has_backup: hasBackup,
           });
         } finally {
@@ -1460,7 +1460,7 @@ function getConfig<A>(file: string, createDefault: () => A, throwOnInvalid?: boo
         fs.mkdirSync(corruptedBackupDir);
       } catch (mkdirErr) {
         const mkdirCode = getErrnoCode(mkdirErr);
-        if (mkdirCode !== 'EEXIST') {
+        if (mkdirCode !== "EEXIST") {
           throw mkdirErr;
         }
       }
@@ -1473,11 +1473,11 @@ function getConfig<A>(file: string, createDefault: () => A, throwOnInvalid?: boo
       let alreadyBackedUp = false;
 
       // Check if current corrupted content matches any existing backup
-      const currentContent = fs.readFileSync(file, { encoding: 'utf-8' });
+      const currentContent = fs.readFileSync(file, { encoding: "utf-8" });
       for (const backup of existingCorruptedBackups) {
         try {
           const backupContent = fs.readFileSync(join(corruptedBackupDir, backup), {
-            encoding: 'utf-8',
+            encoding: "utf-8",
           });
           if (currentContent === backupContent) {
             alreadyBackedUp = true;
@@ -1493,7 +1493,7 @@ function getConfig<A>(file: string, createDefault: () => A, throwOnInvalid?: boo
         try {
           fs.copyFileSync(file, corruptedBackupPath);
           logForDebugging(`Corrupted config backed up to: ${corruptedBackupPath}`, {
-            level: 'error',
+            level: "error",
           });
         } catch {
           // Ignore backup errors
@@ -1538,7 +1538,7 @@ export const getProjectPathForConfig = memoize((): string => {
 });
 
 export function getCurrentProjectConfig(): ProjectConfig {
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === "test") {
     return TEST_PROJECT_CONFIG_FOR_TESTING;
   }
 
@@ -1552,7 +1552,7 @@ export function getCurrentProjectConfig(): ProjectConfig {
   const projectConfig = config.projects[absolutePath] ?? DEFAULT_PROJECT_CONFIG;
   // Not sure how this became a string
   // TODO: Fix upstream
-  if (typeof projectConfig.allowedTools === 'string') {
+  if (typeof projectConfig.allowedTools === "string") {
     projectConfig.allowedTools = (safeParseJSON(projectConfig.allowedTools) as string[]) ?? [];
   }
 
@@ -1562,7 +1562,7 @@ export function getCurrentProjectConfig(): ProjectConfig {
 export function saveCurrentProjectConfig(
   updater: (currentConfig: ProjectConfig) => ProjectConfig,
 ): void {
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === "test") {
     const config = updater(TEST_PROJECT_CONFIG_FOR_TESTING);
     // Skip if no changes (same reference returned)
     if (config === TEST_PROJECT_CONFIG_FOR_TESTING) {
@@ -1600,7 +1600,7 @@ export function saveCurrentProjectConfig(
     }
   } catch (error) {
     logForDebugging(`Failed to save config with lock: ${error}`, {
-      level: 'error',
+      level: "error",
     });
 
     // Same race window as saveGlobalConfig's fallback -- refuse to write
@@ -1608,10 +1608,10 @@ export function saveCurrentProjectConfig(
     const config = getConfig(getGlobalClaudeFile(), createDefaultGlobalConfig);
     if (wouldLoseAuthState(config)) {
       logForDebugging(
-        'saveCurrentProjectConfig fallback: re-read config is missing auth that cache has; refusing to write. See GH #3117.',
-        { level: 'error' },
+        "saveCurrentProjectConfig fallback: re-read config is missing auth that cache has; refusing to write. See GH #3117.",
+        { level: "error" },
       );
-      logEvent('tengu_config_auth_loss_prevented', {});
+      logEvent("tengu_config_auth_loss_prevented", {});
       return;
     }
     const currentProjectConfig = config.projects?.[absolutePath] ?? DEFAULT_PROJECT_CONFIG;
@@ -1647,38 +1647,38 @@ export function shouldSkipPluginAutoupdate(): boolean {
 }
 
 export type AutoUpdaterDisabledReason =
-  | { type: 'development' }
-  | { type: 'env'; envVar: string }
-  | { type: 'config' };
+  | { type: "development" }
+  | { type: "env"; envVar: string }
+  | { type: "config" };
 
 export function formatAutoUpdaterDisabledReason(reason: AutoUpdaterDisabledReason): string {
   switch (reason.type) {
-    case 'development':
-      return 'development build';
-    case 'env':
+    case "development":
+      return "development build";
+    case "env":
       return `${reason.envVar} set`;
-    case 'config':
-      return 'config';
+    case "config":
+      return "config";
   }
 }
 
 export function getAutoUpdaterDisabledReason(): AutoUpdaterDisabledReason | null {
-  if (process.env.NODE_ENV === 'development') {
-    return { type: 'development' };
+  if (process.env.NODE_ENV === "development") {
+    return { type: "development" };
   }
   if (isEnvTruthy(process.env.DISABLE_AUTOUPDATER)) {
-    return { type: 'env', envVar: 'DISABLE_AUTOUPDATER' };
+    return { type: "env", envVar: "DISABLE_AUTOUPDATER" };
   }
   const essentialTrafficEnvVar = getEssentialTrafficOnlyReason();
   if (essentialTrafficEnvVar) {
-    return { type: 'env', envVar: essentialTrafficEnvVar };
+    return { type: "env", envVar: essentialTrafficEnvVar };
   }
   const config = getGlobalConfig();
   if (
     config.autoUpdates === false &&
-    (config.installMethod !== 'native' || config.autoUpdatesProtectedForNative !== true)
+    (config.installMethod !== "native" || config.autoUpdatesProtectedForNative !== true)
   ) {
-    return { type: 'config' };
+    return { type: "config" };
   }
   return null;
 }
@@ -1689,7 +1689,7 @@ export function getOrCreateUserID(): string {
     return config.userID;
   }
 
-  const userID = randomBytes(32).toString('hex');
+  const userID = randomBytes(32).toString("hex");
   saveGlobalConfig((current) => ({ ...current, userID }));
   return userID;
 }
@@ -1709,30 +1709,30 @@ export function getMemoryPath(memoryType: MemoryType): string {
   const cwd = getOriginalCwd();
 
   switch (memoryType) {
-    case 'User':
-      return join(getClaudeConfigHomeDir(), 'CLAUDE.md');
-    case 'Local':
-      return join(cwd, 'CLAUDE.local.md');
-    case 'Project':
-      return join(cwd, 'CLAUDE.md');
-    case 'Managed':
-      return join(getManagedFilePath(), 'CLAUDE.md');
-    case 'AutoMem':
+    case "User":
+      return join(getClaudeConfigHomeDir(), "CLAUDE.md");
+    case "Local":
+      return join(cwd, "CLAUDE.local.md");
+    case "Project":
+      return join(cwd, "CLAUDE.md");
+    case "Managed":
+      return join(getManagedFilePath(), "CLAUDE.md");
+    case "AutoMem":
       return getAutoMemEntrypoint();
   }
   // TeamMem is only a valid MemoryType when feature('TEAMMEM') is true
-  if (feature('TEAMMEM')) {
+  if (feature("TEAMMEM")) {
     return teamMemPaths?.getTeamMemEntrypoint();
   }
-  return ''; // unreachable in external builds where TeamMem is not in MemoryType
+  return ""; // unreachable in external builds where TeamMem is not in MemoryType
 }
 
 export function getManagedClaudeRulesDir(): string {
-  return join(getManagedFilePath(), '.claude', 'rules');
+  return join(getManagedFilePath(), ".claude", "rules");
 }
 
 export function getUserClaudeRulesDir(): string {
-  return join(getClaudeConfigHomeDir(), 'rules');
+  return join(getClaudeConfigHomeDir(), "rules");
 }
 
 // Exported for testing only

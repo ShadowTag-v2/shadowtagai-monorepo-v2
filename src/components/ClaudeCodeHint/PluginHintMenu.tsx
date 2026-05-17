@@ -1,14 +1,14 @@
-import * as React from 'react';
-import { Box, Text } from '../../ink.js';
-import { Select } from '../CustomSelect/select.js';
-import { PermissionDialog } from '../permissions/PermissionDialog.js';
+import * as React from "react";
+import { Box, Text } from "../../ink.js";
+import { Select } from "../CustomSelect/select.js";
+import { PermissionDialog } from "../permissions/PermissionDialog.js";
 
 type Props = {
   pluginName: string;
   pluginDescription?: string;
   marketplaceName: string;
   sourceCommand: string;
-  onResponse: (response: 'yes' | 'no' | 'disable') => void;
+  onResponse: (response: "yes" | "no" | "disable") => void;
 };
 const AUTO_DISMISS_MS = 30_000;
 export function PluginHintMenu({
@@ -21,19 +21,19 @@ export function PluginHintMenu({
   const onResponseRef = React.useRef(onResponse);
   onResponseRef.current = onResponse;
   React.useEffect(() => {
-    const timeoutId = setTimeout((ref) => ref.current('no'), AUTO_DISMISS_MS, onResponseRef);
+    const timeoutId = setTimeout((ref) => ref.current("no"), AUTO_DISMISS_MS, onResponseRef);
     return () => clearTimeout(timeoutId);
   }, []);
   function onSelect(value: string): void {
     switch (value) {
-      case 'yes':
-        onResponse('yes');
+      case "yes":
+        onResponse("yes");
         break;
-      case 'disable':
-        onResponse('disable');
+      case "disable":
+        onResponse("disable");
         break;
       default:
-        onResponse('no');
+        onResponse("no");
     }
   }
   const options = [
@@ -43,15 +43,15 @@ export function PluginHintMenu({
           Yes, install <Text bold>{pluginName}</Text>
         </Text>
       ),
-      value: 'yes',
+      value: "yes",
     },
     {
-      label: 'No',
-      value: 'no',
+      label: "No",
+      value: "no",
     },
     {
       label: "No, and don't show plugin installation hints again",
-      value: 'disable',
+      value: "disable",
     },
   ];
   return (
@@ -79,7 +79,7 @@ export function PluginHintMenu({
           <Text>Would you like to install it?</Text>
         </Box>
         <Box>
-          <Select options={options} onChange={onSelect} onCancel={() => onResponse('no')} />
+          <Select options={options} onChange={onSelect} onCancel={() => onResponse("no")} />
         </Box>
       </Box>
     </PermissionDialog>

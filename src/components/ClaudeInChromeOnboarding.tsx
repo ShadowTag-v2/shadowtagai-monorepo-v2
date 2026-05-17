@@ -1,14 +1,14 @@
-import React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { logEvent } from 'src/services/analytics/index.js';
+import React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { logEvent } from "src/services/analytics/index.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- enter to continue
-import { Box, Link, Newline, Text, useInput } from '../ink.js';
-import { isChromeExtensionInstalled } from '../utils/claudeInChrome/setup.js';
-import { saveGlobalConfig } from '../utils/config.js';
-import { Dialog } from './design-system/Dialog.js';
+import { Box, Link, Newline, Text, useInput } from "../ink.js";
+import { isChromeExtensionInstalled } from "../utils/claudeInChrome/setup.js";
+import { saveGlobalConfig } from "../utils/config.js";
+import { Dialog } from "./design-system/Dialog.js";
 
-const CHROME_EXTENSION_URL = 'https://claude.ai/chrome';
-const CHROME_PERMISSIONS_URL = 'https://clau.de/chrome/permissions';
+const CHROME_EXTENSION_URL = "https://claude.ai/chrome";
+const CHROME_PERMISSIONS_URL = "https://clau.de/chrome/permissions";
 type Props = {
   onDone(): void;
 };
@@ -18,9 +18,9 @@ export function ClaudeInChromeOnboarding(t0) {
   const [isExtensionInstalled, setIsExtensionInstalled] = React.useState(false);
   let t1;
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => {
-      logEvent('tengu_claude_in_chrome_onboarding_shown', {});
+      logEvent("tengu_claude_in_chrome_onboarding_shown", {});
       isChromeExtensionInstalled().then(setIsExtensionInstalled);
       saveGlobalConfig(_temp);
     };
@@ -77,7 +77,7 @@ export function ClaudeInChromeOnboarding(t0) {
   if ($[8] !== isExtensionInstalled) {
     t6 = isExtensionInstalled && (
       <>
-        {' '}
+        {" "}
         (<Link url={CHROME_PERMISSIONS_URL} />)
       </>
     );
@@ -100,7 +100,7 @@ export function ClaudeInChromeOnboarding(t0) {
     t7 = $[11];
   }
   let t8;
-  if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Text bold={true} color="chromeYellow">
         /chrome
@@ -111,7 +111,7 @@ export function ClaudeInChromeOnboarding(t0) {
     t8 = $[12];
   }
   let t9;
-  if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = (
       <Text dimColor={true}>
         For more info, use {t8} or visit <Link url="https://code.claude.com/docs/en/chrome" />

@@ -6,12 +6,12 @@
  * extension (packages/claude-vscode/src/common-host/sessionStorage.ts).
  */
 
-import type { UUID } from 'node:crypto';
-import { open as fsOpen, readdir, realpath, stat } from 'node:fs/promises';
-import { join } from 'node:path';
-import { getClaudeConfigHomeDir } from './envUtils.js';
-import { getWorktreePathsPortable } from './getWorktreePathsPortable.js';
-import { djb2Hash } from './hash.js';
+import type { UUID } from "node:crypto";
+import { open as fsOpen, readdir, realpath, stat } from "node:fs/promises";
+import { join } from "node:path";
+import { getClaudeConfigHomeDir } from "./envUtils.js";
+import { getWorktreePathsPortable } from "./getWorktreePathsPortable.js";
+import { djb2Hash } from "./hash.js";
 
 /** Size of the head/tail buffer for lite metadata reads. */
 export const LITE_READ_BUF_SIZE = 65536;
@@ -23,7 +23,7 @@ export const LITE_READ_BUF_SIZE = 65536;
 const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export function validateUuid(maybeUuid: unknown): UUID | null {
-  if (typeof maybeUuid !== 'string') return null;
+  if (typeof maybeUuid !== "string") return null;
   return uuidRegex.test(maybeUuid) ? (maybeUuid as UUID) : null;
 }
 
@@ -36,7 +36,7 @@ export function validateUuid(maybeUuid: unknown): UUID | null {
  * Only allocates a new string when escape sequences are present.
  */
 export function unescapeJsonString(raw: string): string {
-  if (!raw.includes('\\')) return raw;
+  if (!raw.includes("\\")) return raw;
   try {
     return JSON.parse(`"${raw}"`);
   } catch {
@@ -58,7 +58,7 @@ export function extractJsonStringField(text: string, key: string): string | unde
     const valueStart = idx + pattern.length;
     let i = valueStart;
     while (i < text.length) {
-      if (text[i] === '\\') {
+      if (text[i] === "\\") {
         i += 2;
         continue;
       }
@@ -87,7 +87,7 @@ export function extractLastJsonStringField(text: string, key: string): string | 
       const valueStart = idx + pattern.length;
       let i = valueStart;
       while (i < text.length) {
-        if (text[i] === '\\') {
+        if (text[i] === "\\") {
           i += 2;
           continue;
         }
@@ -126,9 +126,9 @@ const COMMAND_NAME_RE = /<command-name>(.*?)<\/command-name>/;
  */
 export function extractFirstPromptFromHead(head: string): string {
   let start = 0;
-  let commandFallback = '';
+  let commandFallback = "";
   while (start < head.length) {
-    const newlineIdx = head.indexOf('\n', start);
+    const newlineIdx = head.indexOf("\n", start);
     const line = newlineIdx >= 0 ? head.slice(start, newlineIdx) : head.slice(start);
     start = newlineIdx >= 0 ? newlineIdx + 1 : head.length;
 
@@ -140,25 +140,25 @@ export function extractFirstPromptFromHead(head: string): string {
 
     try {
       const entry = JSON.parse(line) as Record<string, unknown>;
-      if (entry.type !== 'user') continue;
+      if (entry.type !== "user") continue;
 
       const message = entry.message as Record<string, unknown> | undefined;
       if (!message) continue;
 
       const content = message.content;
       const texts: string[] = [];
-      if (typeof content === 'string') {
+      if (typeof content === "string") {
         texts.push(content);
       } else if (Array.isArray(content)) {
         for (const block of content as Record<string, unknown>[]) {
-          if (block.type === 'text' && typeof block.text === 'string') {
+          if (block.type === "text" && typeof block.text === "string") {
             texts.push(block.text as string);
           }
         }
       }
 
       for (const raw of texts) {
-        let result = raw.replace(/\n/g, ' ').trim();
+        let result = raw.replace(/\n/g, " ").trim();
         if (!result) continue;
 
         // Skip slash-command messages but remember first as fallback
@@ -182,7 +182,7 @@ export function extractFirstPromptFromHead(head: string): string {
     } catch {}
   }
   if (commandFallback) return commandFallback;
-  return '';
+  return "";
 }
 
 // ---------------------------------------------------------------------------
@@ -202,18 +202,18 @@ export async function readHeadAndTail(
   buf: Buffer,
 ): Promise<{ head: string; tail: string }> {
   try {
-    const fh = await fsOpen(filePath, 'r');
+    const fh = await fsOpen(filePath, "r");
     try {
       const headResult = await fh.read(buf, 0, LITE_READ_BUF_SIZE, 0);
-      if (headResult.bytesRead === 0) return { head: '', tail: '' };
+      if (headResult.bytesRead === 0) return { head: "", tail: "" };
 
-      const head = buf.toString('utf8', 0, headResult.bytesRead);
+      const head = buf.toString("utf8", 0, headResult.bytesRead);
 
       const tailOffset = Math.max(0, fileSize - LITE_READ_BUF_SIZE);
       let tail = head;
       if (tailOffset > 0) {
         const tailResult = await fh.read(buf, 0, LITE_READ_BUF_SIZE, tailOffset);
-        tail = buf.toString('utf8', 0, tailResult.bytesRead);
+        tail = buf.toString("utf8", 0, tailResult.bytesRead);
       }
 
       return { head, tail };
@@ -221,7 +221,7 @@ export async function readHeadAndTail(
       await fh.close();
     }
   } catch {
-    return { head: '', tail: '' };
+    return { head: "", tail: "" };
   }
 }
 
@@ -239,19 +239,19 @@ export type LiteSessionFile = {
  */
 export async function readSessionLite(filePath: string): Promise<LiteSessionFile | null> {
   try {
-    const fh = await fsOpen(filePath, 'r');
+    const fh = await fsOpen(filePath, "r");
     try {
       const stat = await fh.stat();
       const buf = Buffer.allocUnsafe(LITE_READ_BUF_SIZE);
       const headResult = await fh.read(buf, 0, LITE_READ_BUF_SIZE, 0);
       if (headResult.bytesRead === 0) return null;
 
-      const head = buf.toString('utf8', 0, headResult.bytesRead);
+      const head = buf.toString("utf8", 0, headResult.bytesRead);
       const tailOffset = Math.max(0, stat.size - LITE_READ_BUF_SIZE);
       let tail = head;
       if (tailOffset > 0) {
         const tailResult = await fh.read(buf, 0, LITE_READ_BUF_SIZE, tailOffset);
-        tail = buf.toString('utf8', 0, tailResult.bytesRead);
+        tail = buf.toString("utf8", 0, tailResult.bytesRead);
       }
 
       return { mtime: stat.mtime.getTime(), size: stat.size, head, tail };
@@ -291,11 +291,11 @@ function simpleHash(str: string): string {
  * @returns A safe name (e.g., '-Users-foo-my-project' or 'plugin-name-server')
  */
 export function sanitizePath(name: string): string {
-  const sanitized = name.replace(/[^a-zA-Z0-9]/g, '-');
+  const sanitized = name.replace(/[^a-zA-Z0-9]/g, "-");
   if (sanitized.length <= MAX_SANITIZED_LENGTH) {
     return sanitized;
   }
-  const hash = typeof Bun !== 'undefined' ? Bun.hash(name).toString(36) : simpleHash(name);
+  const hash = typeof Bun !== "undefined" ? Bun.hash(name).toString(36) : simpleHash(name);
   return `${sanitized.slice(0, MAX_SANITIZED_LENGTH)}-${hash}`;
 }
 
@@ -304,7 +304,7 @@ export function sanitizePath(name: string): string {
 // ---------------------------------------------------------------------------
 
 export function getProjectsDir(): string {
-  return join(getClaudeConfigHomeDir(), 'projects');
+  return join(getClaudeConfigHomeDir(), "projects");
 }
 
 export function getProjectDir(projectDir: string): string {
@@ -319,9 +319,9 @@ export function getProjectDir(projectDir: string): string {
  */
 export async function canonicalizePath(dir: string): Promise<string> {
   try {
-    return (await realpath(dir)).normalize('NFC');
+    return (await realpath(dir)).normalize("NFC");
   } catch {
-    return dir.normalize('NFC');
+    return dir.normalize("NFC");
   }
 }
 
@@ -469,7 +469,7 @@ function parseBoundaryLine(line: string): { hasPreservedSegment: boolean } | nul
       subtype?: string;
       compactMetadata?: { preservedSegment?: unknown };
     };
-    if (parsed.type !== 'system' || parsed.subtype !== 'compact_boundary') {
+    if (parsed.type !== "system" || parsed.subtype !== "compact_boundary") {
       return null;
     }
     return {
@@ -548,7 +548,7 @@ function processStraddle(s: LoadState, chunk: Buffer, bytesRead: number): number
   } else {
     if (hasPrefix(cb, SYSTEM_PREFIX, 0, s.carryLen)) {
       const hit = parseBoundaryLine(
-        cb.toString('utf-8', 0, s.carryLen) + chunk.toString('utf-8', 0, firstNl),
+        cb.toString("utf-8", 0, s.carryLen) + chunk.toString("utf-8", 0, firstNl),
       );
       if (hit?.hasPreservedSegment) {
         s.hasPreservedSegment = true;
@@ -593,7 +593,7 @@ function scanChunkLines(
       boundaryAt >= lineStart &&
       boundaryAt < Math.min(lineStart + BOUNDARY_SEARCH_BOUND, lineEnd)
     ) {
-      const hit = parseBoundaryLine(buf.toString('utf-8', lineStart, nl));
+      const hit = parseBoundaryLine(buf.toString("utf-8", lineStart, nl));
       if (hit?.hasPreservedSegment) {
         s.hasPreservedSegment = true; // don't truncate; preserved msgs already in output
       } else if (hit) {
@@ -704,7 +704,7 @@ export async function readTranscriptForLoad(
   };
 
   const chunk = Buffer.allocUnsafe(CHUNK_SIZE);
-  const fd = await fsOpen(filePath, 'r');
+  const fd = await fsOpen(filePath, "r");
   try {
     let filePos = 0;
     while (filePos < fileSize) {

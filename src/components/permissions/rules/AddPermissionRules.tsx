@@ -1,47 +1,47 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Select } from '../../../components/CustomSelect/select.js';
-import { Box, Text } from '../../../ink.js';
-import type { ToolPermissionContext } from '../../../Tool.js';
+import { c as _c } from "react/compiler-runtime";
+import { Select } from "../../../components/CustomSelect/select.js";
+import { Box, Text } from "../../../ink.js";
+import type { ToolPermissionContext } from "../../../Tool.js";
 import type {
   PermissionBehavior,
   PermissionRule,
   PermissionRuleValue,
-} from '../../../utils/permissions/PermissionRule.js';
+} from "../../../utils/permissions/PermissionRule.js";
 import {
   applyPermissionUpdate,
   persistPermissionUpdate,
-} from '../../../utils/permissions/PermissionUpdate.js';
-import { permissionRuleValueToString } from '../../../utils/permissions/permissionRuleParser.js';
+} from "../../../utils/permissions/PermissionUpdate.js";
+import { permissionRuleValueToString } from "../../../utils/permissions/permissionRuleParser.js";
 import {
   detectUnreachableRules,
   type UnreachableRule,
-} from '../../../utils/permissions/shadowedRuleDetection.js';
-import { SandboxManager } from '../../../utils/sandbox/sandbox-adapter.js';
-import { type EditableSettingSource, SOURCES } from '../../../utils/settings/constants.js';
-import { getRelativeSettingsFilePathForSource } from '../../../utils/settings/settings.js';
-import { plural } from '../../../utils/stringUtils.js';
-import type { OptionWithDescription } from '../../CustomSelect/select.js';
-import { Dialog } from '../../design-system/Dialog.js';
-import { PermissionRuleDescription } from './PermissionRuleDescription.js';
+} from "../../../utils/permissions/shadowedRuleDetection.js";
+import { SandboxManager } from "../../../utils/sandbox/sandbox-adapter.js";
+import { type EditableSettingSource, SOURCES } from "../../../utils/settings/constants.js";
+import { getRelativeSettingsFilePathForSource } from "../../../utils/settings/settings.js";
+import { plural } from "../../../utils/stringUtils.js";
+import type { OptionWithDescription } from "../../CustomSelect/select.js";
+import { Dialog } from "../../design-system/Dialog.js";
+import { PermissionRuleDescription } from "./PermissionRuleDescription.js";
 export function optionForPermissionSaveDestination(
   saveDestination: EditableSettingSource,
 ): OptionWithDescription {
   switch (saveDestination) {
-    case 'localSettings':
+    case "localSettings":
       return {
-        label: 'Project settings (local)',
-        description: `Saved in ${getRelativeSettingsFilePathForSource('localSettings')}`,
+        label: "Project settings (local)",
+        description: `Saved in ${getRelativeSettingsFilePathForSource("localSettings")}`,
         value: saveDestination,
       };
-    case 'projectSettings':
+    case "projectSettings":
       return {
-        label: 'Project settings',
-        description: `Checked in at ${getRelativeSettingsFilePathForSource('projectSettings')}`,
+        label: "Project settings",
+        description: `Checked in at ${getRelativeSettingsFilePathForSource("projectSettings")}`,
         value: saveDestination,
       };
-    case 'userSettings':
+    case "userSettings":
       return {
-        label: 'User settings',
+        label: "User settings",
         description: `Saved in at ~/.claude/settings.json`,
         value: saveDestination,
       };
@@ -66,7 +66,7 @@ export function AddPermissionRules(t0) {
     setToolPermissionContext,
   } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = SOURCES.map(optionForPermissionSaveDestination);
     $[0] = t1;
   } else {
@@ -83,20 +83,20 @@ export function AddPermissionRules(t0) {
     $[6] !== setToolPermissionContext
   ) {
     t2 = (selectedValue) => {
-      if (selectedValue === 'cancel') {
+      if (selectedValue === "cancel") {
         onCancel();
         return;
       } else {
         if ((SOURCES as readonly string[]).includes(selectedValue)) {
           const destination = selectedValue as EditableSettingSource;
           const updatedContext = applyPermissionUpdate(initialContext, {
-            type: 'addRules',
+            type: "addRules",
             rules: ruleValues,
             behavior: ruleBehavior,
             destination,
           });
           persistPermissionUpdate({
-            type: 'addRules',
+            type: "addRules",
             rules: ruleValues,
             behavior: ruleBehavior,
             destination,
@@ -137,7 +137,7 @@ export function AddPermissionRules(t0) {
   const onSelect = t2;
   let t3;
   if ($[8] !== ruleValues.length) {
-    t3 = plural(ruleValues.length, 'rule');
+    t3 = plural(ruleValues.length, "rule");
     $[8] = ruleValues.length;
     $[9] = t3;
   } else {
@@ -166,8 +166,8 @@ export function AddPermissionRules(t0) {
   }
   const t6 =
     ruleValues.length === 1
-      ? 'Where should this rule be saved?'
-      : 'Where should these rules be saved?';
+      ? "Where should this rule be saved?"
+      : "Where should these rules be saved?";
   let t7;
   if ($[14] !== t6) {
     t7 = <Text>{t6}</Text>;

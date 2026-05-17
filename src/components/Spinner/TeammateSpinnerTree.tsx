@@ -1,11 +1,11 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { useAppState } from '../../state/AppState.js';
-import { getRunningTeammatesSorted } from '../../tasks/InProcessTeammateTask/InProcessTeammateTask.js';
-import { formatNumber } from '../../utils/format.js';
-import { TeammateSpinnerLine } from './TeammateSpinnerLine.js';
-import { TEAMMATE_SELECT_HINT } from './teammateSelectHint.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { useAppState } from "../../state/AppState.js";
+import { getRunningTeammatesSorted } from "../../tasks/InProcessTeammateTask/InProcessTeammateTask.js";
+import { formatNumber } from "../../utils/format.js";
+import { TeammateSpinnerLine } from "./TeammateSpinnerLine.js";
+import { TEAMMATE_SELECT_HINT } from "./teammateSelectHint.js";
 
 type Props = {
   selectedIndex?: number;
@@ -49,7 +49,7 @@ export function TeammateSpinnerTree(t0) {
     $[7] !== tasks ||
     $[8] !== viewingAgentTaskId
   ) {
-    t5 = Symbol.for('react.early_return_sentinel');
+    t5 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const teammateTasks = getRunningTeammatesSorted(tasks);
       if (teammateTasks.length === 0) {
@@ -61,10 +61,10 @@ export function TeammateSpinnerTree(t0) {
       const isLeaderHighlighted = isLeaderForegrounded || isLeaderSelected;
       isHideSelected = isInSelectionMode === true && selectedIndex === teammateTasks.length;
       T0 = Box;
-      t1 = 'column';
+      t1 = "column";
       t2 = 1;
-      const t6 = isLeaderSelected ? 'suggestion' : undefined;
-      const t7 = isLeaderSelected ? figures.pointer : ' ';
+      const t6 = isLeaderSelected ? "suggestion" : undefined;
+      const t7 = isLeaderSelected ? figures.pointer : " ";
       let t8;
       if ($[16] !== isLeaderHighlighted || $[17] !== t6 || $[18] !== t7) {
         t8 = (
@@ -80,12 +80,12 @@ export function TeammateSpinnerTree(t0) {
         t8 = $[19];
       }
       const t9 = !isLeaderHighlighted;
-      const t10 = isLeaderHighlighted ? '\u2552\u2550' : '\u250C\u2500';
+      const t10 = isLeaderHighlighted ? "\u2552\u2550" : "\u250C\u2500";
       let t11;
       if ($[20] !== isLeaderHighlighted || $[21] !== t10 || $[22] !== t9) {
         t11 = (
           <Text dimColor={t9} bold={isLeaderHighlighted}>
-            {t10}{' '}
+            {t10}{" "}
           </Text>
         );
         $[20] = isLeaderHighlighted;
@@ -95,7 +95,7 @@ export function TeammateSpinnerTree(t0) {
       } else {
         t11 = $[23];
       }
-      const t12 = isLeaderSelected ? 'suggestion' : 'cyan_FOR_SUBAGENTS_ONLY';
+      const t12 = isLeaderSelected ? "suggestion" : "cyan_FOR_SUBAGENTS_ONLY";
       let t13;
       if ($[24] !== isLeaderHighlighted || $[25] !== t12) {
         t13 = (
@@ -231,7 +231,7 @@ export function TeammateSpinnerTree(t0) {
     t4 = $[14];
     t5 = $[15];
   }
-  if (t5 !== Symbol.for('react.early_return_sentinel')) {
+  if (t5 !== Symbol.for("react.early_return_sentinel")) {
     return t5;
   }
   let t6;
@@ -283,8 +283,8 @@ function _temp(s) {
 function HideRow(t0) {
   const $ = _c(18);
   const { isSelected } = t0;
-  const t1 = isSelected ? 'suggestion' : undefined;
-  const t2 = isSelected ? figures.pointer : ' ';
+  const t1 = isSelected ? "suggestion" : undefined;
+  const t2 = isSelected ? figures.pointer : " ";
   let t3;
   if ($[0] !== isSelected || $[1] !== t1 || $[2] !== t2) {
     t3 = (
@@ -300,12 +300,12 @@ function HideRow(t0) {
     t3 = $[3];
   }
   const t4 = !isSelected;
-  const t5 = isSelected ? '\u2558\u2550' : '\u2514\u2500';
+  const t5 = isSelected ? "\u2558\u2550" : "\u2514\u2500";
   let t6;
   if ($[4] !== isSelected || $[5] !== t4 || $[6] !== t5) {
     t6 = (
       <Text dimColor={t4} bold={isSelected}>
-        {t5}{' '}
+        {t5}{" "}
       </Text>
     );
     $[4] = isSelected;

@@ -30,7 +30,7 @@ interface CollapseStats {
  * for the same object structure, which is sufficient for adjacent dedup.
  */
 function contentFingerprint(content: unknown): string {
-  if (typeof content === 'string') return content;
+  if (typeof content === "string") return content;
   try {
     return JSON.stringify(content);
   } catch {
@@ -43,9 +43,9 @@ function contentFingerprint(content: unknown): string {
  * Tool errors typically have is_error: true or contain error-pattern content.
  */
 function isToolError(msg: MessageLike): boolean {
-  if (msg.type === 'tool_result' && (msg as Record<string, unknown>).is_error === true) return true;
-  const content = typeof msg.content === 'string' ? msg.content : '';
-  return content.includes('Error:') || content.includes('error:') || content.includes('ENOENT');
+  if (msg.type === "tool_result" && (msg as Record<string, unknown>).is_error === true) return true;
+  const content = typeof msg.content === "string" ? msg.content : "";
+  return content.includes("Error:") || content.includes("error:") || content.includes("ENOENT");
 }
 
 /**
@@ -82,7 +82,7 @@ export function contextCollapse(messages: MessageLike[], totalLimit: number): Me
   };
 
   let currentGroup: MessageLike | null = null;
-  let currentFingerprint: string = '';
+  let currentFingerprint: string = "";
   let repetitionCount = 0;
   let errorRunStart = -1; // Index in collapsed[] where current error run begins
 
@@ -92,13 +92,13 @@ export function contextCollapse(messages: MessageLike[], totalLimit: number): Me
     if (repetitionCount > 0) {
       // Emit collapsed message
       const contentStr =
-        typeof currentGroup.content === 'string'
+        typeof currentGroup.content === "string"
           ? currentGroup.content
           : JSON.stringify(currentGroup.content);
       collapsed.push({
         ...currentGroup,
         collapsed: true,
-        content: `${contentStr}\n\n[System: The above message was repeated ${repetitionCount} additional time${repetitionCount > 1 ? 's' : ''} and collapsed to save context.]`,
+        content: `${contentStr}\n\n[System: The above message was repeated ${repetitionCount} additional time${repetitionCount > 1 ? "s" : ""} and collapsed to save context.]`,
       });
       stats.deduplicatedMessages += repetitionCount;
       stats.totalCollapsed += repetitionCount;
@@ -112,7 +112,7 @@ export function contextCollapse(messages: MessageLike[], totalLimit: number): Me
       // Keep first and last error, replace middle with summary
       const middleCount = errorRunLength - 2;
       const summaryMsg: MessageLike = {
-        role: 'system',
+        role: "system",
         collapsed: true,
         content: `[System: ${middleCount} repetitive error messages were collapsed to save context.]`,
       };

@@ -1,18 +1,18 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type * as React from 'react';
-import type { Message, ProgressMessage } from 'src/types/message.js';
-import { extractTag } from 'src/utils/messages.js';
-import type { ThemeName } from 'src/utils/theme.js';
-import type { z } from 'zod/v4';
-import { FallbackToolUseErrorMessage } from '../../components/FallbackToolUseErrorMessage.js';
-import { FilePathLink } from '../../components/FilePathLink.js';
-import { HighlightedCode } from '../../components/HighlightedCode.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { NotebookEditToolUseRejectedMessage } from '../../components/NotebookEditToolUseRejectedMessage.js';
-import { Box, Text } from '../../ink.js';
-import type { Tools } from '../../Tool.js';
-import { getDisplayPath } from '../../utils/file.js';
-import type { inputSchema, Output } from './NotebookEditTool.js';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type * as React from "react";
+import type { Message, ProgressMessage } from "src/types/message.js";
+import { extractTag } from "src/utils/messages.js";
+import type { ThemeName } from "src/utils/theme.js";
+import type { z } from "zod/v4";
+import { FallbackToolUseErrorMessage } from "../../components/FallbackToolUseErrorMessage.js";
+import { FilePathLink } from "../../components/FilePathLink.js";
+import { HighlightedCode } from "../../components/HighlightedCode.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { NotebookEditToolUseRejectedMessage } from "../../components/NotebookEditToolUseRejectedMessage.js";
+import { Box, Text } from "../../ink.js";
+import type { Tools } from "../../Tool.js";
+import { getDisplayPath } from "../../utils/file.js";
+import type { inputSchema, Output } from "./NotebookEditTool.js";
 export function getToolUseSummary(
   input: Partial<z.infer<ReturnType<typeof inputSchema>>> | undefined,
 ): string | null {
@@ -43,7 +43,7 @@ export function renderToolUseMessage(
     return (
       <>
         <FilePathLink filePath={notebook_path}>{displayPath}</FilePathLink>
-        {`@${cell_id}, content: ${new_source.slice(0, 30)}…, cell_type: ${cell_type}, edit_mode: ${edit_mode ?? 'replace'}`}
+        {`@${cell_id}, content: ${new_source.slice(0, 30)}…, cell_type: ${cell_type}, edit_mode: ${edit_mode ?? "replace"}`}
       </>
     );
   }
@@ -79,14 +79,14 @@ export function renderToolUseRejectedMessage(
   );
 }
 export function renderToolUseErrorMessage(
-  result: ToolResultBlockParam['content'],
+  result: ToolResultBlockParam["content"],
   {
     verbose,
   }: {
     verbose: boolean;
   },
 ): React.ReactNode {
-  if (!verbose && typeof result === 'string' && extractTag(result, 'tool_use_error')) {
+  if (!verbose && typeof result === "string" && extractTag(result, "tool_use_error")) {
     return (
       <MessageResponse>
         <Text color="error">Error editing notebook</Text>

@@ -1,9 +1,9 @@
 /* eslint-disable eslint-plugin-n/no-unsupported-features/node-builtins */
 
-import { errorMessage } from '../utils/errors.js';
-import { jsonStringify } from '../utils/slowOperations.js';
-import type { DirectConnectConfig } from './directConnectManager.js';
-import { connectResponseSchema } from './types.js';
+import { errorMessage } from "../utils/errors.js";
+import { jsonStringify } from "../utils/slowOperations.js";
+import type { DirectConnectConfig } from "./directConnectManager.js";
+import { connectResponseSchema } from "./types.js";
 
 /**
  * Errors thrown by createDirectConnectSession when the connection fails.
@@ -11,7 +11,7 @@ import { connectResponseSchema } from './types.js';
 export class DirectConnectError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'DirectConnectError';
+    this.name = "DirectConnectError";
   }
 }
 
@@ -38,7 +38,7 @@ export async function createDirectConnectSession({
   workDir?: string;
 }> {
   const headers: Record<string, string> = {
-    'content-type': 'application/json',
+    "content-type": "application/json",
   };
   if (authToken) {
     headers.authorization = `Bearer ${authToken}`;
@@ -47,7 +47,7 @@ export async function createDirectConnectSession({
   let resp: Response;
   try {
     resp = await fetch(`${serverUrl}/sessions`, {
-      method: 'POST',
+      method: "POST",
       headers,
       body: jsonStringify({
         cwd,

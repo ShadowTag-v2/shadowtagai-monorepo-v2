@@ -1,16 +1,16 @@
-import { homedir } from 'node:os';
-import { buildComputerUseTools, createComputerUseMcpServer } from '@ant/computer-use-mcp';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { homedir } from "node:os";
+import { buildComputerUseTools, createComputerUseMcpServer } from "@ant/computer-use-mcp";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 
-import { shutdownDatadog } from '../../services/analytics/datadog.js';
-import { shutdown1PEventLogging } from '../../services/analytics/firstPartyEventLogger.js';
-import { initializeAnalyticsSink } from '../../services/analytics/sink.js';
-import { enableConfigs } from '../config.js';
-import { logForDebugging } from '../debug.js';
-import { filterAppsForDescription } from './appNames.js';
-import { getChicagoCoordinateMode } from './gates.js';
-import { getComputerUseHostAdapter } from './hostAdapter.js';
+import { shutdownDatadog } from "../../services/analytics/datadog.js";
+import { shutdown1PEventLogging } from "../../services/analytics/firstPartyEventLogger.js";
+import { initializeAnalyticsSink } from "../../services/analytics/sink.js";
+import { enableConfigs } from "../config.js";
+import { logForDebugging } from "../debug.js";
+import { filterAppsForDescription } from "./appNames.js";
+import { getChicagoCoordinateMode } from "./gates.js";
+import { getComputerUseHostAdapter } from "./hostAdapter.js";
 
 const APP_ENUM_TIMEOUT_MS = 1000;
 
@@ -94,10 +94,10 @@ export async function runComputerUseMcpServer(): Promise<void> {
     // eslint-disable-next-line custom-rules/no-process-exit
     process.exit(0);
   };
-  process.stdin.on('end', () => void shutdownAndExit());
-  process.stdin.on('error', () => void shutdownAndExit());
+  process.stdin.on("end", () => void shutdownAndExit());
+  process.stdin.on("error", () => void shutdownAndExit());
 
-  logForDebugging('[Computer Use MCP] Starting MCP server');
+  logForDebugging("[Computer Use MCP] Starting MCP server");
   await server.connect(transport);
-  logForDebugging('[Computer Use MCP] MCP server started');
+  logForDebugging("[Computer Use MCP] MCP server started");
 }

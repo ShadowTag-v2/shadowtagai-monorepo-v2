@@ -1,10 +1,10 @@
-import { MCPServerApprovalDialog } from '../components/MCPServerApprovalDialog.js';
-import { MCPServerMultiselectDialog } from '../components/MCPServerMultiselectDialog.js';
-import type { Root } from '../ink.js';
-import { KeybindingSetup } from '../keybindings/KeybindingProviderSetup.js';
-import { AppStateProvider } from '../state/AppState.js';
-import { getMcpConfigsByScope } from './mcp/config.js';
-import { getProjectMcpServerStatus } from './mcp/utils.js';
+import { MCPServerApprovalDialog } from "../components/MCPServerApprovalDialog.js";
+import { MCPServerMultiselectDialog } from "../components/MCPServerMultiselectDialog.js";
+import type { Root } from "../ink.js";
+import { KeybindingSetup } from "../keybindings/KeybindingProviderSetup.js";
+import { AppStateProvider } from "../state/AppState.js";
+import { getMcpConfigsByScope } from "./mcp/config.js";
+import { getProjectMcpServerStatus } from "./mcp/utils.js";
 
 /**
  * Show MCP server approval dialogs for pending project servers.
@@ -12,9 +12,9 @@ import { getProjectMcpServerStatus } from './mcp/utils.js';
  * from main.tsx instead of creating a separate one).
  */
 export async function handleMcpjsonServerApprovals(root: Root): Promise<void> {
-  const { servers: projectServers } = getMcpConfigsByScope('project');
+  const { servers: projectServers } = getMcpConfigsByScope("project");
   const pendingServers = Object.keys(projectServers).filter(
-    (serverName) => getProjectMcpServerStatus(serverName) === 'pending',
+    (serverName) => getProjectMcpServerStatus(serverName) === "pending",
   );
   if (pendingServers.length === 0) {
     return;

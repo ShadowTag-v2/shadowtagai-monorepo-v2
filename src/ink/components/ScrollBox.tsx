@@ -4,15 +4,15 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
-} from 'react';
-import type { Except } from 'type-fest';
-import { markScrollActivity } from '../../bootstrap/state.js';
-import type { DOMElement } from '../dom.js';
-import { markDirty, scheduleRenderFrom } from '../dom.js';
-import { markCommitStart } from '../reconciler.js';
-import type { Styles } from '../styles.js';
-import '../global.d.ts';
-import Box from './Box.js';
+} from "react";
+import type { Except } from "type-fest";
+import { markScrollActivity } from "../../bootstrap/state.js";
+import type { DOMElement } from "../dom.js";
+import { markDirty, scheduleRenderFrom } from "../dom.js";
+import { markCommitStart } from "../reconciler.js";
+import type { Styles } from "../styles.js";
+import "../global.d.ts";
+import Box from "./Box.js";
 export type ScrollBoxHandle = {
   scrollTo: (y: number) => void;
   scrollBy: (dy: number) => void;
@@ -66,7 +66,7 @@ export type ScrollBoxHandle = {
    */
   setClampBounds: (min: number | undefined, max: number | undefined) => void;
 };
-export type ScrollBoxProps = Except<Styles, 'textWrap' | 'overflow' | 'overflowX' | 'overflowY'> & {
+export type ScrollBoxProps = Except<Styles, "textWrap" | "overflow" | "overflowX" | "overflowY"> & {
   ref?: Ref<ScrollBoxHandle>;
   /**
    * When true, automatically pins scroll position to the bottom when content
@@ -230,13 +230,13 @@ function ScrollBox({
         if (el) el.scrollTop ??= 0;
       }}
       style={{
-        flexWrap: 'nowrap',
-        flexDirection: style.flexDirection ?? 'row',
+        flexWrap: "nowrap",
+        flexDirection: style.flexDirection ?? "row",
         flexGrow: style.flexGrow ?? 0,
         flexShrink: style.flexShrink ?? 1,
         ...style,
-        overflowX: 'scroll',
-        overflowY: 'scroll',
+        overflowX: "scroll",
+        overflowY: "scroll",
       }}
       {...(stickyScroll
         ? {

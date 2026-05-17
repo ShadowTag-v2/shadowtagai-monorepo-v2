@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Box, Text } from '../../ink.js';
-import TextInput from '../TextInput.js';
+import { c as _c } from "react/compiler-runtime";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Box, Text } from "../../ink.js";
+import TextInput from "../TextInput.js";
 
 type Props = {
   value: string;
@@ -11,7 +11,7 @@ type Props = {
 function HistorySearchInput(t0) {
   const $ = _c(9);
   const { value, onChange, historyFailedMatch } = t0;
-  const t1 = historyFailedMatch ? 'no matching prompt:' : 'search prompts:';
+  const t1 = historyFailedMatch ? "no matching prompt:" : "search prompts:";
   let t2;
   if ($[0] !== t1) {
     t2 = <Text dimColor={true}>{t1}</Text>;

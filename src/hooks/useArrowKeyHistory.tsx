@@ -1,12 +1,12 @@
-import { useCallback, useRef, useState } from 'react';
-import { getModeFromInput } from 'src/components/PromptInput/inputModes.js';
-import { useNotifications } from 'src/context/notifications.js';
-import { ConfigurableShortcutHint } from '../components/ConfigurableShortcutHint.js';
-import { FOOTER_TEMPORARY_STATUS_TIMEOUT } from '../components/PromptInput/Notifications.js';
-import { getHistory } from '../history.js';
-import { Text } from '../ink.js';
-import type { PromptInputMode } from '../types/textInputTypes.js';
-import type { HistoryEntry, PastedContent } from '../utils/config.js';
+import { useCallback, useRef, useState } from "react";
+import { getModeFromInput } from "src/components/PromptInput/inputModes.js";
+import { useNotifications } from "src/context/notifications.js";
+import { ConfigurableShortcutHint } from "../components/ConfigurableShortcutHint.js";
+import { FOOTER_TEMPORARY_STATUS_TIMEOUT } from "../components/PromptInput/Notifications.js";
+import { getHistory } from "../history.js";
+import { Text } from "../ink.js";
+import type { PromptInputMode } from "../types/textInputTypes.js";
+import type { HistoryEntry, PastedContent } from "../utils/config.js";
 export type HistoryMode = PromptInputMode;
 
 // Load history entries in chunks to reduce disk reads on rapid keypresses
@@ -130,14 +130,14 @@ export function useArrowKeyHistory(
     (input: HistoryEntry | undefined, cursorToStart_0 = false): void => {
       if (!input?.display) return;
       const mode_0 = getModeFromInput(input.display);
-      const value_0 = mode_0 === 'bash' ? input.display.slice(1) : input.display;
+      const value_0 = mode_0 === "bash" ? input.display.slice(1) : input.display;
       setInputWithCursor(value_0, mode_0, input.pastedContents ?? {}, cursorToStart_0);
     },
     [setInputWithCursor],
   );
   const showSearchHint = useCallback((): void => {
     addNotification({
-      key: 'search-history-hint',
+      key: "search-history-hint",
       jsx: (
         <Text dimColor>
           <ConfigurableShortcutHint
@@ -148,7 +148,7 @@ export function useArrowKeyHistory(
           />
         </Text>
       ),
-      priority: 'immediate',
+      priority: "immediate",
       timeoutMs: FOOTER_TEMPORARY_STATUS_TIMEOUT,
     });
   }, [addNotification]);
@@ -160,11 +160,11 @@ export function useArrowKeyHistory(
     const pastedContentsAtPress = pastedContentsRef.current;
     const modeAtPress = currentModeRef.current;
     if (targetIndex === 0) {
-      initialModeFilterRef.current = modeAtPress === 'bash' ? modeAtPress : undefined;
+      initialModeFilterRef.current = modeAtPress === "bash" ? modeAtPress : undefined;
 
       // Save draft synchronously using refs for the latest values
       // This ensures we capture the draft before any async operations or re-renders
-      const hasInput = inputAtPress.trim() !== '';
+      const hasInput = inputAtPress.trim() !== "";
       setLastShownHistoryEntry(
         hasInput
           ? {
@@ -239,7 +239,7 @@ export function useArrowKeyHistory(
         }
       } else {
         // When in filtered mode, stay in that mode when clearing input
-        setInputWithCursor('', initialModeFilterRef.current ?? 'prompt', {});
+        setInputWithCursor("", initialModeFilterRef.current ?? "prompt", {});
       }
     }
     return currentIndex <= 0;
@@ -249,12 +249,12 @@ export function useArrowKeyHistory(
     setHistoryIndex(0);
     historyIndexRef.current = 0;
     initialModeFilterRef.current = undefined;
-    removeNotification('search-history-hint');
+    removeNotification("search-history-hint");
     historyCache.current = [];
     historyCacheModeFilter.current = undefined;
   }, [removeNotification]);
   const dismissSearchHint = useCallback((): void => {
-    removeNotification('search-history-hint');
+    removeNotification("search-history-hint");
   }, [removeNotification]);
   return {
     historyIndex,

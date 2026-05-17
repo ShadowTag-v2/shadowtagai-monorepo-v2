@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { getAgentModelOptions } from '../../utils/model/agent.js';
-import { Select } from '../CustomSelect/select.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { getAgentModelOptions } from "../../utils/model/agent.js";
+import { Select } from "../CustomSelect/select.js";
 
 interface ModelSelectorProps {
   initialModel?: string;
@@ -20,7 +20,7 @@ export function ModelSelector(t0) {
           {
             value: initialModel,
             label: initialModel,
-            description: 'Current model (custom ID)',
+            description: "Current model (custom ID)",
           },
           ...base,
         ];
@@ -34,9 +34,9 @@ export function ModelSelector(t0) {
     t1 = $[1];
   }
   const modelOptions = t1;
-  const defaultModel = initialModel ?? 'sonnet';
+  const defaultModel = initialModel ?? "sonnet";
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box marginBottom={1}>
         <Text dimColor={true}>Model determines the agent's reasoning capabilities and speed.</Text>

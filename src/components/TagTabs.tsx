@@ -1,16 +1,16 @@
-import type React from 'react';
-import { stringWidth } from '../ink/stringWidth.js';
-import { Box, Text } from '../ink.js';
-import { truncateToWidth } from '../utils/format.js';
+import type React from "react";
+import { stringWidth } from "../ink/stringWidth.js";
+import { Box, Text } from "../ink.js";
+import { truncateToWidth } from "../utils/format.js";
 
 // Constants for width calculations - derived from actual rendered strings
-const ALL_TAB_LABEL = 'All';
+const ALL_TAB_LABEL = "All";
 const TAB_PADDING = 2; // Space before and after tab text: " {tab} "
 const HASH_PREFIX_LENGTH = 1; // "#" prefix for non-All tabs
-const LEFT_ARROW_PREFIX = '← ';
-const RIGHT_HINT_WITH_COUNT_PREFIX = '→';
-const RIGHT_HINT_SUFFIX = ' (tab to cycle)';
-const RIGHT_HINT_NO_COUNT = '(tab to cycle)';
+const LEFT_ARROW_PREFIX = "← ";
+const RIGHT_HINT_WITH_COUNT_PREFIX = "→";
+const RIGHT_HINT_SUFFIX = " (tab to cycle)";
+const RIGHT_HINT_NO_COUNT = "(tab to cycle)";
 const MAX_OVERFLOW_DIGITS = 2; // Assume max 99 hidden tabs for width calculation
 
 // Computed widths
@@ -60,7 +60,7 @@ export function TagTabs({
   availableWidth,
   showAllProjects = false,
 }: Props): React.ReactNode {
-  const resumeLabel = showAllProjects ? 'Resume (All Projects)' : 'Resume';
+  const resumeLabel = showAllProjects ? "Resume (All Projects)" : "Resume";
   const resumeLabelWidth = resumeLabel.length + 1; // +1 for gap
 
   // Calculate how much space we have for tabs (use worst-case hint width)
@@ -139,12 +139,12 @@ export function TagTabs({
         return (
           <Text
             key={tab_0}
-            backgroundColor={isSelected ? 'suggestion' : undefined}
-            color={isSelected ? 'inverseText' : undefined}
+            backgroundColor={isSelected ? "suggestion" : undefined}
+            color={isSelected ? "inverseText" : undefined}
             bold={isSelected}
           >
-            {' '}
-            {displayText}{' '}
+            {" "}
+            {displayText}{" "}
           </Text>
         );
       })}

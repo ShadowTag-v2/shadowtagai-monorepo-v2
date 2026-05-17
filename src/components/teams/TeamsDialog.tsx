@@ -1,55 +1,55 @@
-import { randomUUID } from 'node:crypto';
-import figures from 'figures';
-import type * as React from 'react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useInterval } from 'usehooks-ts';
-import { useRegisterOverlay } from '../../context/overlayContext.js';
-import { stringWidth } from '../../ink/stringWidth.js';
+import { randomUUID } from "node:crypto";
+import figures from "figures";
+import type * as React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useInterval } from "usehooks-ts";
+import { useRegisterOverlay } from "../../context/overlayContext.js";
+import { stringWidth } from "../../ink/stringWidth.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- raw j/k/arrow dialog navigation
-import { Box, Text, useInput } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
-import { useShortcutDisplay } from '../../keybindings/useShortcutDisplay.js';
-import { type AppState, useAppState, useSetAppState } from '../../state/AppState.js';
-import { getEmptyToolPermissionContext } from '../../Tool.js';
-import { AGENT_COLOR_TO_THEME_COLOR } from '../../tools/AgentTool/agentColorManager.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { execFileNoThrow } from '../../utils/execFileNoThrow.js';
-import { truncateToWidth } from '../../utils/format.js';
-import { getNextPermissionMode } from '../../utils/permissions/getNextPermissionMode.js';
+import { Box, Text, useInput } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
+import { useShortcutDisplay } from "../../keybindings/useShortcutDisplay.js";
+import { type AppState, useAppState, useSetAppState } from "../../state/AppState.js";
+import { getEmptyToolPermissionContext } from "../../Tool.js";
+import { AGENT_COLOR_TO_THEME_COLOR } from "../../tools/AgentTool/agentColorManager.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { execFileNoThrow } from "../../utils/execFileNoThrow.js";
+import { truncateToWidth } from "../../utils/format.js";
+import { getNextPermissionMode } from "../../utils/permissions/getNextPermissionMode.js";
 import {
   getModeColor,
   type PermissionMode,
   permissionModeFromString,
   permissionModeSymbol,
-} from '../../utils/permissions/PermissionMode.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { IT2_COMMAND, isInsideTmuxSync } from '../../utils/swarm/backends/detection.js';
+} from "../../utils/permissions/PermissionMode.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { IT2_COMMAND, isInsideTmuxSync } from "../../utils/swarm/backends/detection.js";
 import {
   ensureBackendsRegistered,
   getBackendByType,
   getCachedBackend,
-} from '../../utils/swarm/backends/registry.js';
-import type { PaneBackendType } from '../../utils/swarm/backends/types.js';
-import { getSwarmSocketName, TMUX_COMMAND } from '../../utils/swarm/constants.js';
+} from "../../utils/swarm/backends/registry.js";
+import type { PaneBackendType } from "../../utils/swarm/backends/types.js";
+import { getSwarmSocketName, TMUX_COMMAND } from "../../utils/swarm/constants.js";
 import {
   removeMemberFromTeam,
   setMemberMode,
   setMultipleMemberModes,
-} from '../../utils/swarm/teamHelpers.js';
-import { listTasks, unassignTeammateTasks } from '../../utils/tasks.js';
+} from "../../utils/swarm/teamHelpers.js";
+import { listTasks, unassignTeammateTasks } from "../../utils/tasks.js";
 import {
   getTeammateStatuses,
   type TeammateStatus,
   type TeamSummary,
-} from '../../utils/teamDiscovery.js';
+} from "../../utils/teamDiscovery.js";
 import {
   createModeSetRequestMessage,
   sendShutdownRequestToMailbox,
   writeToMailbox,
-} from '../../utils/teammateMailbox.js';
-import { Dialog } from '../design-system/Dialog.js';
-import ThemedText from '../design-system/ThemedText.js';
+} from "../../utils/teammateMailbox.js";
+import { Dialog } from "../design-system/Dialog.js";
+import ThemedText from "../design-system/ThemedText.js";
 
 type Props = {
   initialTeams?: TeamSummary[];
@@ -57,11 +57,11 @@ type Props = {
 };
 type DialogLevel =
   | {
-      type: 'teammateList';
+      type: "teammateList";
       teamName: string;
     }
   | {
-      type: 'teammateDetail';
+      type: "teammateDetail";
       teamName: string;
       memberName: string;
     };
@@ -71,15 +71,15 @@ type DialogLevel =
  */
 export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
   // Register as overlay so CancelRequestHandler doesn't intercept escape
-  useRegisterOverlay('teams-dialog');
+  useRegisterOverlay("teams-dialog");
 
   // initialTeams is derived from teamContext in PromptInput (no filesystem I/O)
   const setAppState = useSetAppState();
 
   // Initialize dialogLevel with first team name if available
-  const firstTeamName = initialTeams?.[0]?.name ?? '';
+  const firstTeamName = initialTeams?.[0]?.name ?? "";
   const [dialogLevel, setDialogLevel] = useState<DialogLevel>({
-    type: 'teammateList',
+    type: "teammateList",
     teamName: firstTeamName,
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -99,7 +99,7 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
     setRefreshKey((k) => k + 1);
   }, 1000);
   const currentTeammate = useMemo(() => {
-    if (dialogLevel.type !== 'teammateDetail') return null;
+    if (dialogLevel.type !== "teammateDetail") return null;
     return teammateStatuses.find((t) => t.name === dialogLevel.memberName) ?? null;
   }, [dialogLevel, teammateStatuses]);
 
@@ -109,7 +109,7 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
   );
   const goBackToList = (): void => {
     setDialogLevel({
-      type: 'teammateList',
+      type: "teammateList",
       teamName: dialogLevel.teamName,
     });
     setSelectedIndex(0);
@@ -117,11 +117,11 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
 
   // Handler for confirm:cycleMode - cycle teammate permission modes
   const handleCycleMode = useCallback(() => {
-    if (dialogLevel.type === 'teammateDetail' && currentTeammate) {
+    if (dialogLevel.type === "teammateDetail" && currentTeammate) {
       // Detail view: cycle just this teammate
       cycleTeammateMode(currentTeammate, dialogLevel.teamName, isBypassAvailable);
       setRefreshKey((k) => k + 1);
-    } else if (dialogLevel.type === 'teammateList' && teammateStatuses.length > 0) {
+    } else if (dialogLevel.type === "teammateList" && teammateStatuses.length > 0) {
       // List view: cycle all teammates in tandem
       cycleAllTeammateModes(teammateStatuses, dialogLevel.teamName, isBypassAvailable);
       setRefreshKey((k) => k + 1);
@@ -131,16 +131,16 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
   // Use keybindings for mode cycling
   useKeybindings(
     {
-      'confirm:cycleMode': handleCycleMode,
+      "confirm:cycleMode": handleCycleMode,
     },
     {
-      context: 'Confirmation',
+      context: "Confirmation",
     },
   );
   useInput((input, key) => {
     // Handle left arrow to go back
     if (key.leftArrow) {
-      if (dialogLevel.type === 'teammateDetail') {
+      if (dialogLevel.type === "teammateDetail") {
         goBackToList();
       }
       return;
@@ -159,13 +159,13 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
 
     // Handle Enter to drill down or view output
     if (key.return) {
-      if (dialogLevel.type === 'teammateList' && teammateStatuses[selectedIndex]) {
+      if (dialogLevel.type === "teammateList" && teammateStatuses[selectedIndex]) {
         setDialogLevel({
-          type: 'teammateDetail',
+          type: "teammateDetail",
           teamName: dialogLevel.teamName,
           memberName: teammateStatuses[selectedIndex].name,
         });
-      } else if (dialogLevel.type === 'teammateDetail' && currentTeammate) {
+      } else if (dialogLevel.type === "teammateDetail" && currentTeammate) {
         // View output - switch to tmux pane
         void viewTeammateOutput(currentTeammate.tmuxPaneId, currentTeammate.backendType);
         onDone();
@@ -174,8 +174,8 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
     }
 
     // Handle 'k' to kill teammate
-    if (input === 'k') {
-      if (dialogLevel.type === 'teammateList' && teammateStatuses[selectedIndex]) {
+    if (input === "k") {
+      if (dialogLevel.type === "teammateList" && teammateStatuses[selectedIndex]) {
         void killTeammate(
           teammateStatuses[selectedIndex].tmuxPaneId,
           teammateStatuses[selectedIndex].backendType,
@@ -188,7 +188,7 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
           // Adjust selection if needed
           setSelectedIndex((prev) => Math.max(0, Math.min(prev, teammateStatuses.length - 2)));
         });
-      } else if (dialogLevel.type === 'teammateDetail' && currentTeammate) {
+      } else if (dialogLevel.type === "teammateDetail" && currentTeammate) {
         void killTeammate(
           currentTeammate.tmuxPaneId,
           currentTeammate.backendType,
@@ -203,19 +203,19 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
     }
 
     // Handle 's' for shutdown of selected teammate
-    if (input === 's') {
-      if (dialogLevel.type === 'teammateList' && teammateStatuses[selectedIndex]) {
+    if (input === "s") {
+      if (dialogLevel.type === "teammateList" && teammateStatuses[selectedIndex]) {
         const teammate = teammateStatuses[selectedIndex];
         void sendShutdownRequestToMailbox(
           teammate.name,
           dialogLevel.teamName,
-          'Graceful shutdown requested by team lead',
+          "Graceful shutdown requested by team lead",
         );
-      } else if (dialogLevel.type === 'teammateDetail' && currentTeammate) {
+      } else if (dialogLevel.type === "teammateDetail" && currentTeammate) {
         void sendShutdownRequestToMailbox(
           currentTeammate.name,
           dialogLevel.teamName,
-          'Graceful shutdown requested by team lead',
+          "Graceful shutdown requested by team lead",
         );
         goBackToList();
       }
@@ -223,12 +223,12 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
     }
 
     // Handle 'h' to hide/show individual teammate (only for backends that support it)
-    if (input === 'h') {
+    if (input === "h") {
       const backend = getCachedBackend();
       const teammate =
-        dialogLevel.type === 'teammateList'
+        dialogLevel.type === "teammateList"
           ? teammateStatuses[selectedIndex]
-          : dialogLevel.type === 'teammateDetail'
+          : dialogLevel.type === "teammateDetail"
             ? currentTeammate
             : null;
       if (teammate && backend?.supportsHideShow) {
@@ -236,7 +236,7 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
           // Force refresh of teammate statuses
           setRefreshKey((k) => k + 1);
         });
-        if (dialogLevel.type === 'teammateDetail') {
+        if (dialogLevel.type === "teammateDetail") {
           goBackToList();
         }
       }
@@ -244,7 +244,7 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
     }
 
     // Handle 'H' to hide/show all teammates (only for backends that support it)
-    if (input === 'H' && dialogLevel.type === 'teammateList') {
+    if (input === "H" && dialogLevel.type === "teammateList") {
       const backend = getCachedBackend();
       if (backend?.supportsHideShow && teammateStatuses.length > 0) {
         // If any are visible, hide all. Otherwise, show all.
@@ -264,8 +264,8 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
     }
 
     // Handle 'p' to prune (kill) all idle teammates
-    if (input === 'p' && dialogLevel.type === 'teammateList') {
-      const idleTeammates = teammateStatuses.filter((t) => t.status === 'idle');
+    if (input === "p" && dialogLevel.type === "teammateList") {
+      const idleTeammates = teammateStatuses.filter((t) => t.status === "idle");
       if (idleTeammates.length > 0) {
         void Promise.all(
           idleTeammates.map((t) =>
@@ -291,14 +291,14 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
     // Note: Mode cycling (shift+tab) is handled via useKeybindings with confirm:cycleMode action
   });
   function getMaxIndex(): number {
-    if (dialogLevel.type === 'teammateList') {
+    if (dialogLevel.type === "teammateList") {
       return Math.max(0, teammateStatuses.length - 1);
     }
     return 0;
   }
 
   // Render based on dialog level
-  if (dialogLevel.type === 'teammateList') {
+  if (dialogLevel.type === "teammateList") {
     return (
       <TeamDetailView
         teamName={dialogLevel.teamName}
@@ -308,7 +308,7 @@ export function TeamsDialog({ initialTeams, onDone }: Props): React.ReactNode {
       />
     );
   }
-  if (dialogLevel.type === 'teammateDetail' && currentTeammate) {
+  if (dialogLevel.type === "teammateDetail" && currentTeammate) {
     return (
       <TeammateDetailView
         teammate={currentTeammate}
@@ -328,9 +328,9 @@ type TeamDetailViewProps = {
 function TeamDetailView(t0) {
   const $ = _c(13);
   const { teamName, teammates, selectedIndex, onCancel } = t0;
-  const subtitle = `${teammates.length} ${teammates.length === 1 ? 'teammate' : 'teammates'}`;
+  const subtitle = `${teammates.length} ${teammates.length === 1 ? "teammate" : "teammates"}`;
   const supportsHideShow = getCachedBackend()?.supportsHideShow ?? false;
-  const cycleModeShortcut = useShortcutDisplay('confirm:cycleMode', 'Confirmation', 'shift+tab');
+  const cycleModeShortcut = useShortcutDisplay("confirm:cycleMode", "Confirmation", "shift+tab");
   const t1 = `Team ${teamName}`;
   let t2;
   if ($[0] !== selectedIndex || $[1] !== teammates) {
@@ -381,8 +381,8 @@ function TeamDetailView(t0) {
       <Box marginLeft={1}>
         <Text dimColor={true}>
           {figures.arrowUp}/{figures.arrowDown} select · Enter view · k kill · s shutdown · p prune
-          idle{supportsHideShow && ' \xB7 h hide/show \xB7 H hide/show all'}
-          {' \xB7 '}
+          idle{supportsHideShow && " \xB7 h hide/show \xB7 H hide/show all"}
+          {" \xB7 "}
           {cycleModeShortcut} sync cycle modes for all · Esc close
         </Text>
       </Box>
@@ -415,12 +415,12 @@ type TeammateListItemProps = {
 function TeammateListItem(t0) {
   const $ = _c(21);
   const { teammate, isSelected } = t0;
-  const isIdle = teammate.status === 'idle';
+  const isIdle = teammate.status === "idle";
   const shouldDim = isIdle && !isSelected;
   let modeSymbol;
   let t1;
   if ($[0] !== teammate.mode) {
-    const mode = teammate.mode ? permissionModeFromString(teammate.mode) : 'default';
+    const mode = teammate.mode ? permissionModeFromString(teammate.mode) : "default";
     modeSymbol = permissionModeSymbol(mode);
     t1 = getModeColor(mode);
     $[0] = teammate.mode;
@@ -431,8 +431,8 @@ function TeammateListItem(t0) {
     t1 = $[2];
   }
   const modeColor = t1;
-  const t2 = isSelected ? 'suggestion' : undefined;
-  const t3 = isSelected ? `${figures.pointer} ` : '  ';
+  const t2 = isSelected ? "suggestion" : undefined;
+  const t3 = isSelected ? `${figures.pointer} ` : "  ";
   let t4;
   if ($[3] !== teammate.isHidden) {
     t4 = teammate.isHidden && <Text dimColor={true}>[hidden] </Text>;
@@ -509,12 +509,12 @@ function TeammateDetailView(t0) {
   const $ = _c(39);
   const { teammate, teamName, onCancel } = t0;
   const [promptExpanded, setPromptExpanded] = useState(false);
-  const cycleModeShortcut = useShortcutDisplay('confirm:cycleMode', 'Confirmation', 'shift+tab');
+  const cycleModeShortcut = useShortcutDisplay("confirm:cycleMode", "Confirmation", "shift+tab");
   const themeColor = teammate.color
     ? AGENT_COLOR_TO_THEME_COLOR[teammate.color as keyof typeof AGENT_COLOR_TO_THEME_COLOR]
     : undefined;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = [];
     $[0] = t1;
   } else {
@@ -552,9 +552,9 @@ function TeammateDetailView(t0) {
   }
   useEffect(t2, t3);
   let t4;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (input) => {
-      if (input === 'p') {
+      if (input === "p") {
         setPromptExpanded(_temp);
       }
     };
@@ -580,11 +580,11 @@ function TeammateDetailView(t0) {
   } else {
     subtitleParts = $[10];
   }
-  const subtitle = subtitleParts.join(' \xB7 ') || undefined;
+  const subtitle = subtitleParts.join(" \xB7 ") || undefined;
   let modeSymbol;
   let t5;
   if ($[11] !== teammate.mode) {
-    const mode = teammate.mode ? permissionModeFromString(teammate.mode) : 'default';
+    const mode = teammate.mode ? permissionModeFromString(teammate.mode) : "default";
     modeSymbol = permissionModeSymbol(mode);
     t5 = getModeColor(mode);
     $[11] = teammate.mode;
@@ -699,8 +699,8 @@ function TeammateDetailView(t0) {
       <Box marginLeft={1}>
         <Text dimColor={true}>
           {figures.arrowLeft} back · Esc close · k kill · s shutdown
-          {getCachedBackend()?.supportsHideShow && ' \xB7 h hide/show'}
-          {' \xB7 '}
+          {getCachedBackend()?.supportsHideShow && " \xB7 h hide/show"}
+          {" \xB7 "}
           {cycleModeShortcut} cycle mode
         </Text>
       </Box>
@@ -728,8 +728,8 @@ function TeammateDetailView(t0) {
 }
 function _temp2(task_0) {
   return (
-    <Text key={task_0.id} color={task_0.status === 'completed' ? 'success' : undefined}>
-      {task_0.status === 'completed' ? figures.tick : '\u25FC'} {task_0.subject}
+    <Text key={task_0.id} color={task_0.status === "completed" ? "success" : undefined}>
+      {task_0.status === "completed" ? figures.tick : "\u25FC"} {task_0.subject}
     </Text>
   );
 }
@@ -771,7 +771,7 @@ async function killTeammate(
     teamName,
     teammateId,
     teammateName,
-    'terminated',
+    "terminated",
   );
 
   // Update AppState to keep status line in sync and notify the lead
@@ -790,13 +790,13 @@ async function killTeammate(
           ...prev.inbox.messages,
           {
             id: randomUUID(),
-            from: 'system',
+            from: "system",
             text: jsonStringify({
-              type: 'teammate_terminated',
+              type: "teammate_terminated",
               message: notificationMessage,
             }),
             timestamp: new Date().toISOString(),
-            status: 'pending' as const,
+            status: "pending" as const,
           },
         ],
       },
@@ -808,16 +808,16 @@ async function viewTeammateOutput(
   paneId: string,
   backendType: PaneBackendType | undefined,
 ): Promise<void> {
-  if (backendType === 'iterm2') {
+  if (backendType === "iterm2") {
     // -s is required to target a specific session (ITermBackend.ts:216-217)
-    await execFileNoThrow(IT2_COMMAND, ['session', 'focus', '-s', paneId]);
+    await execFileNoThrow(IT2_COMMAND, ["session", "focus", "-s", paneId]);
   } else {
     // External-tmux teammates live on the swarm socket — without -L, this
     // targets the default server and silently no-ops. Mirrors runTmuxInSwarm
     // in TmuxBackend.ts:85-89.
     const args = isInsideTmuxSync()
-      ? ['select-pane', '-t', paneId]
-      : ['-L', getSwarmSocketName(), 'select-pane', '-t', paneId];
+      ? ["select-pane", "-t", paneId]
+      : ["-L", getSwarmSocketName(), "select-pane", "-t", paneId];
     await execFileNoThrow(TMUX_COMMAND, args);
   }
 }
@@ -860,12 +860,12 @@ function sendModeChangeToTeammate(
   // Also send message so teammate updates their local permission context
   const message = createModeSetRequestMessage({
     mode: targetMode,
-    from: 'team-lead',
+    from: "team-lead",
   });
   void writeToMailbox(
     teammateName,
     {
-      from: 'team-lead',
+      from: "team-lead",
       text: jsonStringify(message),
       timestamp: new Date().toISOString(),
     },
@@ -882,7 +882,7 @@ function cycleTeammateMode(
   teamName: string,
   isBypassAvailable: boolean,
 ): void {
-  const currentMode = teammate.mode ? permissionModeFromString(teammate.mode) : 'default';
+  const currentMode = teammate.mode ? permissionModeFromString(teammate.mode) : "default";
   const context = {
     ...getEmptyToolPermissionContext(),
     mode: currentMode,
@@ -904,15 +904,15 @@ function cycleAllTeammateModes(
   isBypassAvailable: boolean,
 ): void {
   if (teammates.length === 0) return;
-  const modes = teammates.map((t) => (t.mode ? permissionModeFromString(t.mode) : 'default'));
+  const modes = teammates.map((t) => (t.mode ? permissionModeFromString(t.mode) : "default"));
   const allSame = modes.every((m) => m === modes[0]);
 
   // Determine target mode for all teammates
   const targetMode = !allSame
-    ? 'default'
+    ? "default"
     : getNextPermissionMode({
         ...getEmptyToolPermissionContext(),
-        mode: modes[0] ?? 'default',
+        mode: modes[0] ?? "default",
         isBypassPermissionsModeAvailable: isBypassAvailable,
       });
 
@@ -927,12 +927,12 @@ function cycleAllTeammateModes(
   for (const teammate of teammates) {
     const message = createModeSetRequestMessage({
       mode: targetMode,
-      from: 'team-lead',
+      from: "team-lead",
     });
     void writeToMailbox(
       teammate.name,
       {
-        from: 'team-lead',
+        from: "team-lead",
         text: jsonStringify(message),
         timestamp: new Date().toISOString(),
       },

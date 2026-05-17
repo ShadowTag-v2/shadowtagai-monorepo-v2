@@ -1,18 +1,18 @@
-import { feature } from 'bun:bundle';
-import { useEffect, useRef } from 'react';
+import { feature } from "bun:bundle";
+import { useEffect, useRef } from "react";
 import {
   type AppState,
   useAppState,
   useAppStateStore,
   useSetAppState,
-} from 'src/state/AppState.js';
-import type { ToolPermissionContext } from 'src/Tool.js';
-import { getIsRemoteMode } from '../../bootstrap/state.js';
+} from "src/state/AppState.js";
+import type { ToolPermissionContext } from "src/Tool.js";
+import { getIsRemoteMode } from "../../bootstrap/state.js";
 import {
   createDisabledBypassPermissionsContext,
   shouldDisableBypassPermissions,
   verifyAutoModeGateAccess,
-} from './permissionSetup.js';
+} from "./permissionSetup.js";
 
 let bypassPermissionsCheckRan = false;
 
@@ -71,7 +71,7 @@ export async function checkAndDisableAutoModeIfNeeded(
   setAppState: (f: (prev: AppState) => AppState) => void,
   fastMode?: boolean,
 ): Promise<void> {
-  if (feature('TRANSCRIPT_CLASSIFIER')) {
+  if (feature("TRANSCRIPT_CLASSIFIER")) {
     if (autoModeCheckRan) {
       return;
     }
@@ -97,10 +97,10 @@ export async function checkAndDisableAutoModeIfNeeded(
           queue: [
             ...newState.notifications.queue,
             {
-              key: 'auto-mode-gate-notification',
+              key: "auto-mode-gate-notification",
               text: notification,
-              color: 'warning' as const,
-              priority: 'high' as const,
+              color: "warning" as const,
+              priority: "high" as const,
             },
           ],
         },

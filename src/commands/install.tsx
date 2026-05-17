@@ -1,22 +1,22 @@
-import { homedir } from 'node:os';
-import { join } from 'node:path';
-import type React from 'react';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay } from 'src/commands.js';
-import { logEvent } from 'src/services/analytics/index.js';
-import { StatusIcon } from '../components/design-system/StatusIcon.js';
-import { Box, render, Text } from '../ink.js';
-import { logForDebugging } from '../utils/debug.js';
-import { env } from '../utils/env.js';
-import { errorMessage } from '../utils/errors.js';
+import { homedir } from "node:os";
+import { join } from "node:path";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay } from "src/commands.js";
+import { logEvent } from "src/services/analytics/index.js";
+import { StatusIcon } from "../components/design-system/StatusIcon.js";
+import { Box, render, Text } from "../ink.js";
+import { logForDebugging } from "../utils/debug.js";
+import { env } from "../utils/env.js";
+import { errorMessage } from "../utils/errors.js";
 import {
   checkInstall,
   cleanupNpmInstallations,
   cleanupShellAliases,
   installLatest,
-} from '../utils/nativeInstaller/index.js';
-import { getInitialSettings, updateSettingsForSource } from '../utils/settings/settings.js';
+} from "../utils/nativeInstaller/index.js";
+import { getInitialSettings, updateSettingsForSource } from "../utils/settings/settings.js";
 
 interface InstallProps {
   onDone: (
@@ -30,42 +30,42 @@ interface InstallProps {
 }
 type InstallState =
   | {
-      type: 'checking';
+      type: "checking";
     }
   | {
-      type: 'cleaning-npm';
+      type: "cleaning-npm";
     }
   | {
-      type: 'installing';
+      type: "installing";
       version: string;
     }
   | {
-      type: 'setting-up';
+      type: "setting-up";
     }
   | {
-      type: 'set-up';
+      type: "set-up";
       messages: string[];
     }
   | {
-      type: 'success';
+      type: "success";
       version: string;
       setupMessages?: string[];
     }
   | {
-      type: 'error';
+      type: "error";
       message: string;
       warnings?: string[];
     };
 function getInstallationPath(): string {
-  const isWindows = env.platform === 'win32';
+  const isWindows = env.platform === "win32";
   const homeDir = homedir();
   if (isWindows) {
     // Convert to Windows-style path
-    const windowsPath = join(homeDir, '.local', 'bin', 'claude.exe');
+    const windowsPath = join(homeDir, ".local", "bin", "claude.exe");
     // Replace forward slashes with backslashes for Windows display
-    return windowsPath.replace(/\//g, '\\');
+    return windowsPath.replace(/\//g, "\\");
   }
-  return '~/.local/bin/claude';
+  return "~/.local/bin/claude";
 }
 function SetupNotes(t0) {
   const $ = _c(5);
@@ -74,7 +74,7 @@ function SetupNotes(t0) {
     return null;
   }
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <Box>
         <Text color="warning">
@@ -119,7 +119,7 @@ function _temp(message, index) {
 }
 function Install({ onDone, force, target }: InstallProps): React.ReactNode {
   const [state, setState] = useState<InstallState>({
-    type: 'checking',
+    type: "checking",
   });
   useEffect(() => {
     async function run() {
@@ -129,9 +129,9 @@ function Install({ onDone, force, target }: InstallProps): React.ReactNode {
         );
 
         // Install native build first
-        const channelOrVersion = target || getInitialSettings()?.autoUpdatesChannel || 'latest';
+        const channelOrVersion = target || getInitialSettings()?.autoUpdatesChannel || "latest";
         setState({
-          type: 'installing',
+          type: "installing",
           version: channelOrVersion,
         });
 
@@ -147,23 +147,23 @@ function Install({ onDone, force, target }: InstallProps): React.ReactNode {
         // Check specifically for lock failure
         if (result.lockFailed) {
           throw new Error(
-            'Could not install - another process is currently installing Claude. Please try again in a moment.',
+            "Could not install - another process is currently installing Claude. Please try again in a moment.",
           );
         }
 
         // If we couldn't get the version, there might be an issue
         if (!result.latestVersion) {
-          logForDebugging('Install: Failed to retrieve version information during install', {
-            level: 'error',
+          logForDebugging("Install: Failed to retrieve version information during install", {
+            level: "error",
           });
         }
         if (!result.wasUpdated) {
-          logForDebugging('Install: Already up to date');
+          logForDebugging("Install: Already up to date");
         }
 
         // Set up launcher and shell integration
         setState({
-          type: 'setting-up',
+          type: "setting-up",
         });
         const setupMessages = await checkInstall(true);
         logForDebugging(`Install: Setup launcher completed with ${setupMessages.length} messages`);
@@ -172,31 +172,31 @@ function Install({ onDone, force, target }: InstallProps): React.ReactNode {
         }
 
         // Now that native installation succeeded, clean up old npm installations
-        logForDebugging('Install: Cleaning up npm installations after successful install');
+        logForDebugging("Install: Cleaning up npm installations after successful install");
         const { removed, errors, warnings } = await cleanupNpmInstallations();
         if (removed > 0) {
           logForDebugging(`Cleaned up ${removed} npm installation(s)`);
         }
         if (errors.length > 0) {
-          logForDebugging(`Cleanup errors: ${errors.join(', ')}`);
+          logForDebugging(`Cleanup errors: ${errors.join(", ")}`);
           // Continue despite cleanup errors - native install already succeeded
         }
 
         // Clean up old shell aliases
         const aliasMessages = await cleanupShellAliases();
         if (aliasMessages.length > 0) {
-          logForDebugging(`Shell alias cleanup: ${aliasMessages.map((m) => m.message).join('; ')}`);
+          logForDebugging(`Shell alias cleanup: ${aliasMessages.map((m) => m.message).join("; ")}`);
         }
 
         // Log success event
-        logEvent('tengu_claude_install_command', {
+        logEvent("tengu_claude_install_command", {
           has_version: result.latestVersion ? 1 : 0,
           forced: force ? 1 : 0,
         });
 
         // If user explicitly specified a channel, save it to settings
-        if (target === 'latest' || target === 'stable') {
-          updateSettingsForSource('userSettings', {
+        if (target === "latest" || target === "stable") {
+          updateSettingsForSource("userSettings", {
             autoUpdatesChannel: target,
           });
           logForDebugging(`Install: Saved autoUpdatesChannel=${target} to user settings`);
@@ -208,30 +208,30 @@ function Install({ onDone, force, target }: InstallProps): React.ReactNode {
         // Check if there were any setup errors or notes
         if (setupMessages.length > 0) {
           setState({
-            type: 'set-up',
+            type: "set-up",
             messages: setupMessages.map((m_1) => m_1.message),
           });
           // Still mark as success but show both setup messages and cleanup warnings
           setTimeout(setState, 2000, {
-            type: 'success' as const,
-            version: result.latestVersion || 'current',
+            type: "success" as const,
+            version: result.latestVersion || "current",
             setupMessages: [...setupMessages.map((m_2) => m_2.message), ...allWarnings],
           });
         } else {
           // No setup messages, go straight to success (but still show cleanup warnings if any)
-          logForDebugging('Install: Shell PATH already configured');
+          logForDebugging("Install: Shell PATH already configured");
           setState({
-            type: 'success',
-            version: result.latestVersion || 'current',
+            type: "success",
+            version: result.latestVersion || "current",
             setupMessages: allWarnings.length > 0 ? allWarnings : undefined,
           });
         }
       } catch (error) {
         logForDebugging(`Install command failed: ${error}`, {
-          level: 'error',
+          level: "error",
         });
         setState({
-          type: 'error',
+          type: "error",
           message: errorMessage(error),
         });
       }
@@ -239,37 +239,37 @@ function Install({ onDone, force, target }: InstallProps): React.ReactNode {
     void run();
   }, [force, target]);
   useEffect(() => {
-    if (state.type === 'success') {
+    if (state.type === "success") {
       // Give success message time to render before exiting
-      setTimeout(onDone, 2000, 'Claude Code installation completed successfully', {
-        display: 'system' as const,
+      setTimeout(onDone, 2000, "Claude Code installation completed successfully", {
+        display: "system" as const,
       });
-    } else if (state.type === 'error') {
+    } else if (state.type === "error") {
       // Give error message time to render before exiting
-      setTimeout(onDone, 3000, 'Claude Code installation failed', {
-        display: 'system' as const,
+      setTimeout(onDone, 3000, "Claude Code installation failed", {
+        display: "system" as const,
       });
     }
   }, [state, onDone]);
   return (
     <Box flexDirection="column" marginTop={1}>
-      {state.type === 'checking' && <Text color="claude">Checking installation status...</Text>}
+      {state.type === "checking" && <Text color="claude">Checking installation status...</Text>}
 
-      {state.type === 'cleaning-npm' && (
+      {state.type === "cleaning-npm" && (
         <Text color="warning">Cleaning up old npm installations...</Text>
       )}
 
-      {state.type === 'installing' && (
+      {state.type === "installing" && (
         <Text color="claude">Installing Claude Code native build {state.version}...</Text>
       )}
 
-      {state.type === 'setting-up' && (
+      {state.type === "setting-up" && (
         <Text color="claude">Setting up launcher and shell integration...</Text>
       )}
 
-      {state.type === 'set-up' && <SetupNotes messages={state.messages} />}
+      {state.type === "set-up" && <SetupNotes messages={state.messages} />}
 
-      {state.type === 'success' && (
+      {state.type === "success" && (
         <Box flexDirection="column" gap={1}>
           <Box>
             <StatusIcon status="success" withSpace />
@@ -278,7 +278,7 @@ function Install({ onDone, force, target }: InstallProps): React.ReactNode {
             </Text>
           </Box>
           <Box marginLeft={2} flexDirection="column" gap={1}>
-            {state.version !== 'current' && (
+            {state.version !== "current" && (
               <Box>
                 <Text dimColor>Version: </Text>
                 <Text color="claude">{state.version}</Text>
@@ -302,7 +302,7 @@ function Install({ onDone, force, target }: InstallProps): React.ReactNode {
         </Box>
       )}
 
-      {state.type === 'error' && (
+      {state.type === "error" && (
         <Box flexDirection="column" gap={1}>
           <Box>
             <StatusIcon status="error" withSpace />
@@ -320,10 +320,10 @@ function Install({ onDone, force, target }: InstallProps): React.ReactNode {
 
 // This is only used from cli.tsx, not as a slash command
 export const install = {
-  type: 'local-jsx' as const,
-  name: 'install',
-  description: 'Install Claude Code native build',
-  argumentHint: '[options]',
+  type: "local-jsx" as const,
+  name: "install",
+  description: "Install Claude Code native build",
+  argumentHint: "[options]",
   async call(
     onDone: (
       result: string,
@@ -335,8 +335,8 @@ export const install = {
     args: string[],
   ) {
     // Parse arguments
-    const force = args.includes('--force');
-    const nonFlagArgs = args.filter((arg) => !arg.startsWith('--'));
+    const force = args.includes("--force");
+    const nonFlagArgs = args.filter((arg) => !arg.startsWith("--"));
     const target = nonFlagArgs[0]; // 'latest', 'stable', or version like '1.0.34'
 
     const { unmount } = await render(

@@ -12,44 +12,44 @@
  * - API returns empty restrictions for users without policy limits
  */
 
-import { createHash } from 'node:crypto';
-import { readFileSync as fsReadFileSync } from 'node:fs';
-import { unlink, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import axios from 'axios';
+import { createHash } from "node:crypto";
+import { readFileSync as fsReadFileSync } from "node:fs";
+import { unlink, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import axios from "axios";
 import {
   CLAUDE_AI_INFERENCE_SCOPE,
   getOauthConfig,
   OAUTH_BETA_HEADER,
-} from '../../constants/oauth.js';
+} from "../../constants/oauth.js";
 import {
   checkAndRefreshOAuthTokenIfNeeded,
   getAnthropicApiKeyWithSource,
   getClaudeAIOAuthTokens,
-} from '../../utils/auth.js';
-import { registerCleanup } from '../../utils/cleanupRegistry.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { getClaudeConfigHomeDir } from '../../utils/envUtils.js';
-import { classifyAxiosError } from '../../utils/errors.js';
-import { safeParseJSON } from '../../utils/json.js';
-import { getAPIProvider, isFirstPartyAnthropicBaseUrl } from '../../utils/model/providers.js';
-import { isEssentialTrafficOnly } from '../../utils/privacyLevel.js';
-import { sleep } from '../../utils/sleep.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { getClaudeCodeUserAgent } from '../../utils/userAgent.js';
-import { getRetryDelay } from '../api/withRetry.js';
+} from "../../utils/auth.js";
+import { registerCleanup } from "../../utils/cleanupRegistry.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { getClaudeConfigHomeDir } from "../../utils/envUtils.js";
+import { classifyAxiosError } from "../../utils/errors.js";
+import { safeParseJSON } from "../../utils/json.js";
+import { getAPIProvider, isFirstPartyAnthropicBaseUrl } from "../../utils/model/providers.js";
+import { isEssentialTrafficOnly } from "../../utils/privacyLevel.js";
+import { sleep } from "../../utils/sleep.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { getClaudeCodeUserAgent } from "../../utils/userAgent.js";
+import { getRetryDelay } from "../api/withRetry.js";
 import {
   type PolicyLimitsFetchResult,
   type PolicyLimitsResponse,
   PolicyLimitsResponseSchema,
-} from './types.js';
+} from "./types.js";
 
 function isNodeError(e: unknown): e is NodeJS.ErrnoException {
   return e instanceof Error;
 }
 
 // Constants
-const CACHE_FILENAME = 'policy-limits.json';
+const CACHE_FILENAME = "policy-limits.json";
 const FETCH_TIMEOUT_MS = 10000; // 10 seconds
 const DEFAULT_MAX_RETRIES = 5;
 const POLLING_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
@@ -66,7 +66,7 @@ let loadingCompleteResolve: (() => void) | null = null;
 const LOADING_PROMISE_TIMEOUT_MS = 30000; // 30 seconds
 
 // Session-level cache for policy restrictions
-let sessionCache: PolicyLimitsResponse['restrictions'] | null = null;
+let sessionCache: PolicyLimitsResponse["restrictions"] | null = null;
 
 /**
  * Test-only sync reset. clearPolicyLimitsCache() does file I/O and is too
@@ -99,7 +99,7 @@ export function initializePolicyLimitsLoadingPromise(): void {
 
       setTimeout(() => {
         if (loadingCompleteResolve) {
-          logForDebugging('Policy limits: Loading promise timed out, resolving anyway');
+          logForDebugging("Policy limits: Loading promise timed out, resolving anyway");
           loadingCompleteResolve();
           loadingCompleteResolve = null;
         }
@@ -129,7 +129,7 @@ function sortKeysDeep(obj: unknown): unknown {
   if (Array.isArray(obj)) {
     return obj.map(sortKeysDeep);
   }
-  if (obj !== null && typeof obj === 'object') {
+  if (obj !== null && typeof obj === "object") {
     const sorted: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(obj).sort(([a], [b]) => a.localeCompare(b))) {
       sorted[key] = sortKeysDeep(value);
@@ -142,10 +142,10 @@ function sortKeysDeep(obj: unknown): unknown {
 /**
  * Compute a checksum from restrictions content for HTTP caching
  */
-function computeChecksum(restrictions: PolicyLimitsResponse['restrictions']): string {
+function computeChecksum(restrictions: PolicyLimitsResponse["restrictions"]): string {
   const sorted = sortKeysDeep(restrictions);
   const normalized = jsonStringify(sorted);
-  const hash = createHash('sha256').update(normalized).digest('hex');
+  const hash = createHash("sha256").update(normalized).digest("hex");
   return `sha256:${hash}`;
 }
 
@@ -157,7 +157,7 @@ function computeChecksum(restrictions: PolicyLimitsResponse['restrictions']): st
  */
 export function isPolicyLimitsEligible(): boolean {
   // 3p provider users should not hit the policy limits endpoint
-  if (getAPIProvider() !== 'firstParty') {
+  if (getAPIProvider() !== "firstParty") {
     return false;
   }
 
@@ -191,7 +191,7 @@ export function isPolicyLimitsEligible(): boolean {
 
   // Only Team and Enterprise OAuth users are eligible — these orgs have
   // admin-configurable policy restrictions (e.g. allow_remote_sessions)
-  if (tokens.subscriptionType !== 'enterprise' && tokens.subscriptionType !== 'team') {
+  if (tokens.subscriptionType !== "enterprise" && tokens.subscriptionType !== "team") {
     return false;
   }
 
@@ -224,7 +224,7 @@ function getAuthHeaders(): {
     if (apiKey) {
       return {
         headers: {
-          'x-api-key': apiKey,
+          "x-api-key": apiKey,
         },
       };
     }
@@ -238,14 +238,14 @@ function getAuthHeaders(): {
     return {
       headers: {
         Authorization: `Bearer ${oauthTokens.accessToken}`,
-        'anthropic-beta': OAUTH_BETA_HEADER,
+        "anthropic-beta": OAUTH_BETA_HEADER,
       },
     };
   }
 
   return {
     headers: {},
-    error: 'No authentication available',
+    error: "No authentication available",
   };
 }
 
@@ -289,7 +289,7 @@ async function fetchPolicyLimits(cachedChecksum?: string): Promise<PolicyLimitsF
     if (authHeaders.error) {
       return {
         success: false,
-        error: 'Authentication required for policy limits',
+        error: "Authentication required for policy limits",
         skipRetry: true,
       };
     }
@@ -297,11 +297,11 @@ async function fetchPolicyLimits(cachedChecksum?: string): Promise<PolicyLimitsF
     const endpoint = getPolicyLimitsEndpoint();
     const headers: Record<string, string> = {
       ...authHeaders.headers,
-      'User-Agent': getClaudeCodeUserAgent(),
+      "User-Agent": getClaudeCodeUserAgent(),
     };
 
     if (cachedChecksum) {
-      headers['If-None-Match'] = `"${cachedChecksum}"`;
+      headers["If-None-Match"] = `"${cachedChecksum}"`;
     }
 
     const response = await axios.get(endpoint, {
@@ -312,7 +312,7 @@ async function fetchPolicyLimits(cachedChecksum?: string): Promise<PolicyLimitsF
 
     // Handle 304 Not Modified - cached version is still valid
     if (response.status === 304) {
-      logForDebugging('Policy limits: Using cached restrictions (304)');
+      logForDebugging("Policy limits: Using cached restrictions (304)");
       return {
         success: true,
         restrictions: null, // Signal that cache is valid
@@ -322,7 +322,7 @@ async function fetchPolicyLimits(cachedChecksum?: string): Promise<PolicyLimitsF
 
     // Handle 404 Not Found - no policy limits exist or feature not enabled
     if (response.status === 404) {
-      logForDebugging('Policy limits: No restrictions found (404)');
+      logForDebugging("Policy limits: No restrictions found (404)");
       return {
         success: true,
         restrictions: {},
@@ -335,11 +335,11 @@ async function fetchPolicyLimits(cachedChecksum?: string): Promise<PolicyLimitsF
       logForDebugging(`Policy limits: Invalid response format - ${parsed.error.message}`);
       return {
         success: false,
-        error: 'Invalid policy limits format',
+        error: "Invalid policy limits format",
       };
     }
 
-    logForDebugging('Policy limits: Fetched successfully');
+    logForDebugging("Policy limits: Fetched successfully");
     return {
       success: true,
       restrictions: parsed.data.restrictions,
@@ -348,16 +348,16 @@ async function fetchPolicyLimits(cachedChecksum?: string): Promise<PolicyLimitsF
     // 404 is handled above via validateStatus, so it won't reach here
     const { kind, message } = classifyAxiosError(error);
     switch (kind) {
-      case 'auth':
+      case "auth":
         return {
           success: false,
-          error: 'Not authorized for policy limits',
+          error: "Not authorized for policy limits",
           skipRetry: true,
         };
-      case 'timeout':
-        return { success: false, error: 'Policy limits request timeout' };
-      case 'network':
-        return { success: false, error: 'Cannot connect to server' };
+      case "timeout":
+        return { success: false, error: "Policy limits request timeout" };
+      case "network":
+        return { success: false, error: "Cannot connect to server" };
       default:
         return { success: false, error: message };
     }
@@ -368,9 +368,9 @@ async function fetchPolicyLimits(cachedChecksum?: string): Promise<PolicyLimitsF
  * Load restrictions from cache file
  */
 // sync IO: called from sync context (getRestrictionsFromCache -> isPolicyAllowed)
-function loadCachedRestrictions(): PolicyLimitsResponse['restrictions'] | null {
+function loadCachedRestrictions(): PolicyLimitsResponse["restrictions"] | null {
   try {
-    const content = fsReadFileSync(getCachePath(), 'utf-8');
+    const content = fsReadFileSync(getCachePath(), "utf-8");
     const data = safeParseJSON(content, false);
     const parsed = PolicyLimitsResponseSchema().safeParse(data);
     if (!parsed.success) {
@@ -387,19 +387,19 @@ function loadCachedRestrictions(): PolicyLimitsResponse['restrictions'] | null {
  * Save restrictions to cache file
  */
 async function saveCachedRestrictions(
-  restrictions: PolicyLimitsResponse['restrictions'],
+  restrictions: PolicyLimitsResponse["restrictions"],
 ): Promise<void> {
   try {
     const path = getCachePath();
     const data: PolicyLimitsResponse = { restrictions };
     await writeFile(path, jsonStringify(data, null, 2), {
-      encoding: 'utf-8',
+      encoding: "utf-8",
       mode: 0o600,
     });
     logForDebugging(`Policy limits: Saved to ${path}`);
   } catch (error) {
     logForDebugging(
-      `Policy limits: Failed to save - ${error instanceof Error ? error.message : 'unknown error'}`,
+      `Policy limits: Failed to save - ${error instanceof Error ? error.message : "unknown error"}`,
     );
   }
 }
@@ -408,7 +408,7 @@ async function saveCachedRestrictions(
  * Fetch and load policy limits with file caching
  * Fails open - returns null if fetch fails and no cache exists
  */
-async function fetchAndLoadPolicyLimits(): Promise<PolicyLimitsResponse['restrictions'] | null> {
+async function fetchAndLoadPolicyLimits(): Promise<PolicyLimitsResponse["restrictions"] | null> {
   if (!isPolicyLimitsEligible()) {
     return null;
   }
@@ -422,7 +422,7 @@ async function fetchAndLoadPolicyLimits(): Promise<PolicyLimitsResponse['restric
 
     if (!result.success) {
       if (cachedRestrictions) {
-        logForDebugging('Policy limits: Using stale cache after fetch failure');
+        logForDebugging("Policy limits: Using stale cache after fetch failure");
         sessionCache = cachedRestrictions;
         return cachedRestrictions;
       }
@@ -431,7 +431,7 @@ async function fetchAndLoadPolicyLimits(): Promise<PolicyLimitsResponse['restric
 
     // Handle 304 Not Modified
     if (result.restrictions === null && cachedRestrictions) {
-      logForDebugging('Policy limits: Cache still valid (304 Not Modified)');
+      logForDebugging("Policy limits: Cache still valid (304 Not Modified)");
       sessionCache = cachedRestrictions;
       return cachedRestrictions;
     }
@@ -442,7 +442,7 @@ async function fetchAndLoadPolicyLimits(): Promise<PolicyLimitsResponse['restric
     if (hasContent) {
       sessionCache = newRestrictions;
       await saveCachedRestrictions(newRestrictions);
-      logForDebugging('Policy limits: Applied new restrictions successfully');
+      logForDebugging("Policy limits: Applied new restrictions successfully");
       return newRestrictions;
     }
 
@@ -450,16 +450,16 @@ async function fetchAndLoadPolicyLimits(): Promise<PolicyLimitsResponse['restric
     sessionCache = newRestrictions;
     try {
       await unlink(getCachePath());
-      logForDebugging('Policy limits: Deleted cached file (404 response)');
+      logForDebugging("Policy limits: Deleted cached file (404 response)");
     } catch (e) {
-      if (isNodeError(e) && e.code !== 'ENOENT') {
+      if (isNodeError(e) && e.code !== "ENOENT") {
         logForDebugging(`Policy limits: Failed to delete cached file - ${e.message}`);
       }
     }
     return newRestrictions;
   } catch {
     if (cachedRestrictions) {
-      logForDebugging('Policy limits: Using stale cache after error');
+      logForDebugging("Policy limits: Using stale cache after error");
       sessionCache = cachedRestrictions;
       return cachedRestrictions;
     }
@@ -472,7 +472,7 @@ async function fetchAndLoadPolicyLimits(): Promise<PolicyLimitsResponse['restric
  * and the policy cache is unavailable. Without this, a cache miss or network
  * timeout would silently re-enable these features for HIPAA orgs.
  */
-const ESSENTIAL_TRAFFIC_DENY_ON_MISS = new Set(['allow_product_feedback']);
+const ESSENTIAL_TRAFFIC_DENY_ON_MISS = new Set(["allow_product_feedback"]);
 
 /**
  * Check if a specific policy is allowed
@@ -498,7 +498,7 @@ export function isPolicyAllowed(policy: string): boolean {
 /**
  * Get restrictions synchronously from session cache or file
  */
-function getRestrictionsFromCache(): PolicyLimitsResponse['restrictions'] | null {
+function getRestrictionsFromCache(): PolicyLimitsResponse["restrictions"] | null {
   if (!isPolicyLimitsEligible()) {
     return null;
   }
@@ -554,7 +554,7 @@ export async function refreshPolicyLimits(): Promise<void> {
   }
 
   await fetchAndLoadPolicyLimits();
-  logForDebugging('Policy limits: Refreshed after auth change');
+  logForDebugging("Policy limits: Refreshed after auth change");
 }
 
 /**
@@ -590,7 +590,7 @@ async function pollPolicyLimits(): Promise<void> {
 
     const newCache = sessionCache ? jsonStringify(sessionCache) : null;
     if (newCache !== previousCache) {
-      logForDebugging('Policy limits: Changed during background poll');
+      logForDebugging("Policy limits: Changed during background poll");
     }
   } catch {
     // Don't fail closed for background polling

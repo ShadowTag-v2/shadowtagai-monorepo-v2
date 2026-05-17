@@ -2,36 +2,36 @@
  * Utility for persisting large tool results to disk instead of truncating them.
  */
 
-import { mkdir, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { getOriginalCwd, getSessionId } from '../bootstrap/state.js';
+import { mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import { getOriginalCwd, getSessionId } from "../bootstrap/state.js";
 import {
   BYTES_PER_TOKEN,
   DEFAULT_MAX_RESULT_SIZE_CHARS,
   MAX_TOOL_RESULT_BYTES,
   MAX_TOOL_RESULTS_PER_MESSAGE_CHARS,
-} from '../constants/toolLimits.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import { logEvent } from '../services/analytics/index.js';
-import { sanitizeToolNameForAnalytics } from '../services/analytics/metadata.js';
-import type { Message } from '../types/message.js';
-import { logForDebugging } from './debug.js';
-import { getErrnoCode, toError } from './errors.js';
-import { formatFileSize } from './format.js';
-import { logError } from './log.js';
-import { getProjectDir } from './sessionStorage.js';
-import { jsonStringify } from './slowOperations.js';
+} from "../constants/toolLimits.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import { logEvent } from "../services/analytics/index.js";
+import { sanitizeToolNameForAnalytics } from "../services/analytics/metadata.js";
+import type { Message } from "../types/message.js";
+import { logForDebugging } from "./debug.js";
+import { getErrnoCode, toError } from "./errors.js";
+import { formatFileSize } from "./format.js";
+import { logError } from "./log.js";
+import { getProjectDir } from "./sessionStorage.js";
+import { jsonStringify } from "./slowOperations.js";
 
 // Subdirectory name for tool results within a session
-export const TOOL_RESULTS_SUBDIR = 'tool-results';
+export const TOOL_RESULTS_SUBDIR = "tool-results";
 
 // XML tag used to wrap persisted output messages
-export const PERSISTED_OUTPUT_TAG = '<persisted-output>';
-export const PERSISTED_OUTPUT_CLOSING_TAG = '</persisted-output>';
+export const PERSISTED_OUTPUT_TAG = "<persisted-output>";
+export const PERSISTED_OUTPUT_CLOSING_TAG = "</persisted-output>";
 
 // Message used when tool result content was cleared without persisting to file
-export const TOOL_RESULT_CLEARED_MESSAGE = '[Old tool result content cleared]';
+export const TOOL_RESULT_CLEARED_MESSAGE = "[Old tool result content cleared]";
 
 /**
  * GrowthBook override map: tool name -> persistence threshold (chars).
@@ -40,7 +40,7 @@ export const TOOL_RESULT_CLEARED_MESSAGE = '[Old tool result content cleared]';
  * Tools absent from the map use the hardcoded fallback.
  * Flag default is {} (no overrides == behavior unchanged).
  */
-const PERSIST_THRESHOLD_OVERRIDE_FLAG = 'tengu_satin_quoll';
+const PERSIST_THRESHOLD_OVERRIDE_FLAG = "tengu_satin_quoll";
 
 /**
  * Resolve the effective persistence threshold for a tool.
@@ -67,7 +67,7 @@ export function getPersistenceThreshold(
     {},
   );
   const override = overrides?.[toolName];
-  if (typeof override === 'number' && Number.isFinite(override) && override > 0) {
+  if (typeof override === "number" && Number.isFinite(override) && override > 0) {
     return override;
   }
   return Math.min(declaredMaxResultSizeChars, DEFAULT_MAX_RESULT_SIZE_CHARS);
@@ -108,7 +108,7 @@ export const PREVIEW_SIZE_BYTES = 2000;
  * Get the filepath where a tool result would be persisted.
  */
 export function getToolResultPath(id: string, isJson: boolean): string {
-  const ext = isJson ? 'json' : 'txt';
+  const ext = isJson ? "json" : "txt";
   return join(getToolResultsDir(), `${id}.${ext}`);
 }
 
@@ -131,17 +131,17 @@ export async function ensureToolResultsDir(): Promise<void> {
  * @returns Information about the persisted file including filepath and preview
  */
 export async function persistToolResult(
-  content: NonNullable<ToolResultBlockParam['content']>,
+  content: NonNullable<ToolResultBlockParam["content"]>,
   toolUseId: string,
 ): Promise<PersistedToolResult | PersistToolResultError> {
   const isJson = Array.isArray(content);
 
   // Check for non-text content - we can only persist text blocks
   if (isJson) {
-    const hasNonTextContent = content.some((block) => block.type !== 'text');
+    const hasNonTextContent = content.some((block) => block.type !== "text");
     if (hasNonTextContent) {
       return {
-        error: 'Cannot persist tool results containing non-text content',
+        error: "Cannot persist tool results containing non-text content",
       };
     }
   }
@@ -155,10 +155,10 @@ export async function persistToolResult(
   // the same content on every API turn when microcompact replays the
   // original messages. Use 'wx' instead of a stat-then-write race.
   try {
-    await writeFile(filepath, contentStr, { encoding: 'utf-8', flag: 'wx' });
+    await writeFile(filepath, contentStr, { encoding: "utf-8", flag: "wx" });
     logForDebugging(`Persisted tool result to ${filepath} (${formatFileSize(contentStr.length)})`);
   } catch (error) {
-    if (getErrnoCode(error) !== 'EEXIST') {
+    if (getErrnoCode(error) !== "EEXIST") {
       logError(toError(error));
       return { error: getFileSystemErrorMessage(toError(error)) };
     }
@@ -185,7 +185,7 @@ export function buildLargeToolResultMessage(result: PersistedToolResult): string
   message += `Output too large (${formatFileSize(result.originalSize)}). Full output saved to: ${result.filepath}\n\n`;
   message += `Preview (first ${formatFileSize(PREVIEW_SIZE_BYTES)}):\n`;
   message += result.preview;
-  message += result.hasMore ? '\n...\n' : '\n';
+  message += result.hasMore ? "\n...\n" : "\n";
   message += PERSISTED_OUTPUT_CLOSING_TAG;
   return message;
 }
@@ -233,18 +233,18 @@ export async function processPreMappedToolResultBlock(
  * only blocks are text blocks with empty/whitespace text. Non-text blocks
  * (images, tool_reference) are treated as non-empty.
  */
-export function isToolResultContentEmpty(content: ToolResultBlockParam['content']): boolean {
+export function isToolResultContentEmpty(content: ToolResultBlockParam["content"]): boolean {
   if (!content) return true;
-  if (typeof content === 'string') return content.trim() === '';
+  if (typeof content === "string") return content.trim() === "";
   if (!Array.isArray(content)) return false;
   if (content.length === 0) return true;
   return content.every(
     (block) =>
-      typeof block === 'object' &&
-      'type' in block &&
-      block.type === 'text' &&
-      'text' in block &&
-      (typeof block.text !== 'string' || block.text.trim() === ''),
+      typeof block === "object" &&
+      "type" in block &&
+      block.type === "text" &&
+      "text" in block &&
+      (typeof block.text !== "string" || block.text.trim() === ""),
   );
 }
 
@@ -269,7 +269,7 @@ async function maybePersistLargeToolResult(
   // shell commands, MCP servers returning content:[], REPL statements, etc.).
   // Inject a short marker so the model always has something to react to.
   if (isToolResultContentEmpty(content)) {
-    logEvent('tengu_tool_empty_result', {
+    logEvent("tengu_tool_empty_result", {
       toolName: sanitizeToolNameForAnalytics(toolName),
     });
     return {
@@ -305,7 +305,7 @@ async function maybePersistLargeToolResult(
   const message = buildLargeToolResultMessage(result);
 
   // Log analytics
-  logEvent('tengu_tool_result_persisted', {
+  logEvent("tengu_tool_result_persisted", {
     toolName: sanitizeToolNameForAnalytics(toolName),
     originalSizeBytes: result.originalSize,
     persistedSizeBytes: message.length,
@@ -330,7 +330,7 @@ export function generatePreview(
 
   // Find the last newline within the limit to avoid cutting mid-line
   const truncated = content.slice(0, maxBytes);
-  const lastNewline = truncated.lastIndexOf('\n');
+  const lastNewline = truncated.lastIndexOf("\n");
 
   // If we found a newline reasonably close to the limit, use it
   // Otherwise fall back to the exact limit
@@ -345,7 +345,7 @@ export function generatePreview(
 export function isPersistError(
   result: PersistedToolResult | PersistToolResultError,
 ): result is PersistToolResultError {
-  return 'error' in result;
+  return "error" in result;
 }
 
 // --- Message-level aggregate tool result budget ---
@@ -404,10 +404,10 @@ export function cloneContentReplacementState(
  */
 export function getPerMessageBudgetLimit(): number {
   const override = getFeatureValue_CACHED_MAY_BE_STALE<number | null>(
-    'tengu_hawthorn_window',
+    "tengu_hawthorn_window",
     null,
   );
-  if (typeof override === 'number' && Number.isFinite(override) && override > 0) {
+  if (typeof override === "number" && Number.isFinite(override) && override > 0) {
     return override;
   }
   return MAX_TOOL_RESULTS_PER_MESSAGE_CHARS;
@@ -428,7 +428,7 @@ export function provisionContentReplacementState(
   initialMessages?: Message[],
   initialContentReplacements?: ContentReplacementRecord[],
 ): ContentReplacementState | undefined {
-  const enabled = getFeatureValue_CACHED_MAY_BE_STALE('tengu_hawthorn_steeple', false);
+  const enabled = getFeatureValue_CACHED_MAY_BE_STALE("tengu_hawthorn_steeple", false);
   if (!enabled) return undefined;
   if (initialMessages) {
     return reconstructContentReplacementState(initialMessages, initialContentReplacements ?? []);
@@ -447,19 +447,19 @@ export function provisionContentReplacementState(
  * or path layout can't silently break prompt cache.
  */
 export type ContentReplacementRecord = {
-  kind: 'tool-result';
+  kind: "tool-result";
   toolUseId: string;
   replacement: string;
 };
 
 export type ToolResultReplacementRecord = Extract<
   ContentReplacementRecord,
-  { kind: 'tool-result' }
+  { kind: "tool-result" }
 >;
 
 type ToolResultCandidate = {
   toolUseId: string;
-  content: NonNullable<ToolResultBlockParam['content']>;
+  content: NonNullable<ToolResultBlockParam["content"]>;
   size: number;
 };
 
@@ -469,26 +469,26 @@ type CandidatePartition = {
   fresh: ToolResultCandidate[];
 };
 
-function isContentAlreadyCompacted(content: ToolResultBlockParam['content']): boolean {
+function isContentAlreadyCompacted(content: ToolResultBlockParam["content"]): boolean {
   // All budget-produced content starts with the tag (buildLargeToolResultMessage).
   // `.startsWith()` avoids false-positives when the tag appears anywhere else
   // in the content (e.g., reading this source file).
-  return typeof content === 'string' && content.startsWith(PERSISTED_OUTPUT_TAG);
+  return typeof content === "string" && content.startsWith(PERSISTED_OUTPUT_TAG);
 }
 
-function hasImageBlock(content: NonNullable<ToolResultBlockParam['content']>): boolean {
+function hasImageBlock(content: NonNullable<ToolResultBlockParam["content"]>): boolean {
   return (
     Array.isArray(content) &&
-    content.some((b) => typeof b === 'object' && 'type' in b && b.type === 'image')
+    content.some((b) => typeof b === "object" && "type" in b && b.type === "image")
   );
 }
 
-function contentSize(content: NonNullable<ToolResultBlockParam['content']>): number {
-  if (typeof content === 'string') return content.length;
+function contentSize(content: NonNullable<ToolResultBlockParam["content"]>): number {
+  if (typeof content === "string") return content.length;
   // Sum text-block lengths directly. Slightly under-counts vs serialized
   // (no JSON framing), but the budget is a rough token heuristic anyway.
   // Avoids allocating a content-sized string every enforcement pass.
-  return content.reduce((sum, b) => sum + (b.type === 'text' ? b.text.length : 0), 0);
+  return content.reduce((sum, b) => sum + (b.type === "text" ? b.text.length : 0), 0);
 }
 
 /**
@@ -499,11 +499,11 @@ function contentSize(content: NonNullable<ToolResultBlockParam['content']>): num
 function buildToolNameMap(messages: Message[]): Map<string, string> {
   const map = new Map<string, string>();
   for (const message of messages) {
-    if (message.type !== 'assistant') continue;
+    if (message.type !== "assistant") continue;
     const content = message.message.content;
     if (!Array.isArray(content)) continue;
     for (const block of content) {
-      if (block.type === 'tool_use') {
+      if (block.type === "tool_use") {
         map.set(block.id, block.name);
       }
     }
@@ -518,11 +518,11 @@ function buildToolNameMap(messages: Message[]): Map<string, string> {
  * Returns [] for messages with no eligible blocks.
  */
 function collectCandidatesFromMessage(message: Message): ToolResultCandidate[] {
-  if (message.type !== 'user' || !Array.isArray(message.message.content)) {
+  if (message.type !== "user" || !Array.isArray(message.message.content)) {
     return [];
   }
   return message.message.content.flatMap((block) => {
-    if (block.type !== 'tool_result' || !block.content) return [];
+    if (block.type !== "tool_result" || !block.content) return [];
     if (isContentAlreadyCompacted(block.content)) return [];
     if (hasImageBlock(block.content)) return [];
     return [
@@ -583,9 +583,9 @@ function collectCandidatesByMessage(messages: Message[]): ToolResultCandidate[][
   // message — so the budget must see them as one group too.
   const seenAsstIds = new Set<string>();
   for (const message of messages) {
-    if (message.type === 'user') {
+    if (message.type === "user") {
       current.push(...collectCandidatesFromMessage(message));
-    } else if (message.type === 'assistant') {
+    } else if (message.type === "assistant") {
       if (!seenAsstIds.has(message.message.id)) {
         flush();
         seenAsstIds.add(message.message.id);
@@ -662,12 +662,12 @@ function replaceToolResultContents(
   replacementMap: Map<string, string>,
 ): Message[] {
   return messages.map((message) => {
-    if (message.type !== 'user' || !Array.isArray(message.message.content)) {
+    if (message.type !== "user" || !Array.isArray(message.message.content)) {
       return message;
     }
     const content = message.message.content;
     const needsReplace = content.some(
-      (b) => b.type === 'tool_result' && replacementMap.has(b.tool_use_id),
+      (b) => b.type === "tool_result" && replacementMap.has(b.tool_use_id),
     );
     if (!needsReplace) return message;
     return {
@@ -675,7 +675,7 @@ function replaceToolResultContents(
       message: {
         ...message.message,
         content: content.map((block) => {
-          if (block.type !== 'tool_result') return block;
+          if (block.type !== "tool_result") return block;
           const replacement = replacementMap.get(block.tool_use_id);
           return replacement === undefined ? block : { ...block, content: replacement };
         }),
@@ -736,7 +736,7 @@ export async function enforceToolResultBudget(
   const candidatesByMessage = collectCandidatesByMessage(messages);
   const nameByToolUseId = skipToolNames.size > 0 ? buildToolNameMap(messages) : undefined;
   const shouldSkip = (id: string): boolean =>
-    nameByToolUseId !== undefined && skipToolNames.has(nameByToolUseId.get(id) ?? '');
+    nameByToolUseId !== undefined && skipToolNames.has(nameByToolUseId.get(id) ?? "");
   // Resolve once per call. A mid-session flag change only affects FRESH
   // messages (prior decisions are frozen via seenIds/replacements), so
   // prompt cache for already-seen content is preserved regardless.
@@ -820,11 +820,11 @@ export async function enforceToolResultBudget(
     replacementMap.set(candidate.toolUseId, replacement.content);
     state.replacements.set(candidate.toolUseId, replacement.content);
     newlyReplaced.push({
-      kind: 'tool-result',
+      kind: "tool-result",
       toolUseId: candidate.toolUseId,
       replacement: replacement.content,
     });
-    logEvent('tengu_tool_result_persisted_message_budget', {
+    logEvent("tengu_tool_result_persisted_message_budget", {
       originalSizeBytes: replacement.originalSize,
       persistedSizeBytes: replacement.content.length,
       estimatedOriginalTokens: Math.ceil(replacement.originalSize / BYTES_PER_TOKEN),
@@ -842,7 +842,7 @@ export async function enforceToolResultBudget(
         `across ${messagesOverBudget} over-budget message(s), ` +
         `shed ~${formatFileSize(replacedSize)}, ${reappliedCount} re-applied`,
     );
-    logEvent('tengu_message_level_tool_result_budget_enforced', {
+    logEvent("tengu_message_level_tool_result_budget_enforced", {
       resultsPersisted: newlyReplaced.length,
       messagesOverBudget,
       replacedSizeBytes: replacedSize,
@@ -921,7 +921,7 @@ export function reconstructContentReplacementState(
     state.seenIds.add(id);
   }
   for (const r of records) {
-    if (r.kind === 'tool-result' && candidateIds.has(r.toolUseId)) {
+    if (r.kind === "tool-result" && candidateIds.has(r.toolUseId)) {
       state.replacements.set(r.toolUseId, r.replacement);
     }
   }
@@ -968,18 +968,18 @@ function getFileSystemErrorMessage(error: Error): string {
   const nodeError = error as NodeJS.ErrnoException;
   if (nodeError.code) {
     switch (nodeError.code) {
-      case 'ENOENT':
-        return `Directory not found: ${nodeError.path ?? 'unknown path'}`;
-      case 'EACCES':
-        return `Permission denied: ${nodeError.path ?? 'unknown path'}`;
-      case 'ENOSPC':
-        return 'No space left on device';
-      case 'EROFS':
-        return 'Read-only file system';
-      case 'EMFILE':
-        return 'Too many open files';
-      case 'EEXIST':
-        return `File already exists: ${nodeError.path ?? 'unknown path'}`;
+      case "ENOENT":
+        return `Directory not found: ${nodeError.path ?? "unknown path"}`;
+      case "EACCES":
+        return `Permission denied: ${nodeError.path ?? "unknown path"}`;
+      case "ENOSPC":
+        return "No space left on device";
+      case "EROFS":
+        return "Read-only file system";
+      case "EMFILE":
+        return "Too many open files";
+      case "EEXIST":
+        return `File already exists: ${nodeError.path ?? "unknown path"}`;
       default:
         return `${nodeError.code}: ${nodeError.message}`;
     }

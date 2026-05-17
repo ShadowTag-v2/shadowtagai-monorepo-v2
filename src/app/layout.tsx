@@ -15,14 +15,14 @@
  *   - No inline scripts (compliant with strict CSP)
  */
 
-import type { Metadata } from 'next';
-import { PanopticonProvider } from '@/components/telemetry/PanopticonProvider';
-import './globals.css';
+import type { Metadata } from "next";
+import { PanopticonProvider } from "@/components/telemetry/PanopticonProvider";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'CounselConduit — Privilege-Preserving Legal AI',
+  title: "CounselConduit — Privilege-Preserving Legal AI",
   description:
-    'Secure AI-assisted document review for law firms. Attorney-monitored, privilege-preserving, Heppner-compliant.',
+    "Secure AI-assisted document review for law firms. Attorney-monitored, privilege-preserving, Heppner-compliant.",
   robots: {
     index: false, // Legal SaaS — no public indexing
     follow: false,

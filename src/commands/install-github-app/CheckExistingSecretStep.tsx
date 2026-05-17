@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import TextInput from '../../components/TextInput.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { Box, color, Text, useTheme } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import TextInput from "../../components/TextInput.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { Box, color, Text, useTheme } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
 
 interface CheckExistingSecretStepProps {
   useExistingSecret: boolean;
@@ -40,9 +40,9 @@ export function CheckExistingSecretStep(t0) {
   let t3;
   if ($[4] !== handleNext || $[5] !== handlePrevious || $[6] !== onSubmit) {
     t3 = {
-      'confirm:previous': handlePrevious,
-      'confirm:next': handleNext,
-      'confirm:yes': onSubmit,
+      "confirm:previous": handlePrevious,
+      "confirm:next": handleNext,
+      "confirm:yes": onSubmit,
     };
     $[4] = handleNext;
     $[5] = handlePrevious;
@@ -54,7 +54,7 @@ export function CheckExistingSecretStep(t0) {
   let t4;
   if ($[8] !== useExistingSecret) {
     t4 = {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: useExistingSecret,
     };
     $[8] = useExistingSecret;
@@ -66,8 +66,8 @@ export function CheckExistingSecretStep(t0) {
   let t5;
   if ($[10] !== handleNext || $[11] !== handlePrevious) {
     t5 = {
-      'confirm:previous': handlePrevious,
-      'confirm:next': handleNext,
+      "confirm:previous": handlePrevious,
+      "confirm:next": handleNext,
     };
     $[10] = handleNext;
     $[11] = handlePrevious;
@@ -79,7 +79,7 @@ export function CheckExistingSecretStep(t0) {
   let t7;
   if ($[13] !== t6) {
     t7 = {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: t6,
     };
     $[13] = t6;
@@ -89,7 +89,7 @@ export function CheckExistingSecretStep(t0) {
   }
   useKeybindings(t5, t7);
   let t8;
-  if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Box flexDirection="column" marginBottom={1}>
         <Text bold={true}>Install GitHub App</Text>
@@ -101,7 +101,7 @@ export function CheckExistingSecretStep(t0) {
     t8 = $[15];
   }
   let t9;
-  if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = (
       <Box marginBottom={1}>
         <Text color="warning">ANTHROPIC_API_KEY already exists in repository secrets!</Text>
@@ -112,7 +112,7 @@ export function CheckExistingSecretStep(t0) {
     t9 = $[16];
   }
   let t10;
-  if ($[17] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
     t10 = (
       <Box marginBottom={1}>
         <Text>Would you like to:</Text>
@@ -124,7 +124,7 @@ export function CheckExistingSecretStep(t0) {
   }
   let t11;
   if ($[18] !== theme || $[19] !== useExistingSecret) {
-    t11 = useExistingSecret ? color('success', theme)('> ') : '  ';
+    t11 = useExistingSecret ? color("success", theme)("> ") : "  ";
     $[18] = theme;
     $[19] = useExistingSecret;
     $[20] = t11;
@@ -145,7 +145,7 @@ export function CheckExistingSecretStep(t0) {
   }
   let t13;
   if ($[23] !== theme || $[24] !== useExistingSecret) {
-    t13 = !useExistingSecret ? color('success', theme)('> ') : '  ';
+    t13 = !useExistingSecret ? color("success", theme)("> ") : "  ";
     $[23] = theme;
     $[24] = useExistingSecret;
     $[25] = t13;
@@ -221,7 +221,7 @@ export function CheckExistingSecretStep(t0) {
     t16 = $[38];
   }
   let t17;
-  if ($[39] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[39] === Symbol.for("react.memo_cache_sentinel")) {
     t17 = (
       <Box marginLeft={3}>
         <Text dimColor={true}>↑/↓ to select · Enter to continue</Text>

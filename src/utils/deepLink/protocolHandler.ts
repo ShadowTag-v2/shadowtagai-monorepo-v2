@@ -11,14 +11,14 @@
  * directly — there is no terminal attached.
  */
 
-import { homedir } from 'node:os';
-import { logForDebugging } from '../debug.js';
-import { filterExistingPaths, getKnownPathsForRepo } from '../githubRepoPathMapping.js';
-import { jsonStringify } from '../slowOperations.js';
-import { readLastFetchTime } from './banner.js';
-import { parseDeepLink } from './parseDeepLink.js';
-import { MACOS_BUNDLE_ID } from './registerProtocol.js';
-import { launchInTerminal } from './terminalLauncher.js';
+import { homedir } from "node:os";
+import { logForDebugging } from "../debug.js";
+import { filterExistingPaths, getKnownPathsForRepo } from "../githubRepoPathMapping.js";
+import { jsonStringify } from "../slowOperations.js";
+import { readLastFetchTime } from "./banner.js";
+import { parseDeepLink } from "./parseDeepLink.js";
+import { MACOS_BUNDLE_ID } from "./registerProtocol.js";
+import { launchInTerminal } from "./terminalLauncher.js";
 
 /**
  * Handle an incoming deep link URI.
@@ -63,7 +63,7 @@ export async function handleDeepLinkUri(uri: string): Promise<number> {
   if (!launched) {
     // biome-ignore lint/suspicious/noConsole: intentional error output
     console.error(
-      'Failed to open a terminal. Make sure a supported terminal emulator is installed.',
+      "Failed to open a terminal. Make sure a supported terminal emulator is installed.",
     );
     return 1;
   }
@@ -89,7 +89,7 @@ export async function handleUrlSchemeLaunch(): Promise<number | null> {
   }
 
   try {
-    const { waitForUrlEvent } = await import('url-handler-napi');
+    const { waitForUrlEvent } = await import("url-handler-napi");
     const url = waitForUrlEvent(5000);
     if (!url) {
       return null;

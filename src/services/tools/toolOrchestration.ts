@@ -1,12 +1,12 @@
-import type { ToolUseBlock } from '@anthropic-ai/sdk/resources/index.mjs';
-import type { CanUseToolFn } from '../../hooks/useCanUseTool.js';
-import { findToolByName, type ToolUseContext } from '../../Tool.js';
-import type { AssistantMessage, Message } from '../../types/message.js';
-import { all } from '../../utils/generators.js';
-import { type MessageUpdateLazy, runToolUse } from './toolExecution.js';
+import type { ToolUseBlock } from "@anthropic-ai/sdk/resources/index.mjs";
+import type { CanUseToolFn } from "../../hooks/useCanUseTool.js";
+import { findToolByName, type ToolUseContext } from "../../Tool.js";
+import type { AssistantMessage, Message } from "../../types/message.js";
+import { all } from "../../utils/generators.js";
+import { type MessageUpdateLazy, runToolUse } from "./toolExecution.js";
 
 function getMaxToolUseConcurrency(): number {
-  return parseInt(process.env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY || '', 10) || 10;
+  return parseInt(process.env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY || "", 10) || 10;
 }
 
 export type MessageUpdate = {
@@ -123,7 +123,7 @@ async function* runToolsSerially(
     for await (const update of runToolUse(
       toolUse,
       assistantMessages.find((_) =>
-        _.message.content.some((_) => _.type === 'tool_use' && _.id === toolUse.id),
+        _.message.content.some((_) => _.type === "tool_use" && _.id === toolUse.id),
       )!,
       canUseTool,
       currentContext,
@@ -152,7 +152,7 @@ async function* runToolsConcurrently(
       yield* runToolUse(
         toolUse,
         assistantMessages.find((_) =>
-          _.message.content.some((_) => _.type === 'tool_use' && _.id === toolUse.id),
+          _.message.content.some((_) => _.type === "tool_use" && _.id === toolUse.id),
         )!,
         canUseTool,
         toolUseContext,

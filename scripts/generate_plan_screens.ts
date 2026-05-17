@@ -3,9 +3,9 @@
  * Uses the StitchMCP tool interface for screen generation.
  */
 
-import { $ } from 'bun';
+import { $ } from "bun";
 
-export async function generateMcpScreens(planTitle: string = 'KAIROS Architectural Plan') {
+export async function generateMcpScreens(planTitle: string = "KAIROS Architectural Plan") {
   console.log(`⚡ [StitchMCP] Generating visual plan representations for: ${planTitle}`);
 
   try {
@@ -13,11 +13,11 @@ export async function generateMcpScreens(planTitle: string = 'KAIROS Architectur
     console.log(`✅ [StitchMCP] Screen generated: ${result.substring(0, 200)}`);
     return result;
   } catch {
-    console.log('⚠️ [StitchMCP] Server offline — screen generation deferred to next heartbeat.');
+    console.log("⚠️ [StitchMCP] Server offline — screen generation deferred to next heartbeat.");
     return null;
   }
 }
 
 if (import.meta.main) {
-  await generateMcpScreens(process.argv[2] || 'KAIROS V23 Dashboard');
+  await generateMcpScreens(process.argv[2] || "KAIROS V23 Dashboard");
 }

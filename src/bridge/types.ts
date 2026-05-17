@@ -3,24 +3,24 @@ export const DEFAULT_SESSION_TIMEOUT_MS = 24 * 60 * 60 * 1000;
 
 /** Reusable login guidance appended to bridge auth errors. */
 export const BRIDGE_LOGIN_INSTRUCTION =
-  'Remote Control is only available with claude.ai subscriptions. Please use `/login` to sign in with your claude.ai account.';
+  "Remote Control is only available with claude.ai subscriptions. Please use `/login` to sign in with your claude.ai account.";
 
 /** Full error printed when `claude remote-control` is run without auth. */
 export const BRIDGE_LOGIN_ERROR = `Error: You must be logged in to use Remote Control.\n\n${BRIDGE_LOGIN_INSTRUCTION}`;
 
 /** Shown when the user disconnects Remote Control (via /remote-control or ultraplan launch). */
-export const REMOTE_CONTROL_DISCONNECTED_MSG = 'Remote Control disconnected.';
+export const REMOTE_CONTROL_DISCONNECTED_MSG = "Remote Control disconnected.";
 
 // --- Protocol types for the environments API ---
 
 export type WorkData = {
-  type: 'session' | 'healthcheck';
+  type: "session" | "healthcheck";
   id: string;
 };
 
 export type WorkResponse = {
   id: string;
-  type: 'work';
+  type: "work";
   environment_id: string;
   state: string;
   data: WorkData;
@@ -48,9 +48,9 @@ export type WorkSecret = {
   use_code_sessions?: boolean;
 };
 
-export type SessionDoneStatus = 'completed' | 'failed' | 'interrupted';
+export type SessionDoneStatus = "completed" | "failed" | "interrupted";
 
-export type SessionActivityType = 'tool_start' | 'text' | 'result' | 'error';
+export type SessionActivityType = "tool_start" | "text" | "result" | "error";
 
 export type SessionActivity = {
   type: SessionActivityType;
@@ -64,7 +64,7 @@ export type SessionActivity = {
  * - `worktree`: persistent server, every session gets an isolated git worktree
  * - `same-dir`: persistent server, every session shares cwd (can stomp each other)
  */
-export type SpawnMode = 'single-session' | 'worktree' | 'same-dir';
+export type SpawnMode = "single-session" | "worktree" | "same-dir";
 
 /**
  * Well-known worker_type values THIS codebase produces. Sent as
@@ -74,7 +74,7 @@ export type SpawnMode = 'single-session' | 'worktree' | 'same-dir';
  * sends `"cowork"`, which isn't in this union. REPL code uses this narrow
  * type for its own exhaustiveness; wire-level fields accept any string.
  */
-export type BridgeWorkerType = 'claude_code' | 'claude_code_assistant';
+export type BridgeWorkerType = "claude_code" | "claude_code_assistant";
 
 export type BridgeConfig = {
   dir: string;
@@ -120,9 +120,9 @@ export type BridgeConfig = {
  * carries the permission decision payload (e.g. `{ behavior: 'allow' }`).
  */
 export type PermissionResponseEvent = {
-  type: 'control_response';
+  type: "control_response";
   response: {
-    subtype: 'success';
+    subtype: "success";
     request_id: string;
     response: Record<string, unknown>;
   };
@@ -238,7 +238,7 @@ export type BridgeLogger = {
   /** Update the "<n> of <m> sessions" indicator and spawn mode hint. */
   updateSessionCount(active: number, max: number, mode: SpawnMode): void;
   /** Update the spawn mode shown in the session-count line. Pass null to hide (single-session or toggle unavailable). */
-  setSpawnModeDisplay(mode: 'same-dir' | 'worktree' | null): void;
+  setSpawnModeDisplay(mode: "same-dir" | "worktree" | null): void;
   /** Register a new session for multi-session display (called after spawn succeeds). */
   addSession(sessionId: string, url: string): void;
   /** Update the per-session activity summary (tool being run) in the multi-session list. */

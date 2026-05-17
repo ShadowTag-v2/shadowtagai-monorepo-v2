@@ -1,14 +1,14 @@
-import { c as _c } from 'react/compiler-runtime';
-import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
-import type { HookEventMetadata } from 'src/utils/hooks/hooksConfigManager.js';
-import { Box, Text } from '../../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import type { HookEvent } from "src/entrypoints/agentSdkTypes.js";
+import type { HookEventMetadata } from "src/utils/hooks/hooksConfigManager.js";
+import { Box, Text } from "../../ink.js";
 import {
   getHookDisplayText,
   hookSourceHeaderDisplayString,
   type IndividualHookConfig,
-} from '../../utils/hooks/hooksSettings.js';
-import { Select } from '../CustomSelect/select.js';
-import { Dialog } from '../design-system/Dialog.js';
+} from "../../utils/hooks/hooksSettings.js";
+import { Select } from "../CustomSelect/select.js";
+import { Dialog } from "../design-system/Dialog.js";
 
 type Props = {
   selectedEvent: HookEvent;
@@ -30,11 +30,11 @@ export function SelectHookMode(t0) {
   } = t0;
   const title =
     hookEventMetadata.matcherMetadata !== undefined
-      ? `${selectedEvent} - Matcher: ${selectedMatcher || '(all)'}`
+      ? `${selectedEvent} - Matcher: ${selectedMatcher || "(all)"}`
       : selectedEvent;
   if (hooksForSelectedMatcher.length === 0) {
     let t1;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = (
         <Box flexDirection="column" gap={1}>
           <Text dimColor={true}>No hooks configured for this event.</Text>
@@ -131,7 +131,7 @@ function _temp2(hook, index) {
     label: `[${hook.config.type}] ${getHookDisplayText(hook.config)}`,
     value: index.toString(),
     description:
-      hook.source === 'pluginHook' && hook.pluginName
+      hook.source === "pluginHook" && hook.pluginName
         ? `${hookSourceHeaderDisplayString(hook.source)} (${hook.pluginName})`
         : hookSourceHeaderDisplayString(hook.source),
   };

@@ -4,9 +4,9 @@
 // engine correctly recognises coding terminology, project names, and branch
 // names that would otherwise be misheard.
 
-import { basename } from 'node:path';
-import { getProjectRoot } from '../bootstrap/state.js';
-import { getBranch } from '../utils/git.js';
+import { basename } from "node:path";
+import { getProjectRoot } from "../bootstrap/state.js";
+import { getBranch } from "../utils/git.js";
 
 // ─── Global keyterms ────────────────────────────────────────────────
 
@@ -14,20 +14,20 @@ const GLOBAL_KEYTERMS: readonly string[] = [
   // Terms Deepgram consistently mangles without keyword hints.
   // Note: "Claude" and "Anthropic" are already server-side base keyterms.
   // Avoid terms nobody speaks aloud as-spelled (stdout → "standard out").
-  'MCP',
-  'symlink',
-  'grep',
-  'regex',
-  'localhost',
-  'codebase',
-  'TypeScript',
-  'JSON',
-  'OAuth',
-  'webhook',
-  'gRPC',
-  'dotfiles',
-  'subagent',
-  'worktree',
+  "MCP",
+  "symlink",
+  "grep",
+  "regex",
+  "localhost",
+  "codebase",
+  "TypeScript",
+  "JSON",
+  "OAuth",
+  "webhook",
+  "gRPC",
+  "dotfiles",
+  "subagent",
+  "worktree",
 ];
 
 // ─── Helpers ────────────────────────────────────────────────────────
@@ -39,14 +39,14 @@ const GLOBAL_KEYTERMS: readonly string[] = [
  */
 export function splitIdentifier(name: string): string[] {
   return name
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
     .split(/[-_./\s]+/)
     .map((w) => w.trim())
     .filter((w) => w.length > 2 && w.length <= 20);
 }
 
 function fileNameWords(filePath: string): string[] {
-  const stem = basename(filePath).replace(/\.[^.]+$/, '');
+  const stem = basename(filePath).replace(/\.[^.]+$/, "");
   return splitIdentifier(stem);
 }
 

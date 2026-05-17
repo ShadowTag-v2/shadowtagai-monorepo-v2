@@ -1,24 +1,24 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box } from '../../../../ink.js';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Select } from '../../../CustomSelect/select.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box } from "../../../../ink.js";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Select } from "../../../CustomSelect/select.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../../design-system/KeyboardShortcutHint.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
 export function MethodStep() {
   const $ = _c(11);
   const { goNext, goBack, updateWizardData, goToStep } = useWizard();
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = [
       {
-        label: 'Generate with Claude (recommended)',
-        value: 'generate',
+        label: "Generate with Claude (recommended)",
+        value: "generate",
       },
       {
-        label: 'Manual configuration',
-        value: 'manual',
+        label: "Manual configuration",
+        value: "manual",
       },
     ];
     $[0] = t0;
@@ -27,10 +27,10 @@ export function MethodStep() {
   }
   const methodOptions = t0;
   let t1;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <Byline>
-        <KeyboardShortcutHint shortcut={'\u2191\u2193'} action="navigate" />
+        <KeyboardShortcutHint shortcut={"\u2191\u2193"} action="navigate" />
         <KeyboardShortcutHint shortcut="Enter" action="select" />
         <ConfigurableShortcutHint
           action="confirm:no"
@@ -47,12 +47,12 @@ export function MethodStep() {
   let t2;
   if ($[2] !== goNext || $[3] !== goToStep || $[4] !== updateWizardData) {
     t2 = (value) => {
-      const method = value as 'generate' | 'manual';
+      const method = value as "generate" | "manual";
       updateWizardData({
         method,
-        wasGenerated: method === 'generate',
+        wasGenerated: method === "generate",
       });
-      if (method === 'generate') {
+      if (method === "generate") {
         goNext();
       } else {
         goToStep(3);

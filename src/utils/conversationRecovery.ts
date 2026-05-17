@@ -1,9 +1,9 @@
-import { feature } from 'bun:bundle';
-import type { UUID } from 'node:crypto';
-import { relative } from 'node:path';
-import { getCwd } from 'src/utils/cwd.js';
-import { addInvokedSkill } from '../bootstrap/state.js';
-import { asSessionId } from '../types/ids.js';
+import { feature } from "bun:bundle";
+import type { UUID } from "node:crypto";
+import { relative } from "node:path";
+import { getCwd } from "src/utils/cwd.js";
+import { addInvokedSkill } from "../bootstrap/state.js";
+import { asSessionId } from "../types/ids.js";
 import type {
   AttributionSnapshotMessage,
   ContextCollapseCommitEntry,
@@ -11,12 +11,12 @@ import type {
   LogOption,
   PersistedWorktreeSession,
   SerializedMessage,
-} from '../types/logs.js';
-import type { Message, NormalizedMessage, NormalizedUserMessage } from '../types/message.js';
-import { PERMISSION_MODES } from '../types/permissions.js';
-import { suppressNextSkillListing } from './attachments.js';
-import { copyFileHistoryForResume, type FileHistorySnapshot } from './fileHistory.js';
-import { logError } from './log.js';
+} from "../types/logs.js";
+import type { Message, NormalizedMessage, NormalizedUserMessage } from "../types/message.js";
+import { PERMISSION_MODES } from "../types/permissions.js";
+import { suppressNextSkillListing } from "./attachments.js";
+import { copyFileHistoryForResume, type FileHistorySnapshot } from "./fileHistory.js";
+import { logError } from "./log.js";
 import {
   createAssistantMessage,
   createUserMessage,
@@ -26,9 +26,9 @@ import {
   isToolUseResultMessage,
   NO_RESPONSE_REQUESTED,
   normalizeMessages,
-} from './messages.js';
-import { copyPlanForResume } from './plans.js';
-import { processSessionStartHooks } from './sessionStart.js';
+} from "./messages.js";
+import { copyPlanForResume } from "./plans.js";
+import { processSessionStartHooks } from "./sessionStart.js";
 import {
   buildConversationChain,
   checkResumeConsistency,
@@ -39,25 +39,25 @@ import {
   loadMessageLogs,
   loadTranscriptFile,
   removeExtraFields,
-} from './sessionStorage.js';
-import type { ContentReplacementRecord } from './toolResultStorage.js';
+} from "./sessionStorage.js";
+import type { ContentReplacementRecord } from "./toolResultStorage.js";
 
 // Dead code elimination: ant-only tool names are conditionally required so
 // their strings don't leak into external builds. Static imports always bundle.
 /* eslint-disable @typescript-eslint/no-require-imports */
 const BRIEF_TOOL_NAME: string | null =
-  feature('KAIROS') || feature('KAIROS_BRIEF')
-    ? (require('../tools/BriefTool/prompt.js') as typeof import('../tools/BriefTool/prompt.js'))
+  feature("KAIROS") || feature("KAIROS_BRIEF")
+    ? (require("../tools/BriefTool/prompt.js") as typeof import("../tools/BriefTool/prompt.js"))
         .BRIEF_TOOL_NAME
     : null;
 const LEGACY_BRIEF_TOOL_NAME: string | null =
-  feature('KAIROS') || feature('KAIROS_BRIEF')
-    ? (require('../tools/BriefTool/prompt.js') as typeof import('../tools/BriefTool/prompt.js'))
+  feature("KAIROS") || feature("KAIROS_BRIEF")
+    ? (require("../tools/BriefTool/prompt.js") as typeof import("../tools/BriefTool/prompt.js"))
         .LEGACY_BRIEF_TOOL_NAME
     : null;
-const SEND_USER_FILE_TOOL_NAME: string | null = feature('KAIROS')
+const SEND_USER_FILE_TOOL_NAME: string | null = feature("KAIROS")
   ? (
-      require('../tools/SendUserFileTool/prompt.js') as typeof import('../tools/SendUserFileTool/prompt.js')
+      require("../tools/SendUserFileTool/prompt.js") as typeof import("../tools/SendUserFileTool/prompt.js")
     ).SEND_USER_FILE_TOOL_NAME
   : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
@@ -66,7 +66,7 @@ const SEND_USER_FILE_TOOL_NAME: string | null = feature('KAIROS')
  * Transforms legacy attachment types to current types for backward compatibility
  */
 function migrateLegacyAttachmentTypes(message: Message): Message {
-  if (message.type !== 'attachment') {
+  if (message.type !== "attachment") {
     return message;
   }
 
@@ -76,36 +76,36 @@ function migrateLegacyAttachmentTypes(message: Message): Message {
   }; // Handle legacy types not in current type system
 
   // Transform legacy attachment types
-  if (attachment.type === 'new_file') {
+  if (attachment.type === "new_file") {
     return {
       ...message,
       attachment: {
         ...attachment,
-        type: 'file',
+        type: "file",
         displayPath: relative(getCwd(), attachment.filename as string),
       },
     } as SerializedMessage; // Cast entire message since we know the structure is correct
   }
 
-  if (attachment.type === 'new_directory') {
+  if (attachment.type === "new_directory") {
     return {
       ...message,
       attachment: {
         ...attachment,
-        type: 'directory',
+        type: "directory",
         displayPath: relative(getCwd(), attachment.path as string),
       },
     } as SerializedMessage; // Cast entire message since we know the structure is correct
   }
 
   // Backfill displayPath for attachments from old sessions
-  if (!('displayPath' in attachment)) {
+  if (!("displayPath" in attachment)) {
     const path =
-      'filename' in attachment
+      "filename" in attachment
         ? (attachment.filename as string)
-        : 'path' in attachment
+        : "path" in attachment
           ? (attachment.path as string)
-          : 'skillDir' in attachment
+          : "skillDir" in attachment
             ? (attachment.skillDir as string)
             : undefined;
     if (path) {
@@ -128,8 +128,8 @@ export type TeleportRemoteResponse = {
 };
 
 export type TurnInterruptionState =
-  | { kind: 'none' }
-  | { kind: 'interrupted_prompt'; message: NormalizedUserMessage };
+  | { kind: "none" }
+  | { kind: "interrupted_prompt"; message: NormalizedUserMessage };
 
 export type DeserializeResult = {
   messages: Message[];
@@ -164,7 +164,7 @@ export function deserializeMessagesWithInterruptDetection(
     const validModes = new Set<string>(PERMISSION_MODES);
     for (const msg of migratedMessages) {
       if (
-        msg.type === 'user' &&
+        msg.type === "user" &&
         msg.permissionMode !== undefined &&
         !validModes.has(msg.permissionMode)
       ) {
@@ -194,16 +194,16 @@ export function deserializeMessagesWithInterruptDetection(
     // a synthetic continuation message. This unifies both interruption kinds
     // so the consumer only needs to handle interrupted_prompt.
     let turnInterruptionState: TurnInterruptionState;
-    if (internalState.kind === 'interrupted_turn') {
+    if (internalState.kind === "interrupted_turn") {
       const [continuationMessage] = normalizeMessages([
         createUserMessage({
-          content: 'Continue from where you left off.',
+          content: "Continue from where you left off.",
           isMeta: true,
         }),
       ]);
       filteredMessages.push(continuationMessage!);
       turnInterruptionState = {
-        kind: 'interrupted_prompt',
+        kind: "interrupted_prompt",
         message: continuationMessage!,
       };
     } else {
@@ -216,9 +216,9 @@ export function deserializeMessagesWithInterruptDetection(
     // message so removeInterruptedMessage's splice(idx, 2) removes the
     // correct pair.
     const lastRelevantIdx = filteredMessages.findLastIndex(
-      (m) => m.type !== 'system' && m.type !== 'progress',
+      (m) => m.type !== "system" && m.type !== "progress",
     );
-    if (lastRelevantIdx !== -1 && filteredMessages[lastRelevantIdx]?.type === 'user') {
+    if (lastRelevantIdx !== -1 && filteredMessages[lastRelevantIdx]?.type === "user") {
       filteredMessages.splice(
         lastRelevantIdx + 1,
         0,
@@ -239,7 +239,7 @@ export function deserializeMessagesWithInterruptDetection(
  * Internal 3-way result from detection, before transforming interrupted_turn
  * into interrupted_prompt with a synthetic continuation message.
  */
-type InternalInterruptionState = TurnInterruptionState | { kind: 'interrupted_turn' };
+type InternalInterruptionState = TurnInterruptionState | { kind: "interrupted_turn" };
 
 /**
  * Determines whether the conversation was interrupted mid-turn based on the
@@ -253,7 +253,7 @@ type InternalInterruptionState = TurnInterruptionState | { kind: 'interrupted_tu
  */
 function detectTurnInterruption(messages: NormalizedMessage[]): InternalInterruptionState {
   if (messages.length === 0) {
-    return { kind: 'none' };
+    return { kind: "none" };
   }
 
   // Find the last turn-relevant message, skipping system/progress and
@@ -263,28 +263,28 @@ function detectTurnInterruption(messages: NormalizedMessage[]): InternalInterrup
   // a completed turn.
   const lastMessageIdx = messages.findLastIndex(
     (m) =>
-      m.type !== 'system' &&
-      m.type !== 'progress' &&
-      !(m.type === 'assistant' && m.isApiErrorMessage),
+      m.type !== "system" &&
+      m.type !== "progress" &&
+      !(m.type === "assistant" && m.isApiErrorMessage),
   );
   const lastMessage = lastMessageIdx !== -1 ? messages[lastMessageIdx] : undefined;
 
   if (!lastMessage) {
-    return { kind: 'none' };
+    return { kind: "none" };
   }
 
-  if (lastMessage.type === 'assistant') {
+  if (lastMessage.type === "assistant") {
     // In the streaming path, stop_reason is always null on persisted messages
     // because messages are recorded at content_block_stop time, before
     // message_delta delivers the stop_reason. After filterUnresolvedToolUses
     // has removed assistant messages with unmatched tool_uses, an assistant as
     // the last message means the turn most likely completed normally.
-    return { kind: 'none' };
+    return { kind: "none" };
   }
 
-  if (lastMessage.type === 'user') {
+  if (lastMessage.type === "user") {
     if (lastMessage.isMeta || lastMessage.isCompactSummary) {
-      return { kind: 'none' };
+      return { kind: "none" };
     }
     if (isToolUseResultMessage(lastMessage)) {
       // Brief mode (#20467) drops the trailing assistant text block, so a
@@ -294,21 +294,21 @@ function detectTurnInterruption(messages: NormalizedMessage[]): InternalInterrup
       // "Continue from where you left off." before the user's real next
       // prompt. Look back one step for the originating tool_use.
       if (isTerminalToolResult(lastMessage, messages, lastMessageIdx)) {
-        return { kind: 'none' };
+        return { kind: "none" };
       }
-      return { kind: 'interrupted_turn' };
+      return { kind: "interrupted_turn" };
     }
     // Plain text user prompt — CC hadn't started responding
-    return { kind: 'interrupted_prompt', message: lastMessage };
+    return { kind: "interrupted_prompt", message: lastMessage };
   }
 
-  if (lastMessage.type === 'attachment') {
+  if (lastMessage.type === "attachment") {
     // Attachments are part of the user turn — the user provided context but
     // the assistant never responded.
-    return { kind: 'interrupted_turn' };
+    return { kind: "interrupted_turn" };
   }
 
-  return { kind: 'none' };
+  return { kind: "none" };
 }
 
 /**
@@ -332,14 +332,14 @@ function isTerminalToolResult(
   const content = result.message.content;
   if (!Array.isArray(content)) return false;
   const block = content[0];
-  if (block?.type !== 'tool_result') return false;
+  if (block?.type !== "tool_result") return false;
   const toolUseId = block.tool_use_id;
 
   for (let i = resultIdx - 1; i >= 0; i--) {
     const msg = messages[i]!;
-    if (msg.type !== 'assistant') continue;
+    if (msg.type !== "assistant") continue;
     for (const b of msg.message.content) {
-      if (b.type === 'tool_use' && b.id === toolUseId) {
+      if (b.type === "tool_use" && b.id === toolUseId) {
         return (
           b.name === BRIEF_TOOL_NAME ||
           b.name === LEGACY_BRIEF_TOOL_NAME ||
@@ -360,10 +360,10 @@ function isTerminalToolResult(
  */
 export function restoreSkillStateFromMessages(messages: Message[]): void {
   for (const message of messages) {
-    if (message.type !== 'attachment') {
+    if (message.type !== "attachment") {
       continue;
     }
-    if (message.attachment.type === 'invoked_skills') {
+    if (message.attachment.type === "invoked_skills") {
       for (const skill of message.attachment.skills) {
         if (skill.name && skill.path && skill.content) {
           // Resume only happens for the main session, so agentId is null
@@ -375,7 +375,7 @@ export function restoreSkillStateFromMessages(messages: Message[]): void {
     // in the transcript the model is about to see. sentSkillNames is
     // process-local, so without this every resume re-announces the same
     // ~600 tokens. Fire-once latch; consumed on the first attachment pass.
-    if (message.attachment.type === 'skill_listing') {
+    if (message.attachment.type === "skill_listing") {
       suppressNextSkillListing();
     }
   }
@@ -450,7 +450,7 @@ export async function loadConversationForResume(
   agentSetting?: string;
   customTitle?: string;
   tag?: string;
-  mode?: 'coordinator' | 'normal';
+  mode?: "coordinator" | "normal";
   worktreeSession?: PersistedWorktreeSession | null;
   prNumber?: number;
   prUrl?: string;
@@ -468,13 +468,13 @@ export async function loadConversationForResume(
       // that are actively writing their own transcript.
       const logsPromise = loadMessageLogs();
       let skip = new Set<string>();
-      if (feature('BG_SESSIONS')) {
+      if (feature("BG_SESSIONS")) {
         try {
-          const { listAllLiveSessions } = await import('./udsClient.js');
+          const { listAllLiveSessions } = await import("./udsClient.js");
           const live = await listAllLiveSessions();
           skip = new Set(
             live.flatMap((s) =>
-              s.kind && s.kind !== 'interactive' && s.sessionId ? [s.sessionId] : [],
+              s.kind && s.kind !== "interactive" && s.sessionId ? [s.sessionId] : [],
             ),
           );
         } catch {
@@ -494,7 +494,7 @@ export async function loadConversationForResume(
       const loaded = await loadMessagesFromJsonlPath(sourceJsonlFile);
       messages = loaded.messages;
       sessionId = loaded.sessionId;
-    } else if (typeof source === 'string') {
+    } else if (typeof source === "string") {
       // Load specific session by ID
       log = await getLastSessionLog(source as UUID);
       sessionId = source as UUID;
@@ -539,7 +539,7 @@ export async function loadConversationForResume(
     messages = deserialized.messages;
 
     // Process session start hooks for resume
-    const hookMessages = await processSessionStartHooks('resume', { sessionId });
+    const hookMessages = await processSessionStartHooks("resume", { sessionId });
 
     // Append hook messages to the conversation
     messages.push(...hookMessages);

@@ -4,7 +4,7 @@ import {
   type ParseEntry,
   quote,
   tryParseShellCommand,
-} from './shellQuote.js';
+} from "./shellQuote.js";
 
 /**
  * Rearranges a command with pipes to place stdin redirect after the first command.
@@ -13,13 +13,13 @@ import {
  */
 export function rearrangePipeCommand(command: string): string {
   // Skip if command has backticks - shell-quote doesn't handle them well
-  if (command.includes('`')) {
+  if (command.includes("`")) {
     return quoteWithEvalStdinRedirect(command);
   }
 
   // Skip if command has command substitution - shell-quote parses $() incorrectly,
   // treating ( and ) as separate operators instead of recognizing command substitution
-  if (command.includes('$(')) {
+  if (command.includes("$(")) {
     return quoteWithEvalStdinRedirect(command);
   }
 
@@ -48,7 +48,7 @@ export function rearrangePipeCommand(command: string): string {
   // silently merging pipelines. Line-continuation (\<newline>) is already stripped
   // above; any remaining newline is a real separator. Bail to the eval fallback,
   // which preserves the newline inside a single-quoted arg. See #32515.
-  if (joined.includes('\n')) {
+  if (joined.includes("\n")) {
     return quoteWithEvalStdinRedirect(command);
   }
 
@@ -92,11 +92,11 @@ export function rearrangePipeCommand(command: string): string {
   // Rebuild: first_command < /dev/null | rest_of_pipeline
   const parts = [
     ...buildCommandParts(parsed, 0, firstPipeIndex),
-    '< /dev/null',
+    "< /dev/null",
     ...buildCommandParts(parsed, firstPipeIndex, parsed.length),
   ];
 
-  return singleQuoteForEval(parts.join(' '));
+  return singleQuoteForEval(parts.join(" "));
 }
 
 /**
@@ -105,7 +105,7 @@ export function rearrangePipeCommand(command: string): string {
 function findFirstPipeOperator(parsed: ParseEntry[]): number {
   for (let i = 0; i < parsed.length; i++) {
     const entry = parsed[i];
-    if (isOperator(entry, '|')) {
+    if (isOperator(entry, "|")) {
       return i;
     }
   }
@@ -127,7 +127,7 @@ function buildCommandParts(parsed: ParseEntry[], start: number, end: number): st
 
     // Check for file descriptor redirections (e.g., 2>&1, 2>/dev/null)
     if (
-      typeof entry === 'string' &&
+      typeof entry === "string" &&
       /^[012]$/.test(entry) &&
       i + 2 < end &&
       isOperator(parsed[i + 1])
@@ -136,21 +136,21 @@ function buildCommandParts(parsed: ParseEntry[], start: number, end: number): st
       const target = parsed[i + 2];
 
       // Handle 2>&1 style redirections
-      if (op.op === '>&' && typeof target === 'string' && /^[012]$/.test(target)) {
+      if (op.op === ">&" && typeof target === "string" && /^[012]$/.test(target)) {
         parts.push(`${entry}>&${target}`);
         i += 2;
         continue;
       }
 
       // Handle 2>/dev/null style redirections
-      if (op.op === '>' && target === '/dev/null') {
+      if (op.op === ">" && target === "/dev/null") {
         parts.push(`${entry}>/dev/null`);
         i += 2;
         continue;
       }
 
       // Handle 2> &1 style (space between > and &1)
-      if (op.op === '>' && typeof target === 'string' && target.startsWith('&')) {
+      if (op.op === ">" && typeof target === "string" && target.startsWith("&")) {
         const fd = target.slice(1);
         if (/^[012]$/.test(fd)) {
           parts.push(`${entry}>&${fd}`);
@@ -161,7 +161,7 @@ function buildCommandParts(parsed: ParseEntry[], start: number, end: number): st
     }
 
     // Handle regular entries
-    if (typeof entry === 'string') {
+    if (typeof entry === "string") {
       // Environment variable assignments are only valid at the start of a command,
       // before any non-env-var tokens (the actual command and its arguments)
       const isEnvVar = !seenNonEnvVar && isEnvironmentVariableAssignment(entry);
@@ -169,7 +169,7 @@ function buildCommandParts(parsed: ParseEntry[], start: number, end: number): st
       if (isEnvVar) {
         // For env var assignments, we need to preserve the = but quote the value if needed
         // Split into name and value parts
-        const eqIndex = entry.indexOf('=');
+        const eqIndex = entry.indexOf("=");
         const name = entry.slice(0, eqIndex);
         const value = entry.slice(eqIndex + 1);
 
@@ -183,7 +183,7 @@ function buildCommandParts(parsed: ParseEntry[], start: number, end: number): st
       }
     } else if (isOperator(entry)) {
       // Special handling for glob operators
-      if (entry.op === 'glob' && 'pattern' in entry) {
+      if (entry.op === "glob" && "pattern" in entry) {
         // Don't quote glob patterns - they need to remain as-is for shell expansion
         parts.push(entry.pattern as string);
       } else {
@@ -213,14 +213,14 @@ function isEnvironmentVariableAssignment(str: string): boolean {
  * After these operators, environment variable assignments are valid again.
  */
 function isCommandSeparator(op: string): boolean {
-  return op === '&&' || op === '||' || op === ';';
+  return op === "&&" || op === "||" || op === ";";
 }
 
 /**
  * Type guard to check if a parsed entry is an operator
  */
 function isOperator(entry: unknown, op?: string): entry is { op: string } {
-  if (!entry || typeof entry !== 'object' || !('op' in entry)) {
+  if (!entry || typeof entry !== "object" || !("op" in entry)) {
     return false;
   }
   return op ? entry.op === op : true;
@@ -273,7 +273,7 @@ function joinContinuationLines(command: string): string {
     const backslashCount = match.length - 1; // -1 for the newline
     if (backslashCount % 2 === 1) {
       // Odd number: last backslash escapes the newline (line continuation)
-      return '\\'.repeat(backslashCount - 1);
+      return "\\".repeat(backslashCount - 1);
     } else {
       // Even number: all pair up, newline is a real separator
       return match;

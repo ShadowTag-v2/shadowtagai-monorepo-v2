@@ -1,31 +1,31 @@
-import { readdir } from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { join } from 'node:path';
-import { isFsInaccessible } from '../errors.js';
+import { readdir } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
+import { isFsInaccessible } from "../errors.js";
 
-export const CHROME_EXTENSION_URL = 'https://claude.ai/chrome';
+export const CHROME_EXTENSION_URL = "https://claude.ai/chrome";
 
 // Production extension ID
-const PROD_EXTENSION_ID = 'fcoeoabgfenejglbffodgkkbkcdhcgfn';
+const PROD_EXTENSION_ID = "fcoeoabgfenejglbffodgkkbkcdhcgfn";
 // Dev extension IDs (for internal use)
-const DEV_EXTENSION_ID = 'dihbgbndebgnbjfmelmegjepbnkhlgni';
-const ANT_EXTENSION_ID = 'dngcpimnedloihjnnfngkgjoidhnaolf';
+const DEV_EXTENSION_ID = "dihbgbndebgnbjfmelmegjepbnkhlgni";
+const ANT_EXTENSION_ID = "dngcpimnedloihjnnfngkgjoidhnaolf";
 
 function getExtensionIds(): string[] {
-  return process.env.USER_TYPE === 'ant'
+  return process.env.USER_TYPE === "ant"
     ? [PROD_EXTENSION_ID, DEV_EXTENSION_ID, ANT_EXTENSION_ID]
     : [PROD_EXTENSION_ID];
 }
 
 // Must match ChromiumBrowser from common.ts
 export type ChromiumBrowser =
-  | 'chrome'
-  | 'brave'
-  | 'arc'
-  | 'chromium'
-  | 'edge'
-  | 'vivaldi'
-  | 'opera';
+  | "chrome"
+  | "brave"
+  | "arc"
+  | "chromium"
+  | "edge"
+  | "vivaldi"
+  | "opera";
 
 export type BrowserPath = {
   browser: ChromiumBrowser;
@@ -36,13 +36,13 @@ type Logger = (message: string) => void;
 
 // Browser detection order - must match BROWSER_DETECTION_ORDER from common.ts
 const BROWSER_DETECTION_ORDER: ChromiumBrowser[] = [
-  'chrome',
-  'brave',
-  'arc',
-  'edge',
-  'chromium',
-  'vivaldi',
-  'opera',
+  "chrome",
+  "brave",
+  "arc",
+  "edge",
+  "chromium",
+  "vivaldi",
+  "opera",
 ];
 
 type BrowserDataConfig = {
@@ -54,39 +54,39 @@ type BrowserDataConfig = {
 // Must match CHROMIUM_BROWSERS dataPath from common.ts
 const CHROMIUM_BROWSERS: Record<ChromiumBrowser, BrowserDataConfig> = {
   chrome: {
-    macos: ['Library', 'Application Support', 'Google', 'Chrome'],
-    linux: ['.config', 'google-chrome'],
-    windows: { path: ['Google', 'Chrome', 'User Data'] },
+    macos: ["Library", "Application Support", "Google", "Chrome"],
+    linux: [".config", "google-chrome"],
+    windows: { path: ["Google", "Chrome", "User Data"] },
   },
   brave: {
-    macos: ['Library', 'Application Support', 'BraveSoftware', 'Brave-Browser'],
-    linux: ['.config', 'BraveSoftware', 'Brave-Browser'],
-    windows: { path: ['BraveSoftware', 'Brave-Browser', 'User Data'] },
+    macos: ["Library", "Application Support", "BraveSoftware", "Brave-Browser"],
+    linux: [".config", "BraveSoftware", "Brave-Browser"],
+    windows: { path: ["BraveSoftware", "Brave-Browser", "User Data"] },
   },
   arc: {
-    macos: ['Library', 'Application Support', 'Arc', 'User Data'],
+    macos: ["Library", "Application Support", "Arc", "User Data"],
     linux: [],
-    windows: { path: ['Arc', 'User Data'] },
+    windows: { path: ["Arc", "User Data"] },
   },
   chromium: {
-    macos: ['Library', 'Application Support', 'Chromium'],
-    linux: ['.config', 'chromium'],
-    windows: { path: ['Chromium', 'User Data'] },
+    macos: ["Library", "Application Support", "Chromium"],
+    linux: [".config", "chromium"],
+    windows: { path: ["Chromium", "User Data"] },
   },
   edge: {
-    macos: ['Library', 'Application Support', 'Microsoft Edge'],
-    linux: ['.config', 'microsoft-edge'],
-    windows: { path: ['Microsoft', 'Edge', 'User Data'] },
+    macos: ["Library", "Application Support", "Microsoft Edge"],
+    linux: [".config", "microsoft-edge"],
+    windows: { path: ["Microsoft", "Edge", "User Data"] },
   },
   vivaldi: {
-    macos: ['Library', 'Application Support', 'Vivaldi'],
-    linux: ['.config', 'vivaldi'],
-    windows: { path: ['Vivaldi', 'User Data'] },
+    macos: ["Library", "Application Support", "Vivaldi"],
+    linux: [".config", "vivaldi"],
+    windows: { path: ["Vivaldi", "User Data"] },
   },
   opera: {
-    macos: ['Library', 'Application Support', 'com.operasoftware.Opera'],
-    linux: ['.config', 'opera'],
-    windows: { path: ['Opera Software', 'Opera Stable'], useRoaming: true },
+    macos: ["Library", "Application Support", "com.operasoftware.Opera"],
+    linux: [".config", "opera"],
+    windows: { path: ["Opera Software", "Opera Stable"], useRoaming: true },
   },
 };
 
@@ -103,17 +103,17 @@ export function getAllBrowserDataPathsPortable(): BrowserPath[] {
     let dataPath: string[] | undefined;
 
     switch (process.platform) {
-      case 'darwin':
+      case "darwin":
         dataPath = config.macos;
         break;
-      case 'linux':
+      case "linux":
         dataPath = config.linux;
         break;
-      case 'win32': {
+      case "win32": {
         if (config.windows.path.length > 0) {
           const appDataBase = config.windows.useRoaming
-            ? join(home, 'AppData', 'Roaming')
-            : join(home, 'AppData', 'Local');
+            ? join(home, "AppData", "Roaming")
+            : join(home, "AppData", "Local");
           paths.push({
             browser: browserId,
             path: join(appDataBase, ...config.windows.path),
@@ -174,17 +174,17 @@ export async function detectExtensionInstallationPortable(
 
     const profileDirs = browserProfileEntries
       .filter((entry) => entry.isDirectory())
-      .filter((entry) => entry.name === 'Default' || entry.name.startsWith('Profile '))
+      .filter((entry) => entry.name === "Default" || entry.name.startsWith("Profile "))
       .map((entry) => entry.name);
 
     if (profileDirs.length > 0) {
-      log?.(`[Claude in Chrome] Found ${browser} profiles: ${profileDirs.join(', ')}`);
+      log?.(`[Claude in Chrome] Found ${browser} profiles: ${profileDirs.join(", ")}`);
     }
 
     // Check each profile for any of the extension IDs
     for (const profile of profileDirs) {
       for (const extensionId of extensionIds) {
-        const extensionPath = join(browserBasePath, profile, 'Extensions', extensionId);
+        const extensionPath = join(browserBasePath, profile, "Extensions", extensionId);
 
         try {
           await readdir(extensionPath);

@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Select } from '../../../components/CustomSelect/select.js';
-import { Box, Text } from '../../../ink.js';
-import type { ToolPermissionContext } from '../../../Tool.js';
-import { applyPermissionUpdate } from '../../../utils/permissions/PermissionUpdate.js';
-import { Dialog } from '../../design-system/Dialog.js';
+import { c as _c } from "react/compiler-runtime";
+import { Select } from "../../../components/CustomSelect/select.js";
+import { Box, Text } from "../../../ink.js";
+import type { ToolPermissionContext } from "../../../Tool.js";
+import { applyPermissionUpdate } from "../../../utils/permissions/PermissionUpdate.js";
+import { Dialog } from "../../design-system/Dialog.js";
 
 type Props = {
   directoryPath: string;
@@ -24,9 +24,9 @@ export function RemoveWorkspaceDirectory(t0) {
   ) {
     t1 = () => {
       const updatedContext = applyPermissionUpdate(permissionContext, {
-        type: 'removeDirectories',
+        type: "removeDirectories",
         directories: [directoryPath],
-        destination: 'session',
+        destination: "session",
       });
       setPermissionContext(updatedContext);
       onRemove();
@@ -43,7 +43,7 @@ export function RemoveWorkspaceDirectory(t0) {
   let t2;
   if ($[5] !== handleRemove || $[6] !== onCancel) {
     t2 = (value) => {
-      if (value === 'yes') {
+      if (value === "yes") {
         handleRemove();
       } else {
         onCancel();
@@ -69,22 +69,22 @@ export function RemoveWorkspaceDirectory(t0) {
     t3 = $[9];
   }
   let t4;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Text>Claude Code will no longer have access to files in this directory.</Text>;
     $[10] = t4;
   } else {
     t4 = $[10];
   }
   let t5;
-  if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = [
       {
-        label: 'Yes',
-        value: 'yes',
+        label: "Yes",
+        value: "yes",
       },
       {
-        label: 'No',
-        value: 'no',
+        label: "No",
+        value: "no",
       },
     ];
     $[11] = t5;

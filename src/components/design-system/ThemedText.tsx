@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react';
-import React, { useContext } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import Text from '../../ink/components/Text.js';
-import type { Color, Styles } from '../../ink/styles.js';
-import { getTheme, type Theme } from '../../utils/theme.js';
-import { useTheme } from './ThemeProvider.js';
+import type { ReactNode } from "react";
+import React, { useContext } from "react";
+import { c as _c } from "react/compiler-runtime";
+import Text from "../../ink/components/Text.js";
+import type { Color, Styles } from "../../ink/styles.js";
+import { getTheme, type Theme } from "../../utils/theme.js";
+import { useTheme } from "./ThemeProvider.js";
 
 /** Colors uncolored ThemedText in the subtree. Precedence: explicit `color` >
  *  this > dimColor. Crosses Box boundaries (Ink's style cascade doesn't). */
@@ -56,7 +56,7 @@ export type Props = {
    * If `wrap` is passed (by default), Ink will wrap text and split it into multiple lines.
    * If `truncate-*` is passed, Ink will truncate text instead, which will result in one line of text with the rest cut off.
    */
-  readonly wrap?: Styles['textWrap'];
+  readonly wrap?: Styles["textWrap"];
   readonly children?: ReactNode;
 };
 
@@ -67,10 +67,10 @@ function resolveColor(color: keyof Theme | Color | undefined, theme: Theme): Col
   if (!color) return undefined;
   // Check if it's a raw color (starts with rgb(, #, ansi256(, or ansi:)
   if (
-    color.startsWith('rgb(') ||
-    color.startsWith('#') ||
-    color.startsWith('ansi256(') ||
-    color.startsWith('ansi:')
+    color.startsWith("rgb(") ||
+    color.startsWith("#") ||
+    color.startsWith("ansi256(") ||
+    color.startsWith("ansi:")
   ) {
     return color as Color;
   }
@@ -102,7 +102,7 @@ export default function ThemedText(t0) {
   const underline = t4 === undefined ? false : t4;
   const strikethrough = t5 === undefined ? false : t5;
   const inverse = t6 === undefined ? false : t6;
-  const wrap = t7 === undefined ? 'wrap' : t7;
+  const wrap = t7 === undefined ? "wrap" : t7;
   const [themeName] = useTheme();
   const theme = getTheme(themeName);
   const hoverColor = useContext(TextHoverColorContext);

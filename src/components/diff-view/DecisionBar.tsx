@@ -11,10 +11,10 @@
  * Interaction: 150ms scale transform + ripple on button press.
  */
 
-'use client';
+"use client";
 
-import styles from './diff-view.module.css';
-import type { DecisionBarProps } from './types';
+import styles from "./diff-view.module.css";
+import type { DecisionBarProps } from "./types";
 
 export function DecisionBar({
   selectedCount,
@@ -34,7 +34,7 @@ export function DecisionBar({
           </span>
         ) : (
           <span className={styles.decisionCount}>
-            {totalCount} file{totalCount !== 1 ? 's' : ''} ready for review
+            {totalCount} file{totalCount !== 1 ? "s" : ""} ready for review
           </span>
         )}
       </div>
@@ -47,7 +47,7 @@ export function DecisionBar({
           disabled={isSubmitting}
           aria-label="Reject all changes"
         >
-          {isSubmitting ? <span className={styles.spinner} aria-hidden="true" /> : '✕'} Reject All
+          {isSubmitting ? <span className={styles.spinner} aria-hidden="true" /> : "✕"} Reject All
         </button>
 
         {isPartialMode && selectedCount > 0 && (
@@ -58,7 +58,7 @@ export function DecisionBar({
             disabled={isSubmitting}
             aria-label={`Accept ${selectedCount} selected files`}
           >
-            {isSubmitting ? <span className={styles.spinner} aria-hidden="true" /> : '◐'} Accept
+            {isSubmitting ? <span className={styles.spinner} aria-hidden="true" /> : "◐"} Accept
             Selected ({selectedCount})
           </button>
         )}
@@ -70,7 +70,7 @@ export function DecisionBar({
           disabled={isSubmitting}
           aria-label="Accept all changes"
         >
-          {isSubmitting ? <span className={styles.spinner} aria-hidden="true" /> : '✓'} Accept All
+          {isSubmitting ? <span className={styles.spinner} aria-hidden="true" /> : "✓"} Accept All
         </button>
       </div>
     </div>

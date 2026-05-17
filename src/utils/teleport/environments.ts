@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { getOauthConfig } from 'src/constants/oauth.js';
-import { getOrganizationUUID } from 'src/services/oauth/client.js';
-import { getClaudeAIOAuthTokens } from '../auth.js';
-import { toError } from '../errors.js';
-import { logError } from '../log.js';
-import { getOAuthHeaders } from './api.js';
+import axios from "axios";
+import { getOauthConfig } from "src/constants/oauth.js";
+import { getOrganizationUUID } from "src/services/oauth/client.js";
+import { getClaudeAIOAuthTokens } from "../auth.js";
+import { toError } from "../errors.js";
+import { logError } from "../log.js";
+import { getOAuthHeaders } from "./api.js";
 
-export type EnvironmentKind = 'anthropic_cloud' | 'byoc' | 'bridge';
-export type EnvironmentState = 'active';
+export type EnvironmentKind = "anthropic_cloud" | "byoc" | "bridge";
+export type EnvironmentState = "active";
 
 export type EnvironmentResource = {
   kind: EnvironmentKind;
@@ -33,13 +33,13 @@ export async function fetchEnvironments(): Promise<EnvironmentResource[]> {
   const accessToken = getClaudeAIOAuthTokens()?.accessToken;
   if (!accessToken) {
     throw new Error(
-      'Claude Code web sessions require authentication with a Claude.ai account. API key authentication is not sufficient. Please run /login to authenticate, or check your authentication status with /status.',
+      "Claude Code web sessions require authentication with a Claude.ai account. API key authentication is not sufficient. Please run /login to authenticate, or check your authentication status with /status.",
     );
   }
 
   const orgUUID = await getOrganizationUUID();
   if (!orgUUID) {
-    throw new Error('Unable to get organization UUID');
+    throw new Error("Unable to get organization UUID");
   }
 
   const url = `${getOauthConfig().BASE_API_URL}/v1/environment_providers`;
@@ -47,7 +47,7 @@ export async function fetchEnvironments(): Promise<EnvironmentResource[]> {
   try {
     const headers = {
       ...getOAuthHeaders(accessToken),
-      'x-organization-uuid': orgUUID,
+      "x-organization-uuid": orgUUID,
     };
 
     const response = await axios.get<EnvironmentListResponse>(url, {
@@ -74,11 +74,11 @@ export async function fetchEnvironments(): Promise<EnvironmentResource[]> {
 export async function createDefaultCloudEnvironment(name: string): Promise<EnvironmentResource> {
   const accessToken = getClaudeAIOAuthTokens()?.accessToken;
   if (!accessToken) {
-    throw new Error('No access token available');
+    throw new Error("No access token available");
   }
   const orgUUID = await getOrganizationUUID();
   if (!orgUUID) {
-    throw new Error('Unable to get organization UUID');
+    throw new Error("Unable to get organization UUID");
   }
 
   const url = `${getOauthConfig().BASE_API_URL}/v1/environment_providers/cloud/create`;
@@ -86,16 +86,16 @@ export async function createDefaultCloudEnvironment(name: string): Promise<Envir
     url,
     {
       name,
-      kind: 'anthropic_cloud',
-      description: '',
+      kind: "anthropic_cloud",
+      description: "",
       config: {
-        environment_type: 'anthropic',
-        cwd: '/home/user',
+        environment_type: "anthropic",
+        cwd: "/home/user",
         init_script: null,
         environment: {},
         languages: [
-          { name: 'python', version: '3.11' },
-          { name: 'node', version: '20' },
+          { name: "python", version: "3.11" },
+          { name: "node", version: "20" },
         ],
         network_config: {
           allowed_hosts: [],
@@ -106,8 +106,8 @@ export async function createDefaultCloudEnvironment(name: string): Promise<Envir
     {
       headers: {
         ...getOAuthHeaders(accessToken),
-        'anthropic-beta': 'ccr-byoc-2025-07-29',
-        'x-organization-uuid': orgUUID,
+        "anthropic-beta": "ccr-byoc-2025-07-29",
+        "x-organization-uuid": orgUUID,
       },
       timeout: 15000,
     },

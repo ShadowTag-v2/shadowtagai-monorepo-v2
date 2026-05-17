@@ -1,33 +1,33 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { isFeedbackSurveyDisabled } from 'src/services/analytics/config.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from 'src/services/analytics/growthbook.js';
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { isFeedbackSurveyDisabled } from "src/services/analytics/config.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "src/services/analytics/growthbook.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { isAutoMemoryEnabled } from '../../memdir/paths.js';
-import { isPolicyAllowed } from '../../services/policyLimits/index.js';
-import { FILE_READ_TOOL_NAME } from '../../tools/FileReadTool/prompt.js';
-import type { Message } from '../../types/message.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { isAutoManagedMemoryFile } from '../../utils/memoryFileDetection.js';
-import { extractTextContent, getLastAssistantMessage } from '../../utils/messages.js';
-import { logOTelEvent } from '../../utils/telemetry/events.js';
-import { submitTranscriptShare } from './submitTranscriptShare.js';
-import type { TranscriptShareResponse } from './TranscriptSharePrompt.js';
-import { useSurveyState } from './useSurveyState.js';
-import type { FeedbackSurveyResponse } from './utils.js';
+} from "src/services/analytics/index.js";
+import { isAutoMemoryEnabled } from "../../memdir/paths.js";
+import { isPolicyAllowed } from "../../services/policyLimits/index.js";
+import { FILE_READ_TOOL_NAME } from "../../tools/FileReadTool/prompt.js";
+import type { Message } from "../../types/message.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { isAutoManagedMemoryFile } from "../../utils/memoryFileDetection.js";
+import { extractTextContent, getLastAssistantMessage } from "../../utils/messages.js";
+import { logOTelEvent } from "../../utils/telemetry/events.js";
+import { submitTranscriptShare } from "./submitTranscriptShare.js";
+import type { TranscriptShareResponse } from "./TranscriptSharePrompt.js";
+import { useSurveyState } from "./useSurveyState.js";
+import type { FeedbackSurveyResponse } from "./utils.js";
 
 const HIDE_THANKS_AFTER_MS = 3000;
-const MEMORY_SURVEY_GATE = 'tengu_dunwich_bell';
-const MEMORY_SURVEY_EVENT = 'tengu_memory_survey_event';
+const MEMORY_SURVEY_GATE = "tengu_dunwich_bell";
+const MEMORY_SURVEY_EVENT = "tengu_memory_survey_event";
 const SURVEY_PROBABILITY = 0.2;
-const TRANSCRIPT_SHARE_TRIGGER = 'memory_survey';
+const TRANSCRIPT_SHARE_TRIGGER = "memory_survey";
 const MEMORY_WORD_RE = /\bmemor(?:y|ies)\b/i;
 function hasMemoryFileRead(messages: Message[]): boolean {
   for (const message of messages) {
-    if (message.type !== 'assistant') {
+    if (message.type !== "assistant") {
       continue;
     }
     const content = message.message.content;
@@ -35,13 +35,13 @@ function hasMemoryFileRead(messages: Message[]): boolean {
       continue;
     }
     for (const block of content) {
-      if (block.type !== 'tool_use' || block.name !== FILE_READ_TOOL_NAME) {
+      if (block.type !== "tool_use" || block.name !== FILE_READ_TOOL_NAME) {
         continue;
       }
       const input = block.input as {
         file_path?: unknown;
       };
-      if (typeof input.file_path === 'string' && isAutoManagedMemoryFile(input.file_path)) {
+      if (typeof input.file_path === "string" && isAutoManagedMemoryFile(input.file_path)) {
         return true;
       }
     }
@@ -58,7 +58,7 @@ export function useMemorySurvey(
     enabled?: boolean;
   } = {},
 ): {
-  state: 'closed' | 'open' | 'thanks' | 'transcript_prompt' | 'submitting' | 'submitted';
+  state: "closed" | "open" | "thanks" | "transcript_prompt" | "submitting" | "submitted";
   lastResponse: FeedbackSurveyResponse | null;
   handleSelect: (selected: FeedbackSurveyResponse) => void;
   handleTranscriptSelect: (selected: TranscriptShareResponse) => void;
@@ -73,39 +73,39 @@ export function useMemorySurvey(
   messagesRef.current = messages;
   const onOpen = useCallback((appearanceId: string) => {
     logEvent(MEMORY_SURVEY_EVENT, {
-      event_type: 'appeared' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      event_type: "appeared" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       appearance_id: appearanceId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
-    void logOTelEvent('feedback_survey', {
-      event_type: 'appeared',
+    void logOTelEvent("feedback_survey", {
+      event_type: "appeared",
       appearance_id: appearanceId,
-      survey_type: 'memory',
+      survey_type: "memory",
     });
   }, []);
   const onSelect = useCallback((appearanceId_0: string, selected: FeedbackSurveyResponse) => {
     logEvent(MEMORY_SURVEY_EVENT, {
-      event_type: 'responded' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      event_type: "responded" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       appearance_id: appearanceId_0 as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       response: selected as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
-    void logOTelEvent('feedback_survey', {
-      event_type: 'responded',
+    void logOTelEvent("feedback_survey", {
+      event_type: "responded",
       appearance_id: appearanceId_0,
       response: selected,
-      survey_type: 'memory',
+      survey_type: "memory",
     });
   }, []);
   const shouldShowTranscriptPrompt = useCallback((selected_0: FeedbackSurveyResponse) => {
-    if ('external' !== 'ant') {
+    if ("external" !== "ant") {
       return false;
     }
-    if (selected_0 !== 'bad' && selected_0 !== 'good') {
+    if (selected_0 !== "bad" && selected_0 !== "good") {
       return false;
     }
     if (getGlobalConfig().transcriptShareDismissed) {
       return false;
     }
-    if (!isPolicyAllowed('allow_product_feedback')) {
+    if (!isPolicyAllowed("allow_product_feedback")) {
       return false;
     }
     return true;
@@ -113,15 +113,15 @@ export function useMemorySurvey(
   const onTranscriptPromptShown = useCallback((appearanceId_1: string) => {
     logEvent(MEMORY_SURVEY_EVENT, {
       event_type:
-        'transcript_prompt_appeared' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+        "transcript_prompt_appeared" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       appearance_id: appearanceId_1 as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       trigger:
         TRANSCRIPT_SHARE_TRIGGER as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
-    void logOTelEvent('feedback_survey', {
-      event_type: 'transcript_prompt_appeared',
+    void logOTelEvent("feedback_survey", {
+      event_type: "transcript_prompt_appeared",
       appearance_id: appearanceId_1,
-      survey_type: 'memory',
+      survey_type: "memory",
     });
   }, []);
   const onTranscriptSelect = useCallback(
@@ -133,13 +133,13 @@ export function useMemorySurvey(
         trigger:
           TRANSCRIPT_SHARE_TRIGGER as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
-      if (selected_1 === 'dont_ask_again') {
+      if (selected_1 === "dont_ask_again") {
         saveGlobalConfig((current) => ({
           ...current,
           transcriptShareDismissed: true,
         }));
       }
-      if (selected_1 === 'yes') {
+      if (selected_1 === "yes") {
         const result = await submitTranscriptShare(
           messagesRef.current,
           TRANSCRIPT_SHARE_TRIGGER,
@@ -147,8 +147,8 @@ export function useMemorySurvey(
         );
         logEvent(MEMORY_SURVEY_EVENT, {
           event_type: (result.success
-            ? 'transcript_share_submitted'
-            : 'transcript_share_failed') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+            ? "transcript_share_submitted"
+            : "transcript_share_failed") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           appearance_id:
             appearanceId_2 as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           trigger:
@@ -179,7 +179,7 @@ export function useMemorySurvey(
       seenAssistantUuids.current.clear();
       return;
     }
-    if (state !== 'closed' || isLoading || hasActivePrompt) {
+    if (state !== "closed" || isLoading || hasActivePrompt) {
       return;
     }
 
@@ -193,7 +193,7 @@ export function useMemorySurvey(
     if (isFeedbackSurveyDisabled()) {
       return;
     }
-    if (!isPolicyAllowed('allow_product_feedback')) {
+    if (!isPolicyAllowed("allow_product_feedback")) {
       return;
     }
     if (isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY)) {
@@ -202,7 +202,7 @@ export function useMemorySurvey(
     if (!lastAssistant || seenAssistantUuids.current.has(lastAssistant.uuid)) {
       return;
     }
-    const text = extractTextContent(lastAssistant.message.content, ' ');
+    const text = extractTextContent(lastAssistant.message.content, " ");
     if (!MEMORY_WORD_RE.test(text)) {
       return;
     }

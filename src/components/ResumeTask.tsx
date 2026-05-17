@@ -1,29 +1,29 @@
-import type React from 'react';
-import { useCallback, useState } from 'react';
-import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
-import { type CodeSession, fetchCodeSessionsFromSessionsAPI } from 'src/utils/teleport/api.js';
+import type React from "react";
+import { useCallback, useState } from "react";
+import { useTerminalSize } from "src/hooks/useTerminalSize.js";
+import { type CodeSession, fetchCodeSessionsFromSessionsAPI } from "src/utils/teleport/api.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- raw j/k/arrow list navigation
-import { Box, Text, useInput } from '../ink.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import { useShortcutDisplay } from '../keybindings/useShortcutDisplay.js';
-import { logForDebugging } from '../utils/debug.js';
-import { detectCurrentRepository } from '../utils/detectRepository.js';
-import { formatRelativeTime } from '../utils/format.js';
-import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js';
-import { Select } from './CustomSelect/index.js';
-import { Byline } from './design-system/Byline.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
-import { Spinner } from './Spinner.js';
-import { TeleportError } from './TeleportError.js';
+import { Box, Text, useInput } from "../ink.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import { useShortcutDisplay } from "../keybindings/useShortcutDisplay.js";
+import { logForDebugging } from "../utils/debug.js";
+import { detectCurrentRepository } from "../utils/detectRepository.js";
+import { formatRelativeTime } from "../utils/format.js";
+import { ConfigurableShortcutHint } from "./ConfigurableShortcutHint.js";
+import { Select } from "./CustomSelect/index.js";
+import { Byline } from "./design-system/Byline.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
+import { Spinner } from "./Spinner.js";
+import { TeleportError } from "./TeleportError.js";
 
 type Props = {
   onSelect: (session: CodeSession) => void;
   onCancel: () => void;
   isEmbedded?: boolean;
 };
-type LoadErrorType = 'network' | 'auth' | 'api' | 'other';
-const UPDATED_STRING = 'Updated';
-const SPACE_BETWEEN_TABLE_COLUMNS = '  ';
+type LoadErrorType = "network" | "auth" | "api" | "other";
+const UPDATED_STRING = "Updated";
+const SPACE_BETWEEN_TABLE_COLUMNS = "  ";
 export function ResumeTask({ onSelect, onCancel, isEmbedded = false }: Props): React.ReactNode {
   const { rows } = useTerminalSize();
   const [sessions, setSessions] = useState<CodeSession[]>([]);
@@ -35,7 +35,7 @@ export function ResumeTask({ onSelect, onCancel, isEmbedded = false }: Props): R
 
   // Track focused index for scroll position display in title
   const [focusedIndex, setFocusedIndex] = useState(1);
-  const escKey = useShortcutDisplay('confirm:no', 'Confirmation', 'Esc');
+  const escKey = useShortcutDisplay("confirm:no", "Confirmation", "Esc");
   const loadSessions = useCallback(async () => {
     try {
       setLoading(true);
@@ -44,7 +44,7 @@ export function ResumeTask({ onSelect, onCancel, isEmbedded = false }: Props): R
       // Detect current repository
       const detectedRepo = await detectCurrentRepository();
       setCurrentRepo(detectedRepo);
-      logForDebugging(`Current repository: ${detectedRepo || 'not detected'}`);
+      logForDebugging(`Current repository: ${detectedRepo || "not detected"}`);
       const codeSessions = await fetchCodeSessionsFromSessionsAPI();
 
       // Filter sessions by current repository if detected
@@ -82,18 +82,18 @@ export function ResumeTask({ onSelect, onCancel, isEmbedded = false }: Props): R
   };
 
   // Handle escape via keybinding
-  useKeybinding('confirm:no', onCancel, {
-    context: 'Confirmation',
+  useKeybinding("confirm:no", onCancel, {
+    context: "Confirmation",
   });
   useInput((input, key) => {
     // We need to handle ctrl+c in case we don't render a <Select>
-    if (key.ctrl && input === 'c') {
+    if (key.ctrl && input === "c") {
       onCancel();
       return;
     }
 
     // Handle retry in error state with 'ctrl+r'
-    if (key.ctrl && input === 'r' && loadErrorType) {
+    if (key.ctrl && input === "r" && loadErrorType) {
       handleRetry();
       return;
     }
@@ -120,7 +120,7 @@ export function ResumeTask({ onSelect, onCancel, isEmbedded = false }: Props): R
           <Spinner />
           <Text bold>Loading Claude Code sessions…</Text>
         </Box>
-        <Text dimColor>{retrying ? 'Retrying…' : 'Fetching your Claude Code sessions…'}</Text>
+        <Text dimColor>{retrying ? "Retrying…" : "Fetching your Claude Code sessions…"}</Text>
       </Box>
     );
   }
@@ -163,7 +163,7 @@ export function ResumeTask({ onSelect, onCancel, isEmbedded = false }: Props): R
     ...sessionMetadata.map((meta) => meta.timeString.length),
   );
   const options = sessionMetadata.map(({ timeString, title, id }) => {
-    const paddedTime = timeString.padEnd(maxTimeStringLength, ' ');
+    const paddedTime = timeString.padEnd(maxTimeStringLength, " ");
 
     // TODO: include branch name when API returns it
     return {
@@ -191,7 +191,7 @@ export function ResumeTask({ onSelect, onCancel, isEmbedded = false }: Props): R
         Select a session to resume
         {showScrollPosition && (
           <Text dimColor>
-            {' '}
+            {" "}
             ({focusedIndex} of {sessions.length})
           </Text>
         )}
@@ -200,9 +200,9 @@ export function ResumeTask({ onSelect, onCancel, isEmbedded = false }: Props): R
       <Box flexDirection="column" marginTop={1} flexGrow={1}>
         <Box marginLeft={2}>
           <Text bold>
-            {UPDATED_STRING.padEnd(maxTimeStringLength, ' ')}
+            {UPDATED_STRING.padEnd(maxTimeStringLength, " ")}
             {SPACE_BETWEEN_TABLE_COLUMNS}
-            {'Session Title'}
+            {"Session Title"}
           </Text>
         </Box>
         <Select
@@ -245,30 +245,30 @@ export function ResumeTask({ onSelect, onCancel, isEmbedded = false }: Props): R
  */
 function determineErrorType(errorMessage: string): LoadErrorType {
   const message = errorMessage.toLowerCase();
-  if (message.includes('fetch') || message.includes('network') || message.includes('timeout')) {
-    return 'network';
+  if (message.includes("fetch") || message.includes("network") || message.includes("timeout")) {
+    return "network";
   }
   if (
-    message.includes('auth') ||
-    message.includes('token') ||
-    message.includes('permission') ||
-    message.includes('oauth') ||
-    message.includes('not authenticated') ||
-    message.includes('/login') ||
-    message.includes('console account') ||
-    message.includes('403')
+    message.includes("auth") ||
+    message.includes("token") ||
+    message.includes("permission") ||
+    message.includes("oauth") ||
+    message.includes("not authenticated") ||
+    message.includes("/login") ||
+    message.includes("console account") ||
+    message.includes("403")
   ) {
-    return 'auth';
+    return "auth";
   }
   if (
-    message.includes('api') ||
-    message.includes('rate limit') ||
-    message.includes('500') ||
-    message.includes('529')
+    message.includes("api") ||
+    message.includes("rate limit") ||
+    message.includes("500") ||
+    message.includes("529")
   ) {
-    return 'api';
+    return "api";
   }
-  return 'other';
+  return "other";
 }
 
 /**
@@ -276,13 +276,13 @@ function determineErrorType(errorMessage: string): LoadErrorType {
  */
 function renderErrorSpecificGuidance(errorType: LoadErrorType): React.ReactNode {
   switch (errorType) {
-    case 'network':
+    case "network":
       return (
         <Box marginY={1} flexDirection="column">
           <Text dimColor>Check your internet connection</Text>
         </Box>
       );
-    case 'auth':
+    case "auth":
       return (
         <Box marginY={1} flexDirection="column">
           <Text dimColor>Teleport requires a Claude account</Text>
@@ -291,13 +291,13 @@ function renderErrorSpecificGuidance(errorType: LoadErrorType): React.ReactNode 
           </Text>
         </Box>
       );
-    case 'api':
+    case "api":
       return (
         <Box marginY={1} flexDirection="column">
           <Text dimColor>Sorry, Claude encountered an error</Text>
         </Box>
       );
-    case 'other':
+    case "other":
       return (
         <Box marginY={1} flexDirection="row">
           <Text dimColor>Sorry, Claude Code encountered an error</Text>

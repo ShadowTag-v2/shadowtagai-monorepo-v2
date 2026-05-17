@@ -1,37 +1,37 @@
-import { feature } from 'bun:bundle';
-import { basename } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
-import type { SettingSource } from 'src/utils/settings/constants.js';
-import { z } from 'zod/v4';
-import { isAutoMemoryEnabled } from '../../memdir/paths.js';
+import { feature } from "bun:bundle";
+import { basename } from "node:path";
+import memoize from "lodash-es/memoize.js";
+import type { SettingSource } from "src/utils/settings/constants.js";
+import { z } from "zod/v4";
+import { isAutoMemoryEnabled } from "../../memdir/paths.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { type McpServerConfig, McpServerConfigSchema } from '../../services/mcp/types.js';
-import type { ToolUseContext } from '../../Tool.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { EFFORT_LEVELS, type EffortValue, parseEffortValue } from '../../utils/effort.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { parsePositiveIntFromFrontmatter } from '../../utils/frontmatterParser.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { logError } from '../../utils/log.js';
+} from "../../services/analytics/index.js";
+import { type McpServerConfig, McpServerConfigSchema } from "../../services/mcp/types.js";
+import type { ToolUseContext } from "../../Tool.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { EFFORT_LEVELS, type EffortValue, parseEffortValue } from "../../utils/effort.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { parsePositiveIntFromFrontmatter } from "../../utils/frontmatterParser.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { logError } from "../../utils/log.js";
 import {
   loadMarkdownFilesForSubdir,
   parseAgentToolsFromFrontmatter,
   parseSlashCommandToolsFromFrontmatter,
-} from '../../utils/markdownConfigLoader.js';
-import { PERMISSION_MODES, type PermissionMode } from '../../utils/permissions/PermissionMode.js';
-import { clearPluginAgentCache, loadPluginAgents } from '../../utils/plugins/loadPluginAgents.js';
-import { HooksSchema, type HooksSettings } from '../../utils/settings/types.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { FILE_EDIT_TOOL_NAME } from '../FileEditTool/constants.js';
-import { FILE_READ_TOOL_NAME } from '../FileReadTool/prompt.js';
-import { FILE_WRITE_TOOL_NAME } from '../FileWriteTool/prompt.js';
-import { AGENT_COLORS, type AgentColorName, setAgentColor } from './agentColorManager.js';
-import { type AgentMemoryScope, loadAgentMemoryPrompt } from './agentMemory.js';
-import { checkAgentMemorySnapshot, initializeFromSnapshot } from './agentMemorySnapshot.js';
-import { getBuiltInAgents } from './builtInAgents.js';
+} from "../../utils/markdownConfigLoader.js";
+import { PERMISSION_MODES, type PermissionMode } from "../../utils/permissions/PermissionMode.js";
+import { clearPluginAgentCache, loadPluginAgents } from "../../utils/plugins/loadPluginAgents.js";
+import { HooksSchema, type HooksSettings } from "../../utils/settings/types.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { FILE_EDIT_TOOL_NAME } from "../FileEditTool/constants.js";
+import { FILE_READ_TOOL_NAME } from "../FileReadTool/prompt.js";
+import { FILE_WRITE_TOOL_NAME } from "../FileWriteTool/prompt.js";
+import { AGENT_COLORS, type AgentColorName, setAgentColor } from "./agentColorManager.js";
+import { type AgentMemoryScope, loadAgentMemoryPrompt } from "./agentMemory.js";
+import { checkAgentMemorySnapshot, initializeFromSnapshot } from "./agentMemorySnapshot.js";
+import { getBuiltInAgents } from "./builtInAgents.js";
 
 // Type for MCP server specification in agent definitions
 // Can be either a reference to an existing server by name, or an inline definition as { [name]: config }
@@ -52,15 +52,15 @@ const AgentMcpServerSpecSchema = lazySchema(() =>
 // is broken at module load time
 const AgentJsonSchema = lazySchema(() =>
   z.object({
-    description: z.string().min(1, 'Description cannot be empty'),
+    description: z.string().min(1, "Description cannot be empty"),
     tools: z.array(z.string()).optional(),
     disallowedTools: z.array(z.string()).optional(),
-    prompt: z.string().min(1, 'Prompt cannot be empty'),
+    prompt: z.string().min(1, "Prompt cannot be empty"),
     model: z
       .string()
       .trim()
-      .min(1, 'Model cannot be empty')
-      .transform((m) => (m.toLowerCase() === 'inherit' ? 'inherit' : m))
+      .min(1, "Model cannot be empty")
+      .transform((m) => (m.toLowerCase() === "inherit" ? "inherit" : m))
       .optional(),
     effort: z.union([z.enum(EFFORT_LEVELS), z.number().int()]).optional(),
     permissionMode: z.enum(PERMISSION_MODES).optional(),
@@ -69,11 +69,11 @@ const AgentJsonSchema = lazySchema(() =>
     maxTurns: z.number().int().positive().optional(),
     skills: z.array(z.string()).optional(),
     initialPrompt: z.string().optional(),
-    memory: z.enum(['user', 'project', 'local']).optional(),
+    memory: z.enum(["user", "project", "local"]).optional(),
     background: z.boolean().optional(),
-    isolation: (process.env.USER_TYPE === 'ant'
-      ? z.enum(['worktree', 'remote'])
-      : z.enum(['worktree'])
+    isolation: (process.env.USER_TYPE === "ant"
+      ? z.enum(["worktree", "remote"])
+      : z.enum(["worktree"])
     ).optional(),
   }),
 );
@@ -101,7 +101,7 @@ export type BaseAgentDefinition = {
   background?: boolean; // Always run as background task when spawned
   initialPrompt?: string; // Prepended to the first user turn (slash commands work)
   memory?: AgentMemoryScope; // Persistent memory scope
-  isolation?: 'worktree' | 'remote'; // Run in an isolated git worktree, or remotely in CCR (ant-only)
+  isolation?: "worktree" | "remote"; // Run in an isolated git worktree, or remotely in CCR (ant-only)
   pendingSnapshotUpdate?: { snapshotTimestamp: string };
   /** Omit CLAUDE.md hierarchy from the agent's userContext. Read-only agents
    * (Explore, Plan) don't need commit/PR/lint guidelines — the main agent has
@@ -112,10 +112,10 @@ export type BaseAgentDefinition = {
 
 // Built-in agents - dynamic prompts only, no static systemPrompt field
 export type BuiltInAgentDefinition = BaseAgentDefinition & {
-  source: 'built-in';
-  baseDir: 'built-in';
+  source: "built-in";
+  baseDir: "built-in";
   callback?: () => void;
-  getSystemPrompt: (params: { toolUseContext: Pick<ToolUseContext, 'options'> }) => string;
+  getSystemPrompt: (params: { toolUseContext: Pick<ToolUseContext, "options"> }) => string;
 };
 
 // Custom agents from user/project/policy settings - prompt stored via closure
@@ -129,7 +129,7 @@ export type CustomAgentDefinition = BaseAgentDefinition & {
 // Plugin agents - similar to custom but with plugin metadata, prompt stored via closure
 export type PluginAgentDefinition = BaseAgentDefinition & {
   getSystemPrompt: () => string;
-  source: 'plugin';
+  source: "plugin";
   filename?: string;
   plugin: string;
 };
@@ -142,15 +142,15 @@ export type AgentDefinition =
 
 // Type guards for runtime type checking
 export function isBuiltInAgent(agent: AgentDefinition): agent is BuiltInAgentDefinition {
-  return agent.source === 'built-in';
+  return agent.source === "built-in";
 }
 
 export function isCustomAgent(agent: AgentDefinition): agent is CustomAgentDefinition {
-  return agent.source !== 'built-in' && agent.source !== 'plugin';
+  return agent.source !== "built-in" && agent.source !== "plugin";
 }
 
 export function isPluginAgent(agent: AgentDefinition): agent is PluginAgentDefinition {
-  return agent.source === 'plugin';
+  return agent.source === "plugin";
 }
 
 export type AgentDefinitionsResult = {
@@ -161,12 +161,12 @@ export type AgentDefinitionsResult = {
 };
 
 export function getActiveAgentsFromList(allAgents: AgentDefinition[]): AgentDefinition[] {
-  const builtInAgents = allAgents.filter((a) => a.source === 'built-in');
-  const pluginAgents = allAgents.filter((a) => a.source === 'plugin');
-  const userAgents = allAgents.filter((a) => a.source === 'userSettings');
-  const projectAgents = allAgents.filter((a) => a.source === 'projectSettings');
-  const managedAgents = allAgents.filter((a) => a.source === 'policySettings');
-  const flagAgents = allAgents.filter((a) => a.source === 'flagSettings');
+  const builtInAgents = allAgents.filter((a) => a.source === "built-in");
+  const pluginAgents = allAgents.filter((a) => a.source === "plugin");
+  const userAgents = allAgents.filter((a) => a.source === "userSettings");
+  const projectAgents = allAgents.filter((a) => a.source === "projectSettings");
+  const managedAgents = allAgents.filter((a) => a.source === "policySettings");
+  const flagAgents = allAgents.filter((a) => a.source === "flagSettings");
 
   const agentGroups = [
     builtInAgents,
@@ -225,14 +225,14 @@ export function filterAgentsByMcpRequirements(
 async function initializeAgentMemorySnapshots(agents: CustomAgentDefinition[]): Promise<void> {
   await Promise.all(
     agents.map(async (agent) => {
-      if (agent.memory !== 'user') return;
+      if (agent.memory !== "user") return;
       const result = await checkAgentMemorySnapshot(agent.agentType, agent.memory);
       switch (result.action) {
-        case 'initialize':
+        case "initialize":
           logForDebugging(`Initializing ${agent.agentType} memory from project snapshot`);
           await initializeFromSnapshot(agent.agentType, agent.memory, result.snapshotTimestamp!);
           break;
-        case 'prompt-update':
+        case "prompt-update":
           agent.pendingSnapshotUpdate = {
             snapshotTimestamp: result.snapshotTimestamp!,
           };
@@ -257,7 +257,7 @@ export const getAgentDefinitionsWithOverrides = memoize(
     }
 
     try {
-      const markdownFiles = await loadMarkdownFilesForSubdir('agents', cwd);
+      const markdownFiles = await loadMarkdownFilesForSubdir("agents", cwd);
 
       const failedFiles: Array<{ path: string; error: string }> = [];
       const customAgents = markdownFiles
@@ -273,7 +273,7 @@ export const getAgentDefinitionsWithOverrides = memoize(
             const errorMsg = getParseError(frontmatter);
             failedFiles.push({ path: filePath, error: errorMsg });
             logForDebugging(`Failed to parse agent from ${filePath}: ${errorMsg}`);
-            logEvent('tengu_agent_parse_error', {
+            logEvent("tengu_agent_parse_error", {
               error: errorMsg as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
               location: source as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
             });
@@ -287,7 +287,7 @@ export const getAgentDefinitionsWithOverrides = memoize(
       // loadPluginAgents is memoized and takes no args, so it's independent.
       // Join both so neither becomes a floating promise if the other throws.
       let pluginAgentsPromise = loadPluginAgents();
-      if (feature('AGENT_MEMORY_SNAPSHOT') && isAutoMemoryEnabled()) {
+      if (feature("AGENT_MEMORY_SNAPSHOT") && isAutoMemoryEnabled()) {
         const [pluginAgents_] = await Promise.all([
           pluginAgentsPromise,
           initializeAgentMemorySnapshots(customAgents),
@@ -323,7 +323,7 @@ export const getAgentDefinitionsWithOverrides = memoize(
       return {
         activeAgents: builtInAgents,
         allAgents: builtInAgents,
-        failedFiles: [{ path: 'unknown', error: errorMessage }],
+        failedFiles: [{ path: "unknown", error: errorMessage }],
       };
     }
   },
@@ -341,15 +341,15 @@ function getParseError(frontmatter: Record<string, unknown>): string {
   const agentType = frontmatter.name;
   const description = frontmatter.description;
 
-  if (!agentType || typeof agentType !== 'string') {
+  if (!agentType || typeof agentType !== "string") {
     return 'Missing required "name" field in frontmatter';
   }
 
-  if (!description || typeof description !== 'string') {
+  if (!description || typeof description !== "string") {
     return 'Missing required "description" field in frontmatter';
   }
 
-  return 'Unknown parsing error';
+  return "Unknown parsing error";
 }
 
 /**
@@ -380,7 +380,7 @@ function parseHooksFromFrontmatter(
 export function parseAgentFromJson(
   name: string,
   definition: unknown,
-  source: SettingSource = 'flagSettings',
+  source: SettingSource = "flagSettings",
 ): CustomAgentDefinition | null {
   try {
     const parsed = AgentJsonSchema().parse(definition);
@@ -445,7 +445,7 @@ export function parseAgentFromJson(
  */
 export function parseAgentsFromJson(
   agentsJson: unknown,
-  source: SettingSource = 'flagSettings',
+  source: SettingSource = "flagSettings",
 ): AgentDefinition[] {
   try {
     const parsed = AgentsJsonSchema().parse(agentsJson);
@@ -476,23 +476,23 @@ export function parseAgentFromMarkdown(
 
     // Validate required fields — silently skip files without any agent
     // frontmatter (they're likely co-located reference documentation)
-    if (!agentType || typeof agentType !== 'string') {
+    if (!agentType || typeof agentType !== "string") {
       return null;
     }
-    if (!whenToUse || typeof whenToUse !== 'string') {
+    if (!whenToUse || typeof whenToUse !== "string") {
       logForDebugging(`Agent file ${filePath} is missing required 'description' in frontmatter`);
       return null;
     }
 
     // Unescape newlines in whenToUse that were escaped for YAML parsing
-    whenToUse = whenToUse.replace(/\\n/g, '\n');
+    whenToUse = whenToUse.replace(/\\n/g, "\n");
 
     const color = frontmatter.color as AgentColorName | undefined;
     const modelRaw = frontmatter.model;
     let model: string | undefined;
-    if (typeof modelRaw === 'string' && modelRaw.trim().length > 0) {
+    if (typeof modelRaw === "string" && modelRaw.trim().length > 0) {
       const trimmed = modelRaw.trim();
-      model = trimmed.toLowerCase() === 'inherit' ? 'inherit' : trimmed;
+      model = trimmed.toLowerCase() === "inherit" ? "inherit" : trimmed;
     }
 
     // Parse background flag
@@ -500,8 +500,8 @@ export function parseAgentFromMarkdown(
 
     if (
       backgroundRaw !== undefined &&
-      backgroundRaw !== 'true' &&
-      backgroundRaw !== 'false' &&
+      backgroundRaw !== "true" &&
+      backgroundRaw !== "false" &&
       backgroundRaw !== true &&
       backgroundRaw !== false
     ) {
@@ -510,10 +510,10 @@ export function parseAgentFromMarkdown(
       );
     }
 
-    const background = backgroundRaw === 'true' || backgroundRaw === true ? true : undefined;
+    const background = backgroundRaw === "true" || backgroundRaw === true ? true : undefined;
 
     // Parse memory scope
-    const VALID_MEMORY_SCOPES: AgentMemoryScope[] = ['user', 'project', 'local'];
+    const VALID_MEMORY_SCOPES: AgentMemoryScope[] = ["user", "project", "local"];
     const memoryRaw = frontmatter.memory as string | undefined;
     let memory: AgentMemoryScope | undefined;
     if (memoryRaw !== undefined) {
@@ -521,15 +521,15 @@ export function parseAgentFromMarkdown(
         memory = memoryRaw as AgentMemoryScope;
       } else {
         logForDebugging(
-          `Agent file ${filePath} has invalid memory value '${memoryRaw}'. Valid options: ${VALID_MEMORY_SCOPES.join(', ')}`,
+          `Agent file ${filePath} has invalid memory value '${memoryRaw}'. Valid options: ${VALID_MEMORY_SCOPES.join(", ")}`,
         );
       }
     }
 
     // Parse isolation mode. 'remote' is ant-only; external builds reject it at parse time.
-    type IsolationMode = 'worktree' | 'remote';
+    type IsolationMode = "worktree" | "remote";
     const VALID_ISOLATION_MODES: readonly IsolationMode[] =
-      process.env.USER_TYPE === 'ant' ? ['worktree', 'remote'] : ['worktree'];
+      process.env.USER_TYPE === "ant" ? ["worktree", "remote"] : ["worktree"];
     const isolationRaw = frontmatter.isolation as string | undefined;
     let isolation: IsolationMode | undefined;
     if (isolationRaw !== undefined) {
@@ -537,7 +537,7 @@ export function parseAgentFromMarkdown(
         isolation = isolationRaw as IsolationMode;
       } else {
         logForDebugging(
-          `Agent file ${filePath} has invalid isolation value '${isolationRaw}'. Valid options: ${VALID_ISOLATION_MODES.join(', ')}`,
+          `Agent file ${filePath} has invalid isolation value '${isolationRaw}'. Valid options: ${VALID_ISOLATION_MODES.join(", ")}`,
         );
       }
     }
@@ -548,7 +548,7 @@ export function parseAgentFromMarkdown(
 
     if (effortRaw !== undefined && parsedEffort === undefined) {
       logForDebugging(
-        `Agent file ${filePath} has invalid effort '${effortRaw}'. Valid options: ${EFFORT_LEVELS.join(', ')} or an integer`,
+        `Agent file ${filePath} has invalid effort '${effortRaw}'. Valid options: ${EFFORT_LEVELS.join(", ")} or an integer`,
       );
     }
 
@@ -558,7 +558,7 @@ export function parseAgentFromMarkdown(
       permissionModeRaw && (PERMISSION_MODES as readonly string[]).includes(permissionModeRaw);
 
     if (permissionModeRaw && !isValidPermissionMode) {
-      const errorMsg = `Agent file ${filePath} has invalid permissionMode '${permissionModeRaw}'. Valid options: ${PERMISSION_MODES.join(', ')}`;
+      const errorMsg = `Agent file ${filePath} has invalid permissionMode '${permissionModeRaw}'. Valid options: ${PERMISSION_MODES.join(", ")}`;
       logForDebugging(errorMsg);
     }
 
@@ -572,7 +572,7 @@ export function parseAgentFromMarkdown(
     }
 
     // Extract filename without extension
-    const filename = basename(filePath, '.md');
+    const filename = basename(filePath, ".md");
 
     // Parse tools from frontmatter
     let tools = parseAgentToolsFromFrontmatter(frontmatter.tools);
@@ -599,7 +599,7 @@ export function parseAgentFromMarkdown(
 
     const initialPromptRaw = frontmatter.initialPrompt;
     const initialPrompt =
-      typeof initialPromptRaw === 'string' && initialPromptRaw.trim()
+      typeof initialPromptRaw === "string" && initialPromptRaw.trim()
         ? initialPromptRaw
         : undefined;
 
@@ -644,7 +644,7 @@ export function parseAgentFromMarkdown(
       },
       source,
       filename,
-      ...(color && typeof color === 'string' && AGENT_COLORS.includes(color) ? { color } : {}),
+      ...(color && typeof color === "string" && AGENT_COLORS.includes(color) ? { color } : {}),
       ...(model !== undefined ? { model } : {}),
       ...(parsedEffort !== undefined ? { effort: parsedEffort } : {}),
       ...(isValidPermissionMode ? { permissionMode: permissionModeRaw as PermissionMode } : {}),

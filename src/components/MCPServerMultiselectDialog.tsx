@@ -1,14 +1,14 @@
-import partition from 'lodash-es/partition.js';
-import { c as _c } from 'react/compiler-runtime';
-import { logEvent } from 'src/services/analytics/index.js';
-import { Box, Text } from '../ink.js';
-import { getSettings_DEPRECATED, updateSettingsForSource } from '../utils/settings/settings.js';
-import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js';
-import { SelectMulti } from './CustomSelect/SelectMulti.js';
-import { Byline } from './design-system/Byline.js';
-import { Dialog } from './design-system/Dialog.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
-import { MCPServerDialogCopy } from './MCPServerDialogCopy.js';
+import partition from "lodash-es/partition.js";
+import { c as _c } from "react/compiler-runtime";
+import { logEvent } from "src/services/analytics/index.js";
+import { Box, Text } from "../ink.js";
+import { getSettings_DEPRECATED, updateSettingsForSource } from "../utils/settings/settings.js";
+import { ConfigurableShortcutHint } from "./ConfigurableShortcutHint.js";
+import { SelectMulti } from "./CustomSelect/SelectMulti.js";
+import { Byline } from "./design-system/Byline.js";
+import { Dialog } from "./design-system/Dialog.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
+import { MCPServerDialogCopy } from "./MCPServerDialogCopy.js";
 
 type Props = {
   serverNames: string[];
@@ -26,19 +26,19 @@ export function MCPServerMultiselectDialog(t0) {
       const [approvedServers, rejectedServers] = partition(serverNames, (server) =>
         selectedServers.includes(server),
       );
-      logEvent('tengu_mcp_multidialog_choice', {
+      logEvent("tengu_mcp_multidialog_choice", {
         approved: approvedServers.length,
         rejected: rejectedServers.length,
       });
       if (approvedServers.length > 0) {
         const newEnabledServers = [...new Set([...enabledServers, ...approvedServers])];
-        updateSettingsForSource('localSettings', {
+        updateSettingsForSource("localSettings", {
           enabledMcpjsonServers: newEnabledServers,
         });
       }
       if (rejectedServers.length > 0) {
         const newDisabledServers = [...new Set([...disabledServers, ...rejectedServers])];
-        updateSettingsForSource('localSettings', {
+        updateSettingsForSource("localSettings", {
           disabledMcpjsonServers: newDisabledServers,
         });
       }
@@ -57,7 +57,7 @@ export function MCPServerMultiselectDialog(t0) {
       const currentSettings_0 = getSettings_DEPRECATED() || {};
       const disabledServers_0 = currentSettings_0.disabledMcpjsonServers || [];
       const newDisabledServers_0 = [...new Set([...disabledServers_0, ...serverNames])];
-      updateSettingsForSource('localSettings', {
+      updateSettingsForSource("localSettings", {
         disabledMcpjsonServers: newDisabledServers_0,
       });
       onDone();
@@ -71,7 +71,7 @@ export function MCPServerMultiselectDialog(t0) {
   const handleEscRejectAll = t2;
   const t3 = `${serverNames.length} new MCP servers found in .mcp.json`;
   let t4;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <MCPServerDialogCopy />;
     $[6] = t4;
   } else {
@@ -126,7 +126,7 @@ export function MCPServerMultiselectDialog(t0) {
     t7 = $[17];
   }
   let t8;
-  if ($[18] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[18] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Box paddingX={1}>
         <Text dimColor={true} italic={true}>

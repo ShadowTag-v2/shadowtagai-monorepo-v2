@@ -52,15 +52,10 @@ export interface FleetService {
   sessionId: string | null;
 }
 
-export type ServiceStatus =
-  | 'HEALTHY'
-  | 'DEGRADED'
-  | 'DEPLOYING'
-  | 'FAILED'
-  | 'UNKNOWN';
+export type ServiceStatus = "HEALTHY" | "DEGRADED" | "DEPLOYING" | "FAILED" | "UNKNOWN";
 
 export interface DeploymentPlan {
-  type: 'jules_fleet_deploy';
+  type: "jules_fleet_deploy";
   services: FleetDeployTarget[];
   concurrency: number;
   source: GitHubSource;
@@ -70,7 +65,7 @@ export interface DeploymentPlan {
 export interface FleetDeployTarget {
   serviceName: string;
   prompt: string;
-  priority: 'P0' | 'P1' | 'P2';
+  priority: "P0" | "P1" | "P2";
   sessionConfig: JulesSessionConfig;
 }
 
@@ -91,7 +86,7 @@ export interface FleetHealthReport {
 }
 
 export interface SessionActivity {
-  type: 'planGenerated' | 'progressUpdated' | 'sessionCompleted' | 'agentMessaged';
+  type: "planGenerated" | "progressUpdated" | "sessionCompleted" | "agentMessaged";
   title?: string;
   message?: string;
   artifacts?: SessionArtifact[];
@@ -99,14 +94,14 @@ export interface SessionActivity {
 }
 
 export interface SessionArtifact {
-  type: 'changeSet' | 'bashOutput' | 'media';
+  type: "changeSet" | "bashOutput" | "media";
   format?: string;
 }
 
 export interface DeploymentResult {
   serviceName: string;
   sessionId: string;
-  state: 'completed' | 'failed' | 'timeout';
+  state: "completed" | "failed" | "timeout";
   pullRequestUrl: string | null;
   durationMs: number;
   activities: SessionActivity[];
@@ -118,12 +113,12 @@ export interface DeploymentResult {
 
 const DEFAULT_CONFIG: JulesConfig = {
   defaultSource: {
-    owner: 'ShadowTag-v2',
-    repo: 'Monorepo-Uphillsnowball',
-    baseBranch: 'main',
+    owner: "ShadowTag-v2",
+    repo: "Monorepo-Uphillsnowball",
+    baseBranch: "main",
   },
-  cloudRunProject: 'shadowtag-omega-v4',
-  cloudRunRegion: 'us-central1',
+  cloudRunProject: "shadowtag-omega-v4",
+  cloudRunRegion: "us-central1",
   concurrency: 5,
   pollingIntervalMs: 3000,
   timeoutMs: 600_000, // 10 minutes
@@ -159,10 +154,10 @@ export class JulesFleetOrchestrator {
   /**
    * Register a Cloud Run service in the fleet.
    */
-  registerService(service: Omit<FleetService, 'status' | 'lastDeployedAt' | 'sessionId'>): void {
+  registerService(service: Omit<FleetService, "status" | "lastDeployedAt" | "sessionId">): void {
     this.fleet.set(service.name, {
       ...service,
-      status: 'UNKNOWN',
+      status: "UNKNOWN",
       lastDeployedAt: null,
       sessionId: null,
     });
@@ -182,7 +177,7 @@ export class JulesFleetOrchestrator {
    * routes through Judge 6 before executing via Jules SDK.
    */
   planDeployment(
-    targets: Array<{ serviceName: string; prompt: string; priority?: 'P0' | 'P1' | 'P2' }>,
+    targets: Array<{ serviceName: string; prompt: string; priority?: "P0" | "P1" | "P2" }>,
   ): DeploymentPlan {
     const source = this.config.defaultSource;
     const githubStr = `${source.owner}/${source.repo}`;
@@ -190,7 +185,7 @@ export class JulesFleetOrchestrator {
     const deployTargets: FleetDeployTarget[] = targets.map((t) => ({
       serviceName: t.serviceName,
       prompt: t.prompt,
-      priority: t.priority ?? 'P1',
+      priority: t.priority ?? "P1",
       sessionConfig: {
         prompt: this.buildDeployPrompt(t.serviceName, t.prompt),
         source: { github: githubStr, baseBranch: source.baseBranch },
@@ -202,7 +197,7 @@ export class JulesFleetOrchestrator {
     deployTargets.sort((a, b) => a.priority.localeCompare(b.priority));
 
     return {
-      type: 'jules_fleet_deploy',
+      type: "jules_fleet_deploy",
       services: deployTargets,
       concurrency: this.config.concurrency,
       source,
@@ -256,8 +251,8 @@ ${userPrompt}
    */
   planBatchExecution(plan: DeploymentPlan): Record<string, unknown> {
     return {
-      type: 'mcp_execution_plan',
-      tool: 'jules.all',
+      type: "mcp_execution_plan",
+      tool: "jules.all",
       args: {
         items: plan.services.map((s) => s.sessionConfig),
         options: {
@@ -268,7 +263,7 @@ ${userPrompt}
       },
       governance: {
         requiresJ6Gate: true,
-        riskLevel: plan.services.some((s) => s.priority === 'P0') ? 'ELEVATED' : 'LOW',
+        riskLevel: plan.services.some((s) => s.priority === "P0") ? "ELEVATED" : "LOW",
         serviceCount: plan.services.length,
       },
     };
@@ -280,16 +275,13 @@ ${userPrompt}
    * Returns an MCP execution plan for jules.session() — supports
    * plan approval, interactive feedback, and streaming.
    */
-  planInteractiveSession(
-    serviceName: string,
-    prompt: string,
-  ): Record<string, unknown> {
+  planInteractiveSession(serviceName: string, prompt: string): Record<string, unknown> {
     const source = this.config.defaultSource;
     const githubStr = `${source.owner}/${source.repo}`;
 
     return {
-      type: 'mcp_execution_plan',
-      tool: 'jules.session',
+      type: "mcp_execution_plan",
+      tool: "jules.session",
       args: {
         prompt: this.buildDeployPrompt(serviceName, prompt),
         source: { github: githubStr, baseBranch: source.baseBranch },
@@ -302,7 +294,7 @@ ${userPrompt}
       },
       governance: {
         requiresJ6Gate: true,
-        riskLevel: 'LOW',
+        riskLevel: "LOW",
       },
     };
   }
@@ -321,8 +313,8 @@ ${userPrompt}
     const services = this.getFleetManifest();
 
     return {
-      type: 'mcp_execution_plan',
-      tool: 'cloudrun.list_services',
+      type: "mcp_execution_plan",
+      tool: "cloudrun.list_services",
       args: {
         project: this.config.cloudRunProject,
       },
@@ -339,7 +331,9 @@ ${userPrompt}
   /**
    * Build a fleet health report from probe results.
    */
-  buildHealthReport(probeResults: Array<{ serviceName: string; status: ServiceStatus }>): FleetHealthReport {
+  buildHealthReport(
+    probeResults: Array<{ serviceName: string; status: ServiceStatus }>,
+  ): FleetHealthReport {
     for (const result of probeResults) {
       const service = this.fleet.get(result.serviceName);
       if (service) {
@@ -351,10 +345,10 @@ ${userPrompt}
     return {
       timestamp: new Date().toISOString(),
       totalServices: services.length,
-      healthy: services.filter((s) => s.status === 'HEALTHY').length,
-      degraded: services.filter((s) => s.status === 'DEGRADED').length,
-      failed: services.filter((s) => s.status === 'FAILED').length,
-      deploying: services.filter((s) => s.status === 'DEPLOYING').length,
+      healthy: services.filter((s) => s.status === "HEALTHY").length,
+      degraded: services.filter((s) => s.status === "DEGRADED").length,
+      failed: services.filter((s) => s.status === "FAILED").length,
+      deploying: services.filter((s) => s.status === "DEPLOYING").length,
       services,
     };
   }
@@ -371,21 +365,21 @@ ${userPrompt}
    */
   planRepolessFunction(
     functionPrompt: string,
-    outputFile: string = 'result.md',
+    outputFile: string = "result.md",
   ): Record<string, unknown> {
     return {
-      type: 'mcp_execution_plan',
-      tool: 'jules.session',
+      type: "mcp_execution_plan",
+      tool: "jules.session",
       args: {
         prompt: functionPrompt,
       },
       outputExtraction: {
         targetFile: outputFile,
-        format: 'markdown',
+        format: "markdown",
       },
       governance: {
         requiresJ6Gate: false, // repoless functions are low-risk
-        riskLevel: 'LOW',
+        riskLevel: "LOW",
       },
     };
   }
@@ -400,7 +394,7 @@ ${userPrompt}
   getDiagnostics(): Record<string, unknown> {
     const services = this.getFleetManifest();
     return {
-      orchestrator: 'jules_fleet_orchestrator_v25',
+      orchestrator: "jules_fleet_orchestrator_v25",
       config: {
         project: this.config.cloudRunProject,
         region: this.config.cloudRunRegion,
@@ -410,11 +404,11 @@ ${userPrompt}
       fleet: {
         totalServices: services.length,
         byStatus: {
-          healthy: services.filter((s) => s.status === 'HEALTHY').length,
-          degraded: services.filter((s) => s.status === 'DEGRADED').length,
-          failed: services.filter((s) => s.status === 'FAILED').length,
-          deploying: services.filter((s) => s.status === 'DEPLOYING').length,
-          unknown: services.filter((s) => s.status === 'UNKNOWN').length,
+          healthy: services.filter((s) => s.status === "HEALTHY").length,
+          degraded: services.filter((s) => s.status === "DEGRADED").length,
+          failed: services.filter((s) => s.status === "FAILED").length,
+          deploying: services.filter((s) => s.status === "DEPLOYING").length,
+          unknown: services.filter((s) => s.status === "UNKNOWN").length,
         },
       },
       deploymentHistory: {
@@ -431,7 +425,7 @@ ${userPrompt}
     this.deploymentHistory.push(result);
     const service = this.fleet.get(result.serviceName);
     if (service) {
-      service.status = result.state === 'completed' ? 'HEALTHY' : 'FAILED';
+      service.status = result.state === "completed" ? "HEALTHY" : "FAILED";
       service.lastDeployedAt = new Date().toISOString();
       service.sessionId = result.sessionId;
     }

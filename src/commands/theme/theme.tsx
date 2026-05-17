@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay } from '../../commands.js';
-import { Pane } from '../../components/design-system/Pane.js';
-import { ThemePicker } from '../../components/ThemePicker.js';
-import { useTheme } from '../../ink.js';
-import type { LocalJSXCommandCall } from '../../types/command.js';
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay } from "../../commands.js";
+import { Pane } from "../../components/design-system/Pane.js";
+import { ThemePicker } from "../../components/ThemePicker.js";
+import { useTheme } from "../../ink.js";
+import type { LocalJSXCommandCall } from "../../types/command.js";
 
 type Props = {
   onDone: (
@@ -32,8 +32,8 @@ function ThemePickerCommand(t0) {
   let t2;
   if ($[3] !== onDone) {
     t2 = () => {
-      onDone('Theme picker dismissed', {
-        display: 'system',
+      onDone("Theme picker dismissed", {
+        display: "system",
       });
     };
     $[3] = onDone;

@@ -1,23 +1,23 @@
-import type { ToolUseBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
-import type { ThemeName } from 'src/utils/theme.js';
-import type { Command } from '../../commands.js';
-import { BLACK_CIRCLE } from '../../constants/figures.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Box, Text, useTheme } from '../../ink.js';
-import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
-import { findToolByName, type Tool, type ToolProgressData, type Tools } from '../../Tool.js';
-import type { ProgressMessage } from '../../types/message.js';
-import { useIsClassifierChecking } from '../../utils/classifierApprovalsHook.js';
-import { logError } from '../../utils/log.js';
-import type { buildMessageLookups } from '../../utils/messages.js';
-import { MessageResponse } from '../MessageResponse.js';
-import { useSelectedMessageBg } from '../messageActions.js';
-import { SentryErrorBoundary } from '../SentryErrorBoundary.js';
-import { ToolUseLoader } from '../ToolUseLoader.js';
-import { HookProgressMessage } from './HookProgressMessage.js';
+import type { ToolUseBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "src/hooks/useTerminalSize.js";
+import type { ThemeName } from "src/utils/theme.js";
+import type { Command } from "../../commands.js";
+import { BLACK_CIRCLE } from "../../constants/figures.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Box, Text, useTheme } from "../../ink.js";
+import { useAppStateMaybeOutsideOfProvider } from "../../state/AppState.js";
+import { findToolByName, type Tool, type ToolProgressData, type Tools } from "../../Tool.js";
+import type { ProgressMessage } from "../../types/message.js";
+import { useIsClassifierChecking } from "../../utils/classifierApprovalsHook.js";
+import { logError } from "../../utils/log.js";
+import type { buildMessageLookups } from "../../utils/messages.js";
+import { MessageResponse } from "../MessageResponse.js";
+import { useSelectedMessageBg } from "../messageActions.js";
+import { SentryErrorBoundary } from "../SentryErrorBoundary.js";
+import { ToolUseLoader } from "../ToolUseLoader.js";
+import { HookProgressMessage } from "./HookProgressMessage.js";
 
 type Props = {
   param: ToolUseBlockParam;
@@ -57,8 +57,8 @@ export function AssistantToolUseMessage(t0) {
   const permissionMode = useAppStateMaybeOutsideOfProvider(_temp2);
   const hasStrippedRules = useAppStateMaybeOutsideOfProvider(_temp3);
   const isAutoClassifier =
-    permissionMode === 'auto' || (permissionMode === 'plan' && hasStrippedRules);
-  const isClassifierChecking = false && isClassifierCheckingRaw && permissionMode !== 'auto';
+    permissionMode === "auto" || (permissionMode === "plan" && hasStrippedRules);
+  const isClassifierChecking = false && isClassifierCheckingRaw && permissionMode !== "auto";
   let t1;
   if ($[0] !== param.input || $[1] !== param.name || $[2] !== tools) {
     bb0: {
@@ -183,7 +183,7 @@ export function AssistantToolUseMessage(t0) {
     }
     return t5;
   }
-  if (userFacingToolName === '') {
+  if (userFacingToolName === "") {
     return null;
   }
   let t4;
@@ -250,7 +250,7 @@ export function AssistantToolUseMessage(t0) {
   } else {
     t7 = $[37];
   }
-  const t8 = userFacingToolNameBackgroundColor ? 'inverseText' : undefined;
+  const t8 = userFacingToolNameBackgroundColor ? "inverseText" : undefined;
   let t9;
   if ($[38] !== t8 || $[39] !== userFacingToolName || $[40] !== userFacingToolNameBackgroundColor) {
     t9 = (
@@ -274,7 +274,7 @@ export function AssistantToolUseMessage(t0) {
   }
   let t10;
   if ($[42] !== renderedToolUseMessage) {
-    t10 = renderedToolUseMessage !== '' && (
+    t10 = renderedToolUseMessage !== "" && (
       <Box flexWrap="nowrap">
         <Text>({renderedToolUseMessage})</Text>
       </Box>
@@ -336,7 +336,7 @@ export function AssistantToolUseMessage(t0) {
       (isClassifierChecking ? (
         <MessageResponse height={1}>
           <Text dimColor={true}>
-            {isAutoClassifier ? 'Auto classifier checking\u2026' : 'Bash classifier checking\u2026'}
+            {isAutoClassifier ? "Auto classifier checking\u2026" : "Bash classifier checking\u2026"}
           </Text>
         </MessageResponse>
       ) : isWaitingForPermission ? (
@@ -449,7 +449,7 @@ function renderToolUseMessage(
   try {
     const parsed = tool.inputSchema.safeParse(input);
     if (!parsed.success) {
-      return '';
+      return "";
     }
     return tool.renderToolUseMessage(parsed.data, {
       theme,
@@ -458,7 +458,7 @@ function renderToolUseMessage(
     });
   } catch (error) {
     logError(new Error(`Error rendering tool use message for ${tool.name}: ${error}`));
-    return '';
+    return "";
   }
 }
 function renderToolUseProgressMessage(
@@ -482,7 +482,7 @@ function renderToolUseProgressMessage(
   },
 ): React.ReactNode {
   const toolProgressMessages = progressMessagesForMessage.filter(
-    (msg): msg is ProgressMessage<ToolProgressData> => msg.data.type !== 'hook_progress',
+    (msg): msg is ProgressMessage<ToolProgressData> => msg.data.type !== "hook_progress",
   );
   try {
     const toolMessages =

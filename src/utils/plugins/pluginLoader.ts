@@ -43,59 +43,59 @@ import {
   rmdir,
   stat,
   symlink,
-} from 'node:fs/promises';
-import { basename, dirname, join, relative, resolve, sep } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
-import { getInlinePlugins } from '../../bootstrap/state.js';
-import { BUILTIN_MARKETPLACE_NAME, getBuiltinPlugins } from '../../plugins/builtinPlugins.js';
+} from "node:fs/promises";
+import { basename, dirname, join, relative, resolve, sep } from "node:path";
+import memoize from "lodash-es/memoize.js";
+import { getInlinePlugins } from "../../bootstrap/state.js";
+import { BUILTIN_MARKETPLACE_NAME, getBuiltinPlugins } from "../../plugins/builtinPlugins.js";
 import type {
   LoadedPlugin,
   PluginComponent,
   PluginError,
   PluginLoadResult,
   PluginManifest,
-} from '../../types/plugin.js';
-import { logForDebugging } from '../debug.js';
-import { isEnvTruthy } from '../envUtils.js';
-import { errorMessage, getErrnoPath, isENOENT, isFsInaccessible, toError } from '../errors.js';
-import { execFileNoThrow, execFileNoThrowWithCwd } from '../execFileNoThrow.js';
-import { pathExists } from '../file.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { gitExe } from '../git.js';
-import { lazySchema } from '../lazySchema.js';
-import { logError } from '../log.js';
-import { getSettings_DEPRECATED } from '../settings/settings.js';
+} from "../../types/plugin.js";
+import { logForDebugging } from "../debug.js";
+import { isEnvTruthy } from "../envUtils.js";
+import { errorMessage, getErrnoPath, isENOENT, isFsInaccessible, toError } from "../errors.js";
+import { execFileNoThrow, execFileNoThrowWithCwd } from "../execFileNoThrow.js";
+import { pathExists } from "../file.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { gitExe } from "../git.js";
+import { lazySchema } from "../lazySchema.js";
+import { logError } from "../log.js";
+import { getSettings_DEPRECATED } from "../settings/settings.js";
 import {
   clearPluginSettingsBase,
   getPluginSettingsBase,
   resetSettingsCache,
   setPluginSettingsBase,
-} from '../settings/settingsCache.js';
-import type { HooksSettings } from '../settings/types.js';
-import { SettingsSchema } from '../settings/types.js';
-import { jsonParse, jsonStringify } from '../slowOperations.js';
-import { getAddDirEnabledPlugins } from './addDirPluginSettings.js';
-import { verifyAndDemote } from './dependencyResolver.js';
-import { classifyFetchError, logPluginFetch } from './fetchTelemetry.js';
-import { checkGitAvailable } from './gitAvailability.js';
-import { getInMemoryInstalledPlugins } from './installedPluginsManager.js';
-import { getManagedPluginNames } from './managedPlugins.js';
+} from "../settings/settingsCache.js";
+import type { HooksSettings } from "../settings/types.js";
+import { SettingsSchema } from "../settings/types.js";
+import { jsonParse, jsonStringify } from "../slowOperations.js";
+import { getAddDirEnabledPlugins } from "./addDirPluginSettings.js";
+import { verifyAndDemote } from "./dependencyResolver.js";
+import { classifyFetchError, logPluginFetch } from "./fetchTelemetry.js";
+import { checkGitAvailable } from "./gitAvailability.js";
+import { getInMemoryInstalledPlugins } from "./installedPluginsManager.js";
+import { getManagedPluginNames } from "./managedPlugins.js";
 import {
   formatSourceForDisplay,
   getBlockedMarketplaces,
   getStrictKnownMarketplaces,
   isSourceAllowedByPolicy,
   isSourceInBlocklist,
-} from './marketplaceHelpers.js';
+} from "./marketplaceHelpers.js";
 import {
   getMarketplaceCacheOnly,
   getPluginByIdCacheOnly,
   loadKnownMarketplacesConfigSafe,
-} from './marketplaceManager.js';
-import { getPluginSeedDirs, getPluginsDirectory } from './pluginDirectories.js';
-import { parsePluginIdentifier } from './pluginIdentifier.js';
-import { validatePathWithinBase } from './pluginInstallationHelpers.js';
-import { calculatePluginVersion } from './pluginVersioning.js';
+} from "./marketplaceManager.js";
+import { getPluginSeedDirs, getPluginsDirectory } from "./pluginDirectories.js";
+import { parsePluginIdentifier } from "./pluginIdentifier.js";
+import { validatePathWithinBase } from "./pluginInstallationHelpers.js";
+import { calculatePluginVersion } from "./pluginVersioning.js";
 import {
   type CommandMetadata,
   PluginHooksSchema,
@@ -103,19 +103,19 @@ import {
   PluginManifestSchema,
   type PluginMarketplaceEntry,
   type PluginSource,
-} from './schemas.js';
+} from "./schemas.js";
 import {
   convertDirectoryToZipInPlace,
   extractZipToDirectory,
   getSessionPluginCachePath,
   isPluginZipCacheEnabled,
-} from './zipCache.js';
+} from "./zipCache.js";
 
 /**
  * Get the path where plugin cache is stored
  */
 export function getPluginCachePath(): string {
-  return join(getPluginsDirectory(), 'cache');
+  return join(getPluginsDirectory(), "cache");
 }
 
 /**
@@ -133,11 +133,11 @@ export function getVersionedCachePathIn(
   version: string,
 ): string {
   const { name: pluginName, marketplace } = parsePluginIdentifier(pluginId);
-  const sanitizedMarketplace = (marketplace || 'unknown').replace(/[^a-zA-Z0-9\-_]/g, '-');
-  const sanitizedPlugin = (pluginName || pluginId).replace(/[^a-zA-Z0-9\-_]/g, '-');
+  const sanitizedMarketplace = (marketplace || "unknown").replace(/[^a-zA-Z0-9\-_]/g, "-");
+  const sanitizedPlugin = (pluginName || pluginId).replace(/[^a-zA-Z0-9\-_]/g, "-");
   // Sanitize version to prevent path traversal attacks
-  const sanitizedVersion = version.replace(/[^a-zA-Z0-9\-_.]/g, '-');
-  return join(baseDir, 'cache', sanitizedMarketplace, sanitizedPlugin, sanitizedVersion);
+  const sanitizedVersion = version.replace(/[^a-zA-Z0-9\-_.]/g, "-");
+  return join(baseDir, "cache", sanitizedMarketplace, sanitizedPlugin, sanitizedVersion);
 }
 
 /**
@@ -191,7 +191,7 @@ export async function probeSeedCacheAnyVersion(pluginId: string): Promise<string
   for (const seedDir of getPluginSeedDirs()) {
     // The parent of the version dir — computed the same way as
     // getVersionedCachePathIn, just without the version component.
-    const pluginDir = dirname(getVersionedCachePathIn(seedDir, pluginId, '_'));
+    const pluginDir = dirname(getVersionedCachePathIn(seedDir, pluginId, "_"));
     try {
       const versions = await readdir(pluginDir);
       if (versions.length !== 1) continue;
@@ -216,7 +216,7 @@ export async function probeSeedCacheAnyVersion(pluginId: string): Promise<string
  */
 export function getLegacyCachePath(pluginName: string): string {
   const cachePath = getPluginCachePath();
-  return join(cachePath, pluginName.replace(/[^a-zA-Z0-9\-_]/g, '-'));
+  return join(cachePath, pluginName.replace(/[^a-zA-Z0-9\-_]/g, "-"));
 }
 
 /**
@@ -364,7 +364,7 @@ export async function copyPluginToVersionedCache(
 
   // For local plugins: copy entry.source directory (the single source of truth)
   // For remote plugins: marketplaceDir is undefined, fall back to copying sourcePath
-  if (entry && typeof entry.source === 'string' && marketplaceDir) {
+  if (entry && typeof entry.source === "string" && marketplaceDir) {
     const sourceDir = validatePathWithinBase(marketplaceDir, entry.source);
 
     logForDebugging(`Copying source directory ${entry.source} for plugin ${pluginId}`);
@@ -388,7 +388,7 @@ export async function copyPluginToVersionedCache(
   }
 
   // Remove .git directory from cache if present
-  const gitPath = join(cachePath, '.git');
+  const gitPath = join(cachePath, ".git");
   await rm(gitPath, { recursive: true, force: true });
 
   // Validate that cache has content - if empty, throw so fallback can be used
@@ -416,7 +416,7 @@ export async function copyPluginToVersionedCache(
 function validateGitUrl(url: string): string {
   try {
     const parsed = new URL(url);
-    if (!['https:', 'http:', 'file:'].includes(parsed.protocol)) {
+    if (!["https:", "http:", "file:"].includes(parsed.protocol)) {
       if (!/^git@[a-zA-Z0-9.-]+:/.test(url)) {
         throw new Error(
           `Invalid git URL protocol: ${parsed.protocol}. Only HTTPS, HTTP, file:// and SSH (git@) URLs are supported.`,
@@ -440,21 +440,21 @@ export async function installFromNpm(
   targetPath: string,
   options: { registry?: string; version?: string } = {},
 ): Promise<void> {
-  const npmCachePath = join(getPluginsDirectory(), 'npm-cache');
+  const npmCachePath = join(getPluginsDirectory(), "npm-cache");
 
   await getFsImplementation().mkdir(npmCachePath);
 
   const packageSpec = options.version ? `${packageName}@${options.version}` : packageName;
-  const packagePath = join(npmCachePath, 'node_modules', packageName);
+  const packagePath = join(npmCachePath, "node_modules", packageName);
   const needsInstall = !(await pathExists(packagePath));
 
   if (needsInstall) {
     logForDebugging(`Installing npm package ${packageSpec} to cache`);
-    const args = ['install', packageSpec, '--prefix', npmCachePath];
+    const args = ["install", packageSpec, "--prefix", npmCachePath];
     if (options.registry) {
-      args.push('--registry', options.registry);
+      args.push("--registry", options.registry);
     }
-    const result = await execFileNoThrow('npm', args, { useCwd: false });
+    const result = await execFileNoThrow("npm", args, { useCwd: false });
 
     if (result.code !== 0) {
       throw new Error(`Failed to install npm package: ${result.stderr}`);
@@ -481,16 +481,16 @@ export async function gitClone(
 ): Promise<void> {
   // Use --recurse-submodules to initialize submodules
   // Always start with shallow clone for efficiency
-  const args = ['clone', '--depth', '1', '--recurse-submodules', '--shallow-submodules'];
+  const args = ["clone", "--depth", "1", "--recurse-submodules", "--shallow-submodules"];
 
   // Add --branch flag for specific ref (works for both branches and tags)
   if (ref) {
-    args.push('--branch', ref);
+    args.push("--branch", ref);
   }
 
   // If sha is specified, use --no-checkout since we'll checkout the SHA separately
   if (sha) {
-    args.push('--no-checkout');
+    args.push("--no-checkout");
   }
 
   args.push(gitUrl, targetPath);
@@ -500,9 +500,9 @@ export async function gitClone(
 
   if (cloneResult.code !== 0) {
     logPluginFetch(
-      'plugin_clone',
+      "plugin_clone",
       gitUrl,
-      'failure',
+      "failure",
       performance.now() - cloneStarted,
       classifyFetchError(cloneResult.stderr),
     );
@@ -514,7 +514,7 @@ export async function gitClone(
     // Try shallow fetch of the specific SHA first (most efficient)
     const shallowFetchResult = await execFileNoThrowWithCwd(
       gitExe(),
-      ['fetch', '--depth', '1', 'origin', sha],
+      ["fetch", "--depth", "1", "origin", sha],
       { cwd: targetPath },
     );
 
@@ -522,15 +522,15 @@ export async function gitClone(
       // Some servers don't support fetching arbitrary SHAs
       // Fall back to unshallow fetch to get full history
       logForDebugging(`Shallow fetch of SHA ${sha} failed, falling back to unshallow fetch`);
-      const unshallowResult = await execFileNoThrowWithCwd(gitExe(), ['fetch', '--unshallow'], {
+      const unshallowResult = await execFileNoThrowWithCwd(gitExe(), ["fetch", "--unshallow"], {
         cwd: targetPath,
       });
 
       if (unshallowResult.code !== 0) {
         logPluginFetch(
-          'plugin_clone',
+          "plugin_clone",
           gitUrl,
-          'failure',
+          "failure",
           performance.now() - cloneStarted,
           classifyFetchError(unshallowResult.stderr),
         );
@@ -539,15 +539,15 @@ export async function gitClone(
     }
 
     // Checkout the specific commit
-    const checkoutResult = await execFileNoThrowWithCwd(gitExe(), ['checkout', sha], {
+    const checkoutResult = await execFileNoThrowWithCwd(gitExe(), ["checkout", sha], {
       cwd: targetPath,
     });
 
     if (checkoutResult.code !== 0) {
       logPluginFetch(
-        'plugin_clone',
+        "plugin_clone",
         gitUrl,
-        'failure',
+        "failure",
         performance.now() - cloneStarted,
         classifyFetchError(checkoutResult.stderr),
       );
@@ -557,7 +557,7 @@ export async function gitClone(
 
   // Fire success only after ALL network ops (clone + optional SHA fetch)
   // complete — same telemetry-scope discipline as mcpb and marketplace_url.
-  logPluginFetch('plugin_clone', gitUrl, 'success', performance.now() - cloneStarted);
+  logPluginFetch("plugin_clone", gitUrl, "success", performance.now() - cloneStarted);
 }
 
 /**
@@ -571,7 +571,7 @@ async function installFromGit(
 ): Promise<void> {
   const safeUrl = validateGitUrl(gitUrl);
   await gitClone(safeUrl, targetPath, ref, sha);
-  const refMessage = ref ? ` (ref: ${ref})` : '';
+  const refMessage = ref ? ` (ref: ${ref})` : "";
   logForDebugging(`Cloned repository from ${safeUrl}${refMessage} to ${targetPath}`);
 }
 
@@ -641,8 +641,8 @@ export async function installFromGitSubdir(
 ): Promise<string | undefined> {
   if (!(await checkGitAvailable())) {
     throw new Error(
-      'git-subdir plugin source requires git to be installed and on PATH. ' +
-        'Install git (version 2.25 or later for sparse-checkout cone mode) and try again.',
+      "git-subdir plugin source requires git to be installed and on PATH. " +
+        "Install git (version 2.25 or later for sparse-checkout cone mode) and try again.",
     );
   }
 
@@ -650,9 +650,9 @@ export async function installFromGitSubdir(
   // Clone into a sibling temp dir (same filesystem → rename works, no EXDEV).
   const cloneDir = `${targetPath}.clone`;
 
-  const cloneArgs = ['clone', '--depth', '1', '--filter=tree:0', '--no-checkout'];
+  const cloneArgs = ["clone", "--depth", "1", "--filter=tree:0", "--no-checkout"];
   if (ref) {
-    cloneArgs.push('--branch', ref);
+    cloneArgs.push("--branch", ref);
   }
   cloneArgs.push(gitUrl, cloneDir);
 
@@ -664,7 +664,7 @@ export async function installFromGitSubdir(
   try {
     const sparseResult = await execFileNoThrowWithCwd(
       gitExe(),
-      ['sparse-checkout', 'set', '--cone', '--', subdirPath],
+      ["sparse-checkout", "set", "--cone", "--", subdirPath],
       { cwd: cloneDir },
     );
     if (sparseResult.code !== 0) {
@@ -683,21 +683,21 @@ export async function installFromGitSubdir(
     if (sha) {
       const fetchSha = await execFileNoThrowWithCwd(
         gitExe(),
-        ['fetch', '--depth', '1', 'origin', sha],
+        ["fetch", "--depth", "1", "origin", sha],
         { cwd: cloneDir },
       );
       if (fetchSha.code !== 0) {
         logForDebugging(
           `Shallow fetch of SHA ${sha} failed for git-subdir, falling back to unshallow fetch`,
         );
-        const unshallow = await execFileNoThrowWithCwd(gitExe(), ['fetch', '--unshallow'], {
+        const unshallow = await execFileNoThrowWithCwd(gitExe(), ["fetch", "--unshallow"], {
           cwd: cloneDir,
         });
         if (unshallow.code !== 0) {
           throw new Error(`Failed to fetch commit ${sha}: ${unshallow.stderr}`);
         }
       }
-      const checkout = await execFileNoThrowWithCwd(gitExe(), ['checkout', sha], { cwd: cloneDir });
+      const checkout = await execFileNoThrowWithCwd(gitExe(), ["checkout", sha], { cwd: cloneDir });
       if (checkout.code !== 0) {
         throw new Error(`Failed to checkout commit ${sha}: ${checkout.stderr}`);
       }
@@ -709,10 +709,10 @@ export async function installFromGitSubdir(
       // purely read-only ref lookup (no index lock), so it runs safely in
       // parallel with checkout and we avoid waiting on the network for it.
       const [checkout, revParse] = await Promise.all([
-        execFileNoThrowWithCwd(gitExe(), ['checkout', 'HEAD'], {
+        execFileNoThrowWithCwd(gitExe(), ["checkout", "HEAD"], {
           cwd: cloneDir,
         }),
-        execFileNoThrowWithCwd(gitExe(), ['rev-parse', 'HEAD'], {
+        execFileNoThrowWithCwd(gitExe(), ["rev-parse", "HEAD"], {
           cwd: cloneDir,
         }),
       ]);
@@ -733,15 +733,15 @@ export async function installFromGitSubdir(
     } catch (e: unknown) {
       if (isENOENT(e)) {
         throw new Error(
-          `Subdirectory '${subdirPath}' not found in repository ${gitUrl}${ref ? ` (ref: ${ref})` : ''}. ` +
-            'Check that the path is correct and exists at the specified ref/sha.',
+          `Subdirectory '${subdirPath}' not found in repository ${gitUrl}${ref ? ` (ref: ${ref})` : ""}. ` +
+            "Check that the path is correct and exists at the specified ref/sha.",
         );
       }
       throw e;
     }
 
-    const refMsg = ref ? ` ref=${ref}` : '';
-    const shaMsg = resolvedSha ? ` sha=${resolvedSha}` : '';
+    const refMsg = ref ? ` ref=${ref}` : "";
+    const shaMsg = resolvedSha ? ` sha=${resolvedSha}` : "";
     logForDebugging(
       `Extracted subdir ${subdirPath} from ${gitUrl}${refMsg}${shaMsg} to ${targetPath}`,
     );
@@ -761,7 +761,7 @@ async function installFromLocal(sourcePath: string, targetPath: string): Promise
 
   await copyDir(sourcePath, targetPath);
 
-  const gitPath = join(targetPath, '.git');
+  const gitPath = join(targetPath, ".git");
   await rm(gitPath, { recursive: true, force: true });
 }
 
@@ -774,27 +774,27 @@ export function generateTemporaryCacheNameForPlugin(source: PluginSource): strin
 
   let prefix: string;
 
-  if (typeof source === 'string') {
-    prefix = 'local';
+  if (typeof source === "string") {
+    prefix = "local";
   } else {
     switch (source.source) {
-      case 'npm':
-        prefix = 'npm';
+      case "npm":
+        prefix = "npm";
         break;
-      case 'pip':
-        prefix = 'pip';
+      case "pip":
+        prefix = "pip";
         break;
-      case 'github':
-        prefix = 'github';
+      case "github":
+        prefix = "github";
         break;
-      case 'url':
-        prefix = 'git';
+      case "url":
+        prefix = "git";
         break;
-      case 'git-subdir':
-        prefix = 'subdir';
+      case "git-subdir":
+        prefix = "subdir";
         break;
       default:
-        prefix = 'unknown';
+        prefix = "unknown";
     }
   }
 
@@ -827,23 +827,23 @@ export async function cachePlugin(
 
     shouldCleanup = true;
 
-    if (typeof source === 'string') {
+    if (typeof source === "string") {
       await installFromLocal(source, tempPath);
     } else {
       switch (source.source) {
-        case 'npm':
+        case "npm":
           await installFromNpm(source.package, tempPath, {
             registry: source.registry,
             version: source.version,
           });
           break;
-        case 'github':
+        case "github":
           await installFromGitHub(source.repo, tempPath, source.ref, source.sha);
           break;
-        case 'url':
+        case "url":
           await installFromGit(source.url, tempPath, source.ref, source.sha);
           break;
-        case 'git-subdir':
+        case "git-subdir":
           gitCommitSha = await installFromGitSubdir(
             source.url,
             tempPath,
@@ -852,8 +852,8 @@ export async function cachePlugin(
             source.sha,
           );
           break;
-        case 'pip':
-          throw new Error('Python package plugins are not yet supported');
+        case "pip":
+          throw new Error("Python package plugins are not yet supported");
         default:
           throw new Error(`Unsupported plugin source type`);
       }
@@ -865,20 +865,20 @@ export async function cachePlugin(
         await rm(tempPath, { recursive: true, force: true });
       } catch (cleanupError) {
         logForDebugging(`Failed to clean up installation: ${cleanupError}`, {
-          level: 'error',
+          level: "error",
         });
       }
     }
     throw error;
   }
 
-  const manifestPath = join(tempPath, '.claude-plugin', 'plugin.json');
-  const legacyManifestPath = join(tempPath, 'plugin.json');
+  const manifestPath = join(tempPath, ".claude-plugin", "plugin.json");
+  const legacyManifestPath = join(tempPath, "plugin.json");
   let manifest: PluginManifest;
 
   if (await pathExists(manifestPath)) {
     try {
-      const content = await readFile(manifestPath, { encoding: 'utf-8' });
+      const content = await readFile(manifestPath, { encoding: "utf-8" });
       const parsed = jsonParse(content);
       const result = PluginManifestSchema().safeParse(parsed);
 
@@ -887,11 +887,11 @@ export async function cachePlugin(
       } else {
         // Manifest exists but is invalid - throw error
         const errors = result.error.issues
-          .map((err) => `${err.path.join('.')}: ${err.message}`)
-          .join(', ');
+          .map((err) => `${err.path.join(".")}: ${err.message}`)
+          .join(", ");
 
         logForDebugging(`Invalid manifest at ${manifestPath}: ${errors}`, {
-          level: 'error',
+          level: "error",
         });
 
         throw new Error(
@@ -900,14 +900,14 @@ export async function cachePlugin(
       }
     } catch (error) {
       // Check if this is a validation error we just threw
-      if (error instanceof Error && error.message.includes('invalid manifest file')) {
+      if (error instanceof Error && error.message.includes("invalid manifest file")) {
         throw error;
       }
 
       // JSON parse error
       const errorMsg = errorMessage(error);
       logForDebugging(`Failed to parse manifest at ${manifestPath}: ${errorMsg}`, {
-        level: 'error',
+        level: "error",
       });
 
       throw new Error(
@@ -917,7 +917,7 @@ export async function cachePlugin(
   } else if (await pathExists(legacyManifestPath)) {
     try {
       const content = await readFile(legacyManifestPath, {
-        encoding: 'utf-8',
+        encoding: "utf-8",
       });
       const parsed = jsonParse(content);
       const result = PluginManifestSchema().safeParse(parsed);
@@ -927,11 +927,11 @@ export async function cachePlugin(
       } else {
         // Manifest exists but is invalid - throw error
         const errors = result.error.issues
-          .map((err) => `${err.path.join('.')}: ${err.message}`)
-          .join(', ');
+          .map((err) => `${err.path.join(".")}: ${err.message}`)
+          .join(", ");
 
         logForDebugging(`Invalid legacy manifest at ${legacyManifestPath}: ${errors}`, {
-          level: 'error',
+          level: "error",
         });
 
         throw new Error(
@@ -940,14 +940,14 @@ export async function cachePlugin(
       }
     } catch (error) {
       // Check if this is a validation error we just threw
-      if (error instanceof Error && error.message.includes('invalid manifest file')) {
+      if (error instanceof Error && error.message.includes("invalid manifest file")) {
         throw error;
       }
 
       // JSON parse error
       const errorMsg = errorMessage(error);
       logForDebugging(`Failed to parse legacy manifest at ${legacyManifestPath}: ${errorMsg}`, {
-        level: 'error',
+        level: "error",
       });
 
       throw new Error(
@@ -957,11 +957,11 @@ export async function cachePlugin(
   } else {
     manifest = options?.manifest || {
       name: tempName,
-      description: `Plugin cached from ${typeof source === 'string' ? source : source.source}`,
+      description: `Plugin cached from ${typeof source === "string" ? source : source.source}`,
     };
   }
 
-  const finalName = manifest.name.replace(/[^a-zA-Z0-9-_]/g, '-');
+  const finalName = manifest.name.replace(/[^a-zA-Z0-9-_]/g, "-");
   const finalPath = join(cachePath, finalName);
 
   if (await pathExists(finalPath)) {
@@ -1044,7 +1044,7 @@ export async function loadPluginManifest(
 
   try {
     // Read and parse the manifest JSON file
-    const content = await readFile(manifestPath, { encoding: 'utf-8' });
+    const content = await readFile(manifestPath, { encoding: "utf-8" });
     const parsedJson = jsonParse(content);
 
     // Validate against the PluginManifest schema
@@ -1057,12 +1057,12 @@ export async function loadPluginManifest(
 
     // Schema validation failed but JSON was valid
     const errors = result.error.issues
-      .map((err) => (err.path.length > 0 ? `${err.path.join('.')}: ${err.message}` : err.message))
-      .join(', ');
+      .map((err) => (err.path.length > 0 ? `${err.path.join(".")}: ${err.message}` : err.message))
+      .join(", ");
 
     logForDebugging(
       `Plugin ${pluginName} has an invalid manifest file at ${manifestPath}. Validation errors: ${errors}`,
-      { level: 'error' },
+      { level: "error" },
     );
 
     throw new Error(
@@ -1070,7 +1070,7 @@ export async function loadPluginManifest(
     );
   } catch (error) {
     // Check if this is the error we just threw (validation error)
-    if (error instanceof Error && error.message.includes('invalid manifest file')) {
+    if (error instanceof Error && error.message.includes("invalid manifest file")) {
       throw error;
     }
 
@@ -1079,7 +1079,7 @@ export async function loadPluginManifest(
 
     logForDebugging(
       `Plugin ${pluginName} has a corrupt manifest file at ${manifestPath}. Parse error: ${errorMsg}`,
-      { level: 'error' },
+      { level: "error" },
     );
 
     throw new Error(
@@ -1107,7 +1107,7 @@ async function loadPluginHooks(
     );
   }
 
-  const content = await readFile(hooksConfigPath, { encoding: 'utf-8' });
+  const content = await readFile(hooksConfigPath, { encoding: "utf-8" });
   const rawHooksConfig = jsonParse(content);
 
   // The hooks.json file has a wrapper structure with description and hooks
@@ -1163,11 +1163,11 @@ async function validatePluginPaths(
     } else {
       logForDebugging(
         `${componentLabel} path ${relPath} ${contextLabel} not found at ${fullPath} for ${pluginName}`,
-        { level: 'warn' },
+        { level: "warn" },
       );
       logError(new Error(`Plugin component file not found: ${fullPath} for ${pluginName}`));
       errors.push({
-        type: 'path-not-found',
+        type: "path-not-found",
         source,
         plugin: pluginName,
         path: fullPath,
@@ -1228,7 +1228,7 @@ export async function createPluginFromPath(
 
   // Step 1: Load or create the plugin manifest
   // This provides metadata about the plugin (name, version, etc.)
-  const manifestPath = join(pluginPath, '.claude-plugin', 'plugin.json');
+  const manifestPath = join(pluginPath, ".claude-plugin", "plugin.json");
   const manifest = await loadPluginManifest(manifestPath, fallbackName, source);
 
   // Step 2: Create the base plugin object
@@ -1245,13 +1245,13 @@ export async function createPluginFromPath(
   // Step 3: Auto-detect optional directories in parallel
   const [commandsDirExists, agentsDirExists, skillsDirExists, outputStylesDirExists] =
     await Promise.all([
-      !manifest.commands ? pathExists(join(pluginPath, 'commands')) : false,
-      !manifest.agents ? pathExists(join(pluginPath, 'agents')) : false,
-      !manifest.skills ? pathExists(join(pluginPath, 'skills')) : false,
-      !manifest.outputStyles ? pathExists(join(pluginPath, 'output-styles')) : false,
+      !manifest.commands ? pathExists(join(pluginPath, "commands")) : false,
+      !manifest.agents ? pathExists(join(pluginPath, "agents")) : false,
+      !manifest.skills ? pathExists(join(pluginPath, "skills")) : false,
+      !manifest.outputStyles ? pathExists(join(pluginPath, "output-styles")) : false,
     ]);
 
-  const commandsPath = join(pluginPath, 'commands');
+  const commandsPath = join(pluginPath, "commands");
   if (commandsDirExists) {
     plugin.commandsPath = commandsPath;
   }
@@ -1261,11 +1261,11 @@ export async function createPluginFromPath(
     // Check if it's an object mapping (record of command name → metadata)
     const firstValue = Object.values(manifest.commands)[0];
     if (
-      typeof manifest.commands === 'object' &&
+      typeof manifest.commands === "object" &&
       !Array.isArray(manifest.commands) &&
       firstValue &&
-      typeof firstValue === 'object' &&
-      ('source' in firstValue || 'content' in firstValue)
+      typeof firstValue === "object" &&
+      ("source" in firstValue || "content" in firstValue)
     ) {
       // Object mapping format: { "about": { "source": "./README.md", ... } }
       const commandsMetadata: Record<string, CommandMetadata> = {};
@@ -1276,28 +1276,28 @@ export async function createPluginFromPath(
       const entries = Object.entries(manifest.commands);
       const checks = await Promise.all(
         entries.map(async ([commandName, metadata]) => {
-          if (!metadata || typeof metadata !== 'object') {
-            return { commandName, metadata, kind: 'skip' as const };
+          if (!metadata || typeof metadata !== "object") {
+            return { commandName, metadata, kind: "skip" as const };
           }
           if (metadata.source) {
             const fullPath = join(pluginPath, metadata.source);
             return {
               commandName,
               metadata,
-              kind: 'source' as const,
+              kind: "source" as const,
               fullPath,
               exists: await pathExists(fullPath),
             };
           }
           if (metadata.content) {
-            return { commandName, metadata, kind: 'content' as const };
+            return { commandName, metadata, kind: "content" as const };
           }
-          return { commandName, metadata, kind: 'skip' as const };
+          return { commandName, metadata, kind: "skip" as const };
         }),
       );
       for (const check of checks) {
-        if (check.kind === 'skip') continue;
-        if (check.kind === 'content') {
+        if (check.kind === "skip") continue;
+        if (check.kind === "content") {
           // For inline content commands, add metadata without path
           commandsMetadata[check.commandName] = check.metadata;
           continue;
@@ -1309,17 +1309,17 @@ export async function createPluginFromPath(
         } else {
           logForDebugging(
             `Command ${check.commandName} path ${check.metadata.source} specified in manifest but not found at ${check.fullPath} for ${manifest.name}`,
-            { level: 'warn' },
+            { level: "warn" },
           );
           logError(
             new Error(`Plugin component file not found: ${check.fullPath} for ${manifest.name}`),
           );
           errors.push({
-            type: 'path-not-found',
+            type: "path-not-found",
             source,
             plugin: manifest.name,
             path: check.fullPath,
-            component: 'commands',
+            component: "commands",
           });
         }
       }
@@ -1341,13 +1341,13 @@ export async function createPluginFromPath(
       // Parallelize pathExists checks; process results in order.
       const checks = await Promise.all(
         commandPaths.map(async (cmdPath) => {
-          if (typeof cmdPath !== 'string') {
-            return { cmdPath, kind: 'invalid' as const };
+          if (typeof cmdPath !== "string") {
+            return { cmdPath, kind: "invalid" as const };
           }
           const fullPath = join(pluginPath, cmdPath);
           return {
             cmdPath,
-            kind: 'path' as const,
+            kind: "path" as const,
             fullPath,
             exists: await pathExists(fullPath),
           };
@@ -1355,9 +1355,9 @@ export async function createPluginFromPath(
       );
       const validPaths: string[] = [];
       for (const check of checks) {
-        if (check.kind === 'invalid') {
+        if (check.kind === "invalid") {
           logForDebugging(`Unexpected command format in manifest for ${manifest.name}`, {
-            level: 'error',
+            level: "error",
           });
           continue;
         }
@@ -1366,17 +1366,17 @@ export async function createPluginFromPath(
         } else {
           logForDebugging(
             `Command path ${check.cmdPath} specified in manifest but not found at ${check.fullPath} for ${manifest.name}`,
-            { level: 'warn' },
+            { level: "warn" },
           );
           logError(
             new Error(`Plugin component file not found: ${check.fullPath} for ${manifest.name}`),
           );
           errors.push({
-            type: 'path-not-found',
+            type: "path-not-found",
             source,
             plugin: manifest.name,
             path: check.fullPath,
-            component: 'commands',
+            component: "commands",
           });
         }
       }
@@ -1388,7 +1388,7 @@ export async function createPluginFromPath(
   }
 
   // Step 4: Register agents directory if detected
-  const agentsPath = join(pluginPath, 'agents');
+  const agentsPath = join(pluginPath, "agents");
   if (agentsDirExists) {
     plugin.agentsPath = agentsPath;
   }
@@ -1402,9 +1402,9 @@ export async function createPluginFromPath(
       pluginPath,
       manifest.name,
       source,
-      'agents',
-      'Agent',
-      'specified in manifest but',
+      "agents",
+      "Agent",
+      "specified in manifest but",
       errors,
     );
 
@@ -1414,7 +1414,7 @@ export async function createPluginFromPath(
   }
 
   // Step 4b: Register skills directory if detected
-  const skillsPath = join(pluginPath, 'skills');
+  const skillsPath = join(pluginPath, "skills");
   if (skillsDirExists) {
     plugin.skillsPath = skillsPath;
   }
@@ -1428,9 +1428,9 @@ export async function createPluginFromPath(
       pluginPath,
       manifest.name,
       source,
-      'skills',
-      'Skill',
-      'specified in manifest but',
+      "skills",
+      "Skill",
+      "specified in manifest but",
       errors,
     );
 
@@ -1440,7 +1440,7 @@ export async function createPluginFromPath(
   }
 
   // Step 4d: Register output-styles directory if detected
-  const outputStylesPath = join(pluginPath, 'output-styles');
+  const outputStylesPath = join(pluginPath, "output-styles");
   if (outputStylesDirExists) {
     plugin.outputStylesPath = outputStylesPath;
   }
@@ -1456,9 +1456,9 @@ export async function createPluginFromPath(
       pluginPath,
       manifest.name,
       source,
-      'output-styles',
-      'Output style',
-      'specified in manifest but',
+      "output-styles",
+      "Output style",
+      "specified in manifest but",
       errors,
     );
 
@@ -1472,7 +1472,7 @@ export async function createPluginFromPath(
   const loadedHookPaths = new Set<string>(); // Track loaded hook files
 
   // Load from standard hooks/hooks.json if it exists
-  const standardHooksPath = join(pluginPath, 'hooks', 'hooks.json');
+  const standardHooksPath = join(pluginPath, "hooks", "hooks.json");
   if (await pathExists(standardHooksPath)) {
     try {
       mergedHooks = await loadPluginHooks(standardHooksPath, manifest.name);
@@ -1489,11 +1489,11 @@ export async function createPluginFromPath(
     } catch (error) {
       const errorMsg = errorMessage(error);
       logForDebugging(`Failed to load hooks for ${manifest.name}: ${errorMsg}`, {
-        level: 'error',
+        level: "error",
       });
       logError(toError(error));
       errors.push({
-        type: 'hook-load-failed',
+        type: "hook-load-failed",
         source,
         plugin: manifest.name,
         hookPath: standardHooksPath,
@@ -1507,23 +1507,23 @@ export async function createPluginFromPath(
     const manifestHooksArray = Array.isArray(manifest.hooks) ? manifest.hooks : [manifest.hooks];
 
     for (const hookSpec of manifestHooksArray) {
-      if (typeof hookSpec === 'string') {
+      if (typeof hookSpec === "string") {
         // Path to additional hooks file
         const hookFilePath = join(pluginPath, hookSpec);
         if (!(await pathExists(hookFilePath))) {
           logForDebugging(
             `Hooks file ${hookSpec} specified in manifest but not found at ${hookFilePath} for ${manifest.name}`,
-            { level: 'error' },
+            { level: "error" },
           );
           logError(
             new Error(`Plugin component file not found: ${hookFilePath} for ${manifest.name}`),
           );
           errors.push({
-            type: 'path-not-found',
+            type: "path-not-found",
             source,
             plugin: manifest.name,
             path: hookFilePath,
-            component: 'hooks',
+            component: "hooks",
           });
           continue;
         }
@@ -1546,7 +1546,7 @@ export async function createPluginFromPath(
             const errorMsg = `Duplicate hooks file detected: ${hookSpec} resolves to already-loaded file ${normalizedPath}. The standard hooks/hooks.json is loaded automatically, so manifest.hooks should only reference additional hook files.`;
             logError(new Error(errorMsg));
             errors.push({
-              type: 'hook-load-failed',
+              type: "hook-load-failed",
               source,
               plugin: manifest.name,
               hookPath: hookFilePath,
@@ -1568,11 +1568,11 @@ export async function createPluginFromPath(
             const mergeErrorMsg = errorMessage(mergeError);
             logForDebugging(
               `Failed to merge hooks from ${hookSpec} for ${manifest.name}: ${mergeErrorMsg}`,
-              { level: 'error' },
+              { level: "error" },
             );
             logError(toError(mergeError));
             errors.push({
-              type: 'hook-load-failed',
+              type: "hook-load-failed",
               source,
               plugin: manifest.name,
               hookPath: hookFilePath,
@@ -1583,18 +1583,18 @@ export async function createPluginFromPath(
           const errorMsg = errorMessage(error);
           logForDebugging(
             `Failed to load hooks from ${hookSpec} for ${manifest.name}: ${errorMsg}`,
-            { level: 'error' },
+            { level: "error" },
           );
           logError(toError(error));
           errors.push({
-            type: 'hook-load-failed',
+            type: "hook-load-failed",
             source,
             plugin: manifest.name,
             hookPath: hookFilePath,
             reason: errorMsg,
           });
         }
-      } else if (typeof hookSpec === 'object') {
+      } else if (typeof hookSpec === "object") {
         // Inline hooks
         mergedHooks = mergeHooksSettings(mergedHooks, hookSpec as HooksSettings);
       }
@@ -1654,9 +1654,9 @@ async function loadPluginSettings(
   manifest: PluginManifest,
 ): Promise<Record<string, unknown> | undefined> {
   // Try loading settings.json from the plugin directory
-  const settingsJsonPath = join(pluginPath, 'settings.json');
+  const settingsJsonPath = join(pluginPath, "settings.json");
   try {
-    const content = await readFile(settingsJsonPath, { encoding: 'utf-8' });
+    const content = await readFile(settingsJsonPath, { encoding: "utf-8" });
     const parsed = jsonParse(content);
     if (isRecord(parsed)) {
       const filtered = parsePluginSettings(parsed);
@@ -1669,7 +1669,7 @@ async function loadPluginSettings(
     // Missing/inaccessible is expected - settings.json is optional
     if (!isFsInaccessible(e)) {
       logForDebugging(`Failed to parse settings.json for plugin ${manifest.name}: ${e}`, {
-        level: 'warn',
+        level: "warn",
       });
     }
   }
@@ -1818,7 +1818,7 @@ async function loadPluginsFromMarketplaces({ cacheOnly }: { cacheOnly: boolean }
         // exists, "blocked by blocklist" is less misleading than showing an
         // empty allowed-sources list.
         errors.push({
-          type: 'marketplace-blocked-by-policy',
+          type: "marketplace-blocked-by-policy",
           source: pluginId,
           plugin: pluginName,
           marketplace: marketplaceName!,
@@ -1833,7 +1833,7 @@ async function loadPluginsFromMarketplaces({ cacheOnly }: { cacheOnly: boolean }
         const isBlocked = isSourceInBlocklist(marketplaceConfig.source);
         const allowlist = getStrictKnownMarketplaces() || [];
         errors.push({
-          type: 'marketplace-blocked-by-policy',
+          type: "marketplace-blocked-by-policy",
           source: pluginId,
           plugin: pluginName,
           marketplace: marketplaceName!,
@@ -1861,7 +1861,7 @@ async function loadPluginsFromMarketplaces({ cacheOnly }: { cacheOnly: boolean }
 
       if (!result) {
         errors.push({
-          type: 'plugin-not-found',
+          type: "plugin-not-found",
           source: pluginId,
           pluginId: pluginName!,
           marketplace: marketplaceName!,
@@ -1894,16 +1894,16 @@ async function loadPluginsFromMarketplaces({ cacheOnly }: { cacheOnly: boolean }
   );
 
   for (const [i, result] of results.entries()) {
-    if (result.status === 'fulfilled' && result.value) {
+    if (result.status === "fulfilled" && result.value) {
       plugins.push(result.value);
-    } else if (result.status === 'rejected') {
+    } else if (result.status === "rejected") {
       const err = toError(result.reason);
       logError(err);
       const pluginId = marketplacePluginEntries[i]?.[0];
       errors.push({
-        type: 'generic-error',
+        type: "generic-error",
         source: pluginId,
-        plugin: pluginId.split('@')[0],
+        plugin: pluginId.split("@")[0],
         error: err.message,
       });
     }
@@ -1929,17 +1929,17 @@ async function loadPluginFromMarketplaceEntryCacheOnly(
 ): Promise<LoadedPlugin | null> {
   let pluginPath: string;
 
-  if (typeof entry.source === 'string') {
+  if (typeof entry.source === "string") {
     // Local relative path — read from the marketplace source dir directly.
     // Skip copyPluginToVersionedCache; startup doesn't need a fresh copy.
     let marketplaceDir: string;
     try {
       marketplaceDir = (await stat(marketplaceInstallLocation)).isDirectory()
         ? marketplaceInstallLocation
-        : join(marketplaceInstallLocation, '..');
+        : join(marketplaceInstallLocation, "..");
     } catch {
       errorsOut.push({
-        type: 'plugin-cache-miss',
+        type: "plugin-cache-miss",
         source: pluginId,
         plugin: entry.name,
         installPath: marketplaceInstallLocation,
@@ -1953,10 +1953,10 @@ async function loadPluginFromMarketplaceEntryCacheOnly(
     // External source (npm/github/url/git-subdir) — use recorded installPath.
     if (!installPath || !(await pathExists(installPath))) {
       errorsOut.push({
-        type: 'plugin-cache-miss',
+        type: "plugin-cache-miss",
         source: pluginId,
         plugin: entry.name,
-        installPath: installPath ?? '(not recorded)',
+        installPath: installPath ?? "(not recorded)",
       });
       return null;
     }
@@ -1964,18 +1964,18 @@ async function loadPluginFromMarketplaceEntryCacheOnly(
   }
 
   // Zip cache extraction — must still happen in cacheOnly mode (invariant 4)
-  if (isPluginZipCacheEnabled() && pluginPath.endsWith('.zip')) {
+  if (isPluginZipCacheEnabled() && pluginPath.endsWith(".zip")) {
     const sessionDir = await getSessionPluginCachePath();
-    const extractDir = join(sessionDir, pluginId.replace(/[^a-zA-Z0-9@\-_]/g, '-'));
+    const extractDir = join(sessionDir, pluginId.replace(/[^a-zA-Z0-9@\-_]/g, "-"));
     try {
       await extractZipToDirectory(pluginPath, extractDir);
       pluginPath = extractDir;
     } catch (error) {
       logForDebugging(`Failed to extract plugin ZIP ${pluginPath}: ${error}`, {
-        level: 'error',
+        level: "error",
       });
       errorsOut.push({
-        type: 'plugin-cache-miss',
+        type: "plugin-cache-miss",
         source: pluginId,
         plugin: entry.name,
         installPath: pluginPath,
@@ -2014,21 +2014,21 @@ async function loadPluginFromMarketplaceEntry(
   logForDebugging(`Loading plugin ${entry.name} from source: ${jsonStringify(entry.source)}`);
   let pluginPath: string;
 
-  if (typeof entry.source === 'string') {
+  if (typeof entry.source === "string") {
     // Relative path - resolve relative to marketplace install location
     const marketplaceDir = (await stat(marketplaceInstallLocation)).isDirectory()
       ? marketplaceInstallLocation
-      : join(marketplaceInstallLocation, '..');
+      : join(marketplaceInstallLocation, "..");
     const sourcePluginPath = join(marketplaceDir, entry.source);
 
     if (!(await pathExists(sourcePluginPath))) {
       const error = new Error(`Plugin path not found: ${sourcePluginPath}`);
       logForDebugging(`Plugin path not found: ${sourcePluginPath}`, {
-        level: 'error',
+        level: "error",
       });
       logError(error);
       errorsOut.push({
-        type: 'generic-error',
+        type: "generic-error",
         source: pluginId,
         error: `Plugin directory not found at path: ${sourcePluginPath}. Check that the marketplace entry has the correct path.`,
       });
@@ -2038,7 +2038,7 @@ async function loadPluginFromMarketplaceEntry(
     // Always copy local plugins to versioned cache
     try {
       // Try to load manifest from plugin directory to check for version field first
-      const manifestPath = join(sourcePluginPath, '.claude-plugin', 'plugin.json');
+      const manifestPath = join(sourcePluginPath, ".claude-plugin", "plugin.json");
       let pluginManifest: PluginManifest | undefined;
       try {
         pluginManifest = await loadPluginManifest(manifestPath, entry.name, entry.source);
@@ -2071,7 +2071,7 @@ async function loadPluginFromMarketplaceEntry(
       const errorMsg = errorMessage(error);
       logForDebugging(
         `Failed to copy plugin ${entry.name} to versioned cache: ${errorMsg}. Using marketplace path.`,
-        { level: 'warn' },
+        { level: "warn" },
       );
       pluginPath = sourcePluginPath;
     }
@@ -2089,7 +2089,7 @@ async function loadPluginFromMarketplaceEntry(
         undefined,
         undefined,
         installedVersion ?? entry.version,
-        'sha' in entry.source ? entry.source.sha : undefined,
+        "sha" in entry.source ? entry.source.sha : undefined,
       );
 
       const versionedPath = getVersionedCachePath(pluginId, version);
@@ -2111,7 +2111,7 @@ async function loadPluginFromMarketplaceEntry(
         // disabled for this session — errorsOut.push below surfaces it.
         const seedPath =
           (await probeSeedCache(pluginId, version)) ??
-          (version === 'unknown' ? await probeSeedCacheAnyVersion(pluginId) : null);
+          (version === "unknown" ? await probeSeedCacheAnyVersion(pluginId) : null);
         if (seedPath) {
           pluginPath = seedPath;
           logForDebugging(`Using seed cache for external plugin ${entry.name} at ${seedPath}`);
@@ -2130,7 +2130,7 @@ async function loadPluginFromMarketplaceEntry(
           // Recomputation is only needed when pre-clone was 'unknown'
           // (ref-tracked, no hints) — the clone is the ONLY way to learn.
           const actualVersion =
-            version !== 'unknown'
+            version !== "unknown"
               ? version
               : await calculatePluginVersion(
                   pluginId,
@@ -2160,11 +2160,11 @@ async function loadPluginFromMarketplaceEntry(
     } catch (error) {
       const errorMsg = errorMessage(error);
       logForDebugging(`Failed to cache plugin ${entry.name}: ${errorMsg}`, {
-        level: 'error',
+        level: "error",
       });
       logError(toError(error));
       errorsOut.push({
-        type: 'generic-error',
+        type: "generic-error",
         source: pluginId,
         error: `Failed to download/cache plugin ${entry.name}: ${errorMsg}`,
       });
@@ -2173,9 +2173,9 @@ async function loadPluginFromMarketplaceEntry(
   }
 
   // Zip cache mode: extract ZIP to session temp dir before loading
-  if (isPluginZipCacheEnabled() && pluginPath.endsWith('.zip')) {
+  if (isPluginZipCacheEnabled() && pluginPath.endsWith(".zip")) {
     const sessionDir = await getSessionPluginCachePath();
-    const extractDir = join(sessionDir, pluginId.replace(/[^a-zA-Z0-9@\-_]/g, '-'));
+    const extractDir = join(sessionDir, pluginId.replace(/[^a-zA-Z0-9@\-_]/g, "-"));
     try {
       await extractZipToDirectory(pluginPath, extractDir);
       logForDebugging(`Extracted plugin ZIP to session dir: ${extractDir}`);
@@ -2211,7 +2211,7 @@ async function finishLoadingPluginFromPath(
   const errors: PluginError[] = [];
 
   // Check if plugin.json exists to determine if we should use marketplace manifest
-  const manifestPath = join(pluginPath, '.claude-plugin', 'plugin.json');
+  const manifestPath = join(pluginPath, ".claude-plugin", "plugin.json");
   const hasManifest = await pathExists(manifestPath);
 
   const { plugin, errors: pluginErrors } = await createPluginFromPath(
@@ -2224,7 +2224,7 @@ async function finishLoadingPluginFromPath(
   errors.push(...pluginErrors);
 
   // Set sha from source if available (for github and url source types)
-  if (typeof entry.source === 'object' && 'sha' in entry.source && entry.source.sha) {
+  if (typeof entry.source === "object" && "sha" in entry.source && entry.source.sha) {
     plugin.sha = entry.source.sha;
   }
 
@@ -2243,11 +2243,11 @@ async function finishLoadingPluginFromPath(
       // Check if it's an object mapping
       const firstValue = Object.values(entry.commands)[0];
       if (
-        typeof entry.commands === 'object' &&
+        typeof entry.commands === "object" &&
         !Array.isArray(entry.commands) &&
         firstValue &&
-        typeof firstValue === 'object' &&
-        ('source' in firstValue || 'content' in firstValue)
+        typeof firstValue === "object" &&
+        ("source" in firstValue || "content" in firstValue)
       ) {
         // Object mapping format
         const commandsMetadata: Record<string, CommandMetadata> = {};
@@ -2257,7 +2257,7 @@ async function finishLoadingPluginFromPath(
         const entries = Object.entries(entry.commands);
         const checks = await Promise.all(
           entries.map(async ([commandName, metadata]) => {
-            if (!metadata || typeof metadata !== 'object' || !metadata.source) {
+            if (!metadata || typeof metadata !== "object" || !metadata.source) {
               return { commandName, metadata, skip: true as const };
             }
             const fullPath = join(pluginPath, metadata.source);
@@ -2278,17 +2278,17 @@ async function finishLoadingPluginFromPath(
           } else {
             logForDebugging(
               `Command ${check.commandName} path ${check.metadata.source} from marketplace entry not found at ${check.fullPath} for ${entry.name}`,
-              { level: 'warn' },
+              { level: "warn" },
             );
             logError(
               new Error(`Plugin component file not found: ${check.fullPath} for ${entry.name}`),
             );
             errors.push({
-              type: 'path-not-found',
+              type: "path-not-found",
               source: pluginId,
               plugin: entry.name,
               path: check.fullPath,
-              component: 'commands',
+              component: "commands",
             });
           }
         }
@@ -2304,13 +2304,13 @@ async function finishLoadingPluginFromPath(
         // Parallelize pathExists checks; process results in order.
         const checks = await Promise.all(
           commandPaths.map(async (cmdPath) => {
-            if (typeof cmdPath !== 'string') {
-              return { cmdPath, kind: 'invalid' as const };
+            if (typeof cmdPath !== "string") {
+              return { cmdPath, kind: "invalid" as const };
             }
             const fullPath = join(pluginPath, cmdPath);
             return {
               cmdPath,
-              kind: 'path' as const,
+              kind: "path" as const,
               fullPath,
               exists: await pathExists(fullPath),
             };
@@ -2318,9 +2318,9 @@ async function finishLoadingPluginFromPath(
         );
         const validPaths: string[] = [];
         for (const check of checks) {
-          if (check.kind === 'invalid') {
+          if (check.kind === "invalid") {
             logForDebugging(`Unexpected command format in marketplace entry for ${entry.name}`, {
-              level: 'error',
+              level: "error",
             });
             continue;
           }
@@ -2329,17 +2329,17 @@ async function finishLoadingPluginFromPath(
           } else {
             logForDebugging(
               `Command path ${check.cmdPath} from marketplace entry not found at ${check.fullPath} for ${entry.name}`,
-              { level: 'warn' },
+              { level: "warn" },
             );
             logError(
               new Error(`Plugin component file not found: ${check.fullPath} for ${entry.name}`),
             );
             errors.push({
-              type: 'path-not-found',
+              type: "path-not-found",
               source: pluginId,
               plugin: entry.name,
               path: check.fullPath,
-              component: 'commands',
+              component: "commands",
             });
           }
         }
@@ -2359,9 +2359,9 @@ async function finishLoadingPluginFromPath(
         pluginPath,
         entry.name,
         pluginId,
-        'agents',
-        'Agent',
-        'from marketplace entry',
+        "agents",
+        "Agent",
+        "from marketplace entry",
         errors,
       );
 
@@ -2394,15 +2394,15 @@ async function finishLoadingPluginFromPath(
         } else {
           logForDebugging(
             `Skill path ${skillPath} from marketplace entry not found at ${fullPath} for ${entry.name}`,
-            { level: 'warn' },
+            { level: "warn" },
           );
           logError(new Error(`Plugin component file not found: ${fullPath} for ${entry.name}`));
           errors.push({
-            type: 'path-not-found',
+            type: "path-not-found",
             source: pluginId,
             plugin: entry.name,
             path: fullPath,
-            component: 'skills',
+            component: "skills",
           });
         }
       }
@@ -2428,9 +2428,9 @@ async function finishLoadingPluginFromPath(
         pluginPath,
         entry.name,
         pluginId,
-        'output-styles',
-        'Output style',
-        'from marketplace entry',
+        "output-styles",
+        "Output style",
+        "from marketplace entry",
         errors,
       );
 
@@ -2454,11 +2454,11 @@ async function finishLoadingPluginFromPath(
     );
     logForDebugging(
       `Plugin ${entry.name} has both plugin.json and marketplace manifest entries for commands/agents/skills/hooks/outputStyles. This is a conflict.`,
-      { level: 'error' },
+      { level: "error" },
     );
     logError(error);
     errorsOut.push({
-      type: 'generic-error',
+      type: "generic-error",
       source: pluginId,
       error: `Plugin ${entry.name} has conflicting manifests: both plugin.json and marketplace entry specify components. Set strict: true in marketplace entry or remove component specs from one location.`,
     });
@@ -2471,11 +2471,11 @@ async function finishLoadingPluginFromPath(
       // Check if it's an object mapping
       const firstValue = Object.values(entry.commands)[0];
       if (
-        typeof entry.commands === 'object' &&
+        typeof entry.commands === "object" &&
         !Array.isArray(entry.commands) &&
         firstValue &&
-        typeof firstValue === 'object' &&
-        ('source' in firstValue || 'content' in firstValue)
+        typeof firstValue === "object" &&
+        ("source" in firstValue || "content" in firstValue)
       ) {
         // Object mapping format - merge metadata
         const commandsMetadata: Record<string, CommandMetadata> = {
@@ -2487,7 +2487,7 @@ async function finishLoadingPluginFromPath(
         const entries = Object.entries(entry.commands);
         const checks = await Promise.all(
           entries.map(async ([commandName, metadata]) => {
-            if (!metadata || typeof metadata !== 'object' || !metadata.source) {
+            if (!metadata || typeof metadata !== "object" || !metadata.source) {
               return { commandName, metadata, skip: true as const };
             }
             const fullPath = join(pluginPath, metadata.source);
@@ -2508,17 +2508,17 @@ async function finishLoadingPluginFromPath(
           } else {
             logForDebugging(
               `Command ${check.commandName} path ${check.metadata.source} from marketplace entry not found at ${check.fullPath} for ${entry.name}`,
-              { level: 'warn' },
+              { level: "warn" },
             );
             logError(
               new Error(`Plugin component file not found: ${check.fullPath} for ${entry.name}`),
             );
             errors.push({
-              type: 'path-not-found',
+              type: "path-not-found",
               source: pluginId,
               plugin: entry.name,
               path: check.fullPath,
-              component: 'commands',
+              component: "commands",
             });
           }
         }
@@ -2534,13 +2534,13 @@ async function finishLoadingPluginFromPath(
         // Parallelize pathExists checks; process results in order.
         const checks = await Promise.all(
           commandPaths.map(async (cmdPath) => {
-            if (typeof cmdPath !== 'string') {
-              return { cmdPath, kind: 'invalid' as const };
+            if (typeof cmdPath !== "string") {
+              return { cmdPath, kind: "invalid" as const };
             }
             const fullPath = join(pluginPath, cmdPath);
             return {
               cmdPath,
-              kind: 'path' as const,
+              kind: "path" as const,
               fullPath,
               exists: await pathExists(fullPath),
             };
@@ -2548,9 +2548,9 @@ async function finishLoadingPluginFromPath(
         );
         const validPaths: string[] = [];
         for (const check of checks) {
-          if (check.kind === 'invalid') {
+          if (check.kind === "invalid") {
             logForDebugging(`Unexpected command format in marketplace entry for ${entry.name}`, {
-              level: 'error',
+              level: "error",
             });
             continue;
           }
@@ -2559,17 +2559,17 @@ async function finishLoadingPluginFromPath(
           } else {
             logForDebugging(
               `Command path ${check.cmdPath} from marketplace entry not found at ${check.fullPath} for ${entry.name}`,
-              { level: 'warn' },
+              { level: "warn" },
             );
             logError(
               new Error(`Plugin component file not found: ${check.fullPath} for ${entry.name}`),
             );
             errors.push({
-              type: 'path-not-found',
+              type: "path-not-found",
               source: pluginId,
               plugin: entry.name,
               path: check.fullPath,
-              component: 'commands',
+              component: "commands",
             });
           }
         }
@@ -2589,9 +2589,9 @@ async function finishLoadingPluginFromPath(
         pluginPath,
         entry.name,
         pluginId,
-        'agents',
-        'Agent',
-        'from marketplace entry',
+        "agents",
+        "Agent",
+        "from marketplace entry",
         errors,
       );
 
@@ -2609,9 +2609,9 @@ async function finishLoadingPluginFromPath(
         pluginPath,
         entry.name,
         pluginId,
-        'skills',
-        'Skill',
-        'from marketplace entry',
+        "skills",
+        "Skill",
+        "from marketplace entry",
         errors,
       );
 
@@ -2631,9 +2631,9 @@ async function finishLoadingPluginFromPath(
         pluginPath,
         entry.name,
         pluginId,
-        'output-styles',
-        'Output style',
-        'from marketplace entry',
+        "output-styles",
+        "Output style",
+        "from marketplace entry",
         errors,
       );
 
@@ -2679,12 +2679,12 @@ async function loadSessionOnlyPlugins(
       const resolvedPath = resolve(pluginPath);
 
       if (!(await pathExists(resolvedPath))) {
-        logForDebugging(`Plugin path does not exist: ${resolvedPath}, skipping`, { level: 'warn' });
+        logForDebugging(`Plugin path does not exist: ${resolvedPath}, skipping`, { level: "warn" });
         errors.push({
-          type: 'path-not-found',
+          type: "path-not-found",
           source: `inline[${index}]`,
           path: resolvedPath,
-          component: 'commands',
+          component: "commands",
         });
         continue;
       }
@@ -2708,10 +2708,10 @@ async function loadSessionOnlyPlugins(
     } catch (error) {
       const errorMsg = errorMessage(error);
       logForDebugging(`Failed to load session plugin from ${pluginPath}: ${errorMsg}`, {
-        level: 'warn',
+        level: "warn",
       });
       errors.push({
-        type: 'generic-error',
+        type: "generic-error",
         source: `inline[${index}]`,
         error: `Failed to load plugin: ${errorMsg}`,
       });
@@ -2763,10 +2763,10 @@ export function mergePluginSources(sources: {
   const sessionPlugins = sources.session.filter((p) => {
     if (managed?.has(p.name)) {
       logForDebugging(`Plugin "${p.name}" from --plugin-dir is blocked by managed settings`, {
-        level: 'warn',
+        level: "warn",
       });
       errors.push({
-        type: 'generic-error',
+        type: "generic-error",
         source: p.source,
         plugin: p.name,
         error: `--plugin-dir copy of "${p.name}" ignored: plugin is locked by managed settings`,
@@ -3006,7 +3006,7 @@ export function cachePluginSettings(plugins: LoadedPlugin[]): void {
   // re-validating every settings file on the next getSettingsWithErrors() call.
   if (settings && Object.keys(settings).length > 0) {
     resetSettingsCache();
-    logForDebugging(`Cached plugin settings with keys: ${Object.keys(settings).join(', ')}`);
+    logForDebugging(`Cached plugin settings with keys: ${Object.keys(settings).join(", ")}`);
   }
 }
 
@@ -3014,5 +3014,5 @@ export function cachePluginSettings(plugins: LoadedPlugin[]): void {
  * Type predicate: check if a value is a non-null, non-array object (i.e., a record).
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }

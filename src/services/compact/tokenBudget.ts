@@ -32,29 +32,29 @@ const MAX_OUTPUT_TOKENS_FOR_SUMMARY = 20_000;
 // Sources: https://ai.google.dev/gemini-api/docs/models (verified 2026-05-02)
 const MODEL_CONTEXT_WINDOWS: Record<string, number> = {
   // Claude family (200K)
-  'claude-sonnet-4-20250514': 200_000,
-  'claude-3-5-sonnet-20241022': 200_000,
-  'claude-3-opus-20240229': 200_000,
-  'claude-3-haiku-20240307': 200_000,
-  'claude-opus-4-20250514': 200_000,
+  "claude-sonnet-4-20250514": 200_000,
+  "claude-3-5-sonnet-20241022": 200_000,
+  "claude-3-opus-20240229": 200_000,
+  "claude-3-haiku-20240307": 200_000,
+  "claude-opus-4-20250514": 200_000,
 
   // Gemini 3.x family (1M input tokens, 65K output)
-  'gemini-3.1-pro-preview': 1_048_576,
-  'gemini-3-flash-preview': 1_048_576,
-  'gemini-3.1-flash-lite-preview': 1_048_576,
+  "gemini-3.1-pro-preview": 1_048_576,
+  "gemini-3-flash-preview": 1_048_576,
+  "gemini-3.1-flash-lite-preview": 1_048_576,
 
   // Gemini 2.5 family (1M input tokens, 65K output)
-  'gemini-2.5-pro': 1_048_576,
-  'gemini-2.5-flash': 1_048_576,
-  'gemini-2.5-flash-lite': 1_048_576,
+  "gemini-2.5-pro": 1_048_576,
+  "gemini-2.5-flash": 1_048_576,
+  "gemini-2.5-flash-lite": 1_048_576,
 
   // Gemini 2.0 family (deprecated, 1M)
-  'gemini-2.0-flash': 1_048_576,
-  'gemini-2.0-flash-lite': 1_048_576,
+  "gemini-2.0-flash": 1_048_576,
+  "gemini-2.0-flash-lite": 1_048_576,
 
   // Gemini 1.5 family (legacy, 1M/2M)
-  'gemini-1.5-pro': 2_097_152,
-  'gemini-1.5-flash': 1_048_576,
+  "gemini-1.5-pro": 2_097_152,
+  "gemini-1.5-flash": 1_048_576,
 
   default: 200_000,
 };

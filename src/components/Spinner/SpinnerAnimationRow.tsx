@@ -1,22 +1,22 @@
-import figures from 'figures';
-import type * as React from 'react';
-import { useMemo, useRef } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Box, Text, useAnimationFrame } from '../../ink.js';
-import type { InProcessTeammateTaskState } from '../../tasks/InProcessTeammateTask/types.js';
-import { formatDuration, formatNumber } from '../../utils/format.js';
-import { toInkColor } from '../../utils/ink.js';
-import type { Theme } from '../../utils/theme.js';
-import { Byline } from '../design-system/Byline.js';
-import { GlimmerMessage } from './GlimmerMessage.js';
-import { SpinnerGlyph } from './SpinnerGlyph.js';
-import type { SpinnerMode } from './types.js';
-import { useStalledAnimation } from './useStalledAnimation.js';
-import { interpolateColor, toRGBColor } from './utils.js';
+import figures from "figures";
+import type * as React from "react";
+import { useMemo, useRef } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Box, Text, useAnimationFrame } from "../../ink.js";
+import type { InProcessTeammateTaskState } from "../../tasks/InProcessTeammateTask/types.js";
+import { formatDuration, formatNumber } from "../../utils/format.js";
+import { toInkColor } from "../../utils/ink.js";
+import type { Theme } from "../../utils/theme.js";
+import { Byline } from "../design-system/Byline.js";
+import { GlimmerMessage } from "./GlimmerMessage.js";
+import { SpinnerGlyph } from "./SpinnerGlyph.js";
+import type { SpinnerMode } from "./types.js";
+import { useStalledAnimation } from "./useStalledAnimation.js";
+import { interpolateColor, toRGBColor } from "./utils.js";
 
-const SEP_WIDTH = stringWidth(' · ');
-const THINKING_BARE_WIDTH = stringWidth('thinking');
+const SEP_WIDTH = stringWidth(" · ");
+const THINKING_BARE_WIDTH = stringWidth("thinking");
 const SHOW_TOKENS_AFTER_MS = 30_000;
 
 // Thinking shimmer constants. Previously lived in a separate ThinkingShimmerText
@@ -65,7 +65,7 @@ export type SpinnerAnimationRowProps = {
   leaderIsIdle?: boolean;
 
   // Thinking (state owned by parent, mode-dependent)
-  thinkingStatus: 'thinking' | number | null;
+  thinkingStatus: "thinking" | number | null;
   effortSuffix: string;
 };
 
@@ -135,7 +135,7 @@ export function SpinnerAnimationRow({
     reducedMotion,
   );
   const frame = reducedMotion ? 0 : Math.floor(time / 120);
-  const glimmerSpeed = mode === 'requesting' ? 50 : 200;
+  const glimmerSpeed = mode === "requesting" ? 50 : 200;
   // message is stable within a turn; stringWidth is expensive enough (Bun native
   // call per code point) to memoize explicitly across the 50ms loop.
   const glimmerMessageWidth = useMemo(() => stringWidth(message), [message]);
@@ -145,12 +145,12 @@ export function SpinnerAnimationRow({
     ? -100
     : isStalled
       ? -100
-      : mode === 'requesting'
+      : mode === "requesting"
         ? (cyclePosition % cycleLength) - 10
         : glimmerMessageWidth + 10 - (cyclePosition % cycleLength);
   const flashOpacity = reducedMotion
     ? 0
-    : mode === 'tool-use'
+    : mode === "tool-use"
       ? (Math.sin((time / 1000) * Math.PI) + 1) / 2
       : 0;
 
@@ -196,9 +196,9 @@ export function SpinnerAnimationRow({
 
   // === Thinking text (may shrink to fit) ===
   let thinkingText =
-    thinkingStatus === 'thinking'
+    thinkingStatus === "thinking"
       ? `thinking${effortSuffix}`
-      : typeof thinkingStatus === 'number'
+      : typeof thinkingStatus === "number"
         ? `thought for ${Math.max(1, Math.round(thinkingStatus / 1000))}s`
         : null;
   let thinkingWidthValue = thinkingText ? stringWidth(thinkingText) : 0;
@@ -211,9 +211,9 @@ export function SpinnerAnimationRow({
     verbose || hasRunningTeammates || effectiveElapsedMs > SHOW_TOKENS_AFTER_MS;
   const availableSpace = columns - messageWidth - 5;
   let showThinking = wantsThinking && availableSpace > thinkingWidthValue;
-  if (!showThinking && wantsThinking && thinkingStatus === 'thinking' && effortSuffix) {
+  if (!showThinking && wantsThinking && thinkingStatus === "thinking" && effortSuffix) {
     if (availableSpace > THINKING_BARE_WIDTH) {
-      thinkingText = 'thinking';
+      thinkingText = "thinking";
       thinkingWidthValue = THINKING_BARE_WIDTH;
       showThinking = true;
     }
@@ -225,7 +225,7 @@ export function SpinnerAnimationRow({
     wantsTimerAndTokens && totalTokens > 0 && availableSpace > usedAfterTimer + tokensWidth;
   const thinkingOnly =
     showThinking &&
-    thinkingStatus === 'thinking' &&
+    thinkingStatus === "thinking" &&
     !spinnerSuffix &&
     !showTimer &&
     !showTokens &&
@@ -269,7 +269,7 @@ export function SpinnerAnimationRow({
       : []),
     ...(showThinking && thinkingText
       ? [
-          thinkingStatus === 'thinking' && !reducedMotion ? (
+          thinkingStatus === "thinking" && !reducedMotion ? (
             <Text key="thinking" color={thinkingShimmerColor}>
               {thinkingOnly ? `(${thinkingText})` : thinkingText}
             </Text>
@@ -327,12 +327,12 @@ function SpinnerModeGlyph(t0) {
   const $ = _c(2);
   const { mode } = t0;
   switch (mode) {
-    case 'tool-input':
-    case 'tool-use':
-    case 'responding':
-    case 'thinking': {
+    case "tool-input":
+    case "tool-use":
+    case "responding":
+    case "thinking": {
       let t1;
-      if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <Box width={2}>
             <Text dimColor={true}>{figures.arrowDown}</Text>
@@ -344,9 +344,9 @@ function SpinnerModeGlyph(t0) {
       }
       return t1;
     }
-    case 'requesting': {
+    case "requesting": {
       let t1;
-      if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <Box width={2}>
             <Text dimColor={true}>{figures.arrowUp}</Text>

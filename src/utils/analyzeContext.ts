@@ -1,23 +1,23 @@
-import { feature } from 'bun:bundle';
-import type { Anthropic } from '@anthropic-ai/sdk';
-import { getSystemPrompt, SYSTEM_PROMPT_DYNAMIC_BOUNDARY } from 'src/constants/prompts.js';
-import { microcompactMessages } from 'src/services/compact/microCompact.js';
-import { getSdkBetas } from '../bootstrap/state.js';
-import { getCommandName } from '../commands.js';
-import { getSystemContext } from '../context.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
+import { feature } from "bun:bundle";
+import type { Anthropic } from "@anthropic-ai/sdk";
+import { getSystemPrompt, SYSTEM_PROMPT_DYNAMIC_BOUNDARY } from "src/constants/prompts.js";
+import { microcompactMessages } from "src/services/compact/microCompact.js";
+import { getSdkBetas } from "../bootstrap/state.js";
+import { getCommandName } from "../commands.js";
+import { getSystemContext } from "../context.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
 import {
   AUTOCOMPACT_BUFFER_TOKENS,
   getEffectiveContextWindowSize,
   isAutoCompactEnabled,
   MANUAL_COMPACT_BUFFER_TOKENS,
-} from '../services/compact/autoCompact.js';
+} from "../services/compact/autoCompact.js";
 import {
   countMessagesTokensWithAPI,
   countTokensViaHaikuFallback,
   roughTokenCountEstimation,
-} from '../services/tokenEstimation.js';
-import { estimateSkillFrontmatterTokens } from '../skills/loadSkillsDir.js';
+} from "../services/tokenEstimation.js";
+import { estimateSkillFrontmatterTokens } from "../skills/loadSkillsDir.js";
 import {
   findToolByName,
   type Tool,
@@ -25,13 +25,13 @@ import {
   type Tools,
   type ToolUseContext,
   toolMatchesName,
-} from '../Tool.js';
-import type { AgentDefinition, AgentDefinitionsResult } from '../tools/AgentTool/loadAgentsDir.js';
-import { SKILL_TOOL_NAME } from '../tools/SkillTool/constants.js';
+} from "../Tool.js";
+import type { AgentDefinition, AgentDefinitionsResult } from "../tools/AgentTool/loadAgentsDir.js";
+import { SKILL_TOOL_NAME } from "../tools/SkillTool/constants.js";
 import {
   getLimitedSkillToolCommands,
   getSkillToolInfo as getSlashCommandInfo,
-} from '../tools/SkillTool/prompt.js';
+} from "../tools/SkillTool/prompt.js";
 import type {
   AssistantMessage,
   AttachmentMessage,
@@ -39,25 +39,25 @@ import type {
   NormalizedAssistantMessage,
   NormalizedUserMessage,
   UserMessage,
-} from '../types/message.js';
-import { toolToAPISchema } from './api.js';
-import { filterInjectedMemoryFiles, getMemoryFiles } from './claudemd.js';
-import { getContextWindowForModel } from './context.js';
-import { getCwd } from './cwd.js';
-import { logForDebugging } from './debug.js';
-import { isEnvTruthy } from './envUtils.js';
-import { errorMessage, toError } from './errors.js';
-import { logError } from './log.js';
-import { normalizeMessagesForAPI } from './messages.js';
-import { getRuntimeMainLoopModel } from './model/model.js';
-import type { SettingSource } from './settings/constants.js';
-import { jsonStringify } from './slowOperations.js';
-import { buildEffectiveSystemPrompt } from './systemPrompt.js';
-import type { Theme } from './theme.js';
-import { getCurrentUsage } from './tokens.js';
+} from "../types/message.js";
+import { toolToAPISchema } from "./api.js";
+import { filterInjectedMemoryFiles, getMemoryFiles } from "./claudemd.js";
+import { getContextWindowForModel } from "./context.js";
+import { getCwd } from "./cwd.js";
+import { logForDebugging } from "./debug.js";
+import { isEnvTruthy } from "./envUtils.js";
+import { errorMessage, toError } from "./errors.js";
+import { logError } from "./log.js";
+import { normalizeMessagesForAPI } from "./messages.js";
+import { getRuntimeMainLoopModel } from "./model/model.js";
+import type { SettingSource } from "./settings/constants.js";
+import { jsonStringify } from "./slowOperations.js";
+import { buildEffectiveSystemPrompt } from "./systemPrompt.js";
+import type { Theme } from "./theme.js";
+import { getCurrentUsage } from "./tokens.js";
 
-const RESERVED_CATEGORY_NAME = 'Autocompact buffer';
-const MANUAL_COMPACT_BUFFER_NAME = 'Compact buffer';
+const RESERVED_CATEGORY_NAME = "Autocompact buffer";
+const MANUAL_COMPACT_BUFFER_NAME = "Compact buffer";
 
 /**
  * Fixed token overhead added by the API when tools are present.
@@ -148,7 +148,7 @@ export interface SystemPromptSectionDetail {
 
 interface Agent {
   agentType: string;
-  source: SettingSource | 'built-in' | 'plugin';
+  source: SettingSource | "built-in" | "plugin";
   tokens: number;
 }
 
@@ -161,7 +161,7 @@ interface SlashCommandInfo {
 /** Individual skill detail for context display */
 interface SkillFrontmatter {
   name: string;
-  source: SettingSource | 'plugin';
+  source: SettingSource | "plugin";
   tokens: number;
 }
 
@@ -241,9 +241,9 @@ export async function countToolDefinitionTokens(
   );
   const result = await countTokensWithFallback([], toolSchemas);
   if (result === null || result === 0) {
-    const toolNames = tools.map((t) => t.name).join(', ');
+    const toolNames = tools.map((t) => t.name).join(", ");
     logForDebugging(
-      `countToolDefinitionTokens returned ${result} for ${tools.length} tools: ${toolNames.slice(0, 100)}${toolNames.length > 100 ? '...' : ''}`,
+      `countToolDefinitionTokens returned ${result} for ${tools.length} tools: ${toolNames.slice(0, 100)}${toolNames.length > 100 ? "..." : ""}`,
     );
   }
   return result ?? 0;
@@ -257,7 +257,7 @@ function extractSectionName(content: string): string {
     return headingMatch[1]?.trim();
   }
   // Fall back to a truncated preview of the first non-empty line
-  const firstLine = content.split('\n').find((l) => l.trim().length > 0) ?? '';
+  const firstLine = content.split("\n").find((l) => l.trim().length > 0) ?? "";
   return firstLine.length > 40 ? `${firstLine.slice(0, 40)}…` : firstLine;
 }
 
@@ -284,7 +284,7 @@ async function countSystemTokens(effectiveSystemPrompt: readonly string[]): Prom
   }
 
   const systemTokenCounts = await Promise.all(
-    namedEntries.map(({ content }) => countTokensWithFallback([{ role: 'user', content }], [])),
+    namedEntries.map(({ content }) => countTokensWithFallback([{ role: "user", content }], [])),
   );
 
   const systemPromptSections: SystemPromptSectionDetail[] = namedEntries.map((entry, i) => ({
@@ -322,7 +322,7 @@ async function countMemoryFileTokens(): Promise<{
 
   const claudeMdTokenCounts = await Promise.all(
     memoryFilesData.map(async (file) => {
-      const tokens = await countTokensWithFallback([{ role: 'user', content: file.content }], []);
+      const tokens = await countTokensWithFallback([{ role: "user", content: file.content }], []);
 
       return { file, tokens: tokens || 0 };
     }),
@@ -363,14 +363,14 @@ async function countBuiltInToolTokens(
   }
 
   // Check if tool search is enabled
-  const { isToolSearchEnabled } = await import('./toolSearch.js');
-  const { isDeferredTool } = await import('../tools/ToolSearchTool/prompt.js');
+  const { isToolSearchEnabled } = await import("./toolSearch.js");
+  const { isDeferredTool } = await import("../tools/ToolSearchTool/prompt.js");
   const isDeferred = await isToolSearchEnabled(
-    model ?? '',
+    model ?? "",
     tools,
     getToolPermissionContext,
     agentInfo?.activeAgents ?? [],
-    'analyzeBuiltIn',
+    "analyzeBuiltIn",
   );
 
   // Separate always-loaded and deferred builtin tools using dynamic isDeferredTool check
@@ -392,7 +392,7 @@ async function countBuiltInToolTokens(
   // split of the bulk count based on rough schema size estimation). Excludes
   // SkillTool since its tokens are shown in the separate Skills category.
   let systemToolDetails: SystemToolDetail[] = [];
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     const toolsForBreakdown = alwaysLoadedTools.filter((t) => !toolMatchesName(t, SKILL_TOOL_NAME));
     if (toolsForBreakdown.length > 0) {
       const estimates = toolsForBreakdown.map((t) =>
@@ -420,13 +420,13 @@ async function countBuiltInToolTokens(
     if (messages) {
       const deferredToolNameSet = new Set(deferredBuiltinTools.map((t) => t.name));
       for (const msg of messages) {
-        if (msg.type === 'assistant') {
+        if (msg.type === "assistant") {
           for (const block of msg.message.content) {
             if (
-              'type' in block &&
-              block.type === 'tool_use' &&
-              'name' in block &&
-              typeof block.name === 'string' &&
+              "type" in block &&
+              block.type === "tool_use" &&
+              "name" in block &&
+              typeof block.name === "string" &&
               deferredToolNameSet.has(block.name)
             ) {
               loadedToolNames.add(block.name);
@@ -555,7 +555,7 @@ async function countSkillTokens(
     // (name, description, whenToUse) since full content is only loaded on invocation
     const skillFrontmatter: SkillFrontmatter[] = skills.map((skill) => ({
       name: getCommandName(skill),
-      source: (skill.type === 'prompt' ? skill.source : 'plugin') as SettingSource | 'plugin',
+      source: (skill.type === "prompt" ? skill.source : "plugin") as SettingSource | "plugin",
       tokens: estimateSkillFrontmatterTokens(skill),
     }));
 
@@ -626,15 +626,15 @@ export async function countMcpToolTokens(
 
   // Check if tool search is enabled - if so, MCP tools are deferred
   // isToolSearchEnabled handles threshold calculation internally for TstAuto mode
-  const { isToolSearchEnabled } = await import('./toolSearch.js');
-  const { isDeferredTool } = await import('../tools/ToolSearchTool/prompt.js');
+  const { isToolSearchEnabled } = await import("./toolSearch.js");
+  const { isDeferredTool } = await import("../tools/ToolSearchTool/prompt.js");
 
   const isDeferred = await isToolSearchEnabled(
     model,
     tools,
     getToolPermissionContext,
     agentInfo?.activeAgents ?? [],
-    'analyzeMcp',
+    "analyzeMcp",
   );
 
   // Find MCP tools that have been used in messages (loaded via ToolSearchTool)
@@ -642,13 +642,13 @@ export async function countMcpToolTokens(
   if (isDeferred && messages) {
     const mcpToolNameSet = new Set(mcpTools.map((t) => t.name));
     for (const msg of messages) {
-      if (msg.type === 'assistant') {
+      if (msg.type === "assistant") {
         for (const block of msg.message.content) {
           if (
-            'type' in block &&
-            block.type === 'tool_use' &&
-            'name' in block &&
-            typeof block.name === 'string' &&
+            "type" in block &&
+            block.type === "tool_use" &&
+            "name" in block &&
+            typeof block.name === "string" &&
             mcpToolNameSet.has(block.name)
           ) {
             loadedMcpToolNames.add(block.name);
@@ -662,7 +662,7 @@ export async function countMcpToolTokens(
   for (const [i, tool] of mcpTools.entries()) {
     mcpToolDetails.push({
       name: tool.name,
-      serverName: tool.name.split('__')[1] || 'unknown',
+      serverName: tool.name.split("__")[1] || "unknown",
       tokens: mcpToolTokensByTool[i]!,
       isLoaded: loadedMcpToolNames.has(tool.name) || !isDeferredTool(tool),
     });
@@ -695,7 +695,7 @@ async function countCustomAgentTokens(agentDefinitions: {
   agentTokens: number;
   agentDetails: Agent[];
 }> {
-  const customAgents = agentDefinitions.activeAgents.filter((a) => a.source !== 'built-in');
+  const customAgents = agentDefinitions.activeAgents.filter((a) => a.source !== "built-in");
   const agentDetails: Agent[] = [];
   let agentTokens = 0;
 
@@ -704,8 +704,8 @@ async function countCustomAgentTokens(agentDefinitions: {
       countTokensWithFallback(
         [
           {
-            role: 'user',
-            content: [agent.agentType, agent.whenToUse].join(' '),
+            role: "user",
+            content: [agent.agentType, agent.whenToUse].join(" "),
           },
         ],
         [],
@@ -746,9 +746,9 @@ function processAssistantMessage(
     const blockStr = jsonStringify(block);
     const blockTokens = roughTokenCountEstimation(blockStr);
 
-    if ('type' in block && block.type === 'tool_use') {
+    if ("type" in block && block.type === "tool_use") {
       breakdown.toolCallTokens += blockTokens;
-      const toolName = ('name' in block ? block.name : undefined) || 'unknown';
+      const toolName = ("name" in block ? block.name : undefined) || "unknown";
       breakdown.toolCallsByType.set(
         toolName,
         (breakdown.toolCallsByType.get(toolName) || 0) + blockTokens,
@@ -766,7 +766,7 @@ function processUserMessage(
   toolUseIdToName: Map<string, string>,
 ): void {
   // Handle both string and array content
-  if (typeof msg.message.content === 'string') {
+  if (typeof msg.message.content === "string") {
     // Simple string content
     const tokens = roughTokenCountEstimation(msg.message.content);
     breakdown.userMessageTokens += tokens;
@@ -778,10 +778,10 @@ function processUserMessage(
     const blockStr = jsonStringify(block);
     const blockTokens = roughTokenCountEstimation(blockStr);
 
-    if ('type' in block && block.type === 'tool_result') {
+    if ("type" in block && block.type === "tool_result") {
       breakdown.toolResultTokens += blockTokens;
-      const toolUseId = 'tool_use_id' in block ? block.tool_use_id : undefined;
-      const toolName = (toolUseId ? toolUseIdToName.get(toolUseId) : undefined) || 'unknown';
+      const toolUseId = "tool_use_id" in block ? block.tool_use_id : undefined;
+      const toolName = (toolUseId ? toolUseIdToName.get(toolUseId) : undefined) || "unknown";
       breakdown.toolResultsByType.set(
         toolName,
         (breakdown.toolResultsByType.get(toolName) || 0) + blockTokens,
@@ -797,7 +797,7 @@ function processAttachment(msg: AttachmentMessage, breakdown: MessageBreakdown):
   const contentStr = jsonStringify(msg.attachment);
   const tokens = roughTokenCountEstimation(contentStr);
   breakdown.attachmentTokens += tokens;
-  const attachType = msg.attachment.type || 'unknown';
+  const attachType = msg.attachment.type || "unknown";
   breakdown.attachmentsByType.set(
     attachType,
     (breakdown.attachmentsByType.get(attachType) || 0) + tokens,
@@ -823,11 +823,11 @@ async function approximateMessageTokens(messages: Message[]): Promise<MessageBre
   // Build a map of tool_use_id to tool_name for easier lookup
   const toolUseIdToName = new Map<string, string>();
   for (const msg of microcompactResult.messages) {
-    if (msg.type === 'assistant') {
+    if (msg.type === "assistant") {
       for (const block of msg.message.content) {
-        if ('type' in block && block.type === 'tool_use') {
-          const toolUseId = 'id' in block ? block.id : undefined;
-          const toolName = ('name' in block ? block.name : undefined) || 'unknown';
+        if ("type" in block && block.type === "tool_use") {
+          const toolUseId = "id" in block ? block.id : undefined;
+          const toolName = ("name" in block ? block.name : undefined) || "unknown";
           if (toolUseId) {
             toolUseIdToName.set(toolUseId, toolName);
           }
@@ -838,11 +838,11 @@ async function approximateMessageTokens(messages: Message[]): Promise<MessageBre
 
   // Process each message for detailed breakdown
   for (const msg of microcompactResult.messages) {
-    if (msg.type === 'assistant') {
+    if (msg.type === "assistant") {
       processAssistantMessage(msg, breakdown);
-    } else if (msg.type === 'user') {
+    } else if (msg.type === "user") {
       processUserMessage(msg, breakdown, toolUseIdToName);
-    } else if (msg.type === 'attachment') {
+    } else if (msg.type === "attachment") {
       processAttachment(msg, breakdown);
     }
   }
@@ -850,10 +850,10 @@ async function approximateMessageTokens(messages: Message[]): Promise<MessageBre
   // Calculate total tokens using the API for accuracy
   const approximateMessageTokens = await countTokensWithFallback(
     normalizeMessagesForAPI(microcompactResult.messages).map((_) => {
-      if (_.type === 'assistant') {
+      if (_.type === "assistant") {
         return {
           // Important: strip out fields like id, etc. -- the counting API errors if they're present
-          role: 'assistant',
+          role: "assistant",
           content: _.message.content,
         };
       }
@@ -873,7 +873,7 @@ export async function analyzeContextUsage(
   tools: Tools,
   agentDefinitions: AgentDefinitionsResult,
   terminalWidth?: number,
-  toolUseContext?: Pick<ToolUseContext, 'options'>,
+  toolUseContext?: Pick<ToolUseContext, "options">,
   mainThreadAgentDefinition?: AgentDefinition,
   /** Original messages before microcompact, used to extract API usage */
   originalMessages?: Message[],
@@ -890,7 +890,7 @@ export async function analyzeContextUsage(
   const effectiveSystemPrompt = buildEffectiveSystemPrompt({
     mainThreadAgentDefinition,
     toolUseContext: toolUseContext ?? {
-      options: {} as ToolUseContext['options'],
+      options: {} as ToolUseContext["options"],
     },
     customSystemPrompt: toolUseContext?.options.customSystemPrompt,
     defaultSystemPrompt,
@@ -946,9 +946,9 @@ export async function analyzeContextUsage(
   // System prompt is always shown first (fixed overhead)
   if (systemPromptTokens > 0) {
     cats.push({
-      name: 'System prompt',
+      name: "System prompt",
       tokens: systemPromptTokens,
-      color: 'promptBorder',
+      color: "promptBorder",
     });
   }
 
@@ -957,18 +957,18 @@ export async function analyzeContextUsage(
   const systemToolsTokens = builtInToolTokens - skillFrontmatterTokens;
   if (systemToolsTokens > 0) {
     cats.push({
-      name: process.env.USER_TYPE === 'ant' ? '[ANT-ONLY] System tools' : 'System tools',
+      name: process.env.USER_TYPE === "ant" ? "[ANT-ONLY] System tools" : "System tools",
       tokens: systemToolsTokens,
-      color: 'inactive',
+      color: "inactive",
     });
   }
 
   // MCP tools after system tools
   if (mcpToolTokens > 0) {
     cats.push({
-      name: 'MCP tools',
+      name: "MCP tools",
       tokens: mcpToolTokens,
-      color: 'cyan_FOR_SUBAGENTS_ONLY',
+      color: "cyan_FOR_SUBAGENTS_ONLY",
     });
   }
 
@@ -976,9 +976,9 @@ export async function analyzeContextUsage(
   // These don't count toward context usage but we show them for visibility
   if (deferredToolTokens > 0) {
     cats.push({
-      name: 'MCP tools (deferred)',
+      name: "MCP tools (deferred)",
       tokens: deferredToolTokens,
-      color: 'inactive',
+      color: "inactive",
       isDeferred: true,
     });
   }
@@ -986,9 +986,9 @@ export async function analyzeContextUsage(
   // Show deferred builtin tools (when tool search is enabled)
   if (deferredBuiltinTokens > 0) {
     cats.push({
-      name: 'System tools (deferred)',
+      name: "System tools (deferred)",
       tokens: deferredBuiltinTokens,
-      color: 'inactive',
+      color: "inactive",
       isDeferred: true,
     });
   }
@@ -996,35 +996,35 @@ export async function analyzeContextUsage(
   // Custom agents after MCP tools
   if (agentTokens > 0) {
     cats.push({
-      name: 'Custom agents',
+      name: "Custom agents",
       tokens: agentTokens,
-      color: 'permission',
+      color: "permission",
     });
   }
 
   // Memory files after custom agents
   if (claudeMdTokens > 0) {
     cats.push({
-      name: 'Memory files',
+      name: "Memory files",
       tokens: claudeMdTokens,
-      color: 'claude',
+      color: "claude",
     });
   }
 
   // Skills after memory files
   if (skillFrontmatterTokens > 0) {
     cats.push({
-      name: 'Skills',
+      name: "Skills",
       tokens: skillFrontmatterTokens,
-      color: 'warning',
+      color: "warning",
     });
   }
 
   if (messageTokens !== null && messageTokens > 0) {
     cats.push({
-      name: 'Messages',
+      name: "Messages",
       tokens: messageTokens,
-      color: 'purple_FOR_SUBAGENTS_ONLY',
+      color: "purple_FOR_SUBAGENTS_ONLY",
     });
   }
 
@@ -1041,15 +1041,15 @@ export async function analyzeContextUsage(
   // shouldAutoCompact, so the 33k buffer shown here would be a lie too.
   let reservedTokens = 0;
   let skipReservedBuffer = false;
-  if (feature('REACTIVE_COMPACT')) {
-    if (getFeatureValue_CACHED_MAY_BE_STALE('tengu_cobalt_raccoon', false)) {
+  if (feature("REACTIVE_COMPACT")) {
+    if (getFeatureValue_CACHED_MAY_BE_STALE("tengu_cobalt_raccoon", false)) {
       skipReservedBuffer = true;
     }
   }
-  if (feature('CONTEXT_COLLAPSE')) {
+  if (feature("CONTEXT_COLLAPSE")) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { isContextCollapseEnabled } =
-      require('../services/contextCollapse/index.js') as typeof import('../services/contextCollapse/index.js');
+      require("../services/contextCollapse/index.js") as typeof import("../services/contextCollapse/index.js");
     /* eslint-enable @typescript-eslint/no-require-imports */
     if (isContextCollapseEnabled()) {
       skipReservedBuffer = true;
@@ -1064,7 +1064,7 @@ export async function analyzeContextUsage(
     cats.push({
       name: RESERVED_CATEGORY_NAME,
       tokens: reservedTokens,
-      color: 'inactive',
+      color: "inactive",
     });
   } else if (!isAutoCompact) {
     // Compact buffer reserve (3k from actual context limit)
@@ -1072,7 +1072,7 @@ export async function analyzeContextUsage(
     cats.push({
       name: MANUAL_COMPACT_BUFFER_NAME,
       tokens: reservedTokens,
-      color: 'inactive',
+      color: "inactive",
     });
   }
 
@@ -1080,9 +1080,9 @@ export async function analyzeContextUsage(
   const freeTokens = Math.max(0, contextWindow - actualUsage - reservedTokens);
 
   cats.push({
-    name: 'Free space',
+    name: "Free space",
     tokens: freeTokens,
-    color: 'promptBorder',
+    color: "promptBorder",
   });
 
   // Total for display (everything except free space)
@@ -1119,7 +1119,7 @@ export async function analyzeContextUsage(
   const categorySquares = nonDeferredCats.map((cat) => ({
     ...cat,
     squares:
-      cat.name === 'Free space'
+      cat.name === "Free space"
         ? Math.round((cat.tokens / contextWindow) * TOTAL_SQUARES)
         : Math.max(1, Math.round((cat.tokens / contextWindow) * TOTAL_SQUARES)),
     percentageOfTotal: Math.round((cat.tokens / contextWindow) * 100),
@@ -1164,7 +1164,7 @@ export async function analyzeContextUsage(
     (cat) =>
       cat.name !== RESERVED_CATEGORY_NAME &&
       cat.name !== MANUAL_COMPACT_BUFFER_NAME &&
-      cat.name !== 'Free space',
+      cat.name !== "Free space",
   );
 
   // Add all non-reserved, non-free-space squares first
@@ -1181,14 +1181,14 @@ export async function analyzeContextUsage(
   const reservedSquareCount = reservedCategory ? reservedCategory.squares : 0;
 
   // Fill with free space, leaving room for reserved at the end
-  const freeSpaceCat = cats.find((c) => c.name === 'Free space');
+  const freeSpaceCat = cats.find((c) => c.name === "Free space");
   const freeSpaceTarget = TOTAL_SQUARES - reservedSquareCount;
 
   while (gridSquares.length < freeSpaceTarget) {
     gridSquares.push({
-      color: 'promptBorder',
+      color: "promptBorder",
       isFilled: true,
-      categoryName: 'Free space',
+      categoryName: "Free space",
       tokens: freeSpaceCat?.tokens || 0,
       percentage: freeSpaceCat ? Math.round((freeSpaceCat.tokens / contextWindow) * 100) : 0,
       squareFullness: 1.0, // Free space is always "full"
@@ -1260,9 +1260,9 @@ export async function analyzeContextUsage(
     model: runtimeModel,
     memoryFiles: memoryFileDetails,
     mcpTools: mcpToolDetails,
-    deferredBuiltinTools: process.env.USER_TYPE === 'ant' ? deferredBuiltinDetails : undefined,
-    systemTools: process.env.USER_TYPE === 'ant' ? systemToolDetails : undefined,
-    systemPromptSections: process.env.USER_TYPE === 'ant' ? systemPromptSections : undefined,
+    deferredBuiltinTools: process.env.USER_TYPE === "ant" ? deferredBuiltinDetails : undefined,
+    systemTools: process.env.USER_TYPE === "ant" ? systemToolDetails : undefined,
+    systemPromptSections: process.env.USER_TYPE === "ant" ? systemPromptSections : undefined,
     agents: agentDetails,
     slashCommands:
       slashCommandTokens > 0

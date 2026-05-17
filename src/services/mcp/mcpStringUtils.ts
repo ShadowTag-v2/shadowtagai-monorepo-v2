@@ -4,7 +4,7 @@
  * consumers that only need string parsing (e.g., permissionValidation).
  */
 
-import { normalizeNameForMCP, resolveMcpToolAlias } from './normalization.js';
+import { normalizeNameForMCP, resolveMcpToolAlias } from "./normalization.js";
 
 /*
  * Extracts MCP server information from a tool name string
@@ -22,13 +22,13 @@ export function mcpInfoFromString(toolString: string): {
 } | null {
   // Resolve aliased/variant tool names to canonical mcp__server__tool format
   const resolved = resolveMcpToolAlias(toolString);
-  const parts = resolved.split('__');
+  const parts = resolved.split("__");
   const [mcpPart, serverName, ...toolNameParts] = parts;
-  if (mcpPart !== 'mcp' || !serverName) {
+  if (mcpPart !== "mcp" || !serverName) {
     return null;
   }
   // Join all parts after server name to preserve double underscores in tool names
-  const toolName = toolNameParts.length > 0 ? toolNameParts.join('__') : undefined;
+  const toolName = toolNameParts.length > 0 ? toolNameParts.join("__") : undefined;
   return { serverName, toolName };
 }
 
@@ -75,7 +75,7 @@ export function getToolNameForPermissionCheck(tool: {
  */
 export function getMcpDisplayName(fullName: string, serverName: string): string {
   const prefix = `mcp__${normalizeNameForMCP(serverName)}__`;
-  return fullName.replace(prefix, '');
+  return fullName.replace(prefix, "");
 }
 
 /**
@@ -87,13 +87,13 @@ export function extractMcpToolDisplayName(userFacingName: string): string {
   // This is really ugly but our current Tool type doesn't make it easy to have different display names for different purposes.
 
   // First, remove the (MCP) suffix if present
-  let withoutSuffix = userFacingName.replace(/\s*\(MCP\)\s*$/, '');
+  let withoutSuffix = userFacingName.replace(/\s*\(MCP\)\s*$/, "");
 
   // Trim the result
   withoutSuffix = withoutSuffix.trim();
 
   // Then, remove the server prefix (everything before " - ")
-  const dashIndex = withoutSuffix.indexOf(' - ');
+  const dashIndex = withoutSuffix.indexOf(" - ");
   if (dashIndex !== -1) {
     const displayName = withoutSuffix.substring(dashIndex + 3).trim();
     return displayName;

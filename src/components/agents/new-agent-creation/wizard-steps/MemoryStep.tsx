@@ -1,73 +1,73 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box } from '../../../../ink.js';
-import { useKeybinding } from '../../../../keybindings/useKeybinding.js';
-import { isAutoMemoryEnabled } from '../../../../memdir/paths.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box } from "../../../../ink.js";
+import { useKeybinding } from "../../../../keybindings/useKeybinding.js";
+import { isAutoMemoryEnabled } from "../../../../memdir/paths.js";
 import {
   type AgentMemoryScope,
   loadAgentMemoryPrompt,
-} from '../../../../tools/AgentTool/agentMemory.js';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Select } from '../../../CustomSelect/select.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
+} from "../../../../tools/AgentTool/agentMemory.js";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Select } from "../../../CustomSelect/select.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../../design-system/KeyboardShortcutHint.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
 
 type MemoryOption = {
   label: string;
-  value: AgentMemoryScope | 'none';
+  value: AgentMemoryScope | "none";
 };
 export function MemoryStep() {
   const $ = _c(13);
   const { goNext, goBack, updateWizardData, wizardData } = useWizard();
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[0] = t0;
   } else {
     t0 = $[0];
   }
-  useKeybinding('confirm:no', goBack, t0);
-  const isUserScope = wizardData.location === 'userSettings';
+  useKeybinding("confirm:no", goBack, t0);
+  const isUserScope = wizardData.location === "userSettings";
   let t1;
   if ($[1] !== isUserScope) {
     t1 = isUserScope
       ? [
           {
-            label: 'User scope (~/.claude/agent-memory/) (Recommended)',
-            value: 'user',
+            label: "User scope (~/.claude/agent-memory/) (Recommended)",
+            value: "user",
           },
           {
-            label: 'None (no persistent memory)',
-            value: 'none',
+            label: "None (no persistent memory)",
+            value: "none",
           },
           {
-            label: 'Project scope (.claude/agent-memory/)',
-            value: 'project',
+            label: "Project scope (.claude/agent-memory/)",
+            value: "project",
           },
           {
-            label: 'Local scope (.claude/agent-memory-local/)',
-            value: 'local',
+            label: "Local scope (.claude/agent-memory-local/)",
+            value: "local",
           },
         ]
       : [
           {
-            label: 'Project scope (.claude/agent-memory/) (Recommended)',
-            value: 'project',
+            label: "Project scope (.claude/agent-memory/) (Recommended)",
+            value: "project",
           },
           {
-            label: 'None (no persistent memory)',
-            value: 'none',
+            label: "None (no persistent memory)",
+            value: "none",
           },
           {
-            label: 'User scope (~/.claude/agent-memory/)',
-            value: 'user',
+            label: "User scope (~/.claude/agent-memory/)",
+            value: "user",
           },
           {
-            label: 'Local scope (.claude/agent-memory-local/)',
-            value: 'local',
+            label: "Local scope (.claude/agent-memory-local/)",
+            value: "local",
           },
         ];
     $[1] = isUserScope;
@@ -84,7 +84,7 @@ export function MemoryStep() {
     $[6] !== wizardData.systemPrompt
   ) {
     t2 = (value) => {
-      const memory = value === 'none' ? undefined : (value as AgentMemoryScope);
+      const memory = value === "none" ? undefined : (value as AgentMemoryScope);
       const agentType = wizardData.finalAgent?.agentType;
       updateWizardData({
         selectedMemory: memory,
@@ -112,10 +112,10 @@ export function MemoryStep() {
   }
   const handleSelect = t2;
   let t3;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Byline>
-        <KeyboardShortcutHint shortcut={'\u2191\u2193'} action="navigate" />
+        <KeyboardShortcutHint shortcut={"\u2191\u2193"} action="navigate" />
         <KeyboardShortcutHint shortcut="Enter" action="select" />
         <ConfigurableShortcutHint
           action="confirm:no"

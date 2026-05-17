@@ -1,4 +1,4 @@
-import { Redis } from '@upstash/redis';
+import { Redis } from "@upstash/redis";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,
@@ -11,9 +11,9 @@ export async function checkIdempotency(transactionId: string): Promise<boolean> 
   // NX (Not eXists): Only set if the key does not exist.
   // EX (Expire): Keeps the Redis cache clean by purging the lock after 24 hours.
   // Upstash returns "OK" if the set was successful, or null if the key already existed.
-  const lock = await redis.set(`idempotency:${transactionId}`, 'LOCKED', { nx: true, ex: 86400 });
+  const lock = await redis.set(`idempotency:${transactionId}`, "LOCKED", { nx: true, ex: 86400 });
 
-  return lock === 'OK';
+  return lock === "OK";
 }
 
 /**

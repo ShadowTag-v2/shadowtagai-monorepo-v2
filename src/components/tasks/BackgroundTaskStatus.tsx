@@ -1,24 +1,24 @@
-import figures from 'figures';
-import * as React from 'react';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
-import { stringWidth } from 'src/ink/stringWidth.js';
-import { useAppState, useSetAppState } from 'src/state/AppState.js';
-import { enterTeammateView, exitTeammateView } from 'src/state/teammateViewHelpers.js';
-import { isPanelAgentTask } from 'src/tasks/LocalAgentTask/LocalAgentTask.js';
-import { getPillLabel, pillNeedsCta } from 'src/tasks/pillLabel.js';
-import { isBackgroundTask, type TaskState } from 'src/tasks/types.js';
-import { calculateHorizontalScrollWindow } from 'src/utils/horizontalScroll.js';
-import { Box, Text } from '../../ink.js';
+import figures from "figures";
+import * as React from "react";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "src/hooks/useTerminalSize.js";
+import { stringWidth } from "src/ink/stringWidth.js";
+import { useAppState, useSetAppState } from "src/state/AppState.js";
+import { enterTeammateView, exitTeammateView } from "src/state/teammateViewHelpers.js";
+import { isPanelAgentTask } from "src/tasks/LocalAgentTask/LocalAgentTask.js";
+import { getPillLabel, pillNeedsCta } from "src/tasks/pillLabel.js";
+import { isBackgroundTask, type TaskState } from "src/tasks/types.js";
+import { calculateHorizontalScrollWindow } from "src/utils/horizontalScroll.js";
+import { Box, Text } from "../../ink.js";
 import {
   AGENT_COLOR_TO_THEME_COLOR,
   AGENT_COLORS,
   type AgentColorName,
-} from '../../tools/AgentTool/agentColorManager.js';
-import type { Theme } from '../../utils/theme.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
-import { shouldHideTasksFooter } from './taskStatusUtils.js';
+} from "../../tools/AgentTool/agentColorManager.js";
+import type { Theme } from "../../utils/theme.js";
+import { KeyboardShortcutHint } from "../design-system/KeyboardShortcutHint.js";
+import { shouldHideTasksFooter } from "./taskStatusUtils.js";
 
 type Props = {
   tasksSelected: boolean;
@@ -52,7 +52,7 @@ export function BackgroundTaskStatus(t0) {
   }
   const runningTasks = t3;
   const expandedView = useAppState(_temp4);
-  const showSpinnerTree = expandedView === 'teammates';
+  const showSpinnerTree = expandedView === "teammates";
   const allTeammates = !showSpinnerTree && runningTasks.length > 0 && runningTasks.every(_temp5);
   let t4;
   if ($[2] !== runningTasks) {
@@ -66,7 +66,7 @@ export function BackgroundTaskStatus(t0) {
   let t5;
   if ($[4] !== isLeaderIdle) {
     t5 = {
-      name: 'main',
+      name: "main",
       color: undefined as keyof Theme | undefined,
       isIdle: isLeaderIdle,
       taskId: undefined as string | undefined,
@@ -192,11 +192,11 @@ export function BackgroundTaskStatus(t0) {
       t14 = $[31];
     }
     let t15;
-    if ($[32] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[32] === Symbol.for("react.memo_cache_sentinel")) {
       t15 = (
         <Text dimColor={true}>
-          {' \xB7 '}
-          <KeyboardShortcutHint shortcut={'shift + \u2193'} action="expand" />
+          {" \xB7 "}
+          <KeyboardShortcutHint shortcut={"shift + \u2193"} action="expand" />
         </Text>
       );
       $[32] = t15;
@@ -302,10 +302,10 @@ function _temp7(a, b) {
   return a.identity.agentName.localeCompare(b.identity.agentName);
 }
 function _temp6(t_1) {
-  return t_1.type === 'in_process_teammate';
+  return t_1.type === "in_process_teammate";
 }
 function _temp5(t_0) {
-  return t_0.type === 'in_process_teammate';
+  return t_0.type === "in_process_teammate";
 }
 function _temp4(s_1) {
   return s_1.expandedView;
@@ -410,7 +410,7 @@ function AgentPill(t0) {
   }
   let t1;
   let t2;
-  if ($[14] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => setHover(true);
     t2 = () => setHover(false);
     $[14] = t1;
@@ -458,7 +458,7 @@ function SummaryPill(t0) {
   }
   let t3;
   let t4;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = () => setHover(true);
     t4 = () => setHover(false);
     $[3] = t3;

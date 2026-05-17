@@ -1,22 +1,22 @@
-import { readFile } from 'node:fs/promises';
-import { join, relative, resolve } from 'node:path';
-import { z } from 'zod/v4';
-import type { LspServerConfig, ScopedLspServerConfig } from '../../services/lsp/types.js';
-import { expandEnvVarsInString } from '../../services/mcp/envExpansion.js';
-import type { LoadedPlugin, PluginError } from '../../types/plugin.js';
-import { logForDebugging } from '../debug.js';
-import { isENOENT, toError } from '../errors.js';
-import { logError } from '../log.js';
-import { jsonParse } from '../slowOperations.js';
-import { getPluginDataDir } from './pluginDirectories.js';
+import { readFile } from "node:fs/promises";
+import { join, relative, resolve } from "node:path";
+import { z } from "zod/v4";
+import type { LspServerConfig, ScopedLspServerConfig } from "../../services/lsp/types.js";
+import { expandEnvVarsInString } from "../../services/mcp/envExpansion.js";
+import type { LoadedPlugin, PluginError } from "../../types/plugin.js";
+import { logForDebugging } from "../debug.js";
+import { isENOENT, toError } from "../errors.js";
+import { logError } from "../log.js";
+import { jsonParse } from "../slowOperations.js";
+import { getPluginDataDir } from "./pluginDirectories.js";
 import {
   getPluginStorageId,
   loadPluginOptions,
   type PluginOptionValues,
   substitutePluginVariables,
   substituteUserConfigVariables,
-} from './pluginOptionsStorage.js';
-import { LspServerConfigSchema } from './schemas.js';
+} from "./pluginOptionsStorage.js";
+import { LspServerConfigSchema } from "./schemas.js";
 
 /**
  * Validate that a resolved path stays within the plugin directory.
@@ -31,7 +31,7 @@ function validatePathWithinPlugin(pluginPath: string, relativePath: string): str
   const rel = relative(resolvedPluginPath, resolvedFilePath);
 
   // If relative path starts with .. or is absolute, it's outside the plugin dir
-  if (rel.startsWith('..') || resolve(rel) === rel) {
+  if (rel.startsWith("..") || resolve(rel) === rel) {
     return null;
   }
 
@@ -55,9 +55,9 @@ export async function loadPluginLspServers(
   const servers: Record<string, LspServerConfig> = {};
 
   // 1. Check for .lsp.json file in plugin directory
-  const lspJsonPath = join(plugin.path, '.lsp.json');
+  const lspJsonPath = join(plugin.path, ".lsp.json");
   try {
-    const content = await readFile(lspJsonPath, 'utf-8');
+    const content = await readFile(lspJsonPath, "utf-8");
     const parsed = jsonParse(content);
     const result = z.record(z.string(), LspServerConfigSchema()).safeParse(parsed);
 
@@ -67,11 +67,11 @@ export async function loadPluginLspServers(
       const errorMsg = `LSP config validation failed for .lsp.json in plugin ${plugin.name}: ${result.error.message}`;
       logError(new Error(errorMsg));
       errors.push({
-        type: 'lsp-config-invalid',
+        type: "lsp-config-invalid",
         plugin: plugin.name,
-        serverName: '.lsp.json',
+        serverName: ".lsp.json",
         validationError: result.error.message,
-        source: 'plugin',
+        source: "plugin",
       });
     }
   } catch (error) {
@@ -85,14 +85,14 @@ export async function loadPluginLspServers(
       logError(toError(error));
 
       errors.push({
-        type: 'lsp-config-invalid',
+        type: "lsp-config-invalid",
         plugin: plugin.name,
-        serverName: '.lsp.json',
+        serverName: ".lsp.json",
         validationError:
           error instanceof Error
             ? `Failed to parse JSON: ${error.message}`
-            : 'Failed to parse JSON file',
-        source: 'plugin',
+            : "Failed to parse JSON file",
+        source: "plugin",
       });
     }
   }
@@ -131,26 +131,26 @@ async function loadLspServersFromManifest(
   const declarations = Array.isArray(declaration) ? declaration : [declaration];
 
   for (const decl of declarations) {
-    if (typeof decl === 'string') {
+    if (typeof decl === "string") {
       // Validate path to prevent directory traversal
       const validatedPath = validatePathWithinPlugin(pluginPath, decl);
       if (!validatedPath) {
         const securityMsg = `Security: Path traversal attempt blocked in plugin ${pluginName}: ${decl}`;
         logError(new Error(securityMsg));
-        logForDebugging(securityMsg, { level: 'warn' });
+        logForDebugging(securityMsg, { level: "warn" });
         errors.push({
-          type: 'lsp-config-invalid',
+          type: "lsp-config-invalid",
           plugin: pluginName,
           serverName: decl,
-          validationError: 'Invalid path: must be relative and within plugin directory',
-          source: 'plugin',
+          validationError: "Invalid path: must be relative and within plugin directory",
+          source: "plugin",
         });
         continue;
       }
 
       // Load from file
       try {
-        const content = await readFile(validatedPath, 'utf-8');
+        const content = await readFile(validatedPath, "utf-8");
         const parsed = jsonParse(content);
         const result = z.record(z.string(), LspServerConfigSchema()).safeParse(parsed);
 
@@ -160,11 +160,11 @@ async function loadLspServersFromManifest(
           const errorMsg = `LSP config validation failed for ${decl} in plugin ${pluginName}: ${result.error.message}`;
           logError(new Error(errorMsg));
           errors.push({
-            type: 'lsp-config-invalid',
+            type: "lsp-config-invalid",
             plugin: pluginName,
             serverName: decl,
             validationError: result.error.message,
-            source: 'plugin',
+            source: "plugin",
           });
         }
       } catch (error) {
@@ -176,14 +176,14 @@ async function loadLspServersFromManifest(
         logError(toError(error));
 
         errors.push({
-          type: 'lsp-config-invalid',
+          type: "lsp-config-invalid",
           plugin: pluginName,
           serverName: decl,
           validationError:
             error instanceof Error
               ? `Failed to parse JSON: ${error.message}`
-              : 'Failed to parse JSON file',
-          source: 'plugin',
+              : "Failed to parse JSON file",
+          source: "plugin",
         });
       }
     } else {
@@ -196,11 +196,11 @@ async function loadLspServersFromManifest(
           const errorMsg = `LSP config validation failed for inline server "${serverName}" in plugin ${pluginName}: ${result.error.message}`;
           logError(new Error(errorMsg));
           errors.push({
-            type: 'lsp-config-invalid',
+            type: "lsp-config-invalid",
             plugin: pluginName,
             serverName,
             validationError: result.error.message,
-            source: 'plugin',
+            source: "plugin",
           });
         }
       }
@@ -258,7 +258,7 @@ export function resolvePluginLspEnvironment(
     ...(resolved.env || {}),
   };
   for (const [key, value] of Object.entries(resolvedEnv)) {
-    if (key !== 'CLAUDE_PLUGIN_ROOT' && key !== 'CLAUDE_PLUGIN_DATA') {
+    if (key !== "CLAUDE_PLUGIN_ROOT" && key !== "CLAUDE_PLUGIN_DATA") {
       resolvedEnv[key] = resolveValue(value);
     }
   }
@@ -272,9 +272,9 @@ export function resolvePluginLspEnvironment(
   // Log missing variables if any were found
   if (allMissingVars.length > 0) {
     const uniqueMissingVars = [...new Set(allMissingVars)];
-    const warnMsg = `Missing environment variables in plugin LSP config: ${uniqueMissingVars.join(', ')}`;
+    const warnMsg = `Missing environment variables in plugin LSP config: ${uniqueMissingVars.join(", ")}`;
     logError(new Error(warnMsg));
-    logForDebugging(warnMsg, { level: 'warn' });
+    logForDebugging(warnMsg, { level: "warn" });
   }
 
   return resolved;
@@ -295,7 +295,7 @@ export function addPluginScopeToLspServers(
     const scopedName = `plugin:${pluginName}:${name}`;
     scopedServers[scopedName] = {
       ...config,
-      scope: 'dynamic', // Use dynamic scope for plugin servers
+      scope: "dynamic", // Use dynamic scope for plugin servers
       source: pluginName,
     };
   }

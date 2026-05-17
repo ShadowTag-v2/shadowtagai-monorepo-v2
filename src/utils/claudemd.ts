@@ -25,54 +25,54 @@
  * - Non-existent files are silently ignored
  */
 
-import { feature } from 'bun:bundle';
-import { basename, dirname, extname, isAbsolute, join, parse, relative, sep } from 'node:path';
-import ignore from 'ignore';
-import memoize from 'lodash-es/memoize.js';
-import { Lexer } from 'marked';
-import picomatch from 'picomatch';
-import { logEvent } from 'src/services/analytics/index.js';
-import { getAdditionalDirectoriesForClaudeMd, getOriginalCwd } from '../bootstrap/state.js';
-import { truncateEntrypointContent } from '../memdir/memdir.js';
-import { getAutoMemEntrypoint, isAutoMemoryEnabled } from '../memdir/paths.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
+import { feature } from "bun:bundle";
+import { basename, dirname, extname, isAbsolute, join, parse, relative, sep } from "node:path";
+import ignore from "ignore";
+import memoize from "lodash-es/memoize.js";
+import { Lexer } from "marked";
+import picomatch from "picomatch";
+import { logEvent } from "src/services/analytics/index.js";
+import { getAdditionalDirectoriesForClaudeMd, getOriginalCwd } from "../bootstrap/state.js";
+import { truncateEntrypointContent } from "../memdir/memdir.js";
+import { getAutoMemEntrypoint, isAutoMemoryEnabled } from "../memdir/paths.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
 import {
   getCurrentProjectConfig,
   getManagedClaudeRulesDir,
   getMemoryPath,
   getUserClaudeRulesDir,
-} from './config.js';
-import { logForDebugging } from './debug.js';
-import { logForDiagnosticsNoPII } from './diagLogs.js';
-import { getClaudeConfigHomeDir, isEnvTruthy } from './envUtils.js';
-import { getErrnoCode } from './errors.js';
-import { normalizePathForComparison } from './file.js';
-import { cacheKeys, type FileStateCache } from './fileStateCache.js';
-import { parseFrontmatter, splitPathInFrontmatter } from './frontmatterParser.js';
-import { getFsImplementation, safeResolvePath } from './fsOperations.js';
-import { findCanonicalGitRoot, findGitRoot } from './git.js';
+} from "./config.js";
+import { logForDebugging } from "./debug.js";
+import { logForDiagnosticsNoPII } from "./diagLogs.js";
+import { getClaudeConfigHomeDir, isEnvTruthy } from "./envUtils.js";
+import { getErrnoCode } from "./errors.js";
+import { normalizePathForComparison } from "./file.js";
+import { cacheKeys, type FileStateCache } from "./fileStateCache.js";
+import { parseFrontmatter, splitPathInFrontmatter } from "./frontmatterParser.js";
+import { getFsImplementation, safeResolvePath } from "./fsOperations.js";
+import { findCanonicalGitRoot, findGitRoot } from "./git.js";
 import {
   executeInstructionsLoadedHooks,
   hasInstructionsLoadedHook,
   type InstructionsLoadReason,
   type InstructionsMemoryType,
-} from './hooks.js';
-import type { MemoryType } from './memory/types.js';
-import { expandPath } from './path.js';
-import { pathInWorkingPath } from './permissions/filesystem.js';
-import { isSettingSourceEnabled } from './settings/constants.js';
-import { getInitialSettings } from './settings/settings.js';
+} from "./hooks.js";
+import type { MemoryType } from "./memory/types.js";
+import { expandPath } from "./path.js";
+import { pathInWorkingPath } from "./permissions/filesystem.js";
+import { isSettingSourceEnabled } from "./settings/constants.js";
+import { getInitialSettings } from "./settings/settings.js";
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const teamMemPaths = feature('TEAMMEM')
-  ? (require('../memdir/teamMemPaths.js') as typeof import('../memdir/teamMemPaths.js'))
+const teamMemPaths = feature("TEAMMEM")
+  ? (require("../memdir/teamMemPaths.js") as typeof import("../memdir/teamMemPaths.js"))
   : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
 
 let hasLoggedInitialLoad = false;
 
 const MEMORY_INSTRUCTION_PROMPT =
-  'Codebase and user instructions are shown below. Be sure to adhere to these instructions. IMPORTANT: These instructions OVERRIDE any default behavior and you MUST follow them exactly as written.';
+  "Codebase and user instructions are shown below. Be sure to adhere to these instructions. IMPORTANT: These instructions OVERRIDE any default behavior and you MUST follow them exactly as written.";
 // Recommended max character count for a memory file
 export const MAX_MEMORY_CHARACTER_COUNT = 40000;
 
@@ -80,135 +80,135 @@ export const MAX_MEMORY_CHARACTER_COUNT = 40000;
 // This prevents binary files (images, PDFs, etc.) from being loaded into memory
 const TEXT_FILE_EXTENSIONS = new Set([
   // Markdown and text
-  '.md',
-  '.txt',
-  '.text',
+  ".md",
+  ".txt",
+  ".text",
   // Data formats
-  '.json',
-  '.yaml',
-  '.yml',
-  '.toml',
-  '.xml',
-  '.csv',
+  ".json",
+  ".yaml",
+  ".yml",
+  ".toml",
+  ".xml",
+  ".csv",
   // Web
-  '.html',
-  '.htm',
-  '.css',
-  '.scss',
-  '.sass',
-  '.less',
+  ".html",
+  ".htm",
+  ".css",
+  ".scss",
+  ".sass",
+  ".less",
   // JavaScript/TypeScript
-  '.js',
-  '.ts',
-  '.tsx',
-  '.jsx',
-  '.mjs',
-  '.cjs',
-  '.mts',
-  '.cts',
+  ".js",
+  ".ts",
+  ".tsx",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+  ".mts",
+  ".cts",
   // Python
-  '.py',
-  '.pyi',
-  '.pyw',
+  ".py",
+  ".pyi",
+  ".pyw",
   // Ruby
-  '.rb',
-  '.erb',
-  '.rake',
+  ".rb",
+  ".erb",
+  ".rake",
   // Go
-  '.go',
+  ".go",
   // Rust
-  '.rs',
+  ".rs",
   // Java/Kotlin/Scala
-  '.java',
-  '.kt',
-  '.kts',
-  '.scala',
+  ".java",
+  ".kt",
+  ".kts",
+  ".scala",
   // C/C++
-  '.c',
-  '.cpp',
-  '.cc',
-  '.cxx',
-  '.h',
-  '.hpp',
-  '.hxx',
+  ".c",
+  ".cpp",
+  ".cc",
+  ".cxx",
+  ".h",
+  ".hpp",
+  ".hxx",
   // C#
-  '.cs',
+  ".cs",
   // Swift
-  '.swift',
+  ".swift",
   // Shell
-  '.sh',
-  '.bash',
-  '.zsh',
-  '.fish',
-  '.ps1',
-  '.bat',
-  '.cmd',
+  ".sh",
+  ".bash",
+  ".zsh",
+  ".fish",
+  ".ps1",
+  ".bat",
+  ".cmd",
   // Config
-  '.env',
-  '.ini',
-  '.cfg',
-  '.conf',
-  '.config',
-  '.properties',
+  ".env",
+  ".ini",
+  ".cfg",
+  ".conf",
+  ".config",
+  ".properties",
   // Database
-  '.sql',
-  '.graphql',
-  '.gql',
+  ".sql",
+  ".graphql",
+  ".gql",
   // Protocol
-  '.proto',
+  ".proto",
   // Frontend frameworks
-  '.vue',
-  '.svelte',
-  '.astro',
+  ".vue",
+  ".svelte",
+  ".astro",
   // Templating
-  '.ejs',
-  '.hbs',
-  '.pug',
-  '.jade',
+  ".ejs",
+  ".hbs",
+  ".pug",
+  ".jade",
   // Other languages
-  '.php',
-  '.pl',
-  '.pm',
-  '.lua',
-  '.r',
-  '.R',
-  '.dart',
-  '.ex',
-  '.exs',
-  '.erl',
-  '.hrl',
-  '.clj',
-  '.cljs',
-  '.cljc',
-  '.edn',
-  '.hs',
-  '.lhs',
-  '.elm',
-  '.ml',
-  '.mli',
-  '.f',
-  '.f90',
-  '.f95',
-  '.for',
+  ".php",
+  ".pl",
+  ".pm",
+  ".lua",
+  ".r",
+  ".R",
+  ".dart",
+  ".ex",
+  ".exs",
+  ".erl",
+  ".hrl",
+  ".clj",
+  ".cljs",
+  ".cljc",
+  ".edn",
+  ".hs",
+  ".lhs",
+  ".elm",
+  ".ml",
+  ".mli",
+  ".f",
+  ".f90",
+  ".f95",
+  ".for",
   // Build files
-  '.cmake',
-  '.make',
-  '.makefile',
-  '.gradle',
-  '.sbt',
+  ".cmake",
+  ".make",
+  ".makefile",
+  ".gradle",
+  ".sbt",
   // Documentation
-  '.rst',
-  '.adoc',
-  '.asciidoc',
-  '.org',
-  '.tex',
-  '.latex',
+  ".rst",
+  ".adoc",
+  ".asciidoc",
+  ".org",
+  ".tex",
+  ".latex",
   // Lock files (often text-based)
-  '.lock',
+  ".lock",
   // Misc
-  '.log',
-  '.diff',
-  '.patch',
+  ".log",
+  ".diff",
+  ".patch",
 ]);
 
 export type MemoryFileInfo = {
@@ -250,13 +250,13 @@ function parseFrontmatterPaths(rawContent: string): {
     .map((pattern) => {
       // Remove /** suffix - ignore library treats 'path' as matching both
       // the path itself and everything inside it
-      return pattern.endsWith('/**') ? pattern.slice(0, -3) : pattern;
+      return pattern.endsWith("/**") ? pattern.slice(0, -3) : pattern;
     })
     .filter((p: string) => p.length > 0);
 
   // If all patterns are ** (match-all), treat as no globs (undefined)
   // This means the file applies to all paths
-  if (patterns.length === 0 || patterns.every((p: string) => p === '**')) {
+  if (patterns.length === 0 || patterns.every((p: string) => p === "**")) {
     return { content };
   }
 
@@ -278,18 +278,18 @@ export function stripHtmlComments(content: string): {
   content: string;
   stripped: boolean;
 } {
-  if (!content.includes('<!--')) {
+  if (!content.includes("<!--")) {
     return { content, stripped: false };
   }
   // gfm:false is fine here — html-block detection is a CommonMark rule.
   return stripHtmlCommentsFromTokens(new Lexer({ gfm: false }).lex(content));
 }
 
-function stripHtmlCommentsFromTokens(tokens: ReturnType<Lexer['lex']>): {
+function stripHtmlCommentsFromTokens(tokens: ReturnType<Lexer["lex"]>): {
   content: string;
   stripped: boolean;
 } {
-  let result = '';
+  let result = "";
   let stripped = false;
 
   // A well-formed HTML comment span. Non-greedy so multiple comments on the
@@ -297,13 +297,13 @@ function stripHtmlCommentsFromTokens(tokens: ReturnType<Lexer['lex']>): {
   const commentSpan = /<!--[\s\S]*?-->/g;
 
   for (const token of tokens) {
-    if (token.type === 'html') {
+    if (token.type === "html") {
       const trimmed = token.raw.trimStart();
-      if (trimmed.startsWith('<!--') && trimmed.includes('-->')) {
+      if (trimmed.startsWith("<!--") && trimmed.includes("-->")) {
         // Per CommonMark, a type-2 HTML block ends at the *line* containing
         // `-->`, so text after `-->` on that line is part of this token.
         // Strip only the comment spans and keep any residual content.
-        const residue = token.raw.replace(commentSpan, '');
+        const residue = token.raw.replace(commentSpan, "");
         stripped = true;
         if (residue.trim().length > 0) {
           // Residual content exists (e.g. `<!-- note --> Use bun`): keep it.
@@ -343,7 +343,7 @@ function parseMemoryFileContent(
   // Lex once so strip and @include-extract share the same tokens. gfm:false
   // is required by extract (so ~/path doesn't tokenize as strikethrough) and
   // doesn't affect strip (html blocks are a CommonMark rule).
-  const hasComment = withoutFrontmatter.includes('<!--');
+  const hasComment = withoutFrontmatter.includes("<!--");
   const tokens =
     hasComment || includeBasePath !== undefined
       ? new Lexer({ gfm: false }).lex(withoutFrontmatter)
@@ -362,7 +362,7 @@ function parseMemoryFileContent(
 
   // Truncate MEMORY.md entrypoints to the line AND byte caps
   let finalContent = strippedContent;
-  if (type === 'AutoMem' || type === 'TeamMem') {
+  if (type === "AutoMem" || type === "TeamMem") {
     finalContent = truncateEntrypointContent(strippedContent).content;
   }
 
@@ -384,13 +384,13 @@ function parseMemoryFileContent(
 function handleMemoryFileReadError(error: unknown, filePath: string): void {
   const code = getErrnoCode(error);
   // ENOENT = file doesn't exist, EISDIR = is a directory — both expected
-  if (code === 'ENOENT' || code === 'EISDIR') {
+  if (code === "ENOENT" || code === "EISDIR") {
     return;
   }
   // Log permission errors (EACCES) as they're actionable
-  if (code === 'EACCES') {
+  if (code === "EACCES") {
     // Don't log the full file path to avoid PII/security issues
-    logEvent('tengu_claude_md_permission_error', {
+    logEvent("tengu_claude_md_permission_error", {
       is_access_error: 1,
       has_home_dir: filePath.includes(getClaudeConfigHomeDir()) ? 1 : 0,
     });
@@ -410,7 +410,7 @@ async function safelyReadMemoryFileAsync(
 ): Promise<{ info: MemoryFileInfo | null; includePaths: string[] }> {
   try {
     const fs = getFsImplementation();
-    const rawContent = await fs.readFile(filePath, { encoding: 'utf-8' });
+    const rawContent = await fs.readFile(filePath, { encoding: "utf-8" });
     return parseMemoryFileContent(rawContent, filePath, type, includeBasePath);
   } catch (error) {
     handleMemoryFileReadError(error, filePath);
@@ -431,7 +431,7 @@ type MarkdownToken = {
 // absolute paths. Skips html tokens so @paths inside block comments are
 // ignored — the caller may pass pre-strip tokens.
 function extractIncludePathsFromTokens(
-  tokens: ReturnType<Lexer['lex']>,
+  tokens: ReturnType<Lexer["lex"]>,
   basePath: string,
 ): string[] {
   const absolutePaths = new Set<string>();
@@ -445,22 +445,22 @@ function extractIncludePathsFromTokens(
       if (!path) continue;
 
       // Strip fragment identifiers (#heading, #section-name, etc.)
-      const hashIndex = path.indexOf('#');
+      const hashIndex = path.indexOf("#");
       if (hashIndex !== -1) {
         path = path.substring(0, hashIndex);
       }
       if (!path) continue;
 
       // Unescape the spaces in the path
-      path = path.replace(/\\ /g, ' ');
+      path = path.replace(/\\ /g, " ");
 
       // Accept @path, @./path, @~/path, or @/path
       if (path) {
         const isValidPath =
-          path.startsWith('./') ||
-          path.startsWith('~/') ||
-          (path.startsWith('/') && path !== '/') ||
-          (!path.startsWith('@') && !path.match(/^[#%^&*()]+/) && path.match(/^[a-zA-Z0-9._-]/));
+          path.startsWith("./") ||
+          path.startsWith("~/") ||
+          (path.startsWith("/") && path !== "/") ||
+          (!path.startsWith("@") && !path.match(/^[#%^&*()]+/) && path.match(/^[a-zA-Z0-9._-]/));
 
         if (isValidPath) {
           const resolvedPath = expandPath(path, dirname(basePath));
@@ -473,19 +473,19 @@ function extractIncludePathsFromTokens(
   // Recursively process elements to find text nodes
   function processElements(elements: MarkdownToken[]) {
     for (const element of elements) {
-      if (element.type === 'code' || element.type === 'codespan') {
+      if (element.type === "code" || element.type === "codespan") {
         continue;
       }
 
       // For html tokens that contain comments, strip the comment spans and
       // check the residual for @paths (e.g. `<!-- note --> @./file.md`).
       // Other html tokens (non-comment tags) are skipped entirely.
-      if (element.type === 'html') {
-        const raw = element.raw || '';
+      if (element.type === "html") {
+        const raw = element.raw || "";
         const trimmed = raw.trimStart();
-        if (trimmed.startsWith('<!--') && trimmed.includes('-->')) {
+        if (trimmed.startsWith("<!--") && trimmed.includes("-->")) {
           const commentSpan = /<!--[\s\S]*?-->/g;
-          const residue = raw.replace(commentSpan, '');
+          const residue = raw.replace(commentSpan, "");
           if (residue.trim().length > 0) {
             extractPathsFromText(residue);
           }
@@ -494,8 +494,8 @@ function extractIncludePathsFromTokens(
       }
 
       // Process text nodes
-      if (element.type === 'text') {
-        extractPathsFromText(element.text || '');
+      if (element.type === "text") {
+        extractPathsFromText(element.text || "");
       }
 
       // Recurse into children tokens
@@ -525,7 +525,7 @@ const MAX_INCLUDE_DEPTH = 5;
  * (e.g., /tmp -> /private/tmp on macOS).
  */
 function isClaudeMdExcluded(filePath: string, type: MemoryType): boolean {
-  if (type !== 'User' && type !== 'Project' && type !== 'Local') {
+  if (type !== "User" && type !== "Project" && type !== "Local") {
     return false;
   }
 
@@ -535,7 +535,7 @@ function isClaudeMdExcluded(filePath: string, type: MemoryType): boolean {
   }
 
   const matchOpts = { dot: true };
-  const normalizedPath = filePath.replaceAll('\\', '/');
+  const normalizedPath = filePath.replaceAll("\\", "/");
 
   // Build an expanded pattern list that includes realpath-resolved versions of
   // absolute patterns. This handles symlinks like /tmp -> /private/tmp on macOS:
@@ -558,12 +558,12 @@ function isClaudeMdExcluded(filePath: string, type: MemoryType): boolean {
  */
 function resolveExcludePatterns(patterns: string[]): string[] {
   const fs = getFsImplementation();
-  const expanded: string[] = patterns.map((p) => p.replaceAll('\\', '/'));
+  const expanded: string[] = patterns.map((p) => p.replaceAll("\\", "/"));
 
   for (const normalized of expanded) {
     // Only resolve absolute patterns — glob-only patterns like "**/*.md" don't have
     // a filesystem prefix to resolve
-    if (!normalized.startsWith('/')) {
+    if (!normalized.startsWith("/")) {
       continue;
     }
 
@@ -574,7 +574,7 @@ function resolveExcludePatterns(patterns: string[]): string[] {
 
     try {
       // sync IO: called from sync context (isClaudeMdExcluded -> processMemoryFile -> getMemoryFiles)
-      const resolvedDir = fs.realpathSync(dirToResolve).replaceAll('\\', '/');
+      const resolvedDir = fs.realpathSync(dirToResolve).replaceAll("\\", "/");
       if (resolvedDir !== dirToResolve) {
         const resolvedPattern = resolvedDir + normalized.slice(dirToResolve.length);
         expanded.push(resolvedPattern);
@@ -700,12 +700,12 @@ export async function processMdRules({
     }
 
     const result: MemoryFileInfo[] = [];
-    let entries: import('fs').Dirent[];
+    let entries: import("fs").Dirent[];
     try {
       entries = await fs.readdir(resolvedRulesDir);
     } catch (e: unknown) {
       const code = getErrnoCode(e);
-      if (code === 'ENOENT' || code === 'EACCES' || code === 'ENOTDIR') {
+      if (code === "ENOENT" || code === "EACCES" || code === "ENOTDIR") {
         return [];
       }
       throw e;
@@ -732,7 +732,7 @@ export async function processMdRules({
             visitedDirs,
           })),
         );
-      } else if (isFile && entry.name.endsWith('.md')) {
+      } else if (isFile && entry.name.endsWith(".md")) {
         const files = await processMemoryFile(
           resolvedEntryPath,
           type,
@@ -745,8 +745,8 @@ export async function processMdRules({
 
     return result;
   } catch (error) {
-    if (error instanceof Error && error.message.includes('EACCES')) {
-      logEvent('tengu_claude_rules_md_permission_error', {
+    if (error instanceof Error && error.message.includes("EACCES")) {
+      logEvent("tengu_claude_rules_md_permission_error", {
         is_access_error: 1,
         has_home_dir: rulesDir.includes(getClaudeConfigHomeDir()) ? 1 : 0,
       });
@@ -758,7 +758,7 @@ export async function processMdRules({
 export const getMemoryFiles = memoize(
   async (forceIncludeExternal: boolean = false): Promise<MemoryFileInfo[]> => {
     const startTime = Date.now();
-    logForDiagnosticsNoPII('info', 'memory_files_started');
+    logForDiagnosticsNoPII("info", "memory_files_started");
 
     const result: MemoryFileInfo[] = [];
     const processedPaths = new Set<string>();
@@ -767,16 +767,16 @@ export const getMemoryFiles = memoize(
       forceIncludeExternal || config.hasClaudeMdExternalIncludesApproved || false;
 
     // Process Managed file first (always loaded - policy settings)
-    const managedClaudeMd = getMemoryPath('Managed');
+    const managedClaudeMd = getMemoryPath("Managed");
     result.push(
-      ...(await processMemoryFile(managedClaudeMd, 'Managed', processedPaths, includeExternal)),
+      ...(await processMemoryFile(managedClaudeMd, "Managed", processedPaths, includeExternal)),
     );
     // Process Managed .claude/rules/*.md files
     const managedClaudeRulesDir = getManagedClaudeRulesDir();
     result.push(
       ...(await processMdRules({
         rulesDir: managedClaudeRulesDir,
-        type: 'Managed',
+        type: "Managed",
         processedPaths,
         includeExternal,
         conditionalRule: false,
@@ -784,12 +784,12 @@ export const getMemoryFiles = memoize(
     );
 
     // Process User file (only if userSettings is enabled)
-    if (isSettingSourceEnabled('userSettings')) {
-      const userClaudeMd = getMemoryPath('User');
+    if (isSettingSourceEnabled("userSettings")) {
+      const userClaudeMd = getMemoryPath("User");
       result.push(
         ...(await processMemoryFile(
           userClaudeMd,
-          'User',
+          "User",
           processedPaths,
           true, // User memory can always include external files
         )),
@@ -799,7 +799,7 @@ export const getMemoryFiles = memoize(
       result.push(
         ...(await processMdRules({
           rulesDir: userClaudeRulesDir,
-          type: 'User',
+          type: "User",
           processedPaths,
           includeExternal: true,
           conditionalRule: false,
@@ -844,24 +844,24 @@ export const getMemoryFiles = memoize(
         !pathInWorkingPath(dir, gitRoot);
 
       // Try reading CLAUDE.md (Project) - only if projectSettings is enabled
-      if (isSettingSourceEnabled('projectSettings') && !skipProject) {
-        const projectPath = join(dir, 'CLAUDE.md');
+      if (isSettingSourceEnabled("projectSettings") && !skipProject) {
+        const projectPath = join(dir, "CLAUDE.md");
         result.push(
-          ...(await processMemoryFile(projectPath, 'Project', processedPaths, includeExternal)),
+          ...(await processMemoryFile(projectPath, "Project", processedPaths, includeExternal)),
         );
 
         // Try reading .claude/CLAUDE.md (Project)
-        const dotClaudePath = join(dir, '.claude', 'CLAUDE.md');
+        const dotClaudePath = join(dir, ".claude", "CLAUDE.md");
         result.push(
-          ...(await processMemoryFile(dotClaudePath, 'Project', processedPaths, includeExternal)),
+          ...(await processMemoryFile(dotClaudePath, "Project", processedPaths, includeExternal)),
         );
 
         // Try reading .claude/rules/*.md files (Project)
-        const rulesDir = join(dir, '.claude', 'rules');
+        const rulesDir = join(dir, ".claude", "rules");
         result.push(
           ...(await processMdRules({
             rulesDir,
-            type: 'Project',
+            type: "Project",
             processedPaths,
             includeExternal,
             conditionalRule: false,
@@ -870,10 +870,10 @@ export const getMemoryFiles = memoize(
       }
 
       // Try reading CLAUDE.local.md (Local) - only if localSettings is enabled
-      if (isSettingSourceEnabled('localSettings')) {
-        const localPath = join(dir, 'CLAUDE.local.md');
+      if (isSettingSourceEnabled("localSettings")) {
+        const localPath = join(dir, "CLAUDE.local.md");
         result.push(
-          ...(await processMemoryFile(localPath, 'Local', processedPaths, includeExternal)),
+          ...(await processMemoryFile(localPath, "Local", processedPaths, includeExternal)),
         );
       }
     }
@@ -886,23 +886,23 @@ export const getMemoryFiles = memoize(
       const additionalDirs = getAdditionalDirectoriesForClaudeMd();
       for (const dir of additionalDirs) {
         // Try reading CLAUDE.md from the additional directory
-        const projectPath = join(dir, 'CLAUDE.md');
+        const projectPath = join(dir, "CLAUDE.md");
         result.push(
-          ...(await processMemoryFile(projectPath, 'Project', processedPaths, includeExternal)),
+          ...(await processMemoryFile(projectPath, "Project", processedPaths, includeExternal)),
         );
 
         // Try reading .claude/CLAUDE.md from the additional directory
-        const dotClaudePath = join(dir, '.claude', 'CLAUDE.md');
+        const dotClaudePath = join(dir, ".claude", "CLAUDE.md");
         result.push(
-          ...(await processMemoryFile(dotClaudePath, 'Project', processedPaths, includeExternal)),
+          ...(await processMemoryFile(dotClaudePath, "Project", processedPaths, includeExternal)),
         );
 
         // Try reading .claude/rules/*.md files from the additional directory
-        const rulesDir = join(dir, '.claude', 'rules');
+        const rulesDir = join(dir, ".claude", "rules");
         result.push(
           ...(await processMdRules({
             rulesDir,
-            type: 'Project',
+            type: "Project",
             processedPaths,
             includeExternal,
             conditionalRule: false,
@@ -915,7 +915,7 @@ export const getMemoryFiles = memoize(
     if (isAutoMemoryEnabled()) {
       const { info: memdirEntry } = await safelyReadMemoryFileAsync(
         getAutoMemEntrypoint(),
-        'AutoMem',
+        "AutoMem",
       );
       if (memdirEntry) {
         const normalizedPath = normalizePathForComparison(memdirEntry.path);
@@ -927,10 +927,10 @@ export const getMemoryFiles = memoize(
     }
 
     // Team memory entrypoint - only if feature is on and file exists
-    if (feature('TEAMMEM') && teamMemPaths?.isTeamMemoryEnabled()) {
+    if (feature("TEAMMEM") && teamMemPaths?.isTeamMemoryEnabled()) {
       const { info: teamMemEntry } = await safelyReadMemoryFileAsync(
         teamMemPaths?.getTeamMemEntrypoint(),
-        'TeamMem',
+        "TeamMem",
       );
       if (teamMemEntry) {
         const normalizedPath = normalizePathForComparison(teamMemEntry.path);
@@ -943,7 +943,7 @@ export const getMemoryFiles = memoize(
 
     const totalContentLength = result.reduce((sum, f) => sum + f.content.length, 0);
 
-    logForDiagnosticsNoPII('info', 'memory_files_completed', {
+    logForDiagnosticsNoPII("info", "memory_files_completed", {
       duration_ms: Date.now() - startTime,
       file_count: result.length,
       total_content_length: totalContentLength,
@@ -956,7 +956,7 @@ export const getMemoryFiles = memoize(
 
     if (!hasLoggedInitialLoad) {
       hasLoggedInitialLoad = true;
-      logEvent('tengu_claudemd__initial_load', {
+      logEvent("tengu_claudemd__initial_load", {
         file_count: result.length,
         total_content_length: totalContentLength,
         user_count: typeCounts.User ?? 0,
@@ -964,7 +964,7 @@ export const getMemoryFiles = memoize(
         local_count: typeCounts.Local ?? 0,
         managed_count: typeCounts.Managed ?? 0,
         automem_count: typeCounts.AutoMem ?? 0,
-        ...(feature('TEAMMEM') ? { teammem_count: typeCounts.TeamMem ?? 0 } : {}),
+        ...(feature("TEAMMEM") ? { teammem_count: typeCounts.TeamMem ?? 0 } : {}),
         duration_ms: Date.now() - startTime,
       });
     }
@@ -986,7 +986,7 @@ export const getMemoryFiles = memoize(
       if (eagerLoadReason !== undefined && hasInstructionsLoadedHook()) {
         for (const file of result) {
           if (!isInstructionsMemoryType(file.type)) continue;
-          const loadReason = file.parent ? 'include' : eagerLoadReason;
+          const loadReason = file.parent ? "include" : eagerLoadReason;
           void executeInstructionsLoadedHooks(file.path, file.type, loadReason, {
             globs: file.globs,
             parentFilePath: file.parent,
@@ -1000,7 +1000,7 @@ export const getMemoryFiles = memoize(
 );
 
 function isInstructionsMemoryType(type: MemoryType): type is InstructionsMemoryType {
-  return type === 'User' || type === 'Project' || type === 'Local' || type === 'Managed';
+  return type === "User" || type === "Project" || type === "Local" || type === "Managed";
 }
 
 // Load reason to report for top-level (non-included) files on the next eager
@@ -1008,7 +1008,7 @@ function isInstructionsMemoryType(type: MemoryType): type is InstructionsMemoryT
 // compaction clears the cache, so the InstructionsLoaded hook reports the
 // reload correctly instead of misreporting it as 'session_start'. One-shot:
 // reset to 'session_start' after being read.
-let nextEagerLoadReason: InstructionsLoadReason = 'session_start';
+let nextEagerLoadReason: InstructionsLoadReason = "session_start";
 
 // Whether the InstructionsLoaded hook should fire on the next cache miss.
 // true initially (for session_start), consumed after firing, re-enabled only
@@ -1021,7 +1021,7 @@ function consumeNextEagerLoadReason(): InstructionsLoadReason | undefined {
   if (!shouldFireHook) return undefined;
   shouldFireHook = false;
   const reason = nextEagerLoadReason;
-  nextEagerLoadReason = 'session_start';
+  nextEagerLoadReason = "session_start";
   return reason;
 }
 
@@ -1039,7 +1039,7 @@ export function clearMemoryFileCaches(): void {
   getMemoryFiles.cache?.clear?.();
 }
 
-export function resetGetMemoryFilesCache(reason: InstructionsLoadReason = 'session_start'): void {
+export function resetGetMemoryFilesCache(reason: InstructionsLoadReason = "session_start"): void {
   nextEagerLoadReason = reason;
   shouldFireHook = true;
   clearMemoryFileCaches();
@@ -1056,9 +1056,9 @@ export function getLargeMemoryFiles(files: MemoryFileInfo[]): MemoryFileInfo[] {
  * context" (context builder, /context viz) should filter through this.
  */
 export function filterInjectedMemoryFiles(files: MemoryFileInfo[]): MemoryFileInfo[] {
-  const skipMemoryIndex = getFeatureValue_CACHED_MAY_BE_STALE('tengu_moth_copse', false);
+  const skipMemoryIndex = getFeatureValue_CACHED_MAY_BE_STALE("tengu_moth_copse", false);
   if (!skipMemoryIndex) return files;
-  return files.filter((f) => f.type !== 'AutoMem' && f.type !== 'TeamMem');
+  return files.filter((f) => f.type !== "AutoMem" && f.type !== "TeamMem");
 }
 
 export const getClaudeMds = (
@@ -1066,25 +1066,25 @@ export const getClaudeMds = (
   filter?: (type: MemoryType) => boolean,
 ): string => {
   const memories: string[] = [];
-  const skipProjectLevel = getFeatureValue_CACHED_MAY_BE_STALE('tengu_paper_halyard', false);
+  const skipProjectLevel = getFeatureValue_CACHED_MAY_BE_STALE("tengu_paper_halyard", false);
 
   for (const file of memoryFiles) {
     if (filter && !filter(file.type)) continue;
-    if (skipProjectLevel && (file.type === 'Project' || file.type === 'Local')) continue;
+    if (skipProjectLevel && (file.type === "Project" || file.type === "Local")) continue;
     if (file.content) {
       const description =
-        file.type === 'Project'
-          ? ' (project instructions, checked into the codebase)'
-          : file.type === 'Local'
+        file.type === "Project"
+          ? " (project instructions, checked into the codebase)"
+          : file.type === "Local"
             ? " (user's private project instructions, not checked in)"
-            : feature('TEAMMEM') && file.type === 'TeamMem'
-              ? ' (shared team memory, synced across the organization)'
-              : file.type === 'AutoMem'
+            : feature("TEAMMEM") && file.type === "TeamMem"
+              ? " (shared team memory, synced across the organization)"
+              : file.type === "AutoMem"
                 ? " (user's auto-memory, persists across conversations)"
                 : " (user's private global instructions for all projects)";
 
       const content = file.content.trim();
-      if (feature('TEAMMEM') && file.type === 'TeamMem') {
+      if (feature("TEAMMEM") && file.type === "TeamMem") {
         memories.push(
           `Contents of ${file.path}${description}:\n\n<team-memory-content source="shared">\n${content}\n</team-memory-content>`,
         );
@@ -1095,10 +1095,10 @@ export const getClaudeMds = (
   }
 
   if (memories.length === 0) {
-    return '';
+    return "";
   }
 
-  return `${MEMORY_INSTRUCTION_PROMPT}\n\n${memories.join('\n\n')}`;
+  return `${MEMORY_INSTRUCTION_PROMPT}\n\n${memories.join("\n\n")}`;
 };
 
 /**
@@ -1121,20 +1121,20 @@ export async function getManagedAndUserConditionalRules(
     ...(await processConditionedMdRules(
       targetPath,
       managedClaudeRulesDir,
-      'Managed',
+      "Managed",
       processedPaths,
       false,
     )),
   );
 
-  if (isSettingSourceEnabled('userSettings')) {
+  if (isSettingSourceEnabled("userSettings")) {
     // Process User conditional .claude/rules/*.md files
     const userClaudeRulesDir = getUserClaudeRulesDir();
     result.push(
       ...(await processConditionedMdRules(
         targetPath,
         userClaudeRulesDir,
-        'User',
+        "User",
         processedPaths,
         true,
       )),
@@ -1161,20 +1161,20 @@ export async function getMemoryFilesForNestedDirectory(
   const result: MemoryFileInfo[] = [];
 
   // Process project memory files (CLAUDE.md and .claude/CLAUDE.md)
-  if (isSettingSourceEnabled('projectSettings')) {
-    const projectPath = join(dir, 'CLAUDE.md');
-    result.push(...(await processMemoryFile(projectPath, 'Project', processedPaths, false)));
-    const dotClaudePath = join(dir, '.claude', 'CLAUDE.md');
-    result.push(...(await processMemoryFile(dotClaudePath, 'Project', processedPaths, false)));
+  if (isSettingSourceEnabled("projectSettings")) {
+    const projectPath = join(dir, "CLAUDE.md");
+    result.push(...(await processMemoryFile(projectPath, "Project", processedPaths, false)));
+    const dotClaudePath = join(dir, ".claude", "CLAUDE.md");
+    result.push(...(await processMemoryFile(dotClaudePath, "Project", processedPaths, false)));
   }
 
   // Process local memory file (CLAUDE.local.md)
-  if (isSettingSourceEnabled('localSettings')) {
-    const localPath = join(dir, 'CLAUDE.local.md');
-    result.push(...(await processMemoryFile(localPath, 'Local', processedPaths, false)));
+  if (isSettingSourceEnabled("localSettings")) {
+    const localPath = join(dir, "CLAUDE.local.md");
+    result.push(...(await processMemoryFile(localPath, "Local", processedPaths, false)));
   }
 
-  const rulesDir = join(dir, '.claude', 'rules');
+  const rulesDir = join(dir, ".claude", "rules");
 
   // Process project unconditional .claude/rules/*.md files, which were not eagerly loaded
   // Use a separate processedPaths set to avoid marking conditional rule files as processed
@@ -1182,7 +1182,7 @@ export async function getMemoryFilesForNestedDirectory(
   result.push(
     ...(await processMdRules({
       rulesDir,
-      type: 'Project',
+      type: "Project",
       processedPaths: unconditionalProcessedPaths,
       includeExternal: false,
       conditionalRule: false,
@@ -1191,7 +1191,7 @@ export async function getMemoryFilesForNestedDirectory(
 
   // Process project conditional .claude/rules/*.md files
   result.push(
-    ...(await processConditionedMdRules(targetPath, rulesDir, 'Project', processedPaths, false)),
+    ...(await processConditionedMdRules(targetPath, rulesDir, "Project", processedPaths, false)),
   );
 
   // processedPaths must be seeded with unconditional paths for subsequent directories
@@ -1216,8 +1216,8 @@ export async function getConditionalRulesForCwdLevelDirectory(
   targetPath: string,
   processedPaths: Set<string>,
 ): Promise<MemoryFileInfo[]> {
-  const rulesDir = join(dir, '.claude', 'rules');
-  return processConditionedMdRules(targetPath, rulesDir, 'Project', processedPaths, false);
+  const rulesDir = join(dir, ".claude", "rules");
+  return processConditionedMdRules(targetPath, rulesDir, "Project", processedPaths, false);
 }
 
 /**
@@ -1254,7 +1254,7 @@ export async function processConditionedMdRules(
     // For Project rules: glob patterns are relative to the directory containing .claude
     // For Managed/User rules: glob patterns are relative to the original CWD
     const baseDir =
-      type === 'Project'
+      type === "Project"
         ? dirname(dirname(rulesDir)) // Parent of .claude
         : getOriginalCwd(); // Project root for managed/user rules
 
@@ -1262,7 +1262,7 @@ export async function processConditionedMdRules(
     // ignore() throws on empty strings, paths escaping the base (../),
     // and absolute paths (Windows cross-drive relative() returns absolute).
     // Files outside baseDir can't match baseDir-relative globs anyway.
-    if (!relativePath || relativePath.startsWith('..') || isAbsolute(relativePath)) {
+    if (!relativePath || relativePath.startsWith("..") || isAbsolute(relativePath)) {
       return false;
     }
     return ignore().add(file.globs).ignores(relativePath);
@@ -1277,7 +1277,7 @@ export type ExternalClaudeMdInclude = {
 export function getExternalClaudeMdIncludes(files: MemoryFileInfo[]): ExternalClaudeMdInclude[] {
   const externals: ExternalClaudeMdInclude[] = [];
   for (const file of files) {
-    if (file.type !== 'User' && file.parent && !pathInOriginalCwd(file.path)) {
+    if (file.type !== "User" && file.parent && !pathInOriginalCwd(file.path)) {
       externals.push({ path: file.path, parent: file.parent });
     }
   }
@@ -1307,12 +1307,12 @@ export function isMemoryFilePath(filePath: string): boolean {
   const name = basename(filePath);
 
   // CLAUDE.md or CLAUDE.local.md anywhere
-  if (name === 'CLAUDE.md' || name === 'CLAUDE.local.md') {
+  if (name === "CLAUDE.md" || name === "CLAUDE.local.md") {
     return true;
   }
 
   // .md files in .claude/rules/ directories
-  if (name.endsWith('.md') && filePath.includes(`${sep}.claude${sep}rules${sep}`)) {
+  if (name.endsWith(".md") && filePath.includes(`${sep}.claude${sep}rules${sep}`)) {
     return true;
   }
 

@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Text, useTheme } from '../../ink.js';
-import { getGraphemeSegmenter } from '../../utils/intl.js';
-import { getTheme, type Theme } from '../../utils/theme.js';
-import type { SpinnerMode } from './types.js';
-import { interpolateColor, parseRGB, toRGBColor } from './utils.js';
+import { c as _c } from "react/compiler-runtime";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Text, useTheme } from "../../ink.js";
+import { getGraphemeSegmenter } from "../../utils/intl.js";
+import { getTheme, type Theme } from "../../utils/theme.js";
+import type { SpinnerMode } from "./types.js";
+import { interpolateColor, parseRGB, toRGBColor } from "./utils.js";
 
 type Props = {
   message: string;
@@ -45,7 +45,7 @@ export function GlimmerMessage(t0) {
     $[5] !== stalledIntensity ||
     $[6] !== themeName
   ) {
-    t2 = Symbol.for('react.early_return_sentinel');
+    t2 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const theme = getTheme(themeName);
       let segs;
@@ -109,7 +109,7 @@ export function GlimmerMessage(t0) {
           );
           break bb0;
         }
-        const color_0 = stalledIntensity > 0.5 ? 'error' : messageColor;
+        const color_0 = stalledIntensity > 0.5 ? "error" : messageColor;
         let t5;
         if ($[19] !== color_0 || $[20] !== message) {
           t5 = <Text color={color_0}>{message}</Text>;
@@ -144,7 +144,7 @@ export function GlimmerMessage(t0) {
         t2 = t7;
         break bb0;
       }
-      if (mode === 'tool-use') {
+      if (mode === "tool-use") {
         const baseColorStr_0 = theme[messageColor];
         const shimmerColorStr = theme[shimmerColor];
         const baseRGB_0 = baseColorStr_0 ? parseRGB(baseColorStr_0) : null;
@@ -228,7 +228,7 @@ export function GlimmerMessage(t0) {
     segments = $[8];
     t2 = $[9];
   }
-  if (t2 !== Symbol.for('react.early_return_sentinel')) {
+  if (t2 !== Symbol.for("react.early_return_sentinel")) {
     return t2;
   }
   const shimmerStart = glimmerIndex - 1;
@@ -269,9 +269,9 @@ export function GlimmerMessage(t0) {
   }
   const clampedStart = Math.max(0, shimmerStart);
   let colPos = 0;
-  let before = '';
-  let shim = '';
-  let after = '';
+  let before = "";
+  let shim = "";
+  let after = "";
   if (
     $[48] !== after ||
     $[49] !== before ||

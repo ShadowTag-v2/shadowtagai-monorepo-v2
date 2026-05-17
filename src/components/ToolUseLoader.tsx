@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
-import { BLACK_CIRCLE } from '../constants/figures.js';
-import { useBlink } from '../hooks/useBlink.js';
-import { Box, Text } from '../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import { BLACK_CIRCLE } from "../constants/figures.js";
+import { useBlink } from "../hooks/useBlink.js";
+import { Box, Text } from "../ink.js";
 
 type Props = {
   isError: boolean;
@@ -12,8 +12,8 @@ export function ToolUseLoader(t0) {
   const $ = _c(7);
   const { isError, isUnresolved, shouldAnimate } = t0;
   const [ref, isBlinking] = useBlink(shouldAnimate);
-  const color = isUnresolved ? undefined : isError ? 'error' : 'success';
-  const t1 = !shouldAnimate || isBlinking || isError || !isUnresolved ? BLACK_CIRCLE : ' ';
+  const color = isUnresolved ? undefined : isError ? "error" : "success";
+  const t1 = !shouldAnimate || isBlinking || isError || !isUnresolved ? BLACK_CIRCLE : " ";
   let t2;
   if ($[0] !== color || $[1] !== isUnresolved || $[2] !== t1) {
     t2 = (

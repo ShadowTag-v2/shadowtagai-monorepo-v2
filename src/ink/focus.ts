@@ -1,5 +1,5 @@
-import type { DOMElement } from './dom.js';
-import { FocusEvent } from './events/focus-event.js';
+import type { DOMElement } from "./dom.js";
+import { FocusEvent } from "./events/focus-event.js";
 
 const MAX_FOCUS_STACK = 32;
 
@@ -33,10 +33,10 @@ export class FocusManager {
       if (idx !== -1) this.focusStack.splice(idx, 1);
       this.focusStack.push(previous);
       if (this.focusStack.length > MAX_FOCUS_STACK) this.focusStack.shift();
-      this.dispatchFocusEvent(previous, new FocusEvent('blur', node));
+      this.dispatchFocusEvent(previous, new FocusEvent("blur", node));
     }
     this.activeElement = node;
-    this.dispatchFocusEvent(node, new FocusEvent('focus', previous));
+    this.dispatchFocusEvent(node, new FocusEvent("focus", previous));
   }
 
   blur(): void {
@@ -44,7 +44,7 @@ export class FocusManager {
 
     const previous = this.activeElement;
     this.activeElement = null;
-    this.dispatchFocusEvent(previous, new FocusEvent('blur', null));
+    this.dispatchFocusEvent(previous, new FocusEvent("blur", null));
   }
 
   /**
@@ -64,14 +64,14 @@ export class FocusManager {
 
     const removed = this.activeElement;
     this.activeElement = null;
-    this.dispatchFocusEvent(removed, new FocusEvent('blur', null));
+    this.dispatchFocusEvent(removed, new FocusEvent("blur", null));
 
     // Restore focus to the most recent still-mounted element
     while (this.focusStack.length > 0) {
       const candidate = this.focusStack.pop()!;
       if (isInTree(candidate, root)) {
         this.activeElement = candidate;
-        this.dispatchFocusEvent(candidate, new FocusEvent('focus', removed));
+        this.dispatchFocusEvent(candidate, new FocusEvent("focus", removed));
         return;
       }
     }
@@ -83,7 +83,7 @@ export class FocusManager {
 
   handleClickFocus(node: DOMElement): void {
     const tabIndex = node.attributes.tabIndex;
-    if (typeof tabIndex !== 'number') return;
+    if (typeof tabIndex !== "number") return;
     this.focus(node);
   }
 
@@ -133,12 +133,12 @@ function collectTabbable(root: DOMElement): DOMElement[] {
 
 function walkTree(node: DOMElement, result: DOMElement[]): void {
   const tabIndex = node.attributes.tabIndex;
-  if (typeof tabIndex === 'number' && tabIndex >= 0) {
+  if (typeof tabIndex === "number" && tabIndex >= 0) {
     result.push(node);
   }
 
   for (const child of node.childNodes) {
-    if (child.nodeName !== '#text') {
+    if (child.nodeName !== "#text") {
       walkTree(child, result);
     }
   }
@@ -163,7 +163,7 @@ export function getRootNode(node: DOMElement): DOMElement {
     if (current.focusManager) return current;
     current = current.parentNode;
   }
-  throw new Error('Node is not in a tree with a FocusManager');
+  throw new Error("Node is not in a tree with a FocusManager");
 }
 
 /**

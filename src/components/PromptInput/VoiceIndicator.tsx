@@ -1,11 +1,11 @@
-import { feature } from 'bun:bundle';
-import { c as _c } from 'react/compiler-runtime';
-import { useSettings } from '../../hooks/useSettings.js';
-import { Box, Text, useAnimationFrame } from '../../ink.js';
-import { interpolateColor, toRGBColor } from '../Spinner/utils.js';
+import { feature } from "bun:bundle";
+import { c as _c } from "react/compiler-runtime";
+import { useSettings } from "../../hooks/useSettings.js";
+import { Box, Text, useAnimationFrame } from "../../ink.js";
+import { interpolateColor, toRGBColor } from "../Spinner/utils.js";
 
 type Props = {
-  voiceState: 'idle' | 'recording' | 'processing';
+  voiceState: "idle" | "recording" | "processing";
 };
 
 // Processing shimmer colors: dim gray to lighter gray (matches ThinkingShimmerText)
@@ -23,7 +23,7 @@ const PULSE_PERIOD_S = 2; // 2 second period for all pulsing animations
 
 export function VoiceIndicator(props) {
   const $ = _c(2);
-  if (!feature('VOICE_MODE')) {
+  if (!feature("VOICE_MODE")) {
     return null;
   }
   let t0;
@@ -40,9 +40,9 @@ function VoiceIndicatorImpl(t0) {
   const $ = _c(2);
   const { voiceState } = t0;
   switch (voiceState) {
-    case 'recording': {
+    case "recording": {
       let t1;
-      if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = <Text dimColor={true}>listening…</Text>;
         $[0] = t1;
       } else {
@@ -50,9 +50,9 @@ function VoiceIndicatorImpl(t0) {
       }
       return t1;
     }
-    case 'processing': {
+    case "processing": {
       let t1;
-      if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = <ProcessingShimmer />;
         $[1] = t1;
       } else {
@@ -60,7 +60,7 @@ function VoiceIndicatorImpl(t0) {
       }
       return t1;
     }
-    case 'idle': {
+    case "idle": {
       return null;
     }
   }
@@ -72,11 +72,11 @@ function VoiceIndicatorImpl(t0) {
 // 30-80ms, compounding re-renders during an already-busy window.
 export function VoiceWarmupHint() {
   const $ = _c(1);
-  if (!feature('VOICE_MODE')) {
+  if (!feature("VOICE_MODE")) {
     return null;
   }
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = <Text dimColor={true}>keep holding…</Text>;
     $[0] = t0;
   } else {
@@ -91,7 +91,7 @@ function ProcessingShimmer() {
   const [ref, time] = useAnimationFrame(reducedMotion ? null : 50);
   if (reducedMotion) {
     let t0;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t0 = <Text color="warning">Voice: processing…</Text>;
       $[0] = t0;
     } else {

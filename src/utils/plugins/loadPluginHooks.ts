@@ -1,17 +1,17 @@
-import memoize from 'lodash-es/memoize.js';
-import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
+import memoize from "lodash-es/memoize.js";
+import type { HookEvent } from "src/entrypoints/agentSdkTypes.js";
 import {
   clearRegisteredPluginHooks,
   getRegisteredHooks,
   registerHookCallbacks,
-} from '../../bootstrap/state.js';
-import type { LoadedPlugin } from '../../types/plugin.js';
-import { logForDebugging } from '../debug.js';
-import { settingsChangeDetector } from '../settings/changeDetector.js';
-import { getSettings_DEPRECATED, getSettingsForSource } from '../settings/settings.js';
-import type { PluginHookMatcher } from '../settings/types.js';
-import { jsonStringify } from '../slowOperations.js';
-import { clearPluginCache, loadAllPluginsCacheOnly } from './pluginLoader.js';
+} from "../../bootstrap/state.js";
+import type { LoadedPlugin } from "../../types/plugin.js";
+import { logForDebugging } from "../debug.js";
+import { settingsChangeDetector } from "../settings/changeDetector.js";
+import { getSettings_DEPRECATED, getSettingsForSource } from "../settings/settings.js";
+import type { PluginHookMatcher } from "../settings/types.js";
+import { jsonStringify } from "../slowOperations.js";
+import { clearPluginCache, loadAllPluginsCacheOnly } from "./pluginLoader.js";
 
 // Track if hot reload subscription is set up
 let hotReloadSubscribed = false;
@@ -191,7 +191,7 @@ export async function pruneRemovedPluginHooks(): Promise<void> {
   const survivors: Partial<Record<HookEvent, PluginHookMatcher[]>> = {};
   for (const [event, matchers] of Object.entries(current)) {
     const kept = matchers.filter(
-      (m): m is PluginHookMatcher => 'pluginRoot' in m && enabledRoots.has(m.pluginRoot),
+      (m): m is PluginHookMatcher => "pluginRoot" in m && enabledRoots.has(m.pluginRoot),
     );
     if (kept.length > 0) survivors[event as HookEvent] = kept;
   }
@@ -226,7 +226,7 @@ export function resetHotReloadState(): void {
 // for change detection; tests verify it diffs on the fields that matter.
 export function getPluginAffectingSettingsSnapshot(): string {
   const merged = getSettings_DEPRECATED();
-  const policy = getSettingsForSource('policySettings');
+  const policy = getSettingsForSource("policySettings");
   // Key-sort the two Record fields so insertion order doesn't flap the hash.
   // Array fields (strictKnownMarketplaces, blockedMarketplaces) have
   // schema-stable order.
@@ -256,18 +256,18 @@ export function setupPluginHookHotReload(): void {
   lastPluginSettingsSnapshot = getPluginAffectingSettingsSnapshot();
 
   settingsChangeDetector.subscribe((source) => {
-    if (source === 'policySettings') {
+    if (source === "policySettings") {
       const newSnapshot = getPluginAffectingSettingsSnapshot();
       if (newSnapshot === lastPluginSettingsSnapshot) {
-        logForDebugging('Plugin hooks: skipping reload, plugin-affecting settings unchanged');
+        logForDebugging("Plugin hooks: skipping reload, plugin-affecting settings unchanged");
         return;
       }
 
       lastPluginSettingsSnapshot = newSnapshot;
-      logForDebugging('Plugin hooks: reloading due to plugin-affecting settings change');
+      logForDebugging("Plugin hooks: reloading due to plugin-affecting settings change");
 
       // Clear all plugin-related caches
-      clearPluginCache('loadPluginHooks: plugin-affecting settings changed');
+      clearPluginCache("loadPluginHooks: plugin-affecting settings changed");
       clearPluginHookCache();
 
       // Reload hooks (fire-and-forget, don't block)

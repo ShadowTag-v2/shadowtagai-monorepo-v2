@@ -1,18 +1,18 @@
-import { useEffect, useRef } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useNotifications } from 'src/context/notifications.js';
-import { Text } from 'src/ink.js';
-import type { MCPServerConnection } from 'src/services/mcp/types.js';
-import { getGlobalConfig, saveGlobalConfig } from 'src/utils/config.js';
+import { useEffect, useRef } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useNotifications } from "src/context/notifications.js";
+import { Text } from "src/ink.js";
+import type { MCPServerConnection } from "src/services/mcp/types.js";
+import { getGlobalConfig, saveGlobalConfig } from "src/utils/config.js";
 import {
   detectIDEs,
   type IDEExtensionInstallationStatus,
   isJetBrainsIde,
   isSupportedTerminal,
-} from 'src/utils/ide.js';
-import { getIsRemoteMode } from '../../bootstrap/state.js';
-import { useIdeConnectionStatus } from '../useIdeConnectionStatus.js';
-import type { IDESelection } from '../useIdeSelection.js';
+} from "src/utils/ide.js";
+import { getIsRemoteMode } from "../../bootstrap/state.js";
+import { useIdeConnectionStatus } from "../useIdeConnectionStatus.js";
+import type { IDESelection } from "../useIdeSelection.js";
 
 const MAX_IDE_HINT_SHOW_COUNT = 5;
 type Props = {
@@ -37,9 +37,9 @@ export function useIDEStatusIndicator(t0) {
   const isJetBrains = t1;
   const showIDEInstallErrorOrJetBrainsInfo = ideInstallationStatus?.error || isJetBrains;
   const shouldShowIdeSelection =
-    ideStatus === 'connected' &&
+    ideStatus === "connected" &&
     (ideSelection?.filePath || (ideSelection?.text && ideSelection.lineCount > 0));
-  const shouldShowConnected = ideStatus === 'connected' && !shouldShowIdeSelection;
+  const shouldShowConnected = ideStatus === "connected" && !shouldShowIdeSelection;
   const showIDEInstallError =
     showIDEInstallErrorOrJetBrainsInfo &&
     !isJetBrains &&
@@ -63,7 +63,7 @@ export function useIDEStatusIndicator(t0) {
         return;
       }
       if (isSupportedTerminal() || ideStatus !== null || showJetBrainsInfo) {
-        removeNotification('ide-status-hint');
+        removeNotification("ide-status-hint");
         return;
       }
       if (
@@ -101,15 +101,15 @@ export function useIDEStatusIndicator(t0) {
       if (getIsRemoteMode()) {
         return;
       }
-      if (showIDEInstallError || showJetBrainsInfo || ideStatus !== 'disconnected' || !ideName) {
-        removeNotification('ide-status-disconnected');
+      if (showIDEInstallError || showJetBrainsInfo || ideStatus !== "disconnected" || !ideName) {
+        removeNotification("ide-status-disconnected");
         return;
       }
       addNotification({
-        key: 'ide-status-disconnected',
+        key: "ide-status-disconnected",
         text: `${ideName} disconnected`,
-        color: 'error',
-        priority: 'medium',
+        color: "error",
+        priority: "medium",
       });
     };
     t5 = [
@@ -141,13 +141,13 @@ export function useIDEStatusIndicator(t0) {
         return;
       }
       if (!showJetBrainsInfo) {
-        removeNotification('ide-status-jetbrains-disconnected');
+        removeNotification("ide-status-jetbrains-disconnected");
         return;
       }
       addNotification({
-        key: 'ide-status-jetbrains-disconnected',
-        text: 'IDE plugin not connected \xB7 /status for info',
-        priority: 'medium',
+        key: "ide-status-jetbrains-disconnected",
+        text: "IDE plugin not connected \xB7 /status for info",
+        priority: "medium",
       });
     };
     t7 = [addNotification, removeNotification, showJetBrainsInfo];
@@ -169,14 +169,14 @@ export function useIDEStatusIndicator(t0) {
         return;
       }
       if (!showIDEInstallError) {
-        removeNotification('ide-status-install-error');
+        removeNotification("ide-status-install-error");
         return;
       }
       addNotification({
-        key: 'ide-status-install-error',
-        text: 'IDE extension install failed (see /status for info)',
-        color: 'error',
-        priority: 'medium',
+        key: "ide-status-install-error",
+        text: "IDE extension install failed (see /status for info)",
+        color: "error",
+        priority: "medium",
       });
     };
     t9 = [addNotification, removeNotification, showIDEInstallError];
@@ -198,13 +198,13 @@ function _temp2(hasShownHintRef_0, addNotification_0) {
       hasShownHintRef_0.current = true;
       saveGlobalConfig(_temp);
       addNotification_0({
-        key: 'ide-status-hint',
+        key: "ide-status-hint",
         jsx: (
           <Text dimColor={true}>
             /ide for <Text color="ide">{ideName_0}</Text>
           </Text>
         ),
-        priority: 'low',
+        priority: "low",
       });
     }
   });

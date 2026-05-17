@@ -1,8 +1,8 @@
-import type * as React from 'react';
-import type { CommandResultDisplay, LocalJSXCommandContext } from '../../commands.js';
-import { Feedback } from '../../components/Feedback.js';
-import type { LocalJSXCommandOnDone } from '../../types/command.js';
-import type { Message } from '../../types/message.js';
+import type * as React from "react";
+import type { CommandResultDisplay, LocalJSXCommandContext } from "../../commands.js";
+import { Feedback } from "../../components/Feedback.js";
+import type { LocalJSXCommandOnDone } from "../../types/command.js";
+import type { Message } from "../../types/message.js";
 
 // Shared function to render the Feedback component
 export function renderFeedbackComponent(
@@ -14,7 +14,7 @@ export function renderFeedbackComponent(
   ) => void,
   abortSignal: AbortSignal,
   messages: Message[],
-  initialDescription: string = '',
+  initialDescription: string = "",
   backgroundTasks: {
     [taskId: string]: {
       type: string;
@@ -40,7 +40,7 @@ export async function call(
   context: LocalJSXCommandContext,
   args?: string,
 ): Promise<React.ReactNode> {
-  const initialDescription = args || '';
+  const initialDescription = args || "";
   return renderFeedbackComponent(
     onDone,
     context.abortController.signal,

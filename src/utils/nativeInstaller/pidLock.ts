@@ -9,15 +9,15 @@
  * by checking if the process is still alive.
  */
 
-import { basename, join } from 'node:path';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
-import { logForDebugging } from '../debug.js';
-import { isEnvDefinedFalsy, isEnvTruthy } from '../envUtils.js';
-import { isENOENT, toError } from '../errors.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { getProcessCommand } from '../genericProcessUtils.js';
-import { logError } from '../log.js';
-import { jsonParse, jsonStringify, writeFileSync_DEPRECATED } from '../slowOperations.js';
+import { basename, join } from "node:path";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../services/analytics/growthbook.js";
+import { logForDebugging } from "../debug.js";
+import { isEnvDefinedFalsy, isEnvTruthy } from "../envUtils.js";
+import { isENOENT, toError } from "../errors.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { getProcessCommand } from "../genericProcessUtils.js";
+import { logError } from "../log.js";
+import { jsonParse, jsonStringify, writeFileSync_DEPRECATED } from "../slowOperations.js";
 
 /**
  * Check if PID-based version locking is enabled.
@@ -38,7 +38,7 @@ export function isPidBasedLockingEnabled(): boolean {
     return false;
   }
   // GrowthBook controls gradual rollout (returns false for external users)
-  return getFeatureValue_CACHED_MAY_BE_STALE('tengu_pid_based_version_locking', false);
+  return getFeatureValue_CACHED_MAY_BE_STALE("tengu_pid_based_version_locking", false);
 }
 
 /**
@@ -114,7 +114,7 @@ function isClaudeProcess(pid: number, expectedExecPath: string): boolean {
     const normalizedCommand = command.toLowerCase();
     const normalizedExecPath = expectedExecPath.toLowerCase();
 
-    return normalizedCommand.includes('claude') || normalizedCommand.includes(normalizedExecPath);
+    return normalizedCommand.includes("claude") || normalizedCommand.includes(normalizedExecPath);
   } catch {
     // If command check fails, trust the PID check
     return true;
@@ -128,15 +128,15 @@ export function readLockContent(lockFilePath: string): VersionLockContent | null
   const fs = getFsImplementation();
 
   try {
-    const content = fs.readFileSync(lockFilePath, { encoding: 'utf8' });
-    if (!content || content.trim() === '') {
+    const content = fs.readFileSync(lockFilePath, { encoding: "utf8" });
+    if (!content || content.trim() === "") {
       return null;
     }
 
     const parsed = jsonParse(content) as VersionLockContent;
 
     // Validate required fields
-    if (typeof parsed.pid !== 'number' || !parsed.version || !parsed.execPath) {
+    if (typeof parsed.pid !== "number" || !parsed.version || !parsed.execPath) {
       return null;
     }
 
@@ -201,7 +201,7 @@ function writeLockFile(lockFilePath: string, content: VersionLockContent): void 
 
   try {
     writeFileSync_DEPRECATED(tempPath, jsonStringify(content, null, 2), {
-      encoding: 'utf8',
+      encoding: "utf8",
       flush: true,
     });
     fs.renameSync(tempPath, lockFilePath);
@@ -298,9 +298,9 @@ export async function acquireProcessLifetimeLock(
     }
   };
 
-  process.on('exit', cleanup);
-  process.on('SIGINT', cleanup);
-  process.on('SIGTERM', cleanup);
+  process.on("exit", cleanup);
+  process.on("SIGINT", cleanup);
+  process.on("SIGTERM", cleanup);
 
   // Don't call release() - we want to hold the lock until process exits
   return true;
@@ -337,7 +337,7 @@ export function getAllLockInfo(locksDir: string): LockInfo[] {
   const lockInfos: LockInfo[] = [];
 
   try {
-    const lockFiles = fs.readdirStringSync(locksDir).filter((f: string) => f.endsWith('.lock'));
+    const lockFiles = fs.readdirStringSync(locksDir).filter((f: string) => f.endsWith(".lock"));
 
     for (const lockFile of lockFiles) {
       const lockFilePath = join(locksDir, lockFile);
@@ -377,7 +377,7 @@ export function cleanupStaleLocks(locksDir: string): number {
   let cleanedCount = 0;
 
   try {
-    const lockEntries = fs.readdirStringSync(locksDir).filter((f: string) => f.endsWith('.lock'));
+    const lockEntries = fs.readdirStringSync(locksDir).filter((f: string) => f.endsWith(".lock"));
 
     for (const lockEntry of lockEntries) {
       const lockFilePath = join(locksDir, lockEntry);

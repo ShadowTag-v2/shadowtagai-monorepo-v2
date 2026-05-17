@@ -1,20 +1,20 @@
-import { feature } from 'bun:bundle';
-import { c as _c } from 'react/compiler-runtime';
-import { useExitOnCtrlCDWithKeybindings } from '../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { Box, Text, usePreviewTheme, useTheme, useThemeSetting } from '../ink.js';
-import { useRegisterKeybindingContext } from '../keybindings/KeybindingContext.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import { useShortcutDisplay } from '../keybindings/useShortcutDisplay.js';
-import { useAppState, useSetAppState } from '../state/AppState.js';
-import { gracefulShutdown } from '../utils/gracefulShutdown.js';
-import { updateSettingsForSource } from '../utils/settings/settings.js';
-import type { ThemeSetting } from '../utils/theme.js';
-import { Select } from './CustomSelect/index.js';
-import { Byline } from './design-system/Byline.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
-import { getColorModuleUnavailableReason, getSyntaxTheme } from './StructuredDiff/colorDiff.js';
-import { StructuredDiff } from './StructuredDiff.js';
+import { feature } from "bun:bundle";
+import { c as _c } from "react/compiler-runtime";
+import { useExitOnCtrlCDWithKeybindings } from "../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { Box, Text, usePreviewTheme, useTheme, useThemeSetting } from "../ink.js";
+import { useRegisterKeybindingContext } from "../keybindings/KeybindingContext.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import { useShortcutDisplay } from "../keybindings/useShortcutDisplay.js";
+import { useAppState, useSetAppState } from "../state/AppState.js";
+import { gracefulShutdown } from "../utils/gracefulShutdown.js";
+import { updateSettingsForSource } from "../utils/settings/settings.js";
+import type { ThemeSetting } from "../utils/theme.js";
+import { Select } from "./CustomSelect/index.js";
+import { Byline } from "./design-system/Byline.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
+import { getColorModuleUnavailableReason, getSyntaxTheme } from "./StructuredDiff/colorDiff.js";
+import { StructuredDiff } from "./StructuredDiff.js";
 export type ThemePickerProps = {
   onThemeSelect: (setting: ThemeSetting) => void;
   showIntroText?: boolean;
@@ -38,7 +38,7 @@ export function ThemePicker(t0) {
     onCancel: onCancelProp,
   } = t0;
   const showIntroText = t1 === undefined ? false : t1;
-  const helpText = t2 === undefined ? '' : t2;
+  const helpText = t2 === undefined ? "" : t2;
   const showHelpTextBelow = t3 === undefined ? false : t3;
   const hideEscToCancel = t4 === undefined ? false : t4;
   const skipExitHandling = t5 === undefined ? false : t5;
@@ -46,7 +46,7 @@ export function ThemePicker(t0) {
   const themeSetting = useThemeSetting();
   const { columns } = useTerminalSize();
   let t6;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = getColorModuleUnavailableReason();
     $[0] = t6;
   } else {
@@ -65,18 +65,18 @@ export function ThemePicker(t0) {
   const { setPreviewTheme, savePreview, cancelPreview } = usePreviewTheme();
   const syntaxHighlightingDisabled = useAppState(_temp) ?? false;
   const setAppState = useSetAppState();
-  useRegisterKeybindingContext('ThemePicker');
+  useRegisterKeybindingContext("ThemePicker");
   const syntaxToggleShortcut = useShortcutDisplay(
-    'theme:toggleSyntaxHighlighting',
-    'ThemePicker',
-    'ctrl+t',
+    "theme:toggleSyntaxHighlighting",
+    "ThemePicker",
+    "ctrl+t",
   );
   let t8;
   if ($[3] !== setAppState || $[4] !== syntaxHighlightingDisabled) {
     t8 = () => {
       if (colorModuleUnavailableReason === null) {
         const newValue = !syntaxHighlightingDisabled;
-        updateSettingsForSource('userSettings', {
+        updateSettingsForSource("userSettings", {
           syntaxHighlightingDisabled: newValue,
         });
         setAppState((prev) => ({
@@ -95,50 +95,50 @@ export function ThemePicker(t0) {
     t8 = $[5];
   }
   let t9;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = {
-      context: 'ThemePicker',
+      context: "ThemePicker",
     };
     $[6] = t9;
   } else {
     t9 = $[6];
   }
-  useKeybinding('theme:toggleSyntaxHighlighting', t8, t9);
+  useKeybinding("theme:toggleSyntaxHighlighting", t8, t9);
   const exitState = useExitOnCtrlCDWithKeybindings(skipExitHandling ? _temp2 : undefined);
   let t10;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t10 = [
-      ...(feature('AUTO_THEME')
+      ...(feature("AUTO_THEME")
         ? [
             {
-              label: 'Auto (match terminal)',
-              value: 'auto' as const,
+              label: "Auto (match terminal)",
+              value: "auto" as const,
             },
           ]
         : []),
       {
-        label: 'Dark mode',
-        value: 'dark',
+        label: "Dark mode",
+        value: "dark",
       },
       {
-        label: 'Light mode',
-        value: 'light',
+        label: "Light mode",
+        value: "light",
       },
       {
-        label: 'Dark mode (colorblind-friendly)',
-        value: 'dark-daltonized',
+        label: "Dark mode (colorblind-friendly)",
+        value: "dark-daltonized",
       },
       {
-        label: 'Light mode (colorblind-friendly)',
-        value: 'light-daltonized',
+        label: "Light mode (colorblind-friendly)",
+        value: "light-daltonized",
       },
       {
-        label: 'Dark mode (ANSI colors only)',
-        value: 'dark-ansi',
+        label: "Dark mode (ANSI colors only)",
+        value: "dark-ansi",
       },
       {
-        label: 'Light mode (ANSI colors only)',
-        value: 'light-ansi',
+        label: "Light mode (ANSI colors only)",
+        value: "light-ansi",
       },
     ];
     $[7] = t10;
@@ -161,7 +161,7 @@ export function ThemePicker(t0) {
     t11 = $[9];
   }
   let t12;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t12 = <Text bold={true}>Choose the text style that looks best with your terminal</Text>;
     $[10] = t12;
   } else {
@@ -267,17 +267,17 @@ export function ThemePicker(t0) {
     t19 = $[33];
   }
   let t20;
-  if ($[34] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[34] === Symbol.for("react.memo_cache_sentinel")) {
     t20 = {
       oldStart: 1,
       newStart: 1,
       oldLines: 3,
       newLines: 3,
       lines: [
-        ' function greet() {',
+        " function greet() {",
         '-  console.log("Hello, World!");',
         '+  console.log("Hello, Claude!");',
-        ' }',
+        " }",
       ],
     };
     $[34] = t20;
@@ -311,12 +311,12 @@ export function ThemePicker(t0) {
     t21 = $[36];
   }
   const t22 =
-    colorModuleUnavailableReason === 'env'
+    colorModuleUnavailableReason === "env"
       ? `Syntax highlighting disabled (via CLAUDE_CODE_SYNTAX_HIGHLIGHT=${process.env.CLAUDE_CODE_SYNTAX_HIGHLIGHT})`
       : syntaxHighlightingDisabled
         ? `Syntax highlighting disabled (${syntaxToggleShortcut} to enable)`
         : syntaxTheme
-          ? `Syntax theme: ${syntaxTheme.theme}${syntaxTheme.source ? ` (from ${syntaxTheme.source})` : ''} (${syntaxToggleShortcut} to disable)`
+          ? `Syntax theme: ${syntaxTheme.theme}${syntaxTheme.source ? ` (from ${syntaxTheme.source})` : ""} (${syntaxToggleShortcut} to disable)`
           : `Syntax highlighting enabled (${syntaxToggleShortcut} to disable)`;
   let t23;
   if ($[37] !== t22) {

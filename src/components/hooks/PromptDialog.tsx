@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import type { PromptRequest } from '../../types/hooks.js';
-import { Select } from '../CustomSelect/select.js';
-import { PermissionDialog } from '../permissions/PermissionDialog.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import type { PromptRequest } from "../../types/hooks.js";
+import { Select } from "../CustomSelect/select.js";
+import { PermissionDialog } from "../permissions/PermissionDialog.js";
 
 type Props = {
   title: string;
@@ -16,7 +16,7 @@ export function PromptDialog(t0) {
   const $ = _c(15);
   const { title, toolInputSummary, request, onRespond, onAbort } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
       isActive: true,
     };
@@ -24,7 +24,7 @@ export function PromptDialog(t0) {
   } else {
     t1 = $[0];
   }
-  useKeybinding('app:interrupt', onAbort, t1);
+  useKeybinding("app:interrupt", onAbort, t1);
   let t2;
   if ($[1] !== request.options) {
     t2 = request.options.map(_temp);

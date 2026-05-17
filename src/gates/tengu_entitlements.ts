@@ -12,9 +12,9 @@
  * suitable for user-facing error messages.
  */
 
-import { checkGate_CACHED_OR_BLOCKING } from '../services/analytics/growthbook.js';
-import { logForDebugging } from '../utils/debug.js';
-import { TENGU_GATES } from './tengu_registry.js';
+import { checkGate_CACHED_OR_BLOCKING } from "../services/analytics/growthbook.js";
+import { logForDebugging } from "../utils/debug.js";
+import { TENGU_GATES } from "./tengu_registry.js";
 
 // ─── Entitlement Result ────────────────────────────────────────────
 
@@ -49,7 +49,7 @@ export async function checkBridgeEntitlement(): Promise<EntitlementResult> {
   return {
     entitled: value,
     gate: TENGU_GATES.ccr_bridge.key,
-    reason: value ? null : 'Remote Control is not yet enabled for your account.',
+    reason: value ? null : "Remote Control is not yet enabled for your account.",
   };
 }
 
@@ -66,7 +66,7 @@ export async function checkHarborEntitlement(): Promise<EntitlementResult> {
   return {
     entitled: value,
     gate: TENGU_GATES.harbor.key,
-    reason: value ? null : 'Channel server access is not enabled for your account.',
+    reason: value ? null : "Channel server access is not enabled for your account.",
   };
 }
 
@@ -80,7 +80,7 @@ export async function checkVoiceEntitlement(): Promise<EntitlementResult> {
   return {
     entitled: value,
     gate: TENGU_GATES.voice_enabled.key,
-    reason: value ? null : 'Voice mode is not yet enabled for your account.',
+    reason: value ? null : "Voice mode is not yet enabled for your account.",
   };
 }
 

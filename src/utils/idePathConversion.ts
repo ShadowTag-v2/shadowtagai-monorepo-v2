@@ -3,7 +3,7 @@
  * Handles conversions between Claude's environment and the IDE's environment
  */
 
-import { execFileSync } from 'node:child_process';
+import { execFileSync } from "node:child_process";
 
 export interface IDEPathConverter {
   /**
@@ -39,16 +39,16 @@ export class WindowsToWSLConverter implements IDEPathConverter {
 
     try {
       // Use wslpath to convert Windows paths to WSL paths
-      const result = execFileSync('wslpath', ['-u', windowsPath], {
-        encoding: 'utf8',
-        stdio: ['pipe', 'pipe', 'ignore'], // wslpath writes "wslpath: <errortext>" to stderr
+      const result = execFileSync("wslpath", ["-u", windowsPath], {
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "ignore"], // wslpath writes "wslpath: <errortext>" to stderr
       }).trim();
 
       return result;
     } catch {
       // If wslpath fails, fall back to manual conversion
       return windowsPath
-        .replace(/\\/g, '/') // Convert backslashes to forward slashes
+        .replace(/\\/g, "/") // Convert backslashes to forward slashes
         .replace(/^([A-Z]):/i, (_, letter) => `/mnt/${letter.toLowerCase()}`);
     }
   }
@@ -58,9 +58,9 @@ export class WindowsToWSLConverter implements IDEPathConverter {
 
     try {
       // Use wslpath to convert WSL paths to Windows paths
-      const result = execFileSync('wslpath', ['-w', wslPath], {
-        encoding: 'utf8',
-        stdio: ['pipe', 'pipe', 'ignore'], // wslpath writes "wslpath: <errortext>" to stderr
+      const result = execFileSync("wslpath", ["-w", wslPath], {
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "ignore"], // wslpath writes "wslpath: <errortext>" to stderr
       }).trim();
 
       return result;

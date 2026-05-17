@@ -1,20 +1,20 @@
-import { createHash, type UUID } from 'node:crypto';
-import type { Stats } from 'node:fs';
-import { chmod, copyFile, link, mkdir, readFile, stat, unlink } from 'node:fs/promises';
-import { dirname, isAbsolute, join, relative } from 'node:path';
-import { inspect } from 'node:util';
-import { diffLines } from 'diff';
-import { getIsNonInteractiveSession, getOriginalCwd, getSessionId } from 'src/bootstrap/state.js';
-import { logEvent } from 'src/services/analytics/index.js';
-import { notifyVscodeFileUpdated } from 'src/services/mcp/vscodeSdkMcp.js';
-import type { LogOption } from 'src/types/logs.js';
-import { getGlobalConfig } from './config.js';
-import { logForDebugging } from './debug.js';
-import { getClaudeConfigHomeDir, isEnvTruthy } from './envUtils.js';
-import { getErrnoCode, isENOENT } from './errors.js';
-import { pathExists } from './file.js';
-import { logError } from './log.js';
-import { recordFileHistorySnapshot } from './sessionStorage.js';
+import { createHash, type UUID } from "node:crypto";
+import type { Stats } from "node:fs";
+import { chmod, copyFile, link, mkdir, readFile, stat, unlink } from "node:fs/promises";
+import { dirname, isAbsolute, join, relative } from "node:path";
+import { inspect } from "node:util";
+import { diffLines } from "diff";
+import { getIsNonInteractiveSession, getOriginalCwd, getSessionId } from "src/bootstrap/state.js";
+import { logEvent } from "src/services/analytics/index.js";
+import { notifyVscodeFileUpdated } from "src/services/mcp/vscodeSdkMcp.js";
+import type { LogOption } from "src/types/logs.js";
+import { getGlobalConfig } from "./config.js";
+import { logForDebugging } from "./debug.js";
+import { getClaudeConfigHomeDir, isEnvTruthy } from "./envUtils.js";
+import { getErrnoCode, isENOENT } from "./errors.js";
+import { pathExists } from "./file.js";
+import { logError } from "./log.js";
+import { recordFileHistorySnapshot } from "./sessionStorage.js";
 
 type BackupFileName = string | null; // The null value means the file does not exist in this version
 
@@ -93,8 +93,8 @@ export async function fileHistoryTrackEdit(
   if (!captured) return;
   const mostRecent = captured.snapshots.at(-1);
   if (!mostRecent) {
-    logError(new Error('FileHistory: Missing most recent snapshot'));
-    logEvent('tengu_file_history_track_edit_failed', {});
+    logError(new Error("FileHistory: Missing most recent snapshot"));
+    logEvent("tengu_file_history_track_edit_failed", {});
     return;
   }
   if (mostRecent.trackedFileBackups[trackingPath]) {
@@ -109,7 +109,7 @@ export async function fileHistoryTrackEdit(
     backup = await createBackup(filePath, 1);
   } catch (error) {
     logError(error);
-    logEvent('tengu_file_history_track_edit_failed', {});
+    logEvent("tengu_file_history_track_edit_failed", {});
     return;
   }
   const isAddingFile = backup.backupFileName === null;
@@ -160,7 +160,7 @@ export async function fileHistoryTrackEdit(
         logError(new Error(`FileHistory: Failed to record snapshot: ${error}`));
       });
 
-      logEvent('tengu_file_history_track_edit_success', {
+      logEvent("tengu_file_history_track_edit_success", {
         isNewFile: isAddingFile,
         version: backup.version,
       });
@@ -169,7 +169,7 @@ export async function fileHistoryTrackEdit(
       return updatedState;
     } catch (error) {
       logError(error);
-      logEvent('tengu_file_history_track_edit_failed', {});
+      logEvent("tengu_file_history_track_edit_failed", {});
       return state;
     }
   });
@@ -224,7 +224,7 @@ export async function fileHistoryMakeSnapshot(
               version: nextVersion,
               backupTime: new Date(),
             };
-            logEvent('tengu_file_history_backup_deleted_file', {
+            logEvent("tengu_file_history_backup_deleted_file", {
               version: nextVersion,
             });
             logForDebugging(`FileHistory: Missing tracked file: ${trackingPath}`);
@@ -246,7 +246,7 @@ export async function fileHistoryMakeSnapshot(
           trackedFileBackups[trackingPath] = await createBackup(filePath, nextVersion);
         } catch (error) {
           logError(error);
-          logEvent('tengu_file_history_backup_file_failed', {});
+          logEvent("tengu_file_history_backup_file_failed", {});
         }
       }),
     );
@@ -296,7 +296,7 @@ export async function fileHistoryMakeSnapshot(
       logForDebugging(
         `FileHistory: Added snapshot for ${messageId}, tracking ${state.trackedFiles.size} files`,
       );
-      logEvent('tengu_file_history_snapshot_success', {
+      logEvent("tengu_file_history_snapshot_success", {
         trackedFilesCount: state.trackedFiles.size,
         snapshotCount: updatedState.snapshots.length,
       });
@@ -304,7 +304,7 @@ export async function fileHistoryMakeSnapshot(
       return updatedState;
     } catch (error) {
       logError(error);
-      logEvent('tengu_file_history_snapshot_failed', {});
+      logEvent("tengu_file_history_snapshot_failed", {});
       return state;
     }
   });
@@ -335,11 +335,11 @@ export async function fileHistoryRewind(
   );
   if (!targetSnapshot) {
     logError(new Error(`FileHistory: Snapshot for ${messageId} not found`));
-    logEvent('tengu_file_history_rewind_failed', {
+    logEvent("tengu_file_history_rewind_failed", {
       trackedFilesCount: captured.trackedFiles.size,
       snapshotFound: false,
     });
-    throw new Error('The selected snapshot was not found');
+    throw new Error("The selected snapshot was not found");
   }
 
   try {
@@ -347,13 +347,13 @@ export async function fileHistoryRewind(
     const filesChanged = await applySnapshot(captured, targetSnapshot);
 
     logForDebugging(`FileHistory: [Rewind] Finished rewinding to ${messageId}`);
-    logEvent('tengu_file_history_rewind_success', {
+    logEvent("tengu_file_history_rewind_success", {
       trackedFilesCount: captured.trackedFiles.size,
       filesChangedCount: filesChanged.length,
     });
   } catch (error) {
     logError(error);
-    logEvent('tengu_file_history_rewind_failed', {
+    logEvent("tengu_file_history_rewind_failed", {
       trackedFilesCount: captured.trackedFiles.size,
       snapshotFound: true,
     });
@@ -399,8 +399,8 @@ export async function fileHistoryGetDiffStats(
 
         if (backupFileName === undefined) {
           // Error resolving the backup, so don't touch the file
-          logError(new Error('FileHistory: Error finding the backup file to apply'));
-          logEvent('tengu_file_history_rewind_restore_file_failed', {
+          logError(new Error("FileHistory: Error finding the backup file to apply"));
+          logEvent("tengu_file_history_rewind_restore_file_failed", {
             dryRun: true,
           });
           return null;
@@ -421,7 +421,7 @@ export async function fileHistoryGetDiffStats(
         return null;
       } catch (error) {
         logError(error);
-        logEvent('tengu_file_history_rewind_restore_file_failed', {
+        logEvent("tengu_file_history_rewind_restore_file_failed", {
           dryRun: true,
         });
         return null;
@@ -506,8 +506,8 @@ async function applySnapshot(
 
       if (backupFileName === undefined) {
         // Error resolving the backup, so don't touch the file
-        logError(new Error('FileHistory: Error finding the backup file to apply'));
-        logEvent('tengu_file_history_rewind_restore_file_failed', {
+        logError(new Error("FileHistory: Error finding the backup file to apply"));
+        logEvent("tengu_file_history_rewind_restore_file_failed", {
           dryRun: false,
         });
         continue;
@@ -534,7 +534,7 @@ async function applySnapshot(
       }
     } catch (error) {
       logError(error);
-      logEvent('tengu_file_history_rewind_restore_file_failed', {
+      logEvent("tengu_file_history_rewind_restore_file_failed", {
         dryRun: false,
       });
     }
@@ -574,8 +574,8 @@ export async function checkOriginFileChanged(
   return compareStatsAndContent(originalStats, backupStats, async () => {
     try {
       const [originalContent, backupContent] = await Promise.all([
-        readFile(originalFile, 'utf-8'),
-        readFile(backupPath, 'utf-8'),
+        readFile(originalFile, "utf-8"),
+        readFile(backupPath, "utf-8"),
       ]);
       return originalContent !== backupContent;
     } catch {
@@ -649,7 +649,7 @@ async function computeDiffStatsForFile(
     filesChanged.push(originalFile);
 
     // Compute the diff
-    const changes = diffLines(originalContent ?? '', backupContent ?? '');
+    const changes = diffLines(originalContent ?? "", backupContent ?? "");
     changes.forEach((c) => {
       if (c.added) {
         insertions += c.count || 0;
@@ -670,13 +670,13 @@ async function computeDiffStatsForFile(
 }
 
 function getBackupFileName(filePath: string, version: number): string {
-  const fileNameHash = createHash('sha256').update(filePath).digest('hex').slice(0, 16);
+  const fileNameHash = createHash("sha256").update(filePath).digest("hex").slice(0, 16);
   return `${fileNameHash}@v${version}`;
 }
 
 function resolveBackupPath(backupFileName: string, sessionId?: string): string {
   const configDir = getClaudeConfigHomeDir();
-  return join(configDir, 'file-history', sessionId || getSessionId(), backupFileName);
+  return join(configDir, "file-history", sessionId || getSessionId(), backupFileName);
 }
 
 /**
@@ -721,7 +721,7 @@ async function createBackup(filePath: string | null, version: number): Promise<F
   // Preserve file permissions on the backup.
   await chmod(backupPath, srcStats.mode);
 
-  logEvent('tengu_file_history_backup_file_created', {
+  logEvent("tengu_file_history_backup_file_created", {
     version: version,
     fileSize: srcStats.size,
   });
@@ -747,7 +747,7 @@ async function restoreBackup(filePath: string, backupFileName: string): Promise<
     backupStats = await stat(backupPath);
   } catch (e: unknown) {
     if (isENOENT(e)) {
-      logEvent('tengu_file_history_rewind_restore_file_failed', {});
+      logEvent("tengu_file_history_rewind_restore_file_failed", {});
       logError(new Error(`FileHistory: [Rewind] Backup file not found: ${backupPath}`));
       return;
     }
@@ -877,7 +877,7 @@ export async function copyFileHistoryForResume(log: LogOption): Promise<void> {
   try {
     // All backups share the same directory: {configDir}/file-history/{sessionId}/
     // Create it once upfront instead of once per backup file
-    const newBackupDir = join(getClaudeConfigHomeDir(), 'file-history', sessionId);
+    const newBackupDir = join(getClaudeConfigHomeDir(), "file-history", sessionId);
     await mkdir(newBackupDir, { recursive: true });
 
     // Migrate all backup files from the previous session to current session.
@@ -899,11 +899,11 @@ export async function copyFileHistoryForResume(log: LogOption): Promise<void> {
               await link(oldBackupPath, newBackupPath);
             } catch (e: unknown) {
               const code = getErrnoCode(e);
-              if (code === 'EEXIST') {
+              if (code === "EEXIST") {
                 // Already migrated, skip
                 return;
               }
-              if (code === 'ENOENT') {
+              if (code === "ENOENT") {
                 logError(
                   new Error(
                     `FileHistory: Failed to copy backup ${backupFileName} on restore (backup file does not exist in ${previousSessionId})`,
@@ -929,7 +929,7 @@ export async function copyFileHistoryForResume(log: LogOption): Promise<void> {
           }),
         );
 
-        const copyFailed = results.some((r) => r.status === 'rejected');
+        const copyFailed = results.some((r) => r.status === "rejected");
 
         // Record the snapshot only if we have successfully migrated the backup files
         if (!copyFailed) {
@@ -947,7 +947,7 @@ export async function copyFileHistoryForResume(log: LogOption): Promise<void> {
     );
 
     if (failedSnapshots > 0) {
-      logEvent('tengu_file_history_resume_copy_failed', {
+      logEvent("tengu_file_history_resume_copy_failed", {
         numSnapshots: fileHistorySnapshots.length,
         failedSnapshots,
       });
@@ -1012,7 +1012,7 @@ async function notifyVscodeSnapshotFilesUpdated(
 /** Async read that swallows all errors and returns null (best-effort). */
 async function readFileAsyncOrNull(path: string): Promise<string | null> {
   try {
-    return await readFile(path, 'utf-8');
+    return await readFile(path, "utf-8");
   } catch {
     return null;
   }

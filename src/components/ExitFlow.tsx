@@ -1,11 +1,11 @@
-import sample from 'lodash-es/sample.js';
-import { c as _c } from 'react/compiler-runtime';
-import { gracefulShutdown } from '../utils/gracefulShutdown.js';
-import { WorktreeExitDialog } from './WorktreeExitDialog.js';
+import sample from "lodash-es/sample.js";
+import { c as _c } from "react/compiler-runtime";
+import { gracefulShutdown } from "../utils/gracefulShutdown.js";
+import { WorktreeExitDialog } from "./WorktreeExitDialog.js";
 
-const GOODBYE_MESSAGES = ['Goodbye!', 'See ya!', 'Bye!', 'Catch you later!'];
+const GOODBYE_MESSAGES = ["Goodbye!", "See ya!", "Bye!", "Catch you later!"];
 function getRandomGoodbyeMessage(): string {
-  return sample(GOODBYE_MESSAGES) ?? 'Goodbye!';
+  return sample(GOODBYE_MESSAGES) ?? "Goodbye!";
 }
 type Props = {
   onDone: (message?: string) => void;
@@ -19,7 +19,7 @@ export function ExitFlow(t0) {
   if ($[0] !== onDone) {
     t1 = async function onExit(resultMessage) {
       onDone(resultMessage ?? getRandomGoodbyeMessage());
-      await gracefulShutdown(0, 'prompt_input_exit');
+      await gracefulShutdown(0, "prompt_input_exit");
     };
     $[0] = onDone;
     $[1] = t1;

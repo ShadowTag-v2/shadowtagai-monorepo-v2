@@ -1,7 +1,7 @@
-import { type AnsiCode, ansiCodesToString, diffAnsiCodes } from '@alcalzone/ansi-tokenize';
-import { type Point, type Rectangle, type Size, unionRect } from './layout/geometry.js';
-import { BEL, ESC, SEP } from './termio/ansi.js';
-import * as warn from './warn.js';
+import { type AnsiCode, ansiCodesToString, diffAnsiCodes } from "@alcalzone/ansi-tokenize";
+import { type Point, type Rectangle, type Size, unionRect } from "./layout/geometry.js";
+import { BEL, ESC, SEP } from "./termio/ansi.js";
+import * as warn from "./warn.js";
 
 // --- Shared Pools (interning for memory efficiency) ---
 
@@ -10,10 +10,10 @@ import * as warn from './warn.js';
 // so blitRegion can copy IDs directly (no re-interning) and
 // diffEach can compare IDs as integers (no string lookup).
 export class CharPool {
-  private strings: string[] = [' ', '']; // Index 0 = space, 1 = empty (spacer)
+  private strings: string[] = [" ", ""]; // Index 0 = space, 1 = empty (spacer)
   private stringMap = new Map<string, number>([
-    [' ', 0],
-    ['', 1],
+    [" ", 0],
+    ["", 1],
   ]);
   private ascii: Int32Array = initCharAscii(); // charCode → index, -1 = not interned
 
@@ -39,14 +39,14 @@ export class CharPool {
   }
 
   get(index: number): string {
-    return this.strings[index] ?? ' ';
+    return this.strings[index] ?? " ";
   }
 }
 
 // Hyperlink string pool shared across all screens.
 // Index 0 = no hyperlink.
 export class HyperlinkPool {
-  private strings: string[] = ['']; // Index 0 = no hyperlink
+  private strings: string[] = [""]; // Index 0 = no hyperlink
   private stringMap = new Map<string, number>();
 
   intern(hyperlink: string | undefined): number {
@@ -69,16 +69,16 @@ export class HyperlinkPool {
 // so bit 0 of the resulting styleId is set → renderer won't skip inverted
 // spaces as invisible.
 const INVERSE_CODE: AnsiCode = {
-  type: 'ansi',
-  code: '\x1b[7m',
-  endCode: '\x1b[27m',
+  type: "ansi",
+  code: "\x1b[7m",
+  endCode: "\x1b[27m",
 };
 // Bold (SGR 1) — stacks cleanly, no reflow in monospace. endCode 22
 // also cancels dim (SGR 2); harmless here since we never add dim.
 const BOLD_CODE: AnsiCode = {
-  type: 'ansi',
-  code: '\x1b[1m',
-  endCode: '\x1b[22m',
+  type: "ansi",
+  code: "\x1b[1m",
+  endCode: "\x1b[22m",
 };
 // Underline (SGR 4). Kept alongside yellow+bold — the underline is the
 // unambiguous visible-on-any-theme marker. Yellow-bg-via-inverse can
@@ -86,18 +86,18 @@ const BOLD_CODE: AnsiCode = {
 // bg). If you see underline but no yellow, the yellow is being lost in
 // the existing cell styling — the overlay IS finding the match.
 const UNDERLINE_CODE: AnsiCode = {
-  type: 'ansi',
-  code: '\x1b[4m',
-  endCode: '\x1b[24m',
+  type: "ansi",
+  code: "\x1b[4m",
+  endCode: "\x1b[24m",
 };
 // fg→yellow (SGR 33). With inverse already in the stack, the terminal
 // swaps fg↔bg at render — so yellow-fg becomes yellow-BG. Original bg
 // becomes fg (readable on most themes: dark-bg → dark-text on yellow).
 // endCode 39 is 'default fg' — cancels any prior fg color cleanly.
 const YELLOW_FG_CODE: AnsiCode = {
-  type: 'ansi',
-  code: '\x1b[33m',
-  endCode: '\x1b[39m',
+  type: "ansi",
+  code: "\x1b[33m",
+  endCode: "\x1b[39m",
 };
 
 export class StylePool {
@@ -118,7 +118,7 @@ export class StylePool {
    * with a single bitmask check on the packed word.
    */
   intern(styles: AnsiCode[]): number {
-    const key = styles.length === 0 ? '' : styles.map((s) => s.code).join('\0');
+    const key = styles.length === 0 ? "" : styles.map((s) => s.code).join("\0");
     let id = this.ids.get(key);
     if (id === undefined) {
       const rawId = this.styles.length;
@@ -140,7 +140,7 @@ export class StylePool {
    * for a given pair.
    */
   transition(fromId: number, toId: number): string {
-    if (fromId === toId) return '';
+    if (fromId === toId) return "";
     const key = fromId * 0x100000 + toId;
     let str = this.transitionCache.get(key);
     if (str === undefined) {
@@ -161,7 +161,7 @@ export class StylePool {
     if (id === undefined) {
       const baseCodes = this.get(baseId);
       // If already inverted, use as-is (avoids SGR 7 stacking)
-      const hasInverse = baseCodes.some((c) => c.endCode === '\x1b[27m');
+      const hasInverse = baseCodes.some((c) => c.endCode === "\x1b[27m");
       id = hasInverse ? baseId : this.intern([...baseCodes, INVERSE_CODE]);
       this.inverseCache.set(baseId, id);
     }
@@ -187,17 +187,17 @@ export class StylePool {
       // when both colors are explicit). Filtering both gives clean
       // yellow-bg + terminal-default-fg everywhere. Bold/dim/italic
       // coexist — keep those.
-      const codes = baseCodes.filter((c) => c.endCode !== '\x1b[39m' && c.endCode !== '\x1b[49m');
+      const codes = baseCodes.filter((c) => c.endCode !== "\x1b[39m" && c.endCode !== "\x1b[49m");
       // fg-yellow FIRST so inverse swaps it to bg. Bold after inverse is
       // fine — SGR 1 is fg-attribute-only, order-independent vs 7.
       codes.push(YELLOW_FG_CODE);
-      if (!baseCodes.some((c) => c.endCode === '\x1b[27m')) codes.push(INVERSE_CODE);
-      if (!baseCodes.some((c) => c.endCode === '\x1b[22m')) codes.push(BOLD_CODE);
+      if (!baseCodes.some((c) => c.endCode === "\x1b[27m")) codes.push(INVERSE_CODE);
+      if (!baseCodes.some((c) => c.endCode === "\x1b[22m")) codes.push(BOLD_CODE);
       // Underline as the unambiguous marker — yellow-bg can clash with
       // existing bg styling (user-prompt bg, syntax bg). If you see
       // underline but no yellow on a match, the overlay IS finding it;
       // the yellow is just losing a styling fight.
-      if (!baseCodes.some((c) => c.endCode === '\x1b[24m')) codes.push(UNDERLINE_CODE);
+      if (!baseCodes.some((c) => c.endCode === "\x1b[24m")) codes.push(UNDERLINE_CODE);
       id = this.intern(codes);
       this.currentMatchCache.set(baseId, id);
     }
@@ -234,7 +234,7 @@ export class StylePool {
       // Keep everything except bg (49m) and inverse (27m). Fg, bold, dim,
       // italic, underline, strikethrough all preserved.
       const kept = this.get(baseId).filter(
-        (c) => c.endCode !== '\x1b[49m' && c.endCode !== '\x1b[27m',
+        (c) => c.endCode !== "\x1b[49m" && c.endCode !== "\x1b[27m",
       );
       kept.push(bg);
       id = this.intern(kept);
@@ -246,11 +246,11 @@ export class StylePool {
 
 // endCodes that produce visible effects on space characters
 const VISIBLE_ON_SPACE = new Set([
-  '\x1b[49m', // background color
-  '\x1b[27m', // inverse
-  '\x1b[24m', // underline
-  '\x1b[29m', // strikethrough
-  '\x1b[55m', // overline
+  "\x1b[49m", // background color
+  "\x1b[27m", // inverse
+  "\x1b[24m", // underline
+  "\x1b[29m", // strikethrough
+  "\x1b[55m", // overline
 ]);
 
 function hasVisibleSpaceEffect(styles: AnsiCode[]): boolean {
@@ -416,7 +416,7 @@ export function isCellEmpty(screen: Screen, cell: Cell): boolean {
   // returns true for both unwritten AND cleared cells. Use isEmptyCellAt
   // for the internal distinction.
   return (
-    cell.char === ' ' &&
+    cell.char === " " &&
     cell.styleId === screen.emptyStyleId &&
     cell.width === CellWidth.Narrow &&
     !cell.hyperlink
@@ -437,8 +437,8 @@ export function createScreen(
   hyperlinkPool: HyperlinkPool,
 ): Screen {
   // Warn if dimensions are not valid integers (likely bad yoga layout output)
-  warn.ifNotInteger(width, 'createScreen width');
-  warn.ifNotInteger(height, 'createScreen height');
+  warn.ifNotInteger(width, "createScreen width");
+  warn.ifNotInteger(height, "createScreen height");
 
   // Ensure width and height are valid integers to prevent crashes
   if (!Number.isInteger(width) || width < 0) {
@@ -481,8 +481,8 @@ export function createScreen(
  */
 export function resetScreen(screen: Screen, width: number, height: number): void {
   // Warn if dimensions are not valid integers
-  warn.ifNotInteger(width, 'resetScreen width');
-  warn.ifNotInteger(height, 'resetScreen height');
+  warn.ifNotInteger(width, "resetScreen width");
+  warn.ifNotInteger(height, "resetScreen height");
 
   // Ensure width and height are valid integers to prevent crashes
   if (!Number.isInteger(width) || width < 0) {
@@ -1232,13 +1232,13 @@ function diffSameWidth(
   const stride = width << 1;
 
   const prevCell: Cell = {
-    char: ' ',
+    char: " ",
     styleId: 0,
     width: CellWidth.Narrow,
     hyperlink: undefined,
   };
   const nextCell: Cell = {
-    char: ' ',
+    char: " ",
     styleId: 0,
     width: CellWidth.Narrow,
     hyperlink: undefined,
@@ -1299,13 +1299,13 @@ function diffDifferentWidth(
   const nextCells = next.cells;
 
   const prevCell: Cell = {
-    char: ' ',
+    char: " ",
     styleId: 0,
     width: CellWidth.Narrow,
     hyperlink: undefined,
   };
   const nextCell: Cell = {
-    char: ' ',
+    char: " ",
     styleId: 0,
     width: CellWidth.Narrow,
     hyperlink: undefined,

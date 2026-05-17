@@ -1,12 +1,12 @@
-import type { UUID } from 'node:crypto';
-import { getSessionId } from '../../bootstrap/state.js';
-import type { ToolUseContext } from '../../Tool.js';
-import { AGENT_COLORS, type AgentColorName } from '../../tools/AgentTool/agentColorManager.js';
-import type { LocalJSXCommandContext, LocalJSXCommandOnDone } from '../../types/command.js';
-import { getTranscriptPath, saveAgentColor } from '../../utils/sessionStorage.js';
-import { isTeammate } from '../../utils/teammate.js';
+import type { UUID } from "node:crypto";
+import { getSessionId } from "../../bootstrap/state.js";
+import type { ToolUseContext } from "../../Tool.js";
+import { AGENT_COLORS, type AgentColorName } from "../../tools/AgentTool/agentColorManager.js";
+import type { LocalJSXCommandContext, LocalJSXCommandOnDone } from "../../types/command.js";
+import { getTranscriptPath, saveAgentColor } from "../../utils/sessionStorage.js";
+import { isTeammate } from "../../utils/teammate.js";
 
-const RESET_ALIASES = ['default', 'reset', 'none', 'gray', 'grey'] as const;
+const RESET_ALIASES = ["default", "reset", "none", "gray", "grey"] as const;
 
 export async function call(
   onDone: LocalJSXCommandOnDone,
@@ -16,16 +16,16 @@ export async function call(
   // Teammates cannot set their own color
   if (isTeammate()) {
     onDone(
-      'Cannot set color: This session is a swarm teammate. Teammate colors are assigned by the team leader.',
-      { display: 'system' },
+      "Cannot set color: This session is a swarm teammate. Teammate colors are assigned by the team leader.",
+      { display: "system" },
     );
     return null;
   }
 
-  if (!args || args.trim() === '') {
-    const colorList = AGENT_COLORS.join(', ');
+  if (!args || args.trim() === "") {
+    const colorList = AGENT_COLORS.join(", ");
     onDone(`Please provide a color. Available colors: ${colorList}, default`, {
-      display: 'system',
+      display: "system",
     });
     return null;
   }
@@ -39,25 +39,25 @@ export async function call(
 
     // Use "default" sentinel (not empty string) so truthiness guards
     // in sessionStorage.ts persist the reset across session restarts
-    await saveAgentColor(sessionId, 'default', fullPath);
+    await saveAgentColor(sessionId, "default", fullPath);
 
     context.setAppState((prev) => ({
       ...prev,
       standaloneAgentContext: {
         ...prev.standaloneAgentContext,
-        name: prev.standaloneAgentContext?.name ?? '',
+        name: prev.standaloneAgentContext?.name ?? "",
         color: undefined,
       },
     }));
 
-    onDone('Session color reset to default', { display: 'system' });
+    onDone("Session color reset to default", { display: "system" });
     return null;
   }
 
   if (!AGENT_COLORS.includes(colorArg as AgentColorName)) {
-    const colorList = AGENT_COLORS.join(', ');
+    const colorList = AGENT_COLORS.join(", ");
     onDone(`Invalid color "${colorArg}". Available colors: ${colorList}, default`, {
-      display: 'system',
+      display: "system",
     });
     return null;
   }
@@ -73,11 +73,11 @@ export async function call(
     ...prev,
     standaloneAgentContext: {
       ...prev.standaloneAgentContext,
-      name: prev.standaloneAgentContext?.name ?? '',
+      name: prev.standaloneAgentContext?.name ?? "",
       color: colorArg as AgentColorName,
     },
   }));
 
-  onDone(`Session color set to: ${colorArg}`, { display: 'system' });
+  onDone(`Session color set to: ${colorArg}`, { display: "system" });
   return null;
 }

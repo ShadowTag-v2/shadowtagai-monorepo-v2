@@ -1,9 +1,9 @@
-import figures from 'figures';
-import type { Command } from '../../commands.js';
-import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js';
+import figures from "figures";
+import type { Command } from "../../commands.js";
+import { SandboxManager } from "../../utils/sandbox/sandbox-adapter.js";
 
 const command = {
-  name: 'sandbox',
+  name: "sandbox",
   get description() {
     const currentlyEnabled = SandboxManager.isSandboxingEnabled();
     const autoAllow = SandboxManager.isAutoAllowBashIfSandboxedEnabled();
@@ -19,16 +19,16 @@ const command = {
       icon = currentlyEnabled ? figures.tick : figures.circle;
     }
 
-    let statusText = 'sandbox disabled';
+    let statusText = "sandbox disabled";
     if (currentlyEnabled) {
-      statusText = autoAllow ? 'sandbox enabled (auto-allow)' : 'sandbox enabled';
+      statusText = autoAllow ? "sandbox enabled (auto-allow)" : "sandbox enabled";
 
       // Add unsandboxed fallback status
-      statusText += allowUnsandboxed ? ', fallback allowed' : '';
+      statusText += allowUnsandboxed ? ", fallback allowed" : "";
     }
 
     if (isLocked) {
-      statusText += ' (managed)';
+      statusText += " (managed)";
     }
 
     return `${icon} ${statusText} (⏎ to configure)`;
@@ -38,8 +38,8 @@ const command = {
     return !SandboxManager.isSupportedPlatform() || !SandboxManager.isPlatformInEnabledList();
   },
   immediate: true,
-  type: 'local-jsx',
-  load: () => import('./sandbox-toggle.js'),
+  type: "local-jsx",
+  load: () => import("./sandbox-toggle.js"),
 } satisfies Command;
 
 export default command;

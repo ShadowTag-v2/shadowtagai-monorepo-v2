@@ -1,27 +1,27 @@
-import { homedir, platform } from 'node:os';
-import { join } from 'node:path';
-import { getFsImplementation } from '../utils/fsOperations.js';
-import type { IdeType } from './ide.js';
+import { homedir, platform } from "node:os";
+import { join } from "node:path";
+import { getFsImplementation } from "../utils/fsOperations.js";
+import type { IdeType } from "./ide.js";
 
-const PLUGIN_PREFIX = 'claude-code-jetbrains-plugin';
+const PLUGIN_PREFIX = "claude-code-jetbrains-plugin";
 
 // Map of IDE names to their directory patterns
 const ideNameToDirMap: { [key: string]: string[] } = {
-  pycharm: ['PyCharm'],
-  intellij: ['IntelliJIdea', 'IdeaIC'],
-  webstorm: ['WebStorm'],
-  phpstorm: ['PhpStorm'],
-  rubymine: ['RubyMine'],
-  clion: ['CLion'],
-  goland: ['GoLand'],
-  rider: ['Rider'],
-  datagrip: ['DataGrip'],
-  appcode: ['AppCode'],
-  dataspell: ['DataSpell'],
-  aqua: ['Aqua'],
-  gateway: ['Gateway'],
-  fleet: ['Fleet'],
-  androidstudio: ['AndroidStudio'],
+  pycharm: ["PyCharm"],
+  intellij: ["IntelliJIdea", "IdeaIC"],
+  webstorm: ["WebStorm"],
+  phpstorm: ["PhpStorm"],
+  rubymine: ["RubyMine"],
+  clion: ["CLion"],
+  goland: ["GoLand"],
+  rider: ["Rider"],
+  datagrip: ["DataGrip"],
+  appcode: ["AppCode"],
+  dataspell: ["DataSpell"],
+  aqua: ["Aqua"],
+  gateway: ["Gateway"],
+  fleet: ["Fleet"],
+  androidstudio: ["AndroidStudio"],
 };
 
 // Build plugin directory paths
@@ -34,37 +34,37 @@ function buildCommonPluginDirectoryPaths(ideName: string): string[] {
     return directories;
   }
 
-  const appData = process.env.APPDATA || join(homeDir, 'AppData', 'Roaming');
-  const localAppData = process.env.LOCALAPPDATA || join(homeDir, 'AppData', 'Local');
+  const appData = process.env.APPDATA || join(homeDir, "AppData", "Roaming");
+  const localAppData = process.env.LOCALAPPDATA || join(homeDir, "AppData", "Local");
 
   switch (platform()) {
-    case 'darwin':
+    case "darwin":
       directories.push(
-        join(homeDir, 'Library', 'Application Support', 'JetBrains'),
-        join(homeDir, 'Library', 'Application Support'),
+        join(homeDir, "Library", "Application Support", "JetBrains"),
+        join(homeDir, "Library", "Application Support"),
       );
-      if (ideName.toLowerCase() === 'androidstudio') {
-        directories.push(join(homeDir, 'Library', 'Application Support', 'Google'));
+      if (ideName.toLowerCase() === "androidstudio") {
+        directories.push(join(homeDir, "Library", "Application Support", "Google"));
       }
       break;
 
-    case 'win32':
-      directories.push(join(appData, 'JetBrains'), join(localAppData, 'JetBrains'), join(appData));
-      if (ideName.toLowerCase() === 'androidstudio') {
-        directories.push(join(localAppData, 'Google'));
+    case "win32":
+      directories.push(join(appData, "JetBrains"), join(localAppData, "JetBrains"), join(appData));
+      if (ideName.toLowerCase() === "androidstudio") {
+        directories.push(join(localAppData, "Google"));
       }
       break;
 
-    case 'linux':
+    case "linux":
       directories.push(
-        join(homeDir, '.config', 'JetBrains'),
-        join(homeDir, '.local', 'share', 'JetBrains'),
+        join(homeDir, ".config", "JetBrains"),
+        join(homeDir, ".local", "share", "JetBrains"),
       );
       for (const pattern of idePatterns) {
         directories.push(join(homeDir, `.${pattern}`));
       }
-      if (ideName.toLowerCase() === 'androidstudio') {
-        directories.push(join(homeDir, '.config', 'Google'));
+      if (ideName.toLowerCase() === "androidstudio") {
+        directories.push(join(homeDir, ".config", "Google"));
       }
       break;
     default:
@@ -100,11 +100,11 @@ async function detectPluginDirectories(ideName: string): Promise<string[]> {
           if (!entry.isDirectory() && !entry.isSymbolicLink()) continue;
           const dir = join(baseDir, entry.name);
           // Linux is the only OS to not have a plugins directory
-          if (platform() === 'linux') {
+          if (platform() === "linux") {
             foundDirectories.push(dir);
             continue;
           }
-          const pluginDir = join(dir, 'plugins');
+          const pluginDir = join(dir, "plugins");
           try {
             await fs.stat(pluginDir);
             foundDirectories.push(pluginDir);

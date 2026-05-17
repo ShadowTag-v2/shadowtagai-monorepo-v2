@@ -1,13 +1,13 @@
-import figures from 'figures';
-import type React from 'react';
-import { useEffect, useState } from 'react';
-import { Box, Text } from '../ink.js';
-import { logForDebugging } from '../utils/debug.js';
-import type { GitFileStatus } from '../utils/git.js';
-import { getFileStatus, stashToCleanState } from '../utils/git.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
-import { Spinner } from './Spinner.js';
+import figures from "figures";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { Box, Text } from "../ink.js";
+import { logForDebugging } from "../utils/debug.js";
+import type { GitFileStatus } from "../utils/git.js";
+import { getFileStatus, stashToCleanState } from "../utils/git.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
+import { Spinner } from "./Spinner.js";
 
 type TeleportStashProps = {
   onStashAndContinue: () => void;
@@ -33,9 +33,9 @@ export function TeleportStash({
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : String(err);
         logForDebugging(`Error getting changed files: ${errorMessage}`, {
-          level: 'error',
+          level: "error",
         });
-        setError('Failed to get changed files');
+        setError("Failed to get changed files");
       } finally {
         setLoading(false);
       }
@@ -45,26 +45,26 @@ export function TeleportStash({
   const handleStash = async () => {
     setStashing(true);
     try {
-      logForDebugging('Stashing changes before teleport...');
-      const success = await stashToCleanState('Teleport auto-stash');
+      logForDebugging("Stashing changes before teleport...");
+      const success = await stashToCleanState("Teleport auto-stash");
       if (success) {
-        logForDebugging('Successfully stashed changes');
+        logForDebugging("Successfully stashed changes");
         onStashAndContinue();
       } else {
-        setError('Failed to stash changes');
+        setError("Failed to stash changes");
       }
     } catch (err_0) {
       const errorMessage_0 = err_0 instanceof Error ? err_0.message : String(err_0);
       logForDebugging(`Error stashing changes: ${errorMessage_0}`, {
-        level: 'error',
+        level: "error",
       });
-      setError('Failed to stash changes');
+      setError("Failed to stash changes");
     } finally {
       setStashing(false);
     }
   };
   const handleSelectChange = (value: string) => {
-    if (value === 'stash') {
+    if (value === "stash") {
       void handleStash();
     } else {
       onCancel();
@@ -122,12 +122,12 @@ export function TeleportStash({
         <Select
           options={[
             {
-              label: 'Stash changes and continue',
-              value: 'stash',
+              label: "Stash changes and continue",
+              value: "stash",
             },
             {
-              label: 'Exit',
-              value: 'exit',
+              label: "Exit",
+              value: "exit",
             },
           ]}
           onChange={handleSelectChange}

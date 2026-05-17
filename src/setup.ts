@@ -1,15 +1,15 @@
 /* eslint-disable custom-rules/no-process-exit */
 
-import { feature } from 'bun:bundle';
-import chalk from 'chalk';
+import { feature } from "bun:bundle";
+import chalk from "chalk";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { getCwd } from 'src/utils/cwd.js';
-import { checkForReleaseNotes } from 'src/utils/releaseNotes.js';
-import { setCwd } from 'src/utils/Shell.js';
-import { initSinks } from 'src/utils/sinks.js';
+} from "src/services/analytics/index.js";
+import { getCwd } from "src/utils/cwd.js";
+import { checkForReleaseNotes } from "src/utils/releaseNotes.js";
+import { setCwd } from "src/utils/Shell.js";
+import { initSinks } from "src/utils/sinks.js";
 import {
   getIsNonInteractiveSession,
   getProjectRoot,
@@ -17,41 +17,41 @@ import {
   setOriginalCwd,
   setProjectRoot,
   switchSession,
-} from './bootstrap/state.js';
-import { getCommands } from './commands.js';
-import { initSessionMemory } from './services/SessionMemory/sessionMemory.js';
-import { asSessionId } from './types/ids.js';
-import { isAgentSwarmsEnabled } from './utils/agentSwarmsEnabled.js';
-import { checkAndRestoreTerminalBackup } from './utils/appleTerminalBackup.js';
-import { prefetchApiKeyFromApiKeyHelperIfSafe } from './utils/auth.js';
-import { clearMemoryFileCaches } from './utils/claudemd.js';
-import { getCurrentProjectConfig, getGlobalConfig } from './utils/config.js';
-import { logForDiagnosticsNoPII } from './utils/diagLogs.js';
-import { env } from './utils/env.js';
-import { envDynamic } from './utils/envDynamic.js';
-import { isBareMode, isEnvTruthy } from './utils/envUtils.js';
-import { errorMessage } from './utils/errors.js';
-import { findCanonicalGitRoot, findGitRoot, getIsGit } from './utils/git.js';
-import { initializeFileChangedWatcher } from './utils/hooks/fileChangedWatcher.js';
+} from "./bootstrap/state.js";
+import { getCommands } from "./commands.js";
+import { initSessionMemory } from "./services/SessionMemory/sessionMemory.js";
+import { asSessionId } from "./types/ids.js";
+import { isAgentSwarmsEnabled } from "./utils/agentSwarmsEnabled.js";
+import { checkAndRestoreTerminalBackup } from "./utils/appleTerminalBackup.js";
+import { prefetchApiKeyFromApiKeyHelperIfSafe } from "./utils/auth.js";
+import { clearMemoryFileCaches } from "./utils/claudemd.js";
+import { getCurrentProjectConfig, getGlobalConfig } from "./utils/config.js";
+import { logForDiagnosticsNoPII } from "./utils/diagLogs.js";
+import { env } from "./utils/env.js";
+import { envDynamic } from "./utils/envDynamic.js";
+import { isBareMode, isEnvTruthy } from "./utils/envUtils.js";
+import { errorMessage } from "./utils/errors.js";
+import { findCanonicalGitRoot, findGitRoot, getIsGit } from "./utils/git.js";
+import { initializeFileChangedWatcher } from "./utils/hooks/fileChangedWatcher.js";
 import {
   captureHooksConfigSnapshot,
   updateHooksConfigSnapshot,
-} from './utils/hooks/hooksConfigSnapshot.js';
-import { hasWorktreeCreateHook } from './utils/hooks.js';
-import { checkAndRestoreITerm2Backup } from './utils/iTermBackup.js';
-import { logError } from './utils/log.js';
-import { getRecentActivity } from './utils/logoV2Utils.js';
-import { lockCurrentVersion } from './utils/nativeInstaller/index.js';
-import type { PermissionMode } from './utils/permissions/PermissionMode.js';
-import { getPlanSlug } from './utils/plans.js';
-import { saveWorktreeState } from './utils/sessionStorage.js';
-import { profileCheckpoint } from './utils/startupProfiler.js';
+} from "./utils/hooks/hooksConfigSnapshot.js";
+import { hasWorktreeCreateHook } from "./utils/hooks.js";
+import { checkAndRestoreITerm2Backup } from "./utils/iTermBackup.js";
+import { logError } from "./utils/log.js";
+import { getRecentActivity } from "./utils/logoV2Utils.js";
+import { lockCurrentVersion } from "./utils/nativeInstaller/index.js";
+import type { PermissionMode } from "./utils/permissions/PermissionMode.js";
+import { getPlanSlug } from "./utils/plans.js";
+import { saveWorktreeState } from "./utils/sessionStorage.js";
+import { profileCheckpoint } from "./utils/startupProfiler.js";
 import {
   createTmuxSessionForWorktree,
   createWorktreeForSession,
   generateTmuxSessionName,
   worktreeBranchName,
-} from './utils/worktree.js';
+} from "./utils/worktree.js";
 
 export async function setup(
   cwd: string,
@@ -64,13 +64,13 @@ export async function setup(
   worktreePRNumber?: number,
   messagingSocketPath?: string,
 ): Promise<void> {
-  logForDiagnosticsNoPII('info', 'setup_started');
+  logForDiagnosticsNoPII("info", "setup_started");
 
   // Check for Node.js version < 18
   const nodeVersion = process.version.match(/^v(\d+)\./)?.[1];
   if (!nodeVersion || parseInt(nodeVersion, 10) < 18) {
     // biome-ignore lint/suspicious/noConsole:: intentional console output
-    console.error(chalk.bold.red('Error: Claude Code requires Node.js version 18 or higher.'));
+    console.error(chalk.bold.red("Error: Claude Code requires Node.js version 18 or higher."));
     process.exit(1);
   }
 
@@ -88,8 +88,8 @@ export async function setup(
     // --messaging-socket-path is passed. Awaited so the server is bound
     // and $CLAUDE_CODE_MESSAGING_SOCKET is exported before any hook
     // (SessionStart in particular) can spawn and snapshot process.env.
-    if (feature('UDS_INBOX')) {
-      const m = await import('./utils/udsMessaging.js');
+    if (feature("UDS_INBOX")) {
+      const m = await import("./utils/udsMessaging.js");
       await m.startUdsMessaging(messagingSocketPath ?? m.getDefaultUdsSocketPath(), {
         isExplicit: messagingSocketPath !== undefined,
       });
@@ -99,7 +99,7 @@ export async function setup(
   // Teammate snapshot — SIMPLE-only gate (no escape hatch, swarm not used in bare)
   if (!isBareMode() && isAgentSwarmsEnabled()) {
     const { captureTeammateModeSnapshot } = await import(
-      './utils/swarm/backends/teammateModeSnapshot.js'
+      "./utils/swarm/backends/teammateModeSnapshot.js"
     );
     captureTeammateModeSnapshot();
   }
@@ -111,14 +111,14 @@ export async function setup(
     // iTerm2 backup check only when swarms enabled
     if (isAgentSwarmsEnabled()) {
       const restoredIterm2Backup = await checkAndRestoreITerm2Backup();
-      if (restoredIterm2Backup.status === 'restored') {
+      if (restoredIterm2Backup.status === "restored") {
         // biome-ignore lint/suspicious/noConsole:: intentional console output
         console.log(
           chalk.yellow(
-            'Detected an interrupted iTerm2 setup. Your original settings have been restored. You may need to restart iTerm2 for the changes to take effect.',
+            "Detected an interrupted iTerm2 setup. Your original settings have been restored. You may need to restart iTerm2 for the changes to take effect.",
           ),
         );
-      } else if (restoredIterm2Backup.status === 'failed') {
+      } else if (restoredIterm2Backup.status === "failed") {
         // biome-ignore lint/suspicious/noConsole:: intentional console output
         console.error(
           chalk.red(
@@ -131,14 +131,14 @@ export async function setup(
     // Check and restore Terminal.app backup if setup was interrupted
     try {
       const restoredTerminalBackup = await checkAndRestoreTerminalBackup();
-      if (restoredTerminalBackup.status === 'restored') {
+      if (restoredTerminalBackup.status === "restored") {
         // biome-ignore lint/suspicious/noConsole:: intentional console output
         console.log(
           chalk.yellow(
-            'Detected an interrupted Terminal.app setup. Your original settings have been restored. You may need to restart Terminal.app for the changes to take effect.',
+            "Detected an interrupted Terminal.app setup. Your original settings have been restored. You may need to restart Terminal.app for the changes to take effect.",
           ),
         );
-      } else if (restoredTerminalBackup.status === 'failed') {
+      } else if (restoredTerminalBackup.status === "failed") {
         // biome-ignore lint/suspicious/noConsole:: intentional console output
         console.error(
           chalk.red(
@@ -159,7 +159,7 @@ export async function setup(
   // IMPORTANT: Must be called AFTER setCwd() so hooks are loaded from the correct directory
   const hooksStart = Date.now();
   captureHooksConfigSnapshot();
-  logForDiagnosticsNoPII('info', 'setup_hooks_captured', {
+  logForDiagnosticsNoPII("info", "setup_hooks_captured", {
     duration_ms: Date.now() - hooksStart,
   });
 
@@ -203,7 +203,7 @@ export async function setup(
 
       // If we're inside a worktree, switch to the main repo for worktree creation
       if (mainRepoRoot !== (findGitRoot(getCwd()) ?? getCwd())) {
-        logForDiagnosticsNoPII('info', 'worktree_resolved_to_main_repo');
+        logForDiagnosticsNoPII("info", "worktree_resolved_to_main_repo");
         process.chdir(mainRepoRoot);
         setCwd(mainRepoRoot);
       }
@@ -232,7 +232,7 @@ export async function setup(
       process.exit(1);
     }
 
-    logEvent('tengu_worktree_created', { tmux_enabled: tmuxEnabled });
+    logEvent("tengu_worktree_created", { tmux_enabled: tmuxEnabled });
 
     // Create tmux session for the worktree if enabled
     if (tmuxEnabled && tmuxSessionName) {
@@ -270,27 +270,27 @@ export async function setup(
   }
 
   // Background jobs - only critical registrations that must happen before first query
-  logForDiagnosticsNoPII('info', 'setup_background_jobs_starting');
+  logForDiagnosticsNoPII("info", "setup_background_jobs_starting");
   // Bundled skills/plugins are registered in main.tsx before the parallel
   // getCommands() kick — see comment there. Moved out of setup() because
   // the await points above (startUdsMessaging, ~20ms) meant getCommands()
   // raced ahead and memoized an empty bundledSkills list.
   if (!isBareMode()) {
     initSessionMemory(); // Synchronous - registers hook, gate check happens lazily
-    if (feature('CONTEXT_COLLAPSE')) {
+    if (feature("CONTEXT_COLLAPSE")) {
       /* eslint-disable @typescript-eslint/no-require-imports */
       (
-        require('./services/contextCollapse/index.js') as typeof import('./services/contextCollapse/index.js')
+        require("./services/contextCollapse/index.js") as typeof import("./services/contextCollapse/index.js")
       ).initContextCollapse();
       /* eslint-enable @typescript-eslint/no-require-imports */
     }
   }
   void lockCurrentVersion(); // Lock current version to prevent deletion by other processes
-  logForDiagnosticsNoPII('info', 'setup_background_jobs_launched');
+  logForDiagnosticsNoPII("info", "setup_background_jobs_launched");
 
-  profileCheckpoint('setup_before_prefetch');
+  profileCheckpoint("setup_before_prefetch");
   // Pre-fetch promises - only items needed before render
-  logForDiagnosticsNoPII('info', 'setup_prefetch_starting');
+  logForDiagnosticsNoPII("info", "setup_prefetch_starting");
   // When CLAUDE_CODE_SYNC_PLUGIN_INSTALL is set, skip all plugin prefetch.
   // The sync install path in print.ts calls refreshPluginState() after
   // installing, which reloads commands, hooks, and agents. Prefetching here
@@ -305,7 +305,7 @@ export async function setup(
   if (!skipPluginPrefetch) {
     void getCommands(getProjectRoot());
   }
-  void import('./utils/plugins/loadPluginHooks.js').then((m) => {
+  void import("./utils/plugins/loadPluginHooks.js").then((m) => {
     if (!skipPluginPrefetch) {
       void m.loadPluginHooks(); // Pre-load plugin hooks (consumed by processSessionStartHooks before render)
       m.setupPluginHookHotReload(); // Set up hot reload for plugin hooks when settings change
@@ -318,32 +318,32 @@ export async function setup(
   // overhead. NOT an early-return: the --dangerously-skip-permissions safety
   // gate, tengu_started beacon, and apiKeyHelper prefetch below must still run.
   if (!isBareMode()) {
-    if (process.env.USER_TYPE === 'ant') {
+    if (process.env.USER_TYPE === "ant") {
       // Prime repo classification cache for auto-undercover mode. Default is
       // undercover ON until proven internal; if this resolves to internal, clear
       // the prompt cache so the next turn picks up the OFF state.
-      void import('./utils/commitAttribution.js').then(async (m) => {
+      void import("./utils/commitAttribution.js").then(async (m) => {
         if (await m.isInternalModelRepo()) {
-          const { clearSystemPromptSections } = await import('./constants/systemPromptSections.js');
+          const { clearSystemPromptSections } = await import("./constants/systemPromptSections.js");
           clearSystemPromptSections();
         }
       });
     }
-    if (feature('COMMIT_ATTRIBUTION')) {
+    if (feature("COMMIT_ATTRIBUTION")) {
       // Dynamic import to enable dead code elimination (module contains excluded strings).
       // Defer to next tick so the git subprocess spawn runs after first render
       // rather than during the setup() microtask window.
       setImmediate(() => {
-        void import('./utils/attributionHooks.js').then(({ registerAttributionHooks }) => {
+        void import("./utils/attributionHooks.js").then(({ registerAttributionHooks }) => {
           registerAttributionHooks(); // Register attribution tracking hooks (ant-only feature)
         });
       });
     }
-    void import('./utils/sessionFileAccessHooks.js').then((m) =>
+    void import("./utils/sessionFileAccessHooks.js").then((m) =>
       m.registerSessionFileAccessHooks(),
     ); // Register session file access analytics hooks
-    if (feature('TEAMMEM')) {
-      void import('./services/teamMemorySync/watcher.js').then((m) => m.startTeamMemoryWatcher()); // Start team memory sync watcher
+    if (feature("TEAMMEM")) {
+      void import("./services/teamMemorySync/watcher.js").then((m) => m.startTeamMemoryWatcher()); // Start team memory sync watcher
     }
   }
   initSinks(); // Attach error log + analytics sinks and drain queued events
@@ -353,10 +353,10 @@ export async function setup(
   // inc-3694 (P0 CHANGELOG crash) threw at checkForReleaseNotes below; every
   // event after this point was dead. This beacon is the earliest reliable
   // "process started" signal for release health monitoring.
-  logEvent('tengu_started', {});
+  logEvent("tengu_started", {});
 
   void prefetchApiKeyFromApiKeyHelperIfSafe(getIsNonInteractiveSession()); // Prefetch safely - only executes if trust already confirmed
-  profileCheckpoint('setup_after_prefetch');
+  profileCheckpoint("setup_after_prefetch");
 
   // Pre-fetch data for Logo v2 - await to ensure it's ready before logo renders.
   // --bare / SIMPLE: skip — release notes are interactive-UI display data,
@@ -369,14 +369,14 @@ export async function setup(
   }
 
   // If permission mode is set to bypass, verify we're in a safe environment
-  if (permissionMode === 'bypassPermissions' || allowDangerouslySkipPermissions) {
+  if (permissionMode === "bypassPermissions" || allowDangerouslySkipPermissions) {
     // Check if running as root/sudo on Unix-like systems
     // Allow root if in a sandbox (e.g., TPU devspaces that require root)
     if (
-      process.platform !== 'win32' &&
-      typeof process.getuid === 'function' &&
+      process.platform !== "win32" &&
+      typeof process.getuid === "function" &&
       process.getuid() === 0 &&
-      process.env.IS_SANDBOX !== '1' &&
+      process.env.IS_SANDBOX !== "1" &&
       !isEnvTruthy(process.env.CLAUDE_CODE_BUBBLEWRAP)
     ) {
       // biome-ignore lint/suspicious/noConsole:: intentional console output
@@ -387,14 +387,14 @@ export async function setup(
     }
 
     if (
-      process.env.USER_TYPE === 'ant' &&
+      process.env.USER_TYPE === "ant" &&
       // Skip for Desktop's local agent mode — same trust model as CCR/BYOC
       // (trusted Anthropic-managed launcher intentionally pre-approving everything).
       // Precedent: permissionSetup.ts:861, applySettingsChange.ts:55 (PR #19116)
-      process.env.CLAUDE_CODE_ENTRYPOINT !== 'local-agent' &&
+      process.env.CLAUDE_CODE_ENTRYPOINT !== "local-agent" &&
       // Same for CCD (Claude Code in Desktop) — apps#29127 passes the flag
       // unconditionally to unlock mid-session bypass switching
-      process.env.CLAUDE_CODE_ENTRYPOINT !== 'claude-desktop'
+      process.env.CLAUDE_CODE_ENTRYPOINT !== "claude-desktop"
     ) {
       // Only await if permission mode is set to bypass
       const [isDocker, hasInternet] = await Promise.all([
@@ -402,7 +402,7 @@ export async function setup(
         env.hasInternetAccess(),
       ]);
       const isBubblewrap = envDynamic.getIsBubblewrapSandbox();
-      const isSandbox = process.env.IS_SANDBOX === '1';
+      const isSandbox = process.env.IS_SANDBOX === "1";
       const isSandboxed = isDocker || isBubblewrap || isSandbox;
       if (!isSandboxed || hasInternet) {
         // biome-ignore lint/suspicious/noConsole:: intentional console output
@@ -414,14 +414,14 @@ export async function setup(
     }
   }
 
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === "test") {
     return;
   }
 
   // Log tengu_exit event from the last session?
   const projectConfig = getCurrentProjectConfig();
   if (projectConfig.lastCost !== undefined && projectConfig.lastDuration !== undefined) {
-    logEvent('tengu_exit', {
+    logEvent("tengu_exit", {
       last_session_cost: projectConfig.lastCost,
       last_session_api_duration: projectConfig.lastAPIDuration,
       last_session_tool_duration: projectConfig.lastToolDuration,

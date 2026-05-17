@@ -1,12 +1,12 @@
-import noop from 'lodash-es/noop.js';
-import type { ReactElement } from 'react';
-import { LegacyRoot } from 'react-reconciler/constants.js';
-import { logForDebugging } from '../utils/debug.js';
-import { createNode, type DOMElement } from './dom.js';
-import { FocusManager } from './focus.js';
-import Output from './output.js';
-import reconciler from './reconciler.js';
-import renderNodeToOutput, { resetLayoutShifted } from './render-node-to-output.js';
+import noop from "lodash-es/noop.js";
+import type { ReactElement } from "react";
+import { LegacyRoot } from "react-reconciler/constants.js";
+import { logForDebugging } from "../utils/debug.js";
+import { createNode, type DOMElement } from "./dom.js";
+import { FocusManager } from "./focus.js";
+import Output from "./output.js";
+import reconciler from "./reconciler.js";
+import renderNodeToOutput, { resetLayoutShifted } from "./render-node-to-output.js";
 import {
   CellWidth,
   CharPool,
@@ -16,7 +16,7 @@ import {
   type Screen,
   StylePool,
   setCellStyleId,
-} from './screen.js';
+} from "./screen.js";
 
 /** Position of a match within a rendered message, relative to the message's
  *  own bounding box (row 0 = message top). Stable across scroll — to
@@ -59,7 +59,7 @@ export function renderToScreen(
   width: number,
 ): { screen: Screen; height: number } {
   if (!root) {
-    root = createNode('ink-root');
+    root = createNode("ink-root");
     root.focusManager = new FocusManager(() => false);
     stylePool = new StylePool();
     charPool = new CharPool();
@@ -71,7 +71,7 @@ export function renderToScreen(
       null,
       false,
       null,
-      'search-render',
+      "search-render",
       noop,
       noop,
       noop,
@@ -161,7 +161,7 @@ export function scanPositions(screen: Screen, query: string): MatchPosition[] {
     // maps indexOf positions (code units in the LOWERCASED text) to cell
     // indices in colOf — surrogate pairs (emoji) and multi-unit lowercase
     // (Turkish İ → i + U+0307) make text.length > colOf.length.
-    let text = '';
+    let text = "";
     const colOf: number[] = [];
     const codeUnitToCell: number[] = [];
     for (let col = 0; col < w; col++) {

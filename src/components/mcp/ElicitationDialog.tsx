@@ -3,19 +3,19 @@ import type {
   ElicitRequestURLParams,
   ElicitResult,
   PrimitiveSchemaDefinition,
-} from '@modelcontextprotocol/sdk/types.js';
-import figures from 'figures';
-import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useRegisterOverlay } from '../../context/overlayContext.js';
-import { useNotifyAfterTimeout } from '../../hooks/useNotifyAfterTimeout.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
+} from "@modelcontextprotocol/sdk/types.js";
+import figures from "figures";
+import type React from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useRegisterOverlay } from "../../context/overlayContext.js";
+import { useNotifyAfterTimeout } from "../../hooks/useNotifyAfterTimeout.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- raw text input for elicitation form
-import { Box, Text, useInput } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import type { ElicitationRequestEvent } from '../../services/mcp/elicitationHandler.js';
-import { openBrowser } from '../../utils/browser.js';
+import { Box, Text, useInput } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import type { ElicitationRequestEvent } from "../../services/mcp/elicitationHandler.js";
+import { openBrowser } from "../../utils/browser.js";
 import {
   getEnumLabel,
   getEnumValues,
@@ -26,23 +26,23 @@ import {
   isMultiSelectEnumSchema,
   validateElicitationInput,
   validateElicitationInputAsync,
-} from '../../utils/mcp/elicitationValidation.js';
-import { plural } from '../../utils/stringUtils.js';
-import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
-import { Byline } from '../design-system/Byline.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
-import TextInput from '../TextInput.js';
+} from "../../utils/mcp/elicitationValidation.js";
+import { plural } from "../../utils/stringUtils.js";
+import { ConfigurableShortcutHint } from "../ConfigurableShortcutHint.js";
+import { Byline } from "../design-system/Byline.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { KeyboardShortcutHint } from "../design-system/KeyboardShortcutHint.js";
+import TextInput from "../TextInput.js";
 
 type Props = {
   event: ElicitationRequestEvent;
-  onResponse: (action: ElicitResult['action'], content?: ElicitResult['content']) => void;
+  onResponse: (action: ElicitResult["action"], content?: ElicitResult["content"]) => void;
   /** Called when the phase 2 waiting state is dismissed (URL elicitations only). */
-  onWaitingDismiss?: (action: 'dismiss' | 'retry' | 'cancel') => void;
+  onWaitingDismiss?: (action: "dismiss" | "retry" | "cancel") => void;
 };
 const isTextField = (s: PrimitiveSchemaDefinition) =>
-  ['string', 'number', 'integer'].includes(s.type);
-const RESOLVING_SPINNER_CHARS = '\u280B\u2819\u2839\u2838\u283C\u2834\u2826\u2827\u2807\u280F';
+  ["string", "number", "integer"].includes(s.type);
+const RESOLVING_SPINNER_CHARS = "\u280B\u2819\u2839\u2838\u283C\u2834\u2826\u2827\u2807\u280F";
 const advanceSpinnerFrame = (f: number) => (f + 1) % RESOLVING_SPINNER_CHARS.length;
 
 /** Timer callback for enumTypeaheadRef — module-scope to avoid closure capture. */
@@ -50,7 +50,7 @@ function resetTypeahead(ta: {
   buffer: string;
   timer: ReturnType<typeof setTimeout> | undefined;
 }): void {
-  ta.buffer = '';
+  ta.buffer = "";
   ta.timer = undefined;
 }
 
@@ -69,7 +69,7 @@ function ResolvingSpinner() {
   const [frame, setFrame] = useState(0);
   let t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = () => {
       const timer = setInterval(setFrame, 80, advanceSpinnerFrame);
       return () => clearInterval(timer);
@@ -99,27 +99,27 @@ function formatDateDisplay(isoValue: string, schema: PrimitiveSchemaDefinition):
   try {
     const date = new Date(isoValue);
     if (Number.isNaN(date.getTime())) return isoValue;
-    const format = 'format' in schema ? schema.format : undefined;
-    if (format === 'date-time') {
-      return date.toLocaleDateString('en-US', {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        timeZoneName: 'short',
+    const format = "format" in schema ? schema.format : undefined;
+    if (format === "date-time") {
+      return date.toLocaleDateString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short",
       });
     }
     // date-only: parse as local date to avoid timezone shift
-    const parts = isoValue.split('-');
+    const parts = isoValue.split("-");
     if (parts.length === 3) {
       const local = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-      return local.toLocaleDateString('en-US', {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
+      return local.toLocaleDateString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
       });
     }
     return isoValue;
@@ -130,7 +130,7 @@ function formatDateDisplay(isoValue: string, schema: PrimitiveSchemaDefinition):
 export function ElicitationDialog(t0) {
   const $ = _c(7);
   const { event, onResponse, onWaitingDismiss } = t0;
-  if (event.params.mode === 'url') {
+  if (event.params.mode === "url") {
     let t1;
     if ($[0] !== event || $[1] !== onResponse || $[2] !== onWaitingDismiss) {
       t1 = (
@@ -165,14 +165,14 @@ function ElicitationFormDialog({
   onResponse,
 }: {
   event: ElicitationRequestEvent;
-  onResponse: Props['onResponse'];
+  onResponse: Props["onResponse"];
 }): React.ReactNode {
   const { serverName, signal } = event;
   const request = event.params as ElicitRequestFormParams;
   const { message, requestedSchema } = request;
   const hasFields = Object.keys(requestedSchema.properties).length > 0;
-  const [focusedButton, setFocusedButton] = useState<'accept' | 'decline' | null>(
-    hasFields ? null : 'accept',
+  const [focusedButton, setFocusedButton] = useState<"accept" | "decline" | null>(
+    hasFields ? null : "accept",
   );
   const [formValues, setFormValues] = useState<
     Record<string, string | number | boolean | string[]>
@@ -180,7 +180,7 @@ function ElicitationFormDialog({
     const initialValues: Record<string, string | number | boolean | string[]> = {};
     if (requestedSchema.properties) {
       for (const [propName, propSchema] of Object.entries(requestedSchema.properties)) {
-        if (typeof propSchema === 'object' && propSchema !== null) {
+        if (typeof propSchema === "object" && propSchema !== null) {
           if (propSchema.default !== undefined) {
             initialValues[propName] = propSchema.default;
           }
@@ -204,15 +204,15 @@ function ElicitationFormDialog({
   useEffect(() => {
     if (!signal) return;
     const handleAbort = () => {
-      onResponse('cancel');
+      onResponse("cancel");
     };
     if (signal.aborted) {
       handleAbort();
       return;
     }
-    signal.addEventListener('abort', handleAbort);
+    signal.addEventListener("abort", handleAbort);
     return () => {
-      signal.removeEventListener('abort', handleAbort);
+      signal.removeEventListener("abort", handleAbort);
     };
   }, [signal, onResponse]);
   const schemaFields = useMemo(() => {
@@ -231,10 +231,10 @@ function ElicitationFormDialog({
     const firstField = schemaFields[0];
     if (firstField && isTextField(firstField.schema)) {
       const val = formValues[firstField.name];
-      if (val === undefined) return '';
+      if (val === undefined) return "";
       return String(val);
     }
-    return '';
+    return "";
   });
   const [textInputCursorOffset, setTextInputCursorOffset] = useState(textInputValue.length);
   const [resolvingFields, setResolvingFields] = useState<Set<string>>(() => new Set());
@@ -244,7 +244,7 @@ function ElicitationFormDialog({
   const dateDebounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const resolveAbortRef = useRef<Map<string, AbortController>>(new Map());
   const enumTypeaheadRef = useRef({
-    buffer: '',
+    buffer: "",
     timer: undefined as ReturnType<typeof setTimeout> | undefined,
   });
 
@@ -277,21 +277,21 @@ function ElicitationFormDialog({
 
   // Text fields are always in edit mode when focused — no Enter-to-edit step.
   const isEditingTextField = currentFieldIsText && !focusedButton;
-  useRegisterOverlay('elicitation');
-  useNotifyAfterTimeout('Claude Code needs your input', 'elicitation_dialog');
+  useRegisterOverlay("elicitation");
+  useNotifyAfterTimeout("Claude Code needs your input", "elicitation_dialog");
 
   // Sync textInputValue when the focused field changes
   const syncTextInput = useCallback(
     (fieldIndex: number | undefined) => {
       if (fieldIndex === undefined) {
-        setTextInputValue('');
+        setTextInputValue("");
         setTextInputCursorOffset(0);
         return;
       }
       const field = schemaFields[fieldIndex];
       if (field && isTextField(field.schema) && !isEnumSchema(field.schema)) {
         const val_0 = formValues[field.name];
-        const text = val_0 !== undefined ? String(val_0) : '';
+        const text = val_0 !== undefined ? String(val_0) : "";
         setTextInputValue(text);
         setTextInputCursorOffset(text.length);
       }
@@ -306,14 +306,14 @@ function ElicitationFormDialog({
     const max = schema_0.maxItems;
     // Skip minItems check when field is optional and unset
     if (min !== undefined && selected.length < min && (selected.length > 0 || fieldRequired)) {
-      updateValidationError(fieldName, `Select at least ${min} ${plural(min, 'item')}`);
+      updateValidationError(fieldName, `Select at least ${min} ${plural(min, "item")}`);
     } else if (max !== undefined && selected.length > max) {
-      updateValidationError(fieldName, `Select at most ${max} ${plural(max, 'item')}`);
+      updateValidationError(fieldName, `Select at most ${max} ${plural(max, "item")}`);
     } else {
       updateValidationError(fieldName);
     }
   }
-  function handleNavigation(direction: 'up' | 'down'): void {
+  function handleNavigation(direction: "up" | "down"): void {
     // Collapse accordion and validate on navigate away
     if (currentField && isMultiSelectEnumSchema(currentField.schema)) {
       validateMultiSelect(currentField.name, currentField.schema);
@@ -335,7 +335,7 @@ function ElicitationFormDialog({
       // For date/datetime fields that failed sync validation, try async NL parsing
       if (
         isDateTimeSchema(currentField.schema) &&
-        textInputValue.trim() !== '' &&
+        textInputValue.trim() !== "" &&
         validationErrors[currentField.name]
       ) {
         resolveFieldAsync(currentField.name, currentField.schema, textInputValue);
@@ -346,21 +346,21 @@ function ElicitationFormDialog({
     const itemCount = schemaFields.length + 2;
     const index =
       currentFieldIndex ??
-      (focusedButton === 'accept'
+      (focusedButton === "accept"
         ? schemaFields.length
-        : focusedButton === 'decline'
+        : focusedButton === "decline"
           ? schemaFields.length + 1
           : undefined);
     const nextIndex =
-      index !== undefined ? (index + (direction === 'up' ? itemCount - 1 : 1)) % itemCount : 0;
+      index !== undefined ? (index + (direction === "up" ? itemCount - 1 : 1)) % itemCount : 0;
     if (nextIndex < schemaFields.length) {
       setCurrentFieldIndex(nextIndex);
       setFocusedButton(null);
       syncTextInput(nextIndex);
     } else {
       setCurrentFieldIndex(undefined);
-      setFocusedButton(nextIndex === schemaFields.length ? 'accept' : 'decline');
-      setTextInputValue('');
+      setFocusedButton(nextIndex === schemaFields.length ? "accept" : "decline");
+      setTextInputValue("");
     }
   }
   function setField(fieldName_0: string, value: number | string | boolean | string[] | undefined) {
@@ -376,7 +376,7 @@ function ElicitationFormDialog({
       return next;
     });
     // Clear "required" error when a value is provided
-    if (value !== undefined && validationErrors[fieldName_0] === 'This field is required') {
+    if (value !== undefined && validationErrors[fieldName_0] === "This field is required") {
       updateValidationError(fieldName_0);
     }
   }
@@ -397,7 +397,7 @@ function ElicitationFormDialog({
     if (!fieldName_2) return;
     setField(fieldName_2, undefined);
     updateValidationError(fieldName_2);
-    setTextInputValue('');
+    setTextInputValue("");
     setTextInputCursorOffset(0);
   }
   function commitTextField(
@@ -409,16 +409,16 @@ function ElicitationFormDialog({
 
     // Empty input for non-plain-string types means unset
     if (
-      trimmedValue === '' &&
-      (schema_1.type !== 'string' || ('format' in schema_1 && schema_1.format !== undefined))
+      trimmedValue === "" &&
+      (schema_1.type !== "string" || ("format" in schema_1 && schema_1.format !== undefined))
     ) {
       unsetField(fieldName_3);
       return;
     }
-    if (trimmedValue === '') {
+    if (trimmedValue === "") {
       // Empty plain string — keep or unset depending on whether it was set
       if (formValues[fieldName_3] !== undefined) {
-        setField(fieldName_3, '');
+        setField(fieldName_3, "");
       }
       return;
     }
@@ -491,7 +491,7 @@ function ElicitationFormDialog({
       }
       if (
         isDateTimeSchema(currentField.schema) &&
-        newValue.trim() !== '' &&
+        newValue.trim() !== "" &&
         validationErrors[currentField.name]
       ) {
         const fieldName_5 = currentField.name;
@@ -512,7 +512,7 @@ function ElicitationFormDialog({
     }
   }
   function handleTextInputSubmit() {
-    handleNavigation('down');
+    handleNavigation("down");
   }
 
   /**
@@ -533,18 +533,18 @@ function ElicitationFormDialog({
   // Uses Settings context (escape-only, no 'n' key) since Dialog's
   // Confirmation-context cancel is suppressed when a field is focused.
   useKeybinding(
-    'confirm:no',
+    "confirm:no",
     () => {
       // For text fields, revert uncommitted changes first
       if (isEditingTextField && currentField) {
         const val_1 = formValues[currentField.name];
-        setTextInputValue(val_1 !== undefined ? String(val_1) : '');
+        setTextInputValue(val_1 !== undefined ? String(val_1) : "");
         setTextInputCursorOffset(0);
       }
-      onResponse('cancel');
+      onResponse("cancel");
     },
     {
-      context: 'Settings',
+      context: "Settings",
       isActive: !!currentField && !focusedButton && !expandedAccordion,
     },
   );
@@ -578,13 +578,13 @@ function ElicitationFormDialog({
         if (key.downArrow) {
           if (accordionOptionIndex >= msValues.length - 1) {
             setExpandedAccordion(undefined);
-            handleNavigation('down');
+            handleNavigation("down");
           } else {
             setAccordionOptionIndex(accordionOptionIndex + 1);
           }
           return;
         }
-        if (_input === ' ') {
+        if (_input === " ") {
           const optionValue = msValues[accordionOptionIndex];
           if (optionValue !== undefined) {
             const newSelected = selected_0.includes(optionValue)
@@ -601,12 +601,12 @@ function ElicitationFormDialog({
             ) {
               updateValidationError(
                 currentField.name,
-                `Select at least ${min_0} ${plural(min_0, 'item')}`,
+                `Select at least ${min_0} ${plural(min_0, "item")}`,
               );
             } else if (max_0 !== undefined && newSelected.length > max_0) {
               updateValidationError(
                 currentField.name,
-                `Select at most ${max_0} ${plural(max_0, 'item')}`,
+                `Select at most ${max_0} ${plural(max_0, "item")}`,
               );
             } else {
               updateValidationError(currentField.name);
@@ -621,7 +621,7 @@ function ElicitationFormDialog({
             setField(currentField.name, [...selected_0, optionValue_0]);
           }
           setExpandedAccordion(undefined);
-          handleNavigation('down');
+          handleNavigation("down");
           return;
         }
         if (_input) {
@@ -651,14 +651,14 @@ function ElicitationFormDialog({
         if (key.downArrow) {
           if (accordionOptionIndex >= enumValues.length - 1) {
             setExpandedAccordion(undefined);
-            handleNavigation('down');
+            handleNavigation("down");
           } else {
             setAccordionOptionIndex(accordionOptionIndex + 1);
           }
           return;
         }
         // Space: select and collapse
-        if (_input === ' ') {
+        if (_input === " ") {
           const optionValue_1 = enumValues[accordionOptionIndex];
           if (optionValue_1 !== undefined) {
             setField(currentField.name, optionValue_1);
@@ -673,7 +673,7 @@ function ElicitationFormDialog({
             setField(currentField.name, optionValue_2);
           }
           setExpandedAccordion(undefined);
-          handleNavigation('down');
+          handleNavigation("down");
           return;
         }
         if (_input) {
@@ -685,15 +685,15 @@ function ElicitationFormDialog({
       }
 
       // Accept / Decline buttons
-      if (key.return && focusedButton === 'accept') {
+      if (key.return && focusedButton === "accept") {
         if (validateRequired() && Object.keys(validationErrors).length === 0) {
-          onResponse('accept', formValues);
+          onResponse("accept", formValues);
         } else {
           // Show "required" validation errors on missing fields
           const requiredFields_0 = requestedSchema.required || [];
           for (const fieldName_7 of requiredFields_0) {
             if (formValues[fieldName_7] === undefined) {
-              updateValidationError(fieldName_7, 'This field is required');
+              updateValidationError(fieldName_7, "This field is required");
             }
           }
           const firstBadIndex = schemaFields.findIndex(
@@ -709,8 +709,8 @@ function ElicitationFormDialog({
         }
         return;
       }
-      if (key.return && focusedButton === 'decline') {
-        onResponse('decline');
+      if (key.return && focusedButton === "decline") {
+        onResponse("decline");
         return;
       }
 
@@ -718,18 +718,18 @@ function ElicitationFormDialog({
       if (key.upArrow || key.downArrow) {
         // Reset enum typeahead when leaving a field
         const ta_1 = enumTypeaheadRef.current;
-        ta_1.buffer = '';
+        ta_1.buffer = "";
         if (ta_1.timer !== undefined) {
           clearTimeout(ta_1.timer);
           ta_1.timer = undefined;
         }
-        handleNavigation(key.upArrow ? 'up' : 'down');
+        handleNavigation(key.upArrow ? "up" : "down");
         return;
       }
 
       // Left/Right to switch between Accept and Decline buttons
       if (focusedButton && (key.leftArrow || key.rightArrow)) {
-        setFocusedButton(focusedButton === 'accept' ? 'decline' : 'accept');
+        setFocusedButton(focusedButton === "accept" ? "decline" : "accept");
         return;
       }
       if (!currentField) return;
@@ -737,13 +737,13 @@ function ElicitationFormDialog({
       const value_1 = formValues[name_0];
 
       // Boolean: Space to toggle, Enter to move on
-      if (schema_5.type === 'boolean') {
-        if (_input === ' ') {
+      if (schema_5.type === "boolean") {
+        if (_input === " ") {
           setField(name_0, value_1 === undefined ? true : !value_1);
           return;
         }
         if (key.return) {
-          handleNavigation('down');
+          handleNavigation("down");
           return;
         }
         if (key.backspace && value_1 !== undefined) {
@@ -752,7 +752,7 @@ function ElicitationFormDialog({
         }
         // y/n typeahead
         if (_input && !key.return) {
-          runTypeahead(_input, ['yes', 'no'], (i) => setField(name_0, i === 0));
+          runTypeahead(_input, ["yes", "no"], (i) => setField(name_0, i === 0));
           return;
         }
         return;
@@ -761,7 +761,7 @@ function ElicitationFormDialog({
       // Enum or multi-select (collapsed) — accordion style
       if (isEnumSchema(schema_5) || isMultiSelectEnumSchema(schema_5)) {
         if (key.return) {
-          handleNavigation('down');
+          handleNavigation("down");
           return;
         }
         if (key.backspace && value_1 !== undefined) {
@@ -800,7 +800,7 @@ function ElicitationFormDialog({
 
       // Backspace: text fields when empty
       if (key.backspace) {
-        if (isEditingTextField && textInputValue === '') {
+        if (isEditingTextField && textInputValue === "") {
           unsetField(name_0);
           return;
         }
@@ -816,7 +816,7 @@ function ElicitationFormDialog({
     const requiredFields_1 = requestedSchema.required || [];
     for (const fieldName_8 of requiredFields_1) {
       const value_2 = formValues[fieldName_8];
-      if (value_2 === undefined || value_2 === null || value_2 === '') {
+      if (value_2 === undefined || value_2 === null || value_2 === "") {
         return false;
       }
       if (Array.isArray(value_2) && value_2.length === 0) {
@@ -896,12 +896,12 @@ function ElicitationFormDialog({
 
           // Selection color matches field status
           const selectionColor = error_0
-            ? 'error'
+            ? "error"
             : hasValue
-              ? 'success'
+              ? "success"
               : isRequired
-                ? 'error'
-                : 'suggestion';
+                ? "error"
+                : "suggestion";
           const activeColor = isActive ? selectionColor : undefined;
           const label = (
             <Text color={activeColor} bold={isActive}>
@@ -926,11 +926,11 @@ function ElicitationFormDialog({
                     const isFocused = optIdx === accordionOptionIndex;
                     return (
                       <Box key={optVal} gap={1}>
-                        <Text color="suggestion">{isFocused ? figures.pointer : ' '}</Text>
-                        <Text color={isChecked ? 'success' : undefined}>
+                        <Text color="suggestion">{isFocused ? figures.pointer : " "}</Text>
+                        <Text color={isChecked ? "success" : undefined}>
                           {isChecked ? figures.checkboxOn : figures.checkboxOff}
                         </Text>
-                        <Text color={isFocused ? 'suggestion' : undefined} bold={isFocused}>
+                        <Text color={isFocused ? "suggestion" : undefined} bold={isFocused}>
                           {optLabel}
                         </Text>
                       </Box>
@@ -947,7 +947,7 @@ function ElicitationFormDialog({
                   <Text>
                     {arrow}
                     <Text color={activeColor} bold={isActive}>
-                      {displayLabels.join(', ')}
+                      {displayLabels.join(", ")}
                     </Text>
                   </Text>
                 );
@@ -975,11 +975,11 @@ function ElicitationFormDialog({
                     const isFocused_0 = optIdx_0 === accordionOptionIndex;
                     return (
                       <Box key={optVal_0} gap={1}>
-                        <Text color="suggestion">{isFocused_0 ? figures.pointer : ' '}</Text>
-                        <Text color={isSelected ? 'success' : undefined}>
+                        <Text color="suggestion">{isFocused_0 ? figures.pointer : " "}</Text>
+                        <Text color={isSelected ? "success" : undefined}>
                           {isSelected ? figures.radioOn : figures.radioOff}
                         </Text>
-                        <Text color={isFocused_0 ? 'suggestion' : undefined} bold={isFocused_0}>
+                        <Text color={isFocused_0 ? "suggestion" : undefined} bold={isFocused_0}>
                           {optLabel_0}
                         </Text>
                       </Box>
@@ -1010,7 +1010,7 @@ function ElicitationFormDialog({
                 );
               }
             }
-          } else if (schema_6.type === 'boolean') {
+          } else if (schema_6.type === "boolean") {
             if (isActive) {
               valueContent = hasValue ? (
                 <Text color={activeColor} bold>
@@ -1068,7 +1068,7 @@ function ElicitationFormDialog({
           return (
             <Box key={name_1} flexDirection="column">
               <Box gap={1}>
-                <Text color={selectionColor}>{isActive ? figures.pointer : ' '}</Text>
+                <Text color={selectionColor}>{isActive ? figures.pointer : " "}</Text>
                 {checkbox}
                 <Box>
                   {label}
@@ -1109,7 +1109,7 @@ function ElicitationFormDialog({
       title={`MCP server \u201c${serverName}\u201d requests your input`}
       subtitle={`\n${message}`}
       color="permission"
-      onCancel={() => onResponse('cancel')}
+      onCancel={() => onResponse("cancel")}
       isCancelActive={(!currentField || !!focusedButton) && !expandedAccordion}
       inputGuide={(exitState) =>
         exitState.pending ? (
@@ -1124,7 +1124,7 @@ function ElicitationFormDialog({
             />
             <KeyboardShortcutHint shortcut="↑↓" action="navigate" />
             {currentField && <KeyboardShortcutHint shortcut="Backspace" action="unset" />}
-            {currentField && currentField.schema.type === 'boolean' && (
+            {currentField && currentField.schema.type === "boolean" && (
               <KeyboardShortcutHint shortcut="Space" action="toggle" />
             )}
             {currentField &&
@@ -1148,21 +1148,21 @@ function ElicitationFormDialog({
       <Box flexDirection="column">
         {renderFormFields()}
         <Box>
-          <Text color="success">{focusedButton === 'accept' ? figures.pointer : ' '}</Text>
+          <Text color="success">{focusedButton === "accept" ? figures.pointer : " "}</Text>
           <Text
-            bold={focusedButton === 'accept'}
-            color={focusedButton === 'accept' ? 'success' : undefined}
-            dimColor={focusedButton !== 'accept'}
+            bold={focusedButton === "accept"}
+            color={focusedButton === "accept" ? "success" : undefined}
+            dimColor={focusedButton !== "accept"}
           >
-            {' Accept  '}
+            {" Accept  "}
           </Text>
-          <Text color="error">{focusedButton === 'decline' ? figures.pointer : ' '}</Text>
+          <Text color="error">{focusedButton === "decline" ? figures.pointer : " "}</Text>
           <Text
-            bold={focusedButton === 'decline'}
-            color={focusedButton === 'decline' ? 'error' : undefined}
-            dimColor={focusedButton !== 'decline'}
+            bold={focusedButton === "decline"}
+            color={focusedButton === "decline" ? "error" : undefined}
+            dimColor={focusedButton !== "decline"}
           >
-            {' Decline'}
+            {" Decline"}
           </Text>
         </Box>
       </Box>
@@ -1175,20 +1175,20 @@ function ElicitationURLDialog({
   onWaitingDismiss,
 }: {
   event: ElicitationRequestEvent;
-  onResponse: Props['onResponse'];
-  onWaitingDismiss: Props['onWaitingDismiss'];
+  onResponse: Props["onResponse"];
+  onWaitingDismiss: Props["onWaitingDismiss"];
 }): React.ReactNode {
   const { serverName, signal, waitingState } = event;
   const urlParams = event.params as ElicitRequestURLParams;
   const { message, url } = urlParams;
-  const [phase, setPhase] = useState<'prompt' | 'waiting'>('prompt');
-  const phaseRef = useRef<'prompt' | 'waiting'>('prompt');
+  const [phase, setPhase] = useState<"prompt" | "waiting">("prompt");
+  const phaseRef = useRef<"prompt" | "waiting">("prompt");
   const [focusedButton, setFocusedButton] = useState<
-    'accept' | 'decline' | 'open' | 'action' | 'cancel'
-  >('accept');
+    "accept" | "decline" | "open" | "action" | "cancel"
+  >("accept");
   const showCancel = waitingState?.showCancel ?? false;
-  useNotifyAfterTimeout('Claude Code needs your input', 'elicitation_url_dialog');
-  useRegisterOverlay('elicitation-url');
+  useNotifyAfterTimeout("Claude Code needs your input", "elicitation_url_dialog");
+  useRegisterOverlay("elicitation-url");
 
   // Keep refs in sync for use in abort handler (avoids re-registering listener)
   phaseRef.current = phase;
@@ -1196,24 +1196,24 @@ function ElicitationURLDialog({
   onWaitingDismissRef.current = onWaitingDismiss;
   useEffect(() => {
     const handleAbort = () => {
-      if (phaseRef.current === 'waiting') {
-        onWaitingDismissRef.current?.('cancel');
+      if (phaseRef.current === "waiting") {
+        onWaitingDismissRef.current?.("cancel");
       } else {
-        onResponse('cancel');
+        onResponse("cancel");
       }
     };
     if (signal.aborted) {
       handleAbort();
       return;
     }
-    signal.addEventListener('abort', handleAbort);
-    return () => signal.removeEventListener('abort', handleAbort);
+    signal.addEventListener("abort", handleAbort);
+    return () => signal.removeEventListener("abort", handleAbort);
   }, [signal, onResponse]);
 
   // Parse URL to highlight the domain
-  let domain = '';
-  let urlBeforeDomain = '';
-  let urlAfterDomain = '';
+  let domain = "";
+  let urlBeforeDomain = "";
+  let urlAfterDomain = "";
   try {
     const parsed = new URL(url);
     domain = parsed.hostname;
@@ -1226,38 +1226,38 @@ function ElicitationURLDialog({
 
   // Auto-dismiss when the server sends a completion notification (sets completed flag)
   useEffect(() => {
-    if (phase === 'waiting' && event.completed) {
-      onWaitingDismiss?.(showCancel ? 'retry' : 'dismiss');
+    if (phase === "waiting" && event.completed) {
+      onWaitingDismiss?.(showCancel ? "retry" : "dismiss");
     }
   }, [phase, event.completed, onWaitingDismiss, showCancel]);
   const handleAccept = useCallback(() => {
     void openBrowser(url);
-    onResponse('accept');
-    setPhase('waiting');
-    phaseRef.current = 'waiting';
-    setFocusedButton('open');
+    onResponse("accept");
+    setPhase("waiting");
+    phaseRef.current = "waiting";
+    setFocusedButton("open");
   }, [onResponse, url]);
 
   // eslint-disable-next-line custom-rules/prefer-use-keybindings -- raw input for button navigation
   useInput((_input, key) => {
-    if (phase === 'prompt') {
+    if (phase === "prompt") {
       if (key.leftArrow || key.rightArrow) {
-        setFocusedButton((prev) => (prev === 'accept' ? 'decline' : 'accept'));
+        setFocusedButton((prev) => (prev === "accept" ? "decline" : "accept"));
         return;
       }
       if (key.return) {
-        if (focusedButton === 'accept') {
+        if (focusedButton === "accept") {
           handleAccept();
         } else {
-          onResponse('decline');
+          onResponse("decline");
         }
       }
     } else {
       // waiting phase — cycle through buttons
-      type ButtonName = 'accept' | 'decline' | 'open' | 'action' | 'cancel';
+      type ButtonName = "accept" | "decline" | "open" | "action" | "cancel";
       const waitingButtons: readonly ButtonName[] = showCancel
-        ? ['open', 'action', 'cancel']
-        : ['open', 'action'];
+        ? ["open", "action", "cancel"]
+        : ["open", "action"];
       if (key.leftArrow || key.rightArrow) {
         setFocusedButton((prev_0) => {
           const idx = waitingButtons.indexOf(prev_0);
@@ -1267,24 +1267,24 @@ function ElicitationURLDialog({
         return;
       }
       if (key.return) {
-        if (focusedButton === 'open') {
+        if (focusedButton === "open") {
           void openBrowser(url);
-        } else if (focusedButton === 'cancel') {
-          onWaitingDismiss?.('cancel');
+        } else if (focusedButton === "cancel") {
+          onWaitingDismiss?.("cancel");
         } else {
-          onWaitingDismiss?.(showCancel ? 'retry' : 'dismiss');
+          onWaitingDismiss?.(showCancel ? "retry" : "dismiss");
         }
       }
     }
   });
-  if (phase === 'waiting') {
-    const actionLabel = waitingState?.actionLabel ?? 'Continue without waiting';
+  if (phase === "waiting") {
+    const actionLabel = waitingState?.actionLabel ?? "Continue without waiting";
     return (
       <Dialog
         title={`MCP server \u201c${serverName}\u201d \u2014 waiting for completion`}
         subtitle={`\n${message}`}
         color="permission"
-        onCancel={() => onWaitingDismiss?.('cancel')}
+        onCancel={() => onWaitingDismiss?.("cancel")}
         isCancelActive
         inputGuide={(exitState) =>
           exitState.pending ? (
@@ -1316,32 +1316,32 @@ function ElicitationURLDialog({
             </Text>
           </Box>
           <Box>
-            <Text color="success">{focusedButton === 'open' ? figures.pointer : ' '}</Text>
+            <Text color="success">{focusedButton === "open" ? figures.pointer : " "}</Text>
             <Text
-              bold={focusedButton === 'open'}
-              color={focusedButton === 'open' ? 'success' : undefined}
-              dimColor={focusedButton !== 'open'}
+              bold={focusedButton === "open"}
+              color={focusedButton === "open" ? "success" : undefined}
+              dimColor={focusedButton !== "open"}
             >
-              {' Reopen URL  '}
+              {" Reopen URL  "}
             </Text>
-            <Text color="success">{focusedButton === 'action' ? figures.pointer : ' '}</Text>
+            <Text color="success">{focusedButton === "action" ? figures.pointer : " "}</Text>
             <Text
-              bold={focusedButton === 'action'}
-              color={focusedButton === 'action' ? 'success' : undefined}
-              dimColor={focusedButton !== 'action'}
+              bold={focusedButton === "action"}
+              color={focusedButton === "action" ? "success" : undefined}
+              dimColor={focusedButton !== "action"}
             >
               {` ${actionLabel}`}
             </Text>
             {showCancel && (
               <>
                 <Text> </Text>
-                <Text color="error">{focusedButton === 'cancel' ? figures.pointer : ' '}</Text>
+                <Text color="error">{focusedButton === "cancel" ? figures.pointer : " "}</Text>
                 <Text
-                  bold={focusedButton === 'cancel'}
-                  color={focusedButton === 'cancel' ? 'error' : undefined}
-                  dimColor={focusedButton !== 'cancel'}
+                  bold={focusedButton === "cancel"}
+                  color={focusedButton === "cancel" ? "error" : undefined}
+                  dimColor={focusedButton !== "cancel"}
                 >
-                  {' Cancel'}
+                  {" Cancel"}
                 </Text>
               </>
             )}
@@ -1355,7 +1355,7 @@ function ElicitationURLDialog({
       title={`MCP server \u201c${serverName}\u201d wants to open a URL`}
       subtitle={`\n${message}`}
       color="permission"
-      onCancel={() => onResponse('cancel')}
+      onCancel={() => onResponse("cancel")}
       isCancelActive
       inputGuide={(exitState_0) =>
         exitState_0.pending ? (
@@ -1382,21 +1382,21 @@ function ElicitationURLDialog({
           </Text>
         </Box>
         <Box>
-          <Text color="success">{focusedButton === 'accept' ? figures.pointer : ' '}</Text>
+          <Text color="success">{focusedButton === "accept" ? figures.pointer : " "}</Text>
           <Text
-            bold={focusedButton === 'accept'}
-            color={focusedButton === 'accept' ? 'success' : undefined}
-            dimColor={focusedButton !== 'accept'}
+            bold={focusedButton === "accept"}
+            color={focusedButton === "accept" ? "success" : undefined}
+            dimColor={focusedButton !== "accept"}
           >
-            {' Accept  '}
+            {" Accept  "}
           </Text>
-          <Text color="error">{focusedButton === 'decline' ? figures.pointer : ' '}</Text>
+          <Text color="error">{focusedButton === "decline" ? figures.pointer : " "}</Text>
           <Text
-            bold={focusedButton === 'decline'}
-            color={focusedButton === 'decline' ? 'error' : undefined}
-            dimColor={focusedButton !== 'decline'}
+            bold={focusedButton === "decline"}
+            color={focusedButton === "decline" ? "error" : undefined}
+            dimColor={focusedButton !== "decline"}
           >
-            {' Decline'}
+            {" Decline"}
           </Text>
         </Box>
       </Box>

@@ -1,11 +1,11 @@
-import type { StructuredPatchHunk } from 'diff';
-import { useEffect, useMemo, useState } from 'react';
+import type { StructuredPatchHunk } from "diff";
+import { useEffect, useMemo, useState } from "react";
 import {
   fetchGitDiff,
   fetchGitDiffHunks,
   type GitDiffResult,
   type GitDiffStats,
-} from '../utils/gitDiff.js';
+} from "../utils/gitDiff.js";
 
 const MAX_LINES_PER_FILE = 400;
 

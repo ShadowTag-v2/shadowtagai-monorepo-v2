@@ -1,14 +1,14 @@
-import type React from 'react';
-import { useCallback, useEffect, useRef } from 'react';
-import { isBridgeEnabled } from '../bridge/bridgeEnabled.js';
-import { Box, Text } from '../ink.js';
-import { getClaudeAIOAuthTokens } from '../utils/auth.js';
-import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
-import type { OptionWithDescription } from './CustomSelect/select.js';
-import { Select } from './CustomSelect/select.js';
-import { PermissionDialog } from './permissions/PermissionDialog.js';
+import type React from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { isBridgeEnabled } from "../bridge/bridgeEnabled.js";
+import { Box, Text } from "../ink.js";
+import { getClaudeAIOAuthTokens } from "../utils/auth.js";
+import { getGlobalConfig, saveGlobalConfig } from "../utils/config.js";
+import type { OptionWithDescription } from "./CustomSelect/select.js";
+import { Select } from "./CustomSelect/select.js";
+import { PermissionDialog } from "./permissions/PermissionDialog.js";
 
-type RemoteCalloutSelection = 'enable' | 'dismiss';
+type RemoteCalloutSelection = "enable" | "dismiss";
 type Props = {
   onDone: (selection: RemoteCalloutSelection) => void;
 };
@@ -16,7 +16,7 @@ export function RemoteCallout({ onDone }: Props): React.ReactNode {
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
   const handleCancel = useCallback((): void => {
-    onDoneRef.current('dismiss');
+    onDoneRef.current("dismiss");
   }, []);
 
   // Permanently mark as seen on mount so it only shows once
@@ -34,14 +34,14 @@ export function RemoteCallout({ onDone }: Props): React.ReactNode {
   }, []);
   const options: OptionWithDescription<RemoteCalloutSelection>[] = [
     {
-      label: 'Enable Remote Control for this session',
-      description: 'Opens a secure connection to claude.ai.',
-      value: 'enable',
+      label: "Enable Remote Control for this session",
+      description: "Opens a secure connection to claude.ai.",
+      value: "enable",
     },
     {
-      label: 'Never mind',
-      description: 'You can always enable it later with /remote-control.',
-      value: 'dismiss',
+      label: "Never mind",
+      description: "You can always enable it later with /remote-control.",
+      value: "dismiss",
     },
   ];
   return (

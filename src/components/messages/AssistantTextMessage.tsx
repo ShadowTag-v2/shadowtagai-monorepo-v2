@@ -1,10 +1,10 @@
-import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { useContext } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { ERROR_MESSAGE_USER_ABORT } from 'src/services/compact/compact.js';
-import { isRateLimitErrorMessage } from 'src/services/rateLimitMessages.js';
-import { BLACK_CIRCLE } from '../../constants/figures.js';
-import { Box, NoSelect, Text } from '../../ink.js';
+import type { TextBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import { useContext } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { ERROR_MESSAGE_USER_ABORT } from "src/services/compact/compact.js";
+import { isRateLimitErrorMessage } from "src/services/rateLimitMessages.js";
+import { BLACK_CIRCLE } from "../../constants/figures.js";
+import { Box, NoSelect, Text } from "../../ink.js";
 import {
   API_ERROR_MESSAGE_PREFIX,
   API_TIMEOUT_ERROR_MESSAGE,
@@ -17,17 +17,17 @@ import {
   PROMPT_TOO_LONG_ERROR_MESSAGE,
   startsWithApiErrorPrefix,
   TOKEN_REVOKED_ERROR_MESSAGE,
-} from '../../services/api/errors.js';
-import { isEmptyMessageText, NO_RESPONSE_REQUESTED } from '../../utils/messages.js';
-import { getUpgradeMessage } from '../../utils/model/contextWindowUpgradeCheck.js';
-import { getDefaultSonnetModel, renderModelName } from '../../utils/model/model.js';
-import { isMacOsKeychainLocked } from '../../utils/secureStorage/macOsKeychainStorage.js';
-import { CtrlOToExpand } from '../CtrlOToExpand.js';
-import { InterruptedByUser } from '../InterruptedByUser.js';
-import { Markdown } from '../Markdown.js';
-import { MessageResponse } from '../MessageResponse.js';
-import { MessageActionsSelectedContext } from '../messageActions.js';
-import { RateLimitMessage } from './RateLimitMessage.js';
+} from "../../services/api/errors.js";
+import { isEmptyMessageText, NO_RESPONSE_REQUESTED } from "../../utils/messages.js";
+import { getUpgradeMessage } from "../../utils/model/contextWindowUpgradeCheck.js";
+import { getDefaultSonnetModel, renderModelName } from "../../utils/model/model.js";
+import { isMacOsKeychainLocked } from "../../utils/secureStorage/macOsKeychainStorage.js";
+import { CtrlOToExpand } from "../CtrlOToExpand.js";
+import { InterruptedByUser } from "../InterruptedByUser.js";
+import { Markdown } from "../Markdown.js";
+import { MessageResponse } from "../MessageResponse.js";
+import { MessageActionsSelectedContext } from "../messageActions.js";
+import { RateLimitMessage } from "./RateLimitMessage.js";
 
 const MAX_API_ERROR_CHARS = 1000;
 type Props = {
@@ -41,7 +41,7 @@ type Props = {
 function InvalidApiKeyMessage() {
   const $ = _c(2);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = isMacOsKeychainLocked();
     $[0] = t0;
   } else {
@@ -49,7 +49,7 @@ function InvalidApiKeyMessage() {
   }
   const isKeychainLocked = t0;
   let t1;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <MessageResponse>
         <Box flexDirection="column">
@@ -92,20 +92,20 @@ export function AssistantTextMessage(t0) {
     }
     case PROMPT_TOO_LONG_ERROR_MESSAGE: {
       let t2;
-      if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
-        t2 = getUpgradeMessage('warning');
+      if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
+        t2 = getUpgradeMessage("warning");
         $[3] = t2;
       } else {
         t2 = $[3];
       }
       const upgradeHint = t2;
       let t3;
-      if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
         t3 = (
           <MessageResponse height={1}>
             <Text color="error">
               Context limit reached · /compact or /clear to continue
-              {upgradeHint ? ` · ${upgradeHint}` : ''}
+              {upgradeHint ? ` · ${upgradeHint}` : ""}
             </Text>
           </MessageResponse>
         );
@@ -117,7 +117,7 @@ export function AssistantTextMessage(t0) {
     }
     case CREDIT_BALANCE_TOO_LOW_ERROR_MESSAGE: {
       let t2;
-      if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
         t2 = (
           <MessageResponse height={1}>
             <Text color="error">
@@ -133,7 +133,7 @@ export function AssistantTextMessage(t0) {
     }
     case INVALID_API_KEY_ERROR_MESSAGE: {
       let t2;
-      if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
         t2 = <InvalidApiKeyMessage />;
         $[6] = t2;
       } else {
@@ -143,7 +143,7 @@ export function AssistantTextMessage(t0) {
     }
     case INVALID_API_KEY_ERROR_MESSAGE_EXTERNAL: {
       let t2;
-      if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
         t2 = (
           <MessageResponse height={1}>
             <Text color="error">{INVALID_API_KEY_ERROR_MESSAGE_EXTERNAL}</Text>
@@ -173,7 +173,7 @@ export function AssistantTextMessage(t0) {
     }
     case TOKEN_REVOKED_ERROR_MESSAGE: {
       let t2;
-      if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
         t2 = (
           <MessageResponse height={1}>
             <Text color="error">{TOKEN_REVOKED_ERROR_MESSAGE}</Text>
@@ -187,7 +187,7 @@ export function AssistantTextMessage(t0) {
     }
     case API_TIMEOUT_ERROR_MESSAGE: {
       let t2;
-      if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
         t2 = (
           <MessageResponse height={1}>
             <Text color="error">
@@ -206,20 +206,20 @@ export function AssistantTextMessage(t0) {
     }
     case CUSTOM_OFF_SWITCH_MESSAGE: {
       let t2;
-      if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
         t2 = <Text color="error">We are experiencing high demand for Opus 4.</Text>;
         $[12] = t2;
       } else {
         t2 = $[12];
       }
       let t3;
-      if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
         t3 = (
           <MessageResponse>
             <Box flexDirection="column" gap={1}>
               {t2}
               <Text>
-                To continue immediately, use /model to switch to{' '}
+                To continue immediately, use /model to switch to{" "}
                 {renderModelName(getDefaultSonnetModel())} and continue coding.
               </Text>
             </Box>
@@ -233,7 +233,7 @@ export function AssistantTextMessage(t0) {
     }
     case ERROR_MESSAGE_USER_ABORT: {
       let t2;
-      if ($[14] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
         t2 = (
           <MessageResponse height={1}>
             <InterruptedByUser />
@@ -289,12 +289,12 @@ export function AssistantTextMessage(t0) {
         return t5;
       }
       const t2 = addMargin ? 1 : 0;
-      const t3 = isSelected ? 'messageActionsBackground' : undefined;
+      const t3 = isSelected ? "messageActionsBackground" : undefined;
       let t4;
       if ($[22] !== isSelected || $[23] !== shouldShowDot) {
         t4 = shouldShowDot && (
           <NoSelect fromLeftEdge={true} minWidth={2}>
-            <Text color={isSelected ? 'suggestion' : 'text'}>{BLACK_CIRCLE}</Text>
+            <Text color={isSelected ? "suggestion" : "text"}>{BLACK_CIRCLE}</Text>
           </NoSelect>
         );
         $[22] = isSelected;

@@ -30,7 +30,7 @@ type InstalledAppLike = {
  * ~/Applications is checked at call time via the `homeDir` arg (HOME isn't
  * reliably known at module load in all environments).
  */
-const PATH_ALLOWLIST: readonly string[] = ['/Applications/', '/System/Applications/'];
+const PATH_ALLOWLIST: readonly string[] = ["/Applications/", "/System/Applications/"];
 
 /**
  * Display-name patterns that mark background services even under /Applications.
@@ -55,42 +55,42 @@ const NAME_PATTERN_BLOCKLIST: readonly RegExp[] = [
  */
 const ALWAYS_KEEP_BUNDLE_IDS: ReadonlySet<string> = new Set([
   // Browsers
-  'com.apple.Safari',
-  'com.google.Chrome',
-  'com.microsoft.edgemac',
-  'org.mozilla.firefox',
-  'company.thebrowser.Browser', // Arc
+  "com.apple.Safari",
+  "com.google.Chrome",
+  "com.microsoft.edgemac",
+  "org.mozilla.firefox",
+  "company.thebrowser.Browser", // Arc
   // Communication
-  'com.tinyspeck.slackmacgap',
-  'us.zoom.xos',
-  'com.microsoft.teams2',
-  'com.microsoft.teams',
-  'com.apple.MobileSMS',
-  'com.apple.mail',
+  "com.tinyspeck.slackmacgap",
+  "us.zoom.xos",
+  "com.microsoft.teams2",
+  "com.microsoft.teams",
+  "com.apple.MobileSMS",
+  "com.apple.mail",
   // Productivity
-  'com.microsoft.Word',
-  'com.microsoft.Excel',
-  'com.microsoft.Powerpoint',
-  'com.microsoft.Outlook',
-  'com.apple.iWork.Pages',
-  'com.apple.iWork.Numbers',
-  'com.apple.iWork.Keynote',
-  'com.google.GoogleDocs',
+  "com.microsoft.Word",
+  "com.microsoft.Excel",
+  "com.microsoft.Powerpoint",
+  "com.microsoft.Outlook",
+  "com.apple.iWork.Pages",
+  "com.apple.iWork.Numbers",
+  "com.apple.iWork.Keynote",
+  "com.google.GoogleDocs",
   // Notes / PM
-  'notion.id',
-  'com.apple.Notes',
-  'md.obsidian',
-  'com.linear',
-  'com.figma.Desktop',
+  "notion.id",
+  "com.apple.Notes",
+  "md.obsidian",
+  "com.linear",
+  "com.figma.Desktop",
   // Dev
-  'com.microsoft.VSCode',
-  'com.apple.Terminal',
-  'com.googlecode.iterm2',
-  'com.github.GitHubDesktop',
+  "com.microsoft.VSCode",
+  "com.apple.Terminal",
+  "com.googlecode.iterm2",
+  "com.github.GitHubDesktop",
   // System essentials the model genuinely targets
-  'com.apple.finder',
-  'com.apple.iCal',
-  'com.apple.systempreferences',
+  "com.apple.finder",
+  "com.apple.iCal",
+  "com.apple.systempreferences",
 ]);
 
 // ── Prompt-injection hardening ───────────────────────────────────────────
@@ -109,7 +109,7 @@ const APP_NAME_MAX_COUNT = 50;
 function isUserFacingPath(path: string, homeDir: string | undefined): boolean {
   if (PATH_ALLOWLIST.some((root) => path.startsWith(root))) return true;
   if (homeDir) {
-    const userApps = homeDir.endsWith('/') ? `${homeDir}Applications/` : `${homeDir}/Applications/`;
+    const userApps = homeDir.endsWith("/") ? `${homeDir}Applications/` : `${homeDir}/Applications/`;
     if (path.startsWith(userApps)) return true;
   }
   return false;

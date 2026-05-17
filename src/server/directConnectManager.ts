@@ -1,14 +1,14 @@
 /* eslint-disable eslint-plugin-n/no-unsupported-features/node-builtins */
 
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
+import type { SDKMessage } from "../entrypoints/agentSdkTypes.js";
 import type {
   SDKControlPermissionRequest,
   StdoutMessage,
-} from '../entrypoints/sdk/controlTypes.js';
-import type { RemotePermissionResponse } from '../remote/RemoteSessionManager.js';
-import { logForDebugging } from '../utils/debug.js';
-import { jsonParse, jsonStringify } from '../utils/slowOperations.js';
-import type { RemoteMessageContent } from '../utils/teleport/api.js';
+} from "../entrypoints/sdk/controlTypes.js";
+import type { RemotePermissionResponse } from "../remote/RemoteSessionManager.js";
+import { logForDebugging } from "../utils/debug.js";
+import { jsonParse, jsonStringify } from "../utils/slowOperations.js";
+import type { RemoteMessageContent } from "../utils/teleport/api.js";
 
 export type DirectConnectConfig = {
   serverUrl: string;
@@ -27,7 +27,7 @@ export type DirectConnectCallbacks = {
 
 function isStdoutMessage(value: unknown): value is StdoutMessage {
   return (
-    typeof value === 'object' && value !== null && 'type' in value && typeof value.type === 'string'
+    typeof value === "object" && value !== null && "type" in value && typeof value.type === "string"
   );
 }
 
@@ -51,13 +51,13 @@ export class DirectConnectSessionManager {
       headers,
     } as unknown as string[]);
 
-    this.ws.addEventListener('open', () => {
+    this.ws.addEventListener("open", () => {
       this.callbacks.onConnected?.();
     });
 
-    this.ws.addEventListener('message', (event) => {
-      const data = typeof event.data === 'string' ? event.data : '';
-      const lines = data.split('\n').filter((l: string) => l.trim());
+    this.ws.addEventListener("message", (event) => {
+      const data = typeof event.data === "string" ? event.data : "";
+      const lines = data.split("\n").filter((l: string) => l.trim());
 
       for (const line of lines) {
         let raw: unknown;
@@ -73,8 +73,8 @@ export class DirectConnectSessionManager {
         const parsed = raw;
 
         // Handle control requests (permission requests)
-        if (parsed.type === 'control_request') {
-          if (parsed.request.subtype === 'can_use_tool') {
+        if (parsed.type === "control_request") {
+          if (parsed.request.subtype === "can_use_tool") {
             this.callbacks.onPermissionRequest(parsed.request, parsed.request_id);
           } else {
             // Send an error response for unrecognized subtypes so the
@@ -92,24 +92,24 @@ export class DirectConnectSessionManager {
 
         // Forward SDK messages (assistant, result, system, etc.)
         if (
-          parsed.type !== 'control_response' &&
-          parsed.type !== 'keep_alive' &&
-          parsed.type !== 'control_cancel_request' &&
-          parsed.type !== 'streamlined_text' &&
-          parsed.type !== 'streamlined_tool_use_summary' &&
-          !(parsed.type === 'system' && parsed.subtype === 'post_turn_summary')
+          parsed.type !== "control_response" &&
+          parsed.type !== "keep_alive" &&
+          parsed.type !== "control_cancel_request" &&
+          parsed.type !== "streamlined_text" &&
+          parsed.type !== "streamlined_tool_use_summary" &&
+          !(parsed.type === "system" && parsed.subtype === "post_turn_summary")
         ) {
           this.callbacks.onMessage(parsed);
         }
       }
     });
 
-    this.ws.addEventListener('close', () => {
+    this.ws.addEventListener("close", () => {
       this.callbacks.onDisconnected?.();
     });
 
-    this.ws.addEventListener('error', () => {
-      this.callbacks.onError?.(new Error('WebSocket connection error'));
+    this.ws.addEventListener("error", () => {
+      this.callbacks.onError?.(new Error("WebSocket connection error"));
     });
   }
 
@@ -120,13 +120,13 @@ export class DirectConnectSessionManager {
 
     // Must match SDKUserMessage format expected by `--input-format stream-json`
     const message = jsonStringify({
-      type: 'user',
+      type: "user",
       message: {
-        role: 'user',
+        role: "user",
         content: content,
       },
       parent_tool_use_id: null,
-      session_id: '',
+      session_id: "",
     });
     this.ws.send(message);
     return true;
@@ -139,13 +139,13 @@ export class DirectConnectSessionManager {
 
     // Must match SDKControlResponse format expected by StructuredIO
     const response = jsonStringify({
-      type: 'control_response',
+      type: "control_response",
       response: {
-        subtype: 'success',
+        subtype: "success",
         request_id: requestId,
         response: {
           behavior: result.behavior,
-          ...(result.behavior === 'allow'
+          ...(result.behavior === "allow"
             ? { updatedInput: result.updatedInput }
             : { message: result.message }),
         },
@@ -164,10 +164,10 @@ export class DirectConnectSessionManager {
 
     // Must match SDKControlRequest format expected by StructuredIO
     const request = jsonStringify({
-      type: 'control_request',
+      type: "control_request",
       request_id: crypto.randomUUID(),
       request: {
-        subtype: 'interrupt',
+        subtype: "interrupt",
       },
     });
     this.ws.send(request);
@@ -178,9 +178,9 @@ export class DirectConnectSessionManager {
       return;
     }
     const response = jsonStringify({
-      type: 'control_response',
+      type: "control_response",
       response: {
-        subtype: 'error',
+        subtype: "error",
         request_id: requestId,
         error,
       },

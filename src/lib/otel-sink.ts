@@ -29,17 +29,17 @@
  *   - Events are fire-and-forget (no acks)
  */
 
-import type { TelemetryEvent, TelemetrySink } from '@/lib/telemetry';
-import { stripPiiFields } from '@/lib/telemetry';
+import type { TelemetryEvent, TelemetrySink } from "@/lib/telemetry";
+import { stripPiiFields } from "@/lib/telemetry";
 
 // ── Configuration ────────────────────────────────────────────
 
 const OTEL_ENDPOINT =
-  typeof window !== 'undefined' ? (process.env.NEXT_PUBLIC_OTEL_ENDPOINT ?? '') : '';
+  typeof window !== "undefined" ? (process.env.NEXT_PUBLIC_OTEL_ENDPOINT ?? "") : "";
 
 const OTEL_ENABLED =
-  typeof window !== 'undefined' &&
-  process.env.NEXT_PUBLIC_OTEL_ENABLED === 'true' &&
+  typeof window !== "undefined" &&
+  process.env.NEXT_PUBLIC_OTEL_ENABLED === "true" &&
   OTEL_ENDPOINT.length > 0;
 
 // ── Severity Mapping ─────────────────────────────────────────
@@ -80,16 +80,16 @@ interface OtelLogPayload {
 
 function eventToLogRecord(event: TelemetryEvent): OtelLogRecord {
   const sanitizedMeta = stripPiiFields(event.metadata);
-  const severity = event.severity ?? 'info';
+  const severity = event.severity ?? "info";
   const nowNano = BigInt(Date.now()) * BigInt(1_000_000);
 
   const attributes = Object.entries(sanitizedMeta).map(([key, value]) => {
-    if (typeof value === 'number') {
+    if (typeof value === "number") {
       return Number.isInteger(value)
         ? { key, value: { intValue: String(value) } }
         : { key, value: { doubleValue: value } };
     }
-    if (typeof value === 'boolean') {
+    if (typeof value === "boolean") {
       return { key, value: { boolValue: value } };
     }
     return { key, value: { stringValue: String(value) } };
@@ -110,13 +110,13 @@ function buildPayload(events: TelemetryEvent[]): OtelLogPayload {
       {
         resource: {
           attributes: [
-            { key: 'service.name', value: { stringValue: 'counselconduit-frontend' } },
-            { key: 'service.version', value: { stringValue: '14.6' } },
+            { key: "service.name", value: { stringValue: "counselconduit-frontend" } },
+            { key: "service.version", value: { stringValue: "14.6" } },
           ],
         },
         scopeLogs: [
           {
-            scope: { name: 'panopticon', version: '1.0.0' },
+            scope: { name: "panopticon", version: "1.0.0" },
             logRecords: events.map(eventToLogRecord),
           },
         ],
@@ -141,7 +141,7 @@ export function createOtelSink(): TelemetrySink | null {
   const FLUSH_INTERVAL_MS = 10_000; // 10s batch window (longer than primary)
   const BATCH_SIZE = 50;
 
-  const endpoint = `${OTEL_ENDPOINT.replace(/\/+$/, '')}/v1/logs`;
+  const endpoint = `${OTEL_ENDPOINT.replace(/\/+$/, "")}/v1/logs`;
 
   const sendBatch = async (events: TelemetryEvent[]): Promise<void> => {
     if (events.length === 0) return;
@@ -150,9 +150,9 @@ export function createOtelSink(): TelemetrySink | null {
 
     try {
       await fetch(endpoint, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
         keepalive: true,

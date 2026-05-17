@@ -1,10 +1,10 @@
-import { feature } from 'bun:bundle';
-import { z } from 'zod/v4';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
-import { buildTool, type ToolDef } from '../../Tool.js';
-import { isAgentSwarmsEnabled } from '../../utils/agentSwarmsEnabled.js';
-import { executeTaskCompletedHooks, getTaskCompletedHookMessage } from '../../utils/hooks.js';
-import { lazySchema } from '../../utils/lazySchema.js';
+import { feature } from "bun:bundle";
+import { z } from "zod/v4";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../services/analytics/growthbook.js";
+import { buildTool, type ToolDef } from "../../Tool.js";
+import { isAgentSwarmsEnabled } from "../../utils/agentSwarmsEnabled.js";
+import { executeTaskCompletedHooks, getTaskCompletedHookMessage } from "../../utils/hooks.js";
+import { lazySchema } from "../../utils/lazySchema.js";
 import {
   blockTask,
   deleteTask,
@@ -15,35 +15,35 @@ import {
   type TaskStatus,
   TaskStatusSchema,
   updateTask,
-} from '../../utils/tasks.js';
-import { getAgentId, getAgentName, getTeammateColor, getTeamName } from '../../utils/teammate.js';
-import { writeToMailbox } from '../../utils/teammateMailbox.js';
-import { VERIFICATION_AGENT_TYPE } from '../AgentTool/constants.js';
-import { TASK_UPDATE_TOOL_NAME } from './constants.js';
-import { DESCRIPTION, PROMPT } from './prompt.js';
+} from "../../utils/tasks.js";
+import { getAgentId, getAgentName, getTeammateColor, getTeamName } from "../../utils/teammate.js";
+import { writeToMailbox } from "../../utils/teammateMailbox.js";
+import { VERIFICATION_AGENT_TYPE } from "../AgentTool/constants.js";
+import { TASK_UPDATE_TOOL_NAME } from "./constants.js";
+import { DESCRIPTION, PROMPT } from "./prompt.js";
 
 const inputSchema = lazySchema(() => {
   // Extended status schema that includes 'deleted' as a special action
-  const TaskUpdateStatusSchema = TaskStatusSchema().or(z.literal('deleted'));
+  const TaskUpdateStatusSchema = TaskStatusSchema().or(z.literal("deleted"));
 
   return z.strictObject({
-    taskId: z.string().describe('The ID of the task to update'),
-    subject: z.string().optional().describe('New subject for the task'),
-    description: z.string().optional().describe('New description for the task'),
+    taskId: z.string().describe("The ID of the task to update"),
+    subject: z.string().optional().describe("New subject for the task"),
+    description: z.string().optional().describe("New description for the task"),
     activeForm: z
       .string()
       .optional()
       .describe(
         'Present continuous form shown in spinner when in_progress (e.g., "Running tests")',
       ),
-    status: TaskUpdateStatusSchema.optional().describe('New status for the task'),
-    addBlocks: z.array(z.string()).optional().describe('Task IDs that this task blocks'),
-    addBlockedBy: z.array(z.string()).optional().describe('Task IDs that block this task'),
-    owner: z.string().optional().describe('New owner for the task'),
+    status: TaskUpdateStatusSchema.optional().describe("New status for the task"),
+    addBlocks: z.array(z.string()).optional().describe("Task IDs that this task blocks"),
+    addBlockedBy: z.array(z.string()).optional().describe("Task IDs that block this task"),
+    owner: z.string().optional().describe("New owner for the task"),
     metadata: z
       .record(z.string(), z.unknown())
       .optional()
-      .describe('Metadata keys to merge into the task. Set a key to null to delete it.'),
+      .describe("Metadata keys to merge into the task. Set a key to null to delete it."),
   });
 });
 type InputSchema = ReturnType<typeof inputSchema>;
@@ -69,7 +69,7 @@ export type Output = z.infer<OutputSchema>;
 
 export const TaskUpdateTool = buildTool({
   name: TASK_UPDATE_TOOL_NAME,
-  searchHint: 'update a task',
+  searchHint: "update a task",
   maxResultSizeChars: 100_000,
   async description() {
     return DESCRIPTION;
@@ -84,7 +84,7 @@ export const TaskUpdateTool = buildTool({
     return outputSchema();
   },
   userFacingName() {
-    return 'TaskUpdate';
+    return "TaskUpdate";
   },
   shouldDefer: true,
   isEnabled() {
@@ -97,7 +97,7 @@ export const TaskUpdateTool = buildTool({
     const parts = [input.taskId];
     if (input.status) parts.push(input.status);
     if (input.subject) parts.push(input.subject);
-    return parts.join(' ');
+    return parts.join(" ");
   },
   renderToolUseMessage() {
     return null;
@@ -110,8 +110,8 @@ export const TaskUpdateTool = buildTool({
 
     // Auto-expand task list when updating tasks
     context.setAppState((prev) => {
-      if (prev.expandedView === 'tasks') return prev;
-      return { ...prev, expandedView: 'tasks' as const };
+      if (prev.expandedView === "tasks") return prev;
+      return { ...prev, expandedView: "tasks" as const };
     });
 
     // Check if task exists
@@ -122,7 +122,7 @@ export const TaskUpdateTool = buildTool({
           success: false,
           taskId,
           updatedFields: [],
-          error: 'Task not found',
+          error: "Task not found",
         },
       };
     }
@@ -140,33 +140,33 @@ export const TaskUpdateTool = buildTool({
     } = {};
     if (subject !== undefined && subject !== existingTask.subject) {
       updates.subject = subject;
-      updatedFields.push('subject');
+      updatedFields.push("subject");
     }
     if (description !== undefined && description !== existingTask.description) {
       updates.description = description;
-      updatedFields.push('description');
+      updatedFields.push("description");
     }
     if (activeForm !== undefined && activeForm !== existingTask.activeForm) {
       updates.activeForm = activeForm;
-      updatedFields.push('activeForm');
+      updatedFields.push("activeForm");
     }
     if (owner !== undefined && owner !== existingTask.owner) {
       updates.owner = owner;
-      updatedFields.push('owner');
+      updatedFields.push("owner");
     }
     // Auto-set owner when a teammate marks a task as in_progress without
     // explicitly providing an owner. This ensures the task list can match
     // todo items to teammates for showing activity status.
     if (
       isAgentSwarmsEnabled() &&
-      status === 'in_progress' &&
+      status === "in_progress" &&
       owner === undefined &&
       !existingTask.owner
     ) {
       const agentName = getAgentName();
       if (agentName) {
         updates.owner = agentName;
-        updatedFields.push('owner');
+        updatedFields.push("owner");
       }
     }
     if (metadata !== undefined) {
@@ -179,19 +179,19 @@ export const TaskUpdateTool = buildTool({
         }
       }
       updates.metadata = merged;
-      updatedFields.push('metadata');
+      updatedFields.push("metadata");
     }
     if (status !== undefined) {
       // Handle deletion - delete the task file and return early
-      if (status === 'deleted') {
+      if (status === "deleted") {
         const deleted = await deleteTask(taskListId, taskId);
         return {
           data: {
             success: deleted,
             taskId,
-            updatedFields: deleted ? ['deleted'] : [],
-            error: deleted ? undefined : 'Failed to delete task',
-            statusChange: deleted ? { from: existingTask.status, to: 'deleted' } : undefined,
+            updatedFields: deleted ? ["deleted"] : [],
+            error: deleted ? undefined : "Failed to delete task",
+            statusChange: deleted ? { from: existingTask.status, to: "deleted" } : undefined,
           },
         };
       }
@@ -199,7 +199,7 @@ export const TaskUpdateTool = buildTool({
       // For regular status updates, validate and apply if different
       if (status !== existingTask.status) {
         // Run TaskCompleted hooks when marking a task as completed
-        if (status === 'completed') {
+        if (status === "completed") {
           const blockingErrors: string[] = [];
 
           const generator = executeTaskCompletedHooks(
@@ -226,14 +226,14 @@ export const TaskUpdateTool = buildTool({
                 success: false,
                 taskId,
                 updatedFields: [],
-                error: blockingErrors.join('\n'),
+                error: blockingErrors.join("\n"),
               },
             };
           }
         }
 
         updates.status = status;
-        updatedFields.push('status');
+        updatedFields.push("status");
       }
     }
 
@@ -243,10 +243,10 @@ export const TaskUpdateTool = buildTool({
 
     // Notify new owner via mailbox when ownership changes
     if (updates.owner && isAgentSwarmsEnabled()) {
-      const senderName = getAgentName() || 'team-lead';
+      const senderName = getAgentName() || "team-lead";
       const senderColor = getTeammateColor();
       const assignmentMessage = JSON.stringify({
-        type: 'task_assignment',
+        type: "task_assignment",
         taskId,
         subject: existingTask.subject,
         description: existingTask.description,
@@ -272,7 +272,7 @@ export const TaskUpdateTool = buildTool({
         await blockTask(taskListId, taskId, blockId);
       }
       if (newBlocks.length > 0) {
-        updatedFields.push('blocks');
+        updatedFields.push("blocks");
       }
     }
 
@@ -283,7 +283,7 @@ export const TaskUpdateTool = buildTool({
         await blockTask(taskListId, blockerId, taskId);
       }
       if (newBlockedBy.length > 0) {
-        updatedFields.push('blockedBy');
+        updatedFields.push("blockedBy");
       }
     }
 
@@ -296,13 +296,13 @@ export const TaskUpdateTool = buildTool({
     // does not touch the public SDK surface.
     let verificationNudgeNeeded = false;
     if (
-      feature('VERIFICATION_AGENT') &&
-      getFeatureValue_CACHED_MAY_BE_STALE('tengu_hive_evidence', false) &&
+      feature("VERIFICATION_AGENT") &&
+      getFeatureValue_CACHED_MAY_BE_STALE("tengu_hive_evidence", false) &&
       !context.agentId &&
-      updates.status === 'completed'
+      updates.status === "completed"
     ) {
       const allTasks = await listTasks(taskListId);
-      const allDone = allTasks.every((t) => t.status === 'completed');
+      const allDone = allTasks.every((t) => t.status === "completed");
       if (allDone && allTasks.length >= 3 && !allTasks.some((t) => /verif/i.test(t.subject))) {
         verificationNudgeNeeded = true;
       }
@@ -330,17 +330,17 @@ export const TaskUpdateTool = buildTool({
       // (e.g., task list already cleaned up) that the model can handle.
       return {
         tool_use_id: toolUseID,
-        type: 'tool_result',
+        type: "tool_result",
         content: error || `Task #${taskId} not found`,
       };
     }
 
-    let resultContent = `Updated task #${taskId} ${updatedFields.join(', ')}`;
+    let resultContent = `Updated task #${taskId} ${updatedFields.join(", ")}`;
 
     // Add reminder for teammates when they complete a task (supports in-process teammates)
-    if (statusChange?.to === 'completed' && getAgentId() && isAgentSwarmsEnabled()) {
+    if (statusChange?.to === "completed" && getAgentId() && isAgentSwarmsEnabled()) {
       resultContent +=
-        '\n\nTask completed. Call TaskList now to find your next available task or see if your work unblocked others.';
+        "\n\nTask completed. Call TaskList now to find your next available task or see if your work unblocked others.";
     }
 
     if (verificationNudgeNeeded) {
@@ -349,7 +349,7 @@ export const TaskUpdateTool = buildTool({
 
     return {
       tool_use_id: toolUseID,
-      type: 'tool_result',
+      type: "tool_result",
       content: resultContent,
     };
   },

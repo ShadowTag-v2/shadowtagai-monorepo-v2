@@ -29,16 +29,16 @@
  *               └── 2.1.3.zip
  */
 
-import { randomBytes } from 'node:crypto';
-import { chmod, lstat, readdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { basename, dirname, join } from 'node:path';
-import { logForDebugging } from '../debug.js';
-import { parseZipModes, unzipFile } from '../dxt/zip.js';
-import { isEnvTruthy } from '../envUtils.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { expandTilde } from '../permissions/pathValidation.js';
-import type { MarketplaceSource } from './schemas.js';
+import { randomBytes } from "node:crypto";
+import { chmod, lstat, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { basename, dirname, join } from "node:path";
+import { logForDebugging } from "../debug.js";
+import { parseZipModes, unzipFile } from "../dxt/zip.js";
+import { isEnvTruthy } from "../envUtils.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { expandTilde } from "../permissions/pathValidation.js";
+import type { MarketplaceSource } from "./schemas.js";
 
 /**
  * Check if the plugin zip cache mode is enabled.
@@ -66,9 +66,9 @@ export function getPluginZipCachePath(): string | undefined {
 export function getZipCacheKnownMarketplacesPath(): string {
   const cachePath = getPluginZipCachePath();
   if (!cachePath) {
-    throw new Error('Plugin zip cache is not enabled');
+    throw new Error("Plugin zip cache is not enabled");
   }
-  return join(cachePath, 'known_marketplaces.json');
+  return join(cachePath, "known_marketplaces.json");
 }
 
 /**
@@ -77,9 +77,9 @@ export function getZipCacheKnownMarketplacesPath(): string {
 export function getZipCacheInstalledPluginsPath(): string {
   const cachePath = getPluginZipCachePath();
   if (!cachePath) {
-    throw new Error('Plugin zip cache is not enabled');
+    throw new Error("Plugin zip cache is not enabled");
   }
-  return join(cachePath, 'installed_plugins.json');
+  return join(cachePath, "installed_plugins.json");
 }
 
 /**
@@ -88,9 +88,9 @@ export function getZipCacheInstalledPluginsPath(): string {
 export function getZipCacheMarketplacesDir(): string {
   const cachePath = getPluginZipCachePath();
   if (!cachePath) {
-    throw new Error('Plugin zip cache is not enabled');
+    throw new Error("Plugin zip cache is not enabled");
   }
-  return join(cachePath, 'marketplaces');
+  return join(cachePath, "marketplaces");
 }
 
 /**
@@ -99,9 +99,9 @@ export function getZipCacheMarketplacesDir(): string {
 export function getZipCachePluginsDir(): string {
   const cachePath = getPluginZipCachePath();
   if (!cachePath) {
-    throw new Error('Plugin zip cache is not enabled');
+    throw new Error("Plugin zip cache is not enabled");
   }
-  return join(cachePath, 'plugins');
+  return join(cachePath, "plugins");
 }
 
 // Session plugin cache: a temp directory on local disk (NOT in the mounted zip cache)
@@ -119,7 +119,7 @@ export async function getSessionPluginCachePath(): Promise<string> {
   }
   if (!sessionPluginCachePromise) {
     sessionPluginCachePromise = (async () => {
-      const suffix = randomBytes(8).toString('hex');
+      const suffix = randomBytes(8).toString("hex");
       const dir = join(tmpdir(), `claude-plugin-session-${suffix}`);
       await getFsImplementation().mkdir(dir);
       sessionPluginCachePath = dir;
@@ -168,12 +168,12 @@ export async function atomicWriteToZipCache(
   const dir = dirname(targetPath);
   await getFsImplementation().mkdir(dir);
 
-  const tmpName = `.${basename(targetPath)}.tmp.${randomBytes(4).toString('hex')}`;
+  const tmpName = `.${basename(targetPath)}.tmp.${randomBytes(4).toString("hex")}`;
   const tmpPath = join(dir, tmpName);
 
   try {
-    if (typeof data === 'string') {
-      await writeFile(tmpPath, data, { encoding: 'utf-8' });
+    if (typeof data === "string") {
+      await writeFile(tmpPath, data, { encoding: "utf-8" });
     } else {
       await writeFile(tmpPath, data);
     }
@@ -205,9 +205,9 @@ type ZipEntry = [Uint8Array, { os: number; attrs: number }];
 export async function createZipFromDirectory(sourceDir: string): Promise<Uint8Array> {
   const files: Record<string, ZipEntry> = {};
   const visited = new Set<string>();
-  await collectFilesForZip(sourceDir, '', files, visited);
+  await collectFilesForZip(sourceDir, "", files, visited);
 
-  const { zipSync } = await import('fflate');
+  const { zipSync } = await import("fflate");
   const zipData = zipSync(files, { level: 6 });
   logForDebugging(
     `Created ZIP from ${sourceDir}: ${Object.keys(files).length} files, ${zipData.length} bytes`,
@@ -262,7 +262,7 @@ async function collectFilesForZip(
 
   for (const entry of entries) {
     // Skip hidden files that are git-related
-    if (entry === '.git') {
+    if (entry === ".git") {
       continue;
     }
 
@@ -326,7 +326,7 @@ export async function extractZipToDirectory(zipPath: string, targetDir: string):
 
   for (const [relPath, data] of Object.entries(files)) {
     // Skip directory entries (trailing slash)
-    if (relPath.endsWith('/')) {
+    if (relPath.endsWith("/")) {
       await getFsImplementation().mkdir(join(targetDir, relPath));
       continue;
     }
@@ -364,8 +364,8 @@ export async function convertDirectoryToZipInPlace(
  * Format: marketplaces/{marketplace-name}.json
  */
 export function getMarketplaceJsonRelativePath(marketplaceName: string): string {
-  const sanitized = marketplaceName.replace(/[^a-zA-Z0-9\-_]/g, '-');
-  return join('marketplaces', `${sanitized}.json`);
+  const sanitized = marketplaceName.replace(/[^a-zA-Z0-9\-_]/g, "-");
+  return join("marketplaces", `${sanitized}.json`);
 }
 
 /**
@@ -380,5 +380,5 @@ export function getMarketplaceJsonRelativePath(marketplaceName: string): string 
  * nonsensical in ephemeral containers), npm (node_modules bloat on Filestore mount).
  */
 export function isMarketplaceSourceSupportedByZipCache(source: MarketplaceSource): boolean {
-  return ['github', 'git', 'url', 'settings'].includes(source.source);
+  return ["github", "git", "url", "settings"].includes(source.source);
 }

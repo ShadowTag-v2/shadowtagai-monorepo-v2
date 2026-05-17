@@ -1,16 +1,16 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, color, Link, Text, useTheme } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
-import type { CommandResultDisplay } from '../../types/command.js';
-import type { SandboxDependencyCheck } from '../../utils/sandbox/sandbox-adapter.js';
-import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js';
-import { getSettings_DEPRECATED } from '../../utils/settings/settings.js';
-import { Select } from '../CustomSelect/select.js';
-import { Pane } from '../design-system/Pane.js';
-import { Tab, Tabs, useTabHeaderFocus } from '../design-system/Tabs.js';
-import { SandboxConfigTab } from './SandboxConfigTab.js';
-import { SandboxDependenciesTab } from './SandboxDependenciesTab.js';
-import { SandboxOverridesTab } from './SandboxOverridesTab.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, color, Link, Text, useTheme } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
+import type { CommandResultDisplay } from "../../types/command.js";
+import type { SandboxDependencyCheck } from "../../utils/sandbox/sandbox-adapter.js";
+import { SandboxManager } from "../../utils/sandbox/sandbox-adapter.js";
+import { getSettings_DEPRECATED } from "../../utils/settings/settings.js";
+import { Select } from "../CustomSelect/select.js";
+import { Pane } from "../design-system/Pane.js";
+import { Tab, Tabs, useTabHeaderFocus } from "../design-system/Tabs.js";
+import { SandboxConfigTab } from "./SandboxConfigTab.js";
+import { SandboxDependenciesTab } from "./SandboxDependenciesTab.js";
+import { SandboxOverridesTab } from "./SandboxOverridesTab.js";
 
 type Props = {
   onComplete: (
@@ -21,7 +21,7 @@ type Props = {
   ) => void;
   depCheck: SandboxDependencyCheck;
 };
-type SandboxMode = 'auto-allow' | 'regular' | 'disabled';
+type SandboxMode = "auto-allow" | "regular" | "disabled";
 export function SandboxSettings(t0) {
   const $ = _c(34);
   const { onComplete, depCheck } = t0;
@@ -30,7 +30,7 @@ export function SandboxSettings(t0) {
   const currentAutoAllow = SandboxManager.isAutoAllowBashIfSandboxedEnabled();
   const hasWarnings = depCheck.warnings.length > 0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = getSettings_DEPRECATED();
     $[0] = t1;
   } else {
@@ -41,17 +41,17 @@ export function SandboxSettings(t0) {
   const showSocketWarning = hasWarnings && !allowAllUnixSockets;
   const getCurrentMode = () => {
     if (!currentEnabled) {
-      return 'disabled';
+      return "disabled";
     }
     if (currentAutoAllow) {
-      return 'auto-allow';
+      return "auto-allow";
     }
-    return 'regular';
+    return "regular";
   };
   const currentMode = getCurrentMode();
   let t2;
   if ($[1] !== theme) {
-    t2 = color('success', theme)('(current)');
+    t2 = color("success", theme)("(current)");
     $[1] = theme;
     $[2] = t2;
   } else {
@@ -59,14 +59,14 @@ export function SandboxSettings(t0) {
   }
   const currentIndicator = t2;
   const t3 =
-    currentMode === 'auto-allow'
+    currentMode === "auto-allow"
       ? `Sandbox BashTool, with auto-allow ${currentIndicator}`
-      : 'Sandbox BashTool, with auto-allow';
+      : "Sandbox BashTool, with auto-allow";
   let t4;
   if ($[3] !== t3) {
     t4 = {
       label: t3,
-      value: 'auto-allow',
+      value: "auto-allow",
     };
     $[3] = t3;
     $[4] = t4;
@@ -74,26 +74,26 @@ export function SandboxSettings(t0) {
     t4 = $[4];
   }
   const t5 =
-    currentMode === 'regular'
+    currentMode === "regular"
       ? `Sandbox BashTool, with regular permissions ${currentIndicator}`
-      : 'Sandbox BashTool, with regular permissions';
+      : "Sandbox BashTool, with regular permissions";
   let t6;
   if ($[5] !== t5) {
     t6 = {
       label: t5,
-      value: 'regular',
+      value: "regular",
     };
     $[5] = t5;
     $[6] = t6;
   } else {
     t6 = $[6];
   }
-  const t7 = currentMode === 'disabled' ? `No Sandbox ${currentIndicator}` : 'No Sandbox';
+  const t7 = currentMode === "disabled" ? `No Sandbox ${currentIndicator}` : "No Sandbox";
   let t8;
   if ($[7] !== t7) {
     t8 = {
       label: t7,
-      value: 'disabled',
+      value: "disabled",
     };
     $[7] = t7;
     $[8] = t8;
@@ -116,28 +116,28 @@ export function SandboxSettings(t0) {
     t10 = async function handleSelect(value) {
       const mode = value as SandboxMode;
       switch (mode) {
-        case 'auto-allow': {
+        case "auto-allow": {
           await SandboxManager.setSandboxSettings({
             enabled: true,
             autoAllowBashIfSandboxed: true,
           });
-          onComplete('\u2713 Sandbox enabled with auto-allow for bash commands');
+          onComplete("\u2713 Sandbox enabled with auto-allow for bash commands");
           break;
         }
-        case 'regular': {
+        case "regular": {
           await SandboxManager.setSandboxSettings({
             enabled: true,
             autoAllowBashIfSandboxed: false,
           });
-          onComplete('\u2713 Sandbox enabled with regular bash permissions');
+          onComplete("\u2713 Sandbox enabled with regular bash permissions");
           break;
         }
-        case 'disabled': {
+        case "disabled": {
           await SandboxManager.setSandboxSettings({
             enabled: false,
             autoAllowBashIfSandboxed: false,
           });
-          onComplete('\u25CB Sandbox disabled');
+          onComplete("\u25CB Sandbox disabled");
         }
       }
     };
@@ -150,9 +150,9 @@ export function SandboxSettings(t0) {
   let t11;
   if ($[15] !== onComplete) {
     t11 = {
-      'confirm:no': () =>
+      "confirm:no": () =>
         onComplete(undefined, {
-          display: 'skip',
+          display: "skip",
         }),
     };
     $[15] = onComplete;
@@ -161,9 +161,9 @@ export function SandboxSettings(t0) {
     t11 = $[16];
   }
   let t12;
-  if ($[17] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
     t12 = {
-      context: 'Settings',
+      context: "Settings",
     };
     $[17] = t12;
   } else {
@@ -210,7 +210,7 @@ export function SandboxSettings(t0) {
   }
   const overridesTab = t14;
   let t15;
-  if ($[25] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[25] === Symbol.for("react.memo_cache_sentinel")) {
     t15 = (
       <Tab key="config" title="Config">
         <SandboxConfigTab />
@@ -291,7 +291,7 @@ function SandboxModeTab(t0) {
     t1 = $[1];
   }
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box marginBottom={1}>
         <Text bold={true}>Configure Mode:</Text>
@@ -305,7 +305,7 @@ function SandboxModeTab(t0) {
   if ($[3] !== onComplete) {
     t3 = () =>
       onComplete(undefined, {
-        display: 'skip',
+        display: "skip",
       });
     $[3] = onComplete;
     $[4] = t3;
@@ -339,12 +339,12 @@ function SandboxModeTab(t0) {
     t4 = $[10];
   }
   let t5;
-  if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Text dimColor={true}>
         <Text bold={true} dimColor={true}>
           Auto-allow mode:
-        </Text>{' '}
+        </Text>{" "}
         Commands will try to run in the sandbox automatically, and attempts to run outside of the
         sandbox fallback to regular permissions. Explicit ask/deny rules are always respected.
       </Text>
@@ -354,12 +354,12 @@ function SandboxModeTab(t0) {
     t5 = $[11];
   }
   let t6;
-  if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Box flexDirection="column" marginTop={1} gap={1}>
         {t5}
         <Text dimColor={true}>
-          Learn more:{' '}
+          Learn more:{" "}
           <Link url="https://code.claude.com/docs/en/sandboxing">
             code.claude.com/docs/en/sandboxing
           </Link>

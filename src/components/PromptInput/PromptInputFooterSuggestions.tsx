@@ -1,10 +1,10 @@
-import { memo } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Box, Text } from '../../ink.js';
-import { truncatePathMiddle, truncateToWidth } from '../../utils/format.js';
-import type { Theme } from '../../utils/theme.js';
+import { memo } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Box, Text } from "../../ink.js";
+import { truncatePathMiddle, truncateToWidth } from "../../utils/format.js";
+import type { Theme } from "../../utils/theme.js";
 export type SuggestionItem = {
   id: string;
   displayText: string;
@@ -14,14 +14,14 @@ export type SuggestionItem = {
   color?: keyof Theme;
 };
 export type SuggestionType =
-  | 'command'
-  | 'file'
-  | 'directory'
-  | 'agent'
-  | 'shell'
-  | 'custom-title'
-  | 'slack-channel'
-  | 'none';
+  | "command"
+  | "file"
+  | "directory"
+  | "agent"
+  | "shell"
+  | "custom-title"
+  | "slack-channel"
+  | "none";
 export const OVERLAY_MAX_ITEMS = 5;
 
 /**
@@ -29,10 +29,10 @@ export const OVERLAY_MAX_ITEMS = 5;
  * Icons: + for files, ◇ for MCP resources, * for agents
  */
 function getIcon(itemId: string): string {
-  if (itemId.startsWith('file-')) return '+';
-  if (itemId.startsWith('mcp-resource-')) return '◇';
-  if (itemId.startsWith('agent-')) return '*';
-  return '+';
+  if (itemId.startsWith("file-")) return "+";
+  if (itemId.startsWith("mcp-resource-")) return "◇";
+  if (itemId.startsWith("agent-")) return "*";
+  return "+";
 }
 
 /**
@@ -40,7 +40,7 @@ function getIcon(itemId: string): string {
  */
 function isUnifiedSuggestion(itemId: string): boolean {
   return (
-    itemId.startsWith('file-') || itemId.startsWith('mcp-resource-') || itemId.startsWith('agent-')
+    itemId.startsWith("file-") || itemId.startsWith("mcp-resource-") || itemId.startsWith("agent-")
   );
 }
 const SuggestionItemRow = memo(function SuggestionItemRow(t0) {
@@ -58,10 +58,10 @@ const SuggestionItemRow = memo(function SuggestionItemRow(t0) {
       t1 = $[1];
     }
     const icon = t1;
-    const textColor = isSelected ? 'suggestion' : undefined;
+    const textColor = isSelected ? "suggestion" : undefined;
     const dimColor = !isSelected;
-    const isFile = item.id.startsWith('file-');
-    const isMcpResource = item.id.startsWith('mcp-resource-');
+    const isFile = item.id.startsWith("file-");
+    const isMcpResource = item.id.startsWith("mcp-resource-");
     const separatorWidth = item.description ? 3 : 0;
     let displayText;
     if (isFile) {
@@ -106,7 +106,7 @@ const SuggestionItemRow = memo(function SuggestionItemRow(t0) {
       const maxDescLength = Math.max(0, availableWidth);
       let t2;
       if ($[9] !== item.description || $[10] !== maxDescLength) {
-        t2 = truncateToWidth(item.description.replace(/\s+/g, ' '), maxDescLength);
+        t2 = truncateToWidth(item.description.replace(/\s+/g, " "), maxDescLength);
         $[9] = item.description;
         $[10] = maxDescLength;
         $[11] = t2;
@@ -139,7 +139,7 @@ const SuggestionItemRow = memo(function SuggestionItemRow(t0) {
     maxColumnWidth ?? stringWidth(item.displayText) + 5,
     maxNameWidth,
   );
-  const textColor_0 = item.color || (isSelected ? 'suggestion' : undefined);
+  const textColor_0 = item.color || (isSelected ? "suggestion" : undefined);
   const shouldDim = !isSelected;
   let displayText_0 = item.displayText;
   if (stringWidth(displayText_0) > displayTextWidth - 2) {
@@ -156,15 +156,15 @@ const SuggestionItemRow = memo(function SuggestionItemRow(t0) {
     displayText_0 = t2;
   }
   const paddedDisplayText =
-    displayText_0 + ' '.repeat(Math.max(0, displayTextWidth - stringWidth(displayText_0)));
-  const tagText = item.tag ? `[${item.tag}] ` : '';
+    displayText_0 + " ".repeat(Math.max(0, displayTextWidth - stringWidth(displayText_0)));
+  const tagText = item.tag ? `[${item.tag}] ` : "";
   const tagWidth = stringWidth(tagText);
   const descriptionWidth = Math.max(0, columns - displayTextWidth - tagWidth - 4);
   let t1;
   if ($[19] !== descriptionWidth || $[20] !== item.description) {
     t1 = item.description
-      ? truncateToWidth(item.description.replace(/\s+/g, ' '), descriptionWidth)
-      : '';
+      ? truncateToWidth(item.description.replace(/\s+/g, " "), descriptionWidth)
+      : "";
     $[19] = descriptionWidth;
     $[20] = item.description;
     $[21] = t1;
@@ -194,7 +194,7 @@ const SuggestionItemRow = memo(function SuggestionItemRow(t0) {
   } else {
     t3 = $[27];
   }
-  const t4 = isSelected ? 'suggestion' : undefined;
+  const t4 = isSelected ? "suggestion" : undefined;
   const t5 = !isSelected;
   let t6;
   if ($[28] !== t4 || $[29] !== t5 || $[30] !== truncatedDescription) {
@@ -279,8 +279,8 @@ export function PromptInputFooterSuggestions(t0) {
   ) {
     const visibleItems = suggestions.slice(startIndex, endIndex);
     T0 = Box;
-    t2 = 'column';
-    t3 = overlay ? undefined : 'flex-end';
+    t2 = "column";
+    t3 = overlay ? undefined : "flex-end";
     let t5;
     if ($[13] !== maxColumnWidth || $[14] !== selectedSuggestion || $[15] !== suggestions) {
       t5 = (item_0) => (

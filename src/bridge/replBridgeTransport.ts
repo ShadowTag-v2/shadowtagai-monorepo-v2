@@ -1,12 +1,12 @@
-import type { StdoutMessage } from 'src/entrypoints/sdk/controlTypes.js';
-import { CCRClient } from '../cli/transports/ccrClient.js';
-import type { HybridTransport } from '../cli/transports/HybridTransport.js';
-import { SSETransport } from '../cli/transports/SSETransport.js';
-import { logForDebugging } from '../utils/debug.js';
-import { errorMessage } from '../utils/errors.js';
-import { updateSessionIngressAuthToken } from '../utils/sessionIngressAuth.js';
-import type { SessionState } from '../utils/sessionState.js';
-import { registerWorker } from './workSecret.js';
+import type { StdoutMessage } from "src/entrypoints/sdk/controlTypes.js";
+import { CCRClient } from "../cli/transports/ccrClient.js";
+import type { HybridTransport } from "../cli/transports/HybridTransport.js";
+import { SSETransport } from "../cli/transports/SSETransport.js";
+import { logForDebugging } from "../utils/debug.js";
+import { errorMessage } from "../utils/errors.js";
+import { updateSessionIngressAuthToken } from "../utils/sessionIngressAuth.js";
+import type { SessionState } from "../utils/sessionState.js";
+import { registerWorker } from "./workSecret.js";
 
 /**
  * Transport abstraction for replBridge. Covers exactly the surface that
@@ -61,7 +61,7 @@ export type ReplBridgeTransport = {
    * CCR's processing_at/processed_at columns. `received` is auto-fired by
    * CCRClient on every SSE frame and is not exposed here.
    */
-  reportDelivery(eventId: string, status: 'processing' | 'processed'): void;
+  reportDelivery(eventId: string, status: "processing" | "processed"): void;
   /**
    * Drain the write queue before close() (v2 only; v1 resolves
    * immediately — HybridTransport POSTs are already awaited per-write).
@@ -174,13 +174,13 @@ export async function createV2ReplTransport(opts: {
 
   const epoch = opts.epoch ?? (await registerWorker(sessionUrl, ingressToken));
   logForDebugging(
-    `[bridge:repl] CCR v2: worker sessionId=${sessionId} epoch=${epoch}${opts.epoch !== undefined ? ' (from /bridge)' : ' (via registerWorker)'}`,
+    `[bridge:repl] CCR v2: worker sessionId=${sessionId} epoch=${epoch}${opts.epoch !== undefined ? " (from /bridge)" : " (via registerWorker)"}`,
   );
 
   // Derive SSE stream URL. Same logic as transportUtils.ts:26-33 but
   // starting from an http(s) base instead of a --sdk-url that might be ws://.
   const sseUrl = new URL(sessionUrl);
-  sseUrl.pathname = `${sseUrl.pathname.replace(/\/$/, '')}/worker/events/stream`;
+  sseUrl.pathname = `${sseUrl.pathname.replace(/\/$/, "")}/worker/events/stream`;
 
   const sse = new SSETransport(
     sseUrl,
@@ -200,7 +200,7 @@ export async function createV2ReplTransport(opts: {
     // loop, which picks up the server's re-dispatch (with fresh epoch).
     onEpochMismatch: () => {
       logForDebugging(
-        '[bridge:repl] CCR v2: epoch superseded (409) — closing for poll-loop recovery',
+        "[bridge:repl] CCR v2: epoch superseded (409) — closing for poll-loop recovery",
       );
       // Close resources in a try block so the throw always executes.
       // If ccr.close() or sse.close() throw, we still need to unwind
@@ -213,13 +213,13 @@ export async function createV2ReplTransport(opts: {
       } catch (closeErr: unknown) {
         logForDebugging(
           `[bridge:repl] CCR v2: error during epoch-mismatch cleanup: ${errorMessage(closeErr)}`,
-          { level: 'error' },
+          { level: "error" },
         );
       }
       // Don't return — the calling request() code continues after the 409
       // branch, so callers see the logged warning and a false return. We
       // throw to unwind; the uploaders catch it as a send failure.
-      throw new Error('epoch superseded');
+      throw new Error("epoch superseded");
     },
   });
 
@@ -239,8 +239,8 @@ export async function createV2ReplTransport(opts: {
   // every restart. Overwrite the constructor's wiring to do both — setOnEvent
   // replaces, not appends (SSETransport.ts:658).
   sse.setOnEvent((event) => {
-    ccr.reportDelivery(event.event_id, 'received');
-    ccr.reportDelivery(event.event_id, 'processed');
+    ccr.reportDelivery(event.event_id, "received");
+    ccr.reportDelivery(event.event_id, "processed");
   });
 
   // Both sse.connect() and ccr.initialize() are deferred to connect() below.
@@ -286,9 +286,9 @@ export async function createV2ReplTransport(opts: {
     getStateLabel() {
       // SSETransport doesn't expose its state string; synthesize from
       // what we can observe. replBridge only uses this for debug logging.
-      if (sse.isClosedStatus()) return 'closed';
-      if (sse.isConnectedStatus()) return ccrInitialized ? 'connected' : 'init';
-      return 'connecting';
+      if (sse.isClosedStatus()) return "closed";
+      if (sse.isConnectedStatus()) return ccrInitialized ? "connected" : "init";
+      return "connecting";
     },
     setOnData(cb) {
       sse.setOnData(cb);
@@ -339,13 +339,13 @@ export async function createV2ReplTransport(opts: {
         () => {
           ccrInitialized = true;
           logForDebugging(
-            `[bridge:repl] v2 transport ready for writes (epoch=${epoch}, sse=${sse.isConnectedStatus() ? 'open' : 'opening'})`,
+            `[bridge:repl] v2 transport ready for writes (epoch=${epoch}, sse=${sse.isConnectedStatus() ? "open" : "opening"})`,
           );
           onConnectCb?.();
         },
         (err: unknown) => {
           logForDebugging(`[bridge:repl] CCR v2 initialize failed: ${errorMessage(err)}`, {
-            level: 'error',
+            level: "error",
           });
           // Close transport resources and notify replBridge via onClose
           // so the poll loop can retry on the next work dispatch.

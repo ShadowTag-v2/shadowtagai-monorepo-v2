@@ -1,8 +1,8 @@
-import { feature } from 'bun:bundle';
-import { appendFileSync } from 'node:fs';
-import type React from 'react';
-import { logEvent } from 'src/services/analytics/index.js';
-import { gracefulShutdown, gracefulShutdownSync } from 'src/utils/gracefulShutdown.js';
+import { feature } from "bun:bundle";
+import { appendFileSync } from "node:fs";
+import type React from "react";
+import { logEvent } from "src/services/analytics/index.js";
+import { gracefulShutdown, gracefulShutdownSync } from "src/utils/gracefulShutdown.js";
 import {
   type ChannelEntry,
   getAllowedChannels,
@@ -10,48 +10,48 @@ import {
   setHasDevChannels,
   setSessionTrustAccepted,
   setStatsStore,
-} from './bootstrap/state.js';
-import type { Command } from './commands.js';
-import { createStatsStore, type StatsStore } from './context/stats.js';
-import { getSystemContext } from './context.js';
-import { initializeTelemetryAfterTrust } from './entrypoints/init.js';
-import { isSynchronizedOutputSupported } from './ink/terminal.js';
-import type { RenderOptions, Root, TextProps } from './ink.js';
-import { KeybindingSetup } from './keybindings/KeybindingProviderSetup.js';
-import { startDeferredPrefetches } from './main.js';
+} from "./bootstrap/state.js";
+import type { Command } from "./commands.js";
+import { createStatsStore, type StatsStore } from "./context/stats.js";
+import { getSystemContext } from "./context.js";
+import { initializeTelemetryAfterTrust } from "./entrypoints/init.js";
+import { isSynchronizedOutputSupported } from "./ink/terminal.js";
+import type { RenderOptions, Root, TextProps } from "./ink.js";
+import { KeybindingSetup } from "./keybindings/KeybindingProviderSetup.js";
+import { startDeferredPrefetches } from "./main.js";
 import {
   checkGate_CACHED_OR_BLOCKING,
   initializeGrowthBook,
   resetGrowthBook,
-} from './services/analytics/growthbook.js';
-import { isQualifiedForGrove } from './services/api/grove.js';
-import { handleMcpjsonServerApprovals } from './services/mcpServerApproval.js';
-import { AppStateProvider } from './state/AppState.js';
-import { onChangeAppState } from './state/onChangeAppState.js';
-import { normalizeApiKeyForConfig } from './utils/authPortable.js';
+} from "./services/analytics/growthbook.js";
+import { isQualifiedForGrove } from "./services/api/grove.js";
+import { handleMcpjsonServerApprovals } from "./services/mcpServerApproval.js";
+import { AppStateProvider } from "./state/AppState.js";
+import { onChangeAppState } from "./state/onChangeAppState.js";
+import { normalizeApiKeyForConfig } from "./utils/authPortable.js";
 import {
   getExternalClaudeMdIncludes,
   getMemoryFiles,
   shouldShowClaudeMdExternalIncludesWarning,
-} from './utils/claudemd.js';
+} from "./utils/claudemd.js";
 import {
   checkHasTrustDialogAccepted,
   getCustomApiKeyStatus,
   getGlobalConfig,
   saveGlobalConfig,
-} from './utils/config.js';
-import { updateDeepLinkTerminalPreference } from './utils/deepLink/terminalPreference.js';
-import { isEnvTruthy, isRunningOnHomespace } from './utils/envUtils.js';
-import { type FpsMetrics, FpsTracker } from './utils/fpsTracker.js';
-import { updateGithubRepoPathMapping } from './utils/githubRepoPathMapping.js';
-import { applyConfigEnvironmentVariables } from './utils/managedEnv.js';
-import type { PermissionMode } from './utils/permissions/PermissionMode.js';
-import { getBaseRenderOptions } from './utils/renderOptions.js';
-import { getSettingsWithAllErrors } from './utils/settings/allErrors.js';
+} from "./utils/config.js";
+import { updateDeepLinkTerminalPreference } from "./utils/deepLink/terminalPreference.js";
+import { isEnvTruthy, isRunningOnHomespace } from "./utils/envUtils.js";
+import { type FpsMetrics, FpsTracker } from "./utils/fpsTracker.js";
+import { updateGithubRepoPathMapping } from "./utils/githubRepoPathMapping.js";
+import { applyConfigEnvironmentVariables } from "./utils/managedEnv.js";
+import type { PermissionMode } from "./utils/permissions/PermissionMode.js";
+import { getBaseRenderOptions } from "./utils/renderOptions.js";
+import { getSettingsWithAllErrors } from "./utils/settings/allErrors.js";
 import {
   hasAutoModeOptIn,
   hasSkipDangerousModePermissionPrompt,
-} from './utils/settings/settings.js';
+} from "./utils/settings/settings.js";
 export function completeOnboarding(): void {
   saveGlobalConfig((current) => ({
     ...current,
@@ -81,7 +81,7 @@ export async function exitWithError(
   beforeExit?: () => Promise<void>,
 ): Promise<never> {
   return exitWithMessage(root, message, {
-    color: 'error',
+    color: "error",
     beforeExit,
   });
 }
@@ -96,12 +96,12 @@ export async function exitWithMessage(
   root: Root,
   message: string,
   options?: {
-    color?: TextProps['color'];
+    color?: TextProps["color"];
     exitCode?: number;
     beforeExit?: () => Promise<void>;
   },
 ): Promise<never> {
-  const { Text } = await import('./ink.js');
+  const { Text } = await import("./ink.js");
   const color = options?.color;
   const exitCode = options?.exitCode ?? 1;
   root.render(color ? <Text color={color}>{message}</Text> : <Text>{message}</Text>);
@@ -148,7 +148,7 @@ export async function showSetupScreens(
   devChannels?: ChannelEntry[],
 ): Promise<boolean> {
   if (
-    'production' === 'test' ||
+    "production" === "test" ||
     isEnvTruthy(false) ||
     process.env.IS_DEMO // Skip onboarding in demo mode
   ) {
@@ -161,7 +161,7 @@ export async function showSetupScreens(
     !config.hasCompletedOnboarding // always show onboarding at least once
   ) {
     onboardingShown = true;
-    const { Onboarding } = await import('./components/Onboarding.js');
+    const { Onboarding } = await import("./components/Onboarding.js");
     await showSetupDialog(
       root,
       (done) => (
@@ -189,7 +189,7 @@ export async function showSetupScreens(
     // If it returns true, the TrustDialog would auto-resolve regardless of
     // security features, so we can skip the dynamic import and render cycle.
     if (!checkHasTrustDialogAccepted()) {
-      const { TrustDialog } = await import('./components/TrustDialog/TrustDialog.js');
+      const { TrustDialog } = await import("./components/TrustDialog/TrustDialog.js");
       await showSetupDialog(root, (done) => <TrustDialog commands={commands} onDone={done} />);
     }
 
@@ -216,7 +216,7 @@ export async function showSetupScreens(
     if (await shouldShowClaudeMdExternalIncludesWarning()) {
       const externalIncludes = getExternalClaudeMdIncludes(await getMemoryFiles(true));
       const { ClaudeMdExternalIncludesDialog } = await import(
-        './components/ClaudeMdExternalIncludesDialog.js'
+        "./components/ClaudeMdExternalIncludesDialog.js"
       );
       await showSetupDialog(root, (done) => (
         <ClaudeMdExternalIncludesDialog
@@ -231,7 +231,7 @@ export async function showSetupScreens(
   // Track current repo path for teleport directory switching (fire-and-forget)
   // This must happen AFTER trust to prevent untrusted directories from poisoning the mapping
   void updateGithubRepoPathMapping();
-  if (feature('LODESTONE')) {
+  if (feature("LODESTONE")) {
     updateDeepLinkTerminalPreference();
   }
 
@@ -247,16 +247,16 @@ export async function showSetupScreens(
   // instead of during the pre-render microtask queue.
   setImmediate(() => initializeTelemetryAfterTrust());
   if (await isQualifiedForGrove()) {
-    const { GroveDialog } = await import('src/components/grove/Grove.js');
+    const { GroveDialog } = await import("src/components/grove/Grove.js");
     const decision = await showSetupDialog<string>(root, (done) => (
       <GroveDialog
         showIfAlreadyViewed={false}
-        location={onboardingShown ? 'onboarding' : 'policy_update_modal'}
+        location={onboardingShown ? "onboarding" : "policy_update_modal"}
         onDone={done}
       />
     ));
-    if (decision === 'escape') {
-      logEvent('tengu_grove_policy_exited', {});
+    if (decision === "escape") {
+      logEvent("tengu_grove_policy_exited", {});
       gracefulShutdownSync(0);
       return false;
     }
@@ -268,8 +268,8 @@ export async function showSetupScreens(
   if (process.env.ANTHROPIC_API_KEY && !isRunningOnHomespace()) {
     const customApiKeyTruncated = normalizeApiKeyForConfig(process.env.ANTHROPIC_API_KEY);
     const keyStatus = getCustomApiKeyStatus(customApiKeyTruncated);
-    if (keyStatus === 'new') {
-      const { ApproveApiKey } = await import('./components/ApproveApiKey.js');
+    if (keyStatus === "new") {
+      const { ApproveApiKey } = await import("./components/ApproveApiKey.js");
       await showSetupDialog<boolean>(
         root,
         (done) => <ApproveApiKey customApiKeyTruncated={customApiKeyTruncated} onDone={done} />,
@@ -280,21 +280,21 @@ export async function showSetupScreens(
     }
   }
   if (
-    (permissionMode === 'bypassPermissions' || allowDangerouslySkipPermissions) &&
+    (permissionMode === "bypassPermissions" || allowDangerouslySkipPermissions) &&
     !hasSkipDangerousModePermissionPrompt()
   ) {
     const { BypassPermissionsModeDialog } = await import(
-      './components/BypassPermissionsModeDialog.js'
+      "./components/BypassPermissionsModeDialog.js"
     );
     await showSetupDialog(root, (done) => <BypassPermissionsModeDialog onAccept={done} />);
   }
-  if (feature('TRANSCRIPT_CLASSIFIER')) {
+  if (feature("TRANSCRIPT_CLASSIFIER")) {
     // Only show the opt-in dialog if auto mode actually resolved — if the
     // gate denied it (org not allowlisted, settings disabled), showing
     // consent for an unavailable feature is pointless. The
     // verifyAutoModeGateAccess notification will explain why instead.
-    if (permissionMode === 'auto' && !hasAutoModeOptIn()) {
-      const { AutoModeOptInDialog } = await import('./components/AutoModeOptInDialog.js');
+    if (permissionMode === "auto" && !hasAutoModeOptIn()) {
+      const { AutoModeOptInDialog } = await import("./components/AutoModeOptInDialog.js");
       await showSetupDialog(root, (done) => (
         <AutoModeOptInDialog
           onAccept={done}
@@ -309,7 +309,7 @@ export async function showSetupScreens(
   // dev channels to any --channels list already set in main.tsx. Org policy
   // is NOT bypassed — gateChannelServer() still runs; this flag only exists
   // to sidestep the --channels approved-server allowlist.
-  if (feature('KAIROS') || feature('KAIROS_CHANNELS')) {
+  if (feature("KAIROS") || feature("KAIROS_CHANNELS")) {
     // gateChannelServer and ChannelsNotice read tengu_harbor after this
     // function returns. A cold disk cache (fresh install, or first run after
     // the flag was added server-side) defaults to false and silently drops
@@ -319,12 +319,12 @@ export async function showSetupScreens(
     // initializeGrowthBook promise fired earlier). Also warms the
     // isChannelsEnabled() check in the dev-channels dialog below.
     if (getAllowedChannels().length > 0 || (devChannels?.length ?? 0) > 0) {
-      await checkGate_CACHED_OR_BLOCKING('tengu_harbor');
+      await checkGate_CACHED_OR_BLOCKING("tengu_harbor");
     }
     if (devChannels && devChannels.length > 0) {
       const [{ isChannelsEnabled }, { getClaudeAIOAuthTokens }] = await Promise.all([
-        import('./services/mcp/channelAllowlist.js'),
-        import('./utils/auth.js'),
+        import("./services/mcp/channelAllowlist.js"),
+        import("./utils/auth.js"),
       ]);
       // Skip the dialog when channels are blocked (tengu_harbor off or no
       // OAuth) — accepting then immediately seeing "not available" in
@@ -343,7 +343,7 @@ export async function showSetupScreens(
         ]);
         setHasDevChannels(true);
       } else {
-        const { DevChannelsDialog } = await import('./components/DevChannelsDialog.js');
+        const { DevChannelsDialog } = await import("./components/DevChannelsDialog.js");
         await showSetupDialog(root, (done) => (
           <DevChannelsDialog
             channels={devChannels}
@@ -368,7 +368,7 @@ export async function showSetupScreens(
 
   // Show Chrome onboarding for first-time Claude in Chrome users
   if (claudeInChrome && !getGlobalConfig().hasCompletedClaudeInChromeOnboarding) {
-    const { ClaudeInChromeOnboarding } = await import('./components/ClaudeInChromeOnboarding.js');
+    const { ClaudeInChromeOnboarding } = await import("./components/ClaudeInChromeOnboarding.js");
     await showSetupDialog(root, (done) => <ClaudeInChromeOnboarding onDone={done} />);
   }
   return onboardingShown;
@@ -383,7 +383,7 @@ export function getRenderContext(exitOnCtrlC: boolean): {
 
   // Log analytics event when stdin override is active
   if (baseOptions.stdin) {
-    logEvent('tengu_stdin_interactive', {});
+    logEvent("tengu_stdin_interactive", {});
   }
   const fpsTracker = new FpsTracker();
   const stats = createStatsStore();
@@ -401,7 +401,7 @@ export function getRenderContext(exitOnCtrlC: boolean): {
       ...baseOptions,
       onFrame: (event) => {
         fpsTracker.record(event.durationMs);
-        stats.observe('frame_duration_ms', event.durationMs);
+        stats.observe("frame_duration_ms", event.durationMs);
         if (frameTimingLogPath && event.phases) {
           // Bench-only env-var-gated path: sync write so no frames dropped
           // on abrupt exit. ~100 bytes at ≤60fps is negligible. rss/cpu are
@@ -423,12 +423,12 @@ export function getRenderContext(exitOnCtrlC: boolean): {
           return;
         }
         for (const flicker of event.flickers) {
-          if (flicker.reason === 'resize') {
+          if (flicker.reason === "resize") {
             continue;
           }
           const now = Date.now();
           if (now - lastFlickerTime < 1000) {
-            logEvent('tengu_flicker', {
+            logEvent("tengu_flicker", {
               desiredHeight: flicker.desiredHeight,
               actualHeight: flicker.availableHeight,
               reason: flicker.reason,

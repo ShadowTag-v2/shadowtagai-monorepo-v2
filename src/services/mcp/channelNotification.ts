@@ -16,24 +16,24 @@
  * must explicitly opt in via channelsEnabled: true in managed settings.
  */
 
-import type { ServerCapabilities } from '@modelcontextprotocol/sdk/types.js';
-import { z } from 'zod/v4';
-import { type ChannelEntry, getAllowedChannels } from '../../bootstrap/state.js';
-import { CHANNEL_TAG } from '../../constants/xml.js';
-import { getClaudeAIOAuthTokens, getSubscriptionType } from '../../utils/auth.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { parsePluginIdentifier } from '../../utils/plugins/pluginIdentifier.js';
-import { getSettingsForSource } from '../../utils/settings/settings.js';
-import { escapeXmlAttr } from '../../utils/xml.js';
+import type { ServerCapabilities } from "@modelcontextprotocol/sdk/types.js";
+import { z } from "zod/v4";
+import { type ChannelEntry, getAllowedChannels } from "../../bootstrap/state.js";
+import { CHANNEL_TAG } from "../../constants/xml.js";
+import { getClaudeAIOAuthTokens, getSubscriptionType } from "../../utils/auth.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { parsePluginIdentifier } from "../../utils/plugins/pluginIdentifier.js";
+import { getSettingsForSource } from "../../utils/settings/settings.js";
+import { escapeXmlAttr } from "../../utils/xml.js";
 import {
   type ChannelAllowlistEntry,
   getChannelAllowlist,
   isChannelsEnabled,
-} from './channelAllowlist.js';
+} from "./channelAllowlist.js";
 
 export const ChannelMessageNotificationSchema = lazySchema(() =>
   z.object({
-    method: z.literal('notifications/claude/channel'),
+    method: z.literal("notifications/claude/channel"),
     params: z.object({
       content: z.string(),
       // Opaque passthrough — thread_id, user, whatever the channel wants the
@@ -56,13 +56,13 @@ export const ChannelMessageNotificationSchema = lazySchema(() =>
  * channel can never accidentally match — approval requires the server
  * to deliberately emit this specific event.
  */
-export const CHANNEL_PERMISSION_METHOD = 'notifications/claude/channel/permission';
+export const CHANNEL_PERMISSION_METHOD = "notifications/claude/channel/permission";
 export const ChannelPermissionNotificationSchema = lazySchema(() =>
   z.object({
     method: z.literal(CHANNEL_PERMISSION_METHOD),
     params: z.object({
       request_id: z.string(),
-      behavior: z.enum(['allow', 'deny']),
+      behavior: z.enum(["allow", "deny"]),
     }),
   }),
 );
@@ -78,7 +78,7 @@ export const ChannelPermissionNotificationSchema = lazySchema(() =>
  * Not a zod schema — CC SENDS this, doesn't validate it. A type here
  * keeps both halves of the protocol documented side by side.
  */
-export const CHANNEL_PERMISSION_REQUEST_METHOD = 'notifications/claude/channel/permission_request';
+export const CHANNEL_PERMISSION_REQUEST_METHOD = "notifications/claude/channel/permission_request";
 export type ChannelPermissionRequestParams = {
   request_id: string;
   tool_name: string;
@@ -106,7 +106,7 @@ export function wrapChannelMessage(
   const attrs = Object.entries(meta ?? {})
     .filter(([k]) => SAFE_META_KEY.test(k))
     .map(([k, v]) => ` ${k}="${escapeXmlAttr(v)}"`)
-    .join('');
+    .join("");
   return `<${CHANNEL_TAG} source="${escapeXmlAttr(serverName)}"${attrs}>\n${content}\n</${CHANNEL_TAG}>`;
 }
 
@@ -124,19 +124,19 @@ export function getEffectiveChannelAllowlist(
   orgList: ChannelAllowlistEntry[] | undefined,
 ): {
   entries: ChannelAllowlistEntry[];
-  source: 'org' | 'ledger';
+  source: "org" | "ledger";
 } {
-  if ((sub === 'team' || sub === 'enterprise') && orgList) {
-    return { entries: orgList, source: 'org' };
+  if ((sub === "team" || sub === "enterprise") && orgList) {
+    return { entries: orgList, source: "org" };
   }
-  return { entries: getChannelAllowlist(), source: 'ledger' };
+  return { entries: getChannelAllowlist(), source: "ledger" };
 }
 
 export type ChannelGateResult =
-  | { action: 'register' }
+  | { action: "register" }
   | {
-      action: 'skip';
-      kind: 'capability' | 'disabled' | 'auth' | 'policy' | 'session' | 'marketplace' | 'allowlist';
+      action: "skip";
+      kind: "capability" | "disabled" | "auth" | "policy" | "session" | "marketplace" | "allowlist";
       reason: string;
     };
 
@@ -152,9 +152,9 @@ export function findChannelEntry(
 ): ChannelEntry | undefined {
   // split unconditionally — for a bare name like 'slack', parts is ['slack']
   // and the plugin-kind branch correctly never matches (parts[0] !== 'plugin').
-  const parts = serverName.split(':');
+  const parts = serverName.split(":");
   return channels.find((c) =>
-    c.kind === 'server' ? serverName === c.name : parts[0] === 'plugin' && parts[1] === c.name,
+    c.kind === "server" ? serverName === c.name : parts[0] === "plugin" && parts[1] === c.name,
   );
 }
 
@@ -183,11 +183,11 @@ export function gateChannelServer(
   // presence-signal idiom — same as `tools: {}`). Truthy covers `{}` and
   // `true`; absent/undefined/explicit-`false` all fail. Key matches the
   // notification method namespace (notifications/claude/channel).
-  if (!capabilities?.experimental?.['claude/channel']) {
+  if (!capabilities?.experimental?.["claude/channel"]) {
     return {
-      action: 'skip',
-      kind: 'capability',
-      reason: 'server did not declare claude/channel capability',
+      action: "skip",
+      kind: "capability",
+      reason: "server did not declare claude/channel capability",
     };
   }
 
@@ -196,9 +196,9 @@ export function gateChannelServer(
   // session state.
   if (!isChannelsEnabled()) {
     return {
-      action: 'skip',
-      kind: 'disabled',
-      reason: 'channels feature is not currently available',
+      action: "skip",
+      kind: "disabled",
+      reason: "channels feature is not currently available",
     };
   }
 
@@ -207,9 +207,9 @@ export function gateChannelServer(
   // flow doesn't exist for them. Drop this when console parity lands.
   if (!getClaudeAIOAuthTokens()?.accessToken) {
     return {
-      action: 'skip',
-      kind: 'auth',
-      reason: 'channels requires claude.ai authentication (run /login)',
+      action: "skip",
+      kind: "auth",
+      reason: "channels requires claude.ai authentication (run /login)",
     };
   }
 
@@ -219,13 +219,13 @@ export function gateChannelServer(
   // (remote endpoint returns 404) is still a managed org and must not fall
   // through to the unmanaged path.
   const sub = getSubscriptionType();
-  const managed = sub === 'team' || sub === 'enterprise';
-  const policy = managed ? getSettingsForSource('policySettings') : undefined;
+  const managed = sub === "team" || sub === "enterprise";
+  const policy = managed ? getSettingsForSource("policySettings") : undefined;
   if (managed && policy?.channelsEnabled !== true) {
     return {
-      action: 'skip',
-      kind: 'policy',
-      reason: 'channels not enabled by org policy (set channelsEnabled: true in managed settings)',
+      action: "skip",
+      kind: "policy",
+      reason: "channels not enabled by org policy (set channelsEnabled: true in managed settings)",
     };
   }
 
@@ -235,13 +235,13 @@ export function gateChannelServer(
   const entry = findChannelEntry(serverName, getAllowedChannels());
   if (!entry) {
     return {
-      action: 'skip',
-      kind: 'session',
+      action: "skip",
+      kind: "session",
       reason: `server ${serverName} not in --channels list for this session`,
     };
   }
 
-  if (entry.kind === 'plugin') {
+  if (entry.kind === "plugin") {
     // Marketplace verification: the tag is intent (plugin:slack@anthropic),
     // the runtime name is just plugin:slack:X — could be slack@anthropic or
     // slack@evil depending on what's installed. Verify they match before
@@ -252,9 +252,9 @@ export function gateChannelServer(
     const actual = pluginSource ? parsePluginIdentifier(pluginSource).marketplace : undefined;
     if (actual !== entry.marketplace) {
       return {
-        action: 'skip',
-        kind: 'marketplace',
-        reason: `you asked for plugin:${entry.name}@${entry.marketplace} but the installed ${entry.name} plugin is from ${actual ?? 'an unknown source'}`,
+        action: "skip",
+        kind: "marketplace",
+        reason: `you asked for plugin:${entry.name}@${entry.marketplace} but the installed ${entry.name} plugin is from ${actual ?? "an unknown source"}`,
       };
     }
 
@@ -266,10 +266,10 @@ export function gateChannelServer(
       const { entries, source } = getEffectiveChannelAllowlist(sub, policy?.allowedChannelPlugins);
       if (!entries.some((e) => e.plugin === entry.name && e.marketplace === entry.marketplace)) {
         return {
-          action: 'skip',
-          kind: 'allowlist',
+          action: "skip",
+          kind: "allowlist",
           reason:
-            source === 'org'
+            source === "org"
               ? `plugin ${entry.name}@${entry.marketplace} is not on your org's approved channels list (set allowedChannelPlugins in managed settings)`
               : `plugin ${entry.name}@${entry.marketplace} is not on the approved channels allowlist (use --dangerously-load-development-channels for local dev)`,
         };
@@ -281,12 +281,12 @@ export function gateChannelServer(
     // match a plugin's runtime name and register with no allowlist check.
     if (!entry.dev) {
       return {
-        action: 'skip',
-        kind: 'allowlist',
+        action: "skip",
+        kind: "allowlist",
         reason: `server ${entry.name} is not on the approved channels allowlist (use --dangerously-load-development-channels for local dev)`,
       };
     }
   }
 
-  return { action: 'register' };
+  return { action: "register" };
 }

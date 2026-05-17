@@ -1,15 +1,15 @@
-import { isAbsolute, join } from 'node:path';
-import chokidar, { type FSWatcher } from 'chokidar';
-import { registerCleanup } from '../cleanupRegistry.js';
-import { logForDebugging } from '../debug.js';
-import { errorMessage } from '../errors.js';
+import { isAbsolute, join } from "node:path";
+import chokidar, { type FSWatcher } from "chokidar";
+import { registerCleanup } from "../cleanupRegistry.js";
+import { logForDebugging } from "../debug.js";
+import { errorMessage } from "../errors.js";
 import {
   executeCwdChangedHooks,
   executeFileChangedHooks,
   type HookOutsideReplResult,
-} from '../hooks.js';
-import { clearCwdEnvFiles } from '../sessionEnvironment.js';
-import { getHooksConfigFromSnapshot } from './hooksConfigSnapshot.js';
+} from "../hooks.js";
+import { clearCwdEnvFiles } from "../sessionEnvironment.js";
+import { getHooksConfigFromSnapshot } from "./hooksConfigSnapshot.js";
 
 let watcher: FSWatcher | null = null;
 let currentCwd: string;
@@ -48,7 +48,7 @@ function resolveWatchPaths(config?: ReturnType<typeof getHooksConfigFromSnapshot
   const staticPaths: string[] = [];
   for (const m of matchers) {
     if (!m.matcher) continue;
-    for (const name of m.matcher.split('|').map((s) => s.trim())) {
+    for (const name of m.matcher.split("|").map((s) => s.trim())) {
       if (!name) continue;
       staticPaths.push(isAbsolute(name) ? name : join(currentCwd, name));
     }
@@ -66,12 +66,12 @@ function startWatching(paths: string[]): void {
     awaitWriteFinish: { stabilityThreshold: 500, pollInterval: 200 },
     ignorePermissionErrors: true,
   });
-  watcher.on('change', (p) => handleFileEvent(p, 'change'));
-  watcher.on('add', (p) => handleFileEvent(p, 'add'));
-  watcher.on('unlink', (p) => handleFileEvent(p, 'unlink'));
+  watcher.on("change", (p) => handleFileEvent(p, "change"));
+  watcher.on("add", (p) => handleFileEvent(p, "add"));
+  watcher.on("unlink", (p) => handleFileEvent(p, "unlink"));
 }
 
-function handleFileEvent(path: string, event: 'change' | 'add' | 'unlink'): void {
+function handleFileEvent(path: string, event: "change" | "add" | "unlink"): void {
   logForDebugging(`FileChanged: ${event} ${path}`);
   void executeFileChangedHooks(path, event)
     .then(({ results, watchPaths, systemMessages }) => {
@@ -90,7 +90,7 @@ function handleFileEvent(path: string, event: 'change' | 'add' | 'unlink'): void
     .catch((e) => {
       const msg = errorMessage(e);
       logForDebugging(`FileChanged hook failed: ${msg}`, {
-        level: 'error',
+        level: "error",
       });
       notifyCallback?.(msg, true);
     });
@@ -135,7 +135,7 @@ export async function onCwdChangedForHooks(oldCwd: string, newCwd: string): Prom
   const hookResult = await executeCwdChangedHooks(oldCwd, newCwd).catch((e) => {
     const msg = errorMessage(e);
     logForDebugging(`CwdChanged hook failed: ${msg}`, {
-      level: 'error',
+      level: "error",
     });
     notifyCallback?.(msg, true);
     return {

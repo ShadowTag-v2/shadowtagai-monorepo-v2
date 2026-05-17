@@ -1,4 +1,4 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 
 type Props = {
   /**
@@ -33,7 +33,7 @@ export function RawAnsi(t0) {
   }
   let t1;
   if ($[0] !== lines) {
-    t1 = lines.join('\n');
+    t1 = lines.join("\n");
     $[0] = lines;
     $[1] = t1;
   } else {

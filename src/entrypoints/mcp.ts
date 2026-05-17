@@ -1,30 +1,30 @@
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
   CallToolRequestSchema,
   type CallToolResult,
   ListToolsRequestSchema,
   type ListToolsResult,
   type Tool,
-} from '@modelcontextprotocol/sdk/types.js';
-import { getDefaultAppState } from 'src/state/AppStateStore.js';
-import review from '../commands/review.js';
-import type { Command } from '../commands.js';
-import { findToolByName, getEmptyToolPermissionContext, type ToolUseContext } from '../Tool.js';
-import { getTools } from '../tools.js';
-import { createAbortController } from '../utils/abortController.js';
-import { createFileStateCacheWithSizeLimit } from '../utils/fileStateCache.js';
-import { logError } from '../utils/log.js';
-import { createAssistantMessage } from '../utils/messages.js';
-import { getMainLoopModel } from '../utils/model/model.js';
-import { hasPermissionsToUseTool } from '../utils/permissions/permissions.js';
-import { setCwd } from '../utils/Shell.js';
-import { jsonStringify } from '../utils/slowOperations.js';
-import { getErrorParts } from '../utils/toolErrors.js';
-import { zodToJsonSchema } from '../utils/zodToJsonSchema.js';
+} from "@modelcontextprotocol/sdk/types.js";
+import { getDefaultAppState } from "src/state/AppStateStore.js";
+import review from "../commands/review.js";
+import type { Command } from "../commands.js";
+import { findToolByName, getEmptyToolPermissionContext, type ToolUseContext } from "../Tool.js";
+import { getTools } from "../tools.js";
+import { createAbortController } from "../utils/abortController.js";
+import { createFileStateCacheWithSizeLimit } from "../utils/fileStateCache.js";
+import { logError } from "../utils/log.js";
+import { createAssistantMessage } from "../utils/messages.js";
+import { getMainLoopModel } from "../utils/model/model.js";
+import { hasPermissionsToUseTool } from "../utils/permissions/permissions.js";
+import { setCwd } from "../utils/Shell.js";
+import { jsonStringify } from "../utils/slowOperations.js";
+import { getErrorParts } from "../utils/toolErrors.js";
+import { zodToJsonSchema } from "../utils/zodToJsonSchema.js";
 
-type ToolInput = Tool['inputSchema'];
-type ToolOutput = Tool['outputSchema'];
+type ToolInput = Tool["inputSchema"];
+type ToolOutput = Tool["outputSchema"];
 
 const MCP_COMMANDS: Command[] = [review];
 
@@ -36,7 +36,7 @@ export async function startMCPServer(cwd: string, debug: boolean, verbose: boole
   setCwd(cwd);
   const server = new Server(
     {
-      name: 'claude/tengu',
+      name: "claude/tengu",
       version: MACRO.VERSION,
     },
     {
@@ -60,10 +60,10 @@ export async function startMCPServer(cwd: string, debug: boolean, verbose: boole
             // Skip schemas with anyOf/oneOf at root (from z.union, z.discriminatedUnion, etc.)
             // See: https://github.com/anthropics/claude-code/issues/8014
             if (
-              typeof convertedSchema === 'object' &&
+              typeof convertedSchema === "object" &&
               convertedSchema !== null &&
-              'type' in convertedSchema &&
-              convertedSchema.type === 'object'
+              "type" in convertedSchema &&
+              convertedSchema.type === "object"
             ) {
               outputSchema = convertedSchema as ToolOutput;
             }
@@ -102,7 +102,7 @@ export async function startMCPServer(cwd: string, debug: boolean, verbose: boole
           commands: MCP_COMMANDS,
           tools,
           mainLoopModel: getMainLoopModel(),
-          thinkingConfig: { type: 'disabled' },
+          thinkingConfig: { type: "disabled" },
           mcpClients: [],
           mcpResources: {},
           isNonInteractiveSession: true,
@@ -141,8 +141,8 @@ export async function startMCPServer(cwd: string, debug: boolean, verbose: boole
         return {
           content: [
             {
-              type: 'text' as const,
-              text: typeof finalResult === 'string' ? finalResult : jsonStringify(finalResult.data),
+              type: "text" as const,
+              text: typeof finalResult === "string" ? finalResult : jsonStringify(finalResult.data),
             },
           ],
         };
@@ -150,13 +150,13 @@ export async function startMCPServer(cwd: string, debug: boolean, verbose: boole
         logError(error);
 
         const parts = error instanceof Error ? getErrorParts(error) : [String(error)];
-        const errorText = parts.filter(Boolean).join('\n').trim() || 'Error';
+        const errorText = parts.filter(Boolean).join("\n").trim() || "Error";
 
         return {
           isError: true,
           content: [
             {
-              type: 'text',
+              type: "text",
               text: errorText,
             },
           ],

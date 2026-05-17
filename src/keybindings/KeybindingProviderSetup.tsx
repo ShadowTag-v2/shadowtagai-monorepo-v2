@@ -6,26 +6,26 @@
  * user-defined bindings from ~/.claude/keybindings.json, with hot-reload
  * support when the file changes.
  */
-import type React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useNotifications } from '../context/notifications.js';
+import type React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useNotifications } from "../context/notifications.js";
 // ChordInterceptor intentionally uses useInput to intercept all keystrokes before
 // other handlers process them - this is required for chord sequence support
 // eslint-disable-next-line custom-rules/prefer-use-keybindings
-import { useInput } from '../ink.js';
-import { count } from '../utils/array.js';
-import { logForDebugging } from '../utils/debug.js';
-import { plural } from '../utils/stringUtils.js';
-import { KeybindingProvider } from './KeybindingContext.js';
+import { useInput } from "../ink.js";
+import { count } from "../utils/array.js";
+import { logForDebugging } from "../utils/debug.js";
+import { plural } from "../utils/stringUtils.js";
+import { KeybindingProvider } from "./KeybindingContext.js";
 import {
   initializeKeybindingWatcher,
   type KeybindingsLoadResult,
   loadKeybindingsSyncWithWarnings,
   subscribeToKeybindingChanges,
-} from './loadUserBindings.js';
-import { resolveKeyWithChordState } from './resolver.js';
-import type { KeybindingContextName, ParsedKeystroke } from './types.js';
+} from "./loadUserBindings.js";
+import { resolveKeyWithChordState } from "./resolver.js";
+import type { KeybindingContextName, ParsedKeystroke } from "./types.js";
 
 /**
  * Timeout for chord sequences in milliseconds.
@@ -67,27 +67,27 @@ function useKeybindingWarnings(warnings, isReload) {
   if ($[0] !== addNotification || $[1] !== removeNotification || $[2] !== warnings) {
     t0 = () => {
       if (warnings.length === 0) {
-        removeNotification('keybinding-config-warning');
+        removeNotification("keybinding-config-warning");
         return;
       }
       const errorCount = count(warnings, _temp);
       const warnCount = count(warnings, _temp2);
       let message;
       if (errorCount > 0 && warnCount > 0) {
-        message = `Found ${errorCount} keybinding ${plural(errorCount, 'error')} and ${warnCount} ${plural(warnCount, 'warning')}`;
+        message = `Found ${errorCount} keybinding ${plural(errorCount, "error")} and ${warnCount} ${plural(warnCount, "warning")}`;
       } else {
         if (errorCount > 0) {
-          message = `Found ${errorCount} keybinding ${plural(errorCount, 'error')}`;
+          message = `Found ${errorCount} keybinding ${plural(errorCount, "error")}`;
         } else {
-          message = `Found ${warnCount} keybinding ${plural(warnCount, 'warning')}`;
+          message = `Found ${warnCount} keybinding ${plural(warnCount, "warning")}`;
         }
       }
       message = `${message} \xB7 /doctor for details`;
       addNotification({
-        key: 'keybinding-config-warning',
+        key: "keybinding-config-warning",
         text: message,
-        color: errorCount > 0 ? 'error' : 'warning',
-        priority: errorCount > 0 ? 'immediate' : 'high',
+        color: errorCount > 0 ? "error" : "warning",
+        priority: errorCount > 0 ? "immediate" : "high",
         timeoutMs: 60000,
       });
     };
@@ -117,10 +117,10 @@ function useKeybindingWarnings(warnings, isReload) {
   useEffect(t0, t1);
 }
 function _temp2(w_0) {
-  return w_0.severity === 'warning';
+  return w_0.severity === "warning";
 }
 function _temp(w) {
-  return w.severity === 'error';
+  return w.severity === "error";
 }
 export function KeybindingSetup({ children }: Props): React.ReactNode {
   // Load bindings synchronously for initial render
@@ -184,7 +184,7 @@ export function KeybindingSetup({ children }: Props): React.ReactNode {
         // Set timeout to cancel chord if not completed
         chordTimeoutRef.current = setTimeout(
           (pendingChordRef_0, setPendingChordState_0) => {
-            logForDebugging('[keybindings] Chord timeout - cancelling');
+            logForDebugging("[keybindings] Chord timeout - cancelling");
             pendingChordRef_0.current = null;
             setPendingChordState_0(null);
           },
@@ -282,7 +282,7 @@ function ChordInterceptor(t0) {
           }
         }
       }
-      const contexts = [...handlerContexts, ...activeContexts, 'Global'];
+      const contexts = [...handlerContexts, ...activeContexts, "Global"];
       const wasInChord = pendingChordRef.current !== null;
       const result = resolveKeyWithChordState(
         input,
@@ -292,12 +292,12 @@ function ChordInterceptor(t0) {
         pendingChordRef.current,
       );
       switch (result.type) {
-        case 'chord_started': {
+        case "chord_started": {
           setPendingChord(result.pending);
           event.stopImmediatePropagation();
           break;
         }
-        case 'match': {
+        case "match": {
           setPendingChord(null);
           if (wasInChord) {
             const contextsSet = new Set(contexts);
@@ -316,17 +316,17 @@ function ChordInterceptor(t0) {
           }
           break;
         }
-        case 'chord_cancelled': {
+        case "chord_cancelled": {
           setPendingChord(null);
           event.stopImmediatePropagation();
           break;
         }
-        case 'unbound': {
+        case "unbound": {
           setPendingChord(null);
           event.stopImmediatePropagation();
           break;
         }
-        case 'none':
+        case "none":
       }
     };
     $[0] = activeContexts;

@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react';
-import { useNotifications } from '../context/notifications.js';
-import { getShortcutDisplay } from '../keybindings/shortcutFormat.js';
-import { hasImageInClipboard } from '../utils/imagePaste.js';
+import { useEffect, useRef } from "react";
+import { useNotifications } from "../context/notifications.js";
+import { getShortcutDisplay } from "../keybindings/shortcutFormat.js";
+import { hasImageInClipboard } from "../utils/imagePaste.js";
 
-const NOTIFICATION_KEY = 'clipboard-image-hint';
+const NOTIFICATION_KEY = "clipboard-image-hint";
 // Small debounce to batch rapid focus changes
 const FOCUS_CHECK_DEBOUNCE_MS = 1000;
 // Don't show the hint more than once per this interval
@@ -52,8 +52,8 @@ export function useClipboardImageHint(isFocused: boolean, enabled: boolean): voi
           lastHintTimeRef.current = now;
           addNotification({
             key: NOTIFICATION_KEY,
-            text: `Image in clipboard · ${getShortcutDisplay('chat:imagePaste', 'Chat', 'ctrl+v')} to paste`,
-            priority: 'immediate',
+            text: `Image in clipboard · ${getShortcutDisplay("chat:imagePaste", "Chat", "ctrl+v")} to paste`,
+            priority: "immediate",
             timeoutMs: 8000,
           });
         }

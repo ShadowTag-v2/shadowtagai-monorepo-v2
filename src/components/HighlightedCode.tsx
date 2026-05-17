@@ -1,12 +1,12 @@
-import { memo, useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useSettings } from '../hooks/useSettings.js';
-import { Ansi, Box, measureElement, NoSelect, Text, useTheme } from '../ink.js';
-import { isFullscreenEnvEnabled } from '../utils/fullscreen.js';
-import sliceAnsi from '../utils/sliceAnsi.js';
-import { countCharInString } from '../utils/stringUtils.js';
-import { HighlightedCodeFallback } from './HighlightedCode/Fallback.js';
-import { expectColorFile } from './StructuredDiff/colorDiff.js';
+import { memo, useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useSettings } from "../hooks/useSettings.js";
+import { Ansi, Box, measureElement, NoSelect, Text, useTheme } from "../ink.js";
+import { isFullscreenEnvEnabled } from "../utils/fullscreen.js";
+import sliceAnsi from "../utils/sliceAnsi.js";
+import { countCharInString } from "../utils/stringUtils.js";
+import { HighlightedCodeFallback } from "./HighlightedCode/Fallback.js";
+import { expectColorFile } from "./StructuredDiff/colorDiff.js";
 
 type Props = {
   code: string;
@@ -31,7 +31,7 @@ export const HighlightedCode = memo(function HighlightedCode(t0) {
       break bb0;
     }
     let t3;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = expectColorFile();
       $[0] = t3;
     } else {
@@ -100,7 +100,7 @@ export const HighlightedCode = memo(function HighlightedCode(t0) {
       t6 = 0;
       break bb2;
     }
-    const lineCount = countCharInString(code, '\n') + 1;
+    const lineCount = countCharInString(code, "\n") + 1;
     let t7;
     if ($[12] !== lineCount) {
       t7 = lineCount.toString();

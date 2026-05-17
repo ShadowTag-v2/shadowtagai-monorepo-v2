@@ -4,7 +4,7 @@
  */
 
 // Claude.ai server names are prefixed with this string
-const CLAUDEAI_SERVER_PREFIX = 'claude.ai ';
+const CLAUDEAI_SERVER_PREFIX = "claude.ai ";
 
 /**
  * Known MCP server alias map.
@@ -13,18 +13,18 @@ const CLAUDEAI_SERVER_PREFIX = 'claude.ai ';
  */
 const MCP_SERVER_ALIASES: ReadonlyMap<string, string> = new Map([
   // google-developer-knowledge variants
-  ['google_developer_knowledge', 'google-developer-knowledge'],
-  ['googleDeveloperKnowledge', 'google-developer-knowledge'],
-  ['google_developer-knowledge', 'google-developer-knowledge'],
+  ["google_developer_knowledge", "google-developer-knowledge"],
+  ["googleDeveloperKnowledge", "google-developer-knowledge"],
+  ["google_developer-knowledge", "google-developer-knowledge"],
   // firebase-mcp-server variants
-  ['firebase_mcp_server', 'firebase-mcp-server'],
-  ['firebaseMcpServer', 'firebase-mcp-server'],
+  ["firebase_mcp_server", "firebase-mcp-server"],
+  ["firebaseMcpServer", "firebase-mcp-server"],
   // chrome-devtools-mcp variants
-  ['chrome_devtools_mcp', 'chrome-devtools-mcp'],
-  ['chromeDevtoolsMcp', 'chrome-devtools-mcp'],
+  ["chrome_devtools_mcp", "chrome-devtools-mcp"],
+  ["chromeDevtoolsMcp", "chrome-devtools-mcp"],
   // sequential-thinking variants
-  ['sequential_thinking', 'sequential-thinking'],
-  ['sequentialThinking', 'sequential-thinking'],
+  ["sequential_thinking", "sequential-thinking"],
+  ["sequentialThinking", "sequential-thinking"],
 ]);
 
 /**
@@ -39,15 +39,15 @@ const MCP_SERVER_ALIASES: ReadonlyMap<string, string> = new Map([
  */
 export function resolveMcpToolAlias(toolName: string): string {
   // Already canonical format
-  if (toolName.startsWith('mcp__')) {
+  if (toolName.startsWith("mcp__")) {
     // Check if the server portion is an alias
-    const parts = toolName.split('__');
+    const parts = toolName.split("__");
     if (parts.length >= 3) {
       const serverPart = parts[1]!;
       const canonical = MCP_SERVER_ALIASES.get(serverPart);
       if (canonical) {
         parts[1] = canonical;
-        return parts.join('__');
+        return parts.join("__");
       }
     }
     return toolName;
@@ -55,7 +55,7 @@ export function resolveMcpToolAlias(toolName: string): string {
 
   // Single-underscore format: mcp_serverName_toolName
   // We need to try matching known server aliases from the prefix
-  if (toolName.startsWith('mcp_')) {
+  if (toolName.startsWith("mcp_")) {
     const withoutPrefix = toolName.slice(4); // strip 'mcp_'
 
     // Try each known alias (sorted longest first to avoid partial matches)
@@ -64,7 +64,7 @@ export function resolveMcpToolAlias(toolName: string): string {
     );
 
     for (const [alias, canonical] of sortedAliases) {
-      if (withoutPrefix.startsWith(alias + '_')) {
+      if (withoutPrefix.startsWith(alias + "_")) {
         const toolPart = withoutPrefix.slice(alias.length + 1);
         return `mcp__${canonical}__${toolPart}`;
       }
@@ -73,12 +73,12 @@ export function resolveMcpToolAlias(toolName: string): string {
     // Also try matching the canonical name with hyphens replaced by underscores
     // e.g., mcp_google-developer-knowledge_search_documents
     for (const [, canonical] of MCP_SERVER_ALIASES) {
-      const canonicalAsUnderscore = canonical.replace(/-/g, '_');
-      if (withoutPrefix.startsWith(canonical + '_')) {
+      const canonicalAsUnderscore = canonical.replace(/-/g, "_");
+      if (withoutPrefix.startsWith(canonical + "_")) {
         const toolPart = withoutPrefix.slice(canonical.length + 1);
         return `mcp__${canonical}__${toolPart}`;
       }
-      if (withoutPrefix.startsWith(canonicalAsUnderscore + '_')) {
+      if (withoutPrefix.startsWith(canonicalAsUnderscore + "_")) {
         const toolPart = withoutPrefix.slice(canonicalAsUnderscore.length + 1);
         return `mcp__${canonical}__${toolPart}`;
       }
@@ -97,9 +97,9 @@ export function resolveMcpToolAlias(toolName: string): string {
  * interference with the __ delimiter used in MCP tool names.
  */
 export function normalizeNameForMCP(name: string): string {
-  let normalized = name.replace(/[^a-zA-Z0-9_-]/g, '_');
+  let normalized = name.replace(/[^a-zA-Z0-9_-]/g, "_");
   if (name.startsWith(CLAUDEAI_SERVER_PREFIX)) {
-    normalized = normalized.replace(/_+/g, '_').replace(/^_|_$/g, '');
+    normalized = normalized.replace(/_+/g, "_").replace(/^_|_$/g, "");
   }
   return normalized;
 }

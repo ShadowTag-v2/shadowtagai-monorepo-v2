@@ -1,4 +1,4 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 /**
  * Hook for LSP plugin recommendations
  *
@@ -11,28 +11,28 @@ import { c as _c } from 'react/compiler-runtime';
  * Only shows one recommendation per session.
  */
 
-import { extname, join } from 'node:path';
-import * as React from 'react';
+import { extname, join } from "node:path";
+import * as React from "react";
 import {
   hasShownLspRecommendationThisSession,
   setLspRecommendationShownThisSession,
-} from '../bootstrap/state.js';
-import { useNotifications } from '../context/notifications.js';
-import { useAppState } from '../state/AppState.js';
-import { saveGlobalConfig } from '../utils/config.js';
-import { logForDebugging } from '../utils/debug.js';
-import { logError } from '../utils/log.js';
+} from "../bootstrap/state.js";
+import { useNotifications } from "../context/notifications.js";
+import { useAppState } from "../state/AppState.js";
+import { saveGlobalConfig } from "../utils/config.js";
+import { logForDebugging } from "../utils/debug.js";
+import { logError } from "../utils/log.js";
 import {
   addToNeverSuggest,
   getMatchingLspPlugins,
   incrementIgnoredCount,
-} from '../utils/plugins/lspRecommendation.js';
-import { cacheAndRegisterPlugin } from '../utils/plugins/pluginInstallationHelpers.js';
-import { getSettingsForSource, updateSettingsForSource } from '../utils/settings/settings.js';
+} from "../utils/plugins/lspRecommendation.js";
+import { cacheAndRegisterPlugin } from "../utils/plugins/pluginInstallationHelpers.js";
+import { getSettingsForSource, updateSettingsForSource } from "../utils/settings/settings.js";
 import {
   installPluginAndNotify,
   usePluginRecommendationBase,
-} from './usePluginRecommendationBase.js';
+} from "./usePluginRecommendationBase.js";
 
 // Threshold for detecting timeout vs explicit dismiss (ms)
 // Menu auto-dismisses at 30s, so anything over 28s is likely timeout
@@ -46,14 +46,14 @@ export type LspRecommendationState = {
 } | null;
 type UseLspPluginRecommendationResult = {
   recommendation: LspRecommendationState;
-  handleResponse: (response: 'yes' | 'no' | 'never' | 'disable') => void;
+  handleResponse: (response: "yes" | "no" | "never" | "disable") => void;
 };
 export function useLspPluginRecommendation() {
   const $ = _c(12);
   const trackedFiles = useAppState(_temp);
   const { addNotification } = useNotifications();
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = new Set();
     $[0] = t0;
   } else {
@@ -120,27 +120,27 @@ export function useLspPluginRecommendation() {
       const { pluginId, pluginName, shownAt } = recommendation;
       logForDebugging(`[useLspPluginRecommendation] User response: ${response} for ${pluginName}`);
       switch (response) {
-        case 'yes': {
+        case "yes": {
           installPluginAndNotify(
             pluginId,
             pluginName,
-            'lsp-plugin',
+            "lsp-plugin",
             addNotification,
             async (pluginData) => {
               logForDebugging(`[useLspPluginRecommendation] Installing plugin: ${pluginId}`);
               const localSourcePath =
-                typeof pluginData.entry.source === 'string'
+                typeof pluginData.entry.source === "string"
                   ? join(pluginData.marketplaceInstallLocation, pluginData.entry.source)
                   : undefined;
               await cacheAndRegisterPlugin(
                 pluginId,
                 pluginData.entry,
-                'user',
+                "user",
                 undefined,
                 localSourcePath,
               );
-              const settings = getSettingsForSource('userSettings');
-              updateSettingsForSource('userSettings', {
+              const settings = getSettingsForSource("userSettings");
+              updateSettingsForSource("userSettings", {
                 enabledPlugins: {
                   ...settings?.enabledPlugins,
                   [pluginId]: true,
@@ -151,7 +151,7 @@ export function useLspPluginRecommendation() {
           );
           break;
         }
-        case 'no': {
+        case "no": {
           const elapsed = Date.now() - shownAt;
           if (elapsed >= TIMEOUT_THRESHOLD_MS) {
             logForDebugging(
@@ -161,11 +161,11 @@ export function useLspPluginRecommendation() {
           }
           break;
         }
-        case 'never': {
+        case "never": {
           addToNeverSuggest(pluginId);
           break;
         }
-        case 'disable': {
+        case "disable": {
           saveGlobalConfig(_temp2);
         }
       }

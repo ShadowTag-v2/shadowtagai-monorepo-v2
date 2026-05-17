@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Ansi, Box, Text, useAnimationFrame } from '../../ink.js';
-import { segmentTextByHighlights, type TextHighlight } from '../../utils/textHighlighting.js';
-import { ShimmerChar } from '../Spinner/ShimmerChar.js';
+import { c as _c } from "react/compiler-runtime";
+import { Ansi, Box, Text, useAnimationFrame } from "../../ink.js";
+import { segmentTextByHighlights, type TextHighlight } from "../../utils/textHighlighting.js";
+import { ShimmerChar } from "../Spinner/ShimmerChar.js";
 
 type Props = {
   text: string;
@@ -21,7 +21,7 @@ export function HighlightedInput(t0) {
     lines = [[]];
     let pos = 0;
     for (const segment of segments) {
-      const parts = segment.text.split('\n');
+      const parts = segment.text.split("\n");
       for (let i = 0; i < parts.length; i++) {
         if (i > 0) {
           lines.push([]);
@@ -114,7 +114,7 @@ export function HighlightedInput(t0) {
               if (part_0.highlight?.shimmerColor && part_0.highlight.color) {
                 return (
                   <Text key={partIndex}>
-                    {part_0.text.split('').map((char, charIndex) => (
+                    {part_0.text.split("").map((char, charIndex) => (
                       <ShimmerChar
                         key={charIndex}
                         char={char}

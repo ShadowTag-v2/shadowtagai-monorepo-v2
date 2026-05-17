@@ -12,13 +12,13 @@
  * Reference: tests/test_vcr_fixtures.py, strategic-testing/SKILL.md
  */
 
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { basename, join } from 'node:path';
-import type { Command } from 'commander';
-import { logEvent } from '../services/analytics/index.js';
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { basename, join } from "node:path";
+import type { Command } from "commander";
+import { logEvent } from "../services/analytics/index.js";
 
 // Default VCR fixture directory
-const DEFAULT_FIXTURE_DIR = 'tests/fixtures/vcr';
+const DEFAULT_FIXTURE_DIR = "tests/fixtures/vcr";
 
 interface CassetteInteraction {
   request: {
@@ -53,10 +53,10 @@ interface ReplayResult {
  * Load and parse a cassette fixture file.
  */
 function loadCassette(filepath: string): CassetteFile {
-  const raw = readFileSync(filepath, 'utf-8');
+  const raw = readFileSync(filepath, "utf-8");
   const data = JSON.parse(raw);
   return {
-    name: basename(filepath, '.json'),
+    name: basename(filepath, ".json"),
     interactions: data.interactions ?? [],
     metadata: data.metadata,
   };
@@ -81,7 +81,7 @@ function validateCassette(cassette: CassetteFile): string[] {
       errors.push(`${cassette.name}[${i}]: Missing request method or URL`);
     }
 
-    if (typeof ix.response?.status_code !== 'number') {
+    if (typeof ix.response?.status_code !== "number") {
       errors.push(`${cassette.name}[${i}]: Invalid or missing status_code`);
     }
 
@@ -91,7 +91,7 @@ function validateCassette(cassette: CassetteFile): string[] {
 
     // Check for unscrubbed secrets
     const serialized = JSON.stringify(ix);
-    if (serialized.includes('Bearer ') && !serialized.includes('[SCRUBBED]')) {
+    if (serialized.includes("Bearer ") && !serialized.includes("[SCRUBBED]")) {
       errors.push(`${cassette.name}[${i}]: Unscrubbed Bearer token detected`);
     }
   }
@@ -105,7 +105,7 @@ function validateCassette(cassette: CassetteFile): string[] {
 function discoverCassettes(fixtureDir: string): string[] {
   if (!existsSync(fixtureDir)) return [];
   return readdirSync(fixtureDir)
-    .filter((f) => f.endsWith('.json'))
+    .filter((f) => f.endsWith(".json"))
     .map((f) => join(fixtureDir, f))
     .sort();
 }
@@ -131,7 +131,7 @@ function runBughunterScan(fixtureDir: string): ReplayResult[] {
       });
     } catch (e: any) {
       results.push({
-        cassette: basename(path, '.json'),
+        cassette: basename(path, ".json"),
         totalInteractions: 0,
         passed: 0,
         failed: 1,
@@ -148,41 +148,41 @@ function runBughunterScan(fixtureDir: string): ReplayResult[] {
  */
 function formatResults(results: ReplayResult[]): string {
   if (results.length === 0) {
-    return 'No cassettes found. Use --fixture-dir to specify a directory or create cassettes first.';
+    return "No cassettes found. Use --fixture-dir to specify a directory or create cassettes first.";
   }
 
   const lines: string[] = [];
   const totalPassed = results.reduce((s, r) => s + r.passed, 0);
   const totalFailed = results.reduce((s, r) => s + r.failed, 0);
 
-  lines.push('┌──────────────────────────────────────────────────┐');
-  lines.push('│           BUGHUNTER — VCR Cassette Audit         │');
-  lines.push('├──────────────────────────────────────────────────┤');
+  lines.push("┌──────────────────────────────────────────────────┐");
+  lines.push("│           BUGHUNTER — VCR Cassette Audit         │");
+  lines.push("├──────────────────────────────────────────────────┤");
 
   for (const r of results) {
-    const status = r.failed === 0 ? '✓' : '✗';
+    const status = r.failed === 0 ? "✓" : "✗";
     lines.push(`│ ${status} ${r.cassette.padEnd(30)} ${r.totalInteractions} interactions`);
     for (const err of r.errors) {
       lines.push(`│   └─ ${err}`);
     }
   }
 
-  lines.push('├──────────────────────────────────────────────────┤');
+  lines.push("├──────────────────────────────────────────────────┤");
   lines.push(`│ Total: ${results.length} cassettes, ${totalPassed} passed, ${totalFailed} failed`);
-  lines.push('└──────────────────────────────────────────────────┘');
+  lines.push("└──────────────────────────────────────────────────┘");
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 export function registerBughunterCommand(program: Command) {
   program
-    .command('bughunter')
-    .description('Automated VCR cassette-driven bug finding sequence')
-    .option('-d, --fixture-dir <dir>', 'VCR fixture directory', DEFAULT_FIXTURE_DIR)
-    .option('--json', 'Output results as JSON')
-    .option('--fail-fast', 'Stop at first failing cassette')
+    .command("bughunter")
+    .description("Automated VCR cassette-driven bug finding sequence")
+    .option("-d, --fixture-dir <dir>", "VCR fixture directory", DEFAULT_FIXTURE_DIR)
+    .option("--json", "Output results as JSON")
+    .option("--fail-fast", "Stop at first failing cassette")
     .action(async (options: { fixtureDir: string; json?: boolean; failFast?: boolean }) => {
-      logEvent('tengu_bughunter_invoked', { fixtureDir: options.fixtureDir });
+      logEvent("tengu_bughunter_invoked", { fixtureDir: options.fixtureDir });
 
       const results = runBughunterScan(options.fixtureDir);
 
@@ -194,7 +194,7 @@ export function registerBughunterCommand(program: Command) {
 
       const hasFailures = results.some((r) => r.failed > 0);
       if (hasFailures) {
-        logEvent('tengu_bughunter_failures', {
+        logEvent("tengu_bughunter_failures", {
           failedCount: results.filter((r) => r.failed > 0).length,
         });
         process.exitCode = 1;

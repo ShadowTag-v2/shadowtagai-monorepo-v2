@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import { InterruptedByUser } from './InterruptedByUser.js';
-import { MessageResponse } from './MessageResponse.js';
+import { c as _c } from "react/compiler-runtime";
+import { InterruptedByUser } from "./InterruptedByUser.js";
+import { MessageResponse } from "./MessageResponse.js";
 export function FallbackToolUseRejectedMessage() {
   const $ = _c(1);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = (
       <MessageResponse height={1}>
         <InterruptedByUser />

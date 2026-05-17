@@ -1,22 +1,22 @@
-import * as platformPath from 'node:path';
-import chokidar, { type FSWatcher } from 'chokidar';
-import { getAdditionalDirectoriesForClaudeMd } from '../../bootstrap/state.js';
-import { clearCommandMemoizationCaches, clearCommandsCache } from '../../commands.js';
+import * as platformPath from "node:path";
+import chokidar, { type FSWatcher } from "chokidar";
+import { getAdditionalDirectoriesForClaudeMd } from "../../bootstrap/state.js";
+import { clearCommandMemoizationCaches, clearCommandsCache } from "../../commands.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
+} from "../../services/analytics/index.js";
 import {
   clearSkillCaches,
   getSkillsPath,
   onDynamicSkillsLoaded,
-} from '../../skills/loadSkillsDir.js';
-import { resetSentSkillNames } from '../attachments.js';
-import { registerCleanup } from '../cleanupRegistry.js';
-import { logForDebugging } from '../debug.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { executeConfigChangeHooks, hasBlockingResult } from '../hooks.js';
-import { createSignal } from '../signal.js';
+} from "../../skills/loadSkillsDir.js";
+import { resetSentSkillNames } from "../attachments.js";
+import { registerCleanup } from "../cleanupRegistry.js";
+import { logForDebugging } from "../debug.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { executeConfigChangeHooks, hasBlockingResult } from "../hooks.js";
+import { createSignal } from "../signal.js";
 
 /**
  * Time in milliseconds to wait for file writes to stabilize before processing.
@@ -56,7 +56,7 @@ const POLLING_INTERVAL_MS = 2000;
  * Workaround: use stat() polling under Bun. No FSWatcher = no deadlock.
  * The fix is pending upstream; remove this once the Bun PR lands.
  */
-const USE_POLLING = typeof Bun !== 'undefined';
+const USE_POLLING = typeof Bun !== "undefined";
 
 let watcher: FSWatcher | null = null;
 let reloadTimer: ReturnType<typeof setTimeout> | null = null;
@@ -100,7 +100,7 @@ export async function initialize(): Promise<void> {
   const paths = await getWatchablePaths();
   if (paths.length === 0) return;
 
-  logForDebugging(`Watching for changes in skill/command directories: ${paths.join(', ')}...`);
+  logForDebugging(`Watching for changes in skill/command directories: ${paths.join(", ")}...`);
 
   watcher = chokidar.watch(paths, {
     persistent: true,
@@ -115,7 +115,7 @@ export async function initialize(): Promise<void> {
     ignored: (path, stats) => {
       if (stats && !stats.isFile() && !stats.isDirectory()) return true;
       // Ignore .git directories
-      return path.split(platformPath.sep).some((dir) => dir === '.git');
+      return path.split(platformPath.sep).some((dir) => dir === ".git");
     },
     ignorePermissionErrors: true,
     usePolling: USE_POLLING,
@@ -123,9 +123,9 @@ export async function initialize(): Promise<void> {
     atomic: true,
   });
 
-  watcher.on('add', handleChange);
-  watcher.on('change', handleChange);
-  watcher.on('unlink', handleChange);
+  watcher.on("add", handleChange);
+  watcher.on("change", handleChange);
+  watcher.on("unlink", handleChange);
 
   // Register cleanup to properly dispose of the file watcher during graceful shutdown
   unregisterCleanup = registerCleanup(async () => {
@@ -166,7 +166,7 @@ async function getWatchablePaths(): Promise<string[]> {
   const paths: string[] = [];
 
   // User skills directory (~/.claude/skills)
-  const userSkillsPath = getSkillsPath('userSettings', 'skills');
+  const userSkillsPath = getSkillsPath("userSettings", "skills");
   if (userSkillsPath) {
     try {
       await fs.stat(userSkillsPath);
@@ -177,7 +177,7 @@ async function getWatchablePaths(): Promise<string[]> {
   }
 
   // User commands directory (~/.claude/commands)
-  const userCommandsPath = getSkillsPath('userSettings', 'commands');
+  const userCommandsPath = getSkillsPath("userSettings", "commands");
   if (userCommandsPath) {
     try {
       await fs.stat(userCommandsPath);
@@ -188,7 +188,7 @@ async function getWatchablePaths(): Promise<string[]> {
   }
 
   // Project skills directory (.claude/skills)
-  const projectSkillsPath = getSkillsPath('projectSettings', 'skills');
+  const projectSkillsPath = getSkillsPath("projectSettings", "skills");
   if (projectSkillsPath) {
     try {
       // For project settings, resolve to absolute path
@@ -201,7 +201,7 @@ async function getWatchablePaths(): Promise<string[]> {
   }
 
   // Project commands directory (.claude/commands)
-  const projectCommandsPath = getSkillsPath('projectSettings', 'commands');
+  const projectCommandsPath = getSkillsPath("projectSettings", "commands");
   if (projectCommandsPath) {
     try {
       // For project settings, resolve to absolute path
@@ -215,7 +215,7 @@ async function getWatchablePaths(): Promise<string[]> {
 
   // Additional directories (--add-dir) skills
   for (const dir of getAdditionalDirectoriesForClaudeMd()) {
-    const additionalSkillsPath = platformPath.join(dir, '.claude', 'skills');
+    const additionalSkillsPath = platformPath.join(dir, ".claude", "skills");
     try {
       await fs.stat(additionalSkillsPath);
       paths.push(additionalSkillsPath);
@@ -229,8 +229,8 @@ async function getWatchablePaths(): Promise<string[]> {
 
 function handleChange(path: string): void {
   logForDebugging(`Detected skill change: ${path}`);
-  logEvent('tengu_skill_file_changed', {
-    source: 'chokidar' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+  logEvent("tengu_skill_file_changed", {
+    source: "chokidar" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 
   scheduleReload(path);
@@ -256,7 +256,7 @@ function scheduleReload(changedPath: string): void {
     // operation) just spams the hook matcher with identical queries. Pass the
     // first path as a representative; hooks can inspect all paths via the
     // skills directory if they need the full set.
-    const results = await executeConfigChangeHooks('skills', paths[0]!);
+    const results = await executeConfigChangeHooks("skills", paths[0]!);
     if (hasBlockingResult(results)) {
       logForDebugging(`ConfigChange hook blocked skill reload (${paths.length} paths)`);
       return;

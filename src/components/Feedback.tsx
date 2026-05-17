@@ -1,49 +1,49 @@
-import { readFile, stat } from 'node:fs/promises';
-import axios from 'axios';
-import type * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import { getLastAPIRequest } from 'src/bootstrap/state.js';
-import { logEventTo1P } from 'src/services/analytics/firstPartyEventLogger.js';
+import { readFile, stat } from "node:fs/promises";
+import axios from "axios";
+import type * as React from "react";
+import { useCallback, useEffect, useState } from "react";
+import { getLastAPIRequest } from "src/bootstrap/state.js";
+import { logEventTo1P } from "src/services/analytics/firstPartyEventLogger.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { getLastAssistantMessage, normalizeMessagesForAPI } from 'src/utils/messages.js';
-import type { CommandResultDisplay } from '../commands.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { Box, Text, useInput } from '../ink.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import { queryHaiku } from '../services/api/claude.js';
-import { startsWithApiErrorPrefix } from '../services/api/errors.js';
-import type { Message } from '../types/message.js';
-import { checkAndRefreshOAuthTokenIfNeeded } from '../utils/auth.js';
-import { openBrowser } from '../utils/browser.js';
-import { logForDebugging } from '../utils/debug.js';
-import { env } from '../utils/env.js';
-import { type GitRepoState, getGitState, getIsGit } from '../utils/git.js';
-import { getAuthHeaders, getUserAgent } from '../utils/http.js';
-import { getInMemoryErrors, logError } from '../utils/log.js';
-import { isEssentialTrafficOnly } from '../utils/privacyLevel.js';
+} from "src/services/analytics/index.js";
+import { getLastAssistantMessage, normalizeMessagesForAPI } from "src/utils/messages.js";
+import type { CommandResultDisplay } from "../commands.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { Box, Text, useInput } from "../ink.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import { queryHaiku } from "../services/api/claude.js";
+import { startsWithApiErrorPrefix } from "../services/api/errors.js";
+import type { Message } from "../types/message.js";
+import { checkAndRefreshOAuthTokenIfNeeded } from "../utils/auth.js";
+import { openBrowser } from "../utils/browser.js";
+import { logForDebugging } from "../utils/debug.js";
+import { env } from "../utils/env.js";
+import { type GitRepoState, getGitState, getIsGit } from "../utils/git.js";
+import { getAuthHeaders, getUserAgent } from "../utils/http.js";
+import { getInMemoryErrors, logError } from "../utils/log.js";
+import { isEssentialTrafficOnly } from "../utils/privacyLevel.js";
 import {
   extractTeammateTranscriptsFromTasks,
   getTranscriptPath,
   loadAllSubagentTranscriptsFromDisk,
   MAX_TRANSCRIPT_READ_BYTES,
-} from '../utils/sessionStorage.js';
-import { jsonStringify } from '../utils/slowOperations.js';
-import { asSystemPrompt } from '../utils/systemPromptType.js';
-import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js';
-import { Byline } from './design-system/Byline.js';
-import { Dialog } from './design-system/Dialog.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
-import TextInput from './TextInput.js';
+} from "../utils/sessionStorage.js";
+import { jsonStringify } from "../utils/slowOperations.js";
+import { asSystemPrompt } from "../utils/systemPromptType.js";
+import { ConfigurableShortcutHint } from "./ConfigurableShortcutHint.js";
+import { Byline } from "./design-system/Byline.js";
+import { Dialog } from "./design-system/Dialog.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
+import TextInput from "./TextInput.js";
 
 // This value was determined experimentally by testing the URL length limit
 const GITHUB_URL_LIMIT = 7250;
 const GITHUB_ISSUES_REPO_URL =
-  'external' === 'ant'
-    ? 'https://github.com/anthropics/claude-cli-internal/issues'
-    : 'https://github.com/anthropics/claude-code/issues';
+  "external" === "ant"
+    ? "https://github.com/anthropics/claude-cli-internal/issues"
+    : "https://github.com/anthropics/claude-code/issues";
 type Props = {
   abortSignal: AbortSignal;
   messages: Message[];
@@ -64,7 +64,7 @@ type Props = {
     };
   };
 };
-type Step = 'userInput' | 'consent' | 'submitting' | 'done';
+type Step = "userInput" | "consent" | "submitting" | "done";
 type FeedbackData = {
   // latestAssistantMessageId is the message ID from the latest main model call
   latestAssistantMessageId: string | null;
@@ -92,57 +92,57 @@ export function redactSensitiveInfo(text: string): string {
   redacted = redacted.replace(
     // eslint-disable-next-line custom-rules/no-lookbehind-regex -- .replace(re, string) on /bug path: no-match returns same string (Object.is)
     /(?<![A-Za-z0-9"'])(sk-ant-?[A-Za-z0-9_-]{10,})(?![A-Za-z0-9"'])/g,
-    '[REDACTED_API_KEY]',
+    "[REDACTED_API_KEY]",
   );
 
   // AWS keys - AWSXXXX format - add the pattern we need for the test
   redacted = redacted.replace(/AWS key: "(AWS[A-Z0-9]{20,})"/g, 'AWS key: "[REDACTED_AWS_KEY]"');
 
   // AWS AKIAXXX keys
-  redacted = redacted.replace(/(AKIA[A-Z0-9]{16})/g, '[REDACTED_AWS_KEY]');
+  redacted = redacted.replace(/(AKIA[A-Z0-9]{16})/g, "[REDACTED_AWS_KEY]");
 
   // Google Cloud keys
   redacted = redacted.replace(
     // eslint-disable-next-line custom-rules/no-lookbehind-regex -- same as above
     /(?<![A-Za-z0-9])(AIza[A-Za-z0-9_-]{35})(?![A-Za-z0-9])/g,
-    '[REDACTED_GCP_KEY]',
+    "[REDACTED_GCP_KEY]",
   );
 
   // Vertex AI service account keys
   redacted = redacted.replace(
     // eslint-disable-next-line custom-rules/no-lookbehind-regex -- same as above
     /(?<![A-Za-z0-9])([a-z0-9-]+@[a-z0-9-]+\.iam\.gserviceaccount\.com)(?![A-Za-z0-9])/g,
-    '[REDACTED_GCP_SERVICE_ACCOUNT]',
+    "[REDACTED_GCP_SERVICE_ACCOUNT]",
   );
 
   // Generic API keys in headers
   redacted = redacted.replace(
     /(["']?x-api-key["']?\s*[:=]\s*["']?)[^"',\s)}\]]+/gi,
-    '$1[REDACTED_API_KEY]',
+    "$1[REDACTED_API_KEY]",
   );
 
   // Authorization headers and Bearer tokens
   redacted = redacted.replace(
     /(["']?authorization["']?\s*[:=]\s*["']?(bearer\s+)?)[^"',\s)}\]]+/gi,
-    '$1[REDACTED_TOKEN]',
+    "$1[REDACTED_TOKEN]",
   );
 
   // AWS environment variables
   redacted = redacted.replace(
     /(AWS[_-][A-Za-z0-9_]+\s*[=:]\s*)["']?[^"',\s)}\]]+["']?/gi,
-    '$1[REDACTED_AWS_VALUE]',
+    "$1[REDACTED_AWS_VALUE]",
   );
 
   // GCP environment variables
   redacted = redacted.replace(
     /(GOOGLE[_-][A-Za-z0-9_]+\s*[=:]\s*)["']?[^"',\s)}\]]+["']?/gi,
-    '$1[REDACTED_GCP_VALUE]',
+    "$1[REDACTED_GCP_VALUE]",
   );
 
   // Environment variables with keys
   redacted = redacted.replace(
     /((API[-_]?KEY|TOKEN|SECRET|PASSWORD)\s*[=:]\s*)["']?[^"',\s)}\]]+["']?/gi,
-    '$1[REDACTED]',
+    "$1[REDACTED]",
   );
   return redacted;
 }
@@ -163,7 +163,7 @@ function getSanitizedErrorLogs(): Array<{
     };
 
     // Sanitize error if present and is a string
-    if (errorCopy && typeof errorCopy.error === 'string') {
+    if (errorCopy && typeof errorCopy.error === "string") {
       errorCopy.error = redactSensitiveInfo(errorCopy.error);
     }
     return errorCopy;
@@ -175,11 +175,11 @@ async function loadRawTranscriptJsonl(): Promise<string | null> {
     const { size } = await stat(transcriptPath);
     if (size > MAX_TRANSCRIPT_READ_BYTES) {
       logForDebugging(`Skipping raw transcript read: file too large (${size} bytes)`, {
-        level: 'warn',
+        level: "warn",
       });
       return null;
     }
-    return await readFile(transcriptPath, 'utf-8');
+    return await readFile(transcriptPath, "utf-8");
   } catch {
     return null;
   }
@@ -191,9 +191,9 @@ export function Feedback({
   onDone,
   backgroundTasks = {},
 }: Props): React.ReactNode {
-  const [step, setStep] = useState<Step>('userInput');
+  const [step, setStep] = useState<Step>("userInput");
   const [cursorOffset, setCursorOffset] = useState(0);
-  const [description, setDescription] = useState(initialDescription ?? '');
+  const [description, setDescription] = useState(initialDescription ?? "");
   const [feedbackId, setFeedbackId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [envInfo, setEnvInfo] = useState<{
@@ -220,7 +220,7 @@ export function Feedback({
     void loadEnvInfo();
   }, []);
   const submitReport = useCallback(async () => {
-    setStep('submitting');
+    setStep("submitting");
     setError(null);
     setFeedbackId(null);
 
@@ -266,14 +266,14 @@ export function Feedback({
     if (result.success) {
       if (result.feedbackId) {
         setFeedbackId(result.feedbackId);
-        logEvent('tengu_bug_report_submitted', {
+        logEvent("tengu_bug_report_submitted", {
           feedback_id:
             result.feedbackId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           last_assistant_message_id:
             lastAssistantMessageId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         });
         // 1P-only: freeform text approved for BQ. Join on feedback_id.
-        logEventTo1P('tengu_bug_report_description', {
+        logEventTo1P("tengu_bug_report_description", {
           feedback_id:
             result.feedbackId as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           description: redactSensitiveInfo(
@@ -281,53 +281,53 @@ export function Feedback({
           ) as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         });
       }
-      setStep('done');
+      setStep("done");
     } else {
       if (result.isZdrOrg) {
         setError(
-          'Feedback collection is not available for organizations with custom data retention policies.',
+          "Feedback collection is not available for organizations with custom data retention policies.",
         );
       } else {
-        setError('Could not submit feedback. Please try again later.');
+        setError("Could not submit feedback. Please try again later.");
       }
       // Stay on userInput step so user can retry with their content preserved
-      setStep('userInput');
+      setStep("userInput");
     }
   }, [description, envInfo.isGit, messages, backgroundTasks, abortSignal]);
 
   // Handle cancel - this will be called by Dialog's automatic Esc handling
   const handleCancel = useCallback(() => {
     // Don't cancel when done - let other keys close the dialog
-    if (step === 'done') {
+    if (step === "done") {
       if (error) {
-        onDone('Error submitting feedback / bug report', {
-          display: 'system',
+        onDone("Error submitting feedback / bug report", {
+          display: "system",
         });
       } else {
-        onDone('Feedback / bug report submitted', {
-          display: 'system',
+        onDone("Feedback / bug report submitted", {
+          display: "system",
         });
       }
       return;
     }
-    onDone('Feedback / bug report cancelled', {
-      display: 'system',
+    onDone("Feedback / bug report cancelled", {
+      display: "system",
     });
   }, [step, error, onDone]);
 
   // During text input, use Settings context where only Escape (not 'n') triggers confirm:no.
   // This allows typing 'n' in the text field while still supporting Escape to cancel.
-  useKeybinding('confirm:no', handleCancel, {
-    context: 'Settings',
-    isActive: step === 'userInput',
+  useKeybinding("confirm:no", handleCancel, {
+    context: "Settings",
+    isActive: step === "userInput",
   });
   useInput((input, key) => {
     // Allow any key press to close the dialog when done or when there's an error
-    if (step === 'done') {
+    if (step === "done") {
       if (key.return && title) {
         // Open GitHub issue URL when Enter is pressed
         const issueUrl = createGitHubIssueUrl(
-          feedbackId ?? '',
+          feedbackId ?? "",
           title,
           description,
           getSanitizedErrorLogs(),
@@ -335,12 +335,12 @@ export function Feedback({
         void openBrowser(issueUrl);
       }
       if (error) {
-        onDone('Error submitting feedback / bug report', {
-          display: 'system',
+        onDone("Error submitting feedback / bug report", {
+          display: "system",
         });
       } else {
-        onDone('Feedback / bug report submitted', {
-          display: 'system',
+        onDone("Feedback / bug report submitted", {
+          display: "system",
         });
       }
       return;
@@ -348,13 +348,13 @@ export function Feedback({
 
     // When in userInput step with error, allow user to edit and retry
     // (don't close on any keypress - they can still press Esc to cancel)
-    if (error && step !== 'userInput') {
-      onDone('Error submitting feedback / bug report', {
-        display: 'system',
+    if (error && step !== "userInput") {
+      onDone("Error submitting feedback / bug report", {
+        display: "system",
       });
       return;
     }
-    if (step === 'consent' && (key.return || input === ' ')) {
+    if (step === "consent" && (key.return || input === " ")) {
       void submitReport();
     }
   });
@@ -362,11 +362,11 @@ export function Feedback({
     <Dialog
       title="Submit Feedback / Bug Report"
       onCancel={handleCancel}
-      isCancelActive={step !== 'userInput'}
+      isCancelActive={step !== "userInput"}
       inputGuide={(exitState) =>
         exitState.pending ? (
           <Text>Press {exitState.keyName} again to exit</Text>
-        ) : step === 'userInput' ? (
+        ) : step === "userInput" ? (
           <Byline>
             <KeyboardShortcutHint shortcut="Enter" action="continue" />
             <ConfigurableShortcutHint
@@ -376,7 +376,7 @@ export function Feedback({
               description="cancel"
             />
           </Byline>
-        ) : step === 'consent' ? (
+        ) : step === "consent" ? (
           <Byline>
             <KeyboardShortcutHint shortcut="Enter" action="submit" />
             <ConfigurableShortcutHint
@@ -389,7 +389,7 @@ export function Feedback({
         ) : null
       }
     >
-      {step === 'userInput' && (
+      {step === "userInput" && (
         <Box flexDirection="column" gap={1}>
           <Text>Describe the issue below:</Text>
           <TextInput
@@ -402,10 +402,10 @@ export function Feedback({
               }
             }}
             columns={textInputColumns}
-            onSubmit={() => setStep('consent')}
+            onSubmit={() => setStep("consent")}
             onExitMessage={() =>
-              onDone('Feedback cancelled', {
-                display: 'system',
+              onDone("Feedback cancelled", {
+                display: "system",
               })
             }
             cursorOffset={cursorOffset}
@@ -421,7 +421,7 @@ export function Feedback({
         </Box>
       )}
 
-      {step === 'consent' && (
+      {step === "consent" && (
         <Box flexDirection="column">
           <Text>This report will include:</Text>
           <Box marginLeft={2} flexDirection="column">
@@ -429,22 +429,22 @@ export function Feedback({
               - Your feedback / bug description: <Text dimColor>{description}</Text>
             </Text>
             <Text>
-              - Environment info:{' '}
+              - Environment info:{" "}
               <Text dimColor>
                 {env.platform}, {env.terminal}, v{MACRO.VERSION}
               </Text>
             </Text>
             {envInfo.gitState && (
               <Text>
-                - Git repo metadata:{' '}
+                - Git repo metadata:{" "}
                 <Text dimColor>
                   {envInfo.gitState.branchName}
                   {envInfo.gitState.commitHash
                     ? `, ${envInfo.gitState.commitHash.slice(0, 7)}`
-                    : ''}
-                  {envInfo.gitState.remoteUrl ? ` @ ${envInfo.gitState.remoteUrl}` : ''}
-                  {!envInfo.gitState.isHeadOnRemote && ', not synced'}
-                  {!envInfo.gitState.isClean && ', has local changes'}
+                    : ""}
+                  {envInfo.gitState.remoteUrl ? ` @ ${envInfo.gitState.remoteUrl}` : ""}
+                  {!envInfo.gitState.isHeadOnRemote && ", not synced"}
+                  {!envInfo.gitState.isClean && ", has local changes"}
                 </Text>
               </Text>
             )}
@@ -464,13 +464,13 @@ export function Feedback({
         </Box>
       )}
 
-      {step === 'submitting' && (
+      {step === "submitting" && (
         <Box flexDirection="row" gap={1}>
           <Text>Submitting report…</Text>
         </Box>
       )}
 
-      {step === 'done' && (
+      {step === "done" && (
         <Box flexDirection="column">
           {error ? (
             <Text color="error">{error}</Text>
@@ -504,7 +504,7 @@ export function createGitHubIssueUrl(
     `**Environment Info**\n` +
     `- Platform: ${env.platform}\n` +
     `- Terminal: ${env.terminal}\n` +
-    `- Version: ${MACRO.VERSION || 'unknown'}\n` +
+    `- Version: ${MACRO.VERSION || "unknown"}\n` +
     `- Feedback ID: ${feedbackId}\n` +
     `\n**Errors**\n\`\`\`json\n`;
   const errorSuffix = `\n\`\`\`\n`;
@@ -526,7 +526,7 @@ export function createGitHubIssueUrl(
 
   // If description alone exceeds limit, truncate everything
   if (spaceForErrors <= 0) {
-    const ellipsis = encodeURIComponent('…');
+    const ellipsis = encodeURIComponent("…");
     const buffer = 50; // Extra safety margin
     const maxEncodedLength =
       GITHUB_URL_LIMIT - baseUrl.length - ellipsis.length - encodedNote.length - buffer;
@@ -535,7 +535,7 @@ export function createGitHubIssueUrl(
     if (encodedFullBody.length > maxEncodedLength) {
       encodedFullBody = encodedFullBody.slice(0, maxEncodedLength);
       // Don't cut in middle of %XX sequence
-      const lastPercent = encodedFullBody.lastIndexOf('%');
+      const lastPercent = encodedFullBody.lastIndexOf("%");
       if (lastPercent >= encodedFullBody.length - 2) {
         encodedFullBody = encodedFullBody.slice(0, lastPercent);
       }
@@ -550,11 +550,11 @@ export function createGitHubIssueUrl(
 
   // Truncate errors to fit (prioritize keeping description)
   // Slice encoded errors directly, then trim to avoid cutting %XX sequences
-  const ellipsis = encodeURIComponent('…');
+  const ellipsis = encodeURIComponent("…");
   const buffer = 50; // Extra safety margin
   let truncatedEncodedErrors = encodedErrors.slice(0, spaceForErrors - ellipsis.length - buffer);
   // If we cut in middle of %XX, back up to before the %
-  const lastPercent = truncatedEncodedErrors.lastIndexOf('%');
+  const lastPercent = truncatedEncodedErrors.lastIndexOf("%");
   if (lastPercent >= truncatedEncodedErrors.length - 2) {
     truncatedEncodedErrors = truncatedEncodedErrors.slice(0, lastPercent);
   }
@@ -564,17 +564,17 @@ async function generateTitle(description: string, abortSignal: AbortSignal): Pro
   try {
     const response = await queryHaiku({
       systemPrompt: asSystemPrompt([
-        'Generate a concise, technical issue title (max 80 chars) for a public GitHub issue based on this bug report for Claude Code.',
-        'Claude Code is an agentic coding CLI based on the Anthropic API.',
-        'The title should:',
-        '- Include the type of issue [Bug] or [Feature Request] as the first thing in the title',
-        '- Be concise, specific and descriptive of the actual problem',
-        '- Use technical terminology appropriate for a software issue',
+        "Generate a concise, technical issue title (max 80 chars) for a public GitHub issue based on this bug report for Claude Code.",
+        "Claude Code is an agentic coding CLI based on the Anthropic API.",
+        "The title should:",
+        "- Include the type of issue [Bug] or [Feature Request] as the first thing in the title",
+        "- Be concise, specific and descriptive of the actual problem",
+        "- Use technical terminology appropriate for a software issue",
         '- For error messages, extract the key error (e.g., "Missing Tool Result Block" rather than the full message)',
-        '- Be direct and clear for developers to understand the problem',
+        "- Be direct and clear for developers to understand the problem",
         '- If you cannot determine a clear issue, use "Bug Report: [brief description]"',
-        '- Any LLM API errors are from the Anthropic API, not from any other model provider',
-        'Your response will be directly used as the title of the Github issue, and as such should not contain any other commentary or explaination',
+        "- Any LLM API errors are from the Anthropic API, not from any other model provider",
+        "Your response will be directly used as the title of the Github issue, and as such should not contain any other commentary or explaination",
         'Examples of good titles include: "[Bug] Auto-Compact triggers to soon", "[Bug] Anthropic API Error: Missing Tool Result Block", "[Bug] Error: Invalid Model Name for Opus"',
       ]),
       userPrompt: description,
@@ -584,14 +584,14 @@ async function generateTitle(description: string, abortSignal: AbortSignal): Pro
         toolChoice: undefined,
         isNonInteractiveSession: false,
         agents: [],
-        querySource: 'feedback',
+        querySource: "feedback",
         mcpTools: [],
       },
     });
     const title =
-      response.message.content[0]?.type === 'text'
+      response.message.content[0]?.type === "text"
         ? response.message.content[0].text
-        : 'Bug Report';
+        : "Bug Report";
 
     // Check if the title contains an API error message
     if (startsWithApiErrorPrefix(title)) {
@@ -608,7 +608,7 @@ function createFallbackTitle(description: string): string {
   // Create a safe fallback title based on the bug description
 
   // Try to extract a meaningful title from the first line
-  const firstLine = description.split('\n')[0] || '';
+  const firstLine = description.split("\n")[0] || "";
 
   // If the first line is very short, use it directly
   if (firstLine.length <= 60 && firstLine.length > 5) {
@@ -620,14 +620,14 @@ function createFallbackTitle(description: string): string {
   let truncated = firstLine.slice(0, 60);
   if (firstLine.length > 60) {
     // Find the last space before the 60 char limit
-    const lastSpace = truncated.lastIndexOf(' ');
+    const lastSpace = truncated.lastIndexOf(" ");
     if (lastSpace > 30) {
       // Only trim at word if we're not cutting too much
       truncated = truncated.slice(0, lastSpace);
     }
-    truncated += '...';
+    truncated += "...";
   }
-  return truncated.length < 10 ? 'Bug Report' : truncated;
+  return truncated.length < 10 ? "Bug Report" : truncated;
 }
 
 // Helper function to sanitize and log errors without exposing API keys
@@ -671,12 +671,12 @@ async function submitFeedback(
       };
     }
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      'User-Agent': getUserAgent(),
+      "Content-Type": "application/json",
+      "User-Agent": getUserAgent(),
       ...authResult.headers,
     };
     const response = await axios.post(
-      'https://api.anthropic.com/api/claude_cli_feedback',
+      "https://api.anthropic.com/api/claude_cli_feedback",
       {
         content: jsonStringify(data),
       },
@@ -696,7 +696,7 @@ async function submitFeedback(
         };
       }
       sanitizeAndLogError(
-        new Error('Failed to submit feedback: request did not return feedback_id'),
+        new Error("Failed to submit feedback: request did not return feedback_id"),
       );
       return {
         success: false,
@@ -716,11 +716,11 @@ async function submitFeedback(
     if (axios.isAxiosError(err) && err.response?.status === 403) {
       const errorData = err.response.data;
       if (
-        errorData?.error?.type === 'permission_error' &&
-        errorData?.error?.message?.includes('Custom data retention settings')
+        errorData?.error?.type === "permission_error" &&
+        errorData?.error?.message?.includes("Custom data retention settings")
       ) {
         sanitizeAndLogError(
-          new Error('Cannot submit feedback because custom data retention settings are enabled'),
+          new Error("Cannot submit feedback because custom data retention settings are enabled"),
         );
         return {
           success: false,

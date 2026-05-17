@@ -1,12 +1,12 @@
-import { Suspense, use } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useSettings } from '../../../hooks/useSettings.js';
-import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
-import { stringWidth } from '../../../ink/stringWidth.js';
-import { Ansi, Box, Text, useTheme } from '../../../ink.js';
-import { getCliHighlightPromise } from '../../../utils/cliHighlight.js';
-import { applyMarkdown } from '../../../utils/markdown.js';
-import sliceAnsi from '../../../utils/sliceAnsi.js';
+import { Suspense, use } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useSettings } from "../../../hooks/useSettings.js";
+import { useTerminalSize } from "../../../hooks/useTerminalSize.js";
+import { stringWidth } from "../../../ink/stringWidth.js";
+import { Ansi, Box, Text, useTheme } from "../../../ink.js";
+import { getCliHighlightPromise } from "../../../utils/cliHighlight.js";
+import { applyMarkdown } from "../../../utils/markdown.js";
+import sliceAnsi from "../../../utils/sliceAnsi.js";
 
 type PreviewBoxProps = {
   /** The preview content to display. Markdown is rendered with syntax highlighting
@@ -22,14 +22,14 @@ type PreviewBoxProps = {
   maxWidth?: number;
 };
 const BOX_CHARS = {
-  topLeft: '┌',
-  topRight: '┐',
-  bottomLeft: '└',
-  bottomRight: '┘',
-  horizontal: '─',
-  vertical: '│',
-  teeLeft: '├',
-  teeRight: '┤',
+  topLeft: "┌",
+  topRight: "┐",
+  bottomLeft: "└",
+  bottomRight: "┘",
+  horizontal: "─",
+  vertical: "│",
+  teeLeft: "├",
+  teeRight: "┤",
 };
 
 /**
@@ -68,7 +68,7 @@ export function PreviewBox(props) {
 function PreviewBoxWithHighlight(props) {
   const $ = _c(4);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = getCliHighlightPromise();
     $[0] = t0;
   } else {
@@ -118,7 +118,7 @@ function PreviewBoxBody(t0) {
     $[7] !== minWidth ||
     $[8] !== rendered
   ) {
-    const contentLines = rendered.split('\n');
+    const contentLines = rendered.split("\n");
     const isTruncated = contentLines.length > effectiveMaxLines;
     const truncatedLines = isTruncated ? contentLines.slice(0, effectiveMaxLines) : contentLines;
     const effectiveMinHeight = Math.min(minHeight ?? 0, effectiveMaxLines);
@@ -127,7 +127,7 @@ function PreviewBoxBody(t0) {
       effectiveMinHeight - truncatedLines.length - (isTruncated ? 1 : 0),
     );
     const lines =
-      paddingNeeded > 0 ? [...truncatedLines, ...Array(paddingNeeded).fill('')] : truncatedLines;
+      paddingNeeded > 0 ? [...truncatedLines, ...Array(paddingNeeded).fill("")] : truncatedLines;
     const contentWidth = Math.max(minWidth, ...lines.map(_temp));
     const boxWidth = Math.min(contentWidth + 4, effectiveMaxWidth);
     const innerWidth = boxWidth - 4;
@@ -159,7 +159,7 @@ function PreviewBoxBody(t0) {
         })()
       : null;
     T0 = Box;
-    t3 = 'column';
+    t3 = "column";
     if ($[19] !== topBorder) {
       t4 = <Text dimColor={true}>{topBorder}</Text>;
       $[19] = topBorder;
@@ -172,7 +172,7 @@ function PreviewBoxBody(t0) {
       t8 = (line_0, index) => {
         const lineWidth = stringWidth(line_0);
         const displayLine = lineWidth > innerWidth ? sliceAnsi(line_0, 0, innerWidth) : line_0;
-        const padding = ' '.repeat(Math.max(0, innerWidth - stringWidth(displayLine)));
+        const padding = " ".repeat(Math.max(0, innerWidth - stringWidth(displayLine)));
         return (
           <Box key={index} flexDirection="row">
             <Text dimColor={true}>{BOX_CHARS.vertical} </Text>

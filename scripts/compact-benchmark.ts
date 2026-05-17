@@ -17,12 +17,12 @@
  *   1 — regression detected (>2x baseline)
  */
 
-import { writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { writeFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   resetCompactionCircuitBreaker,
   runCompactionPipeline,
-} from '../src/services/compact/index.js';
+} from "../src/services/compact/index.js";
 
 // ─── Config ──────────────────────────────────────────────────────────
 
@@ -44,13 +44,13 @@ function parseArgs(): BenchConfig {
   };
 
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === '--sizes' && args[i + 1]) {
-      config.sizes = args[i + 1].split(',').map(Number);
+    if (args[i] === "--sizes" && args[i + 1]) {
+      config.sizes = args[i + 1].split(",").map(Number);
       i++;
-    } else if (args[i] === '--iterations' && args[i + 1]) {
+    } else if (args[i] === "--iterations" && args[i + 1]) {
       config.iterations = parseInt(args[i + 1], 10);
       i++;
-    } else if (args[i] === '--output' && args[i + 1]) {
+    } else if (args[i] === "--output" && args[i + 1]) {
       config.outputPath = args[i + 1];
       i++;
     }
@@ -64,43 +64,43 @@ function generateSyntheticConversation(messageCount: number): Record<string, unk
   const messages: Record<string, unknown>[] = [];
 
   for (let i = 0; i < messageCount; i++) {
-    const role = i % 2 === 0 ? 'user' : 'assistant';
+    const role = i % 2 === 0 ? "user" : "assistant";
 
-    if (role === 'user') {
+    if (role === "user") {
       messages.push({
-        role: 'user',
+        role: "user",
         content: `Message ${i}: ${generateRealisticContent(i)}`,
       });
     } else {
       // Every 5th assistant message includes a tool_use block
       if (i % 10 === 1) {
         messages.push({
-          role: 'assistant',
+          role: "assistant",
           content: [
             {
-              type: 'tool_use',
+              type: "tool_use",
               id: `toolu_${i}`,
-              name: 'write_to_file',
+              name: "write_to_file",
               input: {
                 path: `/src/file_${i}.ts`,
-                content: 'x'.repeat(500 + (i % 300)),
+                content: "x".repeat(500 + (i % 300)),
               },
             },
           ],
         });
         messages.push({
-          role: 'user',
+          role: "user",
           content: [
             {
-              type: 'tool_result',
+              type: "tool_result",
               tool_use_id: `toolu_${i}`,
-              content: `Tool output for iteration ${i}: ${'result_data '.repeat(50)}`,
+              content: `Tool output for iteration ${i}: ${"result_data ".repeat(50)}`,
             },
           ],
         });
       } else {
         messages.push({
-          role: 'assistant',
+          role: "assistant",
           content: `Response ${i}: ${generateRealisticContent(i)}`,
         });
       }
@@ -111,14 +111,14 @@ function generateSyntheticConversation(messageCount: number): Record<string, unk
 
 function generateRealisticContent(seed: number): string {
   const templates = [
-    'I need to refactor the authentication module to support OAuth2 PKCE flow.',
-    'The database migration failed because the column type mismatch on user_sessions.',
-    'Let me analyze the performance trace to identify the bottleneck in the API gateway.',
-    'Here is the updated configuration for the Kubernetes deployment manifest.',
-    'The circuit breaker is tripping because the upstream service has >500ms p99 latency.',
-    'We should add retry logic with exponential backoff for the payment webhook handler.',
-    'The test coverage for the notification service dropped below 80% after the refactor.',
-    'I found a race condition in the WebSocket connection manager during reconnection.',
+    "I need to refactor the authentication module to support OAuth2 PKCE flow.",
+    "The database migration failed because the column type mismatch on user_sessions.",
+    "Let me analyze the performance trace to identify the bottleneck in the API gateway.",
+    "Here is the updated configuration for the Kubernetes deployment manifest.",
+    "The circuit breaker is tripping because the upstream service has >500ms p99 latency.",
+    "We should add retry logic with exponential backoff for the payment webhook handler.",
+    "The test coverage for the notification service dropped below 80% after the refactor.",
+    "I found a race condition in the WebSocket connection manager during reconnection.",
   ];
   return templates[seed % templates.length];
 }
@@ -154,7 +154,7 @@ async function runBenchmark(
     resetCompactionCircuitBreaker();
 
     const t0 = performance.now();
-    const result = await runCompactionPipeline(messages, 200_000, 'gemini-2.5-pro');
+    const result = await runCompactionPipeline(messages, 200_000, "gemini-2.5-pro");
     const elapsed = performance.now() - t0;
 
     durations.push(elapsed);
@@ -204,11 +204,11 @@ async function runBenchmark(
 async function main() {
   const config = parseArgs();
 
-  console.log('╔══════════════════════════════════════════════════╗');
-  console.log('║   COMPACT BENCHMARK — Pipeline Perf Regression  ║');
-  console.log('╚══════════════════════════════════════════════════╝');
+  console.log("╔══════════════════════════════════════════════════╗");
+  console.log("║   COMPACT BENCHMARK — Pipeline Perf Regression  ║");
+  console.log("╚══════════════════════════════════════════════════╝");
   console.log();
-  console.log(`Sizes: ${config.sizes.join(', ')}`);
+  console.log(`Sizes: ${config.sizes.join(", ")}`);
   console.log(`Iterations per size: ${config.iterations}`);
   console.log(`Regression threshold: ${config.regressionThresholdMs}ms / 1K messages`);
   console.log();
@@ -221,7 +221,7 @@ async function main() {
     const result = await runBenchmark(size, config.iterations, config.regressionThresholdMs);
     results.push(result);
 
-    const status = result.regression ? '⚠ REGRESSION' : '✓ OK';
+    const status = result.regression ? "⚠ REGRESSION" : "✓ OK";
     if (result.regression) hasRegression = true;
 
     console.log(
@@ -234,18 +234,18 @@ async function main() {
   console.log();
 
   // Summary table
-  console.log('┌─────────┬───────────┬────────────┬─────────────┬───────────┬──────────┐');
-  console.log('│  Msgs   │  Avg (ms) │  P95 (ms)  │  ms/1K msgs │  Red. %   │  Status  │');
-  console.log('├─────────┼───────────┼────────────┼─────────────┼───────────┼──────────┤');
+  console.log("┌─────────┬───────────┬────────────┬─────────────┬───────────┬──────────┐");
+  console.log("│  Msgs   │  Avg (ms) │  P95 (ms)  │  ms/1K msgs │  Red. %   │  Status  │");
+  console.log("├─────────┼───────────┼────────────┼─────────────┼───────────┼──────────┤");
 
   for (const r of results) {
-    const status = r.regression ? '⚠ FAIL' : '  OK  ';
+    const status = r.regression ? "⚠ FAIL" : "  OK  ";
     console.log(
       `│ ${String(r.messageCount).padStart(6)}  │ ${r.avgDurationMs.toFixed(1).padStart(8)}  │ ${r.p95DurationMs.toFixed(1).padStart(9)}  │ ${r.msPerThousandMessages.toFixed(1).padStart(10)}  │ ${r.avgReductionPct.toFixed(1).padStart(8)}  │ ${status} │`,
     );
   }
 
-  console.log('└─────────┴───────────┴────────────┴─────────────┴───────────┴──────────┘');
+  console.log("└─────────┴───────────┴────────────┴─────────────┴───────────┴──────────┘");
 
   // Write JSON report
   const report = {
@@ -257,22 +257,22 @@ async function main() {
   };
 
   if (config.outputPath) {
-    writeFileSync(config.outputPath, JSON.stringify(report, null, 2), 'utf-8');
+    writeFileSync(config.outputPath, JSON.stringify(report, null, 2), "utf-8");
     console.log(`\n📁 Report written to: ${config.outputPath}`);
   } else {
     const defaultPath = join(
       process.cwd(),
-      `compact-bench-${new Date().toISOString().replace(/[:.]/g, '-')}.json`,
+      `compact-bench-${new Date().toISOString().replace(/[:.]/g, "-")}.json`,
     );
-    writeFileSync(defaultPath, JSON.stringify(report, null, 2), 'utf-8');
+    writeFileSync(defaultPath, JSON.stringify(report, null, 2), "utf-8");
     console.log(`\n📁 Report written to: ${defaultPath}`);
   }
 
   if (hasRegression) {
-    console.log('\n✗ REGRESSION DETECTED — pipeline performance exceeds threshold');
+    console.log("\n✗ REGRESSION DETECTED — pipeline performance exceeds threshold");
     process.exitCode = 1;
   } else {
-    console.log('\n✓ All benchmarks within acceptable thresholds');
+    console.log("\n✓ All benchmarks within acceptable thresholds");
   }
 }
 

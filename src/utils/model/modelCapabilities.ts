@@ -1,19 +1,19 @@
-import { readFileSync } from 'node:fs';
-import { mkdir, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import isEqual from 'lodash-es/isEqual.js';
-import memoize from 'lodash-es/memoize.js';
-import { z } from 'zod/v4';
-import { OAUTH_BETA_HEADER } from '../../constants/oauth.js';
-import { getAnthropicClient } from '../../services/api/client.js';
-import { isClaudeAISubscriber } from '../auth.js';
-import { logForDebugging } from '../debug.js';
-import { getClaudeConfigHomeDir } from '../envUtils.js';
-import { safeParseJSON } from '../json.js';
-import { lazySchema } from '../lazySchema.js';
-import { isEssentialTrafficOnly } from '../privacyLevel.js';
-import { jsonStringify } from '../slowOperations.js';
-import { getAPIProvider, isFirstPartyAnthropicBaseUrl } from './providers.js';
+import { readFileSync } from "node:fs";
+import { mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import isEqual from "lodash-es/isEqual.js";
+import memoize from "lodash-es/memoize.js";
+import { z } from "zod/v4";
+import { OAUTH_BETA_HEADER } from "../../constants/oauth.js";
+import { getAnthropicClient } from "../../services/api/client.js";
+import { isClaudeAISubscriber } from "../auth.js";
+import { logForDebugging } from "../debug.js";
+import { getClaudeConfigHomeDir } from "../envUtils.js";
+import { safeParseJSON } from "../json.js";
+import { lazySchema } from "../lazySchema.js";
+import { isEssentialTrafficOnly } from "../privacyLevel.js";
+import { jsonStringify } from "../slowOperations.js";
+import { getAPIProvider, isFirstPartyAnthropicBaseUrl } from "./providers.js";
 
 // .strip() — don't persist internal-only fields (mycro_deployments etc.) to disk
 const ModelCapabilitySchema = lazySchema(() =>
@@ -36,16 +36,16 @@ const CacheFileSchema = lazySchema(() =>
 export type ModelCapability = z.infer<ReturnType<typeof ModelCapabilitySchema>>;
 
 function getCacheDir(): string {
-  return join(getClaudeConfigHomeDir(), 'cache');
+  return join(getClaudeConfigHomeDir(), "cache");
 }
 
 function getCachePath(): string {
-  return join(getCacheDir(), 'model-capabilities.json');
+  return join(getCacheDir(), "model-capabilities.json");
 }
 
 function isModelCapabilitiesEligible(): boolean {
-  if (process.env.USER_TYPE !== 'ant') return false;
-  if (getAPIProvider() !== 'firstParty') return false;
+  if (process.env.USER_TYPE !== "ant") return false;
+  if (getAPIProvider() !== "firstParty") return false;
   if (!isFirstPartyAnthropicBaseUrl()) return false;
   return true;
 }
@@ -60,7 +60,7 @@ const loadCache = memoize(
   (path: string): ModelCapability[] | null => {
     try {
       // eslint-disable-next-line custom-rules/no-sync-fs -- memoized; called from sync getContextWindowForModel
-      const raw = readFileSync(path, 'utf-8');
+      const raw = readFileSync(path, "utf-8");
       const parsed = CacheFileSchema().safeParse(safeParseJSON(raw, false));
       return parsed.success ? parsed.data.models : null;
     } catch {
@@ -97,20 +97,20 @@ export async function refreshModelCapabilities(): Promise<void> {
     const path = getCachePath();
     const models = sortForMatching(parsed);
     if (isEqual(loadCache(path), models)) {
-      logForDebugging('[modelCapabilities] cache unchanged, skipping write');
+      logForDebugging("[modelCapabilities] cache unchanged, skipping write");
       return;
     }
 
     await mkdir(getCacheDir(), { recursive: true });
     await writeFile(path, jsonStringify({ models, timestamp: Date.now() }), {
-      encoding: 'utf-8',
+      encoding: "utf-8",
       mode: 0o600,
     });
     loadCache.cache.delete(path);
     logForDebugging(`[modelCapabilities] cached ${models.length} models`);
   } catch (error) {
     logForDebugging(
-      `[modelCapabilities] fetch failed: ${error instanceof Error ? error.message : 'unknown'}`,
+      `[modelCapabilities] fetch failed: ${error instanceof Error ? error.message : "unknown"}`,
     );
   }
 }

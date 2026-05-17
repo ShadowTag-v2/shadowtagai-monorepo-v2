@@ -1,41 +1,41 @@
-import { execFileSync, spawn } from 'node:child_process';
-import { constants as fsConstants, readFileSync, unlinkSync } from 'node:fs';
-import { type FileHandle, mkdir, open, realpath } from 'node:fs/promises';
-import { isAbsolute, resolve } from 'node:path';
-import { join as posixJoin } from 'node:path/posix';
-import memoize from 'lodash-es/memoize.js';
-import { logEvent } from 'src/services/analytics/index.js';
-import { getOriginalCwd, getSessionId, setCwdState } from '../bootstrap/state.js';
-import { generateTaskId } from '../Task.js';
-import { pwd } from './cwd.js';
-import { logForDebugging } from './debug.js';
-import { errorMessage, isENOENT } from './errors.js';
-import { getFsImplementation } from './fsOperations.js';
-import { logError } from './log.js';
+import { execFileSync, spawn } from "node:child_process";
+import { constants as fsConstants, readFileSync, unlinkSync } from "node:fs";
+import { type FileHandle, mkdir, open, realpath } from "node:fs/promises";
+import { isAbsolute, resolve } from "node:path";
+import { join as posixJoin } from "node:path/posix";
+import memoize from "lodash-es/memoize.js";
+import { logEvent } from "src/services/analytics/index.js";
+import { getOriginalCwd, getSessionId, setCwdState } from "../bootstrap/state.js";
+import { generateTaskId } from "../Task.js";
+import { pwd } from "./cwd.js";
+import { logForDebugging } from "./debug.js";
+import { errorMessage, isENOENT } from "./errors.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { logError } from "./log.js";
 import {
   createAbortedCommand,
   createFailedCommand,
   type ShellCommand,
   wrapSpawn,
-} from './ShellCommand.js';
-import { getTaskOutputDir } from './task/diskOutput.js';
-import { TaskOutput } from './task/TaskOutput.js';
-import { which } from './which.js';
+} from "./ShellCommand.js";
+import { getTaskOutputDir } from "./task/diskOutput.js";
+import { TaskOutput } from "./task/TaskOutput.js";
+import { which } from "./which.js";
 
-export type { ExecResult } from './ShellCommand.js';
+export type { ExecResult } from "./ShellCommand.js";
 
-import { accessSync } from 'node:fs';
-import { onCwdChangedForHooks } from './hooks/fileChangedWatcher.js';
-import { getClaudeTempDirName } from './permissions/filesystem.js';
-import { getPlatform } from './platform.js';
-import { SandboxManager } from './sandbox/sandbox-adapter.js';
-import { invalidateSessionEnvCache } from './sessionEnvironment.js';
-import { createBashShellProvider } from './shell/bashProvider.js';
-import { getCachedPowerShellPath } from './shell/powershellDetection.js';
-import { createPowerShellProvider } from './shell/powershellProvider.js';
-import type { ShellProvider, ShellType } from './shell/shellProvider.js';
-import { subprocessEnv } from './subprocessEnv.js';
-import { posixPathToWindowsPath } from './windowsPaths.js';
+import { accessSync } from "node:fs";
+import { onCwdChangedForHooks } from "./hooks/fileChangedWatcher.js";
+import { getClaudeTempDirName } from "./permissions/filesystem.js";
+import { getPlatform } from "./platform.js";
+import { SandboxManager } from "./sandbox/sandbox-adapter.js";
+import { invalidateSessionEnvCache } from "./sessionEnvironment.js";
+import { createBashShellProvider } from "./shell/bashProvider.js";
+import { getCachedPowerShellPath } from "./shell/powershellDetection.js";
+import { createPowerShellProvider } from "./shell/powershellProvider.js";
+import type { ShellProvider, ShellType } from "./shell/shellProvider.js";
+import { subprocessEnv } from "./subprocessEnv.js";
+import { posixPathToWindowsPath } from "./windowsPaths.js";
 
 const DEFAULT_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 
@@ -52,9 +52,9 @@ function isExecutable(shellPath: string): boolean {
     try {
       // Try to execute the shell with --version, which should exit quickly
       // Use execFileSync to avoid shell injection vulnerabilities
-      execFileSync(shellPath, ['--version'], {
+      execFileSync(shellPath, ["--version"], {
         timeout: 1000,
-        stdio: 'ignore',
+        stdio: "ignore",
       });
       return true;
     } catch {
@@ -71,7 +71,7 @@ export async function findSuitableShell(): Promise<string> {
   const shellOverride = process.env.CLAUDE_CODE_SHELL;
   if (shellOverride) {
     // Validate it's a supported shell type
-    const isSupported = shellOverride.includes('bash') || shellOverride.includes('zsh');
+    const isSupported = shellOverride.includes("bash") || shellOverride.includes("zsh");
     if (isSupported && isExecutable(shellOverride)) {
       logForDebugging(`Using shell override: ${shellOverride}`);
       return shellOverride;
@@ -87,17 +87,17 @@ export async function findSuitableShell(): Promise<string> {
   const env_shell = process.env.SHELL;
   // Only consider SHELL if it's bash or zsh
   const isEnvShellSupported =
-    env_shell && (env_shell.includes('bash') || env_shell.includes('zsh'));
-  const preferBash = env_shell?.includes('bash');
+    env_shell && (env_shell.includes("bash") || env_shell.includes("zsh"));
+  const preferBash = env_shell?.includes("bash");
 
   // Try to locate shells using which (uses Bun.which when available)
-  const [zshPath, bashPath] = await Promise.all([which('zsh'), which('bash')]);
+  const [zshPath, bashPath] = await Promise.all([which("zsh"), which("bash")]);
 
   // Populate shell paths from which results and fallback locations
-  const shellPaths = ['/bin', '/usr/bin', '/usr/local/bin', '/opt/homebrew/bin'];
+  const shellPaths = ["/bin", "/usr/bin", "/usr/local/bin", "/opt/homebrew/bin"];
 
   // Order shells based on user preference
-  const shellOrder = preferBash ? ['bash', 'zsh'] : ['zsh', 'bash'];
+  const shellOrder = preferBash ? ["bash", "zsh"] : ["zsh", "bash"];
   const supportedShells = shellOrder.flatMap((shell) =>
     shellPaths.map((path) => `${path}/${shell}`),
   );
@@ -122,8 +122,8 @@ export async function findSuitableShell(): Promise<string> {
   // If no valid shell found, throw a helpful error
   if (!shellPath) {
     const errorMsg =
-      'No suitable shell found. Claude CLI requires a Posix shell environment. ' +
-      'Please ensure you have a valid shell installed and the SHELL environment variable set.';
+      "No suitable shell found. Claude CLI requires a Posix shell environment. " +
+      "Please ensure you have a valid shell installed and the SHELL environment variable set.";
     logError(new Error(errorMsg));
     throw new Error(errorMsg);
   }
@@ -143,7 +143,7 @@ export const getShellConfig = memoize(getShellConfigImpl);
 export const getPsProvider = memoize(async (): Promise<ShellProvider> => {
   const psPath = await getCachedPowerShellPath();
   if (!psPath) {
-    throw new Error('PowerShell is not available');
+    throw new Error("PowerShell is not available");
   }
   return createPowerShellProvider(psPath);
 });
@@ -193,10 +193,10 @@ export async function exec(
 
   const id = Math.floor(Math.random() * 0x10000)
     .toString(16)
-    .padStart(4, '0');
+    .padStart(4, "0");
 
   // Sandbox temp directory - use per-user directory name to prevent multi-user permission conflicts
-  const sandboxTmpDir = posixJoin(process.env.CLAUDE_CODE_TMPDIR || '/tmp', getClaudeTempDirName());
+  const sandboxTmpDir = posixJoin(process.env.CLAUDE_CODE_TMPDIR || "/tmp", getClaudeTempDirName());
 
   const { commandString: builtCommand, cwdFilePath } = await provider.buildExecCommand(command, {
     id,
@@ -242,8 +242,8 @@ export async function exec(
   //   • pass /bin/sh as the sandbox's inner shell to exec that invocation
   //   • outer spawn is also /bin/sh -c to parse the runtime's POSIX output
   // /bin/sh exists on every platform where sandbox is supported.
-  const isSandboxedPowerShell = shouldUseSandbox && shellType === 'powershell';
-  const sandboxBinShell = isSandboxedPowerShell ? '/bin/sh' : binShell;
+  const isSandboxedPowerShell = shouldUseSandbox && shellType === "powershell";
+  const sandboxBinShell = isSandboxedPowerShell ? "/bin/sh" : binShell;
 
   if (shouldUseSandbox) {
     commandString = await SandboxManager.wrapWithSandbox(
@@ -261,9 +261,9 @@ export async function exec(
     }
   }
 
-  const spawnBinary = isSandboxedPowerShell ? '/bin/sh' : binShell;
+  const spawnBinary = isSandboxedPowerShell ? "/bin/sh" : binShell;
   const shellArgs = isSandboxedPowerShell
-    ? ['-c', commandString]
+    ? ["-c", commandString]
     : provider.getSpawnArgs(commandString);
   const envOverrides = await provider.getEnvironmentOverrides(command);
 
@@ -271,7 +271,7 @@ export async function exec(
   // StreamWrapper → TaskOutput in-memory buffer instead of a file fd.
   // This lets callers receive real-time stdout callbacks.
   const usePipeMode = !!onStdout;
-  const taskId = generateTaskId('local_bash');
+  const taskId = generateTaskId("local_bash");
   const taskOutput = new TaskOutput(taskId, onProgress ?? null, !usePipeMode);
   await mkdir(getTaskOutputDir(), { recursive: true });
 
@@ -292,8 +292,8 @@ export async function exec(
     const O_NOFOLLOW = fsConstants.O_NOFOLLOW ?? 0;
     outputHandle = await open(
       taskOutput.path,
-      process.platform === 'win32'
-        ? 'w'
+      process.platform === "win32"
+        ? "w"
         : fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_APPEND | O_NOFOLLOW,
     );
   }
@@ -302,18 +302,18 @@ export async function exec(
     const childProcess = spawn(spawnBinary, shellArgs, {
       env: {
         ...subprocessEnv(),
-        SHELL: shellType === 'bash' ? binShell : undefined,
-        GIT_EDITOR: 'true',
-        CLAUDECODE: '1',
+        SHELL: shellType === "bash" ? binShell : undefined,
+        GIT_EDITOR: "true",
+        CLAUDECODE: "1",
         ...envOverrides,
-        ...(process.env.USER_TYPE === 'ant'
+        ...(process.env.USER_TYPE === "ant"
           ? {
               CLAUDE_CODE_SESSION_ID: getSessionId(),
             }
           : {}),
       },
       cwd,
-      stdio: usePipeMode ? ['pipe', 'pipe', 'pipe'] : ['pipe', outputHandle?.fd, outputHandle?.fd],
+      stdio: usePipeMode ? ["pipe", "pipe", "pipe"] : ["pipe", outputHandle?.fd, outputHandle?.fd],
       // Don't pass the signal - we'll handle termination ourselves with tree-kill
       detached: provider.detached,
       // Prevent visible console window on Windows (no-op on other platforms)
@@ -346,8 +346,8 @@ export async function exec(
     // multiple 'data' listeners). StreamWrapper feeds TaskOutput for persistence;
     // these callbacks give the caller real-time access.
     if (childProcess.stdout && onStdout) {
-      childProcess.stdout.on('data', (chunk: string | Buffer) => {
-        onStdout(typeof chunk === 'string' ? chunk : chunk.toString());
+      childProcess.stdout.on("data", (chunk: string | Buffer) => {
+        onStdout(typeof chunk === "string" ? chunk : chunk.toString());
       });
     }
 
@@ -362,7 +362,7 @@ export async function exec(
     // but Node.js needs a native Windows path for readFileSync/unlinkSync.
     // Similarly, `pwd -P` outputs a POSIX path that must be converted before setCwd.
     const nativeCwdFilePath =
-      getPlatform() === 'windows' ? posixPathToWindowsPath(cwdFilePath) : cwdFilePath;
+      getPlatform() === "windows" ? posixPathToWindowsPath(cwdFilePath) : cwdFilePath;
 
     void shellCommand.result.then(async (result) => {
       // On Linux, bwrap creates 0-byte mount-point files on the host to deny
@@ -377,21 +377,21 @@ export async function exec(
       if (result && !preventCwdChanges && !result.backgroundTaskId) {
         try {
           let newCwd = readFileSync(nativeCwdFilePath, {
-            encoding: 'utf8',
+            encoding: "utf8",
           }).trim();
-          if (getPlatform() === 'windows') {
+          if (getPlatform() === "windows") {
             newCwd = posixPathToWindowsPath(newCwd);
           }
           // cwd is NFC-normalized (setCwdState); newCwd from `pwd -P` may be
           // NFD on macOS APFS. Normalize before comparing so Unicode paths
           // don't false-positive as "changed" on every command.
-          if (newCwd.normalize('NFC') !== cwd) {
+          if (newCwd.normalize("NFC") !== cwd) {
             setCwd(newCwd, cwd);
             invalidateSessionEnvCache();
             void onCwdChangedForHooks(cwd, newCwd);
           }
         } catch {
-          logEvent('tengu_shell_set_cwd', { success: false });
+          logEvent("tengu_shell_set_cwd", { success: false });
         }
       }
       // Clean up the temp file used for cwd tracking
@@ -444,9 +444,9 @@ export function setCwd(path: string, relativeTo?: string): void {
   }
 
   setCwdState(physicalPath);
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== "test") {
     try {
-      logEvent('tengu_shell_set_cwd', {
+      logEvent("tengu_shell_set_cwd", {
         success: true,
       });
     } catch (_error) {

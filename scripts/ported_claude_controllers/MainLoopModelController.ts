@@ -1,10 +1,10 @@
-import { onGrowthBookRefresh } from '../../services/analytics/growthbook.js';
-import { getAppStateStore } from '../../state/AppState.js';
+import { onGrowthBookRefresh } from "../../services/analytics/growthbook.js";
+import { getAppStateStore } from "../../state/AppState.js";
 import {
   getDefaultMainLoopModelSetting,
   type ModelName,
   parseUserSpecifiedModel,
-} from '../../utils/model/model.js';
+} from "../../utils/model/model.js";
 
 /**
  * Headless controller for the main loop model.
@@ -40,7 +40,7 @@ export class MainLoopModelController {
 
     // Register with GrowthBook and retain unsubscribe if provided
     const gbUnsubscribe = onGrowthBookRefresh(() => evaluateModel());
-    this.unsubscribeGrowthBook = typeof gbUnsubscribe === 'function' ? gbUnsubscribe : () => {};
+    this.unsubscribeGrowthBook = typeof gbUnsubscribe === "function" ? gbUnsubscribe : () => {};
 
     evaluateModel();
   }

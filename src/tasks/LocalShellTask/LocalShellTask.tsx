@@ -1,5 +1,5 @@
-import { feature } from 'bun:bundle';
-import { stat } from 'node:fs/promises';
+import { feature } from "bun:bundle";
+import { stat } from "node:fs/promises";
 import {
   OUTPUT_FILE_TAG,
   STATUS_TAG,
@@ -7,33 +7,33 @@ import {
   TASK_ID_TAG,
   TASK_NOTIFICATION_TAG,
   TOOL_USE_ID_TAG,
-} from '../../constants/xml.js';
-import { abortSpeculation } from '../../services/PromptSuggestion/speculation.js';
-import type { AppState } from '../../state/AppState.js';
+} from "../../constants/xml.js";
+import { abortSpeculation } from "../../services/PromptSuggestion/speculation.js";
+import type { AppState } from "../../state/AppState.js";
 import type {
   LocalShellSpawnInput,
   SetAppState,
   Task,
   TaskContext,
   TaskHandle,
-} from '../../Task.js';
-import { createTaskStateBase } from '../../Task.js';
-import type { AgentId } from '../../types/ids.js';
-import { registerCleanup } from '../../utils/cleanupRegistry.js';
-import { tailFile } from '../../utils/fsOperations.js';
-import { logError } from '../../utils/log.js';
-import { enqueuePendingNotification } from '../../utils/messageQueueManager.js';
-import type { ShellCommand } from '../../utils/ShellCommand.js';
-import { evictTaskOutput, getTaskOutputPath } from '../../utils/task/diskOutput.js';
-import { registerTask, updateTaskState } from '../../utils/task/framework.js';
-import { escapeXml } from '../../utils/xml.js';
-import { backgroundAgentTask, isLocalAgentTask } from '../LocalAgentTask/LocalAgentTask.js';
-import { isMainSessionTask } from '../LocalMainSessionTask.js';
-import { type BashTaskKind, isLocalShellTask, type LocalShellTaskState } from './guards.js';
-import { killTask } from './killShellTasks.js';
+} from "../../Task.js";
+import { createTaskStateBase } from "../../Task.js";
+import type { AgentId } from "../../types/ids.js";
+import { registerCleanup } from "../../utils/cleanupRegistry.js";
+import { tailFile } from "../../utils/fsOperations.js";
+import { logError } from "../../utils/log.js";
+import { enqueuePendingNotification } from "../../utils/messageQueueManager.js";
+import type { ShellCommand } from "../../utils/ShellCommand.js";
+import { evictTaskOutput, getTaskOutputPath } from "../../utils/task/diskOutput.js";
+import { registerTask, updateTaskState } from "../../utils/task/framework.js";
+import { escapeXml } from "../../utils/xml.js";
+import { backgroundAgentTask, isLocalAgentTask } from "../LocalAgentTask/LocalAgentTask.js";
+import { isMainSessionTask } from "../LocalMainSessionTask.js";
+import { type BashTaskKind, isLocalShellTask, type LocalShellTaskState } from "./guards.js";
+import { killTask } from "./killShellTasks.js";
 
 /** Prefix that identifies a LocalShellTask summary to the UI collapse transform. */
-export const BACKGROUND_BASH_SUMMARY_PREFIX = 'Background command ';
+export const BACKGROUND_BASH_SUMMARY_PREFIX = "Background command ";
 const STALL_CHECK_INTERVAL_MS = 5_000;
 const STALL_THRESHOLD_MS = 45_000;
 const STALL_TAIL_BYTES = 1024;
@@ -55,7 +55,7 @@ const PROMPT_PATTERNS = [
   /Overwrite\?/i,
 ];
 export function looksLikePrompt(tail: string): boolean {
-  const lastLine = tail.trimEnd().split('\n').pop() ?? '';
+  const lastLine = tail.trimEnd().split("\n").pop() ?? "";
   return PROMPT_PATTERNS.some((p) => p.test(lastLine));
 }
 
@@ -68,7 +68,7 @@ function startStallWatchdog(
   toolUseId?: string,
   agentId?: AgentId,
 ): () => void {
-  if (kind === 'monitor') return () => {};
+  if (kind === "monitor") return () => {};
   const outputPath = getTaskOutputPath(taskId);
   let lastSize = 0;
   let lastGrowth = Date.now();
@@ -97,7 +97,7 @@ function startStallWatchdog(
             clearInterval(timer);
             const toolUseIdLine = toolUseId
               ? `\n<${TOOL_USE_ID_TAG}>${toolUseId}</${TOOL_USE_ID_TAG}>`
-              : '';
+              : "";
             const summary = `${BACKGROUND_BASH_SUMMARY_PREFIX}"${description}" appears to be waiting for interactive input`;
             // No <status> tag — print.ts treats <status> as a terminal
             // signal and an unknown value falls through to 'completed',
@@ -114,8 +114,8 @@ ${content.trimEnd()}
 The command is likely blocked on an interactive prompt. Kill this task and re-run with piped input (e.g., \`echo y | command\`) or a non-interactive flag if one exists.`;
             enqueuePendingNotification({
               value: message,
-              mode: 'task-notification',
-              priority: 'next',
+              mode: "task-notification",
+              priority: "next",
               agentId,
             });
           },
@@ -134,11 +134,11 @@ The command is likely blocked on an interactive prompt. Kill this task and re-ru
 function enqueueShellNotification(
   taskId: string,
   description: string,
-  status: 'completed' | 'failed' | 'killed',
+  status: "completed" | "failed" | "killed",
   exitCode: number | undefined,
   setAppState: SetAppState,
   toolUseId?: string,
-  kind: BashTaskKind = 'bash',
+  kind: BashTaskKind = "bash",
   agentId?: AgentId,
 ): void {
   // Atomically check and set notified flag to prevent duplicate notifications.
@@ -164,37 +164,37 @@ function enqueueShellNotification(
   // preserved; only the pre-computed response is discarded.
   abortSpeculation(setAppState);
   let summary: string;
-  if (feature('MONITOR_TOOL') && kind === 'monitor') {
+  if (feature("MONITOR_TOOL") && kind === "monitor") {
     // Monitor is streaming-only (post-#22764) — the script exiting means
     // the stream ended, not "condition met". Distinct from the bash prefix
     // so Monitor completions don't fold into the "N background commands
     // completed" collapse.
     switch (status) {
-      case 'completed':
+      case "completed":
         summary = `Monitor "${description}" stream ended`;
         break;
-      case 'failed':
-        summary = `Monitor "${description}" script failed${exitCode !== undefined ? ` (exit ${exitCode})` : ''}`;
+      case "failed":
+        summary = `Monitor "${description}" script failed${exitCode !== undefined ? ` (exit ${exitCode})` : ""}`;
         break;
-      case 'killed':
+      case "killed":
         summary = `Monitor "${description}" stopped`;
         break;
     }
   } else {
     switch (status) {
-      case 'completed':
-        summary = `${BACKGROUND_BASH_SUMMARY_PREFIX}"${description}" completed${exitCode !== undefined ? ` (exit code ${exitCode})` : ''}`;
+      case "completed":
+        summary = `${BACKGROUND_BASH_SUMMARY_PREFIX}"${description}" completed${exitCode !== undefined ? ` (exit code ${exitCode})` : ""}`;
         break;
-      case 'failed':
-        summary = `${BACKGROUND_BASH_SUMMARY_PREFIX}"${description}" failed${exitCode !== undefined ? ` with exit code ${exitCode}` : ''}`;
+      case "failed":
+        summary = `${BACKGROUND_BASH_SUMMARY_PREFIX}"${description}" failed${exitCode !== undefined ? ` with exit code ${exitCode}` : ""}`;
         break;
-      case 'killed':
+      case "killed":
         summary = `${BACKGROUND_BASH_SUMMARY_PREFIX}"${description}" was stopped`;
         break;
     }
   }
   const outputPath = getTaskOutputPath(taskId);
-  const toolUseIdLine = toolUseId ? `\n<${TOOL_USE_ID_TAG}>${toolUseId}</${TOOL_USE_ID_TAG}>` : '';
+  const toolUseIdLine = toolUseId ? `\n<${TOOL_USE_ID_TAG}>${toolUseId}</${TOOL_USE_ID_TAG}>` : "";
   const message = `<${TASK_NOTIFICATION_TAG}>
 <${TASK_ID_TAG}>${taskId}</${TASK_ID_TAG}>${toolUseIdLine}
 <${OUTPUT_FILE_TAG}>${outputPath}</${OUTPUT_FILE_TAG}>
@@ -203,14 +203,14 @@ function enqueueShellNotification(
 </${TASK_NOTIFICATION_TAG}>`;
   enqueuePendingNotification({
     value: message,
-    mode: 'task-notification',
-    priority: feature('MONITOR_TOOL') ? 'next' : 'later',
+    mode: "task-notification",
+    priority: feature("MONITOR_TOOL") ? "next" : "later",
     agentId,
   });
 }
 export const LocalShellTask: Task = {
-  name: 'LocalShellTask',
-  type: 'local_bash',
+  name: "LocalShellTask",
+  type: "local_bash",
   async kill(taskId, setAppState) {
     killTask(taskId, setAppState);
   },
@@ -231,9 +231,9 @@ export async function spawnShellTask(
     killTask(taskId, setAppState);
   });
   const taskState: LocalShellTaskState = {
-    ...createTaskStateBase(taskId, 'local_bash', description, toolUseId),
-    type: 'local_bash',
-    status: 'running',
+    ...createTaskStateBase(taskId, "local_bash", description, toolUseId),
+    type: "local_bash",
+    status: "running",
     command,
     completionStatusSentInAttachment: false,
     shellCommand,
@@ -254,13 +254,13 @@ export async function spawnShellTask(
     await flushAndCleanup(shellCommand);
     let wasKilled = false;
     updateTaskState<LocalShellTaskState>(taskId, setAppState, (task) => {
-      if (task.status === 'killed') {
+      if (task.status === "killed") {
         wasKilled = true;
         return task;
       }
       return {
         ...task,
-        status: result.code === 0 ? 'completed' : 'failed',
+        status: result.code === 0 ? "completed" : "failed",
         result: {
           code: result.code,
           interrupted: result.interrupted,
@@ -273,7 +273,7 @@ export async function spawnShellTask(
     enqueueShellNotification(
       taskId,
       description,
-      wasKilled ? 'killed' : result.code === 0 ? 'completed' : 'failed',
+      wasKilled ? "killed" : result.code === 0 ? "completed" : "failed",
       result.code,
       setAppState,
       toolUseId,
@@ -308,9 +308,9 @@ export function registerForeground(
     killTask(taskId, setAppState);
   });
   const taskState: LocalShellTaskState = {
-    ...createTaskStateBase(taskId, 'local_bash', description, toolUseId),
-    type: 'local_bash',
-    status: 'running',
+    ...createTaskStateBase(taskId, "local_bash", description, toolUseId),
+    type: "local_bash",
+    status: "running",
     command,
     completionStatusSentInAttachment: false,
     shellCommand,
@@ -372,7 +372,7 @@ function backgroundTask(
     let wasKilled = false;
     let cleanupFn: (() => void) | undefined;
     updateTaskState<LocalShellTaskState>(taskId, setAppState, (t) => {
-      if (t.status === 'killed') {
+      if (t.status === "killed") {
         wasKilled = true;
         return t;
       }
@@ -381,7 +381,7 @@ function backgroundTask(
       cleanupFn = t.unregisterCleanup;
       return {
         ...t,
-        status: result.code === 0 ? 'completed' : 'failed',
+        status: result.code === 0 ? "completed" : "failed",
         result: {
           code: result.code,
           interrupted: result.interrupted,
@@ -398,7 +398,7 @@ function backgroundTask(
       enqueueShellNotification(
         taskId,
         description,
-        'killed',
+        "killed",
         result.code,
         setAppState,
         toolUseId,
@@ -406,7 +406,7 @@ function backgroundTask(
         agentId,
       );
     } else {
-      const finalStatus = result.code === 0 ? 'completed' : 'failed';
+      const finalStatus = result.code === 0 ? "completed" : "failed";
       enqueueShellNotification(
         taskId,
         description,
@@ -516,14 +516,14 @@ export function backgroundExistingForegroundTask(
     let wasKilled = false;
     let cleanupFn: (() => void) | undefined;
     updateTaskState<LocalShellTaskState>(taskId, setAppState, (t) => {
-      if (t.status === 'killed') {
+      if (t.status === "killed") {
         wasKilled = true;
         return t;
       }
       cleanupFn = t.unregisterCleanup;
       return {
         ...t,
-        status: result.code === 0 ? 'completed' : 'failed',
+        status: result.code === 0 ? "completed" : "failed",
         result: {
           code: result.code,
           interrupted: result.interrupted,
@@ -534,7 +534,7 @@ export function backgroundExistingForegroundTask(
       };
     });
     cleanupFn?.();
-    const finalStatus = wasKilled ? 'killed' : result.code === 0 ? 'completed' : 'failed';
+    const finalStatus = wasKilled ? "killed" : result.code === 0 ? "completed" : "failed";
     enqueueShellNotification(
       taskId,
       description,

@@ -1,101 +1,101 @@
-import type React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import type React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { installOAuthTokens } from '../cli/handlers/auth.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { setClipboard } from '../ink/termio/osc.js';
-import { useTerminalNotification } from '../ink/useTerminalNotification.js';
-import { Box, Link, Text } from '../ink.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import { getSSLErrorHint } from '../services/api/errorUtils.js';
-import { sendNotification } from '../services/notifier.js';
-import { OAuthService } from '../services/oauth/index.js';
-import { getOauthAccountInfo, validateForceLoginOrg } from '../utils/auth.js';
-import { logError } from '../utils/log.js';
-import { getSettings_DEPRECATED } from '../utils/settings/settings.js';
-import { Select } from './CustomSelect/select.js';
-import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
-import { Spinner } from './Spinner.js';
-import TextInput from './TextInput.js';
+} from "src/services/analytics/index.js";
+import { installOAuthTokens } from "../cli/handlers/auth.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { setClipboard } from "../ink/termio/osc.js";
+import { useTerminalNotification } from "../ink/useTerminalNotification.js";
+import { Box, Link, Text } from "../ink.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import { getSSLErrorHint } from "../services/api/errorUtils.js";
+import { sendNotification } from "../services/notifier.js";
+import { OAuthService } from "../services/oauth/index.js";
+import { getOauthAccountInfo, validateForceLoginOrg } from "../utils/auth.js";
+import { logError } from "../utils/log.js";
+import { getSettings_DEPRECATED } from "../utils/settings/settings.js";
+import { Select } from "./CustomSelect/select.js";
+import { KeyboardShortcutHint } from "./design-system/KeyboardShortcutHint.js";
+import { Spinner } from "./Spinner.js";
+import TextInput from "./TextInput.js";
 
 type Props = {
   onDone(): void;
   startingMessage?: string;
-  mode?: 'login' | 'setup-token';
-  forceLoginMethod?: 'claudeai' | 'console';
+  mode?: "login" | "setup-token";
+  forceLoginMethod?: "claudeai" | "console";
 };
 type OAuthStatus =
   | {
-      state: 'idle';
+      state: "idle";
     } // Initial state, waiting to select login method
   | {
-      state: 'platform_setup';
+      state: "platform_setup";
     } // Show platform setup info (Bedrock/Vertex/Foundry)
   | {
-      state: 'ready_to_start';
+      state: "ready_to_start";
     } // Flow started, waiting for browser to open
   | {
-      state: 'waiting_for_login';
+      state: "waiting_for_login";
       url: string;
     } // Browser opened, waiting for user to login
   | {
-      state: 'creating_api_key';
+      state: "creating_api_key";
     } // Got access token, creating API key
   | {
-      state: 'about_to_retry';
+      state: "about_to_retry";
       nextState: OAuthStatus;
     }
   | {
-      state: 'success';
+      state: "success";
       token?: string;
     }
   | {
-      state: 'error';
+      state: "error";
       message: string;
       toRetry?: OAuthStatus;
     };
-const PASTE_HERE_MSG = 'Paste code here if prompted > ';
+const PASTE_HERE_MSG = "Paste code here if prompted > ";
 export function ConsoleOAuthFlow({
   onDone,
   startingMessage,
-  mode = 'login',
+  mode = "login",
   forceLoginMethod: forceLoginMethodProp,
 }: Props): React.ReactNode {
   const settings = getSettings_DEPRECATED() || {};
   const forceLoginMethod = forceLoginMethodProp ?? settings.forceLoginMethod;
   const orgUUID = settings.forceLoginOrgUUID;
   const forcedMethodMessage =
-    forceLoginMethod === 'claudeai'
-      ? 'Login method pre-selected: Subscription Plan (Claude Pro/Max)'
-      : forceLoginMethod === 'console'
-        ? 'Login method pre-selected: API Usage Billing (Anthropic Console)'
+    forceLoginMethod === "claudeai"
+      ? "Login method pre-selected: Subscription Plan (Claude Pro/Max)"
+      : forceLoginMethod === "console"
+        ? "Login method pre-selected: API Usage Billing (Anthropic Console)"
         : null;
   const terminal = useTerminalNotification();
   const [oauthStatus, setOAuthStatus] = useState<OAuthStatus>(() => {
-    if (mode === 'setup-token') {
+    if (mode === "setup-token") {
       return {
-        state: 'ready_to_start',
+        state: "ready_to_start",
       };
     }
-    if (forceLoginMethod === 'claudeai' || forceLoginMethod === 'console') {
+    if (forceLoginMethod === "claudeai" || forceLoginMethod === "console") {
       return {
-        state: 'ready_to_start',
+        state: "ready_to_start",
       };
     }
     return {
-      state: 'idle',
+      state: "idle",
     };
   });
-  const [pastedCode, setPastedCode] = useState('');
+  const [pastedCode, setPastedCode] = useState("");
   const [cursorOffset, setCursorOffset] = useState(0);
   const [oauthService] = useState(() => new OAuthService());
   const [loginWithClaudeAi, setLoginWithClaudeAi] = useState(() => {
     // Use Claude AI auth for setup-token mode to support user:inference scope
-    return mode === 'setup-token' || forceLoginMethod === 'claudeai';
+    return mode === "setup-token" || forceLoginMethod === "claudeai";
   });
   // After a few seconds we suggest the user to copy/paste url if the
   // browser did not open automatically. In this flow we expect the user to
@@ -106,16 +106,16 @@ export function ConsoleOAuthFlow({
 
   // Log forced login method on mount
   useEffect(() => {
-    if (forceLoginMethod === 'claudeai') {
-      logEvent('tengu_oauth_claudeai_forced', {});
-    } else if (forceLoginMethod === 'console') {
-      logEvent('tengu_oauth_console_forced', {});
+    if (forceLoginMethod === "claudeai") {
+      logEvent("tengu_oauth_claudeai_forced", {});
+    } else if (forceLoginMethod === "console") {
+      logEvent("tengu_oauth_console_forced", {});
     }
   }, [forceLoginMethod]);
 
   // Retry logic
   useEffect(() => {
-    if (oauthStatus.state === 'about_to_retry') {
+    if (oauthStatus.state === "about_to_retry") {
       const timer = setTimeout(setOAuthStatus, 1000, oauthStatus.nextState);
       return () => clearTimeout(timer);
     }
@@ -123,54 +123,54 @@ export function ConsoleOAuthFlow({
 
   // Handle Enter to continue on success state
   useKeybinding(
-    'confirm:yes',
+    "confirm:yes",
     () => {
-      logEvent('tengu_oauth_success', {
+      logEvent("tengu_oauth_success", {
         loginWithClaudeAi,
       });
       onDone();
     },
     {
-      context: 'Confirmation',
-      isActive: oauthStatus.state === 'success' && mode !== 'setup-token',
+      context: "Confirmation",
+      isActive: oauthStatus.state === "success" && mode !== "setup-token",
     },
   );
 
   // Handle Enter to continue from platform setup
   useKeybinding(
-    'confirm:yes',
+    "confirm:yes",
     () => {
       setOAuthStatus({
-        state: 'idle',
+        state: "idle",
       });
     },
     {
-      context: 'Confirmation',
-      isActive: oauthStatus.state === 'platform_setup',
+      context: "Confirmation",
+      isActive: oauthStatus.state === "platform_setup",
     },
   );
 
   // Handle Enter to retry on error state
   useKeybinding(
-    'confirm:yes',
+    "confirm:yes",
     () => {
-      if (oauthStatus.state === 'error' && oauthStatus.toRetry) {
-        setPastedCode('');
+      if (oauthStatus.state === "error" && oauthStatus.toRetry) {
+        setPastedCode("");
         setOAuthStatus({
-          state: 'about_to_retry',
+          state: "about_to_retry",
           nextState: oauthStatus.toRetry,
         });
       }
     },
     {
-      context: 'Confirmation',
-      isActive: oauthStatus.state === 'error' && !!oauthStatus.toRetry,
+      context: "Confirmation",
+      isActive: oauthStatus.state === "error" && !!oauthStatus.toRetry,
     },
   );
   useEffect(() => {
     if (
-      pastedCode === 'c' &&
-      oauthStatus.state === 'waiting_for_login' &&
+      pastedCode === "c" &&
+      oauthStatus.state === "waiting_for_login" &&
       showPastePrompt &&
       !urlCopied
     ) {
@@ -179,19 +179,19 @@ export function ConsoleOAuthFlow({
         setUrlCopied(true);
         setTimeout(setUrlCopied, 2000, false);
       });
-      setPastedCode('');
+      setPastedCode("");
     }
   }, [pastedCode, oauthStatus, showPastePrompt, urlCopied]);
   async function handleSubmitCode(value: string, url: string) {
     try {
       // Expecting format "authorizationCode#state" from the authorization callback URL
-      const [authorizationCode, state] = value.split('#');
+      const [authorizationCode, state] = value.split("#");
       if (!authorizationCode || !state) {
         setOAuthStatus({
-          state: 'error',
-          message: 'Invalid code. Please make sure the full code was copied',
+          state: "error",
+          message: "Invalid code. Please make sure the full code was copied",
           toRetry: {
-            state: 'waiting_for_login',
+            state: "waiting_for_login",
             url,
           },
         });
@@ -199,7 +199,7 @@ export function ConsoleOAuthFlow({
       }
 
       // Track which path the user is taking (manual code entry)
-      logEvent('tengu_oauth_manual_entry', {});
+      logEvent("tengu_oauth_manual_entry", {});
       oauthService.handleManualAuthCodeInput({
         authorizationCode,
         state,
@@ -207,10 +207,10 @@ export function ConsoleOAuthFlow({
     } catch (err: unknown) {
       logError(err);
       setOAuthStatus({
-        state: 'error',
+        state: "error",
         message: (err as Error).message,
         toRetry: {
-          state: 'waiting_for_login',
+          state: "waiting_for_login",
           url,
         },
       });
@@ -218,59 +218,59 @@ export function ConsoleOAuthFlow({
   }
   const startOAuth = useCallback(async () => {
     try {
-      logEvent('tengu_oauth_flow_start', {
+      logEvent("tengu_oauth_flow_start", {
         loginWithClaudeAi,
       });
       const result = await oauthService
         .startOAuthFlow(
           async (url_0) => {
             setOAuthStatus({
-              state: 'waiting_for_login',
+              state: "waiting_for_login",
               url: url_0,
             });
             setTimeout(setShowPastePrompt, 3000, true);
           },
           {
             loginWithClaudeAi,
-            inferenceOnly: mode === 'setup-token',
-            expiresIn: mode === 'setup-token' ? 365 * 24 * 60 * 60 : undefined,
+            inferenceOnly: mode === "setup-token",
+            expiresIn: mode === "setup-token" ? 365 * 24 * 60 * 60 : undefined,
             // 1 year for setup-token
             orgUUID,
           },
         )
         .catch((err_1) => {
-          const isTokenExchangeError = err_1.message.includes('Token exchange failed');
+          const isTokenExchangeError = err_1.message.includes("Token exchange failed");
           // Enterprise TLS proxies (Zscaler et al.) intercept the token
           // exchange POST and cause cryptic SSL errors. Surface an
           // actionable hint so the user isn't stuck in a login loop.
           const sslHint_0 = getSSLErrorHint(err_1);
           setOAuthStatus({
-            state: 'error',
+            state: "error",
             message:
               sslHint_0 ??
               (isTokenExchangeError
-                ? 'Failed to exchange authorization code for access token. Please try again.'
+                ? "Failed to exchange authorization code for access token. Please try again."
                 : err_1.message),
             toRetry:
-              mode === 'setup-token'
+              mode === "setup-token"
                 ? {
-                    state: 'ready_to_start',
+                    state: "ready_to_start",
                   }
                 : {
-                    state: 'idle',
+                    state: "idle",
                   },
           });
-          logEvent('tengu_oauth_token_exchange_error', {
+          logEvent("tengu_oauth_token_exchange_error", {
             error: err_1.message,
             ssl_error: sslHint_0 !== null,
           });
           throw err_1;
         });
-      if (mode === 'setup-token') {
+      if (mode === "setup-token") {
         // For setup-token mode, return the OAuth access token directly (it can be used as an API key)
         // Don't save to keychain - the token is displayed for manual use with CLAUDE_CODE_OAUTH_TOKEN
         setOAuthStatus({
-          state: 'success',
+          state: "success",
           token: result.accessToken,
         });
       } else {
@@ -280,12 +280,12 @@ export function ConsoleOAuthFlow({
           throw new Error(orgResult.message);
         }
         setOAuthStatus({
-          state: 'success',
+          state: "success",
         });
         void sendNotification(
           {
-            message: 'Claude Code login successful',
-            notificationType: 'auth_success',
+            message: "Claude Code login successful",
+            notificationType: "auth_success",
           },
           terminal,
         );
@@ -294,13 +294,13 @@ export function ConsoleOAuthFlow({
       const errorMessage = (err_0 as Error).message;
       const sslHint = getSSLErrorHint(err_0);
       setOAuthStatus({
-        state: 'error',
+        state: "error",
         message: sslHint ?? errorMessage,
         toRetry: {
-          state: mode === 'setup-token' ? 'ready_to_start' : 'idle',
+          state: mode === "setup-token" ? "ready_to_start" : "idle",
         },
       });
-      logEvent('tengu_oauth_error', {
+      logEvent("tengu_oauth_error", {
         error: errorMessage as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         ssl_error: sslHint !== null,
       });
@@ -308,7 +308,7 @@ export function ConsoleOAuthFlow({
   }, [oauthService, loginWithClaudeAi, mode, orgUUID, terminal]);
   const pendingOAuthStartRef = useRef(false);
   useEffect(() => {
-    if (oauthStatus.state === 'ready_to_start' && !pendingOAuthStartRef.current) {
+    if (oauthStatus.state === "ready_to_start" && !pendingOAuthStartRef.current) {
       pendingOAuthStartRef.current = true;
       process.nextTick(
         (
@@ -326,11 +326,11 @@ export function ConsoleOAuthFlow({
 
   // Auto-exit for setup-token mode
   useEffect(() => {
-    if (mode === 'setup-token' && oauthStatus.state === 'success') {
+    if (mode === "setup-token" && oauthStatus.state === "success") {
       // Delay to ensure static content is fully rendered before exiting
       const timer_0 = setTimeout(
         (loginWithClaudeAi_0, onDone_0) => {
-          logEvent('tengu_oauth_success', {
+          logEvent("tengu_oauth_success", {
             loginWithClaudeAi: loginWithClaudeAi_0,
           });
           // Don't clear terminal so the token remains visible
@@ -352,7 +352,7 @@ export function ConsoleOAuthFlow({
   }, [oauthService]);
   return (
     <Box flexDirection="column" gap={1}>
-      {oauthStatus.state === 'waiting_for_login' && showPastePrompt && (
+      {oauthStatus.state === "waiting_for_login" && showPastePrompt && (
         <Box flexDirection="column" key="urlToCopy" gap={1} paddingBottom={1}>
           <Box paddingX={1}>
             <Text dimColor>Browser didn&apos;t open? Use the url below to sign in </Text>
@@ -369,7 +369,7 @@ export function ConsoleOAuthFlow({
           </Link>
         </Box>
       )}
-      {mode === 'setup-token' && oauthStatus.state === 'success' && oauthStatus.token && (
+      {mode === "setup-token" && oauthStatus.state === "success" && oauthStatus.token && (
         <Box key="tokenOutput" flexDirection="column" gap={1} paddingTop={1}>
           <Text color="success">✓ Long-lived authentication token created successfully!</Text>
           <Box flexDirection="column" gap={1}>
@@ -404,7 +404,7 @@ export function ConsoleOAuthFlow({
 }
 type OAuthStatusMessageProps = {
   oauthStatus: OAuthStatus;
-  mode: 'login' | 'setup-token';
+  mode: "login" | "setup-token";
   startingMessage: string | undefined;
   forcedMethodMessage: string | null;
   showPastePrompt: boolean;
@@ -435,10 +435,10 @@ function OAuthStatusMessage(t0) {
     setLoginWithClaudeAi,
   } = t0;
   switch (oauthStatus.state) {
-    case 'idle': {
+    case "idle": {
       const t1 = startingMessage
         ? startingMessage
-        : 'Claude Code can be used with your Claude subscription or billed based on API usage through your Console account.';
+        : "Claude Code can be used with your Claude subscription or billed based on API usage through your Console account.";
       let t2;
       if ($[0] !== t1) {
         t2 = <Text bold={true}>{t1}</Text>;
@@ -448,67 +448,67 @@ function OAuthStatusMessage(t0) {
         t2 = $[1];
       }
       let t3;
-      if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
         t3 = <Text>Select login method:</Text>;
         $[2] = t3;
       } else {
         t3 = $[2];
       }
       let t4;
-      if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
         t4 = {
           label: (
             <Text>
-              Claude account with subscription ·{' '}
+              Claude account with subscription ·{" "}
               <Text dimColor={true}>Pro, Max, Team, or Enterprise</Text>
               {false && (
                 <Text>
-                  {'\n'}
-                  <Text color="warning">[ANT-ONLY]</Text>{' '}
+                  {"\n"}
+                  <Text color="warning">[ANT-ONLY]</Text>{" "}
                   <Text dimColor={true}>
                     Please use this option unless you need to login to a special org for accessing
                     sensitive data (e.g. customer data, HIPI data) with the Console option
                   </Text>
                 </Text>
               )}
-              {'\n'}
+              {"\n"}
             </Text>
           ),
-          value: 'claudeai',
+          value: "claudeai",
         };
         $[3] = t4;
       } else {
         t4 = $[3];
       }
       let t5;
-      if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
         t5 = {
           label: (
             <Text>
               Anthropic Console account · <Text dimColor={true}>API usage billing</Text>
-              {'\n'}
+              {"\n"}
             </Text>
           ),
-          value: 'console',
+          value: "console",
         };
         $[4] = t5;
       } else {
         t5 = $[4];
       }
       let t6;
-      if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
         t6 = [
           t4,
           t5,
           {
             label: (
               <Text>
-                3rd-party platform ·{' '}
+                3rd-party platform ·{" "}
                 <Text dimColor={true}>Amazon Bedrock, Microsoft Foundry, or Vertex AI</Text>
-                {'\n'}
+                {"\n"}
               </Text>
             ),
-            value: 'platform',
+            value: "platform",
           },
         ];
         $[5] = t6;
@@ -522,20 +522,20 @@ function OAuthStatusMessage(t0) {
             <Select
               options={t6}
               onChange={(value_0) => {
-                if (value_0 === 'platform') {
-                  logEvent('tengu_oauth_platform_selected', {});
+                if (value_0 === "platform") {
+                  logEvent("tengu_oauth_platform_selected", {});
                   setOAuthStatus({
-                    state: 'platform_setup',
+                    state: "platform_setup",
                   });
                 } else {
                   setOAuthStatus({
-                    state: 'ready_to_start',
+                    state: "ready_to_start",
                   });
-                  if (value_0 === 'claudeai') {
-                    logEvent('tengu_oauth_claudeai_selected', {});
+                  if (value_0 === "claudeai") {
+                    logEvent("tengu_oauth_claudeai_selected", {});
                     setLoginWithClaudeAi(true);
                   } else {
-                    logEvent('tengu_oauth_console_selected', {});
+                    logEvent("tengu_oauth_console_selected", {});
                     setLoginWithClaudeAi(false);
                   }
                 }
@@ -566,9 +566,9 @@ function OAuthStatusMessage(t0) {
       }
       return t8;
     }
-    case 'platform_setup': {
+    case "platform_setup": {
       let t1;
-      if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = <Text bold={true}>Using 3rd-party platforms</Text>;
         $[12] = t1;
       } else {
@@ -576,7 +576,7 @@ function OAuthStatusMessage(t0) {
       }
       let t2;
       let t3;
-      if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
         t2 = (
           <Text>
             Claude Code supports Amazon Bedrock, Microsoft Foundry, and Vertex AI. Set the required
@@ -596,17 +596,17 @@ function OAuthStatusMessage(t0) {
         t3 = $[14];
       }
       let t4;
-      if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
         t4 = <Text bold={true}>Documentation:</Text>;
         $[15] = t4;
       } else {
         t4 = $[15];
       }
       let t5;
-      if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
         t5 = (
           <Text>
-            · Amazon Bedrock:{' '}
+            · Amazon Bedrock:{" "}
             <Link url="https://code.claude.com/docs/en/amazon-bedrock">
               https://code.claude.com/docs/en/amazon-bedrock
             </Link>
@@ -617,10 +617,10 @@ function OAuthStatusMessage(t0) {
         t5 = $[16];
       }
       let t6;
-      if ($[17] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
         t6 = (
           <Text>
-            · Microsoft Foundry:{' '}
+            · Microsoft Foundry:{" "}
             <Link url="https://code.claude.com/docs/en/microsoft-foundry">
               https://code.claude.com/docs/en/microsoft-foundry
             </Link>
@@ -631,14 +631,14 @@ function OAuthStatusMessage(t0) {
         t6 = $[17];
       }
       let t7;
-      if ($[18] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[18] === Symbol.for("react.memo_cache_sentinel")) {
         t7 = (
           <Box flexDirection="column" marginTop={1}>
             {t4}
             {t5}
             {t6}
             <Text>
-              · Vertex AI:{' '}
+              · Vertex AI:{" "}
               <Link url="https://code.claude.com/docs/en/google-vertex-ai">
                 https://code.claude.com/docs/en/google-vertex-ai
               </Link>
@@ -650,7 +650,7 @@ function OAuthStatusMessage(t0) {
         t7 = $[18];
       }
       let t8;
-      if ($[19] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[19] === Symbol.for("react.memo_cache_sentinel")) {
         t8 = (
           <Box flexDirection="column" gap={1} marginTop={1}>
             {t1}
@@ -672,7 +672,7 @@ function OAuthStatusMessage(t0) {
       }
       return t8;
     }
-    case 'waiting_for_login': {
+    case "waiting_for_login": {
       let t1;
       if ($[20] !== forcedMethodMessage) {
         t1 = forcedMethodMessage && (
@@ -753,9 +753,9 @@ function OAuthStatusMessage(t0) {
       }
       return t4;
     }
-    case 'creating_api_key': {
+    case "creating_api_key": {
       let t1;
-      if ($[37] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[37] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <Box flexDirection="column" gap={1}>
             <Box>
@@ -770,9 +770,9 @@ function OAuthStatusMessage(t0) {
       }
       return t1;
     }
-    case 'about_to_retry': {
+    case "about_to_retry": {
       let t1;
-      if ($[38] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[38] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = (
           <Box flexDirection="column" gap={1}>
             <Text color="permission">Retrying…</Text>
@@ -784,11 +784,11 @@ function OAuthStatusMessage(t0) {
       }
       return t1;
     }
-    case 'success': {
+    case "success": {
       let t1;
       if ($[39] !== mode || $[40] !== oauthStatus.token) {
         t1 =
-          mode === 'setup-token' && oauthStatus.token ? null : (
+          mode === "setup-token" && oauthStatus.token ? null : (
             <>
               {getOauthAccountInfo()?.emailAddress ? (
                 <Text dimColor={true}>
@@ -816,7 +816,7 @@ function OAuthStatusMessage(t0) {
       }
       return t2;
     }
-    case 'error': {
+    case "error": {
       let t1;
       if ($[44] !== oauthStatus.message) {
         t1 = <Text color="error">OAuth error: {oauthStatus.message}</Text>;

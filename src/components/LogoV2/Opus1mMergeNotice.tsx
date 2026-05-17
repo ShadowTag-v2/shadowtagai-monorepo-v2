@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { UP_ARROW } from '../../constants/figures.js';
-import { Box, Text } from '../../ink.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { isOpus1mMergeEnabled } from '../../utils/model/model.js';
-import { AnimatedAsterisk } from './AnimatedAsterisk.js';
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { UP_ARROW } from "../../constants/figures.js";
+import { Box, Text } from "../../ink.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { isOpus1mMergeEnabled } from "../../utils/model/model.js";
+import { AnimatedAsterisk } from "./AnimatedAsterisk.js";
 
 const MAX_SHOW_COUNT = 6;
 export function shouldShowOpus1mMergeNotice(): boolean {
@@ -46,7 +46,7 @@ export function Opus1mMergeNotice() {
     return null;
   }
   let t2;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box paddingLeft={2}>
         <AnimatedAsterisk char={UP_ARROW} />

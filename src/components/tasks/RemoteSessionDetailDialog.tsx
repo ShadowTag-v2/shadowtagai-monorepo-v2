@@ -1,32 +1,32 @@
-import figures from 'figures';
-import React, { useMemo, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { SDKMessage } from 'src/entrypoints/agentSdkTypes.js';
-import type { ToolUseContext } from 'src/Tool.js';
-import type { DeepImmutable } from 'src/types/utils.js';
-import type { CommandResultDisplay } from '../../commands.js';
-import { DIAMOND_FILLED, DIAMOND_OPEN } from '../../constants/figures.js';
-import { useElapsedTime } from '../../hooks/useElapsedTime.js';
-import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
-import { Box, Link, Text } from '../../ink.js';
-import type { RemoteAgentTaskState } from '../../tasks/RemoteAgentTask/RemoteAgentTask.js';
-import { getRemoteTaskSessionUrl } from '../../tasks/RemoteAgentTask/RemoteAgentTask.js';
-import { AGENT_TOOL_NAME, LEGACY_AGENT_TOOL_NAME } from '../../tools/AgentTool/constants.js';
-import { ASK_USER_QUESTION_TOOL_NAME } from '../../tools/AskUserQuestionTool/prompt.js';
-import { EXIT_PLAN_MODE_V2_TOOL_NAME } from '../../tools/ExitPlanModeTool/constants.js';
-import { openBrowser } from '../../utils/browser.js';
-import { errorMessage } from '../../utils/errors.js';
-import { formatDuration, truncateToWidth } from '../../utils/format.js';
-import { toInternalMessages } from '../../utils/messages/mappers.js';
-import { EMPTY_LOOKUPS, normalizeMessages } from '../../utils/messages.js';
-import { plural } from '../../utils/stringUtils.js';
-import { teleportResumeCodeSession } from '../../utils/teleport.js';
-import { Select } from '../CustomSelect/select.js';
-import { Byline } from '../design-system/Byline.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
-import { Message } from '../Message.js';
-import { formatReviewStageCounts, RemoteSessionProgress } from './RemoteSessionProgress.js';
+import figures from "figures";
+import React, { useMemo, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { SDKMessage } from "src/entrypoints/agentSdkTypes.js";
+import type { ToolUseContext } from "src/Tool.js";
+import type { DeepImmutable } from "src/types/utils.js";
+import type { CommandResultDisplay } from "../../commands.js";
+import { DIAMOND_FILLED, DIAMOND_OPEN } from "../../constants/figures.js";
+import { useElapsedTime } from "../../hooks/useElapsedTime.js";
+import type { KeyboardEvent } from "../../ink/events/keyboard-event.js";
+import { Box, Link, Text } from "../../ink.js";
+import type { RemoteAgentTaskState } from "../../tasks/RemoteAgentTask/RemoteAgentTask.js";
+import { getRemoteTaskSessionUrl } from "../../tasks/RemoteAgentTask/RemoteAgentTask.js";
+import { AGENT_TOOL_NAME, LEGACY_AGENT_TOOL_NAME } from "../../tools/AgentTool/constants.js";
+import { ASK_USER_QUESTION_TOOL_NAME } from "../../tools/AskUserQuestionTool/prompt.js";
+import { EXIT_PLAN_MODE_V2_TOOL_NAME } from "../../tools/ExitPlanModeTool/constants.js";
+import { openBrowser } from "../../utils/browser.js";
+import { errorMessage } from "../../utils/errors.js";
+import { formatDuration, truncateToWidth } from "../../utils/format.js";
+import { toInternalMessages } from "../../utils/messages/mappers.js";
+import { EMPTY_LOOKUPS, normalizeMessages } from "../../utils/messages.js";
+import { plural } from "../../utils/stringUtils.js";
+import { teleportResumeCodeSession } from "../../utils/teleport.js";
+import { Select } from "../CustomSelect/select.js";
+import { Byline } from "../design-system/Byline.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { KeyboardShortcutHint } from "../design-system/KeyboardShortcutHint.js";
+import { Message } from "../Message.js";
+import { formatReviewStageCounts, RemoteSessionProgress } from "./RemoteSessionProgress.js";
 
 type Props = {
   session: DeepImmutable<RemoteAgentTaskState>;
@@ -48,61 +48,61 @@ type Props = {
 export function formatToolUseSummary(name: string, input: unknown): string {
   // plan_ready phase is only reached via ExitPlanMode tool
   if (name === EXIT_PLAN_MODE_V2_TOOL_NAME) {
-    return 'Review the plan in Claude Code on the web';
+    return "Review the plan in Claude Code on the web";
   }
-  if (!input || typeof input !== 'object') return name;
+  if (!input || typeof input !== "object") return name;
   // AskUserQuestion: show the question text as a CTA, not the tool name.
   // Input shape is {questions: [{question, header, options}]}.
-  if (name === ASK_USER_QUESTION_TOOL_NAME && 'questions' in input) {
+  if (name === ASK_USER_QUESTION_TOOL_NAME && "questions" in input) {
     const qs = input.questions;
-    if (Array.isArray(qs) && qs[0] && typeof qs[0] === 'object') {
+    if (Array.isArray(qs) && qs[0] && typeof qs[0] === "object") {
       // Prefer question (full text) over header (max-12-char tag). header
       // is a required schema field so checking it first would make the
       // question fallback dead code.
       const q =
-        'question' in qs[0] && typeof qs[0].question === 'string' && qs[0].question
+        "question" in qs[0] && typeof qs[0].question === "string" && qs[0].question
           ? qs[0].question
-          : 'header' in qs[0] && typeof qs[0].header === 'string'
+          : "header" in qs[0] && typeof qs[0].header === "string"
             ? qs[0].header
             : null;
       if (q) {
-        const oneLine = q.replace(/\s+/g, ' ').trim();
+        const oneLine = q.replace(/\s+/g, " ").trim();
         return `Answer in browser: ${truncateToWidth(oneLine, 50)}`;
       }
     }
   }
   for (const v of Object.values(input)) {
-    if (typeof v === 'string' && v.trim()) {
-      const oneLine = v.replace(/\s+/g, ' ').trim();
+    if (typeof v === "string" && v.trim()) {
+      const oneLine = v.replace(/\s+/g, " ").trim();
       return `${name} ${truncateToWidth(oneLine, 60)}`;
     }
   }
   return name;
 }
 const PHASE_LABEL = {
-  needs_input: 'input required',
-  plan_ready: 'ready',
+  needs_input: "input required",
+  plan_ready: "ready",
 } as const;
 const AGENT_VERB = {
-  needs_input: 'waiting',
-  plan_ready: 'done',
+  needs_input: "waiting",
+  plan_ready: "done",
 } as const;
 function UltraplanSessionDetail(t0) {
   const $ = _c(70);
   const { session, onDone, onBack, onKill } = t0;
-  const running = session.status === 'running' || session.status === 'pending';
+  const running = session.status === "running" || session.status === "pending";
   const phase = session.ultraplanPhase;
-  const statusText = running ? (phase ? PHASE_LABEL[phase] : 'running') : session.status;
+  const statusText = running ? (phase ? PHASE_LABEL[phase] : "running") : session.status;
   const elapsedTime = useElapsedTime(session.startTime, running, 1000, 0, session.endTime);
   let spawns = 0;
   let calls = 0;
   let lastBlock = null;
   for (const msg of session.log) {
-    if (msg.type !== 'assistant') {
+    if (msg.type !== "assistant") {
       continue;
     }
     for (const block of msg.message.content) {
-      if (block.type !== 'tool_use') {
+      if (block.type !== "tool_use") {
         continue;
       }
       calls++;
@@ -150,8 +150,8 @@ function UltraplanSessionDetail(t0) {
     t5 =
       onBack ??
       (() =>
-        onDone('Remote session details dismissed', {
-          display: 'system',
+        onDone("Remote session details dismissed", {
+          display: "system",
         }));
     $[8] = onBack;
     $[9] = onDone;
@@ -163,36 +163,36 @@ function UltraplanSessionDetail(t0) {
   const [confirmingStop, setConfirmingStop] = useState(false);
   if (confirmingStop) {
     let t6;
-    if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
       t6 = () => setConfirmingStop(false);
       $[11] = t6;
     } else {
       t6 = $[11];
     }
     let t7;
-    if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
       t7 = <Text dimColor={true}>This will terminate the Claude Code on the web session.</Text>;
       $[12] = t7;
     } else {
       t7 = $[12];
     }
     let t8;
-    if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
       t8 = {
-        label: 'Terminate session',
-        value: 'stop' as const,
+        label: "Terminate session",
+        value: "stop" as const,
       };
       $[13] = t8;
     } else {
       t8 = $[13];
     }
     let t9;
-    if ($[14] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
       t9 = [
         t8,
         {
-          label: 'Back',
-          value: 'back' as const,
+          label: "Back",
+          value: "back" as const,
         },
       ];
       $[14] = t9;
@@ -208,7 +208,7 @@ function UltraplanSessionDetail(t0) {
             <Select
               options={t9}
               onChange={(v) => {
-                if (v === 'stop') {
+                if (v === "stop") {
                   onKill?.();
                   goBackOrClose();
                 } else {
@@ -227,7 +227,7 @@ function UltraplanSessionDetail(t0) {
     }
     return t10;
   }
-  const t6 = phase === 'plan_ready' ? DIAMOND_FILLED : DIAMOND_OPEN;
+  const t6 = phase === "plan_ready" ? DIAMOND_FILLED : DIAMOND_OPEN;
   let t7;
   if ($[18] !== t6) {
     t7 = <Text color="background">{t6} </Text>;
@@ -237,7 +237,7 @@ function UltraplanSessionDetail(t0) {
     t7 = $[19];
   }
   let t8;
-  if ($[20] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[20] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = <Text bold={true}>ultraplan</Text>;
     $[20] = t8;
   } else {
@@ -247,9 +247,9 @@ function UltraplanSessionDetail(t0) {
   if ($[21] !== elapsedTime || $[22] !== statusText) {
     t9 = (
       <Text dimColor={true}>
-        {' \xB7 '}
+        {" \xB7 "}
         {elapsedTime}
-        {' \xB7 '}
+        {" \xB7 "}
         {statusText}
       </Text>
     );
@@ -276,7 +276,7 @@ function UltraplanSessionDetail(t0) {
   }
   let t11;
   if ($[27] !== phase) {
-    t11 = phase === 'plan_ready' && <Text color="success">{figures.tick} </Text>;
+    t11 = phase === "plan_ready" && <Text color="success">{figures.tick} </Text>;
     $[27] = phase;
     $[28] = t11;
   } else {
@@ -284,16 +284,16 @@ function UltraplanSessionDetail(t0) {
   }
   let t12;
   if ($[29] !== agentsWorking) {
-    t12 = plural(agentsWorking, 'agent');
+    t12 = plural(agentsWorking, "agent");
     $[29] = agentsWorking;
     $[30] = t12;
   } else {
     t12 = $[30];
   }
-  const t13 = phase ? AGENT_VERB[phase] : 'working';
+  const t13 = phase ? AGENT_VERB[phase] : "working";
   let t14;
   if ($[31] !== toolCalls) {
-    t14 = plural(toolCalls, 'call');
+    t14 = plural(toolCalls, "call");
     $[31] = toolCalls;
     $[32] = t14;
   } else {
@@ -350,10 +350,10 @@ function UltraplanSessionDetail(t0) {
     t18 = $[46];
   }
   let t19;
-  if ($[47] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[47] === Symbol.for("react.memo_cache_sentinel")) {
     t19 = {
-      label: 'Review in Claude Code on the web',
-      value: 'open' as const,
+      label: "Review in Claude Code on the web",
+      value: "open" as const,
     };
     $[47] = t19;
   } else {
@@ -365,8 +365,8 @@ function UltraplanSessionDetail(t0) {
       onKill && running
         ? [
             {
-              label: 'Stop ultraplan',
-              value: 'stop' as const,
+              label: "Stop ultraplan",
+              value: "stop" as const,
             },
           ]
         : [];
@@ -377,10 +377,10 @@ function UltraplanSessionDetail(t0) {
     t20 = $[50];
   }
   let t21;
-  if ($[51] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[51] === Symbol.for("react.memo_cache_sentinel")) {
     t21 = {
-      label: 'Back',
-      value: 'back' as const,
+      label: "Back",
+      value: "back" as const,
     };
     $[51] = t21;
   } else {
@@ -398,16 +398,16 @@ function UltraplanSessionDetail(t0) {
   if ($[54] !== goBackOrClose || $[55] !== onDone || $[56] !== sessionUrl) {
     t23 = (v_0) => {
       switch (v_0) {
-        case 'open': {
+        case "open": {
           openBrowser(sessionUrl);
           onDone();
           return;
         }
-        case 'stop': {
+        case "stop": {
           setConfirmingStop(true);
           return;
         }
-        case 'back': {
+        case "back": {
           goBackOrClose();
           return;
         }
@@ -463,11 +463,11 @@ function UltraplanSessionDetail(t0) {
   }
   return t26;
 }
-const STAGES = ['finding', 'verifying', 'synthesizing'] as const;
+const STAGES = ["finding", "verifying", "synthesizing"] as const;
 const STAGE_LABELS: Record<(typeof STAGES)[number], string> = {
-  finding: 'Find',
-  verifying: 'Verify',
-  synthesizing: 'Dedupe',
+  finding: "Find",
+  verifying: "Verify",
+  synthesizing: "Dedupe",
 };
 
 // Setup → Find → Verify → Dedupe pipeline. Current stage in cloud teal,
@@ -497,7 +497,7 @@ function StagePipeline(t0) {
     t2 = $[3];
   }
   let t3;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = <Text dimColor={true}> → </Text>;
     $[4] = t3;
   } else {
@@ -560,29 +560,29 @@ function reviewCountsLine(session: DeepImmutable<RemoteAgentTaskState>): string 
   const p = session.reviewProgress;
   // No progress data — the orchestrator never wrote a snapshot. Don't
   // claim "0 findings" when completed; we just don't know.
-  if (!p) return session.status === 'completed' ? 'done' : 'setting up';
+  if (!p) return session.status === "completed" ? "done" : "setting up";
   const verified = p.bugsVerified;
   const refuted = p.bugsRefuted ?? 0;
-  if (session.status === 'completed') {
-    const parts = [`${verified} ${plural(verified, 'finding')}`];
+  if (session.status === "completed") {
+    const parts = [`${verified} ${plural(verified, "finding")}`];
     if (refuted > 0) parts.push(`${refuted} refuted`);
-    return parts.join(' · ');
+    return parts.join(" · ");
   }
   return formatReviewStageCounts(p.stage, p.bugsFound, verified, refuted);
 }
-type MenuAction = 'open' | 'stop' | 'back' | 'dismiss';
+type MenuAction = "open" | "stop" | "back" | "dismiss";
 function ReviewSessionDetail(t0) {
   const $ = _c(56);
   const { session, onDone, onBack, onKill } = t0;
-  const completed = session.status === 'completed';
-  const running = session.status === 'running' || session.status === 'pending';
+  const completed = session.status === "completed";
+  const running = session.status === "running" || session.status === "pending";
   const [confirmingStop, setConfirmingStop] = useState(false);
   const elapsedTime = useElapsedTime(session.startTime, running, 1000, 0, session.endTime);
   let t1;
   if ($[0] !== onDone) {
     t1 = () =>
-      onDone('Remote session details dismissed', {
-        display: 'system',
+      onDone("Remote session details dismissed", {
+        display: "system",
       });
     $[0] = onDone;
     $[1] = t1;
@@ -600,17 +600,17 @@ function ReviewSessionDetail(t0) {
     t2 = $[3];
   }
   const sessionUrl = t2;
-  const statusLabel = completed ? 'ready' : running ? 'running' : session.status;
+  const statusLabel = completed ? "ready" : running ? "running" : session.status;
   if (confirmingStop) {
     let t3;
-    if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = () => setConfirmingStop(false);
       $[4] = t3;
     } else {
       t3 = $[4];
     }
     let t4;
-    if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
       t4 = (
         <Text dimColor={true}>
           This archives the remote session and stops local tracking. The review will not complete
@@ -622,22 +622,22 @@ function ReviewSessionDetail(t0) {
       t4 = $[5];
     }
     let t5;
-    if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
       t5 = {
-        label: 'Stop ultrareview',
-        value: 'stop' as const,
+        label: "Stop ultrareview",
+        value: "stop" as const,
       };
       $[6] = t5;
     } else {
       t5 = $[6];
     }
     let t6;
-    if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
       t6 = [
         t5,
         {
-          label: 'Back',
-          value: 'back' as const,
+          label: "Back",
+          value: "back" as const,
         },
       ];
       $[7] = t6;
@@ -653,7 +653,7 @@ function ReviewSessionDetail(t0) {
             <Select
               options={t6}
               onChange={(v) => {
-                if (v === 'stop') {
+                if (v === "stop") {
                   onKill?.();
                   goBackOrClose();
                 } else {
@@ -677,30 +677,30 @@ function ReviewSessionDetail(t0) {
     t3 = completed
       ? [
           {
-            label: 'Open in Claude Code on the web',
-            value: 'open',
+            label: "Open in Claude Code on the web",
+            value: "open",
           },
           {
-            label: 'Dismiss',
-            value: 'dismiss',
+            label: "Dismiss",
+            value: "dismiss",
           },
         ]
       : [
           {
-            label: 'Open in Claude Code on the web',
-            value: 'open',
+            label: "Open in Claude Code on the web",
+            value: "open",
           },
           ...(onKill && running
             ? [
                 {
-                  label: 'Stop ultrareview',
-                  value: 'stop' as const,
+                  label: "Stop ultrareview",
+                  value: "stop" as const,
                 },
               ]
             : []),
           {
-            label: 'Back',
-            value: 'back',
+            label: "Back",
+            value: "back",
           },
         ];
     $[11] = completed;
@@ -720,20 +720,20 @@ function ReviewSessionDetail(t0) {
   ) {
     t4 = (action) => {
       switch (action) {
-        case 'open': {
+        case "open": {
           openBrowser(sessionUrl);
           onDone();
           break;
         }
-        case 'stop': {
+        case "stop": {
           setConfirmingStop(true);
           break;
         }
-        case 'back': {
+        case "back": {
           goBackOrClose();
           break;
         }
-        case 'dismiss': {
+        case "dismiss": {
           handleClose();
         }
       }
@@ -757,7 +757,7 @@ function ReviewSessionDetail(t0) {
     t6 = $[21];
   }
   let t7;
-  if ($[22] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[22] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = <Text bold={true}>ultrareview</Text>;
     $[22] = t7;
   } else {
@@ -767,9 +767,9 @@ function ReviewSessionDetail(t0) {
   if ($[23] !== elapsedTime || $[24] !== statusLabel) {
     t8 = (
       <Text dimColor={true}>
-        {' \xB7 '}
+        {" \xB7 "}
         {elapsedTime}
-        {' \xB7 '}
+        {" \xB7 "}
         {statusLabel}
       </Text>
     );
@@ -922,7 +922,7 @@ export function RemoteSessionDetailDialog({
   const lastMessages = useMemo(() => {
     if (session.isUltraplan || session.isRemoteReview) return [];
     return normalizeMessages(toInternalMessages(session.log as SDKMessage[]))
-      .filter((_) => _.type !== 'progress')
+      .filter((_) => _.type !== "progress")
       .slice(-3);
   }, [session]);
   if (session.isUltraplan) {
@@ -939,25 +939,25 @@ export function RemoteSessionDetailDialog({
     );
   }
   const handleClose = () =>
-    onDone('Remote session details dismissed', {
-      display: 'system',
+    onDone("Remote session details dismissed", {
+      display: "system",
     });
 
   // Component-specific shortcuts shown in UI hints (t=teleport, space=dismiss,
   // left=back). These are state-dependent actions, not standard dialog keybindings.
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === ' ') {
+    if (e.key === " ") {
       e.preventDefault();
-      onDone('Remote session details dismissed', {
-        display: 'system',
+      onDone("Remote session details dismissed", {
+        display: "system",
       });
-    } else if (e.key === 'left' && onBack) {
+    } else if (e.key === "left" && onBack) {
       e.preventDefault();
       onBack();
-    } else if (e.key === 't' && !isTeleporting) {
+    } else if (e.key === "t" && !isTeleporting) {
       e.preventDefault();
       void handleTeleport();
-    } else if (e.key === 'return') {
+    } else if (e.key === "return") {
       e.preventDefault();
       handleClose();
     }
@@ -980,7 +980,7 @@ export function RemoteSessionDetailDialog({
   const displayTitle = truncateToWidth(session.title, 50);
 
   // Map TaskStatus to display status (handle 'pending')
-  const displayStatus = session.status === 'pending' ? 'starting' : session.status;
+  const displayStatus = session.status === "pending" ? "starting" : session.status;
   return (
     <Box flexDirection="column" tabIndex={0} autoFocus onKeyDown={handleKeyDown}>
       <Dialog
@@ -1001,17 +1001,17 @@ export function RemoteSessionDetailDialog({
       >
         <Box flexDirection="column">
           <Text>
-            <Text bold>Status</Text>:{' '}
-            {displayStatus === 'running' || displayStatus === 'starting' ? (
+            <Text bold>Status</Text>:{" "}
+            {displayStatus === "running" || displayStatus === "starting" ? (
               <Text color="background">{displayStatus}</Text>
-            ) : displayStatus === 'completed' ? (
+            ) : displayStatus === "completed" ? (
               <Text color="success">{displayStatus}</Text>
             ) : (
               <Text color="error">{displayStatus}</Text>
             )}
           </Text>
           <Text>
-            <Text bold>Runtime</Text>:{' '}
+            <Text bold>Runtime</Text>:{" "}
             {formatDuration((session.endTime ?? Date.now()) - session.startTime)}
           </Text>
           <Text wrap="truncate-end">
@@ -1021,7 +1021,7 @@ export function RemoteSessionDetailDialog({
             <Text bold>Progress</Text>: <RemoteSessionProgress session={session} />
           </Text>
           <Text>
-            <Text bold>Session URL</Text>:{' '}
+            <Text bold>Session URL</Text>:{" "}
             <Link url={getRemoteTaskSessionUrl(session.sessionId)}>
               <Text dimColor>{getRemoteTaskSessionUrl(session.sessionId)}</Text>
             </Link>

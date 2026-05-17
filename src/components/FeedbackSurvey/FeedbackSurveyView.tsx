@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { useDebouncedDigitInput } from './useDebouncedDigitInput.js';
-import type { FeedbackSurveyResponse } from './utils.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { useDebouncedDigitInput } from "./useDebouncedDigitInput.js";
+import type { FeedbackSurveyResponse } from "./utils.js";
 
 type Props = {
   onSelect: (option: FeedbackSurveyResponse) => void;
@@ -9,17 +9,17 @@ type Props = {
   setInputValue: (value: string) => void;
   message?: string;
 };
-const RESPONSE_INPUTS = ['0', '1', '2', '3'] as const;
+const RESPONSE_INPUTS = ["0", "1", "2", "3"] as const;
 type ResponseInput = (typeof RESPONSE_INPUTS)[number];
 const inputToResponse: Record<ResponseInput, FeedbackSurveyResponse> = {
-  '0': 'dismissed',
-  '1': 'bad',
-  '2': 'fine',
-  '3': 'good',
+  "0": "dismissed",
+  "1": "bad",
+  "2": "fine",
+  "3": "good",
 } as const;
 export const isValidResponseInput = (input: string): input is ResponseInput =>
   (RESPONSE_INPUTS as readonly string[]).includes(input);
-const DEFAULT_MESSAGE = 'How is Claude doing this session? (optional)';
+const DEFAULT_MESSAGE = "How is Claude doing this session? (optional)";
 export function FeedbackSurveyView(t0) {
   const $ = _c(15);
   const { onSelect, inputValue, setInputValue, message: t1 } = t0;
@@ -49,7 +49,7 @@ export function FeedbackSurveyView(t0) {
   }
   useDebouncedDigitInput(t3);
   let t4;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Text color="ansi:cyan">● </Text>;
     $[6] = t4;
   } else {
@@ -69,7 +69,7 @@ export function FeedbackSurveyView(t0) {
     t5 = $[8];
   }
   let t6;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Box width={10}>
         <Text>
@@ -82,7 +82,7 @@ export function FeedbackSurveyView(t0) {
     t6 = $[9];
   }
   let t7;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Box width={10}>
         <Text>
@@ -95,7 +95,7 @@ export function FeedbackSurveyView(t0) {
     t7 = $[10];
   }
   let t8;
-  if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Box width={10}>
         <Text>
@@ -108,7 +108,7 @@ export function FeedbackSurveyView(t0) {
     t8 = $[11];
   }
   let t9;
-  if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = (
       <Box marginLeft={2}>
         {t6}

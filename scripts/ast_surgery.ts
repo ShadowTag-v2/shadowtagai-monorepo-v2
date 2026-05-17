@@ -16,7 +16,7 @@
  *   bun run scripts/ast_surgery.ts --dry-run
  */
 
-import { $ } from 'bun';
+import { $ } from "bun";
 
 interface SurgeryResult {
   step: string;
@@ -29,22 +29,22 @@ async function runAstSurgery(options: {
   pythonOnly: boolean;
   dryRun: boolean;
 }): Promise<SurgeryResult[]> {
-  console.log('⚡ [Jules] Running AST Surgery...');
+  console.log("⚡ [Jules] Running AST Surgery...");
   const results: SurgeryResult[] = [];
 
   // Step 1: Python — ruff check + format
   try {
-    const ruffArgs = options.dryRun ? '--diff' : '--fix';
-    const ruffResult = await $`uv run ruff check ${ruffArgs} .`.text().catch(() => '');
-    results.push({ step: 'ruff check', success: true, output: ruffResult });
+    const ruffArgs = options.dryRun ? "--diff" : "--fix";
+    const ruffResult = await $`uv run ruff check ${ruffArgs} .`.text().catch(() => "");
+    results.push({ step: "ruff check", success: true, output: ruffResult });
 
     if (!options.dryRun) {
-      const fmtResult = await $`uv run ruff format .`.text().catch(() => '');
-      results.push({ step: 'ruff format', success: true, output: fmtResult });
+      const fmtResult = await $`uv run ruff format .`.text().catch(() => "");
+      results.push({ step: "ruff format", success: true, output: fmtResult });
     }
   } catch (e) {
     results.push({
-      step: 'ruff',
+      step: "ruff",
       success: false,
       output: String(e),
     });
@@ -56,12 +56,12 @@ async function runAstSurgery(options: {
 
   // Step 2: TypeScript/JS — biome check + write
   try {
-    const biomeArgs = options.dryRun ? '' : '--write';
-    const biomeResult = await $`npx @biomejs/biome check ${biomeArgs} .`.text().catch(() => '');
-    results.push({ step: 'biome check', success: true, output: biomeResult });
+    const biomeArgs = options.dryRun ? "" : "--write";
+    const biomeResult = await $`npx @biomejs/biome check ${biomeArgs} .`.text().catch(() => "");
+    results.push({ step: "biome check", success: true, output: biomeResult });
   } catch (e) {
     results.push({
-      step: 'biome',
+      step: "biome",
       success: false,
       output: String(e),
     });
@@ -81,13 +81,13 @@ async function runAstSurgery(options: {
       );
 
       results.push({
-        step: 'ast-grep rewrites',
+        step: "ast-grep rewrites",
         success: true,
-        output: 'Dynamic import migration applied',
+        output: "Dynamic import migration applied",
       });
     } catch (e) {
       results.push({
-        step: 'ast-grep',
+        step: "ast-grep",
         success: false,
         output: String(e),
       });
@@ -102,9 +102,9 @@ async function runAstSurgery(options: {
 if (import.meta.main) {
   const args = Bun.argv.slice(2);
   const options = {
-    autoFix: args.includes('--auto-fix'),
-    pythonOnly: args.includes('--python-only'),
-    dryRun: args.includes('--dry-run'),
+    autoFix: args.includes("--auto-fix"),
+    pythonOnly: args.includes("--python-only"),
+    dryRun: args.includes("--dry-run"),
   };
 
   const results = await runAstSurgery(options);

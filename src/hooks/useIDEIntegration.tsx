@@ -1,14 +1,14 @@
-import { useEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { ScopedMcpServerConfig } from '../services/mcp/types.js';
-import { getGlobalConfig } from '../utils/config.js';
-import { isEnvDefinedFalsy, isEnvTruthy } from '../utils/envUtils.js';
+import { useEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { ScopedMcpServerConfig } from "../services/mcp/types.js";
+import { getGlobalConfig } from "../utils/config.js";
+import { isEnvDefinedFalsy, isEnvTruthy } from "../utils/envUtils.js";
 import {
   type IDEExtensionInstallationStatus,
   type IdeType,
   initializeIdeIntegration,
   isSupportedTerminal,
-} from '../utils/ide.js';
+} from "../utils/ide.js";
 
 type UseIDEIntegrationProps = {
   autoConnectIdeFlag?: boolean;
@@ -63,12 +63,12 @@ export function useIDEIntegration(t0) {
           return {
             ...prev,
             ide: {
-              type: ide.url.startsWith('ws:') ? 'ws-ide' : 'sse-ide',
+              type: ide.url.startsWith("ws:") ? "ws-ide" : "sse-ide",
               url: ide.url,
               ideName: ide.name,
               authToken: ide.authToken,
               ideRunningInWindows: ide.ideRunningInWindows,
-              scope: 'dynamic' as const,
+              scope: "dynamic" as const,
             },
           };
         });

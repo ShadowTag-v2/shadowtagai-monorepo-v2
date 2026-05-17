@@ -7,13 +7,13 @@
  * the sandbox diff review experience.
  */
 
-export { ConfidenceBadge } from './ConfidenceBadge';
-export { DecisionBar } from './DecisionBar';
-export { DiffFile } from './DiffFile';
-export { DiffHunk } from './DiffHunk';
-export { DiffView } from './DiffView';
-export { FileNavigator } from './FileNavigator';
-export { PrivilegeBadge } from './PrivilegeBadge';
+export { ConfidenceBadge } from "./ConfidenceBadge";
+export { DecisionBar } from "./DecisionBar";
+export { DiffFile } from "./DiffFile";
+export { DiffHunk } from "./DiffHunk";
+export { DiffView } from "./DiffView";
+export { FileNavigator } from "./FileNavigator";
+export { PrivilegeBadge } from "./PrivilegeBadge";
 
 export type {
   CommitAction,
@@ -25,4 +25,4 @@ export type {
   DiffViewProps,
   FileNavigatorProps,
   PrivilegeBadgeProps,
-} from './types';
+} from "./types";

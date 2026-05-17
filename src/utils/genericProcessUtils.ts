@@ -1,4 +1,4 @@
-import { execFileNoThrowWithCwd, execSyncWithDefaults_DEPRECATED } from './execFileNoThrow.js';
+import { execFileNoThrowWithCwd, execSyncWithDefaults_DEPRECATED } from "./execFileNoThrow.js";
 
 // This file contains platform-agnostic implementations of common `ps` type commands.
 // When adding new code to this file, make sure to handle:
@@ -31,7 +31,7 @@ export function isProcessRunning(pid: number): boolean {
  * @returns Array of ancestor PIDs from immediate parent to furthest ancestor
  */
 export async function getAncestorPidsAsync(pid: string | number, maxDepth = 10): Promise<number[]> {
-  if (process.platform === 'win32') {
+  if (process.platform === "win32") {
     // For Windows, use a PowerShell script that walks the process tree
     const script = `
       $pid = ${String(pid)}
@@ -46,8 +46,8 @@ export async function getAncestorPidsAsync(pid: string | number, maxDepth = 10):
     `.trim();
 
     const result = await execFileNoThrowWithCwd(
-      'powershell.exe',
-      ['-NoProfile', '-Command', script],
+      "powershell.exe",
+      ["-NoProfile", "-Command", script],
       { timeout: 3000 },
     );
     if (result.code !== 0 || !result.stdout?.trim()) {
@@ -55,7 +55,7 @@ export async function getAncestorPidsAsync(pid: string | number, maxDepth = 10):
     }
     return result.stdout
       .trim()
-      .split(',')
+      .split(",")
       .filter(Boolean)
       .map((p) => parseInt(p, 10))
       .filter((p) => !Number.isNaN(p));
@@ -65,7 +65,7 @@ export async function getAncestorPidsAsync(pid: string | number, maxDepth = 10):
   // This uses a single process invocation instead of multiple sequential calls
   const script = `pid=${String(pid)}; for i in $(seq 1 ${maxDepth}); do ppid=$(ps -o ppid= -p $pid 2>/dev/null | tr -d ' '); if [ -z "$ppid" ] || [ "$ppid" = "0" ] || [ "$ppid" = "1" ]; then break; fi; echo $ppid; pid=$ppid; done`;
 
-  const result = await execFileNoThrowWithCwd('sh', ['-c', script], {
+  const result = await execFileNoThrowWithCwd("sh", ["-c", script], {
     timeout: 3000,
   });
   if (result.code !== 0 || !result.stdout?.trim()) {
@@ -73,7 +73,7 @@ export async function getAncestorPidsAsync(pid: string | number, maxDepth = 10):
   }
   return result.stdout
     .trim()
-    .split('\n')
+    .split("\n")
     .filter(Boolean)
     .map((p) => parseInt(p, 10))
     .filter((p) => !Number.isNaN(p));
@@ -89,7 +89,7 @@ export function getProcessCommand(pid: string | number): string | null {
   try {
     const pidStr = String(pid);
     const command =
-      process.platform === 'win32'
+      process.platform === "win32"
         ? `powershell.exe -NoProfile -Command "(Get-CimInstance Win32_Process -Filter \\"ProcessId=${pidStr}\\").CommandLine"`
         : `ps -o command= -p ${pidStr}`;
 
@@ -110,7 +110,7 @@ export async function getAncestorCommandsAsync(
   pid: string | number,
   maxDepth = 10,
 ): Promise<string[]> {
-  if (process.platform === 'win32') {
+  if (process.platform === "win32") {
     // For Windows, use a PowerShell script that walks the process tree and collects commands
     const script = `
       $currentPid = ${String(pid)}
@@ -126,27 +126,27 @@ export async function getAncestorCommandsAsync(
     `.trim();
 
     const result = await execFileNoThrowWithCwd(
-      'powershell.exe',
-      ['-NoProfile', '-Command', script],
+      "powershell.exe",
+      ["-NoProfile", "-Command", script],
       { timeout: 3000 },
     );
     if (result.code !== 0 || !result.stdout?.trim()) {
       return [];
     }
-    return result.stdout.split('\0').filter(Boolean);
+    return result.stdout.split("\0").filter(Boolean);
   }
 
   // For Unix, use a shell command that walks up the process tree and collects commands
   // Using null byte as separator to handle commands with newlines
   const script = `currentpid=${String(pid)}; for i in $(seq 1 ${maxDepth}); do cmd=$(ps -o command= -p $currentpid 2>/dev/null); if [ -n "$cmd" ]; then printf '%s\\0' "$cmd"; fi; ppid=$(ps -o ppid= -p $currentpid 2>/dev/null | tr -d ' '); if [ -z "$ppid" ] || [ "$ppid" = "0" ] || [ "$ppid" = "1" ]; then break; fi; currentpid=$ppid; done`;
 
-  const result = await execFileNoThrowWithCwd('sh', ['-c', script], {
+  const result = await execFileNoThrowWithCwd("sh", ["-c", script], {
     timeout: 3000,
   });
   if (result.code !== 0 || !result.stdout?.trim()) {
     return [];
   }
-  return result.stdout.split('\0').filter(Boolean);
+  return result.stdout.split("\0").filter(Boolean);
 }
 
 /**
@@ -158,7 +158,7 @@ export function getChildPids(pid: string | number): number[] {
   try {
     const pidStr = String(pid);
     const command =
-      process.platform === 'win32'
+      process.platform === "win32"
         ? `powershell.exe -NoProfile -Command "(Get-CimInstance Win32_Process -Filter \\"ParentProcessId=${pidStr}\\").ProcessId"`
         : `pgrep -P ${pidStr}`;
 
@@ -168,7 +168,7 @@ export function getChildPids(pid: string | number): number[] {
     }
     return result
       .trim()
-      .split('\n')
+      .split("\n")
       .filter(Boolean)
       .map((p) => parseInt(p, 10))
       .filter((p) => !Number.isNaN(p));

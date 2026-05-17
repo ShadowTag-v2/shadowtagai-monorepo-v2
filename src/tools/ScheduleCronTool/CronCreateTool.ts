@@ -1,17 +1,17 @@
-import { z } from 'zod/v4';
-import { setScheduledTasksEnabled } from '../../bootstrap/state.js';
-import type { ValidationResult } from '../../Tool.js';
-import { buildTool, type ToolDef } from '../../Tool.js';
-import { cronToHuman, parseCronExpression } from '../../utils/cron.js';
+import { z } from "zod/v4";
+import { setScheduledTasksEnabled } from "../../bootstrap/state.js";
+import type { ValidationResult } from "../../Tool.js";
+import { buildTool, type ToolDef } from "../../Tool.js";
+import { cronToHuman, parseCronExpression } from "../../utils/cron.js";
 import {
   addCronTask,
   getCronFilePath,
   listAllCronTasks,
   nextCronRunMs,
-} from '../../utils/cronTasks.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { semanticBoolean } from '../../utils/semanticBoolean.js';
-import { getTeammateContext } from '../../utils/teammateContext.js';
+} from "../../utils/cronTasks.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { semanticBoolean } from "../../utils/semanticBoolean.js";
+import { getTeammateContext } from "../../utils/teammateContext.js";
 import {
   buildCronCreateDescription,
   buildCronCreatePrompt,
@@ -19,8 +19,8 @@ import {
   DEFAULT_MAX_AGE_DAYS,
   isDurableCronEnabled,
   isKairosCronEnabled,
-} from './prompt.js';
-import { renderCreateResultMessage, renderCreateToolUseMessage } from './UI.js';
+} from "./prompt.js";
+import { renderCreateResultMessage, renderCreateToolUseMessage } from "./UI.js";
 
 const MAX_JOBS = 50;
 
@@ -31,12 +31,12 @@ const inputSchema = lazySchema(() =>
       .describe(
         'Standard 5-field cron expression in local time: "M H DoM Mon DoW" (e.g. "*/5 * * * *" = every 5 minutes, "30 14 28 2 *" = Feb 28 at 2:30pm local once).',
       ),
-    prompt: z.string().describe('The prompt to enqueue at each fire time.'),
+    prompt: z.string().describe("The prompt to enqueue at each fire time."),
     recurring: semanticBoolean(z.boolean().optional()).describe(
       `true (default) = fire on every cron match until deleted or auto-expired after ${DEFAULT_MAX_AGE_DAYS} days. false = fire once at the next match, then auto-delete. Use false for "remind me at X" one-shot requests with pinned minute/hour/dom/month.`,
     ),
     durable: semanticBoolean(z.boolean().optional()).describe(
-      'true = persist to .claude/scheduled_tasks.json and survive restarts. false (default) = in-memory only, dies when this Claude session ends. Use true only when the user asks the task to survive across sessions.',
+      "true = persist to .claude/scheduled_tasks.json and survive restarts. false (default) = in-memory only, dies when this Claude session ends. Use true only when the user asks the task to survive across sessions.",
     ),
   }),
 );
@@ -55,7 +55,7 @@ export type CreateOutput = z.infer<OutputSchema>;
 
 export const CronCreateTool = buildTool({
   name: CRON_CREATE_TOOL_NAME,
-  searchHint: 'schedule a recurring or one-shot prompt',
+  searchHint: "schedule a recurring or one-shot prompt",
   maxResultSizeChars: 100_000,
   shouldDefer: true,
   get inputSchema(): InputSchema {
@@ -108,7 +108,7 @@ export const CronCreateTool = buildTool({
       return {
         result: false,
         message:
-          'durable crons are not supported for teammates (teammates do not persist across sessions)',
+          "durable crons are not supported for teammates (teammates do not persist across sessions)",
         errorCode: 4,
       };
     }
@@ -142,11 +142,11 @@ export const CronCreateTool = buildTool({
   },
   mapToolResultToToolResultBlockParam(output, toolUseID) {
     const where = output.durable
-      ? 'Persisted to .claude/scheduled_tasks.json'
-      : 'Session-only (not written to disk, dies when Claude exits)';
+      ? "Persisted to .claude/scheduled_tasks.json"
+      : "Session-only (not written to disk, dies when Claude exits)";
     return {
       tool_use_id: toolUseID,
-      type: 'tool_result',
+      type: "tool_result",
       content: output.recurring
         ? `Scheduled recurring job ${output.id} (${output.humanSchedule}). ${where}. Auto-expires after ${DEFAULT_MAX_AGE_DAYS} days. Use CronDelete to cancel sooner.`
         : `Scheduled one-shot task ${output.id} (${output.humanSchedule}). ${where}. It will fire once then auto-delete.`,

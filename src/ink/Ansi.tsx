@@ -1,9 +1,9 @@
-import React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import Link from './components/Link.js';
-import Text from './components/Text.js';
-import type { Color } from './styles.js';
-import { type NamedColor, Parser, type Color as TermioColor, type TextStyle } from './termio.js';
+import React from "react";
+import { c as _c } from "react/compiler-runtime";
+import Link from "./components/Link.js";
+import Text from "./components/Text.js";
+import type { Color } from "./styles.js";
+import { type NamedColor, Parser, type Color as TermioColor, type TextStyle } from "./termio.js";
 
 type Props = {
   children: string;
@@ -33,7 +33,7 @@ type SpanProps = {
 export const Ansi = React.memo(function Ansi(t0) {
   const $ = _c(12);
   const { children, dimColor } = t0;
-  if (typeof children !== 'string') {
+  if (typeof children !== "string") {
     let t1;
     if ($[0] !== children || $[1] !== dimColor) {
       t1 = dimColor ? <Text dim={true}>{String(children)}</Text> : <Text>{String(children)}</Text>;
@@ -45,13 +45,13 @@ export const Ansi = React.memo(function Ansi(t0) {
     }
     return t1;
   }
-  if (children === '') {
+  if (children === "") {
     return null;
   }
   let t1;
   let t2;
   if ($[3] !== children || $[4] !== dimColor) {
-    t2 = Symbol.for('react.early_return_sentinel');
+    t2 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const spans = parseToSpans(children);
       if (spans.length === 0) {
@@ -125,7 +125,7 @@ export const Ansi = React.memo(function Ansi(t0) {
     t1 = $[5];
     t2 = $[6];
   }
-  if (t2 !== Symbol.for('react.early_return_sentinel')) {
+  if (t2 !== Symbol.for("react.early_return_sentinel")) {
     return t2;
   }
   const content = t1;
@@ -154,16 +154,16 @@ function parseToSpans(input: string): Span[] {
   const spans: Span[] = [];
   let currentHyperlink: string | undefined;
   for (const action of actions) {
-    if (action.type === 'link') {
-      if (action.action.type === 'start') {
+    if (action.type === "link") {
+      if (action.action.type === "start") {
         currentHyperlink = action.action.url;
       } else {
         currentHyperlink = undefined;
       }
       continue;
     }
-    if (action.type === 'text') {
-      const text = action.graphemes.map((g) => g.value).join('');
+    if (action.type === "text") {
+      const text = action.graphemes.map((g) => g.value).join("");
       if (!text) continue;
       const props = textStyleToSpanProps(action.style);
       if (currentHyperlink) {
@@ -193,7 +193,7 @@ function textStyleToSpanProps(style: TextStyle): SpanProps {
   if (style.bold) props.bold = true;
   if (style.dim) props.dim = true;
   if (style.italic) props.italic = true;
-  if (style.underline !== 'none') props.underline = true;
+  if (style.underline !== "none") props.underline = true;
   if (style.strikethrough) props.strikethrough = true;
   if (style.inverse) props.inverse = true;
   const fgColor = colorToString(style.fg);
@@ -205,22 +205,22 @@ function textStyleToSpanProps(style: TextStyle): SpanProps {
 
 // Map termio named colors to the ansi: format
 const NAMED_COLOR_MAP: Record<NamedColor, string> = {
-  black: 'ansi:black',
-  red: 'ansi:red',
-  green: 'ansi:green',
-  yellow: 'ansi:yellow',
-  blue: 'ansi:blue',
-  magenta: 'ansi:magenta',
-  cyan: 'ansi:cyan',
-  white: 'ansi:white',
-  brightBlack: 'ansi:blackBright',
-  brightRed: 'ansi:redBright',
-  brightGreen: 'ansi:greenBright',
-  brightYellow: 'ansi:yellowBright',
-  brightBlue: 'ansi:blueBright',
-  brightMagenta: 'ansi:magentaBright',
-  brightCyan: 'ansi:cyanBright',
-  brightWhite: 'ansi:whiteBright',
+  black: "ansi:black",
+  red: "ansi:red",
+  green: "ansi:green",
+  yellow: "ansi:yellow",
+  blue: "ansi:blue",
+  magenta: "ansi:magenta",
+  cyan: "ansi:cyan",
+  white: "ansi:white",
+  brightBlack: "ansi:blackBright",
+  brightRed: "ansi:redBright",
+  brightGreen: "ansi:greenBright",
+  brightYellow: "ansi:yellowBright",
+  brightBlue: "ansi:blueBright",
+  brightMagenta: "ansi:magentaBright",
+  brightCyan: "ansi:cyanBright",
+  brightWhite: "ansi:whiteBright",
 };
 
 /**
@@ -228,13 +228,13 @@ const NAMED_COLOR_MAP: Record<NamedColor, string> = {
  */
 function colorToString(color: TermioColor): Color | undefined {
   switch (color.type) {
-    case 'named':
+    case "named":
       return NAMED_COLOR_MAP[color.name] as Color;
-    case 'indexed':
+    case "indexed":
       return `ansi256(${color.index})` as Color;
-    case 'rgb':
+    case "rgb":
       return `rgb(${color.r},${color.g},${color.b})` as Color;
-    case 'default':
+    case "default":
       return undefined;
   }
 }

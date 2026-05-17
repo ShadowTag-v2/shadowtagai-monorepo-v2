@@ -1,38 +1,38 @@
-import { constants as fsConstants } from 'node:fs';
-import { access, writeFile } from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { join } from 'node:path';
-import axios from 'axios';
-import { getDynamicConfig_BLOCKS_ON_INIT } from 'src/services/analytics/growthbook.js';
+import { constants as fsConstants } from "node:fs";
+import { access, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
+import axios from "axios";
+import { getDynamicConfig_BLOCKS_ON_INIT } from "src/services/analytics/growthbook.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { type ReleaseChannel, saveGlobalConfig } from './config.js';
-import { logForDebugging } from './debug.js';
-import { env } from './env.js';
-import { getClaudeConfigHomeDir } from './envUtils.js';
-import { ClaudeError, getErrnoCode, isENOENT } from './errors.js';
-import { execFileNoThrowWithCwd } from './execFileNoThrow.js';
-import { getFsImplementation } from './fsOperations.js';
-import { gracefulShutdownSync } from './gracefulShutdown.js';
-import { logError } from './log.js';
-import { gte, lt } from './semver.js';
-import { getInitialSettings } from './settings/settings.js';
+} from "src/services/analytics/index.js";
+import { type ReleaseChannel, saveGlobalConfig } from "./config.js";
+import { logForDebugging } from "./debug.js";
+import { env } from "./env.js";
+import { getClaudeConfigHomeDir } from "./envUtils.js";
+import { ClaudeError, getErrnoCode, isENOENT } from "./errors.js";
+import { execFileNoThrowWithCwd } from "./execFileNoThrow.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { gracefulShutdownSync } from "./gracefulShutdown.js";
+import { logError } from "./log.js";
+import { gte, lt } from "./semver.js";
+import { getInitialSettings } from "./settings/settings.js";
 import {
   filterClaudeAliases,
   getShellConfigPaths,
   readFileLines,
   writeFileLines,
-} from './shellConfig.js';
-import { jsonParse } from './slowOperations.js';
+} from "./shellConfig.js";
+import { jsonParse } from "./slowOperations.js";
 
 const GCS_BUCKET_URL =
-  'https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases';
+  "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases";
 
 class AutoUpdaterError extends ClaudeError {}
 
-export type InstallStatus = 'success' | 'no_permissions' | 'install_failed' | 'in_progress';
+export type InstallStatus = "success" | "no_permissions" | "install_failed" | "in_progress";
 
 export type AutoUpdaterResult = {
   version: string | null;
@@ -64,14 +64,14 @@ export type MaxVersionConfig = {
  * This approach keeps version comparison logic simple while maintaining traceability via the SHA.
  */
 export async function assertMinVersion(): Promise<void> {
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === "test") {
     return;
   }
 
   try {
     const versionConfig = await getDynamicConfig_BLOCKS_ON_INIT<{
       minVersion: string;
-    }>('tengu_version_config', { minVersion: '0.0.0' });
+    }>("tengu_version_config", { minVersion: "0.0.0" });
 
     if (versionConfig.minVersion && lt(MACRO.VERSION, versionConfig.minVersion)) {
       // biome-ignore lint/suspicious/noConsole:: intentional console output
@@ -100,7 +100,7 @@ This will ensure you have access to the latest features and improvements.
  */
 export async function getMaxVersion(): Promise<string | undefined> {
   const config = await getMaxVersionConfig();
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     return config.ant || undefined;
   }
   return config.external || undefined;
@@ -112,7 +112,7 @@ export async function getMaxVersion(): Promise<string | undefined> {
  */
 export async function getMaxVersionMessage(): Promise<string | undefined> {
   const config = await getMaxVersionConfig();
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     return config.ant_message || undefined;
   }
   return config.external_message || undefined;
@@ -120,7 +120,7 @@ export async function getMaxVersionMessage(): Promise<string | undefined> {
 
 async function getMaxVersionConfig(): Promise<MaxVersionConfig> {
   try {
-    return await getDynamicConfig_BLOCKS_ON_INIT<MaxVersionConfig>('tengu_max_version_config', {});
+    return await getDynamicConfig_BLOCKS_ON_INIT<MaxVersionConfig>("tengu_max_version_config", {});
   } catch (error) {
     logError(error as Error);
     return {};
@@ -154,7 +154,7 @@ const LOCK_TIMEOUT_MS = 5 * 60 * 1000; // 5 minute timeout for locks
  * This is a function to ensure it's evaluated at runtime after test setup
  */
 export function getLockFilePath(): string {
-  return join(getClaudeConfigHomeDir(), '.update.lock');
+  return join(getClaudeConfigHomeDir(), ".update.lock");
 }
 
 /**
@@ -203,28 +203,28 @@ async function acquireLock(): Promise<boolean> {
   // Lazy-mkdir the config dir on ENOENT.
   try {
     await writeFile(lockPath, `${process.pid}`, {
-      encoding: 'utf8',
-      flag: 'wx',
+      encoding: "utf8",
+      flag: "wx",
     });
     return true;
   } catch (err) {
     const code = getErrnoCode(err);
-    if (code === 'EEXIST') {
+    if (code === "EEXIST") {
       return false;
     }
-    if (code === 'ENOENT') {
+    if (code === "ENOENT") {
       try {
         // fs.mkdir from getFsImplementation() is always recursive:true and
         // swallows EEXIST internally, so a dir-creation race cannot reach the
         // catch below — only writeFile's EEXIST (true lock contention) can.
         await fs.mkdir(getClaudeConfigHomeDir());
         await writeFile(lockPath, `${process.pid}`, {
-          encoding: 'utf8',
-          flag: 'wx',
+          encoding: "utf8",
+          flag: "wx",
         });
         return true;
       } catch (mkdirErr) {
-        if (getErrnoCode(mkdirErr) === 'EEXIST') {
+        if (getErrnoCode(mkdirErr) === "EEXIST") {
           return false;
         }
         logError(mkdirErr as Error);
@@ -243,7 +243,7 @@ async function releaseLock(): Promise<void> {
   const fs = getFsImplementation();
   const lockPath = getLockFilePath();
   try {
-    const lockData = await fs.readFile(lockPath, { encoding: 'utf8' });
+    const lockData = await fs.readFile(lockPath, { encoding: "utf8" });
     if (lockData === `${process.pid}`) {
       await fs.unlink(lockPath);
     }
@@ -260,16 +260,16 @@ async function getInstallationPrefix(): Promise<string | null> {
   const isBun = env.isRunningWithBun();
   let prefixResult = null;
   if (isBun) {
-    prefixResult = await execFileNoThrowWithCwd('bun', ['pm', 'bin', '-g'], {
+    prefixResult = await execFileNoThrowWithCwd("bun", ["pm", "bin", "-g"], {
       cwd: homedir(),
     });
   } else {
-    prefixResult = await execFileNoThrowWithCwd('npm', ['-g', 'config', 'get', 'prefix'], {
+    prefixResult = await execFileNoThrowWithCwd("npm", ["-g", "config", "get", "prefix"], {
       cwd: homedir(),
     });
   }
   if (prefixResult.code !== 0) {
-    logError(new Error(`Failed to check ${isBun ? 'bun' : 'npm'} permissions`));
+    logError(new Error(`Failed to check ${isBun ? "bun" : "npm"} permissions`));
     return null;
   }
   return prefixResult.stdout.trim();
@@ -289,7 +289,7 @@ export async function checkGlobalInstallPermissions(): Promise<{
       await access(prefix, fsConstants.W_OK);
       return { hasPermissions: true, npmPrefix: prefix };
     } catch {
-      logError(new AutoUpdaterError('Insufficient permissions for global npm install.'));
+      logError(new AutoUpdaterError("Insufficient permissions for global npm install."));
       return { hasPermissions: false, npmPrefix: prefix };
     }
   } catch (error) {
@@ -299,13 +299,13 @@ export async function checkGlobalInstallPermissions(): Promise<{
 }
 
 export async function getLatestVersion(channel: ReleaseChannel): Promise<string | null> {
-  const npmTag = channel === 'stable' ? 'stable' : 'latest';
+  const npmTag = channel === "stable" ? "stable" : "latest";
 
   // Run from home directory to avoid reading project-level .npmrc
   // which could be maliciously crafted to redirect to an attacker's registry
   const result = await execFileNoThrowWithCwd(
-    'npm',
-    ['view', `${MACRO.PACKAGE_URL}@${npmTag}`, 'version', '--prefer-online'],
+    "npm",
+    ["view", `${MACRO.PACKAGE_URL}@${npmTag}`, "version", "--prefer-online"],
     { abortSignal: AbortSignal.timeout(5000), cwd: homedir() },
   );
   if (result.code !== 0) {
@@ -313,7 +313,7 @@ export async function getLatestVersion(channel: ReleaseChannel): Promise<string 
     if (result.stderr) {
       logForDebugging(`npm stderr: ${result.stderr.trim()}`);
     } else {
-      logForDebugging('npm stderr: (empty)');
+      logForDebugging("npm stderr: (empty)");
     }
     if (result.stdout) {
       logForDebugging(`npm stdout: ${result.stdout.trim()}`);
@@ -335,8 +335,8 @@ export type NpmDistTags = {
 export async function getNpmDistTags(): Promise<NpmDistTags> {
   // Run from home directory to avoid reading project-level .npmrc
   const result = await execFileNoThrowWithCwd(
-    'npm',
-    ['view', MACRO.PACKAGE_URL, 'dist-tags', '--json', '--prefer-online'],
+    "npm",
+    ["view", MACRO.PACKAGE_URL, "dist-tags", "--json", "--prefer-online"],
     { abortSignal: AbortSignal.timeout(5000), cwd: homedir() },
   );
 
@@ -348,8 +348,8 @@ export async function getNpmDistTags(): Promise<NpmDistTags> {
   try {
     const parsed = jsonParse(result.stdout.trim()) as Record<string, unknown>;
     return {
-      latest: typeof parsed.latest === 'string' ? parsed.latest : null,
-      stable: typeof parsed.stable === 'string' ? parsed.stable : null,
+      latest: typeof parsed.latest === "string" ? parsed.latest : null,
+      stable: typeof parsed.stable === "string" ? parsed.stable : null,
     };
   } catch (error) {
     logForDebugging(`Failed to parse dist-tags: ${error}`);
@@ -365,7 +365,7 @@ export async function getLatestVersionFromGcs(channel: ReleaseChannel): Promise<
   try {
     const response = await axios.get(`${GCS_BUCKET_URL}/${channel}`, {
       timeout: 5000,
-      responseType: 'text',
+      responseType: "text",
     });
     return response.data.trim();
   } catch (error) {
@@ -380,8 +380,8 @@ export async function getLatestVersionFromGcs(channel: ReleaseChannel): Promise<
  */
 export async function getGcsDistTags(): Promise<NpmDistTags> {
   const [latest, stable] = await Promise.all([
-    getLatestVersionFromGcs('latest'),
-    getLatestVersionFromGcs('stable'),
+    getLatestVersionFromGcs("latest"),
+    getLatestVersionFromGcs("stable"),
   ]);
 
   return { latest, stable };
@@ -397,7 +397,7 @@ export async function getGcsDistTags(): Promise<NpmDistTags> {
  * 3. This prevents rollback from listing versions that don't have native binaries
  */
 export async function getVersionHistory(limit: number): Promise<string[]> {
-  if (process.env.USER_TYPE !== 'ant') {
+  if (process.env.USER_TYPE !== "ant") {
     return [];
   }
 
@@ -407,8 +407,8 @@ export async function getVersionHistory(limit: number): Promise<string[]> {
 
   // Run from home directory to avoid reading project-level .npmrc
   const result = await execFileNoThrowWithCwd(
-    'npm',
-    ['view', packageUrl, 'versions', '--json', '--prefer-online'],
+    "npm",
+    ["view", packageUrl, "versions", "--json", "--prefer-online"],
     // Longer timeout for version list
     { abortSignal: AbortSignal.timeout(30000), cwd: homedir() },
   );
@@ -435,21 +435,21 @@ export async function installGlobalPackage(
   specificVersion?: string | null,
 ): Promise<InstallStatus> {
   if (!(await acquireLock())) {
-    logError(new AutoUpdaterError('Another process is currently installing an update'));
+    logError(new AutoUpdaterError("Another process is currently installing an update"));
     // Log the lock contention
-    logEvent('tengu_auto_updater_lock_contention', {
+    logEvent("tengu_auto_updater_lock_contention", {
       pid: process.pid,
       currentVersion: MACRO.VERSION as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     });
-    return 'in_progress';
+    return "in_progress";
   }
 
   try {
     await removeClaudeAliasesFromShellConfigs();
     // Check if we're using npm from Windows path in WSL
     if (!env.isRunningWithBun() && env.isNpmFromWindowsPath()) {
-      logError(new Error('Windows NPM detected in WSL environment'));
-      logEvent('tengu_auto_updater_windows_npm_in_wsl', {
+      logError(new Error("Windows NPM detected in WSL environment"));
+      logEvent("tengu_auto_updater_windows_npm_in_wsl", {
         currentVersion: MACRO.VERSION as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
       // biome-ignore lint/suspicious/noConsole:: intentional console output
@@ -464,12 +464,12 @@ To fix this issue:
   2. Make sure Linux NPM is in your PATH before the Windows version
   3. Try updating again with 'claude update'
 `);
-      return 'install_failed';
+      return "install_failed";
     }
 
     const { hasPermissions } = await checkGlobalInstallPermissions();
     if (!hasPermissions) {
-      return 'no_permissions';
+      return "no_permissions";
     }
 
     // Use specific version if provided, otherwise use latest
@@ -479,10 +479,10 @@ To fix this issue:
 
     // Run from home directory to avoid reading project-level .npmrc/.bunfig.toml
     // which could be maliciously crafted to redirect to an attacker's registry
-    const packageManager = env.isRunningWithBun() ? 'bun' : 'npm';
+    const packageManager = env.isRunningWithBun() ? "bun" : "npm";
     const installResult = await execFileNoThrowWithCwd(
       packageManager,
-      ['install', '-g', packageSpec],
+      ["install", "-g", packageSpec],
       { cwd: homedir() },
     );
     if (installResult.code !== 0) {
@@ -490,16 +490,16 @@ To fix this issue:
         `Failed to install new version of claude: ${installResult.stdout} ${installResult.stderr}`,
       );
       logError(error);
-      return 'install_failed';
+      return "install_failed";
     }
 
     // Set installMethod to 'global' to track npm global installations
     saveGlobalConfig((current) => ({
       ...current,
-      installMethod: 'global',
+      installMethod: "global",
     }));
 
-    return 'success';
+    return "success";
   } finally {
     // Ensure we always release the lock
     await releaseLock();
@@ -528,7 +528,7 @@ async function removeClaudeAliasesFromShellConfigs(): Promise<void> {
     } catch (error) {
       // Don't fail the whole operation if one file can't be processed
       logForDebugging(`Failed to remove alias from ${configFile}: ${error}`, {
-        level: 'error',
+        level: "error",
       });
     }
   }

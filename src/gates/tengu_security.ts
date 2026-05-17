@@ -11,10 +11,15 @@
  * - Audit trail for compliance
  */
 
-import { checkSecurityRestrictionGate } from '../services/analytics/growthbook.js';
-import { logForDebugging } from '../utils/debug.js';
-import { logError } from '../utils/log.js';
-import { GateCategory, getSecurityGates, TENGU_GATES, type TenguGateDefinition } from './tengu_registry.js';
+import { checkSecurityRestrictionGate } from "../services/analytics/growthbook.js";
+import { logForDebugging } from "../utils/debug.js";
+import { logError } from "../utils/log.js";
+import {
+  GateCategory,
+  getSecurityGates,
+  TENGU_GATES,
+  type TenguGateDefinition,
+} from "./tengu_registry.js";
 
 // ─── Security Evaluation Context ───────────────────────────────────
 
@@ -59,9 +64,9 @@ function recordSecurityAudit(result: SecurityGateResult): void {
   }
   securityAuditLog.push(result);
 
-  const level = result.allowed ? 'INFO' : 'CRITICAL';
+  const level = result.allowed ? "INFO" : "CRITICAL";
   logForDebugging(
-    `[tengu-security] ${level}: ${result.gate} → ${result.allowed ? 'ALLOWED' : 'DENIED'} ${result.reason ?? ''}`,
+    `[tengu-security] ${level}: ${result.gate} → ${result.allowed ? "ALLOWED" : "DENIED"} ${result.reason ?? ""}`,
   );
 }
 

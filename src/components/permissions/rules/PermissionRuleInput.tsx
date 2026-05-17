@@ -1,21 +1,21 @@
-import figures from 'figures';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import TextInput from '../../../components/TextInput.js';
-import { useExitOnCtrlCDWithKeybindings } from '../../../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
-import { Box, Newline, Text } from '../../../ink.js';
-import { useKeybinding } from '../../../keybindings/useKeybinding.js';
-import { BashTool } from '../../../tools/BashTool/BashTool.js';
-import { WebFetchTool } from '../../../tools/WebFetchTool/WebFetchTool.js';
+import figures from "figures";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import TextInput from "../../../components/TextInput.js";
+import { useExitOnCtrlCDWithKeybindings } from "../../../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { useTerminalSize } from "../../../hooks/useTerminalSize.js";
+import { Box, Newline, Text } from "../../../ink.js";
+import { useKeybinding } from "../../../keybindings/useKeybinding.js";
+import { BashTool } from "../../../tools/BashTool/BashTool.js";
+import { WebFetchTool } from "../../../tools/WebFetchTool/WebFetchTool.js";
 import type {
   PermissionBehavior,
   PermissionRuleValue,
-} from '../../../utils/permissions/PermissionRule.js';
+} from "../../../utils/permissions/PermissionRule.js";
 import {
   permissionRuleValueFromString,
   permissionRuleValueToString,
-} from '../../../utils/permissions/permissionRuleParser.js';
+} from "../../../utils/permissions/permissionRuleParser.js";
 export type PermissionRuleInputProps = {
   onCancel: () => void;
   onSubmit: (ruleValue: PermissionRuleValue, ruleBehavior: PermissionBehavior) => void;
@@ -24,19 +24,19 @@ export type PermissionRuleInputProps = {
 export function PermissionRuleInput(t0) {
   const $ = _c(24);
   const { onCancel, onSubmit, ruleBehavior } = t0;
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [cursorOffset, setCursorOffset] = useState(0);
   const exitState = useExitOnCtrlCDWithKeybindings();
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
-      context: 'Settings',
+      context: "Settings",
     };
     $[0] = t1;
   } else {
     t1 = $[0];
   }
-  useKeybinding('confirm:no', onCancel, t1);
+  useKeybinding("confirm:no", onCancel, t1);
   const { columns } = useTerminalSize();
   const textInputColumns = columns - 6;
   let t2;
@@ -69,7 +69,7 @@ export function PermissionRuleInput(t0) {
     t3 = $[5];
   }
   let t4;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Newline />;
     $[6] = t4;
   } else {
@@ -77,7 +77,7 @@ export function PermissionRuleInput(t0) {
   }
   let t5;
   let t6;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Text bold={true}>
         {permissionRuleValueToString({
@@ -93,7 +93,7 @@ export function PermissionRuleInput(t0) {
     t6 = $[8];
   }
   let t7;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Text>
         Permission rules are a tool name, optionally followed by a specifier in parentheses.{t4}
@@ -102,7 +102,7 @@ export function PermissionRuleInput(t0) {
         <Text bold={true}>
           {permissionRuleValueToString({
             toolName: BashTool.name,
-            ruleContent: 'ls:*',
+            ruleContent: "ls:*",
           })}
         </Text>
       </Text>

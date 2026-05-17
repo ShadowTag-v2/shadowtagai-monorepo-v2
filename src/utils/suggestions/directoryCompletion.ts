@@ -1,21 +1,21 @@
-import { basename, dirname, join, sep } from 'node:path';
-import { LRUCache } from 'lru-cache';
-import type { SuggestionItem } from 'src/components/PromptInput/PromptInputFooterSuggestions.js';
-import { getCwd } from 'src/utils/cwd.js';
-import { getFsImplementation } from 'src/utils/fsOperations.js';
-import { logError } from 'src/utils/log.js';
-import { expandPath } from 'src/utils/path.js';
+import { basename, dirname, join, sep } from "node:path";
+import { LRUCache } from "lru-cache";
+import type { SuggestionItem } from "src/components/PromptInput/PromptInputFooterSuggestions.js";
+import { getCwd } from "src/utils/cwd.js";
+import { getFsImplementation } from "src/utils/fsOperations.js";
+import { logError } from "src/utils/log.js";
+import { expandPath } from "src/utils/path.js";
 // Types
 export type DirectoryEntry = {
   name: string;
   path: string;
-  type: 'directory';
+  type: "directory";
 };
 
 export type PathEntry = {
   name: string;
   path: string;
-  type: 'directory' | 'file';
+  type: "directory" | "file";
 };
 
 export type CompletionOptions = {
@@ -56,15 +56,15 @@ export function parsePartialPath(partialPath: string, basePath?: string): Parsed
   // Handle empty input
   if (!partialPath) {
     const directory = basePath || getCwd();
-    return { directory, prefix: '' };
+    return { directory, prefix: "" };
   }
 
   const resolved = expandPath(partialPath, basePath);
 
   // If path ends with separator, treat as directory with no prefix
   // Handle both forward slash and platform-specific separator
-  if (partialPath.endsWith('/') || partialPath.endsWith(sep)) {
-    return { directory: resolved, prefix: '' };
+  if (partialPath.endsWith("/") || partialPath.endsWith(sep)) {
+    return { directory: resolved, prefix: "" };
   }
 
   // Split into directory and prefix
@@ -92,11 +92,11 @@ export async function scanDirectory(dirPath: string): Promise<DirectoryEntry[]> 
 
     // Filter for directories only, exclude hidden directories
     const directories = entries
-      .filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
+      .filter((entry) => entry.isDirectory() && !entry.name.startsWith("."))
       .map((entry) => ({
         name: entry.name,
         path: join(dirPath, entry.name),
-        type: 'directory' as const,
+        type: "directory" as const,
       }))
       .slice(0, 100); // Limit results for MVP
 
@@ -129,8 +129,8 @@ export async function getDirectoryCompletions(
   return matches.map((entry) => ({
     id: entry.path,
     displayText: `${entry.name}/`,
-    description: 'directory',
-    metadata: { type: 'directory' as const },
+    description: "directory",
+    metadata: { type: "directory" as const },
   }));
 }
 
@@ -146,13 +146,13 @@ export function clearDirectoryCache(): void {
  */
 export function isPathLikeToken(token: string): boolean {
   return (
-    token.startsWith('~/') ||
-    token.startsWith('/') ||
-    token.startsWith('./') ||
-    token.startsWith('../') ||
-    token === '~' ||
-    token === '.' ||
-    token === '..'
+    token.startsWith("~/") ||
+    token.startsWith("/") ||
+    token.startsWith("./") ||
+    token.startsWith("../") ||
+    token === "~" ||
+    token === "." ||
+    token === ".."
   );
 }
 
@@ -175,16 +175,16 @@ export async function scanDirectoryForPaths(
     const entries = await fs.readdir(dirPath);
 
     const paths = entries
-      .filter((entry) => includeHidden || !entry.name.startsWith('.'))
+      .filter((entry) => includeHidden || !entry.name.startsWith("."))
       .map((entry) => ({
         name: entry.name,
         path: join(dirPath, entry.name),
-        type: entry.isDirectory() ? ('directory' as const) : ('file' as const),
+        type: entry.isDirectory() ? ("directory" as const) : ("file" as const),
       }))
       .sort((a, b) => {
         // Sort directories first, then alphabetically
-        if (a.type === 'directory' && b.type !== 'directory') return -1;
-        if (a.type !== 'directory' && b.type === 'directory') return 1;
+        if (a.type === "directory" && b.type !== "directory") return -1;
+        if (a.type !== "directory" && b.type === "directory") return 1;
         return a.name.localeCompare(b.name);
       })
       .slice(0, 100);
@@ -217,7 +217,7 @@ export async function getPathCompletions(
 
   const matches = entries
     .filter((entry) => {
-      if (!includeFiles && entry.type === 'file') return false;
+      if (!includeFiles && entry.type === "file") return false;
       return entry.name.toLowerCase().startsWith(prefixLower);
     })
     .slice(0, maxResults);
@@ -226,16 +226,16 @@ export async function getPathCompletions(
   // e.g., if partialPath is "src/c", directory portion is "src/"
   // Strip leading "./" since it's just used for cwd search
   // Handle both forward slash and platform separator for Windows compatibility
-  const hasSeparator = partialPath.includes('/') || partialPath.includes(sep);
-  let dirPortion = '';
+  const hasSeparator = partialPath.includes("/") || partialPath.includes(sep);
+  let dirPortion = "";
   if (hasSeparator) {
     // Find the last separator (either / or platform-specific)
-    const lastSlash = partialPath.lastIndexOf('/');
+    const lastSlash = partialPath.lastIndexOf("/");
     const lastSep = partialPath.lastIndexOf(sep);
     const lastSeparatorPos = Math.max(lastSlash, lastSep);
     dirPortion = partialPath.substring(0, lastSeparatorPos + 1);
   }
-  if (dirPortion.startsWith('./') || dirPortion.startsWith(`.${sep}`)) {
+  if (dirPortion.startsWith("./") || dirPortion.startsWith(`.${sep}`)) {
     dirPortion = dirPortion.slice(2);
   }
 
@@ -243,7 +243,7 @@ export async function getPathCompletions(
     const fullPath = dirPortion + entry.name;
     return {
       id: fullPath,
-      displayText: entry.type === 'directory' ? `${fullPath}/` : fullPath,
+      displayText: entry.type === "directory" ? `${fullPath}/` : fullPath,
       metadata: { type: entry.type },
     };
   });

@@ -22,18 +22,18 @@
  * 5. Open in ui.perfetto.dev to visualize
  */
 
-import { feature } from 'bun:bundle';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { mkdir, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { getSessionId } from '../../bootstrap/state.js';
-import { registerCleanup } from '../cleanupRegistry.js';
-import { logForDebugging } from '../debug.js';
-import { getClaudeConfigHomeDir, isEnvDefinedFalsy, isEnvTruthy } from '../envUtils.js';
-import { errorMessage } from '../errors.js';
-import { djb2Hash } from '../hash.js';
-import { jsonStringify } from '../slowOperations.js';
-import { getAgentId, getAgentName, getParentSessionId } from '../teammate.js';
+import { feature } from "bun:bundle";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { getSessionId } from "../../bootstrap/state.js";
+import { registerCleanup } from "../cleanupRegistry.js";
+import { logForDebugging } from "../debug.js";
+import { getClaudeConfigHomeDir, isEnvDefinedFalsy, isEnvTruthy } from "../envUtils.js";
+import { errorMessage } from "../errors.js";
+import { djb2Hash } from "../hash.js";
+import { jsonStringify } from "../slowOperations.js";
+import { getAgentId, getAgentName, getParentSessionId } from "../teammate.js";
 
 /**
  * Chrome Trace Event format types
@@ -41,15 +41,15 @@ import { getAgentId, getAgentName, getParentSessionId } from '../teammate.js';
  */
 
 export type TraceEventPhase =
-  | 'B' // Begin duration event
-  | 'E' // End duration event
-  | 'X' // Complete event (with duration)
-  | 'i' // Instant event
-  | 'C' // Counter event
-  | 'b' // Async begin
-  | 'n' // Async instant
-  | 'e' // Async end
-  | 'M'; // Metadata event
+  | "B" // Begin duration event
+  | "E" // End duration event
+  | "X" // Complete event (with duration)
+  | "i" // Instant event
+  | "C" // Counter event
+  | "b" // Async begin
+  | "n" // Async instant
+  | "e" // Async end
+  | "M"; // Metadata event
 
 export type TraceEvent = {
   name: string;
@@ -142,7 +142,7 @@ function getProcessIdForAgent(agentId: string): number {
  */
 function getCurrentAgentInfo(): AgentInfo {
   const agentId = getAgentId() ?? getSessionId();
-  const agentName = getAgentName() ?? 'main';
+  const agentName = getAgentName() ?? "main";
   const parentSessionId = getParentSessionId();
 
   // Check if we've already registered this agent
@@ -189,7 +189,7 @@ function evictStaleSpans(): void {
       events.push({
         name: span.name,
         cat: span.category,
-        ph: 'E',
+        ph: "E",
         ts: now,
         pid: span.agentInfo.processId,
         tid: span.agentInfo.threadId,
@@ -229,9 +229,9 @@ function evictOldestEvents(): void {
   if (events.length < MAX_EVENTS) return;
   const dropped = events.splice(0, MAX_EVENTS / 2);
   events.unshift({
-    name: 'trace_truncated',
-    cat: '__metadata',
-    ph: 'i',
+    name: "trace_truncated",
+    cat: "__metadata",
+    ph: "i",
     ts: dropped[dropped.length - 1]?.ts ?? 0,
     pid: 1,
     tid: 0,
@@ -249,9 +249,9 @@ export function initializePerfettoTracing(): void {
   logForDebugging(`[Perfetto] initializePerfettoTracing called, env value: ${envValue}`);
 
   // Wrap in feature() for dead code elimination - entire block removed from external builds
-  if (feature('PERFETTO_TRACING')) {
+  if (feature("PERFETTO_TRACING")) {
     if (!envValue || isEnvDefinedFalsy(envValue)) {
-      logForDebugging('[Perfetto] Tracing disabled (env var not set or disabled)');
+      logForDebugging("[Perfetto] Tracing disabled (env var not set or disabled)");
       return;
     }
 
@@ -260,7 +260,7 @@ export function initializePerfettoTracing(): void {
 
     // Determine trace file path
     if (isEnvTruthy(envValue)) {
-      const tracesDir = join(getClaudeConfigHomeDir(), 'traces');
+      const tracesDir = join(getClaudeConfigHomeDir(), "traces");
       tracePath = join(tracesDir, `trace-${getSessionId()}.json`);
     } else {
       // Use the provided path
@@ -272,7 +272,7 @@ export function initializePerfettoTracing(): void {
     );
 
     // Start periodic full-trace write if CLAUDE_CODE_PERFETTO_WRITE_INTERVAL_S is a positive integer
-    const intervalSec = parseInt(process.env.CLAUDE_CODE_PERFETTO_WRITE_INTERVAL_S ?? '', 10);
+    const intervalSec = parseInt(process.env.CLAUDE_CODE_PERFETTO_WRITE_INTERVAL_S ?? "", 10);
     if (intervalSec > 0) {
       writeIntervalId = setInterval(() => {
         void periodicWrite();
@@ -291,22 +291,22 @@ export function initializePerfettoTracing(): void {
 
     // Register cleanup to write final trace on exit
     registerCleanup(async () => {
-      logForDebugging('[Perfetto] Cleanup callback invoked');
+      logForDebugging("[Perfetto] Cleanup callback invoked");
       await writePerfettoTrace();
     });
 
     // Also register a beforeExit handler as a fallback
     // This ensures the trace is written even if cleanup registry is not called
-    process.on('beforeExit', () => {
-      logForDebugging('[Perfetto] beforeExit handler invoked');
+    process.on("beforeExit", () => {
+      logForDebugging("[Perfetto] beforeExit handler invoked");
       void writePerfettoTrace();
     });
 
     // Register a synchronous exit handler as a last resort
     // This is the final fallback to ensure trace is written before process exits
-    process.on('exit', () => {
+    process.on("exit", () => {
       if (!traceWritten) {
-        logForDebugging('[Perfetto] exit handler invoked, writing trace synchronously');
+        logForDebugging("[Perfetto] exit handler invoked, writing trace synchronously");
         writePerfettoTraceSync();
       }
     });
@@ -325,9 +325,9 @@ function emitProcessMetadata(agentInfo: AgentInfo): void {
 
   // Process name
   metadataEvents.push({
-    name: 'process_name',
-    cat: '__metadata',
-    ph: 'M',
+    name: "process_name",
+    cat: "__metadata",
+    ph: "M",
     ts: 0,
     pid: agentInfo.processId,
     tid: 0,
@@ -336,9 +336,9 @@ function emitProcessMetadata(agentInfo: AgentInfo): void {
 
   // Thread name (same as process for now)
   metadataEvents.push({
-    name: 'thread_name',
-    cat: '__metadata',
-    ph: 'M',
+    name: "thread_name",
+    cat: "__metadata",
+    ph: "M",
     ts: 0,
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
@@ -348,9 +348,9 @@ function emitProcessMetadata(agentInfo: AgentInfo): void {
   // Add parent info if available
   if (agentInfo.parentAgentId) {
     metadataEvents.push({
-      name: 'parent_agent',
-      cat: '__metadata',
-      ph: 'M',
+      name: "parent_agent",
+      cat: "__metadata",
+      ph: "M",
       ts: 0,
       pid: agentInfo.processId,
       tid: 0,
@@ -408,14 +408,14 @@ export function startLLMRequestPerfettoSpan(args: {
   isSpeculative?: boolean;
   querySource?: string;
 }): string {
-  if (!isEnabled) return '';
+  if (!isEnabled) return "";
 
   const spanId = generateSpanId();
   const agentInfo = getCurrentAgentInfo();
 
   pendingSpans.set(spanId, {
-    name: 'API Call',
-    category: 'api',
+    name: "API Call",
+    category: "api",
     startTime: getTimestamp(),
     agentInfo,
     args: {
@@ -429,9 +429,9 @@ export function startLLMRequestPerfettoSpan(args: {
 
   // Emit begin event
   events.push({
-    name: 'API Call',
-    cat: 'api',
-    ph: 'B',
+    name: "API Call",
+    cat: "api",
+    ph: "B",
     ts: pendingSpans.get(spanId)?.startTime,
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
@@ -526,9 +526,9 @@ export function endLLMRequestPerfettoSpan(
     const setupEndTs = pending.startTime + setupUs;
 
     events.push({
-      name: 'Request Setup',
-      cat: 'api,setup',
-      ph: 'B',
+      name: "Request Setup",
+      cat: "api,setup",
+      ph: "B",
       ts: pending.startTime,
       pid: pending.agentInfo.processId,
       tid: pending.agentInfo.threadId,
@@ -550,8 +550,8 @@ export function endLLMRequestPerfettoSpan(
 
         events.push({
           name: `Attempt ${i + 1} (retry)`,
-          cat: 'api,retry',
-          ph: 'B',
+          cat: "api,retry",
+          ph: "B",
           ts: attemptStartUs,
           pid: pending.agentInfo.processId,
           tid: pending.agentInfo.threadId,
@@ -559,8 +559,8 @@ export function endLLMRequestPerfettoSpan(
         });
         events.push({
           name: `Attempt ${i + 1} (retry)`,
-          cat: 'api,retry',
-          ph: 'E',
+          cat: "api,retry",
+          ph: "E",
           ts: attemptEndUs,
           pid: pending.agentInfo.processId,
           tid: pending.agentInfo.threadId,
@@ -569,9 +569,9 @@ export function endLLMRequestPerfettoSpan(
     }
 
     events.push({
-      name: 'Request Setup',
-      cat: 'api,setup',
-      ph: 'E',
+      name: "Request Setup",
+      cat: "api,setup",
+      ph: "E",
       ts: setupEndTs,
       pid: pending.agentInfo.processId,
       tid: pending.agentInfo.threadId,
@@ -587,9 +587,9 @@ export function endLLMRequestPerfettoSpan(
 
     // First Token phase: from successful attempt start to first token
     events.push({
-      name: 'First Token',
-      cat: 'api,ttft',
-      ph: 'B',
+      name: "First Token",
+      cat: "api,ttft",
+      ph: "B",
       ts: firstTokenStartTs,
       pid: pending.agentInfo.processId,
       tid: pending.agentInfo.threadId,
@@ -601,9 +601,9 @@ export function endLLMRequestPerfettoSpan(
       },
     });
     events.push({
-      name: 'First Token',
-      cat: 'api,ttft',
-      ph: 'E',
+      name: "First Token",
+      cat: "api,ttft",
+      ph: "E",
       ts: firstTokenEndTs,
       pid: pending.agentInfo.processId,
       tid: pending.agentInfo.threadId,
@@ -616,9 +616,9 @@ export function endLLMRequestPerfettoSpan(
     const actualSamplingMs = ttltMs !== undefined ? ttltMs - ttftMs - setupUs / 1000 : undefined;
     if (actualSamplingMs !== undefined && actualSamplingMs > 0) {
       events.push({
-        name: 'Sampling',
-        cat: 'api,sampling',
-        ph: 'B',
+        name: "Sampling",
+        cat: "api,sampling",
+        ph: "B",
         ts: firstTokenEndTs,
         pid: pending.agentInfo.processId,
         tid: pending.agentInfo.threadId,
@@ -629,9 +629,9 @@ export function endLLMRequestPerfettoSpan(
         },
       });
       events.push({
-        name: 'Sampling',
-        cat: 'api,sampling',
-        ph: 'E',
+        name: "Sampling",
+        cat: "api,sampling",
+        ph: "E",
         ts: firstTokenEndTs + actualSamplingMs * 1000,
         pid: pending.agentInfo.processId,
         tid: pending.agentInfo.threadId,
@@ -643,7 +643,7 @@ export function endLLMRequestPerfettoSpan(
   events.push({
     name: pending.name,
     cat: pending.category,
-    ph: 'E',
+    ph: "E",
     ts: endTime,
     pid: pending.agentInfo.processId,
     tid: pending.agentInfo.threadId,
@@ -657,14 +657,14 @@ export function endLLMRequestPerfettoSpan(
  * Start a tool execution span
  */
 export function startToolPerfettoSpan(toolName: string, args?: Record<string, unknown>): string {
-  if (!isEnabled) return '';
+  if (!isEnabled) return "";
 
   const spanId = generateSpanId();
   const agentInfo = getCurrentAgentInfo();
 
   pendingSpans.set(spanId, {
     name: `Tool: ${toolName}`,
-    category: 'tool',
+    category: "tool",
     startTime: getTimestamp(),
     agentInfo,
     args: {
@@ -676,8 +676,8 @@ export function startToolPerfettoSpan(toolName: string, args?: Record<string, un
   // Emit begin event
   events.push({
     name: `Tool: ${toolName}`,
-    cat: 'tool',
-    ph: 'B',
+    cat: "tool",
+    ph: "B",
     ts: pendingSpans.get(spanId)?.startTime,
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
@@ -718,7 +718,7 @@ export function endToolPerfettoSpan(
   events.push({
     name: pending.name,
     cat: pending.category,
-    ph: 'E',
+    ph: "E",
     ts: endTime,
     pid: pending.agentInfo.processId,
     tid: pending.agentInfo.threadId,
@@ -732,14 +732,14 @@ export function endToolPerfettoSpan(
  * Start a user input waiting span
  */
 export function startUserInputPerfettoSpan(context?: string): string {
-  if (!isEnabled) return '';
+  if (!isEnabled) return "";
 
   const spanId = generateSpanId();
   const agentInfo = getCurrentAgentInfo();
 
   pendingSpans.set(spanId, {
-    name: 'Waiting for User Input',
-    category: 'user_input',
+    name: "Waiting for User Input",
+    category: "user_input",
     startTime: getTimestamp(),
     agentInfo,
     args: {
@@ -749,9 +749,9 @@ export function startUserInputPerfettoSpan(context?: string): string {
 
   // Emit begin event
   events.push({
-    name: 'Waiting for User Input',
-    cat: 'user_input',
-    ph: 'B',
+    name: "Waiting for User Input",
+    cat: "user_input",
+    ph: "B",
     ts: pendingSpans.get(spanId)?.startTime,
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
@@ -790,7 +790,7 @@ export function endUserInputPerfettoSpan(
   events.push({
     name: pending.name,
     cat: pending.category,
-    ph: 'E',
+    ph: "E",
     ts: endTime,
     pid: pending.agentInfo.processId,
     tid: pending.agentInfo.threadId,
@@ -815,7 +815,7 @@ export function emitPerfettoInstant(
   events.push({
     name,
     cat: category,
-    ph: 'i',
+    ph: "i",
     ts: getTimestamp(),
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
@@ -833,8 +833,8 @@ export function emitPerfettoCounter(name: string, values: Record<string, number>
 
   events.push({
     name,
-    cat: 'counter',
-    ph: 'C',
+    cat: "counter",
+    ph: "C",
     ts: getTimestamp(),
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
@@ -846,14 +846,14 @@ export function emitPerfettoCounter(name: string, values: Record<string, number>
  * Start an interaction span (wraps a full user request cycle)
  */
 export function startInteractionPerfettoSpan(userPrompt?: string): string {
-  if (!isEnabled) return '';
+  if (!isEnabled) return "";
 
   const spanId = generateSpanId();
   const agentInfo = getCurrentAgentInfo();
 
   pendingSpans.set(spanId, {
-    name: 'Interaction',
-    category: 'interaction',
+    name: "Interaction",
+    category: "interaction",
     startTime: getTimestamp(),
     agentInfo,
     args: {
@@ -863,9 +863,9 @@ export function startInteractionPerfettoSpan(userPrompt?: string): string {
 
   // Emit begin event
   events.push({
-    name: 'Interaction',
-    cat: 'interaction',
-    ph: 'B',
+    name: "Interaction",
+    cat: "interaction",
+    ph: "B",
     ts: pendingSpans.get(spanId)?.startTime,
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
@@ -891,7 +891,7 @@ export function endInteractionPerfettoSpan(spanId: string): void {
   events.push({
     name: pending.name,
     cat: pending.category,
-    ph: 'E',
+    ph: "E",
     ts: endTime,
     pid: pending.agentInfo.processId,
     tid: pending.agentInfo.threadId,
@@ -931,7 +931,7 @@ function closeOpenSpans(): void {
     events.push({
       name: pending.name,
       cat: pending.category,
-      ph: 'E',
+      ph: "E",
       ts: endTime,
       pid: pending.agentInfo.processId,
       tid: pending.agentInfo.threadId,
@@ -958,7 +958,7 @@ async function periodicWrite(): Promise<void> {
     await writeFile(tracePath, buildTraceDocument());
     logForDebugging(`[Perfetto] Periodic write: ${events.length} events to ${tracePath}`);
   } catch (error) {
-    logForDebugging(`[Perfetto] Periodic write failed: ${errorMessage(error)}`, { level: 'error' });
+    logForDebugging(`[Perfetto] Periodic write failed: ${errorMessage(error)}`, { level: "error" });
   }
 }
 
@@ -986,7 +986,7 @@ async function writePerfettoTrace(): Promise<void> {
     logForDebugging(`[Perfetto] Trace finalized at: ${tracePath}`);
   } catch (error) {
     logForDebugging(`[Perfetto] Failed to write final trace: ${errorMessage(error)}`, {
-      level: 'error',
+      level: "error",
     });
   }
 }
@@ -1018,7 +1018,7 @@ function writePerfettoTraceSync(): void {
   } catch (error) {
     logForDebugging(
       `[Perfetto] Failed to write final trace synchronously: ${errorMessage(error)}`,
-      { level: 'error' },
+      { level: "error" },
     );
   }
 }

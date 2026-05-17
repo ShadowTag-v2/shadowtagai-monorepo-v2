@@ -1,13 +1,13 @@
-import { feature } from 'bun:bundle';
-import { randomUUID } from 'node:crypto';
-import { getSdkBetas, getSessionId } from 'src/bootstrap/state.js';
-import { DEFAULT_OUTPUT_STYLE_NAME } from 'src/constants/outputStyles.js';
-import type { ApiKeySource, PermissionMode, SDKMessage } from 'src/entrypoints/agentSdkTypes.js';
-import { AGENT_TOOL_NAME, LEGACY_AGENT_TOOL_NAME } from 'src/tools/AgentTool/constants.js';
-import { getAnthropicApiKeyWithSource } from '../auth.js';
-import { getCwd } from '../cwd.js';
-import { getFastModeState } from '../fastMode.js';
-import { getSettings_DEPRECATED } from '../settings/settings.js';
+import { feature } from "bun:bundle";
+import { randomUUID } from "node:crypto";
+import { getSdkBetas, getSessionId } from "src/bootstrap/state.js";
+import { DEFAULT_OUTPUT_STYLE_NAME } from "src/constants/outputStyles.js";
+import type { ApiKeySource, PermissionMode, SDKMessage } from "src/entrypoints/agentSdkTypes.js";
+import { AGENT_TOOL_NAME, LEGACY_AGENT_TOOL_NAME } from "src/tools/AgentTool/constants.js";
+import { getAnthropicApiKeyWithSource } from "../auth.js";
+import { getCwd } from "../cwd.js";
+import { getFastModeState } from "../fastMode.js";
+import { getSettings_DEPRECATED } from "../settings/settings.js";
 
 // TODO(next-minor): remove this translation once SDK consumers have migrated
 // to the 'Agent' tool name. The wire name was renamed Task → Agent in #19647,
@@ -48,8 +48,8 @@ export function buildSystemInitMessage(inputs: SystemInitInputs): SDKMessage {
   const outputStyle = settings?.outputStyle ?? DEFAULT_OUTPUT_STYLE_NAME;
 
   const initMessage: SDKMessage = {
-    type: 'system',
-    subtype: 'init',
+    type: "system",
+    subtype: "init",
     cwd: getCwd(),
     session_id: getSessionId(),
     tools: inputs.tools.map((tool) => sdkCompatToolName(tool.name)),
@@ -74,10 +74,10 @@ export function buildSystemInitMessage(inputs: SystemInitInputs): SDKMessage {
     uuid: randomUUID(),
   };
   // Hidden from public SDK types — ant-only UDS messaging socket path
-  if (feature('UDS_INBOX')) {
+  if (feature("UDS_INBOX")) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     (initMessage as Record<string, unknown>).messaging_socket_path =
-      require('../udsMessaging.js').getUdsMessagingSocketPath();
+      require("../udsMessaging.js").getUdsMessagingSocketPath();
     /* eslint-enable @typescript-eslint/no-require-imports */
   }
   initMessage.fast_mode_state = getFastModeState(inputs.model, inputs.fastMode);

@@ -1,7 +1,7 @@
-import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { extractTag } from '../../utils/messages.js';
+import type { TextBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { extractTag } from "../../utils/messages.js";
 
 type Props = {
   addMargin: boolean;
@@ -13,7 +13,7 @@ export function UserBashInputMessage(t0) {
   const { text } = t1;
   let t2;
   if ($[0] !== text) {
-    t2 = extractTag(text, 'bash-input');
+    t2 = extractTag(text, "bash-input");
     $[0] = text;
     $[1] = t2;
   } else {
@@ -25,7 +25,7 @@ export function UserBashInputMessage(t0) {
   }
   const t3 = addMargin ? 1 : 0;
   let t4;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Text color="bashBorder">! </Text>;
     $[2] = t4;
   } else {

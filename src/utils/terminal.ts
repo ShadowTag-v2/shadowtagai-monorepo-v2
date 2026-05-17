@@ -1,7 +1,7 @@
-import chalk from 'chalk';
-import { ctrlOToExpand } from '../components/CtrlOToExpand.js';
-import { stringWidth } from '../ink/stringWidth.js';
-import sliceAnsi from './sliceAnsi.js';
+import chalk from "chalk";
+import { ctrlOToExpand } from "../components/CtrlOToExpand.js";
+import { stringWidth } from "../ink/stringWidth.js";
+import sliceAnsi from "./sliceAnsi.js";
 
 // Text rendering utilities for terminal display
 const MAX_LINES_TO_SHOW = 3;
@@ -20,7 +20,7 @@ function wrapText(
   text: string,
   wrapWidth: number,
 ): { aboveTheFold: string; remainingLines: number } {
-  const lines = text.split('\n');
+  const lines = text.split("\n");
   const wrappedLines: string[] = [];
 
   for (const line of lines) {
@@ -47,7 +47,7 @@ function wrapText(
     return {
       aboveTheFold: wrappedLines
         .slice(0, MAX_LINES_TO_SHOW + 1)
-        .join('\n')
+        .join("\n")
         .trimEnd(),
       remainingLines: 0, // All lines are shown, nothing remaining
     };
@@ -55,7 +55,7 @@ function wrapText(
 
   // Otherwise show the standard MAX_LINES_TO_SHOW
   return {
-    aboveTheFold: wrappedLines.slice(0, MAX_LINES_TO_SHOW).join('\n').trimEnd(),
+    aboveTheFold: wrappedLines.slice(0, MAX_LINES_TO_SHOW).join("\n").trimEnd(),
     remainingLines: Math.max(0, remainingLines),
   };
 }
@@ -75,7 +75,7 @@ export function renderTruncatedContent(
 ): string {
   const trimmedContent = content.trimEnd();
   if (!trimmedContent) {
-    return '';
+    return "";
   }
 
   const wrapWidth = Math.max(terminalWidth - PADDING_TO_PREVENT_OVERFLOW, 10);
@@ -96,12 +96,12 @@ export function renderTruncatedContent(
     aboveTheFold,
     estimatedRemaining > 0
       ? chalk.dim(
-          `… +${estimatedRemaining} lines${suppressExpandHint ? '' : ` ${ctrlOToExpand()}`}`,
+          `… +${estimatedRemaining} lines${suppressExpandHint ? "" : ` ${ctrlOToExpand()}`}`,
         )
-      : '',
+      : "",
   ]
     .filter(Boolean)
-    .join('\n');
+    .join("\n");
 }
 
 /** Fast check: would OutputLine truncate this content? Counts raw newlines
@@ -113,7 +113,7 @@ export function isOutputLineTruncated(content: string): boolean {
   // Need more than MAX_LINES_TO_SHOW newlines (content fills > 3 lines).
   // The +1 accounts for wrapText showing an extra line when remainingLines==1.
   for (let i = 0; i <= MAX_LINES_TO_SHOW; i++) {
-    pos = content.indexOf('\n', pos);
+    pos = content.indexOf("\n", pos);
     if (pos === -1) return false;
     pos++;
   }

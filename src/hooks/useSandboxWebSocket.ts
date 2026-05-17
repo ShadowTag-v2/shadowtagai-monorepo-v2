@@ -18,14 +18,14 @@
  *   - Connection state exposed for UI indicators
  */
 
-'use client';
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
-export type WsConnectionState = 'connecting' | 'connected' | 'disconnected' | 'error';
+export type WsConnectionState = "connecting" | "connected" | "disconnected" | "error";
 
 export interface StateChangeEvent {
-  type: 'state_change';
+  type: "state_change";
   session_id_prefix: string;
   from: string;
   to: string;
@@ -69,7 +69,7 @@ export function useSandboxWebSocket({
   enabled = true,
   maxReconnectAttempts = 5,
 }: UseSandboxWebSocketOptions): UseSandboxWebSocketReturn {
-  const [connectionState, setConnectionState] = useState<WsConnectionState>('disconnected');
+  const [connectionState, setConnectionState] = useState<WsConnectionState>("disconnected");
   const [lastEvent, setLastEvent] = useState<StateChangeEvent | null>(null);
   const [reconnectCount, setReconnectCount] = useState(0);
 
@@ -99,11 +99,11 @@ export function useSandboxWebSocket({
     clearTimers();
     if (wsRef.current) {
       wsRef.current.onclose = null; // Prevent reconnect on intentional close
-      wsRef.current.close(1000, 'client_disconnect');
+      wsRef.current.close(1000, "client_disconnect");
       wsRef.current = null;
     }
     if (mountedRef.current) {
-      setConnectionState('disconnected');
+      setConnectionState("disconnected");
     }
   }, [clearTimers]);
 
@@ -117,10 +117,10 @@ export function useSandboxWebSocket({
     }
 
     clearTimers();
-    setConnectionState('connecting');
+    setConnectionState("connecting");
 
     // Build WebSocket URL — handle both http and https protocols
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsUrl = `${protocol}//${window.location.host}/ws/sandbox/${sessionId}`;
 
     const ws = new WebSocket(wsUrl);
@@ -128,13 +128,13 @@ export function useSandboxWebSocket({
 
     ws.onopen = () => {
       if (!mountedRef.current) return;
-      setConnectionState('connected');
+      setConnectionState("connected");
       setReconnectCount(0);
 
       // Start ping interval (every 60s)
       pingTimerRef.current = setInterval(() => {
         if (ws.readyState === WebSocket.OPEN) {
-          ws.send('ping');
+          ws.send("ping");
         }
       }, 60_000);
     };
@@ -145,13 +145,13 @@ export function useSandboxWebSocket({
       try {
         const data = JSON.parse(event.data as string) as Record<string, unknown>;
 
-        if (data.type === 'state_change') {
+        if (data.type === "state_change") {
           const stateEvent: StateChangeEvent = {
-            type: 'state_change',
-            session_id_prefix: (data.session_id_prefix as string) ?? '',
-            from: (data.from as string) ?? '',
-            to: (data.to as string) ?? '',
-            ts: (data.ts as string) ?? '',
+            type: "state_change",
+            session_id_prefix: (data.session_id_prefix as string) ?? "",
+            from: (data.from as string) ?? "",
+            to: (data.to as string) ?? "",
+            ts: (data.ts as string) ?? "",
             metadata: (data.metadata as Record<string, unknown>) ?? {},
           };
 
@@ -166,13 +166,13 @@ export function useSandboxWebSocket({
 
     ws.onerror = () => {
       if (!mountedRef.current) return;
-      setConnectionState('error');
+      setConnectionState("error");
     };
 
     ws.onclose = (event: CloseEvent) => {
       if (!mountedRef.current) return;
       clearTimers();
-      setConnectionState('disconnected');
+      setConnectionState("disconnected");
 
       // Don't reconnect on clean close or if exceeded max attempts
       if (event.code === 1000 || reconnectCount >= maxReconnectAttempts) return;

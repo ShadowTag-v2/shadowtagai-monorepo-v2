@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { getIsRemoteMode } from '../../bootstrap/state.js';
-import { useNotifications } from '../../context/notifications.js';
-import { Text } from '../../ink.js';
-import { useAppState } from '../../state/AppState.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { plural } from '../../utils/stringUtils.js';
+import { useEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { getIsRemoteMode } from "../../bootstrap/state.js";
+import { useNotifications } from "../../context/notifications.js";
+import { Text } from "../../ink.js";
+import { useAppState } from "../../state/AppState.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { plural } from "../../utils/stringUtils.js";
 export function usePluginInstallationStatus() {
   const $ = _c(20);
   const { addNotification } = useNotifications();
@@ -14,7 +14,7 @@ export function usePluginInstallationStatus() {
   bb0: {
     if (!installationStatus) {
       let t1;
-      if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = {
           totalFailed: 0,
           failedMarketplacesCount: 0,
@@ -76,7 +76,7 @@ export function usePluginInstallationStatus() {
         return;
       }
       if (!installationStatus) {
-        logForDebugging('No installation status to monitor');
+        logForDebugging("No installation status to monitor");
         return;
       }
       if (totalFailed === 0) {
@@ -90,16 +90,16 @@ export function usePluginInstallationStatus() {
       }
       logForDebugging(`Adding notification for ${totalFailed} failed installations`);
       addNotification({
-        key: 'plugin-install-failed',
+        key: "plugin-install-failed",
         jsx: (
           <>
             <Text color="error">
-              {totalFailed} {plural(totalFailed, 'plugin')} failed to install
+              {totalFailed} {plural(totalFailed, "plugin")} failed to install
             </Text>
             <Text dimColor={true}> · /plugin for details</Text>
           </>
         ),
-        priority: 'medium',
+        priority: "medium",
       });
     };
     $[9] = addNotification;
@@ -130,10 +130,10 @@ export function usePluginInstallationStatus() {
   useEffect(t1, t2);
 }
 function _temp3(p) {
-  return p.status === 'failed';
+  return p.status === "failed";
 }
 function _temp2(m) {
-  return m.status === 'failed';
+  return m.status === "failed";
 }
 function _temp(s) {
   return s.plugins.installationStatus;

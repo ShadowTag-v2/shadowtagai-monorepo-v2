@@ -1,18 +1,18 @@
-import { getSessionId } from '../../../bootstrap/state.js';
-import type { ToolUseContext } from '../../../Tool.js';
-import { formatAgentId, parseAgentId } from '../../../utils/agentId.js';
-import { quote } from '../../../utils/bash/shellQuote.js';
-import { registerCleanup } from '../../../utils/cleanupRegistry.js';
-import { logForDebugging } from '../../../utils/debug.js';
-import { jsonStringify } from '../../../utils/slowOperations.js';
-import { writeToMailbox } from '../../../utils/teammateMailbox.js';
+import { getSessionId } from "../../../bootstrap/state.js";
+import type { ToolUseContext } from "../../../Tool.js";
+import { formatAgentId, parseAgentId } from "../../../utils/agentId.js";
+import { quote } from "../../../utils/bash/shellQuote.js";
+import { registerCleanup } from "../../../utils/cleanupRegistry.js";
+import { logForDebugging } from "../../../utils/debug.js";
+import { jsonStringify } from "../../../utils/slowOperations.js";
+import { writeToMailbox } from "../../../utils/teammateMailbox.js";
 import {
   buildInheritedCliFlags,
   buildInheritedEnvVars,
   getTeammateCommand,
-} from '../spawnUtils.js';
-import { assignTeammateColor } from '../teammateLayoutManager.js';
-import { isInsideTmux } from './detection.js';
+} from "../spawnUtils.js";
+import { assignTeammateColor } from "../teammateLayoutManager.js";
+import { isInsideTmux } from "./detection.js";
 import type {
   BackendType,
   PaneBackend,
@@ -20,7 +20,7 @@ import type {
   TeammateMessage,
   TeammateSpawnConfig,
   TeammateSpawnResult,
-} from './types.js';
+} from "./types.js";
 
 /**
  * PaneBackendExecutor adapts a PaneBackend to the TeammateExecutor interface.
@@ -84,7 +84,7 @@ export class PaneBackendExecutor implements TeammateExecutor {
       return {
         success: false,
         agentId,
-        error: 'PaneBackendExecutor not initialized. Call setContext() before spawn().',
+        error: "PaneBackendExecutor not initialized. Call setContext() before spawn().",
       };
     }
 
@@ -116,10 +116,10 @@ export class PaneBackendExecutor implements TeammateExecutor {
         `--team-name ${quote([config.teamName])}`,
         `--agent-color ${quote([teammateColor])}`,
         `--parent-session-id ${quote([config.parentSessionId || getSessionId()])}`,
-        config.planModeRequired ? '--plan-mode-required' : '',
+        config.planModeRequired ? "--plan-mode-required" : "",
       ]
         .filter(Boolean)
-        .join(' ');
+        .join(" ");
 
       // Build CLI flags to propagate to teammate
       const appState = this.context.getAppState();
@@ -131,15 +131,15 @@ export class PaneBackendExecutor implements TeammateExecutor {
       // If teammate has a custom model, add --model flag (or replace inherited one)
       if (config.model) {
         inheritedFlags = inheritedFlags
-          .split(' ')
-          .filter((flag, i, arr) => flag !== '--model' && arr[i - 1] !== '--model')
-          .join(' ');
+          .split(" ")
+          .filter((flag, i, arr) => flag !== "--model" && arr[i - 1] !== "--model")
+          .join(" ");
         inheritedFlags = inheritedFlags
           ? `${inheritedFlags} --model ${quote([config.model])}`
           : `--model ${quote([config.model])}`;
       }
 
-      const flagsStr = inheritedFlags ? ` ${inheritedFlags}` : '';
+      const flagsStr = inheritedFlags ? ` ${inheritedFlags}` : "";
       const workingDir = config.cwd;
 
       // Build environment variables to forward to teammate
@@ -170,7 +170,7 @@ export class PaneBackendExecutor implements TeammateExecutor {
       await writeToMailbox(
         config.name,
         {
-          from: 'team-lead',
+          from: "team-lead",
           text: config.prompt,
           timestamp: new Date().toISOString(),
         },
@@ -245,16 +245,16 @@ export class PaneBackendExecutor implements TeammateExecutor {
 
     // Send shutdown request via mailbox
     const shutdownRequest = {
-      type: 'shutdown_request',
+      type: "shutdown_request",
       requestId: `shutdown-${agentId}-${Date.now()}`,
-      from: 'team-lead',
+      from: "team-lead",
       reason,
     };
 
     await writeToMailbox(
       agentName,
       {
-        from: 'team-lead',
+        from: "team-lead",
         text: jsonStringify(shutdownRequest),
         timestamp: new Date().toISOString(),
       },

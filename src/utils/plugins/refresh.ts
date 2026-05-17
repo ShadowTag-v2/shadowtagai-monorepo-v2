@@ -17,23 +17,23 @@
  * - /plugin menu — sets needsRefresh, user runs /reload-plugins (PR 5b)
  */
 
-import { getOriginalCwd } from '../../bootstrap/state.js';
-import type { Command } from '../../commands.js';
-import { reinitializeLspServerManager } from '../../services/lsp/manager.js';
-import type { AppState } from '../../state/AppState.js';
-import type { AgentDefinitionsResult } from '../../tools/AgentTool/loadAgentsDir.js';
-import { getAgentDefinitionsWithOverrides } from '../../tools/AgentTool/loadAgentsDir.js';
-import type { PluginError } from '../../types/plugin.js';
-import { logForDebugging } from '../debug.js';
-import { errorMessage } from '../errors.js';
-import { logError } from '../log.js';
-import { clearAllCaches } from './cacheUtils.js';
-import { getPluginCommands } from './loadPluginCommands.js';
-import { loadPluginHooks } from './loadPluginHooks.js';
-import { loadPluginLspServers } from './lspPluginIntegration.js';
-import { loadPluginMcpServers } from './mcpPluginIntegration.js';
-import { clearPluginCacheExclusions } from './orphanedPluginFilter.js';
-import { loadAllPlugins } from './pluginLoader.js';
+import { getOriginalCwd } from "../../bootstrap/state.js";
+import type { Command } from "../../commands.js";
+import { reinitializeLspServerManager } from "../../services/lsp/manager.js";
+import type { AppState } from "../../state/AppState.js";
+import type { AgentDefinitionsResult } from "../../tools/AgentTool/loadAgentsDir.js";
+import { getAgentDefinitionsWithOverrides } from "../../tools/AgentTool/loadAgentsDir.js";
+import type { PluginError } from "../../types/plugin.js";
+import { logForDebugging } from "../debug.js";
+import { errorMessage } from "../errors.js";
+import { logError } from "../log.js";
+import { clearAllCaches } from "./cacheUtils.js";
+import { getPluginCommands } from "./loadPluginCommands.js";
+import { loadPluginHooks } from "./loadPluginHooks.js";
+import { loadPluginLspServers } from "./lspPluginIntegration.js";
+import { loadPluginMcpServers } from "./mcpPluginIntegration.js";
+import { clearPluginCacheExclusions } from "./orphanedPluginFilter.js";
+import { loadAllPlugins } from "./pluginLoader.js";
 
 type SetAppState = (updater: (prev: AppState) => AppState) => void;
 
@@ -72,7 +72,7 @@ export type RefreshActivePluginsResult = {
 export async function refreshActivePlugins(
   setAppState: SetAppState,
 ): Promise<RefreshActivePluginsResult> {
-  logForDebugging('refreshActivePlugins: clearing all plugin caches');
+  logForDebugging("refreshActivePlugins: clearing all plugin caches");
   clearAllCaches();
   // Orphan exclusions are session-frozen by default, but /reload-plugins is
   // an explicit "disk changed, re-read it" signal — recompute them too.
@@ -195,7 +195,7 @@ export async function refreshActivePlugins(
  */
 function mergePluginErrors(existing: PluginError[], fresh: PluginError[]): PluginError[] {
   const preserved = existing.filter(
-    (e) => e.source === 'lsp-manager' || e.source.startsWith('plugin:'),
+    (e) => e.source === "lsp-manager" || e.source.startsWith("plugin:"),
   );
   const freshKeys = new Set(fresh.map(errorKey));
   const deduped = preserved.filter((e) => !freshKeys.has(errorKey(e)));
@@ -203,7 +203,7 @@ function mergePluginErrors(existing: PluginError[], fresh: PluginError[]): Plugi
 }
 
 function errorKey(e: PluginError): string {
-  return e.type === 'generic-error'
+  return e.type === "generic-error"
     ? `generic-error:${e.source}:${e.error}`
     : `${e.type}:${e.source}`;
 }

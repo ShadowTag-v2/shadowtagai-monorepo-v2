@@ -1,24 +1,24 @@
-import { setMainLoopModelOverride } from '../bootstrap/state.js';
+import { setMainLoopModelOverride } from "../bootstrap/state.js";
 import {
   clearApiKeyHelperCache,
   clearAwsCredentialsCache,
   clearGcpCredentialsCache,
-} from '../utils/auth.js';
-import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
-import { toError } from '../utils/errors.js';
-import { logError } from '../utils/log.js';
-import { applyConfigEnvironmentVariables } from '../utils/managedEnv.js';
+} from "../utils/auth.js";
+import { getGlobalConfig, saveGlobalConfig } from "../utils/config.js";
+import { toError } from "../utils/errors.js";
+import { logError } from "../utils/log.js";
+import { applyConfigEnvironmentVariables } from "../utils/managedEnv.js";
 import {
   permissionModeFromString,
   toExternalPermissionMode,
-} from '../utils/permissions/PermissionMode.js';
+} from "../utils/permissions/PermissionMode.js";
 import {
   notifyPermissionModeChanged,
   notifySessionMetadataChanged,
   type SessionExternalMetadata,
-} from '../utils/sessionState.js';
-import { updateSettingsForSource } from '../utils/settings/settings.js';
-import type { AppState } from './AppStateStore.js';
+} from "../utils/sessionState.js";
+import { updateSettingsForSource } from "../utils/settings/settings.js";
+import type { AppState } from "./AppStateStore.js";
 
 // Inverse of the push below — restore on worker restart.
 export function externalMetadataToAppState(
@@ -26,7 +26,7 @@ export function externalMetadataToAppState(
 ): (prev: AppState) => AppState {
   return (prev) => ({
     ...prev,
-    ...(typeof metadata.permission_mode === 'string'
+    ...(typeof metadata.permission_mode === "string"
       ? {
           toolPermissionContext: {
             ...prev.toolPermissionContext,
@@ -34,7 +34,7 @@ export function externalMetadataToAppState(
           },
         }
       : {}),
-    ...(typeof metadata.is_ultraplan_mode === 'boolean'
+    ...(typeof metadata.is_ultraplan_mode === "boolean"
       ? { isUltraplanMode: metadata.is_ultraplan_mode }
       : {}),
   });
@@ -78,7 +78,7 @@ export function onChangeAppState({
       // sets mode and isUltraplanMode atomically, so the flag's
       // transition gates it. null per RFC 7396 (removes the key).
       const isUltraplan =
-        newExternal === 'plan' && newState.isUltraplanMode && !oldState.isUltraplanMode
+        newExternal === "plan" && newState.isUltraplanMode && !oldState.isUltraplanMode
           ? true
           : null;
       notifySessionMetadataChanged({
@@ -92,21 +92,21 @@ export function onChangeAppState({
   // mainLoopModel: remove it from settings?
   if (newState.mainLoopModel !== oldState.mainLoopModel && newState.mainLoopModel === null) {
     // Remove from settings
-    updateSettingsForSource('userSettings', { model: undefined });
+    updateSettingsForSource("userSettings", { model: undefined });
     setMainLoopModelOverride(null);
   }
 
   // mainLoopModel: add it to settings?
   if (newState.mainLoopModel !== oldState.mainLoopModel && newState.mainLoopModel !== null) {
     // Save to settings
-    updateSettingsForSource('userSettings', { model: newState.mainLoopModel });
+    updateSettingsForSource("userSettings", { model: newState.mainLoopModel });
     setMainLoopModelOverride(newState.mainLoopModel);
   }
 
   // expandedView → persist as showExpandedTodos + showSpinnerTree for backwards compat
   if (newState.expandedView !== oldState.expandedView) {
-    const showExpandedTodos = newState.expandedView === 'tasks';
-    const showSpinnerTree = newState.expandedView === 'teammates';
+    const showExpandedTodos = newState.expandedView === "tasks";
+    const showSpinnerTree = newState.expandedView === "teammates";
     if (
       getGlobalConfig().showExpandedTodos !== showExpandedTodos ||
       getGlobalConfig().showSpinnerTree !== showSpinnerTree
@@ -129,7 +129,7 @@ export function onChangeAppState({
   }
 
   // tungstenPanelVisible (ant-only tmux panel sticky toggle)
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     if (
       newState.tungstenPanelVisible !== oldState.tungstenPanelVisible &&
       newState.tungstenPanelVisible !== undefined &&

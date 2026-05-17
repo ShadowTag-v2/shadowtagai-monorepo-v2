@@ -1,6 +1,6 @@
 // Pure display formatters — leaf-safe (no Ink). Width-aware truncation lives in ./truncate.ts.
 
-import { getRelativeTimeFormat, getTimeZone } from './intl.js';
+import { getRelativeTimeFormat, getTimeZone } from "./intl.js";
 
 /**
  * Formats a byte count to a human-readable string (KB, MB, GB).
@@ -12,14 +12,14 @@ export function formatFileSize(sizeInBytes: number): string {
     return `${sizeInBytes} bytes`;
   }
   if (kb < 1024) {
-    return `${kb.toFixed(1).replace(/\.0$/, '')}KB`;
+    return `${kb.toFixed(1).replace(/\.0$/, "")}KB`;
   }
   const mb = kb / 1024;
   if (mb < 1024) {
-    return `${mb.toFixed(1).replace(/\.0$/, '')}MB`;
+    return `${mb.toFixed(1).replace(/\.0$/, "")}MB`;
   }
   const gb = mb / 1024;
-  return `${gb.toFixed(1).replace(/\.0$/, '')}GB`;
+  return `${gb.toFixed(1).replace(/\.0$/, "")}GB`;
 }
 
 /**
@@ -38,7 +38,7 @@ export function formatDuration(
   if (ms < 60000) {
     // Special case for 0
     if (ms === 0) {
-      return '0s';
+      return "0s";
     }
     // For durations < 1s, show 1 decimal place (e.g., 0.5s)
     if (ms < 1) {
@@ -100,8 +100,8 @@ let numberFormatterForInconsistentDecimals: Intl.NumberFormat | null = null;
 const getNumberFormatter = (useConsistentDecimals: boolean): Intl.NumberFormat => {
   if (useConsistentDecimals) {
     if (!numberFormatterForConsistentDecimals) {
-      numberFormatterForConsistentDecimals = new Intl.NumberFormat('en-US', {
-        notation: 'compact',
+      numberFormatterForConsistentDecimals = new Intl.NumberFormat("en-US", {
+        notation: "compact",
         maximumFractionDigits: 1,
         minimumFractionDigits: 1,
       });
@@ -109,8 +109,8 @@ const getNumberFormatter = (useConsistentDecimals: boolean): Intl.NumberFormat =
     return numberFormatterForConsistentDecimals;
   } else {
     if (!numberFormatterForInconsistentDecimals) {
-      numberFormatterForInconsistentDecimals = new Intl.NumberFormat('en-US', {
-        notation: 'compact',
+      numberFormatterForInconsistentDecimals = new Intl.NumberFormat("en-US", {
+        notation: "compact",
         maximumFractionDigits: 1,
         minimumFractionDigits: 0,
       });
@@ -129,34 +129,34 @@ export function formatNumber(number: number): string {
 }
 
 export function formatTokens(count: number): string {
-  return formatNumber(count).replace('.0', '');
+  return formatNumber(count).replace(".0", "");
 }
 
-type RelativeTimeStyle = 'long' | 'short' | 'narrow';
+type RelativeTimeStyle = "long" | "short" | "narrow";
 
 type RelativeTimeOptions = {
   style?: RelativeTimeStyle;
-  numeric?: 'always' | 'auto';
+  numeric?: "always" | "auto";
 };
 
 export function formatRelativeTime(
   date: Date,
   options: RelativeTimeOptions & { now?: Date } = {},
 ): string {
-  const { style = 'narrow', numeric = 'always', now = new Date() } = options;
+  const { style = "narrow", numeric = "always", now = new Date() } = options;
   const diffInMs = date.getTime() - now.getTime();
   // Use Math.trunc to truncate towards zero for both positive and negative values
   const diffInSeconds = Math.trunc(diffInMs / 1000);
 
   // Define time intervals with custom short units
   const intervals = [
-    { unit: 'year', seconds: 31536000, shortUnit: 'y' },
-    { unit: 'month', seconds: 2592000, shortUnit: 'mo' },
-    { unit: 'week', seconds: 604800, shortUnit: 'w' },
-    { unit: 'day', seconds: 86400, shortUnit: 'd' },
-    { unit: 'hour', seconds: 3600, shortUnit: 'h' },
-    { unit: 'minute', seconds: 60, shortUnit: 'm' },
-    { unit: 'second', seconds: 1, shortUnit: 's' },
+    { unit: "year", seconds: 31536000, shortUnit: "y" },
+    { unit: "month", seconds: 2592000, shortUnit: "mo" },
+    { unit: "week", seconds: 604800, shortUnit: "w" },
+    { unit: "day", seconds: 86400, shortUnit: "d" },
+    { unit: "hour", seconds: 3600, shortUnit: "h" },
+    { unit: "minute", seconds: 60, shortUnit: "m" },
+    { unit: "second", seconds: 1, shortUnit: "s" },
   ] as const;
 
   // Find the appropriate unit
@@ -164,19 +164,19 @@ export function formatRelativeTime(
     if (Math.abs(diffInSeconds) >= intervalSeconds) {
       const value = Math.trunc(diffInSeconds / intervalSeconds);
       // For short style, use custom format
-      if (style === 'narrow') {
+      if (style === "narrow") {
         return diffInSeconds < 0 ? `${Math.abs(value)}${shortUnit} ago` : `in ${value}${shortUnit}`;
       }
       // For days and longer, use long style regardless of the style parameter
-      return getRelativeTimeFormat('long', numeric).format(value, unit);
+      return getRelativeTimeFormat("long", numeric).format(value, unit);
     }
   }
 
   // For values less than 1 second
-  if (style === 'narrow') {
-    return diffInSeconds <= 0 ? '0s ago' : 'in 0s';
+  if (style === "narrow") {
+    return diffInSeconds <= 0 ? "0s ago" : "in 0s";
   }
-  return getRelativeTimeFormat(style, numeric).format(0, 'second');
+  return getRelativeTimeFormat(style, numeric).format(0, "second");
 }
 
 export function formatRelativeTimeAgo(
@@ -190,7 +190,7 @@ export function formatRelativeTimeAgo(
   }
 
   // For past dates, force numeric: 'always' to ensure we get "X units ago"
-  return formatRelativeTime(date, { ...restOptions, numeric: 'always', now });
+  return formatRelativeTime(date, { ...restOptions, numeric: "always", now });
 }
 
 /**
@@ -209,7 +209,7 @@ export function formatLogMetadata(log: {
   const sizeOrCount =
     log.fileSize !== undefined ? formatFileSize(log.fileSize) : `${log.messageCount} messages`;
   const parts = [
-    formatRelativeTimeAgo(log.modified, { style: 'short' }),
+    formatRelativeTimeAgo(log.modified, { style: "short" }),
     ...(log.gitBranch ? [log.gitBranch] : []),
     sizeOrCount,
   ];
@@ -222,7 +222,7 @@ export function formatLogMetadata(log: {
   if (log.prNumber) {
     parts.push(log.prRepository ? `${log.prRepository}#${log.prNumber}` : `#${log.prNumber}`);
   }
-  return parts.join(' · ');
+  return parts.join(" · ");
 }
 
 export function formatResetTime(
@@ -243,38 +243,38 @@ export function formatResetTime(
   if (hoursUntilReset > 24) {
     // Show date and time for resets more than a day away
     const dateOptions: Intl.DateTimeFormatOptions = {
-      month: 'short',
-      day: 'numeric',
-      hour: showTime ? 'numeric' : undefined,
-      minute: !showTime || minutes === 0 ? undefined : '2-digit',
+      month: "short",
+      day: "numeric",
+      hour: showTime ? "numeric" : undefined,
+      minute: !showTime || minutes === 0 ? undefined : "2-digit",
       hour12: showTime ? true : undefined,
     };
 
     // Add year if it's not the current year
     if (date.getFullYear() !== now.getFullYear()) {
-      dateOptions.year = 'numeric';
+      dateOptions.year = "numeric";
     }
 
-    const dateString = date.toLocaleString('en-US', dateOptions);
+    const dateString = date.toLocaleString("en-US", dateOptions);
 
     // Remove the space before AM/PM and make it lowercase
     return (
       dateString.replace(/ ([AP]M)/i, (_match, ampm) => ampm.toLowerCase()) +
-      (showTimezone ? ` (${getTimeZone()})` : '')
+      (showTimezone ? ` (${getTimeZone()})` : "")
     );
   }
 
   // For resets within 24 hours, show just the time (existing behavior)
-  const timeString = date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: minutes === 0 ? undefined : '2-digit',
+  const timeString = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: minutes === 0 ? undefined : "2-digit",
     hour12: true,
   });
 
   // Remove the space before AM/PM and make it lowercase, then add timezone
   return (
     timeString.replace(/ ([AP]M)/i, (_match, ampm) => ampm.toLowerCase()) +
-    (showTimezone ? ` (${getTimeZone()})` : '')
+    (showTimezone ? ` (${getTimeZone()})` : "")
   );
 }
 
@@ -295,4 +295,4 @@ export {
   truncateToWidth,
   truncateToWidthNoEllipsis,
   wrapText,
-} from './truncate.js';
+} from "./truncate.js";

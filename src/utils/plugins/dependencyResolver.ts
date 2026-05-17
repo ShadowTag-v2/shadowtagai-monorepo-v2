@@ -11,18 +11,18 @@
  *    unsatisfied deps (session-local, does NOT write settings)
  */
 
-import type { LoadedPlugin, PluginError } from '../../types/plugin.js';
-import type { EditableSettingSource } from '../settings/constants.js';
-import { getSettingsForSource } from '../settings/settings.js';
-import { parsePluginIdentifier } from './pluginIdentifier.js';
-import type { PluginId } from './schemas.js';
+import type { LoadedPlugin, PluginError } from "../../types/plugin.js";
+import type { EditableSettingSource } from "../settings/constants.js";
+import { getSettingsForSource } from "../settings/settings.js";
+import { parsePluginIdentifier } from "./pluginIdentifier.js";
+import type { PluginId } from "./schemas.js";
 
 /**
  * Synthetic marketplace sentinel for `--plugin-dir` plugins (pluginLoader.ts
  * sets `source = "{name}@inline"`). Not a real marketplace — bare deps from
  * these plugins cannot meaningfully inherit it.
  */
-const INLINE_MARKETPLACE = 'inline';
+const INLINE_MARKETPLACE = "inline";
 
 /**
  * Normalize a dependency reference to fully-qualified "name@marketplace" form.
@@ -54,11 +54,11 @@ export type DependencyLookupResult = {
 
 export type ResolutionResult =
   | { ok: true; closure: PluginId[] }
-  | { ok: false; reason: 'cycle'; chain: PluginId[] }
-  | { ok: false; reason: 'not-found'; missing: PluginId; requiredBy: PluginId }
+  | { ok: false; reason: "cycle"; chain: PluginId[] }
+  | { ok: false; reason: "not-found"; missing: PluginId; requiredBy: PluginId }
   | {
       ok: false;
-      reason: 'cross-marketplace';
+      reason: "cross-marketplace";
       dependency: PluginId;
       requiredBy: PluginId;
     };
@@ -119,20 +119,20 @@ export async function resolveDependencyClosure(
     ) {
       return {
         ok: false,
-        reason: 'cross-marketplace',
+        reason: "cross-marketplace",
         dependency: id,
         requiredBy,
       };
     }
     if (stack.includes(id)) {
-      return { ok: false, reason: 'cycle', chain: [...stack, id] };
+      return { ok: false, reason: "cycle", chain: [...stack, id] };
     }
     if (visited.has(id)) return null;
     visited.add(id);
 
     const entry = await lookup(id);
     if (!entry) {
-      return { ok: false, reason: 'not-found', missing: id, requiredBy };
+      return { ok: false, reason: "not-found", missing: id, requiredBy };
     }
 
     stack.push(id);
@@ -202,11 +202,11 @@ export function verifyAndDemote(plugins: readonly LoadedPlugin[]): {
           if (count <= 1) enabledByName.delete(p.name);
           else enabledByName.set(p.name, count - 1);
           errors.push({
-            type: 'dependency-unsatisfied',
+            type: "dependency-unsatisfied",
             source: p.source,
             plugin: p.name,
             dependency: dep,
-            reason: (isBare ? knownByName.has(dep) : known.has(dep)) ? 'not-enabled' : 'not-found',
+            reason: (isBare ? knownByName.has(dep) : known.has(dep)) ? "not-enabled" : "not-found",
           });
           changed = true;
           break;
@@ -273,9 +273,9 @@ export function getEnabledPluginIdsForScope(settingSource: EditableSettingSource
  * Returns empty string when `installedDeps` is empty.
  */
 export function formatDependencyCountSuffix(installedDeps: string[]): string {
-  if (installedDeps.length === 0) return '';
+  if (installedDeps.length === 0) return "";
   const n = installedDeps.length;
-  return ` (+ ${n} ${n === 1 ? 'dependency' : 'dependencies'})`;
+  return ` (+ ${n} ${n === 1 ? "dependency" : "dependencies"})`;
 }
 
 /**
@@ -284,6 +284,6 @@ export function formatDependencyCountSuffix(installedDeps: string[]): string {
  * used in the notification UI). Returns empty string when no dependents.
  */
 export function formatReverseDependentsSuffix(rdeps: string[] | undefined): string {
-  if (!rdeps || rdeps.length === 0) return '';
-  return ` — warning: required by ${rdeps.join(', ')}`;
+  if (!rdeps || rdeps.length === 0) return "";
+  return ` — warning: required by ${rdeps.join(", ")}`;
 }

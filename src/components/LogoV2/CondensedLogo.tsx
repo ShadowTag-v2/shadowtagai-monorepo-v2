@@ -1,32 +1,32 @@
-import { useEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useMainLoopModel } from '../../hooks/useMainLoopModel.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { Box, Text } from '../../ink.js';
-import { useAppState } from '../../state/AppState.js';
-import { getEffortSuffix } from '../../utils/effort.js';
-import { truncate } from '../../utils/format.js';
-import { isFullscreenEnvEnabled } from '../../utils/fullscreen.js';
+import { useEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useMainLoopModel } from "../../hooks/useMainLoopModel.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { Box, Text } from "../../ink.js";
+import { useAppState } from "../../state/AppState.js";
+import { getEffortSuffix } from "../../utils/effort.js";
+import { truncate } from "../../utils/format.js";
+import { isFullscreenEnvEnabled } from "../../utils/fullscreen.js";
 import {
   formatModelAndBilling,
   getLogoDisplayData,
   truncatePath,
-} from '../../utils/logoV2Utils.js';
-import { renderModelSetting } from '../../utils/model/model.js';
-import { OffscreenFreeze } from '../OffscreenFreeze.js';
-import { AnimatedClawd } from './AnimatedClawd.js';
-import { Clawd } from './Clawd.js';
+} from "../../utils/logoV2Utils.js";
+import { renderModelSetting } from "../../utils/model/model.js";
+import { OffscreenFreeze } from "../OffscreenFreeze.js";
+import { AnimatedClawd } from "./AnimatedClawd.js";
+import { Clawd } from "./Clawd.js";
 import {
   GuestPassesUpsell,
   incrementGuestPassesSeenCount,
   useShowGuestPassesUpsell,
-} from './GuestPassesUpsell.js';
+} from "./GuestPassesUpsell.js";
 import {
   incrementOverageCreditUpsellSeenCount,
   OverageCreditUpsell,
   useShowOverageCreditUpsell,
-} from './OverageCreditUpsell.js';
+} from "./OverageCreditUpsell.js";
 export function CondensedLogo() {
   const $ = _c(29);
   const { columns } = useTerminalSize();
@@ -84,14 +84,14 @@ export function CondensedLogo() {
   const cwdAvailableWidth = agentName ? textWidth - 1 - stringWidth(agentName) - 3 : textWidth;
   const truncatedCwd = truncatePath(cwd, Math.max(cwdAvailableWidth, 10));
   let t4;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = isFullscreenEnvEnabled() ? <AnimatedClawd /> : <Clawd />;
     $[7] = t4;
   } else {
     t4 = $[7];
   }
   let t5;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = <Text bold={true}>Claude Code</Text>;
     $[8] = t5;
   } else {

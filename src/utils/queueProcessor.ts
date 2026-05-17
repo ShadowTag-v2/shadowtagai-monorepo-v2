@@ -1,5 +1,5 @@
-import type { QueuedCommand } from '../types/textInputTypes.js';
-import { dequeue, dequeueAllMatching, hasCommandsInQueue, peek } from './messageQueueManager.js';
+import type { QueuedCommand } from "../types/textInputTypes.js";
+import { dequeue, dequeueAllMatching, hasCommandsInQueue, peek } from "./messageQueueManager.js";
 
 type ProcessQueueParams = {
   executeInput: (commands: QueuedCommand[]) => Promise<void>;
@@ -13,13 +13,13 @@ type ProcessQueueResult = {
  * Check if a queued command is a slash command (value starts with '/').
  */
 function isSlashCommand(cmd: QueuedCommand): boolean {
-  if (typeof cmd.value === 'string') {
-    return cmd.value.trim().startsWith('/');
+  if (typeof cmd.value === "string") {
+    return cmd.value.trim().startsWith("/");
   }
   // For ContentBlockParam[], check the first text block
   for (const block of cmd.value) {
-    if (block.type === 'text') {
-      return block.text.trim().startsWith('/');
+    if (block.type === "text") {
+      return block.text.trim().startsWith("/");
     }
   }
   return false;
@@ -60,7 +60,7 @@ export function processQueueIfReady({ executeInput }: ProcessQueueParams): Proce
 
   // Slash commands and bash-mode commands are processed individually.
   // Bash commands need per-command error isolation, exit codes, and progress UI.
-  if (isSlashCommand(next) || next.mode === 'bash') {
+  if (isSlashCommand(next) || next.mode === "bash") {
     const cmd = dequeue(isMainThread)!;
     void executeInput([cmd]);
     return { processed: true };

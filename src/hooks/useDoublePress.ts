@@ -1,7 +1,7 @@
 // Creates a function that calls one function on the first call and another
 // function on the second call within a certain timeout
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from "react";
 
 export const DOUBLE_PRESS_TIMEOUT_MS = 800;
 

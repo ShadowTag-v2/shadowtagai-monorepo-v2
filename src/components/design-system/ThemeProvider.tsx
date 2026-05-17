@@ -1,11 +1,11 @@
-import { feature } from 'bun:bundle';
-import type React from 'react';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import useStdin from '../../ink/hooks/use-stdin.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { getSystemThemeName, type SystemTheme } from '../../utils/systemTheme.js';
-import type { ThemeName, ThemeSetting } from '../../utils/theme.js';
+import { feature } from "bun:bundle";
+import type React from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import useStdin from "../../ink/hooks/use-stdin.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { getSystemThemeName, type SystemTheme } from "../../utils/systemTheme.js";
+import type { ThemeName, ThemeSetting } from "../../utils/theme.js";
 
 type ThemeContextValue = {
   /** The saved user preference. May be 'auto'. */
@@ -19,7 +19,7 @@ type ThemeContextValue = {
 };
 
 // Non-'auto' default so useTheme() works without a provider (tests, tooling).
-const DEFAULT_THEME: ThemeName = 'dark';
+const DEFAULT_THEME: ThemeName = "dark";
 const ThemeContext = createContext<ThemeContextValue>({
   themeSetting: DEFAULT_THEME,
   setThemeSetting: () => {},
@@ -49,7 +49,7 @@ export function ThemeProvider({ children, initialState, onThemeSave = defaultSav
   // Track terminal theme for 'auto' resolution. Seeds from $COLORFGBG (or
   // 'dark' if unset); the OSC 11 watcher corrects it on first poll.
   const [systemTheme, setSystemTheme] = useState<SystemTheme>(() =>
-    (initialState ?? themeSetting) === 'auto' ? getSystemThemeName() : 'dark',
+    (initialState ?? themeSetting) === "auto" ? getSystemThemeName() : "dark",
   );
 
   // The setting currently in effect (preview wins while picker is open)
@@ -60,11 +60,11 @@ export function ThemeProvider({ children, initialState, onThemeSave = defaultSav
   // Positive feature() pattern so the watcher import is dead-code-eliminated
   // in external builds.
   useEffect(() => {
-    if (feature('AUTO_THEME')) {
-      if (activeSetting !== 'auto' || !internal_querier) return;
+    if (feature("AUTO_THEME")) {
+      if (activeSetting !== "auto" || !internal_querier) return;
       let cleanup: (() => void) | undefined;
       let cancelled = false;
-      void import('../../utils/systemThemeWatcher.js').then(({ watchSystemTheme }) => {
+      void import("../../utils/systemThemeWatcher.js").then(({ watchSystemTheme }) => {
         if (cancelled) return;
         cleanup = watchSystemTheme(internal_querier, setSystemTheme);
       });
@@ -74,7 +74,7 @@ export function ThemeProvider({ children, initialState, onThemeSave = defaultSav
       };
     }
   }, [activeSetting, internal_querier]);
-  const currentTheme: ThemeName = activeSetting === 'auto' ? systemTheme : activeSetting;
+  const currentTheme: ThemeName = activeSetting === "auto" ? systemTheme : activeSetting;
   const value = useMemo<ThemeContextValue>(
     () => ({
       themeSetting,
@@ -84,14 +84,14 @@ export function ThemeProvider({ children, initialState, onThemeSave = defaultSav
         // Switching to 'auto' restarts the watcher (activeSetting dep), whose
         // first poll fires immediately. Seed from the cache so the OSC
         // round-trip doesn't flash the wrong palette.
-        if (newSetting === 'auto') {
+        if (newSetting === "auto") {
           setSystemTheme(getSystemThemeName());
         }
         onThemeSave?.(newSetting);
       },
       setPreviewTheme: (newSetting_0: ThemeSetting) => {
         setPreviewTheme(newSetting_0);
-        if (newSetting_0 === 'auto') {
+        if (newSetting_0 === "auto") {
           setSystemTheme(getSystemThemeName());
         }
       },

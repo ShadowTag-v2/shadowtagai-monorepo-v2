@@ -1,17 +1,17 @@
-import type { ToolPermissionContext } from '../../Tool.js';
-import { BASH_TOOL_NAME } from '../../tools/BashTool/toolName.js';
-import type { PermissionRule, PermissionRuleSource } from './PermissionRule.js';
+import type { ToolPermissionContext } from "../../Tool.js";
+import { BASH_TOOL_NAME } from "../../tools/BashTool/toolName.js";
+import type { PermissionRule, PermissionRuleSource } from "./PermissionRule.js";
 import {
   getAllowRules,
   getAskRules,
   getDenyRules,
   permissionRuleSourceDisplayString,
-} from './permissions.js';
+} from "./permissions.js";
 
 /**
  * Type of shadowing that makes a rule unreachable
  */
-export type ShadowType = 'ask' | 'deny';
+export type ShadowType = "ask" | "deny";
 
 /**
  * Represents an unreachable permission rule with explanation
@@ -59,7 +59,7 @@ type ShadowResult =
  * - flagSettings: From --settings flag (runtime)
  */
 export function isSharedSettingSource(source: PermissionRuleSource): boolean {
-  return source === 'projectSettings' || source === 'policySettings' || source === 'command';
+  return source === "projectSettings" || source === "policySettings" || source === "command";
 }
 
 /**
@@ -81,7 +81,7 @@ function generateFixSuggestion(
   const shadowedSource = formatSource(shadowedRule.source);
   const toolName = shadowingRule.ruleValue.toolName;
 
-  if (shadowType === 'deny') {
+  if (shadowType === "deny") {
     return `Remove the "${toolName}" deny rule from ${shadowingSource}, or remove the specific allow rule from ${shadowedSource}`;
   }
   return `Remove the "${toolName}" ask rule from ${shadowingSource}, or remove the specific allow rule from ${shadowedSource}`;
@@ -138,7 +138,7 @@ function isAllowRuleShadowedByAskRule(
     // Fall through to mark as shadowed - shared settings should always warn
   }
 
-  return { shadowed: true, shadowedBy: shadowingAskRule, shadowType: 'ask' };
+  return { shadowed: true, shadowedBy: shadowingAskRule, shadowType: "ask" };
 }
 
 /**
@@ -174,7 +174,7 @@ function isAllowRuleShadowedByDenyRule(
     return { shadowed: false };
   }
 
-  return { shadowed: true, shadowedBy: shadowingDenyRule, shadowType: 'deny' };
+  return { shadowed: true, shadowedBy: shadowingDenyRule, shadowType: "deny" };
 }
 
 /**
@@ -204,8 +204,8 @@ export function detectUnreachableRules(
         rule: allowRule,
         reason: `Blocked by "${denyResult.shadowedBy.ruleValue.toolName}" deny rule (from ${shadowSource})`,
         shadowedBy: denyResult.shadowedBy,
-        shadowType: 'deny',
-        fix: generateFixSuggestion('deny', denyResult.shadowedBy, allowRule),
+        shadowType: "deny",
+        fix: generateFixSuggestion("deny", denyResult.shadowedBy, allowRule),
       });
       continue; // Don't also report ask-shadowing if deny-shadowed
     }
@@ -218,8 +218,8 @@ export function detectUnreachableRules(
         rule: allowRule,
         reason: `Shadowed by "${askResult.shadowedBy.ruleValue.toolName}" ask rule (from ${shadowSource})`,
         shadowedBy: askResult.shadowedBy,
-        shadowType: 'ask',
-        fix: generateFixSuggestion('ask', askResult.shadowedBy, allowRule),
+        shadowType: "ask",
+        fix: generateFixSuggestion("ask", askResult.shadowedBy, allowRule),
       });
     }
   }

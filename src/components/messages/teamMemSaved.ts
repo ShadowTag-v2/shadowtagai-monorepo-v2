@@ -1,4 +1,4 @@
-import type { SystemMemorySavedMessage } from '../../types/message.js';
+import type { SystemMemorySavedMessage } from "../../types/message.js";
 
 /**
  * Returns the team-memory segment for the memory-saved UI, plus the count so
@@ -13,7 +13,7 @@ export function teamMemSavedPart(
   const count = message.teamCount ?? 0;
   if (count === 0) return null;
   return {
-    segment: `${count} team ${count === 1 ? 'memory' : 'memories'}`,
+    segment: `${count} team ${count === 1 ? "memory" : "memories"}`,
     count,
   };
 }

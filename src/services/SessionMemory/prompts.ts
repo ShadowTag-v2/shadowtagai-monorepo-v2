@@ -1,9 +1,9 @@
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { roughTokenCountEstimation } from '../../services/tokenEstimation.js';
-import { getClaudeConfigHomeDir } from '../../utils/envUtils.js';
-import { getErrnoCode, toError } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { roughTokenCountEstimation } from "../../services/tokenEstimation.js";
+import { getClaudeConfigHomeDir } from "../../utils/envUtils.js";
+import { getErrnoCode, toError } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
 
 const MAX_SECTION_LENGTH = 2000;
 const MAX_TOTAL_SESSION_MEMORY_TOKENS = 12000;
@@ -84,13 +84,13 @@ REMEMBER: Use the Edit tool in parallel and stop. Do not continue after the edit
  * Load custom session memory template from file if it exists
  */
 export async function loadSessionMemoryTemplate(): Promise<string> {
-  const templatePath = join(getClaudeConfigHomeDir(), 'session-memory', 'config', 'template.md');
+  const templatePath = join(getClaudeConfigHomeDir(), "session-memory", "config", "template.md");
 
   try {
-    return await readFile(templatePath, { encoding: 'utf-8' });
+    return await readFile(templatePath, { encoding: "utf-8" });
   } catch (e: unknown) {
     const code = getErrnoCode(e);
-    if (code === 'ENOENT') {
+    if (code === "ENOENT") {
       return DEFAULT_SESSION_MEMORY_TEMPLATE;
     }
     logError(toError(e));
@@ -104,13 +104,13 @@ export async function loadSessionMemoryTemplate(): Promise<string> {
  * Use {{variableName}} syntax for variable substitution (e.g., {{currentNotes}}, {{notesPath}})
  */
 export async function loadSessionMemoryPrompt(): Promise<string> {
-  const promptPath = join(getClaudeConfigHomeDir(), 'session-memory', 'config', 'prompt.md');
+  const promptPath = join(getClaudeConfigHomeDir(), "session-memory", "config", "prompt.md");
 
   try {
-    return await readFile(promptPath, { encoding: 'utf-8' });
+    return await readFile(promptPath, { encoding: "utf-8" });
   } catch (e: unknown) {
     const code = getErrnoCode(e);
-    if (code === 'ENOENT') {
+    if (code === "ENOENT") {
       return getDefaultUpdatePrompt();
     }
     logError(toError(e));
@@ -123,14 +123,14 @@ export async function loadSessionMemoryPrompt(): Promise<string> {
  */
 function analyzeSectionSizes(content: string): Record<string, number> {
   const sections: Record<string, number> = {};
-  const lines = content.split('\n');
-  let currentSection = '';
+  const lines = content.split("\n");
+  let currentSection = "";
   let currentContent: string[] = [];
 
   for (const line of lines) {
-    if (line.startsWith('# ')) {
+    if (line.startsWith("# ")) {
       if (currentSection && currentContent.length > 0) {
-        const sectionContent = currentContent.join('\n').trim();
+        const sectionContent = currentContent.join("\n").trim();
         sections[currentSection] = roughTokenCountEstimation(sectionContent);
       }
       currentSection = line;
@@ -141,7 +141,7 @@ function analyzeSectionSizes(content: string): Record<string, number> {
   }
 
   if (currentSection && currentContent.length > 0) {
-    const sectionContent = currentContent.join('\n').trim();
+    const sectionContent = currentContent.join("\n").trim();
     sections[currentSection] = roughTokenCountEstimation(sectionContent);
   }
 
@@ -164,7 +164,7 @@ function generateSectionReminders(
     );
 
   if (oversizedSections.length === 0 && !overBudget) {
-    return '';
+    return "";
   }
 
   const parts: string[] = [];
@@ -177,11 +177,11 @@ function generateSectionReminders(
 
   if (oversizedSections.length > 0) {
     parts.push(
-      `\n\n${overBudget ? 'Oversized sections to condense' : 'IMPORTANT: The following sections exceed the per-section limit and MUST be condensed'}:\n${oversizedSections.join('\n')}`,
+      `\n\n${overBudget ? "Oversized sections to condense" : "IMPORTANT: The following sections exceed the per-section limit and MUST be condensed"}:\n${oversizedSections.join("\n")}`,
     );
   }
 
-  return parts.join('');
+  return parts.join("");
 }
 
 /**
@@ -241,15 +241,15 @@ export function truncateSessionMemoryForCompact(content: string): {
   truncatedContent: string;
   wasTruncated: boolean;
 } {
-  const lines = content.split('\n');
+  const lines = content.split("\n");
   const maxCharsPerSection = MAX_SECTION_LENGTH * 4; // roughTokenCountEstimation uses length/4
   const outputLines: string[] = [];
   let currentSectionLines: string[] = [];
-  let currentSectionHeader = '';
+  let currentSectionHeader = "";
   let wasTruncated = false;
 
   for (const line of lines) {
-    if (line.startsWith('# ')) {
+    if (line.startsWith("# ")) {
       const result = flushSessionSection(
         currentSectionHeader,
         currentSectionLines,
@@ -270,7 +270,7 @@ export function truncateSessionMemoryForCompact(content: string): {
   wasTruncated = wasTruncated || result.wasTruncated;
 
   return {
-    truncatedContent: outputLines.join('\n'),
+    truncatedContent: outputLines.join("\n"),
     wasTruncated,
   };
 }
@@ -284,7 +284,7 @@ function flushSessionSection(
     return { lines: sectionLines, wasTruncated: false };
   }
 
-  const sectionContent = sectionLines.join('\n');
+  const sectionContent = sectionLines.join("\n");
   if (sectionContent.length <= maxCharsPerSection) {
     return { lines: [sectionHeader, ...sectionLines], wasTruncated: false };
   }
@@ -299,6 +299,6 @@ function flushSessionSection(
     keptLines.push(line);
     charCount += line.length + 1;
   }
-  keptLines.push('\n[... section truncated for length ...]');
+  keptLines.push("\n[... section truncated for length ...]");
   return { lines: keptLines, wasTruncated: true };
 }

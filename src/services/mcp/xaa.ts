@@ -19,19 +19,19 @@
 import {
   discoverAuthorizationServerMetadata,
   discoverOAuthProtectedResourceMetadata,
-} from '@modelcontextprotocol/sdk/client/auth.js';
-import type { FetchLike } from '@modelcontextprotocol/sdk/shared/transport.js';
-import { z } from 'zod/v4';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { logMCPDebug } from '../../utils/log.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
+} from "@modelcontextprotocol/sdk/client/auth.js";
+import type { FetchLike } from "@modelcontextprotocol/sdk/shared/transport.js";
+import { z } from "zod/v4";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { logMCPDebug } from "../../utils/log.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
 
 const XAA_REQUEST_TIMEOUT_MS = 30000;
 
-const TOKEN_EXCHANGE_GRANT = 'urn:ietf:params:oauth:grant-type:token-exchange';
-const JWT_BEARER_GRANT = 'urn:ietf:params:oauth:grant-type:jwt-bearer';
-const ID_JAG_TOKEN_TYPE = 'urn:ietf:params:oauth:token-type:id-jag';
-const ID_TOKEN_TYPE = 'urn:ietf:params:oauth:token-type:id_token';
+const TOKEN_EXCHANGE_GRANT = "urn:ietf:params:oauth:grant-type:token-exchange";
+const JWT_BEARER_GRANT = "urn:ietf:params:oauth:grant-type:jwt-bearer";
+const ID_JAG_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:id-jag";
+const ID_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:id_token";
 
 /**
  * Creates a fetch wrapper that enforces the XAA request timeout and optionally
@@ -60,9 +60,9 @@ const defaultFetch = makeXaaFetch();
  */
 function normalizeUrl(url: string): string {
   try {
-    return new URL(url).href.replace(/\/$/, '');
+    return new URL(url).href.replace(/\/$/, "");
   } catch {
-    return url.replace(/\/$/, '');
+    return url.replace(/\/$/, "");
   }
 }
 
@@ -78,7 +78,7 @@ export class XaaTokenExchangeError extends Error {
   readonly shouldClearIdToken: boolean;
   constructor(message: string, shouldClearIdToken: boolean) {
     super(message);
-    this.name = 'XaaTokenExchangeError';
+    this.name = "XaaTokenExchangeError";
     this.shouldClearIdToken = shouldClearIdToken;
   }
 }
@@ -92,7 +92,7 @@ const SENSITIVE_TOKEN_RE =
   /"(access_token|refresh_token|id_token|assertion|subject_token|client_secret)"\s*:\s*"[^"]*"/g;
 
 function redactTokens(raw: unknown): string {
-  const s = typeof raw === 'string' ? raw : jsonStringify(raw);
+  const s = typeof raw === "string" ? raw : jsonStringify(raw);
   return s.replace(SENSITIVE_TOKEN_RE, (_, k) => `"${k}":"[REDACTED]"`);
 }
 
@@ -114,7 +114,7 @@ const JwtBearerResponseSchema = lazySchema(() =>
     access_token: z.string().min(1),
     // Many ASes omit token_type since Bearer is the only value anyone uses
     // (RFC 6750). Don't reject a valid access_token over a missing label.
-    token_type: z.string().default('Bearer'),
+    token_type: z.string().default("Bearer"),
     expires_in: z.coerce.number().optional(),
     scope: z.string().optional(),
     refresh_token: z.string().optional(),
@@ -147,7 +147,7 @@ export async function discoverProtectedResource(
     throw new Error(`XAA: PRM discovery failed: ${e instanceof Error ? e.message : String(e)}`);
   }
   if (!prm.resource || !prm.authorization_servers?.[0]) {
-    throw new Error('XAA: PRM discovery failed: PRM missing resource or authorization_servers');
+    throw new Error("XAA: PRM discovery failed: PRM missing resource or authorization_servers");
   }
   if (normalizeUrl(prm.resource) !== normalizeUrl(serverUrl)) {
     throw new Error(
@@ -189,7 +189,7 @@ export async function discoverAuthorizationServer(
   // RFC 8414 §3.3 / RFC 9728 §3 require HTTPS. A PRM-advertised http:// AS
   // that self-consistently reports an http:// issuer would pass the mismatch
   // check above, then we'd POST id_token + client_secret over plaintext.
-  if (new URL(meta.token_endpoint).protocol !== 'https:') {
+  if (new URL(meta.token_endpoint).protocol !== "https:") {
     throw new Error(`XAA: refusing non-HTTPS token endpoint: ${meta.token_endpoint}`);
   }
   return {
@@ -242,15 +242,15 @@ export async function requestJwtAuthorizationGrant(opts: {
     client_id: opts.clientId,
   });
   if (opts.clientSecret) {
-    params.set('client_secret', opts.clientSecret);
+    params.set("client_secret", opts.clientSecret);
   }
   if (opts.scope) {
-    params.set('scope', opts.scope);
+    params.set("scope", opts.scope);
   }
 
   const res = await fetchFn(opts.tokenEndpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params,
   });
   if (!res.ok) {
@@ -330,36 +330,36 @@ export async function exchangeJwtAuthGrant(opts: {
   assertion: string;
   clientId: string;
   clientSecret: string;
-  authMethod?: 'client_secret_basic' | 'client_secret_post';
+  authMethod?: "client_secret_basic" | "client_secret_post";
   scope?: string;
   fetchFn?: FetchLike;
 }): Promise<XaaTokenResult> {
   const fetchFn = opts.fetchFn ?? defaultFetch;
-  const authMethod = opts.authMethod ?? 'client_secret_basic';
+  const authMethod = opts.authMethod ?? "client_secret_basic";
 
   const params = new URLSearchParams({
     grant_type: JWT_BEARER_GRANT,
     assertion: opts.assertion,
   });
   if (opts.scope) {
-    params.set('scope', opts.scope);
+    params.set("scope", opts.scope);
   }
 
   const headers: Record<string, string> = {
-    'Content-Type': 'application/x-www-form-urlencoded',
+    "Content-Type": "application/x-www-form-urlencoded",
   };
-  if (authMethod === 'client_secret_basic') {
+  if (authMethod === "client_secret_basic") {
     const basicAuth = Buffer.from(
       `${encodeURIComponent(opts.clientId)}:${encodeURIComponent(opts.clientSecret)}`,
-    ).toString('base64');
+    ).toString("base64");
     headers.Authorization = `Basic ${basicAuth}`;
   } else {
-    params.set('client_id', opts.clientId);
-    params.set('client_secret', opts.clientSecret);
+    params.set("client_id", opts.clientId);
+    params.set("client_secret", opts.clientSecret);
   }
 
   const res = await fetchFn(opts.tokenEndpoint, {
-    method: 'POST',
+    method: "POST",
     headers,
     body: params,
   });
@@ -417,7 +417,7 @@ export type XaaConfig = {
 export async function performCrossAppAccess(
   serverUrl: string,
   config: XaaConfig,
-  serverName = 'xaa',
+  serverName = "xaa",
   abortSignal?: AbortSignal,
 ): Promise<XaaResult> {
   const fetchFn = makeXaaFetch(abortSignal);
@@ -426,7 +426,7 @@ export async function performCrossAppAccess(
   const prm = await discoverProtectedResource(serverUrl, { fetchFn });
   logMCPDebug(
     serverName,
-    `XAA: discovered resource=${prm.resource} ASes=[${prm.authorization_servers.join(', ')}]`,
+    `XAA: discovered resource=${prm.resource} ASes=[${prm.authorization_servers.join(", ")}]`,
   );
 
   // Try each advertised AS in order. grant_types_supported is OPTIONAL per
@@ -448,7 +448,7 @@ export async function performCrossAppAccess(
       !candidate.grant_types_supported.includes(JWT_BEARER_GRANT)
     ) {
       asErrors.push(
-        `${asUrl}: does not advertise jwt-bearer grant (supported: ${candidate.grant_types_supported.join(', ')})`,
+        `${asUrl}: does not advertise jwt-bearer grant (supported: ${candidate.grant_types_supported.join(", ")})`,
       );
       continue;
     }
@@ -457,19 +457,19 @@ export async function performCrossAppAccess(
   }
   if (!asMeta) {
     throw new Error(
-      `XAA: no authorization server supports jwt-bearer. Tried: ${asErrors.join('; ')}`,
+      `XAA: no authorization server supports jwt-bearer. Tried: ${asErrors.join("; ")}`,
     );
   }
   // Pick auth method from what the AS advertises. We handle
   // client_secret_basic and client_secret_post; if the AS only supports post,
   // honor that, else default to basic (SEP-990 conformance expectation).
   const authMethods = asMeta.token_endpoint_auth_methods_supported;
-  const authMethod: 'client_secret_basic' | 'client_secret_post' =
+  const authMethod: "client_secret_basic" | "client_secret_post" =
     authMethods &&
-    !authMethods.includes('client_secret_basic') &&
-    authMethods.includes('client_secret_post')
-      ? 'client_secret_post'
-      : 'client_secret_basic';
+    !authMethods.includes("client_secret_basic") &&
+    authMethods.includes("client_secret_post")
+      ? "client_secret_post"
+      : "client_secret_basic";
   logMCPDebug(
     serverName,
     `XAA: AS issuer=${asMeta.issuer} token_endpoint=${asMeta.token_endpoint} auth_method=${authMethod}`,

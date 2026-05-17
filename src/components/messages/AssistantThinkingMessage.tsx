@@ -1,8 +1,8 @@
-import type { ThinkingBlock, ThinkingBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { CtrlOToExpand } from '../CtrlOToExpand.js';
-import { Markdown } from '../Markdown.js';
+import type { ThinkingBlock, ThinkingBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { CtrlOToExpand } from "../CtrlOToExpand.js";
+import { Markdown } from "../Markdown.js";
 
 type Props = {
   // Accept either full ThinkingBlock/ThinkingBlockParam or a minimal shape with just type and thinking
@@ -10,7 +10,7 @@ type Props = {
     | ThinkingBlock
     | ThinkingBlockParam
     | {
-        type: 'thinking';
+        type: "thinking";
         thinking: string;
       };
   addMargin: boolean;
@@ -35,10 +35,10 @@ export function AssistantThinkingMessage(t0) {
   if (!shouldShowFullThinking) {
     const t4 = addMargin ? 1 : 0;
     let t5;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t5 = (
         <Text dimColor={true} italic={true}>
-          {'\u2234 Thinking'} <CtrlOToExpand />
+          {"\u2234 Thinking"} <CtrlOToExpand />
         </Text>
       );
       $[0] = t5;
@@ -57,10 +57,10 @@ export function AssistantThinkingMessage(t0) {
   }
   const t4 = addMargin ? 1 : 0;
   let t5;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Text dimColor={true} italic={true}>
-        {'\u2234 Thinking'}…
+        {"\u2234 Thinking"}…
       </Text>
     );
     $[3] = t5;

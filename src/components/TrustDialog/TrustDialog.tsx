@@ -1,20 +1,20 @@
-import { homedir } from 'node:os';
-import React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { logEvent } from 'src/services/analytics/index.js';
-import { setSessionTrustAccepted } from '../../bootstrap/state.js';
-import type { Command } from '../../commands.js';
-import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { Box, Link, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import { getMcpConfigsByScope } from '../../services/mcp/config.js';
-import { BASH_TOOL_NAME } from '../../tools/BashTool/toolName.js';
-import { checkHasTrustDialogAccepted, saveCurrentProjectConfig } from '../../utils/config.js';
-import { getCwd } from '../../utils/cwd.js';
-import { getFsImplementation } from '../../utils/fsOperations.js';
-import { gracefulShutdownSync } from '../../utils/gracefulShutdown.js';
-import { Select } from '../CustomSelect/index.js';
-import { PermissionDialog } from '../permissions/PermissionDialog.js';
+import { homedir } from "node:os";
+import React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { logEvent } from "src/services/analytics/index.js";
+import { setSessionTrustAccepted } from "../../bootstrap/state.js";
+import type { Command } from "../../commands.js";
+import { useExitOnCtrlCDWithKeybindings } from "../../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { Box, Link, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import { getMcpConfigsByScope } from "../../services/mcp/config.js";
+import { BASH_TOOL_NAME } from "../../tools/BashTool/toolName.js";
+import { checkHasTrustDialogAccepted, saveCurrentProjectConfig } from "../../utils/config.js";
+import { getCwd } from "../../utils/cwd.js";
+import { getFsImplementation } from "../../utils/fsOperations.js";
+import { gracefulShutdownSync } from "../../utils/gracefulShutdown.js";
+import { Select } from "../CustomSelect/index.js";
+import { PermissionDialog } from "../permissions/PermissionDialog.js";
 import {
   getApiKeyHelperSources,
   getAwsCommandsSources,
@@ -23,7 +23,7 @@ import {
   getGcpCommandsSources,
   getHooksSources,
   getOtelHeadersHelperSources,
-} from './utils.js';
+} from "./utils.js";
 
 type Props = {
   onDone(): void;
@@ -33,15 +33,15 @@ export function TrustDialog(t0) {
   const $ = _c(33);
   const { onDone, commands } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
-    t1 = getMcpConfigsByScope('project');
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+    t1 = getMcpConfigsByScope("project");
     $[0] = t1;
   } else {
     t1 = $[0];
   }
   const { servers: projectServers } = t1;
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = Object.keys(projectServers);
     $[1] = t2;
   } else {
@@ -49,7 +49,7 @@ export function TrustDialog(t0) {
   }
   const hasMcpServers = t2.length > 0;
   let t3;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = getHooksSources();
     $[2] = t3;
   } else {
@@ -58,7 +58,7 @@ export function TrustDialog(t0) {
   const hooksSettingSources = t3;
   const hasHooks = hooksSettingSources.length > 0;
   let t4;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = getBashPermissionSources();
     $[3] = t4;
   } else {
@@ -66,7 +66,7 @@ export function TrustDialog(t0) {
   }
   const bashSettingSources = t4;
   let t5;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = getApiKeyHelperSources();
     $[4] = t5;
   } else {
@@ -75,7 +75,7 @@ export function TrustDialog(t0) {
   const apiKeyHelperSources = t5;
   const hasApiKeyHelper = apiKeyHelperSources.length > 0;
   let t6;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = getAwsCommandsSources();
     $[5] = t6;
   } else {
@@ -84,7 +84,7 @@ export function TrustDialog(t0) {
   const awsCommandsSources = t6;
   const hasAwsCommands = awsCommandsSources.length > 0;
   let t7;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = getGcpCommandsSources();
     $[6] = t7;
   } else {
@@ -93,7 +93,7 @@ export function TrustDialog(t0) {
   const gcpCommandsSources = t7;
   const hasGcpCommands = gcpCommandsSources.length > 0;
   let t8;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = getOtelHeadersHelperSources();
     $[7] = t8;
   } else {
@@ -102,7 +102,7 @@ export function TrustDialog(t0) {
   const otelHeadersHelperSources = t8;
   const hasOtelHeadersHelper = otelHeadersHelperSources.length > 0;
   let t9;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = getDangerousEnvVarsSources();
     $[8] = t9;
   } else {
@@ -135,7 +135,7 @@ export function TrustDialog(t0) {
   if ($[13] !== hasAnyBashExecution) {
     t12 = () => {
       const isHomeDir = homedir() === getCwd();
-      logEvent('tengu_trust_dialog_shown', {
+      logEvent("tengu_trust_dialog_shown", {
         isHomeDir,
         hasMcpServers,
         hasHooks,
@@ -168,12 +168,12 @@ export function TrustDialog(t0) {
   let t14;
   if ($[16] !== hasAnyBashExecution || $[17] !== onDone) {
     t14 = function onChange(value) {
-      if (value === 'exit') {
+      if (value === "exit") {
         gracefulShutdownSync(1);
         return;
       }
       const isHomeDir_0 = homedir() === getCwd();
-      logEvent('tengu_trust_dialog_accept', {
+      logEvent("tengu_trust_dialog_accept", {
         isHomeDir: isHomeDir_0,
         hasMcpServers,
         hasHooks,
@@ -200,15 +200,15 @@ export function TrustDialog(t0) {
   const onChange = t14;
   const exitState = useExitOnCtrlCDWithKeybindings(_temp6);
   let t15;
-  if ($[19] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[19] === Symbol.for("react.memo_cache_sentinel")) {
     t15 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[19] = t15;
   } else {
     t15 = $[19];
   }
-  useKeybinding('confirm:no', _temp7, t15);
+  useKeybinding("confirm:no", _temp7, t15);
   if (hasTrustDialogAccepted) {
     setTimeout(onDone);
     return null;
@@ -216,7 +216,7 @@ export function TrustDialog(t0) {
   let t16;
   let t17;
   let t18;
-  if ($[20] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[20] === Symbol.for("react.memo_cache_sentinel")) {
     t16 = <Text bold={true}>{getFsImplementation().cwd()}</Text>;
     t17 = (
       <Text>
@@ -235,7 +235,7 @@ export function TrustDialog(t0) {
     t18 = $[22];
   }
   let t19;
-  if ($[23] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[23] === Symbol.for("react.memo_cache_sentinel")) {
     t19 = (
       <Text dimColor={true}>
         <Link url="https://code.claude.com/docs/en/security">Security guide</Link>
@@ -246,15 +246,15 @@ export function TrustDialog(t0) {
     t19 = $[23];
   }
   let t20;
-  if ($[24] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[24] === Symbol.for("react.memo_cache_sentinel")) {
     t20 = [
       {
-        label: 'Yes, I trust this folder',
-        value: 'enable_all',
+        label: "Yes, I trust this folder",
+        value: "enable_all",
       },
       {
-        label: 'No, exit',
-        value: 'exit',
+        label: "No, exit",
+        value: "exit",
       },
     ];
     $[24] = t20;
@@ -266,8 +266,8 @@ export function TrustDialog(t0) {
     t21 = (
       <Select
         options={t20}
-        onChange={(value_0) => onChange(value_0 as 'enable_all' | 'exit')}
-        onCancel={() => onChange('exit')}
+        onChange={(value_0) => onChange(value_0 as "enable_all" | "exit")}
+        onCancel={() => onChange("exit")}
       />
     );
     $[25] = onChange;
@@ -328,11 +328,11 @@ function _temp5(current) {
 }
 function _temp4(command_0) {
   return (
-    command_0.type === 'prompt' &&
-    (command_0.loadedFrom === 'skills' || command_0.loadedFrom === 'plugin') &&
-    (command_0.source === 'projectSettings' ||
-      command_0.source === 'localSettings' ||
-      command_0.source === 'plugin') &&
+    command_0.type === "prompt" &&
+    (command_0.loadedFrom === "skills" || command_0.loadedFrom === "plugin") &&
+    (command_0.source === "projectSettings" ||
+      command_0.source === "localSettings" ||
+      command_0.source === "plugin") &&
     command_0.allowedTools?.some(_temp3)
   );
 }
@@ -341,9 +341,9 @@ function _temp3(tool_0) {
 }
 function _temp2(command) {
   return (
-    command.type === 'prompt' &&
-    command.loadedFrom === 'commands_DEPRECATED' &&
-    (command.source === 'projectSettings' || command.source === 'localSettings') &&
+    command.type === "prompt" &&
+    command.loadedFrom === "commands_DEPRECATED" &&
+    (command.source === "projectSettings" || command.source === "localSettings") &&
     command.allowedTools?.some(_temp)
   );
 }

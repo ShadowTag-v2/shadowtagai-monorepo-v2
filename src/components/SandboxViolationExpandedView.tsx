@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import { SandboxManager } from '../utils/sandbox/sandbox-adapter.js';
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import { SandboxManager } from "../utils/sandbox/sandbox-adapter.js";
 
 /**
  * Format a timestamp as "h:mm:ssa" (e.g., "1:30:45pm").
@@ -9,17 +9,17 @@ import { SandboxManager } from '../utils/sandbox/sandbox-adapter.js';
  */
 function formatTime(date: Date): string {
   const h = date.getHours() % 12 || 12;
-  const m = String(date.getMinutes()).padStart(2, '0');
-  const s = String(date.getSeconds()).padStart(2, '0');
-  const ampm = date.getHours() < 12 ? 'am' : 'pm';
+  const m = String(date.getMinutes()).padStart(2, "0");
+  const s = String(date.getSeconds()).padStart(2, "0");
+  const ampm = date.getHours() < 12 ? "am" : "pm";
   return `${h}:${m}:${s}${ampm}`;
 }
 
-import { getPlatform } from 'src/utils/platform.js';
+import { getPlatform } from "src/utils/platform.js";
 export function SandboxViolationExpandedView() {
   const $ = _c(15);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = [];
     $[0] = t0;
   } else {
@@ -29,7 +29,7 @@ export function SandboxViolationExpandedView() {
   const [totalCount, setTotalCount] = useState(0);
   let t1;
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => {
       const store = SandboxManager.getSandboxViolationStore();
       const unsubscribe = store.subscribe((allViolations) => {
@@ -46,13 +46,13 @@ export function SandboxViolationExpandedView() {
     t2 = $[2];
   }
   useEffect(t1, t2);
-  if (!SandboxManager.isSandboxingEnabled() || getPlatform() === 'linux') {
+  if (!SandboxManager.isSandboxingEnabled() || getPlatform() === "linux") {
     return null;
   }
   if (totalCount === 0) {
     return null;
   }
-  const t3 = totalCount === 1 ? 'operation' : 'operations';
+  const t3 = totalCount === 1 ? "operation" : "operations";
   let t4;
   if ($[3] !== t3 || $[4] !== totalCount) {
     t4 = (
@@ -115,7 +115,7 @@ function _temp(v, i) {
     <Box key={`${v.timestamp.getTime()}-${i}`} paddingLeft={2}>
       <Text dimColor={true}>
         {formatTime(v.timestamp)}
-        {v.command ? ` ${v.command}:` : ''} {v.line}
+        {v.command ? ` ${v.command}:` : ""} {v.line}
       </Text>
     </Box>
   );

@@ -5,8 +5,8 @@ import {
   type Token,
   tokenize,
   undoAnsiCodes,
-} from '@alcalzone/ansi-tokenize';
-import type { Theme } from './theme.js';
+} from "@alcalzone/ansi-tokenize";
+import type { Theme } from "./theme.js";
 
 export type TextHighlight = {
   start: number;
@@ -100,7 +100,7 @@ class HighlightSegmenter {
     // Consume leading ANSI codes before first visible char
     while (this.tokenIdx < this.tokens.length) {
       const token = this.tokens[this.tokenIdx]!;
-      if (token.type !== 'ansi') break;
+      if (token.type !== "ansi") break;
       this.codes.push(token);
       this.stringPos += token.code.length;
       this.tokenIdx++;
@@ -113,7 +113,7 @@ class HighlightSegmenter {
     while (this.visiblePos < targetVisiblePos && this.tokenIdx < this.tokens.length) {
       const token = this.tokens[this.tokenIdx]!;
 
-      if (token.type === 'ansi') {
+      if (token.type === "ansi") {
         this.codes.push(token);
         this.stringPos += token.code.length;
         this.tokenIdx++;

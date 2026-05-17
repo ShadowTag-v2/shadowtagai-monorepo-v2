@@ -1,9 +1,9 @@
-import { extractInboundMessageFields } from '../../bridge/inboundMessages.js';
-import { setReplBridgeHandle } from '../../bridge/replBridgeHandle.js';
-import { getAppStateStore, setAppState } from '../../state/AppState.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage } from '../../utils/errors.js';
-import { enqueue } from '../../utils/messageQueueManager.js';
+import { extractInboundMessageFields } from "../../bridge/inboundMessages.js";
+import { setReplBridgeHandle } from "../../bridge/replBridgeHandle.js";
+import { getAppStateStore, setAppState } from "../../state/AppState.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage } from "../../utils/errors.js";
+import { enqueue } from "../../utils/messageQueueManager.js";
 
 const BRIDGE_FAILURE_DISMISS_MS = 10000;
 const MAX_CONSECUTIVE_INIT_FAILURES = 3;
@@ -40,7 +40,7 @@ export class ReplBridgeController {
 
     try {
       // Dynamic import simulated for headless
-      const { initReplBridge } = await import('../../bridge/initReplBridge.js');
+      const { initReplBridge } = await import("../../bridge/initReplBridge.js");
 
       this.handle = await initReplBridge({
         outboundOnly: state.replBridgeOutboundOnly,
@@ -48,11 +48,11 @@ export class ReplBridgeController {
           try {
             const fields = extractInboundMessageFields(msg);
             if (!fields) return;
-            const { resolveAndPrepend } = await import('../../bridge/inboundAttachments.js');
+            const { resolveAndPrepend } = await import("../../bridge/inboundAttachments.js");
             const content = await resolveAndPrepend(msg, fields.content);
             enqueue({
               value: content,
-              mode: 'prompt',
+              mode: "prompt",
               uuid: fields.uuid,
               skipSlashCommands: true,
               bridgeOrigin: true,
@@ -63,7 +63,7 @@ export class ReplBridgeController {
         },
         onStateChange: (bridgeState: string, detail?: string) => {
           logForDebugging(`[ReplBridgeController] State: ${bridgeState}`);
-          if (bridgeState === 'failed') {
+          if (bridgeState === "failed") {
             this.handleFailure();
           }
         },
@@ -111,9 +111,9 @@ export class ReplBridgeController {
       .slice(startIndex)
       .filter(
         (m: any) =>
-          m.type === 'user' ||
-          m.type === 'assistant' ||
-          (m.type === 'system' && m.subtype === 'local_command'),
+          m.type === "user" ||
+          m.type === "assistant" ||
+          (m.type === "system" && m.subtype === "local_command"),
       );
 
     this.lastWrittenIndex = messages.length;

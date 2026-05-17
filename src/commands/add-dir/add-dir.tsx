@@ -1,24 +1,24 @@
-import chalk from 'chalk';
-import figures from 'figures';
-import type React from 'react';
-import { useEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import chalk from "chalk";
+import figures from "figures";
+import type React from "react";
+import { useEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
 import {
   getAdditionalDirectoriesForClaudeMd,
   setAdditionalDirectoriesForClaudeMd,
-} from '../../bootstrap/state.js';
-import type { LocalJSXCommandContext } from '../../commands.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { AddWorkspaceDirectory } from '../../components/permissions/rules/AddWorkspaceDirectory.js';
-import { Box, Text } from '../../ink.js';
-import type { LocalJSXCommandOnDone } from '../../types/command.js';
+} from "../../bootstrap/state.js";
+import type { LocalJSXCommandContext } from "../../commands.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { AddWorkspaceDirectory } from "../../components/permissions/rules/AddWorkspaceDirectory.js";
+import { Box, Text } from "../../ink.js";
+import type { LocalJSXCommandOnDone } from "../../types/command.js";
 import {
   applyPermissionUpdate,
   persistPermissionUpdate,
-} from '../../utils/permissions/PermissionUpdate.js';
-import type { PermissionUpdateDestination } from '../../utils/permissions/PermissionUpdateSchema.js';
-import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js';
-import { addDirHelpMessage, validateDirectoryForWorkspace } from './validation.js';
+} from "../../utils/permissions/PermissionUpdate.js";
+import type { PermissionUpdateDestination } from "../../utils/permissions/PermissionUpdateSchema.js";
+import { SandboxManager } from "../../utils/sandbox/sandbox-adapter.js";
+import { addDirHelpMessage, validateDirectoryForWorkspace } from "./validation.js";
 
 function AddDirError(t0) {
   const $ = _c(10);
@@ -84,14 +84,14 @@ export async function call(
   context: LocalJSXCommandContext,
   args?: string,
 ): Promise<React.ReactNode> {
-  const directoryPath = (args ?? '').trim();
+  const directoryPath = (args ?? "").trim();
   const appState = context.getAppState();
 
   // Helper to handle adding a directory (shared by both with-path and no-path cases)
   const handleAddDirectory = async (path: string, remember = false) => {
-    const destination: PermissionUpdateDestination = remember ? 'localSettings' : 'session';
+    const destination: PermissionUpdateDestination = remember ? "localSettings" : "session";
     const permissionUpdate = {
-      type: 'addDirectories' as const,
+      type: "addDirectories" as const,
       directories: [path],
       destination,
     };
@@ -122,12 +122,12 @@ export async function call(
         persistPermissionUpdate(permissionUpdate);
         message = `Added ${chalk.bold(path)} as a working directory and saved to local settings`;
       } catch (error) {
-        message = `Added ${chalk.bold(path)} as a working directory. Failed to save to local settings: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        message = `Added ${chalk.bold(path)} as a working directory. Failed to save to local settings: ${error instanceof Error ? error.message : "Unknown error"}`;
       }
     } else {
       message = `Added ${chalk.bold(path)} as a working directory for this session`;
     }
-    const messageWithHint = `${message} ${chalk.dim('· /permissions to manage')}`;
+    const messageWithHint = `${message} ${chalk.dim("· /permissions to manage")}`;
     onDone(messageWithHint);
   };
 
@@ -139,15 +139,15 @@ export async function call(
         permissionContext={appState.toolPermissionContext}
         onAddDirectory={handleAddDirectory}
         onCancel={() => {
-          onDone('Did not add a working directory.');
+          onDone("Did not add a working directory.");
         }}
       />
     );
   }
   const result = await validateDirectoryForWorkspace(directoryPath, appState.toolPermissionContext);
-  if (result.resultType !== 'success') {
+  if (result.resultType !== "success") {
     const message = addDirHelpMessage(result);
-    return <AddDirError message={message} args={args ?? ''} onDone={() => onDone(message)} />;
+    return <AddDirError message={message} args={args ?? ""} onDone={() => onDone(message)} />;
   }
   return (
     <AddWorkspaceDirectory

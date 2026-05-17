@@ -1,12 +1,12 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { getSettings_DEPRECATED, updateSettingsForSource } from '../utils/settings/settings.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
-import { MCPServerDialogCopy } from './MCPServerDialogCopy.js';
+} from "src/services/analytics/index.js";
+import { getSettings_DEPRECATED, updateSettingsForSource } from "../utils/settings/settings.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
+import { MCPServerDialogCopy } from "./MCPServerDialogCopy.js";
 
 type Props = {
   serverName: string;
@@ -18,32 +18,32 @@ export function MCPServerApprovalDialog(t0) {
   let t1;
   if ($[0] !== onDone || $[1] !== serverName) {
     t1 = function onChange(value) {
-      logEvent('tengu_mcp_dialog_choice', {
+      logEvent("tengu_mcp_dialog_choice", {
         choice: value as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
       switch (value) {
-        case 'yes':
-        case 'yes_all': {
+        case "yes":
+        case "yes_all": {
           const currentSettings_0 = getSettings_DEPRECATED() || {};
           const enabledServers = currentSettings_0.enabledMcpjsonServers || [];
           if (!enabledServers.includes(serverName)) {
-            updateSettingsForSource('localSettings', {
+            updateSettingsForSource("localSettings", {
               enabledMcpjsonServers: [...enabledServers, serverName],
             });
           }
-          if (value === 'yes_all') {
-            updateSettingsForSource('localSettings', {
+          if (value === "yes_all") {
+            updateSettingsForSource("localSettings", {
               enableAllProjectMcpServers: true,
             });
           }
           onDone();
           break;
         }
-        case 'no': {
+        case "no": {
           const currentSettings = getSettings_DEPRECATED() || {};
           const disabledServers = currentSettings.disabledMcpjsonServers || [];
           if (!disabledServers.includes(serverName)) {
-            updateSettingsForSource('localSettings', {
+            updateSettingsForSource("localSettings", {
               disabledMcpjsonServers: [...disabledServers, serverName],
             });
           }
@@ -61,33 +61,33 @@ export function MCPServerApprovalDialog(t0) {
   const t2 = `New MCP server found in .mcp.json: ${serverName}`;
   let t3;
   if ($[3] !== onChange) {
-    t3 = () => onChange('no');
+    t3 = () => onChange("no");
     $[3] = onChange;
     $[4] = t3;
   } else {
     t3 = $[4];
   }
   let t4;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <MCPServerDialogCopy />;
     $[5] = t4;
   } else {
     t4 = $[5];
   }
   let t5;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = [
       {
-        label: 'Use this and all future MCP servers in this project',
-        value: 'yes_all',
+        label: "Use this and all future MCP servers in this project",
+        value: "yes_all",
       },
       {
-        label: 'Use this MCP server',
-        value: 'yes',
+        label: "Use this MCP server",
+        value: "yes",
       },
       {
-        label: 'Continue without using this MCP server',
-        value: 'no',
+        label: "Continue without using this MCP server",
+        value: "no",
       },
     ];
     $[6] = t5;
@@ -99,8 +99,8 @@ export function MCPServerApprovalDialog(t0) {
     t6 = (
       <Select
         options={t5}
-        onChange={(value_0) => onChange(value_0 as 'yes_all' | 'yes' | 'no')}
-        onCancel={() => onChange('no')}
+        onChange={(value_0) => onChange(value_0 as "yes_all" | "yes" | "no")}
+        onCancel={() => onChange("no")}
       />
     );
     $[7] = onChange;

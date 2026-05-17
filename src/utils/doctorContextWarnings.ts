@@ -1,24 +1,24 @@
-import { roughTokenCountEstimation } from '../services/tokenEstimation.js';
-import type { Tool, ToolPermissionContext } from '../Tool.js';
-import type { AgentDefinitionsResult } from '../tools/AgentTool/loadAgentsDir.js';
-import { countMcpToolTokens } from './analyzeContext.js';
-import { getLargeMemoryFiles, getMemoryFiles, MAX_MEMORY_CHARACTER_COUNT } from './claudemd.js';
-import { getMainLoopModel } from './model/model.js';
-import { permissionRuleValueToString } from './permissions/permissionRuleParser.js';
-import { detectUnreachableRules } from './permissions/shadowedRuleDetection.js';
-import { SandboxManager } from './sandbox/sandbox-adapter.js';
+import { roughTokenCountEstimation } from "../services/tokenEstimation.js";
+import type { Tool, ToolPermissionContext } from "../Tool.js";
+import type { AgentDefinitionsResult } from "../tools/AgentTool/loadAgentsDir.js";
+import { countMcpToolTokens } from "./analyzeContext.js";
+import { getLargeMemoryFiles, getMemoryFiles, MAX_MEMORY_CHARACTER_COUNT } from "./claudemd.js";
+import { getMainLoopModel } from "./model/model.js";
+import { permissionRuleValueToString } from "./permissions/permissionRuleParser.js";
+import { detectUnreachableRules } from "./permissions/shadowedRuleDetection.js";
+import { SandboxManager } from "./sandbox/sandbox-adapter.js";
 import {
   AGENT_DESCRIPTIONS_THRESHOLD,
   getAgentDescriptionsTotalTokens,
-} from './statusNoticeHelpers.js';
-import { plural } from './stringUtils.js';
+} from "./statusNoticeHelpers.js";
+import { plural } from "./stringUtils.js";
 
 // Thresholds (matching status notices and existing patterns)
 const MCP_TOOLS_THRESHOLD = 25_000; // 15k tokens
 
 export type ContextWarning = {
-  type: 'claudemd_files' | 'agent_descriptions' | 'mcp_tools' | 'unreachable_rules';
-  severity: 'warning' | 'error';
+  type: "claudemd_files" | "agent_descriptions" | "mcp_tools" | "unreachable_rules";
+  severity: "warning" | "error";
   message: string;
   details: string[];
   currentValue: number;
@@ -50,8 +50,8 @@ async function checkClaudeMdFiles(): Promise<ContextWarning | null> {
       : `${largeFiles.length} large CLAUDE.md files detected (each > ${MAX_MEMORY_CHARACTER_COUNT.toLocaleString()} chars)`;
 
   return {
-    type: 'claudemd_files',
-    severity: 'warning',
+    type: "claudemd_files",
+    severity: "warning",
     message,
     details,
     currentValue: largeFiles.length, // Number of files exceeding threshold
@@ -77,7 +77,7 @@ async function checkAgentDescriptions(
 
   // Calculate tokens for each agent
   const agentTokens = agentInfo.activeAgents
-    .filter((a) => a.source !== 'built-in')
+    .filter((a) => a.source !== "built-in")
     .map((agent) => {
       const description = `${agent.agentType}: ${agent.whenToUse}`;
       return {
@@ -96,8 +96,8 @@ async function checkAgentDescriptions(
   }
 
   return {
-    type: 'agent_descriptions',
-    severity: 'warning',
+    type: "agent_descriptions",
+    severity: "warning",
     message: `Large agent descriptions (~${totalTokens.toLocaleString()} tokens > ${AGENT_DESCRIPTIONS_THRESHOLD.toLocaleString()})`,
     details,
     currentValue: totalTokens,
@@ -140,8 +140,8 @@ async function checkMcpTools(
 
     for (const tool of mcpToolDetails) {
       // Extract server name from tool name (format: mcp__servername__toolname)
-      const parts = tool.name.split('__');
-      const serverName = parts[1] || 'unknown';
+      const parts = tool.name.split("__");
+      const serverName = parts[1] || "unknown";
 
       const current = toolsByServer.get(serverName) || { count: 0, tokens: 0 };
       toolsByServer.set(serverName, {
@@ -166,8 +166,8 @@ async function checkMcpTools(
     }
 
     return {
-      type: 'mcp_tools',
-      severity: 'warning',
+      type: "mcp_tools",
+      severity: "warning",
       message: `Large MCP tools context (~${mcpToolTokens.toLocaleString()} tokens > ${MCP_TOOLS_THRESHOLD.toLocaleString()})`,
       details,
       currentValue: mcpToolTokens,
@@ -185,8 +185,8 @@ async function checkMcpTools(
     }
 
     return {
-      type: 'mcp_tools',
-      severity: 'warning',
+      type: "mcp_tools",
+      severity: "warning",
       message: `Large MCP tools context (~${estimatedTokens.toLocaleString()} tokens estimated > ${MCP_TOOLS_THRESHOLD.toLocaleString()})`,
       details: [`${mcpTools.length} MCP tools detected (token count estimated)`],
       currentValue: estimatedTokens,
@@ -219,9 +219,9 @@ async function checkUnreachableRules(
   ]);
 
   return {
-    type: 'unreachable_rules',
-    severity: 'warning',
-    message: `${unreachable.length} ${plural(unreachable.length, 'unreachable permission rule')} detected`,
+    type: "unreachable_rules",
+    severity: "warning",
+    message: `${unreachable.length} ${plural(unreachable.length, "unreachable permission rule")} detected`,
     details,
     currentValue: unreachable.length,
     threshold: 0,

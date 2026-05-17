@@ -1,15 +1,15 @@
-import React, { type RefObject, useEffect, useRef } from 'react';
-import { useNotifications } from '../context/notifications.js';
-import { useCopyOnSelect, useSelectionBgColor } from '../hooks/useCopyOnSelect.js';
-import type { ScrollBoxHandle } from '../ink/components/ScrollBox.js';
-import { useSelection } from '../ink/hooks/use-selection.js';
-import type { FocusMove, SelectionState } from '../ink/selection.js';
-import { isXtermJs } from '../ink/terminal.js';
-import { getClipboardPath } from '../ink/termio/osc.js';
+import React, { type RefObject, useEffect, useRef } from "react";
+import { useNotifications } from "../context/notifications.js";
+import { useCopyOnSelect, useSelectionBgColor } from "../hooks/useCopyOnSelect.js";
+import type { ScrollBoxHandle } from "../ink/components/ScrollBox.js";
+import { useSelection } from "../ink/hooks/use-selection.js";
+import type { FocusMove, SelectionState } from "../ink/selection.js";
+import { isXtermJs } from "../ink/terminal.js";
+import { getClipboardPath } from "../ink/termio/osc.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- Esc needs conditional propagation based on selection state
-import { type Key, useInput } from '../ink.js';
-import { useKeybindings } from '../keybindings/useKeybinding.js';
-import { logForDebugging } from '../utils/debug.js';
+import { type Key, useInput } from "../ink.js";
+import { useKeybindings } from "../keybindings/useKeybinding.js";
+import { logForDebugging } from "../utils/debug.js";
 
 type Props = {
   scrollRef: RefObject<ScrollBoxHandle | null>;
@@ -140,12 +140,12 @@ export function shouldClearSelectionOnKey(key: Key): boolean {
  */
 export function selectionFocusMoveForKey(key: Key): FocusMove | null {
   if (!key.shift || key.meta) return null;
-  if (key.leftArrow) return 'left';
-  if (key.rightArrow) return 'right';
-  if (key.upArrow) return 'up';
-  if (key.downArrow) return 'down';
-  if (key.home) return 'lineStart';
-  if (key.end) return 'lineEnd';
+  if (key.leftArrow) return "left";
+  if (key.rightArrow) return "right";
+  if (key.upArrow) return "up";
+  if (key.downArrow) return "down";
+  if (key.home) return "lineStart";
+  if (key.end) return "lineEnd";
   return null;
 }
 export type WheelAccelState = {
@@ -344,7 +344,7 @@ function initAndLogWheelAccel(): WheelAccelState {
   const xtermJs = isXtermJs();
   const base = readScrollSpeedBase();
   logForDebugging(
-    `wheel accel: ${xtermJs ? 'decay (xterm.js)' : 'window (native)'} · base=${base} · TERM_PROGRAM=${process.env.TERM_PROGRAM ?? 'unset'}`,
+    `wheel accel: ${xtermJs ? "decay (xterm.js)" : "window (native)"} · base=${base} · TERM_PROGRAM=${process.env.TERM_PROGRAM ?? "unset"}`,
   );
   return initWheelAccel(xtermJs, base);
 }
@@ -387,22 +387,22 @@ export function ScrollKeybindingHandler({
     const n = text.length;
     let msg: string;
     switch (path) {
-      case 'native':
+      case "native":
         msg = `copied ${n} chars to clipboard`;
         break;
-      case 'tmux-buffer':
+      case "tmux-buffer":
         msg = `copied ${n} chars to tmux buffer · paste with prefix + ]`;
         break;
-      case 'osc52':
+      case "osc52":
         msg = `sent ${n} chars via OSC 52 · check terminal clipboard settings if paste fails`;
         break;
     }
     addNotification({
-      key: 'selection-copied',
+      key: "selection-copied",
       text: msg,
-      color: 'suggestion',
-      priority: 'immediate',
-      timeoutMs: path === 'native' ? 2000 : 4000,
+      color: "suggestion",
+      priority: "immediate",
+      timeoutMs: path === "native" ? 2000 : 4000,
     });
   }
   function copyAndToast(): void {
@@ -444,18 +444,18 @@ export function ScrollKeybindingHandler({
     if (actual > 0) {
       // Scrolling down: content moves up. Rows at the TOP leave viewport.
       // Anchor+focus shift -actual so they track the content that moved up.
-      selection.captureScrolledRows(top, top + actual - 1, 'above');
+      selection.captureScrolledRows(top, top + actual - 1, "above");
       selection.shiftSelection(-actual, top, bottom);
     } else {
       // Scrolling up: content moves down. Rows at the BOTTOM leave viewport.
       const a = -actual;
-      selection.captureScrolledRows(bottom - a + 1, bottom, 'below');
+      selection.captureScrolledRows(bottom - a + 1, bottom, "below");
       selection.shiftSelection(a, top, bottom);
     }
   }
   useKeybindings(
     {
-      'scroll:pageUp': () => {
+      "scroll:pageUp": () => {
         const s_0 = scrollRef.current;
         if (!s_0) return;
         const d = -Math.max(1, Math.floor(s_0.getViewportHeight() / 2));
@@ -463,7 +463,7 @@ export function ScrollKeybindingHandler({
         const sticky = jumpBy(s_0, d);
         onScroll?.(sticky, s_0);
       },
-      'scroll:pageDown': () => {
+      "scroll:pageDown": () => {
         const s_1 = scrollRef.current;
         if (!s_1) return;
         const d_0 = Math.max(1, Math.floor(s_1.getViewportHeight() / 2));
@@ -471,7 +471,7 @@ export function ScrollKeybindingHandler({
         const sticky_0 = jumpBy(s_1, d_0);
         onScroll?.(sticky_0, s_1);
       },
-      'scroll:lineUp': () => {
+      "scroll:lineUp": () => {
         // Wheel: scrollBy accumulates into pendingScrollDelta, drained async
         // by the renderer. captureScrolledRows can't read the outgoing rows
         // before they leave (drain is non-deterministic). Clear for now.
@@ -486,7 +486,7 @@ export function ScrollKeybindingHandler({
         scrollUp(s_2, computeWheelStep(wheelAccel.current, -1, performance.now()));
         onScroll?.(false, s_2);
       },
-      'scroll:lineDown': () => {
+      "scroll:lineDown": () => {
         selection.clearSelection();
         const s_3 = scrollRef.current;
         if (!s_3 || s_3.getScrollHeight() <= s_3.getViewportHeight()) return false;
@@ -495,14 +495,14 @@ export function ScrollKeybindingHandler({
         const reachedBottom = scrollDown(s_3, step);
         onScroll?.(reachedBottom, s_3);
       },
-      'scroll:top': () => {
+      "scroll:top": () => {
         const s_4 = scrollRef.current;
         if (!s_4) return;
         translateSelectionForJump(s_4, -(s_4.getScrollTop() + s_4.getPendingDelta()));
         s_4.scrollTo(0);
         onScroll?.(false, s_4);
       },
-      'scroll:bottom': () => {
+      "scroll:bottom": () => {
         const s_5 = scrollRef.current;
         if (!s_5) return;
         const max_0 = Math.max(0, s_5.getScrollHeight() - s_5.getViewportHeight());
@@ -516,10 +516,10 @@ export function ScrollKeybindingHandler({
         s_5.scrollToBottom();
         onScroll?.(true, s_5);
       },
-      'selection:copy': copyAndToast,
+      "selection:copy": copyAndToast,
     },
     {
-      context: 'Scroll',
+      context: "Scroll",
       isActive,
     },
   );
@@ -530,7 +530,7 @@ export function ScrollKeybindingHandler({
   // below. These handlers stay for custom rebinds only.
   useKeybindings(
     {
-      'scroll:halfPageUp': () => {
+      "scroll:halfPageUp": () => {
         const s_6 = scrollRef.current;
         if (!s_6) return;
         const d_1 = -Math.max(1, Math.floor(s_6.getViewportHeight() / 2));
@@ -538,7 +538,7 @@ export function ScrollKeybindingHandler({
         const sticky_1 = jumpBy(s_6, d_1);
         onScroll?.(sticky_1, s_6);
       },
-      'scroll:halfPageDown': () => {
+      "scroll:halfPageDown": () => {
         const s_7 = scrollRef.current;
         if (!s_7) return;
         const d_2 = Math.max(1, Math.floor(s_7.getViewportHeight() / 2));
@@ -546,7 +546,7 @@ export function ScrollKeybindingHandler({
         const sticky_2 = jumpBy(s_7, d_2);
         onScroll?.(sticky_2, s_7);
       },
-      'scroll:fullPageUp': () => {
+      "scroll:fullPageUp": () => {
         const s_8 = scrollRef.current;
         if (!s_8) return;
         const d_3 = -Math.max(1, s_8.getViewportHeight());
@@ -554,7 +554,7 @@ export function ScrollKeybindingHandler({
         const sticky_3 = jumpBy(s_8, d_3);
         onScroll?.(sticky_3, s_8);
       },
-      'scroll:fullPageDown': () => {
+      "scroll:fullPageDown": () => {
         const s_9 = scrollRef.current;
         if (!s_9) return;
         const d_4 = Math.max(1, s_9.getViewportHeight());
@@ -564,7 +564,7 @@ export function ScrollKeybindingHandler({
       },
     },
     {
-      context: 'Scroll',
+      context: "Scroll",
       isActive,
     },
   );
@@ -620,7 +620,7 @@ export function ScrollKeybindingHandler({
         event_0.stopImmediatePropagation();
         return;
       }
-      if (key_0.ctrl && !key_0.shift && !key_0.meta && input_0 === 'c') {
+      if (key_0.ctrl && !key_0.shift && !key_0.meta && input_0 === "c") {
         copyAndToast();
         event_0.stopImmediatePropagation();
         return;
@@ -661,7 +661,7 @@ function useDragToScroll(
   scrollRef: RefObject<ScrollBoxHandle | null>,
   selection: ReturnType<typeof useSelection>,
   isActive: boolean,
-  onScroll: Props['onScroll'],
+  onScroll: Props["onScroll"],
 ): void {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const dirRef = useRef<-1 | 0 | 1>(0); // -1 scrolling up, +1 down, 0 idle
@@ -726,7 +726,7 @@ function useDragToScroll(
         // Capture rows about to scroll out the BOTTOM before scrollBy
         // overwrites them. Only rows inside the selection are captured
         // (captureScrolledRows intersects with selection bounds).
-        selection.captureScrolledRows(bottom - actual + 1, bottom, 'below');
+        selection.captureScrolledRows(bottom - actual + 1, bottom, "below");
         selection.shiftAnchor(actual, 0, bottom);
         s.scrollBy(-AUTOSCROLL_LINES);
       } else {
@@ -740,7 +740,7 @@ function useDragToScroll(
         // the bottom boundary (renderer clamps scrollTop to max on drain).
         const actual_0 = Math.min(AUTOSCROLL_LINES, max - s.getScrollTop());
         // Capture rows about to scroll out the TOP.
-        selection.captureScrolledRows(top, top + actual_0 - 1, 'above');
+        selection.captureScrolledRows(top, top + actual_0 - 1, "above");
         selection.shiftAnchor(-actual_0, top, bottom);
         s.scrollBy(AUTOSCROLL_LINES);
       }
@@ -923,14 +923,14 @@ export function scrollUp(s: ScrollBoxHandle, amount: number): void {
   s.scrollBy(-amount);
 }
 export type ModalPagerAction =
-  | 'lineUp'
-  | 'lineDown'
-  | 'halfPageUp'
-  | 'halfPageDown'
-  | 'fullPageUp'
-  | 'fullPageDown'
-  | 'top'
-  | 'bottom';
+  | "lineUp"
+  | "lineDown"
+  | "halfPageUp"
+  | "halfPageDown"
+  | "fullPageUp"
+  | "fullPageDown"
+  | "top"
+  | "bottom";
 
 /**
  * Maps a keystroke to a modal pager action. Exported for testing.
@@ -949,7 +949,7 @@ export type ModalPagerAction =
  */
 export function modalPagerAction(
   input: string,
-  key: Pick<Key, 'ctrl' | 'meta' | 'shift' | 'upArrow' | 'downArrow' | 'home' | 'end'>,
+  key: Pick<Key, "ctrl" | "meta" | "shift" | "upArrow" | "downArrow" | "home" | "end">,
 ): ModalPagerAction | null {
   if (key.meta) return null;
   // Special keys first — arrows/home/end arrive with empty or junk input,
@@ -957,29 +957,29 @@ export function modalPagerAction(
   // reserved for selection-extend (selectionFocusMoveForKey); ctrl+home/end
   // already has a useKeybindings route to scroll:top/bottom.
   if (!key.ctrl && !key.shift) {
-    if (key.upArrow) return 'lineUp';
-    if (key.downArrow) return 'lineDown';
-    if (key.home) return 'top';
-    if (key.end) return 'bottom';
+    if (key.upArrow) return "lineUp";
+    if (key.downArrow) return "lineDown";
+    if (key.home) return "top";
+    if (key.end) return "bottom";
   }
   if (key.ctrl) {
     if (key.shift) return null;
     switch (input) {
-      case 'u':
-        return 'halfPageUp';
-      case 'd':
-        return 'halfPageDown';
-      case 'b':
-        return 'fullPageUp';
-      case 'f':
-        return 'fullPageDown';
+      case "u":
+        return "halfPageUp";
+      case "d":
+        return "halfPageDown";
+      case "b":
+        return "fullPageUp";
+      case "f":
+        return "fullPageDown";
       // emacs-style line scroll (less accepts both ctrl+n/p and ctrl+e/y).
       // Works during search nav — fine-adjust after a jump without
       // leaving modal. No !searchOpen gate on this useInput's isActive.
-      case 'n':
-        return 'lineDown';
-      case 'p':
-        return 'lineUp';
+      case "n":
+        return "lineDown";
+      case "p":
+        return "lineUp";
       default:
         return null;
     }
@@ -989,24 +989,24 @@ export function modalPagerAction(
   if (!c || input !== c.repeat(input.length)) return null;
   // kitty sends G as input='g' shift=true; legacy as 'G' shift=false.
   // Check BEFORE the shift-gate so both hit 'bottom'.
-  if (c === 'G' || (c === 'g' && key.shift)) return 'bottom';
+  if (c === "G" || (c === "g" && key.shift)) return "bottom";
   if (key.shift) return null;
   switch (c) {
-    case 'g':
-      return 'top';
+    case "g":
+      return "top";
     // j/k re-added per Tom Mar 18 — reversal of Mar 16 removal. Works
     // during search nav (fine-adjust after n/N lands) since isModal is
     // independent of searchOpen.
-    case 'j':
-      return 'lineDown';
-    case 'k':
-      return 'lineUp';
+    case "j":
+      return "lineDown";
+    case "k":
+      return "lineUp";
     // less: space = page down, b = page up. ctrl+b already maps above;
     // bare b is the less-native version.
-    case ' ':
-      return 'fullPageDown';
-    case 'b':
-      return 'fullPageUp';
+    case " ":
+      return "fullPageDown";
+    case "b":
+      return "fullPageUp";
     default:
       return null;
   }
@@ -1027,31 +1027,31 @@ export function applyModalPagerAction(
   switch (act) {
     case null:
       return null;
-    case 'lineUp':
-    case 'lineDown': {
-      const d = act === 'lineDown' ? 1 : -1;
+    case "lineUp":
+    case "lineDown": {
+      const d = act === "lineDown" ? 1 : -1;
       onBeforeJump(d);
       return jumpBy(s, d);
     }
-    case 'halfPageUp':
-    case 'halfPageDown': {
+    case "halfPageUp":
+    case "halfPageDown": {
       const half = Math.max(1, Math.floor(s.getViewportHeight() / 2));
-      const d = act === 'halfPageDown' ? half : -half;
+      const d = act === "halfPageDown" ? half : -half;
       onBeforeJump(d);
       return jumpBy(s, d);
     }
-    case 'fullPageUp':
-    case 'fullPageDown': {
+    case "fullPageUp":
+    case "fullPageDown": {
       const page = Math.max(1, s.getViewportHeight());
-      const d = act === 'fullPageDown' ? page : -page;
+      const d = act === "fullPageDown" ? page : -page;
       onBeforeJump(d);
       return jumpBy(s, d);
     }
-    case 'top':
+    case "top":
       onBeforeJump(-(s.getScrollTop() + s.getPendingDelta()));
       s.scrollTo(0);
       return false;
-    case 'bottom': {
+    case "bottom": {
       const max = Math.max(0, s.getScrollHeight() - s.getViewportHeight());
       onBeforeJump(max - (s.getScrollTop() + s.getPendingDelta()));
       // Eager-write scrollTop before scrollToBottom — same double-shift

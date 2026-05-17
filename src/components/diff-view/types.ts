@@ -8,7 +8,7 @@
  */
 
 export interface DiffChange {
-  type: 'add' | 'delete' | 'context';
+  type: "add" | "delete" | "context";
   content: string;
   lineNumber: number;
 }
@@ -25,14 +25,14 @@ export interface DiffFile {
   path: string;
   language: string;
   hunks: DiffHunk[];
-  privilegeStatus: 'privileged' | 'work_product' | 'public';
+  privilegeStatus: "privileged" | "work_product" | "public";
   aiConfidence: number; // 0-1 score from speculation engine
   originalHash: string;
   overlayHash: string;
   hunkCount: number;
 }
 
-export type CommitAction = 'accept' | 'reject' | 'partial_accept';
+export type CommitAction = "accept" | "reject" | "partial_accept";
 
 /**
  * API response from GET /api/sandbox/{sessionId}/diffs
@@ -83,11 +83,11 @@ export interface DecisionBarProps {
 
 export interface ConfidenceBadgeProps {
   confidence: number;
-  size?: 'sm' | 'md';
+  size?: "sm" | "md";
 }
 
 export interface PrivilegeBadgeProps {
-  status: DiffFile['privilegeStatus'];
+  status: DiffFile["privilegeStatus"];
 }
 
 export interface FileNavigatorProps {

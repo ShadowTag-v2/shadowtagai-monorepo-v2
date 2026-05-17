@@ -1,20 +1,20 @@
-import chalk from 'chalk';
-import { marked, type Token, type Tokens } from 'marked';
-import stripAnsi from 'strip-ansi';
-import { color } from '../components/design-system/color.js';
-import { BLOCKQUOTE_BAR } from '../constants/figures.js';
-import { stringWidth } from '../ink/stringWidth.js';
-import { supportsHyperlinks } from '../ink/supports-hyperlinks.js';
-import type { CliHighlight } from './cliHighlight.js';
-import { logForDebugging } from './debug.js';
-import { createHyperlink } from './hyperlink.js';
-import { stripPromptXMLTags } from './messages.js';
-import type { ThemeName } from './theme.js';
+import chalk from "chalk";
+import { marked, type Token, type Tokens } from "marked";
+import stripAnsi from "strip-ansi";
+import { color } from "../components/design-system/color.js";
+import { BLOCKQUOTE_BAR } from "../constants/figures.js";
+import { stringWidth } from "../ink/stringWidth.js";
+import { supportsHyperlinks } from "../ink/supports-hyperlinks.js";
+import type { CliHighlight } from "./cliHighlight.js";
+import { logForDebugging } from "./debug.js";
+import { createHyperlink } from "./hyperlink.js";
+import { stripPromptXMLTags } from "./messages.js";
+import type { ThemeName } from "./theme.js";
 
 // Use \n unconditionally — os.EOL is \r\n on Windows, and the extra \r
 // breaks the character-to-segment mapping in applyStylesToWrappedText,
 // causing styled text to shift right.
-const EOL = '\n';
+const EOL = "\n";
 
 let markedConfigured = false;
 
@@ -42,7 +42,7 @@ export function applyMarkdown(
   return marked
     .lexer(stripPromptXMLTags(content))
     .map((_) => formatToken(_, theme, 0, null, null, highlight))
-    .join('')
+    .join("")
     .trim();
 }
 
@@ -55,10 +55,10 @@ export function formatToken(
   highlight: CliHighlight | null = null,
 ): string {
   switch (token.type) {
-    case 'blockquote': {
+    case "blockquote": {
       const inner = (token.tokens ?? [])
         .map((_) => formatToken(_, theme, 0, null, null, highlight))
-        .join('');
+        .join("");
       // Prefix each line with a dim vertical bar. Keep text italic but at
       // normal brightness — chalk.dim is nearly invisible on dark themes.
       const bar = chalk.dim(BLOCKQUOTE_BAR);
@@ -67,11 +67,11 @@ export function formatToken(
         .map((line) => (stripAnsi(line).trim() ? `${bar} ${chalk.italic(line)}` : line))
         .join(EOL);
     }
-    case 'code': {
+    case "code": {
       if (!highlight) {
         return token.text + EOL;
       }
-      let language = 'plaintext';
+      let language = "plaintext";
       if (token.lang) {
         if (highlight.supportsLanguage(token.lang)) {
           language = token.lang;
@@ -83,26 +83,26 @@ export function formatToken(
       }
       return highlight.highlight(token.text, { language }) + EOL;
     }
-    case 'codespan': {
+    case "codespan": {
       // inline code
-      return color('permission', theme)(token.text);
+      return color("permission", theme)(token.text);
     }
-    case 'em':
+    case "em":
       return chalk.italic(
-        (token.tokens ?? []).map((_) => formatToken(_, theme, 0, null, parent, highlight)).join(''),
+        (token.tokens ?? []).map((_) => formatToken(_, theme, 0, null, parent, highlight)).join(""),
       );
-    case 'strong':
+    case "strong":
       return chalk.bold(
-        (token.tokens ?? []).map((_) => formatToken(_, theme, 0, null, parent, highlight)).join(''),
+        (token.tokens ?? []).map((_) => formatToken(_, theme, 0, null, parent, highlight)).join(""),
       );
-    case 'heading':
+    case "heading":
       switch (token.depth) {
         case 1: // h1
           return (
             chalk.bold.italic.underline(
               (token.tokens ?? [])
                 .map((_) => formatToken(_, theme, 0, null, null, highlight))
-                .join(''),
+                .join(""),
             ) +
             EOL +
             EOL
@@ -112,7 +112,7 @@ export function formatToken(
             chalk.bold(
               (token.tokens ?? [])
                 .map((_) => formatToken(_, theme, 0, null, null, highlight))
-                .join(''),
+                .join(""),
             ) +
             EOL +
             EOL
@@ -122,27 +122,27 @@ export function formatToken(
             chalk.bold(
               (token.tokens ?? [])
                 .map((_) => formatToken(_, theme, 0, null, null, highlight))
-                .join(''),
+                .join(""),
             ) +
             EOL +
             EOL
           );
       }
-    case 'hr':
-      return '---';
-    case 'image':
+    case "hr":
+      return "---";
+    case "image":
       return token.href;
-    case 'link': {
+    case "link": {
       // Prevent mailto links from being displayed as clickable links
-      if (token.href.startsWith('mailto:')) {
+      if (token.href.startsWith("mailto:")) {
         // Extract email from mailto: link and display as plain text
-        const email = token.href.replace(/^mailto:/, '');
+        const email = token.href.replace(/^mailto:/, "");
         return email;
       }
       // Extract display text from the link's child tokens
       const linkText = (token.tokens ?? [])
         .map((_) => formatToken(_, theme, 0, null, token, highlight))
-        .join('');
+        .join("");
       const plainLinkText = stripAnsi(linkText);
       // If the link has meaningful display text (different from the URL),
       // show it as a clickable hyperlink. In terminals that support OSC 8,
@@ -153,7 +153,7 @@ export function formatToken(
       // When the display text matches the URL (or is empty), just show the URL
       return createHyperlink(token.href);
     }
-    case 'list': {
+    case "list": {
       return token.items
         .map((_: Token, index: number) =>
           formatToken(
@@ -165,43 +165,43 @@ export function formatToken(
             highlight,
           ),
         )
-        .join('');
+        .join("");
     }
-    case 'list_item':
+    case "list_item":
       return (token.tokens ?? [])
         .map(
           (_) =>
-            `${'  '.repeat(listDepth)}${formatToken(_, theme, listDepth + 1, orderedListNumber, token, highlight)}`,
+            `${"  ".repeat(listDepth)}${formatToken(_, theme, listDepth + 1, orderedListNumber, token, highlight)}`,
         )
-        .join('');
-    case 'paragraph':
+        .join("");
+    case "paragraph":
       return (
-        (token.tokens ?? []).map((_) => formatToken(_, theme, 0, null, null, highlight)).join('') +
+        (token.tokens ?? []).map((_) => formatToken(_, theme, 0, null, null, highlight)).join("") +
         EOL
       );
-    case 'space':
+    case "space":
       return EOL;
-    case 'br':
+    case "br":
       return EOL;
-    case 'text':
-      if (parent?.type === 'link') {
+    case "text":
+      if (parent?.type === "link") {
         // Already inside a markdown link — the link handler will wrap this
         // in an OSC 8 hyperlink. Linkifying here would nest a second OSC 8
         // sequence, and terminals honor the innermost one, overriding the
         // link's actual href.
         return token.text;
       }
-      if (parent?.type === 'list_item') {
-        return `${orderedListNumber === null ? '-' : `${getListNumber(listDepth, orderedListNumber)}.`} ${token.tokens ? token.tokens.map((_) => formatToken(_, theme, listDepth, orderedListNumber, token, highlight)).join('') : linkifyIssueReferences(token.text)}${EOL}`;
+      if (parent?.type === "list_item") {
+        return `${orderedListNumber === null ? "-" : `${getListNumber(listDepth, orderedListNumber)}.`} ${token.tokens ? token.tokens.map((_) => formatToken(_, theme, listDepth, orderedListNumber, token, highlight)).join("") : linkifyIssueReferences(token.text)}${EOL}`;
       }
       return linkifyIssueReferences(token.text);
-    case 'table': {
+    case "table": {
       const tableToken = token as Tokens.Table;
 
       // Helper function to get the text content that will be displayed (after stripAnsi)
       function getDisplayText(tokens: Token[] | undefined): string {
         return stripAnsi(
-          tokens?.map((_) => formatToken(_, theme, 0, null, null, highlight)).join('') ?? '',
+          tokens?.map((_) => formatToken(_, theme, 0, null, null, highlight)).join("") ?? "",
         );
       }
 
@@ -216,10 +216,10 @@ export function formatToken(
       });
 
       // Format header row
-      let tableOutput = '| ';
+      let tableOutput = "| ";
       tableToken.header.forEach((header, index) => {
         const content =
-          header.tokens?.map((_) => formatToken(_, theme, 0, null, null, highlight)).join('') ?? '';
+          header.tokens?.map((_) => formatToken(_, theme, 0, null, null, highlight)).join("") ?? "";
         const displayText = getDisplayText(header.tokens);
         const width = columnWidths[index]!;
         const align = tableToken.align?.[index];
@@ -228,20 +228,20 @@ export function formatToken(
       tableOutput = tableOutput.trimEnd() + EOL;
 
       // Add separator row
-      tableOutput += '|';
+      tableOutput += "|";
       columnWidths.forEach((width) => {
         // Always use dashes, don't show alignment colons in the output
-        const separator = '-'.repeat(width + 2); // +2 for spaces on each side
+        const separator = "-".repeat(width + 2); // +2 for spaces on each side
         tableOutput += `${separator}|`;
       });
       tableOutput += EOL;
 
       // Format data rows
       tableToken.rows.forEach((row) => {
-        tableOutput += '| ';
+        tableOutput += "| ";
         row.forEach((cell, index) => {
           const content =
-            cell.tokens?.map((_) => formatToken(_, theme, 0, null, null, highlight)).join('') ?? '';
+            cell.tokens?.map((_) => formatToken(_, theme, 0, null, null, highlight)).join("") ?? "";
           const displayText = getDisplayText(cell.tokens);
           const width = columnWidths[index]!;
           const align = tableToken.align?.[index];
@@ -252,16 +252,16 @@ export function formatToken(
 
       return tableOutput + EOL;
     }
-    case 'escape':
+    case "escape":
       // Markdown escape: \) → ), \\ → \, etc.
       return token.text;
-    case 'def':
-    case 'del':
-    case 'html':
+    case "def":
+    case "del":
+    case "html":
       // These token types are not rendered
-      return '';
+      return "";
   }
-  return '';
+  return "";
 }
 
 // Matches owner/repo#NNN style GitHub issue/PR references. The qualified form
@@ -288,7 +288,7 @@ function linkifyIssueReferences(text: string): string {
 }
 
 function numberToLetter(n: number): string {
-  let result = '';
+  let result = "";
   while (n > 0) {
     n--;
     result = String.fromCharCode(97 + (n % 26)) + result;
@@ -298,23 +298,23 @@ function numberToLetter(n: number): string {
 }
 
 const ROMAN_VALUES: ReadonlyArray<[number, string]> = [
-  [1000, 'm'],
-  [900, 'cm'],
-  [500, 'd'],
-  [400, 'cd'],
-  [100, 'c'],
-  [90, 'xc'],
-  [50, 'l'],
-  [40, 'xl'],
-  [10, 'x'],
-  [9, 'ix'],
-  [5, 'v'],
-  [4, 'iv'],
-  [1, 'i'],
+  [1000, "m"],
+  [900, "cm"],
+  [500, "d"],
+  [400, "cd"],
+  [100, "c"],
+  [90, "xc"],
+  [50, "l"],
+  [40, "xl"],
+  [10, "x"],
+  [9, "ix"],
+  [5, "v"],
+  [4, "iv"],
+  [1, "i"],
 ];
 
 function numberToRoman(n: number): string {
-  let result = '';
+  let result = "";
   for (const [value, numeral] of ROMAN_VALUES) {
     while (n >= value) {
       result += numeral;
@@ -347,15 +347,15 @@ export function padAligned(
   content: string,
   displayWidth: number,
   targetWidth: number,
-  align: 'left' | 'center' | 'right' | null | undefined,
+  align: "left" | "center" | "right" | null | undefined,
 ): string {
   const padding = Math.max(0, targetWidth - displayWidth);
-  if (align === 'center') {
+  if (align === "center") {
     const leftPad = Math.floor(padding / 2);
-    return ' '.repeat(leftPad) + content + ' '.repeat(padding - leftPad);
+    return " ".repeat(leftPad) + content + " ".repeat(padding - leftPad);
   }
-  if (align === 'right') {
-    return ' '.repeat(padding) + content;
+  if (align === "right") {
+    return " ".repeat(padding) + content;
   }
-  return content + ' '.repeat(padding);
+  return content + " ".repeat(padding);
 }

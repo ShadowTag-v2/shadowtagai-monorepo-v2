@@ -1,28 +1,28 @@
-import { feature } from 'bun:bundle';
-import type { UUID } from 'node:crypto';
-import { randomUUID } from 'node:crypto';
-import uniqBy from 'lodash-es/uniqBy.js';
-import { logForDebugging } from 'src/utils/debug.js';
-import { getProjectRoot, getSessionId } from '../../bootstrap/state.js';
-import { getCommand, getSkillToolCommands, hasCommand } from '../../commands.js';
+import { feature } from "bun:bundle";
+import type { UUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
+import uniqBy from "lodash-es/uniqBy.js";
+import { logForDebugging } from "src/utils/debug.js";
+import { getProjectRoot, getSessionId } from "../../bootstrap/state.js";
+import { getCommand, getSkillToolCommands, hasCommand } from "../../commands.js";
 import {
   DEFAULT_AGENT_PROMPT,
   enhanceSystemPromptWithEnvDetails,
-} from '../../constants/prompts.js';
-import type { QuerySource } from '../../constants/querySource.js';
-import { getSystemContext, getUserContext } from '../../context.js';
-import type { CanUseToolFn } from '../../hooks/useCanUseTool.js';
-import { query } from '../../query.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
-import { getDumpPromptsPath } from '../../services/api/dumpPrompts.js';
-import { cleanupAgentTracking } from '../../services/api/promptCacheBreakDetection.js';
-import { connectToServer, fetchToolsForClient } from '../../services/mcp/client.js';
-import { getMcpConfigByName } from '../../services/mcp/config.js';
-import type { MCPServerConnection, ScopedMcpServerConfig } from '../../services/mcp/types.js';
-import type { Tool, Tools, ToolUseContext } from '../../Tool.js';
-import { killShellTasksForAgent } from '../../tasks/LocalShellTask/killShellTasks.js';
-import type { Command } from '../../types/command.js';
-import type { AgentId } from '../../types/ids.js';
+} from "../../constants/prompts.js";
+import type { QuerySource } from "../../constants/querySource.js";
+import { getSystemContext, getUserContext } from "../../context.js";
+import type { CanUseToolFn } from "../../hooks/useCanUseTool.js";
+import { query } from "../../query.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../services/analytics/growthbook.js";
+import { getDumpPromptsPath } from "../../services/api/dumpPrompts.js";
+import { cleanupAgentTracking } from "../../services/api/promptCacheBreakDetection.js";
+import { connectToServer, fetchToolsForClient } from "../../services/mcp/client.js";
+import { getMcpConfigByName } from "../../services/mcp/config.js";
+import type { MCPServerConnection, ScopedMcpServerConfig } from "../../services/mcp/types.js";
+import type { Tool, Tools, ToolUseContext } from "../../Tool.js";
+import { killShellTasksForAgent } from "../../tasks/LocalShellTask/killShellTasks.js";
+import type { Command } from "../../types/command.js";
+import type { AgentId } from "../../types/ids.js";
 import type {
   AssistantMessage,
   Message,
@@ -33,42 +33,42 @@ import type {
   TombstoneMessage,
   ToolUseSummaryMessage,
   UserMessage,
-} from '../../types/message.js';
-import { createAttachmentMessage } from '../../utils/attachments.js';
-import { AbortError } from '../../utils/errors.js';
-import { getDisplayPath } from '../../utils/file.js';
+} from "../../types/message.js";
+import { createAttachmentMessage } from "../../utils/attachments.js";
+import { AbortError } from "../../utils/errors.js";
+import { getDisplayPath } from "../../utils/file.js";
 import {
   cloneFileStateCache,
   createFileStateCacheWithSizeLimit,
   READ_FILE_STATE_CACHE_SIZE,
-} from '../../utils/fileStateCache.js';
-import { type CacheSafeParams, createSubagentContext } from '../../utils/forkedAgent.js';
-import { registerFrontmatterHooks } from '../../utils/hooks/registerFrontmatterHooks.js';
-import { clearSessionHooks } from '../../utils/hooks/sessionHooks.js';
-import { executeSubagentStartHooks } from '../../utils/hooks.js';
-import { createUserMessage } from '../../utils/messages.js';
-import { getAgentModel } from '../../utils/model/agent.js';
-import type { ModelAlias } from '../../utils/model/aliases.js';
+} from "../../utils/fileStateCache.js";
+import { type CacheSafeParams, createSubagentContext } from "../../utils/forkedAgent.js";
+import { registerFrontmatterHooks } from "../../utils/hooks/registerFrontmatterHooks.js";
+import { clearSessionHooks } from "../../utils/hooks/sessionHooks.js";
+import { executeSubagentStartHooks } from "../../utils/hooks.js";
+import { createUserMessage } from "../../utils/messages.js";
+import { getAgentModel } from "../../utils/model/agent.js";
+import type { ModelAlias } from "../../utils/model/aliases.js";
 import {
   clearAgentTranscriptSubdir,
   recordSidechainTranscript,
   setAgentTranscriptSubdir,
   writeAgentMetadata,
-} from '../../utils/sessionStorage.js';
+} from "../../utils/sessionStorage.js";
 import {
   isRestrictedToPluginOnly,
   isSourceAdminTrusted,
-} from '../../utils/settings/pluginOnlyPolicy.js';
-import { asSystemPrompt, type SystemPrompt } from '../../utils/systemPromptType.js';
+} from "../../utils/settings/pluginOnlyPolicy.js";
+import { asSystemPrompt, type SystemPrompt } from "../../utils/systemPromptType.js";
 import {
   isPerfettoTracingEnabled,
   registerAgent as registerPerfettoAgent,
   unregisterAgent as unregisterPerfettoAgent,
-} from '../../utils/telemetry/perfettoTracing.js';
-import type { ContentReplacementState } from '../../utils/toolResultStorage.js';
-import { createAgentId } from '../../utils/uuid.js';
-import { resolveAgentTools } from './agentToolUtils.js';
-import { type AgentDefinition, isBuiltInAgent } from './loadAgentsDir.js';
+} from "../../utils/telemetry/perfettoTracing.js";
+import type { ContentReplacementState } from "../../utils/toolResultStorage.js";
+import { createAgentId } from "../../utils/uuid.js";
+import { resolveAgentTools } from "./agentToolUtils.js";
+import { type AgentDefinition, isBuiltInAgent } from "./loadAgentsDir.js";
 
 /**
  * Initialize agent-specific MCP servers
@@ -103,7 +103,7 @@ async function initializeAgentMcpServers(
   // surface. Blocking them (as the first cut did) breaks plugin agents that
   // legitimately need MCP, contradicting "plugin-provided always loads."
   const agentIsAdminTrusted = isSourceAdminTrusted(agentDefinition.source);
-  if (isRestrictedToPluginOnly('mcp') && !agentIsAdminTrusted) {
+  if (isRestrictedToPluginOnly("mcp") && !agentIsAdminTrusted) {
     logForDebugging(
       `[Agent: ${agentDefinition.agentType}] Skipping MCP servers: strictPluginOnlyCustomization locks MCP to plugin-only (agent source: ${agentDefinition.source})`,
     );
@@ -125,14 +125,14 @@ async function initializeAgentMcpServers(
     let name: string;
     let isNewlyCreated = false;
 
-    if (typeof spec === 'string') {
+    if (typeof spec === "string") {
       // Reference by name - look up in existing MCP configs
       // This uses the memoized connectToServer, so we may get a shared client
       name = spec;
       config = getMcpConfigByName(spec);
       if (!config) {
         logForDebugging(`[Agent: ${agentDefinition.agentType}] MCP server not found: ${spec}`, {
-          level: 'warn',
+          level: "warn",
         });
         continue;
       }
@@ -143,7 +143,7 @@ async function initializeAgentMcpServers(
       if (entries.length !== 1) {
         logForDebugging(
           `[Agent: ${agentDefinition.agentType}] Invalid MCP server spec: expected exactly one key`,
-          { level: 'warn' },
+          { level: "warn" },
         );
         continue;
       }
@@ -151,7 +151,7 @@ async function initializeAgentMcpServers(
       name = serverName;
       config = {
         ...serverConfig,
-        scope: 'dynamic' as const,
+        scope: "dynamic" as const,
       } as ScopedMcpServerConfig;
       isNewlyCreated = true;
     }
@@ -164,7 +164,7 @@ async function initializeAgentMcpServers(
     }
 
     // Fetch tools if connected
-    if (client.type === 'connected') {
+    if (client.type === "connected") {
       const tools = await fetchToolsForClient(client);
       agentTools.push(...tools);
       logForDebugging(
@@ -173,7 +173,7 @@ async function initializeAgentMcpServers(
     } else {
       logForDebugging(
         `[Agent: ${agentDefinition.agentType}] Failed to connect to MCP server '${name}': ${client.type}`,
-        { level: 'warn' },
+        { level: "warn" },
       );
     }
   }
@@ -183,13 +183,13 @@ async function initializeAgentMcpServers(
   // Shared clients (referenced by string name) are memoized and used by the parent context
   const cleanup = async () => {
     for (const client of newlyCreatedClients) {
-      if (client.type === 'connected') {
+      if (client.type === "connected") {
         try {
           await client.cleanup();
         } catch (error) {
           logForDebugging(
             `[Agent: ${agentDefinition.agentType}] Error cleaning up MCP server '${client.name}': ${error}`,
-            { level: 'warn' },
+            { level: "warn" },
           );
         }
       }
@@ -219,10 +219,10 @@ function isRecordableMessage(
   msg: QueryMessage,
 ): msg is AssistantMessage | UserMessage | ProgressMessage | SystemCompactBoundaryMessage {
   return (
-    msg.type === 'assistant' ||
-    msg.type === 'user' ||
-    msg.type === 'progress' ||
-    (msg.type === 'system' && 'subtype' in msg && msg.subtype === 'compact_boundary')
+    msg.type === "assistant" ||
+    msg.type === "user" ||
+    msg.type === "progress" ||
+    (msg.type === "system" && "subtype" in msg && msg.subtype === "compact_boundary")
   );
 }
 
@@ -339,7 +339,7 @@ export async function* runAgent({
   }
 
   // Log API calls path for subagents (ant-only)
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     logForDebugging(
       `[Subagent ${agentDefinition.agentType}] API calls: ${getDisplayPath(getDumpPromptsPath(agentId))}`,
     );
@@ -370,7 +370,7 @@ export async function* runAgent({
   const shouldOmitClaudeMd =
     agentDefinition.omitClaudeMd &&
     !override?.userContext &&
-    getFeatureValue_CACHED_MAY_BE_STALE('tengu_slim_subagent_claudemd', true);
+    getFeatureValue_CACHED_MAY_BE_STALE("tengu_slim_subagent_claudemd", true);
   const { claudeMd: _omittedClaudeMd, ...userContextNoClaudeMd } = baseUserContext;
   const resolvedUserContext = shouldOmitClaudeMd ? userContextNoClaudeMd : baseUserContext;
 
@@ -380,7 +380,7 @@ export async function* runAgent({
   // Saves ~1-3 Gtok/week fleet-wide.
   const { gitStatus: _omittedGitStatus, ...systemContextNoGit } = baseSystemContext;
   const resolvedSystemContext =
-    agentDefinition.agentType === 'Explore' || agentDefinition.agentType === 'Plan'
+    agentDefinition.agentType === "Explore" || agentDefinition.agentType === "Plan"
       ? systemContextNoGit
       : baseSystemContext;
 
@@ -395,9 +395,9 @@ export async function* runAgent({
     // Override permission mode if agent defines one (unless parent is bypassPermissions, acceptEdits, or auto)
     if (
       agentPermissionMode &&
-      state.toolPermissionContext.mode !== 'bypassPermissions' &&
-      state.toolPermissionContext.mode !== 'acceptEdits' &&
-      !(feature('TRANSCRIPT_CLASSIFIER') && state.toolPermissionContext.mode === 'auto')
+      state.toolPermissionContext.mode !== "bypassPermissions" &&
+      state.toolPermissionContext.mode !== "acceptEdits" &&
+      !(feature("TRANSCRIPT_CLASSIFIER") && state.toolPermissionContext.mode === "auto")
     ) {
       toolPermissionContext = {
         ...toolPermissionContext,
@@ -412,7 +412,7 @@ export async function* runAgent({
     const shouldAvoidPrompts =
       canShowPermissionPrompts !== undefined
         ? !canShowPermissionPrompts
-        : agentPermissionMode === 'bubble'
+        : agentPermissionMode === "bubble"
           ? false
           : isAsync;
     if (shouldAvoidPrompts) {
@@ -512,11 +512,11 @@ export async function* runAgent({
   // Add SubagentStart hook context as a user message (consistent with SessionStart/UserPromptSubmit)
   if (additionalContexts.length > 0) {
     const contextMessage = createAttachmentMessage({
-      type: 'hook_additional_context',
+      type: "hook_additional_context",
       content: additionalContexts,
-      hookName: 'SubagentStart',
+      hookName: "SubagentStart",
       toolUseID: randomUUID(),
-      hookEvent: 'SubagentStart',
+      hookEvent: "SubagentStart",
     });
     initialMessages.push(contextMessage);
   }
@@ -529,7 +529,7 @@ export async function* runAgent({
   // blanket-blocking all session hooks at execution time (which would
   // also kill plugin agents' hooks).
   const hooksAllowedForThisAgent =
-    !isRestrictedToPluginOnly('hooks') || isSourceAdminTrusted(agentDefinition.source);
+    !isRestrictedToPluginOnly("hooks") || isSourceAdminTrusted(agentDefinition.source);
   if (agentDefinition.hooks && hooksAllowedForThisAgent) {
     registerFrontmatterHooks(
       rootSetAppState,
@@ -548,7 +548,7 @@ export async function* runAgent({
     // Filter valid skills and warn about missing ones
     const validSkills: Array<{
       skillName: string;
-      skill: (typeof allSkills)[0] & { type: 'prompt' };
+      skill: (typeof allSkills)[0] & { type: "prompt" };
     }> = [];
 
     for (const skillName of skillsToPreload) {
@@ -560,16 +560,16 @@ export async function* runAgent({
       if (!resolvedName) {
         logForDebugging(
           `[Agent: ${agentDefinition.agentType}] Warning: Skill '${skillName}' specified in frontmatter was not found`,
-          { level: 'warn' },
+          { level: "warn" },
         );
         continue;
       }
 
       const skill = getCommand(resolvedName, allSkills);
-      if (skill.type !== 'prompt') {
+      if (skill.type !== "prompt") {
         logForDebugging(
           `[Agent: ${agentDefinition.agentType}] Warning: Skill '${skillName}' is not a prompt-based skill`,
-          { level: 'warn' },
+          { level: "warn" },
         );
         continue;
       }
@@ -578,13 +578,13 @@ export async function* runAgent({
 
     // Load all skill contents concurrently and add to initial messages
     const { formatSkillLoadingMetadata } = await import(
-      '../../utils/processUserInput/processSlashCommand.js'
+      "../../utils/processUserInput/processSlashCommand.js"
     );
     const loaded = await Promise.all(
       validSkills.map(async ({ skillName, skill }) => ({
         skillName,
         skill,
-        content: await skill.getPromptForCommand('', toolUseContext),
+        content: await skill.getPromptForCommand("", toolUseContext),
       })),
     );
     for (const { skillName, skill, content } of loaded) {
@@ -595,7 +595,7 @@ export async function* runAgent({
 
       initialMessages.push(
         createUserMessage({
-          content: [{ type: 'text', text: metadata }, ...content],
+          content: [{ type: "text", text: metadata }, ...content],
           isMeta: true,
         }),
       );
@@ -613,10 +613,10 @@ export async function* runAgent({
   // resolvedTools is already deduplicated (see resolveAgentTools), so skip
   // the spread + uniqBy overhead when there are no agent-specific MCP tools.
   const allTools =
-    agentMcpTools.length > 0 ? uniqBy([...resolvedTools, ...agentMcpTools], 'name') : resolvedTools;
+    agentMcpTools.length > 0 ? uniqBy([...resolvedTools, ...agentMcpTools], "name") : resolvedTools;
 
   // Build agent-specific options
-  const agentOptions: ToolUseContext['options'] = {
+  const agentOptions: ToolUseContext["options"] = {
     isNonInteractiveSession: useExactTools
       ? toolUseContext.options.isNonInteractiveSession
       : isAsync
@@ -633,7 +633,7 @@ export async function* runAgent({
     // sub-agents, disable thinking to control output token costs.
     thinkingConfig: useExactTools
       ? toolUseContext.options.thinkingConfig
-      : { type: 'disabled' as const },
+      : { type: "disabled" as const },
     mcpClients: mergedMcpClients,
     mcpResources: toolUseContext.options.mcpResources,
     agentDefinitions: toolUseContext.options.agentDefinitions,
@@ -710,8 +710,8 @@ export async function* runAgent({
       // Forward subagent API request starts to parent's metrics display
       // so TTFT/OTPS update during subagent execution.
       if (
-        message.type === 'stream_event' &&
-        message.event.type === 'message_start' &&
+        message.type === "stream_event" &&
+        message.event.type === "message_start" &&
         message.ttftMs != null
       ) {
         toolUseContext.pushApiMetricsEntry?.(message.ttftMs);
@@ -719,9 +719,9 @@ export async function* runAgent({
       }
 
       // Yield attachment messages (e.g., structured_output) without recording them
-      if (message.type === 'attachment') {
+      if (message.type === "attachment") {
         // Handle max turns reached signal from query.ts
-        if (message.attachment.type === 'max_turns_reached') {
+        if (message.attachment.type === "max_turns_reached") {
           logForDebugging(
             `[Agent
 : $
@@ -745,7 +745,7 @@ export async function* runAgent({
         await recordSidechainTranscript([message], agentId, lastRecordedUuid).catch((err) =>
           logForDebugging(`Failed to record sidechain transcript: ${err}`),
         );
-        if (message.type !== 'progress') {
+        if (message.type !== "progress") {
           lastRecordedUuid = message.uuid;
         }
         yield message;
@@ -768,7 +768,7 @@ export async function* runAgent({
       clearSessionHooks(rootSetAppState, agentId);
     }
     // Clean up prompt cache tracking state for this agent
-    if (feature('PROMPT_CACHE_BREAK_DETECTION')) {
+    if (feature("PROMPT_CACHE_BREAK_DETECTION")) {
       cleanupAgentTracking(agentId);
     }
     // Release cloned file state cache memory
@@ -793,9 +793,9 @@ export async function* runAgent({
     // the agent as a PPID=1 zombie once the main session eventually exits.
     killShellTasksForAgent(agentId, toolUseContext.getAppState, rootSetAppState);
     /* eslint-disable @typescript-eslint/no-require-imports */
-    if (feature('MONITOR_TOOL')) {
+    if (feature("MONITOR_TOOL")) {
       const mcpMod =
-        require('../../tasks/MonitorMcpTask/MonitorMcpTask.js') as typeof import('../../tasks/MonitorMcpTask/MonitorMcpTask.js');
+        require("../../tasks/MonitorMcpTask/MonitorMcpTask.js") as typeof import("../../tasks/MonitorMcpTask/MonitorMcpTask.js");
       mcpMod.killMonitorMcpTasksForAgent(agentId, toolUseContext.getAppState, rootSetAppState);
     }
     /* eslint-enable @typescript-eslint/no-require-imports */
@@ -811,12 +811,12 @@ export function filterIncompleteToolCalls(messages: Message[]): Message[] {
   const toolUseIdsWithResults = new Set<string>();
 
   for (const message of messages) {
-    if (message?.type === 'user') {
+    if (message?.type === "user") {
       const userMessage = message as UserMessage;
       const content = userMessage.message.content;
       if (Array.isArray(content)) {
         for (const block of content) {
-          if (block.type === 'tool_result' && block.tool_use_id) {
+          if (block.type === "tool_result" && block.tool_use_id) {
             toolUseIdsWithResults.add(block.tool_use_id);
           }
         }
@@ -826,13 +826,13 @@ export function filterIncompleteToolCalls(messages: Message[]): Message[] {
 
   // Filter out assistant messages that contain tool calls without results
   return messages.filter((message) => {
-    if (message?.type === 'assistant') {
+    if (message?.type === "assistant") {
       const assistantMessage = message as AssistantMessage;
       const content = assistantMessage.message.content;
       if (Array.isArray(content)) {
         // Check if this assistant message has any tool uses without results
         const hasIncompleteToolCall = content.some(
-          (block) => block.type === 'tool_use' && block.id && !toolUseIdsWithResults.has(block.id),
+          (block) => block.type === "tool_use" && block.id && !toolUseIdsWithResults.has(block.id),
         );
         // Exclude messages with incomplete tool calls
         return !hasIncompleteToolCall;
@@ -845,7 +845,7 @@ export function filterIncompleteToolCalls(messages: Message[]): Message[] {
 
 async function getAgentSystemPrompt(
   agentDefinition: AgentDefinition,
-  toolUseContext: Pick<ToolUseContext, 'options'>,
+  toolUseContext: Pick<ToolUseContext, "options">,
   resolvedAgentModel: string,
   additionalWorkingDirectories: string[],
   resolvedTools: readonly Tool[],
@@ -894,7 +894,7 @@ function resolveSkillName(
 
   // 2. Try prefixing with the agent's plugin name
   // Plugin agents have agentType like "pluginName:agentName"
-  const pluginPrefix = agentDefinition.agentType.split(':')[0];
+  const pluginPrefix = agentDefinition.agentType.split(":")[0];
   if (pluginPrefix) {
     const qualifiedName = `${pluginPrefix}:${skillName}`;
     if (hasCommand(qualifiedName, allSkills)) {

@@ -1,11 +1,11 @@
-import { access, readFile } from 'node:fs/promises';
-import { dirname, join, relative, sep } from 'node:path';
-import type { StructuredPatchHunk } from 'diff';
-import { getCwd } from './cwd.js';
-import { getCachedRepository } from './detectRepository.js';
-import { execFileNoThrow, execFileNoThrowWithCwd } from './execFileNoThrow.js';
-import { isFileWithinReadSizeLimit } from './file.js';
-import { findGitRoot, getDefaultBranch, getGitDir, getIsGit, gitExe } from './git.js';
+import { access, readFile } from "node:fs/promises";
+import { dirname, join, relative, sep } from "node:path";
+import type { StructuredPatchHunk } from "diff";
+import { getCwd } from "./cwd.js";
+import { getCachedRepository } from "./detectRepository.js";
+import { execFileNoThrow, execFileNoThrowWithCwd } from "./execFileNoThrow.js";
+import { isFileWithinReadSizeLimit } from "./file.js";
+import { findGitRoot, getDefaultBranch, getGitDir, getIsGit, gitExe } from "./git.js";
 
 export type GitDiffStats = {
   filesCount: number;
@@ -55,7 +55,7 @@ export async function fetchGitDiff(): Promise<GitDiffResult | null> {
   // before committing to expensive operations.
   const { stdout: shortstatOut, code: shortstatCode } = await execFileNoThrow(
     gitExe(),
-    ['--no-optional-locks', 'diff', 'HEAD', '--shortstat'],
+    ["--no-optional-locks", "diff", "HEAD", "--shortstat"],
     { timeout: GIT_TIMEOUT_MS, preserveOutputOnError: false },
   );
 
@@ -75,7 +75,7 @@ export async function fetchGitDiff(): Promise<GitDiffResult | null> {
   // Get stats via --numstat (all uncommitted changes vs HEAD)
   const { stdout: numstatOut, code: numstatCode } = await execFileNoThrow(
     gitExe(),
-    ['--no-optional-locks', 'diff', 'HEAD', '--numstat'],
+    ["--no-optional-locks", "diff", "HEAD", "--numstat"],
     { timeout: GIT_TIMEOUT_MS, preserveOutputOnError: false },
   );
 
@@ -115,7 +115,7 @@ export async function fetchGitDiffHunks(): Promise<Map<string, StructuredPatchHu
 
   const { stdout: diffOut, code: diffCode } = await execFileNoThrow(
     gitExe(),
-    ['--no-optional-locks', 'diff', 'HEAD'],
+    ["--no-optional-locks", "diff", "HEAD"],
     { timeout: GIT_TIMEOUT_MS, preserveOutputOnError: false },
   );
 
@@ -138,24 +138,24 @@ export type NumstatResult = {
  * Only stores first MAX_FILES entries in perFileStats.
  */
 export function parseGitNumstat(stdout: string): NumstatResult {
-  const lines = stdout.trim().split('\n').filter(Boolean);
+  const lines = stdout.trim().split("\n").filter(Boolean);
   let added = 0;
   let removed = 0;
   let validFileCount = 0;
   const perFileStats = new Map<string, PerFileStats>();
 
   for (const line of lines) {
-    const parts = line.split('\t');
+    const parts = line.split("\t");
     // Valid numstat lines have exactly 3 tab-separated parts: added, removed, filename
     if (parts.length < 3) continue;
 
     validFileCount++;
     const addStr = parts[0];
     const remStr = parts[1];
-    const filePath = parts.slice(2).join('\t'); // filename may contain tabs
-    const isBinary = addStr === '-' || remStr === '-';
-    const fileAdded = isBinary ? 0 : parseInt(addStr ?? '0', 10) || 0;
-    const fileRemoved = isBinary ? 0 : parseInt(remStr ?? '0', 10) || 0;
+    const filePath = parts.slice(2).join("\t"); // filename may contain tabs
+    const isBinary = addStr === "-" || remStr === "-";
+    const fileAdded = isBinary ? 0 : parseInt(addStr ?? "0", 10) || 0;
+    const fileRemoved = isBinary ? 0 : parseInt(remStr ?? "0", 10) || 0;
 
     added += fileAdded;
     removed += fileRemoved;
@@ -205,12 +205,12 @@ export function parseGitDiff(stdout: string): Map<string, StructuredPatchHunk[]>
       continue;
     }
 
-    const lines = fileDiff.split('\n');
+    const lines = fileDiff.split("\n");
 
     // Extract filename from first line: "a/path/to/file b/path/to/file"
     const headerMatch = lines[0]?.match(/^a\/(.+?) b\/(.+)$/);
     if (!headerMatch) continue;
-    const filePath = headerMatch[2] ?? headerMatch[1] ?? '';
+    const filePath = headerMatch[2] ?? headerMatch[1] ?? "";
 
     // Find and parse hunks
     const fileHunks: StructuredPatchHunk[] = [];
@@ -218,7 +218,7 @@ export function parseGitDiff(stdout: string): Map<string, StructuredPatchHunk[]>
     let lineCount = 0;
 
     for (let i = 1; i < lines.length; i++) {
-      const line = lines[i] ?? '';
+      const line = lines[i] ?? "";
 
       // StructuredPatchHunk header: @@ -oldStart,oldLines +newStart,newLines @@
       const hunkMatch = line.match(/^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/);
@@ -227,10 +227,10 @@ export function parseGitDiff(stdout: string): Map<string, StructuredPatchHunk[]>
           fileHunks.push(currentHunk);
         }
         currentHunk = {
-          oldStart: parseInt(hunkMatch[1] ?? '0', 10),
-          oldLines: parseInt(hunkMatch[2] ?? '1', 10),
-          newStart: parseInt(hunkMatch[3] ?? '0', 10),
-          newLines: parseInt(hunkMatch[4] ?? '1', 10),
+          oldStart: parseInt(hunkMatch[1] ?? "0", 10),
+          oldLines: parseInt(hunkMatch[2] ?? "1", 10),
+          newStart: parseInt(hunkMatch[3] ?? "0", 10),
+          newLines: parseInt(hunkMatch[4] ?? "1", 10),
           lines: [],
         };
         continue;
@@ -238,14 +238,14 @@ export function parseGitDiff(stdout: string): Map<string, StructuredPatchHunk[]>
 
       // Skip binary file markers and other metadata
       if (
-        line.startsWith('index ') ||
-        line.startsWith('---') ||
-        line.startsWith('+++') ||
-        line.startsWith('new file') ||
-        line.startsWith('deleted file') ||
-        line.startsWith('old mode') ||
-        line.startsWith('new mode') ||
-        line.startsWith('Binary files')
+        line.startsWith("index ") ||
+        line.startsWith("---") ||
+        line.startsWith("+++") ||
+        line.startsWith("new file") ||
+        line.startsWith("deleted file") ||
+        line.startsWith("old mode") ||
+        line.startsWith("new mode") ||
+        line.startsWith("Binary files")
       ) {
         continue;
       }
@@ -253,7 +253,7 @@ export function parseGitDiff(stdout: string): Map<string, StructuredPatchHunk[]>
       // Add diff lines to current hunk (with line limit)
       if (
         currentHunk &&
-        (line.startsWith('+') || line.startsWith('-') || line.startsWith(' ') || line === '')
+        (line.startsWith("+") || line.startsWith("-") || line.startsWith(" ") || line === "")
       ) {
         // Stop adding lines once we hit the limit
         if (lineCount >= MAX_LINES_PER_FILE) {
@@ -293,7 +293,7 @@ async function isInTransientGitState(): Promise<boolean> {
   const gitDir = await getGitDir(getCwd());
   if (!gitDir) return false;
 
-  const transientFiles = ['MERGE_HEAD', 'REBASE_HEAD', 'CHERRY_PICK_HEAD', 'REVERT_HEAD'];
+  const transientFiles = ["MERGE_HEAD", "REBASE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD"];
 
   const results = await Promise.all(
     transientFiles.map((file) =>
@@ -315,13 +315,13 @@ async function fetchUntrackedFiles(maxFiles: number): Promise<Map<string, PerFil
   // Get list of untracked files (excludes gitignored)
   const { stdout, code } = await execFileNoThrow(
     gitExe(),
-    ['--no-optional-locks', 'ls-files', '--others', '--exclude-standard'],
+    ["--no-optional-locks", "ls-files", "--others", "--exclude-standard"],
     { timeout: GIT_TIMEOUT_MS, preserveOutputOnError: false },
   );
 
   if (code !== 0 || !stdout.trim()) return null;
 
-  const untrackedPaths = stdout.trim().split('\n').filter(Boolean);
+  const untrackedPaths = stdout.trim().split("\n").filter(Boolean);
   if (untrackedPaths.length === 0) return null;
 
   const perFileStats = new Map<string, PerFileStats>();
@@ -353,9 +353,9 @@ export function parseShortstat(stdout: string): GitDiffStats | null {
   );
   if (!match) return null;
   return {
-    filesCount: parseInt(match[1] ?? '0', 10),
-    linesAdded: parseInt(match[2] ?? '0', 10),
-    linesRemoved: parseInt(match[3] ?? '0', 10),
+    filesCount: parseInt(match[1] ?? "0", 10),
+    linesAdded: parseInt(match[2] ?? "0", 10),
+    linesRemoved: parseInt(match[3] ?? "0", 10),
   };
 }
 
@@ -363,7 +363,7 @@ const SINGLE_FILE_DIFF_TIMEOUT_MS = 3000;
 
 export type ToolUseDiff = {
   filename: string;
-  status: 'modified' | 'added';
+  status: "modified" | "added";
   additions: number;
   deletions: number;
   changes: number;
@@ -386,13 +386,13 @@ export async function fetchSingleFileGitDiff(
   const gitRoot = findGitRoot(dirname(absoluteFilePath));
   if (!gitRoot) return null;
 
-  const gitPath = relative(gitRoot, absoluteFilePath).split(sep).join('/');
+  const gitPath = relative(gitRoot, absoluteFilePath).split(sep).join("/");
   const repository = getCachedRepository();
 
   // Check if the file is tracked by git
   const { code: lsFilesCode } = await execFileNoThrowWithCwd(
     gitExe(),
-    ['--no-optional-locks', 'ls-files', '--error-unmatch', gitPath],
+    ["--no-optional-locks", "ls-files", "--error-unmatch", gitPath],
     { cwd: gitRoot, timeout: SINGLE_FILE_DIFF_TIMEOUT_MS },
   );
 
@@ -401,13 +401,13 @@ export async function fetchSingleFileGitDiff(
     const diffRef = await getDiffRef(gitRoot);
     const { stdout, code } = await execFileNoThrowWithCwd(
       gitExe(),
-      ['--no-optional-locks', 'diff', diffRef, '--', gitPath],
+      ["--no-optional-locks", "diff", diffRef, "--", gitPath],
       { cwd: gitRoot, timeout: SINGLE_FILE_DIFF_TIMEOUT_MS },
     );
     if (code !== 0) return null;
     if (!stdout) return null;
     return {
-      ...parseRawDiffToToolUseDiff(gitPath, stdout, 'modified'),
+      ...parseRawDiffToToolUseDiff(gitPath, stdout, "modified"),
       repository,
     };
   }
@@ -426,23 +426,23 @@ export async function fetchSingleFileGitDiff(
 function parseRawDiffToToolUseDiff(
   filename: string,
   rawDiff: string,
-  status: 'modified' | 'added',
-): Omit<ToolUseDiff, 'repository'> {
-  const lines = rawDiff.split('\n');
+  status: "modified" | "added",
+): Omit<ToolUseDiff, "repository"> {
+  const lines = rawDiff.split("\n");
   const patchLines: string[] = [];
   let inHunks = false;
   let additions = 0;
   let deletions = 0;
 
   for (const line of lines) {
-    if (line.startsWith('@@')) {
+    if (line.startsWith("@@")) {
       inHunks = true;
     }
     if (inHunks) {
       patchLines.push(line);
-      if (line.startsWith('+') && !line.startsWith('+++')) {
+      if (line.startsWith("+") && !line.startsWith("+++")) {
         additions++;
-      } else if (line.startsWith('-') && !line.startsWith('---')) {
+      } else if (line.startsWith("-") && !line.startsWith("---")) {
         deletions++;
       }
     }
@@ -454,7 +454,7 @@ function parseRawDiffToToolUseDiff(
     additions,
     deletions,
     changes: additions + deletions,
-    patch: patchLines.join('\n'),
+    patch: patchLines.join("\n"),
   };
 }
 
@@ -469,35 +469,35 @@ async function getDiffRef(gitRoot: string): Promise<string> {
   const baseBranch = process.env.CLAUDE_CODE_BASE_REF || (await getDefaultBranch());
   const { stdout, code } = await execFileNoThrowWithCwd(
     gitExe(),
-    ['--no-optional-locks', 'merge-base', 'HEAD', baseBranch],
+    ["--no-optional-locks", "merge-base", "HEAD", baseBranch],
     { cwd: gitRoot, timeout: SINGLE_FILE_DIFF_TIMEOUT_MS },
   );
   if (code === 0 && stdout.trim()) {
     return stdout.trim();
   }
-  return 'HEAD';
+  return "HEAD";
 }
 
 async function generateSyntheticDiff(
   gitPath: string,
   absoluteFilePath: string,
-): Promise<Omit<ToolUseDiff, 'repository'> | null> {
+): Promise<Omit<ToolUseDiff, "repository"> | null> {
   try {
     if (!isFileWithinReadSizeLimit(absoluteFilePath, MAX_DIFF_SIZE_BYTES)) {
       return null;
     }
-    const content = await readFile(absoluteFilePath, 'utf-8');
-    const lines = content.split('\n');
+    const content = await readFile(absoluteFilePath, "utf-8");
+    const lines = content.split("\n");
     // Remove trailing empty line from split if file ends with newline
-    if (lines.length > 0 && lines.at(-1) === '') {
+    if (lines.length > 0 && lines.at(-1) === "") {
       lines.pop();
     }
     const lineCount = lines.length;
-    const addedLines = lines.map((line) => `+${line}`).join('\n');
+    const addedLines = lines.map((line) => `+${line}`).join("\n");
     const patch = `@@ -0,0 +1,${lineCount} @@\n${addedLines}`;
     return {
       filename: gitPath,
-      status: 'added',
+      status: "added",
       additions: lineCount,
       deletions: 0,
       changes: lineCount,

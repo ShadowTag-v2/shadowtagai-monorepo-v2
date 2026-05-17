@@ -20,11 +20,11 @@ export {
   isInProcessTeammate,
   runWithTeammateContext,
   type TeammateContext,
-} from './teammateContext.js';
+} from "./teammateContext.js";
 
-import type { AppState } from '../state/AppState.js';
-import { isEnvTruthy } from './envUtils.js';
-import { getTeammateContext } from './teammateContext.js';
+import type { AppState } from "../state/AppState.js";
+import { isEnvTruthy } from "./envUtils.js";
+import { getTeammateContext } from "./teammateContext.js";
 
 /**
  * Returns the parent session ID for this teammate.
@@ -203,7 +203,7 @@ export function isTeamLead(
 export function hasActiveInProcessTeammates(appState: AppState): boolean {
   // Check for running in-process teammate tasks
   for (const task of Object.values(appState.tasks)) {
-    if (task.type === 'in_process_teammate' && task.status === 'running') {
+    if (task.type === "in_process_teammate" && task.status === "running") {
       return true;
     }
   }
@@ -217,7 +217,7 @@ export function hasActiveInProcessTeammates(appState: AppState): boolean {
  */
 export function hasWorkingInProcessTeammates(appState: AppState): boolean {
   for (const task of Object.values(appState.tasks)) {
-    if (task.type === 'in_process_teammate' && task.status === 'running' && !task.isIdle) {
+    if (task.type === "in_process_teammate" && task.status === "running" && !task.isIdle) {
       return true;
     }
   }
@@ -236,7 +236,7 @@ export function waitForTeammatesToBecomeIdle(
   const workingTaskIds: string[] = [];
 
   for (const [taskId, task] of Object.entries(appState.tasks)) {
-    if (task.type === 'in_process_teammate' && task.status === 'running' && !task.isIdle) {
+    if (task.type === "in_process_teammate" && task.status === "running" && !task.isIdle) {
       workingTaskIds.push(taskId);
     }
   }
@@ -264,7 +264,7 @@ export function waitForTeammatesToBecomeIdle(
       const newTasks = { ...prev.tasks };
       for (const taskId of workingTaskIds) {
         const task = newTasks[taskId];
-        if (task && task.type === 'in_process_teammate') {
+        if (task && task.type === "in_process_teammate") {
           // If task is already idle, call onIdle immediately
           if (task.isIdle) {
             onIdle();

@@ -3,10 +3,10 @@
  * Generates a well-documented template file for ~/.claude/keybindings.json
  */
 
-import { jsonStringify } from '../utils/slowOperations.js';
-import { DEFAULT_BINDINGS } from './defaultBindings.js';
-import { NON_REBINDABLE, normalizeKeyForComparison } from './reservedShortcuts.js';
-import type { KeybindingBlock } from './types.js';
+import { jsonStringify } from "../utils/slowOperations.js";
+import { DEFAULT_BINDINGS } from "./defaultBindings.js";
+import { NON_REBINDABLE, normalizeKeyForComparison } from "./reservedShortcuts.js";
+import type { KeybindingBlock } from "./types.js";
 
 /**
  * Filter out reserved shortcuts that cannot be rebound.
@@ -38,8 +38,8 @@ export function generateKeybindingsTemplate(): string {
 
   // Format as object wrapper with bindings array
   const config = {
-    $schema: 'https://www.schemastore.org/claude-code-keybindings.json',
-    $docs: 'https://code.claude.com/docs/en/keybindings',
+    $schema: "https://www.schemastore.org/claude-code-keybindings.json",
+    $docs: "https://code.claude.com/docs/en/keybindings",
     bindings,
   };
 

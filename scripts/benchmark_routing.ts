@@ -3,8 +3,8 @@
  * Target: < 5ms keyword, < 20ms semantic
  */
 
-import { clearRuntimeOverrides, setRuntimeOverride } from '../config/feature_flags';
-import { autoRoute } from '../tools/cognitive_router/dispatch';
+import { clearRuntimeOverrides, setRuntimeOverride } from "../config/feature_flags";
+import { autoRoute } from "../tools/cognitive_router/dispatch";
 
 const ITERATIONS = 500;
 const WARM_UP = 10;
@@ -12,27 +12,27 @@ const WARM_UP = 10;
 async function benchmarkKeywordRouting(): Promise<number> {
   // Warm up
   for (let i = 0; i < WARM_UP; i++) {
-    await autoRoute('deploy the service');
+    await autoRoute("deploy the service");
   }
 
   const start = performance.now();
   for (let i = 0; i < ITERATIONS; i++) {
-    await autoRoute('deploy the service');
+    await autoRoute("deploy the service");
   }
   return (performance.now() - start) / ITERATIONS;
 }
 
 async function benchmarkSemanticRouting(): Promise<number> {
-  setRuntimeOverride('SEMANTIC_ROUTING', true);
+  setRuntimeOverride("SEMANTIC_ROUTING", true);
 
   // Warm up
   for (let i = 0; i < WARM_UP; i++) {
-    await autoRoute('what should I do about the complex database issue');
+    await autoRoute("what should I do about the complex database issue");
   }
 
   const start = performance.now();
   for (let i = 0; i < ITERATIONS; i++) {
-    await autoRoute('what should I do about the complex database issue');
+    await autoRoute("what should I do about the complex database issue");
   }
   const avg = (performance.now() - start) / ITERATIONS;
   clearRuntimeOverrides();
@@ -51,8 +51,8 @@ export async function benchmarkAutoRouting() {
   const keywordPass = keywordMs < 5;
   const semanticPass = semanticMs < 20;
 
-  console.log(`⚡ [Benchmark] Keyword:  ${keywordPass ? '✅ PASS' : '❌ FAIL'}`);
-  console.log(`⚡ [Benchmark] Semantic: ${semanticPass ? '✅ PASS' : '❌ FAIL'}`);
+  console.log(`⚡ [Benchmark] Keyword:  ${keywordPass ? "✅ PASS" : "❌ FAIL"}`);
+  console.log(`⚡ [Benchmark] Semantic: ${semanticPass ? "✅ PASS" : "❌ FAIL"}`);
 
   return { keywordMs, semanticMs, keywordPass, semanticPass };
 }

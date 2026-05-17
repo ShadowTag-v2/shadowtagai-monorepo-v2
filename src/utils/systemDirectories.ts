@@ -1,7 +1,7 @@
-import { homedir } from 'node:os';
-import { join } from 'node:path';
-import { logForDebugging } from './debug.js';
-import { getPlatform, type Platform } from './platform.js';
+import { homedir } from "node:os";
+import { join } from "node:path";
+import { logForDebugging } from "./debug.js";
+import { getPlatform, type Platform } from "./platform.js";
 
 export type SystemDirectories = {
   HOME: string;
@@ -32,25 +32,25 @@ export function getSystemDirectories(options?: SystemDirectoriesOptions): System
   // Default paths used by most platforms
   const defaults: SystemDirectories = {
     HOME: homeDir,
-    DESKTOP: join(homeDir, 'Desktop'),
-    DOCUMENTS: join(homeDir, 'Documents'),
-    DOWNLOADS: join(homeDir, 'Downloads'),
+    DESKTOP: join(homeDir, "Desktop"),
+    DOCUMENTS: join(homeDir, "Documents"),
+    DOWNLOADS: join(homeDir, "Downloads"),
   };
 
   switch (platform) {
-    case 'windows': {
+    case "windows": {
       // Windows: Use USERPROFILE if available (handles localized folder names)
       const userProfile = env.USERPROFILE || homeDir;
       return {
         HOME: homeDir,
-        DESKTOP: join(userProfile, 'Desktop'),
-        DOCUMENTS: join(userProfile, 'Documents'),
-        DOWNLOADS: join(userProfile, 'Downloads'),
+        DESKTOP: join(userProfile, "Desktop"),
+        DOCUMENTS: join(userProfile, "Documents"),
+        DOWNLOADS: join(userProfile, "Downloads"),
       };
     }
 
-    case 'linux':
-    case 'wsl': {
+    case "linux":
+    case "wsl": {
       // Linux/WSL: Check XDG Base Directory specification first
       return {
         HOME: homeDir,
@@ -61,7 +61,7 @@ export function getSystemDirectories(options?: SystemDirectoriesOptions): System
     }
     default: {
       // macOS and unknown platforms use standard paths
-      if (platform === 'unknown') {
+      if (platform === "unknown") {
         logForDebugging(`Unknown platform detected, using default paths`);
       }
       return defaults;

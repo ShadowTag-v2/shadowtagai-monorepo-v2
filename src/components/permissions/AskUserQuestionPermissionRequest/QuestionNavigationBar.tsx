@@ -1,10 +1,10 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
-import { stringWidth } from '../../../ink/stringWidth.js';
-import { Box, Text } from '../../../ink.js';
-import type { Question } from '../../../tools/AskUserQuestionTool/AskUserQuestionTool.js';
-import { truncateToWidth } from '../../../utils/format.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../../../hooks/useTerminalSize.js";
+import { stringWidth } from "../../../ink/stringWidth.js";
+import { Box, Text } from "../../../ink.js";
+import type { Question } from "../../../tools/AskUserQuestionTool/AskUserQuestionTool.js";
+import { truncateToWidth } from "../../../utils/format.js";
 
 type Props = {
   questions: Question[];
@@ -25,8 +25,8 @@ export function QuestionNavigationBar(t0) {
     $[3] !== questions
   ) {
     bb0: {
-      const submitText = hideSubmitTab ? '' : ` ${figures.tick} Submit `;
-      const fixedWidth = stringWidth('\u2190 ') + stringWidth(' \u2192') + stringWidth(submitText);
+      const submitText = hideSubmitTab ? "" : ` ${figures.tick} Submit `;
+      const fixedWidth = stringWidth("\u2190 ") + stringWidth(" \u2192") + stringWidth(submitText);
       const availableForTabs = columns - fixedWidth;
       if (availableForTabs <= 0) {
         let t3;
@@ -35,7 +35,7 @@ export function QuestionNavigationBar(t0) {
           if ($[8] !== currentQuestionIndex) {
             t4 = (q, index) => {
               const header = q?.header || `Q${index + 1}`;
-              return index === currentQuestionIndex ? header.slice(0, 3) : '';
+              return index === currentQuestionIndex ? header.slice(0, 3) : "";
             };
             $[8] = currentQuestionIndex;
             $[9] = t4;
@@ -59,7 +59,7 @@ export function QuestionNavigationBar(t0) {
         t2 = tabHeaders;
         break bb0;
       }
-      const currentHeader = tabHeaders[currentQuestionIndex] || '';
+      const currentHeader = tabHeaders[currentQuestionIndex] || "";
       const currentIdealWidth = 4 + stringWidth(currentHeader);
       const currentTabWidth = Math.min(currentIdealWidth, availableForTabs / 2);
       const remainingWidth = availableForTabs - currentTabWidth;
@@ -101,7 +101,7 @@ export function QuestionNavigationBar(t0) {
   const hideArrows = questions.length === 1 && hideSubmitTab;
   let t3;
   if ($[14] !== currentQuestionIndex || $[15] !== hideArrows) {
-    t3 = !hideArrows && <Text color={currentQuestionIndex === 0 ? 'inactive' : undefined}>← </Text>;
+    t3 = !hideArrows && <Text color={currentQuestionIndex === 0 ? "inactive" : undefined}>← </Text>;
     $[14] = currentQuestionIndex;
     $[15] = hideArrows;
     $[16] = t3;
@@ -126,13 +126,13 @@ export function QuestionNavigationBar(t0) {
           <Box key={q_1?.question || `question-${index_2}`}>
             {isSelected ? (
               <Text backgroundColor="permission" color="inverseText">
-                {' '}
-                {checkbox} {displayText}{' '}
+                {" "}
+                {checkbox} {displayText}{" "}
               </Text>
             ) : (
               <Text>
-                {' '}
-                {checkbox} {displayText}{' '}
+                {" "}
+                {checkbox} {displayText}{" "}
               </Text>
             )}
           </Box>
@@ -160,8 +160,8 @@ export function QuestionNavigationBar(t0) {
       <Box key="submit">
         {currentQuestionIndex === questions.length ? (
           <Text backgroundColor="permission" color="inverseText">
-            {' '}
-            {figures.tick} Submit{' '}
+            {" "}
+            {figures.tick} Submit{" "}
           </Text>
         ) : (
           <Text> {figures.tick} Submit </Text>
@@ -178,7 +178,7 @@ export function QuestionNavigationBar(t0) {
   let t6;
   if ($[30] !== currentQuestionIndex || $[31] !== hideArrows || $[32] !== questions.length) {
     t6 = !hideArrows && (
-      <Text color={currentQuestionIndex === questions.length ? 'inactive' : undefined}> →</Text>
+      <Text color={currentQuestionIndex === questions.length ? "inactive" : undefined}> →</Text>
     );
     $[30] = currentQuestionIndex;
     $[31] = hideArrows;

@@ -1,6 +1,6 @@
-import type { McpbManifest } from '@anthropic-ai/mcpb';
-import { errorMessage } from '../errors.js';
-import { jsonParse } from '../slowOperations.js';
+import type { McpbManifest } from "@anthropic-ai/mcpb";
+import { errorMessage } from "../errors.js";
+import { jsonParse } from "../slowOperations.js";
 
 /**
  * Parses and validates a DXT manifest from a JSON object.
@@ -11,17 +11,17 @@ import { jsonParse } from '../slowOperations.js';
  * closures out of the startup heap for sessions that never touch .dxt/.mcpb.
  */
 export async function validateManifest(manifestJson: unknown): Promise<McpbManifest> {
-  const { McpbManifestSchema } = await import('@anthropic-ai/mcpb');
+  const { McpbManifestSchema } = await import("@anthropic-ai/mcpb");
   const parseResult = McpbManifestSchema.safeParse(manifestJson);
 
   if (!parseResult.success) {
     const errors = parseResult.error.flatten();
     const errorMessages = [
-      ...Object.entries(errors.fieldErrors).map(([field, errs]) => `${field}: ${errs?.join(', ')}`),
+      ...Object.entries(errors.fieldErrors).map(([field, errs]) => `${field}: ${errs?.join(", ")}`),
       ...(errors.formErrors || []),
     ]
       .filter(Boolean)
-      .join('; ');
+      .join("; ");
 
     throw new Error(`Invalid manifest: ${errorMessages}`);
   }
@@ -62,15 +62,15 @@ export async function parseAndValidateManifestFromBytes(
  */
 export function generateExtensionId(
   manifest: McpbManifest,
-  prefix?: 'local.unpacked' | 'local.dxt',
+  prefix?: "local.unpacked" | "local.dxt",
 ): string {
   const sanitize = (str: string) =>
     str
       .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-_.]/g, '')
-      .replace(/-+/g, '-')
-      .replace(/^-+|-+$/g, '');
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-_.]/g, "")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
 
   const authorName = manifest.author.name;
   const extensionName = manifest.name;

@@ -1,8 +1,8 @@
-import { type ExecSyncOptionsWithStringEncoding, execSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
-import type { Command } from 'commander';
-import { logEvent } from '../services/analytics/index.js';
+import { type ExecSyncOptionsWithStringEncoding, execSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import type { Command } from "commander";
+import { logEvent } from "../services/analytics/index.js";
 
 /**
  * Dream — AutoDream Memory Consolidation
@@ -32,9 +32,9 @@ export interface DreamResult {
  */
 export function findDreamScript(baseDir?: string): string | null {
   const candidates = [
-    baseDir ? join(baseDir, 'scripts', 'dream_consolidation.py') : null,
-    join(process.cwd(), 'scripts', 'dream_consolidation.py'),
-    join(process.cwd(), '..', 'scripts', 'dream_consolidation.py'),
+    baseDir ? join(baseDir, "scripts", "dream_consolidation.py") : null,
+    join(process.cwd(), "scripts", "dream_consolidation.py"),
+    join(process.cwd(), "..", "scripts", "dream_consolidation.py"),
   ].filter(Boolean) as string[];
 
   for (const candidate of candidates) {
@@ -67,69 +67,69 @@ export function parseDreamOutput(output: string): Partial<DreamResult> {
 
 export function registerDreamCommand(program: Command) {
   program
-    .command('dream')
-    .description('Memory consolidation (AutoDream) — orient, gather, consolidate, prune')
-    .option('--dry-run', 'Run orient+gather only, no writes')
-    .option('--ki-dir <path>', 'Custom knowledge items directory')
-    .option('--base-dir <path>', 'Base directory for script resolution')
+    .command("dream")
+    .description("Memory consolidation (AutoDream) — orient, gather, consolidate, prune")
+    .option("--dry-run", "Run orient+gather only, no writes")
+    .option("--ki-dir <path>", "Custom knowledge items directory")
+    .option("--base-dir <path>", "Base directory for script resolution")
     .action(async (opts) => {
       const startTime = Date.now();
-      console.log('╔══════════════════════════════════════════════════╗');
-      console.log('║          AUTODREAM — Memory Consolidation        ║');
-      console.log('╚══════════════════════════════════════════════════╝');
+      console.log("╔══════════════════════════════════════════════════╗");
+      console.log("║          AUTODREAM — Memory Consolidation        ║");
+      console.log("╚══════════════════════════════════════════════════╝");
       console.log();
 
-      logEvent('tengu_dream_invoked', { dryRun: !!opts.dryRun });
+      logEvent("tengu_dream_invoked", { dryRun: !!opts.dryRun });
 
       try {
         const scriptPath = findDreamScript(opts.baseDir);
         if (!scriptPath) {
-          logEvent('tengu_dream_error', { error: 'script_not_found' });
+          logEvent("tengu_dream_error", { error: "script_not_found" });
           process.exitCode = 1;
           return;
         }
 
         console.log(`Script: ${scriptPath}`);
-        if (opts.dryRun) console.log('Mode: DRY RUN (orient+gather only)');
+        if (opts.dryRun) console.log("Mode: DRY RUN (orient+gather only)");
         console.log();
 
         const args: string[] = [];
-        if (opts.dryRun) args.push('--dry-run');
-        if (opts.kiDir) args.push('--ki-dir', opts.kiDir);
+        if (opts.dryRun) args.push("--dry-run");
+        if (opts.kiDir) args.push("--ki-dir", opts.kiDir);
 
         const execOpts: ExecSyncOptionsWithStringEncoding = {
-          encoding: 'utf-8',
+          encoding: "utf-8",
           timeout: 300_000, // 5 minute timeout
-          env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' },
+          env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
         };
 
-        console.log('Running consolidation pipeline...');
-        console.log('  [1/4] Orient  — scanning knowledge directory');
-        console.log('  [2/4] Gather  — collecting session artifacts');
-        console.log('  [3/4] Consolidate — merging overlapping KIs');
-        console.log('  [4/4] Prune   — removing superseded items');
+        console.log("Running consolidation pipeline...");
+        console.log("  [1/4] Orient  — scanning knowledge directory");
+        console.log("  [2/4] Gather  — collecting session artifacts");
+        console.log("  [3/4] Consolidate — merging overlapping KIs");
+        console.log("  [4/4] Prune   — removing superseded items");
         console.log();
 
-        const output = execSync(`python3 "${scriptPath}" ${args.join(' ')}`, execOpts);
+        const output = execSync(`python3 "${scriptPath}" ${args.join(" ")}`, execOpts);
 
         const metrics = parseDreamOutput(output);
         const durationMs = Date.now() - startTime;
 
         console.log(output);
-        console.log('─'.repeat(50));
+        console.log("─".repeat(50));
         console.log(`✓ AutoDream complete in ${durationMs}ms`);
 
         if (metrics.kiProcessed != null) console.log(`  KIs processed: ${metrics.kiProcessed}`);
         if (metrics.kiMerged != null) console.log(`  KIs merged:    ${metrics.kiMerged}`);
         if (metrics.kiPruned != null) console.log(`  KIs pruned:    ${metrics.kiPruned}`);
 
-        logEvent('tengu_dream_complete', {
+        logEvent("tengu_dream_complete", {
           durationMs,
           ...metrics,
         });
       } catch (e: any) {
         const durationMs = Date.now() - startTime;
-        logEvent('tengu_dream_error', { error: e.message, durationMs });
+        logEvent("tengu_dream_error", { error: e.message, durationMs });
         if (e.stderr) process.exitCode = 1;
       }
     });

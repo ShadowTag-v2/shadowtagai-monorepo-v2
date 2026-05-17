@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay } from '../../commands.js';
-import { ClaudeAuthProvider } from '../../services/mcp/auth.js';
+import React, { useEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay } from "../../commands.js";
+import { ClaudeAuthProvider } from "../../services/mcp/auth.js";
 import type {
   McpClaudeAIProxyServerConfig,
   McpHTTPServerConfig,
   McpSSEServerConfig,
   McpStdioServerConfig,
-} from '../../services/mcp/types.js';
-import { extractAgentMcpServers, filterToolsByServer } from '../../services/mcp/utils.js';
-import { useAppState } from '../../state/AppState.js';
-import { getSessionIngressAuthToken } from '../../utils/sessionIngressAuth.js';
-import { MCPAgentServerMenu } from './MCPAgentServerMenu.js';
-import { MCPListPanel } from './MCPListPanel.js';
-import { MCPRemoteServerMenu } from './MCPRemoteServerMenu.js';
-import { MCPStdioServerMenu } from './MCPStdioServerMenu.js';
-import { MCPToolDetailView } from './MCPToolDetailView.js';
-import { MCPToolListView } from './MCPToolListView.js';
+} from "../../services/mcp/types.js";
+import { extractAgentMcpServers, filterToolsByServer } from "../../services/mcp/utils.js";
+import { useAppState } from "../../state/AppState.js";
+import { getSessionIngressAuthToken } from "../../utils/sessionIngressAuth.js";
+import { MCPAgentServerMenu } from "./MCPAgentServerMenu.js";
+import { MCPListPanel } from "./MCPListPanel.js";
+import { MCPRemoteServerMenu } from "./MCPRemoteServerMenu.js";
+import { MCPStdioServerMenu } from "./MCPStdioServerMenu.js";
+import { MCPToolDetailView } from "./MCPToolDetailView.js";
+import { MCPToolListView } from "./MCPToolListView.js";
 
 type Props = {
   onComplete: (
@@ -33,9 +33,9 @@ export function MCPSettings(t0) {
   const agentDefinitions = useAppState(_temp2);
   const mcpClients = mcp.clients;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
-      type: 'list',
+      type: "list",
     };
     $[0] = t1;
   } else {
@@ -43,7 +43,7 @@ export function MCPSettings(t0) {
   }
   const [viewState, setViewState] = React.useState(t1);
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = [];
     $[1] = t2;
   } else {
@@ -77,9 +77,9 @@ export function MCPSettings(t0) {
         const serverInfos = await Promise.all(
           filteredClients.map(async (client_0) => {
             const scope = client_0.config.scope;
-            const isSSE = client_0.config.type === 'sse';
-            const isHTTP = client_0.config.type === 'http';
-            const isClaudeAIProxy = client_0.config.type === 'claudeai-proxy';
+            const isSSE = client_0.config.type === "sse";
+            const isHTTP = client_0.config.type === "http";
+            const isClaudeAIProxy = client_0.config.type === "claudeai-proxy";
             let isAuthenticated;
             if (isSSE || isHTTP) {
               const authProvider = new ClaudeAuthProvider(
@@ -88,9 +88,9 @@ export function MCPSettings(t0) {
               );
               const tokens = await authProvider.tokens();
               const hasSessionAuth =
-                getSessionIngressAuthToken() !== null && client_0.type === 'connected';
+                getSessionIngressAuthToken() !== null && client_0.type === "connected";
               const hasToolsAndConnected =
-                client_0.type === 'connected' &&
+                client_0.type === "connected" &&
                 filterToolsByServer(mcp.tools, client_0.name).length > 0;
               isAuthenticated = Boolean(tokens) || hasSessionAuth || hasToolsAndConnected;
             }
@@ -102,7 +102,7 @@ export function MCPSettings(t0) {
             if (isClaudeAIProxy) {
               return {
                 ...baseInfo,
-                transport: 'claudeai-proxy' as const,
+                transport: "claudeai-proxy" as const,
                 isAuthenticated: false,
                 config: client_0.config as McpClaudeAIProxyServerConfig,
               };
@@ -110,7 +110,7 @@ export function MCPSettings(t0) {
               if (isSSE) {
                 return {
                   ...baseInfo,
-                  transport: 'sse' as const,
+                  transport: "sse" as const,
                   isAuthenticated,
                   config: client_0.config as McpSSEServerConfig,
                 };
@@ -118,14 +118,14 @@ export function MCPSettings(t0) {
                 if (isHTTP) {
                   return {
                     ...baseInfo,
-                    transport: 'http' as const,
+                    transport: "http" as const,
                     isAuthenticated,
                     config: client_0.config as McpHTTPServerConfig,
                   };
                 } else {
                   return {
                     ...baseInfo,
-                    transport: 'stdio' as const,
+                    transport: "stdio" as const,
                     config: client_0.config as McpStdioServerConfig,
                   };
                 }
@@ -167,7 +167,7 @@ export function MCPSettings(t0) {
       }
       if (servers.length === 0 && agentMcpServers.length === 0) {
         onComplete(
-          'No MCP servers configured. Please run /doctor if this is unexpected. Otherwise, run `claude mcp --help` or visit https://code.claude.com/docs/en/mcp to learn more.',
+          "No MCP servers configured. Please run /doctor if this is unexpected. Otherwise, run `claude mcp --help` or visit https://code.claude.com/docs/en/mcp to learn more.",
         );
       }
     };
@@ -184,18 +184,18 @@ export function MCPSettings(t0) {
   }
   useEffect(t7, t8);
   switch (viewState.type) {
-    case 'list': {
+    case "list": {
       let t10;
       let t9;
-      if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
         t9 = (server) =>
           setViewState({
-            type: 'server-menu',
+            type: "server-menu",
             server,
           });
         t10 = (agentServer) =>
           setViewState({
-            type: 'agent-server-menu',
+            type: "agent-server-menu",
             agentServer,
           });
         $[16] = t10;
@@ -231,7 +231,7 @@ export function MCPSettings(t0) {
       }
       return t11;
     }
-    case 'server-menu': {
+    case "server-menu": {
       let t9;
       if ($[23] !== mcp.tools || $[24] !== viewState.server.name) {
         t9 = filterToolsByServer(mcp.tools, viewState.server.name);
@@ -243,13 +243,13 @@ export function MCPSettings(t0) {
       }
       const serverTools_0 = t9;
       const defaultTab =
-        viewState.server.transport === 'claudeai-proxy' ? 'claude.ai' : 'Claude Code';
-      if (viewState.server.transport === 'stdio') {
+        viewState.server.transport === "claudeai-proxy" ? "claude.ai" : "Claude Code";
+      if (viewState.server.transport === "stdio") {
         let t10;
         if ($[26] !== viewState.server) {
           t10 = () =>
             setViewState({
-              type: 'server-tools',
+              type: "server-tools",
               server: viewState.server,
             });
           $[26] = viewState.server;
@@ -261,7 +261,7 @@ export function MCPSettings(t0) {
         if ($[28] !== defaultTab) {
           t11 = () =>
             setViewState({
-              type: 'list',
+              type: "list",
               defaultTab,
             });
           $[28] = defaultTab;
@@ -301,7 +301,7 @@ export function MCPSettings(t0) {
         if ($[36] !== viewState.server) {
           t10 = () =>
             setViewState({
-              type: 'server-tools',
+              type: "server-tools",
               server: viewState.server,
             });
           $[36] = viewState.server;
@@ -313,7 +313,7 @@ export function MCPSettings(t0) {
         if ($[38] !== defaultTab) {
           t11 = () =>
             setViewState({
-              type: 'list',
+              type: "list",
               defaultTab,
             });
           $[38] = defaultTab;
@@ -350,19 +350,19 @@ export function MCPSettings(t0) {
         return t12;
       }
     }
-    case 'server-tools': {
+    case "server-tools": {
       let t10;
       let t9;
       if ($[46] !== viewState.server) {
         t9 = (_, index) =>
           setViewState({
-            type: 'server-tool-detail',
+            type: "server-tool-detail",
             server: viewState.server,
             toolIndex: index,
           });
         t10 = () =>
           setViewState({
-            type: 'server-menu',
+            type: "server-menu",
             server: viewState.server,
           });
         $[46] = viewState.server;
@@ -384,7 +384,7 @@ export function MCPSettings(t0) {
       }
       return t11;
     }
-    case 'server-tool-detail': {
+    case "server-tool-detail": {
       let t9;
       if ($[53] !== mcp.tools || $[54] !== viewState.server.name) {
         t9 = filterToolsByServer(mcp.tools, viewState.server.name);
@@ -398,7 +398,7 @@ export function MCPSettings(t0) {
       const tool = serverTools[viewState.toolIndex];
       if (!tool) {
         setViewState({
-          type: 'server-tools',
+          type: "server-tools",
           server: viewState.server,
         });
         return null;
@@ -407,7 +407,7 @@ export function MCPSettings(t0) {
       if ($[56] !== viewState.server) {
         t10 = () =>
           setViewState({
-            type: 'server-tools',
+            type: "server-tools",
             server: viewState.server,
           });
         $[56] = viewState.server;
@@ -427,13 +427,13 @@ export function MCPSettings(t0) {
       }
       return t11;
     }
-    case 'agent-server-menu': {
+    case "agent-server-menu": {
       let t9;
-      if ($[62] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[62] === Symbol.for("react.memo_cache_sentinel")) {
         t9 = () =>
           setViewState({
-            type: 'list',
-            defaultTab: 'Agents',
+            type: "list",
+            defaultTab: "Agents",
           });
         $[62] = t9;
       } else {
@@ -462,7 +462,7 @@ function _temp4(a, b) {
   return a.name.localeCompare(b.name);
 }
 function _temp3(client) {
-  return client.name !== 'ide';
+  return client.name !== "ide";
 }
 function _temp2(s_0) {
   return s_0.agentDefinitions;

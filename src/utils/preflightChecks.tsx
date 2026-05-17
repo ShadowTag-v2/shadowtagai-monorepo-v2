@@ -1,14 +1,14 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { logEvent } from 'src/services/analytics/index.js';
-import { Spinner } from '../components/Spinner.js';
-import { getOauthConfig } from '../constants/oauth.js';
-import { useTimeout } from '../hooks/useTimeout.js';
-import { Box, Text } from '../ink.js';
-import { getSSLErrorHint } from '../services/api/errorUtils.js';
-import { getUserAgent } from './http.js';
-import { logError } from './log.js';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { logEvent } from "src/services/analytics/index.js";
+import { Spinner } from "../components/Spinner.js";
+import { getOauthConfig } from "../constants/oauth.js";
+import { useTimeout } from "../hooks/useTimeout.js";
+import { Box, Text } from "../ink.js";
+import { getSSLErrorHint } from "../services/api/errorUtils.js";
+import { getUserAgent } from "./http.js";
+import { logError } from "./log.js";
 export interface PreflightCheckResult {
   success: boolean;
   error?: string;
@@ -26,7 +26,7 @@ async function checkEndpoints(): Promise<PreflightCheckResult> {
       try {
         const response = await axios.get(url, {
           headers: {
-            'User-Agent': getUserAgent(),
+            "User-Agent": getUserAgent(),
           },
         });
         if (response.status !== 200) {
@@ -53,7 +53,7 @@ async function checkEndpoints(): Promise<PreflightCheckResult> {
     const failedResult = results.find((result) => !result.success);
     if (failedResult) {
       // Log failure to Statsig
-      logEvent('tengu_preflight_check_failed', {
+      logEvent("tengu_preflight_check_failed", {
         isConnectivityError: false,
         hasErrorMessage: !!failedResult.error,
         isSSLError: !!failedResult.sslHint,
@@ -68,7 +68,7 @@ async function checkEndpoints(): Promise<PreflightCheckResult> {
     logError(error as Error);
 
     // Log to Statsig
-    logEvent('tengu_preflight_check_failed', {
+    logEvent("tengu_preflight_check_failed", {
       isConnectivityError: true,
     });
     return {
@@ -88,7 +88,7 @@ export function PreflightStep(t0) {
   const showSpinner = useTimeout(1000) && isChecking;
   let t1;
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => {
       const run = async function run() {
         const checkResult = await checkEndpoints();
@@ -152,7 +152,7 @@ export function PreflightStep(t0) {
                 <Text>Please check your internet connection and network settings.</Text>
                 <Text>
                   Note: Claude Code might not be available in your country. Check supported
-                  countries at{' '}
+                  countries at{" "}
                   <Text color="suggestion">https://anthropic.com/supported-countries</Text>
                 </Text>
               </Box>

@@ -1,13 +1,13 @@
-import { feature } from 'bun:bundle';
-import { randomUUID } from 'node:crypto';
-import type { BetaToolUseBlock } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import { getIsNonInteractiveSession } from '../../bootstrap/state.js';
-import { FORK_BOILERPLATE_TAG, FORK_DIRECTIVE_PREFIX } from '../../constants/xml.js';
-import { isCoordinatorMode } from '../../coordinator/coordinatorMode.js';
-import type { AssistantMessage, Message as MessageType } from '../../types/message.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { createUserMessage } from '../../utils/messages.js';
-import type { BuiltInAgentDefinition } from './loadAgentsDir.js';
+import { feature } from "bun:bundle";
+import { randomUUID } from "node:crypto";
+import type { BetaToolUseBlock } from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
+import { getIsNonInteractiveSession } from "../../bootstrap/state.js";
+import { FORK_BOILERPLATE_TAG, FORK_DIRECTIVE_PREFIX } from "../../constants/xml.js";
+import { isCoordinatorMode } from "../../coordinator/coordinatorMode.js";
+import type { AssistantMessage, Message as MessageType } from "../../types/message.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { createUserMessage } from "../../utils/messages.js";
+import type { BuiltInAgentDefinition } from "./loadAgentsDir.js";
 
 /**
  * Fork subagent feature gate.
@@ -24,7 +24,7 @@ import type { BuiltInAgentDefinition } from './loadAgentsDir.js';
  * orchestration role and has its own delegation model.
  */
 export function isForkSubagentEnabled(): boolean {
-  if (feature('FORK_SUBAGENT')) {
+  if (feature("FORK_SUBAGENT")) {
     if (isCoordinatorMode()) return false;
     if (getIsNonInteractiveSession()) return false;
     return true;
@@ -33,7 +33,7 @@ export function isForkSubagentEnabled(): boolean {
 }
 
 /** Synthetic agent type name used for analytics when the fork path fires. */
-export const FORK_SUBAGENT_TYPE = 'fork';
+export const FORK_SUBAGENT_TYPE = "fork";
 
 /**
  * Synthetic agent definition for the fork path.
@@ -54,14 +54,14 @@ export const FORK_SUBAGENT_TYPE = 'fork';
 export const FORK_AGENT = {
   agentType: FORK_SUBAGENT_TYPE,
   whenToUse:
-    'Implicit fork — inherits full conversation context. Not selectable via subagent_type; triggered by omitting subagent_type when the fork experiment is active.',
-  tools: ['*'],
+    "Implicit fork — inherits full conversation context. Not selectable via subagent_type; triggered by omitting subagent_type when the fork experiment is active.",
+  tools: ["*"],
   maxTurns: 200,
-  model: 'inherit',
-  permissionMode: 'bubble',
-  source: 'built-in',
-  baseDir: 'built-in',
-  getSystemPrompt: () => '',
+  model: "inherit",
+  permissionMode: "bubble",
+  source: "built-in",
+  baseDir: "built-in",
+  getSystemPrompt: () => "",
 } satisfies BuiltInAgentDefinition;
 
 /**
@@ -71,18 +71,18 @@ export const FORK_AGENT = {
  */
 export function isInForkChild(messages: MessageType[]): boolean {
   return messages.some((m) => {
-    if (m.type !== 'user') return false;
+    if (m.type !== "user") return false;
     const content = m.message.content;
     if (!Array.isArray(content)) return false;
     return content.some(
-      (block) => block.type === 'text' && block.text.includes(`<${FORK_BOILERPLATE_TAG}>`),
+      (block) => block.type === "text" && block.text.includes(`<${FORK_BOILERPLATE_TAG}>`),
     );
   });
 }
 
 /** Placeholder text used for all tool_result blocks in the fork prefix.
  * Must be identical across all fork children for prompt cache sharing. */
-const FORK_PLACEHOLDER_RESULT = 'Fork started — processing in background';
+const FORK_PLACEHOLDER_RESULT = "Fork started — processing in background";
 
 /**
  * Build the forked conversation messages for the child agent.
@@ -113,28 +113,28 @@ export function buildForkedMessages(
 
   // Collect all tool_use blocks from the assistant message
   const toolUseBlocks = assistantMessage.message.content.filter(
-    (block): block is BetaToolUseBlock => block.type === 'tool_use',
+    (block): block is BetaToolUseBlock => block.type === "tool_use",
   );
 
   if (toolUseBlocks.length === 0) {
     logForDebugging(
       `No tool_use blocks found in assistant message for fork directive: ${directive.slice(0, 50)}...`,
-      { level: 'error' },
+      { level: "error" },
     );
     return [
       createUserMessage({
-        content: [{ type: 'text' as const, text: buildChildMessage(directive) }],
+        content: [{ type: "text" as const, text: buildChildMessage(directive) }],
       }),
     ];
   }
 
   // Build tool_result blocks for every tool_use, all with identical placeholder text
   const toolResultBlocks = toolUseBlocks.map((block) => ({
-    type: 'tool_result' as const,
+    type: "tool_result" as const,
     tool_use_id: block.id,
     content: [
       {
-        type: 'text' as const,
+        type: "text" as const,
         text: FORK_PLACEHOLDER_RESULT,
       },
     ],
@@ -149,7 +149,7 @@ export function buildForkedMessages(
     content: [
       ...toolResultBlocks,
       {
-        type: 'text' as const,
+        type: "text" as const,
         text: buildChildMessage(directive),
       },
     ],

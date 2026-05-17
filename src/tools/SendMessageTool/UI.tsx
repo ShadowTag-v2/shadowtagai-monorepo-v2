@@ -1,13 +1,13 @@
-import type React from 'react';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { Text } from '../../ink.js';
-import { jsonParse } from '../../utils/slowOperations.js';
-import type { Input, SendMessageToolOutput } from './SendMessageTool.js';
+import type React from "react";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { Text } from "../../ink.js";
+import { jsonParse } from "../../utils/slowOperations.js";
+import type { Input, SendMessageToolOutput } from "./SendMessageTool.js";
 export function renderToolUseMessage(input: Partial<Input>): React.ReactNode {
-  if (typeof input.message !== 'object' || input.message === null) {
+  if (typeof input.message !== "object" || input.message === null) {
     return null;
   }
-  if (input.message.type === 'plan_approval_response') {
+  if (input.message.type === "plan_approval_response") {
     return input.message.approve
       ? `approve plan from: ${input.to}`
       : `reject plan from: ${input.to}`;
@@ -23,11 +23,11 @@ export function renderToolResultMessage(
     verbose: boolean;
   },
 ): React.ReactNode {
-  const result: SendMessageToolOutput = typeof content === 'string' ? jsonParse(content) : content;
-  if ('routing' in result && result.routing) {
+  const result: SendMessageToolOutput = typeof content === "string" ? jsonParse(content) : content;
+  if ("routing" in result && result.routing) {
     return null;
   }
-  if ('request_id' in result && 'target' in result) {
+  if ("request_id" in result && "target" in result) {
     return null;
   }
   return (

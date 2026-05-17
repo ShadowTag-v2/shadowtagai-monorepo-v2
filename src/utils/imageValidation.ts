@@ -1,6 +1,6 @@
-import { API_IMAGE_MAX_BASE64_SIZE } from '../constants/apiLimits.js';
-import { logEvent } from '../services/analytics/index.js';
-import { formatFileSize } from './format.js';
+import { API_IMAGE_MAX_BASE64_SIZE } from "../constants/apiLimits.js";
+import { logEvent } from "../services/analytics/index.js";
+import { formatFileSize } from "./format.js";
 
 /**
  * Information about an oversized image.
@@ -24,11 +24,11 @@ export class ImageSizeError extends Error {
     } else {
       message =
         `${oversizedImages.length} images exceed the API limit (${formatFileSize(maxSize)}): ` +
-        oversizedImages.map((img) => `Image ${img.index}: ${formatFileSize(img.size)}`).join(', ') +
+        oversizedImages.map((img) => `Image ${img.index}: ${formatFileSize(img.size)}`).join(", ") +
         `. Please resize these images before sending.`;
     }
     super(message);
-    this.name = 'ImageSizeError';
+    this.name = "ImageSizeError";
   }
 }
 
@@ -37,13 +37,13 @@ export class ImageSizeError extends Error {
  */
 function isBase64ImageBlock(
   block: unknown,
-): block is { type: 'image'; source: { type: 'base64'; data: string } } {
-  if (typeof block !== 'object' || block === null) return false;
+): block is { type: "image"; source: { type: "base64"; data: string } } {
+  if (typeof block !== "object" || block === null) return false;
   const b = block as Record<string, unknown>;
-  if (b.type !== 'image') return false;
-  if (typeof b.source !== 'object' || b.source === null) return false;
+  if (b.type !== "image") return false;
+  if (typeof b.source !== "object" || b.source === null) return false;
   const source = b.source as Record<string, unknown>;
-  return source.type === 'base64' && typeof source.data === 'string';
+  return source.type === "base64" && typeof source.data === "string";
 }
 
 /**
@@ -65,19 +65,19 @@ export function validateImagesForAPI(messages: unknown[]): void {
   let imageIndex = 0;
 
   for (const msg of messages) {
-    if (typeof msg !== 'object' || msg === null) continue;
+    if (typeof msg !== "object" || msg === null) continue;
 
     const m = msg as Record<string, unknown>;
 
     // Handle wrapped message format { type: 'user', message: { role, content } }
     // Only check user messages
-    if (m.type !== 'user') continue;
+    if (m.type !== "user") continue;
 
     const innerMessage = m.message as Record<string, unknown> | undefined;
     if (!innerMessage) continue;
 
     const content = innerMessage.content;
-    if (typeof content === 'string' || !Array.isArray(content)) continue;
+    if (typeof content === "string" || !Array.isArray(content)) continue;
 
     for (const block of content) {
       if (isBase64ImageBlock(block)) {
@@ -86,7 +86,7 @@ export function validateImagesForAPI(messages: unknown[]): void {
         // The API limit applies to the base64 payload size
         const base64Size = block.source.data.length;
         if (base64Size > API_IMAGE_MAX_BASE64_SIZE) {
-          logEvent('tengu_image_api_validation_failed', {
+          logEvent("tengu_image_api_validation_failed", {
             base64_size_bytes: base64Size,
             max_bytes: API_IMAGE_MAX_BASE64_SIZE,
           });

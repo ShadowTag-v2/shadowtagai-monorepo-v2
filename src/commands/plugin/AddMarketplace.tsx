@@ -1,24 +1,24 @@
-import type * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import type * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
-import { Byline } from '../../components/design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../components/design-system/KeyboardShortcutHint.js';
-import { Spinner } from '../../components/Spinner.js';
-import TextInput from '../../components/TextInput.js';
-import { Box, Text } from '../../ink.js';
-import { toError } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { clearAllCaches } from '../../utils/plugins/cacheUtils.js';
+} from "src/services/analytics/index.js";
+import { ConfigurableShortcutHint } from "../../components/ConfigurableShortcutHint.js";
+import { Byline } from "../../components/design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../components/design-system/KeyboardShortcutHint.js";
+import { Spinner } from "../../components/Spinner.js";
+import TextInput from "../../components/TextInput.js";
+import { Box, Text } from "../../ink.js";
+import { toError } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { clearAllCaches } from "../../utils/plugins/cacheUtils.js";
 import {
   addMarketplaceSource,
   saveMarketplaceToSettings,
-} from '../../utils/plugins/marketplaceManager.js';
-import { parseMarketplaceInput } from '../../utils/plugins/parseMarketplaceInput.js';
-import type { ViewState } from './types.js';
+} from "../../utils/plugins/marketplaceManager.js";
+import { parseMarketplaceInput } from "../../utils/plugins/parseMarketplaceInput.js";
+import type { ViewState } from "./types.js";
 
 type Props = {
   inputValue: string;
@@ -48,28 +48,28 @@ export function AddMarketplace({
 }: Props): React.ReactNode {
   const hasAttemptedAutoAdd = useRef(false);
   const [isLoading, setLoading] = useState(false);
-  const [progressMessage, setProgressMessage] = useState<string>('');
+  const [progressMessage, setProgressMessage] = useState<string>("");
   const handleAdd = async () => {
     const input = inputValue.trim();
     if (!input) {
-      setError('Please enter a marketplace source');
+      setError("Please enter a marketplace source");
       return;
     }
     const parsed = await parseMarketplaceInput(input);
     if (!parsed) {
-      setError('Invalid marketplace source format. Try: owner/repo, https://..., or ./path');
+      setError("Invalid marketplace source format. Try: owner/repo, https://..., or ./path");
       return;
     }
 
     // Check if parseMarketplaceInput returned an error
-    if ('error' in parsed) {
+    if ("error" in parsed) {
       setError(parsed.error);
       return;
     }
     setError(null);
     try {
       setLoading(true);
-      setProgressMessage('');
+      setProgressMessage("");
       const { name, resolvedSource } = await addMarketplaceSource(parsed, (message) => {
         setProgressMessage(message);
       });
@@ -78,16 +78,16 @@ export function AddMarketplace({
       });
       clearAllCaches();
       let sourceType = parsed.source;
-      if (parsed.source === 'github') {
+      if (parsed.source === "github") {
         sourceType = parsed.repo as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
       }
-      logEvent('tengu_marketplace_added', {
+      logEvent("tengu_marketplace_added", {
         source_type: sourceType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
       if (onAddComplete) {
         await onAddComplete();
       }
-      setProgressMessage('');
+      setProgressMessage("");
       setLoading(false);
       if (cliMode) {
         // In CLI mode, set result to trigger completion
@@ -95,7 +95,7 @@ export function AddMarketplace({
       } else {
         // In interactive mode, switch to browse view
         setViewState({
-          type: 'browse-marketplace',
+          type: "browse-marketplace",
           targetMarketplace: name,
         });
       }
@@ -103,7 +103,7 @@ export function AddMarketplace({
       const error = toError(err);
       logError(error);
       setError(error.message);
-      setProgressMessage('');
+      setProgressMessage("");
       setLoading(false);
       if (cliMode) {
         // In CLI mode, set result with error to trigger completion
@@ -153,7 +153,7 @@ export function AddMarketplace({
         {isLoading && (
           <Box marginTop={1}>
             <Spinner />
-            <Text>{progressMessage || 'Adding marketplace to configuration…'}</Text>
+            <Text>{progressMessage || "Adding marketplace to configuration…"}</Text>
           </Box>
         )}
         {error && (

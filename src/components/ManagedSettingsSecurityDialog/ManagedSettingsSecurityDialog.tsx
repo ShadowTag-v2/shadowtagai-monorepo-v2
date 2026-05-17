@@ -1,11 +1,11 @@
-import { c as _c } from 'react/compiler-runtime';
-import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import type { SettingsJson } from '../../utils/settings/types.js';
-import { Select } from '../CustomSelect/index.js';
-import { PermissionDialog } from '../permissions/PermissionDialog.js';
-import { extractDangerousSettings, formatDangerousSettingsList } from './utils.js';
+import { c as _c } from "react/compiler-runtime";
+import { useExitOnCtrlCDWithKeybindings } from "../../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import type { SettingsJson } from "../../utils/settings/types.js";
+import { Select } from "../CustomSelect/index.js";
+import { PermissionDialog } from "../permissions/PermissionDialog.js";
+import { extractDangerousSettings, formatDangerousSettingsList } from "./utils.js";
 
 type Props = {
   settings: SettingsJson;
@@ -19,19 +19,19 @@ export function ManagedSettingsSecurityDialog(t0) {
   const settingsList = formatDangerousSettingsList(dangerous);
   const exitState = useExitOnCtrlCDWithKeybindings();
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[0] = t1;
   } else {
     t1 = $[0];
   }
-  useKeybinding('confirm:no', onReject, t1);
+  useKeybinding("confirm:no", onReject, t1);
   let t2;
   if ($[1] !== onAccept || $[2] !== onReject) {
     t2 = function onChange(value) {
-      if (value === 'exit') {
+      if (value === "exit") {
         onReject();
         return;
       }
@@ -45,15 +45,15 @@ export function ManagedSettingsSecurityDialog(t0) {
   }
   const onChange = t2;
   const T0 = PermissionDialog;
-  const t3 = 'warning';
-  const t4 = 'warning';
-  const t5 = 'Managed settings require approval';
+  const t3 = "warning";
+  const t4 = "warning";
+  const t5 = "Managed settings require approval";
   const T1 = Box;
-  const t6 = 'column';
+  const t6 = "column";
   const t7 = 1;
   const t8 = 1;
   let t9;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = (
       <Text>
         Your organization has configured managed settings that could allow execution of arbitrary
@@ -65,9 +65,9 @@ export function ManagedSettingsSecurityDialog(t0) {
     t9 = $[4];
   }
   const T2 = Box;
-  const t10 = 'column';
+  const t10 = "column";
   let t11;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = <Text dimColor={true}>Settings requiring approval:</Text>;
     $[5] = t11;
   } else {
@@ -90,7 +90,7 @@ export function ManagedSettingsSecurityDialog(t0) {
     t13 = $[9];
   }
   let t14;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t14 = (
       <Text>
         Only accept if you trust your organization's IT administration and expect these settings to
@@ -102,15 +102,15 @@ export function ManagedSettingsSecurityDialog(t0) {
     t14 = $[10];
   }
   let t15;
-  if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t15 = [
       {
-        label: 'Yes, I trust these settings',
-        value: 'accept',
+        label: "Yes, I trust these settings",
+        value: "accept",
       },
       {
-        label: 'No, exit Claude Code',
-        value: 'exit',
+        label: "No, exit Claude Code",
+        value: "exit",
       },
     ];
     $[11] = t15;
@@ -122,8 +122,8 @@ export function ManagedSettingsSecurityDialog(t0) {
     t16 = (
       <Select
         options={t15}
-        onChange={(value_0) => onChange(value_0 as 'accept' | 'exit')}
-        onCancel={() => onChange('exit')}
+        onChange={(value_0) => onChange(value_0 as "accept" | "exit")}
+        onCancel={() => onChange("exit")}
       />
     );
     $[12] = onChange;

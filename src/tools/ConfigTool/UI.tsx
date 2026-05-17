@@ -1,8 +1,8 @@
-import type React from 'react';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { Text } from '../../ink.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import type { Input, Output } from './ConfigTool.js';
+import type React from "react";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { Text } from "../../ink.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import type { Input, Output } from "./ConfigTool.js";
 export function renderToolUseMessage(input: Partial<Input>): React.ReactNode {
   if (!input.setting) return null;
   if (input.value === undefined) {
@@ -22,7 +22,7 @@ export function renderToolResultMessage(content: Output): React.ReactNode {
       </MessageResponse>
     );
   }
-  if (content.operation === 'get') {
+  if (content.operation === "get") {
     return (
       <MessageResponse>
         <Text>
@@ -34,7 +34,7 @@ export function renderToolResultMessage(content: Output): React.ReactNode {
   return (
     <MessageResponse>
       <Text>
-        Set <Text bold>{content.setting}</Text> to{' '}
+        Set <Text bold>{content.setting}</Text> to{" "}
         <Text bold>{jsonStringify(content.newValue)}</Text>
       </Text>
     </MessageResponse>

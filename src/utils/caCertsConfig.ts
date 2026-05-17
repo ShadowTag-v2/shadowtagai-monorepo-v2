@@ -13,9 +13,9 @@
  * env var at CLI startup. Only `init.ts` imports this file.
  */
 
-import { getGlobalConfig } from './config.js';
-import { logForDebugging } from './debug.js';
-import { getSettingsForSource } from './settings/settings.js';
+import { getGlobalConfig } from "./config.js";
+import { logForDebugging } from "./debug.js";
+import { getSettingsForSource } from "./settings/settings.js";
 
 /**
  * Apply NODE_EXTRA_CA_CERTS from settings.json to process.env early in init,
@@ -63,11 +63,11 @@ function getExtraCertsPathFromConfig(): string | undefined {
     // Only read from user-controlled settings (~/.claude/settings.json),
     // not project-level settings, to prevent malicious projects from
     // injecting CA certs before the trust dialog.
-    const settings = getSettingsForSource('userSettings');
+    const settings = getSettingsForSource("userSettings");
     const settingsEnv = settings?.env;
 
     logForDebugging(
-      `CA certs: Config fallback - globalEnv keys: ${globalEnv ? Object.keys(globalEnv).join(',') : 'none'}, settingsEnv keys: ${settingsEnv ? Object.keys(settingsEnv).join(',') : 'none'}`,
+      `CA certs: Config fallback - globalEnv keys: ${globalEnv ? Object.keys(globalEnv).join(",") : "none"}, settingsEnv keys: ${settingsEnv ? Object.keys(settingsEnv).join(",") : "none"}`,
     );
 
     // Settings override global config (same precedence as applyConfigEnvironmentVariables)
@@ -78,7 +78,7 @@ function getExtraCertsPathFromConfig(): string | undefined {
     return path;
   } catch (error) {
     logForDebugging(`CA certs: Config fallback failed: ${error}`, {
-      level: 'error',
+      level: "error",
     });
     return undefined;
   }

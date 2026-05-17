@@ -1,11 +1,11 @@
-import sample from 'lodash-es/sample.js';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { extractTag } from '../../utils/messages.js';
-import { MessageResponse } from '../MessageResponse.js';
+import sample from "lodash-es/sample.js";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { extractTag } from "../../utils/messages.js";
+import { MessageResponse } from "../MessageResponse.js";
 
 function getSavingMessage(): string {
-  return sample(['Got it.', 'Good to know.', 'Noted.']);
+  return sample(["Got it.", "Good to know.", "Noted."]);
 }
 type Props = {
   addMargin: boolean;
@@ -16,7 +16,7 @@ export function UserMemoryInputMessage(t0) {
   const { text, addMargin } = t0;
   let t1;
   if ($[0] !== text) {
-    t1 = extractTag(text, 'user-memory-input');
+    t1 = extractTag(text, "user-memory-input");
     $[0] = text;
     $[1] = t1;
   } else {
@@ -24,7 +24,7 @@ export function UserMemoryInputMessage(t0) {
   }
   const input = t1;
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = getSavingMessage();
     $[2] = t2;
   } else {
@@ -36,7 +36,7 @@ export function UserMemoryInputMessage(t0) {
   }
   const t3 = addMargin ? 1 : 0;
   let t4;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <Text color="remember" backgroundColor="memoryBackgroundColor">
         #
@@ -52,8 +52,8 @@ export function UserMemoryInputMessage(t0) {
       <Box>
         {t4}
         <Text backgroundColor="memoryBackgroundColor" color="text">
-          {' '}
-          {input}{' '}
+          {" "}
+          {input}{" "}
         </Text>
       </Box>
     );
@@ -63,7 +63,7 @@ export function UserMemoryInputMessage(t0) {
     t5 = $[5];
   }
   let t6;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <MessageResponse height={1}>
         <Text dimColor={true}>{savingText}</Text>

@@ -1,15 +1,15 @@
-import { feature } from 'bun:bundle';
-import { useMemo } from 'react';
-import { useCommandQueue } from 'src/hooks/useCommandQueue.js';
-import { useAppState } from 'src/state/AppState.js';
-import { getGlobalConfig } from 'src/utils/config.js';
-import { getExampleCommandFromCache } from 'src/utils/exampleCommands.js';
-import { isQueuedCommandEditable } from 'src/utils/messageQueueManager.js';
+import { feature } from "bun:bundle";
+import { useMemo } from "react";
+import { useCommandQueue } from "src/hooks/useCommandQueue.js";
+import { useAppState } from "src/state/AppState.js";
+import { getGlobalConfig } from "src/utils/config.js";
+import { getExampleCommandFromCache } from "src/utils/exampleCommands.js";
+import { isQueuedCommandEditable } from "src/utils/messageQueueManager.js";
 
 // Dead code elimination: conditional import for proactive mode
 /* eslint-disable @typescript-eslint/no-require-imports */
 const proactiveModule =
-  feature('PROACTIVE') || feature('KAIROS') ? require('../../proactive/index.js') : null;
+  feature("PROACTIVE") || feature("KAIROS") ? require("../../proactive/index.js") : null;
 
 type Props = {
   input: string;
@@ -28,7 +28,7 @@ export function usePromptInputPlaceholder({
   const queuedCommands = useCommandQueue();
   const promptSuggestionEnabled = useAppState((s) => s.promptSuggestionEnabled);
   const placeholder = useMemo(() => {
-    if (input !== '') {
+    if (input !== "") {
       return;
     }
 
@@ -48,7 +48,7 @@ export function usePromptInputPlaceholder({
       queuedCommands.some(isQueuedCommandEditable) &&
       (getGlobalConfig().queuedCommandUpHintCount || 0) < NUM_TIMES_QUEUE_HINT_SHOWN
     ) {
-      return 'Press up to edit queued messages';
+      return "Press up to edit queued messages";
     }
 
     // Show example command if user has not submitted yet and suggestions are enabled.

@@ -1,11 +1,11 @@
-import { queryHaiku } from '../../services/api/claude.js';
-import type { Message } from '../../types/message.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage } from '../../utils/errors.js';
-import { safeParseJSON } from '../../utils/json.js';
-import { extractTextContent } from '../../utils/messages.js';
-import { extractConversationText } from '../../utils/sessionTitle.js';
-import { asSystemPrompt } from '../../utils/systemPromptType.js';
+import { queryHaiku } from "../../services/api/claude.js";
+import type { Message } from "../../types/message.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage } from "../../utils/errors.js";
+import { safeParseJSON } from "../../utils/json.js";
+import { extractTextContent } from "../../utils/messages.js";
+import { extractConversationText } from "../../utils/sessionTitle.js";
+import { asSystemPrompt } from "../../utils/systemPromptType.js";
 
 export async function generateSessionName(
   messages: Message[],
@@ -23,19 +23,19 @@ export async function generateSessionName(
       ]),
       userPrompt: conversationText,
       outputFormat: {
-        type: 'json_schema',
+        type: "json_schema",
         schema: {
-          type: 'object',
+          type: "object",
           properties: {
-            name: { type: 'string' },
+            name: { type: "string" },
           },
-          required: ['name'],
+          required: ["name"],
           additionalProperties: false,
         },
       },
       signal,
       options: {
-        querySource: 'rename_generate_name',
+        querySource: "rename_generate_name",
         agents: [],
         isNonInteractiveSession: false,
         hasAppendSystemPrompt: false,
@@ -48,9 +48,9 @@ export async function generateSessionName(
     const response = safeParseJSON(content);
     if (
       response &&
-      typeof response === 'object' &&
-      'name' in response &&
-      typeof (response as { name: unknown }).name === 'string'
+      typeof response === "object" &&
+      "name" in response &&
+      typeof (response as { name: unknown }).name === "string"
     ) {
       return (response as { name: string }).name;
     }
@@ -60,7 +60,7 @@ export async function generateSessionName(
     // logForDebugging, not logError. Called automatically on every 3rd bridge
     // message (initReplBridge.ts), so errors here would flood the error file.
     logForDebugging(`generateSessionName failed: ${errorMessage(error)}`, {
-      level: 'error',
+      level: "error",
     });
     return null;
   }

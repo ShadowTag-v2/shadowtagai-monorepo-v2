@@ -7,27 +7,27 @@
  * fs.watch so first-time writes to a fresh repo get picked up.
  */
 
-import { feature } from 'bun:bundle';
-import { type FSWatcher, watch } from 'node:fs';
-import { mkdir, stat } from 'node:fs/promises';
-import { join } from 'node:path';
-import { getTeamMemPath, isTeamMemoryEnabled } from '../../memdir/teamMemPaths.js';
-import { registerCleanup } from '../../utils/cleanupRegistry.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage } from '../../utils/errors.js';
-import { getGithubRepo } from '../../utils/git.js';
+import { feature } from "bun:bundle";
+import { type FSWatcher, watch } from "node:fs";
+import { mkdir, stat } from "node:fs/promises";
+import { join } from "node:path";
+import { getTeamMemPath, isTeamMemoryEnabled } from "../../memdir/teamMemPaths.js";
+import { registerCleanup } from "../../utils/cleanupRegistry.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage } from "../../utils/errors.js";
+import { getGithubRepo } from "../../utils/git.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../analytics/index.js';
+} from "../analytics/index.js";
 import {
   createSyncState,
   isTeamMemorySyncAvailable,
   pullTeamMemory,
   pushTeamMemory,
   type SyncState,
-} from './index.js';
-import type { TeamMemorySyncPushResult } from './types.js';
+} from "./index.js";
+import type { TeamMemorySyncPushResult } from "./types.js";
 
 const DEBOUNCE_MS = 2000; // Wait 2s after last change before pushing
 
@@ -56,7 +56,7 @@ let pushSuppressedReason: string | null = null;
  *   rate limit — watcher-driven backoff is fine.
  */
 export function isPermanentFailure(r: TeamMemorySyncPushResult): boolean {
-  if (r.errorType === 'no_oauth' || r.errorType === 'no_repo') return true;
+  if (r.errorType === "no_oauth" || r.errorType === "no_repo") return true;
   if (
     r.httpStatus !== undefined &&
     r.httpStatus >= 400 &&
@@ -90,22 +90,22 @@ async function executePush(): Promise<void> {
     }
     if (result.success && result.filesUploaded > 0) {
       logForDebugging(`team-memory-watcher: pushed ${result.filesUploaded} files`, {
-        level: 'info',
+        level: "info",
       });
     } else if (!result.success) {
       logForDebugging(`team-memory-watcher: push failed: ${result.error}`, {
-        level: 'warn',
+        level: "warn",
       });
       if (isPermanentFailure(result) && pushSuppressedReason === null) {
         pushSuppressedReason =
           result.httpStatus !== undefined
             ? `http_${result.httpStatus}`
-            : (result.errorType ?? 'unknown');
+            : (result.errorType ?? "unknown");
         logForDebugging(
           `team-memory-watcher: suppressing retry until next unlink or session restart (${pushSuppressedReason})`,
-          { level: 'warn' },
+          { level: "warn" },
         );
-        logEvent('tengu_team_mem_push_suppressed', {
+        logEvent("tengu_team_mem_push_suppressed", {
           reason:
             pushSuppressedReason as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           ...(result.httpStatus && { status: result.httpStatus }),
@@ -114,7 +114,7 @@ async function executePush(): Promise<void> {
     }
   } catch (e) {
     logForDebugging(`team-memory-watcher: push error: ${errorMessage(e)}`, {
-      level: 'warn',
+      level: "warn",
     });
   } finally {
     pushInProgress = false;
@@ -182,11 +182,11 @@ async function startFileWatcher(teamDir: string): Promise<void> {
         // too-many-entries). fs.watch doesn't distinguish unlink from
         // add/write — stat to disambiguate. ENOENT → file gone → clear.
         void stat(join(teamDir, filename)).catch((err: NodeJS.ErrnoException) => {
-          if (err.code !== 'ENOENT') return;
+          if (err.code !== "ENOENT") return;
           if (pushSuppressedReason !== null) {
             logForDebugging(
               `team-memory-watcher: unlink cleared suppression (was: ${pushSuppressedReason})`,
-              { level: 'info' },
+              { level: "info" },
             );
             pushSuppressedReason = null;
           }
@@ -196,20 +196,20 @@ async function startFileWatcher(teamDir: string): Promise<void> {
       }
       schedulePush();
     });
-    watcher.on('error', (err) => {
+    watcher.on("error", (err) => {
       logForDebugging(`team-memory-watcher: fs.watch error: ${errorMessage(err)}`, {
-        level: 'warn',
+        level: "warn",
       });
     });
     logForDebugging(`team-memory-watcher: watching ${teamDir}`, {
-      level: 'debug',
+      level: "debug",
     });
   } catch (err) {
     // fs.watch throws synchronously on ENOENT (race: dir deleted between
     // mkdir and watch) or EACCES. watcherStarted is already true above,
     // so notifyTeamMemoryWrite's explicit schedulePush path still works.
     logForDebugging(`team-memory-watcher: failed to watch ${teamDir}: ${errorMessage(err)}`, {
-      level: 'warn',
+      level: "warn",
     });
   }
 
@@ -238,7 +238,7 @@ async function startFileWatcher(teamDir: string): Promise<void> {
  * a fresh partner can sit in the bootstrap dead zone for days.
  */
 export async function startTeamMemoryWatcher(): Promise<void> {
-  if (!feature('TEAMMEM')) {
+  if (!feature("TEAMMEM")) {
     return;
   }
   if (!isTeamMemoryEnabled() || !isTeamMemorySyncAvailable()) {
@@ -246,7 +246,7 @@ export async function startTeamMemoryWatcher(): Promise<void> {
   }
   const repoSlug = await getGithubRepo();
   if (!repoSlug) {
-    logForDebugging('team-memory-watcher: no github.com remote, skipping sync', { level: 'debug' });
+    logForDebugging("team-memory-watcher: no github.com remote, skipping sync", { level: "debug" });
     return;
   }
 
@@ -264,12 +264,12 @@ export async function startTeamMemoryWatcher(): Promise<void> {
     if (pullResult.success && pullResult.filesWritten > 0) {
       initialFilesPulled = pullResult.filesWritten;
       logForDebugging(`team-memory-watcher: initial pull got ${pullResult.filesWritten} files`, {
-        level: 'info',
+        level: "info",
       });
     }
   } catch (e) {
     logForDebugging(`team-memory-watcher: initial pull failed: ${errorMessage(e)}`, {
-      level: 'warn',
+      level: "warn",
     });
   }
 
@@ -278,7 +278,7 @@ export async function startTeamMemoryWatcher(): Promise<void> {
   // a bootstrap dead zone for fresh repos.
   await startFileWatcher(getTeamMemPath());
 
-  logEvent('tengu_team_mem_sync_started', {
+  logEvent("tengu_team_mem_sync_started", {
     initial_pull_success: initialPullSuccess,
     initial_files_pulled: initialFilesPulled,
     // Kept for dashboard continuity; now always true when this event fires.

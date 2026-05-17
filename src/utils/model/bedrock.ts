@@ -1,13 +1,13 @@
-import memoize from 'lodash-es/memoize.js';
-import { refreshAndGetAwsCredentials } from '../auth.js';
-import { getAWSRegion, isEnvTruthy } from '../envUtils.js';
-import { logError } from '../log.js';
-import { getAWSClientProxyConfig } from '../proxy.js';
+import memoize from "lodash-es/memoize.js";
+import { refreshAndGetAwsCredentials } from "../auth.js";
+import { getAWSRegion, isEnvTruthy } from "../envUtils.js";
+import { logError } from "../log.js";
+import { getAWSClientProxyConfig } from "../proxy.js";
 
 export const getBedrockInferenceProfiles = memoize(async (): Promise<string[]> => {
   const [client, { ListInferenceProfilesCommand }] = await Promise.all([
     createBedrockClient(),
-    import('@aws-sdk/client-bedrock'),
+    import("@aws-sdk/client-bedrock"),
   ]);
   const allProfiles = [];
   let nextToken: string | undefined;
@@ -16,7 +16,7 @@ export const getBedrockInferenceProfiles = memoize(async (): Promise<string[]> =
     do {
       const command = new ListInferenceProfilesCommand({
         ...(nextToken && { nextToken }),
-        typeEquals: 'SYSTEM_DEFINED',
+        typeEquals: "SYSTEM_DEFINED",
       });
       const response = await client.send(command);
 
@@ -29,7 +29,7 @@ export const getBedrockInferenceProfiles = memoize(async (): Promise<string[]> =
 
     // Filter for Anthropic models (SYSTEM_DEFINED filtering handled in query)
     return allProfiles
-      .filter((profile) => profile.inferenceProfileId?.includes('anthropic'))
+      .filter((profile) => profile.inferenceProfileId?.includes("anthropic"))
       .map((profile) => profile.inferenceProfileId)
       .filter(Boolean) as string[];
   } catch (error) {
@@ -43,7 +43,7 @@ export function findFirstMatch(profiles: string[], substring: string): string | 
 }
 
 async function createBedrockClient() {
-  const { BedrockClient } = await import('@aws-sdk/client-bedrock');
+  const { BedrockClient } = await import("@aws-sdk/client-bedrock");
   // Match the Anthropic Bedrock SDK's region behavior exactly:
   // - Reads AWS_REGION or AWS_DEFAULT_REGION env vars (not AWS config files)
   // - Falls back to 'us-east-1' if neither is set
@@ -59,15 +59,15 @@ async function createBedrockClient() {
     }),
     ...(await getAWSClientProxyConfig()),
     ...(skipAuth && {
-      requestHandler: new (await import('@smithy/node-http-handler')).NodeHttpHandler(),
+      requestHandler: new (await import("@smithy/node-http-handler")).NodeHttpHandler(),
       httpAuthSchemes: [
         {
-          schemeId: 'smithy.api#noAuth',
+          schemeId: "smithy.api#noAuth",
           identityProvider: () => async () => ({}),
-          signer: new (await import('@smithy/core')).NoAuthSigner(),
+          signer: new (await import("@smithy/core")).NoAuthSigner(),
         },
       ],
-      httpAuthSchemeProvider: () => [{ schemeId: 'smithy.api#noAuth' }],
+      httpAuthSchemeProvider: () => [{ schemeId: "smithy.api#noAuth" }],
     }),
   };
 
@@ -87,7 +87,7 @@ async function createBedrockClient() {
 }
 
 export async function createBedrockRuntimeClient() {
-  const { BedrockRuntimeClient } = await import('@aws-sdk/client-bedrock-runtime');
+  const { BedrockRuntimeClient } = await import("@aws-sdk/client-bedrock-runtime");
   const region = getAWSRegion();
   const skipAuth = isEnvTruthy(process.env.CLAUDE_CODE_SKIP_BEDROCK_AUTH);
 
@@ -100,15 +100,15 @@ export async function createBedrockRuntimeClient() {
     ...(skipAuth && {
       // BedrockRuntimeClient defaults to HTTP/2 without fallback
       // proxy servers may not support this, so we explicitly force HTTP/1.1
-      requestHandler: new (await import('@smithy/node-http-handler')).NodeHttpHandler(),
+      requestHandler: new (await import("@smithy/node-http-handler")).NodeHttpHandler(),
       httpAuthSchemes: [
         {
-          schemeId: 'smithy.api#noAuth',
+          schemeId: "smithy.api#noAuth",
           identityProvider: () => async () => ({}),
-          signer: new (await import('@smithy/core')).NoAuthSigner(),
+          signer: new (await import("@smithy/core")).NoAuthSigner(),
         },
       ],
-      httpAuthSchemeProvider: () => [{ schemeId: 'smithy.api#noAuth' }],
+      httpAuthSchemeProvider: () => [{ schemeId: "smithy.api#noAuth" }],
     }),
   };
 
@@ -132,7 +132,7 @@ export const getInferenceProfileBackingModel = memoize(
     try {
       const [client, { GetInferenceProfileCommand }] = await Promise.all([
         createBedrockClient(),
-        import('@aws-sdk/client-bedrock'),
+        import("@aws-sdk/client-bedrock"),
       ]);
       const command = new GetInferenceProfileCommand({
         inferenceProfileIdentifier: profileId,
@@ -153,7 +153,7 @@ export const getInferenceProfileBackingModel = memoize(
 
       // Extract model name from ARN
       // ARN format: arn:aws:bedrock:region:account:foundation-model/model-name
-      const lastSlashIndex = primaryModel.modelArn.lastIndexOf('/');
+      const lastSlashIndex = primaryModel.modelArn.lastIndexOf("/");
       return lastSlashIndex >= 0
         ? primaryModel.modelArn.substring(lastSlashIndex + 1)
         : primaryModel.modelArn;
@@ -168,14 +168,14 @@ export const getInferenceProfileBackingModel = memoize(
  * Check if a model ID is a foundation model (e.g., "anthropic.claude-sonnet-4-5-20250929-v1:0")
  */
 export function isFoundationModel(modelId: string): boolean {
-  return modelId.startsWith('anthropic.');
+  return modelId.startsWith("anthropic.");
 }
 
 /**
  * Cross-region inference profile prefixes for Bedrock.
  * These prefixes allow routing requests to models in specific regions.
  */
-const BEDROCK_REGION_PREFIXES = ['us', 'eu', 'apac', 'global'] as const;
+const BEDROCK_REGION_PREFIXES = ["us", "eu", "apac", "global"] as const;
 
 /**
  * Extract the model/inference profile ID from a Bedrock ARN.
@@ -186,10 +186,10 @@ const BEDROCK_REGION_PREFIXES = ['us', 'eu', 'apac', 'global'] as const;
  * And foundation model ARNs: arn:aws:bedrock:<region>::foundation-model/<model-id>
  */
 export function extractModelIdFromArn(modelId: string): string {
-  if (!modelId.startsWith('arn:')) {
+  if (!modelId.startsWith("arn:")) {
     return modelId;
   }
-  const lastSlashIndex = modelId.lastIndexOf('/');
+  const lastSlashIndex = modelId.lastIndexOf("/");
   if (lastSlashIndex === -1) {
     return modelId;
   }

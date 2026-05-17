@@ -1,11 +1,11 @@
-import { basename } from 'node:path';
-import { c as _c } from 'react/compiler-runtime';
-import type { z } from 'zod/v4';
-import { Text } from '../../../ink.js';
-import { NotebookEditTool } from '../../../tools/NotebookEditTool/NotebookEditTool.js';
-import { logError } from '../../../utils/log.js';
-import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js';
-import { NotebookEditToolDiff } from './NotebookEditToolDiff.js';
+import { basename } from "node:path";
+import { c as _c } from "react/compiler-runtime";
+import type { z } from "zod/v4";
+import { Text } from "../../../ink.js";
+import { NotebookEditTool } from "../../../tools/NotebookEditTool/NotebookEditTool.js";
+import { logError } from "../../../utils/log.js";
+import { FilePermissionDialog } from "../FilePermissionDialog/FilePermissionDialog.js";
+import { NotebookEditToolDiff } from "./NotebookEditToolDiff.js";
 
 type NotebookEditInput = z.infer<typeof NotebookEditTool.inputSchema>;
 export function NotebookEditPermissionRequest(props) {
@@ -38,24 +38,24 @@ export function NotebookEditPermissionRequest(props) {
     parsed = parseInput(props.toolUseConfirm.input);
     const { notebook_path: t11, edit_mode, cell_type } = parsed;
     notebook_path = t11;
-    language = cell_type === 'markdown' ? 'markdown' : 'python';
+    language = cell_type === "markdown" ? "markdown" : "python";
     const editTypeText =
-      edit_mode === 'insert'
-        ? 'insert this cell into'
-        : edit_mode === 'delete'
-          ? 'delete this cell from'
-          : 'make this edit to';
+      edit_mode === "insert"
+        ? "insert this cell into"
+        : edit_mode === "delete"
+          ? "delete this cell from"
+          : "make this edit to";
     T2 = FilePermissionDialog;
     t5 = props.toolUseConfirm;
     t6 = props.toolUseContext;
     t7 = props.onDone;
     t8 = props.onReject;
     t9 = props.workerBadge;
-    t10 = 'Edit notebook';
+    t10 = "Edit notebook";
     T1 = Text;
-    t2 = 'Do you want to ';
+    t2 = "Do you want to ";
     t3 = editTypeText;
-    t4 = ' ';
+    t4 = " ";
     T0 = Text;
     t0 = true;
     t1 = basename(notebook_path);
@@ -214,9 +214,9 @@ function _temp(input) {
   if (!result.success) {
     logError(new Error(`Failed to parse notebook edit input: ${result.error.message}`));
     return {
-      notebook_path: '',
-      new_source: '',
-      cell_id: '',
+      notebook_path: "",
+      new_source: "",
+      cell_id: "",
     } as NotebookEditInput;
   }
   return result.data;

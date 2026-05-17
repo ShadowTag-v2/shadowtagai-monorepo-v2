@@ -1,12 +1,12 @@
-import { mkdir, open } from 'node:fs/promises';
-import { join } from 'node:path';
-import { getSessionId } from '../bootstrap/state.js';
-import type { PastedContent } from './config.js';
-import { logForDebugging } from './debug.js';
-import { getClaudeConfigHomeDir } from './envUtils.js';
-import { getFsImplementation } from './fsOperations.js';
+import { mkdir, open } from "node:fs/promises";
+import { join } from "node:path";
+import { getSessionId } from "../bootstrap/state.js";
+import type { PastedContent } from "./config.js";
+import { logForDebugging } from "./debug.js";
+import { getClaudeConfigHomeDir } from "./envUtils.js";
+import { getFsImplementation } from "./fsOperations.js";
 
-const IMAGE_STORE_DIR = 'image-cache';
+const IMAGE_STORE_DIR = "image-cache";
 const MAX_STORED_IMAGE_PATHS = 200;
 
 // In-memory cache of stored image paths
@@ -31,7 +31,7 @@ async function ensureImageStoreDir(): Promise<void> {
  * Get the file path for an image by ID.
  */
 function getImagePath(imageId: number, mediaType: string): string {
-  const extension = mediaType.split('/')[1] || 'png';
+  const extension = mediaType.split("/")[1] || "png";
   return join(getImageStoreDir(), `${imageId}.${extension}`);
 }
 
@@ -39,10 +39,10 @@ function getImagePath(imageId: number, mediaType: string): string {
  * Cache the image path immediately (fast, no file I/O).
  */
 export function cacheImagePath(content: PastedContent): string | null {
-  if (content.type !== 'image') {
+  if (content.type !== "image") {
     return null;
   }
-  const imagePath = getImagePath(content.id, content.mediaType || 'image/png');
+  const imagePath = getImagePath(content.id, content.mediaType || "image/png");
   evictOldestIfAtCap();
   storedImagePaths.set(content.id, imagePath);
   return imagePath;
@@ -52,16 +52,16 @@ export function cacheImagePath(content: PastedContent): string | null {
  * Store an image from pastedContents to disk.
  */
 export async function storeImage(content: PastedContent): Promise<string | null> {
-  if (content.type !== 'image') {
+  if (content.type !== "image") {
     return null;
   }
 
   try {
     await ensureImageStoreDir();
-    const imagePath = getImagePath(content.id, content.mediaType || 'image/png');
-    const fh = await open(imagePath, 'w', 0o600);
+    const imagePath = getImagePath(content.id, content.mediaType || "image/png");
+    const fh = await open(imagePath, "w", 0o600);
     try {
-      await fh.writeFile(content.content, { encoding: 'base64' });
+      await fh.writeFile(content.content, { encoding: "base64" });
       await fh.datasync();
     } finally {
       await fh.close();
@@ -85,7 +85,7 @@ export async function storeImages(
   const pathMap = new Map<number, string>();
 
   for (const [id, content] of Object.entries(pastedContents)) {
-    if (content.type === 'image') {
+    if (content.type === "image") {
       const path = await storeImage(content);
       if (path) {
         pathMap.set(Number(id), path);

@@ -1,32 +1,32 @@
-import { feature } from 'bun:bundle';
+import { feature } from "bun:bundle";
 import React, {
   useContext,
   useEffect,
   useEffectEvent,
   useState,
   useSyncExternalStore,
-} from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { MailboxProvider } from '../context/mailbox.js';
-import { useSettingsChange } from '../hooks/useSettingsChange.js';
-import { logForDebugging } from '../utils/debug.js';
+} from "react";
+import { c as _c } from "react/compiler-runtime";
+import { MailboxProvider } from "../context/mailbox.js";
+import { useSettingsChange } from "../hooks/useSettingsChange.js";
+import { logForDebugging } from "../utils/debug.js";
 import {
   createDisabledBypassPermissionsContext,
   isBypassPermissionsModeDisabled,
-} from '../utils/permissions/permissionSetup.js';
-import { applySettingsChange } from '../utils/settings/applySettingsChange.js';
-import { createStore } from './store.js';
+} from "../utils/permissions/permissionSetup.js";
+import { applySettingsChange } from "../utils/settings/applySettingsChange.js";
+import { createStore } from "./store.js";
 
 // DCE: voice context is ant-only. External builds get a passthrough.
 /* eslint-disable @typescript-eslint/no-require-imports */
 const VoiceProvider: (props: { children: React.ReactNode }) => React.ReactNode = feature(
-  'VOICE_MODE',
+  "VOICE_MODE",
 )
-  ? require('../context/voice.js').VoiceProvider
+  ? require("../context/voice.js").VoiceProvider
   : ({ children }) => children;
 
 /* eslint-enable @typescript-eslint/no-require-imports */
-import { type AppState, type AppStateStore, getDefaultAppState } from './AppStateStore.js';
+import { type AppState, type AppStateStore, getDefaultAppState } from "./AppStateStore.js";
 
 // TODO: Remove these re-exports once all callers import directly from
 // ./AppStateStore.js. Kept for back-compat during migration so .ts callers
@@ -39,7 +39,7 @@ export {
   IDLE_SPECULATION_STATE,
   type SpeculationResult,
   type SpeculationState,
-} from './AppStateStore.js';
+} from "./AppStateStore.js";
 export const AppStoreContext = React.createContext<AppStateStore | null>(null);
 type Props = {
   children: React.ReactNode;
@@ -52,7 +52,7 @@ export function AppStateProvider(t0) {
   const { children, initialState, onChangeAppState } = t0;
   const hasAppStateContext = useContext(HasAppStateContext);
   if (hasAppStateContext) {
-    throw new Error('AppStateProvider can not be nested within another AppStateProvider');
+    throw new Error("AppStateProvider can not be nested within another AppStateProvider");
   }
   let t1;
   if ($[0] !== initialState || $[1] !== onChangeAppState) {
@@ -73,7 +73,7 @@ export function AppStateProvider(t0) {
         isBypassPermissionsModeDisabled()
       ) {
         logForDebugging(
-          'Disabling bypass permissions mode on mount (remote settings loaded before mount)',
+          "Disabling bypass permissions mode on mount (remote settings loaded before mount)",
         );
         store.setState(_temp);
       }
@@ -84,7 +84,7 @@ export function AppStateProvider(t0) {
     t2 = $[4];
   }
   let t3;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = [];
     $[5] = t3;
   } else {
@@ -139,7 +139,7 @@ function useAppStore(): AppStateStore {
   const store = useContext(AppStoreContext);
   if (!store) {
     throw new ReferenceError(
-      'useAppState/useSetAppState cannot be called outside of an <AppStateProvider />',
+      "useAppState/useSetAppState cannot be called outside of an <AppStateProvider />",
     );
   }
   return store;

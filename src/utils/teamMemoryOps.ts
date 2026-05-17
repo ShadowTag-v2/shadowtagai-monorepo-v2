@@ -1,6 +1,6 @@
-import { isTeamMemFile } from '../memdir/teamMemPaths.js';
-import { FILE_EDIT_TOOL_NAME } from '../tools/FileEditTool/constants.js';
-import { FILE_WRITE_TOOL_NAME } from '../tools/FileWriteTool/prompt.js';
+import { isTeamMemFile } from "../memdir/teamMemPaths.js";
+import { FILE_EDIT_TOOL_NAME } from "../tools/FileEditTool/constants.js";
+import { FILE_WRITE_TOOL_NAME } from "../tools/FileWriteTool/prompt.js";
 
 export { isTeamMemFile };
 
@@ -49,31 +49,31 @@ export function appendTeamMemorySummaryParts(
   if (teamReadCount > 0) {
     const verb = isActive
       ? parts.length === 0
-        ? 'Recalling'
-        : 'recalling'
+        ? "Recalling"
+        : "recalling"
       : parts.length === 0
-        ? 'Recalled'
-        : 'recalled';
-    parts.push(`${verb} ${teamReadCount} team ${teamReadCount === 1 ? 'memory' : 'memories'}`);
+        ? "Recalled"
+        : "recalled";
+    parts.push(`${verb} ${teamReadCount} team ${teamReadCount === 1 ? "memory" : "memories"}`);
   }
   if (teamSearchCount > 0) {
     const verb = isActive
       ? parts.length === 0
-        ? 'Searching'
-        : 'searching'
+        ? "Searching"
+        : "searching"
       : parts.length === 0
-        ? 'Searched'
-        : 'searched';
+        ? "Searched"
+        : "searched";
     parts.push(`${verb} team memories`);
   }
   if (teamWriteCount > 0) {
     const verb = isActive
       ? parts.length === 0
-        ? 'Writing'
-        : 'writing'
+        ? "Writing"
+        : "writing"
       : parts.length === 0
-        ? 'Wrote'
-        : 'wrote';
-    parts.push(`${verb} ${teamWriteCount} team ${teamWriteCount === 1 ? 'memory' : 'memories'}`);
+        ? "Wrote"
+        : "wrote";
+    parts.push(`${verb} ${teamWriteCount} team ${teamWriteCount === 1 ? "memory" : "memories"}`);
   }
 }

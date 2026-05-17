@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import { formatNumber } from '../utils/format.js';
-import type { Theme } from '../utils/theme.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import { formatNumber } from "../utils/format.js";
+import type { Theme } from "../utils/theme.js";
 
 type Props = {
   agentType: string;
@@ -39,7 +39,7 @@ export function AgentProgressLine(t0) {
   } = t0;
   const isAsync = t1 === undefined ? false : t1;
   const hideType = t2 === undefined ? false : t2;
-  const treeChar = isLast ? '\u2514\u2500' : '\u251C\u2500';
+  const treeChar = isLast ? "\u2514\u2500" : "\u251C\u2500";
   const isBackgrounded = isAsync && isResolved;
   let t3;
   if (
@@ -50,12 +50,12 @@ export function AgentProgressLine(t0) {
   ) {
     t3 = () => {
       if (!isResolved) {
-        return lastToolInfo || 'Initializing\u2026';
+        return lastToolInfo || "Initializing\u2026";
       }
       if (isBackgrounded) {
-        return taskDescription ?? 'Running in the background';
+        return taskDescription ?? "Running in the background";
       }
-      return 'Done';
+      return "Done";
     };
     $[0] = isBackgrounded;
     $[1] = isResolved;
@@ -91,19 +91,19 @@ export function AgentProgressLine(t0) {
       </>
     ) : (
       <>
-        <Text bold={true} backgroundColor={color} color={color ? 'inverseText' : undefined}>
+        <Text bold={true} backgroundColor={color} color={color ? "inverseText" : undefined}>
           {agentType}
         </Text>
         {description && (
           <>
-            {' ('}
+            {" ("}
             <Text
               backgroundColor={descriptionColor}
-              color={descriptionColor ? 'inverseText' : undefined}
+              color={descriptionColor ? "inverseText" : undefined}
             >
               {description}
             </Text>
-            {')'}
+            {")"}
           </>
         )}
       </>
@@ -122,8 +122,8 @@ export function AgentProgressLine(t0) {
   if ($[14] !== isBackgrounded || $[15] !== tokens || $[16] !== toolUseCount) {
     t7 = !isBackgrounded && (
       <>
-        {' \xB7 '}
-        {toolUseCount} tool {toolUseCount === 1 ? 'use' : 'uses'}
+        {" \xB7 "}
+        {toolUseCount} tool {toolUseCount === 1 ? "use" : "uses"}
         {tokens !== null && <> · {formatNumber(tokens)} tokens</>}
       </>
     );
@@ -167,7 +167,7 @@ export function AgentProgressLine(t0) {
   if ($[25] !== getStatusText || $[26] !== isBackgrounded || $[27] !== isLast) {
     t10 = !isBackgrounded && (
       <Box paddingLeft={3} flexDirection="row">
-        <Text dimColor={true}>{isLast ? '   \u23BF  ' : '\u2502  \u23BF  '}</Text>
+        <Text dimColor={true}>{isLast ? "   \u23BF  " : "\u2502  \u23BF  "}</Text>
         <Text dimColor={true}>{getStatusText()}</Text>
       </Box>
     );

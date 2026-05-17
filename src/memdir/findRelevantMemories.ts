@@ -1,10 +1,10 @@
-import { feature } from 'bun:bundle';
-import { logForDebugging } from '../utils/debug.js';
-import { errorMessage } from '../utils/errors.js';
-import { getDefaultSonnetModel } from '../utils/model/model.js';
-import { sideQuery } from '../utils/sideQuery.js';
-import { jsonParse } from '../utils/slowOperations.js';
-import { formatMemoryManifest, type MemoryHeader, scanMemoryFiles } from './memoryScan.js';
+import { feature } from "bun:bundle";
+import { logForDebugging } from "../utils/debug.js";
+import { errorMessage } from "../utils/errors.js";
+import { getDefaultSonnetModel } from "../utils/model/model.js";
+import { sideQuery } from "../utils/sideQuery.js";
+import { jsonParse } from "../utils/slowOperations.js";
+import { formatMemoryManifest, type MemoryHeader, scanMemoryFiles } from "./memoryScan.js";
 
 export type RelevantMemory = {
   path: string;
@@ -54,10 +54,10 @@ export async function findRelevantMemories(
 
   // Fires even on empty selection: selection-rate needs the denominator,
   // and -1 ages distinguish "ran, picked nothing" from "never ran".
-  if (feature('MEMORY_SHAPE_TELEMETRY')) {
+  if (feature("MEMORY_SHAPE_TELEMETRY")) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { logMemoryRecallShape } =
-      require('./memoryShapeTelemetry.js') as typeof import('./memoryShapeTelemetry.js');
+      require("./memoryShapeTelemetry.js") as typeof import("./memoryShapeTelemetry.js");
     /* eslint-enable @typescript-eslint/no-require-imports */
     logMemoryRecallShape(memories, selected);
   }
@@ -81,7 +81,7 @@ async function selectRelevantMemories(
   // on keyword overlap ("spawn" in query + "spawn" in a memory
   // description → false positive).
   const toolsSection =
-    recentTools.length > 0 ? `\n\nRecently used tools: ${recentTools.join(', ')}` : '';
+    recentTools.length > 0 ? `\n\nRecently used tools: ${recentTools.join(", ")}` : "";
 
   try {
     const result = await sideQuery({
@@ -90,28 +90,28 @@ async function selectRelevantMemories(
       skipSystemPromptPrefix: true,
       messages: [
         {
-          role: 'user',
+          role: "user",
           content: `Query: ${query}\n\nAvailable memories:\n${manifest}${toolsSection}`,
         },
       ],
       max_tokens: 256,
       output_format: {
-        type: 'json_schema',
+        type: "json_schema",
         schema: {
-          type: 'object',
+          type: "object",
           properties: {
-            selected_memories: { type: 'array', items: { type: 'string' } },
+            selected_memories: { type: "array", items: { type: "string" } },
           },
-          required: ['selected_memories'],
+          required: ["selected_memories"],
           additionalProperties: false,
         },
       },
       signal,
-      querySource: 'memdir_relevance',
+      querySource: "memdir_relevance",
     });
 
-    const textBlock = result.content.find((block) => block.type === 'text');
-    if (!textBlock || textBlock.type !== 'text') {
+    const textBlock = result.content.find((block) => block.type === "text");
+    if (!textBlock || textBlock.type !== "text") {
       return [];
     }
 
@@ -122,7 +122,7 @@ async function selectRelevantMemories(
       return [];
     }
     logForDebugging(`[memdir] selectRelevantMemories failed: ${errorMessage(e)}`, {
-      level: 'warn',
+      level: "warn",
     });
     return [];
   }

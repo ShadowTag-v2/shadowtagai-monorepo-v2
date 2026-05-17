@@ -1,6 +1,6 @@
 # apps/counselconduit/tests/test_centralized_auth.py
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 from fastapi import HTTPException
 from apps.counselconduit.api.auth import verify_firebase_token
 

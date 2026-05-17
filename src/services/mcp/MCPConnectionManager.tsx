@@ -1,9 +1,9 @@
-import { createContext, type ReactNode, useContext } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { Command } from '../../commands.js';
-import type { Tool } from '../../Tool.js';
-import type { MCPServerConnection, ScopedMcpServerConfig, ServerResource } from './types.js';
-import { useManageMCPConnections } from './useManageMCPConnections.js';
+import { createContext, type ReactNode, useContext } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { Command } from "../../commands.js";
+import type { Tool } from "../../Tool.js";
+import type { MCPServerConnection, ScopedMcpServerConfig, ServerResource } from "./types.js";
+import { useManageMCPConnections } from "./useManageMCPConnections.js";
 
 interface MCPConnectionContextValue {
   reconnectMcpServer: (serverName: string) => Promise<{
@@ -18,14 +18,14 @@ const MCPConnectionContext = createContext<MCPConnectionContextValue | null>(nul
 export function useMcpReconnect() {
   const context = useContext(MCPConnectionContext);
   if (!context) {
-    throw new Error('useMcpReconnect must be used within MCPConnectionManager');
+    throw new Error("useMcpReconnect must be used within MCPConnectionManager");
   }
   return context.reconnectMcpServer;
 }
 export function useMcpToggleEnabled() {
   const context = useContext(MCPConnectionContext);
   if (!context) {
-    throw new Error('useMcpToggleEnabled must be used within MCPConnectionManager');
+    throw new Error("useMcpToggleEnabled must be used within MCPConnectionManager");
   }
   return context.toggleMcpServer;
 }

@@ -1,25 +1,25 @@
-import type * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import type { CommandResultDisplay } from '../../commands.js';
-import { TEARDROP_ASTERISK } from '../../constants/figures.js';
-import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { setClipboard } from '../../ink/termio/osc.js';
+import type * as React from "react";
+import { useCallback, useEffect, useState } from "react";
+import type { CommandResultDisplay } from "../../commands.js";
+import { TEARDROP_ASTERISK } from "../../constants/figures.js";
+import { useExitOnCtrlCDWithKeybindings } from "../../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { setClipboard } from "../../ink/termio/osc.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- enter to copy link
-import { Box, Link, Text, useInput } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import { logEvent } from '../../services/analytics/index.js';
+import { Box, Link, Text, useInput } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import { logEvent } from "../../services/analytics/index.js";
 import {
   fetchReferralRedemptions,
   formatCreditAmount,
   getCachedOrFetchPassesEligibility,
-} from '../../services/api/referral.js';
+} from "../../services/api/referral.js";
 import type {
   ReferralRedemptionsResponse,
   ReferrerRewardInfo,
-} from '../../services/oauth/types.js';
-import { count } from '../../utils/array.js';
-import { logError } from '../../utils/log.js';
-import { Pane } from '../design-system/Pane.js';
+} from "../../services/oauth/types.js";
+import { count } from "../../utils/array.js";
+import { logError } from "../../utils/log.js";
+import { Pane } from "../design-system/Pane.js";
 
 type PassStatus = {
   passNumber: number;
@@ -42,23 +42,23 @@ export function Passes({ onDone }: Props): React.ReactNode {
     undefined,
   );
   const exitState = useExitOnCtrlCDWithKeybindings(() =>
-    onDone('Guest passes dialog dismissed', {
-      display: 'system',
+    onDone("Guest passes dialog dismissed", {
+      display: "system",
     }),
   );
   const handleCancel = useCallback(() => {
-    onDone('Guest passes dialog dismissed', {
-      display: 'system',
+    onDone("Guest passes dialog dismissed", {
+      display: "system",
     });
   }, [onDone]);
-  useKeybinding('confirm:no', handleCancel, {
-    context: 'Confirmation',
+  useKeybinding("confirm:no", handleCancel, {
+    context: "Confirmation",
   });
   useInput((_input, key) => {
     if (key.return && referralLink) {
       void setClipboard(referralLink).then((raw) => {
         if (raw) process.stdout.write(raw);
-        logEvent('tengu_guest_passes_link_copied', {});
+        logEvent("tengu_guest_passes_link_copied", {});
         onDone(`Referral link copied to clipboard!`);
       });
     }
@@ -85,7 +85,7 @@ export function Passes({ onDone }: Props): React.ReactNode {
 
         // Use the campaign returned from eligibility for redemptions
         const campaign =
-          eligibilityData.referral_code_details?.campaign ?? 'claude_code_guest_pass';
+          eligibilityData.referral_code_details?.campaign ?? "claude_code_guest_pass";
 
         // Fetch redemptions data
         let redemptionsData: ReferralRedemptionsResponse;
@@ -156,21 +156,21 @@ export function Passes({ onDone }: Props): React.ReactNode {
       // Grayed out redeemed ticket with slashes
       return (
         <Box key={pass.passNumber} flexDirection="column" marginRight={1}>
-          <Text dimColor>{'┌─────────╱'}</Text>
+          <Text dimColor>{"┌─────────╱"}</Text>
           <Text dimColor>{` ) CC ${TEARDROP_ASTERISK} ┊╱`}</Text>
-          <Text dimColor>{'└───────╱'}</Text>
+          <Text dimColor>{"└───────╱"}</Text>
         </Box>
       );
     }
     return (
       <Box key={pass.passNumber} flexDirection="column" marginRight={1}>
-        <Text>{'┌──────────┐'}</Text>
+        <Text>{"┌──────────┐"}</Text>
         <Text>
-          {' ) CC '}
+          {" ) CC "}
           <Text color="claude">{TEARDROP_ASTERISK}</Text>
-          {' ┊ ( '}
+          {" ┊ ( "}
         </Text>
-        <Text>{'└──────────┘'}</Text>
+        <Text>{"└──────────┘"}</Text>
       </Box>
     );
   };
@@ -193,12 +193,12 @@ export function Passes({ onDone }: Props): React.ReactNode {
           <Text dimColor>
             {referrerReward
               ? `Share a free week of Claude Code with friends. If they love it and subscribe, you'll get ${formatCreditAmount(referrerReward)} of extra usage to keep building. `
-              : 'Share a free week of Claude Code with friends. '}
+              : "Share a free week of Claude Code with friends. "}
             <Link
               url={
                 referrerReward
-                  ? 'https://support.claude.com/en/articles/13456702-claude-code-guest-passes'
-                  : 'https://support.claude.com/en/articles/12875061-claude-code-guest-passes'
+                  ? "https://support.claude.com/en/articles/13456702-claude-code-guest-passes"
+                  : "https://support.claude.com/en/articles/12875061-claude-code-guest-passes"
               }
             >
               Terms apply.

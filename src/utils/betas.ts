@@ -1,10 +1,10 @@
-import { feature } from 'bun:bundle';
-import memoize from 'lodash-es/memoize.js';
+import { feature } from "bun:bundle";
+import memoize from "lodash-es/memoize.js";
 import {
   checkStatsigFeatureGate_CACHED_MAY_BE_STALE,
   getFeatureValue_CACHED_MAY_BE_STALE,
-} from 'src/services/analytics/growthbook.js';
-import { getIsNonInteractiveSession, getSdkBetas } from '../bootstrap/state.js';
+} from "src/services/analytics/growthbook.js";
+import { getIsNonInteractiveSession, getSdkBetas } from "../bootstrap/state.js";
 import {
   BEDROCK_EXTRA_PARAMS_HEADERS,
   CLAUDE_CODE_20250219_BETA_HEADER,
@@ -20,15 +20,15 @@ import {
   TOOL_SEARCH_BETA_HEADER_1P,
   TOOL_SEARCH_BETA_HEADER_3P,
   WEB_SEARCH_BETA_HEADER,
-} from '../constants/betas.js';
-import { OAUTH_BETA_HEADER } from '../constants/oauth.js';
-import { isClaudeAISubscriber } from './auth.js';
-import { has1mContext } from './context.js';
-import { isEnvDefinedFalsy, isEnvTruthy } from './envUtils.js';
-import { getCanonicalName } from './model/model.js';
-import { get3PModelCapabilityOverride } from './model/modelSupportOverrides.js';
-import { getAPIProvider } from './model/providers.js';
-import { getInitialSettings } from './settings/settings.js';
+} from "../constants/betas.js";
+import { OAUTH_BETA_HEADER } from "../constants/oauth.js";
+import { isClaudeAISubscriber } from "./auth.js";
+import { has1mContext } from "./context.js";
+import { isEnvDefinedFalsy, isEnvTruthy } from "./envUtils.js";
+import { getCanonicalName } from "./model/model.js";
+import { get3PModelCapabilityOverride } from "./model/modelSupportOverrides.js";
+import { getAPIProvider } from "./model/providers.js";
+import { getInitialSettings } from "./settings/settings.js";
 
 /**
  * SDK-provided betas that are allowed for API key users.
@@ -69,7 +69,7 @@ export function filterAllowedSdkBetas(sdkBetas: string[] | undefined): string[] 
   if (isClaudeAISubscriber()) {
     // biome-ignore lint/suspicious/noConsole: intentional warning
     console.warn(
-      'Warning: Custom betas are only available for API key users. Ignoring provided betas.',
+      "Warning: Custom betas are only available for API key users. Ignoring provided betas.",
     );
     return undefined;
   }
@@ -78,7 +78,7 @@ export function filterAllowedSdkBetas(sdkBetas: string[] | undefined): string[] 
   for (const beta of disallowed) {
     // biome-ignore lint/suspicious/noConsole: intentional warning
     console.warn(
-      `Warning: Beta header '${beta}' is not allowed. Only the following betas are supported: ${ALLOWED_SDK_BETAS.join(', ')}`,
+      `Warning: Beta header '${beta}' is not allowed. Only the following betas are supported: ${ALLOWED_SDK_BETAS.join(", ")}`,
     );
   }
   return allowed.length > 0 ? allowed : undefined;
@@ -88,29 +88,29 @@ export function filterAllowedSdkBetas(sdkBetas: string[] | undefined): string[] 
 // however out of an abundance of caution, we do not enable any which are behind an experiment
 
 export function modelSupportsISP(model: string): boolean {
-  const supported3P = get3PModelCapabilityOverride(model, 'interleaved_thinking');
+  const supported3P = get3PModelCapabilityOverride(model, "interleaved_thinking");
   if (supported3P !== undefined) {
     return supported3P;
   }
   const canonical = getCanonicalName(model);
   const provider = getAPIProvider();
   // Foundry supports interleaved thinking for all models
-  if (provider === 'foundry') {
+  if (provider === "foundry") {
     return true;
   }
-  if (provider === 'firstParty') {
-    return !canonical.includes('claude-3-');
+  if (provider === "firstParty") {
+    return !canonical.includes("claude-3-");
   }
-  return canonical.includes('claude-opus-4') || canonical.includes('claude-sonnet-4');
+  return canonical.includes("claude-opus-4") || canonical.includes("claude-sonnet-4");
 }
 
 function vertexModelSupportsWebSearch(model: string): boolean {
   const canonical = getCanonicalName(model);
   // Web search only supported on Claude 4.0+ models on Vertex
   return (
-    canonical.includes('claude-opus-4') ||
-    canonical.includes('claude-sonnet-4') ||
-    canonical.includes('claude-haiku-4')
+    canonical.includes("claude-opus-4") ||
+    canonical.includes("claude-sonnet-4") ||
+    canonical.includes("claude-haiku-4")
   );
 }
 
@@ -118,16 +118,16 @@ function vertexModelSupportsWebSearch(model: string): boolean {
 export function modelSupportsContextManagement(model: string): boolean {
   const canonical = getCanonicalName(model);
   const provider = getAPIProvider();
-  if (provider === 'foundry') {
+  if (provider === "foundry") {
     return true;
   }
-  if (provider === 'firstParty') {
-    return !canonical.includes('claude-3-');
+  if (provider === "firstParty") {
+    return !canonical.includes("claude-3-");
   }
   return (
-    canonical.includes('claude-opus-4') ||
-    canonical.includes('claude-sonnet-4') ||
-    canonical.includes('claude-haiku-4')
+    canonical.includes("claude-opus-4") ||
+    canonical.includes("claude-sonnet-4") ||
+    canonical.includes("claude-haiku-4")
   );
 }
 
@@ -136,27 +136,27 @@ export function modelSupportsStructuredOutputs(model: string): boolean {
   const canonical = getCanonicalName(model);
   const provider = getAPIProvider();
   // Structured outputs only supported on firstParty and Foundry (not Bedrock/Vertex yet)
-  if (provider !== 'firstParty' && provider !== 'foundry') {
+  if (provider !== "firstParty" && provider !== "foundry") {
     return false;
   }
   return (
-    canonical.includes('claude-sonnet-4-6') ||
-    canonical.includes('claude-sonnet-4-5') ||
-    canonical.includes('claude-opus-4-1') ||
-    canonical.includes('claude-opus-4-5') ||
-    canonical.includes('claude-opus-4-6') ||
-    canonical.includes('claude-haiku-4-5')
+    canonical.includes("claude-sonnet-4-6") ||
+    canonical.includes("claude-sonnet-4-5") ||
+    canonical.includes("claude-opus-4-1") ||
+    canonical.includes("claude-opus-4-5") ||
+    canonical.includes("claude-opus-4-6") ||
+    canonical.includes("claude-haiku-4-5")
   );
 }
 
 // @[MODEL LAUNCH]: Add the new model if it supports auto mode (specifically PI probes) — ask in #proj-claude-code-safety-research.
 export function modelSupportsAutoMode(model: string): boolean {
-  if (feature('TRANSCRIPT_CLASSIFIER')) {
+  if (feature("TRANSCRIPT_CLASSIFIER")) {
     const m = getCanonicalName(model);
     // External: firstParty-only at launch (PI probes not wired for
     // Bedrock/Vertex/Foundry yet). Checked before allowModels so the GB
     // override can't enable auto mode on unsupported providers.
-    if (process.env.USER_TYPE !== 'ant' && getAPIProvider() !== 'firstParty') {
+    if (process.env.USER_TYPE !== "ant" && getAPIProvider() !== "firstParty") {
       return false;
     }
     // GrowthBook override: tengu_auto_mode_config.allowModels force-enables
@@ -165,16 +165,16 @@ export function modelSupportsAutoMode(model: string): boolean {
     // canonical names (e.g. "claude-strudel") match the whole family.
     const config = getFeatureValue_CACHED_MAY_BE_STALE<{
       allowModels?: string[];
-    }>('tengu_auto_mode_config', {});
+    }>("tengu_auto_mode_config", {});
     const rawLower = model.toLowerCase();
     if (
       config?.allowModels?.some((am) => am.toLowerCase() === rawLower || am.toLowerCase() === m)
     ) {
       return true;
     }
-    if (process.env.USER_TYPE === 'ant') {
+    if (process.env.USER_TYPE === "ant") {
       // Denylist: block known-unsupported claude models, allow everything else (ant-internal models etc.)
-      if (m.includes('claude-3-')) return false;
+      if (m.includes("claude-3-")) return false;
       // claude-*-4 not followed by -[6-9]: blocks bare -4, -4-YYYYMMDD, -4@, -4-0 thru -4-5
       if (/claude-(opus|sonnet|haiku)-4(?!-[6-9])/.test(m)) return false;
       return true;
@@ -192,7 +192,7 @@ export function modelSupportsAutoMode(model: string): boolean {
  */
 export function getToolSearchBetaHeader(): string {
   const provider = getAPIProvider();
-  if (provider === 'vertex' || provider === 'bedrock') {
+  if (provider === "vertex" || provider === "bedrock") {
     return TOOL_SEARCH_BETA_HEADER_3P;
   }
   return TOOL_SEARCH_BETA_HEADER_1P;
@@ -205,7 +205,7 @@ export function getToolSearchBetaHeader(): string {
  */
 export function shouldIncludeFirstPartyOnlyBetas(): boolean {
   return (
-    (getAPIProvider() === 'firstParty' || getAPIProvider() === 'foundry') &&
+    (getAPIProvider() === "firstParty" || getAPIProvider() === "foundry") &&
     !isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS)
   );
 }
@@ -217,20 +217,20 @@ export function shouldIncludeFirstPartyOnlyBetas(): boolean {
  */
 export function shouldUseGlobalCacheScope(): boolean {
   return (
-    getAPIProvider() === 'firstParty' &&
+    getAPIProvider() === "firstParty" &&
     !isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS)
   );
 }
 
 export const getAllModelBetas = memoize((model: string): string[] => {
   const betaHeaders = [];
-  const isHaiku = getCanonicalName(model).includes('haiku');
+  const isHaiku = getCanonicalName(model).includes("haiku");
   const provider = getAPIProvider();
   const includeFirstPartyOnlyBetas = shouldIncludeFirstPartyOnlyBetas();
 
   if (!isHaiku) {
     betaHeaders.push(CLAUDE_CODE_20250219_BETA_HEADER);
-    if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_ENTRYPOINT === 'cli') {
+    if (process.env.USER_TYPE === "ant" && process.env.CLAUDE_CODE_ENTRYPOINT === "cli") {
       if (CLI_INTERNAL_BETA_HEADER) {
         betaHeaders.push(CLI_INTERNAL_BETA_HEADER);
       }
@@ -273,18 +273,18 @@ export const getAllModelBetas = memoize((model: string): string[] => {
   // into), unset defers to GB.
   if (
     SUMMARIZE_CONNECTOR_TEXT_BETA_HEADER &&
-    process.env.USER_TYPE === 'ant' &&
+    process.env.USER_TYPE === "ant" &&
     includeFirstPartyOnlyBetas &&
     !isEnvDefinedFalsy(process.env.USE_CONNECTOR_TEXT_SUMMARIZATION) &&
     (isEnvTruthy(process.env.USE_CONNECTOR_TEXT_SUMMARIZATION) ||
-      getFeatureValue_CACHED_MAY_BE_STALE('tengu_slate_prism', false))
+      getFeatureValue_CACHED_MAY_BE_STALE("tengu_slate_prism", false))
   ) {
     betaHeaders.push(SUMMARIZE_CONNECTOR_TEXT_BETA_HEADER);
   }
 
   // Add context management beta for tool clearing (ant opt-in) or thinking preservation
   const antOptedIntoToolClearing =
-    isEnvTruthy(process.env.USE_API_CONTEXT_MANAGEMENT) && process.env.USER_TYPE === 'ant';
+    isEnvTruthy(process.env.USE_API_CONTEXT_MANAGEMENT) && process.env.USER_TYPE === "ant";
 
   const thinkingPreservationEnabled = modelSupportsContextManagement(model);
 
@@ -300,11 +300,11 @@ export const getAllModelBetas = memoize((model: string): string[] => {
   // this header was escaping that kill switch. Proxy gateways that look like
   // firstParty but forward to Vertex reject this header with 400.
   // github.com/deshaw/anthropic-issues/issues/5
-  const strictToolsEnabled = checkStatsigFeatureGate_CACHED_MAY_BE_STALE('tengu_tool_pear');
+  const strictToolsEnabled = checkStatsigFeatureGate_CACHED_MAY_BE_STALE("tengu_tool_pear");
   // 3P default: false. API rejects strict + token-efficient-tools together
   // (tool_use.py:139), so these are mutually exclusive — strict wins.
   const tokenEfficientToolsEnabled =
-    !strictToolsEnabled && getFeatureValue_CACHED_MAY_BE_STALE('tengu_amber_json_tools', false);
+    !strictToolsEnabled && getFeatureValue_CACHED_MAY_BE_STALE("tengu_amber_json_tools", false);
   if (includeFirstPartyOnlyBetas && modelSupportsStructuredOutputs(model) && strictToolsEnabled) {
     betaHeaders.push(STRUCTURED_OUTPUTS_BETA_HEADER);
   }
@@ -312,16 +312,16 @@ export const getAllModelBetas = memoize((model: string): string[] => {
   // Sends the v2 header (2026-03-28) added in anthropics/anthropic#337072 to
   // isolate the CC A/B cohort from ~9.2M/week existing v1 senders. Ant-only
   // while the restored JsonToolUseOutputParser soaks.
-  if (process.env.USER_TYPE === 'ant' && includeFirstPartyOnlyBetas && tokenEfficientToolsEnabled) {
+  if (process.env.USER_TYPE === "ant" && includeFirstPartyOnlyBetas && tokenEfficientToolsEnabled) {
     betaHeaders.push(TOKEN_EFFICIENT_TOOLS_BETA_HEADER);
   }
 
   // Add web search beta for Vertex Claude 4.0+ models only
-  if (provider === 'vertex' && vertexModelSupportsWebSearch(model)) {
+  if (provider === "vertex" && vertexModelSupportsWebSearch(model)) {
     betaHeaders.push(WEB_SEARCH_BETA_HEADER);
   }
   // Foundry only ships models that already support Web Search
-  if (provider === 'foundry') {
+  if (provider === "foundry") {
     betaHeaders.push(WEB_SEARCH_BETA_HEADER);
   }
 
@@ -334,7 +334,7 @@ export const getAllModelBetas = memoize((model: string): string[] => {
   // This is an explicit user opt-in, so honor it regardless of model.
   if (process.env.ANTHROPIC_BETAS) {
     betaHeaders.push(
-      ...process.env.ANTHROPIC_BETAS.split(',')
+      ...process.env.ANTHROPIC_BETAS.split(",")
         .map((_) => _.trim())
         .filter(Boolean),
     );
@@ -344,7 +344,7 @@ export const getAllModelBetas = memoize((model: string): string[] => {
 
 export const getModelBetas = memoize((model: string): string[] => {
   const modelBetas = getAllModelBetas(model);
-  if (getAPIProvider() === 'bedrock') {
+  if (getAPIProvider() === "bedrock") {
     return modelBetas.filter((b) => !BEDROCK_EXTRA_PARAMS_HEADERS.has(b));
   }
   return modelBetas;
@@ -377,8 +377,8 @@ export function getMergedBetas(model: string, options?: { isAgenticQuery?: boole
       baseBetas.push(CLAUDE_CODE_20250219_BETA_HEADER);
     }
     if (
-      process.env.USER_TYPE === 'ant' &&
-      process.env.CLAUDE_CODE_ENTRYPOINT === 'cli' &&
+      process.env.USER_TYPE === "ant" &&
+      process.env.CLAUDE_CODE_ENTRYPOINT === "cli" &&
       CLI_INTERNAL_BETA_HEADER &&
       !baseBetas.includes(CLI_INTERNAL_BETA_HEADER)
     ) {

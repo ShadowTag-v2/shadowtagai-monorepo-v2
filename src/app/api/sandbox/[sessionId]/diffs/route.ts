@@ -13,17 +13,17 @@
  *   - Trust Level 0 enforced by bridge
  */
 
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL =
-  process.env.COUNSELCONDUIT_API_URL ?? 'https://counselconduit-767252945109.us-central1.run.app';
+  process.env.COUNSELCONDUIT_API_URL ?? "https://counselconduit-767252945109.us-central1.run.app";
 
 export async function GET(request: NextRequest, { params }: { params: { sessionId: string } }) {
   const sessionId = params.sessionId;
-  const matterId = request.nextUrl.searchParams.get('matter') ?? '';
+  const matterId = request.nextUrl.searchParams.get("matter") ?? "";
 
   if (!sessionId || !matterId) {
-    return NextResponse.json({ error: 'Missing sessionId or matter parameter' }, { status: 400 });
+    return NextResponse.json({ error: "Missing sessionId or matter parameter" }, { status: 400 });
   }
 
   try {
@@ -32,10 +32,10 @@ export async function GET(request: NextRequest, { params }: { params: { sessionI
       `${BACKEND_URL}/api/sandbox/${sessionId}/diffs?matter=${encodeURIComponent(matterId)}`,
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           // Forward auth token from client
-          ...(request.headers.get('authorization')
-            ? { Authorization: request.headers.get('authorization')! }
+          ...(request.headers.get("authorization")
+            ? { Authorization: request.headers.get("authorization")! }
             : {}),
         },
         // 30s timeout for diff computation
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest, { params }: { params: { sessionI
     const data = await backendRes.json();
     return NextResponse.json(data);
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Internal error';
+    const message = err instanceof Error ? err.message : "Internal error";
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }

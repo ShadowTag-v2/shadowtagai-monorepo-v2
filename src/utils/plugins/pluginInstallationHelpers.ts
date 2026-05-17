@@ -5,45 +5,45 @@
  * system to reduce code duplication and improve maintainability.
  */
 
-import { randomBytes } from 'node:crypto';
-import { rename, rm } from 'node:fs/promises';
-import { dirname, join, resolve, sep } from 'node:path';
+import { randomBytes } from "node:crypto";
+import { rename, rm } from "node:fs/promises";
+import { dirname, join, resolve, sep } from "node:path";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
   logEvent,
-} from '../../services/analytics/index.js';
-import { getCwd } from '../cwd.js';
-import { toError } from '../errors.js';
-import { getFsImplementation } from '../fsOperations.js';
-import { logError } from '../log.js';
-import { getSettingsForSource, updateSettingsForSource } from '../settings/settings.js';
-import { buildPluginTelemetryFields } from '../telemetry/pluginTelemetry.js';
-import { clearAllCaches } from './cacheUtils.js';
+} from "../../services/analytics/index.js";
+import { getCwd } from "../cwd.js";
+import { toError } from "../errors.js";
+import { getFsImplementation } from "../fsOperations.js";
+import { logError } from "../log.js";
+import { getSettingsForSource, updateSettingsForSource } from "../settings/settings.js";
+import { buildPluginTelemetryFields } from "../telemetry/pluginTelemetry.js";
+import { clearAllCaches } from "./cacheUtils.js";
 import {
   formatDependencyCountSuffix,
   getEnabledPluginIdsForScope,
   type ResolutionResult,
   resolveDependencyClosure,
-} from './dependencyResolver.js';
-import { addInstalledPlugin, getGitCommitSha } from './installedPluginsManager.js';
-import { getManagedPluginNames } from './managedPlugins.js';
-import { getMarketplaceCacheOnly, getPluginById } from './marketplaceManager.js';
+} from "./dependencyResolver.js";
+import { addInstalledPlugin, getGitCommitSha } from "./installedPluginsManager.js";
+import { getManagedPluginNames } from "./managedPlugins.js";
+import { getMarketplaceCacheOnly, getPluginById } from "./marketplaceManager.js";
 import {
   isOfficialMarketplaceName,
   parsePluginIdentifier,
   scopeToSettingSource,
-} from './pluginIdentifier.js';
-import { cachePlugin, getVersionedCachePath, getVersionedZipCachePath } from './pluginLoader.js';
-import { isPluginBlockedByPolicy } from './pluginPolicy.js';
-import { calculatePluginVersion } from './pluginVersioning.js';
+} from "./pluginIdentifier.js";
+import { cachePlugin, getVersionedCachePath, getVersionedZipCachePath } from "./pluginLoader.js";
+import { isPluginBlockedByPolicy } from "./pluginPolicy.js";
+import { calculatePluginVersion } from "./pluginVersioning.js";
 import {
   isLocalPluginSource,
   type PluginMarketplaceEntry,
   type PluginScope,
   type PluginSource,
-} from './schemas.js';
-import { convertDirectoryToZipInPlace, isPluginZipCacheEnabled } from './zipCache.js';
+} from "./schemas.js";
+import { convertDirectoryToZipInPlace, isPluginZipCacheEnabled } from "./zipCache.js";
 
 /**
  * Plugin installation metadata for installed_plugins.json
@@ -107,14 +107,14 @@ export function validatePathWithinBase(basePath: string, relativePath: string): 
 export async function cacheAndRegisterPlugin(
   pluginId: string,
   entry: PluginMarketplaceEntry,
-  scope: PluginScope = 'user',
+  scope: PluginScope = "user",
   projectPath?: string,
   localSourcePath?: string,
 ): Promise<string> {
   // For local plugins, we need the resolved absolute path
   // Cast to PluginSource since cachePlugin handles any string path at runtime
   const source: PluginSource =
-    typeof entry.source === 'string' && localSourcePath
+    typeof entry.source === "string" && localSourcePath
       ? (localSourcePath as PluginSource)
       : entry.source;
 
@@ -167,7 +167,7 @@ export async function cacheAndRegisterPlugin(
       // errors when /tmp is on a different filesystem (e.g., tmpfs)
       const tempPath = join(
         dirname(cacheResult.path),
-        `.claude-plugin-temp-${Date.now()}-${randomBytes(4).toString('hex')}`,
+        `.claude-plugin-temp-${Date.now()}-${randomBytes(4).toString("hex")}`,
       );
       await rename(cacheResult.path, tempPath);
       await getFsImplementation().mkdir(dirname(versionedPath));
@@ -216,14 +216,14 @@ export async function cacheAndRegisterPlugin(
  */
 export function registerPluginInstallation(
   info: PluginInstallationInfo,
-  scope: PluginScope = 'user',
+  scope: PluginScope = "user",
   projectPath?: string,
 ): void {
   const now = getCurrentTimestamp();
   addInstalledPlugin(
     info.pluginId,
     {
-      version: info.version || 'unknown',
+      version: info.version || "unknown",
       installedAt: now,
       lastUpdated: now,
       installPath: info.installPath,
@@ -240,7 +240,7 @@ export function registerPluginInstallation(
  * @returns Parsed components or null if invalid
  */
 export function parsePluginId(pluginId: string): { name: string; marketplace: string } | null {
-  const parts = pluginId.split('@');
+  const parts = pluginId.split("@");
   if (parts.length !== 2 || !parts[0] || !parts[1]) {
     return null;
   }
@@ -257,17 +257,17 @@ export function parsePluginId(pluginId: string): { name: string; marketplace: st
  */
 export type InstallCoreResult =
   | { ok: true; closure: string[]; depNote: string }
-  | { ok: false; reason: 'local-source-no-location'; pluginName: string }
-  | { ok: false; reason: 'settings-write-failed'; message: string }
+  | { ok: false; reason: "local-source-no-location"; pluginName: string }
+  | { ok: false; reason: "settings-write-failed"; message: string }
   | {
       ok: false;
-      reason: 'resolution-failed';
+      reason: "resolution-failed";
       resolution: ResolutionResult & { ok: false };
     }
-  | { ok: false; reason: 'blocked-by-policy'; pluginName: string }
+  | { ok: false; reason: "blocked-by-policy"; pluginName: string }
   | {
       ok: false;
-      reason: 'dependency-blocked-by-policy';
+      reason: "dependency-blocked-by-policy";
       pluginName: string;
       blockedDependency: string;
     };
@@ -279,17 +279,17 @@ export type InstallCoreResult =
  */
 export function formatResolutionError(r: ResolutionResult & { ok: false }): string {
   switch (r.reason) {
-    case 'cycle':
-      return `Dependency cycle: ${r.chain.join(' → ')}`;
-    case 'cross-marketplace': {
+    case "cycle":
+      return `Dependency cycle: ${r.chain.join(" → ")}`;
+    case "cross-marketplace": {
       const depMkt = parsePluginIdentifier(r.dependency).marketplace;
-      const where = depMkt ? `marketplace "${depMkt}"` : 'a different marketplace';
+      const where = depMkt ? `marketplace "${depMkt}"` : "a different marketplace";
       const hint = depMkt
         ? ` Add "${depMkt}" to allowCrossMarketplaceDependenciesOn in the ROOT marketplace's marketplace.json (the marketplace of the plugin you're installing — only its allowlist applies; no transitive trust).`
-        : '';
+        : "";
       return `Dependency "${r.dependency}" (required by ${r.requiredBy}) is in ${where}, which is not in the allowlist — cross-marketplace dependencies are blocked by default. Install it manually first.${hint}`;
     }
-    case 'not-found': {
+    case "not-found": {
       const { marketplace: depMkt } = parsePluginIdentifier(r.missing);
       return depMkt
         ? `Dependency "${r.missing}" (required by ${r.requiredBy}) not found. Is the "${depMkt}" marketplace added?`
@@ -325,7 +325,7 @@ export async function installResolvedPlugin({
 }: {
   pluginId: string;
   entry: PluginMarketplaceEntry;
-  scope: 'user' | 'project' | 'local';
+  scope: "user" | "project" | "local";
   marketplaceInstallLocation?: string;
 }): Promise<InstallCoreResult> {
   const settingSource = scopeToSettingSource(scope);
@@ -335,7 +335,7 @@ export async function installResolvedPlugin({
   // be installed. Checked here so all install paths (CLI, UI, hint-triggered)
   // are covered in one place.
   if (isPluginBlockedByPolicy(pluginId)) {
-    return { ok: false, reason: 'blocked-by-policy', pluginName: entry.name };
+    return { ok: false, reason: "blocked-by-policy", pluginName: entry.name };
   }
 
   // ── Resolve dependency closure ──
@@ -352,7 +352,7 @@ export async function installResolvedPlugin({
   if (isLocalPluginSource(entry.source) && !marketplaceInstallLocation) {
     return {
       ok: false,
-      reason: 'local-source-no-location',
+      reason: "local-source-no-location",
       pluginName: entry.name,
     };
   }
@@ -379,7 +379,7 @@ export async function installResolvedPlugin({
     allowedCrossMarketplaces,
   );
   if (!resolution.ok) {
-    return { ok: false, reason: 'resolution-failed', resolution };
+    return { ok: false, reason: "resolution-failed", resolution };
   }
 
   // ── Policy guard for transitive dependencies ──
@@ -390,7 +390,7 @@ export async function installResolvedPlugin({
     if (id !== pluginId && isPluginBlockedByPolicy(id)) {
       return {
         ok: false,
-        reason: 'dependency-blocked-by-policy',
+        reason: "dependency-blocked-by-policy",
         pluginName: entry.name,
         blockedDependency: id,
       };
@@ -409,13 +409,13 @@ export async function installResolvedPlugin({
   if (error) {
     return {
       ok: false,
-      reason: 'settings-write-failed',
+      reason: "settings-write-failed",
       message: error.message,
     };
   }
 
   // ── Materialize: cache each closure member ──
-  const projectPath = scope !== 'user' ? getCwd() : undefined;
+  const projectPath = scope !== "user" ? getCwd() : undefined;
   for (const id of resolution.closure) {
     let info = depInfo.get(id);
     // Root wasn't pre-seeded (caller didn't pass marketplaceInstallLocation
@@ -454,8 +454,8 @@ export type InstallPluginParams = {
   pluginId: string;
   entry: PluginMarketplaceEntry;
   marketplaceName: string;
-  scope?: 'user' | 'project' | 'local';
-  trigger?: 'hint' | 'user';
+  scope?: "user" | "project" | "local";
+  trigger?: "hint" | "user";
 };
 
 /**
@@ -467,8 +467,8 @@ export async function installPluginFromMarketplace({
   pluginId,
   entry,
   marketplaceName,
-  scope = 'user',
-  trigger = 'user',
+  scope = "user",
+  trigger = "user",
 }: InstallPluginParams): Promise<InstallPluginResult> {
   try {
     // Look up the marketplace install location for local-source plugins.
@@ -486,27 +486,27 @@ export async function installPluginFromMarketplace({
 
     if (!result.ok) {
       switch (result.reason) {
-        case 'local-source-no-location':
+        case "local-source-no-location":
           return {
             success: false,
             error: `Cannot install local plugin "${result.pluginName}" without marketplace install location`,
           };
-        case 'settings-write-failed':
+        case "settings-write-failed":
           return {
             success: false,
             error: `Failed to update settings: ${result.message}`,
           };
-        case 'resolution-failed':
+        case "resolution-failed":
           return {
             success: false,
             error: formatResolutionError(result.resolution),
           };
-        case 'blocked-by-policy':
+        case "blocked-by-policy":
           return {
             success: false,
             error: `Plugin "${result.pluginName}" is blocked by your organization's policy and cannot be installed`,
           };
-        case 'dependency-blocked-by-policy':
+        case "dependency-blocked-by-policy":
           return {
             success: false,
             error: `Cannot install "${result.pluginName}": dependency "${result.blockedDependency}" is blocked by your organization's policy`,
@@ -519,16 +519,16 @@ export async function installPluginFromMarketplace({
     // non-official) because dbt external_claude_code_plugin_installs.sql
     // extracts $.plugin_id for official-marketplace install tracking. Other
     // plugin lifecycle events drop the blob key — no downstream consumers.
-    logEvent('tengu_plugin_installed', {
+    logEvent("tengu_plugin_installed", {
       _PROTO_plugin_name: entry.name as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
       _PROTO_marketplace_name: marketplaceName as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
       plugin_id: (isOfficialMarketplaceName(marketplaceName)
         ? pluginId
-        : 'third-party') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+        : "third-party") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       trigger: trigger as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
-      install_source: (trigger === 'hint'
-        ? 'ui-suggestion'
-        : 'ui-discover') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      install_source: (trigger === "hint"
+        ? "ui-suggestion"
+        : "ui-discover") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       ...buildPluginTelemetryFields(entry.name, marketplaceName, getManagedPluginNames()),
       ...(entry.version && {
         version: entry.version as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,

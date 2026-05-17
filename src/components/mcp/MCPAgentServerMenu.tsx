@@ -1,18 +1,18 @@
-import figures from 'figures';
-import type React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CommandResultDisplay } from '../../commands.js';
-import { Box, color, Link, Text, useTheme } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import { AuthenticationCancelledError, performMCPOAuthFlow } from '../../services/mcp/auth.js';
-import { capitalize } from '../../utils/stringUtils.js';
-import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
-import { Select } from '../CustomSelect/index.js';
-import { Byline } from '../design-system/Byline.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
-import { Spinner } from '../Spinner.js';
-import type { AgentMcpServerInfo } from './types.js';
+import figures from "figures";
+import type React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { CommandResultDisplay } from "../../commands.js";
+import { Box, color, Link, Text, useTheme } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import { AuthenticationCancelledError, performMCPOAuthFlow } from "../../services/mcp/auth.js";
+import { capitalize } from "../../utils/stringUtils.js";
+import { ConfigurableShortcutHint } from "../ConfigurableShortcutHint.js";
+import { Select } from "../CustomSelect/index.js";
+import { Byline } from "../design-system/Byline.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { KeyboardShortcutHint } from "../design-system/KeyboardShortcutHint.js";
+import { Spinner } from "../Spinner.js";
+import type { AgentMcpServerInfo } from "./types.js";
 
 type Props = {
   agentServer: AgentMcpServerInfo;
@@ -50,8 +50,8 @@ export function MCPAgentServerMenu({ agentServer, onCancel, onComplete }: Props)
       setAuthorizationUrl(null);
     }
   }, [isAuthenticating]);
-  useKeybinding('confirm:no', handleEscCancel, {
-    context: 'Confirmation',
+  useKeybinding("confirm:no", handleEscCancel, {
+    context: "Confirmation",
     isActive: isAuthenticating,
   });
   const handleAuthenticate = useCallback(async () => {
@@ -65,7 +65,7 @@ export function MCPAgentServerMenu({ agentServer, onCancel, onComplete }: Props)
     try {
       // Create a temporary config for OAuth
       const tempConfig = {
-        type: agentServer.transport as 'http' | 'sse',
+        type: agentServer.transport as "http" | "sse",
         url: agentServer.url,
       };
       await performMCPOAuthFlow(
@@ -106,7 +106,7 @@ export function MCPAgentServerMenu({ agentServer, onCancel, onComplete }: Props)
         )}
         <Box marginLeft={3}>
           <Text dimColor>
-            Return here after authenticating in your browser.{' '}
+            Return here after authenticating in your browser.{" "}
             <ConfigurableShortcutHint
               action="confirm:no"
               context="Confirmation"
@@ -123,13 +123,13 @@ export function MCPAgentServerMenu({ agentServer, onCancel, onComplete }: Props)
   // Only show authenticate option for HTTP/SSE servers
   if (agentServer.needsAuth) {
     menuOptions.push({
-      label: agentServer.isAuthenticated ? 'Re-authenticate' : 'Authenticate',
-      value: 'auth',
+      label: agentServer.isAuthenticated ? "Re-authenticate" : "Authenticate",
+      value: "auth",
     });
   }
   menuOptions.push({
-    label: 'Back',
-    value: 'back',
+    label: "Back",
+    value: "back",
   });
   return (
     <Dialog
@@ -175,22 +175,22 @@ export function MCPAgentServerMenu({ agentServer, onCancel, onComplete }: Props)
 
         <Box>
           <Text bold>Used by: </Text>
-          <Text dimColor>{agentServer.sourceAgents.join(', ')}</Text>
+          <Text dimColor>{agentServer.sourceAgents.join(", ")}</Text>
         </Box>
 
         <Box marginTop={1}>
           <Text bold>Status: </Text>
-          <Text>{color('inactive', theme)(figures.radioOff)} not connected (agent-only)</Text>
+          <Text>{color("inactive", theme)(figures.radioOff)} not connected (agent-only)</Text>
         </Box>
 
         {agentServer.needsAuth && (
           <Box>
             <Text bold>Auth: </Text>
             {agentServer.isAuthenticated ? (
-              <Text>{color('success', theme)(figures.tick)} authenticated</Text>
+              <Text>{color("success", theme)(figures.tick)} authenticated</Text>
             ) : (
               <Text>
-                {color('warning', theme)(figures.triangleUpOutline)} may need authentication
+                {color("warning", theme)(figures.triangleUpOutline)} may need authentication
               </Text>
             )}
           </Box>
@@ -212,10 +212,10 @@ export function MCPAgentServerMenu({ agentServer, onCancel, onComplete }: Props)
           options={menuOptions}
           onChange={async (value) => {
             switch (value) {
-              case 'auth':
+              case "auth":
                 await handleAuthenticate();
                 break;
-              case 'back':
+              case "back":
                 onCancel();
                 break;
             }

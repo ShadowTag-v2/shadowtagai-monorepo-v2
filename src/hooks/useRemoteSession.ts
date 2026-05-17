@@ -1,34 +1,34 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { BoundedUUIDSet } from '../bridge/bridgeMessaging.js';
-import type { ToolUseConfirm } from '../components/permissions/PermissionRequest.js';
-import type { SpinnerMode } from '../components/Spinner/types.js';
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { BoundedUUIDSet } from "../bridge/bridgeMessaging.js";
+import type { ToolUseConfirm } from "../components/permissions/PermissionRequest.js";
+import type { SpinnerMode } from "../components/Spinner/types.js";
 import {
   type RemotePermissionResponse,
   type RemoteSessionConfig,
   RemoteSessionManager,
-} from '../remote/RemoteSessionManager.js';
+} from "../remote/RemoteSessionManager.js";
 import {
   createSyntheticAssistantMessage,
   createToolStub,
-} from '../remote/remotePermissionBridge.js';
-import { convertSDKMessage, isSessionEndMessage } from '../remote/sdkMessageAdapter.js';
-import { useSetAppState } from '../state/AppState.js';
-import type { AppState } from '../state/AppStateStore.js';
-import type { Tool } from '../Tool.js';
-import { findToolByName } from '../Tool.js';
-import type { Message as MessageType } from '../types/message.js';
-import type { PermissionAskDecision } from '../types/permissions.js';
-import { logForDebugging } from '../utils/debug.js';
-import { truncateToWidth } from '../utils/format.js';
+} from "../remote/remotePermissionBridge.js";
+import { convertSDKMessage, isSessionEndMessage } from "../remote/sdkMessageAdapter.js";
+import { useSetAppState } from "../state/AppState.js";
+import type { AppState } from "../state/AppStateStore.js";
+import type { Tool } from "../Tool.js";
+import { findToolByName } from "../Tool.js";
+import type { Message as MessageType } from "../types/message.js";
+import type { PermissionAskDecision } from "../types/permissions.js";
+import { logForDebugging } from "../utils/debug.js";
+import { truncateToWidth } from "../utils/format.js";
 import {
   createSystemMessage,
   extractTextContent,
   handleMessageFromStream,
   type StreamingToolUse,
-} from '../utils/messages.js';
-import { generateSessionTitle } from '../utils/sessionTitle.js';
-import type { RemoteMessageContent } from '../utils/teleport/api.js';
-import { updateSessionTitle } from '../utils/teleport/api.js';
+} from "../utils/messages.js";
+import { generateSessionTitle } from "../utils/sessionTitle.js";
+import type { RemoteMessageContent } from "../utils/teleport/api.js";
+import { updateSessionTitle } from "../utils/teleport/api.js";
 
 // How long to wait for a response before showing a warning
 const RESPONSE_TIMEOUT_MS = 60000; // 60 seconds
@@ -80,7 +80,7 @@ export function useRemoteSession({
 
   const setAppState = useSetAppState();
   const setConnStatus = useCallback(
-    (s: AppState['remoteConnectionStatus']) =>
+    (s: AppState["remoteConnectionStatus"]) =>
       setAppState((prev) =>
         prev.remoteConnectionStatus === s ? prev : { ...prev, remoteConnectionStatus: s },
       ),
@@ -142,12 +142,12 @@ export function useRemoteSession({
     const manager = new RemoteSessionManager(config, {
       onMessage: (sdkMessage) => {
         const parts = [`type=${sdkMessage.type}`];
-        if ('subtype' in sdkMessage) parts.push(`subtype=${sdkMessage.subtype}`);
-        if (sdkMessage.type === 'user') {
+        if ("subtype" in sdkMessage) parts.push(`subtype=${sdkMessage.subtype}`);
+        if (sdkMessage.type === "user") {
           const c = sdkMessage.message?.content;
-          parts.push(`content=${Array.isArray(c) ? c.map((b) => b.type).join(',') : typeof c}`);
+          parts.push(`content=${Array.isArray(c) ? c.map((b) => b.type).join(",") : typeof c}`);
         }
-        logForDebugging(`[useRemoteSession] Received ${parts.join(' ')}`);
+        logForDebugging(`[useRemoteSession] Received ${parts.join(" ")}`);
 
         // Clear response timeout on any message received — including the WS
         // echo of our own POST, which acts as a heartbeat. This must run
@@ -164,7 +164,7 @@ export function useRemoteSession({
         // match — the same uuid can echo more than once (server broadcast +
         // worker echo), and BoundedUUIDSet already caps growth via its ring.
         if (
-          sdkMessage.type === 'user' &&
+          sdkMessage.type === "user" &&
           sdkMessage.uuid &&
           sentUUIDsRef.current.has(sdkMessage.uuid)
         ) {
@@ -172,7 +172,7 @@ export function useRemoteSession({
           return;
         }
         // Handle init message - extract available slash commands
-        if (sdkMessage.type === 'system' && sdkMessage.subtype === 'init' && onInit) {
+        if (sdkMessage.type === "system" && sdkMessage.subtype === "init" && onInit) {
           logForDebugging(
             `[useRemoteSession] Init received with ${sdkMessage.slash_commands.length} slash commands`,
           );
@@ -183,32 +183,32 @@ export function useRemoteSession({
         // All task types (Agent/teammate/workflow/bash) flow through
         // registerTask() → task_started, and complete via task_notification.
         // Return early — these are status signals, not renderable messages.
-        if (sdkMessage.type === 'system') {
-          if (sdkMessage.subtype === 'task_started') {
+        if (sdkMessage.type === "system") {
+          if (sdkMessage.subtype === "task_started") {
             runningTaskIdsRef.current.add(sdkMessage.task_id);
             writeTaskCount();
             return;
           }
-          if (sdkMessage.subtype === 'task_notification') {
+          if (sdkMessage.subtype === "task_notification") {
             runningTaskIdsRef.current.delete(sdkMessage.task_id);
             writeTaskCount();
             return;
           }
-          if (sdkMessage.subtype === 'task_progress') {
+          if (sdkMessage.subtype === "task_progress") {
             return;
           }
           // Track compaction state. The CLI emits status='compacting' at
           // the start and status=null when done; compact_boundary also
           // signals completion. Repeated 'compacting' status messages
           // (keep-alive ticks) update the ref but don't append to messages.
-          if (sdkMessage.subtype === 'status') {
+          if (sdkMessage.subtype === "status") {
             const wasCompacting = isCompactingRef.current;
-            isCompactingRef.current = sdkMessage.status === 'compacting';
+            isCompactingRef.current = sdkMessage.status === "compacting";
             if (wasCompacting && isCompactingRef.current) {
               return;
             }
           }
-          if (sdkMessage.subtype === 'compact_boundary') {
+          if (sdkMessage.subtype === "compact_boundary") {
             isCompactingRef.current = false;
           }
         }
@@ -225,12 +225,12 @@ export function useRemoteSession({
         // delete would never fire post-conversion. Mirrors the add site below
         // and inProcessRunner.ts; without this the set grows unbounded for the
         // session lifetime (BQ: CCR cohort shows 5.2x higher RSS slope).
-        if (setInProgressToolUseIDs && sdkMessage.type === 'user') {
+        if (setInProgressToolUseIDs && sdkMessage.type === "user") {
           const content = sdkMessage.message?.content;
           if (Array.isArray(content)) {
             const resultIds: string[] = [];
             for (const block of content) {
-              if (block.type === 'tool_result') {
+              if (block.type === "tool_result") {
                 resultIds.push(block.tool_use_id);
               }
             }
@@ -255,7 +255,7 @@ export function useRemoteSession({
             : undefined,
         );
 
-        if (converted.type === 'message') {
+        if (converted.type === "message") {
           // When we receive a complete message, clear streaming tool uses
           // since the complete message replaces the partial streaming state
           setStreamingToolUses?.((prev) => (prev.length > 0 ? [] : prev));
@@ -264,9 +264,9 @@ export function useRemoteSession({
           // spinner state instead of "Waiting…" (queued). In local sessions,
           // toolOrchestration.ts handles this, but remote sessions receive
           // pre-built assistant messages without running local tool execution.
-          if (setInProgressToolUseIDs && converted.message.type === 'assistant') {
+          if (setInProgressToolUseIDs && converted.message.type === "assistant") {
             const toolUseIds = converted.message.message.content
-              .filter((block) => block.type === 'tool_use')
+              .filter((block) => block.type === "tool_use")
               .map((block) => block.id);
             if (toolUseIds.length > 0) {
               setInProgressToolUseIDs((prev) => {
@@ -282,7 +282,7 @@ export function useRemoteSession({
           setMessages((prev) => [...prev, converted.message]);
           // Note: Don't stop loading on assistant messages - the agent may still be
           // working (tool use loops). Loading stops only on session end or permission request.
-        } else if (converted.type === 'stream_event') {
+        } else if (converted.type === "stream_event") {
           // Process streaming events to update UI in real-time
           if (setStreamingToolUses && setStreamMode) {
             handleMessageFromStream(
@@ -312,7 +312,7 @@ export function useRemoteSession({
         const syntheticMessage = createSyntheticAssistantMessage(request, requestId);
 
         const permissionResult: PermissionAskDecision = {
-          behavior: 'ask',
+          behavior: "ask",
           message: request.description ?? `${request.tool_name} requires permission`,
           suggestions: request.permission_suggestions,
           blockedPath: request.blocked_path,
@@ -323,7 +323,7 @@ export function useRemoteSession({
           tool,
           description: request.description ?? `${request.tool_name} requires permission`,
           input: request.input,
-          toolUseContext: {} as ToolUseConfirm['toolUseContext'],
+          toolUseContext: {} as ToolUseConfirm["toolUseContext"],
           toolUseID: request.tool_use_id,
           permissionResult,
           permissionPromptStartTimeMs: Date.now(),
@@ -332,8 +332,8 @@ export function useRemoteSession({
           },
           onAbort() {
             const response: RemotePermissionResponse = {
-              behavior: 'deny',
-              message: 'User aborted',
+              behavior: "deny",
+              message: "User aborted",
             };
             manager.respondToPermissionRequest(requestId, response);
             setToolUseConfirmQueue((queue) =>
@@ -342,7 +342,7 @@ export function useRemoteSession({
           },
           onAllow(updatedInput, _permissionUpdates, _feedback) {
             const response: RemotePermissionResponse = {
-              behavior: 'allow',
+              behavior: "allow",
               updatedInput,
             };
             manager.respondToPermissionRequest(requestId, response);
@@ -354,8 +354,8 @@ export function useRemoteSession({
           },
           onReject(feedback?: string) {
             const response: RemotePermissionResponse = {
-              behavior: 'deny',
-              message: feedback ?? 'User denied permission',
+              behavior: "deny",
+              message: feedback ?? "User denied permission",
             };
             manager.respondToPermissionRequest(requestId, response);
             setToolUseConfirmQueue((queue) =>
@@ -378,12 +378,12 @@ export function useRemoteSession({
         setIsLoading(true);
       },
       onConnected: () => {
-        logForDebugging('[useRemoteSession] Connected');
-        setConnStatus('connected');
+        logForDebugging("[useRemoteSession] Connected");
+        setConnStatus("connected");
       },
       onReconnecting: () => {
-        logForDebugging('[useRemoteSession] Reconnecting');
-        setConnStatus('reconnecting');
+        logForDebugging("[useRemoteSession] Reconnecting");
+        setConnStatus("reconnecting");
         // WS gap = we may miss task_notification events. Clear rather than
         // drift high forever. Undercounts tasks that span the gap; accepted.
         runningTaskIdsRef.current.clear();
@@ -393,8 +393,8 @@ export function useRemoteSession({
         setInProgressToolUseIDs?.((prev) => (prev.size > 0 ? new Set() : prev));
       },
       onDisconnected: () => {
-        logForDebugging('[useRemoteSession] Disconnected');
-        setConnStatus('disconnected');
+        logForDebugging("[useRemoteSession] Disconnected");
+        setConnStatus("disconnected");
         setIsLoading(false);
         runningTaskIdsRef.current.clear();
         writeTaskCount();
@@ -409,7 +409,7 @@ export function useRemoteSession({
     manager.connect();
 
     return () => {
-      logForDebugging('[useRemoteSession] Cleanup - disconnecting');
+      logForDebugging("[useRemoteSession] Cleanup - disconnecting");
       // Clear any pending timeout
       if (responseTimeoutRef.current) {
         clearTimeout(responseTimeoutRef.current);
@@ -436,7 +436,7 @@ export function useRemoteSession({
     async (content: RemoteMessageContent, opts?: { uuid?: string }): Promise<boolean> => {
       const manager = managerRef.current;
       if (!manager) {
-        logForDebugging('[useRemoteSession] Cannot send - no manager');
+        logForDebugging("[useRemoteSession] Cannot send - no manager");
         return false;
       }
 
@@ -468,7 +468,7 @@ export function useRemoteSession({
         const sessionId = config.sessionId;
         // Extract plain text from content (may be string or content block array)
         const description =
-          typeof content === 'string' ? content : extractTextContent(content, ' ');
+          typeof content === "string" ? content : extractTextContent(content, " ");
         if (description) {
           // generateSessionTitle never rejects (wraps body in try/catch,
           // returns null on failure), so no .catch needed on this chain.
@@ -486,11 +486,11 @@ export function useRemoteSession({
         const timeoutMs = isCompactingRef.current ? COMPACTION_TIMEOUT_MS : RESPONSE_TIMEOUT_MS;
         responseTimeoutRef.current = setTimeout(
           (setMessages, manager) => {
-            logForDebugging('[useRemoteSession] Response timeout - attempting reconnect');
+            logForDebugging("[useRemoteSession] Response timeout - attempting reconnect");
             // Add a warning message to the conversation
             const warningMessage = createSystemMessage(
-              'Remote session may be unresponsive. Attempting to reconnect…',
-              'warning',
+              "Remote session may be unresponsive. Attempting to reconnect…",
+              "warning",
             );
             setMessages((prev) => [...prev, warningMessage]);
 

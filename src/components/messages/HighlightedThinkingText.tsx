@@ -1,15 +1,15 @@
-import figures from 'figures';
-import { useContext } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useQueuedMessage } from '../../context/QueuedMessageContext.js';
-import { Box, Text } from '../../ink.js';
-import { formatBriefTimestamp } from '../../utils/formatBriefTimestamp.js';
+import figures from "figures";
+import { useContext } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useQueuedMessage } from "../../context/QueuedMessageContext.js";
+import { Box, Text } from "../../ink.js";
+import { formatBriefTimestamp } from "../../utils/formatBriefTimestamp.js";
 import {
   findThinkingTriggerPositions,
   getRainbowColor,
   isUltrathinkEnabled,
-} from '../../utils/thinking.js';
-import { MessageActionsSelectedContext } from '../messageActions.js';
+} from "../../utils/thinking.js";
+import { MessageActionsSelectedContext } from "../messageActions.js";
 
 type Props = {
   text: string;
@@ -21,18 +21,18 @@ export function HighlightedThinkingText(t0) {
   const { text, useBriefLayout, timestamp } = t0;
   const isQueued = useQueuedMessage()?.isQueued ?? false;
   const isSelected = useContext(MessageActionsSelectedContext);
-  const pointerColor = isSelected ? 'suggestion' : 'subtle';
+  const pointerColor = isSelected ? "suggestion" : "subtle";
   if (useBriefLayout) {
     let t1;
     if ($[0] !== timestamp) {
-      t1 = timestamp ? formatBriefTimestamp(timestamp) : '';
+      t1 = timestamp ? formatBriefTimestamp(timestamp) : "";
       $[0] = timestamp;
       $[1] = t1;
     } else {
       t1 = $[1];
     }
     const ts = t1;
-    const t2 = isQueued ? 'subtle' : 'briefLabelYou';
+    const t2 = isQueued ? "subtle" : "briefLabelYou";
     let t3;
     if ($[2] !== t2) {
       t3 = <Text color={t2}>You</Text>;
@@ -63,7 +63,7 @@ export function HighlightedThinkingText(t0) {
     } else {
       t5 = $[8];
     }
-    const t6 = isQueued ? 'subtle' : 'text';
+    const t6 = isQueued ? "subtle" : "text";
     let t7;
     if ($[9] !== t6 || $[10] !== text) {
       t7 = <Text color={t6}>{text}</Text>;
@@ -92,7 +92,7 @@ export function HighlightedThinkingText(t0) {
   let parts;
   let t1;
   if ($[15] !== pointerColor || $[16] !== text) {
-    t1 = Symbol.for('react.early_return_sentinel');
+    t1 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const triggers = isUltrathinkEnabled() ? findThinkingTriggerPositions(text) : [];
       if (triggers.length === 0) {
@@ -164,7 +164,7 @@ export function HighlightedThinkingText(t0) {
     parts = $[17];
     t1 = $[18];
   }
-  if (t1 !== Symbol.for('react.early_return_sentinel')) {
+  if (t1 !== Symbol.for("react.early_return_sentinel")) {
     return t1;
   }
   let t2;

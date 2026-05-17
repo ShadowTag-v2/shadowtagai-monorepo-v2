@@ -23,30 +23,30 @@
  *   - WebSocket messages contain session prefix only (no PII)
  */
 
-'use client';
+"use client";
 
-import { useParams, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { DiffView } from '@/components/diff-view/DiffView';
+import { useParams, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { DiffView } from "@/components/diff-view/DiffView";
 import type {
   CommitAction,
   CommitResponse,
   DiffFile,
   DiffResponse,
-} from '@/components/diff-view/types';
-import { usePanopticonContext } from '@/components/telemetry/PanopticonProvider';
-import { type StateChangeEvent, useSandboxWebSocket } from '@/hooks/useSandboxWebSocket';
-import styles from './sandbox-session.module.css';
+} from "@/components/diff-view/types";
+import { usePanopticonContext } from "@/components/telemetry/PanopticonProvider";
+import { type StateChangeEvent, useSandboxWebSocket } from "@/hooks/useSandboxWebSocket";
+import styles from "./sandbox-session.module.css";
 
 /** Session state machine — aligns with Python SandboxSession.lifecycle */
 type SessionPhase =
-  | 'hydrating'
-  | 'loading'
-  | 'reviewing'
-  | 'committing'
-  | 'committed'
-  | 'rejected'
-  | 'error';
+  | "hydrating"
+  | "loading"
+  | "reviewing"
+  | "committing"
+  | "committed"
+  | "rejected"
+  | "error";
 
 interface SessionMeta {
   sessionId: string;
@@ -152,22 +152,22 @@ function WsStatusBadge({
   reconnectCount: number;
 }) {
   const titleMap: Record<string, string> = {
-    connected: 'Real-time updates active',
-    connecting: `Connecting${reconnectCount > 0 ? ` (attempt ${reconnectCount})` : ''}…`,
+    connected: "Real-time updates active",
+    connecting: `Connecting${reconnectCount > 0 ? ` (attempt ${reconnectCount})` : ""}…`,
   };
   const labelMap: Record<string, string> = {
-    connected: 'Live',
-    connecting: 'Connecting…',
+    connected: "Live",
+    connecting: "Connecting…",
   };
 
   return (
     <div
       className={styles.wsStatus}
       data-state={connectionState}
-      title={titleMap[connectionState] ?? 'Real-time updates disconnected'}
+      title={titleMap[connectionState] ?? "Real-time updates disconnected"}
     >
       <span className={styles.wsStatusDot} />
-      <span className={styles.wsStatusText}>{labelMap[connectionState] ?? 'Offline'}</span>
+      <span className={styles.wsStatusText}>{labelMap[connectionState] ?? "Offline"}</span>
     </div>
   );
 }
@@ -176,12 +176,12 @@ export default function SandboxSessionPage() {
   const params = useParams<{ sessionId: string }>();
   const searchParams = useSearchParams();
   const sessionId = params.sessionId;
-  const matterId = searchParams.get('matter') ?? 'unknown';
+  const matterId = searchParams.get("matter") ?? "unknown";
 
   const { track, trackAsync } = usePanopticonContext();
 
   const [state, setState] = useState<SessionState>({
-    phase: 'hydrating',
+    phase: "hydrating",
     meta: null,
     diffs: [],
     matterId,
@@ -192,29 +192,29 @@ export default function SandboxSessionPage() {
   // ── WebSocket: real-time state transitions ────────────────
   const handleWsStateChange = useCallback(
     (event: StateChangeEvent) => {
-      track('sandbox.ws_state_received', {
+      track("sandbox.ws_state_received", {
         from: event.from,
         to: event.to,
       });
 
       // Map backend state transitions to frontend phases
-      if (event.to === 'committed') {
+      if (event.to === "committed") {
         setState((prev) => ({
           ...prev,
-          phase: 'committed',
+          phase: "committed",
           commitResult: prev.commitResult ?? {
             success: true,
             committed_files: [],
             rejected_files: [],
-            audit_id: (event.metadata?.audit_id as string) ?? '',
-            error: '',
+            audit_id: (event.metadata?.audit_id as string) ?? "",
+            error: "",
             duration_ms: 0,
           },
         }));
-      } else if (event.to === 'rejected') {
-        setState((prev) => ({ ...prev, phase: 'rejected' }));
-      } else if (event.to === 'reviewing') {
-        setState((prev) => ({ ...prev, phase: 'reviewing' }));
+      } else if (event.to === "rejected") {
+        setState((prev) => ({ ...prev, phase: "rejected" }));
+      } else if (event.to === "reviewing") {
+        setState((prev) => ({ ...prev, phase: "reviewing" }));
       }
     },
     [track],
@@ -223,14 +223,14 @@ export default function SandboxSessionPage() {
   const { connectionState, reconnectCount } = useSandboxWebSocket({
     sessionId,
     onStateChange: handleWsStateChange,
-    enabled: state.phase !== 'error',
+    enabled: state.phase !== "error",
   });
 
   // ── Phase 4: Hydrate session from Firestore, then fetch diffs ──
   useEffect(() => {
     if (!sessionId) return;
 
-    track('sandbox.session_opened', {
+    track("sandbox.session_opened", {
       session_id_prefix: sessionId.slice(0, 8),
     });
 
@@ -252,62 +252,62 @@ export default function SandboxSessionPage() {
             matterId: meta.matterId,
           }));
 
-          track('sandbox.session_hydrated', {
+          track("sandbox.session_hydrated", {
             persisted_state: meta.state,
             session_age_s: Math.floor(Date.now() / 1000 - meta.createdAt),
           });
 
           // If session is already in a terminal state, short-circuit
-          if (meta.state === 'committed') {
+          if (meta.state === "committed") {
             setState((prev) => ({
               ...prev,
-              phase: 'committed',
+              phase: "committed",
               commitResult: {
                 success: true,
                 committed_files: [],
                 rejected_files: [],
-                audit_id: '',
-                error: '',
+                audit_id: "",
+                error: "",
                 duration_ms: 0,
               },
             }));
             return;
           }
-          if (meta.state === 'rejected') {
-            setState((prev) => ({ ...prev, phase: 'rejected' }));
+          if (meta.state === "rejected") {
+            setState((prev) => ({ ...prev, phase: "rejected" }));
             return;
           }
         }
       } catch {
         // Hydration failure is non-fatal — fall through to diff fetch
-        track('sandbox.hydration_failed', { error_type: 'fetch_failed' }, 'warn');
+        track("sandbox.hydration_failed", { error_type: "fetch_failed" }, "warn");
       }
 
       // Step 2: Fetch diffs (works regardless of hydration success)
-      setState((prev) => ({ ...prev, phase: 'loading' }));
+      setState((prev) => ({ ...prev, phase: "loading" }));
       try {
-        const effectiveMatter = state.matterId !== 'unknown' ? state.matterId : matterId;
+        const effectiveMatter = state.matterId !== "unknown" ? state.matterId : matterId;
         const res = await fetch(`/api/sandbox/${sessionId}/diffs?matter=${effectiveMatter}`);
         if (!res.ok) {
-          const body = await res.json().catch(() => ({ error: 'Unknown error' }));
+          const body = await res.json().catch(() => ({ error: "Unknown error" }));
           throw new Error(body.error ?? `HTTP ${res.status}`);
         }
 
         const data: DiffResponse = await res.json();
         setState((prev) => ({
           ...prev,
-          phase: 'reviewing',
+          phase: "reviewing",
           diffs: data.diffs as DiffFile[],
           matterId: data.matter_id ?? effectiveMatter,
         }));
 
-        track('sandbox.diffs_loaded', {
+        track("sandbox.diffs_loaded", {
           file_count: data.diffs.length,
         });
       } catch (err) {
-        const message = err instanceof Error ? err.message : 'Failed to load diffs';
-        setState((prev) => ({ ...prev, phase: 'error', error: message }));
-        track('sandbox.load_error', { error_type: 'fetch_failed' }, 'error');
+        const message = err instanceof Error ? err.message : "Failed to load diffs";
+        setState((prev) => ({ ...prev, phase: "error", error: message }));
+        track("sandbox.load_error", { error_type: "fetch_failed" }, "error");
       }
     };
 
@@ -318,56 +318,56 @@ export default function SandboxSessionPage() {
   // ── Handle attorney decision ──────────────────────────────
   const handleDecision = useCallback(
     async (action: CommitAction, selectedFiles?: string[]) => {
-      setState((prev) => ({ ...prev, phase: 'committing' }));
+      setState((prev) => ({ ...prev, phase: "committing" }));
 
       try {
-        await trackAsync('sandbox.decision_submitted', {
+        await trackAsync("sandbox.decision_submitted", {
           action,
           file_count: selectedFiles?.length ?? state.diffs.length,
         });
 
         const res = await fetch(`/api/sandbox/${sessionId}/commit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             action,
             selected_files: selectedFiles ?? null,
             matter_id: state.matterId,
-            rejection_reason: '',
+            rejection_reason: "",
           }),
         });
 
         if (!res.ok) {
-          const body = await res.json().catch(() => ({ error: 'Commit failed' }));
+          const body = await res.json().catch(() => ({ error: "Commit failed" }));
           throw new Error(body.error ?? `HTTP ${res.status}`);
         }
 
         const result: CommitResponse = await res.json();
         setState((prev) => ({
           ...prev,
-          phase: 'committed',
+          phase: "committed",
           commitResult: result,
         }));
 
-        track('sandbox.decision_completed', {
+        track("sandbox.decision_completed", {
           action,
           success: 1,
           duration_ms: result.duration_ms,
         });
       } catch (err) {
-        const message = err instanceof Error ? err.message : 'Commit failed';
-        setState((prev) => ({ ...prev, phase: 'error', error: message }));
-        track('sandbox.decision_error', { error_type: 'commit_failed' }, 'error');
+        const message = err instanceof Error ? err.message : "Commit failed";
+        setState((prev) => ({ ...prev, phase: "error", error: message }));
+        track("sandbox.decision_error", { error_type: "commit_failed" }, "error");
       }
     },
     [sessionId, state.diffs.length, state.matterId, track, trackAsync],
   );
 
   // ── Phase-based rendering via extracted components ────────
-  if (state.phase === 'hydrating') return <HydratingView />;
-  if (state.phase === 'error') return <ErrorView error={state.error} />;
-  if (state.phase === 'rejected') return <RejectedView sessionId={sessionId} />;
-  if (state.phase === 'committed' && state.commitResult) {
+  if (state.phase === "hydrating") return <HydratingView />;
+  if (state.phase === "error") return <ErrorView error={state.error} />;
+  if (state.phase === "rejected") return <RejectedView sessionId={sessionId} />;
+  if (state.phase === "committed" && state.commitResult) {
     return <CommittedView result={state.commitResult} />;
   }
 
@@ -390,7 +390,7 @@ export default function SandboxSessionPage() {
         matterId={state.matterId}
         diffs={state.diffs}
         onDecision={handleDecision}
-        isLoading={state.phase === 'loading' || state.phase === 'committing'}
+        isLoading={state.phase === "loading" || state.phase === "committing"}
       />
     </div>
   );

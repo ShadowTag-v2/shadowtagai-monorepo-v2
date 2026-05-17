@@ -1,8 +1,8 @@
-import { cert, initializeApp } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { cert, initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 
 // Note: Replace with actual service account credentials path
-const serviceAccount = require('../../secrets/serviceAccountKey.json');
+const serviceAccount = require("../../secrets/serviceAccountKey.json");
 
 initializeApp({
   credential: cert(serviceAccount),
@@ -11,20 +11,20 @@ initializeApp({
 const db = getFirestore();
 
 async function seed() {
-  console.log('🌱 Seeding HeadFade Truth Oracle database...');
+  console.log("🌱 Seeding HeadFade Truth Oracle database...");
 
-  const videosRef = db.collection('videos');
+  const videosRef = db.collection("videos");
 
-  await videosRef.doc('demo-123').set({
+  await videosRef.doc("demo-123").set({
     hdiScore: 95,
-    modelsUsed: ['Veo 3.1', 'Gemini 3.1'],
-    parentCreatorId: 'orig_123',
+    modelsUsed: ["Veo 3.1", "Gemini 3.1"],
+    parentCreatorId: "orig_123",
     remixTree: [],
     createdAt: new Date(),
-    title: 'Synthetic Aurora',
+    title: "Synthetic Aurora",
   });
 
-  console.log('✅ Seed complete!');
+  console.log("✅ Seed complete!");
 }
 
 seed().catch(console.error);

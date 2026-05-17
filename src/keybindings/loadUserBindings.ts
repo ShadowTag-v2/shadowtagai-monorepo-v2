@@ -9,22 +9,22 @@
  * use the default bindings.
  */
 
-import { readFileSync } from 'node:fs';
-import { readFile, stat } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import chokidar, { type FSWatcher } from 'chokidar';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import { logEvent } from '../services/analytics/index.js';
-import { registerCleanup } from '../utils/cleanupRegistry.js';
-import { logForDebugging } from '../utils/debug.js';
-import { getClaudeConfigHomeDir } from '../utils/envUtils.js';
-import { errorMessage, isENOENT } from '../utils/errors.js';
-import { createSignal } from '../utils/signal.js';
-import { jsonParse } from '../utils/slowOperations.js';
-import { DEFAULT_BINDINGS } from './defaultBindings.js';
-import { parseBindings } from './parser.js';
-import type { KeybindingBlock, ParsedBinding } from './types.js';
-import { checkDuplicateKeysInJson, type KeybindingWarning, validateBindings } from './validate.js';
+import { readFileSync } from "node:fs";
+import { readFile, stat } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import chokidar, { type FSWatcher } from "chokidar";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import { logEvent } from "../services/analytics/index.js";
+import { registerCleanup } from "../utils/cleanupRegistry.js";
+import { logForDebugging } from "../utils/debug.js";
+import { getClaudeConfigHomeDir } from "../utils/envUtils.js";
+import { errorMessage, isENOENT } from "../utils/errors.js";
+import { createSignal } from "../utils/signal.js";
+import { jsonParse } from "../utils/slowOperations.js";
+import { DEFAULT_BINDINGS } from "./defaultBindings.js";
+import { parseBindings } from "./parser.js";
+import type { KeybindingBlock, ParsedBinding } from "./types.js";
+import { checkDuplicateKeysInJson, type KeybindingWarning, validateBindings } from "./validate.js";
 
 /**
  * Check if keybinding customization is enabled.
@@ -35,7 +35,7 @@ import { checkDuplicateKeysInJson, type KeybindingWarning, validateBindings } fr
  * can check the same condition consistently.
  */
 export function isKeybindingCustomizationEnabled(): boolean {
-  return getFeatureValue_CACHED_MAY_BE_STALE('tengu_keybinding_customization_release', false);
+  return getFeatureValue_CACHED_MAY_BE_STALE("tengu_keybinding_customization_release", false);
 }
 
 /**
@@ -77,7 +77,7 @@ function logCustomBindingsLoadedOncePerDay(userBindingCount: number): void {
   const today = new Date().toISOString().slice(0, 10);
   if (lastCustomBindingsLogDate === today) return;
   lastCustomBindingsLogDate = today;
-  logEvent('tengu_custom_keybindings_loaded', {
+  logEvent("tengu_custom_keybindings_loaded", {
     user_binding_count: userBindingCount,
   });
 }
@@ -86,9 +86,9 @@ function logCustomBindingsLoadedOncePerDay(userBindingCount: number): void {
  * Type guard to check if an object is a valid KeybindingBlock.
  */
 function isKeybindingBlock(obj: unknown): obj is KeybindingBlock {
-  if (typeof obj !== 'object' || obj === null) return false;
+  if (typeof obj !== "object" || obj === null) return false;
   const b = obj as Record<string, unknown>;
-  return typeof b.context === 'string' && typeof b.bindings === 'object' && b.bindings !== null;
+  return typeof b.context === "string" && typeof b.bindings === "object" && b.bindings !== null;
 }
 
 /**
@@ -102,7 +102,7 @@ function isKeybindingBlockArray(arr: unknown): arr is KeybindingBlock[] {
  * Get the path to the user keybindings file.
  */
 export function getKeybindingsPath(): string {
-  return join(getClaudeConfigHomeDir(), 'keybindings.json');
+  return join(getClaudeConfigHomeDir(), "keybindings.json");
 }
 
 /**
@@ -130,12 +130,12 @@ export async function loadKeybindings(): Promise<KeybindingsLoadResult> {
   const userPath = getKeybindingsPath();
 
   try {
-    const content = await readFile(userPath, 'utf-8');
+    const content = await readFile(userPath, "utf-8");
     const parsed: unknown = jsonParse(content);
 
     // Extract bindings array from object wrapper format: { "bindings": [...] }
     let userBlocks: unknown;
-    if (typeof parsed === 'object' && parsed !== null && 'bindings' in parsed) {
+    if (typeof parsed === "object" && parsed !== null && "bindings" in parsed) {
       userBlocks = (parsed as { bindings: unknown }).bindings;
     } else {
       // Invalid format - missing bindings property
@@ -146,8 +146,8 @@ export async function loadKeybindings(): Promise<KeybindingsLoadResult> {
         bindings: defaultBindings,
         warnings: [
           {
-            type: 'parse_error',
-            severity: 'error',
+            type: "parse_error",
+            severity: "error",
             message: errorMessage,
             suggestion,
           },
@@ -159,7 +159,7 @@ export async function loadKeybindings(): Promise<KeybindingsLoadResult> {
     if (!isKeybindingBlockArray(userBlocks)) {
       const errorMessage = !Array.isArray(userBlocks)
         ? '"bindings" must be an array'
-        : 'keybindings.json contains invalid block structure';
+        : "keybindings.json contains invalid block structure";
       const suggestion = !Array.isArray(userBlocks)
         ? 'Set "bindings" to an array of keybinding blocks'
         : 'Each block must have "context" (string) and "bindings" (object)';
@@ -168,8 +168,8 @@ export async function loadKeybindings(): Promise<KeybindingsLoadResult> {
         bindings: defaultBindings,
         warnings: [
           {
-            type: 'parse_error',
-            severity: 'error',
+            type: "parse_error",
+            severity: "error",
             message: errorMessage,
             suggestion,
           },
@@ -207,8 +207,8 @@ export async function loadKeybindings(): Promise<KeybindingsLoadResult> {
       bindings: defaultBindings,
       warnings: [
         {
-          type: 'parse_error',
-          severity: 'error',
+          type: "parse_error",
+          severity: "error",
           message: `Failed to parse keybindings.json: ${errorMessage(error)}`,
         },
       ],
@@ -254,20 +254,20 @@ export function loadKeybindingsSyncWithWarnings(): KeybindingsLoadResult {
 
   try {
     // sync IO: called from sync context (React useState initializer)
-    const content = readFileSync(userPath, 'utf-8');
+    const content = readFileSync(userPath, "utf-8");
     const parsed: unknown = jsonParse(content);
 
     // Extract bindings array from object wrapper format: { "bindings": [...] }
     let userBlocks: unknown;
-    if (typeof parsed === 'object' && parsed !== null && 'bindings' in parsed) {
+    if (typeof parsed === "object" && parsed !== null && "bindings" in parsed) {
       userBlocks = (parsed as { bindings: unknown }).bindings;
     } else {
       // Invalid format - missing bindings property
       cachedBindings = defaultBindings;
       cachedWarnings = [
         {
-          type: 'parse_error',
-          severity: 'error',
+          type: "parse_error",
+          severity: "error",
           message: 'keybindings.json must have a "bindings" array',
           suggestion: 'Use format: { "bindings": [ ... ] }',
         },
@@ -279,15 +279,15 @@ export function loadKeybindingsSyncWithWarnings(): KeybindingsLoadResult {
     if (!isKeybindingBlockArray(userBlocks)) {
       const errorMessage = !Array.isArray(userBlocks)
         ? '"bindings" must be an array'
-        : 'keybindings.json contains invalid block structure';
+        : "keybindings.json contains invalid block structure";
       const suggestion = !Array.isArray(userBlocks)
         ? 'Set "bindings" to an array of keybinding blocks'
         : 'Each block must have "context" (string) and "bindings" (object)';
       cachedBindings = defaultBindings;
       cachedWarnings = [
         {
-          type: 'parse_error',
-          severity: 'error',
+          type: "parse_error",
+          severity: "error",
           message: errorMessage,
           suggestion,
         },
@@ -328,7 +328,7 @@ export async function initializeKeybindingWatcher(): Promise<void> {
 
   // Skip file watching for external users
   if (!isKeybindingCustomizationEnabled()) {
-    logForDebugging('[keybindings] Skipping file watcher - user customization disabled');
+    logForDebugging("[keybindings] Skipping file watcher - user customization disabled");
     return;
   }
 
@@ -364,9 +364,9 @@ export async function initializeKeybindingWatcher(): Promise<void> {
     atomic: true,
   });
 
-  watcher.on('add', handleChange);
-  watcher.on('change', handleChange);
-  watcher.on('unlink', handleDelete);
+  watcher.on("add", handleChange);
+  watcher.on("change", handleChange);
+  watcher.on("unlink", handleDelete);
 
   // Register cleanup
   registerCleanup(async () => disposeKeybindingWatcher());

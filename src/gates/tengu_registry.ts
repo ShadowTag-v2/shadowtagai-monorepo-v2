@@ -15,24 +15,24 @@
  */
 
 // ─── Gate Categories ───────────────────────────────────────────────
-export const enum GateCategory {
+export enum GateCategory {
   /** Security-critical gates that MUST block for fresh values. */
-  SECURITY = 'SECURITY',
+  SECURITY = "SECURITY",
   /** Subscription/org-level feature access. */
-  ENTITLEMENT = 'ENTITLEMENT',
+  ENTITLEMENT = "ENTITLEMENT",
   /** Feature rollout flags (non-critical). */
-  FEATURE = 'FEATURE',
+  FEATURE = "FEATURE",
   /** Analytics/observability configuration. */
-  TELEMETRY = 'TELEMETRY',
+  TELEMETRY = "TELEMETRY",
   /** Internal ant-only debug/test gates. */
-  INTERNAL = 'INTERNAL',
+  INTERNAL = "INTERNAL",
 }
 
 // ─── FIPS-199 Impact Levels ────────────────────────────────────────
-export const enum FIPSImpact {
-  LOW = 'LOW',
-  MODERATE = 'MODERATE',
-  HIGH = 'HIGH',
+export enum FIPSImpact {
+  LOW = "LOW",
+  MODERATE = "MODERATE",
+  HIGH = "HIGH",
 }
 
 // ─── Gate Definition ───────────────────────────────────────────────
@@ -70,8 +70,8 @@ export interface TenguGateDefinition<T = unknown> {
 export const TENGU_GATES = {
   // ── Security ─────────────────────────────────────────────────────
   sessions_elevated_auth: {
-    key: 'tengu_sessions_elevated_auth_enforcement',
-    description: 'Enforces elevated auth (trusted device tokens) for bridge sessions',
+    key: "tengu_sessions_elevated_auth_enforcement",
+    description: "Enforces elevated auth (trusted device tokens) for bridge sessions",
     category: GateCategory.SECURITY,
     defaultValue: false,
     confidentiality: FIPSImpact.HIGH,
@@ -82,8 +82,8 @@ export const TENGU_GATES = {
   },
 
   yolo_classifier_enabled: {
-    key: 'tengu_yolo_security_classifier',
-    description: 'Enables the BashSecurityClassifier for tool command validation',
+    key: "tengu_yolo_security_classifier",
+    description: "Enables the BashSecurityClassifier for tool command validation",
     category: GateCategory.SECURITY,
     defaultValue: true, // Fail-closed: classifier ON by default
     confidentiality: FIPSImpact.HIGH,
@@ -94,8 +94,8 @@ export const TENGU_GATES = {
   },
 
   xml_pipeline_enabled: {
-    key: 'tengu_xml_2stage_pipeline',
-    description: 'Enables 2-stage XML classification pipeline for prompt injection defense',
+    key: "tengu_xml_2stage_pipeline",
+    description: "Enables 2-stage XML classification pipeline for prompt injection defense",
     category: GateCategory.SECURITY,
     defaultValue: true,
     confidentiality: FIPSImpact.HIGH,
@@ -106,8 +106,8 @@ export const TENGU_GATES = {
   },
 
   zta_handoff_enforcement: {
-    key: 'tengu_j6_zta_handoff',
-    description: 'Zero Trust Architecture enforcement for inter-agent handoffs (J6 CSRMC)',
+    key: "tengu_j6_zta_handoff",
+    description: "Zero Trust Architecture enforcement for inter-agent handoffs (J6 CSRMC)",
     category: GateCategory.SECURITY,
     defaultValue: true,
     confidentiality: FIPSImpact.HIGH,
@@ -119,8 +119,8 @@ export const TENGU_GATES = {
 
   // ── Entitlements ─────────────────────────────────────────────────
   ccr_bridge: {
-    key: 'tengu_ccr_bridge',
-    description: 'Remote Control (bridge mode) entitlement — requires claude.ai subscription',
+    key: "tengu_ccr_bridge",
+    description: "Remote Control (bridge mode) entitlement — requires claude.ai subscription",
     category: GateCategory.ENTITLEMENT,
     defaultValue: false,
     confidentiality: FIPSImpact.MODERATE,
@@ -131,8 +131,8 @@ export const TENGU_GATES = {
   },
 
   harbor: {
-    key: 'tengu_harbor',
-    description: 'Channel server access gate — controls pub/sub channel enrollment',
+    key: "tengu_harbor",
+    description: "Channel server access gate — controls pub/sub channel enrollment",
     category: GateCategory.ENTITLEMENT,
     defaultValue: false,
     confidentiality: FIPSImpact.LOW,
@@ -143,8 +143,8 @@ export const TENGU_GATES = {
   },
 
   voice_enabled: {
-    key: 'tengu_voice_mode',
-    description: 'Voice mode (push-to-talk) entitlement gate',
+    key: "tengu_voice_mode",
+    description: "Voice mode (push-to-talk) entitlement gate",
     category: GateCategory.ENTITLEMENT,
     defaultValue: false,
     confidentiality: FIPSImpact.LOW,
@@ -156,8 +156,8 @@ export const TENGU_GATES = {
 
   // ── Features ─────────────────────────────────────────────────────
   streaming_tool_execution: {
-    key: 'tengu_streaming_tool_execution2',
-    description: 'Enables streaming tool execution (concurrent tool output)',
+    key: "tengu_streaming_tool_execution2",
+    description: "Enables streaming tool execution (concurrent tool output)",
     category: GateCategory.FEATURE,
     defaultValue: false,
     confidentiality: FIPSImpact.LOW,
@@ -168,8 +168,8 @@ export const TENGU_GATES = {
   },
 
   auto_dream: {
-    key: 'tengu_onyx_plover',
-    description: 'AutoDream memory consolidation — automatic memory extraction',
+    key: "tengu_onyx_plover",
+    description: "AutoDream memory consolidation — automatic memory extraction",
     category: GateCategory.FEATURE,
     defaultValue: false as unknown,
     confidentiality: FIPSImpact.LOW,
@@ -180,8 +180,8 @@ export const TENGU_GATES = {
   },
 
   cobalt_frost: {
-    key: 'tengu_cobalt_frost',
-    description: 'Deepgram Nova 3 STT model gate for voice streaming',
+    key: "tengu_cobalt_frost",
+    description: "Deepgram Nova 3 STT model gate for voice streaming",
     category: GateCategory.FEATURE,
     defaultValue: false,
     confidentiality: FIPSImpact.LOW,
@@ -192,8 +192,8 @@ export const TENGU_GATES = {
   },
 
   context_compaction: {
-    key: 'tengu_context_compaction_v2',
-    description: '4-layer context compaction pipeline (compact/prune/summarize/trim)',
+    key: "tengu_context_compaction_v2",
+    description: "4-layer context compaction pipeline (compact/prune/summarize/trim)",
     category: GateCategory.FEATURE,
     defaultValue: false,
     confidentiality: FIPSImpact.LOW,
@@ -204,8 +204,8 @@ export const TENGU_GATES = {
   },
 
   speculation_engine: {
-    key: 'tengu_speculation_engine',
-    description: 'Speculative prompt pre-execution via forked agents',
+    key: "tengu_speculation_engine",
+    description: "Speculative prompt pre-execution via forked agents",
     category: GateCategory.FEATURE,
     defaultValue: false,
     confidentiality: FIPSImpact.LOW,
@@ -216,8 +216,8 @@ export const TENGU_GATES = {
   },
 
   magic_docs: {
-    key: 'tengu_magic_docs',
-    description: 'Auto-maintained markdown via subagents (MagicDocs)',
+    key: "tengu_magic_docs",
+    description: "Auto-maintained markdown via subagents (MagicDocs)",
     category: GateCategory.FEATURE,
     defaultValue: false,
     confidentiality: FIPSImpact.LOW,
@@ -229,8 +229,8 @@ export const TENGU_GATES = {
 
   // ── Telemetry ────────────────────────────────────────────────────
   event_batch_config: {
-    key: 'tengu_1p_event_batch_config',
-    description: 'First-party event batch configuration (batch size, flush interval)',
+    key: "tengu_1p_event_batch_config",
+    description: "First-party event batch configuration (batch size, flush interval)",
     category: GateCategory.TELEMETRY,
     defaultValue: {} as Record<string, unknown>,
     confidentiality: FIPSImpact.LOW,
@@ -241,8 +241,8 @@ export const TENGU_GATES = {
   },
 
   event_sampling: {
-    key: 'tengu_event_sampling_config',
-    description: 'Per-event sampling rates for telemetry',
+    key: "tengu_event_sampling_config",
+    description: "Per-event sampling rates for telemetry",
     category: GateCategory.TELEMETRY,
     defaultValue: {} as Record<string, number>,
     confidentiality: FIPSImpact.LOW,
@@ -253,8 +253,8 @@ export const TENGU_GATES = {
   },
 
   sink_killswitch: {
-    key: 'tengu_sink_killswitch',
-    description: 'Emergency killswitch for analytics sinks',
+    key: "tengu_sink_killswitch",
+    description: "Emergency killswitch for analytics sinks",
     category: GateCategory.TELEMETRY,
     defaultValue: false,
     confidentiality: FIPSImpact.LOW,
@@ -266,10 +266,10 @@ export const TENGU_GATES = {
 
   // ── Internal (ant-only) ──────────────────────────────────────────
   ant_model_override: {
-    key: 'tengu_ant_model_override',
-    description: 'Internal model override for ant users (testing/dogfood)',
+    key: "tengu_ant_model_override",
+    description: "Internal model override for ant users (testing/dogfood)",
     category: GateCategory.INTERNAL,
-    defaultValue: '' as string,
+    defaultValue: "" as string,
     confidentiality: FIPSImpact.LOW,
     integrity: FIPSImpact.MODERATE,
     availability: FIPSImpact.LOW,
@@ -278,8 +278,8 @@ export const TENGU_GATES = {
   },
 
   max_version_config: {
-    key: 'tengu_max_version_config',
-    description: 'Maximum version enforcement — gates CLI upgrade prompts',
+    key: "tengu_max_version_config",
+    description: "Maximum version enforcement — gates CLI upgrade prompts",
     category: GateCategory.INTERNAL,
     defaultValue: {} as Record<string, unknown>,
     confidentiality: FIPSImpact.LOW,

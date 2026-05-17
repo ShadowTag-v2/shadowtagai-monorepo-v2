@@ -1,11 +1,11 @@
-import { realpath } from 'node:fs/promises';
-import { getOriginalCwd } from '../bootstrap/state.js';
-import { getGlobalConfig, saveGlobalConfig } from './config.js';
-import { logForDebugging } from './debug.js';
-import { detectCurrentRepository, parseGitHubRepository } from './detectRepository.js';
-import { pathExists } from './file.js';
-import { getRemoteUrlForDir } from './git/gitFilesystem.js';
-import { findGitRoot } from './git.js';
+import { realpath } from "node:fs/promises";
+import { getOriginalCwd } from "../bootstrap/state.js";
+import { getGlobalConfig, saveGlobalConfig } from "./config.js";
+import { logForDebugging } from "./debug.js";
+import { detectCurrentRepository, parseGitHubRepository } from "./detectRepository.js";
+import { pathExists } from "./file.js";
+import { getRemoteUrlForDir } from "./git/gitFilesystem.js";
+import { findGitRoot } from "./git.js";
 
 /**
  * Updates the GitHub repository path mapping in global config.
@@ -21,7 +21,7 @@ export async function updateGithubRepoPathMapping(): Promise<void> {
   try {
     const repo = await detectCurrentRepository();
     if (!repo) {
-      logForDebugging('Not in a GitHub repository, skipping path mapping update');
+      logForDebugging("Not in a GitHub repository, skipping path mapping update");
       return;
     }
 
@@ -34,7 +34,7 @@ export async function updateGithubRepoPathMapping(): Promise<void> {
     // Resolve symlinks for canonical storage
     let currentPath: string;
     try {
-      currentPath = (await realpath(basePath)).normalize('NFC');
+      currentPath = (await realpath(basePath)).normalize("NFC");
     } catch {
       currentPath = basePath;
     }

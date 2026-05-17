@@ -1,14 +1,14 @@
-import { registerCleanup } from './cleanupRegistry.js';
-import { logForDebugging } from './debug.js';
+import { registerCleanup } from "./cleanupRegistry.js";
+import { logForDebugging } from "./debug.js";
 
 /**
  * Sentinel written to stderr ahead of any diverted non-JSON line, so that
  * log scrapers and tests can grep for guard activity.
  */
-export const STDOUT_GUARD_MARKER = '[stdout-guard]';
+export const STDOUT_GUARD_MARKER = "[stdout-guard]";
 
 let installed = false;
-let buffer = '';
+let buffer = "";
 let originalWrite: typeof process.stdout.write | null = null;
 
 function isJsonLine(line: string): boolean {
@@ -59,12 +59,12 @@ export function installStreamJsonStdoutGuard(): void {
     encodingOrCb?: BufferEncoding | ((err?: Error) => void),
     cb?: (err?: Error) => void,
   ): boolean => {
-    const text = typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString('utf-8');
+    const text = typeof chunk === "string" ? chunk : Buffer.from(chunk).toString("utf-8");
 
     buffer += text;
     let newlineIdx: number;
     let wrote = true;
-    while ((newlineIdx = buffer.indexOf('\n')) !== -1) {
+    while ((newlineIdx = buffer.indexOf("\n")) !== -1) {
       const line = buffer.slice(0, newlineIdx);
       buffer = buffer.slice(newlineIdx + 1);
       if (isJsonLine(line)) {
@@ -80,7 +80,7 @@ export function installStreamJsonStdoutGuard(): void {
     // Fire the callback once buffering is done. We report success even when
     // a line was diverted — the caller's intent (emit text) was honored,
     // just on a different fd.
-    const callback = typeof encodingOrCb === 'function' ? encodingOrCb : cb;
+    const callback = typeof encodingOrCb === "function" ? encodingOrCb : cb;
     if (callback) {
       queueMicrotask(() => callback());
     }
@@ -96,7 +96,7 @@ export function installStreamJsonStdoutGuard(): void {
       } else {
         process.stderr.write(`${STDOUT_GUARD_MARKER} ${buffer}\n`);
       }
-      buffer = '';
+      buffer = "";
     }
     if (originalWrite) {
       process.stdout.write = originalWrite;
@@ -115,6 +115,6 @@ export function _resetStreamJsonStdoutGuardForTesting(): void {
     process.stdout.write = originalWrite;
     originalWrite = null;
   }
-  buffer = '';
+  buffer = "";
   installed = false;
 }

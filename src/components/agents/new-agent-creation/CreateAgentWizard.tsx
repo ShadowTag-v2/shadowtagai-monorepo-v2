@@ -1,19 +1,19 @@
-import { c as _c } from 'react/compiler-runtime';
-import { isAutoMemoryEnabled } from '../../../memdir/paths.js';
-import type { Tools } from '../../../Tool.js';
-import type { AgentDefinition } from '../../../tools/AgentTool/loadAgentsDir.js';
-import { WizardProvider } from '../../wizard/index.js';
-import { ColorStep } from './wizard-steps/ColorStep.js';
-import { ConfirmStepWrapper } from './wizard-steps/ConfirmStepWrapper.js';
-import { DescriptionStep } from './wizard-steps/DescriptionStep.js';
-import { GenerateStep } from './wizard-steps/GenerateStep.js';
-import { LocationStep } from './wizard-steps/LocationStep.js';
-import { MemoryStep } from './wizard-steps/MemoryStep.js';
-import { MethodStep } from './wizard-steps/MethodStep.js';
-import { ModelStep } from './wizard-steps/ModelStep.js';
-import { PromptStep } from './wizard-steps/PromptStep.js';
-import { ToolsStep } from './wizard-steps/ToolsStep.js';
-import { TypeStep } from './wizard-steps/TypeStep.js';
+import { c as _c } from "react/compiler-runtime";
+import { isAutoMemoryEnabled } from "../../../memdir/paths.js";
+import type { Tools } from "../../../Tool.js";
+import type { AgentDefinition } from "../../../tools/AgentTool/loadAgentsDir.js";
+import { WizardProvider } from "../../wizard/index.js";
+import { ColorStep } from "./wizard-steps/ColorStep.js";
+import { ConfirmStepWrapper } from "./wizard-steps/ConfirmStepWrapper.js";
+import { DescriptionStep } from "./wizard-steps/DescriptionStep.js";
+import { GenerateStep } from "./wizard-steps/GenerateStep.js";
+import { LocationStep } from "./wizard-steps/LocationStep.js";
+import { MemoryStep } from "./wizard-steps/MemoryStep.js";
+import { MethodStep } from "./wizard-steps/MethodStep.js";
+import { ModelStep } from "./wizard-steps/ModelStep.js";
+import { PromptStep } from "./wizard-steps/PromptStep.js";
+import { ToolsStep } from "./wizard-steps/ToolsStep.js";
+import { TypeStep } from "./wizard-steps/TypeStep.js";
 
 type Props = {
   tools: Tools;
@@ -41,7 +41,7 @@ export function CreateAgentWizard(t0) {
     t2 = $[3];
   }
   let t3;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = isAutoMemoryEnabled() ? [MemoryStep] : [];
     $[4] = t3;
   } else {
@@ -83,7 +83,7 @@ export function CreateAgentWizard(t0) {
   }
   const steps = t5;
   let t6;
-  if ($[13] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {};
     $[13] = t6;
   } else {

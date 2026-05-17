@@ -1,6 +1,6 @@
-import { SETTING_SOURCES, type SettingSource } from '../settings/constants.js';
-import { getSettings_DEPRECATED, getSettingsForSource } from '../settings/settings.js';
-import { type EnvironmentResource, fetchEnvironments } from './environments.js';
+import { SETTING_SOURCES, type SettingSource } from "../settings/constants.js";
+import { getSettings_DEPRECATED, getSettingsForSource } from "../settings/settings.js";
+import { type EnvironmentResource, fetchEnvironments } from "./environments.js";
 
 export type EnvironmentSelectionInfo = {
   availableEnvironments: EnvironmentResource[];
@@ -36,7 +36,7 @@ export async function getEnvironmentSelectionInfo(): Promise<EnvironmentSelectio
 
   // Find which environment would be selected
   let selectedEnvironment: EnvironmentResource =
-    environments.find((env) => env.kind !== 'bridge') ?? environments[0]!;
+    environments.find((env) => env.kind !== "bridge") ?? environments[0]!;
   let selectedEnvironmentSource: SettingSource | null = null;
 
   if (defaultEnvironmentId) {
@@ -51,7 +51,7 @@ export async function getEnvironmentSelectionInfo(): Promise<EnvironmentSelectio
       // Iterate from lowest to highest priority, so the last match wins (highest priority)
       for (let i = SETTING_SOURCES.length - 1; i >= 0; i--) {
         const source = SETTING_SOURCES[i];
-        if (!source || source === 'flagSettings') {
+        if (!source || source === "flagSettings") {
           // Skip flagSettings as it's not a normal source we check
           continue;
         }

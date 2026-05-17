@@ -6,11 +6,11 @@
  * - Resumed sessions: Initialize from teamName/agentName stored in the transcript
  */
 
-import type { AppState } from '../../state/AppState.js';
-import { logForDebugging } from '../debug.js';
-import { logError } from '../log.js';
-import { getDynamicTeamContext } from '../teammate.js';
-import { getTeamFilePath, readTeamFile } from './teamHelpers.js';
+import type { AppState } from "../../state/AppState.js";
+import { logForDebugging } from "../debug.js";
+import { logError } from "../log.js";
+import { getDynamicTeamContext } from "../teammate.js";
+import { getTeamFilePath, readTeamFile } from "./teamHelpers.js";
 
 /**
  * Computes the initial teamContext for AppState.
@@ -20,13 +20,13 @@ import { getTeamFilePath, readTeamFile } from './teamHelpers.js';
  *
  * @returns The teamContext object to include in initialState, or undefined if not a teammate
  */
-export function computeInitialTeamContext(): AppState['teamContext'] | undefined {
+export function computeInitialTeamContext(): AppState["teamContext"] | undefined {
   // dynamicTeamContext is set in main.tsx from CLI args
   const context = getDynamicTeamContext();
 
   if (!context?.teamName || !context?.agentName) {
     logForDebugging(
-      '[Reconnection] computeInitialTeamContext: No teammate context set (not a teammate)',
+      "[Reconnection] computeInitialTeamContext: No teammate context set (not a teammate)",
     );
     return undefined;
   }
@@ -45,7 +45,7 @@ export function computeInitialTeamContext(): AppState['teamContext'] | undefined
   const isLeader = !agentId;
 
   logForDebugging(
-    `[Reconnection] Computed initial team context for ${isLeader ? 'leader' : `teammate ${agentName}`} in team ${teamName}`,
+    `[Reconnection] Computed initial team context for ${isLeader ? "leader" : `teammate ${agentName}`} in team ${teamName}`,
   );
 
   return {

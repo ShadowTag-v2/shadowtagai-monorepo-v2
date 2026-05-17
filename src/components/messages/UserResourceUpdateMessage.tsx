@@ -1,14 +1,14 @@
-import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { c as _c } from 'react/compiler-runtime';
-import { REFRESH_ARROW } from '../../constants/figures.js';
-import { Box, Text } from '../../ink.js';
+import type { TextBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import { c as _c } from "react/compiler-runtime";
+import { REFRESH_ARROW } from "../../constants/figures.js";
+import { Box, Text } from "../../ink.js";
 
 type Props = {
   addMargin: boolean;
   param: TextBlockParam;
 };
 type ParsedUpdate = {
-  kind: 'resource' | 'polling';
+  kind: "resource" | "polling";
   server: string;
   /** URI for resource updates, tool name for polling updates */
   target: string;
@@ -25,9 +25,9 @@ function parseUpdates(text: string): ParsedUpdate[] {
   let match;
   while ((match = resourceRegex.exec(text)) !== null) {
     updates.push({
-      kind: 'resource',
-      server: match[1] ?? '',
-      target: match[2] ?? '',
+      kind: "resource",
+      server: match[1] ?? "",
+      target: match[2] ?? "",
       reason: match[3],
     });
   }
@@ -37,9 +37,9 @@ function parseUpdates(text: string): ParsedUpdate[] {
     /<mcp-polling-update\s+type="([^"]+)"\s+server="([^"]+)"\s+tool="([^"]+)"[^>]*>(?:[\s\S]*?<reason>([^<]+)<\/reason>)?/g;
   while ((match = pollingRegex.exec(text)) !== null) {
     updates.push({
-      kind: 'polling',
-      server: match[2] ?? '',
-      target: match[3] ?? '',
+      kind: "polling",
+      server: match[2] ?? "",
+      target: match[3] ?? "",
       reason: match[4],
     });
   }
@@ -49,9 +49,9 @@ function parseUpdates(text: string): ParsedUpdate[] {
 // Format URI for display - show just the meaningful part
 function formatUri(uri: string): string {
   // For file:// URIs, show just the filename
-  if (uri.startsWith('file://')) {
+  if (uri.startsWith("file://")) {
     const path = uri.slice(7);
-    const parts = path.split('/');
+    const parts = path.split("/");
     return parts[parts.length - 1] || path;
   }
   // For other URIs, show the whole thing but truncated
@@ -70,7 +70,7 @@ export function UserResourceUpdateMessage(t0) {
   let t4;
   let t5;
   if ($[0] !== addMargin || $[1] !== text) {
-    t5 = Symbol.for('react.early_return_sentinel');
+    t5 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const updates = parseUpdates(text);
       if (updates.length === 0) {
@@ -78,7 +78,7 @@ export function UserResourceUpdateMessage(t0) {
         break bb0;
       }
       T0 = Box;
-      t2 = 'column';
+      t2 = "column";
       t3 = addMargin ? 1 : 0;
       t4 = updates.map(_temp);
     }
@@ -96,7 +96,7 @@ export function UserResourceUpdateMessage(t0) {
     t4 = $[5];
     t5 = $[6];
   }
-  if (t5 !== Symbol.for('react.early_return_sentinel')) {
+  if (t5 !== Symbol.for("react.early_return_sentinel")) {
     return t5;
   }
   let t6;
@@ -120,9 +120,9 @@ function _temp(update, i) {
   return (
     <Box key={i}>
       <Text>
-        <Text color="success">{REFRESH_ARROW}</Text> <Text dimColor={true}>{update.server}:</Text>{' '}
+        <Text color="success">{REFRESH_ARROW}</Text> <Text dimColor={true}>{update.server}:</Text>{" "}
         <Text color="suggestion">
-          {update.kind === 'resource' ? formatUri(update.target) : update.target}
+          {update.kind === "resource" ? formatUri(update.target) : update.target}
         </Text>
         {update.reason && <Text dimColor={true}> · {update.reason}</Text>}
       </Text>

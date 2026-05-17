@@ -1,9 +1,9 @@
-import { randomUUID } from 'node:crypto';
-import { useCallback, useRef, useState } from 'react';
-import type { TranscriptShareResponse } from './TranscriptSharePrompt.js';
-import type { FeedbackSurveyResponse } from './utils.js';
+import { randomUUID } from "node:crypto";
+import { useCallback, useRef, useState } from "react";
+import type { TranscriptShareResponse } from "./TranscriptSharePrompt.js";
+import type { FeedbackSurveyResponse } from "./utils.js";
 
-type SurveyState = 'closed' | 'open' | 'thanks' | 'transcript_prompt' | 'submitting' | 'submitted';
+type SurveyState = "closed" | "open" | "thanks" | "transcript_prompt" | "submitting" | "submitted";
 type UseSurveyStateOptions = {
   hideThanksAfterMs: number;
   onOpen: (appearanceId: string) => void | Promise<void>;
@@ -30,15 +30,15 @@ export function useSurveyState({
   handleSelect: (selected: FeedbackSurveyResponse) => boolean;
   handleTranscriptSelect: (selected: TranscriptShareResponse) => void;
 } {
-  const [state, setState] = useState<SurveyState>('closed');
+  const [state, setState] = useState<SurveyState>("closed");
   const [lastResponse, setLastResponse] = useState<FeedbackSurveyResponse | null>(null);
   const appearanceId = useRef(randomUUID());
   const lastResponseRef = useRef<FeedbackSurveyResponse | null>(null);
   const showThanksThenClose = useCallback(() => {
-    setState('thanks');
+    setState("thanks");
     setTimeout(
       (setState_0, setLastResponse_0) => {
-        setState_0('closed');
+        setState_0("closed");
         setLastResponse_0(null);
       },
       hideThanksAfterMs,
@@ -47,14 +47,14 @@ export function useSurveyState({
     );
   }, [hideThanksAfterMs]);
   const showSubmittedThenClose = useCallback(() => {
-    setState('submitted');
-    setTimeout(setState, hideThanksAfterMs, 'closed');
+    setState("submitted");
+    setTimeout(setState, hideThanksAfterMs, "closed");
   }, [hideThanksAfterMs]);
   const open = useCallback(() => {
-    if (state !== 'closed') {
+    if (state !== "closed") {
       return;
     }
-    setState('open');
+    setState("open");
     appearanceId.current = randomUUID();
     void onOpen(appearanceId.current);
   }, [state, onOpen]);
@@ -64,11 +64,11 @@ export function useSurveyState({
       lastResponseRef.current = selected;
       // Always fire the survey response event first
       void onSelect(appearanceId.current, selected);
-      if (selected === 'dismissed') {
-        setState('closed');
+      if (selected === "dismissed") {
+        setState("closed");
         setLastResponse(null);
       } else if (shouldShowTranscriptPrompt?.(selected)) {
-        setState('transcript_prompt');
+        setState("transcript_prompt");
         onTranscriptPromptShown?.(appearanceId.current, selected);
         return true;
       } else {
@@ -81,8 +81,8 @@ export function useSurveyState({
   const handleTranscriptSelect = useCallback(
     (selected_0: TranscriptShareResponse) => {
       switch (selected_0) {
-        case 'yes':
-          setState('submitting');
+        case "yes":
+          setState("submitting");
           void (async () => {
             try {
               const success = await onTranscriptSelect?.(
@@ -100,8 +100,8 @@ export function useSurveyState({
             }
           })();
           break;
-        case 'no':
-        case 'dont_ask_again':
+        case "no":
+        case "dont_ask_again":
           void onTranscriptSelect?.(appearanceId.current, selected_0, lastResponseRef.current);
           showThanksThenClose();
           break;

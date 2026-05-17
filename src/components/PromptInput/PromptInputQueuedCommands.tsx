@@ -1,16 +1,16 @@
-import { feature } from 'bun:bundle';
-import * as React from 'react';
-import { useMemo } from 'react';
-import { Box } from 'src/ink.js';
-import { useAppState } from 'src/state/AppState.js';
-import { STATUS_TAG, SUMMARY_TAG, TASK_NOTIFICATION_TAG } from '../../constants/xml.js';
-import { QueuedMessageProvider } from '../../context/QueuedMessageContext.js';
-import { useCommandQueue } from '../../hooks/useCommandQueue.js';
-import type { QueuedCommand } from '../../types/textInputTypes.js';
-import { isQueuedCommandVisible } from '../../utils/messageQueueManager.js';
-import { createUserMessage, EMPTY_LOOKUPS, normalizeMessages } from '../../utils/messages.js';
-import { jsonParse } from '../../utils/slowOperations.js';
-import { Message } from '../Message.js';
+import { feature } from "bun:bundle";
+import * as React from "react";
+import { useMemo } from "react";
+import { Box } from "src/ink.js";
+import { useAppState } from "src/state/AppState.js";
+import { STATUS_TAG, SUMMARY_TAG, TASK_NOTIFICATION_TAG } from "../../constants/xml.js";
+import { QueuedMessageProvider } from "../../context/QueuedMessageContext.js";
+import { useCommandQueue } from "../../hooks/useCommandQueue.js";
+import type { QueuedCommand } from "../../types/textInputTypes.js";
+import { isQueuedCommandVisible } from "../../utils/messageQueueManager.js";
+import { createUserMessage, EMPTY_LOOKUPS, normalizeMessages } from "../../utils/messages.js";
+import { jsonParse } from "../../utils/slowOperations.js";
+import { Message } from "../Message.js";
 
 const EMPTY_SET = new Set<string>();
 
@@ -21,7 +21,7 @@ const EMPTY_SET = new Set<string>();
 function isIdleNotification(value: string): boolean {
   try {
     const parsed = jsonParse(value);
-    return parsed?.type === 'idle_notification';
+    return parsed?.type === "idle_notification";
   } catch {
     return false;
   }
@@ -48,12 +48,12 @@ function createOverflowNotificationMessage(count: number): string {
 function processQueuedCommands(queuedCommands: QueuedCommand[]): QueuedCommand[] {
   // Filter out idle notifications - they are processed silently
   const filteredCommands = queuedCommands.filter(
-    (cmd) => typeof cmd.value !== 'string' || !isIdleNotification(cmd.value),
+    (cmd) => typeof cmd.value !== "string" || !isIdleNotification(cmd.value),
   );
 
   // Separate task notifications from other commands
-  const taskNotifications = filteredCommands.filter((cmd) => cmd.mode === 'task-notification');
-  const otherCommands = filteredCommands.filter((cmd) => cmd.mode !== 'task-notification');
+  const taskNotifications = filteredCommands.filter((cmd) => cmd.mode === "task-notification");
+  const otherCommands = filteredCommands.filter((cmd) => cmd.mode !== "task-notification");
 
   // If notifications fit within limit, return all commands as-is
   if (taskNotifications.length <= MAX_VISIBLE_NOTIFICATIONS) {
@@ -67,7 +67,7 @@ function processQueuedCommands(queuedCommands: QueuedCommand[]): QueuedCommand[]
   // Create synthetic overflow message
   const overflowCommand: QueuedCommand = {
     value: createOverflowNotificationMessage(overflowCount),
-    mode: 'task-notification',
+    mode: "task-notification",
   };
   return [...otherCommands, ...visibleNotifications, overflowCommand];
 }
@@ -79,7 +79,7 @@ function PromptInputQueuedCommandsImpl(): React.ReactNode {
   // check elsewhere — no teammate-view override needed since this
   // component early-returns when viewing a teammate.
   const useBriefLayout =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature("KAIROS") || feature("KAIROS_BRIEF")
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s_0) => s_0.isBriefOnly)
       : false;
@@ -98,7 +98,7 @@ function PromptInputQueuedCommandsImpl(): React.ReactNode {
     return normalizeMessages(
       processedCommands.map((cmd) => {
         let content = cmd.value;
-        if (cmd.mode === 'bash' && typeof content === 'string') {
+        if (cmd.mode === "bash" && typeof content === "string") {
           content = `<bash-input>${content}</bash-input>`;
         }
         // [Image #N] placeholders are inline in the text value (inserted at

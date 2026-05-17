@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * TelemetrySubmitButton — Panopticon-Wired Form Submit
@@ -17,10 +17,10 @@
  *   Front 3 (Observability): This component tracks the full lifecycle
  */
 
-import { Loader2 } from 'lucide-react';
-import { useEffect, useRef } from 'react';
-import { useFormStatus } from 'react-dom';
-import { usePanopticon } from '@/hooks/usePanopticon';
+import { Loader2 } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { useFormStatus } from "react-dom";
+import { usePanopticon } from "@/hooks/usePanopticon";
 
 interface TelemetrySubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -31,8 +31,8 @@ interface TelemetrySubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButt
 
 export function TelemetrySubmitButton({
   children,
-  pendingText = 'Processing...',
-  formName = 'checkout',
+  pendingText = "Processing...",
+  formName = "checkout",
   ...props
 }: TelemetrySubmitButtonProps) {
   const { pending } = useFormStatus();
@@ -44,7 +44,7 @@ export function TelemetrySubmitButton({
   useEffect(() => {
     if (hasTrackedStart.current) return;
     hasTrackedStart.current = true;
-    trackCheckout('started');
+    trackCheckout("started");
   }, [trackCheckout]);
 
   // Track submission lifecycle transitions
@@ -52,8 +52,8 @@ export function TelemetrySubmitButton({
     if (pending && !wasSubmitting.current) {
       // Transition: idle → pending (user clicked submit)
       wasSubmitting.current = true;
-      trackCheckout('submitted');
-      track('form.submit_initiated', {
+      trackCheckout("submitted");
+      track("form.submit_initiated", {
         form_name_hash: hashString(formName),
       });
     } else if (!pending && wasSubmitting.current) {
@@ -61,7 +61,7 @@ export function TelemetrySubmitButton({
       wasSubmitting.current = false;
       // Note: success/error is tracked by the server action itself,
       // but we track the UI transition for timing correlation
-      track('form.submit_completed', {
+      track("form.submit_completed", {
         form_name_hash: hashString(formName),
       });
     }
@@ -73,7 +73,7 @@ export function TelemetrySubmitButton({
       disabled={pending || props.disabled}
       aria-disabled={pending}
       aria-busy={pending}
-      className={`relative inline-flex items-center justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black ${props.className || ''}`}
+      className={`relative inline-flex items-center justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black ${props.className || ""}`}
       {...props}
     >
       {pending ? (

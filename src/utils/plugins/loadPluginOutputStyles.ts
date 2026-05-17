@@ -1,13 +1,13 @@
-import { basename } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
-import type { OutputStyleConfig } from '../../constants/outputStyles.js';
-import { getPluginErrorMessage } from '../../types/plugin.js';
-import { logForDebugging } from '../debug.js';
-import { coerceDescriptionToString, parseFrontmatter } from '../frontmatterParser.js';
-import { getFsImplementation, isDuplicatePath } from '../fsOperations.js';
-import { extractDescriptionFromMarkdown } from '../markdownConfigLoader.js';
-import { loadAllPluginsCacheOnly } from './pluginLoader.js';
-import { walkPluginMarkdown } from './walkPluginMarkdown.js';
+import { basename } from "node:path";
+import memoize from "lodash-es/memoize.js";
+import type { OutputStyleConfig } from "../../constants/outputStyles.js";
+import { getPluginErrorMessage } from "../../types/plugin.js";
+import { logForDebugging } from "../debug.js";
+import { coerceDescriptionToString, parseFrontmatter } from "../frontmatterParser.js";
+import { getFsImplementation, isDuplicatePath } from "../fsOperations.js";
+import { extractDescriptionFromMarkdown } from "../markdownConfigLoader.js";
+import { loadAllPluginsCacheOnly } from "./pluginLoader.js";
+import { walkPluginMarkdown } from "./walkPluginMarkdown.js";
 
 async function loadOutputStylesFromDirectory(
   outputStylesPath: string,
@@ -21,7 +21,7 @@ async function loadOutputStylesFromDirectory(
       const style = await loadOutputStyleFromFile(fullPath, pluginName, loadedPaths);
       if (style) styles.push(style);
     },
-    { logLabel: 'output-styles' },
+    { logLabel: "output-styles" },
   );
   return styles;
 }
@@ -36,10 +36,10 @@ async function loadOutputStyleFromFile(
     return null;
   }
   try {
-    const content = await fs.readFile(filePath, { encoding: 'utf-8' });
+    const content = await fs.readFile(filePath, { encoding: "utf-8" });
     const { frontmatter, content: markdownContent } = parseFrontmatter(content, filePath);
 
-    const fileName = basename(filePath, '.md');
+    const fileName = basename(filePath, ".md");
     const baseStyleName = (frontmatter.name as string) || fileName;
     // Namespace output styles with plugin name, consistent with commands and agents
     const name = `${pluginName}:${baseStyleName}`;
@@ -48,11 +48,11 @@ async function loadOutputStyleFromFile(
       extractDescriptionFromMarkdown(markdownContent, `Output style from ${pluginName} plugin`);
 
     // Parse forceForPlugin flag (supports both boolean and string values)
-    const forceRaw = frontmatter['force-for-plugin'];
+    const forceRaw = frontmatter["force-for-plugin"];
     const forceForPlugin =
-      forceRaw === true || forceRaw === 'true'
+      forceRaw === true || forceRaw === "true"
         ? true
-        : forceRaw === false || forceRaw === 'false'
+        : forceRaw === false || forceRaw === "false"
           ? false
           : undefined;
 
@@ -60,12 +60,12 @@ async function loadOutputStyleFromFile(
       name,
       description,
       prompt: markdownContent.trim(),
-      source: 'plugin',
+      source: "plugin",
       forceForPlugin,
     };
   } catch (error) {
     logForDebugging(`Failed to load output style from ${filePath}: ${error}`, {
-      level: 'error',
+      level: "error",
     });
     return null;
   }
@@ -78,7 +78,7 @@ export const loadPluginOutputStyles = memoize(async (): Promise<OutputStyleConfi
 
   if (errors.length > 0) {
     logForDebugging(
-      `Plugin loading errors: ${errors.map((e) => getPluginErrorMessage(e)).join(', ')}`,
+      `Plugin loading errors: ${errors.map((e) => getPluginErrorMessage(e)).join(", ")}`,
     );
   }
 
@@ -104,7 +104,7 @@ export const loadPluginOutputStyles = memoize(async (): Promise<OutputStyleConfi
       } catch (error) {
         logForDebugging(
           `Failed to load output styles from plugin ${plugin.name} default directory: ${error}`,
-          { level: 'error' },
+          { level: "error" },
         );
       }
     }
@@ -126,7 +126,7 @@ export const loadPluginOutputStyles = memoize(async (): Promise<OutputStyleConfi
                 `Loaded ${styles.length} output styles from plugin ${plugin.name} custom path: ${stylePath}`,
               );
             }
-          } else if (stats.isFile() && stylePath.endsWith('.md')) {
+          } else if (stats.isFile() && stylePath.endsWith(".md")) {
             // Load single output style file
             const style = await loadOutputStyleFromFile(stylePath, plugin.name, loadedPaths);
             if (style) {
@@ -139,7 +139,7 @@ export const loadPluginOutputStyles = memoize(async (): Promise<OutputStyleConfi
         } catch (error) {
           logForDebugging(
             `Failed to load output styles from plugin ${plugin.name} custom path ${stylePath}: ${error}`,
-            { level: 'error' },
+            { level: "error" },
           );
         }
       }

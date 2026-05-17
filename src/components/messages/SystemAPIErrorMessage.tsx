@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from 'src/ink.js';
-import { formatAPIError } from 'src/services/api/errorUtils.js';
-import type { SystemAPIErrorMessage } from 'src/types/message.js';
-import { useInterval } from 'usehooks-ts';
-import { CtrlOToExpand } from '../CtrlOToExpand.js';
-import { MessageResponse } from '../MessageResponse.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "src/ink.js";
+import { formatAPIError } from "src/services/api/errorUtils.js";
+import type { SystemAPIErrorMessage } from "src/types/message.js";
+import { useInterval } from "usehooks-ts";
+import { CtrlOToExpand } from "../CtrlOToExpand.js";
+import { MessageResponse } from "../MessageResponse.js";
 
 const MAX_API_ERROR_CHARS = 1000;
 type Props = {
@@ -20,7 +20,7 @@ export function SystemAPIErrorMessage(t0) {
   const [countdownMs, setCountdownMs] = useState(0);
   const done = countdownMs >= retryInMs;
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => setCountdownMs(_temp);
     $[0] = t2;
   } else {
@@ -52,9 +52,9 @@ export function SystemAPIErrorMessage(t0) {
     truncated = !verbose && formatted.length > MAX_API_ERROR_CHARS;
     T2 = MessageResponse;
     T1 = Box;
-    t6 = 'column';
+    t6 = "column";
     T0 = Text;
-    t4 = 'error';
+    t4 = "error";
     t5 = truncated ? `${formatted.slice(0, MAX_API_ERROR_CHARS)}\u2026` : formatted;
     $[4] = error;
     $[5] = verbose;
@@ -92,7 +92,7 @@ export function SystemAPIErrorMessage(t0) {
   } else {
     t8 = $[18];
   }
-  const t9 = retryInSecondsLive === 1 ? 'second' : 'seconds';
+  const t9 = retryInSecondsLive === 1 ? "second" : "seconds";
   let t10;
   if (
     $[19] !== maxRetries ||
@@ -105,7 +105,7 @@ export function SystemAPIErrorMessage(t0) {
         Retrying in {retryInSecondsLive} {t9}… (attempt {retryAttempt}/{maxRetries})
         {process.env.API_TIMEOUT_MS
           ? ` · API_TIMEOUT_MS=${process.env.API_TIMEOUT_MS}ms, try increasing it`
-          : ''}
+          : ""}
       </Text>
     );
     $[19] = maxRetries;

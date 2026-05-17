@@ -1,11 +1,11 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text, useTheme } from '../../ink.js';
-import { getTheme, type Theme } from '../../utils/theme.js';
-import { getDefaultCharacters, interpolateColor, parseRGB, toRGBColor } from './utils.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text, useTheme } from "../../ink.js";
+import { getTheme, type Theme } from "../../utils/theme.js";
+import { getDefaultCharacters, interpolateColor, parseRGB, toRGBColor } from "./utils.js";
 
 const DEFAULT_CHARACTERS = getDefaultCharacters();
 const SPINNER_FRAMES = [...DEFAULT_CHARACTERS, ...[...DEFAULT_CHARACTERS].reverse()];
-const REDUCED_MOTION_DOT = '●';
+const REDUCED_MOTION_DOT = "●";
 const REDUCED_MOTION_CYCLE_MS = 2000; // 2-second cycle: 1s visible, 1s dim
 const ERROR_RED = {
   r: 171,
@@ -58,7 +58,7 @@ export function SpinnerGlyph(t0) {
         </Box>
       );
     }
-    const color = stalledIntensity > 0.5 ? 'error' : messageColor;
+    const color = stalledIntensity > 0.5 ? "error" : messageColor;
     let t4;
     if ($[3] !== color || $[4] !== spinnerChar) {
       t4 = (

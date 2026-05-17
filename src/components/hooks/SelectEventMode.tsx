@@ -1,4 +1,4 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 /**
  * SelectEventMode is the entrypoint of the Hooks config menu, where the user
  * sees the list of available hook events.
@@ -8,13 +8,13 @@ import { c as _c } from 'react/compiler-runtime';
  * edit settings.json directly or ask Claude.
  */
 
-import figures from 'figures';
-import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
-import type { HookEventMetadata } from 'src/utils/hooks/hooksConfigManager.js';
-import { Box, Link, Text } from '../../ink.js';
-import { plural } from '../../utils/stringUtils.js';
-import { Select } from '../CustomSelect/select.js';
-import { Dialog } from '../design-system/Dialog.js';
+import figures from "figures";
+import type { HookEvent } from "src/entrypoints/agentSdkTypes.js";
+import type { HookEventMetadata } from "src/utils/hooks/hooksConfigManager.js";
+import { Box, Link, Text } from "../../ink.js";
+import { plural } from "../../utils/stringUtils.js";
+import { Select } from "../CustomSelect/select.js";
+import { Dialog } from "../design-system/Dialog.js";
 
 type Props = {
   hookEventMetadata: Record<HookEvent, HookEventMetadata>;
@@ -36,7 +36,7 @@ export function SelectEventMode(t0) {
   } = t0;
   let t1;
   if ($[0] !== totalHooksCount) {
-    t1 = plural(totalHooksCount, 'hook');
+    t1 = plural(totalHooksCount, "hook");
     $[0] = totalHooksCount;
     $[1] = t1;
   } else {
@@ -60,7 +60,7 @@ export function SelectEventMode(t0) {
     t2 = $[3];
   }
   let t3;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Box flexDirection="column">
         <Text dimColor={true}>

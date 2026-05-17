@@ -1,11 +1,11 @@
-import { feature } from 'bun:bundle';
-import * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { Command } from '../commands.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { Box } from '../ink.js';
-import type { Tools } from '../Tool.js';
-import { isConnectorTextBlock } from '../types/connectorText.js';
+import { feature } from "bun:bundle";
+import * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { Command } from "../commands.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { Box } from "../ink.js";
+import type { Tools } from "../Tool.js";
+import { isConnectorTextBlock } from "../types/connectorText.js";
 import type {
   AssistantMessage,
   AttachmentMessage as AttachmentMessageType,
@@ -14,27 +14,27 @@ import type {
   NormalizedUserMessage,
   ProgressMessage,
   SystemMessage,
-} from '../types/message.js';
-import { isAdvisorBlock } from '../utils/advisor.js';
-import { isFullscreenEnvEnabled } from '../utils/fullscreen.js';
-import { logError } from '../utils/log.js';
-import type { buildMessageLookups } from '../utils/messages.js';
-import { CompactSummary } from './CompactSummary.js';
-import { AdvisorMessage } from './messages/AdvisorMessage.js';
-import { AssistantRedactedThinkingMessage } from './messages/AssistantRedactedThinkingMessage.js';
-import { AssistantTextMessage } from './messages/AssistantTextMessage.js';
-import { AssistantThinkingMessage } from './messages/AssistantThinkingMessage.js';
-import { AssistantToolUseMessage } from './messages/AssistantToolUseMessage.js';
-import { AttachmentMessage } from './messages/AttachmentMessage.js';
-import { CollapsedReadSearchContent } from './messages/CollapsedReadSearchContent.js';
-import { CompactBoundaryMessage } from './messages/CompactBoundaryMessage.js';
-import { GroupedToolUseContent } from './messages/GroupedToolUseContent.js';
-import { SystemTextMessage } from './messages/SystemTextMessage.js';
-import { UserImageMessage } from './messages/UserImageMessage.js';
-import { UserTextMessage } from './messages/UserTextMessage.js';
-import { UserToolResultMessage } from './messages/UserToolResultMessage/UserToolResultMessage.js';
-import { OffscreenFreeze } from './OffscreenFreeze.js';
-import { ExpandShellOutputProvider } from './shell/ExpandShellOutputContext.js';
+} from "../types/message.js";
+import { isAdvisorBlock } from "../utils/advisor.js";
+import { isFullscreenEnvEnabled } from "../utils/fullscreen.js";
+import { logError } from "../utils/log.js";
+import type { buildMessageLookups } from "../utils/messages.js";
+import { CompactSummary } from "./CompactSummary.js";
+import { AdvisorMessage } from "./messages/AdvisorMessage.js";
+import { AssistantRedactedThinkingMessage } from "./messages/AssistantRedactedThinkingMessage.js";
+import { AssistantTextMessage } from "./messages/AssistantTextMessage.js";
+import { AssistantThinkingMessage } from "./messages/AssistantThinkingMessage.js";
+import { AssistantToolUseMessage } from "./messages/AssistantToolUseMessage.js";
+import { AttachmentMessage } from "./messages/AttachmentMessage.js";
+import { CollapsedReadSearchContent } from "./messages/CollapsedReadSearchContent.js";
+import { CompactBoundaryMessage } from "./messages/CompactBoundaryMessage.js";
+import { GroupedToolUseContent } from "./messages/GroupedToolUseContent.js";
+import { SystemTextMessage } from "./messages/SystemTextMessage.js";
+import { UserImageMessage } from "./messages/UserImageMessage.js";
+import { UserTextMessage } from "./messages/UserTextMessage.js";
+import { UserToolResultMessage } from "./messages/UserToolResultMessage/UserToolResultMessage.js";
+import { OffscreenFreeze } from "./OffscreenFreeze.js";
+import { ExpandShellOutputProvider } from "./shell/ExpandShellOutputContext.js";
 export type Props = {
   message:
     | NormalizedUserMessage
@@ -55,7 +55,7 @@ export type Props = {
   progressMessagesForMessage: ProgressMessage[];
   shouldAnimate: boolean;
   shouldShowDot: boolean;
-  style?: 'condensed';
+  style?: "condensed";
   width?: number | string;
   isTranscriptMode: boolean;
   isStatic: boolean;
@@ -92,7 +92,7 @@ function MessageImpl(t0) {
   } = t0;
   const isUserContinuation = t1 === undefined ? false : t1;
   switch (message.type) {
-    case 'attachment': {
+    case "attachment": {
       let t2;
       if (
         $[0] !== addMargin ||
@@ -118,8 +118,8 @@ function MessageImpl(t0) {
       }
       return t2;
     }
-    case 'assistant': {
-      const t2 = containerWidth ?? '100%';
+    case "assistant": {
+      const t2 = containerWidth ?? "100%";
       let t3;
       if (
         $[5] !== addMargin ||
@@ -234,9 +234,9 @@ function MessageImpl(t0) {
       }
       return t4;
     }
-    case 'user': {
+    case "user": {
       if (message.isCompactSummary) {
-        const t2 = isTranscriptMode ? 'transcript' : 'prompt';
+        const t2 = isTranscriptMode ? "transcript" : "prompt";
         let t3;
         if ($[41] !== message || $[42] !== t2) {
           t3 = <CompactSummary message={message} screen={t2} />;
@@ -253,7 +253,7 @@ function MessageImpl(t0) {
         imageIndices = [];
         let imagePosition = 0;
         for (const param of message.message.content) {
-          if (param.type === 'image') {
+          if (param.type === "image") {
             const id = message.imagePasteIds?.[imagePosition];
             imagePosition++;
             imageIndices.push(id ?? imagePosition);
@@ -268,7 +268,7 @@ function MessageImpl(t0) {
         imageIndices = $[46];
       }
       const isLatestBashOutput = latestBashOutputUUID === message.uuid;
-      const t2 = containerWidth ?? '100%';
+      const t2 = containerWidth ?? "100%";
       let t3;
       if (
         $[47] !== addMargin ||
@@ -341,13 +341,13 @@ function MessageImpl(t0) {
       }
       return t5;
     }
-    case 'system': {
-      if (message.subtype === 'compact_boundary') {
+    case "system": {
+      if (message.subtype === "compact_boundary") {
         if (isFullscreenEnvEnabled()) {
           return null;
         }
         let t2;
-        if ($[64] === Symbol.for('react.memo_cache_sentinel')) {
+        if ($[64] === Symbol.for("react.memo_cache_sentinel")) {
           t2 = <CompactBoundaryMessage />;
           $[64] = t2;
         } else {
@@ -355,23 +355,23 @@ function MessageImpl(t0) {
         }
         return t2;
       }
-      if (message.subtype === 'microcompact_boundary') {
+      if (message.subtype === "microcompact_boundary") {
         return null;
       }
-      if (feature('HISTORY_SNIP')) {
+      if (feature("HISTORY_SNIP")) {
         const { isSnipBoundaryMessage } =
-          require('../services/compact/snipProjection.js') as typeof import('../services/compact/snipProjection.js');
+          require("../services/compact/snipProjection.js") as typeof import("../services/compact/snipProjection.js");
         const { isSnipMarkerMessage } =
-          require('../services/compact/snipCompact.js') as typeof import('../services/compact/snipCompact.js');
+          require("../services/compact/snipCompact.js") as typeof import("../services/compact/snipCompact.js");
         if (isSnipBoundaryMessage(message)) {
           let t2;
-          if ($[65] === Symbol.for('react.memo_cache_sentinel')) {
-            t2 = require('./messages/SnipBoundaryMessage.js');
+          if ($[65] === Symbol.for("react.memo_cache_sentinel")) {
+            t2 = require("./messages/SnipBoundaryMessage.js");
             $[65] = t2;
           } else {
             t2 = $[65];
           }
-          const { SnipBoundaryMessage } = t2 as typeof import('./messages/SnipBoundaryMessage.js');
+          const { SnipBoundaryMessage } = t2 as typeof import("./messages/SnipBoundaryMessage.js");
           let t3;
           if ($[66] !== message) {
             t3 = <SnipBoundaryMessage message={message} />;
@@ -386,11 +386,11 @@ function MessageImpl(t0) {
           return null;
         }
       }
-      if (message.subtype === 'local_command') {
+      if (message.subtype === "local_command") {
         let t2;
         if ($[68] !== message.content) {
           t2 = {
-            type: 'text',
+            type: "text",
             text: message.content,
           };
           $[68] = message.content;
@@ -448,7 +448,7 @@ function MessageImpl(t0) {
       }
       return t2;
     }
-    case 'grouped_tool_use': {
+    case "grouped_tool_use": {
       let t2;
       if (
         $[80] !== inProgressToolUseIDs ||
@@ -477,7 +477,7 @@ function MessageImpl(t0) {
       }
       return t2;
     }
-    case 'collapsed_read_search': {
+    case "collapsed_read_search": {
       const t2 = verbose || isTranscriptMode;
       let t3;
       if (
@@ -534,7 +534,7 @@ function UserMessage(t0) {
   } = t0;
   const { columns } = useTerminalSize();
   switch (param.type) {
-    case 'text': {
+    case "text": {
       let t1;
       if (
         $[0] !== addMargin ||
@@ -566,7 +566,7 @@ function UserMessage(t0) {
       }
       return t1;
     }
-    case 'image': {
+    case "image": {
       const t1 = addMargin && !isUserContinuation;
       let t2;
       if ($[7] !== imageIndex || $[8] !== t1) {
@@ -579,7 +579,7 @@ function UserMessage(t0) {
       }
       return t2;
     }
-    case 'tool_result': {
+    case "tool_result": {
       const t1 = columns - 5;
       let t2;
       if (
@@ -647,12 +647,12 @@ function AssistantMessageBlock(t0) {
     lastThinkingBlockId,
     advisorModel,
   } = t0;
-  if (feature('CONNECTOR_TEXT')) {
+  if (feature("CONNECTOR_TEXT")) {
     if (isConnectorTextBlock(param)) {
       let t1;
       if ($[0] !== param.connector_text) {
         t1 = {
-          type: 'text',
+          type: "text",
           text: param.connector_text,
         };
         $[0] = param.connector_text;
@@ -693,7 +693,7 @@ function AssistantMessageBlock(t0) {
     }
   }
   switch (param.type) {
-    case 'tool_use': {
+    case "tool_use": {
       let t1;
       if (
         $[9] !== addMargin ||
@@ -743,7 +743,7 @@ function AssistantMessageBlock(t0) {
       }
       return t1;
     }
-    case 'text': {
+    case "text": {
       let t1;
       if (
         $[22] !== addMargin ||
@@ -775,7 +775,7 @@ function AssistantMessageBlock(t0) {
       }
       return t1;
     }
-    case 'redacted_thinking': {
+    case "redacted_thinking": {
       if (!isTranscriptMode && !verbose) {
         return null;
       }
@@ -789,7 +789,7 @@ function AssistantMessageBlock(t0) {
       }
       return t1;
     }
-    case 'thinking': {
+    case "thinking": {
       if (!isTranscriptMode && !verbose) {
         return null;
       }
@@ -823,8 +823,8 @@ function AssistantMessageBlock(t0) {
       }
       return t2;
     }
-    case 'server_tool_use':
-    case 'advisor_tool_result': {
+    case "server_tool_use":
+    case "advisor_tool_result": {
       if (isAdvisorBlock(param)) {
         const t1 = verbose || isTranscriptMode;
         let t2;
@@ -878,8 +878,8 @@ export function hasThinkingContent(m: {
     }>;
   };
 }): boolean {
-  if (m.type !== 'assistant' || !m.message) return false;
-  return m.message.content.some((b) => b.type === 'thinking' || b.type === 'redacted_thinking');
+  if (m.type !== "assistant" || !m.message) return false;
+  return m.message.content.some((b) => b.type === "thinking" || b.type === "redacted_thinking");
 }
 
 /** Exported for testing */

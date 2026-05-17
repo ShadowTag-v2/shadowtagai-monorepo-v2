@@ -9,23 +9,23 @@
  * handed in; useDirectConnect creates its WebSocket inside the effect.
  */
 
-import { randomUUID } from 'node:crypto';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import type { ToolUseConfirm } from '../components/permissions/PermissionRequest.js';
+import { randomUUID } from "node:crypto";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import type { ToolUseConfirm } from "../components/permissions/PermissionRequest.js";
 import {
   createSyntheticAssistantMessage,
   createToolStub,
-} from '../remote/remotePermissionBridge.js';
-import { convertSDKMessage, isSessionEndMessage } from '../remote/sdkMessageAdapter.js';
-import type { SSHSession } from '../ssh/createSSHSession.js';
-import type { SSHSessionManager } from '../ssh/SSHSessionManager.js';
-import type { Tool } from '../Tool.js';
-import { findToolByName } from '../Tool.js';
-import type { Message as MessageType } from '../types/message.js';
-import type { PermissionAskDecision } from '../types/permissions.js';
-import { logForDebugging } from '../utils/debug.js';
-import { gracefulShutdown } from '../utils/gracefulShutdown.js';
-import type { RemoteMessageContent } from '../utils/teleport/api.js';
+} from "../remote/remotePermissionBridge.js";
+import { convertSDKMessage, isSessionEndMessage } from "../remote/sdkMessageAdapter.js";
+import type { SSHSession } from "../ssh/createSSHSession.js";
+import type { SSHSessionManager } from "../ssh/SSHSessionManager.js";
+import type { Tool } from "../Tool.js";
+import { findToolByName } from "../Tool.js";
+import type { Message as MessageType } from "../types/message.js";
+import type { PermissionAskDecision } from "../types/permissions.js";
+import { logForDebugging } from "../utils/debug.js";
+import { gracefulShutdown } from "../utils/gracefulShutdown.js";
+import type { RemoteMessageContent } from "../utils/teleport/api.js";
 
 type UseSSHSessionResult = {
   isRemoteMode: boolean;
@@ -64,7 +64,7 @@ export function useSSHSession({
     if (!session) return;
 
     hasReceivedInitRef.current = false;
-    logForDebugging('[useSSHSession] wiring SSH session manager');
+    logForDebugging("[useSSHSession] wiring SSH session manager");
 
     const manager = session.createManager({
       onMessage: (sdkMessage) => {
@@ -73,7 +73,7 @@ export function useSSHSession({
         }
 
         // Skip duplicate init messages (one per turn from stream-json mode).
-        if (sdkMessage.type === 'system' && sdkMessage.subtype === 'init') {
+        if (sdkMessage.type === "system" && sdkMessage.subtype === "init") {
           if (hasReceivedInitRef.current) return;
           hasReceivedInitRef.current = true;
         }
@@ -81,7 +81,7 @@ export function useSSHSession({
         const converted = convertSDKMessage(sdkMessage, {
           convertToolResults: true,
         });
-        if (converted.type === 'message') {
+        if (converted.type === "message") {
           setMessages((prev) => [...prev, converted.message]);
         }
       },
@@ -94,7 +94,7 @@ export function useSSHSession({
         const syntheticMessage = createSyntheticAssistantMessage(request, requestId);
 
         const permissionResult: PermissionAskDecision = {
-          behavior: 'ask',
+          behavior: "ask",
           message: request.description ?? `${request.tool_name} requires permission`,
           suggestions: request.permission_suggestions,
           blockedPath: request.blocked_path,
@@ -105,21 +105,21 @@ export function useSSHSession({
           tool,
           description: request.description ?? `${request.tool_name} requires permission`,
           input: request.input,
-          toolUseContext: {} as ToolUseConfirm['toolUseContext'],
+          toolUseContext: {} as ToolUseConfirm["toolUseContext"],
           toolUseID: request.tool_use_id,
           permissionResult,
           permissionPromptStartTimeMs: Date.now(),
           onUserInteraction() {},
           onAbort() {
             manager.respondToPermissionRequest(requestId, {
-              behavior: 'deny',
-              message: 'User aborted',
+              behavior: "deny",
+              message: "User aborted",
             });
             setToolUseConfirmQueue((q) => q.filter((i) => i.toolUseID !== request.tool_use_id));
           },
           onAllow(updatedInput) {
             manager.respondToPermissionRequest(requestId, {
-              behavior: 'allow',
+              behavior: "allow",
               updatedInput,
             });
             setToolUseConfirmQueue((q) => q.filter((i) => i.toolUseID !== request.tool_use_id));
@@ -127,8 +127,8 @@ export function useSSHSession({
           },
           onReject(feedback) {
             manager.respondToPermissionRequest(requestId, {
-              behavior: 'deny',
-              message: feedback ?? 'User denied permission',
+              behavior: "deny",
+              message: feedback ?? "User denied permission",
             });
             setToolUseConfirmQueue((q) => q.filter((i) => i.toolUseID !== request.tool_use_id));
           },
@@ -139,7 +139,7 @@ export function useSSHSession({
         setIsLoading(false);
       },
       onConnected: () => {
-        logForDebugging('[useSSHSession] connected');
+        logForDebugging("[useSSHSession] connected");
         isConnectedRef.current = true;
       },
       onReconnecting: (attempt, max) => {
@@ -151,30 +151,30 @@ export function useSSHSession({
         // history but there's no turn in progress to resume.
         setIsLoading(false);
         const msg: MessageType = {
-          type: 'system',
-          subtype: 'informational',
+          type: "system",
+          subtype: "informational",
           content: `SSH connection dropped — reconnecting (attempt ${attempt}/${max})...`,
           timestamp: new Date().toISOString(),
           uuid: randomUUID(),
-          level: 'warning',
+          level: "warning",
         };
         setMessages((prev) => [...prev, msg]);
       },
       onDisconnected: () => {
-        logForDebugging('[useSSHSession] ssh process exited (giving up)');
+        logForDebugging("[useSSHSession] ssh process exited (giving up)");
         const stderr = session.getStderrTail().trim();
         const connected = isConnectedRef.current;
         const exitCode = session.proc.exitCode;
         isConnectedRef.current = false;
         setIsLoading(false);
 
-        let msg = connected ? 'Remote session ended.' : 'SSH session failed before connecting.';
+        let msg = connected ? "Remote session ended." : "SSH session failed before connecting.";
         // Surface remote stderr if it looks like an error (pre-connect always,
         // post-connect only on nonzero exit — normal --verbose noise otherwise).
         if (stderr && (!connected || exitCode !== 0)) {
           msg += `\nRemote stderr (exit ${exitCode ?? `signal ${session.proc.signalCode}`}):\n${stderr}`;
         }
-        void gracefulShutdown(1, 'other', { finalMessage: msg });
+        void gracefulShutdown(1, "other", { finalMessage: msg });
       },
       onError: (error) => {
         logForDebugging(`[useSSHSession] error: ${error.message}`);
@@ -185,7 +185,7 @@ export function useSSHSession({
     manager.connect();
 
     return () => {
-      logForDebugging('[useSSHSession] cleanup');
+      logForDebugging("[useSSHSession] cleanup");
       manager.disconnect();
       session.proxy.stop();
       managerRef.current = null;

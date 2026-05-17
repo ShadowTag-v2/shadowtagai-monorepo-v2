@@ -1,23 +1,23 @@
-import { join } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
-import { getPlatform } from '../platform.js';
+import { join } from "node:path";
+import memoize from "lodash-es/memoize.js";
+import { getPlatform } from "../platform.js";
 
 /**
  * Get the path to the managed settings directory based on the current platform.
  */
 export const getManagedFilePath = memoize((): string => {
   // Allow override for testing/demos (Ant-only, eliminated from external builds)
-  if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_MANAGED_SETTINGS_PATH) {
+  if (process.env.USER_TYPE === "ant" && process.env.CLAUDE_CODE_MANAGED_SETTINGS_PATH) {
     return process.env.CLAUDE_CODE_MANAGED_SETTINGS_PATH;
   }
 
   switch (getPlatform()) {
-    case 'macos':
-      return '/Library/Application Support/ClaudeCode';
-    case 'windows':
-      return 'C:\\Program Files\\ClaudeCode';
+    case "macos":
+      return "/Library/Application Support/ClaudeCode";
+    case "windows":
+      return "C:\\Program Files\\ClaudeCode";
     default:
-      return '/etc/claude-code';
+      return "/etc/claude-code";
   }
 });
 
@@ -27,5 +27,5 @@ export const getManagedFilePath = memoize((): string => {
  * are merged alphabetically on top (drop-ins override base, later files win).
  */
 export const getManagedSettingsDropInDir = memoize((): string =>
-  join(getManagedFilePath(), 'managed-settings.d'),
+  join(getManagedFilePath(), "managed-settings.d"),
 );

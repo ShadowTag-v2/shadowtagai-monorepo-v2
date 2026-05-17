@@ -1,6 +1,6 @@
-import type { Notification } from 'src/context/notifications.js';
-import { type GlobalConfig, getGlobalConfig } from 'src/utils/config.js';
-import { useStartupNotification } from './useStartupNotification.js';
+import type { Notification } from "src/context/notifications.js";
+import { type GlobalConfig, getGlobalConfig } from "src/utils/config.js";
+import { useStartupNotification } from "./useStartupNotification.js";
 
 // Shows a one-time notification right after a model migration writes its
 // timestamp to config. Each entry reads its own timestamp field(s) and emits
@@ -11,10 +11,10 @@ const MIGRATIONS: ((c: GlobalConfig) => Notification | undefined)[] = [
   (c) => {
     if (!recent(c.sonnet45To46MigrationTimestamp)) return;
     return {
-      key: 'sonnet-46-update',
-      text: 'Model updated to Sonnet 4.6',
-      color: 'suggestion',
-      priority: 'high',
+      key: "sonnet-46-update",
+      text: "Model updated to Sonnet 4.6",
+      color: "suggestion",
+      priority: "high",
       timeoutMs: 3000,
     };
   },
@@ -25,12 +25,12 @@ const MIGRATIONS: ((c: GlobalConfig) => Notification | undefined)[] = [
     const ts = c.legacyOpusMigrationTimestamp ?? c.opusProMigrationTimestamp;
     if (!recent(ts)) return;
     return {
-      key: 'opus-pro-update',
+      key: "opus-pro-update",
       text: isLegacyRemap
-        ? 'Model updated to Opus 4.6 · Set CLAUDE_CODE_DISABLE_LEGACY_MODEL_REMAP=1 to opt out'
-        : 'Model updated to Opus 4.6',
-      color: 'suggestion',
-      priority: 'high',
+        ? "Model updated to Opus 4.6 · Set CLAUDE_CODE_DISABLE_LEGACY_MODEL_REMAP=1 to opt out"
+        : "Model updated to Opus 4.6",
+      color: "suggestion",
+      priority: "high",
       timeoutMs: isLegacyRemap ? 8000 : 3000,
     };
   },

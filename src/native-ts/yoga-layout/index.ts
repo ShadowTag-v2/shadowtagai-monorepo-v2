@@ -55,7 +55,7 @@ import {
   PositionType,
   Unit,
   Wrap,
-} from './enums.js';
+} from "./enums.js";
 
 export {
   Align,
@@ -648,7 +648,7 @@ export class Node {
 
   // -- Style setters: dimensions
 
-  setWidth(v: number | 'auto' | string | undefined): void {
+  setWidth(v: number | "auto" | string | undefined): void {
     this.style.width = parseDimension(v);
     this.markDirty();
   }
@@ -660,7 +660,7 @@ export class Node {
     this.style.width = AUTO_VALUE;
     this.markDirty();
   }
-  setHeight(v: number | 'auto' | string | undefined): void {
+  setHeight(v: number | "auto" | string | undefined): void {
     this.style.height = parseDimension(v);
     this.markDirty();
   }
@@ -736,7 +736,7 @@ export class Node {
     }
     this.markDirty();
   }
-  setFlexBasis(v: number | 'auto' | string | undefined): void {
+  setFlexBasis(v: number | "auto" | string | undefined): void {
     this.style.flexBasis = parseDimension(v);
     this.markDirty();
   }
@@ -814,7 +814,7 @@ export class Node {
 
   // -- Style setters: spacing
 
-  setMargin(edge: Edge, v: number | 'auto' | string | undefined): void {
+  setMargin(edge: Edge, v: number | "auto" | string | undefined): void {
     const val = parseDimension(v);
     this.style.margin[edge] = val;
     if (val.unit === Unit.Auto) this._hasAutoMargin = true;
@@ -2383,15 +2383,15 @@ function roundValue(v: number, scale: number, forceCeil: boolean, forceFloor: bo
 
 function parseDimension(v: number | string | undefined): Value {
   if (v === undefined) return UNDEFINED_VALUE;
-  if (v === 'auto') return AUTO_VALUE;
-  if (typeof v === 'number') {
+  if (v === "auto") return AUTO_VALUE;
+  if (typeof v === "number") {
     // WASM yoga's YGFloatIsUndefined treats NaN and ±Infinity as undefined.
     // Ink passes height={Infinity} (e.g. LogSelector maxHeight default) and
     // expects it to mean "unconstrained" — storing it as a literal point value
     // makes the node height Infinity and breaks all downstream layout.
     return Number.isFinite(v) ? pointValue(v) : UNDEFINED_VALUE;
   }
-  if (typeof v === 'string' && v.endsWith('%')) {
+  if (typeof v === "string" && v.endsWith("%")) {
     return percentValue(parseFloat(v));
   }
   const n = parseFloat(v);

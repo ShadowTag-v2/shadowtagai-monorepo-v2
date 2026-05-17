@@ -15,10 +15,10 @@
  * See docs/claude-code-hints.md for the vendor-facing spec.
  */
 
-import { logForDebugging } from './debug.js';
-import { createSignal } from './signal.js';
+import { logForDebugging } from "./debug.js";
+import { createSignal } from "./signal.js";
 
-export type ClaudeCodeHintType = 'plugin';
+export type ClaudeCodeHintType = "plugin";
 
 export type ClaudeCodeHint = {
   /** Spec version declared by the emitter. Unknown versions are dropped. */
@@ -42,7 +42,7 @@ export type ClaudeCodeHint = {
 const SUPPORTED_VERSIONS = new Set([1]);
 
 /** Hint types this harness understands at the supported versions. */
-const SUPPORTED_TYPES = new Set<string>(['plugin']);
+const SUPPORTED_TYPES = new Set<string>(["plugin"]);
 
 /**
  * Outer tag match. Anchored to whole lines (multiline mode) so that a
@@ -74,7 +74,7 @@ export function extractClaudeCodeHints(
   command: string,
 ): { hints: ClaudeCodeHint[]; stripped: string } {
   // Fast path: no tag open sequence → no work, no allocation.
-  if (!output.includes('<claude-code-hint')) {
+  if (!output.includes("<claude-code-hint")) {
     return { hints: [], stripped: output };
   }
 
@@ -89,26 +89,26 @@ export function extractClaudeCodeHints(
 
     if (!SUPPORTED_VERSIONS.has(v)) {
       logForDebugging(`[claudeCodeHints] dropped hint with unsupported v=${attrs.v}`);
-      return '';
+      return "";
     }
     if (!type || !SUPPORTED_TYPES.has(type)) {
       logForDebugging(`[claudeCodeHints] dropped hint with unsupported type=${type}`);
-      return '';
+      return "";
     }
     if (!value) {
-      logForDebugging('[claudeCodeHints] dropped hint with empty value');
-      return '';
+      logForDebugging("[claudeCodeHints] dropped hint with empty value");
+      return "";
     }
 
     hints.push({ v, type: type as ClaudeCodeHintType, value, sourceCommand });
-    return '';
+    return "";
   });
 
   // Dropping a matched line leaves a blank line (the surrounding newlines
   // remain). Collapse runs of blank lines introduced by the replace so the
   // model-visible output doesn't grow vertical whitespace.
   const collapsed =
-    hints.length > 0 || stripped !== output ? stripped.replace(/\n{3,}/g, '\n\n') : stripped;
+    hints.length > 0 || stripped !== output ? stripped.replace(/\n{3,}/g, "\n\n") : stripped;
 
   return { hints, stripped: collapsed };
 }
@@ -116,7 +116,7 @@ export function extractClaudeCodeHints(
 function parseAttrs(tagBody: string): Record<string, string> {
   const attrs: Record<string, string> = {};
   for (const m of tagBody.matchAll(ATTR_RE)) {
-    attrs[m[1]!] = m[2] ?? m[3] ?? '';
+    attrs[m[1]!] = m[2] ?? m[3] ?? "";
   }
   return attrs;
 }

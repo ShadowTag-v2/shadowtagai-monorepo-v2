@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box } from '../../ink.js';
-import { getInitialSettings } from '../../utils/settings/settings.js';
-import { Clawd, type ClawdPose } from './Clawd.js';
+import { useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box } from "../../ink.js";
+import { getInitialSettings } from "../../utils/settings/settings.js";
+import { Clawd, type ClawdPose } from "./Clawd.js";
 
 type Frame = {
   pose: ClawdPose;
@@ -29,27 +29,27 @@ function hold(pose: ClawdPose, offset: number, frames: number): Frame[] {
 
 // Click animation: crouch, then spring up with both arms raised. Twice.
 const JUMP_WAVE: readonly Frame[] = [
-  ...hold('default', 1, 2),
+  ...hold("default", 1, 2),
   // crouch
-  ...hold('arms-up', 0, 3),
+  ...hold("arms-up", 0, 3),
   // spring!
-  ...hold('default', 0, 1),
-  ...hold('default', 1, 2),
+  ...hold("default", 0, 1),
+  ...hold("default", 1, 2),
   // crouch again
-  ...hold('arms-up', 0, 3),
+  ...hold("arms-up", 0, 3),
   // spring!
-  ...hold('default', 0, 1),
+  ...hold("default", 0, 1),
 ];
 
 // Click animation: glance right, then left, then back.
 const LOOK_AROUND: readonly Frame[] = [
-  ...hold('look-right', 0, 5),
-  ...hold('look-left', 0, 5),
-  ...hold('default', 0, 1),
+  ...hold("look-right", 0, 5),
+  ...hold("look-left", 0, 5),
+  ...hold("default", 0, 1),
 ];
 const CLICK_ANIMATIONS: readonly (readonly Frame[])[] = [JUMP_WAVE, LOOK_AROUND];
 const IDLE: Frame = {
-  pose: 'default',
+  pose: "default",
   offset: 0,
 };
 const FRAME_MS = 60;

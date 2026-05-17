@@ -1,14 +1,14 @@
-import { feature } from 'bun:bundle';
-import { useEffect, useRef } from 'react';
-import { useNotifications } from 'src/context/notifications.js';
-import { getIsRemoteMode } from '../../bootstrap/state.js';
-import { useAppState } from '../../state/AppState.js';
-import type { PermissionMode } from '../../utils/permissions/PermissionMode.js';
+import { feature } from "bun:bundle";
+import { useEffect, useRef } from "react";
+import { useNotifications } from "src/context/notifications.js";
+import { getIsRemoteMode } from "../../bootstrap/state.js";
+import { useAppState } from "../../state/AppState.js";
+import type { PermissionMode } from "../../utils/permissions/PermissionMode.js";
 import {
   getAutoModeUnavailableNotification,
   getAutoModeUnavailableReason,
-} from '../../utils/permissions/permissionSetup.js';
-import { hasAutoModeOptIn } from '../../utils/settings/settings.js';
+} from "../../utils/permissions/permissionSetup.js";
+import { hasAutoModeOptIn } from "../../utils/settings/settings.js";
 
 /**
  * Shows a one-shot notification when the shift-tab carousel wraps past where
@@ -27,14 +27,14 @@ export function useAutoModeUnavailableNotification(): void {
     const prevMode = prevModeRef.current;
     prevModeRef.current = mode;
 
-    if (!feature('TRANSCRIPT_CLASSIFIER')) return;
+    if (!feature("TRANSCRIPT_CLASSIFIER")) return;
     if (getIsRemoteMode()) return;
     if (shownRef.current) return;
 
     const wrappedPastAutoSlot =
-      mode === 'default' &&
-      prevMode !== 'default' &&
-      prevMode !== 'auto' &&
+      mode === "default" &&
+      prevMode !== "default" &&
+      prevMode !== "auto" &&
       !isAutoModeAvailable &&
       hasAutoModeOptIn();
 
@@ -45,10 +45,10 @@ export function useAutoModeUnavailableNotification(): void {
 
     shownRef.current = true;
     addNotification({
-      key: 'auto-mode-unavailable',
+      key: "auto-mode-unavailable",
       text: getAutoModeUnavailableNotification(reason),
-      color: 'warning',
-      priority: 'medium',
+      color: "warning",
+      priority: "medium",
     });
   }, [mode, isAutoModeAvailable, addNotification]);
 }

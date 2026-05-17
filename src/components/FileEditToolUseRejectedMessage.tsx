@@ -1,24 +1,24 @@
-import { relative } from 'node:path';
-import type { StructuredPatchHunk } from 'diff';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
-import { getCwd } from 'src/utils/cwd.js';
-import { Box, Text } from '../ink.js';
-import { HighlightedCode } from './HighlightedCode.js';
-import { MessageResponse } from './MessageResponse.js';
-import { StructuredDiffList } from './StructuredDiffList.js';
+import { relative } from "node:path";
+import type { StructuredPatchHunk } from "diff";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "src/hooks/useTerminalSize.js";
+import { getCwd } from "src/utils/cwd.js";
+import { Box, Text } from "../ink.js";
+import { HighlightedCode } from "./HighlightedCode.js";
+import { MessageResponse } from "./MessageResponse.js";
+import { StructuredDiffList } from "./StructuredDiffList.js";
 
 const MAX_LINES_TO_RENDER = 10;
 type Props = {
   file_path: string;
-  operation: 'write' | 'update';
+  operation: "write" | "update";
   // For updates - show diff
   patch?: StructuredPatchHunk[];
   firstLine: string | null;
   fileContent?: string;
   // For new file creation - show content preview
   content?: string;
-  style?: 'condensed';
+  style?: "condensed";
   verbose: boolean;
 };
 export function FileEditToolUseRejectedMessage(t0) {
@@ -69,7 +69,7 @@ export function FileEditToolUseRejectedMessage(t0) {
     t4 = $[9];
   }
   const text = t4;
-  if (style === 'condensed' && !verbose) {
+  if (style === "condensed" && !verbose) {
     let t5;
     if ($[10] !== text) {
       t5 = <MessageResponse>{text}</MessageResponse>;
@@ -80,14 +80,14 @@ export function FileEditToolUseRejectedMessage(t0) {
     }
     return t5;
   }
-  if (operation === 'write' && content !== undefined) {
+  if (operation === "write" && content !== undefined) {
     let plusLines;
     let t5;
     if ($[12] !== content || $[13] !== verbose) {
-      const lines = content.split('\n');
+      const lines = content.split("\n");
       const numLines = lines.length;
       plusLines = numLines - MAX_LINES_TO_RENDER;
-      t5 = verbose ? content : lines.slice(0, MAX_LINES_TO_RENDER).join('\n');
+      t5 = verbose ? content : lines.slice(0, MAX_LINES_TO_RENDER).join("\n");
       $[12] = content;
       $[13] = verbose;
       $[14] = plusLines;
@@ -97,7 +97,7 @@ export function FileEditToolUseRejectedMessage(t0) {
       t5 = $[15];
     }
     const truncatedContent = t5;
-    const t6 = truncatedContent || '(No content)';
+    const t6 = truncatedContent || "(No content)";
     const t7 = columns - 12;
     let t8;
     if ($[16] !== file_path || $[17] !== t6 || $[18] !== t7) {

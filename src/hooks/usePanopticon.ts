@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * usePanopticon — Client-side Telemetry Hook
@@ -21,7 +21,7 @@
  *   - Performance metric capture (LCP, FID, CLS)
  */
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from "react";
 import {
   flushTelemetry,
   getSessionId,
@@ -30,7 +30,7 @@ import {
   TELEMETRY_EVENTS,
   type TelemetryEventSeverity,
   type TelemetryMetadata,
-} from '@/lib/telemetry';
+} from "@/lib/telemetry";
 
 // ─────────────────────────────────────────────────────────────
 // Hook Interface
@@ -54,13 +54,13 @@ export interface PanopticonActions {
   /** Track form field interactions (focus/blur/change) */
   trackFormField: (
     fieldName: string,
-    action: 'focus' | 'blur' | 'change',
+    action: "focus" | "blur" | "change",
     metadata?: TelemetryMetadata,
   ) => void;
 
   /** Track checkout-specific events */
   trackCheckout: (
-    phase: 'started' | 'submitted' | 'success' | 'error' | 'duplicate_blocked',
+    phase: "started" | "submitted" | "success" | "error" | "duplicate_blocked",
     metadata?: TelemetryMetadata,
   ) => void;
 
@@ -92,13 +92,13 @@ export function usePanopticon(): PanopticonActions {
   useEffect(() => {
     const handleVisibilityChange = () => {
       logEvent(TELEMETRY_EVENTS.PAGE_VISIBILITY_CHANGE, {
-        is_visible: document.visibilityState === 'visible' ? 1 : 0,
+        is_visible: document.visibilityState === "visible" ? 1 : 0,
       });
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -108,19 +108,19 @@ export function usePanopticon(): PanopticonActions {
       logEvent(TELEMETRY_EVENTS.PAGE_UNLOAD);
 
       // sendBeacon is the last-resort flush mechanism
-      if (typeof navigator.sendBeacon === 'function') {
+      if (typeof navigator.sendBeacon === "function") {
         const payload = JSON.stringify({
           eventName: TELEMETRY_EVENTS.PAGE_UNLOAD,
           timestamp: Date.now(),
           sessionId: getSessionId(),
         });
-        navigator.sendBeacon('/api/ops/telemetry', payload);
+        navigator.sendBeacon("/api/ops/telemetry", payload);
       }
     };
 
-    window.addEventListener('beforeunload', handleUnload);
+    window.addEventListener("beforeunload", handleUnload);
     return () => {
-      window.removeEventListener('beforeunload', handleUnload);
+      window.removeEventListener("beforeunload", handleUnload);
     };
   }, []);
 
@@ -134,7 +134,7 @@ export function usePanopticon(): PanopticonActions {
           line: event.lineno,
           col: event.colno,
         },
-        'error',
+        "error",
       );
     };
 
@@ -144,15 +144,15 @@ export function usePanopticon(): PanopticonActions {
         {
           is_promise_rejection: 1,
         },
-        'error',
+        "error",
       );
     };
 
-    window.addEventListener('error', handleError);
-    window.addEventListener('unhandledrejection', handleRejection);
+    window.addEventListener("error", handleError);
+    window.addEventListener("unhandledrejection", handleRejection);
     return () => {
-      window.removeEventListener('error', handleError);
-      window.removeEventListener('unhandledrejection', handleRejection);
+      window.removeEventListener("error", handleError);
+      window.removeEventListener("unhandledrejection", handleRejection);
     };
   }, []);
 
@@ -161,9 +161,9 @@ export function usePanopticon(): PanopticonActions {
     (
       eventName: string,
       metadata: TelemetryMetadata = {},
-      severity: TelemetryEventSeverity = 'info',
+      severity: TelemetryEventSeverity = "info",
     ) => {
-      logEvent(eventName, metadata, severity, 'client');
+      logEvent(eventName, metadata, severity, "client");
     },
     [],
   );
@@ -173,24 +173,24 @@ export function usePanopticon(): PanopticonActions {
     async (
       eventName: string,
       metadata: TelemetryMetadata = {},
-      severity: TelemetryEventSeverity = 'info',
+      severity: TelemetryEventSeverity = "info",
     ) => {
-      await logEventAsync(eventName, metadata, severity, 'client');
+      await logEventAsync(eventName, metadata, severity, "client");
     },
     [],
   );
 
   // ── Form Field Tracking ───────────────────────────────────
   const trackFormField = useCallback(
-    (fieldName: string, action: 'focus' | 'blur' | 'change', metadata: TelemetryMetadata = {}) => {
+    (fieldName: string, action: "focus" | "blur" | "change", metadata: TelemetryMetadata = {}) => {
       logEvent(
         `checkout.field_${action}`,
         {
           field_index: hashFieldName(fieldName),
           ...metadata,
         },
-        'info',
-        'client',
+        "info",
+        "client",
       );
     },
     [],
@@ -199,7 +199,7 @@ export function usePanopticon(): PanopticonActions {
   // ── Checkout-specific Tracking ────────────────────────────
   const trackCheckout = useCallback(
     (
-      phase: 'started' | 'submitted' | 'success' | 'error' | 'duplicate_blocked',
+      phase: "started" | "submitted" | "success" | "error" | "duplicate_blocked",
       metadata: TelemetryMetadata = {},
     ) => {
       const eventMap: Record<string, string> = {
@@ -210,7 +210,7 @@ export function usePanopticon(): PanopticonActions {
         duplicate_blocked: TELEMETRY_EVENTS.CHECKOUT_DUPLICATE_BLOCKED,
       };
 
-      logEvent(eventMap[phase], metadata, phase === 'error' ? 'error' : 'info', 'client');
+      logEvent(eventMap[phase], metadata, phase === "error" ? "error" : "info", "client");
     },
     [],
   );

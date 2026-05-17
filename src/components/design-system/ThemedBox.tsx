@@ -1,13 +1,13 @@
-import type { Ref } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import Box from '../../ink/components/Box.js';
-import type { DOMElement } from '../../ink/dom.js';
-import type { ClickEvent } from '../../ink/events/click-event.js';
-import type { FocusEvent } from '../../ink/events/focus-event.js';
-import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
-import type { Color, Styles } from '../../ink/styles.js';
-import { getTheme, type Theme } from '../../utils/theme.js';
-import { useTheme } from './ThemeProvider.js';
+import type { Ref } from "react";
+import { c as _c } from "react/compiler-runtime";
+import Box from "../../ink/components/Box.js";
+import type { DOMElement } from "../../ink/dom.js";
+import type { ClickEvent } from "../../ink/events/click-event.js";
+import type { FocusEvent } from "../../ink/events/focus-event.js";
+import type { KeyboardEvent } from "../../ink/events/keyboard-event.js";
+import type { Color, Styles } from "../../ink/styles.js";
+import { getTheme, type Theme } from "../../utils/theme.js";
+import { useTheme } from "./ThemeProvider.js";
 
 // Color props that accept theme keys
 type ThemedColorProps = {
@@ -22,13 +22,13 @@ type ThemedColorProps = {
 // Base Styles without color props (they'll be overridden)
 type BaseStylesWithoutColors = Omit<
   Styles,
-  | 'textWrap'
-  | 'borderColor'
-  | 'borderTopColor'
-  | 'borderBottomColor'
-  | 'borderLeftColor'
-  | 'borderRightColor'
-  | 'backgroundColor'
+  | "textWrap"
+  | "borderColor"
+  | "borderTopColor"
+  | "borderBottomColor"
+  | "borderLeftColor"
+  | "borderRightColor"
+  | "backgroundColor"
 >;
 export type Props = BaseStylesWithoutColors &
   ThemedColorProps & {
@@ -53,10 +53,10 @@ function resolveColor(color: keyof Theme | Color | undefined, theme: Theme): Col
   if (!color) return undefined;
   // Check if it's a raw color (starts with rgb(, #, ansi256(, or ansi:)
   if (
-    color.startsWith('rgb(') ||
-    color.startsWith('#') ||
-    color.startsWith('ansi256(') ||
-    color.startsWith('ansi:')
+    color.startsWith("rgb(") ||
+    color.startsWith("#") ||
+    color.startsWith("ansi256(") ||
+    color.startsWith("ansi:")
   ) {
     return color as Color;
   }

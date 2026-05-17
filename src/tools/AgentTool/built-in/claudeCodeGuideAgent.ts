@@ -1,20 +1,20 @@
-import { BASH_TOOL_NAME } from 'src/tools/BashTool/toolName.js';
-import { FILE_READ_TOOL_NAME } from 'src/tools/FileReadTool/prompt.js';
-import { GLOB_TOOL_NAME } from 'src/tools/GlobTool/prompt.js';
-import { GREP_TOOL_NAME } from 'src/tools/GrepTool/prompt.js';
-import { SEND_MESSAGE_TOOL_NAME } from 'src/tools/SendMessageTool/constants.js';
-import { WEB_FETCH_TOOL_NAME } from 'src/tools/WebFetchTool/prompt.js';
-import { WEB_SEARCH_TOOL_NAME } from 'src/tools/WebSearchTool/prompt.js';
-import { isUsing3PServices } from 'src/utils/auth.js';
-import { hasEmbeddedSearchTools } from 'src/utils/embeddedTools.js';
-import { getSettings_DEPRECATED } from 'src/utils/settings/settings.js';
-import { jsonStringify } from '../../../utils/slowOperations.js';
-import type { AgentDefinition, BuiltInAgentDefinition } from '../loadAgentsDir.js';
+import { BASH_TOOL_NAME } from "src/tools/BashTool/toolName.js";
+import { FILE_READ_TOOL_NAME } from "src/tools/FileReadTool/prompt.js";
+import { GLOB_TOOL_NAME } from "src/tools/GlobTool/prompt.js";
+import { GREP_TOOL_NAME } from "src/tools/GrepTool/prompt.js";
+import { SEND_MESSAGE_TOOL_NAME } from "src/tools/SendMessageTool/constants.js";
+import { WEB_FETCH_TOOL_NAME } from "src/tools/WebFetchTool/prompt.js";
+import { WEB_SEARCH_TOOL_NAME } from "src/tools/WebSearchTool/prompt.js";
+import { isUsing3PServices } from "src/utils/auth.js";
+import { hasEmbeddedSearchTools } from "src/utils/embeddedTools.js";
+import { getSettings_DEPRECATED } from "src/utils/settings/settings.js";
+import { jsonStringify } from "../../../utils/slowOperations.js";
+import type { AgentDefinition, BuiltInAgentDefinition } from "../loadAgentsDir.js";
 
-const CLAUDE_CODE_DOCS_MAP_URL = 'https://code.claude.com/docs/en/claude_code_docs_map.md';
-const CDP_DOCS_MAP_URL = 'https://platform.claude.com/llms.txt';
+const CLAUDE_CODE_DOCS_MAP_URL = "https://code.claude.com/docs/en/claude_code_docs_map.md";
+const CDP_DOCS_MAP_URL = "https://platform.claude.com/llms.txt";
 
-export const CLAUDE_CODE_GUIDE_AGENT_TYPE = 'claude-code-guide';
+export const CLAUDE_CODE_GUIDE_AGENT_TYPE = "claude-code-guide";
 
 function getClaudeCodeGuideBasePrompt(): string {
   // Ant-native builds alias find/grep to embedded bfs/ugrep and remove the
@@ -105,10 +105,10 @@ export const CLAUDE_CODE_GUIDE_AGENT: BuiltInAgentDefinition = {
         WEB_FETCH_TOOL_NAME,
         WEB_SEARCH_TOOL_NAME,
       ],
-  source: 'built-in',
-  baseDir: 'built-in',
-  model: 'haiku',
-  permissionMode: 'dontAsk',
+  source: "built-in",
+  baseDir: "built-in",
+  model: "haiku",
+  permissionMode: "dontAsk",
   getSystemPrompt({ toolUseContext }) {
     const commands = toolUseContext.options.commands;
 
@@ -116,40 +116,40 @@ export const CLAUDE_CODE_GUIDE_AGENT: BuiltInAgentDefinition = {
     const contextSections: string[] = [];
 
     // 1. Custom skills
-    const customCommands = commands.filter((cmd) => cmd.type === 'prompt');
+    const customCommands = commands.filter((cmd) => cmd.type === "prompt");
     if (customCommands.length > 0) {
       const commandList = customCommands
         .map((cmd) => `- /${cmd.name}: ${cmd.description}`)
-        .join('\n');
+        .join("\n");
       contextSections.push(`**Available custom skills in this project:**\n${commandList}`);
     }
 
     // 2. Custom agents from .claude/agents/
     const customAgents = toolUseContext.options.agentDefinitions.activeAgents.filter(
-      (a: AgentDefinition) => a.source !== 'built-in',
+      (a: AgentDefinition) => a.source !== "built-in",
     );
     if (customAgents.length > 0) {
       const agentList = customAgents
         .map((a: AgentDefinition) => `- ${a.agentType}: ${a.whenToUse}`)
-        .join('\n');
+        .join("\n");
       contextSections.push(`**Available custom agents configured:**\n${agentList}`);
     }
 
     // 3. MCP servers
     const mcpClients = toolUseContext.options.mcpClients;
     if (mcpClients && mcpClients.length > 0) {
-      const mcpList = mcpClients.map((client: { name: string }) => `- ${client.name}`).join('\n');
+      const mcpList = mcpClients.map((client: { name: string }) => `- ${client.name}`).join("\n");
       contextSections.push(`**Configured MCP servers:**\n${mcpList}`);
     }
 
     // 4. Plugin commands
     const pluginCommands = commands.filter(
-      (cmd) => cmd.type === 'prompt' && cmd.source === 'plugin',
+      (cmd) => cmd.type === "prompt" && cmd.source === "plugin",
     );
     if (pluginCommands.length > 0) {
       const pluginList = pluginCommands
         .map((cmd) => `- /${cmd.name}: ${cmd.description}`)
-        .join('\n');
+        .join("\n");
       contextSections.push(`**Available plugin skills:**\n${pluginList}`);
     }
 
@@ -176,7 +176,7 @@ ${feedbackGuideline}`;
 
 The user has the following custom setup in their environment:
 
-${contextSections.join('\n\n')}
+${contextSections.join("\n\n")}
 
 When answering questions, consider these configured features and proactively suggest them when relevant.`;
     }

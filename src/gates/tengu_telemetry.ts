@@ -13,9 +13,9 @@
  * @see src/services/analytics/sink.ts for killswitch consumer
  */
 
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import { logForDebugging } from '../utils/debug.js';
-import { TENGU_GATES } from './tengu_registry.js';
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import { logForDebugging } from "../utils/debug.js";
+import { TENGU_GATES } from "./tengu_registry.js";
 
 // ─── Batch Config ──────────────────────────────────────────────────
 
@@ -44,10 +44,10 @@ export function getEventBatchConfig(): EventBatchConfig {
   ) as Record<string, unknown>;
 
   return {
-    maxBatchSize: typeof raw.maxBatchSize === 'number' ? raw.maxBatchSize : 100,
-    flushIntervalMs: typeof raw.flushIntervalMs === 'number' ? raw.flushIntervalMs : 30_000,
-    maxQueueDepth: typeof raw.maxQueueDepth === 'number' ? raw.maxQueueDepth : 5000,
-    compress: typeof raw.compress === 'boolean' ? raw.compress : false,
+    maxBatchSize: typeof raw.maxBatchSize === "number" ? raw.maxBatchSize : 100,
+    flushIntervalMs: typeof raw.flushIntervalMs === "number" ? raw.flushIntervalMs : 30_000,
+    maxQueueDepth: typeof raw.maxQueueDepth === "number" ? raw.maxQueueDepth : 5000,
+    compress: typeof raw.compress === "boolean" ? raw.compress : false,
   };
 }
 
@@ -66,7 +66,7 @@ export function getEventSamplingRate(eventName: string): number {
   ) as Record<string, number>;
 
   const rate = config[eventName];
-  if (typeof rate === 'number' && rate >= 0 && rate <= 1) {
+  if (typeof rate === "number" && rate >= 0 && rate <= 1) {
     return rate;
   }
   return 1.0; // Default: sample everything
@@ -116,12 +116,13 @@ export function getTelemetryDiagnostics(): Record<string, unknown> {
   const diagnostics = {
     batchConfig,
     sinkKilled,
-    samplingConfigPresent: Object.keys(
-      getFeatureValue_CACHED_MAY_BE_STALE(
-        TENGU_GATES.event_sampling.key,
-        TENGU_GATES.event_sampling.defaultValue,
-      ) as Record<string, unknown>,
-    ).length > 0,
+    samplingConfigPresent:
+      Object.keys(
+        getFeatureValue_CACHED_MAY_BE_STALE(
+          TENGU_GATES.event_sampling.key,
+          TENGU_GATES.event_sampling.defaultValue,
+        ) as Record<string, unknown>,
+      ).length > 0,
     timestamp: new Date().toISOString(),
   };
 

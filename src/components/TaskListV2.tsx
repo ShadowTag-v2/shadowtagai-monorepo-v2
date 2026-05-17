@@ -1,22 +1,22 @@
-import figures from 'figures';
-import * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { stringWidth } from '../ink/stringWidth.js';
-import { Box, Text } from '../ink.js';
-import { useAppState } from '../state/AppState.js';
-import { isInProcessTeammateTask } from '../tasks/InProcessTeammateTask/types.js';
+import figures from "figures";
+import * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { stringWidth } from "../ink/stringWidth.js";
+import { Box, Text } from "../ink.js";
+import { useAppState } from "../state/AppState.js";
+import { isInProcessTeammateTask } from "../tasks/InProcessTeammateTask/types.js";
 import {
   AGENT_COLOR_TO_THEME_COLOR,
   type AgentColorName,
-} from '../tools/AgentTool/agentColorManager.js';
-import { isAgentSwarmsEnabled } from '../utils/agentSwarmsEnabled.js';
-import { count } from '../utils/array.js';
-import { summarizeRecentActivities } from '../utils/collapseReadSearch.js';
-import { truncateToWidth } from '../utils/format.js';
-import { isTodoV2Enabled, type Task } from '../utils/tasks.js';
-import type { Theme } from '../utils/theme.js';
-import ThemedText from './design-system/ThemedText.js';
+} from "../tools/AgentTool/agentColorManager.js";
+import { isAgentSwarmsEnabled } from "../utils/agentSwarmsEnabled.js";
+import { count } from "../utils/array.js";
+import { summarizeRecentActivities } from "../utils/collapseReadSearch.js";
+import { truncateToWidth } from "../utils/format.js";
+import { isTodoV2Enabled, type Task } from "../utils/tasks.js";
+import type { Theme } from "../utils/theme.js";
+import ThemedText from "./design-system/ThemedText.js";
 
 type Props = {
   tasks: Task[];
@@ -42,14 +42,14 @@ export function TaskListV2({ tasks, isStandalone = false }: Props): React.ReactN
   const previousCompletedIdsRef = React.useRef<Set<string> | null>(null);
   if (previousCompletedIdsRef.current === null) {
     previousCompletedIdsRef.current = new Set(
-      tasks.filter((t) => t.status === 'completed').map((t_0) => t_0.id),
+      tasks.filter((t) => t.status === "completed").map((t_0) => t_0.id),
     );
   }
   const maxDisplay = rows <= 10 ? 0 : Math.min(10, Math.max(3, rows - 14));
 
   // Update completion timestamps: reset when a task transitions to completed
   const currentCompletedIds = new Set(
-    tasks.filter((t_1) => t_1.status === 'completed').map((t_2) => t_2.id),
+    tasks.filter((t_1) => t_1.status === "completed").map((t_2) => t_2.id),
   );
   const now = Date.now();
   for (const id of currentCompletedIds) {
@@ -118,7 +118,7 @@ export function TaskListV2({ tasks, isStandalone = false }: Props): React.ReactN
   const activeTeammates = new Set<string>();
   if (isAgentSwarmsEnabled()) {
     for (const bgTask of Object.values(appStateTasks)) {
-      if (isInProcessTeammateTask(bgTask) && bgTask.status === 'running') {
+      if (isInProcessTeammateTask(bgTask) && bgTask.status === "running") {
         activeTeammates.add(bgTask.identity.agentName);
         activeTeammates.add(bgTask.identity.agentId);
         const activities = bgTask.progress?.recentActivities;
@@ -134,12 +134,12 @@ export function TaskListV2({ tasks, isStandalone = false }: Props): React.ReactN
   }
 
   // Get task counts for display
-  const completedCount = count(tasks, (t_3) => t_3.status === 'completed');
-  const pendingCount = count(tasks, (t_4) => t_4.status === 'pending');
+  const completedCount = count(tasks, (t_3) => t_3.status === "completed");
+  const pendingCount = count(tasks, (t_4) => t_4.status === "pending");
   const inProgressCount = tasks.length - completedCount - pendingCount;
   // Unresolved tasks (open or in_progress) block dependent tasks
   const unresolvedTaskIds = new Set(
-    tasks.filter((t_5) => t_5.status !== 'completed').map((t_6) => t_6.id),
+    tasks.filter((t_5) => t_5.status !== "completed").map((t_6) => t_6.id),
   );
 
   // Check if we need to truncate
@@ -150,7 +150,7 @@ export function TaskListV2({ tasks, isStandalone = false }: Props): React.ReactN
     // Prioritize: recently completed (within 30s), in-progress, pending, older completed
     const recentCompleted: Task[] = [];
     const olderCompleted: Task[] = [];
-    for (const task of tasks.filter((t_7) => t_7.status === 'completed')) {
+    for (const task of tasks.filter((t_7) => t_7.status === "completed")) {
       const ts_0 = completionTimestampsRef.current.get(task.id);
       if (ts_0 && now - ts_0 < RECENT_COMPLETED_TTL_MS) {
         recentCompleted.push(task);
@@ -160,9 +160,9 @@ export function TaskListV2({ tasks, isStandalone = false }: Props): React.ReactN
     }
     recentCompleted.sort(byIdAsc);
     olderCompleted.sort(byIdAsc);
-    const inProgress = tasks.filter((t_8) => t_8.status === 'in_progress').sort(byIdAsc);
+    const inProgress = tasks.filter((t_8) => t_8.status === "in_progress").sort(byIdAsc);
     const pending = tasks
-      .filter((t_9) => t_9.status === 'pending')
+      .filter((t_9) => t_9.status === "pending")
       .sort((a, b) => {
         const aBlocked = a.blockedBy.some((id_1) => unresolvedTaskIds.has(id_1));
         const bBlocked = b.blockedBy.some((id_2) => unresolvedTaskIds.has(id_2));
@@ -179,12 +179,12 @@ export function TaskListV2({ tasks, isStandalone = false }: Props): React.ReactN
     visibleTasks = [...tasks].sort(byIdAsc);
     hiddenTasks = [];
   }
-  let hiddenSummary = '';
+  let hiddenSummary = "";
   if (hiddenTasks.length > 0) {
     const parts: string[] = [];
-    const hiddenPending = count(hiddenTasks, (t_10) => t_10.status === 'pending');
-    const hiddenInProgress = count(hiddenTasks, (t_11) => t_11.status === 'in_progress');
-    const hiddenCompleted = count(hiddenTasks, (t_12) => t_12.status === 'completed');
+    const hiddenPending = count(hiddenTasks, (t_10) => t_10.status === "pending");
+    const hiddenInProgress = count(hiddenTasks, (t_11) => t_11.status === "in_progress");
+    const hiddenCompleted = count(hiddenTasks, (t_12) => t_12.status === "completed");
     if (hiddenInProgress > 0) {
       parts.push(`${hiddenInProgress} in progress`);
     }
@@ -194,7 +194,7 @@ export function TaskListV2({ tasks, isStandalone = false }: Props): React.ReactN
     if (hiddenCompleted > 0) {
       parts.push(`${hiddenCompleted} completed`);
     }
-    hiddenSummary = ` … +${parts.join(', ')}`;
+    hiddenSummary = ` … +${parts.join(", ")}`;
   }
   const content = (
     <>
@@ -218,17 +218,17 @@ export function TaskListV2({ tasks, isStandalone = false }: Props): React.ReactN
         <Box>
           <Text dimColor>
             <Text bold>{tasks.length}</Text>
-            {' tasks ('}
+            {" tasks ("}
             <Text bold>{completedCount}</Text>
-            {' done, '}
+            {" done, "}
             {inProgressCount > 0 && (
               <>
                 <Text bold>{inProgressCount}</Text>
-                {' in progress, '}
+                {" in progress, "}
               </>
             )}
             <Text bold>{pendingCount}</Text>
-            {' open)'}
+            {" open)"}
           </Text>
         </Box>
         {content}
@@ -245,22 +245,22 @@ type TaskItemProps = {
   ownerActive: boolean;
   columns: number;
 };
-function getTaskIcon(status: Task['status']): {
+function getTaskIcon(status: Task["status"]): {
   icon: string;
   color: keyof Theme | undefined;
 } {
   switch (status) {
-    case 'completed':
+    case "completed":
       return {
         icon: figures.tick,
-        color: 'success',
+        color: "success",
       };
-    case 'in_progress':
+    case "in_progress":
       return {
         icon: figures.squareSmallFilled,
-        color: 'claude',
+        color: "claude",
       };
-    case 'pending':
+    case "pending":
       return {
         icon: figures.squareSmall,
         color: undefined,
@@ -270,8 +270,8 @@ function getTaskIcon(status: Task['status']): {
 function TaskItem(t0) {
   const $ = _c(37);
   const { task, ownerColor, openBlockers, activity, ownerActive, columns } = t0;
-  const isCompleted = task.status === 'completed';
-  const isInProgress = task.status === 'in_progress';
+  const isCompleted = task.status === "completed";
+  const isInProgress = task.status === "in_progress";
   const isBlocked = openBlockers.length > 0;
   let t1;
   if ($[0] !== task.status) {
@@ -345,9 +345,9 @@ function TaskItem(t0) {
   if ($[19] !== ownerColor || $[20] !== showOwner || $[21] !== task.owner) {
     t8 = showOwner && (
       <Text dimColor={true}>
-        {' ('}
+        {" ("}
         {ownerColor ? <ThemedText color={ownerColor}>@{task.owner}</ThemedText> : `@${task.owner}`}
-        {')'}
+        {")"}
       </Text>
     );
     $[19] = ownerColor;
@@ -361,8 +361,8 @@ function TaskItem(t0) {
   if ($[23] !== isBlocked || $[24] !== openBlockers) {
     t9 = isBlocked && (
       <Text dimColor={true}>
-        {' '}
-        {figures.pointerSmall} blocked by {[...openBlockers].sort(_temp).map(_temp2).join(', ')}
+        {" "}
+        {figures.pointerSmall} blocked by {[...openBlockers].sort(_temp).map(_temp2).join(", ")}
       </Text>
     );
     $[23] = isBlocked;
@@ -394,7 +394,7 @@ function TaskItem(t0) {
     t11 = showActivity && displayActivity && (
       <Box>
         <Text dimColor={true}>
-          {'  '}
+          {"  "}
           {displayActivity}
           {figures.ellipsis}
         </Text>

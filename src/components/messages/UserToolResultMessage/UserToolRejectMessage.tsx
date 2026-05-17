@@ -1,17 +1,17 @@
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
-import { useTheme } from '../../../ink.js';
-import { filterToolProgressMessages, type Tool, type Tools } from '../../../Tool.js';
-import type { ProgressMessage } from '../../../types/message.js';
-import type { buildMessageLookups } from '../../../utils/messages.js';
-import { FallbackToolUseRejectedMessage } from '../../FallbackToolUseRejectedMessage.js';
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../../../hooks/useTerminalSize.js";
+import { useTheme } from "../../../ink.js";
+import { filterToolProgressMessages, type Tool, type Tools } from "../../../Tool.js";
+import type { ProgressMessage } from "../../../types/message.js";
+import type { buildMessageLookups } from "../../../utils/messages.js";
+import { FallbackToolUseRejectedMessage } from "../../FallbackToolUseRejectedMessage.js";
 
 type Props = {
   input: {
     [key: string]: unknown;
   };
   progressMessagesForMessage: ProgressMessage[];
-  style?: 'condensed';
+  style?: "condensed";
   tool?: Tool;
   tools: Tools;
   lookups: ReturnType<typeof buildMessageLookups>;
@@ -25,7 +25,7 @@ export function UserToolRejectMessage(t0) {
   const [theme] = useTheme();
   if (!tool?.renderToolUseRejectedMessage) {
     let t1;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = <FallbackToolUseRejectedMessage />;
       $[0] = t1;
     } else {
@@ -47,12 +47,12 @@ export function UserToolRejectMessage(t0) {
     $[8] !== tools ||
     $[9] !== verbose
   ) {
-    t3 = Symbol.for('react.early_return_sentinel');
+    t3 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const parsedInput = t1.safeParse(input);
       if (!parsedInput.success) {
         let t4;
-        if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+        if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
           t4 = <FallbackToolUseRejectedMessage />;
           $[12] = t4;
         } else {
@@ -87,7 +87,7 @@ export function UserToolRejectMessage(t0) {
     t2 = $[10];
     t3 = $[11];
   }
-  if (t3 !== Symbol.for('react.early_return_sentinel')) {
+  if (t3 !== Symbol.for("react.early_return_sentinel")) {
     return t3;
   }
   return t2;

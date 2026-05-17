@@ -1,7 +1,7 @@
-import type React from 'react';
-import { createContext, useContext, useEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { saveCurrentProjectConfig } from '../utils/config.js';
+import type React from "react";
+import { createContext, useContext, useEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { saveCurrentProjectConfig } from "../utils/config.js";
 export type StatsStore = {
   increment(name: string, value?: number): void;
   set(name: string, value: number): void;
@@ -106,7 +106,7 @@ export function StatsProvider(t0) {
   const $ = _c(7);
   const { store: externalStore, children } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = createStatsStore();
     $[0] = t1;
   } else {
@@ -127,9 +127,9 @@ export function StatsProvider(t0) {
           }));
         }
       };
-      process.on('exit', flush);
+      process.on("exit", flush);
       return () => {
-        process.off('exit', flush);
+        process.off("exit", flush);
       };
     };
     t3 = [store];
@@ -155,7 +155,7 @@ export function StatsProvider(t0) {
 export function useStats() {
   const store = useContext(StatsContext);
   if (!store) {
-    throw new Error('useStats must be used within a StatsProvider');
+    throw new Error("useStats must be used within a StatsProvider");
   }
   return store;
 }

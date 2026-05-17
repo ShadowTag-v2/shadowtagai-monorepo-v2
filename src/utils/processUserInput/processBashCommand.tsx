@@ -1,24 +1,24 @@
-import { randomUUID } from 'node:crypto';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources';
-import type * as React from 'react';
-import { BashModeProgress } from 'src/components/BashModeProgress.js';
-import type { SetToolJSXFn } from 'src/Tool.js';
-import { BashTool } from 'src/tools/BashTool/BashTool.js';
-import type { AttachmentMessage, SystemMessage, UserMessage } from 'src/types/message.js';
-import type { ShellProgress } from 'src/types/tools.js';
-import { logEvent } from '../../services/analytics/index.js';
-import { errorMessage, ShellError } from '../errors.js';
+import { randomUUID } from "node:crypto";
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources";
+import type * as React from "react";
+import { BashModeProgress } from "src/components/BashModeProgress.js";
+import type { SetToolJSXFn } from "src/Tool.js";
+import { BashTool } from "src/tools/BashTool/BashTool.js";
+import type { AttachmentMessage, SystemMessage, UserMessage } from "src/types/message.js";
+import type { ShellProgress } from "src/types/tools.js";
+import { logEvent } from "../../services/analytics/index.js";
+import { errorMessage, ShellError } from "../errors.js";
 import {
   createSyntheticUserCaveatMessage,
   createUserInterruptionMessage,
   createUserMessage,
   prepareUserContent,
-} from '../messages.js';
-import { resolveDefaultShell } from '../shell/resolveDefaultShell.js';
-import { isPowerShellToolEnabled } from '../shell/shellToolUtils.js';
-import { processToolResultBlock } from '../toolResultStorage.js';
-import { escapeXml } from '../xml.js';
-import type { ProcessUserInputContext } from './processUserInput.js';
+} from "../messages.js";
+import { resolveDefaultShell } from "../shell/resolveDefaultShell.js";
+import { isPowerShellToolEnabled } from "../shell/shellToolUtils.js";
+import { processToolResultBlock } from "../toolResultStorage.js";
+import { escapeXml } from "../xml.js";
+import type { ProcessUserInputContext } from "./processUserInput.js";
 export async function processBashCommand(
   inputString: string,
   precedingInputBlocks: ContentBlockParam[],
@@ -34,8 +34,8 @@ export async function processBashCommand(
   // same platform + env-var gate as tools.ts so input-box routing matches
   // tool-list visibility. Computed up front so telemetry records the
   // actual shell, not the raw setting.
-  const usePowerShell = isPowerShellToolEnabled() && resolveDefaultShell() === 'powershell';
-  logEvent('tengu_input_bash', {
+  const usePowerShell = isPowerShellToolEnabled() && resolveDefaultShell() === "powershell";
+  logEvent("tengu_input_bash", {
     powershell: usePowerShell,
   });
   const userMessage = createUserMessage({
@@ -86,11 +86,11 @@ export async function processBashCommand(
     // native, shouldUseSandbox() returns false regardless (unsupported platform).
     // Lazy-require PowerShellTool so its ~300KB chunk only loads when the
     // user has actually selected the powershell default shell.
-    type PSMod = typeof import('src/tools/PowerShellTool/PowerShellTool.js');
-    let PowerShellTool: PSMod['PowerShellTool'] | null = null;
+    type PSMod = typeof import("src/tools/PowerShellTool/PowerShellTool.js");
+    let PowerShellTool: PSMod["PowerShellTool"] | null = null;
     if (usePowerShell) {
       /* eslint-disable @typescript-eslint/no-require-imports */
-      PowerShellTool = (require('src/tools/PowerShellTool/PowerShellTool.js') as PSMod)
+      PowerShellTool = (require("src/tools/PowerShellTool/PowerShellTool.js") as PSMod)
         .PowerShellTool;
       /* eslint-enable @typescript-eslint/no-require-imports */
     }
@@ -118,7 +118,7 @@ export async function processBashCommand(
         );
     const data = response.data;
     if (!data) {
-      throw new Error('No result received from shell command');
+      throw new Error("No result received from shell command");
     }
     const stderr = data.stderr;
     // Reuse the same formatting pipeline as inline !`cmd` bash (promptShellExecution)
@@ -129,7 +129,7 @@ export async function processBashCommand(
       shellTool,
       {
         ...data,
-        stderr: '',
+        stderr: "",
       },
       randomUUID(),
     );
@@ -137,7 +137,7 @@ export async function processBashCommand(
     // XML from buildLargeToolResultMessage). Escaping it would turn structural
     // tags into &lt;persisted-output&gt;, breaking the model's parse and
     // UserBashOutputMessage's extractTag. Escape the raw fallback only.
-    const stdout = typeof mapped.content === 'string' ? mapped.content : escapeXml(data.stdout);
+    const stdout = typeof mapped.content === "string" ? mapped.content : escapeXml(data.stdout);
     return {
       messages: [
         createSyntheticUserCaveatMessage(),

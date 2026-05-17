@@ -1,22 +1,22 @@
-import type { Base64ImageSource, ImageBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
+import type { Base64ImageSource, ImageBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
 import {
   API_IMAGE_MAX_BASE64_SIZE,
   IMAGE_MAX_HEIGHT,
   IMAGE_MAX_WIDTH,
   IMAGE_TARGET_RAW_SIZE,
-} from '../constants/apiLimits.js';
-import { logEvent } from '../services/analytics/index.js';
+} from "../constants/apiLimits.js";
+import { logEvent } from "../services/analytics/index.js";
 import {
   getImageProcessor,
   type SharpFunction,
   type SharpInstance,
-} from '../tools/FileReadTool/imageProcessor.js';
-import { logForDebugging } from './debug.js';
-import { errorMessage } from './errors.js';
-import { formatFileSize } from './format.js';
-import { logError } from './log.js';
+} from "../tools/FileReadTool/imageProcessor.js";
+import { logForDebugging } from "./debug.js";
+import { errorMessage } from "./errors.js";
+import { formatFileSize } from "./format.js";
+import { logError } from "./log.js";
 
-type ImageMediaType = 'image/png' | 'image/jpeg' | 'image/gif' | 'image/webp';
+type ImageMediaType = "image/png" | "image/jpeg" | "image/gif" | "image/webp";
 
 // Error type constants for analytics (numeric to comply with logEvent restrictions)
 const ERROR_TYPE_MODULE_LOAD = 1;
@@ -34,7 +34,7 @@ const ERROR_TYPE_PERMISSION = 8;
 export class ImageResizeError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'ImageResizeError';
+    this.name = "ImageResizeError";
   }
 }
 
@@ -49,16 +49,16 @@ function classifyImageError(error: unknown): number {
   if (error instanceof Error) {
     const errorWithCode = error as Error & { code?: string };
     if (
-      errorWithCode.code === 'MODULE_NOT_FOUND' ||
-      errorWithCode.code === 'ERR_MODULE_NOT_FOUND' ||
-      errorWithCode.code === 'ERR_DLOPEN_FAILED'
+      errorWithCode.code === "MODULE_NOT_FOUND" ||
+      errorWithCode.code === "ERR_MODULE_NOT_FOUND" ||
+      errorWithCode.code === "ERR_DLOPEN_FAILED"
     ) {
       return ERROR_TYPE_MODULE_LOAD;
     }
-    if (errorWithCode.code === 'EACCES' || errorWithCode.code === 'EPERM') {
+    if (errorWithCode.code === "EACCES" || errorWithCode.code === "EPERM") {
       return ERROR_TYPE_PERMISSION;
     }
-    if (errorWithCode.code === 'ENOMEM') {
+    if (errorWithCode.code === "ENOMEM") {
       return ERROR_TYPE_MEMORY;
     }
   }
@@ -68,52 +68,52 @@ function classifyImageError(error: unknown): number {
   const message = errorMessage(error);
 
   // Module loading errors from our native wrapper
-  if (message.includes('Native image processor module not available')) {
+  if (message.includes("Native image processor module not available")) {
     return ERROR_TYPE_MODULE_LOAD;
   }
 
   // Sharp/vips processing errors (format detection, corrupt data, etc.)
   if (
-    message.includes('unsupported image format') ||
-    message.includes('Input buffer') ||
-    message.includes('Input file is missing') ||
-    message.includes('Input file has corrupt header') ||
-    message.includes('corrupt header') ||
-    message.includes('corrupt image') ||
-    message.includes('premature end') ||
-    message.includes('zlib: data error') ||
-    message.includes('zero width') ||
-    message.includes('zero height')
+    message.includes("unsupported image format") ||
+    message.includes("Input buffer") ||
+    message.includes("Input file is missing") ||
+    message.includes("Input file has corrupt header") ||
+    message.includes("corrupt header") ||
+    message.includes("corrupt image") ||
+    message.includes("premature end") ||
+    message.includes("zlib: data error") ||
+    message.includes("zero width") ||
+    message.includes("zero height")
   ) {
     return ERROR_TYPE_PROCESSING;
   }
 
   // Pixel/dimension limit errors from sharp/vips
   if (
-    message.includes('pixel limit') ||
-    message.includes('too many pixels') ||
-    message.includes('exceeds pixel') ||
-    message.includes('image dimensions')
+    message.includes("pixel limit") ||
+    message.includes("too many pixels") ||
+    message.includes("exceeds pixel") ||
+    message.includes("image dimensions")
   ) {
     return ERROR_TYPE_PIXEL_LIMIT;
   }
 
   // Memory allocation failures
   if (
-    message.includes('out of memory') ||
-    message.includes('Cannot allocate') ||
-    message.includes('memory allocation')
+    message.includes("out of memory") ||
+    message.includes("Cannot allocate") ||
+    message.includes("memory allocation")
   ) {
     return ERROR_TYPE_MEMORY;
   }
 
   // Timeout errors
-  if (message.includes('timeout') || message.includes('timed out')) {
+  if (message.includes("timeout") || message.includes("timed out")) {
     return ERROR_TYPE_TIMEOUT;
   }
 
   // Vips-specific errors (VipsJpeg, VipsPng, VipsWebp, etc.)
-  if (message.includes('Vips')) {
+  if (message.includes("Vips")) {
     return ERROR_TYPE_VIPS;
   }
 
@@ -155,7 +155,7 @@ interface ImageCompressionContext {
 
 interface CompressedImageResult {
   base64: string;
-  mediaType: Base64ImageSource['media_type'];
+  mediaType: Base64ImageSource["media_type"];
   originalSize: number;
 }
 
@@ -173,7 +173,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
     // "Unable to determine image format"), and the fallback's size check
     // `0 ≤ 5MB` would pass it through, yielding an empty base64 string
     // that the API rejects with `image cannot be empty`.
-    throw new ImageResizeError('Image file is empty (0 bytes)');
+    throw new ImageResizeError("Image file is empty (0 bytes)");
   }
   try {
     const sharp = await getImageProcessor();
@@ -182,14 +182,14 @@ export async function maybeResizeAndDownsampleImageBuffer(
 
     const mediaType = metadata.format ?? ext;
     // Normalize "jpg" to "jpeg" for media type compatibility
-    const normalizedMediaType = mediaType === 'jpg' ? 'jpeg' : mediaType;
+    const normalizedMediaType = mediaType === "jpg" ? "jpeg" : mediaType;
 
     // If dimensions aren't available from metadata
     if (!metadata.width || !metadata.height) {
       if (originalSize > IMAGE_TARGET_RAW_SIZE) {
         // Create fresh sharp instance for compression
         const compressedBuffer = await sharp(imageBuffer).jpeg({ quality: 80 }).toBuffer();
-        return { buffer: compressedBuffer, mediaType: 'jpeg' };
+        return { buffer: compressedBuffer, mediaType: "jpeg" };
       }
       // Return without dimensions if we can't determine them
       return { buffer: imageBuffer, mediaType: normalizedMediaType };
@@ -222,7 +222,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
     }
 
     const needsDimensionResize = width > IMAGE_MAX_WIDTH || height > IMAGE_MAX_HEIGHT;
-    const isPng = normalizedMediaType === 'png';
+    const isPng = normalizedMediaType === "png";
 
     // If dimensions are within limits but file is too large, try compression first
     // This preserves full resolution when possible
@@ -236,7 +236,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
         if (pngCompressed.length <= IMAGE_TARGET_RAW_SIZE) {
           return {
             buffer: pngCompressed,
-            mediaType: 'png',
+            mediaType: "png",
             dimensions: {
               originalWidth,
               originalHeight,
@@ -253,7 +253,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
         if (compressedBuffer.length <= IMAGE_TARGET_RAW_SIZE) {
           return {
             buffer: compressedBuffer,
-            mediaType: 'jpeg',
+            mediaType: "jpeg",
             dimensions: {
               originalWidth,
               originalHeight,
@@ -284,7 +284,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
     logForDebugging(`Resizing to ${width}x${height}`);
     const resizedImageBuffer = await sharp(imageBuffer)
       .resize(width, height, {
-        fit: 'inside',
+        fit: "inside",
         withoutEnlargement: true,
       })
       .toBuffer();
@@ -295,7 +295,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
       if (isPng) {
         const pngCompressed = await sharp(imageBuffer)
           .resize(width, height, {
-            fit: 'inside',
+            fit: "inside",
             withoutEnlargement: true,
           })
           .png({ compressionLevel: 9, palette: true })
@@ -303,7 +303,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
         if (pngCompressed.length <= IMAGE_TARGET_RAW_SIZE) {
           return {
             buffer: pngCompressed,
-            mediaType: 'png',
+            mediaType: "png",
             dimensions: {
               originalWidth,
               originalHeight,
@@ -318,7 +318,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
       for (const quality of [80, 60, 40, 20]) {
         const compressedBuffer = await sharp(imageBuffer)
           .resize(width, height, {
-            fit: 'inside',
+            fit: "inside",
             withoutEnlargement: true,
           })
           .jpeg({ quality })
@@ -326,7 +326,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
         if (compressedBuffer.length <= IMAGE_TARGET_RAW_SIZE) {
           return {
             buffer: compressedBuffer,
-            mediaType: 'jpeg',
+            mediaType: "jpeg",
             dimensions: {
               originalWidth,
               originalHeight,
@@ -339,10 +339,10 @@ export async function maybeResizeAndDownsampleImageBuffer(
       // If still too large, resize smaller and compress aggressively
       const smallerWidth = Math.min(width, 1000);
       const smallerHeight = Math.round((height * smallerWidth) / Math.max(width, 1));
-      logForDebugging('Still too large, compressing with JPEG');
+      logForDebugging("Still too large, compressing with JPEG");
       const compressedBuffer = await sharp(imageBuffer)
         .resize(smallerWidth, smallerHeight, {
-          fit: 'inside',
+          fit: "inside",
           withoutEnlargement: true,
         })
         .jpeg({ quality: 20 })
@@ -350,7 +350,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
       logForDebugging(`JPEG compressed buffer size: ${compressedBuffer.length}`);
       return {
         buffer: compressedBuffer,
-        mediaType: 'jpeg',
+        mediaType: "jpeg",
         dimensions: {
           originalWidth,
           originalHeight,
@@ -375,7 +375,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
     logError(error as Error);
     const errorType = classifyImageError(error);
     const errorMsg = errorMessage(error);
-    logEvent('tengu_image_resize_failed', {
+    logEvent("tengu_image_resize_failed", {
       original_size_bytes: originalSize,
       error_type: errorType,
       error_message_hash: hashString(errorMsg),
@@ -402,7 +402,7 @@ export async function maybeResizeAndDownsampleImageBuffer(
 
     // If original image's base64 encoding is within API limit, allow it through uncompressed
     if (base64Size <= API_IMAGE_MAX_BASE64_SIZE && !overDim) {
-      logEvent('tengu_image_resize_fallback', {
+      logEvent("tengu_image_resize_fallback", {
         original_size_bytes: originalSize,
         base64_size_bytes: base64Size,
         error_type: errorType,
@@ -436,17 +436,17 @@ export async function maybeResizeAndDownsampleImageBlock(
   imageBlock: ImageBlockParam,
 ): Promise<ImageBlockWithDimensions> {
   // Only process base64 images
-  if (imageBlock.source.type !== 'base64') {
+  if (imageBlock.source.type !== "base64") {
     return { block: imageBlock };
   }
 
   // Decode base64 to buffer
-  const imageBuffer = Buffer.from(imageBlock.source.data, 'base64');
+  const imageBuffer = Buffer.from(imageBlock.source.data, "base64");
   const originalSize = imageBuffer.length;
 
   // Extract extension from media type
   const mediaType = imageBlock.source.media_type;
-  const ext = mediaType?.split('/')[1] || 'png';
+  const ext = mediaType?.split("/")[1] || "png";
 
   // Resize if needed
   const resized = await maybeResizeAndDownsampleImageBuffer(imageBuffer, originalSize, ext);
@@ -454,11 +454,11 @@ export async function maybeResizeAndDownsampleImageBlock(
   // Return resized image block with dimension info
   return {
     block: {
-      type: 'image',
+      type: "image",
       source: {
-        type: 'base64',
-        media_type: `image/${resized.mediaType}` as Base64ImageSource['media_type'],
-        data: resized.buffer.toString('base64'),
+        type: "base64",
+        media_type: `image/${resized.mediaType}` as Base64ImageSource["media_type"],
+        data: resized.buffer.toString("base64"),
       },
     },
     dimensions: resized.dimensions,
@@ -486,8 +486,8 @@ export async function compressImageBuffer(
   originalMediaType?: string,
 ): Promise<CompressedImageResult> {
   // Extract format from originalMediaType if provided (e.g., "image/png" -> "png")
-  const fallbackFormat = originalMediaType?.split('/')[1] || 'jpeg';
-  const normalizedFallback = fallbackFormat === 'jpg' ? 'jpeg' : fallbackFormat;
+  const fallbackFormat = originalMediaType?.split("/")[1] || "jpeg";
+  const normalizedFallback = fallbackFormat === "jpg" ? "jpeg" : fallbackFormat;
 
   try {
     const sharp = await getImageProcessor();
@@ -515,7 +515,7 @@ export async function compressImageBuffer(
     }
 
     // For PNG, try palette optimization
-    if (format === 'png') {
+    if (format === "png") {
       const palettizedResult = await tryPalettePNG(context, sharp);
       if (palettizedResult) {
         return palettizedResult;
@@ -535,7 +535,7 @@ export async function compressImageBuffer(
     logError(error as Error);
     const errorType = classifyImageError(error);
     const errorMsg = errorMessage(error);
-    logEvent('tengu_image_compress_failed', {
+    logEvent("tengu_image_compress_failed", {
       original_size_bytes: imageBuffer.length,
       max_bytes: maxBytes,
       error_type: errorType,
@@ -547,7 +547,7 @@ export async function compressImageBuffer(
       // Detect actual format from magic bytes instead of trusting the provided media type
       const detected = detectImageFormatFromBuffer(imageBuffer);
       return {
-        base64: imageBuffer.toString('base64'),
+        base64: imageBuffer.toString("base64"),
         mediaType: detected,
         originalSize: imageBuffer.length,
       };
@@ -587,12 +587,12 @@ export async function compressImageBlock(
   maxBytes: number = IMAGE_TARGET_RAW_SIZE,
 ): Promise<ImageBlockParam> {
   // Only process base64 images
-  if (imageBlock.source.type !== 'base64') {
+  if (imageBlock.source.type !== "base64") {
     return imageBlock;
   }
 
   // Decode base64 to buffer
-  const imageBuffer = Buffer.from(imageBlock.source.data, 'base64');
+  const imageBuffer = Buffer.from(imageBlock.source.data, "base64");
 
   // Check if already within size limit
   if (imageBuffer.length <= maxBytes) {
@@ -603,9 +603,9 @@ export async function compressImageBlock(
   const compressed = await compressImageBuffer(imageBuffer, maxBytes);
 
   return {
-    type: 'image',
+    type: "image",
     source: {
-      type: 'base64',
+      type: "base64",
       media_type: compressed.mediaType,
       data: compressed.base64,
     },
@@ -619,10 +619,10 @@ function createCompressedImageResult(
   mediaType: string,
   originalSize: number,
 ): CompressedImageResult {
-  const normalizedMediaType = mediaType === 'jpg' ? 'jpeg' : mediaType;
+  const normalizedMediaType = mediaType === "jpg" ? "jpeg" : mediaType;
   return {
-    base64: buffer.toString('base64'),
-    mediaType: `image/${normalizedMediaType}` as Base64ImageSource['media_type'],
+    base64: buffer.toString("base64"),
+    mediaType: `image/${normalizedMediaType}` as Base64ImageSource["media_type"],
     originalSize,
   };
 }
@@ -638,7 +638,7 @@ async function tryProgressiveResizing(
     const newHeight = Math.round((context.metadata.height || 2000) * scalingFactor);
 
     let resizedImage = sharp(context.imageBuffer).resize(newWidth, newHeight, {
-      fit: 'inside',
+      fit: "inside",
       withoutEnlargement: true,
     });
 
@@ -657,15 +657,15 @@ async function tryProgressiveResizing(
 
 function applyFormatOptimizations(image: SharpInstance, format: string): SharpInstance {
   switch (format) {
-    case 'png':
+    case "png":
       return image.png({
         compressionLevel: 9,
         palette: true,
       });
-    case 'jpeg':
-    case 'jpg':
+    case "jpeg":
+    case "jpg":
       return image.jpeg({ quality: 80 });
-    case 'webp':
+    case "webp":
       return image.webp({ quality: 80 });
     default:
       return image;
@@ -678,7 +678,7 @@ async function tryPalettePNG(
 ): Promise<CompressedImageResult | null> {
   const palettePng = await sharp(context.imageBuffer)
     .resize(800, 800, {
-      fit: 'inside',
+      fit: "inside",
       withoutEnlargement: true,
     })
     .png({
@@ -689,7 +689,7 @@ async function tryPalettePNG(
     .toBuffer();
 
   if (palettePng.length <= context.maxBytes) {
-    return createCompressedImageResult(palettePng, 'png', context.originalSize);
+    return createCompressedImageResult(palettePng, "png", context.originalSize);
   }
 
   return null;
@@ -702,14 +702,14 @@ async function tryJPEGConversion(
 ): Promise<CompressedImageResult | null> {
   const jpegBuffer = await sharp(context.imageBuffer)
     .resize(600, 600, {
-      fit: 'inside',
+      fit: "inside",
       withoutEnlargement: true,
     })
     .jpeg({ quality })
     .toBuffer();
 
   if (jpegBuffer.length <= context.maxBytes) {
-    return createCompressedImageResult(jpegBuffer, 'jpeg', context.originalSize);
+    return createCompressedImageResult(jpegBuffer, "jpeg", context.originalSize);
   }
 
   return null;
@@ -721,13 +721,13 @@ async function createUltraCompressedJPEG(
 ): Promise<CompressedImageResult> {
   const ultraCompressedBuffer = await sharp(context.imageBuffer)
     .resize(400, 400, {
-      fit: 'inside',
+      fit: "inside",
       withoutEnlargement: true,
     })
     .jpeg({ quality: 20 })
     .toBuffer();
 
-  return createCompressedImageResult(ultraCompressedBuffer, 'jpeg', context.originalSize);
+  return createCompressedImageResult(ultraCompressedBuffer, "jpeg", context.originalSize);
 }
 
 /**
@@ -736,21 +736,21 @@ async function createUltraCompressedJPEG(
  * @returns Media type string (e.g., 'image/png', 'image/jpeg') or 'image/png' as default
  */
 export function detectImageFormatFromBuffer(buffer: Buffer): ImageMediaType {
-  if (buffer.length < 4) return 'image/png'; // default
+  if (buffer.length < 4) return "image/png"; // default
 
   // Check PNG signature
   if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47) {
-    return 'image/png';
+    return "image/png";
   }
 
   // Check JPEG signature (FFD8FF)
   if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) {
-    return 'image/jpeg';
+    return "image/jpeg";
   }
 
   // Check GIF signature (GIF87a or GIF89a)
   if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46) {
-    return 'image/gif';
+    return "image/gif";
   }
 
   // Check WebP signature (RIFF....WEBP)
@@ -762,12 +762,12 @@ export function detectImageFormatFromBuffer(buffer: Buffer): ImageMediaType {
       buffer[10] === 0x42 &&
       buffer[11] === 0x50
     ) {
-      return 'image/webp';
+      return "image/webp";
     }
   }
 
   // Default to PNG if unknown
-  return 'image/png';
+  return "image/png";
 }
 
 /**
@@ -777,11 +777,11 @@ export function detectImageFormatFromBuffer(buffer: Buffer): ImageMediaType {
  */
 export function detectImageFormatFromBase64(base64Data: string): ImageMediaType {
   try {
-    const buffer = Buffer.from(base64Data, 'base64');
+    const buffer = Buffer.from(base64Data, "base64");
     return detectImageFormatFromBuffer(buffer);
   } catch {
     // Default to PNG on any error
-    return 'image/png';
+    return "image/png";
   }
 }
 
@@ -829,5 +829,5 @@ export function createImageMetadataText(dims: ImageDimensions, sourcePath?: stri
     );
   }
 
-  return `[Image: ${parts.join(', ')}]`;
+  return `[Image: ${parts.join(", ")}]`;
 }

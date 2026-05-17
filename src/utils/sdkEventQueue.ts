@@ -1,11 +1,11 @@
-import type { UUID } from 'node:crypto';
-import { randomUUID } from 'node:crypto';
-import { getIsNonInteractiveSession, getSessionId } from '../bootstrap/state.js';
-import type { SdkWorkflowProgress } from '../types/tools.js';
+import type { UUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
+import { getIsNonInteractiveSession, getSessionId } from "../bootstrap/state.js";
+import type { SdkWorkflowProgress } from "../types/tools.js";
 
 type TaskStartedEvent = {
-  type: 'system';
-  subtype: 'task_started';
+  type: "system";
+  subtype: "task_started";
   task_id: string;
   tool_use_id?: string;
   description: string;
@@ -15,8 +15,8 @@ type TaskStartedEvent = {
 };
 
 type TaskProgressEvent = {
-  type: 'system';
-  subtype: 'task_progress';
+  type: "system";
+  subtype: "task_progress";
   task_id: string;
   tool_use_id?: string;
   description: string;
@@ -39,11 +39,11 @@ type TaskProgressEvent = {
 // the LLM loop. Consumers (e.g. VS Code session.ts) use this to remove the
 // task from the subagent panel.
 type TaskNotificationSdkEvent = {
-  type: 'system';
-  subtype: 'task_notification';
+  type: "system";
+  subtype: "task_notification";
   task_id: string;
   tool_use_id?: string;
-  status: 'completed' | 'failed' | 'stopped';
+  status: "completed" | "failed" | "stopped";
   output_file: string;
   summary: string;
   usage?: {
@@ -60,9 +60,9 @@ type TaskNotificationSdkEvent = {
 // do-while loop exits — so SDK consumers can trust it as the authoritative
 // "turn is over" signal even when result was withheld for background agents.
 type SessionStateChangedEvent = {
-  type: 'system';
-  subtype: 'session_state_changed';
-  state: 'idle' | 'running' | 'requires_action';
+  type: "system";
+  subtype: "session_state_changed";
+  state: "idle" | "running" | "requires_action";
 };
 
 export type SdkEvent =
@@ -111,7 +111,7 @@ export function drainSdkEvents(): Array<SdkEvent & { uuid: UUID; session_id: str
  */
 export function emitTaskTerminatedSdk(
   taskId: string,
-  status: 'completed' | 'failed' | 'stopped',
+  status: "completed" | "failed" | "stopped",
   opts?: {
     toolUseId?: string;
     summary?: string;
@@ -120,13 +120,13 @@ export function emitTaskTerminatedSdk(
   },
 ): void {
   enqueueSdkEvent({
-    type: 'system',
-    subtype: 'task_notification',
+    type: "system",
+    subtype: "task_notification",
     task_id: taskId,
     tool_use_id: opts?.toolUseId,
     status,
-    output_file: opts?.outputFile ?? '',
-    summary: opts?.summary ?? '',
+    output_file: opts?.outputFile ?? "",
+    summary: opts?.summary ?? "",
     usage: opts?.usage,
   });
 }

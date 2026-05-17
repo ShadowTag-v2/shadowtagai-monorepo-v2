@@ -1,7 +1,7 @@
-import { logForDebugging } from '../../utils/debug.js';
-import { truncate } from '../../utils/format.js';
-import { getFsImplementation } from '../../utils/fsOperations.js';
-import { expandPath } from '../../utils/path.js';
+import { logForDebugging } from "../../utils/debug.js";
+import { truncate } from "../../utils/format.js";
+import { getFsImplementation } from "../../utils/fsOperations.js";
+import { expandPath } from "../../utils/path.js";
 
 const MAX_READ_BYTES = 64 * 1024;
 
@@ -35,8 +35,8 @@ export function getSymbolAtPosition(
     const { buffer, bytesRead } = fs.readSync(absolutePath, {
       length: MAX_READ_BYTES,
     });
-    const content = buffer.toString('utf-8', 0, bytesRead);
-    const lines = content.split('\n');
+    const content = buffer.toString("utf-8", 0, bytesRead);
+    const lines = content.split("\n");
 
     if (line < 0 || line >= lines.length) {
       return null;
@@ -81,7 +81,7 @@ export function getSymbolAtPosition(
     if (error instanceof Error) {
       logForDebugging(
         `Symbol extraction failed for ${filePath}:${line}:${character}: ${error.message}`,
-        { level: 'warn' },
+        { level: "warn" },
       );
     }
     // Still return null for graceful fallback to position display

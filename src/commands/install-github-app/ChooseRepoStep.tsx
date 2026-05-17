@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import TextInput from '../../components/TextInput.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import TextInput from "../../components/TextInput.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
 
 interface ChooseRepoStepProps {
   currentRepo: string | null;
@@ -74,9 +74,9 @@ export function ChooseRepoStep(t0) {
   let t4;
   if ($[9] !== handleNext || $[10] !== handlePrevious || $[11] !== handleSubmit) {
     t4 = {
-      'confirm:previous': handlePrevious,
-      'confirm:next': handleNext,
-      'confirm:yes': handleSubmit,
+      "confirm:previous": handlePrevious,
+      "confirm:next": handleNext,
+      "confirm:yes": handleSubmit,
     };
     $[9] = handleNext;
     $[10] = handlePrevious;
@@ -89,7 +89,7 @@ export function ChooseRepoStep(t0) {
   let t6;
   if ($[13] !== t5) {
     t6 = {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: t5,
     };
     $[13] = t5;
@@ -101,8 +101,8 @@ export function ChooseRepoStep(t0) {
   let t7;
   if ($[15] !== handleNext || $[16] !== handlePrevious) {
     t7 = {
-      'confirm:previous': handlePrevious,
-      'confirm:next': handleNext,
+      "confirm:previous": handlePrevious,
+      "confirm:next": handleNext,
     };
     $[15] = handleNext;
     $[16] = handlePrevious;
@@ -113,7 +113,7 @@ export function ChooseRepoStep(t0) {
   let t8;
   if ($[18] !== isTextInputVisible) {
     t8 = {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: isTextInputVisible,
     };
     $[18] = isTextInputVisible;
@@ -123,7 +123,7 @@ export function ChooseRepoStep(t0) {
   }
   useKeybindings(t7, t8);
   let t9;
-  if ($[20] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[20] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = (
       <Box flexDirection="column" marginBottom={1}>
         <Text bold={true}>Install GitHub App</Text>
@@ -138,8 +138,8 @@ export function ChooseRepoStep(t0) {
   if ($[21] !== currentRepo || $[22] !== useCurrentRepo) {
     t10 = currentRepo && (
       <Box marginBottom={1}>
-        <Text bold={useCurrentRepo} color={useCurrentRepo ? 'permission' : undefined}>
-          {useCurrentRepo ? '> ' : '  '}Use current repository: {currentRepo}
+        <Text bold={useCurrentRepo} color={useCurrentRepo ? "permission" : undefined}>
+          {useCurrentRepo ? "> " : "  "}Use current repository: {currentRepo}
         </Text>
       </Box>
     );
@@ -150,9 +150,9 @@ export function ChooseRepoStep(t0) {
     t10 = $[23];
   }
   const t11 = !useCurrentRepo || !currentRepo;
-  const t12 = !useCurrentRepo || !currentRepo ? 'permission' : undefined;
-  const t13 = !useCurrentRepo || !currentRepo ? '> ' : '  ';
-  const t14 = currentRepo ? 'Enter a different repository' : 'Enter repository';
+  const t12 = !useCurrentRepo || !currentRepo ? "permission" : undefined;
+  const t13 = !useCurrentRepo || !currentRepo ? "> " : "  ";
+  const t14 = currentRepo ? "Enter a different repository" : "Enter repository";
   let t15;
   if ($[24] !== t11 || $[25] !== t12 || $[26] !== t13 || $[27] !== t14) {
     t15 = (
@@ -191,7 +191,7 @@ export function ChooseRepoStep(t0) {
           }}
           onSubmit={handleSubmit}
           focus={true}
-          placeholder={'Enter a repo as owner/repo or https://github.com/owner/repo\u2026'}
+          placeholder={"Enter a repo as owner/repo or https://github.com/owner/repo\u2026"}
           columns={textInputColumns}
           cursorOffset={cursorOffset}
           onChangeCursorOffset={setCursorOffset}
@@ -239,7 +239,7 @@ export function ChooseRepoStep(t0) {
   } else {
     t18 = $[42];
   }
-  const t19 = currentRepo ? '\u2191/\u2193 to select \xB7 ' : '';
+  const t19 = currentRepo ? "\u2191/\u2193 to select \xB7 " : "";
   let t20;
   if ($[43] !== t19) {
     t20 = (

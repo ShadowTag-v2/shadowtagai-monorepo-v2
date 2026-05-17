@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import { useEffect } from "react";
+import { c as _c } from "react/compiler-runtime";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import type { TeleportRemoteResponse } from 'src/utils/conversationRecovery.js';
-import { type TeleportSource, useTeleportResume } from '../hooks/useTeleportResume.js';
-import { Box, Text } from '../ink.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import { ResumeTask } from './ResumeTask.js';
-import { Spinner } from './Spinner.js';
+} from "src/services/analytics/index.js";
+import type { TeleportRemoteResponse } from "src/utils/conversationRecovery.js";
+import { type TeleportSource, useTeleportResume } from "../hooks/useTeleportResume.js";
+import { Box, Text } from "../ink.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import { ResumeTask } from "./ResumeTask.js";
+import { Spinner } from "./Spinner.js";
 
 interface TeleportResumeWrapperProps {
   onComplete: (result: TeleportRemoteResponse) => void;
@@ -32,7 +32,7 @@ export function TeleportResumeWrapper(t0) {
   let t3;
   if ($[0] !== source) {
     t2 = () => {
-      logEvent('tengu_teleport_started', {
+      logEvent("tengu_teleport_started", {
         source: source as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
     };
@@ -71,7 +71,7 @@ export function TeleportResumeWrapper(t0) {
   let t5;
   if ($[8] !== onCancel) {
     t5 = () => {
-      logEvent('tengu_teleport_cancelled', {});
+      logEvent("tengu_teleport_cancelled", {});
       onCancel();
     };
     $[8] = onCancel;
@@ -84,7 +84,7 @@ export function TeleportResumeWrapper(t0) {
   let t7;
   if ($[10] !== t6) {
     t7 = {
-      context: 'Global',
+      context: "Global",
       isActive: t6,
     };
     $[10] = t6;
@@ -92,10 +92,10 @@ export function TeleportResumeWrapper(t0) {
   } else {
     t7 = $[11];
   }
-  useKeybinding('app:interrupt', handleCancel, t7);
+  useKeybinding("app:interrupt", handleCancel, t7);
   if (isResuming && selectedSession) {
     let t8;
-    if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
       t8 = (
         <Box flexDirection="row">
           <Spinner />
@@ -123,7 +123,7 @@ export function TeleportResumeWrapper(t0) {
   }
   if (error && !onError) {
     let t8;
-    if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
       t8 = (
         <Text bold={true} color="error">
           Failed to resume session
@@ -142,7 +142,7 @@ export function TeleportResumeWrapper(t0) {
       t9 = $[17];
     }
     let t10;
-    if ($[18] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[18] === Symbol.for("react.memo_cache_sentinel")) {
       t10 = (
         <Box marginTop={1}>
           <Text dimColor={true}>

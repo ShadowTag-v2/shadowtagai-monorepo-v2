@@ -1,16 +1,16 @@
-import { basename } from 'node:path';
-import React from 'react';
-import { logError } from 'src/utils/log.js';
-import { useDebounceCallback } from 'usehooks-ts';
-import type { InputEvent, Key } from '../ink.js';
+import { basename } from "node:path";
+import React from "react";
+import { logError } from "src/utils/log.js";
+import { useDebounceCallback } from "usehooks-ts";
+import type { InputEvent, Key } from "../ink.js";
 import {
   getImageFromClipboard,
   isImageFilePath,
   PASTE_THRESHOLD,
   tryReadImageFromPath,
-} from '../utils/imagePaste.js';
-import type { ImageDimensions } from '../utils/imageResizer.js';
-import { getPlatform } from '../utils/platform.js';
+} from "../utils/imagePaste.js";
+import type { ImageDimensions } from "../utils/imageResizer.js";
+import { getPlatform } from "../utils/platform.js";
 
 const CLIPBOARD_CHECK_DEBOUNCE_MS = 50;
 const PASTE_COMPLETION_TIMEOUT_MS = 100;
@@ -48,7 +48,7 @@ export function usePasteHandler({ onPaste, onInput, onImagePaste }: PasteHandler
   // that key is Enter, it submits the old input and the paste is lost.
   const pastePendingRef = React.useRef(false);
 
-  const isMacOS = React.useMemo(() => getPlatform() === 'macos', []);
+  const isMacOS = React.useMemo(() => getPlatform() === "macos", []);
 
   React.useEffect(() => {
     return () => {
@@ -106,7 +106,7 @@ export function usePasteHandler({ onPaste, onInput, onImagePaste }: PasteHandler
           setPasteState(({ chunks }) => {
             // Join chunks and filter out orphaned focus sequences
             // These can appear when focus events split during paste
-            const pastedText = chunks.join('').replace(/\[I$/, '').replace(/\[O$/, '');
+            const pastedText = chunks.join("").replace(/\[I$/, "").replace(/\[O$/, "");
 
             // Check if the pasted text contains image file paths
             // When dragging multiple images, they may come as:
@@ -118,7 +118,7 @@ export function usePasteHandler({ onPaste, onInput, onImagePaste }: PasteHandler
             // This works because spaces within paths are escaped (e.g., `file\ name.png`)
             const lines = pastedText
               .split(/ (?=\/|[A-Za-z]:\\)/)
-              .flatMap((part) => part.split('\n'))
+              .flatMap((part) => part.split("\n"))
               .filter((line) => line.trim());
             const imagePaths = lines.filter((line) => isImageFilePath(line));
 
@@ -147,7 +147,7 @@ export function usePasteHandler({ onPaste, onInput, onImagePaste }: PasteHandler
                     // If some paths weren't images, paste them as text
                     const nonImageLines = lines.filter((line) => !isImageFilePath(line));
                     if (nonImageLines.length > 0 && onPaste) {
-                      onPaste(nonImageLines.join('\n'));
+                      onPaste(nonImageLines.join("\n"));
                     }
                     setIsPasting(false);
                   } else if (isTempScreenshot && isMacOS) {
@@ -223,7 +223,7 @@ export function usePasteHandler({ onPaste, onInput, onImagePaste }: PasteHandler
     // - Unix: ` /` - Windows: ` C:\` etc.
     const hasImageFilePath = input
       .split(/ (?=\/|[A-Za-z]:\\)/)
-      .flatMap((part) => part.split('\n'))
+      .flatMap((part) => part.split("\n"))
       .some((line) => isImageFilePath(line.trim()));
 
     // Handle empty paste (clipboard image on macOS)

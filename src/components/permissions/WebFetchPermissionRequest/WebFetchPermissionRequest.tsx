@@ -1,12 +1,12 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text, useTheme } from '../../../ink.js';
-import { WebFetchTool } from '../../../tools/WebFetchTool/WebFetchTool.js';
-import { shouldShowAlwaysAllowOptions } from '../../../utils/permissions/permissionsLoader.js';
-import { Select } from '../../CustomSelect/select.js';
-import { usePermissionRequestLogging } from '../hooks.js';
-import { PermissionDialog } from '../PermissionDialog.js';
-import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js';
-import { logUnaryPermissionEvent } from '../utils.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text, useTheme } from "../../../ink.js";
+import { WebFetchTool } from "../../../tools/WebFetchTool/WebFetchTool.js";
+import { shouldShowAlwaysAllowOptions } from "../../../utils/permissions/permissionsLoader.js";
+import { Select } from "../../CustomSelect/select.js";
+import { usePermissionRequestLogging } from "../hooks.js";
+import { PermissionDialog } from "../PermissionDialog.js";
+import { PermissionRuleExplanation } from "../PermissionRuleExplanation.js";
+import { logUnaryPermissionEvent } from "../utils.js";
 
 function inputToPermissionRuleContent(input: { [k: string]: unknown }): string {
   try {
@@ -38,10 +38,10 @@ export function WebFetchPermissionRequest(t0) {
   }
   const hostname = t1.hostname;
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = {
-      completion_type: 'tool_use_single',
-      language_name: 'none',
+      completion_type: "tool_use_single",
+      language_name: "none",
     };
     $[2] = t2;
   } else {
@@ -50,7 +50,7 @@ export function WebFetchPermissionRequest(t0) {
   const unaryEvent = t2;
   usePermissionRequestLogging(toolUseConfirm, unaryEvent);
   let t3;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = shouldShowAlwaysAllowOptions();
     $[3] = t3;
   } else {
@@ -58,10 +58,10 @@ export function WebFetchPermissionRequest(t0) {
   }
   const showAlwaysAllowOptions = t3;
   let t4;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = {
-      label: 'Yes',
-      value: 'yes',
+      label: "Yes",
+      value: "yes",
     };
     $[4] = t4;
   } else {
@@ -76,7 +76,7 @@ export function WebFetchPermissionRequest(t0) {
       if ($[7] !== t5) {
         t6 = {
           label: <Text>Yes, and don't ask again for {t5}</Text>,
-          value: 'yes-dont-ask-again-domain',
+          value: "yes-dont-ask-again-domain",
         };
         $[7] = t5;
         $[8] = t6;
@@ -86,14 +86,14 @@ export function WebFetchPermissionRequest(t0) {
       result.push(t6);
     }
     let t5;
-    if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
       t5 = {
         label: (
           <Text>
             No, and tell Claude what to do differently <Text bold={true}>(esc)</Text>
           </Text>
         ),
-        value: 'no',
+        value: "no",
       };
       $[9] = t5;
     } else {
@@ -110,14 +110,14 @@ export function WebFetchPermissionRequest(t0) {
   if ($[10] !== onDone || $[11] !== onReject || $[12] !== toolUseConfirm) {
     t5 = function onChange(newValue) {
       switch (newValue) {
-        case 'yes': {
-          logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
+        case "yes": {
+          logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "accept");
           toolUseConfirm.onAllow(toolUseConfirm.input, []);
           onDone();
           break;
         }
-        case 'yes-dont-ask-again-domain': {
-          logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
+        case "yes-dont-ask-again-domain": {
+          logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "accept");
           const ruleContent = inputToPermissionRuleContent(toolUseConfirm.input);
           const ruleValue = {
             toolName: toolUseConfirm.tool.name,
@@ -125,17 +125,17 @@ export function WebFetchPermissionRequest(t0) {
           };
           toolUseConfirm.onAllow(toolUseConfirm.input, [
             {
-              type: 'addRules',
+              type: "addRules",
               rules: [ruleValue],
-              behavior: 'allow',
-              destination: 'localSettings',
+              behavior: "allow",
+              destination: "localSettings",
             },
           ]);
           onDone();
           break;
         }
-        case 'no': {
-          logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'reject');
+        case "no": {
+          logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "reject");
           toolUseConfirm.onReject();
           onReject();
           onDone();
@@ -213,7 +213,7 @@ export function WebFetchPermissionRequest(t0) {
     t10 = $[26];
   }
   let t11;
-  if ($[27] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = <Text>Do you want to allow Claude to fetch this content?</Text>;
     $[27] = t11;
   } else {
@@ -221,7 +221,7 @@ export function WebFetchPermissionRequest(t0) {
   }
   let t12;
   if ($[28] !== onChange) {
-    t12 = () => onChange('no');
+    t12 = () => onChange("no");
     $[28] = onChange;
     $[29] = t12;
   } else {

@@ -1,5 +1,5 @@
-import type * as React from 'react';
-import type { RefObject } from 'react';
+import type * as React from "react";
+import type { RefObject } from "react";
 import {
   useCallback,
   useContext,
@@ -8,23 +8,23 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
-} from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useVirtualScroll } from '../hooks/useVirtualScroll.js';
-import type { ScrollBoxHandle } from '../ink/components/ScrollBox.js';
-import type { DOMElement } from '../ink/dom.js';
-import type { MatchPosition } from '../ink/render-to-screen.js';
-import { Box } from '../ink.js';
-import type { RenderableMessage } from '../types/message.js';
-import { TextHoverColorContext } from './design-system/ThemedText.js';
-import { ScrollChromeContext } from './FullscreenLayout.js';
+} from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useVirtualScroll } from "../hooks/useVirtualScroll.js";
+import type { ScrollBoxHandle } from "../ink/components/ScrollBox.js";
+import type { DOMElement } from "../ink/dom.js";
+import type { MatchPosition } from "../ink/render-to-screen.js";
+import { Box } from "../ink.js";
+import type { RenderableMessage } from "../types/message.js";
+import { TextHoverColorContext } from "./design-system/ThemedText.js";
+import { ScrollChromeContext } from "./FullscreenLayout.js";
 
 // Rows of breathing room above the target when we scrollTo.
 const HEADROOM = 3;
 
-import { logForDebugging } from '../utils/debug.js';
-import { sleep } from '../utils/sleep.js';
-import { renderableSearchText } from '../utils/transcriptSearch.js';
+import { logForDebugging } from "../utils/debug.js";
+import { sleep } from "../utils/sleep.js";
+import { renderableSearchText } from "../utils/transcriptSearch.js";
 import {
   isNavigableMessage,
   type MessageActionsNav,
@@ -32,7 +32,7 @@ import {
   type NavigableMessage,
   stripSystemReminders,
   toolCallOf,
-} from './messageActions.js';
+} from "./messageActions.js";
 
 // Fallback extractor: lower + cache here for callers without the
 // Messages.tsx tool-lookup path (tests, static contexts). Messages.tsx
@@ -53,7 +53,7 @@ export type StickyPrompt =
   // Click sets this — header HIDES but padding stays collapsed (0) so
   // the content ❯ lands at screen row 0 instead of row 1. Cleared on
   // the next sticky-prompt compute (user scrolls again).
-  | 'clicked';
+  | "clicked";
 
 /** Huge pasted prompts (cat file | claude) can be MBs. Header wraps into
  *  2 rows via overflow:hidden — this just bounds the React prop size. */
@@ -163,24 +163,24 @@ function stickyPromptText(msg: RenderableMessage): string | null {
 }
 function computeStickyPromptText(msg: RenderableMessage): string | null {
   let raw: string | null = null;
-  if (msg.type === 'user') {
+  if (msg.type === "user") {
     if (msg.isMeta || msg.isVisibleInTranscriptOnly) return null;
     const block = msg.message.content[0];
-    if (block?.type !== 'text') return null;
+    if (block?.type !== "text") return null;
     raw = block.text;
   } else if (
-    msg.type === 'attachment' &&
-    msg.attachment.type === 'queued_command' &&
-    msg.attachment.commandMode !== 'task-notification' &&
+    msg.type === "attachment" &&
+    msg.attachment.type === "queued_command" &&
+    msg.attachment.commandMode !== "task-notification" &&
     !msg.attachment.isMeta
   ) {
     const p = msg.attachment.prompt;
     raw =
-      typeof p === 'string' ? p : p.flatMap((b) => (b.type === 'text' ? [b.text] : [])).join('\n');
+      typeof p === "string" ? p : p.flatMap((b) => (b.type === "text" ? [b.text] : [])).join("\n");
   }
   if (raw === null) return null;
   const t = stripSystemReminders(raw);
-  if (t.startsWith('<') || t === '') return null;
+  if (t.startsWith("<") || t === "") return null;
   return t;
 }
 
@@ -243,7 +243,7 @@ function VirtualItem(t0) {
   } else {
     t1 = $[2];
   }
-  const t2 = expanded ? 'userMessageBackgroundHover' : undefined;
+  const t2 = expanded ? "userMessageBackgroundHover" : undefined;
   const t3 = expanded ? 1 : undefined;
   let t4;
   if ($[3] !== clickable || $[4] !== msg || $[5] !== onClickK) {
@@ -275,7 +275,7 @@ function VirtualItem(t0) {
   } else {
     t6 = $[14];
   }
-  const t7 = hovered && !expanded ? 'text' : undefined;
+  const t7 = hovered && !expanded ? "text" : undefined;
   let t8;
   if ($[15] !== idx || $[16] !== msg || $[17] !== renderItem) {
     t8 = renderItem(msg, idx);
@@ -412,7 +412,7 @@ export function VirtualMessageList({
       }
       return false;
     };
-    const isUser = (i: number) => isVisible(i) && messages[i]?.type === 'user';
+    const isUser = (i: number) => isVisible(i) && messages[i]?.type === "user";
     return {
       // Entry via shift+↑ = same semantic as in-cursor shift+↑ (prevUser).
       enterCursor: () => scan(messages.length - 1, -1, isUser),
@@ -1075,8 +1075,8 @@ function StickyTracker({
   // without force the last.idx===idx guard would hold 'clicked' until the
   // user crossed a prompt boundary. Previously encoded in last.idx as
   // -1/-2/-3 which overlapped with real indices — too clever.
-  type Suppress = 'none' | 'armed' | 'force';
-  const suppress = useRef<Suppress>('none');
+  type Suppress = "none" | "armed" | "force";
+  const suppress = useRef<Suppress>("none");
   // Dedup on idx only — estimate derives from firstVisibleTop which shifts
   // every scroll tick, so including it in the key made the guard dead
   // (setStickyPrompt fired a fresh {text,scrollTo} per-frame). The scrollTo
@@ -1093,12 +1093,12 @@ function StickyTracker({
   useEffect(() => {
     // Hold while two-phase correction is in flight.
     if (pending.current.idx >= 0) return;
-    if (suppress.current === 'armed') {
-      suppress.current = 'force';
+    if (suppress.current === "armed") {
+      suppress.current = "force";
       return;
     }
-    const force = suppress.current === 'force';
-    suppress.current = 'none';
+    const force = suppress.current === "force";
+    suppress.current = "none";
     if (!force && lastIdx.current === idx) return;
     lastIdx.current = idx;
     if (text === null) {
@@ -1113,9 +1113,9 @@ function StickyTracker({
     const paraEnd = trimmed.search(/\n\s*\n/);
     const collapsed = (paraEnd >= 0 ? trimmed.slice(0, paraEnd) : trimmed)
       .slice(0, STICKY_TEXT_CAP)
-      .replace(/\s+/g, ' ')
+      .replace(/\s+/g, " ")
       .trim();
-    if (collapsed === '') {
+    if (collapsed === "") {
       setStickyPrompt(null);
       return;
     }
@@ -1126,8 +1126,8 @@ function StickyTracker({
       scrollTo: () => {
         // Hide header, keep padding collapsed — FullscreenLayout's
         // 'clicked' sentinel → scrollBox_y=0 + pad=0 → viewportTop=0.
-        setStickyPrompt('clicked');
-        suppress.current = 'armed';
+        setStickyPrompt("clicked");
+        suppress.current = "armed";
         // scrollToElement anchors by DOMElement ref, not a number:
         // render-node-to-output reads el.yogaNode.getComputedTop() at
         // paint time (same Yoga pass as scrollHeight). No staleness from

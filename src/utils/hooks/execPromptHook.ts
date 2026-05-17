@@ -1,19 +1,19 @@
-import { randomUUID } from 'node:crypto';
-import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
-import { queryModelWithoutStreaming } from '../../services/api/claude.js';
-import type { ToolUseContext } from '../../Tool.js';
-import type { Message } from '../../types/message.js';
-import { createAttachmentMessage } from '../attachments.js';
-import { createCombinedAbortSignal } from '../combinedAbortSignal.js';
-import { logForDebugging } from '../debug.js';
-import { errorMessage } from '../errors.js';
-import type { HookResult } from '../hooks.js';
-import { safeParseJSON } from '../json.js';
-import { createUserMessage, extractTextContent } from '../messages.js';
-import { getSmallFastModel } from '../model/model.js';
-import type { PromptHook } from '../settings/types.js';
-import { asSystemPrompt } from '../systemPromptType.js';
-import { addArgumentsToPrompt, hookResponseSchema } from './hookHelpers.js';
+import { randomUUID } from "node:crypto";
+import type { HookEvent } from "src/entrypoints/agentSdkTypes.js";
+import { queryModelWithoutStreaming } from "../../services/api/claude.js";
+import type { ToolUseContext } from "../../Tool.js";
+import type { Message } from "../../types/message.js";
+import { createAttachmentMessage } from "../attachments.js";
+import { createCombinedAbortSignal } from "../combinedAbortSignal.js";
+import { logForDebugging } from "../debug.js";
+import { errorMessage } from "../errors.js";
+import type { HookResult } from "../hooks.js";
+import { safeParseJSON } from "../json.js";
+import { createUserMessage, extractTextContent } from "../messages.js";
+import { getSmallFastModel } from "../model/model.js";
+import type { PromptHook } from "../settings/types.js";
+import { asSystemPrompt } from "../systemPromptType.js";
+import { addArgumentsToPrompt, hookResponseSchema } from "./hookHelpers.js";
 
 /**
  * Execute a prompt-based hook using an LLM
@@ -63,7 +63,7 @@ Your response must be a JSON object matching one of the following schemas:
 1. If the condition is met, return: {"ok": true}
 2. If the condition is not met, return: {"ok": false, "reason": "Reason for why it is not met"}`,
         ]),
-        thinkingConfig: { type: 'disabled' as const },
+        thinkingConfig: { type: "disabled" as const },
         tools: toolUseContext.options.tools,
         signal: combinedSignal,
         options: {
@@ -76,18 +76,18 @@ Your response must be a JSON object matching one of the following schemas:
           isNonInteractiveSession: true,
           hasAppendSystemPrompt: false,
           agents: [],
-          querySource: 'hook_prompt',
+          querySource: "hook_prompt",
           mcpTools: [],
           agentId: toolUseContext.agentId,
           outputFormat: {
-            type: 'json_schema',
+            type: "json_schema",
             schema: {
-              type: 'object',
+              type: "object",
               properties: {
-                ok: { type: 'boolean' },
-                reason: { type: 'string' },
+                ok: { type: "boolean" },
+                reason: { type: "string" },
               },
-              required: ['ok'],
+              required: ["ok"],
               additionalProperties: false,
             },
           },
@@ -110,13 +110,13 @@ Your response must be a JSON object matching one of the following schemas:
         logForDebugging(`Hooks: error parsing response as JSON: ${fullResponse}`);
         return {
           hook,
-          outcome: 'non_blocking_error',
+          outcome: "non_blocking_error",
           message: createAttachmentMessage({
-            type: 'hook_non_blocking_error',
+            type: "hook_non_blocking_error",
             hookName,
             toolUseID: effectiveToolUseID,
             hookEvent,
-            stderr: 'JSON validation failed',
+            stderr: "JSON validation failed",
             stdout: fullResponse,
             exitCode: 1,
           }),
@@ -130,9 +130,9 @@ Your response must be a JSON object matching one of the following schemas:
         );
         return {
           hook,
-          outcome: 'non_blocking_error',
+          outcome: "non_blocking_error",
           message: createAttachmentMessage({
-            type: 'hook_non_blocking_error',
+            type: "hook_non_blocking_error",
             hookName,
             toolUseID: effectiveToolUseID,
             hookEvent,
@@ -148,7 +148,7 @@ Your response must be a JSON object matching one of the following schemas:
         logForDebugging(`Hooks: Prompt hook condition was not met: ${parsed.data.reason}`);
         return {
           hook,
-          outcome: 'blocking',
+          outcome: "blocking",
           blockingError: {
             blockingError: `Prompt hook condition was not met: ${parsed.data.reason}`,
             command: hook.prompt,
@@ -162,13 +162,13 @@ Your response must be a JSON object matching one of the following schemas:
       logForDebugging(`Hooks: Prompt hook condition was met`);
       return {
         hook,
-        outcome: 'success',
+        outcome: "success",
         message: createAttachmentMessage({
-          type: 'hook_success',
+          type: "hook_success",
           hookName,
           toolUseID: effectiveToolUseID,
           hookEvent,
-          content: '',
+          content: "",
         }),
       };
     } catch (error) {
@@ -177,7 +177,7 @@ Your response must be a JSON object matching one of the following schemas:
       if (combinedSignal.aborted) {
         return {
           hook,
-          outcome: 'cancelled',
+          outcome: "cancelled",
         };
       }
       throw error;
@@ -187,14 +187,14 @@ Your response must be a JSON object matching one of the following schemas:
     logForDebugging(`Hooks: Prompt hook error: ${errorMsg}`);
     return {
       hook,
-      outcome: 'non_blocking_error',
+      outcome: "non_blocking_error",
       message: createAttachmentMessage({
-        type: 'hook_non_blocking_error',
+        type: "hook_non_blocking_error",
         hookName,
         toolUseID: effectiveToolUseID,
         hookEvent,
         stderr: `Error executing prompt hook: ${errorMsg}`,
-        stdout: '',
+        stdout: "",
         exitCode: 1,
       }),
     };

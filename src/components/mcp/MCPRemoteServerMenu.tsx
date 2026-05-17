@@ -1,46 +1,46 @@
-import figures from 'figures';
-import React, { useEffect, useRef, useState } from 'react';
+import figures from "figures";
+import React, { useEffect, useRef, useState } from "react";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from 'src/services/analytics/index.js';
-import type { CommandResultDisplay } from '../../commands.js';
-import { getOauthConfig } from '../../constants/oauth.js';
-import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { setClipboard } from '../../ink/termio/osc.js';
+} from "src/services/analytics/index.js";
+import type { CommandResultDisplay } from "../../commands.js";
+import { getOauthConfig } from "../../constants/oauth.js";
+import { useExitOnCtrlCDWithKeybindings } from "../../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { setClipboard } from "../../ink/termio/osc.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- raw j/k/arrow menu navigation
-import { Box, color, Link, Text, useInput, useTheme } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
+import { Box, color, Link, Text, useInput, useTheme } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
 import {
   AuthenticationCancelledError,
   performMCPOAuthFlow,
   revokeServerTokens,
-} from '../../services/mcp/auth.js';
-import { clearServerCache } from '../../services/mcp/client.js';
-import { useMcpReconnect, useMcpToggleEnabled } from '../../services/mcp/MCPConnectionManager.js';
+} from "../../services/mcp/auth.js";
+import { clearServerCache } from "../../services/mcp/client.js";
+import { useMcpReconnect, useMcpToggleEnabled } from "../../services/mcp/MCPConnectionManager.js";
 import {
   describeMcpConfigFilePath,
   excludeCommandsByServer,
   excludeResourcesByServer,
   excludeToolsByServer,
   filterMcpPromptsByServer,
-} from '../../services/mcp/utils.js';
-import { useAppState, useSetAppState } from '../../state/AppState.js';
-import { getOauthAccountInfo } from '../../utils/auth.js';
-import { openBrowser } from '../../utils/browser.js';
-import { errorMessage } from '../../utils/errors.js';
-import { logMCPDebug } from '../../utils/log.js';
-import { capitalize } from '../../utils/stringUtils.js';
-import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
-import { Select } from '../CustomSelect/index.js';
-import { Byline } from '../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
-import { Spinner } from '../Spinner.js';
-import TextInput from '../TextInput.js';
-import { CapabilitiesSection } from './CapabilitiesSection.js';
-import type { ClaudeAIServerInfo, HTTPServerInfo, SSEServerInfo } from './types.js';
-import { handleReconnectError, handleReconnectResult } from './utils/reconnectHelpers.js';
+} from "../../services/mcp/utils.js";
+import { useAppState, useSetAppState } from "../../state/AppState.js";
+import { getOauthAccountInfo } from "../../utils/auth.js";
+import { openBrowser } from "../../utils/browser.js";
+import { errorMessage } from "../../utils/errors.js";
+import { logMCPDebug } from "../../utils/log.js";
+import { capitalize } from "../../utils/stringUtils.js";
+import { ConfigurableShortcutHint } from "../ConfigurableShortcutHint.js";
+import { Select } from "../CustomSelect/index.js";
+import { Byline } from "../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../design-system/KeyboardShortcutHint.js";
+import { Spinner } from "../Spinner.js";
+import TextInput from "../TextInput.js";
+import { CapabilitiesSection } from "./CapabilitiesSection.js";
+import type { ClaudeAIServerInfo, HTTPServerInfo, SSEServerInfo } from "./types.js";
+import { handleReconnectError, handleReconnectResult } from "./utils/reconnectHelpers.js";
 
 type Props = {
   server: SSEServerInfo | HTTPServerInfo | ClaudeAIServerInfo;
@@ -81,7 +81,7 @@ export function MCPRemoteServerMenu({
   const [urlCopied, setUrlCopied] = useState(false);
   const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const unmountedRef = useRef(false);
-  const [callbackUrlInput, setCallbackUrlInput] = useState('');
+  const [callbackUrlInput, setCallbackUrlInput] = useState("");
   const [callbackUrlCursorOffset, setCallbackUrlCursorOffset] = useState(0);
   const [manualCallbackSubmit, setManualCallbackSubmit] = useState<((url: string) => void) | null>(
     null,
@@ -108,7 +108,7 @@ export function MCPRemoteServerMenu({
   // 1. It has OAuth tokens (server.isAuthenticated), OR
   // 2. It's connected and has tools (meaning it's working via some auth mechanism)
   const isEffectivelyAuthenticated =
-    server.isAuthenticated || (server.client.type === 'connected' && serverToolsCount > 0);
+    server.isAuthenticated || (server.client.type === "connected" && serverToolsCount > 0);
   const reconnectMcpServer = useMcpReconnect();
   const handleClaudeAIAuthComplete = React.useCallback(async () => {
     setIsClaudeAIAuthenticating(false);
@@ -116,23 +116,23 @@ export function MCPRemoteServerMenu({
     setIsReconnecting(true);
     try {
       const result = await reconnectMcpServer(server.name);
-      const success = result.client.type === 'connected';
-      logEvent('tengu_claudeai_mcp_auth_completed', {
+      const success = result.client.type === "connected";
+      logEvent("tengu_claudeai_mcp_auth_completed", {
         success,
       });
       if (success) {
         onComplete?.(`Authentication successful. Connected to ${server.name}.`);
-      } else if (result.client.type === 'needs-auth') {
+      } else if (result.client.type === "needs-auth") {
         onComplete?.(
-          'Authentication successful, but server still requires authentication. You may need to manually restart Claude Code.',
+          "Authentication successful, but server still requires authentication. You may need to manually restart Claude Code.",
         );
       } else {
         onComplete?.(
-          'Authentication successful, but server reconnection failed. You may need to manually restart Claude Code for the changes to take effect.',
+          "Authentication successful, but server reconnection failed. You may need to manually restart Claude Code for the changes to take effect.",
         );
       }
     } catch (err) {
-      logEvent('tengu_claudeai_mcp_auth_completed', {
+      logEvent("tengu_claudeai_mcp_auth_completed", {
         success: false,
       });
       onComplete?.(handleReconnectError(err, server.name));
@@ -150,7 +150,7 @@ export function MCPRemoteServerMenu({
         c.name === server.name
           ? {
               ...c,
-              type: 'needs-auth' as const,
+              type: "needs-auth" as const,
             }
           : c,
       );
@@ -168,7 +168,7 @@ export function MCPRemoteServerMenu({
         },
       };
     });
-    logEvent('tengu_claudeai_mcp_clear_auth_completed', {});
+    logEvent("tengu_claudeai_mcp_clear_auth_completed", {});
     onComplete?.(`Disconnected from ${server.name}.`);
     setIsClaudeAIClearingAuth(false);
     setClaudeAIClearAuthUrl(null);
@@ -177,7 +177,7 @@ export function MCPRemoteServerMenu({
 
   // Escape to cancel authentication flow
   useKeybinding(
-    'confirm:no',
+    "confirm:no",
     () => {
       authAbortControllerRef.current?.abort();
       authAbortControllerRef.current = null;
@@ -185,34 +185,34 @@ export function MCPRemoteServerMenu({
       setAuthorizationUrl(null);
     },
     {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: isAuthenticating,
     },
   );
 
   // Escape to cancel Claude AI authentication
   useKeybinding(
-    'confirm:no',
+    "confirm:no",
     () => {
       setIsClaudeAIAuthenticating(false);
       setClaudeAIAuthUrl(null);
     },
     {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: isClaudeAIAuthenticating,
     },
   );
 
   // Escape to cancel Claude AI clear auth
   useKeybinding(
-    'confirm:no',
+    "confirm:no",
     () => {
       setIsClaudeAIClearingAuth(false);
       setClaudeAIClearAuthUrl(null);
       setClaudeAIClearAuthBrowserOpened(false);
     },
     {
-      context: 'Confirmation',
+      context: "Confirmation",
       isActive: isClaudeAIClearingAuth,
     },
   );
@@ -233,7 +233,7 @@ export function MCPRemoteServerMenu({
         void openBrowser(connectorsUrl);
       }
     }
-    if (input === 'c' && !urlCopied) {
+    if (input === "c" && !urlCopied) {
       const urlToCopy = authorizationUrl || claudeAIAuthUrl || claudeAIClearAuthUrl;
       if (urlToCopy) {
         void setClipboard(urlToCopy).then((raw) => {
@@ -258,13 +258,13 @@ export function MCPRemoteServerMenu({
     const accountInfo = getOauthAccountInfo();
     const orgUuid = accountInfo?.organizationUuid;
     let authUrl: string;
-    if (orgUuid && server.config.type === 'claudeai-proxy' && server.config.id) {
+    if (orgUuid && server.config.type === "claudeai-proxy" && server.config.id) {
       // Use the direct auth URL with org and server IDs
       // Replace 'mcprs' prefix with 'mcpsrv' if present
-      const serverId = server.config.id.startsWith('mcprs')
+      const serverId = server.config.id.startsWith("mcprs")
         ? `mcpsrv${server.config.id.slice(5)}`
         : server.config.id;
-      const productSurface = encodeURIComponent(process.env.CLAUDE_CODE_ENTRYPOINT || 'cli');
+      const productSurface = encodeURIComponent(process.env.CLAUDE_CODE_ENTRYPOINT || "cli");
       authUrl = `${claudeAiBaseUrl}/api/organizations/${orgUuid}/mcp/start-auth/${serverId}?product_surface=${productSurface}`;
     } else {
       // Fall back to settings/connectors if we don't have the required IDs
@@ -272,34 +272,34 @@ export function MCPRemoteServerMenu({
     }
     setClaudeAIAuthUrl(authUrl);
     setIsClaudeAIAuthenticating(true);
-    logEvent('tengu_claudeai_mcp_auth_started', {});
+    logEvent("tengu_claudeai_mcp_auth_started", {});
     await openBrowser(authUrl);
   }, [server.config]);
   const handleClaudeAIClearAuth = React.useCallback(() => {
     setIsClaudeAIClearingAuth(true);
-    logEvent('tengu_claudeai_mcp_clear_auth_started', {});
+    logEvent("tengu_claudeai_mcp_clear_auth_started", {});
   }, []);
   const handleToggleEnabled = React.useCallback(async () => {
-    const wasEnabled = server.client.type !== 'disabled';
+    const wasEnabled = server.client.type !== "disabled";
     try {
       await toggleMcpServer(server.name);
-      if (server.config.type === 'claudeai-proxy') {
-        logEvent('tengu_claudeai_mcp_toggle', {
+      if (server.config.type === "claudeai-proxy") {
+        logEvent("tengu_claudeai_mcp_toggle", {
           new_state: (wasEnabled
-            ? 'disabled'
-            : 'enabled') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+            ? "disabled"
+            : "enabled") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         });
       }
 
       // Return to the server list so user can continue managing other servers
       onCancel();
     } catch (err_0) {
-      const action = wasEnabled ? 'disable' : 'enable';
+      const action = wasEnabled ? "disable" : "enable";
       onComplete?.(`Failed to ${action} MCP server '${server.name}': ${errorMessage(err_0)}`);
     }
   }, [server.client.type, server.config.type, server.name, toggleMcpServer, onCancel, onComplete]);
   const handleAuthenticate = React.useCallback(async () => {
-    if (server.config.type === 'claudeai-proxy') return;
+    if (server.config.type === "claudeai-proxy") return;
     setIsAuthenticating(true);
     setError(null);
     const controller = new AbortController();
@@ -324,24 +324,24 @@ export function MCPRemoteServerMenu({
             },
           },
         );
-        logEvent('tengu_mcp_auth_config_authenticate', {
+        logEvent("tengu_mcp_auth_config_authenticate", {
           wasAuthenticated: server.isAuthenticated,
         });
         const result_0 = await reconnectMcpServer(server.name);
-        if (result_0.client.type === 'connected') {
+        if (result_0.client.type === "connected") {
           const message = isEffectivelyAuthenticated
             ? `Authentication successful. Reconnected to ${server.name}.`
             : `Authentication successful. Connected to ${server.name}.`;
           onComplete?.(message);
-        } else if (result_0.client.type === 'needs-auth') {
+        } else if (result_0.client.type === "needs-auth") {
           onComplete?.(
-            'Authentication successful, but server still requires authentication. You may need to manually restart Claude Code.',
+            "Authentication successful, but server still requires authentication. You may need to manually restart Claude Code.",
           );
         } else {
           // result.client.type === 'failed'
           logMCPDebug(server.name, `Reconnection failed after authentication`);
           onComplete?.(
-            'Authentication successful, but server reconnection failed. You may need to manually restart Claude Code for the changes to take effect.',
+            "Authentication successful, but server reconnection failed. You may need to manually restart Claude Code for the changes to take effect.",
           );
         }
       }
@@ -354,7 +354,7 @@ export function MCPRemoteServerMenu({
       setIsAuthenticating(false);
       authAbortControllerRef.current = null;
       setManualCallbackSubmit(null);
-      setCallbackUrlInput('');
+      setCallbackUrlInput("");
     }
   }, [
     server.isAuthenticated,
@@ -365,11 +365,11 @@ export function MCPRemoteServerMenu({
     isEffectivelyAuthenticated,
   ]);
   const handleClearAuth = async () => {
-    if (server.config.type === 'claudeai-proxy') return;
+    if (server.config.type === "claudeai-proxy") return;
     if (server.config) {
       // First revoke the authentication tokens and clear all auth state
       await revokeServerTokens(server.name, server.config);
-      logEvent('tengu_mcp_auth_config_clear', {});
+      logEvent("tengu_mcp_auth_config_clear", {});
 
       // Disconnect the client and clear the cache
       await clearServerCache(server.name, {
@@ -384,7 +384,7 @@ export function MCPRemoteServerMenu({
           c_0.name === server.name
             ? {
                 ...c_0,
-                type: 'failed' as const,
+                type: "failed" as const,
               }
             : c_0,
         );
@@ -410,9 +410,9 @@ export function MCPRemoteServerMenu({
     // one will open. If IdP login IS needed, authorizationUrl populates and
     // the URL fallback block below still renders.
     const authCopy =
-      server.config.type !== 'claudeai-proxy' && server.config.oauth?.xaa
-        ? ' Authenticating via your identity provider'
-        : ' A browser window will open for authentication';
+      server.config.type !== "claudeai-proxy" && server.config.oauth?.xaa
+        ? " Authenticating via your identity provider"
+        : " A browser window will open for authentication";
     return (
       <Box flexDirection="column" gap={1} padding={1}>
         <Text color="claude">Authenticating with {server.name}…</Text>
@@ -424,7 +424,7 @@ export function MCPRemoteServerMenu({
           <Box flexDirection="column">
             <Box>
               <Text dimColor>
-                If your browser doesn&apos;t open automatically, copy this URL manually{' '}
+                If your browser doesn&apos;t open automatically, copy this URL manually{" "}
               </Text>
               {urlCopied ? (
                 <Text color="success">(Copied!)</Text>
@@ -444,13 +444,13 @@ export function MCPRemoteServerMenu({
               address bar:
             </Text>
             <Box>
-              <Text dimColor>URL {'>'} </Text>
+              <Text dimColor>URL {">"} </Text>
               <TextInput
                 value={callbackUrlInput}
                 onChange={setCallbackUrlInput}
                 onSubmit={(value: string) => {
                   manualCallbackSubmit(value.trim());
-                  setCallbackUrlInput('');
+                  setCallbackUrlInput("");
                 }}
                 cursorOffset={callbackUrlCursorOffset}
                 onChangeCursorOffset={setCallbackUrlCursorOffset}
@@ -479,7 +479,7 @@ export function MCPRemoteServerMenu({
           <Box flexDirection="column">
             <Box>
               <Text dimColor>
-                If your browser doesn&apos;t open automatically, copy this URL manually{' '}
+                If your browser doesn&apos;t open automatically, copy this URL manually{" "}
               </Text>
               {urlCopied ? (
                 <Text color="success">(Copied!)</Text>
@@ -519,7 +519,7 @@ export function MCPRemoteServerMenu({
               <Box flexDirection="column">
                 <Box>
                   <Text dimColor>
-                    If your browser didn&apos;t open automatically, copy this URL manually{' '}
+                    If your browser didn&apos;t open automatically, copy this URL manually{" "}
                   </Text>
                   {urlCopied ? (
                     <Text color="success">(Copied!)</Text>
@@ -587,71 +587,71 @@ export function MCPRemoteServerMenu({
   const menuOptions = [];
 
   // If server is disabled, show Enable first as the primary action
-  if (server.client.type === 'disabled') {
+  if (server.client.type === "disabled") {
     menuOptions.push({
-      label: 'Enable',
-      value: 'toggle-enabled',
+      label: "Enable",
+      value: "toggle-enabled",
     });
   }
-  if (server.client.type === 'connected' && serverToolsCount > 0) {
+  if (server.client.type === "connected" && serverToolsCount > 0) {
     menuOptions.push({
-      label: 'View tools',
-      value: 'tools',
+      label: "View tools",
+      value: "tools",
     });
   }
-  if (server.config.type === 'claudeai-proxy') {
-    if (server.client.type === 'connected') {
+  if (server.config.type === "claudeai-proxy") {
+    if (server.client.type === "connected") {
       menuOptions.push({
-        label: 'Clear authentication',
-        value: 'claudeai-clear-auth',
+        label: "Clear authentication",
+        value: "claudeai-clear-auth",
       });
-    } else if (server.client.type !== 'disabled') {
+    } else if (server.client.type !== "disabled") {
       menuOptions.push({
-        label: 'Authenticate',
-        value: 'claudeai-auth',
+        label: "Authenticate",
+        value: "claudeai-auth",
       });
     }
   } else {
     if (isEffectivelyAuthenticated) {
       menuOptions.push({
-        label: 'Re-authenticate',
-        value: 'reauth',
+        label: "Re-authenticate",
+        value: "reauth",
       });
       menuOptions.push({
-        label: 'Clear authentication',
-        value: 'clear-auth',
+        label: "Clear authentication",
+        value: "clear-auth",
       });
     }
     if (!isEffectivelyAuthenticated) {
       menuOptions.push({
-        label: 'Authenticate',
-        value: 'auth',
+        label: "Authenticate",
+        value: "auth",
       });
     }
   }
-  if (server.client.type !== 'disabled') {
-    if (server.client.type !== 'needs-auth') {
+  if (server.client.type !== "disabled") {
+    if (server.client.type !== "needs-auth") {
       menuOptions.push({
-        label: 'Reconnect',
-        value: 'reconnectMcpServer',
+        label: "Reconnect",
+        value: "reconnectMcpServer",
       });
     }
     menuOptions.push({
-      label: 'Disable',
-      value: 'toggle-enabled',
+      label: "Disable",
+      value: "toggle-enabled",
     });
   }
 
   // If there are no other options, add a back option so Select handles escape
   if (menuOptions.length === 0) {
     menuOptions.push({
-      label: 'Back',
-      value: 'back',
+      label: "Back",
+      value: "back",
     });
   }
   return (
     <Box flexDirection="column">
-      <Box flexDirection="column" paddingX={1} borderStyle={borderless ? undefined : 'round'}>
+      <Box flexDirection="column" paddingX={1} borderStyle={borderless ? undefined : "round"}>
         <Box marginBottom={1}>
           <Text bold>{capitalizedServerName} MCP Server</Text>
         </Box>
@@ -659,29 +659,29 @@ export function MCPRemoteServerMenu({
         <Box flexDirection="column" gap={0}>
           <Box>
             <Text bold>Status: </Text>
-            {server.client.type === 'disabled' ? (
-              <Text>{color('inactive', theme)(figures.radioOff)} disabled</Text>
-            ) : server.client.type === 'connected' ? (
-              <Text>{color('success', theme)(figures.tick)} connected</Text>
-            ) : server.client.type === 'pending' ? (
+            {server.client.type === "disabled" ? (
+              <Text>{color("inactive", theme)(figures.radioOff)} disabled</Text>
+            ) : server.client.type === "connected" ? (
+              <Text>{color("success", theme)(figures.tick)} connected</Text>
+            ) : server.client.type === "pending" ? (
               <>
                 <Text dimColor>{figures.radioOff}</Text>
                 <Text> connecting…</Text>
               </>
-            ) : server.client.type === 'needs-auth' ? (
-              <Text>{color('warning', theme)(figures.triangleUpOutline)} needs authentication</Text>
+            ) : server.client.type === "needs-auth" ? (
+              <Text>{color("warning", theme)(figures.triangleUpOutline)} needs authentication</Text>
             ) : (
-              <Text>{color('error', theme)(figures.cross)} failed</Text>
+              <Text>{color("error", theme)(figures.cross)} failed</Text>
             )}
           </Box>
 
-          {server.transport !== 'claudeai-proxy' && (
+          {server.transport !== "claudeai-proxy" && (
             <Box>
               <Text bold>Auth: </Text>
               {isEffectivelyAuthenticated ? (
-                <Text>{color('success', theme)(figures.tick)} authenticated</Text>
+                <Text>{color("success", theme)(figures.tick)} authenticated</Text>
               ) : (
-                <Text>{color('error', theme)(figures.cross)} not authenticated</Text>
+                <Text>{color("error", theme)(figures.cross)} not authenticated</Text>
               )}
             </Box>
           )}
@@ -696,7 +696,7 @@ export function MCPRemoteServerMenu({
             <Text dimColor>{describeMcpConfigFilePath(server.scope)}</Text>
           </Box>
 
-          {server.client.type === 'connected' && (
+          {server.client.type === "connected" && (
             <CapabilitiesSection
               serverToolsCount={serverToolsCount}
               serverPromptsCount={serverCommandsCount}
@@ -704,7 +704,7 @@ export function MCPRemoteServerMenu({
             />
           )}
 
-          {server.client.type === 'connected' && serverToolsCount > 0 && (
+          {server.client.type === "connected" && serverToolsCount > 0 && (
             <Box>
               <Text bold>Tools: </Text>
               <Text dimColor>{serverToolsCount} tools</Text>
@@ -724,36 +724,36 @@ export function MCPRemoteServerMenu({
               options={menuOptions}
               onChange={async (value_0) => {
                 switch (value_0) {
-                  case 'tools':
+                  case "tools":
                     onViewTools();
                     break;
-                  case 'auth':
-                  case 'reauth':
+                  case "auth":
+                  case "reauth":
                     await handleAuthenticate();
                     break;
-                  case 'clear-auth':
+                  case "clear-auth":
                     await handleClearAuth();
                     break;
-                  case 'claudeai-auth':
+                  case "claudeai-auth":
                     await handleClaudeAIAuth();
                     break;
-                  case 'claudeai-clear-auth':
+                  case "claudeai-clear-auth":
                     handleClaudeAIClearAuth();
                     break;
-                  case 'reconnectMcpServer':
+                  case "reconnectMcpServer":
                     setIsReconnecting(true);
                     try {
                       const result_1 = await reconnectMcpServer(server.name);
-                      if (server.config.type === 'claudeai-proxy') {
-                        logEvent('tengu_claudeai_mcp_reconnect', {
-                          success: result_1.client.type === 'connected',
+                      if (server.config.type === "claudeai-proxy") {
+                        logEvent("tengu_claudeai_mcp_reconnect", {
+                          success: result_1.client.type === "connected",
                         });
                       }
                       const { message: message_0 } = handleReconnectResult(result_1, server.name);
                       onComplete?.(message_0);
                     } catch (err_2) {
-                      if (server.config.type === 'claudeai-proxy') {
-                        logEvent('tengu_claudeai_mcp_reconnect', {
+                      if (server.config.type === "claudeai-proxy") {
+                        logEvent("tengu_claudeai_mcp_reconnect", {
                           success: false,
                         });
                       }
@@ -762,10 +762,10 @@ export function MCPRemoteServerMenu({
                       setIsReconnecting(false);
                     }
                     break;
-                  case 'toggle-enabled':
+                  case "toggle-enabled":
                     await handleToggleEnabled();
                     break;
-                  case 'back':
+                  case "back":
                     onCancel();
                     break;
                 }

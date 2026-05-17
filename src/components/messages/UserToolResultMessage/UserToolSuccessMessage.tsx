@@ -1,26 +1,26 @@
-import { feature } from 'bun:bundle';
-import figures from 'figures';
-import * as React from 'react';
-import { SentryErrorBoundary } from 'src/components/SentryErrorBoundary.js';
-import { Box, Text, useTheme } from '../../../ink.js';
-import { useAppState } from '../../../state/AppState.js';
-import { filterToolProgressMessages, type Tool, type Tools } from '../../../Tool.js';
-import type { NormalizedUserMessage, ProgressMessage } from '../../../types/message.js';
+import { feature } from "bun:bundle";
+import figures from "figures";
+import * as React from "react";
+import { SentryErrorBoundary } from "src/components/SentryErrorBoundary.js";
+import { Box, Text, useTheme } from "../../../ink.js";
+import { useAppState } from "../../../state/AppState.js";
+import { filterToolProgressMessages, type Tool, type Tools } from "../../../Tool.js";
+import type { NormalizedUserMessage, ProgressMessage } from "../../../types/message.js";
 import {
   deleteClassifierApproval,
   getClassifierApproval,
   getYoloClassifierApproval,
-} from '../../../utils/classifierApprovals.js';
-import type { buildMessageLookups } from '../../../utils/messages.js';
-import { MessageResponse } from '../../MessageResponse.js';
-import { HookProgressMessage } from '../HookProgressMessage.js';
+} from "../../../utils/classifierApprovals.js";
+import type { buildMessageLookups } from "../../../utils/messages.js";
+import { MessageResponse } from "../../MessageResponse.js";
+import { HookProgressMessage } from "../HookProgressMessage.js";
 
 type Props = {
   message: NormalizedUserMessage;
   lookups: ReturnType<typeof buildMessageLookups>;
   toolUseID: string;
   progressMessagesForMessage: ProgressMessage[];
-  style?: 'condensed';
+  style?: "condensed";
   tool?: Tool;
   tools: Tools;
   verbose: boolean;
@@ -44,7 +44,7 @@ export function UserToolSuccessMessage({
   // per-scrollback-message store subscription — same pattern as
   // UserPromptMessage.tsx.
   const isBriefOnly =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature("KAIROS") || feature("KAIROS_BRIEF")
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s) => s.isBriefOnly)
       : false;
@@ -93,23 +93,23 @@ export function UserToolSuccessMessage({
   // render like plain assistant text. Skip the tool-result width constraint
   // so MarkdownTable's SAFETY_MARGIN=4 (tuned for the assistant-text 2-col
   // dot gutter) holds — otherwise tables wrap their box-drawing chars.
-  const rendersAsAssistantText = tool.userFacingName(undefined) === '';
+  const rendersAsAssistantText = tool.userFacingName(undefined) === "";
   return (
     <Box flexDirection="column">
       <Box flexDirection="column" width={rendersAsAssistantText ? undefined : width}>
         {renderedMessage}
-        {feature('BASH_CLASSIFIER')
+        {feature("BASH_CLASSIFIER")
           ? classifierRule && (
               <MessageResponse height={1}>
                 <Text dimColor>
                   <Text color="success">{figures.tick}</Text>
-                  {' Auto-approved \u00b7 matched '}
+                  {" Auto-approved \u00b7 matched "}
                   {`"${classifierRule}"`}
                 </Text>
               </MessageResponse>
             )
           : null}
-        {feature('TRANSCRIPT_CLASSIFIER')
+        {feature("TRANSCRIPT_CLASSIFIER")
           ? yoloReason && (
               <MessageResponse height={1}>
                 <Text dimColor>Allowed by auto mode classifier</Text>

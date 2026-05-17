@@ -1,15 +1,15 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type * as React from 'react';
-import { extractTag } from 'src/utils/messages.js';
-import { FallbackToolUseErrorMessage } from '../../components/FallbackToolUseErrorMessage.js';
-import { FilePathLink } from '../../components/FilePathLink.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { Text } from '../../ink.js';
-import { FILE_NOT_FOUND_CWD_NOTE, getDisplayPath } from '../../utils/file.js';
-import { formatFileSize } from '../../utils/format.js';
-import { getPlansDirectory } from '../../utils/plans.js';
-import { getTaskOutputDir } from '../../utils/task/diskOutput.js';
-import type { Input, Output } from './FileReadTool.js';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type * as React from "react";
+import { extractTag } from "src/utils/messages.js";
+import { FallbackToolUseErrorMessage } from "../../components/FallbackToolUseErrorMessage.js";
+import { FilePathLink } from "../../components/FilePathLink.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { Text } from "../../ink.js";
+import { FILE_NOT_FOUND_CWD_NOTE, getDisplayPath } from "../../utils/file.js";
+import { formatFileSize } from "../../utils/format.js";
+import { getPlansDirectory } from "../../utils/plans.js";
+import { getTaskOutputDir } from "../../utils/task/diskOutput.js";
+import type { Input, Output } from "./FileReadTool.js";
 
 /**
  * Check if a file path is an agent output file and extract the task ID.
@@ -17,7 +17,7 @@ import type { Input, Output } from './FileReadTool.js';
  */
 function getAgentOutputTaskId(filePath: string): string | null {
   const prefix = `${getTaskOutputDir()}/`;
-  const suffix = '.output';
+  const suffix = ".output";
   if (filePath.startsWith(prefix) && filePath.endsWith(suffix)) {
     const taskId = filePath.slice(prefix.length, -suffix.length);
     // Validate it looks like a task ID (alphanumeric, reasonable length)
@@ -42,7 +42,7 @@ export function renderToolUseMessage(
   // For agent output files, return empty string so no parentheses are shown
   // The task ID is displayed separately by AssistantToolUseMessage
   if (getAgentOutputTaskId(file_path)) {
-    return '';
+    return "";
   }
   const displayPath = verbose ? file_path : getDisplayPath(file_path);
   if (pages) {
@@ -79,7 +79,7 @@ export function renderToolUseTag({ file_path }: Partial<Input>): React.ReactNode
 export function renderToolResultMessage(output: Output): React.ReactNode {
   // TODO: Render recursively
   switch (output.type) {
-    case 'image': {
+    case "image": {
       const { originalSize } = output.file;
       const formattedSize = formatFileSize(originalSize);
       return (
@@ -88,7 +88,7 @@ export function renderToolResultMessage(output: Output): React.ReactNode {
         </MessageResponse>
       );
     }
-    case 'notebook': {
+    case "notebook": {
       const { cells } = output.file;
       if (!cells || cells.length < 1) {
         return <Text color="error">No cells found in notebook</Text>;
@@ -101,7 +101,7 @@ export function renderToolResultMessage(output: Output): React.ReactNode {
         </MessageResponse>
       );
     }
-    case 'pdf': {
+    case "pdf": {
       const { originalSize } = output.file;
       const formattedSize = formatFileSize(originalSize);
       return (
@@ -110,27 +110,27 @@ export function renderToolResultMessage(output: Output): React.ReactNode {
         </MessageResponse>
       );
     }
-    case 'parts': {
+    case "parts": {
       return (
         <MessageResponse height={1}>
           <Text>
-            Read <Text bold>{output.file.count}</Text> {output.file.count === 1 ? 'page' : 'pages'}{' '}
+            Read <Text bold>{output.file.count}</Text> {output.file.count === 1 ? "page" : "pages"}{" "}
             ({formatFileSize(output.file.originalSize)})
           </Text>
         </MessageResponse>
       );
     }
-    case 'text': {
+    case "text": {
       const { numLines } = output.file;
       return (
         <MessageResponse height={1}>
           <Text>
-            Read <Text bold>{numLines}</Text> {numLines === 1 ? 'line' : 'lines'}
+            Read <Text bold>{numLines}</Text> {numLines === 1 ? "line" : "lines"}
           </Text>
         </MessageResponse>
       );
     }
-    case 'file_unchanged': {
+    case "file_unchanged": {
       return (
         <MessageResponse height={1}>
           <Text dimColor>Unchanged since last read</Text>
@@ -140,14 +140,14 @@ export function renderToolResultMessage(output: Output): React.ReactNode {
   }
 }
 export function renderToolUseErrorMessage(
-  result: ToolResultBlockParam['content'],
+  result: ToolResultBlockParam["content"],
   {
     verbose,
   }: {
     verbose: boolean;
   },
 ): React.ReactNode {
-  if (!verbose && typeof result === 'string') {
+  if (!verbose && typeof result === "string") {
     // FileReadTool throws from call() so errors lack <tool_use_error> wrapping —
     // check the raw string directly for the cwd note marker.
     if (result.includes(FILE_NOT_FOUND_CWD_NOTE)) {
@@ -157,7 +157,7 @@ export function renderToolUseErrorMessage(
         </MessageResponse>
       );
     }
-    if (extractTag(result, 'tool_use_error')) {
+    if (extractTag(result, "tool_use_error")) {
       return (
         <MessageResponse>
           <Text color="error">Error reading file</Text>
@@ -169,12 +169,12 @@ export function renderToolUseErrorMessage(
 }
 export function userFacingName(input: Partial<Input> | undefined): string {
   if (input?.file_path?.startsWith(getPlansDirectory())) {
-    return 'Reading Plan';
+    return "Reading Plan";
   }
   if (input?.file_path && getAgentOutputTaskId(input.file_path)) {
-    return 'Read agent output';
+    return "Read agent output";
   }
-  return 'Read';
+  return "Read";
 }
 export function getToolUseSummary(input: Partial<Input> | undefined): string | null {
   if (!input?.file_path) {

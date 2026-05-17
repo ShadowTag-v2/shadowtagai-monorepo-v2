@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
 
 type SuccessStepProps = {
   secretExists: boolean;
@@ -12,7 +12,7 @@ export function SuccessStep(t0) {
   const { secretExists, useExistingSecret, secretName, skipWorkflow: t1 } = t0;
   const skipWorkflow = t1 === undefined ? false : t1;
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box flexDirection="column" marginBottom={1}>
         <Text bold={true}>Install GitHub App</Text>
@@ -59,7 +59,7 @@ export function SuccessStep(t0) {
     t5 = $[9];
   }
   let t6;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Box marginTop={1}>
         <Text>Next steps:</Text>
@@ -110,7 +110,7 @@ export function SuccessStep(t0) {
     t8 = $[17];
   }
   let t9;
-  if ($[18] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[18] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = (
       <Box marginLeft={3}>
         <Text dimColor={true}>Press any key to exit</Text>

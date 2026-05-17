@@ -1,10 +1,10 @@
-import { feature } from 'bun:bundle';
-import { useEffect, useRef } from 'react';
-import { getTerminalFocusState, subscribeTerminalFocus } from '../ink/terminal-focus-state.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import { generateAwaySummary } from '../services/awaySummary.js';
-import type { Message } from '../types/message.js';
-import { createAwaySummaryMessage } from '../utils/messages.js';
+import { feature } from "bun:bundle";
+import { useEffect, useRef } from "react";
+import { getTerminalFocusState, subscribeTerminalFocus } from "../ink/terminal-focus-state.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import { generateAwaySummary } from "../services/awaySummary.js";
+import type { Message } from "../types/message.js";
+import { createAwaySummaryMessage } from "../utils/messages.js";
 
 const BLUR_DELAY_MS = 5 * 60_000;
 
@@ -13,8 +13,8 @@ type SetMessages = (updater: (prev: Message[]) => Message[]) => void;
 function hasSummarySinceLastUserTurn(messages: readonly Message[]): boolean {
   for (let i = messages.length - 1; i >= 0; i--) {
     const m = messages[i]!;
-    if (m.type === 'user' && !m.isMeta && !m.isCompactSummary) return false;
-    if (m.type === 'system' && m.subtype === 'away_summary') return true;
+    if (m.type === "user" && !m.isMeta && !m.isCompactSummary) return false;
+    if (m.type === "system" && m.subtype === "away_summary") return true;
   }
   return false;
 }
@@ -42,10 +42,10 @@ export function useAwaySummary(
   isLoadingRef.current = isLoading;
 
   // 3P default: false
-  const gbEnabled = getFeatureValue_CACHED_MAY_BE_STALE('tengu_sedge_lantern', false);
+  const gbEnabled = getFeatureValue_CACHED_MAY_BE_STALE("tengu_sedge_lantern", false);
 
   useEffect(() => {
-    if (!feature('AWAY_SUMMARY')) return;
+    if (!feature("AWAY_SUMMARY")) return;
     if (!gbEnabled) return;
 
     function clearTimer(): void {
@@ -82,10 +82,10 @@ export function useAwaySummary(
 
     function onFocusChange(): void {
       const state = getTerminalFocusState();
-      if (state === 'blurred') {
+      if (state === "blurred") {
         clearTimer();
         timerRef.current = setTimeout(onBlurTimerFire, BLUR_DELAY_MS);
-      } else if (state === 'focused') {
+      } else if (state === "focused") {
         clearTimer();
         abortInFlight();
         pendingRef.current = false;
@@ -110,7 +110,7 @@ export function useAwaySummary(
   useEffect(() => {
     if (isLoading) return;
     if (!pendingRef.current) return;
-    if (getTerminalFocusState() !== 'blurred') return;
+    if (getTerminalFocusState() !== "blurred") return;
     void generateRef.current?.();
   }, [isLoading]);
 }

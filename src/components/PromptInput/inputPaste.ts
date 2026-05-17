@@ -1,5 +1,5 @@
-import { getPastedTextRefNumLines } from 'src/history.js';
-import type { PastedContent } from 'src/utils/config.js';
+import { getPastedTextRefNumLines } from "src/history.js";
+import type { PastedContent } from "src/utils/config.js";
 
 const TRUNCATION_THRESHOLD = 10000; // Characters before we truncate
 const PREVIEW_LENGTH = 1000; // Characters to show at start and end
@@ -22,7 +22,7 @@ export function maybeTruncateMessageForInput(text: string, nextPasteId: number):
   if (text.length <= TRUNCATION_THRESHOLD) {
     return {
       truncatedText: text,
-      placeholderContent: '',
+      placeholderContent: "",
     };
   }
 
@@ -76,7 +76,7 @@ export function maybeTruncateInput(
       ...pastedContents,
       [nextPasteId]: {
         id: nextPasteId,
-        type: 'text',
+        type: "text",
         content: placeholderContent,
       },
     },

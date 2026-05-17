@@ -1,20 +1,20 @@
-import { GrowthBook } from '@growthbook/growthbook';
-import { isEqual, memoize } from 'lodash-es';
-import { getIsNonInteractiveSession, getSessionTrustAccepted } from '../../bootstrap/state.js';
-import { getGrowthBookClientKey } from '../../constants/keys.js';
+import { GrowthBook } from "@growthbook/growthbook";
+import { isEqual, memoize } from "lodash-es";
+import { getIsNonInteractiveSession, getSessionTrustAccepted } from "../../bootstrap/state.js";
+import { getGrowthBookClientKey } from "../../constants/keys.js";
 import {
   checkHasTrustDialogAccepted,
   getGlobalConfig,
   saveGlobalConfig,
-} from '../../utils/config.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { toError } from '../../utils/errors.js';
-import { getAuthHeaders } from '../../utils/http.js';
-import { logError } from '../../utils/log.js';
-import { createSignal } from '../../utils/signal.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import { type GitHubActionsMetadata, getUserForGrowthBook } from '../../utils/user.js';
-import { is1PEventLoggingEnabled, logGrowthBookExperimentTo1P } from './firstPartyEventLogger.js';
+} from "../../utils/config.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { toError } from "../../utils/errors.js";
+import { getAuthHeaders } from "../../utils/http.js";
+import { logError } from "../../utils/log.js";
+import { createSignal } from "../../utils/signal.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import { type GitHubActionsMetadata, getUserForGrowthBook } from "../../utils/user.js";
+import { is1PEventLoggingEnabled, logGrowthBookExperimentTo1P } from "./firstPartyEventLogger.js";
 
 /**
  * User attributes sent to GrowthBook for targeting.
@@ -24,7 +24,7 @@ export type GrowthBookUserAttributes = {
   id: string;
   sessionId: string;
   deviceID: string;
-  platform: 'win32' | 'darwin' | 'linux';
+  platform: "win32" | "darwin" | "linux";
   apiBaseUrlHost?: string;
   organizationUUID?: string;
   accountUUID?: string;
@@ -159,13 +159,13 @@ let envOverridesParsed = false;
 function getEnvOverrides(): Record<string, unknown> | null {
   if (!envOverridesParsed) {
     envOverridesParsed = true;
-    if (process.env.USER_TYPE === 'ant') {
+    if (process.env.USER_TYPE === "ant") {
       const raw = process.env.CLAUDE_INTERNAL_FC_OVERRIDES;
       if (raw) {
         try {
           envOverrides = JSON.parse(raw) as Record<string, unknown>;
           logForDebugging(
-            `GrowthBook: Using env var overrides for ${Object.keys(envOverrides!).length} features: ${Object.keys(envOverrides!).join(', ')}`,
+            `GrowthBook: Using env var overrides for ${Object.keys(envOverrides!).length} features: ${Object.keys(envOverrides!).join(", ")}`,
           );
         } catch {
           logError(new Error(`GrowthBook: Failed to parse CLAUDE_INTERNAL_FC_OVERRIDES: ${raw}`));
@@ -194,7 +194,7 @@ export function hasGrowthBookEnvOverride(feature: string): boolean {
  * until the next saveGlobalConfig() invalidates it.
  */
 function getConfigOverrides(): Record<string, unknown> | undefined {
-  if (process.env.USER_TYPE !== 'ant') return undefined;
+  if (process.env.USER_TYPE !== "ant") return undefined;
   try {
     return getGlobalConfig().growthBookOverrides;
   } catch {
@@ -228,7 +228,7 @@ export function getGrowthBookConfigOverrides(): Record<string, unknown> {
  * change the model until the next periodic refresh.
  */
 export function setGrowthBookConfigOverride(feature: string, value: unknown): void {
-  if (process.env.USER_TYPE !== 'ant') return;
+  if (process.env.USER_TYPE !== "ant") return;
   try {
     saveGlobalConfig((c) => {
       const current = c.growthBookOverrides ?? {};
@@ -253,7 +253,7 @@ export function setGrowthBookConfigOverride(feature: string, value: unknown): vo
 }
 
 export function clearGrowthBookConfigOverrides(): void {
-  if (process.env.USER_TYPE !== 'ant') return;
+  if (process.env.USER_TYPE !== "ant") return;
   try {
     saveGlobalConfig((c) => {
       if (!c.growthBookOverrides || Object.keys(c.growthBookOverrides).length === 0) {
@@ -323,7 +323,7 @@ async function processRemoteEvalPayload(gbClient: GrowthBook): Promise<boolean> 
   const transformedFeatures: Record<string, MalformedFeatureDefinition> = {};
   for (const [key, feature] of Object.entries(payload.features)) {
     const f = feature as MalformedFeatureDefinition;
-    if ('value' in f && !('defaultValue' in f)) {
+    if ("value" in f && !("defaultValue" in f)) {
       transformedFeatures[key] = {
         ...f,
         defaultValue: f.value,
@@ -333,7 +333,7 @@ async function processRemoteEvalPayload(gbClient: GrowthBook): Promise<boolean> 
     }
 
     // Store experiment data for later logging when feature is accessed
-    if (f.source === 'experiment' && f.experimentResult) {
+    if (f.source === "experiment" && f.experimentResult) {
       const expResult = f.experimentResult as {
         variationId?: number;
       };
@@ -362,7 +362,7 @@ async function processRemoteEvalPayload(gbClient: GrowthBook): Promise<boolean> 
     // lands in `value` (current API) or `defaultValue` (post-TODO API shape),
     // it's the authoritative value for this user. Guarding on both keeps
     // syncRemoteEvalToDisk correct across a partial or full API migration.
-    const v = 'value' in feature ? feature.value : feature.defaultValue;
+    const v = "value" in feature ? feature.value : feature.defaultValue;
     if (v !== undefined) {
       remoteEvalFeatureValues.set(key, v);
     }
@@ -418,7 +418,7 @@ export function getApiBaseUrlHost(): string | undefined {
   if (!baseUrl) return undefined;
   try {
     const host = new URL(baseUrl).host;
-    if (host === 'api.anthropic.com') return undefined;
+    if (host === "api.anthropic.com") return undefined;
     return host;
   } catch {
     return undefined;
@@ -434,7 +434,7 @@ function getUserAttributes(): GrowthBookUserAttributes {
   // For ants, always try to include email from OAuth config even if ANTHROPIC_API_KEY is set.
   // This ensures GrowthBook targeting by email works regardless of auth method.
   let email = user.email;
-  if (!email && process.env.USER_TYPE === 'ant') {
+  if (!email && process.env.USER_TYPE === "ant") {
     email = getGlobalConfig().oauthAccount?.emailAddress;
   }
 
@@ -472,15 +472,15 @@ const getGrowthBookClient = memoize(
 
     const attributes = getUserAttributes();
     const clientKey = getGrowthBookClientKey();
-    if (process.env.USER_TYPE === 'ant') {
+    if (process.env.USER_TYPE === "ant") {
       logForDebugging(
         `GrowthBook: Creating client with clientKey=${clientKey}, attributes: ${jsonStringify(attributes)}`,
       );
     }
     const baseUrl =
-      process.env.USER_TYPE === 'ant'
-        ? process.env.CLAUDE_CODE_GB_BASE_URL || 'https://api.anthropic.com/'
-        : 'https://api.anthropic.com/';
+      process.env.USER_TYPE === "ant"
+        ? process.env.CLAUDE_CODE_GB_BASE_URL || "https://api.anthropic.com/"
+        : "https://api.anthropic.com/";
 
     // Skip auth if trust hasn't been established yet
     // This prevents executing apiKeyHelper commands before the trust dialog
@@ -492,7 +492,7 @@ const getGrowthBookClient = memoize(
       checkHasTrustDialogAccepted() || getSessionTrustAccepted() || getIsNonInteractiveSession();
     const authHeaders = hasTrust
       ? getAuthHeaders()
-      : { headers: {}, error: 'trust not established' };
+      : { headers: {}, error: "trust not established" };
     const hasAuth = !authHeaders.error;
     clientCreatedWithAuth = hasAuth;
 
@@ -504,11 +504,11 @@ const getGrowthBookClient = memoize(
       attributes,
       remoteEval: true,
       // Re-fetch when user ID or org changes (org change = login to different org)
-      cacheKeyAttributes: ['id', 'organizationUUID'],
+      cacheKeyAttributes: ["id", "organizationUUID"],
       // Add auth headers if available
       ...(authHeaders.error ? {} : { apiHostRequestHeaders: authHeaders.headers }),
       // Debug logging for Ants
-      ...(process.env.USER_TYPE === 'ant'
+      ...(process.env.USER_TYPE === "ant"
         ? {
             log: (msg: string, ctx: Record<string, unknown>) => {
               logForDebugging(`GrowthBook: ${msg} ${jsonStringify(ctx)}`);
@@ -529,13 +529,13 @@ const getGrowthBookClient = memoize(
       .then(async (result) => {
         // Guard: if this client was replaced by a newer one, skip processing
         if (client !== thisClient) {
-          if (process.env.USER_TYPE === 'ant') {
-            logForDebugging('GrowthBook: Skipping init callback for replaced client');
+          if (process.env.USER_TYPE === "ant") {
+            logForDebugging("GrowthBook: Skipping init callback for replaced client");
           }
           return;
         }
 
-        if (process.env.USER_TYPE === 'ant') {
+        if (process.env.USER_TYPE === "ant") {
           logForDebugging(
             `GrowthBook initialized successfully, source: ${result.source}, success: ${result.success}`,
           );
@@ -561,18 +561,18 @@ const getGrowthBookClient = memoize(
         }
 
         // Log what features were loaded
-        if (process.env.USER_TYPE === 'ant') {
+        if (process.env.USER_TYPE === "ant") {
           const features = thisClient.getFeatures();
           if (features) {
             const featureKeys = Object.keys(features);
             logForDebugging(
-              `GrowthBook loaded ${featureKeys.length} features: ${featureKeys.slice(0, 10).join(', ')}${featureKeys.length > 10 ? '...' : ''}`,
+              `GrowthBook loaded ${featureKeys.length} features: ${featureKeys.slice(0, 10).join(", ")}${featureKeys.length > 10 ? "..." : ""}`,
             );
           }
         }
       })
       .catch((error) => {
-        if (process.env.USER_TYPE === 'ant') {
+        if (process.env.USER_TYPE === "ant") {
           logError(toError(error));
         }
       });
@@ -580,8 +580,8 @@ const getGrowthBookClient = memoize(
     // Register cleanup handlers for graceful shutdown (named refs so resetGrowthBook can remove them)
     currentBeforeExitHandler = () => client?.destroy();
     currentExitHandler = () => client?.destroy();
-    process.on('beforeExit', currentBeforeExitHandler);
-    process.on('exit', currentExitHandler);
+    process.on("beforeExit", currentBeforeExitHandler);
+    process.on("exit", currentExitHandler);
 
     return { client: thisClient, initialized };
   },
@@ -605,9 +605,9 @@ export const initializeGrowthBook = memoize(async (): Promise<GrowthBook | null>
     if (hasTrust) {
       const currentAuth = getAuthHeaders();
       if (!currentAuth.error) {
-        if (process.env.USER_TYPE === 'ant') {
+        if (process.env.USER_TYPE === "ant") {
           logForDebugging(
-            'GrowthBook: Auth became available after client creation, reinitializing',
+            "GrowthBook: Auth became available after client creation, reinitializing",
           );
         }
         // Use resetGrowthBook to properly destroy old client and stop periodic refresh
@@ -671,7 +671,7 @@ async function getFeatureValueInternal<T>(
     logExposureForFeature(feature);
   }
 
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     logForDebugging(`GrowthBook: getFeatureValue("${feature}") = ${jsonStringify(result)}`);
   }
   return result;
@@ -927,7 +927,7 @@ export function refreshGrowthBookAfterAuthChange(): void {
         reinitializingPromise = null;
       });
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       throw error;
     }
     logError(toError(error));
@@ -941,11 +941,11 @@ export function resetGrowthBook(): void {
   stopPeriodicGrowthBookRefresh();
   // Remove process handlers before destroying client to prevent accumulation
   if (currentBeforeExitHandler) {
-    process.off('beforeExit', currentBeforeExitHandler);
+    process.off("beforeExit", currentBeforeExitHandler);
     currentBeforeExitHandler = null;
   }
   if (currentExitHandler) {
-    process.off('exit', currentExitHandler);
+    process.off("exit", currentExitHandler);
     currentExitHandler = null;
   }
   client?.destroy();
@@ -964,7 +964,7 @@ export function resetGrowthBook(): void {
 
 // Periodic refresh interval (matches Statsig's 6-hour interval)
 const GROWTHBOOK_REFRESH_INTERVAL_MS =
-  process.env.USER_TYPE !== 'ant'
+  process.env.USER_TYPE !== "ant"
     ? 6 * 60 * 60 * 1000 // 6 hours
     : 20 * 60 * 1000; // 20 min (for ants)
 let refreshInterval: ReturnType<typeof setInterval> | null = null;
@@ -994,8 +994,8 @@ export async function refreshGrowthBookFeatures(): Promise<void> {
     // (e.g. refreshGrowthBookAfterAuthChange ran), skip processing the
     // stale payload. Mirrors the init-callback guard above.
     if (growthBookClient !== client) {
-      if (process.env.USER_TYPE === 'ant') {
-        logForDebugging('GrowthBook: Skipping refresh processing for replaced client');
+      if (process.env.USER_TYPE === "ant") {
+        logForDebugging("GrowthBook: Skipping refresh processing for replaced client");
       }
       return;
     }
@@ -1008,8 +1008,8 @@ export async function refreshGrowthBookFeatures(): Promise<void> {
     // processRemoteEvalPayload (the guard above only covers refreshFeatures).
     if (growthBookClient !== client) return;
 
-    if (process.env.USER_TYPE === 'ant') {
-      logForDebugging('GrowthBook: Light refresh completed');
+    if (process.env.USER_TYPE === "ant") {
+      logForDebugging("GrowthBook: Light refresh completed");
     }
 
     // Gate on hadFeatures: if the payload was empty/malformed,
@@ -1021,7 +1021,7 @@ export async function refreshGrowthBookFeatures(): Promise<void> {
       refreshed.emit();
     }
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       throw error;
     }
     logError(toError(error));
@@ -1056,7 +1056,7 @@ export function setupPeriodicGrowthBookRefresh(): void {
     beforeExitListener = () => {
       stopPeriodicGrowthBookRefresh();
     };
-    process.once('beforeExit', beforeExitListener);
+    process.once("beforeExit", beforeExitListener);
   }
 }
 
@@ -1069,7 +1069,7 @@ export function stopPeriodicGrowthBookRefresh(): void {
     refreshInterval = null;
   }
   if (beforeExitListener) {
-    process.removeListener('beforeExit', beforeExitListener);
+    process.removeListener("beforeExit", beforeExitListener);
     beforeExitListener = null;
   }
 }

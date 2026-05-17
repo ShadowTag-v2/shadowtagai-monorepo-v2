@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../../ink.js';
-import { formatDuration } from '../../utils/format.js';
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../../ink.js";
+import { formatDuration } from "../../utils/format.js";
 
 type Props = {
   elapsedTimeSeconds?: number;

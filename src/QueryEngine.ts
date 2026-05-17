@@ -1,8 +1,8 @@
-import { feature } from 'bun:bundle';
-import { randomUUID } from 'node:crypto';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import last from 'lodash-es/last.js';
-import { getSessionId, isSessionPersistenceDisabled } from 'src/bootstrap/state.js';
+import { feature } from "bun:bundle";
+import { randomUUID } from "node:crypto";
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import last from "lodash-es/last.js";
+import { getSessionId, isSessionPersistenceDisabled } from "src/bootstrap/state.js";
 import type {
   PermissionMode,
   SDKCompactBoundaryMessage,
@@ -10,91 +10,91 @@ import type {
   SDKPermissionDenial,
   SDKStatus,
   SDKUserMessageReplay,
-} from 'src/entrypoints/agentSdkTypes.js';
-import { accumulateUsage, updateUsage } from 'src/services/api/claude.js';
-import type { NonNullableUsage } from 'src/services/api/logging.js';
-import { EMPTY_USAGE } from 'src/services/api/logging.js';
-import stripAnsi from 'strip-ansi';
-import type { Command } from './commands.js';
-import { getSlashCommandToolSkills } from './commands.js';
-import { LOCAL_COMMAND_STDERR_TAG, LOCAL_COMMAND_STDOUT_TAG } from './constants/xml.js';
-import { getModelUsage, getTotalAPIDuration, getTotalCost } from './cost-tracker.js';
-import type { CanUseToolFn } from './hooks/useCanUseTool.js';
-import { loadMemoryPrompt } from './memdir/memdir.js';
-import { hasAutoMemPathOverride } from './memdir/paths.js';
-import { query } from './query.js';
-import { categorizeRetryableAPIError } from './services/api/errors.js';
-import type { MCPServerConnection } from './services/mcp/types.js';
-import type { AppState } from './state/AppState.js';
-import { type Tools, type ToolUseContext, toolMatchesName } from './Tool.js';
-import type { AgentDefinition } from './tools/AgentTool/loadAgentsDir.js';
-import { SYNTHETIC_OUTPUT_TOOL_NAME } from './tools/SyntheticOutputTool/SyntheticOutputTool.js';
-import type { Message } from './types/message.js';
-import type { OrphanedPermission } from './types/textInputTypes.js';
-import { createAbortController } from './utils/abortController.js';
-import type { AttributionState } from './utils/commitAttribution.js';
-import { getGlobalConfig } from './utils/config.js';
-import { getCwd } from './utils/cwd.js';
-import { isBareMode, isEnvTruthy } from './utils/envUtils.js';
-import { getFastModeState } from './utils/fastMode.js';
+} from "src/entrypoints/agentSdkTypes.js";
+import { accumulateUsage, updateUsage } from "src/services/api/claude.js";
+import type { NonNullableUsage } from "src/services/api/logging.js";
+import { EMPTY_USAGE } from "src/services/api/logging.js";
+import stripAnsi from "strip-ansi";
+import type { Command } from "./commands.js";
+import { getSlashCommandToolSkills } from "./commands.js";
+import { LOCAL_COMMAND_STDERR_TAG, LOCAL_COMMAND_STDOUT_TAG } from "./constants/xml.js";
+import { getModelUsage, getTotalAPIDuration, getTotalCost } from "./cost-tracker.js";
+import type { CanUseToolFn } from "./hooks/useCanUseTool.js";
+import { loadMemoryPrompt } from "./memdir/memdir.js";
+import { hasAutoMemPathOverride } from "./memdir/paths.js";
+import { query } from "./query.js";
+import { categorizeRetryableAPIError } from "./services/api/errors.js";
+import type { MCPServerConnection } from "./services/mcp/types.js";
+import type { AppState } from "./state/AppState.js";
+import { type Tools, type ToolUseContext, toolMatchesName } from "./Tool.js";
+import type { AgentDefinition } from "./tools/AgentTool/loadAgentsDir.js";
+import { SYNTHETIC_OUTPUT_TOOL_NAME } from "./tools/SyntheticOutputTool/SyntheticOutputTool.js";
+import type { Message } from "./types/message.js";
+import type { OrphanedPermission } from "./types/textInputTypes.js";
+import { createAbortController } from "./utils/abortController.js";
+import type { AttributionState } from "./utils/commitAttribution.js";
+import { getGlobalConfig } from "./utils/config.js";
+import { getCwd } from "./utils/cwd.js";
+import { isBareMode, isEnvTruthy } from "./utils/envUtils.js";
+import { getFastModeState } from "./utils/fastMode.js";
 import {
   type FileHistoryState,
   fileHistoryEnabled,
   fileHistoryMakeSnapshot,
-} from './utils/fileHistory.js';
-import { cloneFileStateCache, type FileStateCache } from './utils/fileStateCache.js';
-import { headlessProfilerCheckpoint } from './utils/headlessProfiler.js';
-import { registerStructuredOutputEnforcement } from './utils/hooks/hookHelpers.js';
-import { getInMemoryErrors } from './utils/log.js';
-import { countToolCalls, SYNTHETIC_MESSAGES } from './utils/messages.js';
-import { getMainLoopModel, parseUserSpecifiedModel } from './utils/model/model.js';
-import { loadAllPluginsCacheOnly } from './utils/plugins/pluginLoader.js';
+} from "./utils/fileHistory.js";
+import { cloneFileStateCache, type FileStateCache } from "./utils/fileStateCache.js";
+import { headlessProfilerCheckpoint } from "./utils/headlessProfiler.js";
+import { registerStructuredOutputEnforcement } from "./utils/hooks/hookHelpers.js";
+import { getInMemoryErrors } from "./utils/log.js";
+import { countToolCalls, SYNTHETIC_MESSAGES } from "./utils/messages.js";
+import { getMainLoopModel, parseUserSpecifiedModel } from "./utils/model/model.js";
+import { loadAllPluginsCacheOnly } from "./utils/plugins/pluginLoader.js";
 import {
   type ProcessUserInputContext,
   processUserInput,
-} from './utils/processUserInput/processUserInput.js';
-import { fetchSystemPromptParts } from './utils/queryContext.js';
-import { setCwd } from './utils/Shell.js';
-import { flushSessionStorage, recordTranscript } from './utils/sessionStorage.js';
-import { asSystemPrompt } from './utils/systemPromptType.js';
-import { resolveThemeSetting } from './utils/systemTheme.js';
-import { shouldEnableThinkingByDefault, type ThinkingConfig } from './utils/thinking.js';
+} from "./utils/processUserInput/processUserInput.js";
+import { fetchSystemPromptParts } from "./utils/queryContext.js";
+import { setCwd } from "./utils/Shell.js";
+import { flushSessionStorage, recordTranscript } from "./utils/sessionStorage.js";
+import { asSystemPrompt } from "./utils/systemPromptType.js";
+import { resolveThemeSetting } from "./utils/systemTheme.js";
+import { shouldEnableThinkingByDefault, type ThinkingConfig } from "./utils/thinking.js";
 
 // Lazy: MessageSelector.tsx pulls React/ink; only needed for message filtering at query time
 /* eslint-disable @typescript-eslint/no-require-imports */
-const messageSelector = (): typeof import('src/components/MessageSelector.js') =>
-  require('src/components/MessageSelector.js');
+const messageSelector = (): typeof import("src/components/MessageSelector.js") =>
+  require("src/components/MessageSelector.js");
 
 import {
   localCommandOutputToSDKAssistantMessage,
   toSDKCompactMetadata,
-} from './utils/messages/mappers.js';
-import { buildSystemInitMessage, sdkCompatToolName } from './utils/messages/systemInit.js';
-import { getScratchpadDir, isScratchpadEnabled } from './utils/permissions/filesystem.js';
+} from "./utils/messages/mappers.js";
+import { buildSystemInitMessage, sdkCompatToolName } from "./utils/messages/systemInit.js";
+import { getScratchpadDir, isScratchpadEnabled } from "./utils/permissions/filesystem.js";
 /* eslint-enable @typescript-eslint/no-require-imports */
 import {
   handleOrphanedPermission,
   isResultSuccessful,
   normalizeMessage,
-} from './utils/queryHelpers.js';
+} from "./utils/queryHelpers.js";
 
 // Dead code elimination: conditional import for coordinator mode
 /* eslint-disable @typescript-eslint/no-require-imports */
 const getCoordinatorUserContext: (
   mcpClients: ReadonlyArray<{ name: string }>,
   scratchpadDir?: string,
-) => { [k: string]: string } = feature('COORDINATOR_MODE')
-  ? require('./coordinator/coordinatorMode.js').getCoordinatorUserContext
+) => { [k: string]: string } = feature("COORDINATOR_MODE")
+  ? require("./coordinator/coordinatorMode.js").getCoordinatorUserContext
   : () => ({});
 /* eslint-enable @typescript-eslint/no-require-imports */
 
 // Dead code elimination: conditional import for snip compaction
 /* eslint-disable @typescript-eslint/no-require-imports */
-const snipModule = feature('HISTORY_SNIP')
-  ? (require('./services/compact/snipCompact.js') as typeof import('./services/compact/snipCompact.js'))
+const snipModule = feature("HISTORY_SNIP")
+  ? (require("./services/compact/snipCompact.js") as typeof import("./services/compact/snipCompact.js"))
   : null;
-const snipProjection = feature('HISTORY_SNIP')
-  ? (require('./services/compact/snipProjection.js') as typeof import('./services/compact/snipProjection.js'))
+const snipProjection = feature("HISTORY_SNIP")
+  ? (require("./services/compact/snipProjection.js") as typeof import("./services/compact/snipProjection.js"))
   : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
 
@@ -121,7 +121,7 @@ export type QueryEngineConfig = {
   verbose?: boolean;
   replayUserMessages?: boolean;
   /** Handler for URL elicitations triggered by MCP tool -32042 errors. */
-  handleElicitation?: ToolUseContext['handleElicitation'];
+  handleElicitation?: ToolUseContext["handleElicitation"];
   includePartialMessages?: boolean;
   setSDKStatus?: (status: SDKStatus) => void;
   abortController?: AbortController;
@@ -230,7 +230,7 @@ export class QueryEngine {
       );
 
       // Track denials for SDK reporting
-      if (result.behavior !== 'allow') {
+      if (result.behavior !== "allow") {
         this.permissionDenials.push({
           tool_name: sdkCompatToolName(tool.name),
           tool_use_id: toolUseID,
@@ -249,12 +249,12 @@ export class QueryEngine {
     const initialThinkingConfig: ThinkingConfig = thinkingConfig
       ? thinkingConfig
       : shouldEnableThinkingByDefault() !== false
-        ? { type: 'adaptive' }
-        : { type: 'disabled' };
+        ? { type: "adaptive" }
+        : { type: "disabled" };
 
-    headlessProfilerCheckpoint('before_getSystemPrompt');
+    headlessProfilerCheckpoint("before_getSystemPrompt");
     // Narrow once so TS tracks the type through the conditionals below.
-    const customPrompt = typeof customSystemPrompt === 'string' ? customSystemPrompt : undefined;
+    const customPrompt = typeof customSystemPrompt === "string" ? customSystemPrompt : undefined;
     const {
       defaultSystemPrompt,
       userContext: baseUserContext,
@@ -268,7 +268,7 @@ export class QueryEngine {
       mcpClients,
       customSystemPrompt: customPrompt,
     });
-    headlessProfilerCheckpoint('after_getSystemPrompt');
+    headlessProfilerCheckpoint("after_getSystemPrompt");
     const userContext = {
       ...baseUserContext,
       ...getCoordinatorUserContext(
@@ -379,7 +379,7 @@ export class QueryEngine {
       resultText,
     } = await processUserInput({
       input: prompt,
-      mode: 'prompt',
+      mode: "prompt",
       setToolJSX: () => {},
       context: {
         ...processUserInputContext,
@@ -388,7 +388,7 @@ export class QueryEngine {
       messages: this.mutableMessages,
       uuid: options?.uuid,
       isMeta: options?.isMeta,
-      querySource: 'sdk',
+      querySource: "sdk",
     });
 
     // Push new messages, including user input and any attachments
@@ -429,11 +429,11 @@ export class QueryEngine {
     // Filter messages that should be acknowledged after transcript
     const replayableMessages = messagesFromUserInput.filter(
       (msg) =>
-        (msg.type === 'user' &&
+        (msg.type === "user" &&
           !msg.isMeta && // Skip synthetic caveat messages
           !msg.toolUseResult && // Skip tool results (they'll be acked from query)
           messageSelector().selectableUserMessagesFilter(msg)) || // Skip non-user-authored messages (task notifications, etc.)
-        (msg.type === 'system' && msg.subtype === 'compact_boundary'), // Always ack compact boundaries
+        (msg.type === "system" && msg.subtype === "compact_boundary"), // Always ack compact boundaries
     );
     const messagesToAck = replayUserMessages ? replayableMessages : [];
 
@@ -490,7 +490,7 @@ export class QueryEngine {
       setSDKStatus,
     };
 
-    headlessProfilerCheckpoint('before_skills_plugins');
+    headlessProfilerCheckpoint("before_skills_plugins");
     // Cache-only: headless/SDK/CCR startup must not block on network for
     // ref-tracked plugins. CCR populates the cache via CLAUDE_CODE_SYNC_PLUGIN_INSTALL
     // (headlessPluginInstall) or CLAUDE_CODE_PLUGIN_SEED_DIR before this runs;
@@ -499,7 +499,7 @@ export class QueryEngine {
       getSlashCommandToolSkills(getCwd()),
       loadAllPluginsCacheOnly(),
     ]);
-    headlessProfilerCheckpoint('after_skills_plugins');
+    headlessProfilerCheckpoint("after_skills_plugins");
 
     yield buildSystemInitMessage({
       tools,
@@ -514,7 +514,7 @@ export class QueryEngine {
     });
 
     // Record when system message is yielded for headless latency tracking
-    headlessProfilerCheckpoint('system_message_yielded');
+    headlessProfilerCheckpoint("system_message_yielded");
 
     if (!shouldQuery) {
       // Return the results of local slash commands.
@@ -522,14 +522,14 @@ export class QueryEngine {
       // because selectableUserMessagesFilter excludes local-command-stdout tags.
       for (const msg of messagesFromUserInput) {
         if (
-          msg.type === 'user' &&
-          typeof msg.message.content === 'string' &&
+          msg.type === "user" &&
+          typeof msg.message.content === "string" &&
           (msg.message.content.includes(`<${LOCAL_COMMAND_STDOUT_TAG}>`) ||
             msg.message.content.includes(`<${LOCAL_COMMAND_STDERR_TAG}>`) ||
             msg.isCompactSummary)
         ) {
           yield {
-            type: 'user',
+            type: "user",
             message: {
               ...msg.message,
               content: stripAnsi(msg.message.content),
@@ -548,19 +548,19 @@ export class QueryEngine {
         // Emitted as assistant (not the dedicated SDKLocalCommandOutputMessage
         // system subtype) so mobile clients + session-ingress can parse it.
         if (
-          msg.type === 'system' &&
-          msg.subtype === 'local_command' &&
-          typeof msg.content === 'string' &&
+          msg.type === "system" &&
+          msg.subtype === "local_command" &&
+          typeof msg.content === "string" &&
           (msg.content.includes(`<${LOCAL_COMMAND_STDOUT_TAG}>`) ||
             msg.content.includes(`<${LOCAL_COMMAND_STDERR_TAG}>`))
         ) {
           yield localCommandOutputToSDKAssistantMessage(msg.content, msg.uuid);
         }
 
-        if (msg.type === 'system' && msg.subtype === 'compact_boundary') {
+        if (msg.type === "system" && msg.subtype === "compact_boundary") {
           yield {
-            type: 'system',
-            subtype: 'compact_boundary' as const,
+            type: "system",
+            subtype: "compact_boundary" as const,
             session_id: getSessionId(),
             uuid: msg.uuid,
             compact_metadata: toSDKCompactMetadata(msg.compactMetadata),
@@ -579,13 +579,13 @@ export class QueryEngine {
       }
 
       yield {
-        type: 'result',
-        subtype: 'success',
+        type: "result",
+        subtype: "success",
         is_error: false,
         duration_ms: Date.now() - startTime,
         duration_api_ms: getTotalAPIDuration(),
         num_turns: messages.length - 1,
-        result: resultText ?? '',
+        result: resultText ?? "",
         stop_reason: null,
         session_id: getSessionId(),
         total_cost_usd: getTotalCost(),
@@ -637,15 +637,15 @@ export class QueryEngine {
       canUseTool: wrappedCanUseTool,
       toolUseContext: processUserInputContext,
       fallbackModel,
-      querySource: 'sdk',
+      querySource: "sdk",
       maxTurns,
       taskBudget,
     })) {
       // Record assistant, user, and compact boundary messages
       if (
-        message.type === 'assistant' ||
-        message.type === 'user' ||
-        (message.type === 'system' && message.subtype === 'compact_boundary')
+        message.type === "assistant" ||
+        message.type === "user" ||
+        (message.type === "system" && message.subtype === "compact_boundary")
       ) {
         // Before writing a compact boundary, flush any in-memory-only
         // messages up through the preservedSegment tail. Attachments and
@@ -655,7 +655,7 @@ export class QueryEngine {
         // between turns), tailUuid points to a never-written message →
         // applyPreservedSegmentRelinks fails its tail→head walk → returns
         // without pruning → resume loads full pre-compact history.
-        if (persistSession && message.type === 'system' && message.subtype === 'compact_boundary') {
+        if (persistSession && message.type === "system" && message.subtype === "compact_boundary") {
           const tailUuid = message.compactMetadata?.preservedSegment?.tailUuid;
           if (tailUuid) {
             const tailIdx = this.mutableMessages.findLastIndex((m) => m.uuid === tailUuid);
@@ -675,7 +675,7 @@ export class QueryEngine {
           // elapses first. Interactive CC doesn't hit this because
           // useLogMessages.ts fire-and-forgets. enqueueWrite is
           // order-preserving so fire-and-forget here is safe.
-          if (message.type === 'assistant') {
+          if (message.type === "assistant") {
             void recordTranscript(messages);
           } else {
             await recordTranscript(messages);
@@ -686,9 +686,9 @@ export class QueryEngine {
         if (!hasAcknowledgedInitialMessages && messagesToAck.length > 0) {
           hasAcknowledgedInitialMessages = true;
           for (const msgToAck of messagesToAck) {
-            if (msgToAck.type === 'user') {
+            if (msgToAck.type === "user") {
               yield {
-                type: 'user',
+                type: "user",
                 message: msgToAck.message,
                 session_id: getSessionId(),
                 parent_tool_use_id: null,
@@ -701,15 +701,15 @@ export class QueryEngine {
         }
       }
 
-      if (message.type === 'user') {
+      if (message.type === "user") {
         turnCount++;
       }
 
       switch (message.type) {
-        case 'tombstone':
+        case "tombstone":
           // Tombstone messages are control signals for removing messages, skip them
           break;
-        case 'assistant':
+        case "assistant":
           // Capture stop_reason if already set (synthetic messages). For
           // streamed responses, this is null at content_block_stop time;
           // the real value arrives via message_delta (handled below).
@@ -719,7 +719,7 @@ export class QueryEngine {
           this.mutableMessages.push(message);
           yield* normalizeMessage(message);
           break;
-        case 'progress':
+        case "progress":
           this.mutableMessages.push(message);
           // Record inline so the dedup loop in the next ask() call sees it
           // as already-recorded. Without this, deferred progress interleaves
@@ -732,17 +732,17 @@ export class QueryEngine {
           }
           yield* normalizeMessage(message);
           break;
-        case 'user':
+        case "user":
           this.mutableMessages.push(message);
           yield* normalizeMessage(message);
           break;
-        case 'stream_event':
-          if (message.event.type === 'message_start') {
+        case "stream_event":
+          if (message.event.type === "message_start") {
             // Reset current message usage for new message
             currentMessageUsage = EMPTY_USAGE;
             currentMessageUsage = updateUsage(currentMessageUsage, message.event.message.usage);
           }
-          if (message.event.type === 'message_delta') {
+          if (message.event.type === "message_delta") {
             currentMessageUsage = updateUsage(currentMessageUsage, message.event.usage);
             // Capture stop_reason from message_delta. The assistant message
             // is yielded at content_block_stop with stop_reason=null; the
@@ -752,14 +752,14 @@ export class QueryEngine {
               lastStopReason = message.event.delta.stop_reason;
             }
           }
-          if (message.event.type === 'message_stop') {
+          if (message.event.type === "message_stop") {
             // Accumulate current message usage into total
             this.totalUsage = accumulateUsage(this.totalUsage, currentMessageUsage);
           }
 
           if (includePartialMessages) {
             yield {
-              type: 'stream_event' as const,
+              type: "stream_event" as const,
               event: message.event,
               session_id: getSessionId(),
               parent_tool_use_id: null,
@@ -768,7 +768,7 @@ export class QueryEngine {
           }
 
           break;
-        case 'attachment':
+        case "attachment":
           this.mutableMessages.push(message);
           // Record inline (same reason as progress above).
           if (persistSession) {
@@ -777,11 +777,11 @@ export class QueryEngine {
           }
 
           // Extract structured output from StructuredOutput tool calls
-          if (message.attachment.type === 'structured_output') {
+          if (message.attachment.type === "structured_output") {
             structuredOutputFromTool = message.attachment.data;
           }
           // Handle max turns reached signal from query.ts
-          else if (message.attachment.type === 'max_turns_reached') {
+          else if (message.attachment.type === "max_turns_reached") {
             if (persistSession) {
               if (
                 isEnvTruthy(process.env.CLAUDE_CODE_EAGER_FLUSH) ||
@@ -791,8 +791,8 @@ export class QueryEngine {
               }
             }
             yield {
-              type: 'result',
-              subtype: 'error_max_turns',
+              type: "result",
+              subtype: "error_max_turns",
               duration_ms: Date.now() - startTime,
               duration_api_ms: getTotalAPIDuration(),
               is_error: true,
@@ -810,11 +810,11 @@ export class QueryEngine {
             return;
           }
           // Yield queued_command attachments as SDK user message replays
-          else if (replayUserMessages && message.attachment.type === 'queued_command') {
+          else if (replayUserMessages && message.attachment.type === "queued_command") {
             yield {
-              type: 'user',
+              type: "user",
               message: {
-                role: 'user' as const,
+                role: "user" as const,
                 content: message.attachment.prompt,
               },
               session_id: getSessionId(),
@@ -825,10 +825,10 @@ export class QueryEngine {
             } as SDKUserMessageReplay;
           }
           break;
-        case 'stream_request_start':
+        case "stream_request_start":
           // Don't yield stream request start messages
           break;
-        case 'system': {
+        case "system": {
           // Snip boundary: replay on our store to remove zombie messages and
           // stale markers. The yielded boundary is a signal, not data to push —
           // the replay produces its own equivalent boundary. Without this,
@@ -846,7 +846,7 @@ export class QueryEngine {
           }
           this.mutableMessages.push(message);
           // Yield compact boundary messages to SDK
-          if (message.subtype === 'compact_boundary' && message.compactMetadata) {
+          if (message.subtype === "compact_boundary" && message.compactMetadata) {
             // Release pre-compaction messages for GC. The boundary was just
             // pushed so it's the last element. query.ts already uses
             // getMessagesAfterCompactBoundary() internally, so only
@@ -861,17 +861,17 @@ export class QueryEngine {
             }
 
             yield {
-              type: 'system',
-              subtype: 'compact_boundary' as const,
+              type: "system",
+              subtype: "compact_boundary" as const,
               session_id: getSessionId(),
               uuid: message.uuid,
               compact_metadata: toSDKCompactMetadata(message.compactMetadata),
             };
           }
-          if (message.subtype === 'api_error') {
+          if (message.subtype === "api_error") {
             yield {
-              type: 'system',
-              subtype: 'api_retry' as const,
+              type: "system",
+              subtype: "api_retry" as const,
               attempt: message.retryAttempt,
               max_retries: message.maxRetries,
               retry_delay_ms: message.retryInMs,
@@ -884,10 +884,10 @@ export class QueryEngine {
           // Don't yield other system messages in headless mode
           break;
         }
-        case 'tool_use_summary':
+        case "tool_use_summary":
           // Yield tool use summary messages to SDK
           yield {
-            type: 'tool_use_summary' as const,
+            type: "tool_use_summary" as const,
             summary: message.summary,
             preceding_tool_use_ids: message.precedingToolUseIds,
             session_id: getSessionId(),
@@ -907,8 +907,8 @@ export class QueryEngine {
           }
         }
         yield {
-          type: 'result',
-          subtype: 'error_max_budget_usd',
+          type: "result",
+          subtype: "error_max_budget_usd",
           duration_ms: Date.now() - startTime,
           duration_api_ms: getTotalAPIDuration(),
           is_error: true,
@@ -927,10 +927,10 @@ export class QueryEngine {
       }
 
       // Check if structured output retry limit exceeded (only on user messages)
-      if (message.type === 'user' && jsonSchema) {
+      if (message.type === "user" && jsonSchema) {
         const currentCalls = countToolCalls(this.mutableMessages, SYNTHETIC_OUTPUT_TOOL_NAME);
         const callsThisQuery = currentCalls - initialStructuredOutputCalls;
-        const maxRetries = parseInt(process.env.MAX_STRUCTURED_OUTPUT_RETRIES || '5', 10);
+        const maxRetries = parseInt(process.env.MAX_STRUCTURED_OUTPUT_RETRIES || "5", 10);
         if (callsThisQuery >= maxRetries) {
           if (persistSession) {
             if (
@@ -941,8 +941,8 @@ export class QueryEngine {
             }
           }
           yield {
-            type: 'result',
-            subtype: 'error_max_structured_output_retries',
+            type: "result",
+            subtype: "error_max_structured_output_retries",
             duration_ms: Date.now() - startTime,
             duration_api_ms: getTotalAPIDuration(),
             is_error: true,
@@ -969,13 +969,13 @@ export class QueryEngine {
     // return '' and -p mode emit a blank line. Allowlist to assistant|user:
     // isResultSuccessful handles both (user with all tool_result blocks is a
     // valid successful terminal state).
-    const result = messages.findLast((m) => m.type === 'assistant' || m.type === 'user');
+    const result = messages.findLast((m) => m.type === "assistant" || m.type === "user");
     // Capture for the error_during_execution diagnostic — isResultSuccessful
     // is a type predicate (message is Message), so inside the false branch
     // `result` narrows to never and these accesses don't typecheck.
-    const edeResultType = result?.type ?? 'undefined';
+    const edeResultType = result?.type ?? "undefined";
     const edeLastContentType =
-      result?.type === 'assistant' ? (last(result.message.content)?.type ?? 'none') : 'n/a';
+      result?.type === "assistant" ? (last(result.message.content)?.type ?? "none") : "n/a";
 
     // Flush buffered transcript writes before yielding result.
     // The desktop app kills the CLI process immediately after receiving the
@@ -991,8 +991,8 @@ export class QueryEngine {
 
     if (!isResultSuccessful(result, lastStopReason)) {
       yield {
-        type: 'result',
-        subtype: 'error_during_execution',
+        type: "result",
+        subtype: "error_during_execution",
         duration_ms: Date.now() - startTime,
         duration_api_ms: getTotalAPIDuration(),
         is_error: true,
@@ -1023,20 +1023,20 @@ export class QueryEngine {
     }
 
     // Extract the text result based on message type
-    let textResult = '';
+    let textResult = "";
     let isApiError = false;
 
-    if (result.type === 'assistant') {
+    if (result.type === "assistant") {
       const lastContent = last(result.message.content);
-      if (lastContent?.type === 'text' && !SYNTHETIC_MESSAGES.has(lastContent.text)) {
+      if (lastContent?.type === "text" && !SYNTHETIC_MESSAGES.has(lastContent.text)) {
         textResult = lastContent.text;
       }
       isApiError = Boolean(result.isApiErrorMessage);
     }
 
     yield {
-      type: 'result',
-      subtype: 'success',
+      type: "result",
+      subtype: "success",
       is_error: isApiError,
       duration_ms: Date.now() - startTime,
       duration_api_ms: getTotalAPIDuration(),
@@ -1140,7 +1140,7 @@ export async function* ask({
   abortController?: AbortController;
   replayUserMessages?: boolean;
   includePartialMessages?: boolean;
-  handleElicitation?: ToolUseContext['handleElicitation'];
+  handleElicitation?: ToolUseContext["handleElicitation"];
   agents?: AgentDefinition[];
   setSDKStatus?: (status: SDKStatus) => void;
   orphanedPermission?: OrphanedPermission;
@@ -1172,7 +1172,7 @@ export async function* ask({
     setSDKStatus,
     abortController,
     orphanedPermission,
-    ...(feature('HISTORY_SNIP')
+    ...(feature("HISTORY_SNIP")
       ? {
           snipReplay: (yielded: Message, store: Message[]) => {
             if (!snipProjection?.isSnipBoundaryMessage(yielded)) return undefined;

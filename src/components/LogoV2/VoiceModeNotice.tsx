@@ -1,19 +1,19 @@
-import { feature } from 'bun:bundle';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { getInitialSettings } from '../../utils/settings/settings.js';
-import { isVoiceModeEnabled } from '../../voice/voiceModeEnabled.js';
-import { AnimatedAsterisk } from './AnimatedAsterisk.js';
-import { shouldShowOpus1mMergeNotice } from './Opus1mMergeNotice.js';
+import { feature } from "bun:bundle";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { getInitialSettings } from "../../utils/settings/settings.js";
+import { isVoiceModeEnabled } from "../../voice/voiceModeEnabled.js";
+import { AnimatedAsterisk } from "./AnimatedAsterisk.js";
+import { shouldShowOpus1mMergeNotice } from "./Opus1mMergeNotice.js";
 
 const MAX_SHOW_COUNT = 3;
 export function VoiceModeNotice() {
   const $ = _c(1);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
-    t0 = feature('VOICE_MODE') ? <VoiceModeNoticeInner /> : null;
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+    t0 = feature("VOICE_MODE") ? <VoiceModeNoticeInner /> : null;
     $[0] = t0;
   } else {
     t0 = $[0];
@@ -54,7 +54,7 @@ function VoiceModeNoticeInner() {
     return null;
   }
   let t2;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box paddingLeft={2}>
         <AnimatedAsterisk />

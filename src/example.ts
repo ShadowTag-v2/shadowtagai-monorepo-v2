@@ -8,25 +8,25 @@
 // ─── Pure Math Functions ───
 
 export function add(a: number, b: number): number {
-  if (typeof a !== 'number' || typeof b !== 'number') {
-    throw new Error('Both arguments must be numbers');
+  if (typeof a !== "number" || typeof b !== "number") {
+    throw new Error("Both arguments must be numbers");
   }
   return a + b;
 }
 
 export function multiply(a: number, b: number): number {
-  if (typeof a !== 'number' || typeof b !== 'number') {
-    throw new Error('Both arguments must be numbers');
+  if (typeof a !== "number" || typeof b !== "number") {
+    throw new Error("Both arguments must be numbers");
   }
   return a * b;
 }
 
 export function divide(a: number, b: number): number {
-  if (typeof a !== 'number' || typeof b !== 'number') {
-    throw new Error('Both arguments must be numbers');
+  if (typeof a !== "number" || typeof b !== "number") {
+    throw new Error("Both arguments must be numbers");
   }
   if (b === 0) {
-    throw new Error('Cannot divide by zero');
+    throw new Error("Cannot divide by zero");
   }
   return a / b;
 }
@@ -40,7 +40,7 @@ export interface User {
 
 export async function fetchUser(id: string): Promise<User> {
   if (!id) {
-    throw new Error('User ID is required');
+    throw new Error("User ID is required");
   }
   // Simulate async fetch with minimal delay
   return new Promise((resolve) => {
@@ -79,7 +79,7 @@ export class Calculator {
 // ─── Validation Functions ───
 
 export function isValidEmail(email: unknown): boolean {
-  if (typeof email !== 'string' || !email) {
+  if (typeof email !== "string" || !email) {
     return false;
   }
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -87,16 +87,16 @@ export function isValidEmail(email: unknown): boolean {
 
 // ─── Date Functions ───
 
-export function formatDate(date: Date, format: 'short' | 'long' = 'short'): string {
+export function formatDate(date: Date, format: "short" | "long" = "short"): string {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
-    throw new Error('Invalid date');
+    throw new Error("Invalid date");
   }
-  if (format === 'long') {
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+  if (format === "long") {
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   }
-  return date.toLocaleDateString('en-US');
+  return date.toLocaleDateString("en-US");
 }

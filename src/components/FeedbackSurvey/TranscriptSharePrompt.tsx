@@ -1,19 +1,19 @@
-import { c as _c } from 'react/compiler-runtime';
-import { BLACK_CIRCLE } from '../../constants/figures.js';
-import { Box, Text } from '../../ink.js';
-import { useDebouncedDigitInput } from './useDebouncedDigitInput.js';
-export type TranscriptShareResponse = 'yes' | 'no' | 'dont_ask_again';
+import { c as _c } from "react/compiler-runtime";
+import { BLACK_CIRCLE } from "../../constants/figures.js";
+import { Box, Text } from "../../ink.js";
+import { useDebouncedDigitInput } from "./useDebouncedDigitInput.js";
+export type TranscriptShareResponse = "yes" | "no" | "dont_ask_again";
 type Props = {
   onSelect: (option: TranscriptShareResponse) => void;
   inputValue: string;
   setInputValue: (value: string) => void;
 };
-const RESPONSE_INPUTS = ['1', '2', '3'] as const;
+const RESPONSE_INPUTS = ["1", "2", "3"] as const;
 type ResponseInput = (typeof RESPONSE_INPUTS)[number];
 const inputToResponse: Record<ResponseInput, TranscriptShareResponse> = {
-  '1': 'yes',
-  '2': 'no',
-  '3': 'dont_ask_again',
+  "1": "yes",
+  "2": "no",
+  "3": "dont_ask_again",
 } as const;
 const isValidResponseInput = (input: string): input is ResponseInput =>
   (RESPONSE_INPUTS as readonly string[]).includes(input);
@@ -45,7 +45,7 @@ export function TranscriptSharePrompt(t0) {
   }
   useDebouncedDigitInput(t2);
   let t3;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Box>
         <Text color="ansi:cyan">{BLACK_CIRCLE} </Text>
@@ -59,7 +59,7 @@ export function TranscriptSharePrompt(t0) {
     t3 = $[6];
   }
   let t4;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <Box marginLeft={2}>
         <Text dimColor={true}>
@@ -72,7 +72,7 @@ export function TranscriptSharePrompt(t0) {
     t4 = $[7];
   }
   let t5;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Box width={10}>
         <Text>
@@ -85,7 +85,7 @@ export function TranscriptSharePrompt(t0) {
     t5 = $[8];
   }
   let t6;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Box width={10}>
         <Text>
@@ -98,7 +98,7 @@ export function TranscriptSharePrompt(t0) {
     t6 = $[9];
   }
   let t7;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Box flexDirection="column" marginTop={1}>
         {t3}

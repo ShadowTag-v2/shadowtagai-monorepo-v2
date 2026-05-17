@@ -1,15 +1,15 @@
-import type { Command } from '../commands.js';
-import { getAttributionTexts } from '../utils/attribution.js';
-import { executeShellCommandsInPrompt } from '../utils/promptShellExecution.js';
-import { getUndercoverInstructions, isUndercover } from '../utils/undercover.js';
+import type { Command } from "../commands.js";
+import { getAttributionTexts } from "../utils/attribution.js";
+import { executeShellCommandsInPrompt } from "../utils/promptShellExecution.js";
+import { getUndercoverInstructions, isUndercover } from "../utils/undercover.js";
 
-const ALLOWED_TOOLS = ['Bash(git add:*)', 'Bash(git status:*)', 'Bash(git commit:*)'];
+const ALLOWED_TOOLS = ["Bash(git add:*)", "Bash(git status:*)", "Bash(git commit:*)"];
 
 function getPromptContent(): string {
   const { commit: commitAttribution } = getAttributionTexts();
 
-  let prefix = '';
-  if (process.env.USER_TYPE === 'ant' && isUndercover()) {
+  let prefix = "";
+  if (process.env.USER_TYPE === "ant" && isUndercover()) {
     prefix = `${getUndercoverInstructions()}\n`;
   }
 
@@ -42,7 +42,7 @@ Based on the above changes, create a single git commit:
 2. Stage relevant files and create the commit using HEREDOC syntax:
 \`\`\`
 git commit -m "$(cat <<'EOF'
-Commit message here.${commitAttribution ? `\n\n${commitAttribution}` : ''}
+Commit message here.${commitAttribution ? `\n\n${commitAttribution}` : ""}
 EOF
 )"
 \`\`\`
@@ -51,13 +51,13 @@ You have the capability to call multiple tools in a single response. Stage and c
 }
 
 const command = {
-  type: 'prompt',
-  name: 'commit',
-  description: 'Create a git commit',
+  type: "prompt",
+  name: "commit",
+  description: "Create a git commit",
   allowedTools: ALLOWED_TOOLS,
   contentLength: 0, // Dynamic content
-  progressMessage: 'creating commit',
-  source: 'builtin',
+  progressMessage: "creating commit",
+  source: "builtin",
   async getPromptForCommand(_args, context) {
     const promptContent = getPromptContent();
     const finalContent = await executeShellCommandsInPrompt(
@@ -78,10 +78,10 @@ const command = {
           };
         },
       },
-      '/commit',
+      "/commit",
     );
 
-    return [{ type: 'text', text: finalContent }];
+    return [{ type: "text", text: finalContent }];
   },
 } satisfies Command;
 

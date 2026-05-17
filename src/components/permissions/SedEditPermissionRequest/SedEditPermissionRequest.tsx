@@ -1,16 +1,16 @@
-import { basename, relative } from 'node:path';
-import { Suspense, use } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { FileEditToolDiff } from 'src/components/FileEditToolDiff.js';
-import { getCwd } from 'src/utils/cwd.js';
-import { isENOENT } from 'src/utils/errors.js';
-import { detectEncodingForResolvedPath } from 'src/utils/fileRead.js';
-import { getFsImplementation } from 'src/utils/fsOperations.js';
-import { Text } from '../../../ink.js';
-import { BashTool } from '../../../tools/BashTool/BashTool.js';
-import { applySedSubstitution, type SedEditInfo } from '../../../tools/BashTool/sedEditParser.js';
-import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js';
-import type { PermissionRequestProps } from '../PermissionRequest.js';
+import { basename, relative } from "node:path";
+import { Suspense, use } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { FileEditToolDiff } from "src/components/FileEditToolDiff.js";
+import { getCwd } from "src/utils/cwd.js";
+import { isENOENT } from "src/utils/errors.js";
+import { detectEncodingForResolvedPath } from "src/utils/fileRead.js";
+import { getFsImplementation } from "src/utils/fsOperations.js";
+import { Text } from "../../../ink.js";
+import { BashTool } from "../../../tools/BashTool/BashTool.js";
+import { applySedSubstitution, type SedEditInfo } from "../../../tools/BashTool/sedEditParser.js";
+import { FilePermissionDialog } from "../FilePermissionDialog/FilePermissionDialog.js";
+import type { PermissionRequestProps } from "../PermissionRequest.js";
 
 type SedEditPermissionRequestProps = PermissionRequestProps & {
   sedInfo: SedEditInfo;
@@ -41,7 +41,7 @@ export function SedEditPermissionRequest(t0) {
         encoding,
       });
       return {
-        oldContent: raw.replaceAll('\r\n', '\n'),
+        oldContent: raw.replaceAll("\r\n", "\n"),
         fileExists: true,
       };
     })().catch(_temp);
@@ -76,7 +76,7 @@ function _temp(e) {
     throw e;
   }
   return {
-    oldContent: '',
+    oldContent: "",
     fileExists: false,
   };
 }
@@ -112,7 +112,7 @@ function SedEditPermissionRequestInner(t0) {
   bb0: {
     if (oldContent === newContent) {
       let t3;
-      if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
         t3 = [];
         $[7] = t3;
       } else {
@@ -142,10 +142,10 @@ function SedEditPermissionRequestInner(t0) {
   let t3;
   bb1: {
     if (!fileExists) {
-      t3 = 'File does not exist';
+      t3 = "File does not exist";
       break bb1;
     }
-    t3 = 'Pattern did not match any content';
+    t3 = "Pattern did not match any content";
   }
   const noChangesMessage = t3;
   let t4;

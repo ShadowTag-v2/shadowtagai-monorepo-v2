@@ -1,4 +1,4 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 export type Props = {
   /**
    * Number of newlines to insert.
@@ -17,7 +17,7 @@ export default function Newline(t0) {
   const count = t1 === undefined ? 1 : t1;
   let t2;
   if ($[0] !== count) {
-    t2 = '\n'.repeat(count);
+    t2 = "\n".repeat(count);
     $[0] = count;
     $[1] = t2;
   } else {

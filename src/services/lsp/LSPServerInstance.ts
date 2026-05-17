@@ -1,13 +1,13 @@
-import * as path from 'node:path';
-import { pathToFileURL } from 'node:url';
-import type { InitializeParams } from 'vscode-languageserver-protocol';
-import { getCwd } from '../../utils/cwd.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { sleep } from '../../utils/sleep.js';
-import type { createLSPClient as createLSPClientType } from './LSPClient.js';
-import type { LspServerState, ScopedLspServerConfig } from './types.js';
+import * as path from "node:path";
+import { pathToFileURL } from "node:url";
+import type { InitializeParams } from "vscode-languageserver-protocol";
+import { getCwd } from "../../utils/cwd.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { sleep } from "../../utils/sleep.js";
+import type { createLSPClient as createLSPClientType } from "./LSPClient.js";
+import type { LspServerState, ScopedLspServerConfig } from "./types.js";
 
 /**
  * LSP error code for "content modified" - indicates the server's state changed
@@ -107,10 +107,10 @@ export function createLSPServerInstance(
   // vscode-jsonrpc (~129KB) only loads when an LSP server is actually
   // instantiated, not when the static import chain reaches this module.
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { createLSPClient } = require('./LSPClient.js') as {
+  const { createLSPClient } = require("./LSPClient.js") as {
     createLSPClient: typeof createLSPClientType;
   };
-  let state: LspServerState = 'stopped';
+  let state: LspServerState = "stopped";
   let startTime: Date | undefined;
   let lastError: Error | undefined;
   let restartCount = 0;
@@ -119,7 +119,7 @@ export function createLSPServerInstance(
   // Without this, state stays 'running' after crash and the server is never
   // restarted (zombie state).
   const client = createLSPClient(name, (error) => {
-    state = 'error';
+    state = "error";
     lastError = error;
     crashRecoveryCount++;
   });
@@ -133,14 +133,14 @@ export function createLSPServerInstance(
    * @throws {Error} If server fails to start or initialize
    */
   async function start(): Promise<void> {
-    if (state === 'running' || state === 'starting') {
+    if (state === "running" || state === "starting") {
       return;
     }
 
     // Cap crash-recovery attempts so a persistently crashing server doesn't
     // spawn unbounded child processes on every incoming request.
     const maxRestarts = config.maxRestarts ?? 3;
-    if (state === 'error' && crashRecoveryCount > maxRestarts) {
+    if (state === "error" && crashRecoveryCount > maxRestarts) {
       const error = new Error(
         `LSP server '${name}' exceeded max crash recovery attempts (${maxRestarts})`,
       );
@@ -151,7 +151,7 @@ export function createLSPServerInstance(
 
     let initPromise: Promise<unknown> | undefined;
     try {
-      state = 'starting';
+      state = "starting";
       logForDebugging(`Starting LSP server instance: ${name}`);
 
       // Start the client
@@ -213,7 +213,7 @@ export function createLSPServerInstance(
             },
             hover: {
               dynamicRegistration: false,
-              contentFormat: ['markdown', 'plaintext'],
+              contentFormat: ["markdown", "plaintext"],
             },
             definition: {
               dynamicRegistration: false,
@@ -231,7 +231,7 @@ export function createLSPServerInstance(
             },
           },
           general: {
-            positionEncodings: ['utf-16'],
+            positionEncodings: ["utf-16"],
           },
         },
       };
@@ -247,7 +247,7 @@ export function createLSPServerInstance(
         await initPromise;
       }
 
-      state = 'running';
+      state = "running";
       startTime = new Date();
       crashRecoveryCount = 0;
       logForDebugging(`LSP server instance started: ${name}`);
@@ -256,7 +256,7 @@ export function createLSPServerInstance(
       client.stop().catch(() => {});
       // Prevent unhandled rejection from abandoned initialize promise
       initPromise?.catch(() => {});
-      state = 'error';
+      state = "error";
       lastError = error as Error;
       logError(error);
       throw error;
@@ -272,17 +272,17 @@ export function createLSPServerInstance(
    * @throws {Error} If server fails to stop
    */
   async function stop(): Promise<void> {
-    if (state === 'stopped' || state === 'stopping') {
+    if (state === "stopped" || state === "stopping") {
       return;
     }
 
     try {
-      state = 'stopping';
+      state = "stopping";
       await client.stop();
-      state = 'stopped';
+      state = "stopped";
       logForDebugging(`LSP server instance stopped: ${name}`);
     } catch (error) {
-      state = 'error';
+      state = "error";
       lastError = error as Error;
       logError(error);
       throw error;
@@ -336,7 +336,7 @@ export function createLSPServerInstance(
    * @returns true if state is 'running' AND the client has completed initialization
    */
   function isHealthy(): boolean {
-    return state === 'running' && client.isInitialized;
+    return state === "running" && client.isInitialized;
   }
 
   /**
@@ -356,7 +356,7 @@ export function createLSPServerInstance(
     if (!isHealthy()) {
       const error = new Error(
         `Cannot send request to LSP server '${name}': server is ${state}` +
-          `${lastError ? `, last error: ${lastError.message}` : ''}`,
+          `${lastError ? `, last error: ${lastError.message}` : ""}`,
       );
       logError(error);
       throw error;
@@ -376,7 +376,7 @@ export function createLSPServerInstance(
         // versions of vscode-jsonrpc in the dependency tree (8.2.0 vs 8.2.1).
         const errorCode = (error as { code?: number }).code;
         const isContentModifiedError =
-          typeof errorCode === 'number' && errorCode === LSP_ERROR_CONTENT_MODIFIED;
+          typeof errorCode === "number" && errorCode === LSP_ERROR_CONTENT_MODIFIED;
 
         if (isContentModifiedError && attempt < MAX_RETRIES_FOR_TRANSIENT_ERRORS) {
           const delay = RETRY_BASE_DELAY_MS * 2 ** attempt;
@@ -395,7 +395,7 @@ export function createLSPServerInstance(
 
     // All retries failed or non-retryable error
     const requestError = new Error(
-      `LSP request '${method}' failed for server '${name}': ${lastAttemptError?.message ?? 'unknown error'}`,
+      `LSP request '${method}' failed for server '${name}': ${lastAttemptError?.message ?? "unknown error"}`,
     );
     logError(requestError);
     throw requestError;

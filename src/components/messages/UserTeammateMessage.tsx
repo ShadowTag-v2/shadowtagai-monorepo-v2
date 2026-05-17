@@ -1,16 +1,16 @@
-import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import figures from 'figures';
-import * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { TEAMMATE_MESSAGE_TAG } from '../../constants/xml.js';
-import { Ansi, Box, Text, type TextProps } from '../../ink.js';
-import { toInkColor } from '../../utils/ink.js';
-import { jsonParse } from '../../utils/slowOperations.js';
-import { isShutdownApproved } from '../../utils/teammateMailbox.js';
-import { MessageResponse } from '../MessageResponse.js';
-import { tryRenderPlanApprovalMessage } from './PlanApprovalMessage.js';
-import { tryRenderShutdownMessage } from './ShutdownMessage.js';
-import { tryRenderTaskAssignmentMessage } from './TaskAssignmentMessage.js';
+import type { TextBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import figures from "figures";
+import * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { TEAMMATE_MESSAGE_TAG } from "../../constants/xml.js";
+import { Ansi, Box, Text, type TextProps } from "../../ink.js";
+import { toInkColor } from "../../utils/ink.js";
+import { jsonParse } from "../../utils/slowOperations.js";
+import { isShutdownApproved } from "../../utils/teammateMailbox.js";
+import { MessageResponse } from "../MessageResponse.js";
+import { tryRenderPlanApprovalMessage } from "./PlanApprovalMessage.js";
+import { tryRenderShutdownMessage } from "./ShutdownMessage.js";
+import { tryRenderTaskAssignmentMessage } from "./TaskAssignmentMessage.js";
 
 type Props = {
   addMargin: boolean;
@@ -25,7 +25,7 @@ type ParsedMessage = {
 };
 const TEAMMATE_MSG_REGEX = new RegExp(
   `<${TEAMMATE_MESSAGE_TAG}\\s+teammate_id="([^"]+)"(?:\\s+color="([^"]+)")?(?:\\s+summary="([^"]+)")?>\\n?([\\s\\S]*?)\\n?<\\/${TEAMMATE_MESSAGE_TAG}>`,
-  'g',
+  "g",
 );
 
 /**
@@ -51,8 +51,8 @@ function parseTeammateMessages(text: string): ParsedMessage[] {
   return messages;
 }
 function getDisplayName(teammateId: string): string {
-  if (teammateId === 'leader') {
-    return 'leader';
+  if (teammateId === "leader") {
+    return "leader";
   }
   return teammateId;
 }
@@ -69,7 +69,7 @@ export function UserTeammateMessage({
     }
     try {
       const parsed = jsonParse(msg.content);
-      if (parsed?.type === 'teammate_terminated') return false;
+      if (parsed?.type === "teammate_terminated") return false;
     } catch {
       // Not JSON, keep the message
     }
@@ -113,12 +113,12 @@ export function UserTeammateMessage({
         }
 
         // Hide idle notifications - they are processed silently
-        if (parsedIdleNotification?.type === 'idle_notification') {
+        if (parsedIdleNotification?.type === "idle_notification") {
           return null;
         }
 
         // Task completed notification - show which task was completed
-        if (parsedIdleNotification?.type === 'task_completed') {
+        if (parsedIdleNotification?.type === "task_completed") {
           const taskCompleted = parsedIdleNotification as {
             type: string;
             from: string;
@@ -131,7 +131,7 @@ export function UserTeammateMessage({
               <MessageResponse>
                 <Text color="success">✓</Text>
                 <Text>
-                  {' '}
+                  {" "}
                   Completed task #{taskCompleted.taskId}
                   {taskCompleted.taskSubject && (
                     <Text dimColor> ({taskCompleted.taskSubject})</Text>
@@ -159,7 +159,7 @@ export function UserTeammateMessage({
 }
 type TeammateMessageContentProps = {
   displayName: string;
-  inkColor: TextProps['color'];
+  inkColor: TextProps["color"];
   content: string;
   summary?: string;
   isTranscriptMode?: boolean;

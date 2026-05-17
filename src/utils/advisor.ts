@@ -1,32 +1,32 @@
-import type { BetaUsage } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import { shouldIncludeFirstPartyOnlyBetas } from './betas.js';
-import { isEnvTruthy } from './envUtils.js';
-import { getInitialSettings } from './settings/settings.js';
+import type { BetaUsage } from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import { shouldIncludeFirstPartyOnlyBetas } from "./betas.js";
+import { isEnvTruthy } from "./envUtils.js";
+import { getInitialSettings } from "./settings/settings.js";
 
 // The SDK does not yet have types for advisor blocks.
 // TODO(hackyon): Migrate to the real anthropic SDK types when this feature ships publicly
 export type AdvisorServerToolUseBlock = {
-  type: 'server_tool_use';
+  type: "server_tool_use";
   id: string;
-  name: 'advisor';
+  name: "advisor";
   input: { [key: string]: unknown };
 };
 
 export type AdvisorToolResultBlock = {
-  type: 'advisor_tool_result';
+  type: "advisor_tool_result";
   tool_use_id: string;
   content:
     | {
-        type: 'advisor_result';
+        type: "advisor_result";
         text: string;
       }
     | {
-        type: 'advisor_redacted_result';
+        type: "advisor_redacted_result";
         encrypted_content: string;
       }
     | {
-        type: 'advisor_tool_result_error';
+        type: "advisor_tool_result_error";
         error_code: string;
       };
 };
@@ -35,8 +35,8 @@ export type AdvisorBlock = AdvisorServerToolUseBlock | AdvisorToolResultBlock;
 
 export function isAdvisorBlock(param: { type: string; name?: string }): param is AdvisorBlock {
   return (
-    param.type === 'advisor_tool_result' ||
-    (param.type === 'server_tool_use' && param.name === 'advisor')
+    param.type === "advisor_tool_result" ||
+    (param.type === "server_tool_use" && param.name === "advisor")
   );
 }
 
@@ -48,7 +48,7 @@ type AdvisorConfig = {
 };
 
 function getAdvisorConfig(): AdvisorConfig {
-  return getFeatureValue_CACHED_MAY_BE_STALE<AdvisorConfig>('tengu_sage_compass', {});
+  return getFeatureValue_CACHED_MAY_BE_STALE<AdvisorConfig>("tengu_sage_compass", {});
 }
 
 export function isAdvisorEnabled(): boolean {
@@ -79,13 +79,13 @@ export function getExperimentAdvisorModels():
 // Checks whether the main loop model supports calling the advisor tool.
 export function modelSupportsAdvisor(model: string): boolean {
   const m = model.toLowerCase();
-  return m.includes('opus-4-6') || m.includes('sonnet-4-6') || process.env.USER_TYPE === 'ant';
+  return m.includes("opus-4-6") || m.includes("sonnet-4-6") || process.env.USER_TYPE === "ant";
 }
 
 // @[MODEL LAUNCH]: Add the new model if it can serve as an advisor model.
 export function isValidAdvisorModel(model: string): boolean {
   const m = model.toLowerCase();
-  return m.includes('opus-4-6') || m.includes('sonnet-4-6') || process.env.USER_TYPE === 'ant';
+  return m.includes("opus-4-6") || m.includes("sonnet-4-6") || process.env.USER_TYPE === "ant";
 }
 
 export function getInitialAdvisorSetting(): string | undefined {
@@ -100,7 +100,7 @@ export function getAdvisorUsage(usage: BetaUsage): Array<BetaUsage & { model: st
   if (!iterations) {
     return [];
   }
-  return iterations.filter((it) => it.type === 'advisor_message') as unknown as Array<
+  return iterations.filter((it) => it.type === "advisor_message") as unknown as Array<
     BetaUsage & { model: string }
   >;
 }

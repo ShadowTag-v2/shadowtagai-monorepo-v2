@@ -1,27 +1,27 @@
-import type * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useInterval } from 'usehooks-ts';
-import type { CommandResultDisplay } from '../../commands.js';
-import { Markdown } from '../../components/Markdown.js';
-import { SpinnerGlyph } from '../../components/Spinner/SpinnerGlyph.js';
-import { DOWN_ARROW, UP_ARROW } from '../../constants/figures.js';
-import { getSystemPrompt } from '../../constants/prompts.js';
-import { useModalOrTerminalSize } from '../../context/modalContext.js';
-import { getSystemContext, getUserContext } from '../../context.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import ScrollBox from '../../ink/components/ScrollBox.js';
-import { Box, Text } from '../../ink.js';
-import type { LocalJSXCommandOnDone } from '../../types/command.js';
-import type { Message } from '../../types/message.js';
-import { createAbortController } from '../../utils/abortController.js';
-import { saveGlobalConfig } from '../../utils/config.js';
-import { errorMessage } from '../../utils/errors.js';
-import { type CacheSafeParams, getLastCacheSafeParams } from '../../utils/forkedAgent.js';
-import { getMessagesAfterCompactBoundary } from '../../utils/messages.js';
-import type { ProcessUserInputContext } from '../../utils/processUserInput/processUserInput.js';
-import { runSideQuestion } from '../../utils/sideQuestion.js';
-import { asSystemPrompt } from '../../utils/systemPromptType.js';
+import type * as React from "react";
+import { useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useInterval } from "usehooks-ts";
+import type { CommandResultDisplay } from "../../commands.js";
+import { Markdown } from "../../components/Markdown.js";
+import { SpinnerGlyph } from "../../components/Spinner/SpinnerGlyph.js";
+import { DOWN_ARROW, UP_ARROW } from "../../constants/figures.js";
+import { getSystemPrompt } from "../../constants/prompts.js";
+import { useModalOrTerminalSize } from "../../context/modalContext.js";
+import { getSystemContext, getUserContext } from "../../context.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import ScrollBox from "../../ink/components/ScrollBox.js";
+import { Box, Text } from "../../ink.js";
+import type { LocalJSXCommandOnDone } from "../../types/command.js";
+import type { Message } from "../../types/message.js";
+import { createAbortController } from "../../utils/abortController.js";
+import { saveGlobalConfig } from "../../utils/config.js";
+import { errorMessage } from "../../utils/errors.js";
+import { type CacheSafeParams, getLastCacheSafeParams } from "../../utils/forkedAgent.js";
+import { getMessagesAfterCompactBoundary } from "../../utils/messages.js";
+import type { ProcessUserInputContext } from "../../utils/processUserInput/processUserInput.js";
+import { runSideQuestion } from "../../utils/sideQuestion.js";
+import { asSystemPrompt } from "../../utils/systemPromptType.js";
 
 type BtwComponentProps = {
   question: string;
@@ -45,7 +45,7 @@ function BtwSideQuestion(t0) {
   const scrollRef = useRef(null);
   const { rows } = useModalOrTerminalSize(useTerminalSize());
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => setFrame(_temp);
     $[0] = t1;
   } else {
@@ -56,22 +56,22 @@ function BtwSideQuestion(t0) {
   if ($[1] !== onDone) {
     t2 = function handleKeyDown(e) {
       if (
-        e.key === 'escape' ||
-        e.key === 'return' ||
-        e.key === ' ' ||
-        (e.ctrl && (e.key === 'c' || e.key === 'd'))
+        e.key === "escape" ||
+        e.key === "return" ||
+        e.key === " " ||
+        (e.ctrl && (e.key === "c" || e.key === "d"))
       ) {
         e.preventDefault();
         onDone(undefined, {
-          display: 'skip',
+          display: "skip",
         });
         return;
       }
-      if (e.key === 'up' || (e.ctrl && e.key === 'p')) {
+      if (e.key === "up" || (e.ctrl && e.key === "p")) {
         e.preventDefault();
         scrollRef.current?.scrollBy(-SCROLL_LINES);
       }
-      if (e.key === 'down' || (e.ctrl && e.key === 'n')) {
+      if (e.key === "down" || (e.ctrl && e.key === "n")) {
         e.preventDefault();
         scrollRef.current?.scrollBy(SCROLL_LINES);
       }
@@ -98,13 +98,13 @@ function BtwSideQuestion(t0) {
             if (result.response) {
               setResponse(result.response);
             } else {
-              setError('No response received');
+              setError("No response received");
             }
           }
         } catch (t5) {
           const err = t5;
           if (!abortController.signal.aborted) {
-            setError(errorMessage(err) || 'Failed to get response');
+            setError(errorMessage(err) || "Failed to get response");
           }
         }
       };
@@ -125,10 +125,10 @@ function BtwSideQuestion(t0) {
   useEffect(t3, t4);
   const maxContentHeight = Math.max(5, rows - CHROME_ROWS - OUTER_CHROME_ROWS);
   let t5;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Text color="warning" bold={true}>
-        /btw{' '}
+        /btw{" "}
       </Text>
     );
     $[7] = t5;
@@ -246,7 +246,7 @@ function _temp(f) {
 }
 function stripInProgressAssistantMessage(messages: Message[]): Message[] {
   const last = messages.at(-1);
-  if (last?.type === 'assistant' && last.message.stop_reason === null) {
+  if (last?.type === "assistant" && last.message.stop_reason === null) {
     return messages.slice(0, -1);
   }
   return messages;
@@ -290,8 +290,8 @@ export async function call(
 ): Promise<React.ReactNode> {
   const question = args?.trim();
   if (!question) {
-    onDone('Usage: /btw <your question>', {
-      display: 'system',
+    onDone("Usage: /btw <your question>", {
+      display: "system",
     });
     return null;
   }

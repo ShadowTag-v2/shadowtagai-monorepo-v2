@@ -12,16 +12,16 @@
  * Each remains for backwards compat; new callers should use this module.
  */
 
-import { z } from 'zod/v4';
-import { getIsNonInteractiveSession } from '../bootstrap/state.js';
-import { logEvent } from '../services/analytics/index.js';
-import { queryHaiku } from '../services/api/claude.js';
-import type { Message } from '../types/message.js';
-import { logForDebugging } from './debug.js';
-import { safeParseJSON } from './json.js';
-import { lazySchema } from './lazySchema.js';
-import { extractTextContent } from './messages.js';
-import { asSystemPrompt } from './systemPromptType.js';
+import { z } from "zod/v4";
+import { getIsNonInteractiveSession } from "../bootstrap/state.js";
+import { logEvent } from "../services/analytics/index.js";
+import { queryHaiku } from "../services/api/claude.js";
+import type { Message } from "../types/message.js";
+import { logForDebugging } from "./debug.js";
+import { safeParseJSON } from "./json.js";
+import { lazySchema } from "./lazySchema.js";
+import { extractTextContent } from "./messages.js";
+import { asSystemPrompt } from "./systemPromptType.js";
 
 const MAX_CONVERSATION_TEXT = 1000;
 
@@ -33,21 +33,21 @@ const MAX_CONVERSATION_TEXT = 1000;
 export function extractConversationText(messages: Message[]): string {
   const parts: string[] = [];
   for (const msg of messages) {
-    if (msg.type !== 'user' && msg.type !== 'assistant') continue;
-    if ('isMeta' in msg && msg.isMeta) continue;
-    if ('origin' in msg && msg.origin && msg.origin.kind !== 'human') continue;
+    if (msg.type !== "user" && msg.type !== "assistant") continue;
+    if ("isMeta" in msg && msg.isMeta) continue;
+    if ("origin" in msg && msg.origin && msg.origin.kind !== "human") continue;
     const content = msg.message.content;
-    if (typeof content === 'string') {
+    if (typeof content === "string") {
       parts.push(content);
     } else if (Array.isArray(content)) {
       for (const block of content) {
-        if ('type' in block && block.type === 'text' && 'text' in block) {
+        if ("type" in block && block.type === "text" && "text" in block) {
           parts.push(block.text as string);
         }
       }
     }
   }
-  const text = parts.join('\n');
+  const text = parts.join("\n");
   return text.length > MAX_CONVERSATION_TEXT ? text.slice(-MAX_CONVERSATION_TEXT) : text;
 }
 
@@ -86,19 +86,19 @@ export async function generateSessionTitle(
       systemPrompt: asSystemPrompt([SESSION_TITLE_PROMPT]),
       userPrompt: trimmed,
       outputFormat: {
-        type: 'json_schema',
+        type: "json_schema",
         schema: {
-          type: 'object',
+          type: "object",
           properties: {
-            title: { type: 'string' },
+            title: { type: "string" },
           },
-          required: ['title'],
+          required: ["title"],
           additionalProperties: false,
         },
       },
       signal,
       options: {
-        querySource: 'generate_session_title',
+        querySource: "generate_session_title",
         agents: [],
         // Reflect the actual session mode — this module is called from
         // both the SDK print path (non-interactive) and the CCR remote
@@ -114,14 +114,14 @@ export async function generateSessionTitle(
     const parsed = titleSchema().safeParse(safeParseJSON(text));
     const title = parsed.success ? parsed.data.title.trim() || null : null;
 
-    logEvent('tengu_session_title_generated', { success: title !== null });
+    logEvent("tengu_session_title_generated", { success: title !== null });
 
     return title;
   } catch (error) {
     logForDebugging(`generateSessionTitle failed: ${error}`, {
-      level: 'error',
+      level: "error",
     });
-    logEvent('tengu_session_title_generated', { success: false });
+    logEvent("tengu_session_title_generated", { success: false });
     return null;
   }
 }

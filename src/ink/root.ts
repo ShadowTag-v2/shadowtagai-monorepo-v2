@@ -1,9 +1,9 @@
-import { Stream } from 'node:stream';
-import type { ReactNode } from 'react';
-import { logForDebugging } from 'src/utils/debug.js';
-import type { FrameEvent } from './frame.js';
-import Ink, { type Options as InkOptions } from './ink.js';
-import instances from './instances.js';
+import { Stream } from "node:stream";
+import type { ReactNode } from "react";
+import { logForDebugging } from "src/utils/debug.js";
+import type { FrameEvent } from "./frame.js";
+import Ink, { type Options as InkOptions } from "./ink.js";
+import instances from "./instances.js";
 
 export type RenderOptions = {
   /**
@@ -47,15 +47,15 @@ export type Instance = {
   /**
    * Replace previous root node with a new one or update props of the current root node.
    */
-  rerender: Ink['render'];
+  rerender: Ink["render"];
   /**
    * Manually unmount the whole Ink app.
    */
-  unmount: Ink['unmount'];
+  unmount: Ink["unmount"];
   /**
    * Returns a promise, which resolves when app is unmounted.
    */
-  waitUntilExit: Ink['waitUntilExit'];
+  waitUntilExit: Ink["waitUntilExit"];
   cleanup: () => void;
 };
 

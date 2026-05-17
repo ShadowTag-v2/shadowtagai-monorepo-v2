@@ -21,10 +21,10 @@
  * when context is irrecoverably over limit (mirrors autoCompact.ts pattern).
  */
 
-import { apiMicrocompact } from './apiMicrocompact.js';
-import { contextCollapse } from './contextCollapse.js';
-import { historySnip } from './historySnip.js';
-import { allocateTokenBudget, type CompactionBudget } from './tokenBudget.js';
+import { apiMicrocompact } from "./apiMicrocompact.js";
+import { contextCollapse } from "./contextCollapse.js";
+import { historySnip } from "./historySnip.js";
+import { allocateTokenBudget, type CompactionBudget } from "./tokenBudget.js";
 
 // Circuit breaker: stop retrying after N consecutive failures
 const MAX_CONSECUTIVE_FAILURES = 3;
@@ -70,25 +70,25 @@ export async function runCompactionPipeline(
     let t0 = performance.now();
     const budget = allocateTokenBudget(messages, totalWindow, model);
     layerTimings.tokenBudget = performance.now() - t0;
-    layersApplied.push('tokenBudget');
+    layersApplied.push("tokenBudget");
 
     // Layer 1: Strip and truncate tool outputs
     t0 = performance.now();
     let compacted = apiMicrocompact(messages, budget.maxToolOutputLength);
     layerTimings.apiMicrocompact = performance.now() - t0;
-    layersApplied.push('apiMicrocompact');
+    layersApplied.push("apiMicrocompact");
 
     // Layer 2: Snip old conversation history by API-round groups
     t0 = performance.now();
     compacted = historySnip(compacted, budget.historyLimit);
     layerTimings.historySnip = performance.now() - t0;
-    layersApplied.push('historySnip');
+    layersApplied.push("historySnip");
 
     // Layer 3: Collapse adjacent duplicates and error sequences
     t0 = performance.now();
     compacted = contextCollapse(compacted, budget.totalLimit);
     layerTimings.contextCollapse = performance.now() - t0;
-    layersApplied.push('contextCollapse');
+    layersApplied.push("contextCollapse");
 
     // Success — reset circuit breaker
     consecutiveFailures = 0;
@@ -111,14 +111,13 @@ export function resetCompactionCircuitBreaker(): void {
   consecutiveFailures = 0;
 }
 
-export type { CompactionBudget };
-export { allocateTokenBudget, apiMicrocompact, contextCollapse, historySnip };
-
 // Sovereign Cache — cache-aware pipeline wrapper
 export {
-  runCachedCompactionPipeline,
   computeFingerprint,
   getSovereignCacheStats,
   invalidateSovereignCache,
   resetSovereignCacheStats,
-} from './sovereignCache.js';
+  runCachedCompactionPipeline,
+} from "./sovereignCache.js";
+export type { CompactionBudget };
+export { allocateTokenBudget, apiMicrocompact, contextCollapse, historySnip };

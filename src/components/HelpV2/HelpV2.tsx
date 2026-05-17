@@ -1,15 +1,15 @@
-import { c as _c } from 'react/compiler-runtime';
-import { useExitOnCtrlCDWithKeybindings } from 'src/hooks/useExitOnCtrlCDWithKeybindings.js';
-import { useShortcutDisplay } from 'src/keybindings/useShortcutDisplay.js';
-import { builtInCommandNames, type Command, type CommandResultDisplay } from '../../commands.js';
-import { useIsInsideModal } from '../../context/modalContext.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { Box, Link, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import { Pane } from '../design-system/Pane.js';
-import { Tab, Tabs } from '../design-system/Tabs.js';
-import { Commands } from './Commands.js';
-import { General } from './General.js';
+import { c as _c } from "react/compiler-runtime";
+import { useExitOnCtrlCDWithKeybindings } from "src/hooks/useExitOnCtrlCDWithKeybindings.js";
+import { useShortcutDisplay } from "src/keybindings/useShortcutDisplay.js";
+import { builtInCommandNames, type Command, type CommandResultDisplay } from "../../commands.js";
+import { useIsInsideModal } from "../../context/modalContext.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { Box, Link, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import { Pane } from "../design-system/Pane.js";
+import { Tab, Tabs } from "../design-system/Tabs.js";
+import { Commands } from "./Commands.js";
+import { General } from "./General.js";
 
 type Props = {
   onClose: (
@@ -29,8 +29,8 @@ export function HelpV2(t0) {
   let t1;
   if ($[0] !== onClose) {
     t1 = () =>
-      onClose('Help dialog dismissed', {
-        display: 'system',
+      onClose("Help dialog dismissed", {
+        display: "system",
       });
     $[0] = onClose;
     $[1] = t1;
@@ -39,17 +39,17 @@ export function HelpV2(t0) {
   }
   const close = t1;
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = {
-      context: 'Help',
+      context: "Help",
     };
     $[2] = t2;
   } else {
     t2 = $[2];
   }
-  useKeybinding('help:dismiss', close, t2);
+  useKeybinding("help:dismiss", close, t2);
   const exitState = useExitOnCtrlCDWithKeybindings(close);
-  const dismissShortcut = useShortcutDisplay('help:dismiss', 'Help', 'esc');
+  const dismissShortcut = useShortcutDisplay("help:dismiss", "Help", "esc");
   let antOnlyCommands;
   let builtinCommands;
   let t3;
@@ -57,7 +57,7 @@ export function HelpV2(t0) {
     const builtinNames = builtInCommandNames();
     builtinCommands = commands.filter((cmd) => builtinNames.has(cmd.name) && !cmd.isHidden);
     let t4;
-    if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
       t4 = [];
       $[7] = t4;
     } else {
@@ -76,7 +76,7 @@ export function HelpV2(t0) {
   }
   const customCommands = t3;
   let t4;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <Tab key="general" title="general">
         <General />
@@ -185,7 +185,7 @@ export function HelpV2(t0) {
   if ($[31] !== tabs) {
     t6 = (
       <Tabs
-        title={false ? '/help' : `Claude Code v${MACRO.VERSION}`}
+        title={false ? "/help" : `Claude Code v${MACRO.VERSION}`}
         color="professionalBlue"
         defaultTab="general"
       >
@@ -198,7 +198,7 @@ export function HelpV2(t0) {
     t6 = $[32];
   }
   let t7;
-  if ($[33] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[33] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Box marginTop={1}>
         <Text>

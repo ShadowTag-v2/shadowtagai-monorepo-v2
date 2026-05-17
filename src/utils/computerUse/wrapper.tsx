@@ -24,19 +24,19 @@ import {
   type CuPermissionResponse,
   DEFAULT_GRANT_FLAGS,
   type ScreenshotDims,
-} from '@ant/computer-use-mcp';
-import * as React from 'react';
-import { getSessionId } from '../../bootstrap/state.js';
-import { ComputerUseApproval } from '../../components/permissions/ComputerUseApproval/ComputerUseApproval.js';
-import type { Tool, ToolUseContext } from '../../Tool.js';
-import { logForDebugging } from '../debug.js';
-import { checkComputerUseLock, tryAcquireComputerUseLock } from './computerUseLock.js';
-import { registerEscHotkey } from './escHotkey.js';
-import { getChicagoCoordinateMode } from './gates.js';
-import { getComputerUseHostAdapter } from './hostAdapter.js';
-import { getComputerUseMCPRenderingOverrides } from './toolRendering.js';
+} from "@ant/computer-use-mcp";
+import * as React from "react";
+import { getSessionId } from "../../bootstrap/state.js";
+import { ComputerUseApproval } from "../../components/permissions/ComputerUseApproval/ComputerUseApproval.js";
+import type { Tool, ToolUseContext } from "../../Tool.js";
+import { logForDebugging } from "../debug.js";
+import { checkComputerUseLock, tryAcquireComputerUseLock } from "./computerUseLock.js";
+import { registerEscHotkey } from "./escHotkey.js";
+import { getChicagoCoordinateMode } from "./gates.js";
+import { getComputerUseHostAdapter } from "./hostAdapter.js";
+import { getComputerUseMCPRenderingOverrides } from "./toolRendering.js";
 
-type CallOverride = Pick<Tool, 'call'>['call'];
+type CallOverride = Pick<Tool, "call">["call"];
 type Binding = {
   ctx: ComputerUseSessionContext;
   dispatch: (name: string, args: unknown) => Promise<CuCallToolResult>;
@@ -222,17 +222,17 @@ export function buildSessionContext(): ComputerUseSessionContext {
     checkCuLock: async () => {
       const c = await checkComputerUseLock();
       switch (c.kind) {
-        case 'free':
+        case "free":
           return {
             holder: undefined,
             isSelf: false,
           };
-        case 'held_by_self':
+        case "held_by_self":
           return {
             holder: getSessionId(),
             isSelf: true,
           };
-        case 'blocked':
+        case "blocked":
           return {
             holder: c.by,
             isSelf: false,
@@ -247,7 +247,7 @@ export function buildSessionContext(): ComputerUseSessionContext {
     // notification in that case.
     acquireCuLock: async () => {
       const r = await tryAcquireComputerUseLock();
-      if (r.kind === 'blocked') {
+      if (r.kind === "blocked") {
         throw new Error(formatLockHeld(r.by));
       }
       if (r.fresh) {
@@ -256,14 +256,14 @@ export function buildSessionContext(): ComputerUseSessionContext {
         // CFRunLoopSource is processed by the drainRunLoop pump, so this
         // holds a pump retain until unregisterEscHotkey() in cleanup.ts.
         const escRegistered = registerEscHotkey(() => {
-          logForDebugging('[cu-esc] user escape, aborting turn');
+          logForDebugging("[cu-esc] user escape, aborting turn");
           tuc().abortController.abort();
         });
         tuc().sendOSNotification?.({
           message: escRegistered
-            ? 'Claude is using your computer · press Esc to stop'
-            : 'Claude is using your computer · press Ctrl+C to stop',
-          notificationType: 'computer_use_enter',
+            ? "Claude is using your computer · press Esc to stop"
+            : "Claude is using your computer · press Ctrl+C to stop",
+          notificationType: "computer_use_enter",
         });
       }
     },
@@ -305,18 +305,18 @@ export function getComputerUseMCPToolOverrides(toolName: string): ComputerUseMCP
     // those; the fallthrough coerces them to empty text.
     const data = Array.isArray(result.content)
       ? result.content.map((item) =>
-          item.type === 'image'
+          item.type === "image"
             ? {
-                type: 'image' as const,
+                type: "image" as const,
                 source: {
-                  type: 'base64' as const,
-                  media_type: item.mimeType ?? 'image/jpeg',
+                  type: "base64" as const,
+                  media_type: item.mimeType ?? "image/jpeg",
                   data: item.data,
                 },
               }
             : {
-                type: 'text' as const,
-                text: item.type === 'text' ? item.text : '',
+                type: "text" as const,
+                text: item.type === "text" ? item.text : "",
               },
         )
       : result.content;
@@ -354,19 +354,19 @@ async function runPermissionDialog(req: CuPermissionRequest): Promise<CuPermissi
       // If already aborted, addEventListener won't fire — reject now so the
       // promise doesn't hang waiting for a user who Ctrl+C'd.
       if (signal.aborted) {
-        reject(new Error('Computer Use permission dialog aborted'));
+        reject(new Error("Computer Use permission dialog aborted"));
         return;
       }
       const onAbort = (): void => {
-        signal.removeEventListener('abort', onAbort);
-        reject(new Error('Computer Use permission dialog aborted'));
+        signal.removeEventListener("abort", onAbort);
+        reject(new Error("Computer Use permission dialog aborted"));
       };
-      signal.addEventListener('abort', onAbort);
+      signal.addEventListener("abort", onAbort);
       setToolJSX({
         jsx: React.createElement(ComputerUseApproval, {
           request: req,
           onDone: (resp: CuPermissionResponse) => {
-            signal.removeEventListener('abort', onAbort);
+            signal.removeEventListener("abort", onAbort);
             resolve(resp);
           },
         }),

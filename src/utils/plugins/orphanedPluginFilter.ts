@@ -15,12 +15,12 @@
  * (autoupdate, concurrent sessions) don't affect it.
  */
 
-import { dirname, isAbsolute, join, normalize, relative, sep } from 'node:path';
-import { ripGrep } from '../ripgrep.js';
-import { getPluginsDirectory } from './pluginDirectories.js';
+import { dirname, isAbsolute, join, normalize, relative, sep } from "node:path";
+import { ripGrep } from "../ripgrep.js";
+import { getPluginsDirectory } from "./pluginDirectories.js";
 
 // Inlined from cacheUtils.ts to avoid a circular dep through commands.js.
-const ORPHANED_AT_FILENAME = '.orphaned_at';
+const ORPHANED_AT_FILENAME = ".orphaned_at";
 
 /** Session-scoped cache. Frozen once computed — only cleared by explicit /reload-plugins. */
 let cachedExclusions: string[] | null = null;
@@ -36,7 +36,7 @@ let cachedExclusions: string[] | null = null;
  * is a fallback. Best-effort: returns empty array if anything goes wrong.
  */
 export async function getGlobExclusionsForPluginCache(searchPath?: string): Promise<string[]> {
-  const cachePath = normalize(join(getPluginsDirectory(), 'cache'));
+  const cachePath = normalize(join(getPluginsDirectory(), "cache"));
 
   if (searchPath && !pathsOverlap(searchPath, cachePath)) {
     return [];
@@ -54,7 +54,7 @@ export async function getGlobExclusionsForPluginCache(searchPath?: string): Prom
     // into plugin contents (node_modules, etc.). Never-aborts signal: no
     // caller signal to thread.
     const markers = await ripGrep(
-      ['--files', '--hidden', '--no-ignore', '--max-depth', '4', '--glob', ORPHANED_AT_FILENAME],
+      ["--files", "--hidden", "--no-ignore", "--max-depth", "4", "--glob", ORPHANED_AT_FILENAME],
       cachePath,
       new AbortController().signal,
     );
@@ -64,7 +64,7 @@ export async function getGlobExclusionsForPluginCache(searchPath?: string): Prom
       const versionDir = dirname(markerPath);
       const rel = isAbsolute(versionDir) ? relative(cachePath, versionDir) : versionDir;
       // ripgrep glob patterns always use forward slashes, even on Windows
-      const posixRelative = rel.replace(/\\/g, '/');
+      const posixRelative = rel.replace(/\\/g, "/");
       return `!**/${posixRelative}/**`;
     });
     return cachedExclusions;
@@ -94,5 +94,5 @@ function pathsOverlap(a: string, b: string): boolean {
 
 function normalizeForCompare(p: string): string {
   const n = normalize(p);
-  return process.platform === 'win32' ? n.toLowerCase() : n;
+  return process.platform === "win32" ? n.toLowerCase() : n;
 }

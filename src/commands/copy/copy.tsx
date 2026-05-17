@@ -1,26 +1,26 @@
-import { mkdir, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { marked, type Tokens } from 'marked';
-import { useRef } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay } from '../../commands.js';
-import { Select } from '../../components/CustomSelect/select.js';
-import { Byline } from '../../components/design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../components/design-system/KeyboardShortcutHint.js';
-import { Pane } from '../../components/design-system/Pane.js';
-import { stringWidth } from '../../ink/stringWidth.js';
-import { setClipboard } from '../../ink/termio/osc.js';
-import { Box, Text } from '../../ink.js';
-import { logEvent } from '../../services/analytics/index.js';
-import type { LocalJSXCommandCall } from '../../types/command.js';
-import type { AssistantMessage, Message } from '../../types/message.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { extractTextContent, stripPromptXMLTags } from '../../utils/messages.js';
-import { countCharInString } from '../../utils/stringUtils.js';
+import { mkdir, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { marked, type Tokens } from "marked";
+import { useRef } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay } from "../../commands.js";
+import { Select } from "../../components/CustomSelect/select.js";
+import { Byline } from "../../components/design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../components/design-system/KeyboardShortcutHint.js";
+import { Pane } from "../../components/design-system/Pane.js";
+import { stringWidth } from "../../ink/stringWidth.js";
+import { setClipboard } from "../../ink/termio/osc.js";
+import { Box, Text } from "../../ink.js";
+import { logEvent } from "../../services/analytics/index.js";
+import type { LocalJSXCommandCall } from "../../types/command.js";
+import type { AssistantMessage, Message } from "../../types/message.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { extractTextContent, stripPromptXMLTags } from "../../utils/messages.js";
+import { countCharInString } from "../../utils/stringUtils.js";
 
-const COPY_DIR = join(tmpdir(), 'claude');
-const RESPONSE_FILENAME = 'response.md';
+const COPY_DIR = join(tmpdir(), "claude");
+const RESPONSE_FILENAME = "response.md";
 const MAX_LOOKBACK = 20;
 type CodeBlock = {
   code: string;
@@ -30,7 +30,7 @@ function extractCodeBlocks(markdown: string): CodeBlock[] {
   const tokens = marked.lexer(stripPromptXMLTags(markdown));
   const blocks: CodeBlock[] = [];
   for (const token of tokens) {
-    if (token.type === 'code') {
+    if (token.type === "code") {
       const codeToken = token as Tokens.Code;
       blocks.push({
         code: codeToken.text,
@@ -50,10 +50,10 @@ export function collectRecentAssistantTexts(messages: Message[]): string[] {
   const texts: string[] = [];
   for (let i = messages.length - 1; i >= 0 && texts.length < MAX_LOOKBACK; i--) {
     const msg = messages[i];
-    if (msg?.type !== 'assistant' || msg.isApiErrorMessage) continue;
+    if (msg?.type !== "assistant" || msg.isApiErrorMessage) continue;
     const content = (msg as AssistantMessage).message.content;
     if (!Array.isArray(content)) continue;
-    const text = extractTextContent(content, '\n\n');
+    const text = extractTextContent(content, "\n\n");
     if (text) texts.push(text);
   }
   return texts;
@@ -62,25 +62,25 @@ export function fileExtension(lang: string | undefined): string {
   if (lang) {
     // Sanitize to prevent path traversal (e.g. ```../../etc/passwd)
     // Language identifiers are alphanumeric: python, tsx, jsonc, etc.
-    const sanitized = lang.replace(/[^a-zA-Z0-9]/g, '');
-    if (sanitized && sanitized !== 'plaintext') {
+    const sanitized = lang.replace(/[^a-zA-Z0-9]/g, "");
+    if (sanitized && sanitized !== "plaintext") {
       return `.${sanitized}`;
     }
   }
-  return '.txt';
+  return ".txt";
 }
 async function writeToFile(text: string, filename: string): Promise<string> {
   const filePath = join(COPY_DIR, filename);
   await mkdir(COPY_DIR, {
     recursive: true,
   });
-  await writeFile(filePath, text, 'utf-8');
+  await writeFile(filePath, text, "utf-8");
   return filePath;
 }
 async function copyOrWriteToFile(text: string, filename: string): Promise<string> {
   const raw = await setClipboard(text);
   if (raw) process.stdout.write(raw);
-  const lineCount = countCharInString(text, '\n') + 1;
+  const lineCount = countCharInString(text, "\n") + 1;
   const charCount = text.length;
   // Also write to a temp file — clipboard paths are best-effort (OSC 52 needs
   // terminal support), so the file provides a reliable fallback.
@@ -92,11 +92,11 @@ async function copyOrWriteToFile(text: string, filename: string): Promise<string
   }
 }
 function truncateLine(text: string, maxLen: number): string {
-  const firstLine = text.split('\n')[0] ?? '';
+  const firstLine = text.split("\n")[0] ?? "";
   if (stringWidth(firstLine) <= maxLen) {
     return firstLine;
   }
-  let result = '';
+  let result = "";
   let width = 0;
   const targetWidth = maxLen - 1;
   for (const char of firstLine) {
@@ -118,17 +118,17 @@ type PickerProps = {
     },
   ) => void;
 };
-type PickerSelection = number | 'full' | 'always';
+type PickerSelection = number | "full" | "always";
 function CopyPicker(t0) {
   const $ = _c(33);
   const { fullText, codeBlocks, messageAge, onDone } = t0;
-  const focusedRef = useRef('full');
-  const t1 = `${fullText.length} chars, ${countCharInString(fullText, '\n') + 1} lines`;
+  const focusedRef = useRef("full");
+  const t1 = `${fullText.length} chars, ${countCharInString(fullText, "\n") + 1} lines`;
   let t2;
   if ($[0] !== t1) {
     t2 = {
-      label: 'Full response',
-      value: 'full' as const,
+      label: "Full response",
+      value: "full" as const,
       description: t1,
     };
     $[0] = t1;
@@ -139,11 +139,11 @@ function CopyPicker(t0) {
   let t3;
   if ($[2] !== codeBlocks || $[3] !== t2) {
     let t4;
-    if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
       t4 = {
-        label: 'Always copy full response',
-        value: 'always' as const,
-        description: 'Skip this picker in the future (revert via /config)',
+        label: "Always copy full response",
+        value: "always" as const,
+        description: "Skip this picker in the future (revert via /config)",
       };
       $[5] = t4;
     } else {
@@ -160,7 +160,7 @@ function CopyPicker(t0) {
   let t4;
   if ($[6] !== codeBlocks || $[7] !== fullText) {
     t4 = function getSelectionContent(selected) {
-      if (selected === 'full' || selected === 'always') {
+      if (selected === "full" || selected === "always") {
         return {
           text: fullText,
           filename: RESPONSE_FILENAME,
@@ -189,11 +189,11 @@ function CopyPicker(t0) {
   ) {
     t5 = async function handleSelect(selected_0) {
       const content = getSelectionContent(selected_0);
-      if (selected_0 === 'always') {
+      if (selected_0 === "always") {
         if (!getGlobalConfig().copyFullResponse) {
           saveGlobalConfig(_temp2);
         }
-        logEvent('tengu_copy', {
+        logEvent("tengu_copy", {
           block_count: codeBlocks.length,
           always: true,
           message_age: messageAge,
@@ -202,7 +202,7 @@ function CopyPicker(t0) {
         onDone(`${result}\nPreference saved. Use /config to change copyFullResponse`);
         return;
       }
-      logEvent('tengu_copy', {
+      logEvent("tengu_copy", {
         selected_block: content.blockIndex,
         block_count: codeBlocks.length,
         message_age: messageAge,
@@ -228,7 +228,7 @@ function CopyPicker(t0) {
   ) {
     const handleWrite = async function handleWrite(selected_1) {
       const content_0 = getSelectionContent(selected_1);
-      logEvent('tengu_copy', {
+      logEvent("tengu_copy", {
         selected_block: content_0.blockIndex,
         block_count: codeBlocks.length,
         message_age: messageAge,
@@ -243,7 +243,7 @@ function CopyPicker(t0) {
       }
     };
     t6 = function handleKeyDown(e_0) {
-      if (e_0.key === 'w') {
+      if (e_0.key === "w") {
         e_0.preventDefault();
         handleWrite(focusedRef.current);
       }
@@ -258,14 +258,14 @@ function CopyPicker(t0) {
   }
   const handleKeyDown = t6;
   let t7;
-  if ($[19] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[19] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = <Text dimColor={true}>Select content to copy:</Text>;
     $[19] = t7;
   } else {
     t7 = $[19];
   }
   let t8;
-  if ($[20] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[20] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (value) => {
       focusedRef.current = value;
     };
@@ -286,8 +286,8 @@ function CopyPicker(t0) {
   let t10;
   if ($[23] !== onDone) {
     t10 = () => {
-      onDone('Copy cancelled', {
-        display: 'system',
+      onDone("Copy cancelled", {
+        display: "system",
       });
     };
     $[23] = onDone;
@@ -308,7 +308,7 @@ function CopyPicker(t0) {
     t11 = $[28];
   }
   let t12;
-  if ($[29] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[29] === Symbol.for("react.memo_cache_sentinel")) {
     t12 = (
       <Text dimColor={true}>
         <Byline>
@@ -348,19 +348,19 @@ function _temp2(c) {
   };
 }
 function _temp(block, index) {
-  const blockLines = countCharInString(block.code, '\n') + 1;
+  const blockLines = countCharInString(block.code, "\n") + 1;
   return {
     label: truncateLine(block.code, 60),
     value: index,
     description:
-      [block.lang, blockLines > 1 ? `${blockLines} lines` : undefined].filter(Boolean).join(', ') ||
+      [block.lang, blockLines > 1 ? `${blockLines} lines` : undefined].filter(Boolean).join(", ") ||
       undefined,
   };
 }
 export const call: LocalJSXCommandCall = async (onDone, context, args) => {
   const texts = collectRecentAssistantTexts(context.messages);
   if (texts.length === 0) {
-    onDone('No assistant message to copy');
+    onDone("No assistant message to copy");
     return null;
   }
 
@@ -375,7 +375,7 @@ export const call: LocalJSXCommandCall = async (onDone, context, args) => {
     }
     if (n > texts.length) {
       onDone(
-        `Only ${texts.length} assistant ${texts.length === 1 ? 'message' : 'messages'} available to copy`,
+        `Only ${texts.length} assistant ${texts.length === 1 ? "message" : "messages"} available to copy`,
       );
       return null;
     }
@@ -385,7 +385,7 @@ export const call: LocalJSXCommandCall = async (onDone, context, args) => {
   const codeBlocks = extractCodeBlocks(text);
   const config = getGlobalConfig();
   if (codeBlocks.length === 0 || config.copyFullResponse) {
-    logEvent('tengu_copy', {
+    logEvent("tengu_copy", {
       always: config.copyFullResponse,
       block_count: codeBlocks.length,
       message_age: age,

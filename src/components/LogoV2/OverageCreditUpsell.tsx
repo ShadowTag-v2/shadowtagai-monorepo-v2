@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../../ink.js';
-import { logEvent } from '../../services/analytics/index.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../../ink.js";
+import { logEvent } from "../../services/analytics/index.js";
 import {
   formatGrantAmount,
   getCachedOverageCreditGrant,
   refreshOverageCreditGrantCache,
-} from '../../services/api/overageCreditGrant.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
-import { truncate } from '../../utils/format.js';
-import type { FeedConfig } from './Feed.js';
+} from "../../services/api/overageCreditGrant.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
+import { truncate } from "../../utils/format.js";
+import type { FeedConfig } from "./Feed.js";
 
 const MAX_IMPRESSIONS = 3;
 
@@ -66,7 +66,7 @@ export function incrementOverageCreditUpsellSeenCount(): void {
       overageCreditUpsellSeenCount: newCount,
     };
   });
-  logEvent('tengu_overage_credit_upsell_shown', {
+  logEvent("tengu_overage_credit_upsell_shown", {
     seen_count: newCount,
   });
 }
@@ -78,7 +78,7 @@ function getUsageText(amount: string): string {
 
 // Copy from "OC & Bulk Overages copy" doc (#4 — CLI Welcome screen).
 // Char budgets: title ≤19, subtitle ≤48.
-const FEED_SUBTITLE = 'On us. Works on third-party apps · /extra-usage';
+const FEED_SUBTITLE = "On us. Works on third-party apps · /extra-usage";
 function getFeedTitle(amount: string): string {
   return `${amount} in extra usage`;
 }
@@ -92,7 +92,7 @@ export function OverageCreditUpsell(t0) {
   let t1;
   let t2;
   if ($[0] !== maxWidth || $[1] !== twoLine) {
-    t2 = Symbol.for('react.early_return_sentinel');
+    t2 = Symbol.for("react.early_return_sentinel");
     bb0: {
       const info = getCachedOverageCreditGrant();
       if (!info) {
@@ -148,7 +148,7 @@ export function OverageCreditUpsell(t0) {
     t1 = $[2];
     t2 = $[3];
   }
-  if (t2 !== Symbol.for('react.early_return_sentinel')) {
+  if (t2 !== Symbol.for("react.early_return_sentinel")) {
     return t2;
   }
   return t1;
@@ -164,7 +164,7 @@ export function OverageCreditUpsell(t0) {
 export function createOverageCreditFeed(): FeedConfig {
   const info = getCachedOverageCreditGrant();
   const amount = info ? formatGrantAmount(info) : null;
-  const title = amount ? getFeedTitle(amount) : 'extra usage credit';
+  const title = amount ? getFeedTitle(amount) : "extra usage credit";
   return {
     title,
     lines: [],

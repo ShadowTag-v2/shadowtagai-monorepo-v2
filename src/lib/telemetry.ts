@@ -30,7 +30,7 @@ export type VerifiedSafeMetadata = never;
 /**
  * Event severity levels aligned with diagnostic tracking patterns.
  */
-export type TelemetryEventSeverity = 'info' | 'warn' | 'error' | 'critical';
+export type TelemetryEventSeverity = "info" | "warn" | "error" | "critical";
 
 /**
  * Core event metadata — only primitives allowed to prevent accidental PII leakage.
@@ -49,7 +49,7 @@ export interface TelemetryEvent {
   timestamp: number;
   sessionId: string;
   severity: TelemetryEventSeverity;
-  source: 'client' | 'server' | 'edge';
+  source: "client" | "server" | "edge";
 }
 
 /**
@@ -73,7 +73,7 @@ interface QueuedEvent {
 
 const eventQueue: QueuedEvent[] = [];
 let sink: TelemetrySink | null = null;
-let sessionId: string = '';
+let sessionId: string = "";
 
 // Maximum queue depth before we start dropping oldest events
 const MAX_QUEUE_DEPTH = 500;
@@ -90,7 +90,7 @@ const MAX_QUEUE_DEPTH = 500;
 export function stripPiiFields<V>(metadata: Record<string, V>): Record<string, V> {
   let result: Record<string, V> | undefined;
   for (const key in metadata) {
-    if (key.startsWith('_PII_')) {
+    if (key.startsWith("_PII_")) {
       if (result === undefined) {
         result = { ...metadata };
       }
@@ -109,10 +109,10 @@ export function stripPiiFields<V>(metadata: Record<string, V>): Record<string, V
  * High-frequency events (mousemove, scroll) are sampled to reduce volume.
  */
 const SAMPLING_CONFIG: Record<string, number> = {
-  'checkout.field_focus': 0.1, // 10% sampling
-  'checkout.field_blur': 0.1,
-  'ui.scroll': 0.01, // 1% sampling
-  'ui.resize': 0.05,
+  "checkout.field_focus": 0.1, // 10% sampling
+  "checkout.field_blur": 0.1,
+  "ui.scroll": 0.01, // 1% sampling
+  "ui.resize": 0.05,
 };
 
 /**
@@ -138,8 +138,8 @@ export function shouldSampleEvent(eventName: string): number | null {
 export function getSessionId(): string {
   if (sessionId) return sessionId;
 
-  if (typeof window !== 'undefined') {
-    const stored = sessionStorage.getItem('panopticon_session_id');
+  if (typeof window !== "undefined") {
+    const stored = sessionStorage.getItem("panopticon_session_id");
     if (stored) {
       sessionId = stored;
       return sessionId;
@@ -148,8 +148,8 @@ export function getSessionId(): string {
 
   sessionId = crypto.randomUUID();
 
-  if (typeof window !== 'undefined') {
-    sessionStorage.setItem('panopticon_session_id', sessionId);
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem("panopticon_session_id", sessionId);
   }
 
   return sessionId;
@@ -199,8 +199,8 @@ export function attachTelemetrySink(newSink: TelemetrySink): void {
 export function logEvent(
   eventName: string,
   metadata: TelemetryMetadata = {},
-  severity: TelemetryEventSeverity = 'info',
-  source: TelemetryEvent['source'] = 'client',
+  severity: TelemetryEventSeverity = "info",
+  source: TelemetryEvent["source"] = "client",
 ): void {
   // Sampling gate
   const sampleResult = shouldSampleEvent(eventName);
@@ -237,8 +237,8 @@ export function logEvent(
 export async function logEventAsync(
   eventName: string,
   metadata: TelemetryMetadata = {},
-  severity: TelemetryEventSeverity = 'info',
-  source: TelemetryEvent['source'] = 'client',
+  severity: TelemetryEventSeverity = "info",
+  source: TelemetryEvent["source"] = "client",
 ): Promise<void> {
   const sampleResult = shouldSampleEvent(eventName);
   if (sampleResult === 0) return;
@@ -281,9 +281,9 @@ export async function flushTelemetry(): Promise<void> {
  */
 export function isTelemetryDisabled(): boolean {
   return (
-    process.env.NODE_ENV === 'test' ||
-    process.env.DISABLE_TELEMETRY === '1' ||
-    process.env.DISABLE_ERROR_REPORTING === '1'
+    process.env.NODE_ENV === "test" ||
+    process.env.DISABLE_TELEMETRY === "1" ||
+    process.env.DISABLE_ERROR_REPORTING === "1"
   );
 }
 
@@ -293,30 +293,30 @@ export function isTelemetryDisabled(): boolean {
 
 export const TELEMETRY_EVENTS = {
   // Checkout flow
-  CHECKOUT_STARTED: 'checkout.started',
-  CHECKOUT_SUBMITTED: 'checkout.submitted',
-  CHECKOUT_SUCCESS: 'checkout.success',
-  CHECKOUT_ERROR: 'checkout.error',
-  CHECKOUT_DUPLICATE_BLOCKED: 'checkout.duplicate_blocked',
+  CHECKOUT_STARTED: "checkout.started",
+  CHECKOUT_SUBMITTED: "checkout.submitted",
+  CHECKOUT_SUCCESS: "checkout.success",
+  CHECKOUT_ERROR: "checkout.error",
+  CHECKOUT_DUPLICATE_BLOCKED: "checkout.duplicate_blocked",
 
   // Idempotency
-  IDEMPOTENCY_LOCK_ACQUIRED: 'idempotency.lock_acquired',
-  IDEMPOTENCY_LOCK_REJECTED: 'idempotency.lock_rejected',
-  IDEMPOTENCY_LOCK_RELEASED: 'idempotency.lock_released',
+  IDEMPOTENCY_LOCK_ACQUIRED: "idempotency.lock_acquired",
+  IDEMPOTENCY_LOCK_REJECTED: "idempotency.lock_rejected",
+  IDEMPOTENCY_LOCK_RELEASED: "idempotency.lock_released",
 
   // Rate limiting
-  RATE_LIMIT_HIT: 'rate_limit.hit',
-  RATE_LIMIT_BYPASS: 'rate_limit.bypass_attempt',
+  RATE_LIMIT_HIT: "rate_limit.hit",
+  RATE_LIMIT_BYPASS: "rate_limit.bypass_attempt",
 
   // Page lifecycle
-  PAGE_VIEW: 'page.view',
-  PAGE_UNLOAD: 'page.unload',
-  PAGE_VISIBILITY_CHANGE: 'page.visibility_change',
+  PAGE_VIEW: "page.view",
+  PAGE_UNLOAD: "page.unload",
+  PAGE_VISIBILITY_CHANGE: "page.visibility_change",
 
   // Error tracking
-  UNHANDLED_ERROR: 'error.unhandled',
-  ACTION_ERROR: 'error.action',
-  NETWORK_ERROR: 'error.network',
+  UNHANDLED_ERROR: "error.unhandled",
+  ACTION_ERROR: "error.action",
+  NETWORK_ERROR: "error.network",
 } as const;
 
 /**
@@ -326,5 +326,5 @@ export const TELEMETRY_EVENTS = {
 export function _resetForTesting(): void {
   sink = null;
   eventQueue.length = 0;
-  sessionId = '';
+  sessionId = "";
 }

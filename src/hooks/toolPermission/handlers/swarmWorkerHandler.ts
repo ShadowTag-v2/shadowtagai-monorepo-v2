@@ -1,19 +1,19 @@
-import { feature } from 'bun:bundle';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import type { PendingClassifierCheck } from '../../../types/permissions.js';
-import { isAgentSwarmsEnabled } from '../../../utils/agentSwarmsEnabled.js';
-import { toError } from '../../../utils/errors.js';
-import { logError } from '../../../utils/log.js';
-import type { PermissionDecision } from '../../../utils/permissions/PermissionResult.js';
-import type { PermissionUpdate } from '../../../utils/permissions/PermissionUpdateSchema.js';
+import { feature } from "bun:bundle";
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import type { PendingClassifierCheck } from "../../../types/permissions.js";
+import { isAgentSwarmsEnabled } from "../../../utils/agentSwarmsEnabled.js";
+import { toError } from "../../../utils/errors.js";
+import { logError } from "../../../utils/log.js";
+import type { PermissionDecision } from "../../../utils/permissions/PermissionResult.js";
+import type { PermissionUpdate } from "../../../utils/permissions/PermissionUpdateSchema.js";
 import {
   createPermissionRequest,
   isSwarmWorker,
   sendPermissionRequestViaMailbox,
-} from '../../../utils/swarm/permissionSync.js';
-import { registerPermissionCallback } from '../../useSwarmPermissionPoller.js';
-import type { PermissionContext } from '../PermissionContext.js';
-import { createResolveOnce } from '../PermissionContext.js';
+} from "../../../utils/swarm/permissionSync.js";
+import { registerPermissionCallback } from "../../useSwarmPermissionPoller.js";
+import type { PermissionContext } from "../PermissionContext.js";
+import { createResolveOnce } from "../PermissionContext.js";
 
 type SwarmWorkerPermissionParams = {
   ctx: PermissionContext;
@@ -49,7 +49,7 @@ async function handleSwarmWorkerPermission(
   // For bash commands, try classifier auto-approval before forwarding to
   // the leader. Agents await the classifier result (rather than racing it
   // against user interaction like the main agent).
-  const classifierResult = feature('BASH_CLASSIFIER')
+  const classifierResult = feature("BASH_CLASSIFIER")
     ? await ctx.tryClassifier?.(params.pendingClassifierCheck, updatedInput)
     : null;
   if (classifierResult) {
@@ -109,8 +109,8 @@ async function handleSwarmWorkerPermission(
           clearPendingRequest();
 
           ctx.logDecision({
-            decision: 'reject',
-            source: { type: 'user_reject', hasFeedback: !!feedback },
+            decision: "reject",
+            source: { type: "user_reject", hasFeedback: !!feedback },
           });
 
           resolveOnce(ctx.cancelAndAbort(feedback, undefined, contentBlocks));
@@ -133,7 +133,7 @@ async function handleSwarmWorkerPermission(
       // If the abort signal fires while waiting for the leader response,
       // resolve the promise with a cancel decision so it does not hang.
       ctx.toolUseContext.abortController.signal.addEventListener(
-        'abort',
+        "abort",
         () => {
           if (!claim()) return;
           clearPendingRequest();

@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
 import {
   getAllOutputStyles,
   OUTPUT_STYLE_CONFIG,
   type OutputStyleConfig,
-} from '../constants/outputStyles.js';
-import { Box, Text } from '../ink.js';
-import type { OutputStyle } from '../utils/config.js';
-import { getCwd } from '../utils/cwd.js';
-import type { OptionWithDescription } from './CustomSelect/select.js';
-import { Select } from './CustomSelect/select.js';
-import { Dialog } from './design-system/Dialog.js';
+} from "../constants/outputStyles.js";
+import { Box, Text } from "../ink.js";
+import type { OutputStyle } from "../utils/config.js";
+import { getCwd } from "../utils/cwd.js";
+import type { OptionWithDescription } from "./CustomSelect/select.js";
+import { Select } from "./CustomSelect/select.js";
+import { Dialog } from "./design-system/Dialog.js";
 
-const DEFAULT_OUTPUT_STYLE_LABEL = 'Default';
+const DEFAULT_OUTPUT_STYLE_LABEL = "Default";
 const DEFAULT_OUTPUT_STYLE_DESCRIPTION =
-  'Claude completes coding tasks efficiently and provides concise responses';
+  "Claude completes coding tasks efficiently and provides concise responses";
 function mapConfigsToOptions(styles: {
   [styleName: string]: OutputStyleConfig | null;
 }): OptionWithDescription[] {
@@ -34,7 +34,7 @@ export function OutputStylePicker(t0) {
   const $ = _c(16);
   const { initialStyle, onComplete, onCancel, isStandaloneCommand } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = [];
     $[0] = t1;
   } else {
@@ -44,7 +44,7 @@ export function OutputStylePicker(t0) {
   const [isLoading, setIsLoading] = useState(true);
   let t2;
   let t3;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => {
       getAllOutputStyles(getCwd())
         .then((allStyles) => {
@@ -81,7 +81,7 @@ export function OutputStylePicker(t0) {
   const t5 = !isStandaloneCommand;
   const t6 = !isStandaloneCommand;
   let t7;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Box marginTop={1}>
         <Text dimColor={true}>This changes how Claude Code communicates with you</Text>

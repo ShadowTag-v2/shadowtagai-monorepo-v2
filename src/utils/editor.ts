@@ -1,9 +1,9 @@
-import { type SpawnOptions, type SpawnSyncOptions, spawn, spawnSync } from 'node:child_process';
-import { basename } from 'node:path';
-import memoize from 'lodash-es/memoize.js';
-import instances from '../ink/instances.js';
-import { logForDebugging } from './debug.js';
-import { whichSync } from './which.js';
+import { type SpawnOptions, type SpawnSyncOptions, spawn, spawnSync } from "node:child_process";
+import { basename } from "node:path";
+import memoize from "lodash-es/memoize.js";
+import instances from "../ink/instances.js";
+import { logForDebugging } from "./debug.js";
+import { whichSync } from "./which.js";
 
 function isCommandAvailable(command: string): boolean {
   return !!whichSync(command);
@@ -13,15 +13,15 @@ function isCommandAvailable(command: string): boolean {
 // without fighting the TUI for stdin. VS Code forks (cursor, windsurf, codium)
 // are listed explicitly since none contain 'code' as a substring.
 const GUI_EDITORS = [
-  'code',
-  'cursor',
-  'windsurf',
-  'codium',
-  'subl',
-  'atom',
-  'gedit',
-  'notepad++',
-  'notepad',
+  "code",
+  "cursor",
+  "windsurf",
+  "codium",
+  "subl",
+  "atom",
+  "gedit",
+  "notepad++",
+  "notepad",
 ];
 
 // Editors that accept +N as a goto-line argument. The Windows default
@@ -29,7 +29,7 @@ const GUI_EDITORS = [
 const PLUS_N_EDITORS = /\b(vi|vim|nvim|nano|emacs|pico|micro|helix|hx)\b/;
 
 // VS Code and forks use -g file:line. subl uses bare file:line (no -g).
-const VSCODE_FAMILY = new Set(['code', 'cursor', 'windsurf', 'codium']);
+const VSCODE_FAMILY = new Set(["code", "cursor", "windsurf", "codium"]);
 
 /**
  * Classify the editor as GUI or not. Returns the matched GUI family name
@@ -42,7 +42,7 @@ const VSCODE_FAMILY = new Set(['code', 'cursor', 'windsurf', 'codium']);
  * 'code' → matches.
  */
 export function classifyGuiEditor(editor: string): string | undefined {
-  const base = basename(editor.split(' ')[0] ?? '');
+  const base = basename(editor.split(" ")[0] ?? "");
   return GUI_EDITORS.find((g) => base.includes(g));
 }
 
@@ -52,8 +52,8 @@ export function classifyGuiEditor(editor: string): string | undefined {
  */
 function guiGotoArgv(guiFamily: string, filePath: string, line: number | undefined): string[] {
   if (!line) return [filePath];
-  if (VSCODE_FAMILY.has(guiFamily)) return ['-g', `${filePath}:${line}`];
-  if (guiFamily === 'subl') return [`${filePath}:${line}`];
+  if (VSCODE_FAMILY.has(guiFamily)) return ["-g", `${filePath}:${line}`];
+  if (guiFamily === "subl") return [`${filePath}:${line}`];
   return [filePath];
 }
 
@@ -76,21 +76,21 @@ export function openFileInExternalEditor(filePath: string, line?: number): boole
   // Spawn the user's actual binary (preserves code-insiders, abs paths, etc.).
   // Split into binary + extra args so multi-word values like 'start /wait
   // notepad' or 'code --wait' propagate all tokens to spawn.
-  const parts = editor.split(' ');
+  const parts = editor.split(" ");
   const base = parts[0] ?? editor;
   const editorArgs = parts.slice(1);
   const guiFamily = classifyGuiEditor(editor);
 
   if (guiFamily) {
     const gotoArgv = guiGotoArgv(guiFamily, filePath, line);
-    const detachedOpts: SpawnOptions = { detached: true, stdio: 'ignore' };
+    const detachedOpts: SpawnOptions = { detached: true, stdio: "ignore" };
     let child;
-    if (process.platform === 'win32') {
+    if (process.platform === "win32") {
       // shell: true on win32 so code.cmd / cursor.cmd / windsurf.cmd resolve —
       // CreateProcess can't execute .cmd/.bat directly. Assemble quoted command
       // string; cmd.exe doesn't expand $() or backticks inside double quotes.
       // Quote each arg so paths with spaces survive the shell join.
-      const gotoStr = gotoArgv.map((a) => `"${a}"`).join(' ');
+      const gotoStr = gotoArgv.map((a) => `"${a}"`).join(" ");
       child = spawn(`${editor} ${gotoStr}`, { ...detachedOpts, shell: true });
     } else {
       // POSIX: argv array with no shell — injection-safe. shell: true would
@@ -100,7 +100,7 @@ export function openFileInExternalEditor(filePath: string, line?: number): boole
     }
     // spawn() emits ENOENT asynchronously. ENOENT on $VISUAL/$EDITOR is a
     // user-config error, not an internal bug — don't pollute error telemetry.
-    child.on('error', (e) => logForDebugging(`editor spawn failed: ${e}`, { level: 'error' }));
+    child.on("error", (e) => logForDebugging(`editor spawn failed: ${e}`, { level: "error" }));
     child.unref();
     return true;
   }
@@ -115,14 +115,14 @@ export function openFileInExternalEditor(filePath: string, line?: number): boole
   const useGotoLine = line && PLUS_N_EDITORS.test(basename(base));
   inkInstance.enterAlternateScreen();
   try {
-    const syncOpts: SpawnSyncOptions = { stdio: 'inherit' };
+    const syncOpts: SpawnSyncOptions = { stdio: "inherit" };
     let result;
-    if (process.platform === 'win32') {
+    if (process.platform === "win32") {
       // On Windows use shell: true so cmd.exe builtins like `start` resolve.
       // shell: true joins args unquoted, so assemble the command string with
       // explicit quoting ourselves (matching promptEditor.ts:74). spawnSync
       // returns errors in .error rather than throwing.
-      const lineArg = useGotoLine ? `+${line} ` : '';
+      const lineArg = useGotoLine ? `+${line} ` : "";
       result = spawnSync(`${editor} ${lineArg}"${filePath}"`, {
         ...syncOpts,
         shell: true,
@@ -134,7 +134,7 @@ export function openFileInExternalEditor(filePath: string, line?: number): boole
     }
     if (result.error) {
       logForDebugging(`editor spawn failed: ${result.error}`, {
-        level: 'error',
+        level: "error",
       });
       return false;
     }
@@ -156,11 +156,11 @@ export const getExternalEditor = memoize((): string | undefined => {
 
   // `isCommandAvailable` breaks the claude process' stdin on Windows
   // as a bandaid, we skip it
-  if (process.platform === 'win32') {
-    return 'start /wait notepad';
+  if (process.platform === "win32") {
+    return "start /wait notepad";
   }
 
   // Search for available editors in order of preference
-  const editors = ['code', 'vi', 'nano'];
+  const editors = ["code", "vi", "nano"];
   return editors.find((command) => isCommandAvailable(command));
 });

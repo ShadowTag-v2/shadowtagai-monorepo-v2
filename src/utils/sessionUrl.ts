@@ -1,5 +1,5 @@
-import { randomUUID, type UUID } from 'node:crypto';
-import { validateUuid } from './uuid.js';
+import { randomUUID, type UUID } from "node:crypto";
+import { validateUuid } from "./uuid.js";
 
 export type ParsedSessionUrl = {
   sessionId: UUID;
@@ -20,7 +20,7 @@ export type ParsedSessionUrl = {
 export function parseSessionIdentifier(resumeIdentifier: string): ParsedSessionUrl | null {
   // Check for JSONL file path before URL parsing, since Windows absolute
   // paths (e.g., C:\path\file.jsonl) are parsed as valid URLs with C: as protocol
-  if (resumeIdentifier.toLowerCase().endsWith('.jsonl')) {
+  if (resumeIdentifier.toLowerCase().endsWith(".jsonl")) {
     return {
       sessionId: randomUUID() as UUID,
       ingressUrl: null,

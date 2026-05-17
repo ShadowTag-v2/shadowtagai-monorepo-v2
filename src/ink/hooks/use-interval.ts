@@ -1,5 +1,5 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { ClockContext } from '../components/ClockContext.js';
+import { useContext, useEffect, useRef, useState } from "react";
+import { ClockContext } from "../components/ClockContext.js";
 
 /**
  * Returns the clock time, updating at the given interval.

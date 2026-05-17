@@ -1,10 +1,10 @@
-import { pathToFileURL } from 'node:url';
-import { c as _c } from 'react/compiler-runtime';
-import Link from '../../ink/components/Link.js';
-import { supportsHyperlinks } from '../../ink/supports-hyperlinks.js';
-import { Box, Text } from '../../ink.js';
-import { getStoredImagePath } from '../../utils/imageStore.js';
-import { MessageResponse } from '../MessageResponse.js';
+import { pathToFileURL } from "node:url";
+import { c as _c } from "react/compiler-runtime";
+import Link from "../../ink/components/Link.js";
+import { supportsHyperlinks } from "../../ink/supports-hyperlinks.js";
+import { Box, Text } from "../../ink.js";
+import { getStoredImagePath } from "../../utils/imageStore.js";
+import { MessageResponse } from "../MessageResponse.js";
 
 type Props = {
   imageId?: number;
@@ -20,7 +20,7 @@ type Props = {
 export function UserImageMessage(t0) {
   const $ = _c(7);
   const { imageId, addMargin } = t0;
-  const label = imageId ? `[Image #${imageId}]` : '[Image]';
+  const label = imageId ? `[Image #${imageId}]` : "[Image]";
   let t1;
   if ($[0] !== imageId || $[1] !== label) {
     const imagePath = imageId ? getStoredImagePath(imageId) : null;

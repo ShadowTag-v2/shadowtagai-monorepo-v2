@@ -1,20 +1,20 @@
-import { type ChildProcess, spawn } from 'node:child_process';
+import { type ChildProcess, spawn } from "node:child_process";
 import {
   createMessageConnection,
   type MessageConnection,
   StreamMessageReader,
   StreamMessageWriter,
   Trace,
-} from 'vscode-jsonrpc/node.js';
+} from "vscode-jsonrpc/node.js";
 import type {
   InitializeParams,
   InitializeResult,
   ServerCapabilities,
-} from 'vscode-languageserver-protocol';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { subprocessEnv } from '../../utils/subprocessEnv.js';
+} from "vscode-languageserver-protocol";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { subprocessEnv } from "../../utils/subprocessEnv.js";
 /**
  * LSP client interface.
  */
@@ -93,7 +93,7 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
       try {
         // 1. Spawn LSP server process
         process = spawn(command, args, {
-          stdio: ['pipe', 'pipe', 'pipe'],
+          stdio: ["pipe", "pipe", "pipe"],
           env: { ...subprocessEnv(), ...options?.env },
           cwd: options?.cwd,
           // Prevent visible console window on Windows (no-op on other platforms)
@@ -101,7 +101,7 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
         });
 
         if (!process.stdout || !process.stdin) {
-          throw new Error('LSP server process stdio not available');
+          throw new Error("LSP server process stdio not available");
         }
 
         // 1.5. Wait for process to successfully spawn before using streams
@@ -120,16 +120,16 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
             reject(error);
           };
           const cleanup = (): void => {
-            spawnedProcess.removeListener('spawn', onSpawn);
-            spawnedProcess.removeListener('error', onError);
+            spawnedProcess.removeListener("spawn", onSpawn);
+            spawnedProcess.removeListener("error", onError);
           };
-          spawnedProcess.once('spawn', onSpawn);
-          spawnedProcess.once('error', onError);
+          spawnedProcess.once("spawn", onSpawn);
+          spawnedProcess.once("error", onError);
         });
 
         // Capture stderr for server diagnostics and errors
         if (process.stderr) {
-          process.stderr.on('data', (data: Buffer) => {
+          process.stderr.on("data", (data: Buffer) => {
             const output = data.toString().trim();
             if (output) {
               logForDebugging(`[LSP SERVER ${serverName}] ${output}`);
@@ -138,7 +138,7 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
         }
 
         // Handle process errors (after successful spawn, e.g., crash during operation)
-        process.on('error', (error) => {
+        process.on("error", (error) => {
           if (!isStopping) {
             startFailed = true;
             startError = error;
@@ -146,7 +146,7 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
           }
         });
 
-        process.on('exit', (code, _signal) => {
+        process.on("exit", (code, _signal) => {
           if (code !== 0 && code !== null && !isStopping) {
             isInitialized = false;
             startFailed = false;
@@ -159,7 +159,7 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
 
         // Handle stdin stream errors to prevent unhandled promise rejections
         // when the LSP server process exits before we finish writing
-        process.stdin.on('error', (error: Error) => {
+        process.stdin.on("error", (error: Error) => {
           if (!isStopping) {
             logForDebugging(`LSP server ${serverName} stdin error: ${error.message}`);
           }
@@ -232,18 +232,18 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
 
     async initialize(params: InitializeParams): Promise<InitializeResult> {
       if (!connection) {
-        throw new Error('LSP client not started');
+        throw new Error("LSP client not started");
       }
 
       checkStartFailed();
 
       try {
-        const result: InitializeResult = await connection.sendRequest('initialize', params);
+        const result: InitializeResult = await connection.sendRequest("initialize", params);
 
         capabilities = result.capabilities;
 
         // Send initialized notification
-        await connection.sendNotification('initialized', {});
+        await connection.sendNotification("initialized", {});
 
         isInitialized = true;
         logForDebugging(`LSP server ${serverName} initialized`);
@@ -258,13 +258,13 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
 
     async sendRequest<TResult>(method: string, params: unknown): Promise<TResult> {
       if (!connection) {
-        throw new Error('LSP client not started');
+        throw new Error("LSP client not started");
       }
 
       checkStartFailed();
 
       if (!isInitialized) {
-        throw new Error('LSP server not initialized');
+        throw new Error("LSP server not initialized");
       }
 
       try {
@@ -278,7 +278,7 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
 
     async sendNotification(method: string, params: unknown): Promise<void> {
       if (!connection) {
-        throw new Error('LSP client not started');
+        throw new Error("LSP client not started");
       }
 
       checkStartFailed();
@@ -340,8 +340,8 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
       try {
         if (connection) {
           // Try to send shutdown request and exit notification
-          await connection.sendRequest('shutdown', {});
-          await connection.sendNotification('exit', {});
+          await connection.sendRequest("shutdown", {});
+          await connection.sendNotification("exit", {});
         }
       } catch (error) {
         const err = error as Error;
@@ -362,13 +362,13 @@ export function createLSPClient(serverName: string, onCrash?: (error: Error) => 
 
         if (process) {
           // Remove event listeners to prevent memory leaks
-          process.removeAllListeners('error');
-          process.removeAllListeners('exit');
+          process.removeAllListeners("error");
+          process.removeAllListeners("exit");
           if (process.stdin) {
-            process.stdin.removeAllListeners('error');
+            process.stdin.removeAllListeners("error");
           }
           if (process.stderr) {
-            process.stderr.removeAllListeners('data');
+            process.stderr.removeAllListeners("data");
           }
 
           try {

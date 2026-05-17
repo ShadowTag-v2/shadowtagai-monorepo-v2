@@ -1,28 +1,28 @@
-import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Text, useTheme } from '../../../ink.js';
-import { useKeybinding } from '../../../keybindings/useKeybinding.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../../services/analytics/growthbook.js';
+import type React from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Box, Text, useTheme } from "../../../ink.js";
+import { useKeybinding } from "../../../keybindings/useKeybinding.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../../services/analytics/growthbook.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../../services/analytics/index.js';
-import { sanitizeToolNameForAnalytics } from '../../../services/analytics/metadata.js';
-import { getDestructiveCommandWarning } from '../../../tools/PowerShellTool/destructiveCommandWarning.js';
-import { PowerShellTool } from '../../../tools/PowerShellTool/PowerShellTool.js';
-import { isAllowlistedCommand } from '../../../tools/PowerShellTool/readOnlyValidation.js';
-import type { PermissionUpdate } from '../../../utils/permissions/PermissionUpdateSchema.js';
-import { getCompoundCommandPrefixesStatic } from '../../../utils/powershell/staticPrefix.js';
-import { Select } from '../../CustomSelect/select.js';
-import { type UnaryEvent, usePermissionRequestLogging } from '../hooks.js';
-import { PermissionDecisionDebugInfo } from '../PermissionDecisionDebugInfo.js';
-import { PermissionDialog } from '../PermissionDialog.js';
-import { PermissionExplainerContent, usePermissionExplainerUI } from '../PermissionExplanation.js';
-import type { PermissionRequestProps } from '../PermissionRequest.js';
-import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js';
-import { useShellPermissionFeedback } from '../useShellPermissionFeedback.js';
-import { logUnaryPermissionEvent } from '../utils.js';
-import { powershellToolUseOptions } from './powershellToolUseOptions.js';
+} from "../../../services/analytics/index.js";
+import { sanitizeToolNameForAnalytics } from "../../../services/analytics/metadata.js";
+import { getDestructiveCommandWarning } from "../../../tools/PowerShellTool/destructiveCommandWarning.js";
+import { PowerShellTool } from "../../../tools/PowerShellTool/PowerShellTool.js";
+import { isAllowlistedCommand } from "../../../tools/PowerShellTool/readOnlyValidation.js";
+import type { PermissionUpdate } from "../../../utils/permissions/PermissionUpdateSchema.js";
+import { getCompoundCommandPrefixesStatic } from "../../../utils/powershell/staticPrefix.js";
+import { Select } from "../../CustomSelect/select.js";
+import { type UnaryEvent, usePermissionRequestLogging } from "../hooks.js";
+import { PermissionDecisionDebugInfo } from "../PermissionDecisionDebugInfo.js";
+import { PermissionDialog } from "../PermissionDialog.js";
+import { PermissionExplainerContent, usePermissionExplainerUI } from "../PermissionExplanation.js";
+import type { PermissionRequestProps } from "../PermissionRequest.js";
+import { PermissionRuleExplanation } from "../PermissionRuleExplanation.js";
+import { useShellPermissionFeedback } from "../useShellPermissionFeedback.js";
+import { logUnaryPermissionEvent } from "../utils.js";
+import { powershellToolUseOptions } from "./powershellToolUseOptions.js";
 export function PowerShellPermissionRequest(props: PermissionRequestProps): React.ReactNode {
   const { toolUseConfirm, toolUseContext, onDone, onReject, workerBadge } = props;
   const { command, description } = PowerShellTool.inputSchema.parse(toolUseConfirm.input);
@@ -53,7 +53,7 @@ export function PowerShellPermissionRequest(props: PermissionRequestProps): Reac
     explainerVisible: explainerState.visible,
   });
   const destructiveWarning = getFeatureValue_CACHED_MAY_BE_STALE(
-    'tengu_destructive_command_warning',
+    "tengu_destructive_command_warning",
     false,
   )
     ? getDestructiveCommandWarning(command)
@@ -70,7 +70,7 @@ export function PowerShellPermissionRequest(props: PermissionRequestProps): Reac
   // computes a prefix per subcommand, excluding subcommands that are already
   // auto-allowed (read-only).
   const [editablePrefix, setEditablePrefix] = useState<string | undefined>(
-    command.includes('\n') ? undefined : command,
+    command.includes("\n") ? undefined : command,
   );
   const hasUserEditedPrefix = useRef(false);
   useEffect(() => {
@@ -100,8 +100,8 @@ export function PowerShellPermissionRequest(props: PermissionRequestProps): Reac
   }, []);
   const unaryEvent = useMemo<UnaryEvent>(
     () => ({
-      completion_type: 'tool_use_single',
-      language_name: 'none',
+      completion_type: "tool_use_single",
+      language_name: "none",
     }),
     [],
   );
@@ -110,7 +110,7 @@ export function PowerShellPermissionRequest(props: PermissionRequestProps): Reac
     () =>
       powershellToolUseOptions({
         suggestions:
-          toolUseConfirm.permissionResult.behavior === 'ask'
+          toolUseConfirm.permissionResult.behavior === "ask"
             ? toolUseConfirm.permissionResult.suggestions
             : undefined,
         onRejectFeedbackChange: setRejectFeedback,
@@ -135,41 +135,41 @@ export function PowerShellPermissionRequest(props: PermissionRequestProps): Reac
   const handleToggleDebug = useCallback(() => {
     setShowPermissionDebug((prev) => !prev);
   }, []);
-  useKeybinding('permission:toggleDebug', handleToggleDebug, {
-    context: 'Confirmation',
+  useKeybinding("permission:toggleDebug", handleToggleDebug, {
+    context: "Confirmation",
   });
   function onSelect(value: string) {
     // Map options to numeric values for analytics (strings not allowed in logEvent)
     const optionIndex: Record<string, number> = {
       yes: 1,
-      'yes-apply-suggestions': 2,
-      'yes-prefix-edited': 2,
+      "yes-apply-suggestions": 2,
+      "yes-prefix-edited": 2,
       no: 3,
     };
-    logEvent('tengu_permission_request_option_selected', {
+    logEvent("tengu_permission_request_option_selected", {
       option_index: optionIndex[value],
       explainer_visible: explainerState.visible,
     });
     const toolNameForAnalytics = sanitizeToolNameForAnalytics(
       toolUseConfirm.tool.name,
     ) as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
-    if (value === 'yes-prefix-edited') {
-      const trimmedPrefix = (editablePrefix ?? '').trim();
-      logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
+    if (value === "yes-prefix-edited") {
+      const trimmedPrefix = (editablePrefix ?? "").trim();
+      logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "accept");
       if (!trimmedPrefix) {
         toolUseConfirm.onAllow(toolUseConfirm.input, []);
       } else {
         const prefixUpdates: PermissionUpdate[] = [
           {
-            type: 'addRules',
+            type: "addRules",
             rules: [
               {
                 toolName: PowerShellTool.name,
                 ruleContent: trimmedPrefix,
               },
             ],
-            behavior: 'allow',
-            destination: 'localSettings',
+            behavior: "allow",
+            destination: "localSettings",
           },
         ];
         toolUseConfirm.onAllow(toolUseConfirm.input, prefixUpdates);
@@ -178,11 +178,11 @@ export function PowerShellPermissionRequest(props: PermissionRequestProps): Reac
       return;
     }
     switch (value) {
-      case 'yes': {
+      case "yes": {
         const trimmedFeedback = acceptFeedback.trim();
-        logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
+        logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "accept");
         // Log accept submission with feedback context
-        logEvent('tengu_accept_submitted', {
+        logEvent("tengu_accept_submitted", {
           toolName: toolNameForAnalytics,
           isMcp: toolUseConfirm.tool.isMcp ?? false,
           has_instructions: !!trimmedFeedback,
@@ -193,22 +193,22 @@ export function PowerShellPermissionRequest(props: PermissionRequestProps): Reac
         onDone();
         break;
       }
-      case 'yes-apply-suggestions': {
-        logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
+      case "yes-apply-suggestions": {
+        logUnaryPermissionEvent("tool_use_single", toolUseConfirm, "accept");
         // Extract suggestions if present (works for both 'ask' and 'passthrough' behaviors)
         const permissionUpdates =
-          'suggestions' in toolUseConfirm.permissionResult
+          "suggestions" in toolUseConfirm.permissionResult
             ? toolUseConfirm.permissionResult.suggestions || []
             : [];
         toolUseConfirm.onAllow(toolUseConfirm.input, permissionUpdates);
         onDone();
         break;
       }
-      case 'no': {
+      case "no": {
         const trimmedFeedback = rejectFeedback.trim();
 
         // Log reject submission with feedback context
-        logEvent('tengu_reject_submitted', {
+        logEvent("tengu_reject_submitted", {
           toolName: toolNameForAnalytics,
           isMcp: toolUseConfirm.tool.isMcp ?? false,
           has_instructions: !!trimmedFeedback,
@@ -280,11 +280,11 @@ export function PowerShellPermissionRequest(props: PermissionRequestProps): Reac
           <Box justifyContent="space-between" marginTop={1}>
             <Text dimColor>
               Esc to cancel
-              {((focusedOption === 'yes' && !yesInputMode) ||
-                (focusedOption === 'no' && !noInputMode)) &&
-                ' · Tab to amend'}
+              {((focusedOption === "yes" && !yesInputMode) ||
+                (focusedOption === "no" && !noInputMode)) &&
+                " · Tab to amend"}
               {explainerState.enabled &&
-                ` · ctrl+e to ${explainerState.visible ? 'hide' : 'explain'}`}
+                ` · ctrl+e to ${explainerState.visible ? "hide" : "explain"}`}
             </Text>
             {toolUseContext.options.debug && <Text dimColor>Ctrl+d to show debug info</Text>}
           </Box>

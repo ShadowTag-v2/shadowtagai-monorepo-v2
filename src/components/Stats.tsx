@@ -1,41 +1,41 @@
-import { feature } from 'bun:bundle';
-import { plot as asciichart } from 'asciichart';
-import chalk from 'chalk';
-import figures from 'figures';
-import type React from 'react';
-import { Suspense, use, useEffect, useMemo, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import stripAnsi from 'strip-ansi';
-import type { CommandResultDisplay } from '../commands.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { applyColor } from '../ink/colorize.js';
-import { stringWidth as getStringWidth } from '../ink/stringWidth.js';
-import type { Color } from '../ink/styles.js';
+import { feature } from "bun:bundle";
+import { plot as asciichart } from "asciichart";
+import chalk from "chalk";
+import figures from "figures";
+import type React from "react";
+import { Suspense, use, useEffect, useMemo, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import stripAnsi from "strip-ansi";
+import type { CommandResultDisplay } from "../commands.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { applyColor } from "../ink/colorize.js";
+import { stringWidth as getStringWidth } from "../ink/stringWidth.js";
+import type { Color } from "../ink/styles.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- raw j/k/arrow stats navigation
-import { Ansi, Box, Text, useInput } from '../ink.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import { getGlobalConfig } from '../utils/config.js';
-import { formatDuration, formatNumber } from '../utils/format.js';
-import { generateHeatmap } from '../utils/heatmap.js';
-import { renderModelName } from '../utils/model/model.js';
-import { copyAnsiToClipboard } from '../utils/screenshotClipboard.js';
+import { Ansi, Box, Text, useInput } from "../ink.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import { getGlobalConfig } from "../utils/config.js";
+import { formatDuration, formatNumber } from "../utils/format.js";
+import { generateHeatmap } from "../utils/heatmap.js";
+import { renderModelName } from "../utils/model/model.js";
+import { copyAnsiToClipboard } from "../utils/screenshotClipboard.js";
 import {
   aggregateClaudeCodeStatsForRange,
   type ClaudeCodeStats,
   type DailyModelTokens,
   type StatsDateRange,
-} from '../utils/stats.js';
-import { resolveThemeSetting } from '../utils/systemTheme.js';
-import { getTheme, themeColorToAnsi } from '../utils/theme.js';
-import { Pane } from './design-system/Pane.js';
-import { Tab, Tabs, useTabHeaderFocus } from './design-system/Tabs.js';
-import { Spinner } from './Spinner.js';
+} from "../utils/stats.js";
+import { resolveThemeSetting } from "../utils/systemTheme.js";
+import { getTheme, themeColorToAnsi } from "../utils/theme.js";
+import { Pane } from "./design-system/Pane.js";
+import { Tab, Tabs, useTabHeaderFocus } from "./design-system/Tabs.js";
+import { Spinner } from "./Spinner.js";
 
 function formatPeakDay(dateStr: string): string {
   const date = new Date(dateStr);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
   });
 }
 type Props = {
@@ -48,22 +48,22 @@ type Props = {
 };
 type StatsResult =
   | {
-      type: 'success';
+      type: "success";
       data: ClaudeCodeStats;
     }
   | {
-      type: 'error';
+      type: "error";
       message: string;
     }
   | {
-      type: 'empty';
+      type: "empty";
     };
 const DATE_RANGE_LABELS: Record<StatsDateRange, string> = {
-  '7d': 'Last 7 days',
-  '30d': 'Last 30 days',
-  all: 'All time',
+  "7d": "Last 7 days",
+  "30d": "Last 30 days",
+  all: "All time",
 };
-const DATE_RANGE_ORDER: StatsDateRange[] = ['all', '7d', '30d'];
+const DATE_RANGE_ORDER: StatsDateRange[] = ["all", "7d", "30d"];
 function getNextDateRange(current: StatsDateRange): StatsDateRange {
   const currentIndex = DATE_RANGE_ORDER.indexOf(current);
   return DATE_RANGE_ORDER[(currentIndex + 1) % DATE_RANGE_ORDER.length]!;
@@ -74,22 +74,22 @@ function getNextDateRange(current: StatsDateRange): StatsDateRange {
  * Always loads all-time stats for the heatmap.
  */
 function createAllTimeStatsPromise(): Promise<StatsResult> {
-  return aggregateClaudeCodeStatsForRange('all')
+  return aggregateClaudeCodeStatsForRange("all")
     .then((data): StatsResult => {
       if (!data || data.totalSessions === 0) {
         return {
-          type: 'empty',
+          type: "empty",
         };
       }
       return {
-        type: 'success',
+        type: "success",
         data,
       };
     })
     .catch((err): StatsResult => {
-      const message = err instanceof Error ? err.message : 'Failed to load stats';
+      const message = err instanceof Error ? err.message : "Failed to load stats";
       return {
-        type: 'error',
+        type: "error",
         message,
       };
     });
@@ -98,7 +98,7 @@ export function Stats(t0) {
   const $ = _c(4);
   const { onClose } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = createAllTimeStatsPromise();
     $[0] = t1;
   } else {
@@ -106,7 +106,7 @@ export function Stats(t0) {
   }
   const allTimePromise = t1;
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box marginTop={1}>
         <Spinner />
@@ -133,7 +133,7 @@ export function Stats(t0) {
 }
 type StatsContentProps = {
   allTimePromise: Promise<StatsResult>;
-  onClose: Props['onClose'];
+  onClose: Props["onClose"];
 };
 
 /**
@@ -144,9 +144,9 @@ function StatsContent(t0) {
   const $ = _c(34);
   const { allTimePromise, onClose } = t0;
   const allTimeResult = use(allTimePromise);
-  const [dateRange, setDateRange] = useState('all');
+  const [dateRange, setDateRange] = useState("all");
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {};
     $[0] = t1;
   } else {
@@ -154,13 +154,13 @@ function StatsContent(t0) {
   }
   const [statsCache, setStatsCache] = useState(t1);
   const [isLoadingFiltered, setIsLoadingFiltered] = useState(false);
-  const [activeTab, setActiveTab] = useState('Overview');
+  const [activeTab, setActiveTab] = useState("Overview");
   const [copyStatus, setCopyStatus] = useState(null);
   let t2;
   let t3;
   if ($[1] !== dateRange || $[2] !== statsCache) {
     t2 = () => {
-      if (dateRange === 'all') {
+      if (dateRange === "all") {
         return;
       }
       if (statsCache[dateRange]) {
@@ -198,17 +198,17 @@ function StatsContent(t0) {
   }
   useEffect(t2, t3);
   const displayStats =
-    dateRange === 'all'
-      ? allTimeResult.type === 'success'
+    dateRange === "all"
+      ? allTimeResult.type === "success"
         ? allTimeResult.data
         : null
-      : (statsCache[dateRange] ?? (allTimeResult.type === 'success' ? allTimeResult.data : null));
-  const allTimeStats = allTimeResult.type === 'success' ? allTimeResult.data : null;
+      : (statsCache[dateRange] ?? (allTimeResult.type === "success" ? allTimeResult.data : null));
+  const allTimeStats = allTimeResult.type === "success" ? allTimeResult.data : null;
   let t4;
   if ($[5] !== onClose) {
     t4 = () => {
-      onClose('Stats dialog dismissed', {
-        display: 'system',
+      onClose("Stats dialog dismissed", {
+        display: "system",
       });
     };
     $[5] = onClose;
@@ -218,30 +218,30 @@ function StatsContent(t0) {
   }
   const handleClose = t4;
   let t5;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[7] = t5;
   } else {
     t5 = $[7];
   }
-  useKeybinding('confirm:no', handleClose, t5);
+  useKeybinding("confirm:no", handleClose, t5);
   let t6;
   if ($[8] !== activeTab || $[9] !== dateRange || $[10] !== displayStats || $[11] !== onClose) {
     t6 = (input, key) => {
-      if (key.ctrl && (input === 'c' || input === 'd')) {
-        onClose('Stats dialog dismissed', {
-          display: 'system',
+      if (key.ctrl && (input === "c" || input === "d")) {
+        onClose("Stats dialog dismissed", {
+          display: "system",
         });
       }
       if (key.tab) {
         setActiveTab(_temp);
       }
-      if (input === 'r' && !key.ctrl && !key.meta) {
+      if (input === "r" && !key.ctrl && !key.meta) {
         setDateRange(getNextDateRange(dateRange));
       }
-      if (key.ctrl && input === 's' && displayStats) {
+      if (key.ctrl && input === "s" && displayStats) {
         handleScreenshot(displayStats, activeTab, setCopyStatus);
       }
     };
@@ -254,7 +254,7 @@ function StatsContent(t0) {
     t6 = $[12];
   }
   useInput(t6);
-  if (allTimeResult.type === 'error') {
+  if (allTimeResult.type === "error") {
     let t7;
     if ($[13] !== allTimeResult.message) {
       t7 = (
@@ -269,9 +269,9 @@ function StatsContent(t0) {
     }
     return t7;
   }
-  if (allTimeResult.type === 'empty') {
+  if (allTimeResult.type === "empty") {
     let t7;
-    if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
       t7 = (
         <Box marginTop={1}>
           <Text color="warning">No stats available yet. Start using Claude Code!</Text>
@@ -285,7 +285,7 @@ function StatsContent(t0) {
   }
   if (!displayStats || !allTimeStats) {
     let t7;
-    if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
       t7 = (
         <Box marginTop={1}>
           <Spinner />
@@ -353,7 +353,7 @@ function StatsContent(t0) {
   } else {
     t9 = $[28];
   }
-  const t10 = copyStatus ? ` · ${copyStatus}` : '';
+  const t10 = copyStatus ? ` · ${copyStatus}` : "";
   let t11;
   if ($[29] !== t10) {
     t11 = (
@@ -383,7 +383,7 @@ function StatsContent(t0) {
   return t12;
 }
 function _temp(prev_0) {
-  return prev_0 === 'Overview' ? 'Models' : 'Overview';
+  return prev_0 === "Overview" ? "Models" : "Overview";
 }
 function DateRangeSelector(t0) {
   const $ = _c(9);
@@ -466,7 +466,7 @@ function OverviewTab({
   const factoid = useMemo(() => generateFunFactoid(stats, totalTokens), [stats, totalTokens]);
 
   // Calculate range days based on selected date range
-  const rangeDays = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : stats.totalDays;
+  const rangeDays = dateRange === "7d" ? 7 : dateRange === "30d" ? 30 : stats.totalDays;
 
   // Compute shot stats data (ant-only, gated by feature flag)
   let shotStatsData: {
@@ -477,7 +477,7 @@ function OverviewTab({
       pct: number;
     }[];
   } | null = null;
-  if (feature('SHOT_STATS') && stats.shotDistribution) {
+  if (feature("SHOT_STATS") && stats.shotDistribution) {
     const dist = stats.shotDistribution;
     const total = Object.values(dist).reduce((s, n) => s + n, 0);
     if (total > 0) {
@@ -501,22 +501,22 @@ function OverviewTab({
         avgShots: (totalShots / total).toFixed(1),
         buckets: [
           {
-            label: '1-shot',
+            label: "1-shot",
             count: b1,
             pct: pct(b1),
           },
           {
-            label: '2\u20135 shot',
+            label: "2\u20135 shot",
             count: b2_5,
             pct: pct(b2_5),
           },
           {
-            label: '6\u201310 shot',
+            label: "6\u201310 shot",
             count: b6_10,
             pct: pct(b6_10),
           },
           {
-            label: '11+ shot',
+            label: "11+ shot",
             count: b11,
             pct: pct(b11),
           },
@@ -545,7 +545,7 @@ function OverviewTab({
         <Box flexDirection="column" width={28}>
           {favoriteModel && (
             <Text wrap="truncate">
-              Favorite model:{' '}
+              Favorite model:{" "}
               <Text color="claude" bold>
                 {renderModelName(favoriteModel[0])}
               </Text>
@@ -569,7 +569,7 @@ function OverviewTab({
         <Box flexDirection="column" width={28}>
           {stats.longestSession && (
             <Text wrap="truncate">
-              Longest session:{' '}
+              Longest session:{" "}
               <Text color="claude">{formatDuration(stats.longestSession.duration)}</Text>
             </Text>
           )}
@@ -586,11 +586,11 @@ function OverviewTab({
         </Box>
         <Box flexDirection="column" width={28}>
           <Text wrap="truncate">
-            Longest streak:{' '}
+            Longest streak:{" "}
             <Text color="claude" bold>
               {stats.streaks.longestStreak}
-            </Text>{' '}
-            {stats.streaks.longestStreak === 1 ? 'day' : 'days'}
+            </Text>{" "}
+            {stats.streaks.longestStreak === 1 ? "day" : "days"}
           </Text>
         </Box>
       </Box>
@@ -606,21 +606,21 @@ function OverviewTab({
         </Box>
         <Box flexDirection="column" width={28}>
           <Text wrap="truncate">
-            Current streak:{' '}
+            Current streak:{" "}
             <Text color="claude" bold>
               {allTimeStats.streaks.currentStreak}
-            </Text>{' '}
-            {allTimeStats.streaks.currentStreak === 1 ? 'day' : 'days'}
+            </Text>{" "}
+            {allTimeStats.streaks.currentStreak === 1 ? "day" : "days"}
           </Text>
         </Box>
       </Box>
 
       {/* Speculation time saved (ant-only) */}
-      {'external' === 'ant' && stats.totalSpeculationTimeSavedMs > 0 && (
+      {"external" === "ant" && stats.totalSpeculationTimeSavedMs > 0 && (
         <Box flexDirection="row" gap={4}>
           <Box flexDirection="column" width={28}>
             <Text wrap="truncate">
-              Speculation saved:{' '}
+              Speculation saved:{" "}
               <Text color="claude">{formatDuration(stats.totalSpeculationTimeSavedMs)}</Text>
             </Text>
           </Box>
@@ -636,14 +636,14 @@ function OverviewTab({
           <Box flexDirection="row" gap={4}>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                {shotStatsData.buckets[0]?.label}:{' '}
+                {shotStatsData.buckets[0]?.label}:{" "}
                 <Text color="claude">{shotStatsData.buckets[0]?.count}</Text>
                 <Text color="subtle"> ({shotStatsData.buckets[0]?.pct}%)</Text>
               </Text>
             </Box>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                {shotStatsData.buckets[1]?.label}:{' '}
+                {shotStatsData.buckets[1]?.label}:{" "}
                 <Text color="claude">{shotStatsData.buckets[1]?.count}</Text>
                 <Text color="subtle"> ({shotStatsData.buckets[1]?.pct}%)</Text>
               </Text>
@@ -652,14 +652,14 @@ function OverviewTab({
           <Box flexDirection="row" gap={4}>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                {shotStatsData.buckets[2]?.label}:{' '}
+                {shotStatsData.buckets[2]?.label}:{" "}
                 <Text color="claude">{shotStatsData.buckets[2]?.count}</Text>
                 <Text color="subtle"> ({shotStatsData.buckets[2]?.pct}%)</Text>
               </Text>
             </Box>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                {shotStatsData.buckets[3]?.label}:{' '}
+                {shotStatsData.buckets[3]?.label}:{" "}
                 <Text color="claude">{shotStatsData.buckets[3]?.count}</Text>
                 <Text color="subtle"> ({shotStatsData.buckets[3]?.pct}%)</Text>
               </Text>
@@ -689,39 +689,39 @@ function OverviewTab({
 // Sorted by tokens ascending for comparison logic
 const BOOK_COMPARISONS = [
   {
-    name: 'The Little Prince',
+    name: "The Little Prince",
     tokens: 22000,
   },
   {
-    name: 'The Old Man and the Sea',
+    name: "The Old Man and the Sea",
     tokens: 35000,
   },
   {
-    name: 'A Christmas Carol',
+    name: "A Christmas Carol",
     tokens: 37000,
   },
   {
-    name: 'Animal Farm',
+    name: "Animal Farm",
     tokens: 39000,
   },
   {
-    name: 'Fahrenheit 451',
+    name: "Fahrenheit 451",
     tokens: 60000,
   },
   {
-    name: 'The Great Gatsby',
+    name: "The Great Gatsby",
     tokens: 62000,
   },
   {
-    name: 'Slaughterhouse-Five',
+    name: "Slaughterhouse-Five",
     tokens: 64000,
   },
   {
-    name: 'Brave New World',
+    name: "Brave New World",
     tokens: 83000,
   },
   {
-    name: 'The Catcher in the Rye',
+    name: "The Catcher in the Rye",
     tokens: 95000,
   },
   {
@@ -729,59 +729,59 @@ const BOOK_COMPARISONS = [
     tokens: 103000,
   },
   {
-    name: 'The Hobbit',
+    name: "The Hobbit",
     tokens: 123000,
   },
   {
-    name: '1984',
+    name: "1984",
     tokens: 123000,
   },
   {
-    name: 'To Kill a Mockingbird',
+    name: "To Kill a Mockingbird",
     tokens: 130000,
   },
   {
-    name: 'Pride and Prejudice',
+    name: "Pride and Prejudice",
     tokens: 156000,
   },
   {
-    name: 'Dune',
+    name: "Dune",
     tokens: 244000,
   },
   {
-    name: 'Moby-Dick',
+    name: "Moby-Dick",
     tokens: 268000,
   },
   {
-    name: 'Crime and Punishment',
+    name: "Crime and Punishment",
     tokens: 274000,
   },
   {
-    name: 'A Game of Thrones',
+    name: "A Game of Thrones",
     tokens: 381000,
   },
   {
-    name: 'Anna Karenina',
+    name: "Anna Karenina",
     tokens: 468000,
   },
   {
-    name: 'Don Quixote',
+    name: "Don Quixote",
     tokens: 520000,
   },
   {
-    name: 'The Lord of the Rings',
+    name: "The Lord of the Rings",
     tokens: 576000,
   },
   {
-    name: 'The Count of Monte Cristo',
+    name: "The Count of Monte Cristo",
     tokens: 603000,
   },
   {
-    name: 'Les Misérables',
+    name: "Les Misérables",
     tokens: 689000,
   },
   {
-    name: 'War and Peace',
+    name: "War and Peace",
     tokens: 730000,
   },
 ];
@@ -789,43 +789,43 @@ const BOOK_COMPARISONS = [
 // Time equivalents for session durations
 const TIME_COMPARISONS = [
   {
-    name: 'a TED talk',
+    name: "a TED talk",
     minutes: 18,
   },
   {
-    name: 'an episode of The Office',
+    name: "an episode of The Office",
     minutes: 22,
   },
   {
-    name: 'listening to Abbey Road',
+    name: "listening to Abbey Road",
     minutes: 47,
   },
   {
-    name: 'a yoga class',
+    name: "a yoga class",
     minutes: 60,
   },
   {
-    name: 'a World Cup soccer match',
+    name: "a World Cup soccer match",
     minutes: 90,
   },
   {
-    name: 'a half marathon (average time)',
+    name: "a half marathon (average time)",
     minutes: 120,
   },
   {
-    name: 'the movie Inception',
+    name: "the movie Inception",
     minutes: 148,
   },
   {
-    name: 'watching Titanic',
+    name: "watching Titanic",
     minutes: 195,
   },
   {
-    name: 'a transatlantic flight',
+    name: "a transatlantic flight",
     minutes: 420,
   },
   {
-    name: 'a full night of sleep',
+    name: "a full night of sleep",
     minutes: 480,
   },
 ];
@@ -854,7 +854,7 @@ function generateFunFactoid(stats: ClaudeCodeStats, totalTokens: number): string
     }
   }
   if (factoids.length === 0) {
-    return '';
+    return "";
   }
   const randomIndex = Math.floor(Math.random() * factoids.length);
   return factoids[randomIndex]!;
@@ -891,7 +891,7 @@ function ModelsTab(t0) {
   }, t2);
   if (modelEntries.length === 0) {
     let t3;
-    if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
       t3 = (
         <Box>
           <Text color="subtle">No model usage data available</Text>
@@ -926,7 +926,7 @@ function ModelsTab(t0) {
     t3 = $[5];
   }
   const T0 = Box;
-  const t5 = 'column';
+  const t5 = "column";
   const t6 = 36;
   const t8 = rightModels.map((t7) => {
     const [model_1, usage_1] = t7;
@@ -956,8 +956,8 @@ function ModelsTab(t0) {
     t10 = showScrollHint && (
       <Box marginTop={1}>
         <Text color="subtle">
-          {canScrollUp ? figures.arrowUp : ' '} {canScrollDown ? figures.arrowDown : ' '}{' '}
-          {scrollOffset + 1}-{Math.min(scrollOffset + 4, modelEntries.length)} of{' '}
+          {canScrollUp ? figures.arrowUp : " "} {canScrollDown ? figures.arrowDown : " "}{" "}
+          {scrollOffset + 1}-{Math.min(scrollOffset + 4, modelEntries.length)} of{" "}
           {modelEntries.length} models (↑↓ to scroll)
         </Text>
       </Box>
@@ -1000,7 +1000,7 @@ function ModelsTab(t0) {
 function _temp1(item, i) {
   return (
     <Text key={item.model}>
-      {i > 0 ? ' \xB7 ' : ''}
+      {i > 0 ? " \xB7 " : ""}
       <Ansi>{item.coloredBullet}</Ansi> {item.model}
     </Text>
   );
@@ -1101,7 +1101,7 @@ function ModelEntry(t0) {
   if ($[15] !== t7 || $[16] !== t8) {
     t9 = (
       <Text color="subtle">
-        {'  '}In: {t7} · Out: {t8}
+        {"  "}In: {t7} · Out: {t8}
       </Text>
     );
     $[15] = t7;
@@ -1227,7 +1227,7 @@ function generateXAxisLabels(
   _chartWidth: number,
   yAxisOffset: number,
 ): string {
-  if (data.length === 0) return '';
+  if (data.length === 0) return "";
 
   // Show 3-4 date labels evenly spaced, but leave room for last label
   const numLabels = Math.min(4, Math.max(2, Math.floor(data.length / 8)));
@@ -1241,9 +1241,9 @@ function generateXAxisLabels(
   for (let i = 0; i < numLabels; i++) {
     const idx = Math.min(i * step, data.length - 1);
     const date = new Date(data[idx]?.date);
-    const label = date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
+    const label = date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
     });
     labelPositions.push({
       pos: idx,
@@ -1252,11 +1252,11 @@ function generateXAxisLabels(
   }
 
   // Build the label string with proper spacing
-  let result = ' '.repeat(yAxisOffset);
+  let result = " ".repeat(yAxisOffset);
   let currentPos = 0;
   for (const { pos, label } of labelPositions) {
     const spaces = Math.max(1, pos - currentPos);
-    result += ' '.repeat(spaces) + label;
+    result += " ".repeat(spaces) + label;
     currentPos = pos + label.length;
   }
   return result;
@@ -1265,27 +1265,27 @@ function generateXAxisLabels(
 // Screenshot functionality
 async function handleScreenshot(
   stats: ClaudeCodeStats,
-  activeTab: 'Overview' | 'Models',
+  activeTab: "Overview" | "Models",
   setStatus: (status: string | null) => void,
 ): Promise<void> {
-  setStatus('copying…');
+  setStatus("copying…");
   const ansiText = renderStatsToAnsi(stats, activeTab);
   const result = await copyAnsiToClipboard(ansiText);
-  setStatus(result.success ? 'copied!' : 'copy failed');
+  setStatus(result.success ? "copied!" : "copy failed");
 
   // Clear status after 2 seconds
   setTimeout(setStatus, 2000, null);
 }
-function renderStatsToAnsi(stats: ClaudeCodeStats, activeTab: 'Overview' | 'Models'): string {
+function renderStatsToAnsi(stats: ClaudeCodeStats, activeTab: "Overview" | "Models"): string {
   const lines: string[] = [];
-  if (activeTab === 'Overview') {
+  if (activeTab === "Overview") {
     lines.push(...renderOverviewToAnsi(stats));
   } else {
     lines.push(...renderModelsToAnsi(stats));
   }
 
   // Trim trailing empty lines
-  while (lines.length > 0 && stripAnsi(lines[lines.length - 1]!).trim() === '') {
+  while (lines.length > 0 && stripAnsi(lines[lines.length - 1]!).trim() === "") {
     lines.pop();
   }
 
@@ -1296,12 +1296,12 @@ function renderStatsToAnsi(stats: ClaudeCodeStats, activeTab: 'Overview' | 'Mode
     // Use known content widths based on layout:
     // Overview: two-column stats = COL2_START(40) + COL2_LABEL_WIDTH(18) + max_value(~12) = 70
     // Models: chart width = 80
-    const contentWidth = activeTab === 'Overview' ? 70 : 80;
-    const statsLabel = '/stats';
+    const contentWidth = activeTab === "Overview" ? 70 : 80;
+    const statsLabel = "/stats";
     const padding = Math.max(2, contentWidth - lastLineLen - statsLabel.length);
-    lines[lines.length - 1] = lastLine + ' '.repeat(padding) + chalk.gray(statsLabel);
+    lines[lines.length - 1] = lastLine + " ".repeat(padding) + chalk.gray(statsLabel);
   }
-  return lines.join('\n');
+  return lines.join("\n");
 }
 function renderOverviewToAnsi(stats: ClaudeCodeStats): string[] {
   const lines: string[] = [];
@@ -1326,7 +1326,7 @@ function renderOverviewToAnsi(stats: ClaudeCodeStats): string[] {
     const label2 = `${l2}:`.padEnd(COL2_LABEL_WIDTH);
 
     // Assemble with colors applied to values only
-    return label1 + h(v1) + ' '.repeat(spaceBetween) + label2 + h(v2);
+    return label1 + h(v1) + " ".repeat(spaceBetween) + label2 + h(v2);
   };
 
   // Heatmap - use fixed width for screenshot (56 = 52 weeks + 4 for day labels)
@@ -1336,7 +1336,7 @@ function renderOverviewToAnsi(stats: ClaudeCodeStats): string[] {
         terminalWidth: 56,
       }),
     );
-    lines.push('');
+    lines.push("");
   }
 
   // Calculate values
@@ -1353,46 +1353,46 @@ function renderOverviewToAnsi(stats: ClaudeCodeStats): string[] {
   if (favoriteModel) {
     lines.push(
       row(
-        'Favorite model',
+        "Favorite model",
         renderModelName(favoriteModel[0]),
-        'Total tokens',
+        "Total tokens",
         formatNumber(totalTokens),
       ),
     );
   }
-  lines.push('');
+  lines.push("");
 
   // Row 2: Sessions | Longest session
   lines.push(
     row(
-      'Sessions',
+      "Sessions",
       formatNumber(stats.totalSessions),
-      'Longest session',
-      stats.longestSession ? formatDuration(stats.longestSession.duration) : 'N/A',
+      "Longest session",
+      stats.longestSession ? formatDuration(stats.longestSession.duration) : "N/A",
     ),
   );
 
   // Row 3: Current streak | Longest streak
-  const currentStreakVal = `${stats.streaks.currentStreak} ${stats.streaks.currentStreak === 1 ? 'day' : 'days'}`;
-  const longestStreakVal = `${stats.streaks.longestStreak} ${stats.streaks.longestStreak === 1 ? 'day' : 'days'}`;
-  lines.push(row('Current streak', currentStreakVal, 'Longest streak', longestStreakVal));
+  const currentStreakVal = `${stats.streaks.currentStreak} ${stats.streaks.currentStreak === 1 ? "day" : "days"}`;
+  const longestStreakVal = `${stats.streaks.longestStreak} ${stats.streaks.longestStreak === 1 ? "day" : "days"}`;
+  lines.push(row("Current streak", currentStreakVal, "Longest streak", longestStreakVal));
 
   // Row 4: Active days | Peak hour
   const activeDaysVal = `${stats.activeDays}/${stats.totalDays}`;
   const peakHourVal =
     stats.peakActivityHour !== null
       ? `${stats.peakActivityHour}:00-${stats.peakActivityHour + 1}:00`
-      : 'N/A';
-  lines.push(row('Active days', activeDaysVal, 'Peak hour', peakHourVal));
+      : "N/A";
+  lines.push(row("Active days", activeDaysVal, "Peak hour", peakHourVal));
 
   // Speculation time saved (ant-only)
-  if ('external' === 'ant' && stats.totalSpeculationTimeSavedMs > 0) {
-    const label = 'Speculation saved:'.padEnd(COL1_LABEL_WIDTH);
+  if ("external" === "ant" && stats.totalSpeculationTimeSavedMs > 0) {
+    const label = "Speculation saved:".padEnd(COL1_LABEL_WIDTH);
     lines.push(label + h(formatDuration(stats.totalSpeculationTimeSavedMs)));
   }
 
   // Shot stats (ant-only)
-  if (feature('SHOT_STATS') && stats.shotDistribution) {
+  if (feature("SHOT_STATS") && stats.shotDistribution) {
     const dist = stats.shotDistribution;
     const totalWithShots = Object.values(dist).reduce((s, n) => s + n, 0);
     if (totalWithShots > 0) {
@@ -1414,18 +1414,18 @@ function renderOverviewToAnsi(stats: ClaudeCodeStats): string[] {
       const b2_5 = bucket(2, 5);
       const b6_10 = bucket(6, 10);
       const b11 = bucket(11);
-      lines.push('');
-      lines.push('Shot distribution');
+      lines.push("");
+      lines.push("Shot distribution");
       lines.push(
-        row('1-shot', fmtBucket(b1, pct(b1)), '2\u20135 shot', fmtBucket(b2_5, pct(b2_5))),
+        row("1-shot", fmtBucket(b1, pct(b1)), "2\u20135 shot", fmtBucket(b2_5, pct(b2_5))),
       );
       lines.push(
-        row('6\u201310 shot', fmtBucket(b6_10, pct(b6_10)), '11+ shot', fmtBucket(b11, pct(b11))),
+        row("6\u201310 shot", fmtBucket(b6_10, pct(b6_10)), "11+ shot", fmtBucket(b11, pct(b11))),
       );
-      lines.push(`${'Avg/session:'.padEnd(COL1_LABEL_WIDTH)}${h(avgShots)}`);
+      lines.push(`${"Avg/session:".padEnd(COL1_LABEL_WIDTH)}${h(avgShots)}`);
     }
   }
-  lines.push('');
+  lines.push("");
 
   // Fun factoid
   const factoid = generateFunFactoid(stats, totalTokens);
@@ -1439,7 +1439,7 @@ function renderModelsToAnsi(stats: ClaudeCodeStats): string[] {
     ([, a], [, b]) => b.inputTokens + b.outputTokens - (a.inputTokens + a.outputTokens),
   );
   if (modelEntries.length === 0) {
-    lines.push(chalk.gray('No model usage data available'));
+    lines.push(chalk.gray("No model usage data available"));
     return lines;
   }
   const favoriteModel = modelEntries[0];
@@ -1455,22 +1455,22 @@ function renderModelsToAnsi(stats: ClaudeCodeStats): string[] {
     80, // Fixed width for screenshot
   );
   if (chartOutput) {
-    lines.push(chalk.bold('Tokens per Day'));
+    lines.push(chalk.bold("Tokens per Day"));
     lines.push(chartOutput.chart);
     lines.push(chalk.gray(chartOutput.xAxisLabels));
     // Legend - use pre-colored bullets from chart output
     const legendLine = chartOutput.legend
       .map((item) => `${item.coloredBullet} ${item.model}`)
-      .join(' · ');
+      .join(" · ");
     lines.push(legendLine);
-    lines.push('');
+    lines.push("");
   }
 
   // Summary
   lines.push(
-    `${figures.star} Favorite: ${chalk.magenta.bold(renderModelName(favoriteModel?.[0] || ''))} · ${figures.circle} Total: ${chalk.magenta(formatNumber(totalTokens))} tokens`,
+    `${figures.star} Favorite: ${chalk.magenta.bold(renderModelName(favoriteModel?.[0] || ""))} · ${figures.circle} Total: ${chalk.magenta(formatNumber(totalTokens))} tokens`,
   );
-  lines.push('');
+  lines.push("");
 
   // Model breakdown - only show top 3 for screenshot
   const topModels = modelEntries.slice(0, 3);

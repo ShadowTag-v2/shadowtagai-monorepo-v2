@@ -1,14 +1,14 @@
-import { getSentinelCategory } from '@ant/computer-use-mcp/sentinelApps';
-import type { CuPermissionRequest, CuPermissionResponse } from '@ant/computer-use-mcp/types';
-import { DEFAULT_GRANT_FLAGS } from '@ant/computer-use-mcp/types';
-import figures from 'figures';
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../../ink.js';
-import { execFileNoThrow } from '../../../utils/execFileNoThrow.js';
-import { plural } from '../../../utils/stringUtils.js';
-import { Select } from '../../CustomSelect/select.js';
-import { Dialog } from '../../design-system/Dialog.js';
+import { getSentinelCategory } from "@ant/computer-use-mcp/sentinelApps";
+import type { CuPermissionRequest, CuPermissionResponse } from "@ant/computer-use-mcp/types";
+import { DEFAULT_GRANT_FLAGS } from "@ant/computer-use-mcp/types";
+import figures from "figures";
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../../ink.js";
+import { execFileNoThrow } from "../../../utils/execFileNoThrow.js";
+import { plural } from "../../../utils/stringUtils.js";
+import { Select } from "../../CustomSelect/select.js";
+import { Dialog } from "../../design-system/Dialog.js";
 
 type ComputerUseApprovalProps = {
   request: CuPermissionRequest;
@@ -47,7 +47,7 @@ export function ComputerUseApproval(t0) {
 
 // ── TCC panel ─────────────────────────────────────────────────────────────
 
-type TccOption = 'open_accessibility' | 'open_screen_recording' | 'retry';
+type TccOption = "open_accessibility" | "open_screen_recording" | "retry";
 function ComputerUseTccPanel(t0) {
   const $ = _c(26);
   const { tccState, onDone } = t0;
@@ -56,10 +56,10 @@ function ComputerUseTccPanel(t0) {
     opts = [];
     if (!tccState.accessibility) {
       let t1;
-      if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = {
-          label: 'Open System Settings \u2192 Accessibility',
-          value: 'open_accessibility',
+          label: "Open System Settings \u2192 Accessibility",
+          value: "open_accessibility",
         };
         $[3] = t1;
       } else {
@@ -69,10 +69,10 @@ function ComputerUseTccPanel(t0) {
     }
     if (!tccState.screenRecording) {
       let t1;
-      if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+      if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = {
-          label: 'Open System Settings \u2192 Screen Recording',
-          value: 'open_screen_recording',
+          label: "Open System Settings \u2192 Screen Recording",
+          value: "open_screen_recording",
         };
         $[4] = t1;
       } else {
@@ -81,10 +81,10 @@ function ComputerUseTccPanel(t0) {
       opts.push(t1);
     }
     let t1;
-    if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = {
-        label: 'Try again',
-        value: 'retry',
+        label: "Try again",
+        value: "retry",
       };
       $[5] = t1;
     } else {
@@ -102,27 +102,27 @@ function ComputerUseTccPanel(t0) {
   if ($[6] !== onDone) {
     t1 = function onChange(value) {
       switch (value) {
-        case 'open_accessibility': {
+        case "open_accessibility": {
           execFileNoThrow(
-            'open',
-            ['x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility'],
+            "open",
+            ["x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"],
             {
               useCwd: false,
             },
           );
           return;
         }
-        case 'open_screen_recording': {
+        case "open_screen_recording": {
           execFileNoThrow(
-            'open',
-            ['x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture'],
+            "open",
+            ["x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture"],
             {
               useCwd: false,
             },
           );
           return;
         }
-        case 'retry': {
+        case "retry": {
           onDone();
           return;
         }
@@ -167,7 +167,7 @@ function ComputerUseTccPanel(t0) {
     t6 = $[14];
   }
   let t7;
-  if ($[15] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Text dimColor={true}>
         Grant the missing permissions in System Settings, then select "Try again". macOS may require
@@ -221,11 +221,11 @@ function ComputerUseTccPanel(t0) {
 
 // ── App allowlist panel ───────────────────────────────────────────────────
 
-type AppListOption = 'allow_all' | 'deny';
+type AppListOption = "allow_all" | "deny";
 const SENTINEL_WARNING: Record<NonNullable<ReturnType<typeof getSentinelCategory>>, string> = {
-  shell: 'equivalent to shell access',
-  filesystem: 'can read/write any file',
-  system_settings: 'can change system settings',
+  shell: "equivalent to shell access",
+  filesystem: "can read/write any file",
+  system_settings: "can change system settings",
 };
 function ComputerUseAppListPanel(t0) {
   const $ = _c(48);
@@ -240,8 +240,8 @@ function ComputerUseAppListPanel(t0) {
   }
   const [checked] = useState(t1);
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
-    t2 = ['clipboardRead', 'clipboardWrite', 'systemKeyCombos'];
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
+    t2 = ["clipboardRead", "clipboardWrite", "systemKeyCombos"];
     $[2] = t2;
   } else {
     t2 = $[2];
@@ -259,7 +259,7 @@ function ComputerUseAppListPanel(t0) {
   const t4 = checked.size;
   let t5;
   if ($[5] !== checked.size) {
-    t5 = plural(checked.size, 'app');
+    t5 = plural(checked.size, "app");
     $[5] = checked.size;
     $[6] = t5;
   } else {
@@ -270,7 +270,7 @@ function ComputerUseAppListPanel(t0) {
   if ($[7] !== t6) {
     t7 = {
       label: t6,
-      value: 'allow_all',
+      value: "allow_all",
     };
     $[7] = t6;
     $[8] = t7;
@@ -278,14 +278,14 @@ function ComputerUseAppListPanel(t0) {
     t7 = $[8];
   }
   let t8;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = {
       label: (
         <Text>
           Deny, and tell Claude what to do differently <Text bold={true}>(esc)</Text>
         </Text>
       ),
-      value: 'deny',
+      value: "deny",
     };
     $[9] = t8;
   } else {
@@ -371,7 +371,7 @@ function ComputerUseAppListPanel(t0) {
         if (!resolved) {
           return (
             <Text key={a_3.requestedName} dimColor={true}>
-              {'  '}
+              {"  "}
               {figures.circle} {a_3.requestedName} <Text dimColor={true}>(not installed)</Text>
             </Text>
           );
@@ -379,7 +379,7 @@ function ComputerUseAppListPanel(t0) {
         if (a_3.alreadyGranted) {
           return (
             <Text key={resolved.bundleId} dimColor={true}>
-              {'  '}
+              {"  "}
               {figures.tick} {resolved.displayName} <Text dimColor={true}>(already granted)</Text>
             </Text>
           );
@@ -389,12 +389,12 @@ function ComputerUseAppListPanel(t0) {
         return (
           <Box key={resolved.bundleId} flexDirection="column">
             <Text>
-              {'  '}
+              {"  "}
               {isChecked ? figures.circleFilled : figures.circle} {resolved.displayName}
             </Text>
             {sentinel ? (
               <Text bold={true}>
-                {'    '}
+                {"    "}
                 {figures.warning} {SENTINEL_WARNING[sentinel]}
               </Text>
             ) : null}
@@ -440,7 +440,7 @@ function ComputerUseAppListPanel(t0) {
     t16 =
       request.willHide && request.willHide.length > 0 ? (
         <Text dimColor={true}>
-          {request.willHide.length} other {plural(request.willHide.length, 'app')} will be hidden
+          {request.willHide.length} other {plural(request.willHide.length, "app")} will be hidden
           while Claude works.
         </Text>
       ) : null;
@@ -452,7 +452,7 @@ function ComputerUseAppListPanel(t0) {
   let t17;
   let t18;
   if ($[32] !== respond) {
-    t17 = (v) => respond(v === 'allow_all');
+    t17 = (v) => respond(v === "allow_all");
     t18 = () => respond(false);
     $[32] = respond;
     $[33] = t17;
@@ -509,7 +509,7 @@ function ComputerUseAppListPanel(t0) {
 function _temp4(flag) {
   return (
     <Text key={flag} dimColor={true}>
-      {'  '}· {flag}
+      {"  "}· {flag}
     </Text>
   );
 }
@@ -519,7 +519,7 @@ function _temp3(k_0) {
 function _temp2(a_2) {
   return {
     bundleId: a_2.resolved?.bundleId ?? a_2.requestedName,
-    reason: a_2.resolved ? ('user_denied' as const) : ('not_installed' as const),
+    reason: a_2.resolved ? ("user_denied" as const) : ("not_installed" as const),
   };
 }
 function _temp(a) {

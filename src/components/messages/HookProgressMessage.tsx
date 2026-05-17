@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
-import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
-import type { buildMessageLookups } from 'src/utils/messages.js';
-import { Box, Text } from '../../ink.js';
-import { MessageResponse } from '../MessageResponse.js';
+import { c as _c } from "react/compiler-runtime";
+import type { HookEvent } from "src/entrypoints/agentSdkTypes.js";
+import type { buildMessageLookups } from "src/utils/messages.js";
+import { Box, Text } from "../../ink.js";
+import { MessageResponse } from "../MessageResponse.js";
 
 type Props = {
   hookEvent: HookEvent;
@@ -29,7 +29,7 @@ export function HookProgressMessage(t0) {
   if (inProgressHookCount === 0) {
     return null;
   }
-  if (hookEvent === 'PreToolUse' || hookEvent === 'PostToolUse') {
+  if (hookEvent === "PreToolUse" || hookEvent === "PostToolUse") {
     if (isTranscriptMode) {
       let t2;
       if ($[4] !== inProgressHookCount) {
@@ -51,7 +51,7 @@ export function HookProgressMessage(t0) {
       } else {
         t3 = $[7];
       }
-      const t4 = inProgressHookCount === 1 ? ' hook' : ' hooks';
+      const t4 = inProgressHookCount === 1 ? " hook" : " hooks";
       let t5;
       if ($[8] !== t4) {
         t5 = <Text dimColor={true}>{t4} ran</Text>;
@@ -86,7 +86,7 @@ export function HookProgressMessage(t0) {
     return null;
   }
   let t2;
-  if ($[14] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = <Text dimColor={true}>Running </Text>;
     $[14] = t2;
   } else {
@@ -104,7 +104,7 @@ export function HookProgressMessage(t0) {
   } else {
     t3 = $[16];
   }
-  const t4 = inProgressHookCount === 1 ? ' hook\u2026' : ' hooks\u2026';
+  const t4 = inProgressHookCount === 1 ? " hook\u2026" : " hooks\u2026";
   let t5;
   if ($[17] !== t4) {
     t5 = <Text dimColor={true}>{t4}</Text>;

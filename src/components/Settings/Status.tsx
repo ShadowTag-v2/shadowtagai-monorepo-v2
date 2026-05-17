@@ -1,13 +1,13 @@
-import figures from 'figures';
-import { Suspense, use } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { getSessionId } from '../../bootstrap/state.js';
-import type { LocalJSXCommandContext } from '../../commands.js';
-import { useIsInsideModal } from '../../context/modalContext.js';
-import { Box, Text, useTheme } from '../../ink.js';
-import { type AppState, useAppState } from '../../state/AppState.js';
-import { getCwd } from '../../utils/cwd.js';
-import { getCurrentSessionTitle } from '../../utils/sessionStorage.js';
+import figures from "figures";
+import { Suspense, use } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { getSessionId } from "../../bootstrap/state.js";
+import type { LocalJSXCommandContext } from "../../commands.js";
+import { useIsInsideModal } from "../../context/modalContext.js";
+import { Box, Text, useTheme } from "../../ink.js";
+import { type AppState, useAppState } from "../../state/AppState.js";
+import { getCwd } from "../../utils/cwd.js";
+import { getCurrentSessionTitle } from "../../utils/sessionStorage.js";
 import {
   buildAccountProperties,
   buildAPIProviderProperties,
@@ -21,9 +21,9 @@ import {
   type Diagnostic,
   getModelDisplayLabel,
   type Property,
-} from '../../utils/status.js';
-import type { ThemeName } from '../../utils/theme.js';
-import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
+} from "../../utils/status.js";
+import type { ThemeName } from "../../utils/theme.js";
+import { ConfigurableShortcutHint } from "../ConfigurableShortcutHint.js";
 
 type Props = {
   context: LocalJSXCommandContext;
@@ -35,19 +35,19 @@ function buildPrimarySection(): Property[] {
   const nameValue = customTitle ?? <Text dimColor>/rename to add a name</Text>;
   return [
     {
-      label: 'Version',
+      label: "Version",
       value: MACRO.VERSION,
     },
     {
-      label: 'Session name',
+      label: "Session name",
       value: nameValue,
     },
     {
-      label: 'Session ID',
+      label: "Session ID",
       value: sessionId,
     },
     {
-      label: 'cwd',
+      label: "cwd",
       value: getCwd(),
     },
     ...buildAccountProperties(),
@@ -60,15 +60,15 @@ function buildSecondarySection({
   theme,
   context,
 }: {
-  mainLoopModel: AppState['mainLoopModel'];
-  mcp: AppState['mcp'];
+  mainLoopModel: AppState["mainLoopModel"];
+  mcp: AppState["mcp"];
   theme: ThemeName;
   context: LocalJSXCommandContext;
 }): Property[] {
   const modelLabel = getModelDisplayLabel(mainLoopModel);
   return [
     {
-      label: 'Model',
+      label: "Model",
       value: modelLabel,
     },
     ...buildIDEProperties(mcp.clients, context.options.ideInstallationStatus, theme),
@@ -95,7 +95,7 @@ function PropertyValue(t0) {
         t2 = (item, i) => (
           <Text key={i}>
             {item}
-            {i < value.length - 1 ? ',' : ''}
+            {i < value.length - 1 ? "," : ""}
           </Text>
         );
         $[2] = value.length;
@@ -123,7 +123,7 @@ function PropertyValue(t0) {
     }
     return t2;
   }
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     let t1;
     if ($[6] !== value) {
       t1 = <Text>{value}</Text>;
@@ -143,7 +143,7 @@ export function Status(t0) {
   const mcp = useAppState(_temp2);
   const [theme] = useTheme();
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = buildPrimarySection();
     $[0] = t1;
   } else {
@@ -211,7 +211,7 @@ export function Status(t0) {
     t6 = $[15];
   }
   let t7;
-  if ($[16] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Text dimColor={true}>
         <ConfigurableShortcutHint
@@ -274,7 +274,7 @@ function Diagnostics(t0) {
     return null;
   }
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = <Text bold={true}>System Diagnostics</Text>;
     $[0] = t1;
   } else {
@@ -307,7 +307,7 @@ function _temp5(diagnostic, i) {
   return (
     <Box key={i} flexDirection="row" gap={1} paddingX={1}>
       <Text color="error">{figures.warning}</Text>
-      {typeof diagnostic === 'string' ? <Text wrap="wrap">{diagnostic}</Text> : diagnostic}
+      {typeof diagnostic === "string" ? <Text wrap="wrap">{diagnostic}</Text> : diagnostic}
     </Box>
   );
 }

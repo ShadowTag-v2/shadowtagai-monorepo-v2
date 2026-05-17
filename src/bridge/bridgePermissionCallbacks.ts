@@ -1,7 +1,7 @@
-import type { PermissionUpdate } from '../utils/permissions/PermissionUpdateSchema.js';
+import type { PermissionUpdate } from "../utils/permissions/PermissionUpdateSchema.js";
 
 type BridgePermissionResponse = {
-  behavior: 'allow' | 'deny';
+  behavior: "allow" | "deny";
   updatedInput?: Record<string, unknown>;
   updatedPermissions?: PermissionUpdate[];
   message?: string;
@@ -27,8 +27,8 @@ type BridgePermissionCallbacks = {
  *  as a BridgePermissionResponse. Checks the required `behavior`
  *  discriminant rather than using an unsafe `as` cast. */
 function isBridgePermissionResponse(value: unknown): value is BridgePermissionResponse {
-  if (!value || typeof value !== 'object') return false;
-  return 'behavior' in value && (value.behavior === 'allow' || value.behavior === 'deny');
+  if (!value || typeof value !== "object") return false;
+  return "behavior" in value && (value.behavior === "allow" || value.behavior === "deny");
 }
 
 export type { BridgePermissionCallbacks, BridgePermissionResponse };

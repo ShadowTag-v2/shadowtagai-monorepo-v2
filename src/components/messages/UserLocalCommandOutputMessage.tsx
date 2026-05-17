@@ -1,10 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
-import { DIAMOND_FILLED, DIAMOND_OPEN } from '../../constants/figures.js';
-import { NO_CONTENT_MESSAGE } from '../../constants/messages.js';
-import { Box, Text } from '../../ink.js';
-import { extractTag } from '../../utils/messages.js';
-import { Markdown } from '../Markdown.js';
-import { MessageResponse } from '../MessageResponse.js';
+import { c as _c } from "react/compiler-runtime";
+import { DIAMOND_FILLED, DIAMOND_OPEN } from "../../constants/figures.js";
+import { NO_CONTENT_MESSAGE } from "../../constants/messages.js";
+import { Box, Text } from "../../ink.js";
+import { extractTag } from "../../utils/messages.js";
+import { Markdown } from "../Markdown.js";
+import { MessageResponse } from "../MessageResponse.js";
 
 type Props = {
   content: string;
@@ -15,13 +15,13 @@ export function UserLocalCommandOutputMessage(t0) {
   let lines;
   let t1;
   if ($[0] !== content) {
-    t1 = Symbol.for('react.early_return_sentinel');
+    t1 = Symbol.for("react.early_return_sentinel");
     bb0: {
-      const stdout = extractTag(content, 'local-command-stdout');
-      const stderr = extractTag(content, 'local-command-stderr');
+      const stdout = extractTag(content, "local-command-stdout");
+      const stderr = extractTag(content, "local-command-stderr");
       if (!stdout && !stderr) {
         let t2;
-        if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+        if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
           t2 = (
             <MessageResponse>
               <Text dimColor={true}>{NO_CONTENT_MESSAGE}</Text>
@@ -49,7 +49,7 @@ export function UserLocalCommandOutputMessage(t0) {
     lines = $[1];
     t1 = $[2];
   }
-  if (t1 !== Symbol.for('react.early_return_sentinel')) {
+  if (t1 !== Symbol.for("react.early_return_sentinel")) {
     return t1;
   }
   return lines;
@@ -69,8 +69,8 @@ function IndentedContent(t0) {
     return t1;
   }
   let t1;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
-    t1 = <Text dimColor={true}>{'  \u23BF  '}</Text>;
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
+    t1 = <Text dimColor={true}>{"  \u23BF  "}</Text>;
     $[2] = t1;
   } else {
     t1 = $[2];
@@ -100,12 +100,12 @@ function CloudLaunchContent(t0) {
   let rest;
   let t1;
   if ($[0] !== children) {
-    const nl = children.indexOf('\n');
+    const nl = children.indexOf("\n");
     const header = nl === -1 ? children.slice(2) : children.slice(2, nl);
-    rest = nl === -1 ? '' : children.slice(nl + 1).trim();
-    const sep = header.indexOf(' \xB7 ');
+    rest = nl === -1 ? "" : children.slice(nl + 1).trim();
+    const sep = header.indexOf(" \xB7 ");
     label = sep === -1 ? header : header.slice(0, sep);
-    t1 = sep === -1 ? '' : header.slice(sep);
+    t1 = sep === -1 ? "" : header.slice(sep);
     $[0] = children;
     $[1] = label;
     $[2] = rest;
@@ -160,7 +160,7 @@ function CloudLaunchContent(t0) {
   if ($[14] !== rest) {
     t6 = rest && (
       <Box flexDirection="row">
-        <Text dimColor={true}>{'  \u23BF  '}</Text>
+        <Text dimColor={true}>{"  \u23BF  "}</Text>
         <Text dimColor={true}>{rest}</Text>
       </Box>
     );

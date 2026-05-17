@@ -1,16 +1,16 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { CtrlOToExpand } from '../../components/CtrlOToExpand.js';
-import { FallbackToolUseErrorMessage } from '../../components/FallbackToolUseErrorMessage.js';
-import { MessageResponse } from '../../components/MessageResponse.js';
-import { TOOL_SUMMARY_MAX_LENGTH } from '../../constants/toolLimits.js';
-import { Box, Text } from '../../ink.js';
-import type { ToolProgressData } from '../../Tool.js';
-import type { ProgressMessage } from '../../types/message.js';
-import { FILE_NOT_FOUND_CWD_NOTE, getDisplayPath } from '../../utils/file.js';
-import { truncate } from '../../utils/format.js';
-import { extractTag } from '../../utils/messages.js';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { CtrlOToExpand } from "../../components/CtrlOToExpand.js";
+import { FallbackToolUseErrorMessage } from "../../components/FallbackToolUseErrorMessage.js";
+import { MessageResponse } from "../../components/MessageResponse.js";
+import { TOOL_SUMMARY_MAX_LENGTH } from "../../constants/toolLimits.js";
+import { Box, Text } from "../../ink.js";
+import type { ToolProgressData } from "../../Tool.js";
+import type { ProgressMessage } from "../../types/message.js";
+import { FILE_NOT_FOUND_CWD_NOTE, getDisplayPath } from "../../utils/file.js";
+import { truncate } from "../../utils/format.js";
+import { extractTag } from "../../utils/messages.js";
 
 // Reusable component for search result summaries
 function SearchResultSummary(t0) {
@@ -53,7 +53,7 @@ function SearchResultSummary(t0) {
     t4 =
       secondaryCount !== undefined && secondaryLabel ? (
         <Text>
-          {' '}
+          {" "}
           across <Text bold={true}>{secondaryCount} </Text>
           {secondaryCount === 0 || secondaryCount > 1
             ? secondaryLabel
@@ -69,7 +69,7 @@ function SearchResultSummary(t0) {
   const secondaryText = t4;
   if (verbose) {
     let t5;
-    if ($[11] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
       t5 = <Text dimColor={true}>  ⎿  </Text>;
       $[11] = t5;
     } else {
@@ -148,7 +148,7 @@ function SearchResultSummary(t0) {
   return t6;
 }
 type Output = {
-  mode?: 'content' | 'files_with_matches' | 'count';
+  mode?: "content" | "files_with_matches" | "count";
   numFiles: number;
   filenames: string[];
   content?: string;
@@ -176,18 +176,18 @@ export function renderToolUseMessage(
   if (path) {
     parts.push(`path: "${verbose ? path : getDisplayPath(path)}"`);
   }
-  return parts.join(', ');
+  return parts.join(", ");
 }
 export function renderToolUseErrorMessage(
-  result: ToolResultBlockParam['content'],
+  result: ToolResultBlockParam["content"],
   {
     verbose,
   }: {
     verbose: boolean;
   },
 ): React.ReactNode {
-  if (!verbose && typeof result === 'string' && extractTag(result, 'tool_use_error')) {
-    const errorMessage = extractTag(result, 'tool_use_error');
+  if (!verbose && typeof result === "string" && extractTag(result, "tool_use_error")) {
+    const errorMessage = extractTag(result, "tool_use_error");
     if (errorMessage?.includes(FILE_NOT_FOUND_CWD_NOTE)) {
       return (
         <MessageResponse>
@@ -204,7 +204,7 @@ export function renderToolUseErrorMessage(
   return <FallbackToolUseErrorMessage result={result} verbose={verbose} />;
 }
 export function renderToolResultMessage(
-  { mode = 'files_with_matches', filenames, numFiles, content, numLines, numMatches }: Output,
+  { mode = "files_with_matches", filenames, numFiles, content, numLines, numMatches }: Output,
   _progressMessagesForMessage: ProgressMessage<ToolProgressData>[],
   {
     verbose,
@@ -212,7 +212,7 @@ export function renderToolResultMessage(
     verbose: boolean;
   },
 ): React.ReactNode {
-  if (mode === 'content') {
+  if (mode === "content") {
     return (
       <SearchResultSummary
         count={numLines ?? 0}
@@ -222,7 +222,7 @@ export function renderToolResultMessage(
       />
     );
   }
-  if (mode === 'count') {
+  if (mode === "count") {
     return (
       <SearchResultSummary
         count={numMatches ?? 0}
@@ -236,7 +236,7 @@ export function renderToolResultMessage(
   }
 
   // files_with_matches mode
-  const fileListContent = filenames.map((filename) => filename).join('\n');
+  const fileListContent = filenames.map((filename) => filename).join("\n");
   return (
     <SearchResultSummary
       count={numFiles}
@@ -253,7 +253,7 @@ export function getToolUseSummary(
         path?: string;
         glob?: string;
         type?: string;
-        output_mode?: 'content' | 'files_with_matches' | 'count';
+        output_mode?: "content" | "files_with_matches" | "count";
         head_limit?: number;
       }>
     | undefined,

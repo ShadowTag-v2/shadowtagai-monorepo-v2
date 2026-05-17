@@ -45,7 +45,7 @@ export type AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED = never;
 export function stripProtoFields<V>(metadata: Record<string, V>): Record<string, V> {
   let result: Record<string, V> | undefined;
   for (const key in metadata) {
-    if (key.startsWith('_PROTO_')) {
+    if (key.startsWith("_PROTO_")) {
       if (result === undefined) {
         result = { ...metadata };
       }
@@ -99,8 +99,8 @@ export function attachAnalyticsSink(newSink: AnalyticsSink): void {
     eventQueue.length = 0;
 
     // Log queue size for ants to help debug analytics initialization timing
-    if (process.env.USER_TYPE === 'ant') {
-      sink.logEvent('analytics_sink_attached', {
+    if (process.env.USER_TYPE === "ant") {
+      sink.logEvent("analytics_sink_attached", {
         queued_event_count: queuedEvents.length,
       });
     }

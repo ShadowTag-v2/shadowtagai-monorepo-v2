@@ -1,19 +1,19 @@
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from "node:crypto";
 import {
   createBridgeApiClient,
   BridgeFatalError,
   isExpiredErrorType,
   isSuppressible403,
-} from './bridgeApi.js';
-import type { BridgeConfig, BridgeApiClient } from './types.js';
-import { logForDebugging } from '../utils/debug.js';
-import { logForDiagnosticsNoPII } from '../utils/diagLogs.js';
+} from "./bridgeApi.js";
+import type { BridgeConfig, BridgeApiClient } from "./types.js";
+import { logForDebugging } from "../utils/debug.js";
+import { logForDiagnosticsNoPII } from "../utils/diagLogs.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import { registerCleanup } from '../utils/cleanupRegistry.js';
+} from "../services/analytics/index.js";
+import { registerCleanup } from "../utils/cleanupRegistry.js";
 import {
   handleIngressMessage,
   handleServerControlRequest,
@@ -21,36 +21,36 @@ import {
   isEligibleBridgeMessage,
   extractTitleText,
   BoundedUUIDSet,
-} from './bridgeMessaging.js';
-import { decodeWorkSecret, buildSdkUrl, buildCCRv2SdkUrl, sameSessionId } from './workSecret.js';
-import { toCompatSessionId, toInfraSessionId } from './sessionIdCompat.js';
-import { updateSessionBridgeId } from '../utils/concurrentSessions.js';
-import { getTrustedDeviceToken } from './trustedDevice.js';
-import { HybridTransport } from '../cli/transports/HybridTransport.js';
+} from "./bridgeMessaging.js";
+import { decodeWorkSecret, buildSdkUrl, buildCCRv2SdkUrl, sameSessionId } from "./workSecret.js";
+import { toCompatSessionId, toInfraSessionId } from "./sessionIdCompat.js";
+import { updateSessionBridgeId } from "../utils/concurrentSessions.js";
+import { getTrustedDeviceToken } from "./trustedDevice.js";
+import { HybridTransport } from "../cli/transports/HybridTransport.js";
 import {
   type ReplBridgeTransport,
   createV1ReplTransport,
   createV2ReplTransport,
-} from './replBridgeTransport.js';
-import { updateSessionIngressAuthToken } from '../utils/sessionIngressAuth.js';
-import { isEnvTruthy, isInProtectedNamespace } from '../utils/envUtils.js';
-import { validateBridgeId } from './bridgeApi.js';
-import { describeAxiosError, extractHttpStatus, logBridgeSkip } from './debugUtils.js';
-import type { Message } from '../types/message.js';
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
-import type { PermissionMode } from '../utils/permissions/PermissionMode.js';
-import type { SDKControlRequest, SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
-import { createCapacityWake, type CapacitySignal } from './capacityWake.js';
-import { FlushGate } from './flushGate.js';
-import { DEFAULT_POLL_CONFIG, type PollIntervalConfig } from './pollConfigDefaults.js';
-import { errorMessage } from '../utils/errors.js';
-import { sleep } from '../utils/sleep.js';
+} from "./replBridgeTransport.js";
+import { updateSessionIngressAuthToken } from "../utils/sessionIngressAuth.js";
+import { isEnvTruthy, isInProtectedNamespace } from "../utils/envUtils.js";
+import { validateBridgeId } from "./bridgeApi.js";
+import { describeAxiosError, extractHttpStatus, logBridgeSkip } from "./debugUtils.js";
+import type { Message } from "../types/message.js";
+import type { SDKMessage } from "../entrypoints/agentSdkTypes.js";
+import type { PermissionMode } from "../utils/permissions/PermissionMode.js";
+import type { SDKControlRequest, SDKControlResponse } from "../entrypoints/sdk/controlTypes.js";
+import { createCapacityWake, type CapacitySignal } from "./capacityWake.js";
+import { FlushGate } from "./flushGate.js";
+import { DEFAULT_POLL_CONFIG, type PollIntervalConfig } from "./pollConfigDefaults.js";
+import { errorMessage } from "../utils/errors.js";
+import { sleep } from "../utils/sleep.js";
 import {
   wrapApiForFaultInjection,
   registerBridgeDebugHandle,
   clearBridgeDebugHandle,
   injectBridgeFault,
-} from './bridgeDebug.js';
+} from "./bridgeDebug.js";
 
 export type ReplBridgeHandle = {
   bridgeSessionId: string;
@@ -65,7 +65,7 @@ export type ReplBridgeHandle = {
   teardown(): Promise<void>;
 };
 
-export type BridgeState = 'ready' | 'connected' | 'reconnecting' | 'failed';
+export type BridgeState = "ready" | "connected" | "reconnecting" | "failed";
 
 /**
  * Explicit-param input to initBridgeCore. Everything initReplBridge reads
@@ -256,7 +256,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     getCurrentTitle = () => title,
     toSDKMessages = () => {
       throw new Error(
-        'BridgeCoreParams.toSDKMessages not provided. Pass it if you use writeMessages() or initialMessages — daemon callers that only use writeSdkMessages() never hit this path.',
+        "BridgeCoreParams.toSDKMessages not provided. Pass it if you use writeMessages() or initialMessages — daemon callers that only use writeSdkMessages() never hit this path.",
       );
     },
     onAuth401,
@@ -281,7 +281,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
   // bridgePointer import hoisted: perpetual mode reads it before register;
   // non-perpetual writes it after session create; both use clear at teardown.
   const { writeBridgePointer, clearBridgePointer, readBridgePointer } = await import(
-    './bridgePointer.js'
+    "./bridgePointer.js"
   );
 
   // Perpetual mode: read the crash-recovery pointer and treat it as prior
@@ -291,10 +291,10 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
   // pointers — a crashed standalone bridge (`claude remote-control`)
   // writes source:'standalone' with a different workerType.
   const rawPrior = perpetual ? await readBridgePointer(dir) : null;
-  const prior = rawPrior?.source === 'repl' ? rawPrior : null;
+  const prior = rawPrior?.source === "repl" ? rawPrior : null;
 
   logForDebugging(
-    `[bridge:repl] initBridgeCore #${seq} starting (initialMessages=${initialMessages?.length ?? 0}${prior ? ` perpetual prior=env:${prior.environmentId}` : ''})`,
+    `[bridge:repl] initBridgeCore #${seq} starting (initialMessages=${initialMessages?.length ?? 0}${prior ? ` perpetual prior=env:${prior.environmentId}` : ""})`,
   );
 
   // 5. Register bridge environment
@@ -308,7 +308,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
   });
   // Ant-only: interpose so /bridge-kick can inject poll/register/heartbeat
   // failures. Zero cost in external builds (rawApi passes through unchanged).
-  const api = process.env.USER_TYPE === 'ant' ? wrapApiForFaultInjection(rawApi) : rawApi;
+  const api = process.env.USER_TYPE === "ant" ? wrapApiForFaultInjection(rawApi) : rawApi;
 
   const bridgeConfig: BridgeConfig = {
     dir,
@@ -316,7 +316,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     branch,
     gitRepoUrl,
     maxSessions: 1,
-    spawnMode: 'single-session',
+    spawnMode: "single-session",
     verbose: false,
     sandbox: false,
     bridgeId: randomUUID(),
@@ -335,7 +335,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     environmentSecret = reg.environment_secret;
   } catch (err) {
     logBridgeSkip(
-      'registration_failed',
+      "registration_failed",
       `[bridge:repl] Environment registration failed: ${errorMessage(err)}`,
     );
     // Stale pointer may be the cause (expired/deleted env) — clear it so
@@ -343,13 +343,13 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     if (prior) {
       await clearBridgePointer(dir);
     }
-    onStateChange?.('failed', errorMessage(err));
+    onStateChange?.("failed", errorMessage(err));
     return null;
   }
 
   logForDebugging(`[bridge:repl] Environment registered: ${environmentId}`);
-  logForDiagnosticsNoPII('info', 'bridge_repl_env_registered');
-  logEvent('tengu_bridge_repl_env_registered', {});
+  logForDiagnosticsNoPII("info", "bridge_repl_env_registered");
+  logEvent("tengu_bridge_repl_env_registered", {});
 
   /**
    * Reconnect-in-place: if the just-registered environmentId matches what
@@ -385,7 +385,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
         logForDebugging(`[bridge:repl] reconnectSession(${id}) failed: ${errorMessage(err)}`);
       }
     }
-    logForDebugging('[bridge:repl] reconnectSession exhausted — falling through to fresh session');
+    logForDebugging("[bridge:repl] reconnectSession exhausted — falling through to fresh session");
     return false;
   }
 
@@ -431,10 +431,10 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     });
 
     if (!createdSessionId) {
-      logForDebugging('[bridge:repl] Session creation failed, deregistering environment');
-      logEvent('tengu_bridge_repl_session_failed', {});
+      logForDebugging("[bridge:repl] Session creation failed, deregistering environment");
+      logEvent("tengu_bridge_repl_session_failed", {});
       await api.deregisterEnvironment(environmentId).catch(() => {});
-      onStateChange?.('failed', 'Session creation failed');
+      onStateChange?.("failed", "Session creation failed");
       return null;
     }
 
@@ -450,10 +450,10 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
   await writeBridgePointer(dir, {
     sessionId: currentSessionId,
     environmentId,
-    source: 'repl',
+    source: "repl",
   });
-  logForDiagnosticsNoPII('info', 'bridge_repl_session_created');
-  logEvent('tengu_bridge_repl_started', {
+  logForDiagnosticsNoPII("info", "bridge_repl_session_created");
+  logEvent("tengu_bridge_repl_started", {
     has_initial_messages: !!(initialMessages && initialMessages.length > 0),
     inProtectedNamespace: isInProtectedNamespace(),
   });
@@ -630,7 +630,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
       // transport is connected to.
       if (currentWorkId !== workIdBeingCleared) {
         logForDebugging(
-          '[bridge:repl] Poll loop recovered during stopWork await — deferring to it',
+          "[bridge:repl] Poll loop recovered during stopWork await — deferring to it",
         );
         environmentRecreations = 0;
         return true;
@@ -641,7 +641,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
 
     // Bail out if teardown started while we were awaiting
     if (pollController.signal.aborted) {
-      logForDebugging('[bridge:repl] Reconnect aborted by teardown');
+      logForDebugging("[bridge:repl] Reconnect aborted by teardown");
       return false;
     }
 
@@ -670,7 +670,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
 
     // Bail out if teardown started while we were registering
     if (pollController.signal.aborted) {
-      logForDebugging('[bridge:repl] Reconnect aborted after env registration, cleaning up');
+      logForDebugging("[bridge:repl] Reconnect aborted after env registration, cleaning up");
       await api.deregisterEnvironment(environmentId).catch(() => {});
       return false;
     }
@@ -680,7 +680,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     // tryReconnectInPlace/archiveSession kill it server-side.
     if (transport !== null) {
       logForDebugging(
-        '[bridge:repl] Poll loop recovered during registerBridgeEnvironment await — deferring to it',
+        "[bridge:repl] Poll loop recovered during registerBridgeEnvironment await — deferring to it",
       );
       environmentRecreations = 0;
       return true;
@@ -690,14 +690,14 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     // the same on success; URL on mobile/web stays valid;
     // previouslyFlushedUUIDs preserved (no re-flush).
     if (await tryReconnectInPlace(requestedEnvId, currentSessionId)) {
-      logEvent('tengu_bridge_repl_reconnected_in_place', {});
+      logEvent("tengu_bridge_repl_reconnected_in_place", {});
       environmentRecreations = 0;
       return true;
     }
     // Env differs → TTL-expired/reaped; or reconnect failed.
     // Don't deregister — we have a fresh secret for this env either way.
     if (environmentId !== requestedEnvId) {
-      logEvent('tengu_bridge_repl_env_expired_fresh_session', {});
+      logEvent("tengu_bridge_repl_env_expired_fresh_session", {});
     }
 
     // Strategy 2: fresh session on the now-registered environment.
@@ -708,7 +708,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
 
     // Bail out if teardown started while we were archiving
     if (pollController.signal.aborted) {
-      logForDebugging('[bridge:repl] Reconnect aborted after archive, cleaning up');
+      logForDebugging("[bridge:repl] Reconnect aborted after archive, cleaning up");
       await api.deregisterEnvironment(environmentId).catch(() => {});
       return false;
     }
@@ -728,13 +728,13 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     });
 
     if (!newSessionId) {
-      logForDebugging('[bridge:repl] Session creation failed during reconnection');
+      logForDebugging("[bridge:repl] Session creation failed during reconnection");
       return false;
     }
 
     // Bail out if teardown started during session creation (up to 15s)
     if (pollController.signal.aborted) {
-      logForDebugging('[bridge:repl] Reconnect aborted after session creation, cleaning up');
+      logForDebugging("[bridge:repl] Reconnect aborted after session creation, cleaning up");
       await archiveSession(newSessionId);
       return false;
     }
@@ -773,7 +773,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     await writeBridgePointer(dir, {
       sessionId: currentSessionId,
       environmentId,
-      source: 'repl',
+      source: "repl",
     });
 
     // Clear flushed UUIDs so initial messages are re-sent to the new session.
@@ -835,7 +835,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
    */
   function handleTransportPermanentClose(closeCode: number | undefined): void {
     logForDebugging(`[bridge:repl] Transport permanently closed: code=${closeCode}`);
-    logEvent('tengu_bridge_repl_ws_closed', {
+    logEvent("tengu_bridge_repl_ws_closed", {
       code: closeCode,
     });
     // Capture SSE seq high-water mark before nulling. When called from
@@ -861,13 +861,13 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     if (dropped > 0) {
       logForDebugging(
         `[bridge:repl] Dropping ${dropped} pending message(s) on transport close (code=${closeCode})`,
-        { level: 'warn' },
+        { level: "warn" },
       );
     }
 
     if (closeCode === 1000) {
       // Clean close — session ended normally. Tear down the bridge.
-      onStateChange?.('failed', 'session ended');
+      onStateChange?.("failed", "session ended");
       pollController.abort();
       triggerTeardown();
       return;
@@ -882,7 +882,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     // to a fresh session if the env is truly gone. The poll loop
     // (already woken above) picks up the re-queued work once
     // doReconnect completes.
-    onStateChange?.('reconnecting', `Remote Control connection lost (code ${closeCode})`);
+    onStateChange?.("reconnecting", `Remote Control connection lost (code ${closeCode})`);
     logForDebugging(
       `[bridge:repl] Transport reconnect budget exhausted (code=${closeCode}), attempting env reconnect`,
     );
@@ -899,12 +899,12 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
       // env getting null work with no errors, never hitting any
       // give-up path. Tear down explicitly.
       logForDebugging(
-        '[bridge:repl] reconnectEnvironmentWithSession resolved false — tearing down',
+        "[bridge:repl] reconnectEnvironmentWithSession resolved false — tearing down",
       );
-      logEvent('tengu_bridge_repl_reconnect_failed', {
+      logEvent("tengu_bridge_repl_reconnect_failed", {
         close_code: closeCode,
       });
-      onStateChange?.('failed', 'reconnection failed');
+      onStateChange?.("failed", "reconnection failed");
       triggerTeardown();
     });
   }
@@ -913,12 +913,12 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
   // ~30s poll wait — fire-and-observe in the debug log immediately.
   // Windows has no USR signals; `process.on` would throw there.
   let sigusr2Handler: (() => void) | undefined;
-  if (process.env.USER_TYPE === 'ant' && process.platform !== 'win32') {
+  if (process.env.USER_TYPE === "ant" && process.platform !== "win32") {
     sigusr2Handler = () => {
-      logForDebugging('[bridge:repl] SIGUSR2 received — forcing doReconnect() for testing');
+      logForDebugging("[bridge:repl] SIGUSR2 received — forcing doReconnect() for testing");
       void reconnectEnvironmentWithSession();
     };
-    process.on('SIGUSR2', sigusr2Handler);
+    process.on("SIGUSR2", sigusr2Handler);
   }
 
   // Ant-only: /bridge-kick fault injection. handleTransportPermanentClose
@@ -926,24 +926,24 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
   // invoke it directly — the real setOnClose callback is buried inside
   // wireTransport which is itself inside onWorkReceived.
   let debugFireClose: ((code: number) => void) | null = null;
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     registerBridgeDebugHandle({
       fireClose: (code) => {
         if (!debugFireClose) {
-          logForDebugging('[bridge:debug] fireClose: no transport wired yet');
+          logForDebugging("[bridge:debug] fireClose: no transport wired yet");
           return;
         }
         logForDebugging(`[bridge:debug] fireClose(${code}) — injecting`);
         debugFireClose(code);
       },
       forceReconnect: () => {
-        logForDebugging('[bridge:debug] forceReconnect — injecting');
+        logForDebugging("[bridge:debug] forceReconnect — injecting");
         void reconnectEnvironmentWithSession();
       },
       injectFault: injectBridgeFault,
       wakePollLoop,
       describe: () =>
-        `env=${environmentId} session=${currentSessionId} transport=${transport?.getStateLabel() ?? 'null'} workId=${currentWorkId ?? 'null'}`,
+        `env=${environmentId} session=${currentSessionId} transport=${transport?.getStateLabel() ?? "null"} workId=${currentWorkId ?? "null"}`,
     });
   }
 
@@ -953,7 +953,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     signal: pollController.signal,
     getPollIntervalConfig,
     onStateChange,
-    getWsState: () => transport?.getStateLabel() ?? 'null',
+    getWsState: () => transport?.getStateLabel() ?? "null",
     // REPL bridge is single-session: having any transport == at capacity.
     // No need to check isConnectedStatus() — even while the transport is
     // auto-reconnecting internally (up to 10 min), poll is heartbeat-only.
@@ -1000,7 +1000,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
       currentWorkId = null;
       currentIngressToken = null;
       wakePollLoop();
-      onStateChange?.('reconnecting', 'Work item lease expired, fetching fresh token');
+      onStateChange?.("reconnecting", "Work item lease expired, fetching fresh token");
     },
     async onEnvironmentLost() {
       const success = await reconnectEnvironmentWithSession();
@@ -1040,7 +1040,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
       void writeBridgePointer(dir, {
         sessionId: currentSessionId,
         environmentId,
-        source: 'repl',
+        source: "repl",
       });
 
       // Reject foreign session IDs — the server shouldn't assign sessions
@@ -1091,13 +1091,13 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
         v1OauthToken = getOAuthToken();
         if (!v1OauthToken) {
           logForDebugging(
-            '[bridge:repl] No OAuth token available for session ingress, skipping work',
+            "[bridge:repl] No OAuth token available for session ingress, skipping work",
           );
           return;
         }
         updateSessionIngressAuthToken(v1OauthToken);
       }
-      logEvent('tengu_bridge_repl_work_received', {});
+      logEvent("tengu_bridge_repl_work_received", {});
 
       // Close the previous transport. Nullify BEFORE calling close() so
       // the close callback doesn't treat the programmatic close as
@@ -1147,8 +1147,8 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
           // while the WS was connecting, ignore this stale callback.
           if (transport !== newTransport) return;
 
-          logForDebugging('[bridge:repl] Ingress transport connected');
-          logEvent('tengu_bridge_repl_ws_connected', {});
+          logForDebugging("[bridge:repl] Ingress transport connected");
+          logEvent("tengu_bridge_repl_ws_connected", {});
 
           // Update the env var with the latest OAuth token so POST writes
           // (which read via getSessionIngressAuthToken()) use a fresh token.
@@ -1191,7 +1191,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
               logForDebugging(
                 `[bridge:repl] Capped initial flush: ${eligibleMessages.length} -> ${cappedMessages.length} (cap=${historyCap})`,
               );
-              logEvent('tengu_bridge_repl_history_capped', {
+              logEvent("tengu_bridge_repl_history_capped", {
                 eligible_count: eligibleMessages.length,
                 capped_count: cappedMessages.length,
               });
@@ -1235,7 +1235,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
                   // owns the lifecycle now.
                   if (transport !== newTransport) return;
                   drainFlushGate();
-                  onStateChange?.('connected');
+                  onStateChange?.("connected");
                 });
             } else {
               // All initial messages were already flushed (filtered by
@@ -1245,13 +1245,13 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
               // so no flush POST is in-flight — the flag was set before
               // connect() and must be cleared here.
               drainFlushGate();
-              onStateChange?.('connected');
+              onStateChange?.("connected");
             }
           } else if (!flushGate.active) {
             // No initial messages or already flushed on first connect.
             // WS auto-reconnect path — only signal connected if no flush
             // POST is in-flight. If one is, .finally() owns the lifecycle.
-            onStateChange?.('connected');
+            onStateChange?.("connected");
           }
         });
 
@@ -1339,9 +1339,9 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
           (err: unknown) => {
             logForDebugging(
               `[bridge:repl] CCR v2: createV2ReplTransport failed: ${errorMessage(err)}`,
-              { level: 'error' },
+              { level: "error" },
             );
-            logEvent('tengu_bridge_repl_ccr_v2_init_failed', {});
+            logEvent("tengu_bridge_repl_ccr_v2_init_failed", {});
             // If a newer attempt is in flight or already succeeded, don't
             // touch its work item — our failure is irrelevant.
             if (thisGen !== v2Generation) return;
@@ -1373,19 +1373,19 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
         logForDebugging(`[bridge:repl] Ingress URL: ${wsUrl}`);
         logForDebugging(`[bridge:repl] Creating HybridTransport: session=${workSessionId}`);
         // v1OauthToken was validated non-null above (we'd have returned early).
-        const oauthToken = v1OauthToken ?? '';
+        const oauthToken = v1OauthToken ?? "";
         wireTransport(
           createV1ReplTransport(
             new HybridTransport(
               new URL(wsUrl),
               {
                 Authorization: `Bearer ${oauthToken}`,
-                'anthropic-version': '2023-06-01',
+                "anthropic-version": "2023-06-01",
               },
               workSessionId,
               () => ({
                 Authorization: `Bearer ${getOAuthToken() ?? oauthToken}`,
-                'anthropic-version': '2023-06-01',
+                "anthropic-version": "2023-06-01",
               }),
               // Cap retries so a persistently-failing session-ingress can't
               // pin the uploader drain loop for the lifetime of the bridge.
@@ -1396,8 +1396,8 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
                 isBridge: true,
                 onBatchDropped: () => {
                   onStateChange?.(
-                    'reconnecting',
-                    'Lost sync with Remote Control — events could not be delivered',
+                    "reconnecting",
+                    "Lost sync with Remote Control — events could not be delivered",
                   );
                   // SI has been down ~20 min. Wake the poll loop so that when
                   // SI recovers, next poll → onWorkReceived → fresh transport
@@ -1435,7 +1435,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
         void writeBridgePointer(dir, {
           sessionId: currentSessionId,
           environmentId,
-          source: 'repl',
+          source: "repl",
         });
       }, 60 * 60_000)
     : null;
@@ -1452,8 +1452,8 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     keepAliveIntervalMs > 0
       ? setInterval(() => {
           if (!transport) return;
-          logForDebugging('[bridge:repl] keep_alive sent');
-          void transport.write({ type: 'keep_alive' }).catch((err: unknown) => {
+          logForDebugging("[bridge:repl] keep_alive sent");
+          void transport.write({ type: "keep_alive" }).catch((err: unknown) => {
             logForDebugging(`[bridge:repl] keep_alive write failed: ${errorMessage(err)}`);
           });
         }, keepAliveIntervalMs)
@@ -1473,7 +1473,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     teardownStarted = true;
     const teardownStart = Date.now();
     logForDebugging(
-      `[bridge:repl] Teardown starting: env=${environmentId} session=${currentSessionId} workId=${currentWorkId ?? 'none'} transportState=${transport?.getStateLabel() ?? 'null'}`,
+      `[bridge:repl] Teardown starting: env=${environmentId} session=${currentSessionId} workId=${currentWorkId ?? "none"} transportState=${transport?.getStateLabel() ?? "null"}`,
     );
 
     if (pointerRefreshTimer !== null) {
@@ -1483,14 +1483,14 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
       clearInterval(keepAliveTimer);
     }
     if (sigusr2Handler) {
-      process.off('SIGUSR2', sigusr2Handler);
+      process.off("SIGUSR2", sigusr2Handler);
     }
-    if (process.env.USER_TYPE === 'ant') {
+    if (process.env.USER_TYPE === "ant") {
       clearBridgeDebugHandle();
       debugFireClose = null;
     }
     pollController.abort();
-    logForDebugging('[bridge:repl] Teardown: poll loop aborted');
+    logForDebugging("[bridge:repl] Teardown: poll loop aborted");
 
     // Capture the live transport's seq BEFORE close() — close() is sync
     // (just aborts the SSE fetch) and does NOT invoke onClose, so the
@@ -1520,7 +1520,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
       await writeBridgePointer(dir, {
         sessionId: currentSessionId,
         environmentId,
-        source: 'repl',
+        source: "repl",
       });
       logForDebugging(
         `[bridge:repl] Teardown (perpetual): leaving env=${environmentId} session=${currentSessionId} alive on server, duration=${Date.now() - teardownStart}ms`,
@@ -1545,7 +1545,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
       ? api
           .stopWork(environmentId, currentWorkId, true)
           .then(() => {
-            logForDebugging('[bridge:repl] Teardown: stopWork completed');
+            logForDebugging("[bridge:repl] Teardown: stopWork completed");
           })
           .catch((err: unknown) => {
             logForDebugging(`[bridge:repl] Teardown stopWork failed: ${errorMessage(err)}`);
@@ -1560,7 +1560,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     await Promise.all([stopWorkP, archiveSession(currentSessionId)]);
 
     teardownTransport?.close();
-    logForDebugging('[bridge:repl] Teardown: transport closed');
+    logForDebugging("[bridge:repl] Teardown: transport closed");
 
     await api.deregisterEnvironment(environmentId).catch((err: unknown) => {
       logForDebugging(`[bridge:repl] Teardown deregister failed: ${errorMessage(err)}`);
@@ -1580,7 +1580,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
   const unregister = registerCleanup(() => doTeardownImpl?.());
 
   logForDebugging(`[bridge:repl] Ready: env=${environmentId} session=${currentSessionId}`);
-  onStateChange?.('ready');
+  onStateChange?.("ready");
 
   return {
     get bridgeSessionId() {
@@ -1633,10 +1633,10 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
       }
 
       if (!transport) {
-        const types = filtered.map((m) => m.type).join(',');
+        const types = filtered.map((m) => m.type).join(",");
         logForDebugging(
           `[bridge:repl] Transport not configured, dropping ${filtered.length} message(s) [${types}] for session=${currentSessionId}`,
-          { level: 'warn' },
+          { level: "warn" },
         );
         return;
       }
@@ -1667,7 +1667,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
       if (!transport) {
         logForDebugging(
           `[bridge:repl] Transport not configured, dropping ${filtered.length} SDK message(s) for session=${currentSessionId}`,
-          { level: 'warn' },
+          { level: "warn" },
         );
         return;
       }
@@ -1679,7 +1679,7 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     },
     sendControlRequest(request: SDKControlRequest) {
       if (!transport) {
-        logForDebugging('[bridge:repl] Transport not configured, skipping control_request');
+        logForDebugging("[bridge:repl] Transport not configured, skipping control_request");
         return;
       }
       const event = { ...request, session_id: currentSessionId };
@@ -1688,20 +1688,20 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     },
     sendControlResponse(response: SDKControlResponse) {
       if (!transport) {
-        logForDebugging('[bridge:repl] Transport not configured, skipping control_response');
+        logForDebugging("[bridge:repl] Transport not configured, skipping control_response");
         return;
       }
       const event = { ...response, session_id: currentSessionId };
       void transport.write(event);
-      logForDebugging('[bridge:repl] Sent control_response');
+      logForDebugging("[bridge:repl] Sent control_response");
     },
     sendControlCancelRequest(requestId: string) {
       if (!transport) {
-        logForDebugging('[bridge:repl] Transport not configured, skipping control_cancel_request');
+        logForDebugging("[bridge:repl] Transport not configured, skipping control_cancel_request");
         return;
       }
       const event = {
-        type: 'control_cancel_request' as const,
+        type: "control_cancel_request" as const,
         request_id: requestId,
         session_id: currentSessionId,
       };
@@ -1721,8 +1721,8 @@ export async function initBridgeCore(params: BridgeCoreParams): Promise<BridgeCo
     async teardown() {
       unregister();
       await doTeardownImpl?.();
-      logForDebugging('[bridge:repl] Torn down');
-      logEvent('tengu_bridge_repl_teardown', {});
+      logForDebugging("[bridge:repl] Torn down");
+      logEvent("tengu_bridge_repl_teardown", {});
     },
   };
 }
@@ -1853,7 +1853,7 @@ async function startWorkPollLoop({
         consecutiveErrors = 0;
         firstErrorTime = null;
         lastPollErrorTime = null;
-        onStateChange?.('ready');
+        onStateChange?.("ready");
       }
 
       if (!work) {
@@ -1875,7 +1875,7 @@ async function startWorkPollLoop({
           //   - Heartbeat config disabled (GrowthBook update)
           //   - Loop aborted (shutdown)
           if (pollConfig.non_exclusive_heartbeat_interval_ms > 0 && getHeartbeatInfo) {
-            logEvent('tengu_bridge_heartbeat_mode_entered', {
+            logEvent("tengu_bridge_heartbeat_mode_entered", {
               heartbeat_interval_ms: pollConfig.non_exclusive_heartbeat_interval_ms,
             });
             // Deadline computed once at entry — GB updates to atCapMs don't
@@ -1905,12 +1905,12 @@ async function startWorkPollLoop({
                 logForDebugging(`[bridge:repl:heartbeat] Failed: ${errorMessage(err)}`);
                 if (err instanceof BridgeFatalError) {
                   cap.cleanup();
-                  logEvent('tengu_bridge_heartbeat_error', {
+                  logEvent("tengu_bridge_heartbeat_error", {
                     status:
                       err.status as unknown as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
                     error_type: (err.status === 401 || err.status === 403
-                      ? 'auth_failed'
-                      : 'fatal') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+                      ? "auth_failed"
+                      : "fatal") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
                   });
                   // JWT expired (401/403) or work item gone (404/410).
                   // Either way the current transport is dead — SSE
@@ -1938,15 +1938,15 @@ async function startWorkPollLoop({
             }
 
             const exitReason = needsBackoff
-              ? 'error'
+              ? "error"
               : signal.aborted
-                ? 'shutdown'
+                ? "shutdown"
                 : !isAtCapacity()
-                  ? 'capacity_changed'
+                  ? "capacity_changed"
                   : pollDeadline !== null && Date.now() >= pollDeadline
-                    ? 'poll_due'
-                    : 'config_disabled';
-            logEvent('tengu_bridge_heartbeat_mode_exited', {
+                    ? "poll_due"
+                    : "config_disabled";
+            logEvent("tengu_bridge_heartbeat_mode_exited", {
               reason: exitReason as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
               heartbeat_cycles: hbCycles,
             });
@@ -1956,7 +1956,7 @@ async function startWorkPollLoop({
             // below — it's the same capacitySignal-wrapped sleep the legacy
             // path uses, and both need the suspension-overrun check.
             if (!needsBackoff) {
-              if (exitReason === 'poll_due') {
+              if (exitReason === "poll_due") {
                 // bridgeApi throttles empty-poll logs (EMPTY_POLL_LOG_INTERVAL=100)
                 // so the once-per-10min poll_due poll is invisible at counter=2.
                 // Log it here so verification runs see both endpoints in the debug log.
@@ -1994,7 +1994,7 @@ async function startWorkPollLoop({
               logForDebugging(
                 `[bridge:repl] At-capacity sleep overran by ${Math.round(overrun / 1000)}s — process suspension detected, forcing one fast-poll cycle`,
               );
-              logEvent('tengu_bridge_repl_suspension_detected', {
+              logEvent("tengu_bridge_repl_suspension_detected", {
                 overrun_ms: overrun,
               });
               suspensionDetected = true;
@@ -2012,7 +2012,7 @@ async function startWorkPollLoop({
         secret = decodeWorkSecret(work.secret);
       } catch (err) {
         logForDebugging(`[bridge:repl] Failed to decode work secret: ${errorMessage(err)}`);
-        logEvent('tengu_bridge_repl_work_secret_failed', {});
+        logEvent("tengu_bridge_repl_work_secret_failed", {});
         // Can't ack (needs the JWT we failed to decode). stopWork uses OAuth.
         // Prevents XAUTOCLAIM re-delivering this poisoned item every cycle.
         await api.stopWork(envId, work.id, false).catch(() => {});
@@ -2028,15 +2028,15 @@ async function startWorkPollLoop({
         logForDebugging(`[bridge:repl] Acknowledge failed workId=${work.id}: ${errorMessage(err)}`);
       }
 
-      if (work.data.type === 'healthcheck') {
-        logForDebugging('[bridge:repl] Healthcheck received');
+      if (work.data.type === "healthcheck") {
+        logForDebugging("[bridge:repl] Healthcheck received");
         continue;
       }
 
-      if (work.data.type === 'session') {
+      if (work.data.type === "session") {
         const workSessionId = work.data.id;
         try {
-          validateBridgeId(workSessionId, 'session_id');
+          validateBridgeId(workSessionId, "session_id");
         } catch {
           logForDebugging(`[bridge:repl] Invalid session_id in work: ${workSessionId}`);
           continue;
@@ -2048,7 +2048,7 @@ async function startWorkPollLoop({
           work.id,
           secret.use_code_sessions === true,
         );
-        logForDebugging('[bridge:repl] Work accepted, continuing poll loop');
+        logForDebugging("[bridge:repl] Work accepted, continuing poll loop");
       }
     } catch (err) {
       if (signal.aborted) break;
@@ -2081,7 +2081,7 @@ async function startWorkPollLoop({
         logForDebugging(
           `[bridge:repl] Environment deleted, attempting re-registration (attempt ${environmentRecreations}/${MAX_ENVIRONMENT_RECREATIONS})`,
         );
-        logEvent('tengu_bridge_repl_env_lost', {
+        logEvent("tengu_bridge_repl_env_lost", {
           attempt: environmentRecreations,
         } as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS);
 
@@ -2089,12 +2089,12 @@ async function startWorkPollLoop({
           logForDebugging(
             `[bridge:repl] Environment re-registration limit reached (${MAX_ENVIRONMENT_RECREATIONS}), giving up`,
           );
-          onStateChange?.('failed', 'Environment deleted and re-registration limit reached');
+          onStateChange?.("failed", "Environment deleted and re-registration limit reached");
           onFatalError?.();
           break;
         }
 
-        onStateChange?.('reconnecting', 'environment lost, recreating session');
+        onStateChange?.("reconnecting", "environment lost, recreating session");
         const newCreds = await onEnvironmentLost();
         // doReconnect() makes several sequential network calls (1-5s).
         // If the user triggered teardown during that window, its internal
@@ -2112,12 +2112,12 @@ async function startWorkPollLoop({
           // new env immediately dies again we still want the limit to fire.
           consecutiveErrors = 0;
           firstErrorTime = null;
-          onStateChange?.('ready');
+          onStateChange?.("ready");
           logForDebugging(`[bridge:repl] Re-registered environment: ${newCreds.environmentId}`);
           continue;
         }
 
-        onStateChange?.('failed', 'Environment deleted and re-registration failed');
+        onStateChange?.("failed", "Environment deleted and re-registration failed");
         onFatalError?.();
         break;
       }
@@ -2127,13 +2127,13 @@ async function startWorkPollLoop({
         const isExpiry = isExpiredErrorType(err.errorType);
         const isSuppressible = isSuppressible403(err);
         logForDebugging(
-          `[bridge:repl] Fatal poll error: ${err.message} (status=${err.status}, type=${err.errorType ?? 'unknown'})${isSuppressible ? ' (suppressed)' : ''}`,
+          `[bridge:repl] Fatal poll error: ${err.message} (status=${err.status}, type=${err.errorType ?? "unknown"})${isSuppressible ? " (suppressed)" : ""}`,
         );
-        logEvent('tengu_bridge_repl_fatal_error', {
+        logEvent("tengu_bridge_repl_fatal_error", {
           status: err.status,
           error_type: err.errorType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         });
-        logForDiagnosticsNoPII(isExpiry ? 'info' : 'error', 'bridge_repl_fatal_error', {
+        logForDiagnosticsNoPII(isExpiry ? "info" : "error", "bridge_repl_fatal_error", {
           status: err.status,
           error_type: err.errorType,
         });
@@ -2142,8 +2142,8 @@ async function startWorkPollLoop({
         // but always trigger teardown so cleanup runs.
         if (!isSuppressible) {
           onStateChange?.(
-            'failed',
-            isExpiry ? 'session expired · /remote-control to reconnect' : err.message,
+            "failed",
+            isExpiry ? "session expired · /remote-control to reconnect" : err.message,
           );
         }
         // Always trigger teardown — matches bridgeMain.ts where fatalExit=true
@@ -2162,7 +2162,7 @@ async function startWorkPollLoop({
         logForDebugging(
           `[bridge:repl] Detected system sleep (${Math.round((now - lastPollErrorTime) / 1000)}s gap), resetting poll error budget`,
         );
-        logForDiagnosticsNoPII('info', 'bridge_repl_poll_sleep_detected', {
+        logForDiagnosticsNoPII("info", "bridge_repl_poll_sleep_detected", {
           gapMs: now - lastPollErrorTime,
         });
         consecutiveErrors = 0;
@@ -2177,12 +2177,12 @@ async function startWorkPollLoop({
       const elapsed = now - firstErrorTime;
       const httpStatus = extractHttpStatus(err);
       const errMsg = describeAxiosError(err);
-      const wsLabel = getWsState?.() ?? 'unknown';
+      const wsLabel = getWsState?.() ?? "unknown";
 
       logForDebugging(
         `[bridge:repl] Poll error (attempt ${consecutiveErrors}, elapsed ${Math.round(elapsed / 1000)}s, ws=${wsLabel}): ${errMsg}`,
       );
-      logEvent('tengu_bridge_repl_poll_error', {
+      logEvent("tengu_bridge_repl_poll_error", {
         status: httpStatus,
         consecutiveErrors,
         elapsedMs: elapsed,
@@ -2191,7 +2191,7 @@ async function startWorkPollLoop({
       // Only transition to 'reconnecting' on the first error — stay
       // there until a successful poll (avoid flickering the UI state).
       if (consecutiveErrors === 1) {
-        onStateChange?.('reconnecting', errMsg);
+        onStateChange?.("reconnecting", errMsg);
       }
 
       // Give up after continuous failures
@@ -2199,13 +2199,13 @@ async function startWorkPollLoop({
         logForDebugging(
           `[bridge:repl] Poll failures exceeded ${POLL_ERROR_GIVE_UP_MS / 1000}s (${consecutiveErrors} errors), giving up`,
         );
-        logForDiagnosticsNoPII('info', 'bridge_repl_poll_give_up');
-        logEvent('tengu_bridge_repl_poll_give_up', {
+        logForDiagnosticsNoPII("info", "bridge_repl_poll_give_up");
+        logEvent("tengu_bridge_repl_poll_give_up", {
           consecutiveErrors,
           elapsedMs: elapsed,
           lastStatus: httpStatus,
         } as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS);
-        onStateChange?.('failed', 'connection to server lost');
+        onStateChange?.("failed", "connection to server lost");
         break;
       }
 

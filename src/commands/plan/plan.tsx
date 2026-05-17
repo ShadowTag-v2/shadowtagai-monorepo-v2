@@ -1,22 +1,22 @@
-import type * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { handlePlanModeTransition } from '../../bootstrap/state.js';
-import type { LocalJSXCommandContext } from '../../commands.js';
-import { Box, Text } from '../../ink.js';
-import type { LocalJSXCommandOnDone } from '../../types/command.js';
-import { getExternalEditor } from '../../utils/editor.js';
-import { toIDEDisplayName } from '../../utils/ide.js';
-import { applyPermissionUpdate } from '../../utils/permissions/PermissionUpdate.js';
-import { prepareContextForPlanMode } from '../../utils/permissions/permissionSetup.js';
-import { getPlan, getPlanFilePath } from '../../utils/plans.js';
-import { editFileInEditor } from '../../utils/promptEditor.js';
-import { renderToString } from '../../utils/staticRender.js';
+import type * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { handlePlanModeTransition } from "../../bootstrap/state.js";
+import type { LocalJSXCommandContext } from "../../commands.js";
+import { Box, Text } from "../../ink.js";
+import type { LocalJSXCommandOnDone } from "../../types/command.js";
+import { getExternalEditor } from "../../utils/editor.js";
+import { toIDEDisplayName } from "../../utils/ide.js";
+import { applyPermissionUpdate } from "../../utils/permissions/PermissionUpdate.js";
+import { prepareContextForPlanMode } from "../../utils/permissions/permissionSetup.js";
+import { getPlan, getPlanFilePath } from "../../utils/plans.js";
+import { editFileInEditor } from "../../utils/promptEditor.js";
+import { renderToString } from "../../utils/staticRender.js";
 
 function PlanDisplay(t0) {
   const $ = _c(11);
   const { planContent, planPath, editorName } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = <Text bold={true}>Current Plan</Text>;
     $[0] = t1;
   } else {
@@ -87,26 +87,26 @@ export async function call(
   const currentMode = appState.toolPermissionContext.mode;
 
   // If not in plan mode, enable it
-  if (currentMode !== 'plan') {
-    handlePlanModeTransition(currentMode, 'plan');
+  if (currentMode !== "plan") {
+    handlePlanModeTransition(currentMode, "plan");
     setAppState((prev) => ({
       ...prev,
       toolPermissionContext: applyPermissionUpdate(
         prepareContextForPlanMode(prev.toolPermissionContext),
         {
-          type: 'setMode',
-          mode: 'plan',
-          destination: 'session',
+          type: "setMode",
+          mode: "plan",
+          destination: "session",
         },
       ),
     }));
     const description = args.trim();
-    if (description && description !== 'open') {
-      onDone('Enabled plan mode', {
+    if (description && description !== "open") {
+      onDone("Enabled plan mode", {
         shouldQuery: true,
       });
     } else {
-      onDone('Enabled plan mode');
+      onDone("Enabled plan mode");
     }
     return null;
   }
@@ -115,13 +115,13 @@ export async function call(
   const planContent = getPlan();
   const planPath = getPlanFilePath();
   if (!planContent) {
-    onDone('Already in plan mode. No plan written yet.');
+    onDone("Already in plan mode. No plan written yet.");
     return null;
   }
 
   // If user typed "/plan open", open in editor
   const argList = args.trim().split(/\s+/);
-  if (argList[0] === 'open') {
+  if (argList[0] === "open") {
     const result = await editFileInEditor(planPath);
     if (result.error) {
       onDone(`Failed to open plan in editor: ${result.error}`);

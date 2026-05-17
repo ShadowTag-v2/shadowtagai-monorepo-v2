@@ -1,10 +1,10 @@
-import type { ToolUseContext } from '../../Tool.js';
+import type { ToolUseContext } from "../../Tool.js";
 
-import { logForDebugging } from '../debug.js';
-import { errorMessage } from '../errors.js';
-import { withResolvers } from '../withResolvers.js';
-import { isLockHeldLocally, releaseComputerUseLock } from './computerUseLock.js';
-import { unregisterEscHotkey } from './escHotkey.js';
+import { logForDebugging } from "../debug.js";
+import { errorMessage } from "../errors.js";
+import { withResolvers } from "../withResolvers.js";
+import { isLockHeldLocally, releaseComputerUseLock } from "./computerUseLock.js";
+import { unregisterEscHotkey } from "./escHotkey.js";
 
 // cu.apps.unhide is NOT one of the four @MainActor methods wrapped by
 // drainRunLoop's 30s backstop. On abort paths (where the user hit Ctrl+C
@@ -28,13 +28,13 @@ const UNHIDE_TIMEOUT_MS = 5000;
  * No-ops cheaply on non-CU turns: both gate checks are zero-syscall.
  */
 export async function cleanupComputerUseAfterTurn(
-  ctx: Pick<ToolUseContext, 'getAppState' | 'setAppState' | 'sendOSNotification'>,
+  ctx: Pick<ToolUseContext, "getAppState" | "setAppState" | "sendOSNotification">,
 ): Promise<void> {
   const appState = ctx.getAppState();
 
   const hidden = appState.computerUseMcpState?.hiddenDuringTurn;
   if (hidden && hidden.size > 0) {
-    const { unhideComputerUseApps } = await import('./executor.js');
+    const { unhideComputerUseApps } = await import("./executor.js");
     const unhide = unhideComputerUseApps([...hidden]).catch((err) =>
       logForDebugging(`[Computer Use MCP] auto-unhide failed: ${errorMessage(err)}`),
     );
@@ -70,8 +70,8 @@ export async function cleanupComputerUseAfterTurn(
 
   if (await releaseComputerUseLock()) {
     ctx.sendOSNotification?.({
-      message: 'Claude is done using your computer',
-      notificationType: 'computer_use_exit',
+      message: "Claude is done using your computer",
+      notificationType: "computer_use_exit",
     });
   }
 }

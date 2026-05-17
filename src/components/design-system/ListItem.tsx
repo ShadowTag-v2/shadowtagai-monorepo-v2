@@ -1,8 +1,8 @@
-import figures from 'figures';
-import type { ReactNode } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useDeclaredCursor } from '../../ink/hooks/use-declared-cursor.js';
-import { Box, Text } from '../../ink.js';
+import figures from "figures";
+import type { ReactNode } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useDeclaredCursor } from "../../ink/hooks/use-declared-cursor.js";
+import { Box, Text } from "../../ink.js";
 
 type ListItemProps = {
   /**
@@ -147,16 +147,16 @@ export function ListItem(t0) {
   if ($[5] !== disabled || $[6] !== isFocused || $[7] !== isSelected || $[8] !== styled) {
     const getTextColor = function getTextColor() {
       if (disabled) {
-        return 'inactive';
+        return "inactive";
       }
       if (!styled) {
         return;
       }
       if (isSelected) {
-        return 'success';
+        return "success";
       }
       if (isFocused) {
-        return 'suggestion';
+        return "suggestion";
       }
     };
     t5 = getTextColor();

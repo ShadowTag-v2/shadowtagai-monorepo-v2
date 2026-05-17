@@ -1,11 +1,11 @@
-import chalk from 'chalk';
-import { supportsHyperlinks } from '../ink/supports-hyperlinks.js';
+import chalk from "chalk";
+import { supportsHyperlinks } from "../ink/supports-hyperlinks.js";
 
 // OSC 8 hyperlink escape sequences
 // Format: \e]8;;URL\e\\TEXT\e]8;;\e\\
 // Using \x07 (BEL) as terminator which is more widely supported
-export const OSC8_START = '\x1b]8;;';
-export const OSC8_END = '\x07';
+export const OSC8_START = "\x1b]8;;";
+export const OSC8_END = "\x07";
 
 type HyperlinkOptions = {
   supportsHyperlinks?: boolean;

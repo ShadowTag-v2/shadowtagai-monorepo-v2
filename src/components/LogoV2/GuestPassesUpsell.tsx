@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../../ink.js';
-import { logEvent } from '../../services/analytics/index.js';
+import { useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../../ink.js";
+import { logEvent } from "../../services/analytics/index.js";
 import {
   checkCachedPassesEligibility,
   formatCreditAmount,
   getCachedReferrerReward,
   getCachedRemainingPasses,
-} from '../../services/api/referral.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
+} from "../../services/api/referral.js";
+import { getGlobalConfig, saveGlobalConfig } from "../../utils/config.js";
 
 function resetIfPassesRefreshed(): void {
   const remaining = getCachedRemainingPasses();
@@ -51,7 +51,7 @@ export function incrementGuestPassesSeenCount(): void {
       passesUpsellSeenCount: newCount,
     };
   });
-  logEvent('tengu_guest_passes_upsell_shown', {
+  logEvent("tengu_guest_passes_upsell_shown", {
     seen_count: newCount,
   });
 }
@@ -60,15 +60,15 @@ export function incrementGuestPassesSeenCount(): void {
 export function GuestPassesUpsell() {
   const $ = _c(1);
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     const reward = getCachedReferrerReward();
     t0 = (
       <Text dimColor={true}>
-        <Text color="claude">[✻]</Text> <Text color="claude">[✻]</Text>{' '}
-        <Text color="claude">[✻]</Text> ·{' '}
+        <Text color="claude">[✻]</Text> <Text color="claude">[✻]</Text>{" "}
+        <Text color="claude">[✻]</Text> ·{" "}
         {reward
           ? `Share Claude Code and earn ${formatCreditAmount(reward)} of extra usage · /passes`
-          : '3 guest passes at /passes'}
+          : "3 guest passes at /passes"}
       </Text>
     );
     $[0] = t0;

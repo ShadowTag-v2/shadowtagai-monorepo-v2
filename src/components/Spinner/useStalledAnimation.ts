@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef } from "react";
 
 // Hook to handle the transition to red when tokens stop flowing.
 // Driven by the parent's animation clock time instead of independent intervals,

@@ -1,30 +1,30 @@
-import { PureComponent, type ReactNode } from 'react';
-import { updateLastInteractionTime } from '../../bootstrap/state.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { stopCapturingEarlyInput } from '../../utils/earlyInput.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
-import { isMouseClicksDisabled } from '../../utils/fullscreen.js';
-import { logError } from '../../utils/log.js';
-import { EventEmitter } from '../events/emitter.js';
-import { InputEvent } from '../events/input-event.js';
-import { TerminalFocusEvent } from '../events/terminal-focus-event.js';
+import { PureComponent, type ReactNode } from "react";
+import { updateLastInteractionTime } from "../../bootstrap/state.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { stopCapturingEarlyInput } from "../../utils/earlyInput.js";
+import { isEnvTruthy } from "../../utils/envUtils.js";
+import { isMouseClicksDisabled } from "../../utils/fullscreen.js";
+import { logError } from "../../utils/log.js";
+import { EventEmitter } from "../events/emitter.js";
+import { InputEvent } from "../events/input-event.js";
+import { TerminalFocusEvent } from "../events/terminal-focus-event.js";
 import {
   INITIAL_STATE,
   type ParsedInput,
   type ParsedKey,
   type ParsedMouse,
   parseMultipleKeypresses,
-} from '../parse-keypress.js';
-import reconciler from '../reconciler.js';
+} from "../parse-keypress.js";
+import reconciler from "../reconciler.js";
 import {
   finishSelection,
   hasSelection,
   type SelectionState,
   startSelection,
-} from '../selection.js';
-import { isXtermJs, setXtversionName, supportsExtendedKeys } from '../terminal.js';
-import { getTerminalFocused, setTerminalFocused } from '../terminal-focus-state.js';
-import { TerminalQuerier, xtversion } from '../terminal-querier.js';
+} from "../selection.js";
+import { isXtermJs, setXtversionName, supportsExtendedKeys } from "../terminal.js";
+import { getTerminalFocused, setTerminalFocused } from "../terminal-focus-state.js";
+import { TerminalQuerier, xtversion } from "../terminal-querier.js";
 import {
   DISABLE_KITTY_KEYBOARD,
   DISABLE_MODIFY_OTHER_KEYS,
@@ -32,7 +32,7 @@ import {
   ENABLE_MODIFY_OTHER_KEYS,
   FOCUS_IN,
   FOCUS_OUT,
-} from '../termio/csi.js';
+} from "../termio/csi.js";
 import {
   DBP,
   DFE,
@@ -41,19 +41,19 @@ import {
   EFE,
   HIDE_CURSOR,
   SHOW_CURSOR,
-} from '../termio/dec.js';
-import AppContext from './AppContext.js';
-import { ClockProvider } from './ClockContext.js';
+} from "../termio/dec.js";
+import AppContext from "./AppContext.js";
+import { ClockProvider } from "./ClockContext.js";
 import CursorDeclarationContext, {
   type CursorDeclarationSetter,
-} from './CursorDeclarationContext.js';
-import ErrorOverview from './ErrorOverview.js';
-import StdinContext from './StdinContext.js';
-import { TerminalFocusProvider } from './TerminalFocusContext.js';
-import { TerminalSizeContext } from './TerminalSizeContext.js';
+} from "./CursorDeclarationContext.js";
+import ErrorOverview from "./ErrorOverview.js";
+import StdinContext from "./StdinContext.js";
+import { TerminalFocusProvider } from "./TerminalFocusContext.js";
+import { TerminalSizeContext } from "./TerminalSizeContext.js";
 
 // Platforms that support Unix-style process suspension (SIGSTOP/SIGCONT)
-const SUPPORTS_SUSPEND = process.platform !== 'win32';
+const SUPPORTS_SUSPEND = process.platform !== "win32";
 
 // After this many milliseconds of stdin silence, the next chunk triggers
 // a terminal mode re-assert (mouse tracking). Catches tmux detach→attach,
@@ -127,7 +127,7 @@ type State = {
 // It renders stdin and stdout contexts, so that children can access them if needed
 // It also handles Ctrl+C exiting and cursor visibility
 export default class App extends PureComponent<Props, State> {
-  static displayName = 'InternalApp';
+  static displayName = "InternalApp";
   static getDerivedStateFromError(error: Error) {
     return {
       error,
@@ -253,15 +253,15 @@ export default class App extends PureComponent<Props, State> {
     if (!this.isRawModeSupported()) {
       if (stdin === process.stdin) {
         throw new Error(
-          'Raw mode is not supported on the current process.stdin, which Ink uses as input stream by default.\nRead about how to prevent this error on https://github.com/vadimdemedes/ink/#israwmodesupported',
+          "Raw mode is not supported on the current process.stdin, which Ink uses as input stream by default.\nRead about how to prevent this error on https://github.com/vadimdemedes/ink/#israwmodesupported",
         );
       } else {
         throw new Error(
-          'Raw mode is not supported on the stdin provided to Ink.\nRead about how to prevent this error on https://github.com/vadimdemedes/ink/#israwmodesupported',
+          "Raw mode is not supported on the stdin provided to Ink.\nRead about how to prevent this error on https://github.com/vadimdemedes/ink/#israwmodesupported",
         );
       }
     }
-    stdin.setEncoding('utf8');
+    stdin.setEncoding("utf8");
     if (isEnabled) {
       // Ensure raw mode is enabled only once
       if (this.rawModeEnabledCount === 0) {
@@ -272,7 +272,7 @@ export default class App extends PureComponent<Props, State> {
         stopCapturingEarlyInput();
         stdin.ref();
         stdin.setRawMode(true);
-        stdin.addListener('readable', this.handleReadable);
+        stdin.addListener("readable", this.handleReadable);
         // Enable bracketed paste mode
         this.props.stdout.write(EBP);
         // Enable terminal focus reporting (DECSET 1004)
@@ -300,7 +300,7 @@ export default class App extends PureComponent<Props, State> {
               setXtversionName(r.name);
               logForDebugging(`XTVERSION: terminal identified as "${r.name}"`);
             } else {
-              logForDebugging('XTVERSION: no reply (terminal ignored query)');
+              logForDebugging("XTVERSION: no reply (terminal ignored query)");
             }
           });
         });
@@ -318,7 +318,7 @@ export default class App extends PureComponent<Props, State> {
       // Disable bracketed paste mode
       this.props.stdout.write(DBP);
       stdin.setRawMode(false);
-      stdin.removeListener('readable', this.handleReadable);
+      stdin.removeListener("readable", this.handleReadable);
       stdin.unref();
     }
   };
@@ -372,7 +372,7 @@ export default class App extends PureComponent<Props, State> {
       }
       this.incompleteEscapeTimer = setTimeout(
         this.flushIncomplete,
-        this.keyParseState.mode === 'IN_PASTE' ? this.PASTE_TIMEOUT : this.NORMAL_TIMEOUT,
+        this.keyParseState.mode === "IN_PASTE" ? this.PASTE_TIMEOUT : this.NORMAL_TIMEOUT,
       );
     }
   };
@@ -405,21 +405,21 @@ export default class App extends PureComponent<Props, State> {
       const { stdin } = this.props;
       if (
         this.rawModeEnabledCount > 0 &&
-        !stdin.listeners('readable').includes(this.handleReadable)
+        !stdin.listeners("readable").includes(this.handleReadable)
       ) {
         logForDebugging(
-          'handleReadable: re-attaching stdin readable listener after error recovery',
+          "handleReadable: re-attaching stdin readable listener after error recovery",
           {
-            level: 'warn',
+            level: "warn",
           },
         );
-        stdin.addListener('readable', this.handleReadable);
+        stdin.addListener("readable", this.handleReadable);
       }
     }
   };
   handleInput = (input: string | undefined): void => {
     // Exit on Ctrl+C
-    if (input === '\x03' && this.props.exitOnCtrlC) {
+    if (input === "\x03" && this.props.exitOnCtrlC) {
       this.handleExit();
     }
 
@@ -461,7 +461,7 @@ export default class App extends PureComponent<Props, State> {
     }
 
     // Emit suspend event for Claude Code to handle. Mostly just has a notification
-    this.internal_eventEmitter.emit('suspend');
+    this.internal_eventEmitter.emit("suspend");
 
     // Set up resume handler
     const resumeHandler = () => {
@@ -482,11 +482,11 @@ export default class App extends PureComponent<Props, State> {
       }
 
       // Emit resume event for Claude Code to handle
-      this.internal_eventEmitter.emit('resume');
-      process.removeListener('SIGCONT', resumeHandler);
+      this.internal_eventEmitter.emit("resume");
+      process.removeListener("SIGCONT", resumeHandler);
     };
-    process.on('SIGCONT', resumeHandler);
-    process.kill(process.pid, 'SIGSTOP');
+    process.on("SIGCONT", resumeHandler);
+    process.kill(process.pid, "SIGSTOP");
   };
 }
 
@@ -507,8 +507,8 @@ function processKeysInBatch(
   if (
     items.some(
       (i) =>
-        i.kind === 'key' ||
-        (i.kind === 'mouse' && !((i.button & 0x20) !== 0 && (i.button & 0x03) === 3)),
+        i.kind === "key" ||
+        (i.kind === "mouse" && !((i.button & 0x20) !== 0 && (i.button & 0x03) === 3)),
     )
   ) {
     updateLastInteractionTime();
@@ -516,7 +516,7 @@ function processKeysInBatch(
   for (const item of items) {
     // Terminal responses (DECRPM, DA1, OSC replies, etc.) are not user
     // input — route them to the querier to resolve pending promises.
-    if (item.kind === 'response') {
+    if (item.kind === "response") {
       app.querier.onResponse(item.response);
       continue;
     }
@@ -524,7 +524,7 @@ function processKeysInBatch(
     // Mouse click/drag events update selection state (fullscreen only).
     // Terminal sends 1-indexed col/row; convert to 0-indexed for the
     // screen buffer. Button bit 0x20 = drag (motion while button held).
-    if (item.kind === 'mouse') {
+    if (item.kind === "mouse") {
       handleMouseEvent(app, item);
       continue;
     }
@@ -533,8 +533,8 @@ function processKeysInBatch(
     // Handle terminal focus events (DECSET 1004)
     if (sequence === FOCUS_IN) {
       app.handleTerminalFocus(true);
-      const event = new TerminalFocusEvent('terminalfocus');
-      app.internal_eventEmitter.emit('terminalfocus', event);
+      const event = new TerminalFocusEvent("terminalfocus");
+      app.internal_eventEmitter.emit("terminalfocus", event);
       continue;
     }
     if (sequence === FOCUS_OUT) {
@@ -548,8 +548,8 @@ function processKeysInBatch(
         finishSelection(app.props.selection);
         app.props.onSelectionChange();
       }
-      const event = new TerminalFocusEvent('terminalblur');
-      app.internal_eventEmitter.emit('terminalblur', event);
+      const event = new TerminalFocusEvent("terminalblur");
+      app.internal_eventEmitter.emit("terminalblur", event);
       continue;
     }
 
@@ -560,13 +560,13 @@ function processKeysInBatch(
 
     // Handle Ctrl+Z (suspend) using parsed key to support both raw (\x1a) and
     // CSI u format (\x1b[122;5u) from Kitty keyboard protocol terminals
-    if (item.name === 'z' && item.ctrl && SUPPORTS_SUSPEND) {
+    if (item.name === "z" && item.ctrl && SUPPORTS_SUSPEND) {
       app.handleSuspend();
       continue;
     }
     app.handleInput(sequence);
     const event = new InputEvent(item);
-    app.internal_eventEmitter.emit('input', event);
+    app.internal_eventEmitter.emit("input", event);
 
     // Also dispatch through the DOM tree so onKeyDown handlers fire.
     app.props.dispatchKeyboardEvent(item);
@@ -583,7 +583,7 @@ export function handleMouseEvent(app: App, m: ParsedMouse): void {
   const col = m.col - 1;
   const row = m.row - 1;
   const baseButton = m.button & 0x03;
-  if (m.action === 'press') {
+  if (m.action === "press") {
     if ((m.button & 0x20) !== 0 && baseButton === 3) {
       // Mode-1003 motion with no button held. Dispatch hover; skip the
       // rest of this handler (no selection, no click-count side effects).
@@ -705,7 +705,7 @@ export function handleMouseEvent(app: App, m: ParsedMouse): void {
       // own link-opening; Cmd+click is the native UX there anyway.
       // TERM_PROGRAM is the sync fast-path; isXtermJs() is the XTVERSION
       // probe result (catches SSH + non-VS Code embedders like Hyper).
-      if (url && process.env.TERM_PROGRAM !== 'vscode' && !isXtermJs()) {
+      if (url && process.env.TERM_PROGRAM !== "vscode" && !isXtermJs()) {
         // Clear any prior pending timer — clicking a second link
         // supersedes the first (only the latest click opens).
         if (app.pendingHyperlinkTimer) {

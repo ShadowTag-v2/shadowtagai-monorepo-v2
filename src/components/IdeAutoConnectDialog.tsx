@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../ink.js';
-import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
-import { isSupportedTerminal } from '../utils/ide.js';
-import { Select } from './CustomSelect/index.js';
-import { Dialog } from './design-system/Dialog.js';
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../ink.js";
+import { getGlobalConfig, saveGlobalConfig } from "../utils/config.js";
+import { isSupportedTerminal } from "../utils/ide.js";
+import { Select } from "./CustomSelect/index.js";
+import { Dialog } from "./design-system/Dialog.js";
 
 type IdeAutoConnectDialogProps = {
   onComplete: () => void;
@@ -14,7 +14,7 @@ export function IdeAutoConnectDialog(t0) {
   let t1;
   if ($[0] !== onComplete) {
     t1 = async (value) => {
-      const autoConnect = value === 'yes';
+      const autoConnect = value === "yes";
       saveGlobalConfig((current) => ({
         ...current,
         autoConnectIde: autoConnect,
@@ -29,15 +29,15 @@ export function IdeAutoConnectDialog(t0) {
   }
   const handleSelect = t1;
   let t2;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = [
       {
-        label: 'Yes',
-        value: 'yes',
+        label: "Yes",
+        value: "yes",
       },
       {
-        label: 'No',
-        value: 'no',
+        label: "No",
+        value: "no",
       },
     ];
     $[2] = t2;
@@ -54,7 +54,7 @@ export function IdeAutoConnectDialog(t0) {
     t3 = $[4];
   }
   let t4;
-  if ($[5] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Text dimColor={true}>You can also configure this in /config or with the --ide flag</Text>;
     $[5] = t4;
   } else {
@@ -93,7 +93,7 @@ export function IdeDisableAutoConnectDialog(t0) {
   let t1;
   if ($[0] !== onComplete) {
     t1 = (value) => {
-      const disableAutoConnect = value === 'yes';
+      const disableAutoConnect = value === "yes";
       if (disableAutoConnect) {
         saveGlobalConfig(_temp);
       }
@@ -117,15 +117,15 @@ export function IdeDisableAutoConnectDialog(t0) {
   }
   const handleCancel = t2;
   let t3;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = [
       {
-        label: 'No',
-        value: 'no',
+        label: "No",
+        value: "no",
       },
       {
-        label: 'Yes',
-        value: 'yes',
+        label: "Yes",
+        value: "yes",
       },
     ];
     $[4] = t3;

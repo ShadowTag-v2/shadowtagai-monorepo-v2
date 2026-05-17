@@ -1,30 +1,30 @@
-import { relative } from 'node:path';
-import type React from 'react';
-import { getCwdState } from '../../bootstrap/state.js';
-import { SandboxSettings } from '../../components/sandbox/SandboxSettings.js';
-import { color } from '../../ink.js';
-import { getPlatform } from '../../utils/platform.js';
-import { addToExcludedCommands, SandboxManager } from '../../utils/sandbox/sandbox-adapter.js';
+import { relative } from "node:path";
+import type React from "react";
+import { getCwdState } from "../../bootstrap/state.js";
+import { SandboxSettings } from "../../components/sandbox/SandboxSettings.js";
+import { color } from "../../ink.js";
+import { getPlatform } from "../../utils/platform.js";
+import { addToExcludedCommands, SandboxManager } from "../../utils/sandbox/sandbox-adapter.js";
 import {
   getSettings_DEPRECATED,
   getSettingsFilePathForSource,
-} from '../../utils/settings/settings.js';
-import type { ThemeName } from '../../utils/theme.js';
+} from "../../utils/settings/settings.js";
+import type { ThemeName } from "../../utils/theme.js";
 export async function call(
   onDone: (result?: string) => void,
   _context: unknown,
   args?: string,
 ): Promise<React.ReactNode | null> {
   const settings = getSettings_DEPRECATED();
-  const themeName: ThemeName = (settings.theme as ThemeName) || 'light';
+  const themeName: ThemeName = (settings.theme as ThemeName) || "light";
   const platform = getPlatform();
   if (!SandboxManager.isSupportedPlatform()) {
     // WSL1 users will see this since isSupportedPlatform returns false for WSL1
     const errorMessage =
-      platform === 'wsl'
-        ? 'Error: Sandboxing requires WSL2. WSL1 is not supported.'
-        : 'Error: Sandboxing is currently only supported on macOS, Linux, and WSL2.';
-    const message = color('error', themeName)(errorMessage);
+      platform === "wsl"
+        ? "Error: Sandboxing requires WSL2. WSL1 is not supported."
+        : "Error: Sandboxing is currently only supported on macOS, Linux, and WSL2.";
+    const message = color("error", themeName)(errorMessage);
     onDone(message);
     return null;
   }
@@ -35,7 +35,7 @@ export async function call(
   // Check if platform is in enabledPlatforms list (undocumented enterprise setting)
   if (!SandboxManager.isPlatformInEnabledList()) {
     const message = color(
-      'error',
+      "error",
       themeName,
     )(
       `Error: Sandboxing is disabled for this platform (${platform}) via the enabledPlatforms setting.`,
@@ -47,17 +47,17 @@ export async function call(
   // Check if sandbox settings are locked by higher-priority settings
   if (SandboxManager.areSandboxSettingsLockedByPolicy()) {
     const message = color(
-      'error',
+      "error",
       themeName,
     )(
-      'Error: Sandbox settings are overridden by a higher-priority configuration and cannot be changed locally.',
+      "Error: Sandbox settings are overridden by a higher-priority configuration and cannot be changed locally.",
     );
     onDone(message);
     return null;
   }
 
   // Parse the arguments
-  const trimmedArgs = args?.trim() || '';
+  const trimmedArgs = args?.trim() || "";
 
   // If no args, show the interactive menu
   if (!trimmedArgs) {
@@ -66,14 +66,14 @@ export async function call(
 
   // Handle subcommands
   if (trimmedArgs) {
-    const parts = trimmedArgs.split(' ');
+    const parts = trimmedArgs.split(" ");
     const subcommand = parts[0];
-    if (subcommand === 'exclude') {
+    if (subcommand === "exclude") {
       // Handle exclude subcommand
-      const commandPattern = trimmedArgs.slice('exclude '.length).trim();
+      const commandPattern = trimmedArgs.slice("exclude ".length).trim();
       if (!commandPattern) {
         const message = color(
-          'error',
+          "error",
           themeName,
         )(
           'Error: Please provide a command pattern to exclude (e.g., /sandbox exclude "npm run test:*")',
@@ -83,18 +83,18 @@ export async function call(
       }
 
       // Remove quotes if present
-      const cleanPattern = commandPattern.replace(/^["']|["']$/g, '');
+      const cleanPattern = commandPattern.replace(/^["']|["']$/g, "");
 
       // Add to excludedCommands
       addToExcludedCommands(cleanPattern);
 
       // Get the local settings path and make it relative to cwd
-      const localSettingsPath = getSettingsFilePathForSource('localSettings');
+      const localSettingsPath = getSettingsFilePathForSource("localSettings");
       const relativePath = localSettingsPath
         ? relative(getCwdState(), localSettingsPath)
-        : '.claude/settings.local.json';
+        : ".claude/settings.local.json";
       const message = color(
-        'success',
+        "success",
         themeName,
       )(`Added "${cleanPattern}" to excluded commands in ${relativePath}`);
       onDone(message);
@@ -102,7 +102,7 @@ export async function call(
     } else {
       // Unknown subcommand
       const message = color(
-        'error',
+        "error",
         themeName,
       )(`Error: Unknown subcommand "${subcommand}". Available subcommand: exclude`);
       onDone(message);

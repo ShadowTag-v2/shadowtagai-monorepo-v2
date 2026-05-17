@@ -31,11 +31,11 @@ interface OTelSpan {
   spanId: string;
   parentSpanId?: string;
   name: string;
-  kind: 'CLIENT' | 'SERVER' | 'INTERNAL';
+  kind: "CLIENT" | "SERVER" | "INTERNAL";
   startTimeUnixNano: string;
   endTimeUnixNano: string;
   attributes: Record<string, string | number | boolean>;
-  status: { code: 'OK' | 'ERROR' | 'UNSET'; message?: string };
+  status: { code: "OK" | "ERROR" | "UNSET"; message?: string };
 }
 
 /** Metric data point */
@@ -60,8 +60,8 @@ interface ExporterConfig {
 }
 
 const DEFAULT_CONFIG: ExporterConfig = {
-  endpoint: 'http://localhost:4318',
-  serviceName: 'counselconduit-frontend',
+  endpoint: "http://localhost:4318",
+  serviceName: "counselconduit-frontend",
   batchSize: 100,
   flushIntervalMs: 5000,
   maxRetries: 3,
@@ -72,8 +72,8 @@ function generateId(length: 16 | 32 = 16): string {
   const bytes = new Uint8Array(length / 2);
   crypto.getRandomValues(bytes);
   return Array.from(bytes)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 /** Get current time as OTLP nanosecond string */
@@ -108,7 +108,7 @@ export class OTelExporter {
     name: string,
     attributes: Record<string, string | number | boolean> = {},
     options: {
-      kind?: OTelSpan['kind'];
+      kind?: OTelSpan["kind"];
       parentSpanId?: string;
       traceId?: string;
     } = {},
@@ -118,20 +118,20 @@ export class OTelExporter {
       spanId: generateId(16),
       parentSpanId: options.parentSpanId,
       name,
-      kind: options.kind ?? 'INTERNAL',
+      kind: options.kind ?? "INTERNAL",
       startTimeUnixNano: nowNano(),
       endTimeUnixNano: nowNano(), // Updated on endSpan
       attributes: {
-        'service.name': this.config.serviceName,
+        "service.name": this.config.serviceName,
         ...attributes,
       },
-      status: { code: 'UNSET' },
+      status: { code: "UNSET" },
     };
     return span;
   }
 
   /** End a span and add to buffer */
-  endSpan(span: OTelSpan, status: 'OK' | 'ERROR' = 'OK', errorMessage?: string): void {
+  endSpan(span: OTelSpan, status: "OK" | "ERROR" = "OK", errorMessage?: string): void {
     span.endTimeUnixNano = nowNano();
     span.status = { code: status, message: errorMessage };
     this.spanBuffer.push(span);
@@ -145,8 +145,8 @@ export class OTelExporter {
   recordGauge(name: string, value: number, attributes: Record<string, string | number> = {}): void {
     this.metricBuffer.push({
       name,
-      description: '',
-      unit: '',
+      description: "",
+      unit: "",
       gauge: { value },
       timestamp: new Date().toISOString(),
       attributes,
@@ -161,8 +161,8 @@ export class OTelExporter {
   ): void {
     this.metricBuffer.push({
       name,
-      description: '',
-      unit: '',
+      description: "",
+      unit: "",
       sum: { value, isMonotonic: true },
       timestamp: new Date().toISOString(),
       attributes,
@@ -212,29 +212,29 @@ export class OTelExporter {
       resourceSpans: [
         {
           resource: {
-            attributes: [{ key: 'service.name', value: { stringValue: this.config.serviceName } }],
+            attributes: [{ key: "service.name", value: { stringValue: this.config.serviceName } }],
           },
           scopeSpans: [
             {
-              scope: { name: 'counselconduit.sandbox', version: '3.0.0' },
+              scope: { name: "counselconduit.sandbox", version: "3.0.0" },
               spans: spans.map((s) => ({
                 traceId: s.traceId,
                 spanId: s.spanId,
-                parentSpanId: s.parentSpanId ?? '',
+                parentSpanId: s.parentSpanId ?? "",
                 name: s.name,
-                kind: s.kind === 'CLIENT' ? 3 : s.kind === 'SERVER' ? 2 : 1,
+                kind: s.kind === "CLIENT" ? 3 : s.kind === "SERVER" ? 2 : 1,
                 startTimeUnixNano: s.startTimeUnixNano,
                 endTimeUnixNano: s.endTimeUnixNano,
                 attributes: Object.entries(s.attributes).map(([k, v]) => ({
                   key: k,
                   value:
-                    typeof v === 'string'
+                    typeof v === "string"
                       ? { stringValue: v }
-                      : typeof v === 'number'
+                      : typeof v === "number"
                         ? { intValue: String(v) }
                         : { boolValue: v },
                 })),
-                status: { code: s.status.code === 'OK' ? 1 : s.status.code === 'ERROR' ? 2 : 0 },
+                status: { code: s.status.code === "OK" ? 1 : s.status.code === "ERROR" ? 2 : 0 },
               })),
             },
           ],
@@ -248,11 +248,11 @@ export class OTelExporter {
       resourceMetrics: [
         {
           resource: {
-            attributes: [{ key: 'service.name', value: { stringValue: this.config.serviceName } }],
+            attributes: [{ key: "service.name", value: { stringValue: this.config.serviceName } }],
           },
           scopeMetrics: [
             {
-              scope: { name: 'counselconduit.sandbox', version: '3.0.0' },
+              scope: { name: "counselconduit.sandbox", version: "3.0.0" },
               metrics: metrics.map((m) => ({
                 name: m.name,
                 description: m.description,
@@ -267,7 +267,7 @@ export class OTelExporter {
                             attributes: Object.entries(m.attributes).map(([k, v]) => ({
                               key: k,
                               value:
-                                typeof v === 'string'
+                                typeof v === "string"
                                   ? { stringValue: v }
                                   : { intValue: String(v) },
                             })),
@@ -285,7 +285,7 @@ export class OTelExporter {
                             attributes: Object.entries(m.attributes).map(([k, v]) => ({
                               key: k,
                               value:
-                                typeof v === 'string'
+                                typeof v === "string"
                                   ? { stringValue: v }
                                   : { intValue: String(v) },
                             })),
@@ -303,7 +303,7 @@ export class OTelExporter {
 
   private async exportWithRetry(url: string, payload: object): Promise<void> {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
     if (this.config.apiKey) {
       headers.Authorization = `Bearer ${this.config.apiKey}`;
@@ -312,7 +312,7 @@ export class OTelExporter {
     for (let attempt = 0; attempt < this.config.maxRetries; attempt++) {
       try {
         const res = await fetch(url, {
-          method: 'POST',
+          method: "POST",
           headers,
           body: JSON.stringify(payload),
           signal: AbortSignal.timeout(10000),

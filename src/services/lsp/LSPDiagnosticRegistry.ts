@@ -1,10 +1,10 @@
-import { randomUUID } from 'node:crypto';
-import { LRUCache } from 'lru-cache';
-import { logForDebugging } from '../../utils/debug.js';
-import { toError } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
-import type { DiagnosticFile } from '../diagnosticTracking.js';
+import { randomUUID } from "node:crypto";
+import { LRUCache } from "lru-cache";
+import { logForDebugging } from "../../utils/debug.js";
+import { toError } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
+import type { DiagnosticFile } from "../diagnosticTracking.js";
 
 /**
  * Pending LSP diagnostic notification
@@ -90,13 +90,13 @@ export function registerPendingLSPDiagnostic({
  */
 function severityToNumber(severity: string | undefined): number {
   switch (severity) {
-    case 'Error':
+    case "Error":
       return 1;
-    case 'Warning':
+    case "Warning":
       return 2;
-    case 'Info':
+    case "Info":
       return 3;
-    case 'Hint':
+    case "Hint":
       return 4;
     default:
       return 4;
@@ -163,7 +163,7 @@ function deduplicateDiagnosticFiles(allFiles: DiagnosticFile[]): DiagnosticFile[
         dedupedFile.diagnostics.push(diag);
       } catch (error: unknown) {
         const err = toError(error);
-        const truncatedMessage = diag.message?.substring(0, 100) || '<no message>';
+        const truncatedMessage = diag.message?.substring(0, 100) || "<no message>";
         logError(
           new Error(
             `Failed to deduplicate diagnostic in ${file.uri}: ${err.message}. ` +
@@ -286,7 +286,7 @@ export function checkForLSPDiagnostics(): Array<{
       } catch (error: unknown) {
         // Log but continue - failure to track shouldn't prevent delivery
         const err = toError(error);
-        const truncatedMessage = diag.message?.substring(0, 100) || '<no message>';
+        const truncatedMessage = diag.message?.substring(0, 100) || "<no message>";
         logError(
           new Error(
             `Failed to track delivered diagnostic in ${file.uri}: ${err.message}. ` +
@@ -314,7 +314,7 @@ export function checkForLSPDiagnostics(): Array<{
   // Return single result with all deduplicated diagnostics
   return [
     {
-      serverName: Array.from(serverNames).join(', '),
+      serverName: Array.from(serverNames).join(", "),
       files: dedupedFiles,
     },
   ];

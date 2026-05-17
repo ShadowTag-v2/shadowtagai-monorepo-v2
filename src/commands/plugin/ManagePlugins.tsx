@@ -1,37 +1,37 @@
-import type { Dirent } from 'node:fs';
-import * as fs from 'node:fs/promises';
-import * as path from 'node:path';
-import figures from 'figures';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
-import { Byline } from '../../components/design-system/Byline.js';
-import { MCPRemoteServerMenu } from '../../components/mcp/MCPRemoteServerMenu.js';
-import { MCPStdioServerMenu } from '../../components/mcp/MCPStdioServerMenu.js';
-import { MCPToolDetailView } from '../../components/mcp/MCPToolDetailView.js';
-import { MCPToolListView } from '../../components/mcp/MCPToolListView.js';
+import type { Dirent } from "node:fs";
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
+import figures from "figures";
+import * as React from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ConfigurableShortcutHint } from "../../components/ConfigurableShortcutHint.js";
+import { Byline } from "../../components/design-system/Byline.js";
+import { MCPRemoteServerMenu } from "../../components/mcp/MCPRemoteServerMenu.js";
+import { MCPStdioServerMenu } from "../../components/mcp/MCPStdioServerMenu.js";
+import { MCPToolDetailView } from "../../components/mcp/MCPToolDetailView.js";
+import { MCPToolListView } from "../../components/mcp/MCPToolListView.js";
 import type {
   ClaudeAIServerInfo,
   HTTPServerInfo,
   SSEServerInfo,
   StdioServerInfo,
-} from '../../components/mcp/types.js';
-import { SearchBox } from '../../components/SearchBox.js';
-import { useSearchInput } from '../../hooks/useSearchInput.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
+} from "../../components/mcp/types.js";
+import { SearchBox } from "../../components/SearchBox.js";
+import { useSearchInput } from "../../hooks/useSearchInput.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- useInput needed for raw search mode text input
-import { Box, Text, useInput, useTerminalFocus } from '../../ink.js';
-import { useKeybinding, useKeybindings } from '../../keybindings/useKeybinding.js';
-import { getBuiltinPluginDefinition } from '../../plugins/builtinPlugins.js';
-import { useMcpToggleEnabled } from '../../services/mcp/MCPConnectionManager.js';
+import { Box, Text, useInput, useTerminalFocus } from "../../ink.js";
+import { useKeybinding, useKeybindings } from "../../keybindings/useKeybinding.js";
+import { getBuiltinPluginDefinition } from "../../plugins/builtinPlugins.js";
+import { useMcpToggleEnabled } from "../../services/mcp/MCPConnectionManager.js";
 import type {
   MCPServerConnection,
   McpClaudeAIProxyServerConfig,
   McpHTTPServerConfig,
   McpSSEServerConfig,
   McpStdioServerConfig,
-} from '../../services/mcp/types.js';
-import { filterToolsByServer } from '../../services/mcp/utils.js';
+} from "../../services/mcp/types.js";
+import { filterToolsByServer } from "../../services/mcp/utils.js";
 import {
   disablePluginOp,
   enablePluginOp,
@@ -40,56 +40,56 @@ import {
   isPluginEnabledAtProjectScope,
   uninstallPluginOp,
   updatePluginOp,
-} from '../../services/plugins/pluginOperations.js';
-import { useAppState } from '../../state/AppState.js';
-import type { Tool } from '../../Tool.js';
-import type { LoadedPlugin, PluginError } from '../../types/plugin.js';
-import { count } from '../../utils/array.js';
-import { openBrowser } from '../../utils/browser.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { errorMessage, toError } from '../../utils/errors.js';
-import { logError } from '../../utils/log.js';
-import { clearAllCaches } from '../../utils/plugins/cacheUtils.js';
-import { loadInstalledPluginsV2 } from '../../utils/plugins/installedPluginsManager.js';
-import { getMarketplace } from '../../utils/plugins/marketplaceManager.js';
+} from "../../services/plugins/pluginOperations.js";
+import { useAppState } from "../../state/AppState.js";
+import type { Tool } from "../../Tool.js";
+import type { LoadedPlugin, PluginError } from "../../types/plugin.js";
+import { count } from "../../utils/array.js";
+import { openBrowser } from "../../utils/browser.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { errorMessage, toError } from "../../utils/errors.js";
+import { logError } from "../../utils/log.js";
+import { clearAllCaches } from "../../utils/plugins/cacheUtils.js";
+import { loadInstalledPluginsV2 } from "../../utils/plugins/installedPluginsManager.js";
+import { getMarketplace } from "../../utils/plugins/marketplaceManager.js";
 import {
   isMcpbSource,
   loadMcpbFile,
   type McpbNeedsConfigResult,
   type UserConfigValues,
-} from '../../utils/plugins/mcpbHandler.js';
-import { getPluginDataDirSize, pluginDataDirPath } from '../../utils/plugins/pluginDirectories.js';
+} from "../../utils/plugins/mcpbHandler.js";
+import { getPluginDataDirSize, pluginDataDirPath } from "../../utils/plugins/pluginDirectories.js";
 import {
   getFlaggedPlugins,
   markFlaggedPluginsSeen,
   removeFlaggedPlugin,
-} from '../../utils/plugins/pluginFlagging.js';
+} from "../../utils/plugins/pluginFlagging.js";
 import {
   type PersistablePluginScope,
   parsePluginIdentifier,
-} from '../../utils/plugins/pluginIdentifier.js';
-import { loadAllPlugins } from '../../utils/plugins/pluginLoader.js';
+} from "../../utils/plugins/pluginIdentifier.js";
+import { loadAllPlugins } from "../../utils/plugins/pluginLoader.js";
 import {
   loadPluginOptions,
   type PluginOptionSchema,
   savePluginOptions,
-} from '../../utils/plugins/pluginOptionsStorage.js';
-import { isPluginBlockedByPolicy } from '../../utils/plugins/pluginPolicy.js';
-import { getPluginEditableScopes } from '../../utils/plugins/pluginStartupCheck.js';
+} from "../../utils/plugins/pluginOptionsStorage.js";
+import { isPluginBlockedByPolicy } from "../../utils/plugins/pluginPolicy.js";
+import { getPluginEditableScopes } from "../../utils/plugins/pluginStartupCheck.js";
 import {
   getSettings_DEPRECATED,
   getSettingsForSource,
   updateSettingsForSource,
-} from '../../utils/settings/settings.js';
-import { jsonParse } from '../../utils/slowOperations.js';
-import { plural } from '../../utils/stringUtils.js';
-import { formatErrorMessage, getErrorGuidance } from './PluginErrors.js';
-import { PluginOptionsDialog } from './PluginOptionsDialog.js';
-import { PluginOptionsFlow } from './PluginOptionsFlow.js';
-import type { ViewState as ParentViewState } from './types.js';
-import { UnifiedInstalledCell } from './UnifiedInstalledCell.js';
-import type { UnifiedInstalledItem } from './unifiedTypes.js';
-import { usePagination } from './usePagination.js';
+} from "../../utils/settings/settings.js";
+import { jsonParse } from "../../utils/slowOperations.js";
+import { plural } from "../../utils/stringUtils.js";
+import { formatErrorMessage, getErrorGuidance } from "./PluginErrors.js";
+import { PluginOptionsDialog } from "./PluginOptionsDialog.js";
+import { PluginOptionsFlow } from "./PluginOptionsFlow.js";
+import type { ViewState as ParentViewState } from "./types.js";
+import { UnifiedInstalledCell } from "./UnifiedInstalledCell.js";
+import type { UnifiedInstalledItem } from "./unifiedTypes.js";
+import { usePagination } from "./usePagination.js";
 
 type Props = {
   setViewState: (state: ParentViewState) => void;
@@ -98,7 +98,7 @@ type Props = {
   onSearchModeChange?: (isActive: boolean) => void;
   targetPlugin?: string;
   targetMarketplace?: string;
-  action?: 'enable' | 'disable' | 'uninstall';
+  action?: "enable" | "disable" | "uninstall";
 };
 type FlaggedPluginInfo = {
   id: string;
@@ -116,42 +116,42 @@ type FailedPluginInfo = {
   scope: PersistablePluginScope;
 };
 type ViewState =
-  | 'plugin-list'
-  | 'plugin-details'
-  | 'configuring'
+  | "plugin-list"
+  | "plugin-details"
+  | "configuring"
   | {
-      type: 'plugin-options';
+      type: "plugin-options";
     }
   | {
-      type: 'configuring-options';
+      type: "configuring-options";
       schema: PluginOptionSchema;
     }
-  | 'confirm-project-uninstall'
+  | "confirm-project-uninstall"
   | {
-      type: 'confirm-data-cleanup';
+      type: "confirm-data-cleanup";
       size: {
         bytes: number;
         human: string;
       };
     }
   | {
-      type: 'flagged-detail';
+      type: "flagged-detail";
       plugin: FlaggedPluginInfo;
     }
   | {
-      type: 'failed-plugin-details';
+      type: "failed-plugin-details";
       plugin: FailedPluginInfo;
     }
   | {
-      type: 'mcp-detail';
+      type: "mcp-detail";
       client: MCPServerConnection;
     }
   | {
-      type: 'mcp-tools';
+      type: "mcp-tools";
       client: MCPServerConnection;
     }
   | {
-      type: 'mcp-tool-detail';
+      type: "mcp-tool-detail";
       client: MCPServerConnection;
       tool: Tool;
     };
@@ -164,7 +164,7 @@ type MarketplaceInfo = {
 type PluginState = {
   plugin: LoadedPlugin;
   marketplace: string;
-  scope?: 'user' | 'project' | 'local' | 'managed' | 'builtin';
+  scope?: "user" | "project" | "local" | "managed" | "builtin";
   pendingEnable?: boolean; // Toggle enable/disable
   pendingUpdate?: boolean; // Marked for update
 };
@@ -184,16 +184,16 @@ async function getBaseFileNames(dirPath: string): Promise<string[]> {
       withFileTypes: true,
     });
     return entries
-      .filter((entry: Dirent) => entry.isFile() && entry.name.endsWith('.md'))
+      .filter((entry: Dirent) => entry.isFile() && entry.name.endsWith(".md"))
       .map((entry: Dirent) => {
         // Remove .md extension specifically
-        const baseName = path.basename(entry.name, '.md');
+        const baseName = path.basename(entry.name, ".md");
         return baseName;
       });
   } catch (error) {
     const errorMsg = errorMessage(error);
     logForDebugging(`Failed to read plugin components from ${dirPath}: ${errorMsg}`, {
-      level: 'error',
+      level: "error",
     });
     logError(toError(error));
     // Return empty array to allow graceful degradation - plugin details can still be shown
@@ -221,7 +221,7 @@ async function getSkillDirNames(dirPath: string): Promise<string[]> {
       // Check if it's a directory or symlink (symlinks may point to skill directories)
       if (entry.isDirectory() || entry.isSymbolicLink()) {
         // Check if this directory contains a SKILL.md file
-        const skillFilePath = path.join(dirPath, entry.name, 'SKILL.md');
+        const skillFilePath = path.join(dirPath, entry.name, "SKILL.md");
         try {
           const st = await fs.stat(skillFilePath);
           if (st.isFile()) {
@@ -236,7 +236,7 @@ async function getSkillDirNames(dirPath: string): Promise<string[]> {
   } catch (error) {
     const errorMsg = errorMessage(error);
     logForDebugging(`Failed to read skill directories from ${dirPath}: ${errorMsg}`, {
-      level: 'error',
+      level: "error",
     });
     logError(toError(error));
     // Return empty array to allow graceful degradation - plugin details can still be shown
@@ -266,7 +266,7 @@ function PluginComponentsDisplay({
       try {
         // Built-in plugins don't have a marketplace entry — read from the
         // registered definition directly.
-        if (marketplace === 'builtin') {
+        if (marketplace === "builtin") {
           const builtinDef = getBuiltinPluginDefinition(plugin.name);
           if (builtinDef) {
             const skillNames = builtinDef.skills?.map((s) => s.name) ?? [];
@@ -301,7 +301,7 @@ function PluginComponentsDisplay({
           // Get base file names from all command paths
           const commandList: string[] = [];
           for (const commandPath of commandPathList) {
-            if (typeof commandPath === 'string') {
+            if (typeof commandPath === "string") {
               // commandPath is already a full path
               const baseNames = await getBaseFileNames(commandPath);
               commandList.push(...baseNames);
@@ -320,7 +320,7 @@ function PluginComponentsDisplay({
           // Get base file names from all agent paths
           const agentList: string[] = [];
           for (const agentPath of agentPathList) {
-            if (typeof agentPath === 'string') {
+            if (typeof agentPath === "string") {
               // agentPath is already a full path
               const baseNames_0 = await getBaseFileNames(agentPath);
               agentList.push(...baseNames_0);
@@ -340,7 +340,7 @@ function PluginComponentsDisplay({
           // Skills are directories containing SKILL.md files
           const skillList: string[] = [];
           for (const skillPath of skillPathList) {
-            if (typeof skillPath === 'string') {
+            if (typeof skillPath === "string") {
               // skillPath is already a full path to a skills directory
               const skillDirNames = await getSkillDirNames(skillPath);
               skillList.push(...skillDirNames);
@@ -375,7 +375,7 @@ function PluginComponentsDisplay({
           setError(`Plugin ${plugin.name} not found in marketplace`);
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load components');
+        setError(err instanceof Error ? err.message : "Failed to load components");
       } finally {
         setLoading(false);
       }
@@ -421,55 +421,55 @@ function PluginComponentsDisplay({
       <Text bold>Installed components:</Text>
       {components.commands ? (
         <Text dimColor>
-          • Commands:{' '}
-          {typeof components.commands === 'string'
+          • Commands:{" "}
+          {typeof components.commands === "string"
             ? components.commands
             : Array.isArray(components.commands)
-              ? components.commands.join(', ')
-              : Object.keys(components.commands).join(', ')}
+              ? components.commands.join(", ")
+              : Object.keys(components.commands).join(", ")}
         </Text>
       ) : null}
       {components.agents ? (
         <Text dimColor>
-          • Agents:{' '}
-          {typeof components.agents === 'string'
+          • Agents:{" "}
+          {typeof components.agents === "string"
             ? components.agents
             : Array.isArray(components.agents)
-              ? components.agents.join(', ')
-              : Object.keys(components.agents).join(', ')}
+              ? components.agents.join(", ")
+              : Object.keys(components.agents).join(", ")}
         </Text>
       ) : null}
       {components.skills ? (
         <Text dimColor>
-          • Skills:{' '}
-          {typeof components.skills === 'string'
+          • Skills:{" "}
+          {typeof components.skills === "string"
             ? components.skills
             : Array.isArray(components.skills)
-              ? components.skills.join(', ')
-              : Object.keys(components.skills).join(', ')}
+              ? components.skills.join(", ")
+              : Object.keys(components.skills).join(", ")}
         </Text>
       ) : null}
       {components.hooks ? (
         <Text dimColor>
-          • Hooks:{' '}
-          {typeof components.hooks === 'string'
+          • Hooks:{" "}
+          {typeof components.hooks === "string"
             ? components.hooks
             : Array.isArray(components.hooks)
-              ? components.hooks.map(String).join(', ')
-              : typeof components.hooks === 'object' && components.hooks !== null
-                ? Object.keys(components.hooks).join(', ')
+              ? components.hooks.map(String).join(", ")
+              : typeof components.hooks === "object" && components.hooks !== null
+                ? Object.keys(components.hooks).join(", ")
                 : String(components.hooks)}
         </Text>
       ) : null}
       {components.mcpServers ? (
         <Text dimColor>
-          • MCP Servers:{' '}
-          {typeof components.mcpServers === 'string'
+          • MCP Servers:{" "}
+          {typeof components.mcpServers === "string"
             ? components.mcpServers
             : Array.isArray(components.mcpServers)
-              ? components.mcpServers.map(String).join(', ')
-              : typeof components.mcpServers === 'object' && components.mcpServers !== null
-                ? Object.keys(components.mcpServers).join(', ')
+              ? components.mcpServers.map(String).join(", ")
+              : typeof components.mcpServers === "object" && components.mcpServers !== null
+                ? Object.keys(components.mcpServers).join(", ")
                 : String(components.mcpServers)}
         </Text>
       ) : null}
@@ -487,7 +487,7 @@ async function checkIfLocalPlugin(
 ): Promise<string | null> {
   const marketplace = await getMarketplace(marketplaceName);
   const entry = marketplace?.plugins.find((p) => p.name === pluginName);
-  if (entry && typeof entry.source === 'string') {
+  if (entry && typeof entry.source === "string") {
     return `Local plugins cannot be updated remotely. To update, modify the source at: ${entry.source}`;
   }
   return null;
@@ -501,7 +501,7 @@ async function checkIfLocalPlugin(
  */
 export function filterManagedDisabledPlugins(plugins: LoadedPlugin[]): LoadedPlugin[] {
   return plugins.filter((plugin) => {
-    const marketplace = plugin.source.split('@')[1] || 'local';
+    const marketplace = plugin.source.split("@")[1] || "local";
     return !isPluginBlockedByPolicy(`${plugin.name}@${marketplace}`);
   });
 }
@@ -533,13 +533,13 @@ export function ManagePlugins({
   const { columns: terminalWidth } = useTerminalSize();
 
   // View state
-  const [viewState, setViewState] = useState<ViewState>('plugin-list');
+  const [viewState, setViewState] = useState<ViewState>("plugin-list");
   const {
     query: searchQuery,
     setQuery: setSearchQuery,
     cursorOffset: searchCursorOffset,
   } = useSearchInput({
-    isActive: viewState === 'plugin-list' && isSearchMode,
+    isActive: viewState === "plugin-list" && isSearchMode,
     onExit: () => {
       setIsSearchMode(false);
     },
@@ -550,7 +550,7 @@ export function ManagePlugins({
   const [marketplaces, setMarketplaces] = useState<MarketplaceInfo[]>([]);
   const [pluginStates, setPluginStates] = useState<PluginState[]>([]);
   const [loading, setLoading] = useState(true);
-  const [pendingToggles, setPendingToggles] = useState<Map<string, 'will-enable' | 'will-disable'>>(
+  const [pendingToggles, setPendingToggles] = useState<Map<string, "will-enable" | "will-disable">>(
     new Map(),
   );
 
@@ -560,58 +560,58 @@ export function ManagePlugins({
   // Auto-action (enable/disable/uninstall) to fire after auto-navigation lands.
   // Ref, not state: it's consumed by a one-shot effect that already re-runs on
   // viewState/selectedPlugin, so a render-triggering state var would be redundant.
-  const pendingAutoActionRef = useRef<'enable' | 'disable' | 'uninstall' | undefined>(undefined);
+  const pendingAutoActionRef = useRef<"enable" | "disable" | "uninstall" | undefined>(undefined);
 
   // MCP toggle hook
   const toggleMcpServer = useMcpToggleEnabled();
 
   // Handle escape to go back - viewState-dependent navigation
   const handleBack = React.useCallback(() => {
-    if (viewState === 'plugin-details') {
-      setViewState('plugin-list');
+    if (viewState === "plugin-details") {
+      setViewState("plugin-list");
       setSelectedPlugin(null);
       setProcessError(null);
-    } else if (typeof viewState === 'object' && viewState.type === 'failed-plugin-details') {
-      setViewState('plugin-list');
+    } else if (typeof viewState === "object" && viewState.type === "failed-plugin-details") {
+      setViewState("plugin-list");
       setProcessError(null);
-    } else if (viewState === 'configuring') {
-      setViewState('plugin-details');
+    } else if (viewState === "configuring") {
+      setViewState("plugin-details");
       setConfigNeeded(null);
     } else if (
-      typeof viewState === 'object' &&
-      (viewState.type === 'plugin-options' || viewState.type === 'configuring-options')
+      typeof viewState === "object" &&
+      (viewState.type === "plugin-options" || viewState.type === "configuring-options")
     ) {
       // Cancel mid-sequence — plugin is already enabled, just bail to list.
       // User can configure later via the Configure options menu if they want.
-      setViewState('plugin-list');
+      setViewState("plugin-list");
       setSelectedPlugin(null);
-      setResult('Plugin enabled. Configuration skipped — run /reload-plugins to apply.');
+      setResult("Plugin enabled. Configuration skipped — run /reload-plugins to apply.");
       if (onManageComplete) {
         void onManageComplete();
       }
-    } else if (typeof viewState === 'object' && viewState.type === 'flagged-detail') {
-      setViewState('plugin-list');
+    } else if (typeof viewState === "object" && viewState.type === "flagged-detail") {
+      setViewState("plugin-list");
       setProcessError(null);
-    } else if (typeof viewState === 'object' && viewState.type === 'mcp-detail') {
-      setViewState('plugin-list');
+    } else if (typeof viewState === "object" && viewState.type === "mcp-detail") {
+      setViewState("plugin-list");
       setProcessError(null);
-    } else if (typeof viewState === 'object' && viewState.type === 'mcp-tools') {
+    } else if (typeof viewState === "object" && viewState.type === "mcp-tools") {
       setViewState({
-        type: 'mcp-detail',
+        type: "mcp-detail",
         client: viewState.client,
       });
-    } else if (typeof viewState === 'object' && viewState.type === 'mcp-tool-detail') {
+    } else if (typeof viewState === "object" && viewState.type === "mcp-tool-detail") {
       setViewState({
-        type: 'mcp-tools',
+        type: "mcp-tools",
         client: viewState.client,
       });
     } else {
       if (pendingToggles.size > 0) {
-        setResult('Run /reload-plugins to apply plugin changes.');
+        setResult("Run /reload-plugins to apply plugin changes.");
         return;
       }
       setParentViewState({
-        type: 'menu',
+        type: "menu",
       });
     }
   }, [viewState, setParentViewState, pendingToggles, setResult, onManageComplete]);
@@ -621,23 +621,23 @@ export function ManagePlugins({
   // Confirmation context — letting this fire would create competing handlers)
   // and confirm-data-cleanup (uses raw useInput where n and escape are
   // DIFFERENT actions: keep-data vs cancel).
-  useKeybinding('confirm:no', handleBack, {
-    context: 'Confirmation',
+  useKeybinding("confirm:no", handleBack, {
+    context: "Confirmation",
     isActive:
-      (viewState !== 'plugin-list' || !isSearchMode) &&
-      viewState !== 'confirm-project-uninstall' &&
-      !(typeof viewState === 'object' && viewState.type === 'confirm-data-cleanup'),
+      (viewState !== "plugin-list" || !isSearchMode) &&
+      viewState !== "confirm-project-uninstall" &&
+      !(typeof viewState === "object" && viewState.type === "confirm-data-cleanup"),
   });
 
   // Helper to get MCP status
   const getMcpStatus = (
     client: MCPServerConnection,
-  ): 'connected' | 'disabled' | 'pending' | 'needs-auth' | 'failed' => {
-    if (client.type === 'connected') return 'connected';
-    if (client.type === 'disabled') return 'disabled';
-    if (client.type === 'pending') return 'pending';
-    if (client.type === 'needs-auth') return 'needs-auth';
-    return 'failed';
+  ): "connected" | "disabled" | "pending" | "needs-auth" | "failed" => {
+    if (client.type === "connected") return "connected";
+    if (client.type === "disabled") return "disabled";
+    if (client.type === "pending") return "pending";
+    if (client.type === "needs-auth") return "needs-auth";
+    return "failed";
   };
 
   // Derive unified items from plugins and MCP servers
@@ -654,11 +654,11 @@ export function ManagePlugins({
       }>
     >();
     for (const client_0 of mcpClients) {
-      if (client_0.name.startsWith('plugin:')) {
-        const parts = client_0.name.split(':');
+      if (client_0.name.startsWith("plugin:")) {
+        const parts = client_0.name.split(":");
         if (parts.length >= 3) {
           const pluginName = parts[1]!;
-          const serverName = parts.slice(2).join(':');
+          const serverName = parts.slice(2).join(":");
           const existing = pluginMcpMap.get(pluginName) || [];
           existing.push({
             displayName: serverName,
@@ -672,9 +672,9 @@ export function ManagePlugins({
     // Build plugin items (unsorted for now)
     type PluginWithChildren = {
       item: UnifiedInstalledItem & {
-        type: 'plugin';
+        type: "plugin";
       };
-      originalScope: 'user' | 'project' | 'local' | 'managed' | 'builtin';
+      originalScope: "user" | "project" | "local" | "managed" | "builtin";
       childMcps: Array<{
         displayName: string;
         client: MCPServerConnection;
@@ -686,16 +686,16 @@ export function ManagePlugins({
       const isEnabled = mergedSettings?.enabledPlugins?.[pluginId] !== false;
       const errors = pluginErrors.filter(
         (e) =>
-          ('plugin' in e && e.plugin === state.plugin.name) ||
+          ("plugin" in e && e.plugin === state.plugin.name) ||
           e.source === pluginId ||
           e.source.startsWith(`${state.plugin.name}@`),
       );
 
       // Built-in plugins use 'builtin' scope; others look up from V2 data.
-      const originalScope = state.plugin.isBuiltin ? 'builtin' : state.scope || 'user';
+      const originalScope = state.plugin.isBuiltin ? "builtin" : state.scope || "user";
       pluginsWithChildren.push({
         item: {
-          type: 'plugin',
+          type: "plugin",
           id: pluginId,
           name: state.plugin.name,
           description: state.plugin.manifest.description,
@@ -721,8 +721,8 @@ export function ManagePlugins({
     for (const error of pluginErrors) {
       if (
         matchedPluginIds.has(error.source) ||
-        ('plugin' in error &&
-          typeof error.plugin === 'string' &&
+        ("plugin" in error &&
+          typeof error.plugin === "string" &&
           matchedPluginNames.has(error.plugin))
       ) {
         continue;
@@ -738,14 +738,14 @@ export function ManagePlugins({
       if (pluginId_0 in flaggedPlugins) continue;
       const parsed = parsePluginIdentifier(pluginId_0);
       const pluginName_0 = parsed.name || pluginId_0;
-      const marketplace = parsed.marketplace || 'unknown';
+      const marketplace = parsed.marketplace || "unknown";
       const rawScope = pluginScopes.get(pluginId_0);
       // 'flag' is session-only (from --plugin-dir / flagSettings) and undefined
       // means the plugin isn't in any settings source. Default both to 'user'
       // since UnifiedInstalledItem doesn't have a 'flag' scope variant.
-      const scope = rawScope === 'flag' || rawScope === undefined ? 'user' : rawScope;
+      const scope = rawScope === "flag" || rawScope === undefined ? "user" : rawScope;
       failedPluginItems.push({
-        type: 'failed-plugin',
+        type: "failed-plugin",
         id: pluginId_0,
         name: pluginName_0,
         marketplace,
@@ -758,10 +758,10 @@ export function ManagePlugins({
     // Build standalone MCP items
     const standaloneMcps: UnifiedInstalledItem[] = [];
     for (const client_1 of mcpClients) {
-      if (client_1.name === 'ide') continue;
-      if (client_1.name.startsWith('plugin:')) continue;
+      if (client_1.name === "ide") continue;
+      if (client_1.name.startsWith("plugin:")) continue;
       standaloneMcps.push({
-        type: 'mcp',
+        type: "mcp",
         id: `mcp:${client_1.name}`,
         name: client_1.name,
         description: undefined,
@@ -800,12 +800,12 @@ export function ManagePlugins({
       // Add child MCPs right after the plugin, indented (use original scope, not 'flagged').
       // Built-in plugins map to 'user' for display since MCP ConfigScope doesn't include 'builtin'.
       for (const { displayName, client: client_2 } of childMcps) {
-        const displayScope = originalScope_0 === 'builtin' ? 'user' : originalScope_0;
+        const displayScope = originalScope_0 === "builtin" ? "user" : originalScope_0;
         if (!itemsByScope.has(displayScope)) {
           itemsByScope.set(displayScope, []);
         }
         itemsByScope.get(displayScope)?.push({
-          type: 'mcp',
+          type: "mcp",
           id: `mcp:${client_2.name}`,
           name: displayName,
           description: undefined,
@@ -840,18 +840,18 @@ export function ManagePlugins({
     for (const [pluginId_1, entry] of Object.entries(flaggedPlugins)) {
       const parsed_0 = parsePluginIdentifier(pluginId_1);
       const pluginName_1 = parsed_0.name || pluginId_1;
-      const marketplace_0 = parsed_0.marketplace || 'unknown';
-      if (!itemsByScope.has('flagged')) {
-        itemsByScope.set('flagged', []);
+      const marketplace_0 = parsed_0.marketplace || "unknown";
+      if (!itemsByScope.has("flagged")) {
+        itemsByScope.set("flagged", []);
       }
-      itemsByScope.get('flagged')?.push({
-        type: 'flagged-plugin',
+      itemsByScope.get("flagged")?.push({
+        type: "flagged-plugin",
         id: pluginId_1,
         name: pluginName_1,
         marketplace: marketplace_0,
-        scope: 'flagged',
-        reason: 'delisted',
-        text: 'Removed from marketplace',
+        scope: "flagged",
+        reason: "delisted",
+        text: "Removed from marketplace",
         flaggedAt: entry.flaggedAt,
       });
     }
@@ -871,22 +871,22 @@ export function ManagePlugins({
       while (i < items.length) {
         const item_2 = items[i]!;
         if (
-          item_2.type === 'plugin' ||
-          item_2.type === 'failed-plugin' ||
-          item_2.type === 'flagged-plugin'
+          item_2.type === "plugin" ||
+          item_2.type === "failed-plugin" ||
+          item_2.type === "flagged-plugin"
         ) {
           // Collect the plugin and its child MCPs as a group
           const group: UnifiedInstalledItem[] = [item_2];
           i++;
           // Look ahead for indented child MCPs
           let nextItem = items[i];
-          while (nextItem?.type === 'mcp' && nextItem.indented) {
+          while (nextItem?.type === "mcp" && nextItem.indented) {
             group.push(nextItem);
             i++;
             nextItem = items[i];
           }
           pluginGroups.push(group);
-        } else if (item_2.type === 'mcp' && !item_2.indented) {
+        } else if (item_2.type === "mcp" && !item_2.indented) {
           // Standalone MCP (not a child of a plugin)
           standaloneMcpsInScope.push(item_2);
           i++;
@@ -915,7 +915,7 @@ export function ManagePlugins({
   // After 48 hours from seenAt, they auto-clear on next load.
   const flaggedIds = useMemo(
     () =>
-      unifiedItems.filter((item_3) => item_3.type === 'flagged-plugin').map((item_4) => item_4.id),
+      unifiedItems.filter((item_3) => item_3.type === "flagged-plugin").map((item_4) => item_4.id),
     [unifiedItems],
   );
   useEffect(() => {
@@ -931,7 +931,7 @@ export function ManagePlugins({
     return unifiedItems.filter(
       (item_5) =>
         item_5.name.toLowerCase().includes(lowerQuery) ||
-        ('description' in item_5 && item_5.description?.toLowerCase().includes(lowerQuery)),
+        ("description" in item_5 && item_5.description?.toLowerCase().includes(lowerQuery)),
     );
   }, [unifiedItems, searchQuery]);
 
@@ -968,22 +968,22 @@ export function ManagePlugins({
       let hasMcpb = false;
       if (mcpServersSpec) {
         hasMcpb =
-          (typeof mcpServersSpec === 'string' && isMcpbSource(mcpServersSpec)) ||
+          (typeof mcpServersSpec === "string" && isMcpbSource(mcpServersSpec)) ||
           (Array.isArray(mcpServersSpec) &&
-            mcpServersSpec.some((s_2) => typeof s_2 === 'string' && isMcpbSource(s_2)));
+            mcpServersSpec.some((s_2) => typeof s_2 === "string" && isMcpbSource(s_2)));
       }
 
       // If not in manifest, read raw marketplace.json directly (bypassing schema validation)
       // This works even with old cached marketplaces from before MCPB support
       if (!hasMcpb) {
         try {
-          const marketplaceDir = path.join(selectedPlugin?.plugin.path, '..');
+          const marketplaceDir = path.join(selectedPlugin?.plugin.path, "..");
           const marketplaceJsonPath = path.join(
             marketplaceDir,
-            '.claude-plugin',
-            'marketplace.json',
+            ".claude-plugin",
+            "marketplace.json",
           );
-          const content = await fs.readFile(marketplaceJsonPath, 'utf-8');
+          const content = await fs.readFile(marketplaceJsonPath, "utf-8");
           const marketplace_1 = jsonParse(content);
           const entry_0 = marketplace_1.plugins?.find(
             (p: { name: string }) => p.name === selectedPlugin?.plugin.name,
@@ -991,9 +991,9 @@ export function ManagePlugins({
           if (entry_0?.mcpServers) {
             const spec = entry_0.mcpServers;
             hasMcpb =
-              (typeof spec === 'string' && isMcpbSource(spec)) ||
+              (typeof spec === "string" && isMcpbSource(spec)) ||
               (Array.isArray(spec) &&
-                spec.some((s_3: unknown) => typeof s_3 === 'string' && isMcpbSource(s_3)));
+                spec.some((s_3: unknown) => typeof s_3 === "string" && isMcpbSource(s_3)));
           }
         } catch (err) {
           logForDebugging(`Failed to read raw marketplace.json: ${err}`);
@@ -1017,7 +1017,7 @@ export function ManagePlugins({
         // Group plugins by marketplace
         const pluginsByMarketplace: Record<string, LoadedPlugin[]> = {};
         for (const plugin of allPlugins) {
-          const marketplace = plugin.source.split('@')[1] || 'local';
+          const marketplace = plugin.source.split("@")[1] || "local";
           if (!pluginsByMarketplace[marketplace]) {
             pluginsByMarketplace[marketplace] = [];
           }
@@ -1042,8 +1042,8 @@ export function ManagePlugins({
 
         // Sort marketplaces: claude-plugin-directory first, then alphabetically
         marketplaceInfos.sort((a, b) => {
-          if (a.name === 'claude-plugin-directory') return -1;
-          if (b.name === 'claude-plugin-directory') return 1;
+          if (a.name === "claude-plugin-directory") return -1;
+          if (b.name === "claude-plugin-directory") return 1;
           return a.name.localeCompare(b.name);
         });
         setMarketplaces(marketplaceInfos);
@@ -1055,7 +1055,7 @@ export function ManagePlugins({
             const pluginId = `${plugin.name}@${marketplace.name}`;
             // Built-in plugins don't have V2 install entries — skip the lookup.
             const scope = plugin.isBuiltin
-              ? 'builtin'
+              ? "builtin"
               : getPluginInstallationFromV2(pluginId).scope;
             allStates.push({
               plugin,
@@ -1105,7 +1105,7 @@ export function ManagePlugins({
             pendingUpdate: false,
           };
           setSelectedPlugin(pluginState);
-          setViewState('plugin-details');
+          setViewState("plugin-details");
           pendingAutoActionRef.current = action;
           hasAutoNavigated.current = true;
           return;
@@ -1114,11 +1114,11 @@ export function ManagePlugins({
 
       // Fall back to failed plugins (those with errors but not loaded)
       const failedItem = unifiedItems.find(
-        (item_6) => item_6.type === 'failed-plugin' && item_6.name === targetName,
+        (item_6) => item_6.type === "failed-plugin" && item_6.name === targetName,
       );
-      if (failedItem && failedItem.type === 'failed-plugin') {
+      if (failedItem && failedItem.type === "failed-plugin") {
         setViewState({
-          type: 'failed-plugin-details',
+          type: "failed-plugin-details",
           plugin: {
             id: failedItem.id,
             name: failedItem.name,
@@ -1143,22 +1143,22 @@ export function ManagePlugins({
 
   // Handle single plugin operations from details view
   const handleSingleOperation = async (
-    operation: 'enable' | 'disable' | 'update' | 'uninstall',
+    operation: "enable" | "disable" | "update" | "uninstall",
   ) => {
     if (!selectedPlugin) return;
-    const pluginScope = selectedPlugin.scope || 'user';
-    const isBuiltin = pluginScope === 'builtin';
+    const pluginScope = selectedPlugin.scope || "user";
+    const isBuiltin = pluginScope === "builtin";
 
     // Built-in plugins can only be enabled/disabled, not updated/uninstalled.
-    if (isBuiltin && (operation === 'update' || operation === 'uninstall')) {
-      setProcessError('Built-in plugins cannot be updated or uninstalled.');
+    if (isBuiltin && (operation === "update" || operation === "uninstall")) {
+      setProcessError("Built-in plugins cannot be updated or uninstalled.");
       return;
     }
 
     // Managed scope plugins can only be updated, not enabled/disabled/uninstalled
-    if (!isBuiltin && !isInstallableScope(pluginScope) && operation !== 'update') {
+    if (!isBuiltin && !isInstallableScope(pluginScope) && operation !== "update") {
       setProcessError(
-        'This plugin is managed by your organization. Contact your admin to disable it.',
+        "This plugin is managed by your organization. Contact your admin to disable it.",
       );
       return;
     }
@@ -1173,14 +1173,14 @@ export function ManagePlugins({
       // from the settings scope (where enablement lives). Passing it trips
       // the cross-scope guard. Auto-detect finds the right scope. #38084
       switch (operation) {
-        case 'enable': {
+        case "enable": {
           const enableResult = await enablePluginOp(pluginId_3);
           if (!enableResult.success) {
             throw new Error(enableResult.message);
           }
           break;
         }
-        case 'disable': {
+        case "disable": {
           const disableResult = await disablePluginOp(pluginId_3);
           if (!disableResult.success) {
             throw new Error(disableResult.message);
@@ -1188,7 +1188,7 @@ export function ManagePlugins({
           reverseDependents = disableResult.reverseDependents;
           break;
         }
-        case 'uninstall': {
+        case "uninstall": {
           if (isBuiltin) break; // guarded above; narrows pluginScope
           if (!isInstallableScope(pluginScope)) break;
           // If the plugin is enabled in .claude/settings.json (shared with the
@@ -1199,7 +1199,7 @@ export function ManagePlugins({
           // install would leave the project enablement active.
           if (isPluginEnabledAtProjectScope(pluginId_3)) {
             setIsProcessing(false);
-            setViewState('confirm-project-uninstall');
+            setViewState("confirm-project-uninstall");
             return;
           }
           // If the plugin has persistent data (${CLAUDE_PLUGIN_DATA}) AND this
@@ -1213,7 +1213,7 @@ export function ManagePlugins({
           if (dataSize) {
             setIsProcessing(false);
             setViewState({
-              type: 'confirm-data-cleanup',
+              type: "confirm-data-cleanup",
               size: dataSize,
             });
             return;
@@ -1225,7 +1225,7 @@ export function ManagePlugins({
           reverseDependents = result_0.reverseDependents;
           break;
         }
-        case 'update': {
+        case "update": {
           if (isBuiltin) break; // guarded above; narrows pluginScope
           const result = await updatePluginOp(pluginId_3, pluginScope);
           if (!result.success) {
@@ -1240,7 +1240,7 @@ export function ManagePlugins({
               await onManageComplete();
             }
             setParentViewState({
-              type: 'menu',
+              type: "menu",
             });
             return;
           }
@@ -1264,32 +1264,32 @@ export function ManagePlugins({
       if (enabledAfter) {
         setIsProcessing(false);
         setViewState({
-          type: 'plugin-options',
+          type: "plugin-options",
         });
         return;
       }
       const operationName =
-        operation === 'enable'
-          ? 'Enabled'
-          : operation === 'disable'
-            ? 'Disabled'
-            : operation === 'update'
-              ? 'Updated'
-              : 'Uninstalled';
+        operation === "enable"
+          ? "Enabled"
+          : operation === "disable"
+            ? "Disabled"
+            : operation === "update"
+              ? "Updated"
+              : "Uninstalled";
 
       // Single-line warning — notification timeout is ~8s, multi-line would scroll off.
       // The persistent record is in the Errors tab (dependency-unsatisfied after reload).
       const depWarn =
         reverseDependents && reverseDependents.length > 0
-          ? ` · required by ${reverseDependents.join(', ')}`
-          : '';
+          ? ` · required by ${reverseDependents.join(", ")}`
+          : "";
       const message = `✓ ${operationName} ${selectedPlugin.plugin.name}${depWarn}. Run /reload-plugins to apply.`;
       setResult(message);
       if (onManageComplete) {
         await onManageComplete();
       }
       setParentViewState({
-        type: 'menu',
+        type: "menu",
       });
     } catch (error_0) {
       setIsProcessing(false);
@@ -1307,7 +1307,7 @@ export function ManagePlugins({
   // Auto-execute the action prop (/plugin uninstall X, /plugin enable X, etc.)
   // once auto-navigation has landed on plugin-details.
   useEffect(() => {
-    if (viewState === 'plugin-details' && selectedPlugin && pendingAutoActionRef.current) {
+    if (viewState === "plugin-details" && selectedPlugin && pendingAutoActionRef.current) {
       const pending = pendingAutoActionRef.current;
       pendingAutoActionRef.current = undefined;
       void handleSingleOperationRef.current(pending);
@@ -1318,14 +1318,14 @@ export function ManagePlugins({
   const handleToggle = React.useCallback(() => {
     if (selectedIndex >= filteredItems.length) return;
     const item_7 = filteredItems[selectedIndex];
-    if (item_7?.type === 'flagged-plugin') return;
-    if (item_7?.type === 'plugin') {
+    if (item_7?.type === "flagged-plugin") return;
+    if (item_7?.type === "plugin") {
       const pluginId_4 = `${item_7.plugin.name}@${item_7.marketplace}`;
       const mergedSettings_0 = getSettings_DEPRECATED();
       const currentPending = pendingToggles.get(pluginId_4);
       const isEnabled_0 = mergedSettings_0?.enabledPlugins?.[pluginId_4] !== false;
       const pluginScope_0 = item_7.scope;
-      const isBuiltin_0 = pluginScope_0 === 'builtin';
+      const isBuiltin_0 = pluginScope_0 === "builtin";
       if (isBuiltin_0 || isInstallableScope(pluginScope_0)) {
         const newPending = new Map(pendingToggles);
         // Omit scope — see handleSingleOperation's enable/disable comment.
@@ -1334,7 +1334,7 @@ export function ManagePlugins({
           newPending.delete(pluginId_4);
           void (async () => {
             try {
-              if (currentPending === 'will-disable') {
+              if (currentPending === "will-disable") {
                 await enablePluginOp(pluginId_4);
               } else {
                 await disablePluginOp(pluginId_4);
@@ -1345,7 +1345,7 @@ export function ManagePlugins({
             }
           })();
         } else {
-          newPending.set(pluginId_4, isEnabled_0 ? 'will-disable' : 'will-enable');
+          newPending.set(pluginId_4, isEnabled_0 ? "will-disable" : "will-enable");
           void (async () => {
             try {
               if (isEnabled_0) {
@@ -1361,7 +1361,7 @@ export function ManagePlugins({
         }
         setPendingToggles(newPending);
       }
-    } else if (item_7?.type === 'mcp') {
+    } else if (item_7?.type === "mcp") {
       void toggleMcpServer(item_7.client.name);
     }
   }, [selectedIndex, filteredItems, pendingToggles, toggleMcpServer]);
@@ -1370,19 +1370,19 @@ export function ManagePlugins({
   const handleAccept = React.useCallback(() => {
     if (selectedIndex >= filteredItems.length) return;
     const item_8 = filteredItems[selectedIndex];
-    if (item_8?.type === 'plugin') {
+    if (item_8?.type === "plugin") {
       const state_0 = pluginStates.find(
         (s_4) => s_4.plugin.name === item_8.plugin.name && s_4.marketplace === item_8.marketplace,
       );
       if (state_0) {
         setSelectedPlugin(state_0);
-        setViewState('plugin-details');
+        setViewState("plugin-details");
         setDetailsMenuIndex(0);
         setProcessError(null);
       }
-    } else if (item_8?.type === 'flagged-plugin') {
+    } else if (item_8?.type === "flagged-plugin") {
       setViewState({
-        type: 'flagged-detail',
+        type: "flagged-detail",
         plugin: {
           id: item_8.id,
           name: item_8.name,
@@ -1393,9 +1393,9 @@ export function ManagePlugins({
         },
       });
       setProcessError(null);
-    } else if (item_8?.type === 'failed-plugin') {
+    } else if (item_8?.type === "failed-plugin") {
       setViewState({
-        type: 'failed-plugin-details',
+        type: "failed-plugin-details",
         plugin: {
           id: item_8.id,
           name: item_8.name,
@@ -1406,9 +1406,9 @@ export function ManagePlugins({
       });
       setDetailsMenuIndex(0);
       setProcessError(null);
-    } else if (item_8?.type === 'mcp') {
+    } else if (item_8?.type === "mcp") {
       setViewState({
-        type: 'mcp-detail',
+        type: "mcp-detail",
         client: item_8.client,
       });
       setProcessError(null);
@@ -1418,71 +1418,71 @@ export function ManagePlugins({
   // Plugin-list navigation (non-search mode)
   useKeybindings(
     {
-      'select:previous': () => {
+      "select:previous": () => {
         if (selectedIndex === 0) {
           setIsSearchMode(true);
         } else {
           pagination.handleSelectionChange(selectedIndex - 1, setSelectedIndex);
         }
       },
-      'select:next': () => {
+      "select:next": () => {
         if (selectedIndex < filteredItems.length - 1) {
           pagination.handleSelectionChange(selectedIndex + 1, setSelectedIndex);
         }
       },
-      'select:accept': handleAccept,
+      "select:accept": handleAccept,
     },
     {
-      context: 'Select',
-      isActive: viewState === 'plugin-list' && !isSearchMode,
+      context: "Select",
+      isActive: viewState === "plugin-list" && !isSearchMode,
     },
   );
   useKeybindings(
     {
-      'plugin:toggle': handleToggle,
+      "plugin:toggle": handleToggle,
     },
     {
-      context: 'Plugin',
-      isActive: viewState === 'plugin-list' && !isSearchMode,
+      context: "Plugin",
+      isActive: viewState === "plugin-list" && !isSearchMode,
     },
   );
 
   // Handle dismiss action in flagged-detail view
   const handleFlaggedDismiss = React.useCallback(() => {
-    if (typeof viewState !== 'object' || viewState.type !== 'flagged-detail') return;
+    if (typeof viewState !== "object" || viewState.type !== "flagged-detail") return;
     void removeFlaggedPlugin(viewState.plugin.id);
-    setViewState('plugin-list');
+    setViewState("plugin-list");
   }, [viewState]);
   useKeybindings(
     {
-      'select:accept': handleFlaggedDismiss,
+      "select:accept": handleFlaggedDismiss,
     },
     {
-      context: 'Select',
-      isActive: typeof viewState === 'object' && viewState.type === 'flagged-detail',
+      context: "Select",
+      isActive: typeof viewState === "object" && viewState.type === "flagged-detail",
     },
   );
 
   // Build details menu items (needed for navigation)
   const detailsMenuItems = React.useMemo(() => {
-    if (viewState !== 'plugin-details' || !selectedPlugin) return [];
+    if (viewState !== "plugin-details" || !selectedPlugin) return [];
     const mergedSettings_1 = getSettings_DEPRECATED();
     const pluginId_5 = `${selectedPlugin.plugin.name}@${selectedPlugin.marketplace}`;
     const isEnabled_1 = mergedSettings_1?.enabledPlugins?.[pluginId_5] !== false;
-    const isBuiltin_1 = selectedPlugin.marketplace === 'builtin';
+    const isBuiltin_1 = selectedPlugin.marketplace === "builtin";
     const menuItems: Array<{
       label: string;
       action: () => void;
     }> = [];
     menuItems.push({
-      label: isEnabled_1 ? 'Disable plugin' : 'Enable plugin',
-      action: () => void handleSingleOperation(isEnabled_1 ? 'disable' : 'enable'),
+      label: isEnabled_1 ? "Disable plugin" : "Enable plugin",
+      action: () => void handleSingleOperation(isEnabled_1 ? "disable" : "enable"),
     });
 
     // Update/Uninstall options — not available for built-in plugins
     if (!isBuiltin_1) {
       menuItems.push({
-        label: selectedPlugin.pendingUpdate ? 'Unmark for update' : 'Mark for update',
+        label: selectedPlugin.pendingUpdate ? "Unmark for update" : "Mark for update",
         action: async () => {
           try {
             const localError = await checkIfLocalPlugin(
@@ -1511,31 +1511,31 @@ export function ManagePlugins({
             setProcessError(
               error_1 instanceof Error
                 ? error_1.message
-                : 'Failed to check plugin update availability',
+                : "Failed to check plugin update availability",
             );
           }
         },
       });
       if (selectedPluginHasMcpb) {
         menuItems.push({
-          label: 'Configure',
+          label: "Configure",
           action: async () => {
             setIsLoadingConfig(true);
             try {
               const mcpServersSpec_0 = selectedPlugin.plugin.manifest.mcpServers;
               let mcpbPath: string | null = null;
-              if (typeof mcpServersSpec_0 === 'string' && isMcpbSource(mcpServersSpec_0)) {
+              if (typeof mcpServersSpec_0 === "string" && isMcpbSource(mcpServersSpec_0)) {
                 mcpbPath = mcpServersSpec_0;
               } else if (Array.isArray(mcpServersSpec_0)) {
                 for (const spec_0 of mcpServersSpec_0) {
-                  if (typeof spec_0 === 'string' && isMcpbSource(spec_0)) {
+                  if (typeof spec_0 === "string" && isMcpbSource(spec_0)) {
                     mcpbPath = spec_0;
                     break;
                   }
                 }
               }
               if (!mcpbPath) {
-                setProcessError('No MCPB file found in plugin');
+                setProcessError("No MCPB file found in plugin");
                 setIsLoadingConfig(false);
                 return;
               }
@@ -1548,11 +1548,11 @@ export function ManagePlugins({
                 undefined,
                 true,
               );
-              if ('status' in result_1 && result_1.status === 'needs-config') {
+              if ("status" in result_1 && result_1.status === "needs-config") {
                 setConfigNeeded(result_1);
-                setViewState('configuring');
+                setViewState("configuring");
               } else {
-                setProcessError('Failed to load MCPB for configuration');
+                setProcessError("Failed to load MCPB for configuration");
               }
             } catch (err_2) {
               const errorMsg = errorMessage(err_2);
@@ -1568,27 +1568,27 @@ export function ManagePlugins({
         Object.keys(selectedPlugin.plugin.manifest.userConfig).length > 0
       ) {
         menuItems.push({
-          label: 'Configure options',
+          label: "Configure options",
           action: () => {
             setViewState({
-              type: 'configuring-options',
+              type: "configuring-options",
               schema: selectedPlugin.plugin.manifest.userConfig!,
             });
           },
         });
       }
       menuItems.push({
-        label: 'Update now',
-        action: () => void handleSingleOperation('update'),
+        label: "Update now",
+        action: () => void handleSingleOperation("update"),
       });
       menuItems.push({
-        label: 'Uninstall',
-        action: () => void handleSingleOperation('uninstall'),
+        label: "Uninstall",
+        action: () => void handleSingleOperation("uninstall"),
       });
     }
     if (selectedPlugin.plugin.manifest.homepage) {
       menuItems.push({
-        label: 'Open homepage',
+        label: "Open homepage",
         action: () => void openBrowser(selectedPlugin.plugin.manifest.homepage!),
       });
     }
@@ -1597,14 +1597,14 @@ export function ManagePlugins({
         // Generic label — manifest.repository can be GitLab, Bitbucket,
         // Azure DevOps, etc. (gh-31598). pluginDetailsHelpers.tsx:74 keeps
         // 'View on GitHub' because that path has an explicit isGitHub check.
-        label: 'View repository',
+        label: "View repository",
         action: () => void openBrowser(selectedPlugin.plugin.manifest.repository!),
       });
     }
     menuItems.push({
-      label: 'Back to plugin list',
+      label: "Back to plugin list",
       action: () => {
-        setViewState('plugin-list');
+        setViewState("plugin-list");
         setSelectedPlugin(null);
         setProcessError(null);
       },
@@ -1615,33 +1615,33 @@ export function ManagePlugins({
   // Plugin-details navigation
   useKeybindings(
     {
-      'select:previous': () => {
+      "select:previous": () => {
         if (detailsMenuIndex > 0) {
           setDetailsMenuIndex(detailsMenuIndex - 1);
         }
       },
-      'select:next': () => {
+      "select:next": () => {
         if (detailsMenuIndex < detailsMenuItems.length - 1) {
           setDetailsMenuIndex(detailsMenuIndex + 1);
         }
       },
-      'select:accept': () => {
+      "select:accept": () => {
         if (detailsMenuItems[detailsMenuIndex]) {
           detailsMenuItems[detailsMenuIndex]?.action();
         }
       },
     },
     {
-      context: 'Select',
-      isActive: viewState === 'plugin-details' && !!selectedPlugin,
+      context: "Select",
+      isActive: viewState === "plugin-details" && !!selectedPlugin,
     },
   );
 
   // Failed-plugin-details: only "Uninstall" option, handle Enter
   useKeybindings(
     {
-      'select:accept': () => {
-        if (typeof viewState === 'object' && viewState.type === 'failed-plugin-details') {
+      "select:accept": () => {
+        if (typeof viewState === "object" && viewState.type === "failed-plugin-details") {
           void (async () => {
             setIsProcessing(true);
             setProcessError(null);
@@ -1656,15 +1656,15 @@ export function ManagePlugins({
             // The normal uninstall path prompts; this one preserves.
             const result_2 = isInstallableScope(pluginScope_1)
               ? await uninstallPluginOp(pluginId_7, pluginScope_1, false)
-              : await uninstallPluginOp(pluginId_7, 'user', false);
+              : await uninstallPluginOp(pluginId_7, "user", false);
             let success = result_2.success;
             if (!success) {
               // Plugin was never installed (only in enabledPlugins settings).
               // Remove directly from all editable settings sources.
               const editableSources = [
-                'userSettings' as const,
-                'projectSettings' as const,
-                'localSettings' as const,
+                "userSettings" as const,
+                "projectSettings" as const,
+                "localSettings" as const,
               ];
               for (const source of editableSources) {
                 const settings = getSettingsForSource(source);
@@ -1687,7 +1687,7 @@ export function ManagePlugins({
               }
               setIsProcessing(false);
               // Return to list (don't setResult — that closes the whole dialog)
-              setViewState('plugin-list');
+              setViewState("plugin-list");
             } else {
               setIsProcessing(false);
               setProcessError(result_2.message);
@@ -1697,18 +1697,18 @@ export function ManagePlugins({
       },
     },
     {
-      context: 'Select',
+      context: "Select",
       isActive:
-        typeof viewState === 'object' &&
-        viewState.type === 'failed-plugin-details' &&
-        viewState.plugin.scope !== 'managed',
+        typeof viewState === "object" &&
+        viewState.type === "failed-plugin-details" &&
+        viewState.plugin.scope !== "managed",
     },
   );
 
   // Confirm-project-uninstall: y/enter disables in settings.local.json, n/escape cancels
   useKeybindings(
     {
-      'confirm:yes': () => {
+      "confirm:yes": () => {
         if (!selectedPlugin) return;
         setIsProcessing(true);
         setProcessError(null);
@@ -1716,9 +1716,9 @@ export function ManagePlugins({
         // Write `false` directly — disablePluginOp's cross-scope guard would
         // reject this (plugin isn't in localSettings yet; the override IS the
         // point).
-        const { error: error_2 } = updateSettingsForSource('localSettings', {
+        const { error: error_2 } = updateSettingsForSource("localSettings", {
           enabledPlugins: {
-            ...getSettingsForSource('localSettings')?.enabledPlugins,
+            ...getSettingsForSource("localSettings")?.enabledPlugins,
             [pluginId_8]: false,
           },
         });
@@ -1733,17 +1733,17 @@ export function ManagePlugins({
         );
         if (onManageComplete) void onManageComplete();
         setParentViewState({
-          type: 'menu',
+          type: "menu",
         });
       },
-      'confirm:no': () => {
-        setViewState('plugin-details');
+      "confirm:no": () => {
+        setViewState("plugin-details");
         setProcessError(null);
       },
     },
     {
-      context: 'Confirmation',
-      isActive: viewState === 'confirm-project-uninstall' && !!selectedPlugin && !isProcessing,
+      context: "Confirmation",
+      isActive: viewState === "confirm-project-uninstall" && !!selectedPlugin && !isProcessing,
     },
   );
 
@@ -1762,7 +1762,7 @@ export function ManagePlugins({
       const pluginScope_2 = selectedPlugin.scope;
       // Dialog is only reachable from the uninstall case (which guards on
       // isBuiltin), but TS can't track that across viewState transitions.
-      if (!pluginScope_2 || pluginScope_2 === 'builtin' || !isInstallableScope(pluginScope_2))
+      if (!pluginScope_2 || pluginScope_2 === "builtin" || !isInstallableScope(pluginScope_2))
         return;
       const doUninstall = async (deleteDataDir: boolean) => {
         setIsProcessing(true);
@@ -1771,30 +1771,30 @@ export function ManagePlugins({
           const result_3 = await uninstallPluginOp(pluginId_9, pluginScope_2, deleteDataDir);
           if (!result_3.success) throw new Error(result_3.message);
           clearAllCaches();
-          const suffix = deleteDataDir ? '' : ' · data preserved';
+          const suffix = deleteDataDir ? "" : " · data preserved";
           setResult(`${figures.tick} ${result_3.message}${suffix}`);
           if (onManageComplete) void onManageComplete();
           setParentViewState({
-            type: 'menu',
+            type: "menu",
           });
         } catch (e_0) {
           setIsProcessing(false);
           setProcessError(e_0 instanceof Error ? e_0.message : String(e_0));
         }
       };
-      if (input === 'y' || input === 'Y') {
+      if (input === "y" || input === "Y") {
         void doUninstall(true);
-      } else if (input === 'n' || input === 'N') {
+      } else if (input === "n" || input === "N") {
         void doUninstall(false);
       } else if (key.escape) {
-        setViewState('plugin-details');
+        setViewState("plugin-details");
         setProcessError(null);
       }
     },
     {
       isActive:
-        typeof viewState === 'object' &&
-        viewState.type === 'confirm-data-cleanup' &&
+        typeof viewState === "object" &&
+        viewState.type === "confirm-data-cleanup" &&
         !!selectedPlugin &&
         !isProcessing,
     },
@@ -1816,17 +1816,17 @@ export function ManagePlugins({
       }
 
       // Enter search mode with '/' or any printable character (except navigation keys)
-      if (input_0 === '/' && keyIsNotCtrlOrMeta) {
+      if (input_0 === "/" && keyIsNotCtrlOrMeta) {
         setIsSearchMode(true);
-        setSearchQuery('');
+        setSearchQuery("");
         setSelectedIndex(0);
       } else if (
         keyIsNotCtrlOrMeta &&
         input_0.length > 0 &&
         !/^\s+$/.test(input_0) &&
-        input_0 !== 'j' &&
-        input_0 !== 'k' &&
-        input_0 !== ' '
+        input_0 !== "j" &&
+        input_0 !== "k" &&
+        input_0 !== " "
       ) {
         setIsSearchMode(true);
         setSearchQuery(input_0);
@@ -1834,7 +1834,7 @@ export function ManagePlugins({
       }
     },
     {
-      isActive: viewState === 'plugin-list',
+      isActive: viewState === "plugin-list",
     },
   );
 
@@ -1857,7 +1857,7 @@ export function ManagePlugins({
       </Box>
     );
   }
-  if (typeof viewState === 'object' && viewState.type === 'plugin-options' && selectedPlugin) {
+  if (typeof viewState === "object" && viewState.type === "plugin-options" && selectedPlugin) {
     const pluginId_10 = `${selectedPlugin.plugin.name}@${selectedPlugin.marketplace}`;
     function finish(msg: string): void {
       setResult(msg);
@@ -1868,7 +1868,7 @@ export function ManagePlugins({
         void onManageComplete();
       }
       setParentViewState({
-        type: 'menu',
+        type: "menu",
       });
     }
     return (
@@ -1877,15 +1877,15 @@ export function ManagePlugins({
         pluginId={pluginId_10}
         onDone={(outcome, detail) => {
           switch (outcome) {
-            case 'configured':
+            case "configured":
               finish(
                 `✓ Enabled and configured ${selectedPlugin.plugin.name}. Run /reload-plugins to apply.`,
               );
               break;
-            case 'skipped':
+            case "skipped":
               finish(`✓ Enabled ${selectedPlugin.plugin.name}. Run /reload-plugins to apply.`);
               break;
-            case 'error':
+            case "error":
               finish(`Failed to save configuration: ${detail}`);
               break;
           }
@@ -1895,7 +1895,7 @@ export function ManagePlugins({
   }
 
   // Configure options (from the Manage menu)
-  if (typeof viewState === 'object' && viewState.type === 'configuring-options' && selectedPlugin) {
+  if (typeof viewState === "object" && viewState.type === "configuring-options" && selectedPlugin) {
     const pluginId_11 = `${selectedPlugin.plugin.name}@${selectedPlugin.marketplace}`;
     return (
       <PluginOptionsDialog
@@ -1907,19 +1907,19 @@ export function ManagePlugins({
           try {
             savePluginOptions(pluginId_11, values, viewState.schema);
             clearAllCaches();
-            setResult('Configuration saved. Run /reload-plugins for changes to take effect.');
+            setResult("Configuration saved. Run /reload-plugins for changes to take effect.");
           } catch (err_3) {
             setProcessError(`Failed to save configuration: ${errorMessage(err_3)}`);
           }
-          setViewState('plugin-details');
+          setViewState("plugin-details");
         }}
-        onCancel={() => setViewState('plugin-details')}
+        onCancel={() => setViewState("plugin-details")}
       />
     );
   }
 
   // Configuration view
-  if (viewState === 'configuring' && configNeeded && selectedPlugin) {
+  if (viewState === "configuring" && configNeeded && selectedPlugin) {
     const pluginId_12 = `${selectedPlugin.plugin.name}@${selectedPlugin.marketplace}`;
     async function handleSave(config: UserConfigValues) {
       if (!configNeeded || !selectedPlugin) return;
@@ -1927,19 +1927,19 @@ export function ManagePlugins({
         // Find MCPB path again
         const mcpServersSpec_1 = selectedPlugin.plugin.manifest.mcpServers;
         let mcpbPath_0: string | null = null;
-        if (typeof mcpServersSpec_1 === 'string' && isMcpbSource(mcpServersSpec_1)) {
+        if (typeof mcpServersSpec_1 === "string" && isMcpbSource(mcpServersSpec_1)) {
           mcpbPath_0 = mcpServersSpec_1;
         } else if (Array.isArray(mcpServersSpec_1)) {
           for (const spec_1 of mcpServersSpec_1) {
-            if (typeof spec_1 === 'string' && isMcpbSource(spec_1)) {
+            if (typeof spec_1 === "string" && isMcpbSource(spec_1)) {
               mcpbPath_0 = spec_1;
               break;
             }
           }
         }
         if (!mcpbPath_0) {
-          setProcessError('No MCPB file found');
-          setViewState('plugin-details');
+          setProcessError("No MCPB file found");
+          setViewState("plugin-details");
           return;
         }
 
@@ -1949,17 +1949,17 @@ export function ManagePlugins({
         // Success - go back to details
         setProcessError(null);
         setConfigNeeded(null);
-        setViewState('plugin-details');
-        setResult('Configuration saved. Run /reload-plugins for changes to take effect.');
+        setViewState("plugin-details");
+        setResult("Configuration saved. Run /reload-plugins for changes to take effect.");
       } catch (err_4) {
         const errorMsg_0 = errorMessage(err_4);
         setProcessError(`Failed to save configuration: ${errorMsg_0}`);
-        setViewState('plugin-details');
+        setViewState("plugin-details");
       }
     }
     function handleCancel() {
       setConfigNeeded(null);
-      setViewState('plugin-details');
+      setViewState("plugin-details");
     }
     return (
       <PluginOptionsDialog
@@ -1974,7 +1974,7 @@ export function ManagePlugins({
   }
 
   // Flagged plugin detail view
-  if (typeof viewState === 'object' && viewState.type === 'flagged-detail') {
+  if (typeof viewState === "object" && viewState.type === "flagged-detail") {
     const fp = viewState.plugin;
     return (
       <Box flexDirection="column">
@@ -2022,7 +2022,7 @@ export function ManagePlugins({
 
   // Confirm-project-uninstall: warn about shared .claude/settings.json,
   // offer to disable in settings.local.json instead.
-  if (viewState === 'confirm-project-uninstall' && selectedPlugin) {
+  if (viewState === "confirm-project-uninstall" && selectedPlugin) {
     return (
       <Box flexDirection="column">
         <Text bold color="warning">
@@ -2065,8 +2065,8 @@ export function ManagePlugins({
 
   // Confirm-data-cleanup: prompt before deleting ${CLAUDE_PLUGIN_DATA} dir
   if (
-    typeof viewState === 'object' &&
-    viewState.type === 'confirm-data-cleanup' &&
+    typeof viewState === "object" &&
+    viewState.type === "confirm-data-cleanup" &&
     selectedPlugin
   ) {
     return (
@@ -2100,7 +2100,7 @@ export function ManagePlugins({
   }
 
   // Plugin details view
-  if (viewState === 'plugin-details' && selectedPlugin) {
+  if (viewState === "plugin-details" && selectedPlugin) {
     const mergedSettings_2 = getSettings_DEPRECATED(); // Use merged settings to respect all layers
     const pluginId_13 = `${selectedPlugin.plugin.name}@${selectedPlugin.marketplace}`;
     const isEnabled_2 = mergedSettings_2?.enabledPlugins?.[pluginId_13] !== false;
@@ -2108,7 +2108,7 @@ export function ManagePlugins({
     // Compute plugin errors section
     const filteredPluginErrors = pluginErrors.filter(
       (e_1) =>
-        ('plugin' in e_1 && e_1.plugin === selectedPlugin.plugin.name) ||
+        ("plugin" in e_1 && e_1.plugin === selectedPlugin.plugin.name) ||
         e_1.source === pluginId_13 ||
         e_1.source.startsWith(`${selectedPlugin.plugin.name}@`),
     );
@@ -2116,7 +2116,7 @@ export function ManagePlugins({
       filteredPluginErrors.length === 0 ? null : (
         <Box flexDirection="column" marginBottom={1}>
           <Text bold color="error">
-            {filteredPluginErrors.length} {plural(filteredPluginErrors.length, 'error')}:
+            {filteredPluginErrors.length} {plural(filteredPluginErrors.length, "error")}:
           </Text>
           {filteredPluginErrors.map((error_3, i_0) => {
             const guidance = getErrorGuidance(error_3);
@@ -2144,7 +2144,7 @@ export function ManagePlugins({
         {/* Scope */}
         <Box>
           <Text dimColor>Scope: </Text>
-          <Text>{selectedPlugin.scope || 'user'}</Text>
+          <Text>{selectedPlugin.scope || "user"}</Text>
         </Box>
 
         {/* Plugin details */}
@@ -2171,8 +2171,8 @@ export function ManagePlugins({
         {/* Current status */}
         <Box marginBottom={1}>
           <Text dimColor>Status: </Text>
-          <Text color={isEnabled_2 ? 'success' : 'warning'}>
-            {isEnabled_2 ? 'Enabled' : 'Disabled'}
+          <Text color={isEnabled_2 ? "success" : "warning"}>
+            {isEnabled_2 ? "Enabled" : "Disabled"}
           </Text>
           {selectedPlugin.pendingUpdate && <Text color="suggestion"> · Marked for update</Text>}
         </Box>
@@ -2193,14 +2193,14 @@ export function ManagePlugins({
             return (
               <Box key={index_0}>
                 {isSelected && <Text>{figures.pointer} </Text>}
-                {!isSelected && <Text>{'  '}</Text>}
+                {!isSelected && <Text>{"  "}</Text>}
                 <Text
                   bold={isSelected}
                   color={
-                    item_9.label.includes('Uninstall')
-                      ? 'error'
-                      : item_9.label.includes('Update')
-                        ? 'suggestion'
+                    item_9.label.includes("Uninstall")
+                      ? "error"
+                      : item_9.label.includes("Update")
+                        ? "suggestion"
                         : undefined
                   }
                 >
@@ -2254,10 +2254,10 @@ export function ManagePlugins({
   }
 
   // Failed plugin detail view
-  if (typeof viewState === 'object' && viewState.type === 'failed-plugin-details') {
+  if (typeof viewState === "object" && viewState.type === "failed-plugin-details") {
     const failedPlugin_0 = viewState.plugin;
     const firstError = failedPlugin_0.errors[0];
-    const errorMessage_0 = firstError ? formatErrorMessage(firstError) : 'Failed to load';
+    const errorMessage_0 = firstError ? formatErrorMessage(firstError) : "Failed to load";
     return (
       <Box flexDirection="column">
         <Text>
@@ -2267,7 +2267,7 @@ export function ManagePlugins({
         </Text>
         <Text color="error">{errorMessage_0}</Text>
 
-        {failedPlugin_0.scope === 'managed' ? (
+        {failedPlugin_0.scope === "managed" ? (
           <Box marginTop={1}>
             <Text dimColor>Managed by your organization — contact your admin</Text>
           </Box>
@@ -2284,7 +2284,7 @@ export function ManagePlugins({
         <Box marginTop={1}>
           <Text dimColor italic>
             <Byline>
-              {failedPlugin_0.scope !== 'managed' && (
+              {failedPlugin_0.scope !== "managed" && (
                 <ConfigurableShortcutHint
                   action="select:accept"
                   context="Select"
@@ -2306,36 +2306,36 @@ export function ManagePlugins({
   }
 
   // MCP detail view
-  if (typeof viewState === 'object' && viewState.type === 'mcp-detail') {
+  if (typeof viewState === "object" && viewState.type === "mcp-detail") {
     const client_3 = viewState.client;
     const serverToolsCount = filterToolsByServer(mcpTools, client_3.name).length;
 
     // Common handlers for MCP menus
     const handleMcpViewTools = () => {
       setViewState({
-        type: 'mcp-tools',
+        type: "mcp-tools",
         client: client_3,
       });
     };
     const handleMcpCancel = () => {
-      setViewState('plugin-list');
+      setViewState("plugin-list");
     };
     const handleMcpComplete = (result_4?: string) => {
       if (result_4) {
         setResult(result_4);
       }
-      setViewState('plugin-list');
+      setViewState("plugin-list");
     };
 
     // Transform MCPServerConnection to appropriate ServerInfo type
     const scope_5 = client_3.config.scope;
     const configType = client_3.config.type;
-    if (configType === 'stdio') {
+    if (configType === "stdio") {
       const server: StdioServerInfo = {
         name: client_3.name,
         client: client_3,
         scope: scope_5,
-        transport: 'stdio',
+        transport: "stdio",
         config: client_3.config as McpStdioServerConfig,
       };
       return (
@@ -2348,12 +2348,12 @@ export function ManagePlugins({
           borderless
         />
       );
-    } else if (configType === 'sse') {
+    } else if (configType === "sse") {
       const server_0: SSEServerInfo = {
         name: client_3.name,
         client: client_3,
         scope: scope_5,
-        transport: 'sse',
+        transport: "sse",
         isAuthenticated: undefined,
         config: client_3.config as McpSSEServerConfig,
       };
@@ -2367,12 +2367,12 @@ export function ManagePlugins({
           borderless
         />
       );
-    } else if (configType === 'http') {
+    } else if (configType === "http") {
       const server_1: HTTPServerInfo = {
         name: client_3.name,
         client: client_3,
         scope: scope_5,
-        transport: 'http',
+        transport: "http",
         isAuthenticated: undefined,
         config: client_3.config as McpHTTPServerConfig,
       };
@@ -2386,12 +2386,12 @@ export function ManagePlugins({
           borderless
         />
       );
-    } else if (configType === 'claudeai-proxy') {
+    } else if (configType === "claudeai-proxy") {
       const server_2: ClaudeAIServerInfo = {
         name: client_3.name,
         client: client_3,
         scope: scope_5,
-        transport: 'claudeai-proxy',
+        transport: "claudeai-proxy",
         isAuthenticated: undefined,
         config: client_3.config as McpClaudeAIProxyServerConfig,
       };
@@ -2408,41 +2408,41 @@ export function ManagePlugins({
     }
 
     // Fallback - shouldn't happen but handle gracefully
-    setViewState('plugin-list');
+    setViewState("plugin-list");
     return null;
   }
 
   // MCP tools view
-  if (typeof viewState === 'object' && viewState.type === 'mcp-tools') {
+  if (typeof viewState === "object" && viewState.type === "mcp-tools") {
     const client_4 = viewState.client;
     const scope_6 = client_4.config.scope;
     const configType_0 = client_4.config.type;
 
     // Build ServerInfo for MCPToolListView
     let server_3: StdioServerInfo | SSEServerInfo | HTTPServerInfo | ClaudeAIServerInfo;
-    if (configType_0 === 'stdio') {
+    if (configType_0 === "stdio") {
       server_3 = {
         name: client_4.name,
         client: client_4,
         scope: scope_6,
-        transport: 'stdio',
+        transport: "stdio",
         config: client_4.config as McpStdioServerConfig,
       };
-    } else if (configType_0 === 'sse') {
+    } else if (configType_0 === "sse") {
       server_3 = {
         name: client_4.name,
         client: client_4,
         scope: scope_6,
-        transport: 'sse',
+        transport: "sse",
         isAuthenticated: undefined,
         config: client_4.config as McpSSEServerConfig,
       };
-    } else if (configType_0 === 'http') {
+    } else if (configType_0 === "http") {
       server_3 = {
         name: client_4.name,
         client: client_4,
         scope: scope_6,
-        transport: 'http',
+        transport: "http",
         isAuthenticated: undefined,
         config: client_4.config as McpHTTPServerConfig,
       };
@@ -2451,7 +2451,7 @@ export function ManagePlugins({
         name: client_4.name,
         client: client_4,
         scope: scope_6,
-        transport: 'claudeai-proxy',
+        transport: "claudeai-proxy",
         isAuthenticated: undefined,
         config: client_4.config as McpClaudeAIProxyServerConfig,
       };
@@ -2461,14 +2461,14 @@ export function ManagePlugins({
         server={server_3}
         onSelectTool={(tool: Tool) => {
           setViewState({
-            type: 'mcp-tool-detail',
+            type: "mcp-tool-detail",
             client: client_4,
             tool,
           });
         }}
         onBack={() =>
           setViewState({
-            type: 'mcp-detail',
+            type: "mcp-detail",
             client: client_4,
           })
         }
@@ -2477,36 +2477,36 @@ export function ManagePlugins({
   }
 
   // MCP tool detail view
-  if (typeof viewState === 'object' && viewState.type === 'mcp-tool-detail') {
+  if (typeof viewState === "object" && viewState.type === "mcp-tool-detail") {
     const { client: client_5, tool: tool_0 } = viewState;
     const scope_7 = client_5.config.scope;
     const configType_1 = client_5.config.type;
 
     // Build ServerInfo for MCPToolDetailView
     let server_4: StdioServerInfo | SSEServerInfo | HTTPServerInfo | ClaudeAIServerInfo;
-    if (configType_1 === 'stdio') {
+    if (configType_1 === "stdio") {
       server_4 = {
         name: client_5.name,
         client: client_5,
         scope: scope_7,
-        transport: 'stdio',
+        transport: "stdio",
         config: client_5.config as McpStdioServerConfig,
       };
-    } else if (configType_1 === 'sse') {
+    } else if (configType_1 === "sse") {
       server_4 = {
         name: client_5.name,
         client: client_5,
         scope: scope_7,
-        transport: 'sse',
+        transport: "sse",
         isAuthenticated: undefined,
         config: client_5.config as McpSSEServerConfig,
       };
-    } else if (configType_1 === 'http') {
+    } else if (configType_1 === "http") {
       server_4 = {
         name: client_5.name,
         client: client_5,
         scope: scope_7,
-        transport: 'http',
+        transport: "http",
         isAuthenticated: undefined,
         config: client_5.config as McpHTTPServerConfig,
       };
@@ -2515,7 +2515,7 @@ export function ManagePlugins({
         name: client_5.name,
         client: client_5,
         scope: scope_7,
-        transport: 'claudeai-proxy',
+        transport: "claudeai-proxy",
         isAuthenticated: undefined,
         config: client_5.config as McpClaudeAIProxyServerConfig,
       };
@@ -2526,7 +2526,7 @@ export function ManagePlugins({
         server={server_4}
         onBack={() =>
           setViewState({
-            type: 'mcp-tools',
+            type: "mcp-tools",
             client: client_5,
           })
         }
@@ -2575,22 +2575,22 @@ export function ManagePlugins({
         // Get scope label
         const getScopeLabel = (scope_8: string): string => {
           switch (scope_8) {
-            case 'flagged':
-              return 'Flagged';
-            case 'project':
-              return 'Project';
-            case 'local':
-              return 'Local';
-            case 'user':
-              return 'User';
-            case 'enterprise':
-              return 'Enterprise';
-            case 'managed':
-              return 'Managed';
-            case 'builtin':
-              return 'Built-in';
-            case 'dynamic':
-              return 'Built-in';
+            case "flagged":
+              return "Flagged";
+            case "project":
+              return "Project";
+            case "local":
+              return "Local";
+            case "user":
+              return "User";
+            case "enterprise":
+              return "Enterprise";
+            case "managed":
+              return "Managed";
+            case "builtin":
+              return "Built-in";
+            case "dynamic":
+              return "Built-in";
             default:
               return scope_8;
           }
@@ -2600,9 +2600,9 @@ export function ManagePlugins({
             {showScopeHeader && (
               <Box marginTop={visibleIndex > 0 ? 1 : 0} paddingLeft={2}>
                 <Text
-                  dimColor={item_10.scope !== 'flagged'}
-                  color={item_10.scope === 'flagged' ? 'warning' : undefined}
-                  bold={item_10.scope === 'flagged'}
+                  dimColor={item_10.scope !== "flagged"}
+                  color={item_10.scope === "flagged" ? "warning" : undefined}
+                  bold={item_10.scope === "flagged"}
                 >
                   {getScopeLabel(item_10.scope)}
                 </Text>

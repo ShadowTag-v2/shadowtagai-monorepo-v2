@@ -3,44 +3,44 @@
  * Tracks access to session memory and transcript files via Read, Grep, Glob tools.
  * Also tracks memdir file access via Read, Grep, Glob, Edit, and Write tools.
  */
-import { feature } from 'bun:bundle';
-import { registerHookCallbacks } from '../bootstrap/state.js';
-import type { HookInput, HookJSONOutput } from '../entrypoints/agentSdkTypes.js';
+import { feature } from "bun:bundle";
+import { registerHookCallbacks } from "../bootstrap/state.js";
+import type { HookInput, HookJSONOutput } from "../entrypoints/agentSdkTypes.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js';
-import { FILE_EDIT_TOOL_NAME } from '../tools/FileEditTool/constants.js';
-import { inputSchema as editInputSchema } from '../tools/FileEditTool/types.js';
-import { FileReadTool } from '../tools/FileReadTool/FileReadTool.js';
-import { FILE_READ_TOOL_NAME } from '../tools/FileReadTool/prompt.js';
-import { FileWriteTool } from '../tools/FileWriteTool/FileWriteTool.js';
-import { FILE_WRITE_TOOL_NAME } from '../tools/FileWriteTool/prompt.js';
-import { GlobTool } from '../tools/GlobTool/GlobTool.js';
-import { GLOB_TOOL_NAME } from '../tools/GlobTool/prompt.js';
-import { GrepTool } from '../tools/GrepTool/GrepTool.js';
-import { GREP_TOOL_NAME } from '../tools/GrepTool/prompt.js';
-import type { HookCallback } from '../types/hooks.js';
+} from "../services/analytics/index.js";
+import { FILE_EDIT_TOOL_NAME } from "../tools/FileEditTool/constants.js";
+import { inputSchema as editInputSchema } from "../tools/FileEditTool/types.js";
+import { FileReadTool } from "../tools/FileReadTool/FileReadTool.js";
+import { FILE_READ_TOOL_NAME } from "../tools/FileReadTool/prompt.js";
+import { FileWriteTool } from "../tools/FileWriteTool/FileWriteTool.js";
+import { FILE_WRITE_TOOL_NAME } from "../tools/FileWriteTool/prompt.js";
+import { GlobTool } from "../tools/GlobTool/GlobTool.js";
+import { GLOB_TOOL_NAME } from "../tools/GlobTool/prompt.js";
+import { GrepTool } from "../tools/GrepTool/GrepTool.js";
+import { GREP_TOOL_NAME } from "../tools/GrepTool/prompt.js";
+import type { HookCallback } from "../types/hooks.js";
 import {
   detectSessionFileType,
   detectSessionPatternType,
   isAutoMemFile,
   memoryScopeForPath,
-} from './memoryFileDetection.js';
+} from "./memoryFileDetection.js";
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const teamMemPaths = feature('TEAMMEM')
-  ? (require('../memdir/teamMemPaths.js') as typeof import('../memdir/teamMemPaths.js'))
+const teamMemPaths = feature("TEAMMEM")
+  ? (require("../memdir/teamMemPaths.js") as typeof import("../memdir/teamMemPaths.js"))
   : null;
-const teamMemWatcher = feature('TEAMMEM')
-  ? (require('../services/teamMemorySync/watcher.js') as typeof import('../services/teamMemorySync/watcher.js'))
+const teamMemWatcher = feature("TEAMMEM")
+  ? (require("../services/teamMemorySync/watcher.js") as typeof import("../services/teamMemorySync/watcher.js"))
   : null;
-const memoryShapeTelemetry = feature('MEMORY_SHAPE_TELEMETRY')
-  ? (require('../memdir/memoryShapeTelemetry.js') as typeof import('../memdir/memoryShapeTelemetry.js'))
+const memoryShapeTelemetry = feature("MEMORY_SHAPE_TELEMETRY")
+  ? (require("../memdir/memoryShapeTelemetry.js") as typeof import("../memdir/memoryShapeTelemetry.js"))
   : null;
 
 /* eslint-enable @typescript-eslint/no-require-imports */
-import { getSubagentLogName } from './agentContext.js';
+import { getSubagentLogName } from "./agentContext.js";
 
 /**
  * Extract the file path from a tool input for memdir detection.
@@ -72,7 +72,7 @@ function getFilePathFromInput(toolName: string, toolInput: unknown): string | nu
 function getSessionFileTypeFromInput(
   toolName: string,
   toolInput: unknown,
-): 'session_memory' | 'session_transcript' | null {
+): "session_memory" | "session_transcript" | null {
   switch (toolName) {
     case FILE_READ_TOOL_NAME: {
       const parsed = FileReadTool.inputSchema.safeParse(toolInput);
@@ -118,14 +118,14 @@ function getSessionFileTypeFromInput(
  * Uses the same conditions as the PostToolUse session file access hooks.
  */
 export function isMemoryFileAccess(toolName: string, toolInput: unknown): boolean {
-  if (getSessionFileTypeFromInput(toolName, toolInput) === 'session_memory') {
+  if (getSessionFileTypeFromInput(toolName, toolInput) === "session_memory") {
     return true;
   }
 
   const filePath = getFilePathFromInput(toolName, toolInput);
   if (
     filePath &&
-    (isAutoMemFile(filePath) || (feature('TEAMMEM') && teamMemPaths?.isTeamMemFile(filePath)))
+    (isAutoMemFile(filePath) || (feature("TEAMMEM") && teamMemPaths?.isTeamMemFile(filePath)))
   ) {
     return true;
   }
@@ -141,63 +141,63 @@ async function handleSessionFileAccess(
   _toolUseID: string | null,
   _signal: AbortSignal | undefined,
 ): Promise<HookJSONOutput> {
-  if (input.hook_event_name !== 'PostToolUse') return {};
+  if (input.hook_event_name !== "PostToolUse") return {};
 
   const fileType = getSessionFileTypeFromInput(input.tool_name, input.tool_input);
 
   const subagentName = getSubagentLogName();
   const subagentProps = subagentName ? { subagent_name: subagentName } : {};
 
-  if (fileType === 'session_memory') {
-    logEvent('tengu_session_memory_accessed', { ...subagentProps });
-  } else if (fileType === 'session_transcript') {
-    logEvent('tengu_transcript_accessed', { ...subagentProps });
+  if (fileType === "session_memory") {
+    logEvent("tengu_session_memory_accessed", { ...subagentProps });
+  } else if (fileType === "session_transcript") {
+    logEvent("tengu_transcript_accessed", { ...subagentProps });
   }
 
   // Memdir access tracking
   const filePath = getFilePathFromInput(input.tool_name, input.tool_input);
   if (filePath && isAutoMemFile(filePath)) {
-    logEvent('tengu_memdir_accessed', {
+    logEvent("tengu_memdir_accessed", {
       tool: input.tool_name as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       ...subagentProps,
     });
 
     switch (input.tool_name) {
       case FILE_READ_TOOL_NAME:
-        logEvent('tengu_memdir_file_read', { ...subagentProps });
+        logEvent("tengu_memdir_file_read", { ...subagentProps });
         break;
       case FILE_EDIT_TOOL_NAME:
-        logEvent('tengu_memdir_file_edit', { ...subagentProps });
+        logEvent("tengu_memdir_file_edit", { ...subagentProps });
         break;
       case FILE_WRITE_TOOL_NAME:
-        logEvent('tengu_memdir_file_write', { ...subagentProps });
+        logEvent("tengu_memdir_file_write", { ...subagentProps });
         break;
     }
   }
 
   // Team memory access tracking
-  if (feature('TEAMMEM') && filePath && teamMemPaths?.isTeamMemFile(filePath)) {
-    logEvent('tengu_team_mem_accessed', {
+  if (feature("TEAMMEM") && filePath && teamMemPaths?.isTeamMemFile(filePath)) {
+    logEvent("tengu_team_mem_accessed", {
       tool: input.tool_name as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       ...subagentProps,
     });
 
     switch (input.tool_name) {
       case FILE_READ_TOOL_NAME:
-        logEvent('tengu_team_mem_file_read', { ...subagentProps });
+        logEvent("tengu_team_mem_file_read", { ...subagentProps });
         break;
       case FILE_EDIT_TOOL_NAME:
-        logEvent('tengu_team_mem_file_edit', { ...subagentProps });
+        logEvent("tengu_team_mem_file_edit", { ...subagentProps });
         teamMemWatcher?.notifyTeamMemoryWrite();
         break;
       case FILE_WRITE_TOOL_NAME:
-        logEvent('tengu_team_mem_file_write', { ...subagentProps });
+        logEvent("tengu_team_mem_file_write", { ...subagentProps });
         teamMemWatcher?.notifyTeamMemoryWrite();
         break;
     }
   }
 
-  if (feature('MEMORY_SHAPE_TELEMETRY') && filePath) {
+  if (feature("MEMORY_SHAPE_TELEMETRY") && filePath) {
     const scope = memoryScopeForPath(filePath);
     if (
       scope !== null &&
@@ -216,7 +216,7 @@ async function handleSessionFileAccess(
  */
 export function registerSessionFileAccessHooks(): void {
   const hook: HookCallback = {
-    type: 'callback',
+    type: "callback",
     callback: handleSessionFileAccess,
     timeout: 1, // Very short timeout - just logging
     internal: true,

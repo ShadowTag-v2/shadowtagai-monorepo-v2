@@ -105,15 +105,15 @@ export class ClaudeSourcemapBridge {
    */
   planSourcemapIngestion(sourcemapPath: string): Record<string, unknown> {
     return {
-      type: 'mcp_execution_plan',
-      tool: 'filesystem.read',
+      type: "mcp_execution_plan",
+      tool: "filesystem.read",
       args: {
         path: sourcemapPath,
-        encoding: 'utf-8',
+        encoding: "utf-8",
       },
       postProcess: {
-        action: 'parse_sourcemap',
-        targetRegistry: 'claude_sourcemap_bridge',
+        action: "parse_sourcemap",
+        targetRegistry: "claude_sourcemap_bridge",
       },
     };
   }
@@ -128,10 +128,7 @@ export class ClaudeSourcemapBridge {
    * Maps each frame's function name through the registry to recover
    * the original source location.
    */
-  deobfuscateTrace(
-    errorMessage: string,
-    frames: StackTraceFrame[],
-  ): DeobfuscatedTrace {
+  deobfuscateTrace(errorMessage: string, frames: StackTraceFrame[]): DeobfuscatedTrace {
     const correlationId = `err_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
     const deobfuscatedFrames: DeobfuscatedFrame[] = frames.map((frame) => {
@@ -146,14 +143,14 @@ export class ClaudeSourcemapBridge {
     });
 
     // Identify root cause module (first non-internal frame with a mapping)
-    const rootFrame = deobfuscatedFrames.find(
-      (f) => !f.isInternal && f.deobfuscatedName !== null,
-    );
+    const rootFrame = deobfuscatedFrames.find((f) => !f.isInternal && f.deobfuscatedName !== null);
 
     return {
       originalError: errorMessage,
       frames: deobfuscatedFrames,
-      rootCauseModule: rootFrame ? this.registry.get(rootFrame.functionName)?.module ?? null : null,
+      rootCauseModule: rootFrame
+        ? (this.registry.get(rootFrame.functionName)?.module ?? null)
+        : null,
       suggestedFix: this.suggestFix(errorMessage, rootFrame ?? null),
       correlationId,
       timestamp: new Date().toISOString(),
@@ -163,10 +160,7 @@ export class ClaudeSourcemapBridge {
   /**
    * Correlate repeated errors across services.
    */
-  correlateError(
-    trace: DeobfuscatedTrace,
-    serviceName: string,
-  ): ErrorCorrelation {
+  correlateError(trace: DeobfuscatedTrace, serviceName: string): ErrorCorrelation {
     const pattern = this.extractErrorPattern(trace.originalError);
     const existing = this.correlations.get(pattern);
 
@@ -207,19 +201,19 @@ export class ClaudeSourcemapBridge {
     const prompt = this.buildIncidentPrompt(correlation);
 
     return {
-      type: 'mcp_execution_plan',
-      tool: 'jules.session',
+      type: "mcp_execution_plan",
+      tool: "jules.session",
       args: {
         prompt,
         source: {
-          github: 'ShadowTag-v2/Monorepo-Uphillsnowball',
-          baseBranch: 'main',
+          github: "ShadowTag-v2/Monorepo-Uphillsnowball",
+          baseBranch: "main",
         },
         autoPr: true,
       },
       governance: {
         requiresJ6Gate: true,
-        riskLevel: correlation.occurrenceCount > 10 ? 'ELEVATED' : 'LOW',
+        riskLevel: correlation.occurrenceCount > 10 ? "ELEVATED" : "LOW",
         correlationId: correlation.correlationId,
       },
     };
@@ -229,23 +223,20 @@ export class ClaudeSourcemapBridge {
   // PRIVATE HELPERS
   // --------------------------------------------------------------------------
 
-  private suggestFix(
-    errorMessage: string,
-    rootFrame: DeobfuscatedFrame | null,
-  ): string | null {
+  private suggestFix(errorMessage: string, rootFrame: DeobfuscatedFrame | null): string | null {
     if (!rootFrame?.deobfuscatedName) return null;
 
     // Pattern-based suggestions
-    if (errorMessage.includes('ECONNREFUSED')) {
+    if (errorMessage.includes("ECONNREFUSED")) {
       return `Check network connectivity in ${rootFrame.sourceFile}:${rootFrame.originalLine}. Verify service endpoint is reachable.`;
     }
-    if (errorMessage.includes('SIGTERM')) {
+    if (errorMessage.includes("SIGTERM")) {
       return `Graceful shutdown handler may be incomplete in ${rootFrame.deobfuscatedName}. Verify async cleanup.`;
     }
-    if (errorMessage.includes('rate limit') || errorMessage.includes('429')) {
+    if (errorMessage.includes("rate limit") || errorMessage.includes("429")) {
       return `Rate limiting triggered in ${rootFrame.deobfuscatedName}. Consider exponential backoff or request batching.`;
     }
-    if (errorMessage.includes('permission') || errorMessage.includes('403')) {
+    if (errorMessage.includes("permission") || errorMessage.includes("403")) {
       return `IAM permission denied in ${rootFrame.deobfuscatedName}. Verify service account roles.`;
     }
 
@@ -255,10 +246,10 @@ export class ClaudeSourcemapBridge {
   private extractErrorPattern(errorMessage: string): string {
     // Normalize error message by removing dynamic parts (IDs, timestamps, etc.)
     return errorMessage
-      .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '<UUID>')
-      .replace(/\b\d{10,13}\b/g, '<TIMESTAMP>')
-      .replace(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g, '<IP>')
-      .replace(/:\d{4,5}\b/g, ':<PORT>')
+      .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, "<UUID>")
+      .replace(/\b\d{10,13}\b/g, "<TIMESTAMP>")
+      .replace(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g, "<IP>")
+      .replace(/:\d{4,5}\b/g, ":<PORT>")
       .trim();
   }
 
@@ -267,23 +258,23 @@ export class ClaudeSourcemapBridge {
     const framesList = trace.frames
       .filter((f) => f.deobfuscatedName)
       .map((f) => `  - ${f.deobfuscatedName} (${f.sourceFile}:${f.originalLine})`)
-      .join('\n');
+      .join("\n");
 
     return `## Automated Incident Response
 
 **Error Pattern**: ${correlation.errorPattern}
 **Occurrences**: ${correlation.occurrenceCount}
-**Affected Services**: ${correlation.affectedServices.join(', ')}
+**Affected Services**: ${correlation.affectedServices.join(", ")}
 **First Seen**: ${correlation.firstSeen}
 
 ### Deobfuscated Stack Trace
 ${framesList}
 
 ### Root Cause Module
-${trace.rootCauseModule ?? 'Unknown'}
+${trace.rootCauseModule ?? "Unknown"}
 
 ### Suggested Fix
-${trace.suggestedFix ?? 'Manual investigation required'}
+${trace.suggestedFix ?? "Manual investigation required"}
 
 ### Instructions
 1. Identify the root cause from the deobfuscated trace
@@ -300,7 +291,7 @@ ${trace.suggestedFix ?? 'Manual investigation required'}
 
   getDiagnostics(): Record<string, unknown> {
     return {
-      bridge: 'claude_sourcemap_bridge_v25',
+      bridge: "claude_sourcemap_bridge_v25",
       registeredMappings: this.registry.size,
       activeCorrelations: this.correlations.size,
       topErrors: Array.from(this.correlations.values())

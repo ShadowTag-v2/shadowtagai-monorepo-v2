@@ -1,4 +1,4 @@
-import { quote } from './shellQuote.js';
+import { quote } from "./shellQuote.js";
 
 /**
  * Detects if a command contains a heredoc pattern
@@ -62,7 +62,7 @@ export function quoteShellCommand(command: string, addStdinRedirect: boolean = t
 
   // For regular commands, use shell-quote
   if (addStdinRedirect) {
-    return quote([command, '<', '/dev/null']);
+    return quote([command, "<", "/dev/null"]);
   }
 
   return quote([command]);
@@ -119,5 +119,5 @@ export function shouldAddStdinRedirect(command: string): boolean {
 const NUL_REDIRECT_REGEX = /(\d?&?>+\s*)[Nn][Uu][Ll](?=\s|$|[|&;)\n])/g;
 
 export function rewriteWindowsNullRedirect(command: string): string {
-  return command.replace(NUL_REDIRECT_REGEX, '$1/dev/null');
+  return command.replace(NUL_REDIRECT_REGEX, "$1/dev/null");
 }

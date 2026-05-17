@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../../ink.js';
-import type { Theme } from '../../utils/theme.js';
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../../ink.js";
+import type { Theme } from "../../utils/theme.js";
 
 type Props = {
   /**
@@ -23,7 +23,7 @@ type Props = {
    */
   emptyColor?: keyof Theme;
 };
-const BLOCKS = [' ', '▏', '▎', '▍', '▌', '▋', '▊', '▉', '█'];
+const BLOCKS = [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"];
 export function ProgressBar(t0) {
   const $ = _c(13);
   const { ratio: inputRatio, width, fillColor, emptyColor } = t0;
@@ -65,7 +65,7 @@ export function ProgressBar(t0) {
   } else {
     segments = $[6];
   }
-  const t2 = segments.join('');
+  const t2 = segments.join("");
   let t3;
   if ($[9] !== emptyColor || $[10] !== fillColor || $[11] !== t2) {
     t3 = (

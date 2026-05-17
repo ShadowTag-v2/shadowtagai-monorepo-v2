@@ -1,8 +1,8 @@
-import type * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Markdown } from '../../components/Markdown.js';
-import { Box, Text } from '../../ink.js';
-import { jsonParse } from '../../utils/slowOperations.js';
+import type * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Markdown } from "../../components/Markdown.js";
+import { Box, Text } from "../../ink.js";
+import { jsonParse } from "../../utils/slowOperations.js";
 import {
   type IdleNotificationMessage,
   isIdleNotification,
@@ -10,9 +10,9 @@ import {
   isPlanApprovalResponse,
   type PlanApprovalRequestMessage,
   type PlanApprovalResponseMessage,
-} from '../../utils/teammateMailbox.js';
-import { getShutdownMessageSummary } from './ShutdownMessage.js';
-import { getTaskAssignmentSummary } from './TaskAssignmentMessage.js';
+} from "../../utils/teammateMailbox.js";
+import { getShutdownMessageSummary } from "./ShutdownMessage.js";
+import { getTaskAssignmentSummary } from "./TaskAssignmentMessage.js";
 
 type PlanApprovalRequestProps = {
   request: PlanApprovalRequestMessage;
@@ -114,7 +114,7 @@ export function PlanApprovalResponseDisplay(t0) {
       t1 = $[1];
     }
     let t2;
-    if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
       t2 = (
         <Box marginTop={1}>
           <Text>
@@ -183,7 +183,7 @@ export function PlanApprovalResponseDisplay(t0) {
     t2 = $[8];
   }
   let t3;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Box marginTop={1}>
         <Text dimColor={true}>
@@ -253,9 +253,9 @@ function getPlanApprovalSummary(content: string): string | null {
   const response = isPlanApprovalResponse(content);
   if (response) {
     if (response.approved) {
-      return '[Plan Approved] You can now proceed with implementation';
+      return "[Plan Approved] You can now proceed with implementation";
     } else {
-      return `[Plan Rejected] ${response.feedback || 'Please revise your plan'}`;
+      return `[Plan Rejected] ${response.feedback || "Please revise your plan"}`;
     }
   }
   return null;
@@ -265,15 +265,15 @@ function getPlanApprovalSummary(content: string): string | null {
  * Get a brief summary text for an idle notification.
  */
 function getIdleNotificationSummary(msg: IdleNotificationMessage): string {
-  const parts: string[] = ['Agent idle'];
+  const parts: string[] = ["Agent idle"];
   if (msg.completedTaskId) {
-    const status = msg.completedStatus || 'completed';
+    const status = msg.completedStatus || "completed";
     parts.push(`Task ${msg.completedTaskId} ${status}`);
   }
   if (msg.summary) {
     parts.push(`Last DM: ${msg.summary}`);
   }
-  return parts.join(' · ');
+  return parts.join(" · ");
 }
 
 /**
@@ -305,7 +305,7 @@ export function formatTeammateMessageContent(content: string): string {
       type?: string;
       message?: string;
     };
-    if (parsed?.type === 'teammate_terminated' && parsed.message) {
+    if (parsed?.type === "teammate_terminated" && parsed.message) {
       return parsed.message;
     }
   } catch {

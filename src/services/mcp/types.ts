@@ -1,23 +1,23 @@
-import type { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import type { Resource, ServerCapabilities } from '@modelcontextprotocol/sdk/types.js';
-import { z } from 'zod/v4';
-import { lazySchema } from '../../utils/lazySchema.js';
+import type { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import type { Resource, ServerCapabilities } from "@modelcontextprotocol/sdk/types.js";
+import { z } from "zod/v4";
+import { lazySchema } from "../../utils/lazySchema.js";
 
 // Configuration schemas and types
 export const ConfigScopeSchema = lazySchema(() =>
-  z.enum(['local', 'user', 'project', 'dynamic', 'enterprise', 'claudeai', 'managed']),
+  z.enum(["local", "user", "project", "dynamic", "enterprise", "claudeai", "managed"]),
 );
 export type ConfigScope = z.infer<ReturnType<typeof ConfigScopeSchema>>;
 
 export const TransportSchema = lazySchema(() =>
-  z.enum(['stdio', 'sse', 'sse-ide', 'http', 'ws', 'sdk']),
+  z.enum(["stdio", "sse", "sse-ide", "http", "ws", "sdk"]),
 );
 export type Transport = z.infer<ReturnType<typeof TransportSchema>>;
 
 export const McpStdioServerConfigSchema = lazySchema(() =>
   z.object({
-    type: z.literal('stdio').optional(), // Optional for backwards compatibility
-    command: z.string().min(1, 'Command cannot be empty'),
+    type: z.literal("stdio").optional(), // Optional for backwards compatibility
+    command: z.string().min(1, "Command cannot be empty"),
     args: z.array(z.string()).default([]),
     env: z.record(z.string(), z.string()).optional(),
   }),
@@ -36,8 +36,8 @@ const McpOAuthConfigSchema = lazySchema(() =>
     authServerMetadataUrl: z
       .string()
       .url()
-      .startsWith('https://', {
-        message: 'authServerMetadataUrl must use https://',
+      .startsWith("https://", {
+        message: "authServerMetadataUrl must use https://",
       })
       .optional(),
     xaa: McpXaaConfigSchema().optional(),
@@ -46,7 +46,7 @@ const McpOAuthConfigSchema = lazySchema(() =>
 
 export const McpSSEServerConfigSchema = lazySchema(() =>
   z.object({
-    type: z.literal('sse'),
+    type: z.literal("sse"),
     url: z.string(),
     headers: z.record(z.string(), z.string()).optional(),
     headersHelper: z.string().optional(),
@@ -57,7 +57,7 @@ export const McpSSEServerConfigSchema = lazySchema(() =>
 // Internal-only server type for IDE extensions
 export const McpSSEIDEServerConfigSchema = lazySchema(() =>
   z.object({
-    type: z.literal('sse-ide'),
+    type: z.literal("sse-ide"),
     url: z.string(),
     ideName: z.string(),
     ideRunningInWindows: z.boolean().optional(),
@@ -67,7 +67,7 @@ export const McpSSEIDEServerConfigSchema = lazySchema(() =>
 // Internal-only server type for IDE extensions
 export const McpWebSocketIDEServerConfigSchema = lazySchema(() =>
   z.object({
-    type: z.literal('ws-ide'),
+    type: z.literal("ws-ide"),
     url: z.string(),
     ideName: z.string(),
     authToken: z.string().optional(),
@@ -77,7 +77,7 @@ export const McpWebSocketIDEServerConfigSchema = lazySchema(() =>
 
 export const McpHTTPServerConfigSchema = lazySchema(() =>
   z.object({
-    type: z.literal('http'),
+    type: z.literal("http"),
     url: z.string(),
     headers: z.record(z.string(), z.string()).optional(),
     headersHelper: z.string().optional(),
@@ -87,7 +87,7 @@ export const McpHTTPServerConfigSchema = lazySchema(() =>
 
 export const McpWebSocketServerConfigSchema = lazySchema(() =>
   z.object({
-    type: z.literal('ws'),
+    type: z.literal("ws"),
     url: z.string(),
     headers: z.record(z.string(), z.string()).optional(),
     headersHelper: z.string().optional(),
@@ -96,7 +96,7 @@ export const McpWebSocketServerConfigSchema = lazySchema(() =>
 
 export const McpSdkServerConfigSchema = lazySchema(() =>
   z.object({
-    type: z.literal('sdk'),
+    type: z.literal("sdk"),
     name: z.string(),
   }),
 );
@@ -104,7 +104,7 @@ export const McpSdkServerConfigSchema = lazySchema(() =>
 // Config type for Claude.ai proxy servers
 export const McpClaudeAIProxyServerConfigSchema = lazySchema(() =>
   z.object({
-    type: z.literal('claudeai-proxy'),
+    type: z.literal("claudeai-proxy"),
     url: z.string(),
     id: z.string(),
   }),
@@ -157,7 +157,7 @@ export type McpJsonConfig = z.infer<ReturnType<typeof McpJsonConfigSchema>>;
 export type ConnectedMCPServer = {
   client: Client;
   name: string;
-  type: 'connected';
+  type: "connected";
   capabilities: ServerCapabilities;
   serverInfo?: {
     name: string;
@@ -170,20 +170,20 @@ export type ConnectedMCPServer = {
 
 export type FailedMCPServer = {
   name: string;
-  type: 'failed';
+  type: "failed";
   config: ScopedMcpServerConfig;
   error?: string;
 };
 
 export type NeedsAuthMCPServer = {
   name: string;
-  type: 'needs-auth';
+  type: "needs-auth";
   config: ScopedMcpServerConfig;
 };
 
 export type PendingMCPServer = {
   name: string;
-  type: 'pending';
+  type: "pending";
   config: ScopedMcpServerConfig;
   reconnectAttempt?: number;
   maxReconnectAttempts?: number;
@@ -191,7 +191,7 @@ export type PendingMCPServer = {
 
 export type DisabledMCPServer = {
   name: string;
-  type: 'disabled';
+  type: "disabled";
   config: ScopedMcpServerConfig;
 };
 
@@ -211,7 +211,7 @@ export interface SerializedTool {
   description: string;
   inputJSONSchema?: {
     [x: string]: unknown;
-    type: 'object';
+    type: "object";
     properties?: {
       [x: string]: unknown;
     };
@@ -222,7 +222,7 @@ export interface SerializedTool {
 
 export interface SerializedClient {
   name: string;
-  type: 'connected' | 'failed' | 'needs-auth' | 'pending' | 'disabled';
+  type: "connected" | "failed" | "needs-auth" | "pending" | "disabled";
   capabilities?: ServerCapabilities;
 }
 

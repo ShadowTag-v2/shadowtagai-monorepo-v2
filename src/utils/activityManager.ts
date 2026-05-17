@@ -1,4 +1,4 @@
-import { getActiveTimeCounter as getActiveTimeCounterImpl } from '../bootstrap/state.js';
+import { getActiveTimeCounter as getActiveTimeCounterImpl } from "../bootstrap/state.js";
 
 type ActivityManagerOptions = {
   getNow?: () => number;
@@ -69,7 +69,7 @@ export class ActivityManager {
 
           // Only record time if within the timeout window
           if (timeSinceLastActivity < timeoutSeconds) {
-            activeTimeCounter.add(timeSinceLastActivity, { type: 'user' });
+            activeTimeCounter.add(timeSinceLastActivity, { type: "user" });
           }
         }
       }
@@ -114,7 +114,7 @@ export class ActivityManager {
       if (timeSinceLastRecord > 0) {
         const activeTimeCounter = this.getActiveTimeCounter();
         if (activeTimeCounter) {
-          activeTimeCounter.add(timeSinceLastRecord, { type: 'cli' });
+          activeTimeCounter.add(timeSinceLastRecord, { type: "cli" });
         }
       }
 

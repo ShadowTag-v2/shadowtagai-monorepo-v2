@@ -1,20 +1,20 @@
-import { feature } from 'bun:bundle';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import type { Permutations } from 'src/types/utils.js';
-import { getSessionId } from '../bootstrap/state.js';
-import type { AppState } from '../state/AppState.js';
-import type { QueueOperation, QueueOperationMessage } from '../types/messageQueueTypes.js';
+import { feature } from "bun:bundle";
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import type { Permutations } from "src/types/utils.js";
+import { getSessionId } from "../bootstrap/state.js";
+import type { AppState } from "../state/AppState.js";
+import type { QueueOperation, QueueOperationMessage } from "../types/messageQueueTypes.js";
 import type {
   EditablePromptInputMode,
   PromptInputMode,
   QueuedCommand,
   QueuePriority,
-} from '../types/textInputTypes.js';
-import type { PastedContent } from './config.js';
-import { extractTextContent } from './messages.js';
-import { objectGroupBy } from './objectGroupBy.js';
-import { recordQueueOperation } from './sessionStorage.js';
-import { createSignal } from './signal.js';
+} from "../types/textInputTypes.js";
+import type { PastedContent } from "./config.js";
+import { extractTextContent } from "./messages.js";
+import { objectGroupBy } from "./objectGroupBy.js";
+import { recordQueueOperation } from "./sessionStorage.js";
+import { createSignal } from "./signal.js";
 
 export type SetAppState = (f: (prev: AppState) => AppState) => void;
 
@@ -25,7 +25,7 @@ export type SetAppState = (f: (prev: AppState) => AppState) => void;
 function logOperation(operation: QueueOperation, content?: string): void {
   const sessionId = getSessionId();
   const queueOp: QueueOperationMessage = {
-    type: 'queue-operation',
+    type: "queue-operation",
     operation,
     timestamp: new Date().toISOString(),
     sessionId,
@@ -123,9 +123,9 @@ export function recheckCommandQueue(): void {
  * Defaults priority to 'next' (processed before task notifications).
  */
 export function enqueue(command: QueuedCommand): void {
-  commandQueue.push({ ...command, priority: command.priority ?? 'next' });
+  commandQueue.push({ ...command, priority: command.priority ?? "next" });
   notifySubscribers();
-  logOperation('enqueue', typeof command.value === 'string' ? command.value : undefined);
+  logOperation("enqueue", typeof command.value === "string" ? command.value : undefined);
 }
 
 /**
@@ -134,9 +134,9 @@ export function enqueue(command: QueuedCommand): void {
  * is never starved by system messages.
  */
 export function enqueuePendingNotification(command: QueuedCommand): void {
-  commandQueue.push({ ...command, priority: command.priority ?? 'later' });
+  commandQueue.push({ ...command, priority: command.priority ?? "later" });
   notifySubscribers();
-  logOperation('enqueue', typeof command.value === 'string' ? command.value : undefined);
+  logOperation("enqueue", typeof command.value === "string" ? command.value : undefined);
 }
 
 const PRIORITY_ORDER: Record<QueuePriority, number> = {
@@ -166,7 +166,7 @@ export function dequeue(filter?: (cmd: QueuedCommand) => boolean): QueuedCommand
   for (let i = 0; i < commandQueue.length; i++) {
     const cmd = commandQueue[i]!;
     if (filter && !filter(cmd)) continue;
-    const priority = PRIORITY_ORDER[cmd.priority ?? 'next'];
+    const priority = PRIORITY_ORDER[cmd.priority ?? "next"];
     if (priority < bestPriority) {
       bestIdx = i;
       bestPriority = priority;
@@ -177,7 +177,7 @@ export function dequeue(filter?: (cmd: QueuedCommand) => boolean): QueuedCommand
 
   const [dequeued] = commandQueue.splice(bestIdx, 1);
   notifySubscribers();
-  logOperation('dequeue');
+  logOperation("dequeue");
   return dequeued;
 }
 
@@ -195,7 +195,7 @@ export function dequeueAll(): QueuedCommand[] {
   notifySubscribers();
 
   for (const _cmd of commands) {
-    logOperation('dequeue');
+    logOperation("dequeue");
   }
 
   return commands;
@@ -214,7 +214,7 @@ export function peek(filter?: (cmd: QueuedCommand) => boolean): QueuedCommand | 
   for (let i = 0; i < commandQueue.length; i++) {
     const cmd = commandQueue[i]!;
     if (filter && !filter(cmd)) continue;
-    const priority = PRIORITY_ORDER[cmd.priority ?? 'next'];
+    const priority = PRIORITY_ORDER[cmd.priority ?? "next"];
     if (priority < bestPriority) {
       bestIdx = i;
       bestPriority = priority;
@@ -245,7 +245,7 @@ export function dequeueAllMatching(predicate: (cmd: QueuedCommand) => boolean): 
   commandQueue.push(...remaining);
   notifySubscribers();
   for (const _cmd of matched) {
-    logOperation('dequeue');
+    logOperation("dequeue");
   }
   return matched;
 }
@@ -272,7 +272,7 @@ export function remove(commandsToRemove: QueuedCommand[]): void {
   }
 
   for (const _cmd of commandsToRemove) {
-    logOperation('remove');
+    logOperation("remove");
   }
 }
 
@@ -291,7 +291,7 @@ export function removeByFilter(predicate: (cmd: QueuedCommand) => boolean): Queu
   if (removed.length > 0) {
     notifySubscribers();
     for (const _cmd of removed) {
-      logOperation('remove');
+      logOperation("remove");
     }
   }
 
@@ -323,7 +323,7 @@ export function resetCommandQueue(): void {
 // Editable mode helpers
 // ============================================================================
 
-const NON_EDITABLE_MODES = new Set<PromptInputMode>(['task-notification'] satisfies Permutations<
+const NON_EDITABLE_MODES = new Set<PromptInputMode>(["task-notification"] satisfies Permutations<
   Exclude<PromptInputMode, EditablePromptInputMode>
 >);
 
@@ -347,7 +347,7 @@ export function isQueuedCommandEditable(cmd: QueuedCommand): boolean {
  * sees what arrived) but stay non-editable (raw XML).
  */
 export function isQueuedCommandVisible(cmd: QueuedCommand): boolean {
-  if ((feature('KAIROS') || feature('KAIROS_CHANNELS')) && cmd.origin?.kind === 'channel')
+  if ((feature("KAIROS") || feature("KAIROS_CHANNELS")) && cmd.origin?.kind === "channel")
     return true;
   return isQueuedCommandEditable(cmd);
 }
@@ -358,7 +358,7 @@ export function isQueuedCommandVisible(cmd: QueuedCommand): boolean {
  * For ContentBlockParam[], extracts text from text blocks.
  */
 function extractTextFromValue(value: string | ContentBlockParam[]): string {
-  return typeof value === 'string' ? value : extractTextContent(value, '\n');
+  return typeof value === "string" ? value : extractTextContent(value, "\n");
 }
 
 /**
@@ -369,17 +369,17 @@ function extractImagesFromValue(
   value: string | ContentBlockParam[],
   startId: number,
 ): PastedContent[] {
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     return [];
   }
 
   const images: PastedContent[] = [];
   let imageIndex = 0;
   for (const block of value) {
-    if (block.type === 'image' && block.source.type === 'base64') {
+    if (block.type === "image" && block.source.type === "base64") {
       images.push({
         id: startId + imageIndex,
-        type: 'image',
+        type: "image",
         content: block.source.data,
         mediaType: block.source.media_type,
         filename: `image${imageIndex + 1}`,
@@ -412,7 +412,7 @@ export function popAllEditable(
   }
 
   const { editable = [], nonEditable = [] } = objectGroupBy([...commandQueue], (cmd) =>
-    isQueuedCommandEditable(cmd) ? 'editable' : 'nonEditable',
+    isQueuedCommandEditable(cmd) ? "editable" : "nonEditable",
   );
 
   if (editable.length === 0) {
@@ -421,10 +421,10 @@ export function popAllEditable(
 
   // Extract text from queued commands (handles both strings and ContentBlockParam[])
   const queuedTexts = editable.map((cmd) => extractTextFromValue(cmd.value));
-  const newInput = [...queuedTexts, currentInput].filter(Boolean).join('\n');
+  const newInput = [...queuedTexts, currentInput].filter(Boolean).join("\n");
 
   // Calculate cursor offset: length of joined queued commands + 1 + current cursor offset
-  const cursorOffset = queuedTexts.join('\n').length + 1 + currentCursorOffset;
+  const cursorOffset = queuedTexts.join("\n").length + 1 + currentCursorOffset;
 
   // Extract images from queued commands
   const images: PastedContent[] = [];
@@ -434,7 +434,7 @@ export function popAllEditable(
     // Preserve the original PastedContent id so imageStore lookups still work.
     if (cmd.pastedContents) {
       for (const content of Object.values(cmd.pastedContents)) {
-        if (content.type === 'image') {
+        if (content.type === "image") {
           images.push(content);
         }
       }
@@ -446,7 +446,7 @@ export function popAllEditable(
   }
 
   for (const command of editable) {
-    logOperation('popAll', typeof command.value === 'string' ? command.value : undefined);
+    logOperation("popAll", typeof command.value === "string" ? command.value : undefined);
   }
 
   // Replace queue contents with only the non-editable commands
@@ -498,7 +498,7 @@ export const clearPendingNotifications = clearCommandQueue;
  */
 export function getCommandsByMaxPriority(maxPriority: QueuePriority): QueuedCommand[] {
   const threshold = PRIORITY_ORDER[maxPriority];
-  return commandQueue.filter((cmd) => PRIORITY_ORDER[cmd.priority ?? 'next'] <= threshold);
+  return commandQueue.filter((cmd) => PRIORITY_ORDER[cmd.priority ?? "next"] <= threshold);
 }
 
 /**
@@ -510,6 +510,6 @@ export function getCommandsByMaxPriority(maxPriority: QueuePriority): QueuedComm
  */
 export function isSlashCommand(cmd: QueuedCommand): boolean {
   return (
-    typeof cmd.value === 'string' && cmd.value.trim().startsWith('/') && !cmd.skipSlashCommands
+    typeof cmd.value === "string" && cmd.value.trim().startsWith("/") && !cmd.skipSlashCommands
   );
 }

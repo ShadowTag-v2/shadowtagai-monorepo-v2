@@ -1,5 +1,5 @@
-import type { ToolUseBlock } from '@anthropic-ai/sdk/resources';
-import { getRemoteSessionUrl } from '../../constants/product.js';
+import type { ToolUseBlock } from "@anthropic-ai/sdk/resources";
+import { getRemoteSessionUrl } from "../../constants/product.js";
 import {
   OUTPUT_FILE_TAG,
   REMOTE_REVIEW_PROGRESS_TAG,
@@ -11,40 +11,40 @@ import {
   TASK_TYPE_TAG,
   TOOL_USE_ID_TAG,
   ULTRAPLAN_TAG,
-} from '../../constants/xml.js';
-import type { SDKAssistantMessage, SDKMessage } from '../../entrypoints/agentSdkTypes.js';
-import type { SetAppState, Task, TaskContext, TaskStateBase } from '../../Task.js';
-import { createTaskStateBase, generateTaskId } from '../../Task.js';
-import { TodoWriteTool } from '../../tools/TodoWriteTool/TodoWriteTool.js';
+} from "../../constants/xml.js";
+import type { SDKAssistantMessage, SDKMessage } from "../../entrypoints/agentSdkTypes.js";
+import type { SetAppState, Task, TaskContext, TaskStateBase } from "../../Task.js";
+import { createTaskStateBase, generateTaskId } from "../../Task.js";
+import { TodoWriteTool } from "../../tools/TodoWriteTool/TodoWriteTool.js";
 import {
   type BackgroundRemoteSessionPrecondition,
   checkBackgroundRemoteSessionEligibility,
-} from '../../utils/background/remote/remoteSession.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { logError } from '../../utils/log.js';
-import { enqueuePendingNotification } from '../../utils/messageQueueManager.js';
-import { extractTag, extractTextContent } from '../../utils/messages.js';
-import { emitTaskTerminatedSdk } from '../../utils/sdkEventQueue.js';
+} from "../../utils/background/remote/remoteSession.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { logError } from "../../utils/log.js";
+import { enqueuePendingNotification } from "../../utils/messageQueueManager.js";
+import { extractTag, extractTextContent } from "../../utils/messages.js";
+import { emitTaskTerminatedSdk } from "../../utils/sdkEventQueue.js";
 import {
   deleteRemoteAgentMetadata,
   listRemoteAgentMetadata,
   type RemoteAgentMetadata,
   writeRemoteAgentMetadata,
-} from '../../utils/sessionStorage.js';
-import { jsonStringify } from '../../utils/slowOperations.js';
+} from "../../utils/sessionStorage.js";
+import { jsonStringify } from "../../utils/slowOperations.js";
 import {
   appendTaskOutput,
   evictTaskOutput,
   getTaskOutputPath,
   initTaskOutput,
-} from '../../utils/task/diskOutput.js';
-import { registerTask, updateTaskState } from '../../utils/task/framework.js';
-import { fetchSession } from '../../utils/teleport/api.js';
-import { archiveRemoteSession, pollRemoteSessionEvents } from '../../utils/teleport.js';
-import type { TodoList } from '../../utils/todo/types.js';
-import type { UltraplanPhase } from '../../utils/ultraplan/ccrSession.js';
+} from "../../utils/task/diskOutput.js";
+import { registerTask, updateTaskState } from "../../utils/task/framework.js";
+import { fetchSession } from "../../utils/teleport/api.js";
+import { archiveRemoteSession, pollRemoteSessionEvents } from "../../utils/teleport.js";
+import type { TodoList } from "../../utils/todo/types.js";
+import type { UltraplanPhase } from "../../utils/ultraplan/ccrSession.js";
 export type RemoteAgentTaskState = TaskStateBase & {
-  type: 'remote_agent';
+  type: "remote_agent";
   remoteTaskType: RemoteTaskType;
   /** Task-specific metadata (PR number, repo, etc.). */
   remoteTaskMetadata?: RemoteTaskMetadata;
@@ -67,7 +67,7 @@ export type RemoteAgentTaskState = TaskStateBase & {
   isRemoteReview?: boolean;
   /** Parsed from the orchestrator's <remote-review-progress> heartbeat echoes. */
   reviewProgress?: {
-    stage?: 'finding' | 'verifying' | 'synthesizing';
+    stage?: "finding" | "verifying" | "synthesizing";
     bugsFound: number;
     bugsVerified: number;
     bugsRefuted: number;
@@ -79,18 +79,18 @@ export type RemoteAgentTaskState = TaskStateBase & {
    * ExitPlanMode is awaiting browser approval. Surfaced in the pill badge
    * and detail dialog status line.
    */
-  ultraplanPhase?: Exclude<UltraplanPhase, 'running'>;
+  ultraplanPhase?: Exclude<UltraplanPhase, "running">;
 };
 const REMOTE_TASK_TYPES = [
-  'remote-agent',
-  'ultraplan',
-  'ultrareview',
-  'autofix-pr',
-  'background-pr',
+  "remote-agent",
+  "ultraplan",
+  "ultrareview",
+  "autofix-pr",
+  "background-pr",
 ] as const;
 export type RemoteTaskType = (typeof REMOTE_TASK_TYPES)[number];
 function isRemoteTaskType(v: string | undefined): v is RemoteTaskType {
-  return (REMOTE_TASK_TYPES as readonly string[]).includes(v ?? '');
+  return (REMOTE_TASK_TYPES as readonly string[]).includes(v ?? "");
 }
 export type AutofixPrRemoteTaskMetadata = {
   owner: string;
@@ -182,17 +182,17 @@ export async function checkRemoteAgentEligibility({
  */
 export function formatPreconditionError(error: BackgroundRemoteSessionPrecondition): string {
   switch (error.type) {
-    case 'not_logged_in':
-      return 'Please run /login and sign in with your Claude.ai account (not Console).';
-    case 'no_remote_environment':
-      return 'No cloud environment available. Set one up at https://claude.ai/code/onboarding?magic=env-setup';
-    case 'not_in_git_repo':
-      return 'Background tasks require a git repository. Initialize git or run from a git repository.';
-    case 'no_git_remote':
-      return 'Background tasks require a GitHub remote. Add one with `git remote add origin REPO_URL`.';
-    case 'github_app_not_installed':
-      return 'The Claude GitHub app must be installed on this repository first.\nhttps://github.com/apps/claude/installations/new';
-    case 'policy_blocked':
+    case "not_logged_in":
+      return "Please run /login and sign in with your Claude.ai account (not Console).";
+    case "no_remote_environment":
+      return "No cloud environment available. Set one up at https://claude.ai/code/onboarding?magic=env-setup";
+    case "not_in_git_repo":
+      return "Background tasks require a git repository. Initialize git or run from a git repository.";
+    case "no_git_remote":
+      return "Background tasks require a GitHub remote. Add one with `git remote add origin REPO_URL`.";
+    case "github_app_not_installed":
+      return "The Claude GitHub app must be installed on this repository first.\nhttps://github.com/apps/claude/installations/new";
+    case "policy_blocked":
       return "Remote sessions are disabled by your organization's policy. Contact your organization admin to enable them.";
   }
 }
@@ -203,19 +203,19 @@ export function formatPreconditionError(error: BackgroundRemoteSessionPreconditi
 function enqueueRemoteNotification(
   taskId: string,
   title: string,
-  status: 'completed' | 'failed' | 'killed',
+  status: "completed" | "failed" | "killed",
   setAppState: SetAppState,
   toolUseId?: string,
 ): void {
   // Atomically check and set notified flag to prevent duplicate notifications.
   if (!markTaskNotified(taskId, setAppState)) return;
   const statusText =
-    status === 'completed'
-      ? 'completed successfully'
-      : status === 'failed'
-        ? 'failed'
-        : 'was stopped';
-  const toolUseIdLine = toolUseId ? `\n<${TOOL_USE_ID_TAG}>${toolUseId}</${TOOL_USE_ID_TAG}>` : '';
+    status === "completed"
+      ? "completed successfully"
+      : status === "failed"
+        ? "failed"
+        : "was stopped";
+  const toolUseIdLine = toolUseId ? `\n<${TOOL_USE_ID_TAG}>${toolUseId}</${TOOL_USE_ID_TAG}>` : "";
   const outputPath = getTaskOutputPath(taskId);
   const message = `<${TASK_NOTIFICATION_TAG}>
 <${TASK_ID_TAG}>${taskId}</${TASK_ID_TAG}>${toolUseIdLine}
@@ -226,7 +226,7 @@ function enqueueRemoteNotification(
 </${TASK_NOTIFICATION_TAG}>`;
   enqueuePendingNotification({
     value: message,
-    mode: 'task-notification',
+    mode: "task-notification",
   });
 }
 
@@ -257,8 +257,8 @@ export function extractPlanFromLog(log: SDKMessage[]): string | null {
   // Walk backwards through assistant messages to find <ultraplan> content
   for (let i = log.length - 1; i >= 0; i--) {
     const msg = log[i];
-    if (msg?.type !== 'assistant') continue;
-    const fullText = extractTextContent(msg.message.content, '\n');
+    if (msg?.type !== "assistant") continue;
+    const fullText = extractTextContent(msg.message.content, "\n");
     const plan = extractTag(fullText, ULTRAPLAN_TAG);
     if (plan?.trim()) return plan.trim();
   }
@@ -287,7 +287,7 @@ export function enqueueUltraplanFailureNotification(
 The remote Ultraplan session did not produce a plan (${reason}). Inspect the session at ${sessionUrl} and tell the user to retry locally with plan mode.`;
   enqueuePendingNotification({
     value: message,
-    mode: 'task-notification',
+    mode: "task-notification",
   });
 }
 
@@ -311,8 +311,8 @@ function extractReviewFromLog(log: SDKMessage[]): string | null {
     // hook_progress or the terminal hook_response depending on buffering;
     // both have flat stdout.
     if (
-      msg?.type === 'system' &&
-      (msg.subtype === 'hook_progress' || msg.subtype === 'hook_response')
+      msg?.type === "system" &&
+      (msg.subtype === "hook_progress" || msg.subtype === "hook_response")
     ) {
       const tagged = extractTag(msg.stdout, REMOTE_REVIEW_TAG);
       if (tagged?.trim()) return tagged.trim();
@@ -320,8 +320,8 @@ function extractReviewFromLog(log: SDKMessage[]): string | null {
   }
   for (let i = log.length - 1; i >= 0; i--) {
     const msg = log[i];
-    if (msg?.type !== 'assistant') continue;
-    const fullText = extractTextContent(msg.message.content, '\n');
+    if (msg?.type !== "assistant") continue;
+    const fullText = extractTextContent(msg.message.content, "\n");
     const tagged = extractTag(fullText, REMOTE_REVIEW_TAG);
     if (tagged?.trim()) return tagged.trim();
   }
@@ -332,19 +332,19 @@ function extractReviewFromLog(log: SDKMessage[]): string | null {
   const hookStdout = log
     .filter(
       (msg) =>
-        msg.type === 'system' &&
-        (msg.subtype === 'hook_progress' || msg.subtype === 'hook_response'),
+        msg.type === "system" &&
+        (msg.subtype === "hook_progress" || msg.subtype === "hook_response"),
     )
     .map((msg) => msg.stdout)
-    .join('');
+    .join("");
   const hookTagged = extractTag(hookStdout, REMOTE_REVIEW_TAG);
   if (hookTagged?.trim()) return hookTagged.trim();
 
   // Fallback: concatenate all assistant text in chronological order.
   const allText = log
-    .filter((msg): msg is SDKAssistantMessage => msg.type === 'assistant')
-    .map((msg) => extractTextContent(msg.message.content, '\n'))
-    .join('\n')
+    .filter((msg): msg is SDKAssistantMessage => msg.type === "assistant")
+    .map((msg) => extractTextContent(msg.message.content, "\n"))
+    .join("\n")
     .trim();
   return allText || null;
 }
@@ -364,8 +364,8 @@ function extractReviewTagFromLog(log: SDKMessage[]): string | null {
   for (let i = log.length - 1; i >= 0; i--) {
     const msg = log[i];
     if (
-      msg?.type === 'system' &&
-      (msg.subtype === 'hook_progress' || msg.subtype === 'hook_response')
+      msg?.type === "system" &&
+      (msg.subtype === "hook_progress" || msg.subtype === "hook_response")
     ) {
       const tagged = extractTag(msg.stdout, REMOTE_REVIEW_TAG);
       if (tagged?.trim()) return tagged.trim();
@@ -375,8 +375,8 @@ function extractReviewTagFromLog(log: SDKMessage[]): string | null {
   // assistant text per-message scan (prompt mode)
   for (let i = log.length - 1; i >= 0; i--) {
     const msg = log[i];
-    if (msg?.type !== 'assistant') continue;
-    const fullText = extractTextContent(msg.message.content, '\n');
+    if (msg?.type !== "assistant") continue;
+    const fullText = extractTextContent(msg.message.content, "\n");
     const tagged = extractTag(fullText, REMOTE_REVIEW_TAG);
     if (tagged?.trim()) return tagged.trim();
   }
@@ -385,11 +385,11 @@ function extractReviewTagFromLog(log: SDKMessage[]): string | null {
   const hookStdout = log
     .filter(
       (msg) =>
-        msg.type === 'system' &&
-        (msg.subtype === 'hook_progress' || msg.subtype === 'hook_response'),
+        msg.type === "system" &&
+        (msg.subtype === "hook_progress" || msg.subtype === "hook_response"),
     )
     .map((msg) => msg.stdout)
-    .join('');
+    .join("");
   const hookTagged = extractTag(hookStdout, REMOTE_REVIEW_TAG);
   if (hookTagged?.trim()) return hookTagged.trim();
   return null;
@@ -418,7 +418,7 @@ The remote review produced the following findings:
 ${reviewContent}`;
   enqueuePendingNotification({
     value: message,
-    mode: 'task-notification',
+    mode: "task-notification",
   });
 }
 
@@ -440,7 +440,7 @@ function enqueueRemoteReviewFailureNotification(
 Remote review did not produce output (${reason}). Tell the user to retry /ultrareview, or use /review for a local review instead.`;
   enqueuePendingNotification({
     value: message,
-    mode: 'task-notification',
+    mode: "task-notification",
   });
 }
 
@@ -450,9 +450,9 @@ Remote review did not produce output (${reason}). Tell the user to retry /ultrar
 function extractTodoListFromLog(log: SDKMessage[]): TodoList {
   const todoListMessage = log.findLast(
     (msg): msg is SDKAssistantMessage =>
-      msg.type === 'assistant' &&
+      msg.type === "assistant" &&
       msg.message.content.some(
-        (block) => block.type === 'tool_use' && block.name === TodoWriteTool.name,
+        (block) => block.type === "tool_use" && block.name === TodoWriteTool.name,
       ),
   );
   if (!todoListMessage) {
@@ -460,7 +460,7 @@ function extractTodoListFromLog(log: SDKMessage[]): TodoList {
   }
   const input = todoListMessage.message.content.find(
     (block): block is ToolUseBlock =>
-      block.type === 'tool_use' && block.name === TodoWriteTool.name,
+      block.type === "tool_use" && block.name === TodoWriteTool.name,
   )?.input;
   if (!input) {
     return [];
@@ -506,17 +506,17 @@ export function registerRemoteAgentTask(options: {
     isLongRunning,
     remoteTaskMetadata,
   } = options;
-  const taskId = generateTaskId('remote_agent');
+  const taskId = generateTaskId("remote_agent");
 
   // Create the output file before registering the task.
   // RemoteAgentTask uses appendTaskOutput() (not TaskOutput), so
   // the file must exist for readers before any output arrives.
   void initTaskOutput(taskId);
   const taskState: RemoteAgentTaskState = {
-    ...createTaskStateBase(taskId, 'remote_agent', session.title, toolUseId),
-    type: 'remote_agent',
+    ...createTaskStateBase(taskId, "remote_agent", session.title, toolUseId),
+    type: "remote_agent",
     remoteTaskType,
-    status: 'running',
+    status: "running",
     sessionId: session.id,
     command,
     title: session.title,
@@ -589,7 +589,7 @@ async function restoreRemoteAgentTasksImpl(context: TaskContext): Promise<void> 
       // session is still running. fetchSession throws plain Error for all
       // 4xx (validateStatus treats <500 as success), so isTransientNetworkError
       // can't distinguish them; match the 404 message instead.
-      if (e instanceof Error && e.message.startsWith('Session not found:')) {
+      if (e instanceof Error && e.message.startsWith("Session not found:")) {
         logForDebugging(`restoreRemoteAgentTasks: dropping ${meta.taskId} (404: ${String(e)})`);
         void removeRemoteAgentMetadata(meta.taskId);
       } else {
@@ -599,16 +599,16 @@ async function restoreRemoteAgentTasksImpl(context: TaskContext): Promise<void> 
       }
       continue;
     }
-    if (remoteStatus === 'archived') {
+    if (remoteStatus === "archived") {
       // Session ended while the local client was offline. Don't resurrect.
       void removeRemoteAgentMetadata(meta.taskId);
       continue;
     }
     const taskState: RemoteAgentTaskState = {
-      ...createTaskStateBase(meta.taskId, 'remote_agent', meta.title, meta.toolUseId),
-      type: 'remote_agent',
-      remoteTaskType: isRemoteTaskType(meta.remoteTaskType) ? meta.remoteTaskType : 'remote-agent',
-      status: 'running',
+      ...createTaskStateBase(meta.taskId, "remote_agent", meta.title, meta.toolUseId),
+      type: "remote_agent",
+      remoteTaskType: isRemoteTaskType(meta.remoteTaskType) ? meta.remoteTaskType : "remote-agent",
+      status: "running",
       sessionId: meta.sessionId,
       command: meta.command,
       title: meta.title,
@@ -650,7 +650,7 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
     try {
       const appState = context.getAppState();
       const task = appState.tasks?.[taskId] as RemoteAgentTaskState | undefined;
-      if (!task || task.status !== 'running') {
+      if (!task || task.status !== "running") {
         // Task was killed externally (TaskStopTool) or already terminal.
         // Session left alive so the claude.ai URL stays valid — the run_hunt.sh
         // post_stage() calls land as assistant events there, and the user may
@@ -664,25 +664,25 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
         accumulatedLog = [...accumulatedLog, ...response.newEvents];
         const deltaText = response.newEvents
           .map((msg) => {
-            if (msg.type === 'assistant') {
+            if (msg.type === "assistant") {
               return msg.message.content
-                .filter((block) => block.type === 'text')
-                .map((block) => ('text' in block ? block.text : ''))
-                .join('\n');
+                .filter((block) => block.type === "text")
+                .map((block) => ("text" in block ? block.text : ""))
+                .join("\n");
             }
             return jsonStringify(msg);
           })
-          .join('\n');
+          .join("\n");
         if (deltaText) {
           appendTaskOutput(taskId, `${deltaText}\n`);
         }
       }
-      if (response.sessionStatus === 'archived') {
+      if (response.sessionStatus === "archived") {
         updateTaskState<RemoteAgentTaskState>(taskId, context.setAppState, (t) =>
-          t.status === 'running'
+          t.status === "running"
             ? {
                 ...t,
-                status: 'completed',
+                status: "completed",
                 endTime: Date.now(),
               }
             : t,
@@ -690,7 +690,7 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
         enqueueRemoteNotification(
           taskId,
           task.title,
-          'completed',
+          "completed",
           context.setAppState,
           task.toolUseId,
         );
@@ -703,10 +703,10 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
         const completionResult = await checker(task.remoteTaskMetadata);
         if (completionResult !== null) {
           updateTaskState<RemoteAgentTaskState>(taskId, context.setAppState, (t) =>
-            t.status === 'running'
+            t.status === "running"
               ? {
                   ...t,
-                  status: 'completed',
+                  status: "completed",
                   endTime: Date.now(),
                 }
               : t,
@@ -714,7 +714,7 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
           enqueueRemoteNotification(
             taskId,
             completionResult,
-            'completed',
+            "completed",
             context.setAppState,
             task.toolUseId,
           );
@@ -731,7 +731,7 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
       const result =
         task.isUltraplan || task.isLongRunning
           ? undefined
-          : accumulatedLog.findLast((msg) => msg.type === 'result');
+          : accumulatedLog.findLast((msg) => msg.type === "result");
 
       // For remote-review: <remote-review> in hook_progress stdout is the
       // bughunter path's completion signal. Scan only the delta to stay O(new);
@@ -748,14 +748,14 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
       // each event contains all progress tags. Grab the LAST occurrence —
       // extractTag returns the first match which would always be the earliest
       // value (0/0).
-      let newProgress: RemoteAgentTaskState['reviewProgress'];
+      let newProgress: RemoteAgentTaskState["reviewProgress"];
       if (task.isRemoteReview && logGrew) {
         const open = `<${REMOTE_REVIEW_PROGRESS_TAG}>`;
         const close = `</${REMOTE_REVIEW_PROGRESS_TAG}>`;
         for (const ev of response.newEvents) {
           if (
-            ev.type === 'system' &&
-            (ev.subtype === 'hook_progress' || ev.subtype === 'hook_response')
+            ev.type === "system" &&
+            (ev.subtype === "hook_progress" || ev.subtype === "hook_response")
           ) {
             const s = ev.stdout;
             const closeAt = s.lastIndexOf(close);
@@ -763,7 +763,7 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
             if (openAt !== -1 && closeAt > openAt) {
               try {
                 const p = JSON.parse(s.slice(openAt + open.length, closeAt)) as {
-                  stage?: 'finding' | 'verifying' | 'synthesizing';
+                  stage?: "finding" | "verifying" | "synthesizing";
                   bugs_found?: number;
                   bugs_verified?: number;
                   bugs_refuted?: number;
@@ -786,12 +786,12 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
       // never arm without this.
       const hasAnyOutput = accumulatedLog.some(
         (msg) =>
-          msg.type === 'assistant' ||
+          msg.type === "assistant" ||
           (task.isRemoteReview &&
-            msg.type === 'system' &&
-            (msg.subtype === 'hook_progress' || msg.subtype === 'hook_response')),
+            msg.type === "system" &&
+            (msg.subtype === "hook_progress" || msg.subtype === "hook_response")),
       );
-      if (response.sessionStatus === 'idle' && !logGrew && hasAnyOutput) {
+      if (response.sessionStatus === "idle" && !logGrew && hasAnyOutput) {
         consecutiveIdlePolls++;
       } else {
         consecutiveIdlePolls = 0;
@@ -813,17 +813,17 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
       // worth defending against.
       const hasSessionStartHook = accumulatedLog.some(
         (m) =>
-          m.type === 'system' &&
-          (m.subtype === 'hook_started' ||
-            m.subtype === 'hook_progress' ||
-            m.subtype === 'hook_response') &&
+          m.type === "system" &&
+          (m.subtype === "hook_started" ||
+            m.subtype === "hook_progress" ||
+            m.subtype === "hook_response") &&
           (
             m as {
               hook_event?: string;
             }
-          ).hook_event === 'SessionStart',
+          ).hook_event === "SessionStart",
       );
-      const hasAssistantEvents = accumulatedLog.some((m) => m.type === 'assistant');
+      const hasAssistantEvents = accumulatedLog.some((m) => m.type === "assistant");
       const sessionDone =
         task.isRemoteReview &&
         (cachedReviewContent !== null ||
@@ -831,14 +831,14 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
       const reviewTimedOut =
         task.isRemoteReview && Date.now() - task.pollStartedAt > REMOTE_REVIEW_TIMEOUT_MS;
       const newStatus = result
-        ? result.subtype === 'success'
-          ? ('completed' as const)
-          : ('failed' as const)
+        ? result.subtype === "success"
+          ? ("completed" as const)
+          : ("failed" as const)
         : sessionDone || reviewTimedOut
-          ? ('completed' as const)
+          ? ("completed" as const)
           : accumulatedLog.length > 0
-            ? ('running' as const)
-            : ('starting' as const);
+            ? ("running" as const)
+            : ("starting" as const);
 
       // Update task state. Guard against terminal states — if stopTask raced
       // while pollRemoteSessionEvents was in-flight (status set to 'killed',
@@ -846,7 +846,7 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
       // side effects (notification, permission-mode flip).
       let raceTerminated = false;
       updateTaskState<RemoteAgentTaskState>(taskId, context.setAppState, (prevTask) => {
-        if (prevTask.status !== 'running') {
+        if (prevTask.status !== "running") {
           raceTerminated = true;
           return prevTask;
         }
@@ -855,13 +855,13 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
         // subscribers (REPL, Spinner, PromptInput, ...) don't re-render.
         // newProgress only arrives via log growth (heartbeat echo is a
         // hook_progress event), so !logGrew already covers no-update.
-        const statusUnchanged = newStatus === 'running' || newStatus === 'starting';
+        const statusUnchanged = newStatus === "running" || newStatus === "starting";
         if (!logGrew && statusUnchanged) {
           return prevTask;
         }
         return {
           ...prevTask,
-          status: newStatus === 'starting' ? 'running' : newStatus,
+          status: newStatus === "starting" ? "running" : newStatus,
           log: accumulatedLog,
           // Only re-scan for TodoWrite when log grew — log is append-only,
           // so no growth means no new tool_use blocks. Avoids findLast +
@@ -875,7 +875,7 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
 
       // Send notification if task completed or timed out
       if (result || sessionDone || reviewTimedOut) {
-        const finalStatus = result && result.subtype !== 'success' ? 'failed' : 'completed';
+        const finalStatus = result && result.subtype !== "success" ? "failed" : "completed";
 
         // For remote-review tasks: inject the review text directly into the
         // message queue. No mode change, no file indirection — the local model
@@ -888,7 +888,7 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
           // catches the stableIdle path where the tag arrived in an earlier
           // tick but the delta scan wasn't wired yet (first poll after resume).
           const reviewContent = cachedReviewContent ?? extractReviewFromLog(accumulatedLog);
-          if (reviewContent && finalStatus === 'completed') {
+          if (reviewContent && finalStatus === "completed") {
             enqueueRemoteReviewNotification(taskId, reviewContent, context.setAppState);
             void evictTaskOutput(taskId);
             void removeRemoteAgentMetadata(taskId);
@@ -898,14 +898,14 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
           // No output or remote error — mark failed with a review-specific message.
           updateTaskState(taskId, context.setAppState, (t) => ({
             ...t,
-            status: 'failed',
+            status: "failed",
           }));
           const reason =
-            result && result.subtype !== 'success'
-              ? 'remote session returned an error'
+            result && result.subtype !== "success"
+              ? "remote session returned an error"
               : reviewTimedOut && !sessionDone
-                ? 'remote session exceeded 30 minutes'
-                : 'no review output — orchestrator may have exited early';
+                ? "remote session exceeded 30 minutes"
+                : "no review output — orchestrator may have exited early";
           enqueueRemoteReviewFailureNotification(taskId, reason, context.setAppState);
           void evictTaskOutput(taskId);
           void removeRemoteAgentMetadata(taskId);
@@ -934,17 +934,17 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
         const task = appState.tasks?.[taskId] as RemoteAgentTaskState | undefined;
         if (
           task?.isRemoteReview &&
-          task.status === 'running' &&
+          task.status === "running" &&
           Date.now() - task.pollStartedAt > REMOTE_REVIEW_TIMEOUT_MS
         ) {
           updateTaskState(taskId, context.setAppState, (t) => ({
             ...t,
-            status: 'failed',
+            status: "failed",
             endTime: Date.now(),
           }));
           enqueueRemoteReviewFailureNotification(
             taskId,
-            'remote session exceeded 30 minutes',
+            "remote session exceeded 30 minutes",
             context.setAppState,
           );
           void evictTaskOutput(taskId);
@@ -979,15 +979,15 @@ function startRemoteSessionPolling(taskId: string, context: TaskContext): () => 
  * - src/components/tasks/BackgroundTaskStatus.tsx (polling logic)
  */
 export const RemoteAgentTask: Task = {
-  name: 'RemoteAgentTask',
-  type: 'remote_agent',
+  name: "RemoteAgentTask",
+  type: "remote_agent",
   async kill(taskId, setAppState) {
     let toolUseId: string | undefined;
     let description: string | undefined;
     let sessionId: string | undefined;
     let killed = false;
     updateTaskState<RemoteAgentTaskState>(taskId, setAppState, (task) => {
-      if (task.status !== 'running') {
+      if (task.status !== "running") {
         return task;
       }
       toolUseId = task.toolUseId;
@@ -996,7 +996,7 @@ export const RemoteAgentTask: Task = {
       killed = true;
       return {
         ...task,
-        status: 'killed',
+        status: "killed",
         notified: true,
         endTime: Date.now(),
       };
@@ -1005,7 +1005,7 @@ export const RemoteAgentTask: Task = {
     // Close the task_started bookend for SDK consumers. The poll loop's
     // early-return when status!=='running' won't emit a notification.
     if (killed) {
-      emitTaskTerminatedSdk(taskId, 'stopped', {
+      emitTaskTerminatedSdk(taskId, "stopped", {
         toolUseId,
         summary: description,
       });
@@ -1019,7 +1019,7 @@ export const RemoteAgentTask: Task = {
     void evictTaskOutput(taskId);
     void removeRemoteAgentMetadata(taskId);
     logForDebugging(
-      `RemoteAgentTask ${taskId} killed, archiving session ${sessionId ?? 'unknown'}`,
+      `RemoteAgentTask ${taskId} killed, archiving session ${sessionId ?? "unknown"}`,
     );
   },
 };

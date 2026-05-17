@@ -1,13 +1,13 @@
-import { randomUUID } from 'node:crypto';
-import type { QuerySource } from '../../constants/querySource.js';
-import { queryModelWithoutStreaming } from '../../services/api/claude.js';
-import type { Message } from '../../types/message.js';
-import { createAbortController } from '../../utils/abortController.js';
-import { logError } from '../../utils/log.js';
-import { toError } from '../errors.js';
-import { extractTextContent } from '../messages.js';
-import { asSystemPrompt } from '../systemPromptType.js';
-import type { REPLHookContext } from './postSamplingHooks.js';
+import { randomUUID } from "node:crypto";
+import type { QuerySource } from "../../constants/querySource.js";
+import { queryModelWithoutStreaming } from "../../services/api/claude.js";
+import type { Message } from "../../types/message.js";
+import { createAbortController } from "../../utils/abortController.js";
+import { logError } from "../../utils/log.js";
+import { toError } from "../errors.js";
+import { extractTextContent } from "../messages.js";
+import { asSystemPrompt } from "../systemPromptType.js";
+import type { REPLHookContext } from "./postSamplingHooks.js";
 
 export type ApiQueryHookContext = REPLHookContext & {
   queryMessageCount?: number;
@@ -36,7 +36,7 @@ export type ApiQueryHookConfig<TResult> = {
 
 export type ApiQueryResult<TResult> =
   | {
-      type: 'success';
+      type: "success";
       queryName: string;
       result: TResult;
       messageId: string;
@@ -44,7 +44,7 @@ export type ApiQueryResult<TResult> =
       uuid: string;
     }
   | {
-      type: 'error';
+      type: "error";
       queryName: string;
       error: Error;
       uuid: string;
@@ -80,7 +80,7 @@ export function createApiQueryHook<TResult>(config: ApiQueryHookConfig<TResult>)
       const response = await queryModelWithoutStreaming({
         messages,
         systemPrompt,
-        thinkingConfig: { type: 'disabled' as const },
+        thinkingConfig: { type: "disabled" as const },
         tools,
         signal: createAbortController().signal,
         options: {
@@ -107,7 +107,7 @@ export function createApiQueryHook<TResult>(config: ApiQueryHookConfig<TResult>)
         const result = config.parseResponse(content, context);
         config.logResult(
           {
-            type: 'success',
+            type: "success",
             queryName: config.name,
             result,
             messageId: response.message.id,
@@ -119,7 +119,7 @@ export function createApiQueryHook<TResult>(config: ApiQueryHookConfig<TResult>)
       } catch (error) {
         config.logResult(
           {
-            type: 'error',
+            type: "error",
             queryName: config.name,
             error: error as Error,
             uuid,

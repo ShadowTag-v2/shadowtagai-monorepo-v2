@@ -9,23 +9,23 @@
  * sdk/controlTypes.ts directly.
  */
 
-import type { CallToolResult, ToolAnnotations } from '@modelcontextprotocol/sdk/types.js';
+import type { CallToolResult, ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
 
 // Control protocol types for SDK builders (bridge subpath consumers)
 /** @alpha */
 export type {
   SDKControlRequest,
   SDKControlResponse,
-} from './sdk/controlTypes.js';
+} from "./sdk/controlTypes.js";
 // Re-export core types (common serializable types)
-export * from './sdk/coreTypes.js';
+export * from "./sdk/coreTypes.js";
 // Re-export runtime types (callbacks, interfaces with methods)
-export * from './sdk/runtimeTypes.js';
+export * from "./sdk/runtimeTypes.js";
 
 // Re-export settings types (generated from settings JSON schema)
-export type { Settings } from './sdk/settingsTypes.generated.js';
+export type { Settings } from "./sdk/settingsTypes.generated.js";
 // Re-export tool types (all marked @internal until SDK API stabilizes)
-export * from './sdk/toolTypes.js';
+export * from "./sdk/toolTypes.js";
 
 // ============================================================================
 // Functions
@@ -36,7 +36,7 @@ import type {
   SDKResultMessage,
   SDKSessionInfo,
   SDKUserMessage,
-} from './sdk/coreTypes.js';
+} from "./sdk/coreTypes.js";
 // Import types needed for function signatures
 import type {
   AnyZodRawShape,
@@ -56,7 +56,7 @@ import type {
   SdkMcpToolDefinition,
   SessionMessage,
   SessionMutationOptions,
-} from './sdk/runtimeTypes.js';
+} from "./sdk/runtimeTypes.js";
 
 export type {
   ForkSessionOptions,
@@ -78,7 +78,7 @@ export function tool<Schema extends AnyZodRawShape>(
     alwaysLoad?: boolean;
   },
 ): SdkMcpToolDefinition<Schema> {
-  throw new Error('not implemented');
+  throw new Error("not implemented");
 }
 
 type CreateSdkMcpServerOptions = {
@@ -97,7 +97,7 @@ type CreateSdkMcpServerOptions = {
 export function createSdkMcpServer(
   _options: CreateSdkMcpServerOptions,
 ): McpSdkServerConfigWithInstance {
-  throw new Error('not implemented');
+  throw new Error("not implemented");
 }
 
 export class AbortError extends Error {}
@@ -112,7 +112,7 @@ export function query(_params: {
   options?: Options;
 }): Query;
 export function query(): Query {
-  throw new Error('query is not implemented in the SDK');
+  throw new Error("query is not implemented in the SDK");
 }
 
 /**
@@ -121,7 +121,7 @@ export function query(): Query {
  * @alpha
  */
 export function unstable_v2_createSession(_options: SDKSessionOptions): SDKSession {
-  throw new Error('unstable_v2_createSession is not implemented in the SDK');
+  throw new Error("unstable_v2_createSession is not implemented in the SDK");
 }
 
 /**
@@ -133,7 +133,7 @@ export function unstable_v2_resumeSession(
   _sessionId: string,
   _options: SDKSessionOptions,
 ): SDKSession {
-  throw new Error('unstable_v2_resumeSession is not implemented in the SDK');
+  throw new Error("unstable_v2_resumeSession is not implemented in the SDK");
 }
 
 // @[MODEL LAUNCH]: Update the example model ID in this docstring.
@@ -153,7 +153,7 @@ export async function unstable_v2_prompt(
   _message: string,
   _options: SDKSessionOptions,
 ): Promise<SDKResultMessage> {
-  throw new Error('unstable_v2_prompt is not implemented in the SDK');
+  throw new Error("unstable_v2_prompt is not implemented in the SDK");
 }
 
 /**
@@ -171,7 +171,7 @@ export async function getSessionMessages(
   _sessionId: string,
   _options?: GetSessionMessagesOptions,
 ): Promise<SessionMessage[]> {
-  throw new Error('getSessionMessages is not implemented in the SDK');
+  throw new Error("getSessionMessages is not implemented in the SDK");
 }
 
 /**
@@ -194,7 +194,7 @@ export async function getSessionMessages(
  * ```
  */
 export async function listSessions(_options?: ListSessionsOptions): Promise<SDKSessionInfo[]> {
-  throw new Error('listSessions is not implemented in the SDK');
+  throw new Error("listSessions is not implemented in the SDK");
 }
 
 /**
@@ -210,7 +210,7 @@ export async function getSessionInfo(
   _sessionId: string,
   _options?: GetSessionInfoOptions,
 ): Promise<SDKSessionInfo | undefined> {
-  throw new Error('getSessionInfo is not implemented in the SDK');
+  throw new Error("getSessionInfo is not implemented in the SDK");
 }
 
 /**
@@ -224,7 +224,7 @@ export async function renameSession(
   _title: string,
   _options?: SessionMutationOptions,
 ): Promise<void> {
-  throw new Error('renameSession is not implemented in the SDK');
+  throw new Error("renameSession is not implemented in the SDK");
 }
 
 /**
@@ -238,7 +238,7 @@ export async function tagSession(
   _tag: string | null,
   _options?: SessionMutationOptions,
 ): Promise<void> {
-  throw new Error('tagSession is not implemented in the SDK');
+  throw new Error("tagSession is not implemented in the SDK");
 }
 
 /**
@@ -259,7 +259,7 @@ export async function forkSession(
   _sessionId: string,
   _options?: ForkSessionOptions,
 ): Promise<ForkSessionResult> {
-  throw new Error('forkSession is not implemented in the SDK');
+  throw new Error("forkSession is not implemented in the SDK");
 }
 
 // ============================================================================
@@ -299,8 +299,8 @@ export type CronJitterConfig = {
  * @internal
  */
 export type ScheduledTaskEvent =
-  | { type: 'fire'; task: CronTask }
-  | { type: 'missed'; tasks: CronTask[] };
+  | { type: "fire"; task: CronTask }
+  | { type: "missed"; tasks: CronTask[] };
 
 /**
  * Handle returned by `watchScheduledTasks()`.
@@ -342,7 +342,7 @@ export function watchScheduledTasks(_opts: {
   signal: AbortSignal;
   getJitterConfig?: () => CronJitterConfig;
 }): ScheduledTasksHandle {
-  throw new Error('not implemented');
+  throw new Error("not implemented");
 }
 
 /**
@@ -351,7 +351,7 @@ export function watchScheduledTasks(_opts: {
  * @internal
  */
 export function buildMissedTaskNotification(_missed: CronTask[]): string {
-  throw new Error('not implemented');
+  throw new Error("not implemented");
 }
 
 /**
@@ -398,7 +398,7 @@ export type RemoteControlHandle = {
   controlRequests(): AsyncGenerator<unknown>;
   permissionResponses(): AsyncGenerator<unknown>;
   onStateChange(
-    cb: (state: 'ready' | 'connected' | 'reconnecting' | 'failed', detail?: string) => void,
+    cb: (state: "ready" | "connected" | "reconnecting" | "failed", detail?: string) => void,
   ): void;
   teardown(): Promise<void>;
 };
@@ -426,5 +426,5 @@ export type RemoteControlHandle = {
 export async function connectRemoteControl(
   _opts: ConnectRemoteControlOptions,
 ): Promise<RemoteControlHandle | null> {
-  throw new Error('not implemented');
+  throw new Error("not implemented");
 }

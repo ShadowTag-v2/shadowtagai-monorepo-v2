@@ -1,7 +1,7 @@
-import { getMainLoopModel } from './model/model.js';
+import { getMainLoopModel } from "./model/model.js";
 
 // Document extensions that are handled specially
-export const DOCUMENT_EXTENSIONS = new Set(['pdf']);
+export const DOCUMENT_EXTENSIONS = new Set(["pdf"]);
 
 /**
  * Parse a page range string into firstPage/lastPage numbers.
@@ -20,7 +20,7 @@ export function parsePDFPageRange(pages: string): { firstPage: number; lastPage:
   }
 
   // "N-" open-ended range
-  if (trimmed.endsWith('-')) {
+  if (trimmed.endsWith("-")) {
     const first = parseInt(trimmed.slice(0, -1), 10);
     if (Number.isNaN(first) || first < 1) {
       return null;
@@ -28,7 +28,7 @@ export function parsePDFPageRange(pages: string): { firstPage: number; lastPage:
     return { firstPage: first, lastPage: Infinity };
   }
 
-  const dashIndex = trimmed.indexOf('-');
+  const dashIndex = trimmed.indexOf("-");
   if (dashIndex === -1) {
     // Single page: "5"
     const page = parseInt(trimmed, 10);
@@ -55,7 +55,7 @@ export function parsePDFPageRange(pages: string): { firstPage: number; lastPage:
  * covers all provider ID formats (Bedrock prefixes, Vertex @-dates).
  */
 export function isPDFSupported(): boolean {
-  return !getMainLoopModel().toLowerCase().includes('claude-3-haiku');
+  return !getMainLoopModel().toLowerCase().includes("claude-3-haiku");
 }
 
 /**
@@ -63,6 +63,6 @@ export function isPDFSupported(): boolean {
  * @param ext File extension (with or without leading dot)
  */
 export function isPDFExtension(ext: string): boolean {
-  const normalized = ext.startsWith('.') ? ext.slice(1) : ext;
+  const normalized = ext.startsWith(".") ? ext.slice(1) : ext;
   return DOCUMENT_EXTENSIONS.has(normalized.toLowerCase());
 }

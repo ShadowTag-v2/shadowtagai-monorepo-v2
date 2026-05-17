@@ -1,23 +1,23 @@
-import figures from 'figures';
-import * as React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { SettingSource } from 'src/utils/settings/constants.js';
-import { Box, Text } from '../../ink.js';
-import type { ResolvedAgent } from '../../tools/AgentTool/agentDisplay.js';
+import figures from "figures";
+import * as React from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { SettingSource } from "src/utils/settings/constants.js";
+import { Box, Text } from "../../ink.js";
+import type { ResolvedAgent } from "../../tools/AgentTool/agentDisplay.js";
 import {
   AGENT_SOURCE_GROUPS,
   compareAgentsByName,
   getOverrideSourceLabel,
   resolveAgentModelDisplay,
-} from '../../tools/AgentTool/agentDisplay.js';
-import type { AgentDefinition } from '../../tools/AgentTool/loadAgentsDir.js';
-import { count } from '../../utils/array.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { Divider } from '../design-system/Divider.js';
-import { getAgentSourceDisplayName } from './utils.js';
+} from "../../tools/AgentTool/agentDisplay.js";
+import type { AgentDefinition } from "../../tools/AgentTool/loadAgentsDir.js";
+import { count } from "../../utils/array.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { Divider } from "../design-system/Divider.js";
+import { getAgentSourceDisplayName } from "./utils.js";
 
 type Props = {
-  source: SettingSource | 'all' | 'built-in' | 'plugin';
+  source: SettingSource | "all" | "built-in" | "plugin";
   agents: ResolvedAgent[];
   onBack: () => void;
   onSelect: (agent: AgentDefinition) => void;
@@ -43,10 +43,10 @@ export function AgentsList(t0) {
   if ($[2] !== isCreateNewSelected) {
     t2 = () => (
       <Box>
-        <Text color={isCreateNewSelected ? 'suggestion' : undefined}>
-          {isCreateNewSelected ? `${figures.pointer} ` : '  '}
+        <Text color={isCreateNewSelected ? "suggestion" : undefined}>
+          {isCreateNewSelected ? `${figures.pointer} ` : "  "}
         </Text>
-        <Text color={isCreateNewSelected ? 'suggestion' : undefined}>Create new agent</Text>
+        <Text color={isCreateNewSelected ? "suggestion" : undefined}>Create new agent</Text>
       </Box>
     );
     $[2] = isCreateNewSelected;
@@ -62,7 +62,7 @@ export function AgentsList(t0) {
     $[6] !== selectedAgent?.source
   ) {
     t3 = (agent_0) => {
-      const isBuiltIn = agent_0.source === 'built-in';
+      const isBuiltIn = agent_0.source === "built-in";
       const isSelected =
         !isBuiltIn &&
         !isCreateNewSelected &&
@@ -70,31 +70,31 @@ export function AgentsList(t0) {
         selectedAgent?.source === agent_0.source;
       const { isOverridden, overriddenBy } = getOverrideInfo(agent_0);
       const dimmed = isBuiltIn || isOverridden;
-      const textColor = !isBuiltIn && isSelected ? 'suggestion' : undefined;
+      const textColor = !isBuiltIn && isSelected ? "suggestion" : undefined;
       const resolvedModel = resolveAgentModelDisplay(agent_0);
       return (
         <Box key={`${agent_0.agentType}-${agent_0.source}`}>
           <Text dimColor={dimmed && !isSelected} color={textColor}>
-            {isBuiltIn ? '' : isSelected ? `${figures.pointer} ` : '  '}
+            {isBuiltIn ? "" : isSelected ? `${figures.pointer} ` : "  "}
           </Text>
           <Text dimColor={dimmed && !isSelected} color={textColor}>
             {agent_0.agentType}
           </Text>
           {resolvedModel && (
             <Text dimColor={true} color={textColor}>
-              {' \xB7 '}
+              {" \xB7 "}
               {resolvedModel}
             </Text>
           )}
           {agent_0.memory && (
             <Text dimColor={true} color={textColor}>
-              {' \xB7 '}
+              {" \xB7 "}
               {agent_0.memory} memory
             </Text>
           )}
           {overriddenBy && (
-            <Text dimColor={!isSelected} color={isSelected ? 'warning' : undefined}>
-              {' '}
+            <Text dimColor={!isSelected} color={isSelected ? "warning" : undefined}>
+              {" "}
               {figures.warning} shadowed by {getOverrideSourceLabel(overriddenBy)}
             </Text>
           )}
@@ -113,7 +113,7 @@ export function AgentsList(t0) {
   if ($[8] !== sortedAgents || $[9] !== source) {
     bb0: {
       const nonBuiltIn = sortedAgents.filter(_temp2);
-      if (source === 'all') {
+      if (source === "all") {
         t4 = AGENT_SOURCE_GROUPS.filter(_temp3).flatMap((t5) => {
           const { source: groupSource } = t5;
           return nonBuiltIn.filter((a_0) => a_0.source === groupSource);
@@ -167,7 +167,7 @@ export function AgentsList(t0) {
     $[21] !== selectedAgent
   ) {
     t7 = (e) => {
-      if (e.key === 'return') {
+      if (e.key === "return") {
         e.preventDefault();
         if (isCreateNewSelected && onCreateNew) {
           onCreateNew();
@@ -178,7 +178,7 @@ export function AgentsList(t0) {
         }
         return;
       }
-      if (e.key !== 'up' && e.key !== 'down') {
+      if (e.key !== "up" && e.key !== "down") {
         return;
       }
       e.preventDefault();
@@ -197,7 +197,7 @@ export function AgentsList(t0) {
         }
       }
       const newPosition =
-        e.key === 'up'
+        e.key === "up"
           ? currentPosition === 0
             ? totalItems - 1
             : currentPosition - 1
@@ -229,7 +229,7 @@ export function AgentsList(t0) {
   let t8;
   if ($[23] !== renderAgent || $[24] !== sortedAgents) {
     t8 = (t9) => {
-      const title = t9 === undefined ? 'Built-in (always available):' : t9;
+      const title = t9 === undefined ? "Built-in (always available):" : t9;
       const builtInAgents = sortedAgents.filter(_temp4);
       return (
         <Box flexDirection="column" marginBottom={1} paddingLeft={2}>
@@ -308,11 +308,11 @@ export function AgentsList(t0) {
     $[39] !== source ||
     $[40] !== sourceTitle
   ) {
-    t22 = Symbol.for('react.early_return_sentinel');
+    t22 = Symbol.for("react.early_return_sentinel");
     bb1: {
       const builtInAgents_0 = sortedAgents.filter(_temp5);
       const hasNoAgents =
-        !sortedAgents.length || (source !== 'built-in' && !sortedAgents.some(_temp6));
+        !sortedAgents.length || (source !== "built-in" && !sortedAgents.some(_temp6));
       if (hasNoAgents) {
         let t23;
         if ($[55] !== onCreateNew || $[56] !== renderCreateNewOption) {
@@ -326,7 +326,7 @@ export function AgentsList(t0) {
         let t24;
         let t25;
         let t26;
-        if ($[58] === Symbol.for('react.memo_cache_sentinel')) {
+        if ($[58] === Symbol.for("react.memo_cache_sentinel")) {
           t24 = (
             <Text dimColor={true}>
               No agents found. Create specialized subagents that Claude can delegate to.
@@ -353,7 +353,7 @@ export function AgentsList(t0) {
         }
         let t27;
         if ($[61] !== renderBuiltInAgentsSection || $[62] !== sortedAgents || $[63] !== source) {
-          t27 = source !== 'built-in' && sortedAgents.some(_temp7) && (
+          t27 = source !== "built-in" && sortedAgents.some(_temp7) && (
             <>
               <Divider />
               {renderBuiltInAgentsSection()}
@@ -437,7 +437,7 @@ export function AgentsList(t0) {
         t21 = $[76];
       }
       T0 = Box;
-      t11 = 'column';
+      t11 = "column";
       t12 = 0;
       t13 = true;
       t14 = handleKeyDown;
@@ -450,7 +450,7 @@ export function AgentsList(t0) {
         t15 = $[79];
       }
       t16 =
-        source === 'all' ? (
+        source === "all" ? (
           <>
             {AGENT_SOURCE_GROUPS.filter(_temp9).map((t24) => {
               const { label, source: groupSource_0 } = t24;
@@ -472,7 +472,7 @@ export function AgentsList(t0) {
               </Box>
             )}
           </>
-        ) : source === 'built-in' ? (
+        ) : source === "built-in" ? (
           <>
             <Text dimColor={true} italic={true}>
               Built-in agents are provided by default and cannot be modified.
@@ -534,7 +534,7 @@ export function AgentsList(t0) {
     t21 = $[53];
     t22 = $[54];
   }
-  if (t22 !== Symbol.for('react.early_return_sentinel')) {
+  if (t22 !== Symbol.for("react.early_return_sentinel")) {
     return t22;
   }
   let t23;
@@ -594,34 +594,34 @@ export function AgentsList(t0) {
   return t24;
 }
 function _temp1(a_9) {
-  return a_9.source === 'built-in';
+  return a_9.source === "built-in";
 }
 function _temp0(a_8) {
-  return a_8.source !== 'built-in';
+  return a_8.source !== "built-in";
 }
 function _temp9(g_0) {
-  return g_0.source !== 'built-in';
+  return g_0.source !== "built-in";
 }
 function _temp8(a_6) {
   return !a_6.overriddenBy;
 }
 function _temp7(a_5) {
-  return a_5.source === 'built-in';
+  return a_5.source === "built-in";
 }
 function _temp6(a_4) {
-  return a_4.source !== 'built-in';
+  return a_4.source !== "built-in";
 }
 function _temp5(a_3) {
-  return a_3.source === 'built-in';
+  return a_3.source === "built-in";
 }
 function _temp4(a_2) {
-  return a_2.source === 'built-in';
+  return a_2.source === "built-in";
 }
 function _temp3(g) {
-  return g.source !== 'built-in';
+  return g.source !== "built-in";
 }
 function _temp2(a) {
-  return a.source !== 'built-in';
+  return a.source !== "built-in";
 }
 function _temp(agent) {
   return {

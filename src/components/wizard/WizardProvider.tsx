@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
-import type { WizardContextValue } from './types.js';
+import { createContext, useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useExitOnCtrlCDWithKeybindings } from "../../hooks/useExitOnCtrlCDWithKeybindings.js";
+import type { WizardContextValue } from "./types.js";
 
 // Use any here for the context since it will be cast properly when used
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,7 +23,7 @@ export function WizardProvider(t0) {
   const [wizardData, setWizardData] = useState(initialData);
   const [isCompleted, setIsCompleted] = useState(false);
   let t4;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = [];
     $[2] = t4;
   } else {
@@ -128,7 +128,7 @@ export function WizardProvider(t0) {
   }
   const cancel = t10;
   let t11;
-  if ($[21] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[21] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = (updates) => {
       setWizardData((prev_4) => ({
         ...prev_4,

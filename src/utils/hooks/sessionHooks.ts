@@ -1,10 +1,10 @@
-import { HOOK_EVENTS, type HookEvent } from 'src/entrypoints/agentSdkTypes.js';
-import type { AppState } from 'src/state/AppState.js';
-import type { Message } from 'src/types/message.js';
-import { logForDebugging } from '../debug.js';
-import type { AggregatedHookResult } from '../hooks.js';
-import type { HookCommand } from '../settings/types.js';
-import { isHookEqual } from './hooksSettings.js';
+import { HOOK_EVENTS, type HookEvent } from "src/entrypoints/agentSdkTypes.js";
+import type { AppState } from "src/state/AppState.js";
+import type { Message } from "src/types/message.js";
+import { logForDebugging } from "../debug.js";
+import type { AggregatedHookResult } from "../hooks.js";
+import type { HookCommand } from "../settings/types.js";
+import { isHookEqual } from "./hooksSettings.js";
 
 type OnHookSuccess = (hook: HookCommand | FunctionHook, result: AggregatedHookResult) => void;
 
@@ -19,7 +19,7 @@ export type FunctionHookCallback = (
  * Session-scoped only, cannot be persisted to settings.json.
  */
 export type FunctionHook = {
-  type: 'function';
+  type: "function";
   id?: string; // Optional unique ID for removal
   timeout?: number;
   callback: FunctionHookCallback;
@@ -93,7 +93,7 @@ export function addFunctionHook(
 ): string {
   const id = options?.id || `function-hook-${Date.now()}-${Math.random()}`;
   const hook: FunctionHook = {
-    type: 'function',
+    type: "function",
     id,
     timeout: options?.timeout || 5000,
     callback,
@@ -124,7 +124,7 @@ export function removeFunctionHook(
     const updatedMatchers = eventMatchers
       .map((matcher) => {
         const updatedHooks = matcher.hooks.filter((h) => {
-          if (h.hook.type !== 'function') return true;
+          if (h.hook.type !== "function") return true;
           return h.hook.id !== hookId;
         });
 
@@ -259,7 +259,7 @@ function convertToHookMatchers(sessionMatchers: SessionHookMatcher[]): SessionDe
     matcher: sm.matcher,
     skillRoot: sm.skillRoot,
     // Filter out function hooks - they can't be persisted to HookMatcher format
-    hooks: sm.hooks.map((h) => h.hook).filter((h): h is HookCommand => h.type !== 'function'),
+    hooks: sm.hooks.map((h) => h.hook).filter((h): h is HookCommand => h.type !== "function"),
   }));
 }
 
@@ -329,7 +329,7 @@ export function getSessionFunctionHooks(
     return sessionMatchers
       .map((sm) => ({
         matcher: sm.matcher,
-        hooks: sm.hooks.map((h) => h.hook).filter((h): h is FunctionHook => h.type === 'function'),
+        hooks: sm.hooks.map((h) => h.hook).filter((h): h is FunctionHook => h.type === "function"),
       }))
       .filter((m) => m.hooks.length > 0);
   };
@@ -385,7 +385,7 @@ export function getSessionHookCallback(
 
   // Find the hook in the matchers
   for (const matcherEntry of eventMatchers) {
-    if (matcherEntry.matcher === matcher || matcher === '') {
+    if (matcherEntry.matcher === matcher || matcher === "") {
       const hookEntry = matcherEntry.hooks.find((h) => isHookEqual(h.hook, hook));
       if (hookEntry) {
         return hookEntry;

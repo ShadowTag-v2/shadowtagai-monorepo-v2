@@ -1,7 +1,7 @@
-import { type AnsiCode, ansiCodesToString, diffAnsiCodes } from '@alcalzone/ansi-tokenize';
-import { logForDebugging } from '../utils/debug.js';
-import type { Diff, FlickerReason, Frame } from './frame.js';
-import type { Point } from './layout/geometry.js';
+import { type AnsiCode, ansiCodesToString, diffAnsiCodes } from "@alcalzone/ansi-tokenize";
+import { logForDebugging } from "../utils/debug.js";
+import type { Diff, FlickerReason, Frame } from "./frame.js";
+import type { Point } from "./layout/geometry.js";
 import {
   type Cell,
   CellWidth,
@@ -14,15 +14,15 @@ import {
   type StylePool,
   shiftRows,
   visibleCellAtIndex,
-} from './screen.js';
+} from "./screen.js";
 import {
   CURSOR_HOME,
   scrollDown as csiScrollDown,
   scrollUp as csiScrollUp,
   RESET_SCROLL_REGION,
   setScrollRegion,
-} from './termio/csi.js';
-import { LINK_END, link as oscLink } from './termio/osc.js';
+} from "./termio/csi.js";
+import { LINK_END, link as oscLink } from "./termio/osc.js";
 
 type State = {
   previousOutput: string;
@@ -33,15 +33,15 @@ type Options = {
   stylePool: StylePool;
 };
 
-const CARRIAGE_RETURN = { type: 'carriageReturn' } as const;
-const NEWLINE = { type: 'stdout', content: '\n' } as const;
+const CARRIAGE_RETURN = { type: "carriageReturn" } as const;
+const NEWLINE = { type: "stdout", content: "\n" } as const;
 
 export class LogUpdate {
   private state: State;
 
   constructor(private readonly options: Options) {
     this.state = {
-      previousOutput: '',
+      previousOutput: "",
     };
   }
 
@@ -55,7 +55,7 @@ export class LogUpdate {
 
   // Called when process resumes from suspension (SIGCONT) to prevent clobbering terminal content
   reset(): void {
-    this.state.previousOutput = '';
+    this.state.previousOutput = "";
   }
 
   private renderFullFrame(frame: Frame): Diff {
@@ -64,7 +64,7 @@ export class LogUpdate {
     let currentStyles: AnsiCode[] = [];
     let currentHyperlink: Hyperlink;
     for (let y = 0; y < screen.height; y++) {
-      let line = '';
+      let line = "";
       for (let x = 0; x < screen.width; x++) {
         const cell = cellAt(screen, x, y);
         if (cell && cell.width !== CellWidth.SpacerTail) {
@@ -104,14 +104,14 @@ export class LogUpdate {
     if (lines.length === 0) {
       return [];
     }
-    return [{ type: 'stdout', content: lines.join('\n') }];
+    return [{ type: "stdout", content: lines.join("\n") }];
   }
 
   private getRenderOpsForDone(prev: Frame): Diff {
-    this.state.previousOutput = '';
+    this.state.previousOutput = "";
 
     if (!prev.cursor.visible) {
-      return [{ type: 'cursorShow' }];
+      return [{ type: "cursorShow" }];
     }
     return [];
   }
@@ -134,7 +134,7 @@ export class LogUpdate {
       next.viewport.height < prev.viewport.height ||
       (prev.viewport.width !== 0 && next.viewport.width !== prev.viewport.width)
     ) {
-      return fullResetSequence_CAUSES_FLICKER(next, 'resize', stylePool);
+      return fullResetSequence_CAUSES_FLICKER(next, "resize", stylePool);
     }
 
     // DECSTBM scroll optimization: when a ScrollBox's scrollTop changed,
@@ -160,7 +160,7 @@ export class LogUpdate {
         shiftRows(prev.screen, top, bottom, delta);
         scrollPatch = [
           {
-            type: 'stdout',
+            type: "stdout",
             content:
               setScrollRegion(top + 1, bottom + 1) +
               (delta > 0 ? csiScrollUp(delta) : csiScrollDown(-delta)) +
@@ -201,7 +201,7 @@ export class LogUpdate {
       logForDebugging(
         `Full reset (shrink->below): prevHeight=${prev.screen.height}, nextHeight=${next.screen.height}, viewport=${prev.viewport.height}`,
       );
-      return fullResetSequence_CAUSES_FLICKER(next, 'offscreen', stylePool);
+      return fullResetSequence_CAUSES_FLICKER(next, "offscreen", stylePool);
     }
 
     if (
@@ -225,7 +225,7 @@ export class LogUpdate {
       if (scrollbackChangeY >= 0) {
         const prevLine = readLine(prev.screen, scrollbackChangeY);
         const nextLine = readLine(next.screen, scrollbackChangeY);
-        return fullResetSequence_CAUSES_FLICKER(next, 'offscreen', stylePool, {
+        return fullResetSequence_CAUSES_FLICKER(next, "offscreen", stylePool, {
           triggerY: scrollbackChangeY,
           prevLine,
           nextLine,
@@ -248,7 +248,7 @@ export class LogUpdate {
       // If we need to clear more lines than fit in the viewport, some are in
       // scrollback, so we need a full reset.
       if (linesToClear > prev.viewport.height) {
-        return fullResetSequence_CAUSES_FLICKER(next, 'offscreen', this.options.stylePool);
+        return fullResetSequence_CAUSES_FLICKER(next, "offscreen", this.options.stylePool);
       }
 
       // clear(N) moves cursor UP by N-1 lines and to column 0
@@ -256,8 +256,8 @@ export class LogUpdate {
       // But we want to be at next.screen.height - 1 (bottom of new screen)
       screen.txn((prev) => [
         [
-          { type: 'clear', count: linesToClear },
-          { type: 'cursorMove', x: 0, y: -1 },
+          { type: "clear", count: linesToClear },
+          { type: "cursorMove", x: 0, y: -1 },
         ],
         { dx: -prev.x, dy: -linesToClear },
       ]);
@@ -343,13 +343,13 @@ export class LogUpdate {
           const patches: Diff = [];
           transitionStyle(patches, stylePool, styleIdToReset, stylePool.none);
           transitionHyperlink(patches, hyperlinkToReset, undefined);
-          patches.push({ type: 'stdout', content: ' ' });
+          patches.push({ type: "stdout", content: " " });
           return [patches, { dx: 1, dy: 0 }];
         });
       }
     });
     if (needsFullReset) {
-      return fullResetSequence_CAUSES_FLICKER(next, 'offscreen', stylePool, {
+      return fullResetSequence_CAUSES_FLICKER(next, "offscreen", stylePool, {
         triggerY: resetTriggerY,
         prevLine: readLine(prev.screen, resetTriggerY),
         nextLine: readLine(next.screen, resetTriggerY),
@@ -395,7 +395,7 @@ export class LogUpdate {
         if (dy !== 0 || prev.x !== next.cursor.x) {
           // Use CR to clear pending wrap (if any), then cursor move
           const patches: Diff = [CARRIAGE_RETURN];
-          patches.push({ type: 'cursorMove', x: next.cursor.x, y: dy });
+          patches.push({ type: "cursorMove", x: next.cursor.x, y: dy });
           return [patches, { dx: next.cursor.x - prev.x, dy }];
         }
         return [[], { dx: 0, dy: 0 }];
@@ -409,7 +409,7 @@ export class LogUpdate {
       const damage = next.screen.damage;
       const damageInfo = damage
         ? `${damage.width}x${damage.height} at (${damage.x},${damage.y})`
-        : 'none';
+        : "none";
       logForDebugging(
         `Slow render: ${elapsed.toFixed(1)}ms, screen: ${next.screen.height}x${next.screen.width}, damage: ${damageInfo}, changes: ${screen.diff.length}`,
       );
@@ -421,7 +421,7 @@ export class LogUpdate {
 
 function transitionHyperlink(diff: Diff, current: Hyperlink, target: Hyperlink): Hyperlink {
   if (current !== target) {
-    diff.push({ type: 'hyperlink', uri: target ?? '' });
+    diff.push({ type: "hyperlink", uri: target ?? "" });
     return target;
   }
   return current;
@@ -435,15 +435,15 @@ function transitionStyle(
 ): number {
   const str = stylePool.transition(currentId, targetId);
   if (str.length > 0) {
-    diff.push({ type: 'styleStr', str });
+    diff.push({ type: "styleStr", str });
   }
   return targetId;
 }
 
 function readLine(screen: Screen, y: number): string {
-  let line = '';
+  let line = "";
   for (let x = 0; x < screen.width; x++) {
-    line += charInCellAt(screen, x, y) ?? ' ';
+    line += charInCellAt(screen, x, y) ?? " ";
   }
   return line.trimEnd();
 }
@@ -457,7 +457,7 @@ function fullResetSequence_CAUSES_FLICKER(
   // After clearTerminal, cursor is at (0, 0)
   const screen = new VirtualScreen({ x: 0, y: 0 }, frame.viewport.width);
   renderFrame(screen, frame, stylePool);
-  return [{ type: 'clearTerminal', reason, debug }, ...screen.diff];
+  return [{ type: "clearTerminal", reason, debug }, ...screen.diff];
 }
 
 function renderFrame(screen: VirtualScreen, frame: Frame, stylePool: StylePool): void {
@@ -577,7 +577,7 @@ function writeCellWithStyleStr(screen: VirtualScreen, cell: Cell, styleStr: stri
 
   const diff = screen.diff;
   if (styleStr.length > 0) {
-    diff.push({ type: 'styleStr', str: styleStr });
+    diff.push({ type: "styleStr", str: styleStr });
   }
 
   const needsCompensation = cellWidth === 2 && needsWidthCompensation(cell.char);
@@ -589,16 +589,16 @@ function writeCellWithStyleStr(screen: VirtualScreen, cell: Cell, styleStr: stri
   // gap with the emoji's background. Also clears any stale content at x+1.
   // CHA is 1-based, so column px+1 (0-based) is CHA target px+2.
   if (needsCompensation && px + 1 < vw) {
-    diff.push({ type: 'cursorTo', col: px + 2 });
-    diff.push({ type: 'stdout', content: ' ' });
-    diff.push({ type: 'cursorTo', col: px + 1 });
+    diff.push({ type: "cursorTo", col: px + 2 });
+    diff.push({ type: "stdout", content: " " });
+    diff.push({ type: "cursorTo", col: px + 1 });
   }
 
-  diff.push({ type: 'stdout', content: cell.char });
+  diff.push({ type: "stdout", content: cell.char });
 
   // Force terminal cursor to correct column after the emoji.
   if (needsCompensation) {
-    diff.push({ type: 'cursorTo', col: px + cellWidth + 1 });
+    diff.push({ type: "cursorTo", col: px + cellWidth + 1 });
   }
 
   // Update cursor — mutate in place to avoid Point allocation
@@ -621,17 +621,17 @@ function moveCursorTo(screen: VirtualScreen, targetX: number, targetY: number) {
     // to reset to column 0 on the current line without advancing
     // to the next line, then issue the cursor movement.
     if (inPendingWrap) {
-      return [[CARRIAGE_RETURN, { type: 'cursorMove', x: targetX, y: dy }], { dx, dy }];
+      return [[CARRIAGE_RETURN, { type: "cursorMove", x: targetX, y: dy }], { dx, dy }];
     }
 
     // When moving to a different line, use carriage return (\r) to reset to
     // column 0 first, then cursor move.
     if (dy !== 0) {
-      return [[CARRIAGE_RETURN, { type: 'cursorMove', x: targetX, y: dy }], { dx, dy }];
+      return [[CARRIAGE_RETURN, { type: "cursorMove", x: targetX, y: dy }], { dx, dy }];
     }
 
     // Standard same-line cursor move
-    return [[{ type: 'cursorMove', x: dx, y: dy }], { dx, dy }];
+    return [[{ type: "cursorMove", x: dx, y: dy }], { dx, dy }];
   });
 }
 

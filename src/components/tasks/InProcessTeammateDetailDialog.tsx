@@ -1,18 +1,18 @@
-import { c as _c } from 'react/compiler-runtime';
-import type { DeepImmutable } from 'src/types/utils.js';
-import { useElapsedTime } from '../../hooks/useElapsedTime.js';
-import { Box, Text, useTheme } from '../../ink.js';
-import { useKeybindings } from '../../keybindings/useKeybinding.js';
-import { getEmptyToolPermissionContext } from '../../Tool.js';
-import type { InProcessTeammateTaskState } from '../../tasks/InProcessTeammateTask/types.js';
-import { getTools } from '../../tools.js';
-import { formatNumber, truncateToWidth } from '../../utils/format.js';
-import { toInkColor } from '../../utils/ink.js';
-import { Byline } from '../design-system/Byline.js';
-import { Dialog } from '../design-system/Dialog.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
-import { renderToolActivity } from './renderToolActivity.js';
-import { describeTeammateActivity } from './taskStatusUtils.js';
+import { c as _c } from "react/compiler-runtime";
+import type { DeepImmutable } from "src/types/utils.js";
+import { useElapsedTime } from "../../hooks/useElapsedTime.js";
+import { Box, Text, useTheme } from "../../ink.js";
+import { useKeybindings } from "../../keybindings/useKeybinding.js";
+import { getEmptyToolPermissionContext } from "../../Tool.js";
+import type { InProcessTeammateTaskState } from "../../tasks/InProcessTeammateTask/types.js";
+import { getTools } from "../../tools.js";
+import { formatNumber, truncateToWidth } from "../../utils/format.js";
+import { toInkColor } from "../../utils/ink.js";
+import { Byline } from "../design-system/Byline.js";
+import { Dialog } from "../design-system/Dialog.js";
+import { KeyboardShortcutHint } from "../design-system/KeyboardShortcutHint.js";
+import { renderToolActivity } from "./renderToolActivity.js";
+import { describeTeammateActivity } from "./taskStatusUtils.js";
 
 type Props = {
   teammate: DeepImmutable<InProcessTeammateTaskState>;
@@ -26,7 +26,7 @@ export function InProcessTeammateDetailDialog(t0) {
   const { teammate, onDone, onKill, onBack, onForeground } = t0;
   const [theme] = useTheme();
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = getTools(getEmptyToolPermissionContext());
     $[0] = t1;
   } else {
@@ -35,14 +35,14 @@ export function InProcessTeammateDetailDialog(t0) {
   const tools = t1;
   const elapsedTime = useElapsedTime(
     teammate.startTime,
-    teammate.status === 'running',
+    teammate.status === "running",
     1000,
     teammate.totalPausedMs ?? 0,
   );
   let t2;
   if ($[1] !== onDone) {
     t2 = {
-      'confirm:yes': onDone,
+      "confirm:yes": onDone,
     };
     $[1] = onDone;
     $[2] = t2;
@@ -50,9 +50,9 @@ export function InProcessTeammateDetailDialog(t0) {
     t2 = $[2];
   }
   let t3;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[3] = t3;
   } else {
@@ -68,19 +68,19 @@ export function InProcessTeammateDetailDialog(t0) {
     $[8] !== teammate.status
   ) {
     t4 = (e) => {
-      if (e.key === ' ') {
+      if (e.key === " ") {
         e.preventDefault();
         onDone();
       } else {
-        if (e.key === 'left' && onBack) {
+        if (e.key === "left" && onBack) {
           e.preventDefault();
           onBack();
         } else {
-          if (e.key === 'x' && teammate.status === 'running' && onKill) {
+          if (e.key === "x" && teammate.status === "running" && onKill) {
             e.preventDefault();
             onKill();
           } else {
-            if (e.key === 'f' && teammate.status === 'running' && onForeground) {
+            if (e.key === "f" && teammate.status === "running" && onForeground) {
               e.preventDefault();
               onForeground();
             }
@@ -160,22 +160,22 @@ export function InProcessTeammateDetailDialog(t0) {
   const title = t10;
   let t11;
   if ($[24] !== teammate.status) {
-    t11 = teammate.status !== 'running' && (
+    t11 = teammate.status !== "running" && (
       <Text
         color={
-          teammate.status === 'completed'
-            ? 'success'
-            : teammate.status === 'killed'
-              ? 'warning'
-              : 'error'
+          teammate.status === "completed"
+            ? "success"
+            : teammate.status === "killed"
+              ? "warning"
+              : "error"
         }
       >
-        {teammate.status === 'completed'
-          ? 'Completed'
-          : teammate.status === 'failed'
-            ? 'Failed'
-            : 'Stopped'}
-        {' \xB7 '}
+        {teammate.status === "completed"
+          ? "Completed"
+          : teammate.status === "failed"
+            ? "Failed"
+            : "Stopped"}
+        {" \xB7 "}
       </Text>
     );
     $[24] = teammate.status;
@@ -195,8 +195,8 @@ export function InProcessTeammateDetailDialog(t0) {
   if ($[28] !== toolUseCount) {
     t13 = toolUseCount !== undefined && toolUseCount > 0 && (
       <>
-        {' '}
-        · {toolUseCount} {toolUseCount === 1 ? 'tool' : 'tools'}
+        {" "}
+        · {toolUseCount} {toolUseCount === 1 ? "tool" : "tools"}
       </>
     );
     $[28] = toolUseCount;
@@ -242,12 +242,12 @@ export function InProcessTeammateDetailDialog(t0) {
         <Text>Press {exitState.keyName} again to exit</Text>
       ) : (
         <Byline>
-          {onBack && <KeyboardShortcutHint shortcut={'\u2190'} action="go back" />}
+          {onBack && <KeyboardShortcutHint shortcut={"\u2190"} action="go back" />}
           <KeyboardShortcutHint shortcut="Esc/Enter/Space" action="close" />
-          {teammate.status === 'running' && onKill && (
+          {teammate.status === "running" && onKill && (
             <KeyboardShortcutHint shortcut="x" action="stop" />
           )}
-          {teammate.status === 'running' && onForeground && (
+          {teammate.status === "running" && onForeground && (
             <KeyboardShortcutHint shortcut="f" action="foreground" />
           )}
         </Byline>
@@ -262,7 +262,7 @@ export function InProcessTeammateDetailDialog(t0) {
   }
   let t17;
   if ($[42] !== teammate.progress || $[43] !== teammate.status || $[44] !== theme) {
-    t17 = teammate.status === 'running' &&
+    t17 = teammate.status === "running" &&
       teammate.progress?.recentActivities &&
       teammate.progress.recentActivities.length > 0 && (
         <Box flexDirection="column">
@@ -275,7 +275,7 @@ export function InProcessTeammateDetailDialog(t0) {
               dimColor={i < teammate.progress.recentActivities.length - 1}
               wrap="truncate-end"
             >
-              {i === teammate.progress.recentActivities.length - 1 ? '\u203A ' : '  '}
+              {i === teammate.progress.recentActivities.length - 1 ? "\u203A " : "  "}
               {renderToolActivity(activity_0, tools, theme)}
             </Text>
           ))}
@@ -289,7 +289,7 @@ export function InProcessTeammateDetailDialog(t0) {
     t17 = $[45];
   }
   let t18;
-  if ($[46] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[46] === Symbol.for("react.memo_cache_sentinel")) {
     t18 = (
       <Text bold={true} dimColor={true}>
         Prompt
@@ -314,7 +314,7 @@ export function InProcessTeammateDetailDialog(t0) {
   }
   let t20;
   if ($[49] !== teammate.error || $[50] !== teammate.status) {
-    t20 = teammate.status === 'failed' && teammate.error && (
+    t20 = teammate.status === "failed" && teammate.error && (
       <Box flexDirection="column" marginTop={1}>
         <Text bold={true} color="error">
           Error

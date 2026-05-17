@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { extraUsage } from 'src/commands/extra-usage/index.js';
-import { Box, Text } from 'src/ink.js';
-import { useClaudeAiLimits } from 'src/services/claudeAiLimitsHook.js';
-import { shouldProcessMockLimits } from 'src/services/rateLimitMocking.js'; // Used for /mock-limits command
-import { getRateLimitTier, getSubscriptionType, isClaudeAISubscriber } from 'src/utils/auth.js';
-import { hasClaudeAiBillingAccess } from 'src/utils/billing.js';
-import { MessageResponse } from '../MessageResponse.js';
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { extraUsage } from "src/commands/extra-usage/index.js";
+import { Box, Text } from "src/ink.js";
+import { useClaudeAiLimits } from "src/services/claudeAiLimitsHook.js";
+import { shouldProcessMockLimits } from "src/services/rateLimitMocking.js"; // Used for /mock-limits command
+import { getRateLimitTier, getSubscriptionType, isClaudeAISubscriber } from "src/utils/auth.js";
+import { hasClaudeAiBillingAccess } from "src/utils/billing.js";
+import { MessageResponse } from "../MessageResponse.js";
 
 type UpsellParams = {
   shouldShowUpsell: boolean;
@@ -27,24 +27,24 @@ export function getUpsellMessage({
   if (!shouldShowUpsell) return null;
   if (isMax20x) {
     if (isExtraUsageCommandEnabled) {
-      return '/extra-usage to finish what you\u2019re working on.';
+      return "/extra-usage to finish what you\u2019re working on.";
     }
-    return '/login to switch to an API usage-billed account.';
+    return "/login to switch to an API usage-billed account.";
   }
   if (shouldAutoOpenRateLimitOptionsMenu) {
-    return 'Opening your options\u2026';
+    return "Opening your options\u2026";
   }
   if (!isTeamOrEnterprise && !isExtraUsageCommandEnabled) {
-    return '/upgrade to increase your usage limit.';
+    return "/upgrade to increase your usage limit.";
   }
   if (isTeamOrEnterprise) {
     if (!isExtraUsageCommandEnabled) return null;
     if (hasBillingAccess) {
-      return '/extra-usage to finish what you\u2019re working on.';
+      return "/extra-usage to finish what you\u2019re working on.";
     }
-    return '/extra-usage to request more usage from your admin.';
+    return "/extra-usage to request more usage from your admin.";
   }
-  return '/upgrade or /extra-usage to finish what you\u2019re working on.';
+  return "/upgrade or /extra-usage to finish what you\u2019re working on.";
 }
 type RateLimitMessageProps = {
   text: string;
@@ -54,7 +54,7 @@ export function RateLimitMessage(t0) {
   const $ = _c(16);
   const { text, onOpenRateLimitOptions } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = getSubscriptionType();
     $[0] = t1;
   } else {
@@ -62,17 +62,17 @@ export function RateLimitMessage(t0) {
   }
   const subscriptionType = t1;
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = getRateLimitTier();
     $[1] = t2;
   } else {
     t2 = $[1];
   }
   const rateLimitTier = t2;
-  const isTeamOrEnterprise = subscriptionType === 'team' || subscriptionType === 'enterprise';
-  const isMax20x = rateLimitTier === 'default_claude_max_20x';
+  const isTeamOrEnterprise = subscriptionType === "team" || subscriptionType === "enterprise";
+  const isMax20x = rateLimitTier === "default_claude_max_20x";
   let t3;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = shouldProcessMockLimits() || isClaudeAISubscriber();
     $[2] = t3;
   } else {
@@ -83,7 +83,7 @@ export function RateLimitMessage(t0) {
   const [hasOpenedInteractiveMenu, setHasOpenedInteractiveMenu] = useState(false);
   const claudeAiLimits = useClaudeAiLimits();
   const isCurrentlyRateLimited =
-    claudeAiLimits.status === 'rejected' &&
+    claudeAiLimits.status === "rejected" &&
     claudeAiLimits.resetsAt !== undefined &&
     !claudeAiLimits.isUsingOverage;
   const shouldAutoOpenRateLimitOptionsMenu =

@@ -1,18 +1,18 @@
-import { feature } from 'bun:bundle';
-import figures from 'figures';
-import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { stringWidth } from '../ink/stringWidth.js';
-import { Box, Text } from '../ink.js';
-import { useAppState, useSetAppState } from '../state/AppState.js';
-import type { AppState } from '../state/AppStateStore.js';
-import { getGlobalConfig } from '../utils/config.js';
-import { isFullscreenActive } from '../utils/fullscreen.js';
-import { getCompanion } from './companion.js';
-import { renderFace, renderSprite, spriteFrameCount } from './sprites.js';
-import { RARITY_COLORS } from './types.js';
+import { feature } from "bun:bundle";
+import figures from "figures";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { stringWidth } from "../ink/stringWidth.js";
+import { Box, Text } from "../ink.js";
+import { useAppState, useSetAppState } from "../state/AppState.js";
+import type { AppState } from "../state/AppStateStore.js";
+import { getGlobalConfig } from "../utils/config.js";
+import { isFullscreenActive } from "../utils/fullscreen.js";
+import { getCompanion } from "./companion.js";
+import { renderFace, renderSprite, spriteFrameCount } from "./sprites.js";
+import { RARITY_COLORS } from "./types.js";
 
 const TICK_MS = 500;
 const BUBBLE_SHOW = 20; // ticks → ~10s at 500ms
@@ -30,12 +30,12 @@ const PET_HEARTS = [
   `  ${H}  ${H}   ${H}  `,
   ` ${H}   ${H}  ${H}   `,
   `${H}  ${H}      ${H} `,
-  '·    ·   ·  ',
+  "·    ·   ·  ",
 ];
 function wrap(text: string, width: number): string[] {
-  const words = text.split(' ');
+  const words = text.split(" ");
   const lines: string[] = [];
-  let cur = '';
+  let cur = "";
   for (const w of words) {
     if (cur.length + w.length + 1 > width && cur) {
       lines.push(cur);
@@ -60,17 +60,17 @@ function SpeechBubble(t0) {
   let t6;
   if ($[0] !== color || $[1] !== fading || $[2] !== text) {
     const lines = wrap(text, 30);
-    borderColor = fading ? 'inactive' : color;
+    borderColor = fading ? "inactive" : color;
     T0 = Box;
-    t1 = 'column';
-    t2 = 'round';
+    t1 = "column";
+    t2 = "round";
     t3 = borderColor;
     t4 = 1;
     t5 = 34;
     let t7;
     if ($[11] !== fading) {
       t7 = (l, i) => (
-        <Text key={i} italic={true} dimColor={!fading} color={fading ? 'inactive' : undefined}>
+        <Text key={i} italic={true} dimColor={!fading} color={fading ? "inactive" : undefined}>
           {l}
         </Text>
       );
@@ -128,7 +128,7 @@ function SpeechBubble(t0) {
     t7 = $[20];
   }
   const bubble = t7;
-  if (tail === 'right') {
+  if (tail === "right") {
     let t8;
     if ($[21] !== borderColor) {
       t8 = <Text color={borderColor}>─</Text>;
@@ -198,7 +198,7 @@ function spriteColWidth(nameWidth: number): number {
 // Narrow terminals: 0 — REPL.tsx stacks the one-liner on its own row
 // (above input in fullscreen, below in scrollback), so no reservation.
 export function companionReservedColumns(terminalColumns: number, speaking: boolean): number {
-  if (!feature('BUDDY')) return 0;
+  if (!feature("BUDDY")) return 0;
   const companion = getCompanion();
   if (!companion || getGlobalConfig().companionMuted) return 0;
   if (terminalColumns < MIN_COLS_FOR_FULL_SPRITE) return 0;
@@ -209,7 +209,7 @@ export function companionReservedColumns(terminalColumns: number, speaking: bool
 export function CompanionSprite(): React.ReactNode {
   const reaction = useAppState((s) => s.companionReaction);
   const petAt = useAppState((s) => s.companionPetAt);
-  const focused = useAppState((s) => s.footerSelection === 'companion');
+  const focused = useAppState((s) => s.footerSelection === "companion");
   const setAppState = useSetAppState();
   const { columns } = useTerminalSize();
   const [tick, setTick] = useState(0);
@@ -249,7 +249,7 @@ export function CompanionSprite(): React.ReactNode {
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- tick intentionally captured at reaction-change, not tracked
   }, [reaction, setAppState, tick]);
-  if (!feature('BUDDY')) return null;
+  if (!feature("BUDDY")) return null;
   const companion = getCompanion();
   if (!companion || getGlobalConfig().companionMuted) return null;
   const color = RARITY_COLORS[companion.rarity];
@@ -273,13 +273,13 @@ export function CompanionSprite(): React.ReactNode {
           {petting && <Text color="autoAccept">{figures.heart} </Text>}
           <Text bold color={color}>
             {renderFace(companion)}
-          </Text>{' '}
+          </Text>{" "}
           <Text
             italic
             dimColor={!focused && !reaction}
             bold={focused}
             inverse={focused && !reaction}
-            color={reaction ? (fading ? 'inactive' : color) : focused ? color : undefined}
+            color={reaction ? (fading ? "inactive" : color) : focused ? color : undefined}
           >
             {label}
           </Text>
@@ -304,7 +304,7 @@ export function CompanionSprite(): React.ReactNode {
     }
   }
   const body = renderSprite(companion, spriteFrame).map((line) =>
-    blink ? line.replaceAll(companion.eye, '-') : line,
+    blink ? line.replaceAll(companion.eye, "-") : line,
   );
   const sprite = heartFrame ? [heartFrame, ...body] : body;
 
@@ -316,7 +316,7 @@ export function CompanionSprite(): React.ReactNode {
   const spriteColumn = (
     <Box flexDirection="column" flexShrink={0} alignItems="center" width={colWidth}>
       {sprite.map((line, i) => (
-        <Text key={i} color={i === 0 && heartFrame ? 'autoAccept' : color}>
+        <Text key={i} color={i === 0 && heartFrame ? "autoAccept" : color}>
           {line}
         </Text>
       ))}
@@ -396,7 +396,7 @@ export function CompanionFloatingBubble() {
     t3 = $[4];
   }
   useEffect(t2, t3);
-  if (!feature('BUDDY') || !reaction) {
+  if (!feature("BUDDY") || !reaction) {
     return null;
   }
   const companion = getCompanion();

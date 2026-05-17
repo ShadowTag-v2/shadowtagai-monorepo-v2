@@ -1,12 +1,12 @@
-import { isRemoteManagedSettingsEligible } from '../services/remoteManagedSettings/syncCache.js';
-import { clearCACertsCache } from './caCerts.js';
-import { getGlobalConfig } from './config.js';
-import { isEnvTruthy } from './envUtils.js';
-import { isProviderManagedEnvVar, SAFE_ENV_VARS } from './managedEnvConstants.js';
-import { clearMTLSCache } from './mtls.js';
-import { clearProxyCache, configureGlobalAgents } from './proxy.js';
-import { isSettingSourceEnabled } from './settings/constants.js';
-import { getSettings_DEPRECATED, getSettingsForSource } from './settings/settings.js';
+import { isRemoteManagedSettingsEligible } from "../services/remoteManagedSettings/syncCache.js";
+import { clearCACertsCache } from "./caCerts.js";
+import { getGlobalConfig } from "./config.js";
+import { isEnvTruthy } from "./envUtils.js";
+import { isProviderManagedEnvVar, SAFE_ENV_VARS } from "./managedEnvConstants.js";
+import { clearMTLSCache } from "./mtls.js";
+import { clearProxyCache, configureGlobalAgents } from "./proxy.js";
+import { isSettingSourceEnabled } from "./settings/constants.js";
+import { getSettings_DEPRECATED, getSettingsForSource } from "./settings/settings.js";
 
 /**
  * `claude ssh` remote: ANTHROPIC_UNIX_SOCKET routes auth through a -R forwarded
@@ -88,7 +88,7 @@ function filterSettingsEnv(env: Record<string, string> | undefined): Record<stri
  * inside the project directory and could be committed by a malicious actor to redirect
  * traffic (e.g., ANTHROPIC_BASE_URL) to an attacker-controlled server.
  */
-const TRUSTED_SETTING_SOURCES = ['userSettings', 'flagSettings', 'policySettings'] as const;
+const TRUSTED_SETTING_SOURCES = ["userSettings", "flagSettings", "policySettings"] as const;
 
 /**
  * Apply environment variables from trusted sources to process.env.
@@ -107,7 +107,7 @@ export function applySafeConfigEnvironmentVariables(): void {
   // Capture CCD spawn-env keys before any settings.env is applied (once).
   if (ccdSpawnEnvKeys === undefined) {
     ccdSpawnEnvKeys =
-      process.env.CLAUDE_CODE_ENTRYPOINT === 'claude-desktop'
+      process.env.CLAUDE_CODE_ENTRYPOINT === "claude-desktop"
         ? new Set(Object.keys(process.env))
         : null;
   }
@@ -122,7 +122,7 @@ export function applySafeConfigEnvironmentVariables(): void {
   // doesn't get clobbered by ~/.claude/settings.json env (gh#217). policy/flag
   // sources are always enabled, so this only ever filters userSettings.
   for (const source of TRUSTED_SETTING_SOURCES) {
-    if (source === 'policySettings') continue;
+    if (source === "policySettings") continue;
     if (!isSettingSourceEnabled(source)) continue;
     Object.assign(process.env, filterSettingsEnv(getSettingsForSource(source)?.env));
   }
@@ -135,7 +135,7 @@ export function applySafeConfigEnvironmentVariables(): void {
   // dependency visible: non-policy env → eligibility → policy env.
   isRemoteManagedSettingsEligible();
 
-  Object.assign(process.env, filterSettingsEnv(getSettingsForSource('policySettings')?.env));
+  Object.assign(process.env, filterSettingsEnv(getSettingsForSource("policySettings")?.env));
 
   // Apply only safe env vars from the fully-merged settings (which includes
   // project-scoped sources). For safe vars that also exist in trusted sources,

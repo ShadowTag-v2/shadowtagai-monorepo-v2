@@ -1,4 +1,4 @@
-import memoize from 'lodash-es/memoize.js';
+import memoize from "lodash-es/memoize.js";
 
 // This ensures you get the LOCAL date in ISO format
 export function getLocalISODate(): string {
@@ -9,8 +9,8 @@ export function getLocalISODate(): string {
 
   const now = new Date();
   const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
@@ -29,5 +29,5 @@ export function getLocalMonthYear(): string {
   const date = process.env.CLAUDE_CODE_OVERRIDE_DATE
     ? new Date(process.env.CLAUDE_CODE_OVERRIDE_DATE)
     : new Date();
-  return date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+  return date.toLocaleString("en-US", { month: "long", year: "numeric" });
 }

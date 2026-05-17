@@ -1,29 +1,29 @@
-import chalk from 'chalk';
-import cliBoxes, { type Boxes, type BoxStyle } from 'cli-boxes';
-import { applyColor } from './colorize.js';
-import type { DOMNode } from './dom.js';
-import type Output from './output.js';
-import { stringWidth } from './stringWidth.js';
-import type { Color } from './styles.js';
+import chalk from "chalk";
+import cliBoxes, { type Boxes, type BoxStyle } from "cli-boxes";
+import { applyColor } from "./colorize.js";
+import type { DOMNode } from "./dom.js";
+import type Output from "./output.js";
+import { stringWidth } from "./stringWidth.js";
+import type { Color } from "./styles.js";
 
 export type BorderTextOptions = {
   content: string; // Pre-rendered string with ANSI color codes
-  position: 'top' | 'bottom';
-  align: 'start' | 'end' | 'center';
+  position: "top" | "bottom";
+  align: "start" | "end" | "center";
   offset?: number; // Only used with 'start' or 'end' alignment. Number of characters from the edge.
 };
 
 export const CUSTOM_BORDER_STYLES = {
   dashed: {
-    top: '╌',
-    left: '╎',
-    right: '╎',
-    bottom: '╌',
+    top: "╌",
+    left: "╎",
+    right: "╎",
+    bottom: "╌",
     // there aren't any line-drawing characters for dashes unfortunately
-    topLeft: ' ',
-    topRight: ' ',
-    bottomLeft: ' ',
-    bottomRight: ' ',
+    topLeft: " ",
+    topRight: " ",
+    bottomLeft: " ",
+    bottomRight: " ",
   },
 } as const;
 
@@ -32,7 +32,7 @@ export type BorderStyle = keyof Boxes | keyof typeof CUSTOM_BORDER_STYLES | BoxS
 function embedTextInBorder(
   borderLine: string,
   text: string,
-  align: 'start' | 'end' | 'center',
+  align: "start" | "end" | "center",
   offset: number = 0,
   borderChar: string,
 ): [before: string, text: string, after: string] {
@@ -40,13 +40,13 @@ function embedTextInBorder(
   const borderLength = borderLine.length;
 
   if (textLength >= borderLength - 2) {
-    return ['', text.substring(0, borderLength), ''];
+    return ["", text.substring(0, borderLength), ""];
   }
 
   let position: number;
-  if (align === 'center') {
+  if (align === "center") {
     position = Math.floor((borderLength - textLength) / 2);
-  } else if (align === 'start') {
+  } else if (align === "start") {
     position = offset + 1; // +1 to account for corner character
   } else {
     // align === 'end'
@@ -77,7 +77,7 @@ const renderBorder = (x: number, y: number, node: DOMNode, output: Output): void
     const width = Math.floor(node.yogaNode?.getComputedWidth());
     const height = Math.floor(node.yogaNode?.getComputedHeight());
     const box =
-      typeof node.style.borderStyle === 'string'
+      typeof node.style.borderStyle === "string"
         ? (CUSTOM_BORDER_STYLES[node.style.borderStyle as keyof typeof CUSTOM_BORDER_STYLES] ??
           cliBoxes[node.style.borderStyle as keyof Boxes])
         : node.style.borderStyle;
@@ -103,14 +103,14 @@ const renderBorder = (x: number, y: number, node: DOMNode, output: Output): void
     const contentWidth = Math.max(0, width - (showLeftBorder ? 1 : 0) - (showRightBorder ? 1 : 0));
 
     const topBorderLine = showTopBorder
-      ? (showLeftBorder ? box.topLeft : '') +
+      ? (showLeftBorder ? box.topLeft : "") +
         box.top.repeat(contentWidth) +
-        (showRightBorder ? box.topRight : '')
-      : '';
+        (showRightBorder ? box.topRight : "")
+      : "";
 
     // Handle text in top border
     let topBorder: string | undefined;
-    if (showTopBorder && node.style.borderText?.position === 'top') {
+    if (showTopBorder && node.style.borderText?.position === "top") {
       const [before, text, after] = embedTextInBorder(
         topBorderLine,
         node.style.borderText.content,
@@ -151,14 +151,14 @@ const renderBorder = (x: number, y: number, node: DOMNode, output: Output): void
     }
 
     const bottomBorderLine = showBottomBorder
-      ? (showLeftBorder ? box.bottomLeft : '') +
+      ? (showLeftBorder ? box.bottomLeft : "") +
         box.bottom.repeat(contentWidth) +
-        (showRightBorder ? box.bottomRight : '')
-      : '';
+        (showRightBorder ? box.bottomRight : "")
+      : "";
 
     // Handle text in bottom border
     let bottomBorder: string | undefined;
-    if (showBottomBorder && node.style.borderText?.position === 'bottom') {
+    if (showBottomBorder && node.style.borderText?.position === "bottom") {
       const [before, text, after] = embedTextInBorder(
         bottomBorderLine,
         node.style.borderText.content,

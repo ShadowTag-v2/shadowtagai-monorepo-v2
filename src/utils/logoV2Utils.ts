@@ -1,14 +1,14 @@
-import { getDirectConnectServerUrl, getSessionId } from '../bootstrap/state.js';
-import { stringWidth } from '../ink/stringWidth.js';
-import type { LogOption } from '../types/logs.js';
-import { getSubscriptionName, isClaudeAISubscriber } from './auth.js';
-import { getCwd } from './cwd.js';
-import { getDisplayPath } from './file.js';
-import { truncate, truncateToWidth, truncateToWidthNoEllipsis } from './format.js';
-import { getStoredChangelogFromMemory, parseChangelog } from './releaseNotes.js';
-import { gt } from './semver.js';
-import { loadMessageLogs } from './sessionStorage.js';
-import { getInitialSettings } from './settings/settings.js';
+import { getDirectConnectServerUrl, getSessionId } from "../bootstrap/state.js";
+import { stringWidth } from "../ink/stringWidth.js";
+import type { LogOption } from "../types/logs.js";
+import { getSubscriptionName, isClaudeAISubscriber } from "./auth.js";
+import { getCwd } from "./cwd.js";
+import { getDisplayPath } from "./file.js";
+import { truncate, truncateToWidth, truncateToWidthNoEllipsis } from "./format.js";
+import { getStoredChangelogFromMemory, parseChangelog } from "./releaseNotes.js";
+import { gt } from "./semver.js";
+import { loadMessageLogs } from "./sessionStorage.js";
+import { getInitialSettings } from "./settings/settings.js";
 
 // Layout constants
 const MAX_LEFT_WIDTH = 50;
@@ -17,7 +17,7 @@ const BORDER_PADDING = 4;
 const DIVIDER_WIDTH = 1;
 const CONTENT_PADDING = 2;
 
-export type LayoutMode = 'horizontal' | 'compact';
+export type LayoutMode = "horizontal" | "compact";
 
 export type LayoutDimensions = {
   leftWidth: number;
@@ -29,8 +29,8 @@ export type LayoutDimensions = {
  * Determines the layout mode based on terminal width
  */
 export function getLayoutMode(columns: number): LayoutMode {
-  if (columns >= 70) return 'horizontal';
-  return 'compact';
+  if (columns >= 70) return "horizontal";
+  return "compact";
 }
 
 /**
@@ -41,7 +41,7 @@ export function calculateLayoutDimensions(
   layoutMode: LayoutMode,
   optimalLeftWidth: number,
 ): LayoutDimensions {
-  if (layoutMode === 'horizontal') {
+  if (layoutMode === "horizontal") {
     const leftWidth = optimalLeftWidth;
     const usedSpace = BORDER_PADDING + CONTENT_PADDING + DIVIDER_WIDTH + leftWidth;
     const availableForRight = columns - usedSpace;
@@ -91,7 +91,7 @@ export function calculateOptimalLeftWidth(
  */
 export function formatWelcomeMessage(username: string | null): string {
   if (!username || username.length > MAX_USERNAME_LENGTH) {
-    return 'Welcome back!';
+    return "Welcome back!";
   }
   return `Welcome back ${username}!`;
 }
@@ -103,14 +103,14 @@ export function formatWelcomeMessage(username: string | null): string {
 export function truncatePath(path: string, maxLength: number): string {
   if (stringWidth(path) <= maxLength) return path;
 
-  const separator = '/';
-  const ellipsis = '…';
+  const separator = "/";
+  const ellipsis = "…";
   const ellipsisWidth = 1; // '…' is always 1 column
   const separatorWidth = 1;
 
   const parts = path.split(separator);
-  const first = parts[0] || '';
-  const last = parts[parts.length - 1] || '';
+  const first = parts[0] || "";
+  const last = parts[parts.length - 1] || "";
   const firstWidth = stringWidth(first);
   const lastWidth = stringWidth(last);
 
@@ -121,12 +121,12 @@ export function truncatePath(path: string, maxLength: number): string {
 
   // We don't have enough space to show the last part, so truncate it
   // But since firstPart is empty (unix) we don't want the extra ellipsis
-  if (first === '' && ellipsisWidth + separatorWidth + lastWidth >= maxLength) {
+  if (first === "" && ellipsisWidth + separatorWidth + lastWidth >= maxLength) {
     return `${separator}${truncateToWidth(last, Math.max(1, maxLength - separatorWidth))}`;
   }
 
   // We have a first part so let's show the ellipsis and truncate last part
-  if (first !== '' && ellipsisWidth * 2 + separatorWidth + lastWidth >= maxLength) {
+  if (first !== "" && ellipsisWidth * 2 + separatorWidth + lastWidth >= maxLength) {
     return `${ellipsis}${separator}${truncateToWidth(last, Math.max(1, maxLength - ellipsisWidth - separatorWidth))}`;
   }
 
@@ -189,11 +189,11 @@ export async function getRecentActivity(): Promise<LogOption[]> {
         .filter((log) => {
           if (log.isSidechain) return false;
           if (log.sessionId === currentSessionId) return false;
-          if (log.summary?.includes('I apologize')) return false;
+          if (log.summary?.includes("I apologize")) return false;
 
           // Filter out sessions where both summary and firstPrompt are "No prompt" or missing
-          const hasSummary = log.summary && log.summary !== 'No prompt';
-          const hasFirstPrompt = log.firstPrompt && log.firstPrompt !== 'No prompt';
+          const hasSummary = log.summary && log.summary !== "No prompt";
+          const hasFirstPrompt = log.firstPrompt && log.firstPrompt !== "No prompt";
           return hasSummary || hasFirstPrompt;
         })
         .slice(0, 3);
@@ -233,11 +233,11 @@ export function getLogoDisplayData(): {
 } {
   const version = process.env.DEMO_VERSION ?? MACRO.VERSION;
   const serverUrl = getDirectConnectServerUrl();
-  const displayPath = process.env.DEMO_VERSION ? '/code/claude' : getDisplayPath(getCwd());
+  const displayPath = process.env.DEMO_VERSION ? "/code/claude" : getDisplayPath(getCwd());
   const cwd = serverUrl
-    ? `${displayPath} in ${serverUrl.replace(/^https?:\/\//, '')}`
+    ? `${displayPath} in ${serverUrl.replace(/^https?:\/\//, "")}`
     : displayPath;
-  const billingType = isClaudeAISubscriber() ? getSubscriptionName() : 'API Usage Billing';
+  const billingType = isClaudeAISubscriber() ? getSubscriptionName() : "API Usage Billing";
   const agentName = getInitialSettings().agent;
 
   return {
@@ -260,7 +260,7 @@ export function formatModelAndBilling(
   truncatedModel: string;
   truncatedBilling: string;
 } {
-  const separator = ' · ';
+  const separator = " · ";
   const combinedWidth = stringWidth(modelName) + separator.length + stringWidth(billingType);
   const shouldSplit = combinedWidth > availableWidth;
 
@@ -289,10 +289,10 @@ export function formatModelAndBilling(
  */
 export function getRecentReleaseNotesSync(maxItems: number): string[] {
   // For ants, use bundled changelog
-  if (process.env.USER_TYPE === 'ant') {
+  if (process.env.USER_TYPE === "ant") {
     const changelog = MACRO.VERSION_CHANGELOG;
     if (changelog) {
-      const commits = changelog.trim().split('\n').filter(Boolean);
+      const commits = changelog.trim().split("\n").filter(Boolean);
       return commits.slice(0, maxItems);
     }
     return [];

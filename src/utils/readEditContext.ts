@@ -1,5 +1,5 @@
-import { type FileHandle, open } from 'node:fs/promises';
-import { isENOENT } from './errors.js';
+import { type FileHandle, open } from "node:fs/promises";
+import { isENOENT } from "./errors.js";
 
 export const CHUNK_SIZE = 8 * 1024;
 export const MAX_SCAN_BYTES = 10 * 1024 * 1024;
@@ -47,7 +47,7 @@ export async function readEditContext(
  */
 export async function openForScan(path: string): Promise<FileHandle | null> {
   try {
-    return await open(path, 'r');
+    return await open(path, "r");
   } catch (e) {
     if (isENOENT(e)) return null;
     throw e;
@@ -62,8 +62,8 @@ export async function scanForContext(
   needle: string,
   contextLines: number,
 ): Promise<EditContext> {
-  if (needle === '') return { content: '', lineOffset: 1, truncated: false };
-  const needleLF = Buffer.from(needle, 'utf8');
+  if (needle === "") return { content: "", lineOffset: 1, truncated: false };
+  const needleLF = Buffer.from(needle, "utf8");
   // Model sends LF; files may be CRLF. Count newlines to size the overlap for
   // the longer CRLF form; defer encoding the CRLF buffer until LF scan misses.
   let nlCount = 0;
@@ -84,7 +84,7 @@ export async function scanForContext(
     let matchAt = indexOfWithin(buf, needleLF, viewLen);
     let matchLen = needleLF.length;
     if (matchAt === -1 && nlCount > 0) {
-      needleCRLF ??= Buffer.from(needle.replaceAll('\n', '\r\n'), 'utf8');
+      needleCRLF ??= Buffer.from(needle.replaceAll("\n", "\r\n"), "utf8");
       matchAt = indexOfWithin(buf, needleCRLF, viewLen);
       matchLen = needleCRLF.length;
     }
@@ -109,7 +109,7 @@ export async function scanForContext(
     buf.copyWithin(0, viewLen - prevTail, viewLen);
   }
 
-  return { content: '', lineOffset: 1, truncated: pos >= MAX_SCAN_BYTES };
+  return { content: "", lineOffset: 1, truncated: pos >= MAX_SCAN_BYTES };
 }
 
 /**
@@ -151,8 +151,8 @@ function countNewlines(buf: Buffer, start: number, end: number): number {
 
 /** Decode buf[0..len) to utf8, normalizing CRLF only if CR is present. */
 function normalizeCRLF(buf: Buffer, len: number): string {
-  const s = buf.toString('utf8', 0, len);
-  return s.includes('\r') ? s.replaceAll('\r\n', '\n') : s;
+  const s = buf.toString("utf8", 0, len);
+  return s.includes("\r") ? s.replaceAll("\r\n", "\n") : s;
 }
 
 /**

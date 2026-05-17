@@ -1,15 +1,15 @@
-import { Suspense, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay, LocalJSXCommandContext } from '../../commands.js';
-import { useIsInsideModal, useModalOrTerminalSize } from '../../context/modalContext.js';
-import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
-import { Pane } from '../design-system/Pane.js';
-import { Tab, Tabs } from '../design-system/Tabs.js';
-import { Config } from './Config.js';
-import { buildDiagnostics, Status } from './Status.js';
-import { Usage } from './Usage.js';
+import { Suspense, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay, LocalJSXCommandContext } from "../../commands.js";
+import { useIsInsideModal, useModalOrTerminalSize } from "../../context/modalContext.js";
+import { useExitOnCtrlCDWithKeybindings } from "../../hooks/useExitOnCtrlCDWithKeybindings.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
+import { Pane } from "../design-system/Pane.js";
+import { Tab, Tabs } from "../design-system/Tabs.js";
+import { Config } from "./Config.js";
+import { buildDiagnostics, Status } from "./Status.js";
+import { Usage } from "./Usage.js";
 
 type Props = {
   onClose: (
@@ -19,7 +19,7 @@ type Props = {
     },
   ) => void;
   context: LocalJSXCommandContext;
-  defaultTab: 'Status' | 'Config' | 'Usage' | 'Gates';
+  defaultTab: "Status" | "Config" | "Usage" | "Gates";
 };
 export function Settings(t0) {
   const $ = _c(25);
@@ -39,8 +39,8 @@ export function Settings(t0) {
       if (tabsHidden) {
         return;
       }
-      onClose('Status dialog dismissed', {
-        display: 'system',
+      onClose("Status dialog dismissed", {
+        display: "system",
       });
     };
     $[0] = onClose;
@@ -52,12 +52,12 @@ export function Settings(t0) {
   const handleEscape = t1;
   const t2 =
     !tabsHidden &&
-    !(selectedTab === 'Config' && configOwnsEsc) &&
-    !(selectedTab === 'Gates' && gatesOwnsEsc);
+    !(selectedTab === "Config" && configOwnsEsc) &&
+    !(selectedTab === "Gates" && gatesOwnsEsc);
   let t3;
   if ($[3] !== t2) {
     t3 = {
-      context: 'Settings',
+      context: "Settings",
       isActive: t2,
     };
     $[3] = t2;
@@ -65,7 +65,7 @@ export function Settings(t0) {
   } else {
     t3 = $[4];
   }
-  useKeybinding('confirm:no', handleEscape, t3);
+  useKeybinding("confirm:no", handleEscape, t3);
   let t4;
   if ($[5] !== context || $[6] !== diagnosticsPromise) {
     t4 = (
@@ -102,7 +102,7 @@ export function Settings(t0) {
     t5 = $[11];
   }
   let t6;
-  if ($[12] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = (
       <Tab key="usage" title="Usage">
         <Usage />
@@ -137,7 +137,7 @@ export function Settings(t0) {
     t8 = $[18];
   }
   const tabs = t8;
-  const t9 = defaultTab !== 'Config' && defaultTab !== 'Gates';
+  const t9 = defaultTab !== "Config" && defaultTab !== "Gates";
   const t10 = tabsHidden || insideModal ? undefined : contentHeight;
   let t11;
   if (

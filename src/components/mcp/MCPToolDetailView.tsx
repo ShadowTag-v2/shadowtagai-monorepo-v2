@@ -1,11 +1,11 @@
-import React from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { extractMcpToolDisplayName, getMcpDisplayName } from '../../services/mcp/mcpStringUtils.js';
-import type { Tool } from '../../Tool.js';
-import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
-import { Dialog } from '../design-system/Dialog.js';
-import type { ServerInfo } from './types.js';
+import React from "react";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { extractMcpToolDisplayName, getMcpDisplayName } from "../../services/mcp/mcpStringUtils.js";
+import type { Tool } from "../../Tool.js";
+import { ConfigurableShortcutHint } from "../ConfigurableShortcutHint.js";
+import { Dialog } from "../design-system/Dialog.js";
+import type { ServerInfo } from "./types.js";
 
 type Props = {
   tool: Tool;
@@ -15,7 +15,7 @@ type Props = {
 export function MCPToolDetailView(t0) {
   const $ = _c(44);
   const { tool, server, onBack } = t0;
-  const [toolDescription, setToolDescription] = React.useState('');
+  const [toolDescription, setToolDescription] = React.useState("");
   let t1;
   let toolName;
   if ($[0] !== server.name || $[1] !== tool) {
@@ -69,7 +69,7 @@ export function MCPToolDetailView(t0) {
             {
               isNonInteractiveSession: false,
               toolPermissionContext: {
-                mode: 'default' as const,
+                mode: "default" as const,
                 additionalWorkingDirectories: new Map(),
                 alwaysAllowRules: {},
                 alwaysDenyRules: {},
@@ -81,7 +81,7 @@ export function MCPToolDetailView(t0) {
           );
           setToolDescription(desc);
         } catch {
-          setToolDescription('Failed to load description');
+          setToolDescription("Failed to load description");
         }
       };
       loadDescription();
@@ -139,7 +139,7 @@ export function MCPToolDetailView(t0) {
   }
   const titleContent = t10;
   let t11;
-  if ($[24] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[24] === Symbol.for("react.memo_cache_sentinel")) {
     t11 = <Text bold={true}>Tool name: </Text>;
     $[24] = t11;
   } else {
@@ -159,7 +159,7 @@ export function MCPToolDetailView(t0) {
     t12 = $[26];
   }
   let t13;
-  if ($[27] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
     t13 = <Text bold={true}>Full name: </Text>;
     $[27] = t13;
   } else {
@@ -205,13 +205,13 @@ export function MCPToolDetailView(t0) {
               return (
                 <Text key={key}>
                   • {key}
-                  {isRequired && <Text dimColor={true}> (required)</Text>}:{' '}
+                  {isRequired && <Text dimColor={true}> (required)</Text>}:{" "}
                   <Text dimColor={true}>
-                    {typeof value === 'object' && value && 'type' in value
+                    {typeof value === "object" && value && "type" in value
                       ? String(value.type)
-                      : 'unknown'}
+                      : "unknown"}
                   </Text>
-                  {typeof value === 'object' && value && 'description' in value && (
+                  {typeof value === "object" && value && "description" in value && (
                     <Text dimColor={true}> - {String(value.description)}</Text>
                   )}
                 </Text>

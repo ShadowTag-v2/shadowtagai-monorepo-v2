@@ -1,33 +1,33 @@
-import { isAbsolute, relative, resolve } from 'node:path';
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type { StructuredPatchHunk } from 'diff';
-import type * as React from 'react';
-import { Suspense, use, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { MessageResponse } from 'src/components/MessageResponse.js';
-import { extractTag } from 'src/utils/messages.js';
-import { CtrlOToExpand } from '../../components/CtrlOToExpand.js';
-import { FallbackToolUseErrorMessage } from '../../components/FallbackToolUseErrorMessage.js';
-import { FileEditToolUpdatedMessage } from '../../components/FileEditToolUpdatedMessage.js';
-import { FileEditToolUseRejectedMessage } from '../../components/FileEditToolUseRejectedMessage.js';
-import { FilePathLink } from '../../components/FilePathLink.js';
-import { HighlightedCode } from '../../components/HighlightedCode.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { Box, Text } from '../../ink.js';
-import type { ToolProgressData } from '../../Tool.js';
-import type { ProgressMessage } from '../../types/message.js';
-import { getCwd } from '../../utils/cwd.js';
-import { getPatchForDisplay } from '../../utils/diff.js';
-import { getDisplayPath } from '../../utils/file.js';
-import { logError } from '../../utils/log.js';
-import { getPlansDirectory } from '../../utils/plans.js';
-import { openForScan, readCapped } from '../../utils/readEditContext.js';
-import type { Output } from './FileWriteTool.js';
+import { isAbsolute, relative, resolve } from "node:path";
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import type { StructuredPatchHunk } from "diff";
+import type * as React from "react";
+import { Suspense, use, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import { MessageResponse } from "src/components/MessageResponse.js";
+import { extractTag } from "src/utils/messages.js";
+import { CtrlOToExpand } from "../../components/CtrlOToExpand.js";
+import { FallbackToolUseErrorMessage } from "../../components/FallbackToolUseErrorMessage.js";
+import { FileEditToolUpdatedMessage } from "../../components/FileEditToolUpdatedMessage.js";
+import { FileEditToolUseRejectedMessage } from "../../components/FileEditToolUseRejectedMessage.js";
+import { FilePathLink } from "../../components/FilePathLink.js";
+import { HighlightedCode } from "../../components/HighlightedCode.js";
+import { useTerminalSize } from "../../hooks/useTerminalSize.js";
+import { Box, Text } from "../../ink.js";
+import type { ToolProgressData } from "../../Tool.js";
+import type { ProgressMessage } from "../../types/message.js";
+import { getCwd } from "../../utils/cwd.js";
+import { getPatchForDisplay } from "../../utils/diff.js";
+import { getDisplayPath } from "../../utils/file.js";
+import { logError } from "../../utils/log.js";
+import { getPlansDirectory } from "../../utils/plans.js";
+import { openForScan, readCapped } from "../../utils/readEditContext.js";
+import type { Output } from "./FileWriteTool.js";
 
 const MAX_LINES_TO_RENDER = 10;
 // Model output uses \n regardless of platform, so always split on \n.
 // os.EOL is \r\n on Windows, which would give numLines=1 for all files.
-const EOL = '\n';
+const EOL = "\n";
 
 /**
  * Count visible lines in file content. A trailing newline is treated as a
@@ -41,7 +41,7 @@ function FileWriteToolCreatedMessage(t0) {
   const $ = _c(25);
   const { filePath, content, verbose } = t0;
   const { columns } = useTerminalSize();
-  const contentWithFallback = content || '(No content)';
+  const contentWithFallback = content || "(No content)";
   const numLines = countLines(content);
   const plusLines = numLines - MAX_LINES_TO_RENDER;
   let t1;
@@ -86,7 +86,7 @@ function FileWriteToolCreatedMessage(t0) {
   if ($[10] !== contentWithFallback || $[11] !== verbose) {
     t5 = verbose
       ? contentWithFallback
-      : contentWithFallback.split('\n').slice(0, MAX_LINES_TO_RENDER).join('\n');
+      : contentWithFallback.split("\n").slice(0, MAX_LINES_TO_RENDER).join("\n");
     $[10] = contentWithFallback;
     $[11] = verbose;
     $[12] = t5;
@@ -112,7 +112,7 @@ function FileWriteToolCreatedMessage(t0) {
   if ($[17] !== numLines || $[18] !== plusLines || $[19] !== verbose) {
     t8 = !verbose && plusLines > 0 && (
       <Text dimColor={true}>
-        … +{plusLines} {plusLines === 1 ? 'line' : 'lines'} {numLines > 0 && <CtrlOToExpand />}
+        … +{plusLines} {plusLines === 1 ? "line" : "lines"} {numLines > 0 && <CtrlOToExpand />}
       </Text>
     );
     $[17] = numLines;
@@ -151,9 +151,9 @@ export function userFacingName(
     | undefined,
 ): string {
   if (input?.file_path?.startsWith(getPlansDirectory())) {
-    return 'Updated plan';
+    return "Updated plan";
   }
-  return 'Write';
+  return "Write";
 }
 
 /** Gates fullscreen click-to-expand. Only `create` truncates (to
@@ -161,7 +161,7 @@ export function userFacingName(
  *  Called per visible message on hover/scroll, so early-exit after finding the
  *  (MAX+1)th line instead of splitting the whole (possibly huge) content. */
 export function isResultTruncated({ type, content }: Output): boolean {
-  if (type !== 'create') return false;
+  if (type !== "create") return false;
   let pos = 0;
   for (let i = 0; i < MAX_LINES_TO_RENDER; i++) {
     pos = content.indexOf(EOL, pos);
@@ -200,7 +200,7 @@ export function renderToolUseMessage(
   }
   // For plan files, path is already in userFacingName
   if (input.file_path.startsWith(getPlansDirectory())) {
-    return '';
+    return "";
   }
   return (
     <FilePathLink filePath={input.file_path}>
@@ -220,7 +220,7 @@ export function renderToolUseRejectedMessage(
     style,
     verbose,
   }: {
-    style?: 'condensed';
+    style?: "condensed";
     verbose: boolean;
   },
 ): React.ReactNode {
@@ -230,15 +230,15 @@ export function renderToolUseRejectedMessage(
 }
 type RejectionDiffData =
   | {
-      type: 'create';
+      type: "create";
     }
   | {
-      type: 'update';
+      type: "update";
       patch: StructuredPatchHunk[];
       oldContent: string;
     }
   | {
-      type: 'error';
+      type: "error";
     };
 function WriteRejectionDiff(t0) {
   const $ = _c(20);
@@ -255,7 +255,7 @@ function WriteRejectionDiff(t0) {
   const [dataPromise] = useState(t1);
   let t2;
   if ($[3] !== content) {
-    t2 = content.split('\n')[0] ?? null;
+    t2 = content.split("\n")[0] ?? null;
     $[3] = content;
     $[4] = t2;
   } else {
@@ -326,12 +326,12 @@ function WriteRejectionBody(t0) {
   const $ = _c(8);
   const { promise, filePath, firstLine, createFallback, style, verbose } = t0;
   const data = use(promise);
-  if (data.type === 'create') {
+  if (data.type === "create") {
     return createFallback;
   }
-  if (data.type === 'error') {
+  if (data.type === "error") {
     let t1;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = (
         <MessageResponse>
           <Text>(No changes)</Text>
@@ -381,7 +381,7 @@ async function loadRejectionDiff(filePath: string, content: string): Promise<Rej
     const handle = await openForScan(fullFilePath);
     if (handle === null)
       return {
-        type: 'create',
+        type: "create",
       };
     let oldContent: string | null;
     try {
@@ -393,7 +393,7 @@ async function loadRejectionDiff(filePath: string, content: string): Promise<Rej
     // OOMing on a diff of a multi-GB file.
     if (oldContent === null)
       return {
-        type: 'create',
+        type: "create",
       };
     const patch = getPatchForDisplay({
       filePath,
@@ -407,7 +407,7 @@ async function loadRejectionDiff(filePath: string, content: string): Promise<Rej
       ],
     });
     return {
-      type: 'update',
+      type: "update",
       patch,
       oldContent,
     };
@@ -415,19 +415,19 @@ async function loadRejectionDiff(filePath: string, content: string): Promise<Rej
     // User may have manually applied the change while the diff was shown.
     logError(e as Error);
     return {
-      type: 'error',
+      type: "error",
     };
   }
 }
 export function renderToolUseErrorMessage(
-  result: ToolResultBlockParam['content'],
+  result: ToolResultBlockParam["content"],
   {
     verbose,
   }: {
     verbose: boolean;
   },
 ): React.ReactNode {
-  if (!verbose && typeof result === 'string' && extractTag(result, 'tool_use_error')) {
+  if (!verbose && typeof result === "string" && extractTag(result, "tool_use_error")) {
     return (
       <MessageResponse>
         <Text color="error">Error writing file</Text>
@@ -443,30 +443,30 @@ export function renderToolResultMessage(
     style,
     verbose,
   }: {
-    style?: 'condensed';
+    style?: "condensed";
     verbose: boolean;
   },
 ): React.ReactNode {
   switch (type) {
-    case 'create': {
+    case "create": {
       const isPlanFile = filePath.startsWith(getPlansDirectory());
 
       // Plan files: invert condensed behavior
       // - Regular mode: just show hint (user can type /plan to see full content)
       // - Condensed mode (subagent view): show full content
       if (isPlanFile && !verbose) {
-        if (style !== 'condensed') {
+        if (style !== "condensed") {
           return (
             <MessageResponse>
               <Text dimColor>/plan to preview</Text>
             </MessageResponse>
           );
         }
-      } else if (style === 'condensed' && !verbose) {
+      } else if (style === "condensed" && !verbose) {
         const numLines = countLines(content);
         return (
           <Text>
-            Wrote <Text bold>{numLines}</Text> lines to{' '}
+            Wrote <Text bold>{numLines}</Text> lines to{" "}
             <Text bold>{relative(getCwd(), filePath)}</Text>
           </Text>
         );
@@ -475,17 +475,17 @@ export function renderToolResultMessage(
         <FileWriteToolCreatedMessage filePath={filePath} content={content} verbose={verbose} />
       );
     }
-    case 'update': {
+    case "update": {
       const isPlanFile = filePath.startsWith(getPlansDirectory());
       return (
         <FileEditToolUpdatedMessage
           filePath={filePath}
           structuredPatch={structuredPatch}
-          firstLine={content.split('\n')[0] ?? null}
+          firstLine={content.split("\n")[0] ?? null}
           fileContent={originalFile ?? undefined}
           style={style}
           verbose={verbose}
-          previewHint={isPlanFile ? '/plan to preview' : undefined}
+          previewHint={isPlanFile ? "/plan to preview" : undefined}
         />
       );
     }

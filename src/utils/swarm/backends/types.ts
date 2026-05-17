@@ -1,4 +1,4 @@
-import type { AgentColorName } from '../../../tools/AgentTool/agentColorManager.js';
+import type { AgentColorName } from "../../../tools/AgentTool/agentColorManager.js";
 
 /**
  * Types of backends available for teammate execution.
@@ -6,13 +6,13 @@ import type { AgentColorName } from '../../../tools/AgentTool/agentColorManager.
  * - 'iterm2': Uses iTerm2 native split panes via the it2 CLI
  * - 'in-process': Runs teammate in the same Node.js process with isolated context
  */
-export type BackendType = 'tmux' | 'iterm2' | 'in-process';
+export type BackendType = "tmux" | "iterm2" | "in-process";
 
 /**
  * Subset of BackendType for pane-based backends only.
  * Used in messages and types that specifically deal with terminal panes.
  */
-export type PaneBackendType = 'tmux' | 'iterm2';
+export type PaneBackendType = "tmux" | "iterm2";
 
 /**
  * Opaque identifier for a pane managed by a backend.
@@ -202,7 +202,7 @@ export type TeammateSpawnConfig = TeammateIdentity & {
   /** System prompt for this teammate (resolved from workflow config) */
   systemPrompt?: string;
   /** How to apply the system prompt: 'replace' or 'append' to default */
-  systemPromptMode?: 'default' | 'replace' | 'append';
+  systemPromptMode?: "default" | "replace" | "append";
   /** Optional git worktree path */
   worktreePath?: string;
   /** Parent session ID (for context linking) */
@@ -296,6 +296,6 @@ export type TeammateExecutor = {
 /**
  * Type guard to check if a backend type uses terminal panes.
  */
-export function isPaneBackend(type: BackendType): type is 'tmux' | 'iterm2' {
-  return type === 'tmux' || type === 'iterm2';
+export function isPaneBackend(type: BackendType): type is "tmux" | "iterm2" {
+  return type === "tmux" || type === "iterm2";
 }

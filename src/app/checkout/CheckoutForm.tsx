@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useActionState } from 'react';
-import { SubmitButton } from '@/components/SubmitButton';
-import { processOrderAction } from './actions';
+import { useActionState } from "react";
+import { SubmitButton } from "@/components/SubmitButton";
+import { processOrderAction } from "./actions";
 
 export function CheckoutForm({ idempotencyKey }: { idempotencyKey: string }) {
   // React 19: Binds the Server Action to the form UI safely.

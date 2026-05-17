@@ -1,6 +1,6 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from 'src/ink.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "src/ink.js";
 
 type Props = {
   hasStash: boolean;
@@ -12,7 +12,7 @@ export function PromptInputStashNotice(t0) {
     return null;
   }
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = (
       <Box paddingLeft={2}>
         <Text dimColor={true}>{figures.pointerSmall} Stashed (auto-restores after submit)</Text>

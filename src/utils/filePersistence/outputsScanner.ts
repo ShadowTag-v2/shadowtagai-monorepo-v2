@@ -7,11 +7,11 @@
  * - Find modified files by comparing file mtimes against turn start time
  */
 
-import * as fs from 'node:fs/promises';
-import * as path from 'node:path';
-import { logForDebugging } from '../debug.js';
-import type { EnvironmentKind } from '../teleport/environments.js';
-import type { TurnStartTime } from './types.js';
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
+import { logForDebugging } from "../debug.js";
+import type { EnvironmentKind } from "../teleport/environments.js";
+import type { TurnStartTime } from "./types.js";
 
 /** Shared debug logger for file persistence modules */
 export function logDebug(message: string): void {
@@ -24,18 +24,18 @@ export function logDebug(message: string): void {
  */
 export function getEnvironmentKind(): EnvironmentKind | null {
   const kind = process.env.CLAUDE_CODE_ENVIRONMENT_KIND;
-  if (kind === 'byoc' || kind === 'anthropic_cloud') {
+  if (kind === "byoc" || kind === "anthropic_cloud") {
     return kind;
   }
   return null;
 }
 
 function hasParentPath(entry: object): entry is { parentPath: string; name: string } {
-  return 'parentPath' in entry && typeof entry.parentPath === 'string';
+  return "parentPath" in entry && typeof entry.parentPath === "string";
 }
 
 function hasPath(entry: object): entry is { path: string; name: string } {
-  return 'path' in entry && typeof entry.path === 'string';
+  return "path" in entry && typeof entry.path === "string";
 }
 
 function getEntryParentPath(entry: object, fallback: string): string {
@@ -87,7 +87,7 @@ export async function findModifiedFiles(
   }
 
   if (filePaths.length === 0) {
-    logDebug('No files found in outputs directory');
+    logDebug("No files found in outputs directory");
     return [];
   }
 

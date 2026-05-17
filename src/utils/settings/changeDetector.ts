@@ -1,24 +1,24 @@
-import { stat } from 'node:fs/promises';
-import * as platformPath from 'node:path';
-import chokidar, { type FSWatcher } from 'chokidar';
-import { getIsRemoteMode } from '../../bootstrap/state.js';
-import { registerCleanup } from '../cleanupRegistry.js';
-import { logForDebugging } from '../debug.js';
-import { errorMessage } from '../errors.js';
-import { type ConfigChangeSource, executeConfigChangeHooks, hasBlockingResult } from '../hooks.js';
-import { createSignal } from '../signal.js';
-import { jsonStringify } from '../slowOperations.js';
-import { SETTING_SOURCES, type SettingSource } from './constants.js';
-import { clearInternalWrites, consumeInternalWrite } from './internalWrites.js';
-import { getManagedSettingsDropInDir } from './managedPath.js';
+import { stat } from "node:fs/promises";
+import * as platformPath from "node:path";
+import chokidar, { type FSWatcher } from "chokidar";
+import { getIsRemoteMode } from "../../bootstrap/state.js";
+import { registerCleanup } from "../cleanupRegistry.js";
+import { logForDebugging } from "../debug.js";
+import { errorMessage } from "../errors.js";
+import { type ConfigChangeSource, executeConfigChangeHooks, hasBlockingResult } from "../hooks.js";
+import { createSignal } from "../signal.js";
+import { jsonStringify } from "../slowOperations.js";
+import { SETTING_SOURCES, type SettingSource } from "./constants.js";
+import { clearInternalWrites, consumeInternalWrite } from "./internalWrites.js";
+import { getManagedSettingsDropInDir } from "./managedPath.js";
 import {
   getHkcuSettings,
   getMdmSettings,
   refreshMdmSettings,
   setMdmSettingsCache,
-} from './mdm/settings.js';
-import { getSettingsFilePathForSource } from './settings.js';
-import { resetSettingsCache } from './settingsCache.js';
+} from "./mdm/settings.js";
+import { getSettingsFilePathForSource } from "./settings.js";
+import { resetSettingsCache } from "./settingsCache.js";
 
 /**
  * Time in milliseconds to wait for file writes to stabilize before processing.
@@ -92,7 +92,7 @@ export async function initialize(): Promise<void> {
   if (dirs.length === 0) return;
 
   logForDebugging(
-    `Watching for changes in setting files ${[...settingsFiles].join(', ')}...${dropInDir ? ` and drop-in directory ${dropInDir}` : ''}`,
+    `Watching for changes in setting files ${[...settingsFiles].join(", ")}...${dropInDir ? ` and drop-in directory ${dropInDir}` : ""}`,
   );
 
   watcher = chokidar.watch(dirs, {
@@ -108,7 +108,7 @@ export async function initialize(): Promise<void> {
       // and will error with EOPNOTSUPP on macOS.
       if (stats && !stats.isFile() && !stats.isDirectory()) return true;
       // Ignore .git directories
-      if (path.split(platformPath.sep).some((dir) => dir === '.git')) return true;
+      if (path.split(platformPath.sep).some((dir) => dir === ".git")) return true;
       // Allow directories (chokidar needs them for directory-level watching)
       // and paths without stats (chokidar's initial check before stat)
       if (!stats || stats.isDirectory()) return false;
@@ -121,7 +121,7 @@ export async function initialize(): Promise<void> {
       if (
         dropInDir &&
         normalized.startsWith(dropInDir + platformPath.sep) &&
-        normalized.endsWith('.json')
+        normalized.endsWith(".json")
       ) {
         return false;
       }
@@ -133,9 +133,9 @@ export async function initialize(): Promise<void> {
     atomic: true, // Handle atomic writes better
   });
 
-  watcher.on('change', handleChange);
-  watcher.on('unlink', handleDelete);
-  watcher.on('add', handleAdd);
+  watcher.on("change", handleChange);
+  watcher.on("unlink", handleDelete);
+  watcher.on("add", handleAdd);
 }
 
 /**
@@ -184,7 +184,7 @@ async function getWatchTargets(): Promise<{
     // Additionally, they may be temp files in $TMPDIR which can contain special files
     // (FIFOs, sockets) that cause the file watcher to hang or error.
     // See: https://github.com/anthropics/claude-code/issues/16469
-    if (source === 'flagSettings') {
+    if (source === "flagSettings") {
       continue;
     }
     const path = getSettingsFilePathForSource(source);
@@ -244,15 +244,15 @@ async function getWatchTargets(): Promise<{
 
 function settingSourceToConfigChangeSource(source: SettingSource): ConfigChangeSource {
   switch (source) {
-    case 'userSettings':
-      return 'user_settings';
-    case 'projectSettings':
-      return 'project_settings';
-    case 'localSettings':
-      return 'local_settings';
-    case 'flagSettings':
-    case 'policySettings':
-      return 'policy_settings';
+    case "userSettings":
+      return "user_settings";
+    case "projectSettings":
+      return "project_settings";
+    case "localSettings":
+      return "local_settings";
+    case "flagSettings":
+    case "policySettings":
+      return "policy_settings";
   }
 }
 
@@ -349,7 +349,7 @@ function getSourceForPath(path: string): SettingSource | undefined {
   // Check if the path is inside the managed-settings.d/ drop-in directory
   const dropInDir = getManagedSettingsDropInDir();
   if (normalizedPath.startsWith(dropInDir + platformPath.sep)) {
-    return 'policySettings';
+    return "policySettings";
   }
 
   return SETTING_SOURCES.find((source) => getSettingsFilePathForSource(source) === normalizedPath);
@@ -385,8 +385,8 @@ function startMdmPoll(): void {
           lastMdmSnapshot = currentSnapshot;
           // Update the cache so sync readers pick up new values
           setMdmSettingsCache(current, currentHkcu);
-          logForDebugging('Detected MDM settings change via poll');
-          fanOut('policySettings');
+          logForDebugging("Detected MDM settings change via poll");
+          fanOut("policySettings");
         }
       } catch (error) {
         logForDebugging(`MDM poll error: ${errorMessage(error)}`);

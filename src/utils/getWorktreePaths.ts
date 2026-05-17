@@ -1,7 +1,7 @@
-import { sep } from 'node:path';
-import { logEvent } from '../services/analytics/index.js';
-import { execFileNoThrowWithCwd } from './execFileNoThrow.js';
-import { gitExe } from './git.js';
+import { sep } from "node:path";
+import { logEvent } from "../services/analytics/index.js";
+import { execFileNoThrowWithCwd } from "./execFileNoThrow.js";
+import { gitExe } from "./git.js";
 
 /**
  * Returns the paths of all worktrees for the current git repository.
@@ -20,7 +20,7 @@ export async function getWorktreePaths(cwd: string): Promise<string[]> {
 
   const { stdout, code } = await execFileNoThrowWithCwd(
     gitExe(),
-    ['worktree', 'list', '--porcelain'],
+    ["worktree", "list", "--porcelain"],
     {
       cwd,
       preserveOutputOnError: false,
@@ -30,7 +30,7 @@ export async function getWorktreePaths(cwd: string): Promise<string[]> {
   const durationMs = Date.now() - startTime;
 
   if (code !== 0) {
-    logEvent('tengu_worktree_detection', {
+    logEvent("tengu_worktree_detection", {
       duration_ms: durationMs,
       worktree_count: 0,
       success: false,
@@ -48,11 +48,11 @@ export async function getWorktreePaths(cwd: string): Promise<string[]> {
   // HEAD def456
   // branch refs/heads/feature
   const worktreePaths = stdout
-    .split('\n')
-    .filter((line) => line.startsWith('worktree '))
-    .map((line) => line.slice('worktree '.length).normalize('NFC'));
+    .split("\n")
+    .filter((line) => line.startsWith("worktree "))
+    .map((line) => line.slice("worktree ".length).normalize("NFC"));
 
-  logEvent('tengu_worktree_detection', {
+  logEvent("tengu_worktree_detection", {
     duration_ms: durationMs,
     worktree_count: worktreePaths.length,
     success: true,

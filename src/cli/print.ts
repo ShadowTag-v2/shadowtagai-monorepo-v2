@@ -1,35 +1,35 @@
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { feature } from 'bun:bundle';
-import { readFile, stat } from 'node:fs/promises';
-import { dirname } from 'node:path';
-import { downloadUserSettings, redownloadUserSettings } from 'src/services/settingsSync/index.js';
-import { waitForRemoteManagedSettingsToLoad } from 'src/services/remoteManagedSettings/index.js';
-import { StructuredIO } from 'src/cli/structuredIO.js';
-import { RemoteIO } from 'src/cli/remoteIO.js';
-import { type Command, formatDescriptionWithSource, getCommandName } from 'src/commands.js';
-import { createStreamlinedTransformer } from 'src/utils/streamlinedTransform.js';
-import { installStreamJsonStdoutGuard } from 'src/utils/streamJsonStdoutGuard.js';
-import type { ToolPermissionContext } from 'src/Tool.js';
-import type { ThinkingConfig } from 'src/utils/thinking.js';
-import { assembleToolPool, filterToolsByDenyRules } from 'src/tools.js';
-import uniqBy from 'lodash-es/uniqBy.js';
-import { uniq } from 'src/utils/array.js';
-import { mergeAndFilterTools } from 'src/utils/toolPool.js';
+import { feature } from "bun:bundle";
+import { readFile, stat } from "node:fs/promises";
+import { dirname } from "node:path";
+import { downloadUserSettings, redownloadUserSettings } from "src/services/settingsSync/index.js";
+import { waitForRemoteManagedSettingsToLoad } from "src/services/remoteManagedSettings/index.js";
+import { StructuredIO } from "src/cli/structuredIO.js";
+import { RemoteIO } from "src/cli/remoteIO.js";
+import { type Command, formatDescriptionWithSource, getCommandName } from "src/commands.js";
+import { createStreamlinedTransformer } from "src/utils/streamlinedTransform.js";
+import { installStreamJsonStdoutGuard } from "src/utils/streamJsonStdoutGuard.js";
+import type { ToolPermissionContext } from "src/Tool.js";
+import type { ThinkingConfig } from "src/utils/thinking.js";
+import { assembleToolPool, filterToolsByDenyRules } from "src/tools.js";
+import uniqBy from "lodash-es/uniqBy.js";
+import { uniq } from "src/utils/array.js";
+import { mergeAndFilterTools } from "src/utils/toolPool.js";
 import {
   logEvent,
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
-} from 'src/services/analytics/index.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from 'src/services/analytics/growthbook.js';
-import { logForDebugging } from 'src/utils/debug.js';
-import { logForDiagnosticsNoPII, withDiagnosticsTiming } from 'src/utils/diagLogs.js';
-import { toolMatchesName, type Tool, type Tools } from 'src/Tool.js';
+} from "src/services/analytics/index.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "src/services/analytics/growthbook.js";
+import { logForDebugging } from "src/utils/debug.js";
+import { logForDiagnosticsNoPII, withDiagnosticsTiming } from "src/utils/diagLogs.js";
+import { toolMatchesName, type Tool, type Tools } from "src/Tool.js";
 import {
   type AgentDefinition,
   isBuiltInAgent,
   parseAgentsFromJson,
-} from 'src/tools/AgentTool/loadAgentsDir.js';
-import type { Message, NormalizedUserMessage } from 'src/types/message.js';
-import type { QueuedCommand } from 'src/types/textInputTypes.js';
+} from "src/tools/AgentTool/loadAgentsDir.js";
+import type { Message, NormalizedUserMessage } from "src/types/message.js";
+import type { QueuedCommand } from "src/types/textInputTypes.js";
 import {
   dequeue,
   dequeueAllMatching,
@@ -38,8 +38,8 @@ import {
   peek,
   subscribeToCommandQueue,
   getCommandsByMaxPriority,
-} from 'src/utils/messageQueueManager.js';
-import { notifyCommandLifecycle } from 'src/utils/commandLifecycle.js';
+} from "src/utils/messageQueueManager.js";
+import { notifyCommandLifecycle } from "src/utils/commandLifecycle.js";
 import {
   getSessionState,
   notifySessionStateChanged,
@@ -47,50 +47,50 @@ import {
   setPermissionModeChangedListener,
   type RequiresActionDetails,
   type SessionExternalMetadata,
-} from 'src/utils/sessionState.js';
-import { externalMetadataToAppState } from 'src/state/onChangeAppState.js';
-import { getInMemoryErrors, logError, logMCPDebug } from 'src/utils/log.js';
-import { writeToStdout, registerProcessOutputErrorHandlers } from 'src/utils/process.js';
-import type { Stream } from 'src/utils/stream.js';
-import { EMPTY_USAGE } from 'src/services/api/logging.js';
+} from "src/utils/sessionState.js";
+import { externalMetadataToAppState } from "src/state/onChangeAppState.js";
+import { getInMemoryErrors, logError, logMCPDebug } from "src/utils/log.js";
+import { writeToStdout, registerProcessOutputErrorHandlers } from "src/utils/process.js";
+import type { Stream } from "src/utils/stream.js";
+import { EMPTY_USAGE } from "src/services/api/logging.js";
 import {
   loadConversationForResume,
   type TurnInterruptionState,
-} from 'src/utils/conversationRecovery.js';
+} from "src/utils/conversationRecovery.js";
 import type {
   MCPServerConnection,
   McpSdkServerConfig,
   ScopedMcpServerConfig,
-} from 'src/services/mcp/types.js';
+} from "src/services/mcp/types.js";
 import {
   ChannelMessageNotificationSchema,
   gateChannelServer,
   wrapChannelMessage,
   findChannelEntry,
-} from 'src/services/mcp/channelNotification.js';
-import { isChannelAllowlisted, isChannelsEnabled } from 'src/services/mcp/channelAllowlist.js';
-import { parsePluginIdentifier } from 'src/utils/plugins/pluginIdentifier.js';
-import { validateUuid } from 'src/utils/uuid.js';
-import { fromArray } from 'src/utils/generators.js';
-import { ask } from 'src/QueryEngine.js';
-import type { PermissionPromptTool } from 'src/utils/queryHelpers.js';
+} from "src/services/mcp/channelNotification.js";
+import { isChannelAllowlisted, isChannelsEnabled } from "src/services/mcp/channelAllowlist.js";
+import { parsePluginIdentifier } from "src/utils/plugins/pluginIdentifier.js";
+import { validateUuid } from "src/utils/uuid.js";
+import { fromArray } from "src/utils/generators.js";
+import { ask } from "src/QueryEngine.js";
+import type { PermissionPromptTool } from "src/utils/queryHelpers.js";
 import {
   createFileStateCacheWithSizeLimit,
   mergeFileStateCaches,
   READ_FILE_STATE_CACHE_SIZE,
-} from 'src/utils/fileStateCache.js';
-import { expandPath } from 'src/utils/path.js';
-import { extractReadFilesFromMessages } from 'src/utils/queryHelpers.js';
-import { registerHookEventHandler } from 'src/utils/hooks/hookEvents.js';
-import { executeFilePersistence } from 'src/utils/filePersistence/filePersistence.js';
-import { finalizePendingAsyncHooks } from 'src/utils/hooks/AsyncHookRegistry.js';
+} from "src/utils/fileStateCache.js";
+import { expandPath } from "src/utils/path.js";
+import { extractReadFilesFromMessages } from "src/utils/queryHelpers.js";
+import { registerHookEventHandler } from "src/utils/hooks/hookEvents.js";
+import { executeFilePersistence } from "src/utils/filePersistence/filePersistence.js";
+import { finalizePendingAsyncHooks } from "src/utils/hooks/AsyncHookRegistry.js";
 import {
   gracefulShutdown,
   gracefulShutdownSync,
   isShuttingDown,
-} from 'src/utils/gracefulShutdown.js';
-import { registerCleanup } from 'src/utils/cleanupRegistry.js';
-import { createIdleTimeoutManager } from 'src/utils/idleTimeout.js';
+} from "src/utils/gracefulShutdown.js";
+import { registerCleanup } from "src/utils/cleanupRegistry.js";
+import { createIdleTimeoutManager } from "src/utils/idleTimeout.js";
 import type {
   SDKStatus,
   ModelInfo,
@@ -101,7 +101,7 @@ import type {
   McpServerConfigForProcessTransport,
   McpServerStatus,
   RewindFilesResult,
-} from 'src/entrypoints/agentSdkTypes.js';
+} from "src/entrypoints/agentSdkTypes.js";
 import type {
   StdoutMessage,
   SDKControlInitializeRequest,
@@ -110,76 +110,76 @@ import type {
   SDKControlResponse,
   SDKControlMcpSetServersResponse,
   SDKControlReloadPluginsResponse,
-} from 'src/entrypoints/sdk/controlTypes.js';
-import type { PermissionMode } from '@anthropic-ai/claude-agent-sdk';
-import type { PermissionMode as InternalPermissionMode } from 'src/types/permissions.js';
-import { cwd } from 'node:process';
-import { getCwd } from 'src/utils/cwd.js';
-import omit from 'lodash-es/omit.js';
-import reject from 'lodash-es/reject.js';
-import { isPolicyAllowed } from 'src/services/policyLimits/index.js';
-import type { ReplBridgeHandle } from 'src/bridge/replBridge.js';
-import { getRemoteSessionUrl } from 'src/constants/product.js';
-import { buildBridgeConnectUrl } from 'src/bridge/bridgeStatusUtil.js';
-import { extractInboundMessageFields } from 'src/bridge/inboundMessages.js';
-import { resolveAndPrepend } from 'src/bridge/inboundAttachments.js';
-import type { CanUseToolFn } from 'src/hooks/useCanUseTool.js';
-import { hasPermissionsToUseTool } from 'src/utils/permissions/permissions.js';
-import { safeParseJSON } from 'src/utils/json.js';
+} from "src/entrypoints/sdk/controlTypes.js";
+import type { PermissionMode } from "@anthropic-ai/claude-agent-sdk";
+import type { PermissionMode as InternalPermissionMode } from "src/types/permissions.js";
+import { cwd } from "node:process";
+import { getCwd } from "src/utils/cwd.js";
+import omit from "lodash-es/omit.js";
+import reject from "lodash-es/reject.js";
+import { isPolicyAllowed } from "src/services/policyLimits/index.js";
+import type { ReplBridgeHandle } from "src/bridge/replBridge.js";
+import { getRemoteSessionUrl } from "src/constants/product.js";
+import { buildBridgeConnectUrl } from "src/bridge/bridgeStatusUtil.js";
+import { extractInboundMessageFields } from "src/bridge/inboundMessages.js";
+import { resolveAndPrepend } from "src/bridge/inboundAttachments.js";
+import type { CanUseToolFn } from "src/hooks/useCanUseTool.js";
+import { hasPermissionsToUseTool } from "src/utils/permissions/permissions.js";
+import { safeParseJSON } from "src/utils/json.js";
 import {
   outputSchema as permissionToolOutputSchema,
   permissionPromptToolResultToPermissionDecision,
-} from 'src/utils/permissions/PermissionPromptToolResultSchema.js';
-import { createAbortController } from 'src/utils/abortController.js';
-import { createCombinedAbortSignal } from 'src/utils/combinedAbortSignal.js';
-import { generateSessionTitle } from 'src/utils/sessionTitle.js';
-import { buildSideQuestionFallbackParams } from 'src/utils/queryContext.js';
-import { runSideQuestion } from 'src/utils/sideQuestion.js';
+} from "src/utils/permissions/PermissionPromptToolResultSchema.js";
+import { createAbortController } from "src/utils/abortController.js";
+import { createCombinedAbortSignal } from "src/utils/combinedAbortSignal.js";
+import { generateSessionTitle } from "src/utils/sessionTitle.js";
+import { buildSideQuestionFallbackParams } from "src/utils/queryContext.js";
+import { runSideQuestion } from "src/utils/sideQuestion.js";
 import {
   processSessionStartHooks,
   processSetupHooks,
   takeInitialUserMessage,
-} from 'src/utils/sessionStart.js';
-import { DEFAULT_OUTPUT_STYLE_NAME, getAllOutputStyles } from 'src/constants/outputStyles.js';
-import { TEAMMATE_MESSAGE_TAG, TICK_TAG } from 'src/constants/xml.js';
-import { getSettings_DEPRECATED, getSettingsWithSources } from 'src/utils/settings/settings.js';
-import { settingsChangeDetector } from 'src/utils/settings/changeDetector.js';
-import { applySettingsChange } from 'src/utils/settings/applySettingsChange.js';
+} from "src/utils/sessionStart.js";
+import { DEFAULT_OUTPUT_STYLE_NAME, getAllOutputStyles } from "src/constants/outputStyles.js";
+import { TEAMMATE_MESSAGE_TAG, TICK_TAG } from "src/constants/xml.js";
+import { getSettings_DEPRECATED, getSettingsWithSources } from "src/utils/settings/settings.js";
+import { settingsChangeDetector } from "src/utils/settings/changeDetector.js";
+import { applySettingsChange } from "src/utils/settings/applySettingsChange.js";
 import {
   isFastModeAvailable,
   isFastModeEnabled,
   isFastModeSupportedByModel,
   getFastModeState,
-} from 'src/utils/fastMode.js';
+} from "src/utils/fastMode.js";
 import {
   isAutoModeGateEnabled,
   getAutoModeUnavailableNotification,
   getAutoModeUnavailableReason,
   isBypassPermissionsModeDisabled,
   transitionPermissionMode,
-} from 'src/utils/permissions/permissionSetup.js';
+} from "src/utils/permissions/permissionSetup.js";
 import {
   tryGenerateSuggestion,
   logSuggestionOutcome,
   logSuggestionSuppressed,
   type PromptVariant,
-} from 'src/services/PromptSuggestion/promptSuggestion.js';
-import { getLastCacheSafeParams } from 'src/utils/forkedAgent.js';
-import { getAccountInformation } from 'src/utils/auth.js';
-import { OAuthService } from 'src/services/oauth/index.js';
-import { installOAuthTokens } from 'src/cli/handlers/auth.js';
-import { getAPIProvider } from 'src/utils/model/providers.js';
-import type { HookCallbackMatcher } from 'src/types/hooks.js';
-import { AwsAuthStatusManager } from 'src/utils/awsAuthStatusManager.js';
-import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
+} from "src/services/PromptSuggestion/promptSuggestion.js";
+import { getLastCacheSafeParams } from "src/utils/forkedAgent.js";
+import { getAccountInformation } from "src/utils/auth.js";
+import { OAuthService } from "src/services/oauth/index.js";
+import { installOAuthTokens } from "src/cli/handlers/auth.js";
+import { getAPIProvider } from "src/utils/model/providers.js";
+import type { HookCallbackMatcher } from "src/types/hooks.js";
+import { AwsAuthStatusManager } from "src/utils/awsAuthStatusManager.js";
+import type { HookEvent } from "src/entrypoints/agentSdkTypes.js";
 import {
   registerHookCallbacks,
   setInitJsonSchema,
   getInitJsonSchema,
   setSdkAgentProgressSummariesEnabled,
-} from 'src/bootstrap/state.js';
-import { createSyntheticOutputTool } from 'src/tools/SyntheticOutputTool/SyntheticOutputTool.js';
-import { parseSessionIdentifier } from 'src/utils/sessionUrl.js';
+} from "src/bootstrap/state.js";
+import { createSyntheticOutputTool } from "src/tools/SyntheticOutputTool/SyntheticOutputTool.js";
+import { parseSessionIdentifier } from "src/utils/sessionUrl.js";
 import {
   hydrateRemoteSession,
   hydrateFromCCRv2InternalEvents,
@@ -191,8 +191,8 @@ import {
   saveMode,
   saveAiGeneratedTitle,
   restoreSessionMetadata,
-} from 'src/utils/sessionStorage.js';
-import { incrementPromptCount } from 'src/utils/commitAttribution.js';
+} from "src/utils/sessionStorage.js";
+import { incrementPromptCount } from "src/utils/commitAttribution.js";
 import {
   setupSdkMcpClients,
   connectToServer,
@@ -200,49 +200,49 @@ import {
   fetchToolsForClient,
   areMcpConfigsEqual,
   reconnectMcpServerImpl,
-} from 'src/services/mcp/client.js';
+} from "src/services/mcp/client.js";
 import {
   filterMcpServersByPolicy,
   getMcpConfigByName,
   isMcpServerDisabled,
   setMcpServerEnabled,
-} from 'src/services/mcp/config.js';
-import { performMCPOAuthFlow, revokeServerTokens } from 'src/services/mcp/auth.js';
+} from "src/services/mcp/config.js";
+import { performMCPOAuthFlow, revokeServerTokens } from "src/services/mcp/auth.js";
 import {
   runElicitationHooks,
   runElicitationResultHooks,
-} from 'src/services/mcp/elicitationHandler.js';
-import { executeNotificationHooks } from 'src/utils/hooks.js';
+} from "src/services/mcp/elicitationHandler.js";
+import { executeNotificationHooks } from "src/utils/hooks.js";
 import {
   ElicitRequestSchema,
   ElicitationCompleteNotificationSchema,
-} from '@modelcontextprotocol/sdk/types.js';
-import { getMcpPrefix } from 'src/services/mcp/mcpStringUtils.js';
-import { commandBelongsToServer, filterToolsByServer } from 'src/services/mcp/utils.js';
-import { setupVscodeSdkMcp } from 'src/services/mcp/vscodeSdkMcp.js';
-import { getAllMcpConfigs } from 'src/services/mcp/config.js';
-import { isQualifiedForGrove, checkGroveForNonInteractive } from 'src/services/api/grove.js';
-import { toInternalMessages, toSDKRateLimitInfo } from 'src/utils/messages/mappers.js';
-import { createModelSwitchBreadcrumbs } from 'src/utils/messages.js';
-import { collectContextData } from 'src/commands/context/context-noninteractive.js';
-import { LOCAL_COMMAND_STDOUT_TAG } from 'src/constants/xml.js';
-import { statusListeners, type ClaudeAILimits } from 'src/services/claudeAiLimits.js';
+} from "@modelcontextprotocol/sdk/types.js";
+import { getMcpPrefix } from "src/services/mcp/mcpStringUtils.js";
+import { commandBelongsToServer, filterToolsByServer } from "src/services/mcp/utils.js";
+import { setupVscodeSdkMcp } from "src/services/mcp/vscodeSdkMcp.js";
+import { getAllMcpConfigs } from "src/services/mcp/config.js";
+import { isQualifiedForGrove, checkGroveForNonInteractive } from "src/services/api/grove.js";
+import { toInternalMessages, toSDKRateLimitInfo } from "src/utils/messages/mappers.js";
+import { createModelSwitchBreadcrumbs } from "src/utils/messages.js";
+import { collectContextData } from "src/commands/context/context-noninteractive.js";
+import { LOCAL_COMMAND_STDOUT_TAG } from "src/constants/xml.js";
+import { statusListeners, type ClaudeAILimits } from "src/services/claudeAiLimits.js";
 import {
   getDefaultMainLoopModel,
   getMainLoopModel,
   modelDisplayString,
   parseUserSpecifiedModel,
-} from 'src/utils/model/model.js';
-import { getModelOptions } from 'src/utils/model/modelOptions.js';
+} from "src/utils/model/model.js";
+import { getModelOptions } from "src/utils/model/modelOptions.js";
 import {
   modelSupportsEffort,
   modelSupportsMaxEffort,
   EFFORT_LEVELS,
   resolveAppliedEffort,
-} from 'src/utils/effort.js';
-import { modelSupportsAdaptiveThinking } from 'src/utils/thinking.js';
-import { modelSupportsAutoMode } from 'src/utils/betas.js';
-import { ensureModelStringsInitialized } from 'src/utils/model/modelStrings.js';
+} from "src/utils/effort.js";
+import { modelSupportsAdaptiveThinking } from "src/utils/thinking.js";
+import { modelSupportsAutoMode } from "src/utils/betas.js";
+import { ensureModelStringsInitialized } from "src/utils/model/modelStrings.js";
 import {
   getSessionId,
   setMainLoopModelOverride,
@@ -256,76 +256,76 @@ import {
   getAllowedChannels,
   setAllowedChannels,
   type ChannelEntry,
-} from 'src/bootstrap/state.js';
-import { runWithWorkload, WORKLOAD_CRON } from 'src/utils/workloadContext.js';
-import type { UUID } from 'node:crypto';
-import { randomUUID } from 'node:crypto';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import type { AppState } from 'src/state/AppStateStore.js';
+} from "src/bootstrap/state.js";
+import { runWithWorkload, WORKLOAD_CRON } from "src/utils/workloadContext.js";
+import type { UUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
+import type { ContentBlockParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import type { AppState } from "src/state/AppStateStore.js";
 import {
   fileHistoryRewind,
   fileHistoryCanRestore,
   fileHistoryEnabled,
   fileHistoryGetDiffStats,
-} from 'src/utils/fileHistory.js';
-import { restoreAgentFromSession, restoreSessionStateFromLog } from 'src/utils/sessionRestore.js';
-import { SandboxManager } from 'src/utils/sandbox/sandbox-adapter.js';
+} from "src/utils/fileHistory.js";
+import { restoreAgentFromSession, restoreSessionStateFromLog } from "src/utils/sessionRestore.js";
+import { SandboxManager } from "src/utils/sandbox/sandbox-adapter.js";
 import {
   headlessProfilerStartTurn,
   headlessProfilerCheckpoint,
   logHeadlessProfilerTurn,
-} from 'src/utils/headlessProfiler.js';
-import { startQueryProfile, logQueryProfileReport } from 'src/utils/queryProfiler.js';
-import { asSessionId } from 'src/types/ids.js';
-import { jsonStringify } from '../utils/slowOperations.js';
-import { skillChangeDetector } from '../utils/skills/skillChangeDetector.js';
-import { getCommands, clearCommandsCache } from '../commands.js';
-import { isBareMode, isEnvTruthy, isEnvDefinedFalsy } from '../utils/envUtils.js';
-import { installPluginsForHeadless } from '../utils/plugins/headlessPluginInstall.js';
-import { refreshActivePlugins } from '../utils/plugins/refresh.js';
-import { loadAllPluginsCacheOnly } from '../utils/plugins/pluginLoader.js';
+} from "src/utils/headlessProfiler.js";
+import { startQueryProfile, logQueryProfileReport } from "src/utils/queryProfiler.js";
+import { asSessionId } from "src/types/ids.js";
+import { jsonStringify } from "../utils/slowOperations.js";
+import { skillChangeDetector } from "../utils/skills/skillChangeDetector.js";
+import { getCommands, clearCommandsCache } from "../commands.js";
+import { isBareMode, isEnvTruthy, isEnvDefinedFalsy } from "../utils/envUtils.js";
+import { installPluginsForHeadless } from "../utils/plugins/headlessPluginInstall.js";
+import { refreshActivePlugins } from "../utils/plugins/refresh.js";
+import { loadAllPluginsCacheOnly } from "../utils/plugins/pluginLoader.js";
 import {
   isTeamLead,
   hasActiveInProcessTeammates,
   hasWorkingInProcessTeammates,
   waitForTeammatesToBecomeIdle,
-} from '../utils/teammate.js';
+} from "../utils/teammate.js";
 import {
   readUnreadMessages,
   markMessagesAsRead,
   isShutdownApproved,
-} from '../utils/teammateMailbox.js';
-import { removeTeammateFromTeamFile } from '../utils/swarm/teamHelpers.js';
-import { unassignTeammateTasks } from '../utils/tasks.js';
-import { getRunningTasks } from '../utils/task/framework.js';
-import { isBackgroundTask } from '../tasks/types.js';
-import { stopTask } from '../tasks/stopTask.js';
-import { drainSdkEvents } from '../utils/sdkEventQueue.js';
-import { initializeGrowthBook } from '../services/analytics/growthbook.js';
-import { errorMessage, toError } from '../utils/errors.js';
-import { sleep } from '../utils/sleep.js';
-import { isExtractModeActive } from '../memdir/paths.js';
+} from "../utils/teammateMailbox.js";
+import { removeTeammateFromTeamFile } from "../utils/swarm/teamHelpers.js";
+import { unassignTeammateTasks } from "../utils/tasks.js";
+import { getRunningTasks } from "../utils/task/framework.js";
+import { isBackgroundTask } from "../tasks/types.js";
+import { stopTask } from "../tasks/stopTask.js";
+import { drainSdkEvents } from "../utils/sdkEventQueue.js";
+import { initializeGrowthBook } from "../services/analytics/growthbook.js";
+import { errorMessage, toError } from "../utils/errors.js";
+import { sleep } from "../utils/sleep.js";
+import { isExtractModeActive } from "../memdir/paths.js";
 
 // Dead code elimination: conditional imports
 /* eslint-disable @typescript-eslint/no-require-imports */
-const coordinatorModeModule = feature('COORDINATOR_MODE')
-  ? (require('../coordinator/coordinatorMode.js') as typeof import('../coordinator/coordinatorMode.js'))
+const coordinatorModeModule = feature("COORDINATOR_MODE")
+  ? (require("../coordinator/coordinatorMode.js") as typeof import("../coordinator/coordinatorMode.js"))
   : null;
 const proactiveModule =
-  feature('PROACTIVE') || feature('KAIROS')
-    ? (require('../proactive/index.js') as typeof import('../proactive/index.js'))
+  feature("PROACTIVE") || feature("KAIROS")
+    ? (require("../proactive/index.js") as typeof import("../proactive/index.js"))
     : null;
-const cronSchedulerModule = feature('AGENT_TRIGGERS')
-  ? (require('../utils/cronScheduler.js') as typeof import('../utils/cronScheduler.js'))
+const cronSchedulerModule = feature("AGENT_TRIGGERS")
+  ? (require("../utils/cronScheduler.js") as typeof import("../utils/cronScheduler.js"))
   : null;
-const cronJitterConfigModule = feature('AGENT_TRIGGERS')
-  ? (require('../utils/cronJitterConfig.js') as typeof import('../utils/cronJitterConfig.js'))
+const cronJitterConfigModule = feature("AGENT_TRIGGERS")
+  ? (require("../utils/cronJitterConfig.js") as typeof import("../utils/cronJitterConfig.js"))
   : null;
-const cronGate = feature('AGENT_TRIGGERS')
-  ? (require('../tools/ScheduleCronTool/prompt.js') as typeof import('../tools/ScheduleCronTool/prompt.js'))
+const cronGate = feature("AGENT_TRIGGERS")
+  ? (require("../tools/ScheduleCronTool/prompt.js") as typeof import("../tools/ScheduleCronTool/prompt.js"))
   : null;
-const extractMemoriesModule = feature('EXTRACT_MEMORIES')
-  ? (require('../services/extractMemories/extractMemories.js') as typeof import('../services/extractMemories/extractMemories.js'))
+const extractMemoriesModule = feature("EXTRACT_MEMORIES")
+  ? (require("../services/extractMemories/extractMemories.js") as typeof import("../services/extractMemories/extractMemories.js"))
   : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
 
@@ -370,7 +370,7 @@ function trackReceivedMessageUuid(uuid: UUID): boolean {
 type PromptValue = string | ContentBlockParam[];
 
 function toBlocks(v: PromptValue): ContentBlockParam[] {
-  return typeof v === 'string' ? [{ type: 'text', text: v }] : v;
+  return typeof v === "string" ? [{ type: "text", text: v }] : v;
 }
 
 /**
@@ -380,8 +380,8 @@ function toBlocks(v: PromptValue): ContentBlockParam[] {
  */
 export function joinPromptValues(values: PromptValue[]): PromptValue {
   if (values.length === 1) return values[0]!;
-  if (values.every((v) => typeof v === 'string')) {
-    return values.join('\n');
+  if (values.every((v) => typeof v === "string")) {
+    return values.join("\n");
   }
   return values.flatMap(toBlocks);
 }
@@ -396,7 +396,7 @@ export function joinPromptValues(values: PromptValue[]): PromptValue {
 export function canBatchWith(head: QueuedCommand, next: QueuedCommand | undefined): boolean {
   return (
     next !== undefined &&
-    next.mode === 'prompt' &&
+    next.mode === "prompt" &&
     next.workload === head.workload &&
     next.isMeta === head.isMeta
   );
@@ -436,13 +436,13 @@ export async function runHeadless(
     enableAuthStatus: boolean | undefined;
     agent: string | undefined;
     workload: string | undefined;
-    setupTrigger?: 'init' | 'maintenance' | undefined;
+    setupTrigger?: "init" | "maintenance" | undefined;
     sessionStartHooksPromise?: ReturnType<typeof processSessionStartHooks>;
     setSDKStatus?: (status: SDKStatus) => void;
   },
 ): Promise<void> {
   if (
-    process.env.USER_TYPE === 'ant' &&
+    process.env.USER_TYPE === "ant" &&
     isEnvTruthy(process.env.CLAUDE_CODE_EXIT_AFTER_FIRST_RENDER)
   ) {
     process.stderr.write(`\nStartup time: ${Math.round(process.uptime() * 1000)}ms\n`);
@@ -456,7 +456,7 @@ export async function runHeadless(
   // installPluginsAndApplyMcpInBackground before plugin install reads
   // enabledPlugins.
   if (
-    feature('DOWNLOAD_USER_SETTINGS') &&
+    feature("DOWNLOAD_USER_SETTINGS") &&
     (isEnvTruthy(process.env.CLAUDE_CODE_REMOTE) || getIsRemoteMode())
   ) {
     void downloadUserSettings();
@@ -484,29 +484,29 @@ export async function runHeadless(
   // where CLAUDE_CODE_PROACTIVE is set but main.tsx's check didn't fire
   // (e.g. env was injected by the SDK transport after argv parsing).
   if (
-    (feature('PROACTIVE') || feature('KAIROS')) &&
+    (feature("PROACTIVE") || feature("KAIROS")) &&
     proactiveModule &&
     !proactiveModule.isProactiveActive() &&
     isEnvTruthy(process.env.CLAUDE_CODE_PROACTIVE)
   ) {
-    proactiveModule.activateProactive('command');
+    proactiveModule.activateProactive("command");
   }
 
   // Periodically force a full GC to keep memory usage in check
-  if (typeof Bun !== 'undefined') {
+  if (typeof Bun !== "undefined") {
     const gcTimer = setInterval(Bun.gc, 1000);
     gcTimer.unref();
   }
 
   // Start headless profiler for first turn
   headlessProfilerStartTurn();
-  headlessProfilerCheckpoint('runHeadless_entry');
+  headlessProfilerCheckpoint("runHeadless_entry");
 
   // Check Grove requirements for non-interactive consumer subscribers
   if (await isQualifiedForGrove()) {
     await checkGroveForNonInteractive();
   }
-  headlessProfilerCheckpoint('after_grove_check');
+  headlessProfilerCheckpoint("after_grove_check");
 
   // Initialize GrowthBook so feature flags take effect in headless mode.
   // Without this, the disk cache is empty and all flags fall back to defaults.
@@ -539,7 +539,7 @@ export async function runHeadless(
   // line-by-line JSON parser. Install a guard that diverts non-JSON lines to
   // stderr so the stream stays clean. Must run before the first
   // structuredIO.write below.
-  if (options.outputFormat === 'stream-json') {
+  if (options.outputFormat === "stream-json") {
     installStreamJsonStdoutGuard();
   }
 
@@ -568,29 +568,29 @@ export async function runHeadless(
       await SandboxManager.initialize(structuredIO.createSandboxAskCallback());
     } catch (err) {
       process.stderr.write(`\n❌ Sandbox Error: ${errorMessage(err)}\n`);
-      gracefulShutdownSync(1, 'other');
+      gracefulShutdownSync(1, "other");
       return;
     }
   }
 
-  if (options.outputFormat === 'stream-json' && options.verbose) {
+  if (options.outputFormat === "stream-json" && options.verbose) {
     registerHookEventHandler((event) => {
       const message: StdoutMessage = (() => {
         switch (event.type) {
-          case 'started':
+          case "started":
             return {
-              type: 'system' as const,
-              subtype: 'hook_started' as const,
+              type: "system" as const,
+              subtype: "hook_started" as const,
               hook_id: event.hookId,
               hook_name: event.hookName,
               hook_event: event.hookEvent,
               uuid: randomUUID(),
               session_id: getSessionId(),
             };
-          case 'progress':
+          case "progress":
             return {
-              type: 'system' as const,
-              subtype: 'hook_progress' as const,
+              type: "system" as const,
+              subtype: "hook_progress" as const,
               hook_id: event.hookId,
               hook_name: event.hookName,
               hook_event: event.hookEvent,
@@ -600,10 +600,10 @@ export async function runHeadless(
               uuid: randomUUID(),
               session_id: getSessionId(),
             };
-          case 'response':
+          case "response":
             return {
-              type: 'system' as const,
-              subtype: 'hook_response' as const,
+              type: "system" as const,
+              subtype: "hook_response" as const,
               hook_id: event.hookId,
               hook_name: event.hookName,
               hook_event: event.hookEvent,
@@ -625,7 +625,7 @@ export async function runHeadless(
     await processSetupHooks(options.setupTrigger);
   }
 
-  headlessProfilerCheckpoint('before_loadInitialMessages');
+  headlessProfilerCheckpoint("before_loadInitialMessages");
   const appState = getAppState();
   const {
     messages: initialMessages,
@@ -687,7 +687,7 @@ export async function runHeadless(
     // so we require the target to be a user message
     const targetMessage = initialMessages.find((m) => m.uuid === options.rewindFiles);
 
-    if (!targetMessage || targetMessage.type !== 'user') {
+    if (!targetMessage || targetMessage.type !== "user") {
       process.stderr.write(
         `Error: --rewind-files requires a user message UUID, but ${options.rewindFiles} is not a user message in this session\n`,
       );
@@ -703,7 +703,7 @@ export async function runHeadless(
       false,
     );
     if (!result.canRewind) {
-      process.stderr.write(`Error: ${result.error || 'Unexpected error'}\n`);
+      process.stderr.write(`Error: ${result.error || "Unexpected error"}\n`);
       gracefulShutdownSync(1);
       return;
     }
@@ -716,8 +716,8 @@ export async function runHeadless(
 
   // Check if we need input prompt - skip if we're resuming with a valid session ID/JSONL file or using SDK URL
   const hasValidResumeSessionId =
-    typeof options.resume === 'string' &&
-    (Boolean(validateUuid(options.resume)) || options.resume.endsWith('.jsonl'));
+    typeof options.resume === "string" &&
+    (Boolean(validateUuid(options.resume)) || options.resume.endsWith(".jsonl"));
   const isUsingSdkUrl = Boolean(options.sdkUrl);
 
   if (!inputPrompt && !hasValidResumeSessionId && !isUsingSdkUrl) {
@@ -728,9 +728,9 @@ export async function runHeadless(
     return;
   }
 
-  if (options.outputFormat === 'stream-json' && !options.verbose) {
+  if (options.outputFormat === "stream-json" && !options.verbose) {
     process.stderr.write(
-      'Error: When using --print, --output-format=stream-json requires --verbose\n',
+      "Error: When using --print, --output-format=stream-json requires --verbose\n",
     );
     gracefulShutdownSync(1);
     return;
@@ -745,12 +745,12 @@ export async function runHeadless(
 
   // When using SDK URL, always use stdio permission prompting to delegate to the SDK
   const effectivePermissionPromptToolName = options.sdkUrl
-    ? 'stdio'
+    ? "stdio"
     : options.permissionPromptToolName;
 
   // Callback for when a permission prompt is shown
   const onPermissionPrompt = (details: RequiresActionDetails) => {
-    if (feature('COMMIT_ATTRIBUTION')) {
+    if (feature("COMMIT_ATTRIBUTION")) {
       setAppState((prev) => ({
         ...prev,
         attribution: {
@@ -759,7 +759,7 @@ export async function runHeadless(
         },
       }));
     }
-    notifySessionStateChanged('requires_action', details);
+    notifySessionStateChanged("requires_action", details);
   };
 
   const canUseTool = getCanUseToolFn(
@@ -778,12 +778,12 @@ export async function runHeadless(
   // Install errors handlers to gracefully handle broken pipes (e.g., when parent process dies)
   registerProcessOutputErrorHandlers();
 
-  headlessProfilerCheckpoint('after_loadInitialMessages');
+  headlessProfilerCheckpoint("after_loadInitialMessages");
 
   // Ensure model strings are initialized before generating model options.
   // For Bedrock users, this waits for the profile fetch to get correct region strings.
   await ensureModelStringsInitialized();
-  headlessProfilerCheckpoint('after_modelStrings');
+  headlessProfilerCheckpoint("after_modelStrings");
 
   // UDS inbox store registration is deferred until after `run` is defined
   // so we can pass `run` as the onEnqueue callback (see below).
@@ -792,19 +792,19 @@ export async function runHeadless(
   // For stream-json (SDK/CCR) and default text output, only the last message is
   // read for the exit code / final result. Avoid accumulating every message in
   // memory for the entire session.
-  const needsFullArray = options.outputFormat === 'json' && options.verbose;
+  const needsFullArray = options.outputFormat === "json" && options.verbose;
   const messages: SDKMessage[] = [];
   let lastMessage: SDKMessage | undefined;
   // Streamlined mode transforms messages when CLAUDE_CODE_STREAMLINED_OUTPUT=true and using stream-json
   // Build flag gates this out of external builds; env var is the runtime opt-in for ant builds
   const transformToStreamlined =
-    feature('STREAMLINED_OUTPUT') &&
+    feature("STREAMLINED_OUTPUT") &&
     isEnvTruthy(process.env.CLAUDE_CODE_STREAMLINED_OUTPUT) &&
-    options.outputFormat === 'stream-json'
+    options.outputFormat === "stream-json"
       ? createStreamlinedTransformer()
       : null;
 
-  headlessProfilerCheckpoint('before_runHeadlessStreaming');
+  headlessProfilerCheckpoint("before_runHeadlessStreaming");
   for await (const message of runHeadlessStreaming(
     structuredIO,
     appState.mcp.clients,
@@ -825,7 +825,7 @@ export async function runHeadless(
       if (transformed) {
         await structuredIO.write(transformed);
       }
-    } else if (options.outputFormat === 'stream-json' && options.verbose) {
+    } else if (options.outputFormat === "stream-json" && options.verbose) {
       await structuredIO.write(message);
     }
     // Should not be getting control messages or stream events in non-stream mode.
@@ -834,22 +834,22 @@ export async function runHeadless(
     // (session_state_changed(idle) and any late task_notification drain after
     // result in the finally block).
     if (
-      message.type !== 'control_response' &&
-      message.type !== 'control_request' &&
-      message.type !== 'control_cancel_request' &&
+      message.type !== "control_response" &&
+      message.type !== "control_request" &&
+      message.type !== "control_cancel_request" &&
       !(
-        message.type === 'system' &&
-        (message.subtype === 'session_state_changed' ||
-          message.subtype === 'task_notification' ||
-          message.subtype === 'task_started' ||
-          message.subtype === 'task_progress' ||
-          message.subtype === 'post_turn_summary')
+        message.type === "system" &&
+        (message.subtype === "session_state_changed" ||
+          message.subtype === "task_notification" ||
+          message.subtype === "task_started" ||
+          message.subtype === "task_progress" ||
+          message.subtype === "post_turn_summary")
       ) &&
-      message.type !== 'stream_event' &&
-      message.type !== 'keep_alive' &&
-      message.type !== 'streamlined_text' &&
-      message.type !== 'streamlined_tool_use_summary' &&
-      message.type !== 'prompt_suggestion'
+      message.type !== "stream_event" &&
+      message.type !== "keep_alive" &&
+      message.type !== "streamlined_text" &&
+      message.type !== "streamlined_tool_use_summary" &&
+      message.type !== "prompt_suggestion"
     ) {
       if (needsFullArray) {
         messages.push(message);
@@ -859,9 +859,9 @@ export async function runHeadless(
   }
 
   switch (options.outputFormat) {
-    case 'json':
-      if (!lastMessage || lastMessage.type !== 'result') {
-        throw new Error('No messages returned');
+    case "json":
+      if (!lastMessage || lastMessage.type !== "result") {
+        throw new Error("No messages returned");
       }
       if (options.verbose) {
         writeToStdout(`${jsonStringify(messages)}\n`);
@@ -869,29 +869,29 @@ export async function runHeadless(
       }
       writeToStdout(`${jsonStringify(lastMessage)}\n`);
       break;
-    case 'stream-json':
+    case "stream-json":
       // already logged above
       break;
     default:
-      if (!lastMessage || lastMessage.type !== 'result') {
-        throw new Error('No messages returned');
+      if (!lastMessage || lastMessage.type !== "result") {
+        throw new Error("No messages returned");
       }
       switch (lastMessage.subtype) {
-        case 'success':
+        case "success":
           writeToStdout(
-            lastMessage.result.endsWith('\n') ? lastMessage.result : `${lastMessage.result}\n`,
+            lastMessage.result.endsWith("\n") ? lastMessage.result : `${lastMessage.result}\n`,
           );
           break;
-        case 'error_during_execution':
+        case "error_during_execution":
           writeToStdout(`Execution error`);
           break;
-        case 'error_max_turns':
+        case "error_max_turns":
           writeToStdout(`Error: Reached max turns (${options.maxTurns})`);
           break;
-        case 'error_max_budget_usd':
+        case "error_max_budget_usd":
           writeToStdout(`Error: Exceeded USD budget (${options.maxBudgetUsd})`);
           break;
-        case 'error_max_structured_output_retries':
+        case "error_max_structured_output_retries":
           writeToStdout(`Error: Failed to provide valid structured output after maximum retries`);
       }
   }
@@ -904,11 +904,11 @@ export async function runHeadless(
   // delays process exit so gracefulShutdownSync's 5s failsafe doesn't kill
   // the forked agent mid-flight. Gated by isExtractModeActive so the
   // tengu_slate_thimble flag controls non-interactive extraction end-to-end.
-  if (feature('EXTRACT_MEMORIES') && isExtractModeActive()) {
+  if (feature("EXTRACT_MEMORIES") && isExtractModeActive()) {
     await extractMemoriesModule?.drainPendingExtraction();
   }
 
-  gracefulShutdownSync(lastMessage?.type === 'result' && lastMessage?.is_error ? 1 : 0);
+  gracefulShutdownSync(lastMessage?.type === "result" && lastMessage?.is_error ? 1 : 0);
 }
 
 function runHeadlessStreaming(
@@ -947,10 +947,10 @@ function runHeadlessStreaming(
 ): AsyncIterable<StdoutMessage> {
   let running = false;
   let runPhase:
-    | 'draining_commands'
-    | 'waiting_for_agents'
-    | 'finally_flush'
-    | 'finally_post_flush'
+    | "draining_commands"
+    | "waiting_for_agents"
+    | "finally_flush"
+    | "finally_post_flush"
     | undefined;
   let inputClosed = false;
   let shutdownPromptInjected = false;
@@ -963,13 +963,13 @@ function runHeadlessStreaming(
   // gracefulShutdown persists session state and flushes analytics, with a
   // failsafe timer that force-exits if cleanup hangs.
   const sigintHandler = () => {
-    logForDiagnosticsNoPII('info', 'shutdown_signal', { signal: 'SIGINT' });
+    logForDiagnosticsNoPII("info", "shutdown_signal", { signal: "SIGINT" });
     if (abortController && !abortController.signal.aborted) {
       abortController.abort();
     }
     void gracefulShutdown(0);
   };
-  process.on('SIGINT', sigintHandler);
+  process.on("SIGINT", sigintHandler);
 
   // Dump run()'s state at SIGTERM so a stuck session's healthsweep can name
   // the do/while(waitingForAgents) poll without reading the transcript.
@@ -978,7 +978,7 @@ function runHeadlessStreaming(
     for (const t of getRunningTasks(getAppState())) {
       if (isBackgroundTask(t)) bg[t.type] = (bg[t.type] ?? 0) + 1;
     }
-    logForDiagnosticsNoPII('info', 'run_state_at_shutdown', {
+    logForDiagnosticsNoPII("info", "run_state_at_shutdown", {
       run_active: running,
       run_phase: runPhase,
       worker_status: getSessionState(),
@@ -998,16 +998,16 @@ function runHeadlessStreaming(
   setPermissionModeChangedListener((newMode) => {
     // Only emit for SDK-exposed modes.
     if (
-      newMode === 'default' ||
-      newMode === 'acceptEdits' ||
-      newMode === 'bypassPermissions' ||
-      newMode === 'plan' ||
-      newMode === (feature('TRANSCRIPT_CLASSIFIER') && 'auto') ||
-      newMode === 'dontAsk'
+      newMode === "default" ||
+      newMode === "acceptEdits" ||
+      newMode === "bypassPermissions" ||
+      newMode === "plan" ||
+      newMode === (feature("TRANSCRIPT_CLASSIFIER") && "auto") ||
+      newMode === "dontAsk"
     ) {
       output.enqueue({
-        type: 'system',
-        subtype: 'status',
+        type: "system",
+        subtype: "status",
         status: null,
         permissionMode: newMode as PermissionMode,
         uuid: randomUUID(),
@@ -1027,7 +1027,7 @@ function runHeadlessStreaming(
       generationRequestId: string | null;
     } | null;
     pendingSuggestion: {
-      type: 'prompt_suggestion';
+      type: "prompt_suggestion";
       suggestion: string;
       uuid: UUID;
       session_id: string;
@@ -1051,7 +1051,7 @@ function runHeadlessStreaming(
     const authStatusManager = AwsAuthStatusManager.getInstance();
     unsubscribeAuthStatus = authStatusManager.subscribe((status) => {
       output.enqueue({
-        type: 'auth_status',
+        type: "auth_status",
         isAuthenticating: status.isAuthenticating,
         output: status.output,
         error: status.error,
@@ -1068,7 +1068,7 @@ function runHeadlessStreaming(
     const rateLimitInfo = toSDKRateLimitInfo(limits);
     if (rateLimitInfo) {
       output.enqueue({
-        type: 'rate_limit_event',
+        type: "rate_limit_event",
         rate_limit_info: rateLimitInfo,
         uuid: randomUUID(),
         session_id: getSessionId(),
@@ -1105,7 +1105,7 @@ function runHeadlessStreaming(
   // Auto-resume interrupted turns on restart so CC continues from where it
   // left off without requiring the SDK to re-send the prompt.
   const resumeInterruptedTurnEnv = process.env.CLAUDE_CODE_RESUME_INTERRUPTED_TURN;
-  if (turnInterruptionState && turnInterruptionState.kind !== 'none' && resumeInterruptedTurnEnv) {
+  if (turnInterruptionState && turnInterruptionState.kind !== "none" && resumeInterruptedTurnEnv) {
     logForDebugging(
       `[print.ts] Auto-resuming interrupted turn (kind: ${turnInterruptionState.kind})`,
     );
@@ -1116,7 +1116,7 @@ function runHeadlessStreaming(
     // appending a synthetic "Continue from where you left off." message.
     removeInterruptedMessage(mutableMessages, turnInterruptionState.message);
     enqueue({
-      mode: 'prompt',
+      mode: "prompt",
       value: turnInterruptionState.message.message.content,
       uuid: randomUUID(),
     });
@@ -1124,9 +1124,9 @@ function runHeadlessStreaming(
 
   const modelOptions = getModelOptions();
   const modelInfos = modelOptions.map((option) => {
-    const modelId = option.value === null ? 'default' : option.value;
+    const modelId = option.value === null ? "default" : option.value;
     const resolvedModel =
-      modelId === 'default' ? getDefaultMainLoopModel() : parseUserSpecifiedModel(modelId);
+      modelId === "default" ? getDefaultMainLoopModel() : parseUserSpecifiedModel(modelId);
     const hasEffort = modelSupportsEffort(resolvedModel);
     const hasAdaptiveThinking = modelSupportsAdaptiveThinking(resolvedModel);
     const hasFastMode = isFastModeSupportedByModel(option.value);
@@ -1139,7 +1139,7 @@ function runHeadlessStreaming(
         supportsEffort: true,
         supportedEffortLevels: modelSupportsMaxEffort(resolvedModel)
           ? [...EFFORT_LEVELS]
-          : EFFORT_LEVELS.filter((l) => l !== 'max'),
+          : EFFORT_LEVELS.filter((l) => l !== "max"),
       }),
       ...(hasAdaptiveThinking && { supportsAdaptiveThinking: true }),
       ...(hasFastMode && { supportsFastMode: true }),
@@ -1153,11 +1153,11 @@ function runHeadlessStreaming(
     mutableMessages.push(...breadcrumbs);
     for (const crumb of breadcrumbs) {
       if (
-        typeof crumb.message.content === 'string' &&
+        typeof crumb.message.content === "string" &&
         crumb.message.content.includes(`<${LOCAL_COMMAND_STDOUT_TAG}>`)
       ) {
         output.enqueue({
-          type: 'user',
+          type: "user",
           message: crumb.message,
           session_id: getSessionId(),
           parent_tool_use_id: null,
@@ -1185,11 +1185,11 @@ function runHeadlessStreaming(
    */
   function registerElicitationHandlers(clients: MCPServerConnection[]): void {
     for (const connection of clients) {
-      if (connection.type !== 'connected' || elicitationRegistered.has(connection.name)) {
+      if (connection.type !== "connected" || elicitationRegistered.has(connection.name)) {
         continue;
       }
       // Skip SDK MCP servers — elicitation flows through SdkControlClientTransport
-      if (connection.config.type === 'sdk') {
+      if (connection.config.type === "sdk") {
         continue;
       }
       const serverName = connection.name;
@@ -1203,9 +1203,9 @@ function runHeadlessStreaming(
             `Elicitation request received in print mode: ${jsonStringify(request)}`,
           );
 
-          const mode = request.params.mode === 'url' ? 'url' : 'form';
+          const mode = request.params.mode === "url" ? "url" : "form";
 
-          logEvent('tengu_mcp_elicitation_shown', {
+          logEvent("tengu_mcp_elicitation_shown", {
             mode: mode as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           });
 
@@ -1213,7 +1213,7 @@ function runHeadlessStreaming(
           const hookResponse = await runElicitationHooks(serverName, request.params, extra.signal);
           if (hookResponse) {
             logMCPDebug(serverName, `Elicitation resolved by hook: ${jsonStringify(hookResponse)}`);
-            logEvent('tengu_mcp_elicitation_response', {
+            logEvent("tengu_mcp_elicitation_response", {
               mode: mode as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
               action:
                 hookResponse.action as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -1222,14 +1222,14 @@ function runHeadlessStreaming(
           }
 
           // Delegate to SDK consumer via control protocol
-          const url = 'url' in request.params ? (request.params.url as string) : undefined;
+          const url = "url" in request.params ? (request.params.url as string) : undefined;
           const requestedSchema =
-            'requestedSchema' in request.params
+            "requestedSchema" in request.params
               ? (request.params.requestedSchema as Record<string, unknown> | undefined)
               : undefined;
 
           const elicitationId =
-            'elicitationId' in request.params
+            "elicitationId" in request.params
               ? (request.params.elicitationId as string | undefined)
               : undefined;
 
@@ -1251,7 +1251,7 @@ function runHeadlessStreaming(
             elicitationId,
           );
 
-          logEvent('tengu_mcp_elicitation_response', {
+          logEvent("tengu_mcp_elicitation_response", {
             mode: mode as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
             action: result.action as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           });
@@ -1266,11 +1266,11 @@ function runHeadlessStreaming(
             logMCPDebug(serverName, `Elicitation completion notification: ${elicitationId}`);
             void executeNotificationHooks({
               message: `MCP server "${serverName}" confirmed elicitation ${elicitationId} complete`,
-              notificationType: 'elicitation_complete',
+              notificationType: "elicitation_complete",
             });
             output.enqueue({
-              type: 'system',
-              subtype: 'elicitation_complete',
+              type: "system",
+              subtype: "elicitation_complete",
               mcp_server_name: serverName,
               elicitation_id: elicitationId,
               uuid: randomUUID(),
@@ -1300,12 +1300,12 @@ function runHeadlessStreaming(
       (name) => !currentServerNames.has(name),
     );
     // Check if any SDK clients are pending and need to be upgraded
-    const hasPendingSdkClients = sdkClients.some((c) => c.type === 'pending');
+    const hasPendingSdkClients = sdkClients.some((c) => c.type === "pending");
     // Check if any SDK clients failed their handshake and need to be retried.
     // Without this, a client that lands in 'failed' (e.g. handshake timeout on
     // a WS reconnect race) stays failed forever — its name satisfies the
     // connectedServerNames diff but it contributes zero tools.
-    const hasFailedSdkClients = sdkClients.some((c) => c.type === 'failed');
+    const hasFailedSdkClients = sdkClients.some((c) => c.type === "failed");
 
     const haveServersChanged =
       hasNewServers || hasRemovedServers || hasPendingSdkClients || hasFailedSdkClients;
@@ -1314,7 +1314,7 @@ function runHeadlessStreaming(
       // Clean up removed servers
       for (const client of sdkClients) {
         if (!currentServerNames.has(client.name)) {
-          if (client.type === 'connected') {
+          if (client.type === "connected") {
             await client.cleanup();
           }
         }
@@ -1372,7 +1372,7 @@ function runHeadlessStreaming(
         assembledTools,
         appState.toolPermissionContext.mode,
       ),
-      'name',
+      "name",
     );
     if (options.permissionPromptToolName) {
       allTools = allTools.filter(
@@ -1382,7 +1382,7 @@ function runHeadlessStreaming(
     const initJsonSchema = getInitJsonSchema();
     if (initJsonSchema && !options.jsonSchema) {
       const syntheticOutputResult = createSyntheticOutputTool(initJsonSchema);
-      if ('tool' in syntheticOutputResult) {
+      if ("tool" in syntheticOutputResult) {
         allTools = [...allTools, syntheticOutputResult.tool];
       }
     }
@@ -1410,7 +1410,7 @@ function runHeadlessStreaming(
     const startIndex = Math.min(bridgeLastForwardedIndex, mutableMessages.length);
     const newMessages = mutableMessages
       .slice(startIndex)
-      .filter((m) => m.type === 'user' || m.type === 'assistant');
+      .filter((m) => m.type === "user" || m.type === "assistant");
     bridgeLastForwardedIndex = mutableMessages.length;
     if (newMessages.length > 0) {
       bridgeHandle.writeMessages(newMessages);
@@ -1496,7 +1496,7 @@ function runHeadlessStreaming(
   function buildMcpServerStatuses(): McpServerStatus[] {
     const currentAppState = getAppState();
     const currentMcpClients = currentAppState.mcp.clients;
-    const allMcpTools = uniqBy([...currentAppState.mcp.tools, ...dynamicMcpState.tools], 'name');
+    const allMcpTools = uniqBy([...currentAppState.mcp.tools, ...dynamicMcpState.tools], "name");
     const existingNames = new Set([
       ...currentMcpClients.map((c) => c.name),
       ...sdkClients.map((c) => c.name),
@@ -1507,28 +1507,28 @@ function runHeadlessStreaming(
       ...dynamicMcpState.clients.filter((c) => !existingNames.has(c.name)),
     ].map((connection) => {
       let config;
-      if (connection.config.type === 'sse' || connection.config.type === 'http') {
+      if (connection.config.type === "sse" || connection.config.type === "http") {
         config = {
           type: connection.config.type,
           url: connection.config.url,
           headers: connection.config.headers,
           oauth: connection.config.oauth,
         };
-      } else if (connection.config.type === 'claudeai-proxy') {
+      } else if (connection.config.type === "claudeai-proxy") {
         config = {
-          type: 'claudeai-proxy' as const,
+          type: "claudeai-proxy" as const,
           url: connection.config.url,
           id: connection.config.id,
         };
-      } else if (connection.config.type === 'stdio' || connection.config.type === undefined) {
+      } else if (connection.config.type === "stdio" || connection.config.type === undefined) {
         config = {
-          type: 'stdio' as const,
+          type: "stdio" as const,
           command: connection.config.command,
           args: connection.config.args,
         };
       }
       const serverTools =
-        connection.type === 'connected'
+        connection.type === "connected"
           ? filterToolsByServer(allMcpTools, connection.name).map((tool) => ({
               name: tool.mcpInfo?.toolName ?? tool.name,
               annotations: {
@@ -1545,16 +1545,16 @@ function runHeadlessStreaming(
       // handler re-runs the full gate); just avoids dead buttons.
       let capabilities: { experimental?: Record<string, unknown> } | undefined;
       if (
-        (feature('KAIROS') || feature('KAIROS_CHANNELS')) &&
-        connection.type === 'connected' &&
+        (feature("KAIROS") || feature("KAIROS_CHANNELS")) &&
+        connection.type === "connected" &&
         connection.capabilities.experimental
       ) {
         const exp = { ...connection.capabilities.experimental };
         if (
-          exp['claude/channel'] &&
+          exp["claude/channel"] &&
           (!isChannelsEnabled() || !isChannelAllowlisted(connection.config.pluginSource))
         ) {
-          delete exp['claude/channel'];
+          delete exp["claude/channel"];
         }
         if (Object.keys(exp).length > 0) {
           capabilities = { experimental: exp };
@@ -1563,8 +1563,8 @@ function runHeadlessStreaming(
       return {
         name: connection.name,
         status: connection.type,
-        serverInfo: connection.type === 'connected' ? connection.serverInfo : undefined,
-        error: connection.type === 'failed' ? connection.error : undefined,
+        serverInfo: connection.type === "connected" ? connection.serverInfo : undefined,
+        error: connection.type === "failed" ? connection.error : undefined,
         config,
         scope: connection.config.scope,
         tools: serverTools,
@@ -1580,11 +1580,11 @@ function runHeadlessStreaming(
       // settings (fired in main.tsx preAction). downloadUserSettings() caches
       // its promise so this awaits the same in-flight request.
       await Promise.all([
-        feature('DOWNLOAD_USER_SETTINGS') &&
+        feature("DOWNLOAD_USER_SETTINGS") &&
         (isEnvTruthy(process.env.CLAUDE_CODE_REMOTE) || getIsRemoteMode())
-          ? withDiagnosticsTiming('headless_user_settings_download', () => downloadUserSettings())
+          ? withDiagnosticsTiming("headless_user_settings_download", () => downloadUserSettings())
           : Promise.resolve(),
-        withDiagnosticsTiming('headless_managed_settings_wait', () =>
+        withDiagnosticsTiming("headless_managed_settings_wait", () =>
           waitForRemoteManagedSettingsToLoad(),
         ),
       ]);
@@ -1650,7 +1650,7 @@ function runHeadlessStreaming(
     // settings applied — leaking policy-blocked agents into the init message.
     // See gh-23085: isBridgeEnabled() at Commander-definition time poisoned
     // the settings cache before setEligibility(true) ran.
-    const sdkAgents = currentAgents.filter((a) => a.source === 'flagSettings');
+    const sdkAgents = currentAgents.filter((a) => a.source === "flagSettings");
     currentAgents = [...freshAgentDefs.allAgents, ...sdkAgents];
   }
 
@@ -1666,16 +1666,16 @@ function runHeadlessStreaming(
       const type = config.type;
       if (
         type === undefined ||
-        type === 'stdio' ||
-        type === 'sse' ||
-        type === 'http' ||
-        type === 'sdk'
+        type === "stdio" ||
+        type === "sse" ||
+        type === "http" ||
+        type === "sdk"
       ) {
         supportedConfigs[name] = config;
       }
     }
     for (const [name, config] of Object.entries(sdkMcpConfigs)) {
-      if (config.type === 'sdk' && !(name in supportedConfigs)) {
+      if (config.type === "sdk" && !(name in supportedConfigs)) {
         supportedConfigs[name] = config;
       }
     }
@@ -1700,7 +1700,7 @@ function runHeadlessStreaming(
   // setTimeout(0) yields to the event loop so pending stdin messages
   // (interrupts, user messages) are processed before the tick fires.
   const scheduleProactiveTick =
-    feature('PROACTIVE') || feature('KAIROS')
+    feature("PROACTIVE") || feature("KAIROS")
       ? () => {
           setTimeout(() => {
             if (
@@ -1712,10 +1712,10 @@ function runHeadlessStreaming(
             }
             const tickContent = `<${TICK_TAG}>${new Date().toLocaleTimeString()}</${TICK_TAG}>`;
             enqueue({
-              mode: 'prompt' as const,
+              mode: "prompt" as const,
               value: tickContent,
               uuid: randomUUID(),
-              priority: 'later',
+              priority: "later",
               isMeta: true,
             });
             void run();
@@ -1725,8 +1725,8 @@ function runHeadlessStreaming(
 
   // Abort the current operation when a 'now' priority message arrives.
   subscribeToCommandQueue(() => {
-    if (abortController && getCommandsByMaxPriority('now').length > 0) {
-      abortController.abort('interrupt');
+    if (abortController && getCommandsByMaxPriority("now").length > 0) {
+      abortController.abort("interrupt");
     }
   });
 
@@ -1737,14 +1737,14 @@ function runHeadlessStreaming(
 
     running = true;
     runPhase = undefined;
-    notifySessionStateChanged('running');
+    notifySessionStateChanged("running");
     idleTimeout.stop();
 
-    headlessProfilerCheckpoint('run_entry');
+    headlessProfilerCheckpoint("run_entry");
     // TODO(custom-tool-refactor): Should move to the init message, like browser
 
     await updateSdkMcp();
-    headlessProfilerCheckpoint('after_updateSdkMcp');
+    headlessProfilerCheckpoint("after_updateSdkMcp");
 
     // Resolve deferred plugin installation (CLAUDE_CODE_SYNC_PLUGIN_INSTALL).
     // The promise was started eagerly so installation overlaps with other init.
@@ -1752,17 +1752,17 @@ function runHeadlessStreaming(
     // If CLAUDE_CODE_SYNC_PLUGIN_INSTALL_TIMEOUT_MS is set, races against that
     // deadline and proceeds without plugins on timeout (logging an error).
     if (pluginInstallPromise) {
-      const timeoutMs = parseInt(process.env.CLAUDE_CODE_SYNC_PLUGIN_INSTALL_TIMEOUT_MS || '', 10);
+      const timeoutMs = parseInt(process.env.CLAUDE_CODE_SYNC_PLUGIN_INSTALL_TIMEOUT_MS || "", 10);
       if (timeoutMs > 0) {
-        const timeout = sleep(timeoutMs).then(() => 'timeout' as const);
+        const timeout = sleep(timeoutMs).then(() => "timeout" as const);
         const result = await Promise.race([pluginInstallPromise, timeout]);
-        if (result === 'timeout') {
+        if (result === "timeout") {
           logError(
             new Error(
               `CLAUDE_CODE_SYNC_PLUGIN_INSTALL: plugin installation timed out after ${timeoutMs}ms`,
             ),
           );
-          logEvent('tengu_sync_plugin_install_timeout', {
+          logEvent("tengu_sync_plugin_install_timeout", {
             timeout_ms: timeoutMs,
           });
         }
@@ -1776,7 +1776,7 @@ function runHeadlessStreaming(
 
       // Set up hot-reload for plugin hooks now that the initial install is done.
       // In sync-install mode, setup.ts skips this to avoid racing with the install.
-      const { setupPluginHookHotReload } = await import('../utils/plugins/loadPluginHooks.js');
+      const { setupPluginHookHotReload } = await import("../utils/plugins/loadPluginHooks.js");
       setupPluginHookHotReload();
     }
 
@@ -1797,18 +1797,18 @@ function runHeadlessStreaming(
       const drainCommandQueue = async () => {
         while ((command = dequeue(isMainThread))) {
           if (
-            command.mode !== 'prompt' &&
-            command.mode !== 'orphaned-permission' &&
-            command.mode !== 'task-notification'
+            command.mode !== "prompt" &&
+            command.mode !== "orphaned-permission" &&
+            command.mode !== "task-notification"
           ) {
-            throw new Error('only prompt commands are supported in streaming mode');
+            throw new Error("only prompt commands are supported in streaming mode");
           }
 
           // Non-prompt commands (task-notification, orphaned-permission) carry
           // side effects or orphanedPermission state, so they process singly.
           // Prompt commands greedily collect followers with matching workload.
           const batch: QueuedCommand[] = [command];
-          if (command.mode === 'prompt') {
+          if (command.mode === "prompt") {
             while (canBatchWith(command, peek(isMainThread))) {
               batch.push(dequeue(isMainThread)!);
             }
@@ -1831,8 +1831,8 @@ function runHeadlessStreaming(
             for (const c of batch) {
               if (c.uuid && c.uuid !== command.uuid) {
                 output.enqueue({
-                  type: 'user',
-                  message: { role: 'user', content: c.value },
+                  type: "user",
+                  message: { role: "user", content: c.value },
                   session_id: getSessionId(),
                   parent_tool_use_id: null,
                   uuid: c.uuid,
@@ -1865,7 +1865,7 @@ function runHeadlessStreaming(
           const allTools = buildAllTools(appState);
 
           for (const uuid of batchUuids) {
-            notifyCommandLifecycle(uuid, 'started');
+            notifyCommandLifecycle(uuid, "started");
           }
 
           // Task notifications arrive when background agents complete.
@@ -1873,8 +1873,8 @@ function runHeadlessStreaming(
           // to ask() so the model sees the agent result and can act on it.
           // This matches TUI behavior where useQueueProcessor always feeds
           // notifications to the model regardless of coordinator mode.
-          if (command.mode === 'task-notification') {
-            const notificationText = typeof command.value === 'string' ? command.value : '';
+          if (command.mode === "task-notification") {
+            const notificationText = typeof command.value === "string" ? command.value : "";
             // Parse the XML-formatted notification
             const taskIdMatch = notificationText.match(/<task-id>([^<]+)<\/task-id>/);
             const toolUseIdMatch = notificationText.match(/<tool-use-id>([^<]+)<\/tool-use-id>/);
@@ -1884,17 +1884,17 @@ function runHeadlessStreaming(
 
             const isValidStatus = (
               s: string | undefined,
-            ): s is 'completed' | 'failed' | 'stopped' | 'killed' =>
-              s === 'completed' || s === 'failed' || s === 'stopped' || s === 'killed';
+            ): s is "completed" | "failed" | "stopped" | "killed" =>
+              s === "completed" || s === "failed" || s === "stopped" || s === "killed";
             const rawStatus = statusMatch?.[1];
             const status = isValidStatus(rawStatus)
-              ? rawStatus === 'killed'
-                ? 'stopped'
+              ? rawStatus === "killed"
+                ? "stopped"
                 : rawStatus
-              : 'completed';
+              : "completed";
 
             const usageMatch = notificationText.match(/<usage>([\s\S]*?)<\/usage>/);
-            const usageContent = usageMatch?.[1] ?? '';
+            const usageContent = usageMatch?.[1] ?? "";
             const totalTokensMatch = usageContent.match(/<total_tokens>(\d+)<\/total_tokens>/);
             const toolUsesMatch = usageContent.match(/<tool_uses>(\d+)<\/tool_uses>/);
             const durationMsMatch = usageContent.match(/<duration_ms>(\d+)<\/duration_ms>/);
@@ -1908,13 +1908,13 @@ function runHeadlessStreaming(
             // emitTaskTerminatedSdk, so skipping statusless events is safe.
             if (statusMatch) {
               output.enqueue({
-                type: 'system',
-                subtype: 'task_notification',
-                task_id: taskIdMatch?.[1] ?? '',
+                type: "system",
+                subtype: "task_notification",
+                task_id: taskIdMatch?.[1] ?? "",
                 tool_use_id: toolUseIdMatch?.[1],
                 status,
-                output_file: outputFileMatch?.[1] ?? '',
-                summary: summaryMatch?.[1] ?? '',
+                output_file: outputFileMatch?.[1] ?? "",
+                summary: summaryMatch?.[1] ?? "",
                 usage:
                   totalTokensMatch && toolUsesMatch
                     ? {
@@ -1932,8 +1932,8 @@ function runHeadlessStreaming(
 
           const input = command.value;
 
-          if (structuredIO instanceof RemoteIO && command.mode === 'prompt') {
-            logEvent('tengu_bridge_message_received', {
+          if (structuredIO instanceof RemoteIO && command.mode === "prompt") {
+            logEvent("tengu_bridge_message_received", {
               is_repl: false,
             });
           }
@@ -1944,17 +1944,17 @@ function runHeadlessStreaming(
           suggestionState.pendingSuggestion = null;
           suggestionState.pendingLastEmittedEntry = null;
           if (suggestionState.lastEmitted) {
-            if (command.mode === 'prompt') {
+            if (command.mode === "prompt") {
               // SDK user messages enqueue ContentBlockParam[], not a plain string
               const inputText =
-                typeof input === 'string'
+                typeof input === "string"
                   ? input
                   : (
-                      input.find((b) => b.type === 'text') as
-                        | { type: 'text'; text: string }
+                      input.find((b) => b.type === "text") as
+                        | { type: "text"; text: string }
                         | undefined
                     )?.text;
-              if (typeof inputText === 'string') {
+              if (typeof inputText === "string") {
                 logSuggestionOutcome(
                   suggestionState.lastEmitted.text,
                   inputText,
@@ -1968,9 +1968,9 @@ function runHeadlessStreaming(
           }
 
           abortController = createAbortController();
-          const turnStartTime = feature('FILE_PERSISTENCE') ? Date.now() : undefined;
+          const turnStartTime = feature("FILE_PERSISTENCE") ? Date.now() : undefined;
 
-          headlessProfilerCheckpoint('before_ask');
+          headlessProfilerCheckpoint("before_ask");
           startQueryProfile();
           // Per-iteration ALS context so bg agents spawned inside ask()
           // inherit workload across their detached awaits. In-process cron
@@ -1980,7 +1980,7 @@ function runHeadlessStreaming(
           const cmd = command;
           await runWithWorkload(cmd.workload ?? options.workload, async () => {
             for await (const message of ask({
-              commands: uniqBy([...currentCommands, ...appState.mcp.commands], 'name'),
+              commands: uniqBy([...currentCommands, ...appState.mcp.commands], "name"),
               prompt: input,
               promptUuid: cmd.uuid,
               isMeta: cmd.isMeta,
@@ -2026,14 +2026,14 @@ function runHeadlessStreaming(
                   elicitSignal,
                   params.mode,
                   params.url,
-                  'elicitationId' in params ? params.elicitationId : undefined,
+                  "elicitationId" in params ? params.elicitationId : undefined,
                 ),
               agents: currentAgents,
               orphanedPermission: cmd.orphanedPermission,
               setSDKStatus: (status) => {
                 output.enqueue({
-                  type: 'system',
-                  subtype: 'status',
+                  type: "system",
+                  subtype: "status",
                   status,
                   session_id: getSessionId(),
                   uuid: randomUUID(),
@@ -2045,7 +2045,7 @@ function runHeadlessStreaming(
               // while blocked on permission requests.
               forwardMessagesToBridge();
 
-              if (message.type === 'result') {
+              if (message.type === "result") {
                 // Flush pending SDK events so they appear before result on the stream.
                 for (const event of drainSdkEvents()) {
                   output.enqueue(event);
@@ -2056,7 +2056,7 @@ function runHeadlessStreaming(
                 if (
                   getRunningTasks(currentState).some(
                     (t) =>
-                      (t.type === 'local_agent' || t.type === 'local_workflow') &&
+                      (t.type === "local_agent" || t.type === "local_workflow") &&
                       isBackgroundTask(t),
                   )
                 ) {
@@ -2077,18 +2077,18 @@ function runHeadlessStreaming(
           }); // end runWithWorkload
 
           for (const uuid of batchUuids) {
-            notifyCommandLifecycle(uuid, 'completed');
+            notifyCommandLifecycle(uuid, "completed");
           }
 
           // Forward messages to bridge after each turn
           forwardMessagesToBridge();
           bridgeHandle?.sendResult();
 
-          if (feature('FILE_PERSISTENCE') && turnStartTime !== undefined) {
+          if (feature("FILE_PERSISTENCE") && turnStartTime !== undefined) {
             void executeFilePersistence(turnStartTime, abortController.signal, (result) => {
               output.enqueue({
-                type: 'system' as const,
-                subtype: 'files_persisted' as const,
+                type: "system" as const,
+                subtype: "files_persisted" as const,
                 files: result.files,
                 failed: result.failed,
                 processed_at: new Date().toISOString(),
@@ -2112,7 +2112,7 @@ function runHeadlessStreaming(
 
             const cacheSafeParams = getLastCacheSafeParams();
             if (!cacheSafeParams) {
-              logSuggestionSuppressed('sdk_no_params', undefined, undefined, 'sdk');
+              logSuggestionSuppressed("sdk_no_params", undefined, undefined, "sdk");
             } else {
               // Use a ref object so the IIFE's finally can compare against its own
               // promise without a self-reference (which upsets TypeScript's flow analysis).
@@ -2124,11 +2124,11 @@ function runHeadlessStreaming(
                     mutableMessages,
                     getAppState,
                     cacheSafeParams,
-                    'sdk',
+                    "sdk",
                   );
                   if (!result || localAbort.signal.aborted) return;
                   const suggestionMsg = {
-                    type: 'prompt_suggestion' as const,
+                    type: "prompt_suggestion" as const,
                     suggestion: result.suggestion,
                     uuid: randomUUID(),
                     session_id: getSessionId(),
@@ -2158,9 +2158,9 @@ function runHeadlessStreaming(
                 } catch (error) {
                   if (
                     error instanceof Error &&
-                    (error.name === 'AbortError' || error.name === 'APIUserAbortError')
+                    (error.name === "AbortError" || error.name === "APIUserAbortError")
                   ) {
-                    logSuggestionSuppressed('aborted', undefined, undefined, 'sdk');
+                    logSuggestionSuppressed("aborted", undefined, undefined, "sdk");
                     return;
                   }
                   logError(toError(error));
@@ -2191,7 +2191,7 @@ function runHeadlessStreaming(
           output.enqueue(event);
         }
 
-        runPhase = 'draining_commands';
+        runPhase = "draining_commands";
         await drainCommandQueue();
 
         // Check for running background tasks before exiting.
@@ -2206,13 +2206,13 @@ function runHeadlessStreaming(
         {
           const state = getAppState();
           const hasRunningBg = getRunningTasks(state).some(
-            (t) => isBackgroundTask(t) && t.type !== 'in_process_teammate',
+            (t) => isBackgroundTask(t) && t.type !== "in_process_teammate",
           );
           const hasMainThreadQueued = peek(isMainThread) !== undefined;
           if (hasRunningBg || hasMainThreadQueued) {
             waitingForAgents = true;
             if (!hasMainThreadQueued) {
-              runPhase = 'waiting_for_agents';
+              runPhase = "waiting_for_agents";
               // No commands ready yet, wait for tasks to complete
               await sleep(100);
             }
@@ -2242,8 +2242,8 @@ function runHeadlessStreaming(
       // Write directly to structuredIO to ensure immediate delivery
       try {
         await structuredIO.write({
-          type: 'result',
-          subtype: 'error_during_execution',
+          type: "result",
+          subtype: "error_during_execution",
           duration_ms: 0,
           duration_api_ms: 0,
           is_error: true,
@@ -2264,12 +2264,12 @@ function runHeadlessStreaming(
       gracefulShutdownSync(1);
       return;
     } finally {
-      runPhase = 'finally_flush';
+      runPhase = "finally_flush";
       // Flush pending internal events before going idle
       await structuredIO.flushInternalEvents();
-      runPhase = 'finally_post_flush';
+      runPhase = "finally_post_flush";
       if (!isShuttingDown()) {
-        notifySessionStateChanged('idle');
+        notifySessionStateChanged("idle");
         // Drain so the idle session_state_changed SDK event (plus any
         // terminal task_notification bookends emitted during bg-agent
         // teardown) reach the output stream before we block on the next
@@ -2287,7 +2287,7 @@ function runHeadlessStreaming(
 
     // Proactive tick: if proactive is active and queue is empty, inject a tick
     if (
-      (feature('PROACTIVE') || feature('KAIROS')) &&
+      (feature("PROACTIVE") || feature("KAIROS")) &&
       proactiveModule?.isProactiveActive() &&
       !proactiveModule.isProactivePaused()
     ) {
@@ -2315,7 +2315,7 @@ function runHeadlessStreaming(
       const teamContext = currentAppState.teamContext;
 
       if (teamContext && isTeamLead(teamContext)) {
-        const agentName = 'team-lead';
+        const agentName = "team-lead";
 
         // Poll for messages while teammates are active
         // This is needed because teammates may send messages while we're waiting
@@ -2331,7 +2331,7 @@ function runHeadlessStreaming(
               Object.keys(refreshedState.teamContext.teammates).length > 0);
 
           if (!hasActiveTeammates) {
-            logForDebugging('[print.ts] No more active teammates, stopping poll');
+            logForDebugging("[print.ts] No more active teammates, stopping poll");
             break;
           }
 
@@ -2368,7 +2368,7 @@ function runHeadlessStreaming(
                   logForDebugging(`[print.ts] Removed ${teammateToRemove} from team file`);
 
                   // Unassign tasks owned by this teammate
-                  await unassignTeammateTasks(teamName, teammateId, teammateToRemove, 'shutdown');
+                  await unassignTeammateTasks(teamName, teammateId, teammateToRemove, "shutdown");
 
                   // Remove from teamContext in AppState
                   setAppState((prev) => {
@@ -2391,13 +2391,13 @@ function runHeadlessStreaming(
             const formatted = unread
               .map(
                 (m: { from: string; text: string; color?: string }) =>
-                  `<${TEAMMATE_MESSAGE_TAG} teammate_id="${m.from}"${m.color ? ` color="${m.color}"` : ''}>\n${m.text}\n</${TEAMMATE_MESSAGE_TAG}>`,
+                  `<${TEAMMATE_MESSAGE_TAG} teammate_id="${m.from}"${m.color ? ` color="${m.color}"` : ""}>\n${m.text}\n</${TEAMMATE_MESSAGE_TAG}>`,
               )
-              .join('\n\n');
+              .join("\n\n");
 
             // Enqueue and process
             enqueue({
-              mode: 'prompt',
+              mode: "prompt",
               value: formatted,
               uuid: randomUUID(),
             });
@@ -2410,10 +2410,10 @@ function runHeadlessStreaming(
           if (inputClosed && !shutdownPromptInjected) {
             shutdownPromptInjected = true;
             logForDebugging(
-              '[print.ts] Input closed with active teammates, injecting shutdown prompt',
+              "[print.ts] Input closed with active teammates, injecting shutdown prompt",
             );
             enqueue({
-              mode: 'prompt',
+              mode: "prompt",
               value: SHUTDOWN_TEAM_PROMPT,
               uuid: randomUUID(),
             });
@@ -2448,7 +2448,7 @@ function runHeadlessStreaming(
       if (hasActiveSwarm) {
         // Team members are idle or pane-based - inject prompt to shut down team
         enqueue({
-          mode: 'prompt',
+          mode: "prompt",
           value: SHUTDOWN_TEAM_PROMPT,
           uuid: randomUUID(),
         });
@@ -2471,9 +2471,9 @@ function runHeadlessStreaming(
 
   // Set up UDS inbox callback so the query loop is kicked off
   // when a message arrives via the UDS socket in headless mode.
-  if (feature('UDS_INBOX')) {
+  if (feature("UDS_INBOX")) {
     /* eslint-disable @typescript-eslint/no-require-imports */
-    const { setOnEnqueue } = require('../utils/udsMessaging.js');
+    const { setOnEnqueue } = require("../utils/udsMessaging.js");
     /* eslint-enable @typescript-eslint/no-require-imports */
     setOnEnqueue(() => {
       if (!inputClosed) {
@@ -2488,16 +2488,16 @@ function runHeadlessStreaming(
   // that drains on enqueue while idle. The run() mutex makes this safe
   // during an active turn: the call no-ops and the post-run recheck at
   // the end of run() picks up the queued command.
-  let cronScheduler: import('../utils/cronScheduler.js').CronScheduler | null = null;
-  if (feature('AGENT_TRIGGERS') && cronSchedulerModule && cronGate?.isKairosCronEnabled()) {
+  let cronScheduler: import("../utils/cronScheduler.js").CronScheduler | null = null;
+  if (feature("AGENT_TRIGGERS") && cronSchedulerModule && cronGate?.isKairosCronEnabled()) {
     cronScheduler = cronSchedulerModule.createCronScheduler({
       onFire: (prompt) => {
         if (inputClosed) return;
         enqueue({
-          mode: 'prompt',
+          mode: "prompt",
           value: prompt,
           uuid: randomUUID(),
-          priority: 'later',
+          priority: "later",
           // System-generated — matches useScheduledTasks.ts REPL equivalent.
           // Without this, messages.ts metaProp eval is {} → prompt leaks
           // into visible transcript when cron fires mid-turn in -p mode.
@@ -2522,9 +2522,9 @@ function runHeadlessStreaming(
     response?: Record<string, unknown>,
   ) => {
     output.enqueue({
-      type: 'control_response',
+      type: "control_response",
       response: {
-        subtype: 'success',
+        subtype: "success",
         request_id: message.request_id,
         response: response,
       },
@@ -2533,9 +2533,9 @@ function runHeadlessStreaming(
 
   const sendControlResponseError = (message: SDKControlRequest, errorMessage: string) => {
     output.enqueue({
-      type: 'control_response',
+      type: "control_response",
       response: {
-        subtype: 'error',
+        subtype: "error",
         request_id: message.request_id,
         error: errorMessage,
       },
@@ -2590,21 +2590,21 @@ function runHeadlessStreaming(
   // the last generation of the queue has complete.
   void (async () => {
     let initialized = false;
-    logForDiagnosticsNoPII('info', 'cli_message_loop_started');
+    logForDiagnosticsNoPII("info", "cli_message_loop_started");
     for await (const message of structuredIO.structuredInput) {
       // Non-user events are handled inline (no queue). started→completed in
       // the same tick carries no information, so only fire completed.
       // control_response is reported by StructuredIO.processLine (which also
       // sees orphans that never yield here).
-      const eventId = 'uuid' in message ? message.uuid : undefined;
-      if (eventId && message.type !== 'user' && message.type !== 'control_response') {
-        notifyCommandLifecycle(eventId, 'completed');
+      const eventId = "uuid" in message ? message.uuid : undefined;
+      if (eventId && message.type !== "user" && message.type !== "control_response") {
+        notifyCommandLifecycle(eventId, "completed");
       }
 
-      if (message.type === 'control_request') {
-        if (message.request.subtype === 'interrupt') {
+      if (message.type === "control_request") {
+        if (message.request.subtype === "interrupt") {
           // Track escapes for attribution (ant-only feature)
-          if (feature('COMMIT_ATTRIBUTION')) {
+          if (feature("COMMIT_ATTRIBUTION")) {
             setAppState((prev) => ({
               ...prev,
               attribution: {
@@ -2621,9 +2621,9 @@ function runHeadlessStreaming(
           suggestionState.lastEmitted = null;
           suggestionState.pendingSuggestion = null;
           sendControlResponseSuccess(message);
-        } else if (message.request.subtype === 'end_session') {
+        } else if (message.request.subtype === "end_session") {
           logForDebugging(
-            `[print.ts] end_session received, reason=${message.request.reason ?? 'unspecified'}`,
+            `[print.ts] end_session received, reason=${message.request.reason ?? "unspecified"}`,
           );
           if (abortController) {
             abortController.abort();
@@ -2634,7 +2634,7 @@ function runHeadlessStreaming(
           suggestionState.pendingSuggestion = null;
           sendControlResponseSuccess(message);
           break; // exits for-await → falls through to inputClosed=true drain below
-        } else if (message.request.subtype === 'initialize') {
+        } else if (message.request.subtype === "initialize") {
           // SDK MCP server names from the initialize message
           // Populated by both browser and ProcessTransport sessions
           if (message.request.sdkMcpServers && message.request.sdkMcpServers.length > 0) {
@@ -2642,7 +2642,7 @@ function runHeadlessStreaming(
               // Create placeholder config for SDK MCP servers
               // The actual server connection is managed by the SDK Query class
               sdkMcpConfigs[serverName] = {
-                type: 'sdk',
+                type: "sdk",
                 name: serverName,
               };
             }
@@ -2674,7 +2674,7 @@ function runHeadlessStreaming(
 
           if (
             message.request.agentProgressSummaries &&
-            getFeatureValue_CACHED_MAY_BE_STALE('tengu_slate_prism', true)
+            getFeatureValue_CACHED_MAY_BE_STALE("tengu_slate_prism", true)
           ) {
             setSdkAgentProgressSummariesEnabled(true);
           }
@@ -2686,7 +2686,7 @@ function runHeadlessStreaming(
           if (hasCommandsInQueue()) {
             void run();
           }
-        } else if (message.request.subtype === 'set_permission_mode') {
+        } else if (message.request.subtype === "set_permission_mode") {
           const m = message.request; // for typescript (TODO: use readonly types to avoid this)
           setAppState((prev) => ({
             ...prev,
@@ -2701,32 +2701,32 @@ function runHeadlessStreaming(
           // handleSetPermissionMode sends the control_response; the
           // notifySessionMetadataChanged that used to follow here is
           // now fired by onChangeAppState (with externalized mode name).
-        } else if (message.request.subtype === 'set_model') {
-          const requestedModel = message.request.model ?? 'default';
-          const model = requestedModel === 'default' ? getDefaultMainLoopModel() : requestedModel;
+        } else if (message.request.subtype === "set_model") {
+          const requestedModel = message.request.model ?? "default";
+          const model = requestedModel === "default" ? getDefaultMainLoopModel() : requestedModel;
           activeUserSpecifiedModel = model;
           setMainLoopModelOverride(model);
           notifySessionMetadataChanged({ model });
           injectModelSwitchBreadcrumbs(requestedModel, model);
 
           sendControlResponseSuccess(message);
-        } else if (message.request.subtype === 'set_max_thinking_tokens') {
+        } else if (message.request.subtype === "set_max_thinking_tokens") {
           if (message.request.max_thinking_tokens === null) {
             options.thinkingConfig = undefined;
           } else if (message.request.max_thinking_tokens === 0) {
-            options.thinkingConfig = { type: 'disabled' };
+            options.thinkingConfig = { type: "disabled" };
           } else {
             options.thinkingConfig = {
-              type: 'enabled',
+              type: "enabled",
               budgetTokens: message.request.max_thinking_tokens,
             };
           }
           sendControlResponseSuccess(message);
-        } else if (message.request.subtype === 'mcp_status') {
+        } else if (message.request.subtype === "mcp_status") {
           sendControlResponseSuccess(message, {
             mcpServers: buildMcpServerStatuses(),
           });
-        } else if (message.request.subtype === 'get_context_usage') {
+        } else if (message.request.subtype === "get_context_usage") {
           try {
             const appState = getAppState();
             const data = await collectContextData({
@@ -2744,7 +2744,7 @@ function runHeadlessStreaming(
           } catch (error) {
             sendControlResponseError(message, errorMessage(error));
           }
-        } else if (message.request.subtype === 'mcp_message') {
+        } else if (message.request.subtype === "mcp_message") {
           // Handle MCP notifications from SDK servers
           const mcpRequest = message.request;
           const sdkClient = sdkClients.find((client) => client.name === mcpRequest.server_name);
@@ -2752,13 +2752,13 @@ function runHeadlessStreaming(
           // placeholder clients with null client until updateSdkMcp() runs
           if (
             sdkClient &&
-            sdkClient.type === 'connected' &&
+            sdkClient.type === "connected" &&
             sdkClient.client?.transport?.onmessage
           ) {
             sdkClient.client.transport.onmessage(mcpRequest.message);
           }
           sendControlResponseSuccess(message);
-        } else if (message.request.subtype === 'rewind_files') {
+        } else if (message.request.subtype === "rewind_files") {
           const appState = getAppState();
           const result = await handleRewindFiles(
             message.request.user_message_id as UUID,
@@ -2769,15 +2769,15 @@ function runHeadlessStreaming(
           if (result.canRewind || message.request.dry_run) {
             sendControlResponseSuccess(message, result);
           } else {
-            sendControlResponseError(message, result.error ?? 'Unexpected error');
+            sendControlResponseError(message, result.error ?? "Unexpected error");
           }
-        } else if (message.request.subtype === 'cancel_async_message') {
+        } else if (message.request.subtype === "cancel_async_message") {
           const targetUuid = message.request.message_uuid;
           const removed = dequeueAllMatching((cmd) => cmd.uuid === targetUuid);
           sendControlResponseSuccess(message, {
             cancelled: removed.length > 0,
           });
-        } else if (message.request.subtype === 'seed_read_state') {
+        } else if (message.request.subtype === "seed_read_state") {
           // Client observed a Read that was later removed from context (e.g.
           // by snip), so transcript-based seeding missed it. Queued into
           // pendingSeeds; applied at the next clone-replace boundary.
@@ -2796,14 +2796,14 @@ function runHeadlessStreaming(
             // Math.floor matches FileReadTool and getFileModificationTime.
             const diskMtime = Math.floor((await stat(normalizedPath)).mtimeMs);
             if (diskMtime <= message.request.mtime) {
-              const raw = await readFile(normalizedPath, 'utf-8');
+              const raw = await readFile(normalizedPath, "utf-8");
               // Strip BOM + normalize CRLF→LF to match readFileInRange and
               // readFileSyncWithMetadata. FileEditTool's content-compare
               // fallback (for Windows mtime bumps without content change)
               // compares against LF-normalized disk reads.
               const content = (raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw).replaceAll(
-                '\r\n',
-                '\n',
+                "\r\n",
+                "\n",
               );
               pendingSeeds.set(normalizedPath, {
                 content,
@@ -2816,7 +2816,7 @@ function runHeadlessStreaming(
             // ENOENT etc — skip seeding but still succeed
           }
           sendControlResponseSuccess(message);
-        } else if (message.request.subtype === 'mcp_set_servers') {
+        } else if (message.request.subtype === "mcp_set_servers") {
           const { response, sdkServersChanged } = await applyMcpServerChanges(
             message.request.servers,
           );
@@ -2826,43 +2826,43 @@ function runHeadlessStreaming(
           if (sdkServersChanged) {
             void updateSdkMcp();
           }
-        } else if (message.request.subtype === 'reload_plugins') {
+        } else if (message.request.subtype === "reload_plugins") {
           try {
             if (
-              feature('DOWNLOAD_USER_SETTINGS') &&
+              feature("DOWNLOAD_USER_SETTINGS") &&
               (isEnvTruthy(process.env.CLAUDE_CODE_REMOTE) || getIsRemoteMode())
             ) {
               // Re-pull user settings so enabledPlugins pushed from the
               // user's local CLI take effect before the cache sweep.
               const applied = await redownloadUserSettings();
               if (applied) {
-                settingsChangeDetector.notifyChange('userSettings');
+                settingsChangeDetector.notifyChange("userSettings");
               }
             }
 
             const r = await refreshActivePlugins(setAppState);
 
-            const sdkAgents = currentAgents.filter((a) => a.source === 'flagSettings');
+            const sdkAgents = currentAgents.filter((a) => a.source === "flagSettings");
             currentAgents = [...r.agentDefinitions.allAgents, ...sdkAgents];
 
             // Reload succeeded — gather response data best-effort so a
             // read failure doesn't mask the successful state change.
             // allSettled so one failure doesn't discard the others.
-            let plugins: SDKControlReloadPluginsResponse['plugins'] = [];
+            let plugins: SDKControlReloadPluginsResponse["plugins"] = [];
             const [cmdsR, mcpR, pluginsR] = await Promise.allSettled([
               getCommands(cwd()),
               applyPluginMcpDiff(),
               loadAllPluginsCacheOnly(),
             ]);
-            if (cmdsR.status === 'fulfilled') {
+            if (cmdsR.status === "fulfilled") {
               currentCommands = cmdsR.value;
             } else {
               logError(cmdsR.reason);
             }
-            if (mcpR.status === 'rejected') {
+            if (mcpR.status === "rejected") {
               logError(mcpR.reason);
             }
-            if (pluginsR.status === 'fulfilled') {
+            if (pluginsR.status === "fulfilled") {
               plugins = pluginsR.value.enabled.map((p) => ({
                 name: p.name,
                 path: p.path,
@@ -2878,12 +2878,12 @@ function runHeadlessStreaming(
                 .map((cmd) => ({
                   name: getCommandName(cmd),
                   description: formatDescriptionWithSource(cmd),
-                  argumentHint: cmd.argumentHint || '',
+                  argumentHint: cmd.argumentHint || "",
                 })),
               agents: currentAgents.map((a) => ({
                 name: a.agentType,
                 description: a.whenToUse,
-                model: a.model === 'inherit' ? undefined : a.model,
+                model: a.model === "inherit" ? undefined : a.model,
               })),
               plugins,
               mcpServers: buildMcpServerStatuses(),
@@ -2892,7 +2892,7 @@ function runHeadlessStreaming(
           } catch (error) {
             sendControlResponseError(message, errorMessage(error));
           }
-        } else if (message.request.subtype === 'mcp_reconnect') {
+        } else if (message.request.subtype === "mcp_reconnect") {
           const currentAppState = getAppState();
           const { serverName } = message.request;
           elicitationRegistered.delete(serverName);
@@ -2946,19 +2946,19 @@ function runHeadlessStreaming(
                 ...result.tools,
               ],
             };
-            if (result.client.type === 'connected') {
+            if (result.client.type === "connected") {
               registerElicitationHandlers([result.client]);
               reregisterChannelHandlerAfterReconnect(result.client);
               sendControlResponseSuccess(message);
             } else {
               const errorMessage =
-                result.client.type === 'failed'
-                  ? (result.client.error ?? 'Connection failed')
+                result.client.type === "failed"
+                  ? (result.client.error ?? "Connection failed")
                   : `Server status: ${result.client.type}`;
               sendControlResponseError(message, errorMessage);
             }
           }
-        } else if (message.request.subtype === 'mcp_toggle') {
+        } else if (message.request.subtype === "mcp_toggle") {
           const currentAppState = getAppState();
           const { serverName, enabled } = message.request;
           elicitationRegistered.delete(serverName);
@@ -2984,7 +2984,7 @@ function runHeadlessStreaming(
               ...dynamicMcpState.clients,
               ...currentAppState.mcp.clients,
             ].find((c) => c.name === serverName);
-            if (client && client.type === 'connected') {
+            if (client && client.type === "connected") {
               await clearServerCache(serverName, config);
             }
             // Update appState.mcp to reflect disabled status and remove tools/commands/resources
@@ -2995,7 +2995,7 @@ function runHeadlessStreaming(
                 ...prev.mcp,
                 clients: prev.mcp.clients.map((c) =>
                   c.name === serverName
-                    ? { name: serverName, type: 'disabled' as const, config }
+                    ? { name: serverName, type: "disabled" as const, config }
                     : c,
                 ),
                 tools: reject(prev.mcp.tools, (t) => t.name?.startsWith(prefix)),
@@ -3030,19 +3030,19 @@ function runHeadlessStreaming(
                     : omit(prev.mcp.resources, serverName),
               },
             }));
-            if (result.client.type === 'connected') {
+            if (result.client.type === "connected") {
               registerElicitationHandlers([result.client]);
               reregisterChannelHandlerAfterReconnect(result.client);
               sendControlResponseSuccess(message);
             } else {
               const errorMessage =
-                result.client.type === 'failed'
-                  ? (result.client.error ?? 'Connection failed')
+                result.client.type === "failed"
+                  ? (result.client.error ?? "Connection failed")
                   : `Server status: ${result.client.type}`;
               sendControlResponseError(message, errorMessage);
             }
           }
-        } else if (message.request.subtype === 'channel_enable') {
+        } else if (message.request.subtype === "channel_enable") {
           const currentAppState = getAppState();
           handleChannelEnable(
             message.request_id,
@@ -3051,7 +3051,7 @@ function runHeadlessStreaming(
             [...currentAppState.mcp.clients, ...sdkClients, ...dynamicMcpState.clients],
             output,
           );
-        } else if (message.request.subtype === 'mcp_authenticate') {
+        } else if (message.request.subtype === "mcp_authenticate") {
           const { serverName } = message.request;
           const currentAppState = getAppState();
           const config =
@@ -3061,7 +3061,7 @@ function runHeadlessStreaming(
             null;
           if (!config) {
             sendControlResponseError(message, `Server not found: ${serverName}`);
-          } else if (config.type !== 'sse' && config.type !== 'http') {
+          } else if (config.type !== "sse" && config.type !== "http") {
             sendControlResponseError(
               message,
               `Server type "${config.type}" does not support OAuth authentication`,
@@ -3174,7 +3174,7 @@ function runHeadlessStreaming(
                 })
                 .catch((error) => {
                   logForDebugging(`MCP OAuth failed for ${serverName}: ${error}`, {
-                    level: 'error',
+                    level: "error",
                   });
                 })
                 .finally(() => {
@@ -3191,7 +3191,7 @@ function runHeadlessStreaming(
               sendControlResponseError(message, errorMessage(error));
             }
           }
-        } else if (message.request.subtype === 'mcp_oauth_callback_url') {
+        } else if (message.request.subtype === "mcp_oauth_callback_url") {
           const { serverName, callbackUrl } = message.request;
           const submit = oauthCallbackSubmitters.get(serverName);
           if (submit) {
@@ -3202,14 +3202,14 @@ function runHeadlessStreaming(
             let hasCodeOrError = false;
             try {
               const parsed = new URL(callbackUrl);
-              hasCodeOrError = parsed.searchParams.has('code') || parsed.searchParams.has('error');
+              hasCodeOrError = parsed.searchParams.has("code") || parsed.searchParams.has("error");
             } catch {
               // Invalid URL
             }
             if (!hasCodeOrError) {
               sendControlResponseError(
                 message,
-                'Invalid callback URL: missing authorization code. Please paste the full redirect URL including the code parameter.',
+                "Invalid callback URL: missing authorization code. Please paste the full redirect URL including the code parameter.",
               );
             } else {
               oauthManualCallbackUsed.add(serverName);
@@ -3225,7 +3225,7 @@ function runHeadlessStreaming(
                 } catch (error) {
                   sendControlResponseError(
                     message,
-                    error instanceof Error ? error.message : 'OAuth authentication failed',
+                    error instanceof Error ? error.message : "OAuth authentication failed",
                   );
                 }
               } else {
@@ -3235,7 +3235,7 @@ function runHeadlessStreaming(
           } else {
             sendControlResponseError(message, `No active OAuth flow for server: ${serverName}`);
           }
-        } else if (message.request.subtype === 'claude_authenticate') {
+        } else if (message.request.subtype === "claude_authenticate") {
           // Anthropic OAuth over the control channel. The SDK client owns
           // the user's browser (we're headless in -p mode); we hand back
           // both URLs and wait. Automatic URL → localhost listener catches
@@ -3250,7 +3250,7 @@ function runHeadlessStreaming(
           // is GC'd — no fd or port is held.
           claudeOAuth?.service.cleanup();
 
-          logEvent('tengu_oauth_flow_start', {
+          logEvent("tengu_oauth_flow_start", {
             loginWithClaudeAi: loginWithClaudeAi ?? true,
           });
 
@@ -3282,7 +3282,7 @@ function runHeadlessStreaming(
               // getClaudeAIOAuthTokens in this process is invalidated; the
               // next API call re-reads keychain/file and works. No respawn.
               await installOAuthTokens(tokens);
-              logEvent('tengu_oauth_success', {
+              logEvent("tengu_oauth_success", {
                 loginWithClaudeAi: loginWithClaudeAi ?? true,
               });
             })
@@ -3301,7 +3301,7 @@ function runHeadlessStreaming(
           // path and surfaces the real error to the client.
           void flow.catch((err) =>
             logForDebugging(`claude_authenticate flow ended: ${err}`, {
-              level: 'info',
+              level: "info",
             }),
           );
 
@@ -3314,7 +3314,7 @@ function runHeadlessStreaming(
             const { manualUrl, automaticUrl } = await Promise.race([
               urlPromise,
               flow.then(() => {
-                throw new Error('OAuth flow completed without producing auth URLs');
+                throw new Error("OAuth flow completed without producing auth URLs");
               }),
             ]);
             sendControlResponseSuccess(message, {
@@ -3325,16 +3325,16 @@ function runHeadlessStreaming(
             sendControlResponseError(message, errorMessage(error));
           }
         } else if (
-          message.request.subtype === 'claude_oauth_callback' ||
-          message.request.subtype === 'claude_oauth_wait_for_completion'
+          message.request.subtype === "claude_oauth_callback" ||
+          message.request.subtype === "claude_oauth_wait_for_completion"
         ) {
           if (!claudeOAuth) {
-            sendControlResponseError(message, 'No active claude_authenticate flow');
+            sendControlResponseError(message, "No active claude_authenticate flow");
           } else {
             // Inject the manual code synchronously — must happen in stdin
             // message order so a subsequent claude_authenticate doesn't
             // replace the service before this code lands.
-            if (message.request.subtype === 'claude_oauth_callback') {
+            if (message.request.subtype === "claude_oauth_callback") {
               claudeOAuth.service.handleManualAuthCodeInput({
                 authorizationCode: message.request.authorizationCode,
                 state: message.request.state,
@@ -3363,7 +3363,7 @@ function runHeadlessStreaming(
               (error: unknown) => sendControlResponseError(message, errorMessage(error)),
             );
           }
-        } else if (message.request.subtype === 'mcp_clear_auth') {
+        } else if (message.request.subtype === "mcp_clear_auth") {
           const { serverName } = message.request;
           const currentAppState = getAppState();
           const config =
@@ -3373,7 +3373,7 @@ function runHeadlessStreaming(
             null;
           if (!config) {
             sendControlResponseError(message, `Server not found: ${serverName}`);
-          } else if (config.type !== 'sse' && config.type !== 'http') {
+          } else if (config.type !== "sse" && config.type !== "http") {
             sendControlResponseError(message, `Cannot clear auth for server type "${config.type}"`);
           } else {
             await revokeServerTokens(serverName, config);
@@ -3403,7 +3403,7 @@ function runHeadlessStreaming(
             }));
             sendControlResponseSuccess(message, {});
           }
-        } else if (message.request.subtype === 'apply_flag_settings') {
+        } else if (message.request.subtype === "apply_flag_settings") {
           // Snapshot the current model before applying — we need to detect
           // model switches so we can inject breadcrumbs and notify listeners.
           const prevModel = getMainLoopModel();
@@ -3433,7 +3433,7 @@ function runHeadlessStreaming(
           // Bonus: going through notifyChange also tells the other subscribers
           // (loadPluginHooks, sandbox-adapter) about the change, which the
           // previous direct call skipped.
-          settingsChangeDetector.notifyChange('flagSettings');
+          settingsChangeDetector.notifyChange("flagSettings");
 
           // If the incoming settings include a model change, update the
           // override so getMainLoopModel() reflects it. The override has
@@ -3441,7 +3441,7 @@ function runHeadlessStreaming(
           // getUserSpecifiedModelSetting(), so without this update,
           // getMainLoopModel() returns the stale override and the model
           // change is silently ignored (matching set_model at :2811).
-          if ('model' in incoming) {
+          if ("model" in incoming) {
             if (incoming.model != null) {
               setMainLoopModelOverride(String(incoming.model));
             } else {
@@ -3454,13 +3454,13 @@ function runHeadlessStreaming(
           const newModel = getMainLoopModel();
           if (newModel !== prevModel) {
             activeUserSpecifiedModel = newModel;
-            const modelArg = incoming.model ? String(incoming.model) : 'default';
+            const modelArg = incoming.model ? String(incoming.model) : "default";
             notifySessionMetadataChanged({ model: newModel });
             injectModelSwitchBreadcrumbs(modelArg, newModel);
           }
 
           sendControlResponseSuccess(message);
-        } else if (message.request.subtype === 'get_settings') {
+        } else if (message.request.subtype === "get_settings") {
           const currentAppState = getAppState();
           const model = getMainLoopModel();
           // modelSupportsEffort gate matches claude.ts — applied.effort must
@@ -3473,10 +3473,10 @@ function runHeadlessStreaming(
             applied: {
               model,
               // Numeric effort (ant-only) → null; SDK schema is string-level only.
-              effort: typeof effort === 'string' ? effort : null,
+              effort: typeof effort === "string" ? effort : null,
             },
           });
-        } else if (message.request.subtype === 'stop_task') {
+        } else if (message.request.subtype === "stop_task") {
           const { task_id: taskId } = message.request;
           try {
             await stopTask(taskId, {
@@ -3487,7 +3487,7 @@ function runHeadlessStreaming(
           } catch (error) {
             sendControlResponseError(message, errorMessage(error));
           }
-        } else if (message.request.subtype === 'generate_session_title') {
+        } else if (message.request.subtype === "generate_session_title") {
           // Fire-and-forget so the Haiku call does not block the stdin loop
           // (which would delay processing of subsequent user messages /
           // interrupts for the duration of the API roundtrip).
@@ -3519,7 +3519,7 @@ function runHeadlessStreaming(
               sendControlResponseError(message, errorMessage(e));
             }
           })();
-        } else if (message.request.subtype === 'side_question') {
+        } else if (message.request.subtype === "side_question") {
           // Same fire-and-forget pattern as generate_session_title above —
           // the forked agent's API roundtrip must not block the stdin loop.
           //
@@ -3580,8 +3580,8 @@ function runHeadlessStreaming(
             }
           })();
         } else if (
-          (feature('PROACTIVE') || feature('KAIROS')) &&
-          (message.request as { subtype: string }).subtype === 'set_proactive'
+          (feature("PROACTIVE") || feature("KAIROS")) &&
+          (message.request as { subtype: string }).subtype === "set_proactive"
         ) {
           const req = message.request as unknown as {
             subtype: string;
@@ -3589,14 +3589,14 @@ function runHeadlessStreaming(
           };
           if (req.enabled) {
             if (!proactiveModule?.isProactiveActive()) {
-              proactiveModule?.activateProactive('command');
+              proactiveModule?.activateProactive("command");
               scheduleProactiveTick?.();
             }
           } else {
             proactiveModule?.deactivateProactive();
           }
           sendControlResponseSuccess(message);
-        } else if (message.request.subtype === 'remote_control') {
+        } else if (message.request.subtype === "remote_control") {
           if (message.request.enabled) {
             if (bridgeHandle) {
               // Already connected
@@ -3619,7 +3619,7 @@ function runHeadlessStreaming(
               // instead of a generic "initialization failed".
               let bridgeFailureDetail: string | undefined;
               try {
-                const { initReplBridge } = await import('src/bridge/initReplBridge.js');
+                const { initReplBridge } = await import("src/bridge/initReplBridge.js");
                 const handle = await initReplBridge({
                   onInboundMessage(msg) {
                     const fields = extractInboundMessageFields(msg);
@@ -3627,7 +3627,7 @@ function runHeadlessStreaming(
                     const { content, uuid } = fields;
                     enqueue({
                       value: content,
-                      mode: 'prompt' as const,
+                      mode: "prompt" as const,
                       uuid,
                       skipSlashCommands: true,
                     });
@@ -3643,7 +3643,7 @@ function runHeadlessStreaming(
                     abortController?.abort();
                   },
                   onSetModel(model) {
-                    const resolved = model === 'default' ? getDefaultMainLoopModel() : model;
+                    const resolved = model === "default" ? getDefaultMainLoopModel() : model;
                     activeUserSpecifiedModel = resolved;
                     setMainLoopModelOverride(resolved);
                   },
@@ -3651,24 +3651,24 @@ function runHeadlessStreaming(
                     if (maxTokens === null) {
                       options.thinkingConfig = undefined;
                     } else if (maxTokens === 0) {
-                      options.thinkingConfig = { type: 'disabled' };
+                      options.thinkingConfig = { type: "disabled" };
                     } else {
                       options.thinkingConfig = {
-                        type: 'enabled',
+                        type: "enabled",
                         budgetTokens: maxTokens,
                       };
                     }
                   },
                   onStateChange(state, detail) {
-                    if (state === 'failed') {
+                    if (state === "failed") {
                       bridgeFailureDetail = detail;
                     }
                     logForDebugging(
-                      `[bridge:sdk] State change: ${state}${detail ? ` — ${detail}` : ''}`,
+                      `[bridge:sdk] State change: ${state}${detail ? ` — ${detail}` : ""}`,
                     );
                     output.enqueue({
-                      type: 'system' as StdoutMessage['type'],
-                      subtype: 'bridge_state' as string,
+                      type: "system" as StdoutMessage["type"],
+                      subtype: "bridge_state" as string,
                       state,
                       detail,
                       uuid: randomUUID(),
@@ -3680,7 +3680,7 @@ function runHeadlessStreaming(
                 if (!handle) {
                   sendControlResponseError(
                     message,
-                    bridgeFailureDetail ?? 'Remote Control initialization failed',
+                    bridgeFailureDetail ?? "Remote Control initialization failed",
                   );
                 } else {
                   bridgeHandle = handle;
@@ -3729,32 +3729,32 @@ function runHeadlessStreaming(
           );
         }
         continue;
-      } else if (message.type === 'control_response') {
+      } else if (message.type === "control_response") {
         // Replay control_response messages when replay mode is enabled
         if (options.replayUserMessages) {
           output.enqueue(message);
         }
         continue;
-      } else if (message.type === 'keep_alive') {
+      } else if (message.type === "keep_alive") {
         // Silently ignore keep-alive messages
         continue;
-      } else if (message.type === 'update_environment_variables') {
+      } else if (message.type === "update_environment_variables") {
         // Handled in structuredIO.ts, but TypeScript needs the type guard
         continue;
-      } else if (message.type === 'assistant' || message.type === 'system') {
+      } else if (message.type === "assistant" || message.type === "system") {
         // History replay from bridge: inject into mutableMessages as
         // conversation context so the model sees prior turns.
         const internalMsgs = toInternalMessages([message]);
         mutableMessages.push(...internalMsgs);
         // Echo assistant messages back so CCR displays them
-        if (message.type === 'assistant' && options.replayUserMessages) {
+        if (message.type === "assistant" && options.replayUserMessages) {
           output.enqueue(message);
         }
         continue;
       }
       // After handling control, keep-alive, env-var, assistant, and system
       // messages above, only user messages should remain.
-      if (message.type !== 'user') {
+      if (message.type !== "user") {
         continue;
       }
 
@@ -3773,7 +3773,7 @@ function runHeadlessStreaming(
           if (options.replayUserMessages) {
             logForDebugging(`Sending acknowledgment for duplicate user message: ${message.uuid}`);
             output.enqueue({
-              type: 'user',
+              type: "user",
               message: message.message,
               session_id: sessionId,
               parent_tool_use_id: null,
@@ -3786,7 +3786,7 @@ function runHeadlessStreaming(
           // ran but its lifecycle was never closed (interrupted before ack).
           // Runtime dups don't need this — the original enqueue path closes them.
           if (existsInSession) {
-            notifyCommandLifecycle(message.uuid, 'completed');
+            notifyCommandLifecycle(message.uuid, "completed");
           }
           // Don't enqueue duplicate messages for execution
           continue;
@@ -3797,7 +3797,7 @@ function runHeadlessStreaming(
       }
 
       enqueue({
-        mode: 'prompt' as const,
+        mode: "prompt" as const,
         // file_attachments rides the protobuf catchall from the web composer.
         // Same-ref no-op when absent (no 'file_attachments' key).
         value: await resolveAndPrepend(message, message.message.content),
@@ -3806,7 +3806,7 @@ function runHeadlessStreaming(
       });
       // Increment prompt count for attribution tracking and save snapshot
       // The snapshot persists promptCount so it survives compaction
-      if (feature('COMMIT_ATTRIBUTION')) {
+      if (feature("COMMIT_ATTRIBUTION")) {
         setAppState((prev) => ({
           ...prev,
           attribution: incrementPromptCount(prev.attribution, (snapshot) => {
@@ -3859,7 +3859,7 @@ export function createCanUseToolWithPermissionPrompt(
       (await hasPermissionsToUseTool(tool, input, toolUseContext, assistantMessage, toolUseId));
 
     // If the tool is allowed or denied, return the result
-    if (mainPermissionResult.behavior === 'allow' || mainPermissionResult.behavior === 'deny') {
+    if (mainPermissionResult.behavior === "allow" || mainPermissionResult.behavior === "deny") {
       return mainPermissionResult;
     }
 
@@ -3881,18 +3881,18 @@ export function createCanUseToolWithPermissionPrompt(
     if (combinedSignal.aborted) {
       cleanupAbortListener();
       return {
-        behavior: 'deny',
-        message: 'Permission prompt was aborted.',
+        behavior: "deny",
+        message: "Permission prompt was aborted.",
         decisionReason: {
-          type: 'permissionPromptTool' as const,
+          type: "permissionPromptTool" as const,
           permissionPromptToolName: tool.name,
           toolResult: undefined,
         },
       };
     }
 
-    const abortPromise = new Promise<'aborted'>((resolve) => {
-      combinedSignal.addEventListener('abort', () => resolve('aborted'), {
+    const abortPromise = new Promise<"aborted">((resolve) => {
+      combinedSignal.addEventListener("abort", () => resolve("aborted"), {
         once: true,
       });
     });
@@ -3911,12 +3911,12 @@ export function createCanUseToolWithPermissionPrompt(
     const raceResult = await Promise.race([toolCallPromise, abortPromise]);
     cleanupAbortListener();
 
-    if (raceResult === 'aborted' || combinedSignal.aborted) {
+    if (raceResult === "aborted" || combinedSignal.aborted) {
       return {
-        behavior: 'deny',
-        message: 'Permission prompt was aborted.',
+        behavior: "deny",
+        message: "Permission prompt was aborted.",
         decisionReason: {
-          type: 'permissionPromptTool' as const,
+          type: "permissionPromptTool" as const,
           permissionPromptToolName: tool.name,
           toolResult: undefined,
         },
@@ -3928,14 +3928,14 @@ export function createCanUseToolWithPermissionPrompt(
 
     const permissionToolResultBlockParam = permissionPromptTool.mapToolResultToToolResultBlockParam(
       result.data,
-      '1',
+      "1",
     );
     if (
       !permissionToolResultBlockParam.content ||
       !Array.isArray(permissionToolResultBlockParam.content) ||
       !permissionToolResultBlockParam.content[0] ||
-      permissionToolResultBlockParam.content[0].type !== 'text' ||
-      typeof permissionToolResultBlockParam.content[0].text !== 'string'
+      permissionToolResultBlockParam.content[0].type !== "text" ||
+      typeof permissionToolResultBlockParam.content[0].text !== "string"
     ) {
       throw new Error(
         'Permission prompt tool returned an invalid result. Expected a single text block param with type="text" and a string text value.',
@@ -3961,7 +3961,7 @@ export function getCanUseToolFn(
   getMcpTools: () => Tool[],
   onPermissionPrompt?: (details: RequiresActionDetails) => void,
 ): CanUseToolFn {
-  if (permissionPromptToolName === 'stdio') {
+  if (permissionPromptToolName === "stdio") {
     return structuredIO.createCanUseTool(onPermissionPrompt);
   }
   if (!permissionPromptToolName) {
@@ -3980,7 +3980,7 @@ export function getCanUseToolFn(
         toolMatchesName(t, permissionPromptToolName),
       ) as PermissionPromptTool | undefined;
       if (!permissionPromptTool) {
-        const error = `Error: MCP tool ${permissionPromptToolName} (passed via --permission-prompt-tool) not found. Available MCP tools: ${mcpTools.map((t) => t.name).join(', ') || 'none'}`;
+        const error = `Error: MCP tool ${permissionPromptToolName} (passed via --permission-prompt-tool) not found. Available MCP tools: ${mcpTools.map((t) => t.name).join(", ") || "none"}`;
         process.stderr.write(`${error}\n`);
         gracefulShutdownSync(1);
         throw new Error(error);
@@ -4018,10 +4018,10 @@ async function handleInitializeRequest(
 ): Promise<void> {
   if (initialized) {
     output.enqueue({
-      type: 'control_response',
+      type: "control_response",
       response: {
-        subtype: 'error',
-        error: 'Already initialized',
+        subtype: "error",
+        error: "Already initialized",
         request_id: requestId,
         pending_permission_requests: structuredIO.getPendingPermissionRequests(),
       },
@@ -4042,7 +4042,7 @@ async function handleInitializeRequest(
 
   // Merge agents from stdin to avoid ARG_MAX limits
   if (request.agents) {
-    const stdinAgents = parseAgentsFromJson(request.agents, 'flagSettings');
+    const stdinAgents = parseAgentsFromJson(request.agents, "flagSettings");
     agents.push(...stdinAgents);
   }
 
@@ -4070,7 +4070,7 @@ async function handleInitializeRequest(
       if (
         !options.userSpecifiedModel &&
         mainThreadAgent.model &&
-        mainThreadAgent.model !== 'inherit'
+        mainThreadAgent.model !== "inherit"
       ) {
         const agentModel = parseUserSpecifiedModel(mainThreadAgent.model);
         setMainLoopModelOverride(agentModel);
@@ -4119,13 +4119,13 @@ async function handleInitializeRequest(
       .map((cmd) => ({
         name: getCommandName(cmd),
         description: formatDescriptionWithSource(cmd),
-        argumentHint: cmd.argumentHint || '',
+        argumentHint: cmd.argumentHint || "",
       })),
     agents: agents.map((agent) => ({
       name: agent.agentType,
       description: agent.whenToUse,
       // 'inherit' is an internal sentinel; normalize to undefined for the public API
-      model: agent.model === 'inherit' ? undefined : agent.model,
+      model: agent.model === "inherit" ? undefined : agent.model,
     })),
     output_style: outputStyle,
     available_output_styles: Object.keys(availableOutputStyles),
@@ -4153,9 +4153,9 @@ async function handleInitializeRequest(
   }
 
   output.enqueue({
-    type: 'control_response',
+    type: "control_response",
     response: {
-      subtype: 'success',
+      subtype: "success",
       request_id: requestId,
       response: initResponse,
     },
@@ -4169,7 +4169,7 @@ async function handleInitializeRequest(
     const status = authStatusManager.getStatus();
     if (status) {
       output.enqueue({
-        type: 'auth_status',
+        type: "auth_status",
         isAuthenticating: status.isAuthenticating,
         output: status.output,
         error: status.error,
@@ -4187,12 +4187,12 @@ async function handleRewindFiles(
   dryRun: boolean,
 ): Promise<RewindFilesResult> {
   if (!fileHistoryEnabled()) {
-    return { canRewind: false, error: 'File rewinding is not enabled.' };
+    return { canRewind: false, error: "File rewinding is not enabled." };
   }
   if (!fileHistoryCanRestore(appState.fileHistory, userMessageId)) {
     return {
       canRewind: false,
-      error: 'No file checkpoint found for this message.',
+      error: "No file checkpoint found for this message.",
     };
   }
 
@@ -4232,27 +4232,27 @@ function handleSetPermissionMode(
   output: Stream<StdoutMessage>,
 ): ToolPermissionContext {
   // Check if trying to switch to bypassPermissions mode
-  if (request.mode === 'bypassPermissions') {
+  if (request.mode === "bypassPermissions") {
     if (isBypassPermissionsModeDisabled()) {
       output.enqueue({
-        type: 'control_response',
+        type: "control_response",
         response: {
-          subtype: 'error',
+          subtype: "error",
           request_id: requestId,
           error:
-            'Cannot set permission mode to bypassPermissions because it is disabled by settings or configuration',
+            "Cannot set permission mode to bypassPermissions because it is disabled by settings or configuration",
         },
       });
       return toolPermissionContext;
     }
     if (!toolPermissionContext.isBypassPermissionsModeAvailable) {
       output.enqueue({
-        type: 'control_response',
+        type: "control_response",
         response: {
-          subtype: 'error',
+          subtype: "error",
           request_id: requestId,
           error:
-            'Cannot set permission mode to bypassPermissions because the session was not launched with --dangerously-skip-permissions',
+            "Cannot set permission mode to bypassPermissions because the session was not launched with --dangerously-skip-permissions",
         },
       });
       return toolPermissionContext;
@@ -4260,16 +4260,16 @@ function handleSetPermissionMode(
   }
 
   // Check if trying to switch to auto mode without the classifier gate
-  if (feature('TRANSCRIPT_CLASSIFIER') && request.mode === 'auto' && !isAutoModeGateEnabled()) {
+  if (feature("TRANSCRIPT_CLASSIFIER") && request.mode === "auto" && !isAutoModeGateEnabled()) {
     const reason = getAutoModeUnavailableReason();
     output.enqueue({
-      type: 'control_response',
+      type: "control_response",
       response: {
-        subtype: 'error',
+        subtype: "error",
         request_id: requestId,
         error: reason
           ? `Cannot set permission mode to auto: ${getAutoModeUnavailableNotification(reason)}`
-          : 'Cannot set permission mode to auto',
+          : "Cannot set permission mode to auto",
       },
     });
     return toolPermissionContext;
@@ -4277,9 +4277,9 @@ function handleSetPermissionMode(
 
   // Allow the mode switch
   output.enqueue({
-    type: 'control_response',
+    type: "control_response",
     response: {
-      subtype: 'success',
+      subtype: "success",
       request_id: requestId,
       response: {
         mode: request.mode,
@@ -4319,18 +4319,18 @@ function handleChannelEnable(
 ): void {
   const respondError = (error: string) =>
     output.enqueue({
-      type: 'control_response',
-      response: { subtype: 'error', request_id: requestId, error },
+      type: "control_response",
+      response: { subtype: "error", request_id: requestId, error },
     });
 
-  if (!(feature('KAIROS') || feature('KAIROS_CHANNELS'))) {
-    return respondError('channels feature not available in this build');
+  if (!(feature("KAIROS") || feature("KAIROS_CHANNELS"))) {
+    return respondError("channels feature not available in this build");
   }
 
   // Only a 'connected' client has .capabilities and .client to register the
   // handler on. The pool spread at the call site matches mcp_status.
-  const connection = connectionPool.find((c) => c.name === serverName && c.type === 'connected');
-  if (!connection || connection.type !== 'connected') {
+  const connection = connectionPool.find((c) => c.name === serverName && c.type === "connected");
+  if (!connection || connection.type !== "connected") {
     return respondError(`server ${serverName} is not connected`);
   }
 
@@ -4346,19 +4346,19 @@ function handleChannelEnable(
   }
 
   const entry: ChannelEntry = {
-    kind: 'plugin',
+    kind: "plugin",
     name: parsed.name,
     marketplace: parsed.marketplace,
   };
   // Idempotency: don't double-append on repeat enable.
   const prior = getAllowedChannels();
   const already = prior.some(
-    (e) => e.kind === 'plugin' && e.name === entry.name && e.marketplace === entry.marketplace,
+    (e) => e.kind === "plugin" && e.name === entry.name && e.marketplace === entry.marketplace,
   );
   if (!already) setAllowedChannels([...prior, entry]);
 
   const gate = gateChannelServer(serverName, connection.capabilities, pluginSource);
-  if (gate.action === 'skip') {
+  if (gate.action === "skip") {
     // Rollback — only remove the entry we appended.
     if (!already) setAllowedChannels(prior);
     return respondError(gate.reason);
@@ -4366,8 +4366,8 @@ function handleChannelEnable(
 
   const pluginId =
     `${entry.name}@${entry.marketplace}` as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS;
-  logMCPDebug(serverName, 'Channel notifications registered');
-  logEvent('tengu_mcp_channel_enable', { plugin: pluginId });
+  logMCPDebug(serverName, "Channel notifications registered");
+  logEvent("tengu_mcp_channel_enable", { plugin: pluginId });
 
   // Identical enqueue shape to the interactive register block in
   // useManageMCPConnections. drainCommandQueue processes it between turns —
@@ -4378,28 +4378,28 @@ function handleChannelEnable(
     async (notification) => {
       const { content, meta } = notification.params;
       logMCPDebug(serverName, `notifications/claude/channel: ${content.slice(0, 80)}`);
-      logEvent('tengu_mcp_channel_message', {
+      logEvent("tengu_mcp_channel_message", {
         content_length: content.length,
         meta_key_count: Object.keys(meta ?? {}).length,
-        entry_kind: 'plugin' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+        entry_kind: "plugin" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         is_dev: false,
         plugin: pluginId,
       });
       enqueue({
-        mode: 'prompt',
+        mode: "prompt",
         value: wrapChannelMessage(serverName, content, meta),
-        priority: 'next',
+        priority: "next",
         isMeta: true,
-        origin: { kind: 'channel', server: serverName },
+        origin: { kind: "channel", server: serverName },
         skipSlashCommands: true,
       });
     },
   );
 
   output.enqueue({
-    type: 'control_response',
+    type: "control_response",
     response: {
-      subtype: 'success',
+      subtype: "success",
       request_id: requestId,
       response: undefined,
     },
@@ -4423,29 +4423,29 @@ function handleChannelEnable(
  * check.
  */
 function reregisterChannelHandlerAfterReconnect(connection: MCPServerConnection): void {
-  if (!(feature('KAIROS') || feature('KAIROS_CHANNELS'))) return;
-  if (connection.type !== 'connected') return;
+  if (!(feature("KAIROS") || feature("KAIROS_CHANNELS"))) return;
+  if (connection.type !== "connected") return;
 
   const gate = gateChannelServer(
     connection.name,
     connection.capabilities,
     connection.config.pluginSource,
   );
-  if (gate.action !== 'register') return;
+  if (gate.action !== "register") return;
 
   const entry = findChannelEntry(connection.name, getAllowedChannels());
   const pluginId =
-    entry?.kind === 'plugin'
+    entry?.kind === "plugin"
       ? (`${entry.name}@${entry.marketplace}` as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS)
       : undefined;
 
-  logMCPDebug(connection.name, 'Channel notifications re-registered after reconnect');
+  logMCPDebug(connection.name, "Channel notifications re-registered after reconnect");
   connection.client.setNotificationHandler(
     ChannelMessageNotificationSchema(),
     async (notification) => {
       const { content, meta } = notification.params;
       logMCPDebug(connection.name, `notifications/claude/channel: ${content.slice(0, 80)}`);
-      logEvent('tengu_mcp_channel_message', {
+      logEvent("tengu_mcp_channel_message", {
         content_length: content.length,
         meta_key_count: Object.keys(meta ?? {}).length,
         entry_kind: entry?.kind as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -4453,11 +4453,11 @@ function reregisterChannelHandlerAfterReconnect(connection: MCPServerConnection)
         plugin: pluginId,
       });
       enqueue({
-        mode: 'prompt',
+        mode: "prompt",
         value: wrapChannelMessage(connection.name, content, meta),
-        priority: 'next',
+        priority: "next",
         isMeta: true,
-        origin: { kind: 'channel', server: connection.name },
+        origin: { kind: "channel", server: connection.name },
         skipSlashCommands: true,
       });
     },
@@ -4469,10 +4469,10 @@ function reregisterChannelHandlerAfterReconnect(connection: MCPServerConnection)
  * When using stream-json, writes JSON to stdout; otherwise writes plain text to stderr.
  */
 function emitLoadError(message: string, outputFormat: string | undefined): void {
-  if (outputFormat === 'stream-json') {
+  if (outputFormat === "stream-json") {
     const errorResult = {
-      type: 'result',
-      subtype: 'error_during_execution',
+      type: "result",
+      subtype: "error_during_execution",
       duration_ms: 0,
       duration_api_ms: 0,
       is_error: true,
@@ -4534,7 +4534,7 @@ async function loadInitialMessages(
   // Handle continue in print mode
   if (options.continue) {
     try {
-      logEvent('tengu_continue_print', {});
+      logEvent("tengu_continue_print", {});
 
       const result = await loadConversationForResume(
         undefined /* sessionId */,
@@ -4542,14 +4542,14 @@ async function loadInitialMessages(
       );
       if (result) {
         // Match coordinator mode to the resumed session's mode
-        if (feature('COORDINATOR_MODE') && coordinatorModeModule) {
+        if (feature("COORDINATOR_MODE") && coordinatorModeModule) {
           const warning = coordinatorModeModule.matchSessionMode(result.mode);
           if (warning) {
             process.stderr.write(`${warning}\n`);
             // Refresh agent definitions to reflect the mode switch
             const { getAgentDefinitionsWithOverrides, getActiveAgentsFromList } =
               // eslint-disable-next-line @typescript-eslint/no-require-imports
-              require('../tools/AgentTool/loadAgentsDir.js') as typeof import('../tools/AgentTool/loadAgentsDir.js');
+              require("../tools/AgentTool/loadAgentsDir.js") as typeof import("../tools/AgentTool/loadAgentsDir.js");
             getAgentDefinitionsWithOverrides.cache.clear?.();
             const freshAgentDefs = await getAgentDefinitionsWithOverrides(getCwd());
 
@@ -4584,8 +4584,8 @@ async function loadInitialMessages(
         );
 
         // Write mode entry for the resumed session
-        if (feature('COORDINATOR_MODE') && coordinatorModeModule) {
-          saveMode(coordinatorModeModule.isCoordinatorMode() ? 'coordinator' : 'normal');
+        if (feature("COORDINATOR_MODE") && coordinatorModeModule) {
+          saveMode(coordinatorModeModule.isCoordinatorMode() ? "coordinator" : "normal");
         }
 
         return {
@@ -4604,14 +4604,14 @@ async function loadInitialMessages(
   // Handle teleport in print mode
   if (options.teleport) {
     try {
-      if (!isPolicyAllowed('allow_remote_sessions')) {
+      if (!isPolicyAllowed("allow_remote_sessions")) {
         throw new Error("Remote sessions are disabled by your organization's policy.");
       }
 
-      logEvent('tengu_teleport_print', {});
+      logEvent("tengu_teleport_print", {});
 
-      if (typeof options.teleport !== 'string') {
-        throw new Error('No session ID provided for teleport');
+      if (typeof options.teleport !== "string") {
+        throw new Error("No session ID provided for teleport");
       }
 
       const {
@@ -4619,7 +4619,7 @@ async function loadInitialMessages(
         processMessagesForTeleportResume,
         teleportResumeCodeSession,
         validateGitState,
-      } = await import('src/utils/teleport.js');
+      } = await import("src/utils/teleport.js");
       await validateGitState();
       const teleportResult = await teleportResumeCodeSession(options.teleport);
       const { branchError } = await checkOutTeleportedSessionBranch(teleportResult.branch);
@@ -4637,16 +4637,16 @@ async function loadInitialMessages(
   // URLs are [ANT-ONLY]
   if (options.resume) {
     try {
-      logEvent('tengu_resume_print', {});
+      logEvent("tengu_resume_print", {});
 
       // In print mode - we require a valid session ID, JSONL file or URL
       const parsedSessionId = parseSessionIdentifier(
-        typeof options.resume === 'string' ? options.resume : '',
+        typeof options.resume === "string" ? options.resume : "",
       );
       if (!parsedSessionId) {
         let errorMessage =
-          'Error: --resume requires a valid session ID when used with --print. Usage: claude -p --resume <session-id>';
-        if (typeof options.resume === 'string') {
+          "Error: --resume requires a valid session ID when used with --print. Usage: claude -p --resume <session-id>";
+        if (typeof options.resume === "string") {
           errorMessage += `. Session IDs must be in UUID format (e.g., 550e8400-e29b-41d4-a716-446655440000). Provided value "${options.resume}" is not a valid UUID`;
         }
         emitLoadError(errorMessage, options.outputFormat);
@@ -4664,7 +4664,7 @@ async function loadInitialMessages(
         ]);
         if (metadata) {
           setAppState(externalMetadataToAppState(metadata));
-          if (typeof metadata.model === 'string') {
+          if (typeof metadata.model === "string") {
             setMainLoopModelOverride(metadata.model);
           }
         }
@@ -4693,7 +4693,7 @@ async function loadInitialMessages(
           // Execute SessionStart hooks for startup since we're starting a new session
           return {
             messages: await (options.sessionStartHooksPromise ??
-              processSessionStartHooks('startup')),
+              processSessionStartHooks("startup")),
           };
         } else {
           emitLoadError(
@@ -4721,14 +4721,14 @@ async function loadInitialMessages(
       }
 
       // Match coordinator mode to the resumed session's mode
-      if (feature('COORDINATOR_MODE') && coordinatorModeModule) {
+      if (feature("COORDINATOR_MODE") && coordinatorModeModule) {
         const warning = coordinatorModeModule.matchSessionMode(result.mode);
         if (warning) {
           process.stderr.write(`${warning}\n`);
           // Refresh agent definitions to reflect the mode switch
           const { getAgentDefinitionsWithOverrides, getActiveAgentsFromList } =
             // eslint-disable-next-line @typescript-eslint/no-require-imports
-            require('../tools/AgentTool/loadAgentsDir.js') as typeof import('../tools/AgentTool/loadAgentsDir.js');
+            require("../tools/AgentTool/loadAgentsDir.js") as typeof import("../tools/AgentTool/loadAgentsDir.js");
           getAgentDefinitionsWithOverrides.cache.clear?.();
           const freshAgentDefs = await getAgentDefinitionsWithOverrides(getCwd());
 
@@ -4761,8 +4761,8 @@ async function loadInitialMessages(
       );
 
       // Write mode entry for the resumed session
-      if (feature('COORDINATOR_MODE') && coordinatorModeModule) {
-        saveMode(coordinatorModeModule.isCoordinatorMode() ? 'coordinator' : 'normal');
+      if (feature("COORDINATOR_MODE") && coordinatorModeModule) {
+        saveMode(coordinatorModeModule.isCoordinatorMode() ? "coordinator" : "normal");
       }
 
       return {
@@ -4775,7 +4775,7 @@ async function loadInitialMessages(
       const errorMessage =
         error instanceof Error
           ? `Failed to resume session: ${error.message}`
-          : 'Failed to resume session with --print mode';
+          : "Failed to resume session with --print mode";
       emitLoadError(errorMessage, options.outputFormat);
       gracefulShutdownSync(1);
       return { messages: [] };
@@ -4786,7 +4786,7 @@ async function loadInitialMessages(
   // it wasn't kicked — e.g. --continue with no prior session falls through
   // here with sessionStartHooksPromise undefined because main.tsx guards on continue)
   return {
-    messages: await (options.sessionStartHooksPromise ?? processSessionStartHooks('startup')),
+    messages: await (options.sessionStartHooksPromise ?? processSessionStartHooks("startup")),
   };
 }
 
@@ -4798,15 +4798,15 @@ function getStructuredIO(
   },
 ): StructuredIO {
   let inputStream: AsyncIterable<string>;
-  if (typeof inputPrompt === 'string') {
-    if (inputPrompt.trim() !== '') {
+  if (typeof inputPrompt === "string") {
+    if (inputPrompt.trim() !== "") {
       // Normalize to a streaming input.
       inputStream = fromArray([
         jsonStringify({
-          type: 'user',
-          session_id: '',
+          type: "user",
+          session_id: "",
           message: {
-            role: 'user',
+            role: "user",
             content: inputPrompt,
           },
           parent_tool_use_id: null,
@@ -4844,9 +4844,9 @@ export async function handleOrphanedPermissionResponse({
   handledToolUseIds: Set<string>;
 }): Promise<boolean> {
   if (
-    message.response.subtype === 'success' &&
+    message.response.subtype === "success" &&
     message.response.response?.toolUseID &&
-    typeof message.response.response.toolUseID === 'string'
+    typeof message.response.response.toolUseID === "string"
   ) {
     const permissionResult = message.response.response as PermissionResult;
     const { toolUseID } = permissionResult;
@@ -4883,7 +4883,7 @@ export async function handleOrphanedPermissionResponse({
       `handleOrphanedPermissionResponse: enqueuing orphaned permission for toolUseID=${toolUseID} messageID=${assistantMessage.message.id}`,
     );
     enqueue({
-      mode: 'orphaned-permission' as const,
+      mode: "orphaned-permission" as const,
       value: [],
       orphanedPermission: {
         permissionResult,
@@ -4911,7 +4911,7 @@ function toScopedConfig(config: McpServerConfigForProcessTransport): ScopedMcpSe
   // McpServerConfigForProcessTransport is a subset of McpServerConfig
   // (it excludes IDE-specific types like sse-ide and ws-ide)
   // Adding scope makes it a valid ScopedMcpServerConfig
-  return { ...config, scope: 'dynamic' } as ScopedMcpServerConfig;
+  return { ...config, scope: "dynamic" } as ScopedMcpServerConfig;
 }
 
 /**
@@ -4956,7 +4956,7 @@ export async function handleMcpSetServers(
   const { allowed: allowedServers, blocked } = filterMcpServersByPolicy(servers);
   const policyErrors: Record<string, string> = {};
   for (const name of blocked) {
-    policyErrors[name] = 'Blocked by enterprise policy (allowedMcpServers/deniedMcpServers)';
+    policyErrors[name] = "Blocked by enterprise policy (allowedMcpServers/deniedMcpServers)";
   }
 
   // Separate SDK servers from process-based servers
@@ -4964,7 +4964,7 @@ export async function handleMcpSetServers(
   const processServers: Record<string, McpServerConfigForProcessTransport> = {};
 
   for (const [name, config] of Object.entries(allowedServers)) {
-    if (config.type === 'sdk') {
+    if (config.type === "sdk") {
       sdkServers[name] = config;
     } else {
       processServers[name] = config;
@@ -4985,7 +4985,7 @@ export async function handleMcpSetServers(
   for (const name of currentSdkNames) {
     if (!newSdkNames.has(name)) {
       const client = newSdkClients.find((c) => c.name === name);
-      if (client && client.type === 'connected') {
+      if (client && client.type === "connected") {
         await client.cleanup();
       }
       newSdkClients = newSdkClients.filter((c) => c.name !== name);
@@ -5002,9 +5002,9 @@ export async function handleMcpSetServers(
     if (!currentSdkNames.has(name)) {
       newSdkConfigs[name] = config;
       const pendingClient: MCPServerConnection = {
-        type: 'pending',
+        type: "pending",
         name,
-        config: { ...config, scope: 'dynamic' as const },
+        config: { ...config, scope: "dynamic" as const },
       };
       newSdkClients = [...newSdkClients, pendingClient];
       sdkAdded.push(name);
@@ -5070,7 +5070,7 @@ export async function reconcileMcpServers(
     const client = newClients.find((c) => c.name === name);
     const config = currentState.configs[name];
     if (client && config) {
-      if (client.type === 'connected') {
+      if (client.type === "connected") {
         try {
           await client.cleanup();
         } catch (e) {
@@ -5102,7 +5102,7 @@ export async function reconcileMcpServers(
 
     // SDK servers are managed by the SDK process, not the CLI.
     // Just track them without trying to connect.
-    if (config.type === 'sdk') {
+    if (config.type === "sdk") {
       added.push(name);
       continue;
     }
@@ -5111,11 +5111,11 @@ export async function reconcileMcpServers(
       const client = await connectToServer(name, scopedConfig);
       newClients.push(client);
 
-      if (client.type === 'connected') {
+      if (client.type === "connected") {
         const serverTools = await fetchToolsForClient(client);
         newTools.push(...serverTools);
-      } else if (client.type === 'failed') {
-        errors[name] = client.error || 'Connection failed';
+      } else if (client.type === "failed") {
+        errors[name] = client.error || "Connection failed";
       }
 
       added.push(name);

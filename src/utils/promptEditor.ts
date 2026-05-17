@@ -1,17 +1,17 @@
-import { expandPastedTextRefs, formatPastedTextRef, getPastedTextRefNumLines } from '../history.js';
-import instances from '../ink/instances.js';
-import type { PastedContent } from './config.js';
-import { classifyGuiEditor, getExternalEditor } from './editor.js';
-import { execSync_DEPRECATED } from './execSyncWrapper.js';
-import { getFsImplementation } from './fsOperations.js';
-import { toIDEDisplayName } from './ide.js';
-import { writeFileSync_DEPRECATED } from './slowOperations.js';
-import { generateTempFilePath } from './tempfile.js';
+import { expandPastedTextRefs, formatPastedTextRef, getPastedTextRefNumLines } from "../history.js";
+import instances from "../ink/instances.js";
+import type { PastedContent } from "./config.js";
+import { classifyGuiEditor, getExternalEditor } from "./editor.js";
+import { execSync_DEPRECATED } from "./execSyncWrapper.js";
+import { getFsImplementation } from "./fsOperations.js";
+import { toIDEDisplayName } from "./ide.js";
+import { writeFileSync_DEPRECATED } from "./slowOperations.js";
+import { generateTempFilePath } from "./tempfile.js";
 
 // Map of editor command overrides (e.g., to add wait flags)
 const EDITOR_OVERRIDES: Record<string, string> = {
-  code: 'code -w', // VS Code: wait for file to be closed
-  subl: 'subl --wait', // Sublime Text: wait for file to be closed
+  code: "code -w", // VS Code: wait for file to be closed
+  subl: "subl --wait", // Sublime Text: wait for file to be closed
 };
 
 function isGuiEditor(editor: string): boolean {
@@ -28,7 +28,7 @@ export function editFileInEditor(filePath: string): EditorResult {
   const fs = getFsImplementation();
   const inkInstance = instances.get(process.stdout);
   if (!inkInstance) {
-    throw new Error('Ink instance not found - cannot pause rendering');
+    throw new Error("Ink instance not found - cannot pause rendering");
   }
 
   const editor = getExternalEditor();
@@ -63,18 +63,18 @@ export function editFileInEditor(filePath: string): EditorResult {
     // Use override command if available, otherwise use the editor as-is
     const editorCommand = EDITOR_OVERRIDES[editor] ?? editor;
     execSync_DEPRECATED(`${editorCommand} "${filePath}"`, {
-      stdio: 'inherit',
+      stdio: "inherit",
     });
 
     // Read the edited content
-    const editedContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
+    const editedContent = fs.readFileSync(filePath, { encoding: "utf-8" });
     return { content: editedContent };
   } catch (err) {
     if (
-      typeof err === 'object' &&
+      typeof err === "object" &&
       err !== null &&
-      'status' in err &&
-      typeof (err as { status: unknown }).status === 'number'
+      "status" in err &&
+      typeof (err as { status: unknown }).status === "number"
     ) {
       const status = (err as { status: number }).status;
       if (status !== 0) {
@@ -109,7 +109,7 @@ function recollapsePastedContent(
 
   // Find pasted content in the edited text and re-collapse it
   for (const [id, content] of Object.entries(pastedContents)) {
-    if (content.type === 'text') {
+    if (content.type === "text") {
       const pasteId = parseInt(id, 10);
       const contentStr = content.content;
 
@@ -146,7 +146,7 @@ export function editPromptInEditor(
 
     // Write expanded prompt to temp file
     writeFileSync_DEPRECATED(tempFile, expandedPrompt, {
-      encoding: 'utf-8',
+      encoding: "utf-8",
       flush: true,
     });
 
@@ -159,7 +159,7 @@ export function editPromptInEditor(
 
     // Trim a single trailing newline if present (common editor behavior)
     let finalContent = result.content;
-    if (finalContent.endsWith('\n') && !finalContent.endsWith('\n\n')) {
+    if (finalContent.endsWith("\n") && !finalContent.endsWith("\n\n")) {
       finalContent = finalContent.slice(0, -1);
     }
 

@@ -1,7 +1,7 @@
-import { getSettings_DEPRECATED } from '../settings/settings.js';
-import { isModelAlias, isModelFamilyAlias } from './aliases.js';
-import { parseUserSpecifiedModel } from './model.js';
-import { resolveOverriddenModel } from './modelStrings.js';
+import { getSettings_DEPRECATED } from "../settings/settings.js";
+import { isModelAlias, isModelFamilyAlias } from "./aliases.js";
+import { parseUserSpecifiedModel } from "./model.js";
+import { resolveOverriddenModel } from "./modelStrings.js";
 
 /**
  * Check if a model belongs to a given family by checking if its name
@@ -28,7 +28,7 @@ function prefixMatchesModel(modelName: string, prefix: string): boolean {
   if (!modelName.startsWith(prefix)) {
     return false;
   }
-  return modelName.length === prefix.length || modelName[prefix.length] === '-';
+  return modelName.length === prefix.length || modelName[prefix.length] === "-";
 }
 
 /**
@@ -45,7 +45,7 @@ function modelMatchesVersionPrefix(model: string, entry: string): boolean {
     return true;
   }
   // Try with "claude-" prefix (e.g. "opus-4-5" → "claude-opus-4-5")
-  if (!entry.startsWith('claude-') && prefixMatchesModel(resolvedModel, `claude-${entry}`)) {
+  if (!entry.startsWith("claude-") && prefixMatchesModel(resolvedModel, `claude-${entry}`)) {
     return true;
   }
   return false;
@@ -71,7 +71,7 @@ function familyHasSpecificEntries(family: string, allowlist: string[]): boolean 
       continue;
     }
     const afterFamily = idx + family.length;
-    if (afterFamily === entry.length || entry[afterFamily] === '-') {
+    if (afterFamily === entry.length || entry[afterFamily] === "-") {
       return true;
     }
   }

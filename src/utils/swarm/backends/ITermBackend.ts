@@ -1,9 +1,9 @@
-import type { AgentColorName } from '../../../tools/AgentTool/agentColorManager.js';
-import { logForDebugging } from '../../../utils/debug.js';
-import { execFileNoThrow } from '../../../utils/execFileNoThrow.js';
-import { IT2_COMMAND, isInITerm2, isIt2CliAvailable } from './detection.js';
-import { registerITermBackend } from './registry.js';
-import type { CreatePaneResult, PaneBackend, PaneId } from './types.js';
+import type { AgentColorName } from "../../../tools/AgentTool/agentColorManager.js";
+import { logForDebugging } from "../../../utils/debug.js";
+import { execFileNoThrow } from "../../../utils/execFileNoThrow.js";
+import { IT2_COMMAND, isInITerm2, isIt2CliAvailable } from "./detection.js";
+import { registerITermBackend } from "./registry.js";
+import type { CreatePaneResult, PaneBackend, PaneId } from "./types.js";
 
 // Track session IDs for teammates
 const teammateSessionIds: string[] = [];
@@ -50,7 +50,7 @@ function parseSplitOutput(output: string): string {
   if (match?.[1]) {
     return match[1].trim();
   }
-  return '';
+  return "";
 }
 
 /**
@@ -63,7 +63,7 @@ function getLeaderSessionId(): string | null {
   if (!itermSessionId) {
     return null;
   }
-  const colonIndex = itermSessionId.indexOf(':');
+  const colonIndex = itermSessionId.indexOf(":");
   if (colonIndex === -1) {
     return null;
   }
@@ -75,8 +75,8 @@ function getLeaderSessionId(): string | null {
  * via the it2 CLI tool.
  */
 export class ITermBackend implements PaneBackend {
-  readonly type = 'iterm2' as const;
-  readonly displayName = 'iTerm2';
+  readonly type = "iterm2" as const;
+  readonly displayName = "iTerm2";
   readonly supportsHideShow = false;
 
   /**
@@ -86,12 +86,12 @@ export class ITermBackend implements PaneBackend {
     const inITerm2 = isInITerm2();
     logForDebugging(`[ITermBackend] isAvailable check: inITerm2=${inITerm2}`);
     if (!inITerm2) {
-      logForDebugging('[ITermBackend] isAvailable: false (not in iTerm2)');
+      logForDebugging("[ITermBackend] isAvailable: false (not in iTerm2)");
       return false;
     }
     const it2Available = await isIt2CliAvailable();
     logForDebugging(
-      `[ITermBackend] isAvailable: ${it2Available} (it2 CLI ${it2Available ? 'found' : 'not found'})`,
+      `[ITermBackend] isAvailable: ${it2Available} (it2 CLI ${it2Available ? "found" : "not found"})`,
     );
     return it2Available;
   }
@@ -144,25 +144,25 @@ export class ITermBackend implements PaneBackend {
           // Split from leader's session (extracted from ITERM_SESSION_ID env var)
           const leaderSessionId = getLeaderSessionId();
           if (leaderSessionId) {
-            splitArgs = ['session', 'split', '-v', '-s', leaderSessionId];
+            splitArgs = ["session", "split", "-v", "-s", leaderSessionId];
             logForDebugging(`[ITermBackend] First split from leader session: ${leaderSessionId}`);
           } else {
             // Fallback to active session if we can't get leader's ID
-            splitArgs = ['session', 'split', '-v'];
-            logForDebugging('[ITermBackend] First split from active session (no leader ID)');
+            splitArgs = ["session", "split", "-v"];
+            logForDebugging("[ITermBackend] First split from active session (no leader ID)");
           }
         } else {
           // Split from the last teammate's session to stack vertically
           targetedTeammateId = teammateSessionIds[teammateSessionIds.length - 1];
           if (targetedTeammateId) {
-            splitArgs = ['session', 'split', '-s', targetedTeammateId];
+            splitArgs = ["session", "split", "-s", targetedTeammateId];
             logForDebugging(
               `[ITermBackend] Subsequent split from teammate session: ${targetedTeammateId}`,
             );
           } else {
             // Fallback to active session
-            splitArgs = ['session', 'split'];
-            logForDebugging('[ITermBackend] Subsequent split from active session (no teammate ID)');
+            splitArgs = ["session", "split"];
+            logForDebugging("[ITermBackend] Subsequent split from active session (no teammate ID)");
           }
         }
 
@@ -174,7 +174,7 @@ export class ITermBackend implements PaneBackend {
           // failure (Python API off, it2 removed, transient socket error).
           // Pruning on systemic failure would drain all live IDs → state corrupted.
           if (targetedTeammateId) {
-            const listResult = await runIt2(['session', 'list']);
+            const listResult = await runIt2(["session", "list"]);
             if (listResult.code === 0 && !listResult.stdout.includes(targetedTeammateId)) {
               // Confirmed dead — prune and retry with next-to-last (or leader).
               logForDebugging(
@@ -233,7 +233,7 @@ export class ITermBackend implements PaneBackend {
     // Use it2 session run to execute command (adds newline automatically)
     // Always use -s flag to target specific session - this ensures the command
     // goes to the right pane even if user switches windows
-    const args = paneId ? ['session', 'run', '-s', paneId, command] : ['session', 'run', command];
+    const args = paneId ? ["session", "run", "-s", paneId, command] : ["session", "run", command];
 
     const result = await runIt2(args);
 
@@ -283,7 +283,7 @@ export class ITermBackend implements PaneBackend {
    */
   async rebalancePanes(_windowTarget: string, _hasLeader: boolean): Promise<void> {
     // iTerm2 handles pane balancing automatically
-    logForDebugging('[ITermBackend] Pane rebalancing not implemented for iTerm2');
+    logForDebugging("[ITermBackend] Pane rebalancing not implemented for iTerm2");
   }
 
   /**
@@ -296,7 +296,7 @@ export class ITermBackend implements PaneBackend {
     // closing" preference and either shows a dialog or refuses when the session
     // still has a running process (the shell always is). tmux kill-pane has no
     // such prompt, which is why this was only broken for iTerm2.
-    const result = await runIt2(['session', 'close', '-f', '-s', paneId]);
+    const result = await runIt2(["session", "close", "-f", "-s", paneId]);
     // Clean up module state regardless of close result — even if the pane is
     // already gone (e.g., user closed it manually), removing the stale ID is correct.
     const idx = teammateSessionIds.indexOf(paneId);
@@ -314,7 +314,7 @@ export class ITermBackend implements PaneBackend {
    * iTerm2 doesn't have a direct equivalent to tmux's break-pane.
    */
   async hidePane(_paneId: PaneId, _useExternalSession?: boolean): Promise<boolean> {
-    logForDebugging('[ITermBackend] hidePane not supported in iTerm2');
+    logForDebugging("[ITermBackend] hidePane not supported in iTerm2");
     return false;
   }
 
@@ -327,7 +327,7 @@ export class ITermBackend implements PaneBackend {
     _targetWindowOrPane: string,
     _useExternalSession?: boolean,
   ): Promise<boolean> {
-    logForDebugging('[ITermBackend] showPane not supported in iTerm2');
+    logForDebugging("[ITermBackend] showPane not supported in iTerm2");
     return false;
   }
 }

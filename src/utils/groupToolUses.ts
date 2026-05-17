@@ -1,6 +1,6 @@
-import type { BetaToolUseBlock } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/messages/messages.mjs';
-import type { Tools } from '../Tool.js';
+import type { BetaToolUseBlock } from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/messages/messages.mjs";
+import type { Tools } from "../Tool.js";
 import type {
   GroupedToolUseMessage,
   NormalizedAssistantMessage,
@@ -8,7 +8,7 @@ import type {
   NormalizedUserMessage,
   ProgressMessage,
   RenderableMessage,
-} from '../types/message.js';
+} from "../types/message.js";
 
 export type MessageWithoutProgress = Exclude<NormalizedMessage, ProgressMessage>;
 
@@ -34,7 +34,7 @@ function getToolsWithGrouping(tools: Tools): Set<string> {
 function getToolUseInfo(
   msg: MessageWithoutProgress,
 ): { messageId: string; toolUseId: string; toolName: string } | null {
-  if (msg.type === 'assistant' && msg.message.content[0]?.type === 'tool_use') {
+  if (msg.type === "assistant" && msg.message.content[0]?.type === "tool_use") {
     const content = msg.message.content[0];
     return {
       messageId: msg.message.id,
@@ -98,9 +98,9 @@ export function applyGrouping(
   const resultsByToolUseId = new Map<string, NormalizedUserMessage>();
 
   for (const msg of messages) {
-    if (msg.type === 'user') {
+    if (msg.type === "user") {
       for (const content of msg.message.content) {
-        if (content.type === 'tool_result' && groupedToolUseIds.has(content.tool_use_id)) {
+        if (content.type === "tool_result" && groupedToolUseIds.has(content.tool_use_id)) {
           resultsByToolUseId.set(content.tool_use_id, msg);
         }
       }
@@ -134,7 +134,7 @@ export function applyGrouping(
           }
 
           const groupedMessage: GroupedToolUseMessage = {
-            type: 'grouped_tool_use',
+            type: "grouped_tool_use",
             toolName: info.toolName,
             messages: group,
             results,
@@ -150,9 +150,9 @@ export function applyGrouping(
     }
 
     // Skip user messages whose tool_results are all grouped
-    if (msg.type === 'user') {
+    if (msg.type === "user") {
       const toolResults = msg.message.content.filter(
-        (c): c is ToolResultBlockParam => c.type === 'tool_result',
+        (c): c is ToolResultBlockParam => c.type === "tool_result",
       );
       if (toolResults.length > 0) {
         const allGrouped = toolResults.every((tr) => groupedToolUseIds.has(tr.tool_use_id));

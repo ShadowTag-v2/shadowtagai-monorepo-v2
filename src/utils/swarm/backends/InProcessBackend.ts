@@ -1,20 +1,20 @@
-import type { ToolUseContext } from '../../../Tool.js';
+import type { ToolUseContext } from "../../../Tool.js";
 import {
   findTeammateTaskByAgentId,
   requestTeammateShutdown,
-} from '../../../tasks/InProcessTeammateTask/InProcessTeammateTask.js';
-import { parseAgentId } from '../../../utils/agentId.js';
-import { logForDebugging } from '../../../utils/debug.js';
-import { jsonStringify } from '../../../utils/slowOperations.js';
-import { createShutdownRequestMessage, writeToMailbox } from '../../../utils/teammateMailbox.js';
-import { startInProcessTeammate } from '../inProcessRunner.js';
-import { killInProcessTeammate, spawnInProcessTeammate } from '../spawnInProcess.js';
+} from "../../../tasks/InProcessTeammateTask/InProcessTeammateTask.js";
+import { parseAgentId } from "../../../utils/agentId.js";
+import { logForDebugging } from "../../../utils/debug.js";
+import { jsonStringify } from "../../../utils/slowOperations.js";
+import { createShutdownRequestMessage, writeToMailbox } from "../../../utils/teammateMailbox.js";
+import { startInProcessTeammate } from "../inProcessRunner.js";
+import { killInProcessTeammate, spawnInProcessTeammate } from "../spawnInProcess.js";
 import type {
   TeammateExecutor,
   TeammateMessage,
   TeammateSpawnConfig,
   TeammateSpawnResult,
-} from './types.js';
+} from "./types.js";
 
 /**
  * InProcessBackend implements TeammateExecutor for in-process teammates.
@@ -30,7 +30,7 @@ import type {
  * abstraction (getTeammateExecutor() in registry.ts).
  */
 export class InProcessBackend implements TeammateExecutor {
-  readonly type = 'in-process' as const;
+  readonly type = "in-process" as const;
 
   /**
    * Tool use context for AppState access.
@@ -69,7 +69,7 @@ export class InProcessBackend implements TeammateExecutor {
       return {
         success: false,
         agentId: `${config.name}@${config.teamName}`,
-        error: 'InProcessBackend not initialized. Call setContext() before spawn().',
+        error: "InProcessBackend not initialized. Call setContext() before spawn().",
       };
     }
 
@@ -200,7 +200,7 @@ export class InProcessBackend implements TeammateExecutor {
     // Create shutdown request message
     const shutdownRequest = createShutdownRequestMessage({
       requestId,
-      from: 'team-lead', // Terminate is always called by the leader
+      from: "team-lead", // Terminate is always called by the leader
       reason,
     });
 
@@ -209,7 +209,7 @@ export class InProcessBackend implements TeammateExecutor {
     await writeToMailbox(
       teammateAgentName,
       {
-        from: 'team-lead',
+        from: "team-lead",
         text: jsonStringify(shutdownRequest),
         timestamp: new Date().toISOString(),
       },
@@ -250,7 +250,7 @@ export class InProcessBackend implements TeammateExecutor {
     // Kill the teammate via the existing helper function
     const killed = killInProcessTeammate(task.id, this.context.setAppState);
 
-    logForDebugging(`[InProcessBackend] kill() ${killed ? 'succeeded' : 'failed'} for ${agentId}`);
+    logForDebugging(`[InProcessBackend] kill() ${killed ? "succeeded" : "failed"} for ${agentId}`);
 
     return killed;
   }
@@ -279,7 +279,7 @@ export class InProcessBackend implements TeammateExecutor {
     }
 
     // Check if task is running and not aborted
-    const isRunning = task.status === 'running';
+    const isRunning = task.status === "running";
     const isAborted = task.abortController?.signal.aborted ?? true;
 
     const active = isRunning && !isAborted;

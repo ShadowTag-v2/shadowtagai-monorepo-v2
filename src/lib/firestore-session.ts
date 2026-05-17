@@ -40,7 +40,7 @@ export interface SessionSummary {
 }
 
 export interface SessionCommitRequest {
-  action: 'accept' | 'reject' | 'partial_accept';
+  action: "accept" | "reject" | "partial_accept";
   matterId: string;
   selectedFiles?: string[];
   rejectionReason?: string;
@@ -64,16 +64,16 @@ export interface DiffResponse {
 
 // ── API Client ─────────────────────────────────────────────────────────
 
-const API_BASE = '/api/sandbox';
+const API_BASE = "/api/sandbox";
 
 /**
  * Create a new sandbox session.
  */
 export async function createSession(req: SessionCreateRequest): Promise<SessionCreateResponse> {
   const res = await fetch(`${API_BASE}/sessions`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify({
       matter_id: req.matterId,
       ttl_seconds: req.ttlSeconds ?? 1800,
@@ -82,8 +82,8 @@ export async function createSession(req: SessionCreateRequest): Promise<SessionC
   });
 
   if (!res.ok) {
-    const body = await res.json().catch(() => ({ detail: 'Session creation failed' }));
-    throw new SessionApiError(res.status, body.detail ?? 'Session creation failed');
+    const body = await res.json().catch(() => ({ detail: "Session creation failed" }));
+    throw new SessionApiError(res.status, body.detail ?? "Session creation failed");
   }
 
   return res.json();
@@ -94,7 +94,7 @@ export async function createSession(req: SessionCreateRequest): Promise<SessionC
  */
 export async function resumeSession(sessionId: string): Promise<SessionCreateResponse> {
   const res = await fetch(`${API_BASE}/${sessionId}`, {
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -104,8 +104,8 @@ export async function resumeSession(sessionId: string): Promise<SessionCreateRes
     if (res.status === 403) {
       throw new SessionAccessDeniedError(sessionId);
     }
-    const body = await res.json().catch(() => ({ detail: 'Resume failed' }));
-    throw new SessionApiError(res.status, body.detail ?? 'Resume failed');
+    const body = await res.json().catch(() => ({ detail: "Resume failed" }));
+    throw new SessionApiError(res.status, body.detail ?? "Resume failed");
   }
 
   return res.json();
@@ -116,14 +116,14 @@ export async function resumeSession(sessionId: string): Promise<SessionCreateRes
  */
 export async function listSessions(matterId?: string): Promise<SessionSummary[]> {
   const params = new URLSearchParams();
-  if (matterId) params.set('matter', matterId);
+  if (matterId) params.set("matter", matterId);
 
   const res = await fetch(`${API_BASE}/sessions?${params.toString()}`, {
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!res.ok) {
-    throw new SessionApiError(res.status, 'Failed to list sessions');
+    throw new SessionApiError(res.status, "Failed to list sessions");
   }
 
   return res.json();
@@ -134,12 +134,12 @@ export async function listSessions(matterId?: string): Promise<SessionSummary[]>
  */
 export async function fetchDiffs(sessionId: string, matterId: string): Promise<DiffResponse> {
   const res = await fetch(`${API_BASE}/${sessionId}/diffs?matter=${encodeURIComponent(matterId)}`, {
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!res.ok) {
-    const body = await res.json().catch(() => ({ detail: 'Diff fetch failed' }));
-    throw new SessionApiError(res.status, body.detail ?? 'Diff fetch failed');
+    const body = await res.json().catch(() => ({ detail: "Diff fetch failed" }));
+    throw new SessionApiError(res.status, body.detail ?? "Diff fetch failed");
   }
 
   return res.json();
@@ -153,20 +153,20 @@ export async function commitSession(
   req: SessionCommitRequest,
 ): Promise<SessionCommitResponse> {
   const res = await fetch(`${API_BASE}/${sessionId}/commit`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify({
       action: req.action,
       matter_id: req.matterId,
       selected_files: req.selectedFiles,
-      rejection_reason: req.rejectionReason ?? '',
+      rejection_reason: req.rejectionReason ?? "",
     }),
   });
 
   if (!res.ok) {
-    const body = await res.json().catch(() => ({ detail: 'Commit failed' }));
-    throw new SessionApiError(res.status, body.detail ?? 'Commit failed');
+    const body = await res.json().catch(() => ({ detail: "Commit failed" }));
+    throw new SessionApiError(res.status, body.detail ?? "Commit failed");
   }
 
   return res.json();
@@ -180,20 +180,20 @@ export class SessionApiError extends Error {
     message: string,
   ) {
     super(message);
-    this.name = 'SessionApiError';
+    this.name = "SessionApiError";
   }
 }
 
 export class SessionNotFoundError extends SessionApiError {
   constructor(sessionId: string) {
     super(404, `Session ${sessionId.slice(0, 8)}… not found`);
-    this.name = 'SessionNotFoundError';
+    this.name = "SessionNotFoundError";
   }
 }
 
 export class SessionAccessDeniedError extends SessionApiError {
   constructor(sessionId: string) {
     super(403, `Access denied to session ${sessionId.slice(0, 8)}…`);
-    this.name = 'SessionAccessDeniedError';
+    this.name = "SessionAccessDeniedError";
   }
 }

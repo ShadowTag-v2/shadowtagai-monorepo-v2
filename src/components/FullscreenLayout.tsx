@@ -1,5 +1,5 @@
-import { fileURLToPath } from 'node:url';
-import figures from 'figures';
+import { fileURLToPath } from "node:url";
+import figures from "figures";
 import React, {
   createContext,
   type ReactNode,
@@ -10,25 +10,25 @@ import React, {
   useRef,
   useState,
   useSyncExternalStore,
-} from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import { ModalContext } from '../context/modalContext.js';
+} from "react";
+import { c as _c } from "react/compiler-runtime";
+import { ModalContext } from "../context/modalContext.js";
 import {
   PromptOverlayProvider,
   usePromptOverlay,
   usePromptOverlayDialog,
-} from '../context/promptOverlayContext.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import ScrollBox, { type ScrollBoxHandle } from '../ink/components/ScrollBox.js';
-import instances from '../ink/instances.js';
-import { Box, Text } from '../ink.js';
-import type { Message } from '../types/message.js';
-import { openBrowser, openPath } from '../utils/browser.js';
-import { isFullscreenEnvEnabled } from '../utils/fullscreen.js';
-import { plural } from '../utils/stringUtils.js';
-import { isNullRenderingAttachment } from './messages/nullRenderingAttachments.js';
-import PromptInputFooterSuggestions from './PromptInput/PromptInputFooterSuggestions.js';
-import type { StickyPrompt } from './VirtualMessageList.js';
+} from "../context/promptOverlayContext.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import ScrollBox, { type ScrollBoxHandle } from "../ink/components/ScrollBox.js";
+import instances from "../ink/instances.js";
+import { Box, Text } from "../ink.js";
+import type { Message } from "../types/message.js";
+import { openBrowser, openPath } from "../utils/browser.js";
+import { isFullscreenEnvEnabled } from "../utils/fullscreen.js";
+import { plural } from "../utils/stringUtils.js";
+import { isNullRenderingAttachment } from "./messages/nullRenderingAttachments.js";
+import PromptInputFooterSuggestions from "./PromptInput/PromptInputFooterSuggestions.js";
+import type { StickyPrompt } from "./VirtualMessageList.js";
 
 /** Rows of transcript context kept visible above the modal pane's ▔ divider. */
 const MODAL_TRANSCRIPT_PEEK = 2;
@@ -219,27 +219,27 @@ export function countUnseenAssistantTurns(
   let prevWasAssistant = false;
   for (let i = dividerIndex; i < messages.length; i++) {
     const m = messages[i]!;
-    if (m.type === 'progress') continue;
+    if (m.type === "progress") continue;
     // Tool-use-only assistant entries aren't "new messages" to the user —
     // skip them the same way we skip progress. prevWasAssistant is NOT
     // updated, so a text block immediately following still counts as the
     // same turn (tool_use + text from one API response = 1).
-    if (m.type === 'assistant' && !assistantHasVisibleText(m)) continue;
-    const isAssistant = m.type === 'assistant';
+    if (m.type === "assistant" && !assistantHasVisibleText(m)) continue;
+    const isAssistant = m.type === "assistant";
     if (isAssistant && !prevWasAssistant) count++;
     prevWasAssistant = isAssistant;
   }
   return count;
 }
 function assistantHasVisibleText(m: Message): boolean {
-  if (m.type !== 'assistant') return false;
+  if (m.type !== "assistant") return false;
   for (const b of m.message.content) {
-    if (b.type === 'text' && b.text.trim() !== '') return true;
+    if (b.type === "text" && b.text.trim() !== "") return true;
   }
   return false;
 }
 export type UnseenDivider = {
-  firstUnseenUuid: Message['uuid'];
+  firstUnseenUuid: Message["uuid"];
   count: number;
 };
 
@@ -265,7 +265,7 @@ export function computeUnseenDivider(
   let anchorIdx = dividerIndex;
   while (
     anchorIdx < messages.length &&
-    (messages[anchorIdx]?.type === 'progress' || isNullRenderingAttachment(messages[anchorIdx]!))
+    (messages[anchorIdx]?.type === "progress" || isNullRenderingAttachment(messages[anchorIdx]!))
   ) {
     anchorIdx++;
   }
@@ -312,7 +312,7 @@ export function FullscreenLayout(t0) {
   const { rows: terminalRows, columns } = useTerminalSize();
   const [stickyPrompt, setStickyPrompt] = useState(null);
   let t4;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = {
       setStickyPrompt,
     };
@@ -348,7 +348,7 @@ export function FullscreenLayout(t0) {
   }
   const pillVisible = useSyncExternalStore(subscribe, t6);
   let t7;
-  if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = [];
     $[6] = t7;
   } else {
@@ -357,7 +357,7 @@ export function FullscreenLayout(t0) {
   useLayoutEffect(_temp3, t7);
   if (isFullscreenEnvEnabled()) {
     const sticky = hideSticky ? null : stickyPrompt;
-    const headerPrompt = sticky != null && sticky !== 'clicked' && overlay == null ? sticky : null;
+    const headerPrompt = sticky != null && sticky !== "clicked" && overlay == null ? sticky : null;
     const padCollapsed = sticky != null && overlay == null;
     let t8;
     if ($[7] !== headerPrompt) {
@@ -452,7 +452,7 @@ export function FullscreenLayout(t0) {
     }
     let t15;
     let t16;
-    if ($[29] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[29] === Symbol.for("react.memo_cache_sentinel")) {
       t15 = <SuggestionsOverlay />;
       t16 = <DialogOverlay />;
       $[29] = t15;
@@ -503,7 +503,7 @@ export function FullscreenLayout(t0) {
             opaque={true}
           >
             <Box flexShrink={0}>
-              <Text color="permission">{'\u2594'.repeat(columns)}</Text>
+              <Text color="permission">{"\u2594".repeat(columns)}</Text>
             </Box>
             <Box flexDirection="column" paddingX={2} flexShrink={0} overflow="hidden">
               {modal}
@@ -579,7 +579,7 @@ function _temp3() {
   };
 }
 function _temp2(url) {
-  if (url.startsWith('file:')) {
+  if (url.startsWith("file:")) {
     try {
       openPath(fileURLToPath(url));
     } catch {}
@@ -594,7 +594,7 @@ function NewMessagesPill(t0) {
   const [hover, setHover] = useState(false);
   let t1;
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => setHover(true);
     t2 = () => setHover(false);
     $[0] = t1;
@@ -603,10 +603,10 @@ function NewMessagesPill(t0) {
     t1 = $[0];
     t2 = $[1];
   }
-  const t3 = hover ? 'userMessageBackgroundHover' : 'userMessageBackground';
+  const t3 = hover ? "userMessageBackgroundHover" : "userMessageBackground";
   let t4;
   if ($[2] !== count) {
-    t4 = count > 0 ? `${count} new ${plural(count, 'message')}` : 'Jump to bottom';
+    t4 = count > 0 ? `${count} new ${plural(count, "message")}` : "Jump to bottom";
     $[2] = count;
     $[3] = t4;
   } else {
@@ -616,8 +616,8 @@ function NewMessagesPill(t0) {
   if ($[4] !== t3 || $[5] !== t4) {
     t5 = (
       <Text backgroundColor={t3} dimColor={true}>
-        {' '}
-        {t4} {figures.arrowDown}{' '}
+        {" "}
+        {t4} {figures.arrowDown}{" "}
       </Text>
     );
     $[4] = t3;
@@ -660,10 +660,10 @@ function StickyPromptHeader(t0) {
   const $ = _c(8);
   const { text, onClick } = t0;
   const [hover, setHover] = useState(false);
-  const t1 = hover ? 'userMessageBackgroundHover' : 'userMessageBackground';
+  const t1 = hover ? "userMessageBackgroundHover" : "userMessageBackground";
   let t2;
   let t3;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => setHover(true);
     t3 = () => setHover(false);
     $[0] = t2;

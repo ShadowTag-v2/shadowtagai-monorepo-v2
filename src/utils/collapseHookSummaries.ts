@@ -1,8 +1,8 @@
-import type { RenderableMessage, SystemStopHookSummaryMessage } from '../types/message.js';
+import type { RenderableMessage, SystemStopHookSummaryMessage } from "../types/message.js";
 
 function isLabeledHookSummary(msg: RenderableMessage): msg is SystemStopHookSummaryMessage {
   return (
-    msg.type === 'system' && msg.subtype === 'stop_hook_summary' && msg.hookLabel !== undefined
+    msg.type === "system" && msg.subtype === "stop_hook_summary" && msg.hookLabel !== undefined
   );
 }
 

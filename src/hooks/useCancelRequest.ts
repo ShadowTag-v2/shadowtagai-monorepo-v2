@@ -4,31 +4,31 @@
  * Must be rendered inside KeybindingSetup to have access to the keybinding context.
  * This component renders nothing - it just registers the cancel keybinding handler.
  */
-import { useCallback, useRef } from 'react';
-import { logEvent } from 'src/services/analytics/index.js';
-import type { AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS } from 'src/services/analytics/metadata.js';
-import { useAppState, useAppStateStore, useSetAppState } from 'src/state/AppState.js';
-import { isVimModeEnabled } from '../components/PromptInput/utils.js';
-import type { ToolUseConfirm } from '../components/permissions/PermissionRequest.js';
-import type { SpinnerMode } from '../components/Spinner/types.js';
-import { useNotifications } from '../context/notifications.js';
-import { useIsOverlayActive } from '../context/overlayContext.js';
-import { useCommandQueue } from '../hooks/useCommandQueue.js';
-import { getShortcutDisplay } from '../keybindings/shortcutFormat.js';
-import { useKeybinding } from '../keybindings/useKeybinding.js';
-import type { Screen } from '../screens/REPL.js';
-import { exitTeammateView } from '../state/teammateViewHelpers.js';
+import { useCallback, useRef } from "react";
+import { logEvent } from "src/services/analytics/index.js";
+import type { AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS } from "src/services/analytics/metadata.js";
+import { useAppState, useAppStateStore, useSetAppState } from "src/state/AppState.js";
+import { isVimModeEnabled } from "../components/PromptInput/utils.js";
+import type { ToolUseConfirm } from "../components/permissions/PermissionRequest.js";
+import type { SpinnerMode } from "../components/Spinner/types.js";
+import { useNotifications } from "../context/notifications.js";
+import { useIsOverlayActive } from "../context/overlayContext.js";
+import { useCommandQueue } from "../hooks/useCommandQueue.js";
+import { getShortcutDisplay } from "../keybindings/shortcutFormat.js";
+import { useKeybinding } from "../keybindings/useKeybinding.js";
+import type { Screen } from "../screens/REPL.js";
+import { exitTeammateView } from "../state/teammateViewHelpers.js";
 import {
   killAllRunningAgentTasks,
   markAgentsNotified,
-} from '../tasks/LocalAgentTask/LocalAgentTask.js';
-import type { PromptInputMode, VimMode } from '../types/textInputTypes.js';
+} from "../tasks/LocalAgentTask/LocalAgentTask.js";
+import type { PromptInputMode, VimMode } from "../types/textInputTypes.js";
 import {
   clearCommandQueue,
   enqueuePendingNotification,
   hasCommandsInQueue,
-} from '../utils/messageQueueManager.js';
-import { emitTaskTerminatedSdk } from '../utils/sdkEventQueue.js';
+} from "../utils/messageQueueManager.js";
+import { emitTaskTerminatedSdk } from "../utils/sdkEventQueue.js";
 
 /** Time window in ms during which a second press kills all background agents. */
 const KILL_AGENTS_CONFIRM_WINDOW_MS = 3000;
@@ -80,14 +80,14 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
 
   const handleCancel = useCallback(() => {
     const cancelProps = {
-      source: 'escape' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      source: "escape" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       streamMode: streamMode as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
     };
 
     // Priority 1: If there's an active task running, cancel it first
     // This takes precedence over queue management so users can always interrupt Claude
     if (abortSignal !== undefined && !abortSignal.aborted) {
-      logEvent('tengu_cancel', cancelProps);
+      logEvent("tengu_cancel", cancelProps);
       setToolUseConfirmQueue(() => []);
       onCancel();
       return;
@@ -102,7 +102,7 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
     }
 
     // Fallback: nothing to cancel or pop (shouldn't reach here if isActive is correct)
-    logEvent('tengu_cancel', cancelProps);
+    logEvent("tengu_cancel", cancelProps);
     setToolUseConfirmQueue(() => []);
     onCancel();
   }, [abortSignal, popCommandFromQueue, setToolUseConfirmQueue, onCancel, streamMode]);
@@ -118,18 +118,18 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
   // rather than cancel the request. Let PromptInput handle mode exit.
   // This only applies to Escape, not Ctrl+C which should always cancel.
   const isInSpecialModeWithEmptyInput =
-    inputMode !== undefined && inputMode !== 'prompt' && !inputValue;
+    inputMode !== undefined && inputMode !== "prompt" && !inputValue;
   // When viewing a teammate's transcript, let useBackgroundTaskNavigation handle Escape
-  const isViewingTeammate = viewSelectionMode === 'viewing-agent';
+  const isViewingTeammate = viewSelectionMode === "viewing-agent";
   // Context guards: other screens/overlays handle their own cancel
   const isContextActive =
-    screen !== 'transcript' &&
+    screen !== "transcript" &&
     !isSearchingHistory &&
     !isMessageSelectorVisible &&
     !isLocalJSXCommand &&
     !isHelpOpen &&
     !isOverlayActive &&
-    !(isVimModeEnabled() && vimMode === 'INSERT');
+    !(isVimModeEnabled() && vimMode === "INSERT");
 
   // Escape (chat:cancel) defers to mode-exit when in special mode with empty
   // input, and to useBackgroundTaskNavigation when viewing a teammate
@@ -146,8 +146,8 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
   const isCtrlCActive =
     isContextActive && (canCancelRunningTask || hasQueuedCommands || isViewingTeammate);
 
-  useKeybinding('chat:cancel', handleCancel, {
-    context: 'Chat',
+  useKeybinding("chat:cancel", handleCancel, {
+    context: "Chat",
     isActive: isEscapeActive,
   });
 
@@ -157,7 +157,7 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
   const killAllAgentsAndNotify = useCallback((): boolean => {
     const tasks = store.getState().tasks;
     const running = Object.entries(tasks).filter(
-      ([, t]) => t.type === 'local_agent' && t.status === 'running',
+      ([, t]) => t.type === "local_agent" && t.status === "running",
     );
     if (running.length === 0) return false;
     killAllRunningAgentTasks(tasks, setAppState);
@@ -165,7 +165,7 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
     for (const [taskId, task] of running) {
       markAgentsNotified(taskId, setAppState);
       descriptions.push(task.description);
-      emitTaskTerminatedSdk(taskId, 'stopped', {
+      emitTaskTerminatedSdk(taskId, "stopped", {
         toolUseId: task.toolUseId,
         summary: task.description,
       });
@@ -173,8 +173,8 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
     const summary =
       descriptions.length === 1
         ? `Background agent "${descriptions[0]}" was stopped by the user.`
-        : `${descriptions.length} background agents were stopped by the user: ${descriptions.map((d) => `"${d}"`).join(', ')}.`;
-    enqueuePendingNotification({ value: summary, mode: 'task-notification' });
+        : `${descriptions.length} background agents were stopped by the user: ${descriptions.map((d) => `"${d}"`).join(", ")}.`;
+    enqueuePendingNotification({ value: summary, mode: "task-notification" });
     onAgentsKilled();
     return true;
   }, [store, setAppState, onAgentsKilled]);
@@ -199,8 +199,8 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
     handleCancel,
   ]);
 
-  useKeybinding('app:interrupt', handleInterrupt, {
-    context: 'Global',
+  useKeybinding("app:interrupt", handleInterrupt, {
+    context: "Global",
     isActive: isCtrlCActive,
   });
 
@@ -210,13 +210,13 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
   const handleKillAgents = useCallback(() => {
     const tasks = store.getState().tasks;
     const hasRunningAgents = Object.values(tasks).some(
-      (t) => t.type === 'local_agent' && t.status === 'running',
+      (t) => t.type === "local_agent" && t.status === "running",
     );
     if (!hasRunningAgents) {
       addNotification({
-        key: 'kill-agents-none',
-        text: 'No background agents running',
-        priority: 'immediate',
+        key: "kill-agents-none",
+        text: "No background agents running",
+        priority: "immediate",
         timeoutMs: 2000,
       });
       return;
@@ -226,9 +226,9 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
     if (elapsed <= KILL_AGENTS_CONFIRM_WINDOW_MS) {
       // Second press within window -- kill all background agents
       lastKillAgentsPressRef.current = 0;
-      removeNotification('kill-agents-confirm');
-      logEvent('tengu_cancel', {
-        source: 'kill_agents' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      removeNotification("kill-agents-confirm");
+      logEvent("tengu_cancel", {
+        source: "kill_agents" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
       clearCommandQueue();
       killAllAgentsAndNotify();
@@ -236,11 +236,11 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
     }
     // First press -- show confirmation hint in status bar
     lastKillAgentsPressRef.current = now;
-    const shortcut = getShortcutDisplay('chat:killAgents', 'Chat', 'ctrl+x ctrl+k');
+    const shortcut = getShortcutDisplay("chat:killAgents", "Chat", "ctrl+x ctrl+k");
     addNotification({
-      key: 'kill-agents-confirm',
+      key: "kill-agents-confirm",
       text: `Press ${shortcut} again to stop background agents`,
-      priority: 'immediate',
+      priority: "immediate",
       timeoutMs: KILL_AGENTS_CONFIRM_WINDOW_MS,
     });
   }, [store, addNotification, removeNotification, killAllAgentsAndNotify]);
@@ -248,8 +248,8 @@ export function CancelRequestHandler(props: CancelRequestHandlerProps): null {
   // Must stay always-active: ctrl+x is consumed as a chord prefix regardless
   // of isActive (because ctrl+x ctrl+e is always live), so an inactive handler
   // here would leak ctrl+k to readline kill-line. Handler gates internally.
-  useKeybinding('chat:killAgents', handleKillAgents, {
-    context: 'Chat',
+  useKeybinding("chat:killAgents", handleKillAgents, {
+    context: "Chat",
   });
 
   return null;

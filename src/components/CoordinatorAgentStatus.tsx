@@ -1,4 +1,4 @@
-import { c as _c } from 'react/compiler-runtime';
+import { c as _c } from "react/compiler-runtime";
 /**
  * CoordinatorTaskPanel — Steerable list of background agents.
  *
@@ -7,21 +7,21 @@ import { c as _c } from 'react/compiler-runtime';
  * always; a timestamp shows until passed. Enter to view/steer, x to dismiss.
  */
 
-import figures from 'figures';
-import * as React from 'react';
-import { BLACK_CIRCLE, PAUSE_ICON, PLAY_ICON } from '../constants/figures.js';
-import { useTerminalSize } from '../hooks/useTerminalSize.js';
-import { stringWidth } from '../ink/stringWidth.js';
-import { Box, Text, wrapText } from '../ink.js';
-import { type AppState, useAppState, useSetAppState } from '../state/AppState.js';
-import { enterTeammateView, exitTeammateView } from '../state/teammateViewHelpers.js';
+import figures from "figures";
+import * as React from "react";
+import { BLACK_CIRCLE, PAUSE_ICON, PLAY_ICON } from "../constants/figures.js";
+import { useTerminalSize } from "../hooks/useTerminalSize.js";
+import { stringWidth } from "../ink/stringWidth.js";
+import { Box, Text, wrapText } from "../ink.js";
+import { type AppState, useAppState, useSetAppState } from "../state/AppState.js";
+import { enterTeammateView, exitTeammateView } from "../state/teammateViewHelpers.js";
 import {
   isPanelAgentTask,
   type LocalAgentTaskState,
-} from '../tasks/LocalAgentTask/LocalAgentTask.js';
-import { formatDuration, formatNumber } from '../utils/format.js';
-import { evictTerminalTask } from '../utils/task/framework.js';
-import { isTerminalStatus } from './tasks/taskStatusUtils.js';
+} from "../tasks/LocalAgentTask/LocalAgentTask.js";
+import { formatDuration, formatNumber } from "../utils/format.js";
+import { evictTerminalTask } from "../utils/task/framework.js";
+import { isTerminalStatus } from "./tasks/taskStatusUtils.js";
 
 /**
  * Which panel-managed tasks currently have a visible row.
@@ -31,7 +31,7 @@ import { isTerminalStatus } from './tasks/taskStatusUtils.js';
  * the filter time-dependent. Shared by panel render, useCoordinatorTaskCount,
  * and index resolvers so the math can't drift.
  */
-export function getVisibleAgentTasks(tasks: AppState['tasks']): LocalAgentTaskState[] {
+export function getVisibleAgentTasks(tasks: AppState["tasks"]): LocalAgentTaskState[] {
   return Object.values(tasks)
     .filter((t): t is LocalAgentTaskState => isPanelAgentTask(t) && t.evictAfter !== 0)
     .sort((a, b) => a.startTime - b.startTime);
@@ -41,7 +41,7 @@ export function CoordinatorTaskPanel(): React.ReactNode {
   const viewingAgentTaskId = useAppState((s_0) => s_0.viewingAgentTaskId);
   const agentNameRegistry = useAppState((s_1) => s_1.agentNameRegistry);
   const coordinatorTaskIndex = useAppState((s_2) => s_2.coordinatorTaskIndex);
-  const tasksSelected = useAppState((s_3) => s_3.footerSelection === 'tasks');
+  const tasksSelected = useAppState((s_3) => s_3.footerSelection === "tasks");
   const selectedIndex = tasksSelected ? coordinatorTaskIndex : undefined;
   const setAppState = useSetAppState();
   const visibleTasks = getVisibleAgentTasks(tasks);
@@ -119,11 +119,11 @@ function MainLine(t0) {
   const $ = _c(10);
   const { isSelected, isViewed, onClick } = t0;
   const [hover, setHover] = React.useState(false);
-  const prefix = isSelected || hover ? `${figures.pointer} ` : '  ';
+  const prefix = isSelected || hover ? `${figures.pointer} ` : "  ";
   const bullet = isViewed ? BLACK_CIRCLE : figures.circle;
   let t1;
   let t2;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = () => setHover(true);
     t2 = () => setHover(false);
     $[0] = t1;
@@ -201,7 +201,7 @@ function AgentLine(t0) {
     t2 =
       tokenCount !== undefined && tokenCount > 0
         ? ` · ${arrow} ${formatNumber(tokenCount)} tokens`
-        : '';
+        : "";
     $[2] = arrow;
     $[3] = tokenCount;
     $[4] = t2;
@@ -210,15 +210,15 @@ function AgentLine(t0) {
   }
   const tokenText = t2;
   const queuedCount = task.pendingMessages.length;
-  const queuedText = queuedCount > 0 ? ` · ${queuedCount} queued` : '';
+  const queuedText = queuedCount > 0 ? ` · ${queuedCount} queued` : "";
   const displayDescription = task.progress?.summary || task.description;
   const highlighted = isSelected || hover;
-  const prefix = highlighted ? `${figures.pointer} ` : '  ';
+  const prefix = highlighted ? `${figures.pointer} ` : "  ";
   const bullet = isViewed ? BLACK_CIRCLE : figures.circle;
   const dim = !highlighted && !isViewed;
   const sep = isRunning ? PLAY_ICON : PAUSE_ICON;
-  const namePart = name ? `${name}: ` : '';
-  const hintPart = isSelected && !isViewed ? ` · x to ${isRunning ? 'stop' : 'clear'}` : '';
+  const namePart = name ? `${name}: ` : "";
+  const hintPart = isSelected && !isViewed ? ` · x to ${isRunning ? "stop" : "clear"}` : "";
   const suffixPart = ` ${sep} ${elapsed}${tokenText}${queuedText}${hintPart}`;
   const availableForDesc =
     columns -
@@ -229,7 +229,7 @@ function AgentLine(t0) {
   const t3 = Math.max(0, availableForDesc);
   let t4;
   if ($[5] !== displayDescription || $[6] !== t3) {
-    t4 = wrapText(displayDescription, t3, 'truncate-end');
+    t4 = wrapText(displayDescription, t3, "truncate-end");
     $[5] = displayDescription;
     $[6] = t3;
     $[7] = t4;
@@ -244,7 +244,7 @@ function AgentLine(t0) {
         <Text dimColor={false} bold={true}>
           {name}
         </Text>
-        {': '}
+        {": "}
       </>
     );
     $[8] = name;
@@ -314,7 +314,7 @@ function AgentLine(t0) {
   }
   let t10;
   let t9;
-  if ($[27] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = () => setHover(true);
     t10 = () => setHover(false);
     $[27] = t10;

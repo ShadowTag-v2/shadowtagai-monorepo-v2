@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../../ink.js';
-import { Spinner } from '../Spinner.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../../ink.js";
+import { Spinner } from "../Spinner.js";
 
 type LoadingStateProps = {
   /**
@@ -51,7 +51,7 @@ export function LoadingState(t0) {
   const bold = t1 === undefined ? false : t1;
   const dimColor = t2 === undefined ? false : t2;
   let t3;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = <Spinner />;
     $[0] = t3;
   } else {
@@ -63,7 +63,7 @@ export function LoadingState(t0) {
       <Box flexDirection="row">
         {t3}
         <Text bold={bold} dimColor={dimColor}>
-          {' '}
+          {" "}
           {message}
         </Text>
       </Box>

@@ -1,7 +1,7 @@
-import type * as React from 'react';
-import type { LocalJSXCommandContext } from '../../commands.js';
-import { Settings } from '../../components/Settings/Settings.js';
-import type { LocalJSXCommandOnDone } from '../../types/command.js';
+import type * as React from "react";
+import type { LocalJSXCommandContext } from "../../commands.js";
+import { Settings } from "../../components/Settings/Settings.js";
+import type { LocalJSXCommandOnDone } from "../../types/command.js";
 export async function call(
   onDone: LocalJSXCommandOnDone,
   context: LocalJSXCommandContext,

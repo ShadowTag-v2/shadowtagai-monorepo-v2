@@ -1,8 +1,8 @@
-import { lstat, realpath } from 'node:fs/promises';
-import { dirname, join, resolve, sep } from 'node:path';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import { getErrnoCode } from '../utils/errors.js';
-import { getAutoMemPath, isAutoMemoryEnabled } from './paths.js';
+import { lstat, realpath } from "node:fs/promises";
+import { dirname, join, resolve, sep } from "node:path";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import { getErrnoCode } from "../utils/errors.js";
+import { getAutoMemPath, isAutoMemoryEnabled } from "./paths.js";
 
 /**
  * Error thrown when a path validation detects a traversal or injection attempt.
@@ -10,7 +10,7 @@ import { getAutoMemPath, isAutoMemoryEnabled } from './paths.js';
 export class PathTraversalError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'PathTraversalError';
+    this.name = "PathTraversalError";
   }
 }
 
@@ -21,7 +21,7 @@ export class PathTraversalError extends Error {
  */
 function sanitizePathKey(key: string): string {
   // Null bytes can truncate paths in C-based syscalls
-  if (key.includes('\0')) {
+  if (key.includes("\0")) {
     throw new PathTraversalError(`Null byte in path key: "${key}"`);
   }
   // URL-encoded traversals (e.g. %2e%2e%2f = ../)
@@ -33,29 +33,29 @@ function sanitizePathKey(key: string): string {
     // so no URL-encoded traversal is possible
     decoded = key;
   }
-  if (decoded !== key && (decoded.includes('..') || decoded.includes('/'))) {
+  if (decoded !== key && (decoded.includes("..") || decoded.includes("/"))) {
     throw new PathTraversalError(`URL-encoded traversal in path key: "${key}"`);
   }
   // Unicode normalization attacks: fullwidth ．．／ (U+FF0E U+FF0F) normalize
   // to ASCII ../ under NFKC. While path.resolve/fs.writeFile treat these as
   // literal bytes (not separators), downstream layers or filesystems may
   // normalize — reject for defense-in-depth (PSR M22187 vector 4).
-  const normalized = key.normalize('NFKC');
+  const normalized = key.normalize("NFKC");
   if (
     normalized !== key &&
-    (normalized.includes('..') ||
-      normalized.includes('/') ||
-      normalized.includes('\\') ||
-      normalized.includes('\0'))
+    (normalized.includes("..") ||
+      normalized.includes("/") ||
+      normalized.includes("\\") ||
+      normalized.includes("\0"))
   ) {
     throw new PathTraversalError(`Unicode-normalized traversal in path key: "${key}"`);
   }
   // Reject backslashes (Windows path separator used as traversal vector)
-  if (key.includes('\\')) {
+  if (key.includes("\\")) {
     throw new PathTraversalError(`Backslash in path key: "${key}"`);
   }
   // Reject absolute paths
-  if (key.startsWith('/')) {
+  if (key.startsWith("/")) {
     throw new PathTraversalError(`Absolute path key: "${key}"`);
   }
   return key;
@@ -72,7 +72,7 @@ export function isTeamMemoryEnabled(): boolean {
   if (!isAutoMemoryEnabled()) {
     return false;
   }
-  return getFeatureValue_CACHED_MAY_BE_STALE('tengu_herring_clock', false);
+  return getFeatureValue_CACHED_MAY_BE_STALE("tengu_herring_clock", false);
 }
 
 /**
@@ -80,7 +80,7 @@ export function isTeamMemoryEnabled(): boolean {
  * Lives as a subdirectory of the auto-memory directory, scoped per-project.
  */
 export function getTeamMemPath(): string {
-  return (join(getAutoMemPath(), 'team') + sep).normalize('NFC');
+  return (join(getAutoMemPath(), "team") + sep).normalize("NFC");
 }
 
 /**
@@ -88,7 +88,7 @@ export function getTeamMemPath(): string {
  * Lives as a subdirectory of the auto-memory directory, scoped per-project.
  */
 export function getTeamMemEntrypoint(): string {
-  return join(getAutoMemPath(), 'team', 'MEMORY.md');
+  return join(getAutoMemPath(), "team", "MEMORY.md");
 }
 
 /**
@@ -119,7 +119,7 @@ async function realpathDeepestExisting(absolutePath: string): Promise<string> {
       return tail.length === 0 ? realCurrent : join(realCurrent, ...tail.reverse());
     } catch (e: unknown) {
       const code = getErrnoCode(e);
-      if (code === 'ENOENT') {
+      if (code === "ENOENT") {
         // Could be truly non-existent (safe to walk up) OR a dangling symlink
         // whose target doesn't exist. Dangling symlinks are an attack vector:
         // writeFile would follow the link and create the target outside teamDir.
@@ -140,10 +140,10 @@ async function realpathDeepestExisting(absolutePath: string): Promise<string> {
           }
           // lstat also failed (truly non-existent or inaccessible) — safe to walk up.
         }
-      } else if (code === 'ELOOP') {
+      } else if (code === "ELOOP") {
         // Symlink loop — corrupted or malicious filesystem state.
         throw new PathTraversalError(`Symlink loop detected in path: "${current}"`);
-      } else if (code !== 'ENOTDIR' && code !== 'ENAMETOOLONG') {
+      } else if (code !== "ENOTDIR" && code !== "ENAMETOOLONG") {
         // EACCES, EIO, etc. — cannot verify containment. Fail closed by wrapping
         // as PathTraversalError so the caller can skip this entry gracefully
         // instead of aborting the entire batch.
@@ -173,10 +173,10 @@ async function isRealPathWithinTeamDir(realCandidate: string): Promise<boolean> 
   try {
     // getTeamMemPath() includes a trailing separator; strip it because
     // realpath() rejects trailing separators on some platforms.
-    realTeamDir = await realpath(getTeamMemPath().replace(/[/\\]+$/, ''));
+    realTeamDir = await realpath(getTeamMemPath().replace(/[/\\]+$/, ""));
   } catch (e: unknown) {
     const code = getErrnoCode(e);
-    if (code === 'ENOENT' || code === 'ENOTDIR') {
+    if (code === "ENOENT" || code === "ENOTDIR") {
       // Team dir doesn't exist — symlink escape impossible, skip check.
       return true;
     }
@@ -212,7 +212,7 @@ export function isTeamMemPath(filePath: string): boolean {
  * directory via .. segments, or escapes via a symlink (PSR M22186).
  */
 export async function validateTeamMemWritePath(filePath: string): Promise<string> {
-  if (filePath.includes('\0')) {
+  if (filePath.includes("\0")) {
     throw new PathTraversalError(`Null byte in path: "${filePath}"`);
   }
   // First pass: normalize .. segments and check string-level containment.

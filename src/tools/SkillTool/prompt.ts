@@ -1,17 +1,17 @@
-import { memoize } from 'lodash-es';
-import type { Command } from 'src/commands.js';
-import { getCommandName, getSkillToolCommands, getSlashCommandToolSkills } from 'src/commands.js';
-import { COMMAND_NAME_TAG } from '../../constants/xml.js';
-import { stringWidth } from '../../ink/stringWidth.js';
+import { memoize } from "lodash-es";
+import type { Command } from "src/commands.js";
+import { getCommandName, getSkillToolCommands, getSlashCommandToolSkills } from "src/commands.js";
+import { COMMAND_NAME_TAG } from "../../constants/xml.js";
+import { stringWidth } from "../../ink/stringWidth.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { count } from '../../utils/array.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { toError } from '../../utils/errors.js';
-import { truncate } from '../../utils/format.js';
-import { logError } from '../../utils/log.js';
+} from "../../services/analytics/index.js";
+import { count } from "../../utils/array.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { toError } from "../../utils/errors.js";
+import { truncate } from "../../utils/format.js";
+import { logError } from "../../utils/log.js";
 
 // Skill listing gets 1% of the context window (in characters)
 export const SKILL_BUDGET_CONTEXT_PERCENT = 0.01;
@@ -44,7 +44,7 @@ function getCommandDescription(cmd: Command): string {
 function formatCommandDescription(cmd: Command): string {
   // Debug: log if userFacingName differs from cmd.name for plugin skills
   const displayName = getCommandName(cmd);
-  if (cmd.name !== displayName && cmd.type === 'prompt' && cmd.source === 'plugin') {
+  if (cmd.name !== displayName && cmd.type === "prompt" && cmd.source === "plugin") {
     logForDebugging(`Skill prompt: showing "${cmd.name}" (userFacingName="${displayName}")`);
   }
 
@@ -57,7 +57,7 @@ export function formatCommandsWithinBudget(
   commands: Command[],
   contextWindowTokens?: number,
 ): string {
-  if (commands.length === 0) return '';
+  if (commands.length === 0) return "";
 
   const budget = getCharBudget(contextWindowTokens);
 
@@ -71,7 +71,7 @@ export function formatCommandsWithinBudget(
     fullEntries.reduce((sum, e) => sum + stringWidth(e.full), 0) + (fullEntries.length - 1);
 
   if (fullTotal <= budget) {
-    return fullEntries.map((e) => e.full).join('\n');
+    return fullEntries.map((e) => e.full).join("\n");
   }
 
   // Partition into bundled (never truncated) and rest
@@ -79,7 +79,7 @@ export function formatCommandsWithinBudget(
   const restCommands: Command[] = [];
   for (let i = 0; i < commands.length; i++) {
     const cmd = commands[i]!;
-    if (cmd.type === 'prompt' && cmd.source === 'bundled') {
+    if (cmd.type === "prompt" && cmd.source === "bundled") {
       bundledIndices.add(i);
     } else {
       restCommands.push(cmd);
@@ -95,7 +95,7 @@ export function formatCommandsWithinBudget(
 
   // Calculate max description length for non-bundled commands
   if (restCommands.length === 0) {
-    return fullEntries.map((e) => e.full).join('\n');
+    return fullEntries.map((e) => e.full).join("\n");
   }
 
   const restNameOverhead =
@@ -106,12 +106,12 @@ export function formatCommandsWithinBudget(
 
   if (maxDescLen < MIN_DESC_LENGTH) {
     // Extreme case: non-bundled go names-only, bundled keep descriptions
-    if (process.env.USER_TYPE === 'ant') {
-      logEvent('tengu_skill_descriptions_truncated', {
+    if (process.env.USER_TYPE === "ant") {
+      logEvent("tengu_skill_descriptions_truncated", {
         skill_count: commands.length,
         budget,
         full_total: fullTotal,
-        truncation_mode: 'names_only' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+        truncation_mode: "names_only" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         max_desc_length: maxDescLen,
         bundled_count: bundledIndices.size,
         bundled_chars: bundledChars,
@@ -119,7 +119,7 @@ export function formatCommandsWithinBudget(
     }
     return commands
       .map((cmd, i) => (bundledIndices.has(i) ? fullEntries[i]?.full : `- ${cmd.name}`))
-      .join('\n');
+      .join("\n");
   }
 
   // Truncate non-bundled descriptions to fit within budget
@@ -127,13 +127,13 @@ export function formatCommandsWithinBudget(
     restCommands,
     (cmd) => stringWidth(getCommandDescription(cmd)) > maxDescLen,
   );
-  if (process.env.USER_TYPE === 'ant') {
-    logEvent('tengu_skill_descriptions_truncated', {
+  if (process.env.USER_TYPE === "ant") {
+    logEvent("tengu_skill_descriptions_truncated", {
       skill_count: commands.length,
       budget,
       full_total: fullTotal,
       truncation_mode:
-        'description_trimmed' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+        "description_trimmed" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       max_desc_length: maxDescLen,
       truncated_count: truncatedCount,
       // Count of bundled skills included in this prompt (excludes skills with disableModelInvocation)
@@ -148,7 +148,7 @@ export function formatCommandsWithinBudget(
       const description = getCommandDescription(cmd);
       return `- ${cmd.name}: ${truncate(description, maxDescLen)}`;
     })
-    .join('\n');
+    .join("\n");
 }
 
 export const getPrompt = memoize(async (_cwd: string): Promise<string> => {

@@ -1,14 +1,14 @@
-import { BASH_TOOL_NAME } from '../tools/BashTool/toolName.js';
-import { FILE_READ_TOOL_NAME } from '../tools/FileReadTool/prompt.js';
-import { GREP_TOOL_NAME } from '../tools/GrepTool/prompt.js';
-import { WEB_FETCH_TOOL_NAME } from '../tools/WebFetchTool/prompt.js';
-import type { ContextData } from './analyzeContext.js';
-import { getDisplayPath } from './file.js';
-import { formatTokens } from './format.js';
+import { BASH_TOOL_NAME } from "../tools/BashTool/toolName.js";
+import { FILE_READ_TOOL_NAME } from "../tools/FileReadTool/prompt.js";
+import { GREP_TOOL_NAME } from "../tools/GrepTool/prompt.js";
+import { WEB_FETCH_TOOL_NAME } from "../tools/WebFetchTool/prompt.js";
+import type { ContextData } from "./analyzeContext.js";
+import { getDisplayPath } from "./file.js";
+import { formatTokens } from "./format.js";
 
 // --
 
-export type SuggestionSeverity = 'info' | 'warning';
+export type SuggestionSeverity = "info" | "warning";
 
 export type ContextSuggestion = {
   severity: SuggestionSeverity;
@@ -40,7 +40,7 @@ export function generateContextSuggestions(data: ContextData): ContextSuggestion
   // Sort: warnings first, then by savings descending
   suggestions.sort((a, b) => {
     if (a.severity !== b.severity) {
-      return a.severity === 'warning' ? -1 : 1;
+      return a.severity === "warning" ? -1 : 1;
     }
     return (b.savingsTokens ?? 0) - (a.savingsTokens ?? 0);
   });
@@ -53,11 +53,11 @@ export function generateContextSuggestions(data: ContextData): ContextSuggestion
 function checkNearCapacity(data: ContextData, suggestions: ContextSuggestion[]): void {
   if (data.percentage >= NEAR_CAPACITY_PERCENT) {
     suggestions.push({
-      severity: 'warning',
+      severity: "warning",
       title: `Context is ${data.percentage}% full`,
       detail: data.isAutoCompactEnabled
-        ? 'Autocompact will trigger soon, which discards older messages. Use /compact now to control what gets kept.'
-        : 'Autocompact is disabled. Use /compact to free space, or enable autocompact in /config.',
+        ? "Autocompact will trigger soon, which discards older messages. Use /compact now to control what gets kept."
+        : "Autocompact is disabled. Use /compact to free space, or enable autocompact in /config.",
     });
   }
 }
@@ -90,40 +90,40 @@ function getLargeToolSuggestion(
   switch (toolName) {
     case BASH_TOOL_NAME:
       return {
-        severity: 'warning',
+        severity: "warning",
         title: `Bash results using ${tokenStr} tokens (${percent.toFixed(0)}%)`,
         detail:
-          'Pipe output through head, tail, or grep to reduce result size. Avoid cat on large files \u2014 use Read with offset/limit instead.',
+          "Pipe output through head, tail, or grep to reduce result size. Avoid cat on large files \u2014 use Read with offset/limit instead.",
         savingsTokens: Math.floor(tokens * 0.5),
       };
     case FILE_READ_TOOL_NAME:
       return {
-        severity: 'info',
+        severity: "info",
         title: `Read results using ${tokenStr} tokens (${percent.toFixed(0)}%)`,
         detail:
-          'Use offset and limit parameters to read only the sections you need. Avoid re-reading entire files when you only need a few lines.',
+          "Use offset and limit parameters to read only the sections you need. Avoid re-reading entire files when you only need a few lines.",
         savingsTokens: Math.floor(tokens * 0.3),
       };
     case GREP_TOOL_NAME:
       return {
-        severity: 'info',
+        severity: "info",
         title: `Grep results using ${tokenStr} tokens (${percent.toFixed(0)}%)`,
         detail:
-          'Add more specific patterns or use the glob or type parameter to narrow file types. Consider Glob for file discovery instead of Grep.',
+          "Add more specific patterns or use the glob or type parameter to narrow file types. Consider Glob for file discovery instead of Grep.",
         savingsTokens: Math.floor(tokens * 0.3),
       };
     case WEB_FETCH_TOOL_NAME:
       return {
-        severity: 'info',
+        severity: "info",
         title: `WebFetch results using ${tokenStr} tokens (${percent.toFixed(0)}%)`,
         detail:
-          'Web page content can be very large. Consider extracting only the specific information needed.',
+          "Web page content can be very large. Consider extracting only the specific information needed.",
         savingsTokens: Math.floor(tokens * 0.4),
       };
     default:
       if (percent >= 20) {
         return {
-          severity: 'info',
+          severity: "info",
           title: `${toolName} using ${tokenStr} tokens (${percent.toFixed(0)}%)`,
           detail: `This tool is consuming a significant portion of context.`,
           savingsTokens: Math.floor(tokens * 0.2),
@@ -154,10 +154,10 @@ function checkReadResultBloat(data: ContextData, suggestions: ContextSuggestion[
 
   if (readPercent >= READ_BLOAT_PERCENT && readTool.resultTokens >= LARGE_TOOL_RESULT_TOKENS) {
     suggestions.push({
-      severity: 'info',
+      severity: "info",
       title: `File reads using ${formatTokens(readTool.resultTokens)} tokens (${readPercent.toFixed(0)}%)`,
       detail:
-        'If you are re-reading files, consider referencing earlier reads. Use offset/limit for large files.',
+        "If you are re-reading files, consider referencing earlier reads. Use offset/limit for large files.",
       savingsTokens: Math.floor(readTool.resultTokens * 0.3),
     });
   }
@@ -175,10 +175,10 @@ function checkMemoryBloat(data: ContextData, suggestions: ContextSuggestion[]): 
         const name = getDisplayPath(f.path);
         return `${name} (${formatTokens(f.tokens)})`;
       })
-      .join(', ');
+      .join(", ");
 
     suggestions.push({
-      severity: 'info',
+      severity: "info",
       title: `Memory files using ${formatTokens(totalMemoryTokens)} tokens (${memoryPercent.toFixed(0)}%)`,
       detail: `Largest: ${largestFiles}. Use /memory to review and prune stale entries.`,
       savingsTokens: Math.floor(totalMemoryTokens * 0.3),
@@ -193,10 +193,10 @@ function checkAutoCompactDisabled(data: ContextData, suggestions: ContextSuggest
     data.percentage < NEAR_CAPACITY_PERCENT
   ) {
     suggestions.push({
-      severity: 'info',
-      title: 'Autocompact is disabled',
+      severity: "info",
+      title: "Autocompact is disabled",
       detail:
-        'Without autocompact, you will hit context limits and lose the conversation. Enable it in /config or use /compact manually.',
+        "Without autocompact, you will hit context limits and lose the conversation. Enable it in /config or use /compact manually.",
     });
   }
 }

@@ -1,16 +1,16 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import memoize from 'lodash-es/memoize.js';
-import { z } from 'zod/v4';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import memoize from "lodash-es/memoize.js";
+import { z } from "zod/v4";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../../services/analytics/index.js';
-import { buildTool, findToolByName, type Tool, type ToolDef, type Tools } from '../../Tool.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { lazySchema } from '../../utils/lazySchema.js';
-import { escapeRegExp } from '../../utils/stringUtils.js';
-import { isToolSearchEnabledOptimistic } from '../../utils/toolSearch.js';
-import { getPrompt, isDeferredTool, TOOL_SEARCH_TOOL_NAME } from './prompt.js';
+} from "../../services/analytics/index.js";
+import { buildTool, findToolByName, type Tool, type ToolDef, type Tools } from "../../Tool.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { lazySchema } from "../../utils/lazySchema.js";
+import { escapeRegExp } from "../../utils/stringUtils.js";
+import { isToolSearchEnabledOptimistic } from "../../utils/toolSearch.js";
+import { getPrompt, isDeferredTool, TOOL_SEARCH_TOOL_NAME } from "./prompt.js";
 
 export const inputSchema = lazySchema(() =>
   z.object({
@@ -23,7 +23,7 @@ export const inputSchema = lazySchema(() =>
       .number()
       .optional()
       .default(5)
-      .describe('Maximum number of results to return (default: 5)'),
+      .describe("Maximum number of results to return (default: 5)"),
   }),
 );
 type InputSchema = ReturnType<typeof inputSchema>;
@@ -50,7 +50,7 @@ function getDeferredToolsCacheKey(deferredTools: Tools): string {
   return deferredTools
     .map((t) => t.name)
     .sort()
-    .join(',');
+    .join(",");
 }
 
 /**
@@ -61,11 +61,11 @@ const getToolDescriptionMemoized = memoize(
   async (toolName: string, tools: Tools): Promise<string> => {
     const tool = findToolByName(tools, toolName);
     if (!tool) {
-      return '';
+      return "";
     }
     return tool.prompt({
       getToolPermissionContext: async () => ({
-        mode: 'default' as const,
+        mode: "default" as const,
         additionalWorkingDirectories: new Map(),
         alwaysAllowRules: {},
         alwaysDenyRules: {},
@@ -127,27 +127,27 @@ function parseToolName(name: string): {
   isMcp: boolean;
 } {
   // Check if it's an MCP tool
-  if (name.startsWith('mcp__')) {
-    const withoutPrefix = name.replace(/^mcp__/, '').toLowerCase();
-    const parts = withoutPrefix.split('__').flatMap((p) => p.split('_'));
+  if (name.startsWith("mcp__")) {
+    const withoutPrefix = name.replace(/^mcp__/, "").toLowerCase();
+    const parts = withoutPrefix.split("__").flatMap((p) => p.split("_"));
     return {
       parts: parts.filter(Boolean),
-      full: withoutPrefix.replace(/__/g, ' ').replace(/_/g, ' '),
+      full: withoutPrefix.replace(/__/g, " ").replace(/_/g, " "),
       isMcp: true,
     };
   }
 
   // Regular tool - split by CamelCase and underscores
   const parts = name
-    .replace(/([a-z])([A-Z])/g, '$1 $2') // CamelCase to spaces
-    .replace(/_/g, ' ')
+    .replace(/([a-z])([A-Z])/g, "$1 $2") // CamelCase to spaces
+    .replace(/_/g, " ")
     .toLowerCase()
     .split(/\s+/)
     .filter(Boolean);
 
   return {
     parts,
-    full: parts.join(' '),
+    full: parts.join(" "),
     isMcp: false,
   };
 }
@@ -197,7 +197,7 @@ async function searchToolsWithKeywords(
 
   // If query looks like an MCP tool prefix (mcp__server), find matching tools.
   // Handles models searching by server name with mcp__ prefix.
-  if (queryLower.startsWith('mcp__') && queryLower.length > 5) {
+  if (queryLower.startsWith("mcp__") && queryLower.length > 5) {
     const prefixMatches = deferredTools
       .filter((t) => t.name.toLowerCase().startsWith(queryLower))
       .slice(0, maxResults)
@@ -213,7 +213,7 @@ async function searchToolsWithKeywords(
   const requiredTerms: string[] = [];
   const optionalTerms: string[] = [];
   for (const term of queryTerms) {
-    if (term.startsWith('+') && term.length > 1) {
+    if (term.startsWith("+") && term.length > 1) {
       requiredTerms.push(term.slice(1));
     } else {
       optionalTerms.push(term);
@@ -232,7 +232,7 @@ async function searchToolsWithKeywords(
         const parsed = parseToolName(tool.name);
         const description = await getToolDescriptionMemoized(tool.name, tools);
         const descNormalized = description.toLowerCase();
-        const hintNormalized = tool.searchHint?.toLowerCase() ?? '';
+        const hintNormalized = tool.searchHint?.toLowerCase() ?? "";
         const matchesAll = requiredTerms.every((term) => {
           const pattern = termPatterns.get(term)!;
           return (
@@ -253,7 +253,7 @@ async function searchToolsWithKeywords(
       const parsed = parseToolName(tool.name);
       const description = await getToolDescriptionMemoized(tool.name, tools);
       const descNormalized = description.toLowerCase();
-      const hintNormalized = tool.searchHint?.toLowerCase() ?? '';
+      const hintNormalized = tool.searchHint?.toLowerCase() ?? "";
 
       let score = 0;
       for (const term of allScoringTerms) {
@@ -326,13 +326,13 @@ export const ToolSearchTool = buildTool({
     // Check for MCP servers still connecting
     function getPendingServerNames(): string[] | undefined {
       const appState = getAppState();
-      const pending = appState.mcp.clients.filter((c) => c.type === 'pending');
+      const pending = appState.mcp.clients.filter((c) => c.type === "pending");
       return pending.length > 0 ? pending.map((s) => s.name) : undefined;
     }
 
     // Helper to log search outcome
-    function logSearchOutcome(matches: string[], queryType: 'select' | 'keyword'): void {
-      logEvent('tengu_tool_search_outcome', {
+    function logSearchOutcome(matches: string[], queryType: "select" | "keyword"): void {
+      logEvent("tengu_tool_search_outcome", {
         query: query as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         queryType: queryType as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         matchCount: matches.length,
@@ -350,7 +350,7 @@ export const ToolSearchTool = buildTool({
     const selectMatch = query.match(/^select:(.+)$/i);
     if (selectMatch) {
       const requested = selectMatch[1]
-        ?.split(',')
+        ?.split(",")
         .map((s) => s.trim())
         .filter(Boolean);
 
@@ -366,20 +366,20 @@ export const ToolSearchTool = buildTool({
       }
 
       if (found.length === 0) {
-        logForDebugging(`ToolSearchTool: select failed — none found: ${missing.join(', ')}`);
-        logSearchOutcome([], 'select');
+        logForDebugging(`ToolSearchTool: select failed — none found: ${missing.join(", ")}`);
+        logSearchOutcome([], "select");
         const pendingServers = getPendingServerNames();
         return buildSearchResult([], query, deferredTools.length, pendingServers);
       }
 
       if (missing.length > 0) {
         logForDebugging(
-          `ToolSearchTool: partial select — found: ${found.join(', ')}, missing: ${missing.join(', ')}`,
+          `ToolSearchTool: partial select — found: ${found.join(", ")}, missing: ${missing.join(", ")}`,
         );
       } else {
-        logForDebugging(`ToolSearchTool: selected ${found.join(', ')}`);
+        logForDebugging(`ToolSearchTool: selected ${found.join(", ")}`);
       }
-      logSearchOutcome(found, 'select');
+      logSearchOutcome(found, "select");
       return buildSearchResult(found, query, deferredTools.length);
     }
 
@@ -390,7 +390,7 @@ export const ToolSearchTool = buildTool({
       `ToolSearchTool: keyword search for "${query}", found ${matches.length} matches`,
     );
 
-    logSearchOutcome(matches, 'keyword');
+    logSearchOutcome(matches, "keyword");
 
     // Include pending server info when search finds no matches
     if (matches.length === 0) {
@@ -403,7 +403,7 @@ export const ToolSearchTool = buildTool({
   renderToolUseMessage() {
     return null;
   },
-  userFacingName: () => '',
+  userFacingName: () => "",
   /**
    * Returns a tool_result with tool_reference blocks.
    * This format works on 1P/Foundry. Bedrock/Vertex may not support
@@ -411,21 +411,21 @@ export const ToolSearchTool = buildTool({
    */
   mapToolResultToToolResultBlockParam(content: Output, toolUseID: string): ToolResultBlockParam {
     if (content.matches.length === 0) {
-      let text = 'No matching deferred tools found';
+      let text = "No matching deferred tools found";
       if (content.pending_mcp_servers && content.pending_mcp_servers.length > 0) {
-        text += `. Some MCP servers are still connecting: ${content.pending_mcp_servers.join(', ')}. Their tools will become available shortly — try searching again.`;
+        text += `. Some MCP servers are still connecting: ${content.pending_mcp_servers.join(", ")}. Their tools will become available shortly — try searching again.`;
       }
       return {
-        type: 'tool_result',
+        type: "tool_result",
         tool_use_id: toolUseID,
         content: text,
       };
     }
     return {
-      type: 'tool_result',
+      type: "tool_result",
       tool_use_id: toolUseID,
       content: content.matches.map((name) => ({
-        type: 'tool_reference' as const,
+        type: "tool_reference" as const,
         tool_name: name,
       })),
     } as unknown as ToolResultBlockParam;

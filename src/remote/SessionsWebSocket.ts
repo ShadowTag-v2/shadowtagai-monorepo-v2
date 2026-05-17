@@ -1,18 +1,18 @@
-import { randomUUID } from 'node:crypto';
-import { getOauthConfig } from '../constants/oauth.js';
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
+import { randomUUID } from "node:crypto";
+import { getOauthConfig } from "../constants/oauth.js";
+import type { SDKMessage } from "../entrypoints/agentSdkTypes.js";
 import type {
   SDKControlCancelRequest,
   SDKControlRequest,
   SDKControlRequestInner,
   SDKControlResponse,
-} from '../entrypoints/sdk/controlTypes.js';
-import { logForDebugging } from '../utils/debug.js';
-import { errorMessage } from '../utils/errors.js';
-import { logError } from '../utils/log.js';
-import { getWebSocketTLSOptions } from '../utils/mtls.js';
-import { getWebSocketProxyAgent, getWebSocketProxyUrl } from '../utils/proxy.js';
-import { jsonParse, jsonStringify } from '../utils/slowOperations.js';
+} from "../entrypoints/sdk/controlTypes.js";
+import { logForDebugging } from "../utils/debug.js";
+import { errorMessage } from "../utils/errors.js";
+import { logError } from "../utils/log.js";
+import { getWebSocketTLSOptions } from "../utils/mtls.js";
+import { getWebSocketProxyAgent, getWebSocketProxyUrl } from "../utils/proxy.js";
+import { jsonParse, jsonStringify } from "../utils/slowOperations.js";
 
 const RECONNECT_DELAY_MS = 2000;
 const MAX_RECONNECT_ATTEMPTS = 5;
@@ -35,7 +35,7 @@ const PERMANENT_CLOSE_CODES = new Set([
   4003, // unauthorized
 ]);
 
-type WebSocketState = 'connecting' | 'connected' | 'closed';
+type WebSocketState = "connecting" | "connected" | "closed";
 
 type SessionsMessage =
   | SDKMessage
@@ -44,14 +44,14 @@ type SessionsMessage =
   | SDKControlCancelRequest;
 
 function isSessionsMessage(value: unknown): value is SessionsMessage {
-  if (typeof value !== 'object' || value === null || !('type' in value)) {
+  if (typeof value !== "object" || value === null || !("type" in value)) {
     return false;
   }
   // Accept any message with a string `type` field. Downstream handlers
   // (sdkMessageAdapter, RemoteSessionManager) decide what to do with
   // unknown types. A hardcoded allowlist here would silently drop new
   // message types the backend starts sending before the client is updated.
-  return typeof value.type === 'string';
+  return typeof value.type === "string";
 }
 
 export type SessionsWebSocketCallbacks = {
@@ -81,7 +81,7 @@ type WebSocketLike = {
  */
 export class SessionsWebSocket {
   private ws: WebSocketLike | null = null;
-  private state: WebSocketState = 'closed';
+  private state: WebSocketState = "closed";
   private reconnectAttempts = 0;
   private sessionNotFoundRetries = 0;
   private pingInterval: NodeJS.Timeout | null = null;
@@ -98,14 +98,14 @@ export class SessionsWebSocket {
    * Connect to the sessions WebSocket endpoint
    */
   async connect(): Promise<void> {
-    if (this.state === 'connecting') {
-      logForDebugging('[SessionsWebSocket] Already connecting');
+    if (this.state === "connecting") {
+      logForDebugging("[SessionsWebSocket] Already connecting");
       return;
     }
 
-    this.state = 'connecting';
+    this.state = "connecting";
 
-    const baseUrl = getOauthConfig().BASE_API_URL.replace('https://', 'wss://');
+    const baseUrl = getOauthConfig().BASE_API_URL.replace("https://", "wss://");
     const url = `${baseUrl}/v1/sessions/ws/${this.sessionId}/subscribe?organization_uuid=${this.orgUuid}`;
 
     logForDebugging(`[SessionsWebSocket] Connecting to ${url}`);
@@ -114,10 +114,10 @@ export class SessionsWebSocket {
     const accessToken = this.getAccessToken();
     const headers = {
       Authorization: `Bearer ${accessToken}`,
-      'anthropic-version': '2023-06-01',
+      "anthropic-version": "2023-06-01",
     };
 
-    if (typeof Bun !== 'undefined') {
+    if (typeof Bun !== "undefined") {
       // Bun's WebSocket supports headers/proxy options but the DOM typings don't
       // eslint-disable-next-line eslint-plugin-n/no-unsupported-features/node-builtins
       const ws = new globalThis.WebSocket(url, {
@@ -127,37 +127,37 @@ export class SessionsWebSocket {
       } as unknown as string[]);
       this.ws = ws;
 
-      ws.addEventListener('open', () => {
-        logForDebugging('[SessionsWebSocket] Connection opened, authenticated via headers');
-        this.state = 'connected';
+      ws.addEventListener("open", () => {
+        logForDebugging("[SessionsWebSocket] Connection opened, authenticated via headers");
+        this.state = "connected";
         this.reconnectAttempts = 0;
         this.sessionNotFoundRetries = 0;
         this.startPingInterval();
         this.callbacks.onConnected?.();
       });
 
-      ws.addEventListener('message', (event: MessageEvent) => {
-        const data = typeof event.data === 'string' ? event.data : String(event.data);
+      ws.addEventListener("message", (event: MessageEvent) => {
+        const data = typeof event.data === "string" ? event.data : String(event.data);
         this.handleMessage(data);
       });
 
-      ws.addEventListener('error', () => {
-        const err = new Error('[SessionsWebSocket] WebSocket error');
+      ws.addEventListener("error", () => {
+        const err = new Error("[SessionsWebSocket] WebSocket error");
         logError(err);
         this.callbacks.onError?.(err);
       });
 
       // eslint-disable-next-line eslint-plugin-n/no-unsupported-features/node-builtins
-      ws.addEventListener('close', (event: CloseEvent) => {
+      ws.addEventListener("close", (event: CloseEvent) => {
         logForDebugging(`[SessionsWebSocket] Closed: code=${event.code} reason=${event.reason}`);
         this.handleClose(event.code);
       });
 
-      ws.addEventListener('pong', () => {
-        logForDebugging('[SessionsWebSocket] Pong received');
+      ws.addEventListener("pong", () => {
+        logForDebugging("[SessionsWebSocket] Pong received");
       });
     } else {
-      const { default: WS } = await import('ws');
+      const { default: WS } = await import("ws");
       const ws = new WS(url, {
         headers,
         agent: getWebSocketProxyAgent(url),
@@ -165,32 +165,32 @@ export class SessionsWebSocket {
       });
       this.ws = ws;
 
-      ws.on('open', () => {
-        logForDebugging('[SessionsWebSocket] Connection opened, authenticated via headers');
+      ws.on("open", () => {
+        logForDebugging("[SessionsWebSocket] Connection opened, authenticated via headers");
         // Auth is handled via headers, so we're immediately connected
-        this.state = 'connected';
+        this.state = "connected";
         this.reconnectAttempts = 0;
         this.sessionNotFoundRetries = 0;
         this.startPingInterval();
         this.callbacks.onConnected?.();
       });
 
-      ws.on('message', (data: Buffer) => {
+      ws.on("message", (data: Buffer) => {
         this.handleMessage(data.toString());
       });
 
-      ws.on('error', (err: Error) => {
+      ws.on("error", (err: Error) => {
         logError(new Error(`[SessionsWebSocket] Error: ${err.message}`));
         this.callbacks.onError?.(err);
       });
 
-      ws.on('close', (code: number, reason: Buffer) => {
+      ws.on("close", (code: number, reason: Buffer) => {
         logForDebugging(`[SessionsWebSocket] Closed: code=${code} reason=${reason.toString()}`);
         this.handleClose(code);
       });
 
-      ws.on('pong', () => {
-        logForDebugging('[SessionsWebSocket] Pong received');
+      ws.on("pong", () => {
+        logForDebugging("[SessionsWebSocket] Pong received");
       });
     }
   }
@@ -207,7 +207,7 @@ export class SessionsWebSocket {
         this.callbacks.onMessage(message);
       } else {
         logForDebugging(
-          `[SessionsWebSocket] Ignoring message type: ${typeof message === 'object' && message !== null && 'type' in message ? String(message.type) : 'unknown'}`,
+          `[SessionsWebSocket] Ignoring message type: ${typeof message === "object" && message !== null && "type" in message ? String(message.type) : "unknown"}`,
         );
       }
     } catch (error) {
@@ -221,14 +221,14 @@ export class SessionsWebSocket {
   private handleClose(closeCode: number): void {
     this.stopPingInterval();
 
-    if (this.state === 'closed') {
+    if (this.state === "closed") {
       return;
     }
 
     this.ws = null;
 
     const previousState = this.state;
-    this.state = 'closed';
+    this.state = "closed";
 
     // Permanent codes: stop reconnecting — server has definitively ended the session
     if (PERMANENT_CLOSE_CODES.has(closeCode)) {
@@ -257,14 +257,14 @@ export class SessionsWebSocket {
     }
 
     // Attempt reconnection if we were connected
-    if (previousState === 'connected' && this.reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+    if (previousState === "connected" && this.reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
       this.reconnectAttempts++;
       this.scheduleReconnect(
         RECONNECT_DELAY_MS,
         `attempt ${this.reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}`,
       );
     } else {
-      logForDebugging('[SessionsWebSocket] Not reconnecting');
+      logForDebugging("[SessionsWebSocket] Not reconnecting");
       this.callbacks.onClose?.();
     }
   }
@@ -282,7 +282,7 @@ export class SessionsWebSocket {
     this.stopPingInterval();
 
     this.pingInterval = setInterval(() => {
-      if (this.ws && this.state === 'connected') {
+      if (this.ws && this.state === "connected") {
         try {
           this.ws.ping?.();
         } catch {
@@ -306,12 +306,12 @@ export class SessionsWebSocket {
    * Send a control response back to the session
    */
   sendControlResponse(response: SDKControlResponse): void {
-    if (!this.ws || this.state !== 'connected') {
-      logError(new Error('[SessionsWebSocket] Cannot send: not connected'));
+    if (!this.ws || this.state !== "connected") {
+      logError(new Error("[SessionsWebSocket] Cannot send: not connected"));
       return;
     }
 
-    logForDebugging('[SessionsWebSocket] Sending control response');
+    logForDebugging("[SessionsWebSocket] Sending control response");
     this.ws.send(jsonStringify(response));
   }
 
@@ -319,13 +319,13 @@ export class SessionsWebSocket {
    * Send a control request to the session (e.g., interrupt)
    */
   sendControlRequest(request: SDKControlRequestInner): void {
-    if (!this.ws || this.state !== 'connected') {
-      logError(new Error('[SessionsWebSocket] Cannot send: not connected'));
+    if (!this.ws || this.state !== "connected") {
+      logError(new Error("[SessionsWebSocket] Cannot send: not connected"));
       return;
     }
 
     const controlRequest: SDKControlRequest = {
-      type: 'control_request',
+      type: "control_request",
       request_id: randomUUID(),
       request,
     };
@@ -338,15 +338,15 @@ export class SessionsWebSocket {
    * Check if connected
    */
   isConnected(): boolean {
-    return this.state === 'connected';
+    return this.state === "connected";
   }
 
   /**
    * Close the WebSocket connection
    */
   close(): void {
-    logForDebugging('[SessionsWebSocket] Closing connection');
-    this.state = 'closed';
+    logForDebugging("[SessionsWebSocket] Closing connection");
+    this.state = "closed";
     this.stopPingInterval();
 
     if (this.reconnectTimer) {
@@ -369,7 +369,7 @@ export class SessionsWebSocket {
    * Useful when the subscription becomes stale (e.g., after container shutdown).
    */
   reconnect(): void {
-    logForDebugging('[SessionsWebSocket] Force reconnecting');
+    logForDebugging("[SessionsWebSocket] Force reconnecting");
     this.reconnectAttempts = 0;
     this.sessionNotFoundRetries = 0;
     this.close();

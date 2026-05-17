@@ -1,4 +1,4 @@
-type CommandLifecycleState = 'started' | 'completed';
+type CommandLifecycleState = "started" | "completed";
 
 type CommandLifecycleListener = (uuid: string, state: CommandLifecycleState) => void;
 

@@ -10,23 +10,23 @@
  * marketplace filtering is hardcoded for v1.
  */
 
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../../services/analytics/growthbook.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
   logEvent,
-} from '../../services/analytics/index.js';
+} from "../../services/analytics/index.js";
 import {
   type ClaudeCodeHint,
   hasShownHintThisSession,
   setPendingHint,
-} from '../claudeCodeHints.js';
-import { getGlobalConfig, saveGlobalConfig } from '../config.js';
-import { logForDebugging } from '../debug.js';
-import { isPluginInstalled } from './installedPluginsManager.js';
-import { getPluginById } from './marketplaceManager.js';
-import { isOfficialMarketplaceName, parsePluginIdentifier } from './pluginIdentifier.js';
-import { isPluginBlockedByPolicy } from './pluginPolicy.js';
+} from "../claudeCodeHints.js";
+import { getGlobalConfig, saveGlobalConfig } from "../config.js";
+import { logForDebugging } from "../debug.js";
+import { isPluginInstalled } from "./installedPluginsManager.js";
+import { getPluginById } from "./marketplaceManager.js";
+import { isOfficialMarketplaceName, parsePluginIdentifier } from "./pluginIdentifier.js";
+import { isPluginBlockedByPolicy } from "./pluginPolicy.js";
 
 /**
  * Hard cap on `claudeCodeHints.plugin[]` — bounds config growth. Each shown
@@ -60,7 +60,7 @@ export type PluginHintRecommendation = {
  * later in resolvePluginHint (hook side).
  */
 export function maybeRecordPluginHint(hint: ClaudeCodeHint): void {
-  if (!getFeatureValue_CACHED_MAY_BE_STALE('tengu_lapis_finch', false)) return;
+  if (!getFeatureValue_CACHED_MAY_BE_STALE("tengu_lapis_finch", false)) return;
   if (hasShownHintThisSession()) return;
 
   const state = getGlobalConfig().claudeCodeHints;
@@ -105,12 +105,12 @@ export async function resolvePluginHint(
 
   const pluginData = await getPluginById(pluginId);
 
-  logEvent('tengu_plugin_hint_detected', {
-    _PROTO_plugin_name: (name ?? '') as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
-    _PROTO_marketplace_name: (marketplace ?? '') as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
+  logEvent("tengu_plugin_hint_detected", {
+    _PROTO_plugin_name: (name ?? "") as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
+    _PROTO_marketplace_name: (marketplace ?? "") as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
     result: (pluginData
-      ? 'passed'
-      : 'not_in_cache') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      ? "passed"
+      : "not_in_cache") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   });
 
   if (!pluginData) {
@@ -121,7 +121,7 @@ export async function resolvePluginHint(
   return {
     pluginId,
     pluginName: pluginData.entry.name,
-    marketplaceName: marketplace ?? '',
+    marketplaceName: marketplace ?? "",
     pluginDescription: pluginData.entry.description,
     sourceCommand: hint.sourceCommand,
   };

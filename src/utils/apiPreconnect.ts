@@ -23,8 +23,8 @@
  * - Bedrock/Vertex/Foundry (different endpoints, different auth)
  */
 
-import { getOauthConfig } from '../constants/oauth.js';
-import { isEnvTruthy } from './envUtils.js';
+import { getOauthConfig } from "../constants/oauth.js";
+import { isEnvTruthy } from "./envUtils.js";
 
 let fired = false;
 
@@ -64,7 +64,7 @@ export function preconnectAnthropicApi(): void {
   // request will handshake fresh if needed.
   // eslint-disable-next-line eslint-plugin-n/no-unsupported-features/node-builtins
   void fetch(baseUrl, {
-    method: 'HEAD',
+    method: "HEAD",
     signal: AbortSignal.timeout(10_000),
   }).catch(() => {});
 }

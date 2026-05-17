@@ -1,31 +1,31 @@
-import type { ToolUseBlock } from '@anthropic-ai/sdk/resources/index.mjs';
-import last from 'lodash-es/last.js';
-import { getSessionId, isSessionPersistenceDisabled } from 'src/bootstrap/state.js';
-import type { SDKMessage } from 'src/entrypoints/agentSdkTypes.js';
-import type { CanUseToolFn } from '../hooks/useCanUseTool.js';
-import { runTools } from '../services/tools/toolOrchestration.js';
-import { findToolByName, type Tool, type Tools } from '../Tool.js';
-import { BASH_TOOL_NAME } from '../tools/BashTool/toolName.js';
-import { FILE_EDIT_TOOL_NAME } from '../tools/FileEditTool/constants.js';
-import type { Input as FileReadInput } from '../tools/FileReadTool/FileReadTool.js';
-import { FILE_READ_TOOL_NAME, FILE_UNCHANGED_STUB } from '../tools/FileReadTool/prompt.js';
-import { FILE_WRITE_TOOL_NAME } from '../tools/FileWriteTool/prompt.js';
-import type { Message } from '../types/message.js';
-import type { OrphanedPermission } from '../types/textInputTypes.js';
-import { logForDebugging } from './debug.js';
-import { isEnvTruthy } from './envUtils.js';
-import { isFsInaccessible } from './errors.js';
-import { getFileModificationTime, stripLineNumberPrefix } from './file.js';
-import { readFileSyncWithMetadata } from './fileRead.js';
-import { createFileStateCacheWithSizeLimit, type FileStateCache } from './fileStateCache.js';
-import { isNotEmptyMessage, normalizeMessages } from './messages.js';
-import { expandPath } from './path.js';
+import type { ToolUseBlock } from "@anthropic-ai/sdk/resources/index.mjs";
+import last from "lodash-es/last.js";
+import { getSessionId, isSessionPersistenceDisabled } from "src/bootstrap/state.js";
+import type { SDKMessage } from "src/entrypoints/agentSdkTypes.js";
+import type { CanUseToolFn } from "../hooks/useCanUseTool.js";
+import { runTools } from "../services/tools/toolOrchestration.js";
+import { findToolByName, type Tool, type Tools } from "../Tool.js";
+import { BASH_TOOL_NAME } from "../tools/BashTool/toolName.js";
+import { FILE_EDIT_TOOL_NAME } from "../tools/FileEditTool/constants.js";
+import type { Input as FileReadInput } from "../tools/FileReadTool/FileReadTool.js";
+import { FILE_READ_TOOL_NAME, FILE_UNCHANGED_STUB } from "../tools/FileReadTool/prompt.js";
+import { FILE_WRITE_TOOL_NAME } from "../tools/FileWriteTool/prompt.js";
+import type { Message } from "../types/message.js";
+import type { OrphanedPermission } from "../types/textInputTypes.js";
+import { logForDebugging } from "./debug.js";
+import { isEnvTruthy } from "./envUtils.js";
+import { isFsInaccessible } from "./errors.js";
+import { getFileModificationTime, stripLineNumberPrefix } from "./file.js";
+import { readFileSyncWithMetadata } from "./fileRead.js";
+import { createFileStateCacheWithSizeLimit, type FileStateCache } from "./fileStateCache.js";
+import { isNotEmptyMessage, normalizeMessages } from "./messages.js";
+import { expandPath } from "./path.js";
 import type {
   inputSchema as permissionToolInputSchema,
   outputSchema as permissionToolOutputSchema,
-} from './permissions/PermissionPromptToolResultSchema.js';
-import type { ProcessUserInputContext } from './processUserInput/processUserInput.js';
-import { recordTranscript } from './sessionStorage.js';
+} from "./permissions/PermissionPromptToolResultSchema.js";
+import type { ProcessUserInputContext } from "./processUserInput/processUserInput.js";
+import { recordTranscript } from "./sessionStorage.js";
 
 export type PermissionPromptTool = Tool<
   ReturnType<typeof permissionToolInputSchema>,
@@ -50,22 +50,22 @@ export function isResultSuccessful(
 ): message is Message {
   if (!message) return false;
 
-  if (message.type === 'assistant') {
+  if (message.type === "assistant") {
     const lastContent = last(message.message.content);
     return (
-      lastContent?.type === 'text' ||
-      lastContent?.type === 'thinking' ||
-      lastContent?.type === 'redacted_thinking'
+      lastContent?.type === "text" ||
+      lastContent?.type === "thinking" ||
+      lastContent?.type === "redacted_thinking"
     );
   }
 
-  if (message.type === 'user') {
+  if (message.type === "user") {
     // Check if all content blocks are tool_result type
     const content = message.message.content;
     if (
       Array.isArray(content) &&
       content.length > 0 &&
-      content.every((block) => 'type' in block && block.type === 'tool_result')
+      content.every((block) => "type" in block && block.type === "tool_result")
     ) {
       return true;
     }
@@ -81,7 +81,7 @@ export function isResultSuccessful(
   // error_during_execution with errors[] = the entire process's
   // accumulated logError() buffer. Covers both string-content and
   // text-block-content user prompts, and any other non-passing shape.
-  return stopReason === 'end_turn';
+  return stopReason === "end_turn";
 }
 
 // Track last sent time for tool progress messages per tool use ID
@@ -92,14 +92,14 @@ const toolProgressLastSentTime = new Map<string, number>();
 
 export function* normalizeMessage(message: Message): Generator<SDKMessage> {
   switch (message.type) {
-    case 'assistant':
+    case "assistant":
       for (const _ of normalizeMessages([message])) {
         // Skip empty messages (e.g., "(no content)") that shouldn't be output to SDK
         if (!isNotEmptyMessage(_)) {
           continue;
         }
         yield {
-          type: 'assistant',
+          type: "assistant",
           message: _.message,
           parent_tool_use_id: null,
           session_id: getSessionId(),
@@ -108,17 +108,17 @@ export function* normalizeMessage(message: Message): Generator<SDKMessage> {
         };
       }
       return;
-    case 'progress':
-      if (message.data.type === 'agent_progress' || message.data.type === 'skill_progress') {
+    case "progress":
+      if (message.data.type === "agent_progress" || message.data.type === "skill_progress") {
         for (const _ of normalizeMessages([message.data.message])) {
           switch (_.type) {
-            case 'assistant':
+            case "assistant":
               // Skip empty messages (e.g., "(no content)") that shouldn't be output to SDK
               if (!isNotEmptyMessage(_)) {
                 break;
               }
               yield {
-                type: 'assistant',
+                type: "assistant",
                 message: _.message,
                 parent_tool_use_id: message.parentToolUseID,
                 session_id: getSessionId(),
@@ -126,9 +126,9 @@ export function* normalizeMessage(message: Message): Generator<SDKMessage> {
                 error: _.error,
               };
               break;
-            case 'user':
+            case "user":
               yield {
-                type: 'user',
+                type: "user",
                 message: _.message,
                 parent_tool_use_id: message.parentToolUseID,
                 session_id: getSessionId(),
@@ -143,8 +143,8 @@ export function* normalizeMessage(message: Message): Generator<SDKMessage> {
           }
         }
       } else if (
-        message.data.type === 'bash_progress' ||
-        message.data.type === 'powershell_progress'
+        message.data.type === "bash_progress" ||
+        message.data.type === "powershell_progress"
       ) {
         // Filter bash progress to send only one per minute
         // Only emit for Claude Code Remote for now
@@ -170,9 +170,9 @@ export function* normalizeMessage(message: Message): Generator<SDKMessage> {
 
           toolProgressLastSentTime.set(trackingKey, now);
           yield {
-            type: 'tool_progress',
+            type: "tool_progress",
             tool_use_id: message.toolUseID,
-            tool_name: message.data.type === 'bash_progress' ? 'Bash' : 'PowerShell',
+            tool_name: message.data.type === "bash_progress" ? "Bash" : "PowerShell",
             parent_tool_use_id: message.parentToolUseID,
             elapsed_time_seconds: message.data.elapsedTimeSeconds,
             task_id: message.data.taskId,
@@ -182,10 +182,10 @@ export function* normalizeMessage(message: Message): Generator<SDKMessage> {
         }
       }
       break;
-    case 'user':
+    case "user":
       for (const _ of normalizeMessages([message])) {
         yield {
-          type: 'user',
+          type: "user",
           message: _.message,
           parent_tool_use_id: null,
           session_id: getSessionId(),
@@ -219,7 +219,7 @@ export async function* handleOrphanedPermission(
   let toolUseBlock: ToolUseBlock | undefined;
   if (Array.isArray(content)) {
     for (const block of content) {
-      if (block.type === 'tool_use' && block.id === toolUseID) {
+      if (block.type === "tool_use" && block.id === toolUseID) {
         toolUseBlock = block as ToolUseBlock;
         break;
       }
@@ -240,13 +240,13 @@ export async function* handleOrphanedPermission(
 
   // Create ToolUseBlock with the updated input if permission was allowed
   let finalInput = toolInput;
-  if (permissionResult.behavior === 'allow') {
+  if (permissionResult.behavior === "allow") {
     if (permissionResult.updatedInput !== undefined) {
       finalInput = permissionResult.updatedInput;
     } else {
       logForDebugging(
         `Orphaned permission for ${toolName}: updatedInput is undefined, falling back to original tool input`,
-        { level: 'warn' },
+        { level: "warn" },
       );
     }
   }
@@ -258,8 +258,8 @@ export async function* handleOrphanedPermission(
   const canUseTool: CanUseToolFn = async () => ({
     ...permissionResult,
     decisionReason: {
-      type: 'mode',
-      mode: 'default' as const,
+      type: "mode",
+      mode: "default" as const,
     },
   });
 
@@ -278,9 +278,9 @@ export async function* handleOrphanedPermission(
   // wrongly skip the push while runTools below still executes, orphaning the result.
   const alreadyPresent = mutableMessages.some(
     (m) =>
-      m.type === 'assistant' &&
+      m.type === "assistant" &&
       Array.isArray(m.message.content) &&
-      m.message.content.some((b) => b.type === 'tool_use' && 'id' in b && b.id === toolUseID),
+      m.message.content.some((b) => b.type === "tool_use" && "id" in b && b.id === toolUseID),
   );
   if (!alreadyPresent) {
     mutableMessages.push(assistantMessage);
@@ -334,9 +334,9 @@ export function extractReadFilesFromMessages(
   const fileEditToolUseIds = new Map<string, string>(); // toolUseId -> filePath
 
   for (const message of messages) {
-    if (message.type === 'assistant' && Array.isArray(message.message.content)) {
+    if (message.type === "assistant" && Array.isArray(message.message.content)) {
       for (const content of message.message.content) {
-        if (content.type === 'tool_use' && content.name === FILE_READ_TOOL_NAME) {
+        if (content.type === "tool_use" && content.name === FILE_READ_TOOL_NAME) {
           // Extract file_path from the tool use input
           const input = content.input as FileReadInput | undefined;
           // Ranged reads are not added to the cache.
@@ -345,7 +345,7 @@ export function extractReadFilesFromMessages(
             const absolutePath = expandPath(input.file_path, cwd);
             fileReadToolUseIds.set(content.id, absolutePath);
           }
-        } else if (content.type === 'tool_use' && content.name === FILE_WRITE_TOOL_NAME) {
+        } else if (content.type === "tool_use" && content.name === FILE_WRITE_TOOL_NAME) {
           // Extract file_path and content from the Write tool use input
           const input = content.input as { file_path?: string; content?: string } | undefined;
           if (input?.file_path && input?.content) {
@@ -356,7 +356,7 @@ export function extractReadFilesFromMessages(
               content: input.content,
             });
           }
-        } else if (content.type === 'tool_use' && content.name === FILE_EDIT_TOOL_NAME) {
+        } else if (content.type === "tool_use" && content.name === FILE_EDIT_TOOL_NAME) {
           // Edit's input has old_string/new_string, not the resulting content.
           // Track the path so the second pass can read current disk state.
           const input = content.input as { file_path?: string } | undefined;
@@ -371,14 +371,14 @@ export function extractReadFilesFromMessages(
 
   // Second pass: find corresponding tool results and extract content
   for (const message of messages) {
-    if (message.type === 'user' && Array.isArray(message.message.content)) {
+    if (message.type === "user" && Array.isArray(message.message.content)) {
       for (const content of message.message.content) {
-        if (content.type === 'tool_result' && content.tool_use_id) {
+        if (content.type === "tool_result" && content.tool_use_id) {
           // Handle Read tool results
           const readFilePath = fileReadToolUseIds.get(content.tool_use_id);
           if (
             readFilePath &&
-            typeof content.content === 'string' &&
+            typeof content.content === "string" &&
             // Dedup stubs contain no file content — the earlier real Read
             // already cached it. Chronological last-wins would otherwise
             // overwrite the real entry with stub text.
@@ -387,15 +387,15 @@ export function extractReadFilesFromMessages(
             // Remove system-reminder blocks from the content
             const processedContent = content.content.replace(
               /<system-reminder>[\s\S]*?<\/system-reminder>/g,
-              '',
+              "",
             );
 
             // Extract the actual file content from the tool result
             // Tool results for text files contain line numbers, we need to strip those
             const fileContent = processedContent
-              .split('\n')
+              .split("\n")
               .map(stripLineNumberPrefix)
-              .join('\n')
+              .join("\n")
               .trim();
 
             // Cache the file content with the message timestamp
@@ -463,12 +463,12 @@ export function extractReadFilesFromMessages(
 export function extractBashToolsFromMessages(messages: Message[]): Set<string> {
   const tools = new Set<string>();
   for (const message of messages) {
-    if (message.type === 'assistant' && Array.isArray(message.message.content)) {
+    if (message.type === "assistant" && Array.isArray(message.message.content)) {
       for (const content of message.message.content) {
-        if (content.type === 'tool_use' && content.name === BASH_TOOL_NAME) {
+        if (content.type === "tool_use" && content.name === BASH_TOOL_NAME) {
           const { input } = content;
-          if (typeof input !== 'object' || input === null || !('command' in input)) continue;
-          const cmd = extractCliName(typeof input.command === 'string' ? input.command : undefined);
+          if (typeof input !== "object" || input === null || !("command" in input)) continue;
+          const cmd = extractCliName(typeof input.command === "string" ? input.command : undefined);
           if (cmd) {
             tools.add(cmd);
           }
@@ -479,7 +479,7 @@ export function extractBashToolsFromMessages(messages: Message[]): Set<string> {
   return tools;
 }
 
-const STRIPPED_COMMANDS = new Set(['sudo']);
+const STRIPPED_COMMANDS = new Set(["sudo"]);
 
 /**
  * Extract the actual CLI name from a bash command string, skipping

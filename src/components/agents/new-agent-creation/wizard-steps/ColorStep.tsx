@@ -1,26 +1,26 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box } from '../../../../ink.js';
-import { useKeybinding } from '../../../../keybindings/useKeybinding.js';
-import type { AgentColorName } from '../../../../tools/AgentTool/agentColorManager.js';
-import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
-import { Byline } from '../../../design-system/Byline.js';
-import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
-import { useWizard } from '../../../wizard/index.js';
-import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
-import { ColorPicker } from '../../ColorPicker.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box } from "../../../../ink.js";
+import { useKeybinding } from "../../../../keybindings/useKeybinding.js";
+import type { AgentColorName } from "../../../../tools/AgentTool/agentColorManager.js";
+import { ConfigurableShortcutHint } from "../../../ConfigurableShortcutHint.js";
+import { Byline } from "../../../design-system/Byline.js";
+import { KeyboardShortcutHint } from "../../../design-system/KeyboardShortcutHint.js";
+import { useWizard } from "../../../wizard/index.js";
+import { WizardDialogLayout } from "../../../wizard/WizardDialogLayout.js";
+import { ColorPicker } from "../../ColorPicker.js";
 export function ColorStep() {
   const $ = _c(14);
   const { goNext, goBack, updateWizardData, wizardData } = useWizard();
   let t0;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t0 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[0] = t0;
   } else {
     t0 = $[0];
   }
-  useKeybinding('confirm:no', goBack, t0);
+  useKeybinding("confirm:no", goBack, t0);
   let t1;
   if (
     $[1] !== goNext ||
@@ -69,10 +69,10 @@ export function ColorStep() {
   }
   const handleConfirm = t1;
   let t2;
-  if ($[10] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Byline>
-        <KeyboardShortcutHint shortcut={'\u2191\u2193'} action="navigate" />
+        <KeyboardShortcutHint shortcut={"\u2191\u2193"} action="navigate" />
         <KeyboardShortcutHint shortcut="Enter" action="select" />
         <ConfigurableShortcutHint
           action="confirm:no"
@@ -86,7 +86,7 @@ export function ColorStep() {
   } else {
     t2 = $[10];
   }
-  const t3 = wizardData.agentType || 'agent';
+  const t3 = wizardData.agentType || "agent";
   let t4;
   if ($[11] !== handleConfirm || $[12] !== t3) {
     t4 = (

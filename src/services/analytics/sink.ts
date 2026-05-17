@@ -8,16 +8,16 @@
  * Usage: Call initializeAnalyticsSink() during app startup to attach the sink.
  */
 
-import { trackDatadogEvent } from './datadog.js';
-import { logEventTo1P, shouldSampleEvent } from './firstPartyEventLogger.js';
-import { checkStatsigFeatureGate_CACHED_MAY_BE_STALE } from './growthbook.js';
-import { attachAnalyticsSink, stripProtoFields } from './index.js';
-import { isSinkKilled } from './sinkKillswitch.js';
+import { trackDatadogEvent } from "./datadog.js";
+import { logEventTo1P, shouldSampleEvent } from "./firstPartyEventLogger.js";
+import { checkStatsigFeatureGate_CACHED_MAY_BE_STALE } from "./growthbook.js";
+import { attachAnalyticsSink, stripProtoFields } from "./index.js";
+import { isSinkKilled } from "./sinkKillswitch.js";
 
 // Local type matching the logEvent metadata signature
 type LogEventMetadata = { [key: string]: boolean | number | undefined };
 
-const DATADOG_GATE_NAME = 'tengu_log_datadog_events';
+const DATADOG_GATE_NAME = "tengu_log_datadog_events";
 
 // Module-level gate state - starts undefined, initialized during startup
 let isDatadogGateEnabled: boolean | undefined;
@@ -27,7 +27,7 @@ let isDatadogGateEnabled: boolean | undefined;
  * Falls back to cached value from previous session if not yet initialized.
  */
 function shouldTrackDatadog(): boolean {
-  if (isSinkKilled('datadog')) {
+  if (isSinkKilled("datadog")) {
     return false;
   }
   if (isDatadogGateEnabled !== undefined) {

@@ -1,10 +1,10 @@
-import { randomUUID } from 'crypto';
-import { TEAMMATE_MESSAGE_TAG } from '../../constants/xml.js';
-import { getAppStateStore, setAppState } from '../../state/AppState.js';
-import { logForDebugging } from '../../utils/debug.js';
-import { TEAM_LEAD_NAME } from '../../utils/swarm/constants.js';
-import { getAgentName, isTeamLead, isTeammate } from '../../utils/teammate.js';
-import { isInProcessTeammate } from '../../utils/teammateContext.js';
+import { randomUUID } from "crypto";
+import { TEAMMATE_MESSAGE_TAG } from "../../constants/xml.js";
+import { getAppStateStore, setAppState } from "../../state/AppState.js";
+import { logForDebugging } from "../../utils/debug.js";
+import { TEAM_LEAD_NAME } from "../../utils/swarm/constants.js";
+import { getAgentName, isTeamLead, isTeammate } from "../../utils/teammate.js";
+import { isInProcessTeammate } from "../../utils/teammateContext.js";
 import {
   isModeSetRequest,
   isPermissionRequest,
@@ -16,7 +16,7 @@ import {
   isTeamPermissionUpdate,
   markMessagesAsRead,
   readUnreadMessages,
-} from '../../utils/teammateMailbox.js';
+} from "../../utils/teammateMailbox.js";
 
 const INBOX_POLL_INTERVAL_MS = 1000;
 
@@ -60,7 +60,7 @@ export class InboxPollerController {
     if (isTeamLead(appState.teamContext)) {
       const leadAgentId = appState.teamContext!.leadAgentId;
       const leadName = appState.teamContext!.teammates[leadAgentId]?.name;
-      return leadName || 'team-lead';
+      return leadName || "team-lead";
     }
     return undefined;
   }
@@ -111,11 +111,11 @@ export class InboxPollerController {
 
     const formatted = regularMessages
       .map((m: any) => {
-        const colorAttr = m.color ? ` color="${m.color}"` : '';
-        const summaryAttr = m.summary ? ` summary="${m.summary}"` : '';
+        const colorAttr = m.color ? ` color="${m.color}"` : "";
+        const summaryAttr = m.summary ? ` summary="${m.summary}"` : "";
         return `<${TEAMMATE_MESSAGE_TAG} teammate_id="${m.from}"${colorAttr}${summaryAttr}>\n${m.text}\n</${TEAMMATE_MESSAGE_TAG}>`;
       })
-      .join('\n\n');
+      .join("\n\n");
 
     if (!this.isLoading && !this.focusedInputDialog) {
       logForDebugging(`[InboxPollerController] Session idle, submitting immediately`);
@@ -141,7 +141,7 @@ export class InboxPollerController {
             from: m.from,
             text: m.text,
             timestamp: m.timestamp,
-            status: 'pending',
+            status: "pending",
             color: m.color,
             summary: m.summary,
           })),
@@ -154,17 +154,17 @@ export class InboxPollerController {
     if (this.isLoading || this.focusedInputDialog) return;
 
     const pendingMessages = currentAppState.inbox.messages.filter(
-      (m: any) => m.status === 'pending',
+      (m: any) => m.status === "pending",
     );
     if (pendingMessages.length === 0) return;
 
     const formatted = pendingMessages
       .map((m: any) => {
-        const colorAttr = m.color ? ` color="${m.color}"` : '';
-        const summaryAttr = m.summary ? ` summary="${m.summary}"` : '';
+        const colorAttr = m.color ? ` color="${m.color}"` : "";
+        const summaryAttr = m.summary ? ` summary="${m.summary}"` : "";
         return `<${TEAMMATE_MESSAGE_TAG} teammate_id="${m.from}"${colorAttr}${summaryAttr}>\n${m.text}\n</${TEAMMATE_MESSAGE_TAG}>`;
       })
-      .join('\n\n');
+      .join("\n\n");
 
     const submitted = this.onSubmitMessage(formatted);
     if (submitted) {

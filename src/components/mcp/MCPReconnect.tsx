@@ -1,11 +1,11 @@
-import figures from 'figures';
-import { useEffect, useState } from 'react';
-import { c as _c } from 'react/compiler-runtime';
-import type { CommandResultDisplay } from '../../commands.js';
-import { Box, color, Text, useTheme } from '../../ink.js';
-import { useMcpReconnect } from '../../services/mcp/MCPConnectionManager.js';
-import { useAppStateStore } from '../../state/AppState.js';
-import { Spinner } from '../Spinner.js';
+import figures from "figures";
+import { useEffect, useState } from "react";
+import { c as _c } from "react/compiler-runtime";
+import type { CommandResultDisplay } from "../../commands.js";
+import { Box, color, Text, useTheme } from "../../ink.js";
+import { useMcpReconnect } from "../../services/mcp/MCPConnectionManager.js";
+import { useAppStateStore } from "../../state/AppState.js";
+import { Spinner } from "../Spinner.js";
 
 type Props = {
   serverName: string;
@@ -39,20 +39,20 @@ export function MCPReconnect(t0) {
           }
           const result = await reconnectMcpServer(serverName);
           switch (result.client.type) {
-            case 'connected': {
+            case "connected": {
               setIsReconnecting(false);
               onComplete(`Successfully reconnected to ${serverName}`);
               break;
             }
-            case 'needs-auth': {
+            case "needs-auth": {
               setError(`${serverName} requires authentication`);
               setIsReconnecting(false);
               onComplete(`${serverName} requires authentication. Use /mcp to authenticate.`);
               break;
             }
-            case 'pending':
-            case 'failed':
-            case 'disabled': {
+            case "pending":
+            case "failed":
+            case "disabled": {
               setError(`Failed to reconnect to ${serverName}`);
               setIsReconnecting(false);
               onComplete(`Failed to reconnect to ${serverName}`);
@@ -94,7 +94,7 @@ export function MCPReconnect(t0) {
       t3 = $[7];
     }
     let t4;
-    if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
       t4 = (
         <Box>
           <Spinner />
@@ -123,7 +123,7 @@ export function MCPReconnect(t0) {
   if (error) {
     let t3;
     if ($[11] !== theme) {
-      t3 = color('error', theme)(figures.cross);
+      t3 = color("error", theme)(figures.cross);
       $[11] = theme;
       $[12] = t3;
     } else {

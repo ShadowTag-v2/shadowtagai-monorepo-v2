@@ -1,13 +1,13 @@
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text, useTheme } from '../../../ink.js';
-import { FallbackPermissionRequest } from '../FallbackPermissionRequest.js';
-import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js';
-import type { ToolInput } from '../FilePermissionDialog/useFilePermissionDialog.js';
-import type { ToolUseConfirm } from '../PermissionRequest.js';
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text, useTheme } from "../../../ink.js";
+import { FallbackPermissionRequest } from "../FallbackPermissionRequest.js";
+import { FilePermissionDialog } from "../FilePermissionDialog/FilePermissionDialog.js";
+import type { ToolInput } from "../FilePermissionDialog/useFilePermissionDialog.js";
+import type { ToolUseConfirm } from "../PermissionRequest.js";
 
 function pathFromToolUse(toolUseConfirm: ToolUseConfirm): string | null {
   const tool = toolUseConfirm.tool;
-  if ('getPath' in tool && typeof tool.getPath === 'function') {
+  if ("getPath" in tool && typeof tool.getPath === "function") {
     try {
       return tool.getPath(toolUseConfirm.input);
     } catch {
@@ -40,7 +40,7 @@ export function FilesystemPermissionRequest(t0) {
   }
   const userFacingName = t2;
   const isReadOnly = toolUseConfirm.tool.isReadOnly(toolUseConfirm.input);
-  const userFacingReadOrEdit = isReadOnly ? 'Read' : 'Edit';
+  const userFacingReadOrEdit = isReadOnly ? "Read" : "Edit";
   const title = `${userFacingReadOrEdit} file`;
   const parseInput = _temp;
   if (!path) {
@@ -110,7 +110,7 @@ export function FilesystemPermissionRequest(t0) {
     t4 = $[19];
   }
   const content = t4;
-  const t5 = isReadOnly ? 'read' : 'write';
+  const t5 = isReadOnly ? "read" : "write";
   let t6;
   if (
     $[20] !== content ||

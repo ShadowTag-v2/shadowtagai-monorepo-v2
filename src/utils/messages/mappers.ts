@@ -1,54 +1,54 @@
-import { randomUUID, type UUID } from 'node:crypto';
-import type { BetaContentBlock } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import { getSessionId } from 'src/bootstrap/state.js';
-import { LOCAL_COMMAND_STDERR_TAG, LOCAL_COMMAND_STDOUT_TAG } from 'src/constants/xml.js';
+import { randomUUID, type UUID } from "node:crypto";
+import type { BetaContentBlock } from "@anthropic-ai/sdk/resources/beta/messages/messages.mjs";
+import { getSessionId } from "src/bootstrap/state.js";
+import { LOCAL_COMMAND_STDERR_TAG, LOCAL_COMMAND_STDOUT_TAG } from "src/constants/xml.js";
 import type {
   SDKAssistantMessage,
   SDKCompactBoundaryMessage,
   SDKMessage,
   SDKRateLimitInfo,
-} from 'src/entrypoints/agentSdkTypes.js';
-import type { ClaudeAILimits } from 'src/services/claudeAiLimits.js';
-import { EXIT_PLAN_MODE_V2_TOOL_NAME } from 'src/tools/ExitPlanModeTool/constants.js';
-import type { AssistantMessage, CompactMetadata, Message } from 'src/types/message.js';
-import type { DeepImmutable } from 'src/types/utils.js';
-import stripAnsi from 'strip-ansi';
-import { createAssistantMessage } from '../messages.js';
-import { getPlan } from '../plans.js';
+} from "src/entrypoints/agentSdkTypes.js";
+import type { ClaudeAILimits } from "src/services/claudeAiLimits.js";
+import { EXIT_PLAN_MODE_V2_TOOL_NAME } from "src/tools/ExitPlanModeTool/constants.js";
+import type { AssistantMessage, CompactMetadata, Message } from "src/types/message.js";
+import type { DeepImmutable } from "src/types/utils.js";
+import stripAnsi from "strip-ansi";
+import { createAssistantMessage } from "../messages.js";
+import { getPlan } from "../plans.js";
 
 export function toInternalMessages(messages: readonly DeepImmutable<SDKMessage>[]): Message[] {
   return messages.flatMap((message) => {
     switch (message.type) {
-      case 'assistant':
+      case "assistant":
         return [
           {
-            type: 'assistant',
+            type: "assistant",
             message: message.message,
             uuid: message.uuid,
             requestId: undefined,
             timestamp: new Date().toISOString(),
           } as Message,
         ];
-      case 'user':
+      case "user":
         return [
           {
-            type: 'user',
+            type: "user",
             message: message.message,
             uuid: message.uuid ?? randomUUID(),
             timestamp: message.timestamp ?? new Date().toISOString(),
             isMeta: message.isSynthetic,
           } as Message,
         ];
-      case 'system':
+      case "system":
         // Handle compact boundary messages
-        if (message.subtype === 'compact_boundary') {
+        if (message.subtype === "compact_boundary") {
           const compactMsg = message;
           return [
             {
-              type: 'system',
-              content: 'Conversation compacted',
-              level: 'info',
-              subtype: 'compact_boundary',
+              type: "system",
+              content: "Conversation compacted",
+              level: "info",
+              subtype: "compact_boundary",
               compactMetadata: fromSDKCompactMetadata(compactMsg.compact_metadata),
               uuid: message.uuid,
               timestamp: new Date().toISOString(),
@@ -62,7 +62,7 @@ export function toInternalMessages(messages: readonly DeepImmutable<SDKMessage>[
   });
 }
 
-type SDKCompactMetadata = SDKCompactBoundaryMessage['compact_metadata'];
+type SDKCompactMetadata = SDKCompactBoundaryMessage["compact_metadata"];
 
 export function toSDKCompactMetadata(meta: CompactMetadata): SDKCompactMetadata {
   const seg = meta.preservedSegment;
@@ -100,10 +100,10 @@ export function fromSDKCompactMetadata(meta: SDKCompactMetadata): CompactMetadat
 export function toSDKMessages(messages: Message[]): SDKMessage[] {
   return messages.flatMap((message): SDKMessage[] => {
     switch (message.type) {
-      case 'assistant':
+      case "assistant":
         return [
           {
-            type: 'assistant',
+            type: "assistant",
             message: normalizeAssistantMessageForSDK(message),
             session_id: getSessionId(),
             parent_tool_use_id: null,
@@ -111,10 +111,10 @@ export function toSDKMessages(messages: Message[]): SDKMessage[] {
             error: message.error,
           },
         ];
-      case 'user':
+      case "user":
         return [
           {
-            type: 'user',
+            type: "user",
             message: message.message,
             session_id: getSessionId(),
             parent_tool_use_id: null,
@@ -130,12 +130,12 @@ export function toSDKMessages(messages: Message[]): SDKMessage[] {
               : {}),
           },
         ];
-      case 'system':
-        if (message.subtype === 'compact_boundary' && message.compactMetadata) {
+      case "system":
+        if (message.subtype === "compact_boundary" && message.compactMetadata) {
           return [
             {
-              type: 'system',
-              subtype: 'compact_boundary' as const,
+              type: "system",
+              subtype: "compact_boundary" as const,
               session_id: getSessionId(),
               uuid: message.uuid,
               compact_metadata: toSDKCompactMetadata(message.compactMetadata),
@@ -147,7 +147,7 @@ export function toSDKMessages(messages: Message[]): SDKMessage[] {
         // input metadata (e.g. <command-name>...</command-name>) which must
         // not leak to the RC web UI.
         if (
-          message.subtype === 'local_command' &&
+          message.subtype === "local_command" &&
           (message.content.includes(`<${LOCAL_COMMAND_STDOUT_TAG}>`) ||
             message.content.includes(`<${LOCAL_COMMAND_STDERR_TAG}>`))
         ) {
@@ -178,15 +178,15 @@ export function localCommandOutputToSDKAssistantMessage(
   uuid: UUID,
 ): SDKAssistantMessage {
   const cleanContent = stripAnsi(rawContent)
-    .replace(/<local-command-stdout>([\s\S]*?)<\/local-command-stdout>/, '$1')
-    .replace(/<local-command-stderr>([\s\S]*?)<\/local-command-stderr>/, '$1')
+    .replace(/<local-command-stdout>([\s\S]*?)<\/local-command-stdout>/, "$1")
+    .replace(/<local-command-stderr>([\s\S]*?)<\/local-command-stderr>/, "$1")
     .trim();
   // createAssistantMessage builds a complete APIAssistantMessage with id, type,
   // model: SYNTHETIC_MODEL, role, stop_reason, usage — all fields required by
   // downstream deserializers like Android's SdkAssistantMessage.
   const synthetic = createAssistantMessage({ content: cleanContent });
   return {
-    type: 'assistant',
+    type: "assistant",
     message: synthetic.message,
     parent_tool_use_id: null,
     session_id: getSessionId(),
@@ -237,14 +237,14 @@ export function toSDKRateLimitInfo(
  * the V2 tool reads plan from file instead of input, but SDK users expect
  * tool_input.plan to exist.
  */
-function normalizeAssistantMessageForSDK(message: AssistantMessage): AssistantMessage['message'] {
+function normalizeAssistantMessageForSDK(message: AssistantMessage): AssistantMessage["message"] {
   const content = message.message.content;
   if (!Array.isArray(content)) {
     return message.message;
   }
 
   const normalizedContent = content.map((block): BetaContentBlock => {
-    if (block.type !== 'tool_use') {
+    if (block.type !== "tool_use") {
       return block;
     }
 

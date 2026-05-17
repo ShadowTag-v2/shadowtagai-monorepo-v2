@@ -1,10 +1,10 @@
-import { type StructuredPatchHunk, structuredPatch } from 'diff';
-import { logEvent } from 'src/services/analytics/index.js';
-import { getLocCounter } from '../bootstrap/state.js';
-import { addToTotalLinesChanged } from '../cost-tracker.js';
-import type { FileEdit } from '../tools/FileEditTool/types.js';
-import { count } from './array.js';
-import { convertLeadingTabsToSpaces } from './file.js';
+import { type StructuredPatchHunk, structuredPatch } from "diff";
+import { logEvent } from "src/services/analytics/index.js";
+import { getLocCounter } from "../bootstrap/state.js";
+import { addToTotalLinesChanged } from "../cost-tracker.js";
+import type { FileEdit } from "../tools/FileEditTool/types.js";
+import { count } from "./array.js";
+import { convertLeadingTabsToSpaces } from "./file.js";
 
 export const CONTEXT_LINES = 3;
 export const DIFF_TIMEOUT_MS = 5_000;
@@ -28,16 +28,16 @@ export function adjustHunkLineNumbers(
 
 // For some reason, & confuses the diff library, so we replace it with a token,
 // then substitute it back in after the diff is computed.
-const AMPERSAND_TOKEN = '<<:AMPERSAND_TOKEN:>>';
+const AMPERSAND_TOKEN = "<<:AMPERSAND_TOKEN:>>";
 
-const DOLLAR_TOKEN = '<<:DOLLAR_TOKEN:>>';
+const DOLLAR_TOKEN = "<<:DOLLAR_TOKEN:>>";
 
 function escapeForDiff(s: string): string {
-  return s.replaceAll('&', AMPERSAND_TOKEN).replaceAll('$', DOLLAR_TOKEN);
+  return s.replaceAll("&", AMPERSAND_TOKEN).replaceAll("$", DOLLAR_TOKEN);
 }
 
 function unescapeFromDiff(s: string): string {
-  return s.replaceAll(AMPERSAND_TOKEN, '&').replaceAll(DOLLAR_TOKEN, '$');
+  return s.replaceAll(AMPERSAND_TOKEN, "&").replaceAll(DOLLAR_TOKEN, "$");
 }
 
 /**
@@ -55,18 +55,18 @@ export function countLinesChanged(patch: StructuredPatchHunk[], newFileContent?:
     numAdditions = newFileContent.split(/\r?\n/).length;
   } else {
     numAdditions = patch.reduce(
-      (acc, hunk) => acc + count(hunk.lines, (_) => _.startsWith('+')),
+      (acc, hunk) => acc + count(hunk.lines, (_) => _.startsWith("+")),
       0,
     );
-    numRemovals = patch.reduce((acc, hunk) => acc + count(hunk.lines, (_) => _.startsWith('-')), 0);
+    numRemovals = patch.reduce((acc, hunk) => acc + count(hunk.lines, (_) => _.startsWith("-")), 0);
   }
 
   addToTotalLinesChanged(numAdditions, numRemovals);
 
-  getLocCounter()?.add(numAdditions, { type: 'added' });
-  getLocCounter()?.add(numRemovals, { type: 'removed' });
+  getLocCounter()?.add(numAdditions, { type: "added" });
+  getLocCounter()?.add(numRemovals, { type: "removed" });
 
-  logEvent('tengu_file_changed', {
+  logEvent("tengu_file_changed", {
     lines_added: numAdditions,
     lines_removed: numRemovals,
   });
@@ -137,7 +137,7 @@ export function getPatchForDisplay({
     preparedFileContents,
     edits.reduce((p, edit) => {
       const { old_string, new_string } = edit;
-      const replace_all = 'replace_all' in edit ? edit.replace_all : false;
+      const replace_all = "replace_all" in edit ? edit.replace_all : false;
       const escapedOldString = escapeForDiff(convertLeadingTabsToSpaces(old_string));
       const escapedNewString = escapeForDiff(convertLeadingTabsToSpaces(new_string));
 

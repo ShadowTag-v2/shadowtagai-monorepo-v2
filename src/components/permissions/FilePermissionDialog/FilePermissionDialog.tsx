@@ -1,23 +1,23 @@
-import { relative } from 'node:path';
-import type React from 'react';
-import { useMemo } from 'react';
-import { useDiffInIDE } from '../../../hooks/useDiffInIDE.js';
-import { Box, Text } from '../../../ink.js';
-import type { ToolUseContext } from '../../../Tool.js';
-import { getLanguageName } from '../../../utils/cliHighlight.js';
-import { getCwd } from '../../../utils/cwd.js';
-import { getFsImplementation, safeResolvePath } from '../../../utils/fsOperations.js';
-import { expandPath } from '../../../utils/path.js';
-import type { CompletionType } from '../../../utils/unaryLogging.js';
-import { Select } from '../../CustomSelect/index.js';
-import { ShowInIDEPrompt } from '../../ShowInIDEPrompt.js';
-import { usePermissionRequestLogging } from '../hooks.js';
-import { PermissionDialog } from '../PermissionDialog.js';
-import type { ToolUseConfirm } from '../PermissionRequest.js';
-import type { WorkerBadgeProps } from '../WorkerBadge.js';
-import type { IDEDiffSupport } from './ideDiffConfig.js';
-import type { FileOperationType, PermissionOption } from './permissionOptions.js';
-import { type ToolInput, useFilePermissionDialog } from './useFilePermissionDialog.js';
+import { relative } from "node:path";
+import type React from "react";
+import { useMemo } from "react";
+import { useDiffInIDE } from "../../../hooks/useDiffInIDE.js";
+import { Box, Text } from "../../../ink.js";
+import type { ToolUseContext } from "../../../Tool.js";
+import { getLanguageName } from "../../../utils/cliHighlight.js";
+import { getCwd } from "../../../utils/cwd.js";
+import { getFsImplementation, safeResolvePath } from "../../../utils/fsOperations.js";
+import { expandPath } from "../../../utils/path.js";
+import type { CompletionType } from "../../../utils/unaryLogging.js";
+import { Select } from "../../CustomSelect/index.js";
+import { ShowInIDEPrompt } from "../../ShowInIDEPrompt.js";
+import { usePermissionRequestLogging } from "../hooks.js";
+import { PermissionDialog } from "../PermissionDialog.js";
+import type { ToolUseConfirm } from "../PermissionRequest.js";
+import type { WorkerBadgeProps } from "../WorkerBadge.js";
+import type { IDEDiffSupport } from "./ideDiffConfig.js";
+import type { FileOperationType, PermissionOption } from "./permissionOptions.js";
+import { type ToolInput, useFilePermissionDialog } from "./useFilePermissionDialog.js";
 export type FilePermissionDialogProps<T extends ToolInput = ToolInput> = {
   // Required props from PermissionRequestProps
   toolUseConfirm: ToolUseConfirm;
@@ -53,12 +53,12 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
   onReject,
   title,
   subtitle,
-  question = 'Do you want to proceed?',
+  question = "Do you want to proceed?",
   content,
-  completionType = 'tool_use_single',
+  completionType = "tool_use_single",
   path,
   parseInput,
-  operationType = 'write',
+  operationType = "write",
   ideDiffSupport,
   workerBadge,
   languageName: languageNameOverride,
@@ -68,7 +68,7 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
   // downstream UnaryEvent.language_name and logPermissionEvent already accept
   // Promise<string>. useMemo keeps the promise stable across renders.
   const languageName = useMemo(
-    () => languageNameOverride ?? (path ? getLanguageName(path) : 'none'),
+    () => languageNameOverride ?? (path ? getLanguageName(path) : "none"),
     [languageNameOverride, path],
   );
   const unaryEvent = useMemo(
@@ -80,7 +80,7 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
   );
   usePermissionRequestLogging(toolUseConfirm, unaryEvent);
   const symlinkTarget = useMemo(() => {
-    if (!path || operationType === 'read') {
+    if (!path || operationType === "read") {
       return null;
     }
     const expandedPath = expandPath(path);
@@ -92,7 +92,7 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
     return null;
   }, [path, operationType]);
   const fileDialogResult = useFilePermissionDialog({
-    filePath: path || '',
+    filePath: path || "",
     completionType,
     languageName,
     toolUseConfirm,
@@ -150,14 +150,14 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
           new_string: e.new_string,
           replace_all: e.replace_all || false,
         })),
-        editMode: ideDiffConfig.editMode || 'single',
+        editMode: ideDiffConfig.editMode || "single",
       }
     : {
         onChange: () => {},
         toolUseContext,
-        filePath: '',
+        filePath: "",
         edits: [],
-        editMode: 'single' as const,
+        editMode: "single" as const,
       };
   const { closeTabInIDE, showingDiffInIDE, ideName } = useDiffInIDE(diffParams);
   const onChange = (option_0: PermissionOption, feedback?: string) => {
@@ -186,7 +186,7 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
     );
   }
   const isSymlinkOutsideCwd =
-    symlinkTarget != null && relative(getCwd(), symlinkTarget).startsWith('..');
+    symlinkTarget != null && relative(getCwd(), symlinkTarget).startsWith("..");
   const symlinkWarning = symlinkTarget ? (
     <Box paddingX={1} marginBottom={1}>
       <Text color="warning">
@@ -207,7 +207,7 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
         {symlinkWarning}
         {content}
         <Box flexDirection="column" paddingX={1}>
-          {typeof question === 'string' ? <Text>{question}</Text> : question}
+          {typeof question === "string" ? <Text>{question}</Text> : question}
           <Select
             options={options}
             inlineDescriptions
@@ -215,13 +215,13 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
               const selected = options.find((opt) => opt.value === value);
               if (selected) {
                 // For reject option
-                if (selected.option.type === 'reject') {
+                if (selected.option.type === "reject") {
                   const trimmedFeedback = rejectFeedback.trim();
                   onChange(selected.option, trimmedFeedback || undefined);
                   return;
                 }
                 // For accept-once option, pass accept feedback if present
-                if (selected.option.type === 'accept-once') {
+                if (selected.option.type === "accept-once") {
                   const trimmedFeedback_0 = acceptFeedback.trim();
                   onChange(selected.option, trimmedFeedback_0 || undefined);
                   return;
@@ -231,7 +231,7 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
             }}
             onCancel={() =>
               onChange({
-                type: 'reject',
+                type: "reject",
               })
             }
             onFocus={(value_0) => setFocusedOption(value_0)}
@@ -242,9 +242,9 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
       <Box paddingX={1} marginTop={1}>
         <Text dimColor>
           Esc to cancel
-          {((focusedOption === 'yes' && !yesInputMode) ||
-            (focusedOption === 'no' && !noInputMode)) &&
-            ' · Tab to amend'}
+          {((focusedOption === "yes" && !yesInputMode) ||
+            (focusedOption === "no" && !noInputMode)) &&
+            " · Tab to amend"}
         </Text>
       </Box>
     </>

@@ -1,22 +1,22 @@
-import { randomUUID } from 'node:crypto';
-import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios';
-import { getOauthConfig } from 'src/constants/oauth.js';
-import { getOrganizationUUID } from 'src/services/oauth/client.js';
-import z from 'zod/v4';
-import { getClaudeAIOAuthTokens } from '../auth.js';
-import { logForDebugging } from '../debug.js';
-import { parseGitHubRepository } from '../detectRepository.js';
-import { errorMessage, toError } from '../errors.js';
-import { lazySchema } from '../lazySchema.js';
-import { logError } from '../log.js';
-import { sleep } from '../sleep.js';
-import { jsonStringify } from '../slowOperations.js';
+import { randomUUID } from "node:crypto";
+import axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
+import { getOauthConfig } from "src/constants/oauth.js";
+import { getOrganizationUUID } from "src/services/oauth/client.js";
+import z from "zod/v4";
+import { getClaudeAIOAuthTokens } from "../auth.js";
+import { logForDebugging } from "../debug.js";
+import { parseGitHubRepository } from "../detectRepository.js";
+import { errorMessage, toError } from "../errors.js";
+import { lazySchema } from "../lazySchema.js";
+import { logError } from "../log.js";
+import { sleep } from "../sleep.js";
+import { jsonStringify } from "../slowOperations.js";
 
 // Retry configuration for teleport API requests
 const TELEPORT_RETRY_DELAYS = [2000, 4000, 8000, 16000]; // 4 retries with exponential backoff
 const MAX_TELEPORT_RETRIES = TELEPORT_RETRY_DELAYS.length;
 
-export const CCR_BYOC_BETA = 'ccr-byoc-2025-07-29';
+export const CCR_BYOC_BETA = "ccr-byoc-2025-07-29";
 
 /**
  * Checks if an axios error is a transient network error that should be retried
@@ -81,17 +81,17 @@ export async function axiosGetWithRetry<T>(
 }
 
 // Types matching the actual Sessions API response from api/schemas/sessions/sessions.py
-export type SessionStatus = 'requires_action' | 'running' | 'idle' | 'archived';
+export type SessionStatus = "requires_action" | "running" | "idle" | "archived";
 
 export type GitSource = {
-  type: 'git_repository';
+  type: "git_repository";
   url: string;
   revision?: string | null;
   allow_unrestricted_git_push?: boolean;
 };
 
 export type KnowledgeBaseSource = {
-  type: 'knowledge_base';
+  type: "knowledge_base";
   knowledge_base_id: string;
 };
 
@@ -99,13 +99,13 @@ export type SessionContextSource = GitSource | KnowledgeBaseSource;
 
 // Outcome types from api/schemas/sandbox.py
 export type OutcomeGitInfo = {
-  type: 'github';
+  type: "github";
   repo: string;
   branches: string[];
 };
 
 export type GitRepositoryOutcome = {
-  type: 'git_repository';
+  type: "git_repository";
   git_info: OutcomeGitInfo;
 };
 
@@ -125,7 +125,7 @@ export type SessionContext = {
 };
 
 export type SessionResource = {
-  type: 'session';
+  type: "session";
   id: string;
   title: string | null;
   session_status: SessionStatus;
@@ -148,13 +148,13 @@ export const CodeSessionSchema = lazySchema(() =>
     title: z.string(),
     description: z.string(),
     status: z.enum([
-      'idle',
-      'working',
-      'waiting',
-      'completed',
-      'archived',
-      'cancelled',
-      'rejected',
+      "idle",
+      "working",
+      "waiting",
+      "completed",
+      "archived",
+      "cancelled",
+      "rejected",
     ]),
     repo: z
       .object({
@@ -185,13 +185,13 @@ export async function prepareApiRequest(): Promise<{
   const accessToken = getClaudeAIOAuthTokens()?.accessToken;
   if (accessToken === undefined) {
     throw new Error(
-      'Claude Code web sessions require authentication with a Claude.ai account. API key authentication is not sufficient. Please run /login to authenticate, or check your authentication status with /status.',
+      "Claude Code web sessions require authentication with a Claude.ai account. API key authentication is not sufficient. Please run /login to authenticate, or check your authentication status with /status.",
     );
   }
 
   const orgUUID = await getOrganizationUUID();
   if (!orgUUID) {
-    throw new Error('Unable to get organization UUID');
+    throw new Error("Unable to get organization UUID");
   }
 
   return { accessToken, orgUUID };
@@ -209,8 +209,8 @@ export async function fetchCodeSessionsFromSessionsAPI(): Promise<CodeSession[]>
   try {
     const headers = {
       ...getOAuthHeaders(accessToken),
-      'anthropic-beta': 'ccr-byoc-2025-07-29',
-      'x-organization-uuid': orgUUID,
+      "anthropic-beta": "ccr-byoc-2025-07-29",
+      "x-organization-uuid": orgUUID,
     };
 
     const response = await axiosGetWithRetry<ListSessionsResponse>(url, {
@@ -225,15 +225,15 @@ export async function fetchCodeSessionsFromSessionsAPI(): Promise<CodeSession[]>
     const sessions: CodeSession[] = response.data.data.map((session) => {
       // Extract repository info from git sources
       const gitSource = session.session_context.sources.find(
-        (source): source is GitSource => source.type === 'git_repository',
+        (source): source is GitSource => source.type === "git_repository",
       );
 
-      let repo: CodeSession['repo'] = null;
+      let repo: CodeSession["repo"] = null;
       if (gitSource?.url) {
         // Parse GitHub URL using the existing utility function
         const repoPath = parseGitHubRepository(gitSource.url);
         if (repoPath) {
-          const [owner, name] = repoPath.split('/');
+          const [owner, name] = repoPath.split("/");
           if (owner && name) {
             repo = {
               name,
@@ -248,9 +248,9 @@ export async function fetchCodeSessionsFromSessionsAPI(): Promise<CodeSession[]>
 
       return {
         id: session.id,
-        title: session.title || 'Untitled',
-        description: '', // SessionResource doesn't have description field
-        status: session.session_status as CodeSession['status'], // Map session_status to status
+        title: session.title || "Untitled",
+        description: "", // SessionResource doesn't have description field
+        status: session.session_status as CodeSession["status"], // Map session_status to status
         repo,
         turns: [], // SessionResource doesn't have turns field
         created_at: session.created_at,
@@ -274,8 +274,8 @@ export async function fetchCodeSessionsFromSessionsAPI(): Promise<CodeSession[]>
 export function getOAuthHeaders(accessToken: string): Record<string, string> {
   return {
     Authorization: `Bearer ${accessToken}`,
-    'Content-Type': 'application/json',
-    'anthropic-version': '2023-06-01',
+    "Content-Type": "application/json",
+    "anthropic-version": "2023-06-01",
   };
 }
 
@@ -290,8 +290,8 @@ export async function fetchSession(sessionId: string): Promise<SessionResource> 
   const url = `${getOauthConfig().BASE_API_URL}/v1/sessions/${sessionId}`;
   const headers = {
     ...getOAuthHeaders(accessToken),
-    'anthropic-beta': 'ccr-byoc-2025-07-29',
-    'x-organization-uuid': orgUUID,
+    "anthropic-beta": "ccr-byoc-2025-07-29",
+    "x-organization-uuid": orgUUID,
   };
 
   const response = await axios.get<SessionResource>(url, {
@@ -310,7 +310,7 @@ export async function fetchSession(sessionId: string): Promise<SessionResource> 
     }
 
     if (response.status === 401) {
-      throw new Error('Session expired. Please run /login to sign in again.');
+      throw new Error("Session expired. Please run /login to sign in again.");
     }
 
     throw new Error(
@@ -328,7 +328,7 @@ export async function fetchSession(sessionId: string): Promise<SessionResource> 
  */
 export function getBranchFromSession(session: SessionResource): string | undefined {
   const gitOutcome = session.session_context.outcomes?.find(
-    (outcome): outcome is GitRepositoryOutcome => outcome.type === 'git_repository',
+    (outcome): outcome is GitRepositoryOutcome => outcome.type === "git_repository",
   );
   return gitOutcome?.git_info?.branches[0];
 }
@@ -359,17 +359,17 @@ export async function sendEventToRemoteSession(
     const url = `${getOauthConfig().BASE_API_URL}/v1/sessions/${sessionId}/events`;
     const headers = {
       ...getOAuthHeaders(accessToken),
-      'anthropic-beta': 'ccr-byoc-2025-07-29',
-      'x-organization-uuid': orgUUID,
+      "anthropic-beta": "ccr-byoc-2025-07-29",
+      "x-organization-uuid": orgUUID,
     };
 
     const userEvent = {
       uuid: opts?.uuid ?? randomUUID(),
       session_id: sessionId,
-      type: 'user',
+      type: "user",
       parent_tool_use_id: null,
       message: {
-        role: 'user',
+        role: "user",
         content: messageContent,
       },
     };
@@ -415,8 +415,8 @@ export async function updateSessionTitle(sessionId: string, title: string): Prom
     const url = `${getOauthConfig().BASE_API_URL}/v1/sessions/${sessionId}`;
     const headers = {
       ...getOAuthHeaders(accessToken),
-      'anthropic-beta': 'ccr-byoc-2025-07-29',
-      'x-organization-uuid': orgUUID,
+      "anthropic-beta": "ccr-byoc-2025-07-29",
+      "x-organization-uuid": orgUUID,
     };
 
     logForDebugging(`[updateSessionTitle] Updating title for session ${sessionId}: "${title}"`);

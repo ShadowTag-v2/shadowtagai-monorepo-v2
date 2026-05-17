@@ -7,26 +7,26 @@
  * onDone('skipped') immediately if nothing needs filling.
  */
 
-import * as React from 'react';
-import type { LoadedPlugin } from '../../types/plugin.js';
-import { errorMessage } from '../../utils/errors.js';
+import * as React from "react";
+import type { LoadedPlugin } from "../../types/plugin.js";
+import { errorMessage } from "../../utils/errors.js";
 import {
   loadMcpServerUserConfig,
   saveMcpServerUserConfig,
-} from '../../utils/plugins/mcpbHandler.js';
+} from "../../utils/plugins/mcpbHandler.js";
 import {
   getUnconfiguredChannels,
   type UnconfiguredChannel,
-} from '../../utils/plugins/mcpPluginIntegration.js';
-import { loadAllPlugins } from '../../utils/plugins/pluginLoader.js';
+} from "../../utils/plugins/mcpPluginIntegration.js";
+import { loadAllPlugins } from "../../utils/plugins/pluginLoader.js";
 import {
   getUnconfiguredOptions,
   loadPluginOptions,
   type PluginOptionSchema,
   type PluginOptionValues,
   savePluginOptions,
-} from '../../utils/plugins/pluginOptionsStorage.js';
-import { PluginOptionsDialog } from './PluginOptionsDialog.js';
+} from "../../utils/plugins/pluginOptionsStorage.js";
+import { PluginOptionsDialog } from "./PluginOptionsDialog.js";
 
 /**
  * Post-install lookup: return the LoadedPlugin for the just-installed
@@ -63,7 +63,7 @@ type Props = {
    * `configured` = user filled all fields. `skipped` = nothing needed
    * configuring, or user hit cancel. `error` = save threw.
    */
-  onDone: (outcome: 'configured' | 'skipped' | 'error', detail?: string) => void;
+  onDone: (outcome: "configured" | "skipped" | "error", detail?: string) => void;
 };
 export function PluginOptionsFlow({ plugin, pluginId, onDone }: Props): React.ReactNode {
   // Build the step list once at mount. Re-calling after a save would drop the
@@ -75,9 +75,9 @@ export function PluginOptionsFlow({ plugin, pluginId, onDone }: Props): React.Re
     const unconfigured = getUnconfiguredOptions(plugin);
     if (Object.keys(unconfigured).length > 0) {
       result.push({
-        key: 'top-level',
+        key: "top-level",
         title: `Configure ${plugin.name}`,
-        subtitle: 'Plugin options',
+        subtitle: "Plugin options",
         schema: unconfigured,
         load: () => loadPluginOptions(pluginId),
         save: (values) => savePluginOptions(pluginId, values, plugin.manifest.userConfig!),
@@ -111,7 +111,7 @@ export function PluginOptionsFlow({ plugin, pluginId, onDone }: Props): React.Re
   // is a React rules-of-hooks violation.
   React.useEffect(() => {
     if (steps.length === 0) {
-      onDoneRef.current('skipped');
+      onDoneRef.current("skipped");
     }
   }, [steps.length]);
   if (steps.length === 0) {
@@ -122,14 +122,14 @@ export function PluginOptionsFlow({ plugin, pluginId, onDone }: Props): React.Re
     try {
       current.save(values_1);
     } catch (err) {
-      onDone('error', errorMessage(err));
+      onDone("error", errorMessage(err));
       return;
     }
     const next = index + 1;
     if (next < steps.length) {
       setIndex(next);
     } else {
-      onDone('configured');
+      onDone("configured");
     }
   }
 
@@ -144,7 +144,7 @@ export function PluginOptionsFlow({ plugin, pluginId, onDone }: Props): React.Re
       configSchema={current.schema}
       initialValues={current.load()}
       onSave={handleSave}
-      onCancel={() => onDone('skipped')}
+      onCancel={() => onDone("skipped")}
     />
   );
 }

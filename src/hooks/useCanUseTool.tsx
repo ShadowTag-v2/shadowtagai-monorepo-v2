@@ -1,33 +1,33 @@
-import { feature } from 'bun:bundle';
-import { APIUserAbortError } from '@anthropic-ai/sdk';
-import { c as _c } from 'react/compiler-runtime';
-import { Text } from '../ink.js';
-import type { Tool as ToolType, ToolUseContext } from '../Tool.js';
+import { feature } from "bun:bundle";
+import { APIUserAbortError } from "@anthropic-ai/sdk";
+import { c as _c } from "react/compiler-runtime";
+import { Text } from "../ink.js";
+import type { Tool as ToolType, ToolUseContext } from "../Tool.js";
 import {
   consumeSpeculativeClassifierCheck,
   peekSpeculativeClassifierCheck,
-} from '../tools/BashTool/bashPermissions.js';
-import { BASH_TOOL_NAME } from '../tools/BashTool/toolName.js';
-import type { AssistantMessage } from '../types/message.js';
-import { recordAutoModeDenial } from '../utils/autoModeDenials.js';
+} from "../tools/BashTool/bashPermissions.js";
+import { BASH_TOOL_NAME } from "../tools/BashTool/toolName.js";
+import type { AssistantMessage } from "../types/message.js";
+import { recordAutoModeDenial } from "../utils/autoModeDenials.js";
 import {
   clearClassifierChecking,
   setClassifierApproval,
   setYoloClassifierApproval,
-} from '../utils/classifierApprovals.js';
-import { logForDebugging } from '../utils/debug.js';
-import { AbortError } from '../utils/errors.js';
-import { logError } from '../utils/log.js';
-import type { PermissionDecision } from '../utils/permissions/PermissionResult.js';
-import { hasPermissionsToUseTool } from '../utils/permissions/permissions.js';
-import { handleCoordinatorPermission } from './toolPermission/handlers/coordinatorHandler.js';
-import { handleInteractivePermission } from './toolPermission/handlers/interactiveHandler.js';
-import { handleSwarmWorkerPermission } from './toolPermission/handlers/swarmWorkerHandler.js';
+} from "../utils/classifierApprovals.js";
+import { logForDebugging } from "../utils/debug.js";
+import { AbortError } from "../utils/errors.js";
+import { logError } from "../utils/log.js";
+import type { PermissionDecision } from "../utils/permissions/PermissionResult.js";
+import { hasPermissionsToUseTool } from "../utils/permissions/permissions.js";
+import { handleCoordinatorPermission } from "./toolPermission/handlers/coordinatorHandler.js";
+import { handleInteractivePermission } from "./toolPermission/handlers/interactiveHandler.js";
+import { handleSwarmWorkerPermission } from "./toolPermission/handlers/swarmWorkerHandler.js";
 import {
   createPermissionContext,
   createPermissionQueueOps,
-} from './toolPermission/PermissionContext.js';
-import { logPermissionDecision } from './toolPermission/permissionLogging.js';
+} from "./toolPermission/PermissionContext.js";
+import { logPermissionDecision } from "./toolPermission/permissionLogging.js";
 export type CanUseToolFn<Input extends Record<string, unknown> = Record<string, unknown>> = (
   tool: ToolType,
   input: Input,
@@ -60,20 +60,20 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
             : hasPermissionsToUseTool(tool, input, toolUseContext, assistantMessage, toolUseID);
         return decisionPromise
           .then(async (result) => {
-            if (result.behavior === 'allow') {
+            if (result.behavior === "allow") {
               if (ctx.resolveIfAborted(resolve)) {
                 return;
               }
               if (
-                feature('TRANSCRIPT_CLASSIFIER') &&
-                result.decisionReason?.type === 'classifier' &&
-                result.decisionReason.classifier === 'auto-mode'
+                feature("TRANSCRIPT_CLASSIFIER") &&
+                result.decisionReason?.type === "classifier" &&
+                result.decisionReason.classifier === "auto-mode"
               ) {
                 setYoloClassifierApproval(toolUseID, result.decisionReason.reason);
               }
               ctx.logDecision({
-                decision: 'accept',
-                source: 'config',
+                decision: "accept",
+                source: "config",
               });
               resolve(
                 ctx.buildAllow(result.updatedInput ?? input, {
@@ -92,7 +92,7 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
               return;
             }
             switch (result.behavior) {
-              case 'deny': {
+              case "deny": {
                 logPermissionDecision(
                   {
                     tool,
@@ -102,24 +102,24 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
                     toolUseID,
                   },
                   {
-                    decision: 'reject',
-                    source: 'config',
+                    decision: "reject",
+                    source: "config",
                   },
                 );
                 if (
-                  feature('TRANSCRIPT_CLASSIFIER') &&
-                  result.decisionReason?.type === 'classifier' &&
-                  result.decisionReason.classifier === 'auto-mode'
+                  feature("TRANSCRIPT_CLASSIFIER") &&
+                  result.decisionReason?.type === "classifier" &&
+                  result.decisionReason.classifier === "auto-mode"
                 ) {
                   recordAutoModeDenial({
                     toolName: tool.name,
                     display: description,
-                    reason: result.decisionReason.reason ?? '',
+                    reason: result.decisionReason.reason ?? "",
                     timestamp: Date.now(),
                   });
                   toolUseContext.addNotification?.({
-                    key: 'auto-mode-denied',
-                    priority: 'immediate',
+                    key: "auto-mode-denied",
+                    priority: "immediate",
                     jsx: (
                       <>
                         <Text color="error">
@@ -133,11 +133,11 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
                 resolve(result);
                 return;
               }
-              case 'ask': {
+              case "ask": {
                 if (appState.toolPermissionContext.awaitAutomatedChecksBeforeDialog) {
                   const coordinatorDecision = await handleCoordinatorPermission({
                     ctx,
-                    ...(feature('BASH_CLASSIFIER')
+                    ...(feature("BASH_CLASSIFIER")
                       ? {
                           pendingClassifierCheck: result.pendingClassifierCheck,
                         }
@@ -157,7 +157,7 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
                 const swarmDecision = await handleSwarmWorkerPermission({
                   ctx,
                   description,
-                  ...(feature('BASH_CLASSIFIER')
+                  ...(feature("BASH_CLASSIFIER")
                     ? {
                         pendingClassifierCheck: result.pendingClassifierCheck,
                       }
@@ -170,7 +170,7 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
                   return;
                 }
                 if (
-                  feature('BASH_CLASSIFIER') &&
+                  feature("BASH_CLASSIFIER") &&
                   result.pendingClassifierCheck &&
                   tool.name === BASH_TOOL_NAME &&
                   !appState.toolPermissionContext.awaitAutomatedChecksBeforeDialog
@@ -191,10 +191,10 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
                       return;
                     }
                     if (
-                      raceResult.type === 'result' &&
+                      raceResult.type === "result" &&
                       raceResult.result.matches &&
-                      raceResult.result.confidence === 'high' &&
-                      feature('BASH_CLASSIFIER')
+                      raceResult.result.confidence === "high" &&
+                      feature("BASH_CLASSIFIER")
                     ) {
                       consumeSpeculativeClassifierCheck(
                         (
@@ -208,16 +208,16 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
                         setClassifierApproval(toolUseID, matchedRule);
                       }
                       ctx.logDecision({
-                        decision: 'accept',
+                        decision: "accept",
                         source: {
-                          type: 'classifier',
+                          type: "classifier",
                         },
                       });
                       resolve(
                         ctx.buildAllow(result.updatedInput ?? (input as Record<string, unknown>), {
                           decisionReason: {
-                            type: 'classifier' as const,
-                            classifier: 'bash_allow' as const,
+                            type: "classifier" as const,
+                            classifier: "bash_allow" as const,
                             reason: `Allowed by prompt rule: "${raceResult.result.matchedDescription}"`,
                           },
                         }),
@@ -233,11 +233,11 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
                     result,
                     awaitAutomatedChecksBeforeDialog:
                       appState.toolPermissionContext.awaitAutomatedChecksBeforeDialog,
-                    bridgeCallbacks: feature('BRIDGE_MODE')
+                    bridgeCallbacks: feature("BRIDGE_MODE")
                       ? appState.replBridgePermissionCallbacks
                       : undefined,
                     channelCallbacks:
-                      feature('KAIROS') || feature('KAIROS_CHANNELS')
+                      feature("KAIROS") || feature("KAIROS_CHANNELS")
                         ? appState.channelPermissionCallbacks
                         : undefined,
                   },
@@ -273,12 +273,12 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
 }
 function _temp2(res) {
   return setTimeout(res, 2000, {
-    type: 'timeout' as const,
+    type: "timeout" as const,
   });
 }
 function _temp(r) {
   return {
-    type: 'result' as const,
+    type: "result" as const,
     result: r,
   };
 }

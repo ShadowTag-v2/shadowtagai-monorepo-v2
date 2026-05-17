@@ -1,5 +1,5 @@
-import type * as React from 'react';
-import { Text } from '../ink.js';
+import type * as React from "react";
+import { Text } from "../ink.js";
 
 /**
  * Inverse-highlight every occurrence of `query` in `text` (case-insensitive).

@@ -1,25 +1,25 @@
-import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { c as _c } from 'react/compiler-runtime';
-import type { Tools } from '../../../Tool.js';
-import type { NormalizedUserMessage, ProgressMessage } from '../../../types/message.js';
+import type { ToolResultBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
+import { c as _c } from "react/compiler-runtime";
+import type { Tools } from "../../../Tool.js";
+import type { NormalizedUserMessage, ProgressMessage } from "../../../types/message.js";
 import {
   type buildMessageLookups,
   CANCEL_MESSAGE,
   INTERRUPT_MESSAGE_FOR_TOOL_USE,
   REJECT_MESSAGE,
-} from '../../../utils/messages.js';
-import { UserToolCanceledMessage } from './UserToolCanceledMessage.js';
-import { UserToolErrorMessage } from './UserToolErrorMessage.js';
-import { UserToolRejectMessage } from './UserToolRejectMessage.js';
-import { UserToolSuccessMessage } from './UserToolSuccessMessage.js';
-import { useGetToolFromMessages } from './utils.js';
+} from "../../../utils/messages.js";
+import { UserToolCanceledMessage } from "./UserToolCanceledMessage.js";
+import { UserToolErrorMessage } from "./UserToolErrorMessage.js";
+import { UserToolRejectMessage } from "./UserToolRejectMessage.js";
+import { UserToolSuccessMessage } from "./UserToolSuccessMessage.js";
+import { useGetToolFromMessages } from "./utils.js";
 
 type Props = {
   param: ToolResultBlockParam;
   message: NormalizedUserMessage;
   lookups: ReturnType<typeof buildMessageLookups>;
   progressMessagesForMessage: ProgressMessage[];
-  style?: 'condensed';
+  style?: "condensed";
   tools: Tools;
   verbose: boolean;
   width: number | string;
@@ -42,9 +42,9 @@ export function UserToolResultMessage(t0) {
   if (!toolUse) {
     return null;
   }
-  if (typeof param.content === 'string' && param.content.startsWith(CANCEL_MESSAGE)) {
+  if (typeof param.content === "string" && param.content.startsWith(CANCEL_MESSAGE)) {
     let t1;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
       t1 = <UserToolCanceledMessage />;
       $[0] = t1;
     } else {
@@ -53,7 +53,7 @@ export function UserToolResultMessage(t0) {
     return t1;
   }
   if (
-    (typeof param.content === 'string' && param.content.startsWith(REJECT_MESSAGE)) ||
+    (typeof param.content === "string" && param.content.startsWith(REJECT_MESSAGE)) ||
     param.content === INTERRUPT_MESSAGE_FOR_TOOL_USE
   ) {
     const t1 = toolUse.toolUse.input as {

@@ -10,13 +10,13 @@
  * are not detectable until after installation.
  */
 
-import { extname } from 'node:path';
-import { isBinaryInstalled } from '../binaryCheck.js';
-import { getGlobalConfig, saveGlobalConfig } from '../config.js';
-import { logForDebugging } from '../debug.js';
-import { isPluginInstalled } from './installedPluginsManager.js';
-import { getMarketplace, loadKnownMarketplacesConfig } from './marketplaceManager.js';
-import { ALLOWED_OFFICIAL_MARKETPLACE_NAMES, type PluginMarketplaceEntry } from './schemas.js';
+import { extname } from "node:path";
+import { isBinaryInstalled } from "../binaryCheck.js";
+import { getGlobalConfig, saveGlobalConfig } from "../config.js";
+import { logForDebugging } from "../debug.js";
+import { isPluginInstalled } from "./installedPluginsManager.js";
+import { getMarketplace, loadKnownMarketplacesConfig } from "./marketplaceManager.js";
+import { ALLOWED_OFFICIAL_MARKETPLACE_NAMES, type PluginMarketplaceEntry } from "./schemas.js";
 
 /**
  * LSP plugin recommendation returned to the caller
@@ -59,16 +59,16 @@ type LspInfo = {
  * @returns LSP info with extensions and command, or null if not extractable
  */
 function extractLspInfoFromManifest(
-  lspServers: PluginMarketplaceEntry['lspServers'],
+  lspServers: PluginMarketplaceEntry["lspServers"],
 ): LspInfo | null {
   if (!lspServers) {
     return null;
   }
 
   // If it's a string path (e.g., "./.lsp.json"), we can't read it from marketplace
-  if (typeof lspServers === 'string') {
+  if (typeof lspServers === "string") {
     logForDebugging(
-      '[lspRecommendation] Skipping string path lspServers (not readable from marketplace)',
+      "[lspRecommendation] Skipping string path lspServers (not readable from marketplace)",
     );
     return null;
   }
@@ -77,7 +77,7 @@ function extractLspInfoFromManifest(
   if (Array.isArray(lspServers)) {
     for (const item of lspServers) {
       // Skip string paths in arrays
-      if (typeof item === 'string') {
+      if (typeof item === "string") {
         continue;
       }
       // Try to extract from inline config object
@@ -100,7 +100,7 @@ function extractLspInfoFromManifest(
  * Type guard to check if a value is a record object
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
+  return typeof value === "object" && value !== null;
 }
 
 function extractFromServerConfigRecord(serverConfigs: Record<string, unknown>): LspInfo | null {
@@ -113,7 +113,7 @@ function extractFromServerConfigRecord(serverConfigs: Record<string, unknown>): 
     }
 
     // Get command from first valid server config
-    if (!command && typeof config.command === 'string') {
+    if (!command && typeof config.command === "string") {
       command = config.command;
     }
 
@@ -210,14 +210,14 @@ async function getLspPluginsFromMarketplaces(): Promise<Map<string, LspPluginInf
 export async function getMatchingLspPlugins(filePath: string): Promise<LspPluginRecommendation[]> {
   // Check if globally disabled
   if (isLspRecommendationsDisabled()) {
-    logForDebugging('[lspRecommendation] Recommendations are disabled');
+    logForDebugging("[lspRecommendation] Recommendations are disabled");
     return [];
   }
 
   // Extract file extension
   const ext = extname(filePath).toLowerCase();
   if (!ext) {
-    logForDebugging('[lspRecommendation] No file extension found');
+    logForDebugging("[lspRecommendation] No file extension found");
     return [];
   }
 
@@ -319,7 +319,7 @@ export function incrementIgnoredCount(): void {
       lspRecommendationIgnoredCount: newCount,
     };
   });
-  logForDebugging('[lspRecommendation] Incremented ignored count');
+  logForDebugging("[lspRecommendation] Incremented ignored count");
 }
 
 /**
@@ -350,5 +350,5 @@ export function resetIgnoredCount(): void {
       lspRecommendationIgnoredCount: 0,
     };
   });
-  logForDebugging('[lspRecommendation] Reset ignored count');
+  logForDebugging("[lspRecommendation] Reset ignored count");
 }

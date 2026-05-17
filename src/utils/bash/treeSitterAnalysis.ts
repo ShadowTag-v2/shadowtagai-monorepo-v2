@@ -87,13 +87,13 @@ type QuoteSpans = {
  */
 function collectQuoteSpans(node: TreeSitterNode, out: QuoteSpans, inDouble: boolean): void {
   switch (node.type) {
-    case 'raw_string':
+    case "raw_string":
       out.raw.push([node.startIndex, node.endIndex]);
       return; // literal body, no nested quotes possible
-    case 'ansi_c_string':
+    case "ansi_c_string":
       out.ansiC.push([node.startIndex, node.endIndex]);
       return; // literal body
-    case 'string':
+    case "string":
       // Only collect the outermost string (matches old per-type walk
       // which stops at first match). Recurse regardless — a nested
       // $(cmd 'x') inside "..." has a real inner raw_string.
@@ -102,7 +102,7 @@ function collectQuoteSpans(node: TreeSitterNode, out: QuoteSpans, inDouble: bool
         if (child) collectQuoteSpans(child, out, true);
       }
       return;
-    case 'heredoc_redirect': {
+    case "heredoc_redirect": {
       // Quoted heredocs (<<'EOF', <<"EOF", <<\EOF): literal body.
       // Unquoted (<<EOF) expands $()/${} — the body can contain
       // $(cmd 'x') whose inner '...' IS a real raw_string node.
@@ -110,9 +110,9 @@ function collectQuoteSpans(node: TreeSitterNode, out: QuoteSpans, inDouble: bool
       // Matches sync path's extractHeredocs({ quotedOnly: true }).
       let isQuoted = false;
       for (const child of node.children) {
-        if (child && child.type === 'heredoc_start') {
+        if (child && child.type === "heredoc_start") {
           const first = child.text[0];
-          isQuoted = first === "'" || first === '"' || first === '\\';
+          isQuoted = first === "'" || first === '"' || first === "\\";
           break;
         }
       }
@@ -242,7 +242,7 @@ export function extractQuoteContext(rootNode: unknown, command: string): QuoteCo
     doubleQuoteDelimSet.add(start); // opening "
     doubleQuoteDelimSet.add(end - 1); // closing "
   }
-  let withDoubleQuotes = '';
+  let withDoubleQuotes = "";
   for (let i = 0; i < command.length; i++) {
     if (singleQuoteSet.has(i)) continue;
     if (doubleQuoteDelimSet.has(i)) continue;
@@ -267,7 +267,7 @@ export function extractQuoteContext(rootNode: unknown, command: string): QuoteCo
   }
   for (const [start, end] of quotedHeredocSpans) {
     // Heredoc redirect spans have no inline quote delimiters — strip entirely.
-    spansWithQuoteChars.push([start, end, '', '']);
+    spansWithQuoteChars.push([start, end, "", ""]);
   }
   const unquotedKeepQuoteChars = replaceSpansKeepQuotes(command, spansWithQuoteChars);
 
@@ -291,50 +291,50 @@ export function extractCompoundStructure(rootNode: unknown, command: string): Co
     for (const child of node.children) {
       if (!child) continue;
 
-      if (child.type === 'list') {
+      if (child.type === "list") {
         // list nodes contain && and || operators
         for (const listChild of child.children) {
           if (!listChild) continue;
-          if (listChild.type === '&&' || listChild.type === '||') {
+          if (listChild.type === "&&" || listChild.type === "||") {
             operators.push(listChild.type);
-          } else if (listChild.type === 'list' || listChild.type === 'redirected_statement') {
+          } else if (listChild.type === "list" || listChild.type === "redirected_statement") {
             // Nested list, or redirected_statement wrapping a list/pipeline —
             // recurse so inner operators/pipelines are detected. For
             // `cmd1 && cmd2 2>/dev/null && cmd3`, the redirected_statement
             // wraps `list(cmd1 && cmd2)` — the inner `&&` would be missed
             // without recursion.
             walkTopLevel({ ...node, children: [listChild] } as TreeSitterNode);
-          } else if (listChild.type === 'pipeline') {
+          } else if (listChild.type === "pipeline") {
             hasPipeline = true;
             segments.push(listChild.text);
-          } else if (listChild.type === 'subshell') {
+          } else if (listChild.type === "subshell") {
             hasSubshell = true;
             segments.push(listChild.text);
-          } else if (listChild.type === 'compound_statement') {
+          } else if (listChild.type === "compound_statement") {
             hasCommandGroup = true;
             segments.push(listChild.text);
           } else {
             segments.push(listChild.text);
           }
         }
-      } else if (child.type === ';') {
-        operators.push(';');
-      } else if (child.type === 'pipeline') {
+      } else if (child.type === ";") {
+        operators.push(";");
+      } else if (child.type === "pipeline") {
         hasPipeline = true;
         segments.push(child.text);
-      } else if (child.type === 'subshell') {
+      } else if (child.type === "subshell") {
         hasSubshell = true;
         segments.push(child.text);
-      } else if (child.type === 'compound_statement') {
+      } else if (child.type === "compound_statement") {
         hasCommandGroup = true;
         segments.push(child.text);
       } else if (
-        child.type === 'command' ||
-        child.type === 'declaration_command' ||
-        child.type === 'variable_assignment'
+        child.type === "command" ||
+        child.type === "declaration_command" ||
+        child.type === "variable_assignment"
       ) {
         segments.push(child.text);
-      } else if (child.type === 'redirected_statement') {
+      } else if (child.type === "redirected_statement") {
         // `cd ~/src && find path 2>/dev/null` — tree-sitter wraps the ENTIRE
         // compound in a redirected_statement: program → redirected_statement →
         // (list → cmd1, &&, cmd2) + file_redirect. Same for `cmd1 | cmd2 > out`
@@ -343,7 +343,7 @@ export function extractCompoundStructure(rootNode: unknown, command: string): Co
         // don't affect compound/pipeline classification).
         let foundInner = false;
         for (const inner of child.children) {
-          if (!inner || inner.type === 'file_redirect') continue;
+          if (!inner || inner.type === "file_redirect") continue;
           foundInner = true;
           walkTopLevel({ ...child, children: [inner] } as TreeSitterNode);
         }
@@ -351,18 +351,18 @@ export function extractCompoundStructure(rootNode: unknown, command: string): Co
           // Standalone redirect with no body (shouldn't happen, but fail-safe)
           segments.push(child.text);
         }
-      } else if (child.type === 'negated_command') {
+      } else if (child.type === "negated_command") {
         // `! cmd` — recurse into the inner command so its structure is
         // classified (pipeline/subshell/etc.), but also record the full
         // negated text as a segment so segments.length stays meaningful.
         segments.push(child.text);
         walkTopLevel(child);
       } else if (
-        child.type === 'if_statement' ||
-        child.type === 'while_statement' ||
-        child.type === 'for_statement' ||
-        child.type === 'case_statement' ||
-        child.type === 'function_definition'
+        child.type === "if_statement" ||
+        child.type === "while_statement" ||
+        child.type === "for_statement" ||
+        child.type === "case_statement" ||
+        child.type === "function_definition"
       ) {
         // Control-flow constructs: the construct itself is one segment,
         // but recurse so inner pipelines/subshells/operators are detected.
@@ -402,12 +402,12 @@ export function hasActualOperatorNodes(rootNode: unknown): boolean {
 
   function walk(node: TreeSitterNode): boolean {
     // Check for operator types that indicate compound commands
-    if (node.type === ';' || node.type === '&&' || node.type === '||') {
+    if (node.type === ";" || node.type === "&&" || node.type === "||") {
       // Verify this is a child of a list or program, not inside a command
       return true;
     }
 
-    if (node.type === 'list') {
+    if (node.type === "list") {
       // A list node means there are compound operators
       return true;
     }
@@ -434,19 +434,19 @@ export function extractDangerousPatterns(rootNode: unknown): DangerousPatterns {
 
   function walk(node: TreeSitterNode): void {
     switch (node.type) {
-      case 'command_substitution':
+      case "command_substitution":
         hasCommandSubstitution = true;
         break;
-      case 'process_substitution':
+      case "process_substitution":
         hasProcessSubstitution = true;
         break;
-      case 'expansion':
+      case "expansion":
         hasParameterExpansion = true;
         break;
-      case 'heredoc_redirect':
+      case "heredoc_redirect":
         hasHeredoc = true;
         break;
-      case 'comment':
+      case "comment":
         hasComment = true;
         break;
     }

@@ -1,15 +1,15 @@
-import { useCallback, useRef, useState } from 'react';
-import type { FeedbackSurveyResponse } from '../components/FeedbackSurvey/utils.js';
+import { useCallback, useRef, useState } from "react";
+import type { FeedbackSurveyResponse } from "../components/FeedbackSurvey/utils.js";
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
   logEvent,
-} from '../services/analytics/index.js';
-import { useAppState, useSetAppState } from '../state/AppState.js';
-import type { Message } from '../types/message.js';
-import type { SkillUpdate } from '../utils/hooks/skillImprovement.js';
-import { applySkillImprovement } from '../utils/hooks/skillImprovement.js';
-import { createSystemMessage } from '../utils/messages.js';
+} from "../services/analytics/index.js";
+import { useAppState, useSetAppState } from "../state/AppState.js";
+import type { Message } from "../types/message.js";
+import type { SkillUpdate } from "../utils/hooks/skillImprovement.js";
+import { applySkillImprovement } from "../utils/hooks/skillImprovement.js";
+import { createSystemMessage } from "../utils/messages.js";
 
 type SkillImprovementSuggestion = {
   skillName: string;
@@ -39,12 +39,12 @@ export function useSkillImprovementSurvey(setMessages: SetMessages): {
     setIsOpen(true);
     if (!loggedAppearanceRef.current) {
       loggedAppearanceRef.current = true;
-      logEvent('tengu_skill_improvement_survey', {
-        event_type: 'appeared' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      logEvent("tengu_skill_improvement_survey", {
+        event_type: "appeared" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         // _PROTO_skill_name routes to the privileged skill_name BQ column.
         // Unredacted names don't go in additional_metadata.
         _PROTO_skill_name: (suggestion.skillName ??
-          'unknown') as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
+          "unknown") as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
       });
     }
   }
@@ -54,13 +54,13 @@ export function useSkillImprovementSurvey(setMessages: SetMessages): {
       const current = lastSuggestionRef.current;
       if (!current) return;
 
-      const applied = selected !== 'dismissed';
+      const applied = selected !== "dismissed";
 
-      logEvent('tengu_skill_improvement_survey', {
-        event_type: 'responded' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+      logEvent("tengu_skill_improvement_survey", {
+        event_type: "responded" as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         response: (applied
-          ? 'applied'
-          : 'dismissed') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
+          ? "applied"
+          : "dismissed") as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         // _PROTO_skill_name routes to the privileged skill_name BQ column.
         // Unredacted names don't go in additional_metadata.
         _PROTO_skill_name: current.skillName as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
@@ -72,7 +72,7 @@ export function useSkillImprovementSurvey(setMessages: SetMessages): {
             ...prev,
             createSystemMessage(
               `Skill "${current.skillName}" updated with improvements.`,
-              'suggestion',
+              "suggestion",
             ),
           ]);
         });

@@ -1,23 +1,23 @@
-import { readdir, rm, stat, unlink, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { clearCommandsCache } from '../../commands.js';
-import { clearAllOutputStylesCache } from '../../constants/outputStyles.js';
-import { clearAgentDefinitionsCache } from '../../tools/AgentTool/loadAgentsDir.js';
-import { clearPromptCache } from '../../tools/SkillTool/prompt.js';
-import { resetSentSkillNames } from '../attachments.js';
-import { logForDebugging } from '../debug.js';
-import { getErrnoCode } from '../errors.js';
-import { logError } from '../log.js';
-import { loadInstalledPluginsFromDisk } from './installedPluginsManager.js';
-import { clearPluginAgentCache } from './loadPluginAgents.js';
-import { clearPluginCommandCache } from './loadPluginCommands.js';
-import { clearPluginHookCache, pruneRemovedPluginHooks } from './loadPluginHooks.js';
-import { clearPluginOutputStyleCache } from './loadPluginOutputStyles.js';
-import { clearPluginCache, getPluginCachePath } from './pluginLoader.js';
-import { clearPluginOptionsCache } from './pluginOptionsStorage.js';
-import { isPluginZipCacheEnabled } from './zipCache.js';
+import { readdir, rm, stat, unlink, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { clearCommandsCache } from "../../commands.js";
+import { clearAllOutputStylesCache } from "../../constants/outputStyles.js";
+import { clearAgentDefinitionsCache } from "../../tools/AgentTool/loadAgentsDir.js";
+import { clearPromptCache } from "../../tools/SkillTool/prompt.js";
+import { resetSentSkillNames } from "../attachments.js";
+import { logForDebugging } from "../debug.js";
+import { getErrnoCode } from "../errors.js";
+import { logError } from "../log.js";
+import { loadInstalledPluginsFromDisk } from "./installedPluginsManager.js";
+import { clearPluginAgentCache } from "./loadPluginAgents.js";
+import { clearPluginCommandCache } from "./loadPluginCommands.js";
+import { clearPluginHookCache, pruneRemovedPluginHooks } from "./loadPluginHooks.js";
+import { clearPluginOutputStyleCache } from "./loadPluginOutputStyles.js";
+import { clearPluginCache, getPluginCachePath } from "./pluginLoader.js";
+import { clearPluginOptionsCache } from "./pluginOptionsStorage.js";
+import { isPluginZipCacheEnabled } from "./zipCache.js";
 
-const ORPHANED_AT_FILENAME = '.orphaned_at';
+const ORPHANED_AT_FILENAME = ".orphaned_at";
 const CLEANUP_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 export function clearAllPluginCaches(): void {
@@ -52,7 +52,7 @@ export function clearAllCaches(): void {
  */
 export async function markPluginVersionOrphaned(versionPath: string): Promise<void> {
   try {
-    await writeFile(getOrphanedAtPath(versionPath), `${Date.now()}`, 'utf-8');
+    await writeFile(getOrphanedAtPath(versionPath), `${Date.now()}`, "utf-8");
   } catch (error) {
     logForDebugging(`Failed to write .orphaned_at: ${versionPath}: ${error}`);
   }
@@ -118,7 +118,7 @@ async function removeOrphanedAtMarker(versionPath: string): Promise<void> {
     await unlink(orphanedAtPath);
   } catch (error) {
     const code = getErrnoCode(error);
-    if (code === 'ENOENT') return;
+    if (code === "ENOENT") return;
     logForDebugging(`Failed to remove .orphaned_at: ${versionPath}: ${error}`);
   }
 }
@@ -147,7 +147,7 @@ async function processOrphanedPluginVersion(versionPath: string, now: number): P
     orphanedAt = (await stat(orphanedAtPath)).mtimeMs;
   } catch (error) {
     const code = getErrnoCode(error);
-    if (code === 'ENOENT') {
+    if (code === "ENOENT") {
       await markPluginVersionOrphaned(versionPath);
       return;
     }

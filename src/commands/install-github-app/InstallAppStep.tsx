@@ -1,8 +1,8 @@
-import figures from 'figures';
-import { c as _c } from 'react/compiler-runtime';
-import { GITHUB_ACTION_SETUP_DOCS_URL } from '../../constants/github-app.js';
-import { Box, Text } from '../../ink.js';
-import { useKeybinding } from '../../keybindings/useKeybinding.js';
+import figures from "figures";
+import { c as _c } from "react/compiler-runtime";
+import { GITHUB_ACTION_SETUP_DOCS_URL } from "../../constants/github-app.js";
+import { Box, Text } from "../../ink.js";
+import { useKeybinding } from "../../keybindings/useKeybinding.js";
 
 interface InstallAppStepProps {
   repoUrl: string;
@@ -12,17 +12,17 @@ export function InstallAppStep(t0) {
   const $ = _c(12);
   const { repoUrl, onSubmit } = t0;
   let t1;
-  if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
-      context: 'Confirmation',
+      context: "Confirmation",
     };
     $[0] = t1;
   } else {
     t1 = $[0];
   }
-  useKeybinding('confirm:yes', onSubmit, t1);
+  useKeybinding("confirm:yes", onSubmit, t1);
   let t2;
-  if ($[1] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = (
       <Box flexDirection="column" marginBottom={1}>
         <Text bold={true}>Install the Claude GitHub App</Text>
@@ -33,7 +33,7 @@ export function InstallAppStep(t0) {
     t2 = $[1];
   }
   let t3;
-  if ($[2] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = (
       <Box marginBottom={1}>
         <Text>Opening browser to install the Claude GitHub App…</Text>
@@ -44,7 +44,7 @@ export function InstallAppStep(t0) {
     t3 = $[2];
   }
   let t4;
-  if ($[3] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = (
       <Box marginBottom={1}>
         <Text>If your browser doesn't open automatically, visit:</Text>
@@ -55,7 +55,7 @@ export function InstallAppStep(t0) {
     t4 = $[3];
   }
   let t5;
-  if ($[4] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = (
       <Box marginBottom={1}>
         <Text underline={true}>https://github.com/apps/claude</Text>
@@ -80,7 +80,7 @@ export function InstallAppStep(t0) {
     t6 = $[6];
   }
   let t7;
-  if ($[7] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = (
       <Box marginBottom={1}>
         <Text dimColor={true}>
@@ -93,7 +93,7 @@ export function InstallAppStep(t0) {
     t7 = $[7];
   }
   let t8;
-  if ($[8] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = (
       <Box>
         <Text bold={true} color="permission">
@@ -106,11 +106,11 @@ export function InstallAppStep(t0) {
     t8 = $[8];
   }
   let t9;
-  if ($[9] === Symbol.for('react.memo_cache_sentinel')) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = (
       <Box marginTop={1}>
         <Text dimColor={true}>
-          Having trouble? See manual setup instructions at:{' '}
+          Having trouble? See manual setup instructions at:{" "}
           <Text color="claude">{GITHUB_ACTION_SETUP_DOCS_URL}</Text>
         </Text>
       </Box>

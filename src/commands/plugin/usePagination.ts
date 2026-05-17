@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from "react";
 
 const DEFAULT_MAX_VISIBLE = 5;
 
@@ -30,7 +30,7 @@ type UsePaginationResult<T> = {
   handleSelectionChange: (newIndex: number, setSelectedIndex: (index: number) => void) => void;
   // Page navigation - returns false for continuous scrolling (not needed)
   handlePageNavigation: (
-    direction: 'left' | 'right',
+    direction: "left" | "right",
     setSelectedIndex: (index: number) => void,
   ) => boolean;
   // Scroll position info for UI display
@@ -130,7 +130,7 @@ export function usePagination<T>({
 
   // Page navigation - disabled for continuous scrolling
   const handlePageNavigation = useCallback(
-    (_direction: 'left' | 'right', _setSelectedIndex: (index: number) => void): boolean => {
+    (_direction: "left" | "right", _setSelectedIndex: (index: number) => void): boolean => {
       return false;
     },
     [],

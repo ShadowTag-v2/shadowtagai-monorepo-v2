@@ -1,15 +1,15 @@
-import { feature } from 'bun:bundle';
-import { c as _c } from 'react/compiler-runtime';
-import { Box, Text } from '../ink.js';
-import type { ContextData } from '../utils/analyzeContext.js';
-import { generateContextSuggestions } from '../utils/contextSuggestions.js';
-import { getDisplayPath } from '../utils/file.js';
-import { formatTokens } from '../utils/format.js';
-import { getSourceDisplayName, type SettingSource } from '../utils/settings/constants.js';
-import { plural } from '../utils/stringUtils.js';
-import { ContextSuggestions } from './ContextSuggestions.js';
+import { feature } from "bun:bundle";
+import { c as _c } from "react/compiler-runtime";
+import { Box, Text } from "../ink.js";
+import type { ContextData } from "../utils/analyzeContext.js";
+import { generateContextSuggestions } from "../utils/contextSuggestions.js";
+import { getDisplayPath } from "../utils/file.js";
+import { formatTokens } from "../utils/format.js";
+import { getSourceDisplayName, type SettingSource } from "../utils/settings/constants.js";
+import { plural } from "../utils/stringUtils.js";
+import { ContextSuggestions } from "./ContextSuggestions.js";
 
-const RESERVED_CATEGORY_NAME = 'Autocompact buffer';
+const RESERVED_CATEGORY_NAME = "Autocompact buffer";
 
 /**
  * One-liner for the legend header showing what context-collapse has done.
@@ -20,14 +20,14 @@ const RESERVED_CATEGORY_NAME = 'Autocompact buffer';
  */
 function CollapseStatus() {
   const $ = _c(2);
-  if (feature('CONTEXT_COLLAPSE')) {
+  if (feature("CONTEXT_COLLAPSE")) {
     let t0;
     let t1;
-    if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
-      t1 = Symbol.for('react.early_return_sentinel');
+    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+      t1 = Symbol.for("react.early_return_sentinel");
       bb0: {
         const { getStats, isContextCollapseEnabled } =
-          require('../services/contextCollapse/index.js') as typeof import('../services/contextCollapse/index.js');
+          require("../services/contextCollapse/index.js") as typeof import("../services/contextCollapse/index.js");
         if (!isContextCollapseEnabled()) {
           t1 = null;
           break bb0;
@@ -37,7 +37,7 @@ function CollapseStatus() {
         const parts = [];
         if (s.collapsedSpans > 0) {
           parts.push(
-            `${s.collapsedSpans} ${plural(s.collapsedSpans, 'span')} summarized (${s.collapsedMessages} msgs)`,
+            `${s.collapsedSpans} ${plural(s.collapsedSpans, "span")} summarized (${s.collapsedMessages} msgs)`,
           );
         }
         if (s.stagedSpans > 0) {
@@ -45,16 +45,16 @@ function CollapseStatus() {
         }
         const summary =
           parts.length > 0
-            ? parts.join(', ')
+            ? parts.join(", ")
             : h.totalSpawns > 0
-              ? `${h.totalSpawns} ${plural(h.totalSpawns, 'spawn')}, nothing staged yet`
-              : 'waiting for first trigger';
+              ? `${h.totalSpawns} ${plural(h.totalSpawns, "spawn")}, nothing staged yet`
+              : "waiting for first trigger";
         let line2 = null;
         if (h.totalErrors > 0) {
           line2 = (
             <Text color="warning">
               Collapse errors: {h.totalErrors}/{h.totalSpawns} spawns failed
-              {h.lastError ? ` (last: ${h.lastError.slice(0, 60)})` : ''}
+              {h.lastError ? ` (last: ${h.lastError.slice(0, 60)})` : ""}
             </Text>
           );
         } else {
@@ -79,7 +79,7 @@ function CollapseStatus() {
       t0 = $[0];
       t1 = $[1];
     }
-    if (t1 !== Symbol.for('react.early_return_sentinel')) {
+    if (t1 !== Symbol.for("react.early_return_sentinel")) {
       return t1;
     }
     return t0;
@@ -88,12 +88,12 @@ function CollapseStatus() {
 }
 
 // Order for displaying source groups: Project > User > Managed > Plugin > Built-in
-const SOURCE_DISPLAY_ORDER = ['Project', 'User', 'Managed', 'Plugin', 'Built-in'];
+const SOURCE_DISPLAY_ORDER = ["Project", "User", "Managed", "Plugin", "Built-in"];
 
 /** Group items by source type for display, sorted by tokens descending within each group */
 function groupBySource<
   T extends {
-    source: SettingSource | 'plugin' | 'built-in';
+    source: SettingSource | "plugin" | "built-in";
     tokens: number;
   },
 >(items: T[]): Map<string, T[]> {
@@ -178,9 +178,9 @@ export function ContextVisualization(t0) {
     const hasDeferredBuiltinTools = deferredBuiltinTools.length > 0;
     const autocompactCategory = categories.find(_temp3);
     T1 = Box;
-    t6 = 'column';
+    t6 = "column";
     t7 = 1;
-    if ($[21] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[21] === Symbol.for("react.memo_cache_sentinel")) {
       t8 = <Text bold={true}>Context Usage</Text>;
       $[21] = t8;
     } else {
@@ -240,7 +240,7 @@ export function ContextVisualization(t0) {
     let t16;
     let t17;
     let t18;
-    if ($[35] === Symbol.for('react.memo_cache_sentinel')) {
+    if ($[35] === Symbol.for("react.memo_cache_sentinel")) {
       t16 = <CollapseStatus />;
       t17 = <Text> </Text>;
       t18 = (
@@ -261,11 +261,11 @@ export function ContextVisualization(t0) {
       t19 = (cat_2, index) => {
         const tokenDisplay = formatTokens(cat_2.tokens);
         const percentDisplay = cat_2.isDeferred
-          ? 'N/A'
+          ? "N/A"
           : `${((cat_2.tokens / rawMaxTokens) * 100).toFixed(1)}%`;
         const isReserved = cat_2.name === RESERVED_CATEGORY_NAME;
         const displayName = cat_2.name;
-        const symbol = cat_2.isDeferred ? ' ' : isReserved ? '\u26DD' : '\u26C1';
+        const symbol = cat_2.isDeferred ? " " : isReserved ? "\u26DD" : "\u26C1";
         return (
           <Box key={index}>
             <Text color={cat_2.color}>{symbol}</Text>
@@ -345,14 +345,14 @@ export function ContextVisualization(t0) {
       t9 = $[50];
     }
     T0 = Box;
-    t2 = 'column';
+    t2 = "column";
     t3 = -1;
     if ($[51] !== hasDeferredMcpTools || $[52] !== mcpTools) {
       t4 = mcpTools.length > 0 && (
         <Box flexDirection="column" marginTop={1}>
           <Box>
             <Text bold={true}>MCP tools</Text>
-            <Text dimColor={true}> · /mcp{hasDeferredMcpTools ? ' (loaded on-demand)' : ''}</Text>
+            <Text dimColor={true}> · /mcp{hasDeferredMcpTools ? " (loaded on-demand)" : ""}</Text>
           </Box>
           {mcpTools.some(_temp9) && (
             <Box flexDirection="column" marginTop={1}>
@@ -755,13 +755,13 @@ function _temp9(t_0) {
   return t_0.isLoaded;
 }
 function _temp8(c_0) {
-  return c_0.name === 'Free space';
+  return c_0.name === "Free space";
 }
 function _temp7(c) {
-  return c.name === 'Free space';
+  return c.name === "Free space";
 }
 function _temp6(c_1) {
-  return c_1.name === 'Free space';
+  return c_1.name === "Free space";
 }
 function _temp5(row, rowIndex) {
   return (
@@ -771,23 +771,23 @@ function _temp5(row, rowIndex) {
   );
 }
 function _temp4(square, colIndex) {
-  if (square.categoryName === 'Free space') {
+  if (square.categoryName === "Free space") {
     return (
       <Text key={colIndex} dimColor={true}>
-        {'\u26F6 '}
+        {"\u26F6 "}
       </Text>
     );
   }
   if (square.categoryName === RESERVED_CATEGORY_NAME) {
     return (
       <Text key={colIndex} color={square.color}>
-        {'\u26DD '}
+        {"\u26DD "}
       </Text>
     );
   }
   return (
     <Text key={colIndex} color={square.color}>
-      {square.squareFullness >= 0.7 ? '\u26C1 ' : '\u26C0 '}
+      {square.squareFullness >= 0.7 ? "\u26C1 " : "\u26C0 "}
     </Text>
   );
 }
@@ -795,12 +795,12 @@ function _temp3(cat_1) {
   return cat_1.name === RESERVED_CATEGORY_NAME;
 }
 function _temp2(cat_0) {
-  return cat_0.isDeferred && cat_0.name.includes('MCP');
+  return cat_0.isDeferred && cat_0.name.includes("MCP");
 }
 function _temp(cat) {
   return (
     cat.tokens > 0 &&
-    cat.name !== 'Free space' &&
+    cat.name !== "Free space" &&
     cat.name !== RESERVED_CATEGORY_NAME &&
     !cat.isDeferred
   );

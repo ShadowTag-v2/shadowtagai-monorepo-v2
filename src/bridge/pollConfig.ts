@@ -1,7 +1,7 @@
-import { z } from 'zod/v4';
-import { getFeatureValue_CACHED_WITH_REFRESH } from '../services/analytics/growthbook.js';
-import { lazySchema } from '../utils/lazySchema.js';
-import { DEFAULT_POLL_CONFIG, type PollIntervalConfig } from './pollConfigDefaults.js';
+import { z } from "zod/v4";
+import { getFeatureValue_CACHED_WITH_REFRESH } from "../services/analytics/growthbook.js";
+import { lazySchema } from "../utils/lazySchema.js";
+import { DEFAULT_POLL_CONFIG, type PollIntervalConfig } from "./pollConfigDefaults.js";
 
 // .min(100) on the seek-work intervals restores the old Math.max(..., 100)
 // defense-in-depth floor against fat-fingered GrowthBook values. Unlike a
@@ -20,7 +20,7 @@ import { DEFAULT_POLL_CONFIG, type PollIntervalConfig } from './pollConfigDefaul
 // restoring at_capacity) falls through every throttle site with no sleep —
 // tight-looping /poll at HTTP-round-trip speed.
 const zeroOrAtLeast100 = {
-  message: 'must be 0 (disabled) or ≥100ms',
+  message: "must be 0 (disabled) or ≥100ms",
 };
 const pollIntervalConfigSchema = lazySchema(() =>
   z
@@ -64,7 +64,7 @@ const pollIntervalConfigSchema = lazySchema(() =>
       (cfg) => cfg.non_exclusive_heartbeat_interval_ms > 0 || cfg.poll_interval_ms_at_capacity > 0,
       {
         message:
-          'at-capacity liveness requires non_exclusive_heartbeat_interval_ms > 0 or poll_interval_ms_at_capacity > 0',
+          "at-capacity liveness requires non_exclusive_heartbeat_interval_ms > 0 or poll_interval_ms_at_capacity > 0",
       },
     )
     .refine(
@@ -73,7 +73,7 @@ const pollIntervalConfigSchema = lazySchema(() =>
         cfg.multisession_poll_interval_ms_at_capacity > 0,
       {
         message:
-          'at-capacity liveness requires non_exclusive_heartbeat_interval_ms > 0 or multisession_poll_interval_ms_at_capacity > 0',
+          "at-capacity liveness requires non_exclusive_heartbeat_interval_ms > 0 or multisession_poll_interval_ms_at_capacity > 0",
       },
     ),
 );
@@ -88,7 +88,7 @@ const pollIntervalConfigSchema = lazySchema(() =>
  */
 export function getPollIntervalConfig(): PollIntervalConfig {
   const raw = getFeatureValue_CACHED_WITH_REFRESH<unknown>(
-    'tengu_bridge_poll_interval_config',
+    "tengu_bridge_poll_interval_config",
     DEFAULT_POLL_CONFIG,
     5 * 60 * 1000,
   );

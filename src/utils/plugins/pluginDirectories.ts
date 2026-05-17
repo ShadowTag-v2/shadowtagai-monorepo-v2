@@ -9,18 +9,18 @@
  * The base directory can be overridden via CLAUDE_CODE_PLUGIN_CACHE_DIR.
  */
 
-import { mkdirSync } from 'node:fs';
-import { readdir, rm, stat } from 'node:fs/promises';
-import { delimiter, join } from 'node:path';
-import { getUseCoworkPlugins } from '../../bootstrap/state.js';
-import { logForDebugging } from '../debug.js';
-import { getClaudeConfigHomeDir, isEnvTruthy } from '../envUtils.js';
-import { errorMessage, isFsInaccessible } from '../errors.js';
-import { formatFileSize } from '../format.js';
-import { expandTilde } from '../permissions/pathValidation.js';
+import { mkdirSync } from "node:fs";
+import { readdir, rm, stat } from "node:fs/promises";
+import { delimiter, join } from "node:path";
+import { getUseCoworkPlugins } from "../../bootstrap/state.js";
+import { logForDebugging } from "../debug.js";
+import { getClaudeConfigHomeDir, isEnvTruthy } from "../envUtils.js";
+import { errorMessage, isFsInaccessible } from "../errors.js";
+import { formatFileSize } from "../format.js";
+import { expandTilde } from "../permissions/pathValidation.js";
 
-const PLUGINS_DIR = 'plugins';
-const COWORK_PLUGINS_DIR = 'cowork_plugins';
+const PLUGINS_DIR = "plugins";
+const COWORK_PLUGINS_DIR = "cowork_plugins";
 
 /**
  * Get the plugins directory name based on current mode.
@@ -91,12 +91,12 @@ export function getPluginSeedDirs(): string[] {
 
 function sanitizePluginId(pluginId: string): string {
   // Same character class as the install-cache sanitizer (pluginLoader.ts)
-  return pluginId.replace(/[^a-zA-Z0-9\-_]/g, '-');
+  return pluginId.replace(/[^a-zA-Z0-9\-_]/g, "-");
 }
 
 /** Pure path — no mkdir. For display (e.g. uninstall dialog). */
 export function pluginDataDirPath(pluginId: string): string {
-  return join(getPluginsDirectory(), 'data', sanitizePluginId(pluginId));
+  return join(getPluginsDirectory(), "data", sanitizePluginId(pluginId));
 }
 
 /**
@@ -171,7 +171,7 @@ export async function deletePluginDataDir(pluginId: string): Promise<void> {
     await rm(dir, { recursive: true, force: true });
   } catch (e) {
     logForDebugging(`Failed to delete plugin data dir ${dir}: ${errorMessage(e)}`, {
-      level: 'warn',
+      level: "warn",
     });
   }
 }

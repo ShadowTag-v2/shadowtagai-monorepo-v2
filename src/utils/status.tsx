@@ -1,51 +1,51 @@
-import chalk from 'chalk';
-import figures from 'figures';
-import type * as React from 'react';
-import { color, Text } from '../ink.js';
-import type { MCPServerConnection } from '../services/mcp/types.js';
-import { getAccountInformation, isClaudeAISubscriber } from './auth.js';
-import { getLargeMemoryFiles, getMemoryFiles, MAX_MEMORY_CHARACTER_COUNT } from './claudemd.js';
-import { getDoctorDiagnostic } from './doctorDiagnostic.js';
-import { getAWSRegion, getDefaultVertexRegion, isEnvTruthy } from './envUtils.js';
-import { getDisplayPath } from './file.js';
-import { formatNumber } from './format.js';
+import chalk from "chalk";
+import figures from "figures";
+import type * as React from "react";
+import { color, Text } from "../ink.js";
+import type { MCPServerConnection } from "../services/mcp/types.js";
+import { getAccountInformation, isClaudeAISubscriber } from "./auth.js";
+import { getLargeMemoryFiles, getMemoryFiles, MAX_MEMORY_CHARACTER_COUNT } from "./claudemd.js";
+import { getDoctorDiagnostic } from "./doctorDiagnostic.js";
+import { getAWSRegion, getDefaultVertexRegion, isEnvTruthy } from "./envUtils.js";
+import { getDisplayPath } from "./file.js";
+import { formatNumber } from "./format.js";
 import {
   getIdeClientName,
   type IDEExtensionInstallationStatus,
   isJetBrainsIde,
   toIDEDisplayName,
-} from './ide.js';
-import { getClaudeAiUserDefaultModelDescription, modelDisplayString } from './model/model.js';
-import { getAPIProvider } from './model/providers.js';
-import { getMTLSConfig } from './mtls.js';
-import { checkInstall } from './nativeInstaller/index.js';
-import { getProxyUrl } from './proxy.js';
-import { SandboxManager } from './sandbox/sandbox-adapter.js';
-import { getSettingsWithAllErrors } from './settings/allErrors.js';
+} from "./ide.js";
+import { getClaudeAiUserDefaultModelDescription, modelDisplayString } from "./model/model.js";
+import { getAPIProvider } from "./model/providers.js";
+import { getMTLSConfig } from "./mtls.js";
+import { checkInstall } from "./nativeInstaller/index.js";
+import { getProxyUrl } from "./proxy.js";
+import { SandboxManager } from "./sandbox/sandbox-adapter.js";
+import { getSettingsWithAllErrors } from "./settings/allErrors.js";
 import {
   getEnabledSettingSources,
   getSettingSourceDisplayNameCapitalized,
-} from './settings/constants.js';
+} from "./settings/constants.js";
 import {
   getManagedFileSettingsPresence,
   getPolicySettingsOrigin,
   getSettingsForSource,
-} from './settings/settings.js';
-import type { ThemeName } from './theme.js';
+} from "./settings/settings.js";
+import type { ThemeName } from "./theme.js";
 export type Property = {
   label?: string;
   value: React.ReactNode | Array<string>;
 };
 export type Diagnostic = React.ReactNode;
 export function buildSandboxProperties(): Property[] {
-  if ('external' !== 'ant') {
+  if ("external" !== "ant") {
     return [];
   }
   const isSandboxed = SandboxManager.isSandboxingEnabled();
   return [
     {
-      label: 'Bash Sandbox',
-      value: isSandboxed ? 'Enabled' : 'Disabled',
+      label: "Bash Sandbox",
+      value: isSandboxed ? "Enabled" : "Disabled",
     },
   ];
 }
@@ -54,39 +54,39 @@ export function buildIDEProperties(
   ideInstallationStatus: IDEExtensionInstallationStatus | null = null,
   theme: ThemeName,
 ): Property[] {
-  const ideClient = mcpClients?.find((client) => client.name === 'ide');
+  const ideClient = mcpClients?.find((client) => client.name === "ide");
   if (ideInstallationStatus) {
     const ideName = toIDEDisplayName(ideInstallationStatus.ideType);
     const pluginOrExtension = isJetBrainsIde(ideInstallationStatus.ideType)
-      ? 'plugin'
-      : 'extension';
+      ? "plugin"
+      : "extension";
     if (ideInstallationStatus.error) {
       return [
         {
-          label: 'IDE',
+          label: "IDE",
           value: (
             <Text>
-              {color('error', theme)(figures.cross)} Error installing {ideName} {pluginOrExtension}:{' '}
+              {color("error", theme)(figures.cross)} Error installing {ideName} {pluginOrExtension}:{" "}
               {ideInstallationStatus.error}
-              {'\n'}Please restart your IDE and try again.
+              {"\n"}Please restart your IDE and try again.
             </Text>
           ),
         },
       ];
     }
     if (ideInstallationStatus.installed) {
-      if (ideClient && ideClient.type === 'connected') {
+      if (ideClient && ideClient.type === "connected") {
         if (ideInstallationStatus.installedVersion !== ideClient.serverInfo?.version) {
           return [
             {
-              label: 'IDE',
+              label: "IDE",
               value: `Connected to ${ideName} ${pluginOrExtension} version ${ideInstallationStatus.installedVersion} (server version: ${ideClient.serverInfo?.version})`,
             },
           ];
         } else {
           return [
             {
-              label: 'IDE',
+              label: "IDE",
               value: `Connected to ${ideName} ${pluginOrExtension} version ${ideInstallationStatus.installedVersion}`,
             },
           ];
@@ -94,26 +94,26 @@ export function buildIDEProperties(
       } else {
         return [
           {
-            label: 'IDE',
+            label: "IDE",
             value: `Installed ${ideName} ${pluginOrExtension}`,
           },
         ];
       }
     }
   } else if (ideClient) {
-    const ideName = getIdeClientName(ideClient) ?? 'IDE';
-    if (ideClient.type === 'connected') {
+    const ideName = getIdeClientName(ideClient) ?? "IDE";
+    if (ideClient.type === "connected") {
       return [
         {
-          label: 'IDE',
+          label: "IDE",
           value: `Connected to ${ideName} extension`,
         },
       ];
     } else {
       return [
         {
-          label: 'IDE',
-          value: `${color('error', theme)(figures.cross)} Not connected to ${ideName}`,
+          label: "IDE",
+          value: `${color("error", theme)(figures.cross)} Not connected to ${ideName}`,
         },
       ];
     }
@@ -124,7 +124,7 @@ export function buildMcpProperties(
   clients: MCPServerConnection[] = [],
   theme: ThemeName,
 ): Property[] {
-  const servers = clients.filter((client) => client.name !== 'ide');
+  const servers = clients.filter((client) => client.name !== "ide");
   if (!servers.length) {
     return [];
   }
@@ -138,20 +138,20 @@ export function buildMcpProperties(
     failed: 0,
   };
   for (const s of servers) {
-    if (s.type === 'connected') byState.connected++;
-    else if (s.type === 'pending') byState.pending++;
-    else if (s.type === 'needs-auth') byState.needsAuth++;
+    if (s.type === "connected") byState.connected++;
+    else if (s.type === "pending") byState.pending++;
+    else if (s.type === "needs-auth") byState.needsAuth++;
     else byState.failed++;
   }
   const parts: string[] = [];
-  if (byState.connected) parts.push(color('success', theme)(`${byState.connected} connected`));
-  if (byState.needsAuth) parts.push(color('warning', theme)(`${byState.needsAuth} need auth`));
-  if (byState.pending) parts.push(color('inactive', theme)(`${byState.pending} pending`));
-  if (byState.failed) parts.push(color('error', theme)(`${byState.failed} failed`));
+  if (byState.connected) parts.push(color("success", theme)(`${byState.connected} connected`));
+  if (byState.needsAuth) parts.push(color("warning", theme)(`${byState.needsAuth} need auth`));
+  if (byState.pending) parts.push(color("inactive", theme)(`${byState.pending} pending`));
+  if (byState.failed) parts.push(color("error", theme)(`${byState.failed} failed`));
   return [
     {
-      label: 'MCP servers',
-      value: `${parts.join(', ')} ${color('inactive', theme)('· /mcp')}`,
+      label: "MCP servers",
+      value: `${parts.join(", ")} ${color("inactive", theme)("· /mcp")}`,
     },
   ];
 }
@@ -180,30 +180,30 @@ export function buildSettingSourcesProperties(): Property[] {
   // For policySettings, distinguish between remote and local (or skip if neither exists)
   const sourceNames = sourcesWithSettings
     .map((source) => {
-      if (source === 'policySettings') {
+      if (source === "policySettings") {
         const origin = getPolicySettingsOrigin();
         if (origin === null) {
           return null; // Skip - no policy settings exist
         }
         switch (origin) {
-          case 'remote':
-            return 'Enterprise managed settings (remote)';
-          case 'plist':
-            return 'Enterprise managed settings (plist)';
-          case 'hklm':
-            return 'Enterprise managed settings (HKLM)';
-          case 'file': {
+          case "remote":
+            return "Enterprise managed settings (remote)";
+          case "plist":
+            return "Enterprise managed settings (plist)";
+          case "hklm":
+            return "Enterprise managed settings (HKLM)";
+          case "file": {
             const { hasBase, hasDropIns } = getManagedFileSettingsPresence();
             if (hasBase && hasDropIns) {
-              return 'Enterprise managed settings (file + drop-ins)';
+              return "Enterprise managed settings (file + drop-ins)";
             }
             if (hasDropIns) {
-              return 'Enterprise managed settings (drop-ins)';
+              return "Enterprise managed settings (drop-ins)";
             }
-            return 'Enterprise managed settings (file)';
+            return "Enterprise managed settings (file)";
           }
-          case 'hkcu':
-            return 'Enterprise managed settings (HKCU)';
+          case "hkcu":
+            return "Enterprise managed settings (HKCU)";
         }
       }
       return getSettingSourceDisplayNameCapitalized(source);
@@ -211,7 +211,7 @@ export function buildSettingSourcesProperties(): Property[] {
     .filter((name): name is string => name !== null);
   return [
     {
-      label: 'Setting sources',
+      label: "Setting sources",
       value: sourceNames,
     },
   ];
@@ -226,7 +226,7 @@ export async function buildInstallationHealthDiagnostics(): Promise<Diagnostic[]
   const { errors: validationErrors } = getSettingsWithAllErrors();
   if (validationErrors.length > 0) {
     const invalidFiles = Array.from(new Set(validationErrors.map((error) => error.file)));
-    const fileList = invalidFiles.join(', ');
+    const fileList = invalidFiles.join(", ");
     items.push(`Found invalid settings files: ${fileList}. They will be ignored.`);
   }
 
@@ -235,7 +235,7 @@ export async function buildInstallationHealthDiagnostics(): Promise<Diagnostic[]
     items.push(warning.issue);
   });
   if (diagnostic.hasUpdatePermissions === false) {
-    items.push('No write permissions for auto-updates (requires sudo)');
+    items.push("No write permissions for auto-updates (requires sudo)");
   }
   return items;
 }
@@ -247,19 +247,19 @@ export function buildAccountProperties(): Property[] {
   const properties: Property[] = [];
   if (accountInfo.subscription) {
     properties.push({
-      label: 'Login method',
+      label: "Login method",
       value: `${accountInfo.subscription} Account`,
     });
   }
   if (accountInfo.tokenSource) {
     properties.push({
-      label: 'Auth token',
+      label: "Auth token",
       value: accountInfo.tokenSource,
     });
   }
   if (accountInfo.apiKeySource) {
     properties.push({
-      label: 'API key',
+      label: "API key",
       value: accountInfo.apiKeySource,
     });
   }
@@ -267,13 +267,13 @@ export function buildAccountProperties(): Property[] {
   // Hide sensitive account info in demo mode
   if (accountInfo.organization && !process.env.IS_DEMO) {
     properties.push({
-      label: 'Organization',
+      label: "Organization",
       value: accountInfo.organization,
     });
   }
   if (accountInfo.email && !process.env.IS_DEMO) {
     properties.push({
-      label: 'Email',
+      label: "Email",
       value: accountInfo.email,
     });
   }
@@ -282,111 +282,111 @@ export function buildAccountProperties(): Property[] {
 export function buildAPIProviderProperties(): Property[] {
   const apiProvider = getAPIProvider();
   const properties: Property[] = [];
-  if (apiProvider !== 'firstParty') {
+  if (apiProvider !== "firstParty") {
     const providerLabel = {
-      bedrock: 'AWS Bedrock',
-      vertex: 'Google Vertex AI',
-      foundry: 'Microsoft Foundry',
+      bedrock: "AWS Bedrock",
+      vertex: "Google Vertex AI",
+      foundry: "Microsoft Foundry",
     }[apiProvider];
     properties.push({
-      label: 'API provider',
+      label: "API provider",
       value: providerLabel,
     });
   }
-  if (apiProvider === 'firstParty') {
+  if (apiProvider === "firstParty") {
     const anthropicBaseUrl = process.env.ANTHROPIC_BASE_URL;
     if (anthropicBaseUrl) {
       properties.push({
-        label: 'Anthropic base URL',
+        label: "Anthropic base URL",
         value: anthropicBaseUrl,
       });
     }
-  } else if (apiProvider === 'bedrock') {
+  } else if (apiProvider === "bedrock") {
     const bedrockBaseUrl = process.env.BEDROCK_BASE_URL;
     if (bedrockBaseUrl) {
       properties.push({
-        label: 'Bedrock base URL',
+        label: "Bedrock base URL",
         value: bedrockBaseUrl,
       });
     }
     properties.push({
-      label: 'AWS region',
+      label: "AWS region",
       value: getAWSRegion(),
     });
     if (isEnvTruthy(process.env.CLAUDE_CODE_SKIP_BEDROCK_AUTH)) {
       properties.push({
-        value: 'AWS auth skipped',
+        value: "AWS auth skipped",
       });
     }
-  } else if (apiProvider === 'vertex') {
+  } else if (apiProvider === "vertex") {
     const vertexBaseUrl = process.env.VERTEX_BASE_URL;
     if (vertexBaseUrl) {
       properties.push({
-        label: 'Vertex base URL',
+        label: "Vertex base URL",
         value: vertexBaseUrl,
       });
     }
     const gcpProject = process.env.ANTHROPIC_VERTEX_PROJECT_ID;
     if (gcpProject) {
       properties.push({
-        label: 'GCP project',
+        label: "GCP project",
         value: gcpProject,
       });
     }
     properties.push({
-      label: 'Default region',
+      label: "Default region",
       value: getDefaultVertexRegion(),
     });
     if (isEnvTruthy(process.env.CLAUDE_CODE_SKIP_VERTEX_AUTH)) {
       properties.push({
-        value: 'GCP auth skipped',
+        value: "GCP auth skipped",
       });
     }
-  } else if (apiProvider === 'foundry') {
+  } else if (apiProvider === "foundry") {
     const foundryBaseUrl = process.env.ANTHROPIC_FOUNDRY_BASE_URL;
     if (foundryBaseUrl) {
       properties.push({
-        label: 'Microsoft Foundry base URL',
+        label: "Microsoft Foundry base URL",
         value: foundryBaseUrl,
       });
     }
     const foundryResource = process.env.ANTHROPIC_FOUNDRY_RESOURCE;
     if (foundryResource) {
       properties.push({
-        label: 'Microsoft Foundry resource',
+        label: "Microsoft Foundry resource",
         value: foundryResource,
       });
     }
     if (isEnvTruthy(process.env.CLAUDE_CODE_SKIP_FOUNDRY_AUTH)) {
       properties.push({
-        value: 'Microsoft Foundry auth skipped',
+        value: "Microsoft Foundry auth skipped",
       });
     }
   }
   const proxyUrl = getProxyUrl();
   if (proxyUrl) {
     properties.push({
-      label: 'Proxy',
+      label: "Proxy",
       value: proxyUrl,
     });
   }
   const mtlsConfig = getMTLSConfig();
   if (process.env.NODE_EXTRA_CA_CERTS) {
     properties.push({
-      label: 'Additional CA cert(s)',
+      label: "Additional CA cert(s)",
       value: process.env.NODE_EXTRA_CA_CERTS,
     });
   }
   if (mtlsConfig) {
     if (mtlsConfig.cert && process.env.CLAUDE_CODE_CLIENT_CERT) {
       properties.push({
-        label: 'mTLS client cert',
+        label: "mTLS client cert",
         value: process.env.CLAUDE_CODE_CLIENT_CERT,
       });
     }
     if (mtlsConfig.key && process.env.CLAUDE_CODE_CLIENT_KEY) {
       properties.push({
-        label: 'mTLS client key',
+        label: "mTLS client key",
         value: process.env.CLAUDE_CODE_CLIENT_KEY,
       });
     }
@@ -397,7 +397,7 @@ export function getModelDisplayLabel(mainLoopModel: string | null): string {
   let modelLabel = modelDisplayString(mainLoopModel);
   if (mainLoopModel === null && isClaudeAISubscriber()) {
     const description = getClaudeAiUserDefaultModelDescription();
-    modelLabel = `${chalk.bold('Default')} ${description}`;
+    modelLabel = `${chalk.bold("Default")} ${description}`;
   }
   return modelLabel;
 }

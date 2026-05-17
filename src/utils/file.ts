@@ -1,6 +1,6 @@
-import { chmodSync, writeFileSync as fsWriteFileSync } from 'node:fs';
-import { realpath, stat } from 'node:fs/promises';
-import { homedir } from 'node:os';
+import { chmodSync, writeFileSync as fsWriteFileSync } from "node:fs";
+import { realpath, stat } from "node:fs/promises";
+import { homedir } from "node:os";
 import {
   basename,
   dirname,
@@ -11,22 +11,22 @@ import {
   relative,
   resolve,
   sep,
-} from 'node:path';
-import { logEvent } from 'src/services/analytics/index.js';
-import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
-import { getCwd } from '../utils/cwd.js';
-import { logForDebugging } from './debug.js';
-import { isENOENT, isFsInaccessible } from './errors.js';
+} from "node:path";
+import { logEvent } from "src/services/analytics/index.js";
+import { getFeatureValue_CACHED_MAY_BE_STALE } from "../services/analytics/growthbook.js";
+import { getCwd } from "../utils/cwd.js";
+import { logForDebugging } from "./debug.js";
+import { isENOENT, isFsInaccessible } from "./errors.js";
 import {
   detectEncodingForResolvedPath,
   detectLineEndingsForString,
   type LineEndingType,
-} from './fileRead.js';
-import { fileReadCache } from './fileReadCache.js';
-import { getFsImplementation, safeResolvePath } from './fsOperations.js';
-import { logError } from './log.js';
-import { expandPath } from './path.js';
-import { getPlatform } from './platform.js';
+} from "./fileRead.js";
+import { fileReadCache } from "./fileReadCache.js";
+import { getFsImplementation, safeResolvePath } from "./fsOperations.js";
+import { logError } from "./log.js";
+import { expandPath } from "./path.js";
+import { getPlatform } from "./platform.js";
 
 export type File = {
   filename: string;
@@ -50,7 +50,7 @@ export const MAX_OUTPUT_SIZE = 0.25 * 1024 * 1024; // 0.25MB in bytes
 export function readFileSafe(filepath: string): string | null {
   try {
     const fs = getFsImplementation();
-    return fs.readFileSync(filepath, { encoding: 'utf8' });
+    return fs.readFileSync(filepath, { encoding: "utf8" });
   } catch (error) {
     logError(error);
     return null;
@@ -86,10 +86,10 @@ export function writeTextContent(
   endings: LineEndingType,
 ): void {
   let toWrite = content;
-  if (endings === 'CRLF') {
+  if (endings === "CRLF") {
     // Normalize any existing CRLF to LF first so a new_string that already
     // contains \r\n (raw model output) doesn't become \r\r\n after the join.
-    toWrite = content.replaceAll('\r\n', '\n').split('\n').join('\r\n');
+    toWrite = content.replaceAll("\r\n", "\n").split("\n").join("\r\n");
   }
 
   writeFileSyncAndFlush_DEPRECATED(filePath, toWrite, { encoding });
@@ -103,18 +103,18 @@ export function detectFileEncoding(filePath: string): BufferEncoding {
   } catch (error) {
     if (isFsInaccessible(error)) {
       logForDebugging(`detectFileEncoding failed for expected reason: ${error.code}`, {
-        level: 'debug',
+        level: "debug",
       });
     } else {
       logError(error);
     }
-    return 'utf8';
+    return "utf8";
   }
 }
 
 export function detectLineEndings(
   filePath: string,
-  encoding: BufferEncoding = 'utf8',
+  encoding: BufferEncoding = "utf8",
 ): LineEndingType {
   try {
     const fs = getFsImplementation();
@@ -125,15 +125,15 @@ export function detectLineEndings(
     return detectLineEndingsForString(content);
   } catch (error) {
     logError(error);
-    return 'LF';
+    return "LF";
   }
 }
 
 export function convertLeadingTabsToSpaces(content: string): string {
   // The /gm regex scans every line even on no-match; skip it entirely
   // for the common tab-free case.
-  if (!content.includes('\t')) return content;
-  return content.replace(/^\t+/gm, (_) => '  '.repeat(_.length));
+  if (!content.includes("\t")) return content;
+  return content.replace(/^\t+/gm, (_) => "  ".repeat(_.length));
 }
 
 export function getAbsoluteAndRelativePaths(path: string | undefined): {
@@ -148,7 +148,7 @@ export function getAbsoluteAndRelativePaths(path: string | undefined): {
 export function getDisplayPath(filePath: string): string {
   // Use relative path if file is in the current working directory
   const { relativePath } = getAbsoluteAndRelativePaths(filePath);
-  if (relativePath && !relativePath.startsWith('..')) {
+  if (relativePath && !relativePath.startsWith("..")) {
     return relativePath;
   }
 
@@ -203,7 +203,7 @@ export function findSimilarFile(filePath: string): string | undefined {
  * Marker included in file-not-found error messages that contain a cwd note.
  * UI renderers check for this to show a short "File not found" message.
  */
-export const FILE_NOT_FOUND_CWD_NOTE = 'Note: your current working directory is';
+export const FILE_NOT_FOUND_CWD_NOTE = "Note: your current working directory is";
 
 /**
  * Suggests a corrected path under the current working directory when a file/directory
@@ -269,7 +269,7 @@ export async function suggestPathUnderCwd(requestedPath: string): Promise<string
 export function isCompactLinePrefixEnabled(): boolean {
   // 3P default: killswitch off = compact format enabled. Client-side only —
   // no server support needed, safe for Bedrock/Vertex/Foundry.
-  return !getFeatureValue_CACHED_MAY_BE_STALE('tengu_compact_line_prefix_killswitch', false);
+  return !getFeatureValue_CACHED_MAY_BE_STALE("tengu_compact_line_prefix_killswitch", false);
 }
 
 /**
@@ -284,13 +284,13 @@ export function addLineNumbers({
   startLine: number;
 }): string {
   if (!content) {
-    return '';
+    return "";
   }
 
   const lines = content.split(/\r?\n/);
 
   if (isCompactLinePrefixEnabled()) {
-    return lines.map((line, index) => `${index + startLine}\t${line}`).join('\n');
+    return lines.map((line, index) => `${index + startLine}\t${line}`).join("\n");
   }
 
   return lines
@@ -299,9 +299,9 @@ export function addLineNumbers({
       if (numStr.length >= 6) {
         return `${numStr}→${line}`;
       }
-      return `${numStr.padStart(6, ' ')}→${line}`;
+      return `${numStr.padStart(6, " ")}→${line}`;
     })
-    .join('\n');
+    .join("\n");
 }
 
 /**
@@ -348,7 +348,7 @@ export function readFileSyncCached(filePath: string): string {
 export function writeFileSyncAndFlush_DEPRECATED(
   filePath: string,
   content: string,
-  options: { encoding: BufferEncoding; mode?: number } = { encoding: 'utf-8' },
+  options: { encoding: BufferEncoding; mode?: number } = { encoding: "utf-8" },
 ): void {
   const fs = getFsImplementation();
 
@@ -418,9 +418,9 @@ export function writeFileSyncAndFlush_DEPRECATED(
     logForDebugging(`File ${targetPath} written atomically`);
   } catch (atomicError) {
     logForDebugging(`Failed to write file atomically: ${atomicError}`, {
-      level: 'error',
+      level: "error",
     });
-    logEvent('tengu_atomic_write_error', {});
+    logEvent("tengu_atomic_write_error", {});
 
     // Clean up temp file on error
     try {
@@ -459,18 +459,18 @@ export function getDesktopPath(): string {
   const platform = getPlatform();
   const homeDir = homedir();
 
-  if (platform === 'macos') {
-    return join(homeDir, 'Desktop');
+  if (platform === "macos") {
+    return join(homeDir, "Desktop");
   }
 
-  if (platform === 'windows') {
+  if (platform === "windows") {
     // For WSL, try to access Windows desktop
     const windowsHome = process.env.USERPROFILE
-      ? process.env.USERPROFILE.replace(/\\/g, '/')
+      ? process.env.USERPROFILE.replace(/\\/g, "/")
       : null;
 
     if (windowsHome) {
-      const wslPath = windowsHome.replace(/^[A-Z]:/, '');
+      const wslPath = windowsHome.replace(/^[A-Z]:/, "");
       const desktopPath = `/mnt/c${wslPath}/Desktop`;
 
       if (getFsImplementation().existsSync(desktopPath)) {
@@ -480,20 +480,20 @@ export function getDesktopPath(): string {
 
     // Fallback: try to find desktop in typical Windows user location
     try {
-      const usersDir = '/mnt/c/Users';
+      const usersDir = "/mnt/c/Users";
       const userDirs = getFsImplementation().readdirSync(usersDir);
 
       for (const user of userDirs) {
         if (
-          user.name === 'Public' ||
-          user.name === 'Default' ||
-          user.name === 'Default User' ||
-          user.name === 'All Users'
+          user.name === "Public" ||
+          user.name === "Default" ||
+          user.name === "Default User" ||
+          user.name === "All Users"
         ) {
           continue;
         }
 
-        const potentialDesktopPath = join(usersDir, user.name, 'Desktop');
+        const potentialDesktopPath = join(usersDir, user.name, "Desktop");
 
         if (getFsImplementation().existsSync(potentialDesktopPath)) {
           return potentialDesktopPath;
@@ -505,7 +505,7 @@ export function getDesktopPath(): string {
   }
 
   // Linux/unknown platform fallback
-  const desktopPath = join(homeDir, 'Desktop');
+  const desktopPath = join(homeDir, "Desktop");
   if (getFsImplementation().existsSync(desktopPath)) {
     return desktopPath;
   }
@@ -547,8 +547,8 @@ export function normalizePathForComparison(filePath: string): string {
   // On Windows, normalize for case-insensitive comparison:
   // - Convert forward slashes to backslashes (path.normalize only does this on actual Windows)
   // - Convert to lowercase (Windows paths are case-insensitive)
-  if (getPlatform() === 'windows') {
-    normalized = normalized.replace(/\//g, '\\').toLowerCase();
+  if (getPlatform() === "windows") {
+    normalized = normalized.replace(/\//g, "\\").toLowerCase();
   }
 
   return normalized;

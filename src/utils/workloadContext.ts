@@ -16,14 +16,14 @@
  * pattern as agentContext.ts.
  */
 
-import { AsyncLocalStorage } from 'node:async_hooks';
+import { AsyncLocalStorage } from "node:async_hooks";
 
 /**
  * Server-side sanitizer (_sanitize_entrypoint in claude_code.py) accepts
  * only lowercase [a-z0-9_-]{0,32}. Uppercase stops parsing at char 0.
  */
-export type Workload = 'cron';
-export const WORKLOAD_CRON: Workload = 'cron';
+export type Workload = "cron";
+export const WORKLOAD_CRON: Workload = "cron";
 
 const workloadStorage = new AsyncLocalStorage<{
   workload: string | undefined;

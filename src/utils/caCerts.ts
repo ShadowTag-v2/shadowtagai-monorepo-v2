@@ -1,7 +1,7 @@
-import memoize from 'lodash-es/memoize.js';
-import { logForDebugging } from './debug.js';
-import { hasNodeOption } from './envUtils.js';
-import { getFsImplementation } from './fsOperations.js';
+import memoize from "lodash-es/memoize.js";
+import { logForDebugging } from "./debug.js";
+import { hasNodeOption } from "./envUtils.js";
+import { getFsImplementation } from "./fsOperations.js";
 
 /**
  * Load CA certificates for TLS connections.
@@ -26,7 +26,7 @@ import { getFsImplementation } from './fsOperations.js';
  * so `proxy.ts`/`mtls.ts` don't transitively pull in the command registry.
  */
 export const getCACertificates = memoize((): string[] | undefined => {
-  const useSystemCA = hasNodeOption('--use-system-ca') || hasNodeOption('--use-openssl-ca');
+  const useSystemCA = hasNodeOption("--use-system-ca") || hasNodeOption("--use-openssl-ca");
 
   const extraCertsPath = process.env.NODE_EXTRA_CA_CERTS;
 
@@ -42,7 +42,7 @@ export const getCACertificates = memoize((): string[] | undefined => {
   // is never accessed. Most users hit the early return above, so we only
   // pay this cost when custom CA handling is actually needed.
   /* eslint-disable @typescript-eslint/no-require-imports */
-  const tls = require('node:tls') as typeof import('tls');
+  const tls = require("node:tls") as typeof import("tls");
   /* eslint-enable @typescript-eslint/no-require-imports */
 
   const certs: string[] = [];
@@ -51,7 +51,7 @@ export const getCACertificates = memoize((): string[] | undefined => {
     // Load system CA store (Bun API)
     const getCACerts = (tls as typeof tls & { getCACertificates?: (type: string) => string[] })
       .getCACertificates;
-    const systemCAs = getCACerts?.('system');
+    const systemCAs = getCACerts?.("system");
     if (systemCAs && systemCAs.length > 0) {
       certs.push(...systemCAs);
       logForDebugging(`CA certs: Loaded ${certs.length} system CA certificates (--use-system-ca)`);
@@ -59,7 +59,7 @@ export const getCACertificates = memoize((): string[] | undefined => {
       // Under Node.js where getCACertificates doesn't exist and no extra certs,
       // return undefined to let Node.js handle --use-system-ca natively.
       logForDebugging(
-        'CA certs: --use-system-ca set but system CA API unavailable, deferring to runtime',
+        "CA certs: --use-system-ca set but system CA API unavailable, deferring to runtime",
       );
       return undefined;
     } else {
@@ -79,7 +79,7 @@ export const getCACertificates = memoize((): string[] | undefined => {
   if (extraCertsPath) {
     try {
       const extraCert = getFsImplementation().readFileSync(extraCertsPath, {
-        encoding: 'utf8',
+        encoding: "utf8",
       });
       certs.push(extraCert);
       logForDebugging(
@@ -88,7 +88,7 @@ export const getCACertificates = memoize((): string[] | undefined => {
     } catch (error) {
       logForDebugging(
         `CA certs: Failed to read NODE_EXTRA_CA_CERTS file (${extraCertsPath}): ${error}`,
-        { level: 'error' },
+        { level: "error" },
       );
     }
   }
@@ -103,5 +103,5 @@ export const getCACertificates = memoize((): string[] | undefined => {
  */
 export function clearCACertsCache(): void {
   getCACertificates.cache.clear?.();
-  logForDebugging('Cleared CA certificates cache');
+  logForDebugging("Cleared CA certificates cache");
 }

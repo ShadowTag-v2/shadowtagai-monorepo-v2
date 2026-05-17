@@ -1,16 +1,16 @@
-import { basename, relative } from 'node:path';
-import { c as _c } from 'react/compiler-runtime';
-import { FileEditToolDiff } from 'src/components/FileEditToolDiff.js';
-import { getCwd } from 'src/utils/cwd.js';
-import type { z } from 'zod/v4';
-import { Text } from '../../../ink.js';
-import { FileEditTool } from '../../../tools/FileEditTool/FileEditTool.js';
-import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js';
+import { basename, relative } from "node:path";
+import { c as _c } from "react/compiler-runtime";
+import { FileEditToolDiff } from "src/components/FileEditToolDiff.js";
+import { getCwd } from "src/utils/cwd.js";
+import type { z } from "zod/v4";
+import { Text } from "../../../ink.js";
+import { FileEditTool } from "../../../tools/FileEditTool/FileEditTool.js";
+import { FilePermissionDialog } from "../FilePermissionDialog/FilePermissionDialog.js";
 import {
   createSingleEditDiffConfig,
   type FileEdit,
   type IDEDiffSupport,
-} from '../FilePermissionDialog/ideDiffConfig.js';
+} from "../FilePermissionDialog/ideDiffConfig.js";
 
 type FileEditInput = z.infer<typeof FileEditTool.inputSchema>;
 const ideDiffSupport: IDEDiffSupport<FileEditInput> = {
@@ -70,11 +70,11 @@ export function FileEditPermissionRequest(props) {
     t6 = props.onDone;
     t7 = props.onReject;
     t8 = props.workerBadge;
-    t9 = 'Edit file';
+    t9 = "Edit file";
     t10 = relative(getCwd(), file_path);
     T1 = Text;
-    t2 = 'Do you want to make this edit to';
-    t3 = ' ';
+    t2 = "Do you want to make this edit to";
+    t3 = " ";
     T0 = Text;
     t0 = true;
     t1 = basename(file_path);

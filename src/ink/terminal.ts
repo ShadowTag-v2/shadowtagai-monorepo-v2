@@ -1,15 +1,15 @@
-import type { Writable } from 'node:stream';
-import { coerce } from 'semver';
-import { env } from '../utils/env.js';
-import { gte } from '../utils/semver.js';
-import { getClearTerminalSequence } from './clearTerminal.js';
-import type { Diff } from './frame.js';
-import { cursorMove, cursorTo, eraseLines } from './termio/csi.js';
-import { BSU, ESU, HIDE_CURSOR, SHOW_CURSOR } from './termio/dec.js';
-import { link } from './termio/osc.js';
+import type { Writable } from "node:stream";
+import { coerce } from "semver";
+import { env } from "../utils/env.js";
+import { gte } from "../utils/semver.js";
+import { getClearTerminalSequence } from "./clearTerminal.js";
+import type { Diff } from "./frame.js";
+import { cursorMove, cursorTo, eraseLines } from "./termio/csi.js";
+import { BSU, ESU, HIDE_CURSOR, SHOW_CURSOR } from "./termio/dec.js";
+import { link } from "./termio/osc.js";
 
 export type Progress = {
-  state: 'running' | 'completed' | 'error' | 'indeterminate';
+  state: "running" | "completed" | "error" | "indeterminate";
   percentage?: number;
 };
 
@@ -46,14 +46,14 @@ export function isProgressReportingAvailable(): boolean {
 
   // Ghostty 1.2.0+ supports OSC 9;4 for progress
   // https://ghostty.org/docs/install/release-notes/1-2-0
-  if (process.env.TERM_PROGRAM === 'ghostty') {
-    return gte(version.version, '1.2.0');
+  if (process.env.TERM_PROGRAM === "ghostty") {
+    return gte(version.version, "1.2.0");
   }
 
   // iTerm2 3.6.6+ supports OSC 9;4 for progress
   // https://iterm2.com/downloads.html
-  if (process.env.TERM_PROGRAM === 'iTerm.app') {
-    return gte(version.version, '3.6.6');
+  if (process.env.TERM_PROGRAM === "iTerm.app") {
+    return gte(version.version, "3.6.6");
   }
 
   return false;
@@ -74,28 +74,28 @@ export function isSynchronizedOutputSupported(): boolean {
 
   // Modern terminals with known DEC 2026 support
   if (
-    termProgram === 'iTerm.app' ||
-    termProgram === 'WezTerm' ||
-    termProgram === 'WarpTerminal' ||
-    termProgram === 'ghostty' ||
-    termProgram === 'contour' ||
-    termProgram === 'vscode' ||
-    termProgram === 'alacritty'
+    termProgram === "iTerm.app" ||
+    termProgram === "WezTerm" ||
+    termProgram === "WarpTerminal" ||
+    termProgram === "ghostty" ||
+    termProgram === "contour" ||
+    termProgram === "vscode" ||
+    termProgram === "alacritty"
   ) {
     return true;
   }
 
   // kitty sets TERM=xterm-kitty or KITTY_WINDOW_ID
-  if (term?.includes('kitty') || process.env.KITTY_WINDOW_ID) return true;
+  if (term?.includes("kitty") || process.env.KITTY_WINDOW_ID) return true;
 
   // Ghostty may set TERM=xterm-ghostty without TERM_PROGRAM
-  if (term === 'xterm-ghostty') return true;
+  if (term === "xterm-ghostty") return true;
 
   // foot sets TERM=foot or TERM=foot-extra
-  if (term?.startsWith('foot')) return true;
+  if (term?.startsWith("foot")) return true;
 
   // Alacritty may set TERM containing 'alacritty'
-  if (term?.includes('alacritty')) return true;
+  if (term?.includes("alacritty")) return true;
 
   // Zed uses the alacritty_terminal crate which supports DEC 2026
   if (process.env.ZED_TERM) return true;
@@ -137,8 +137,8 @@ export function setXtversionName(name: string): void {
  *  SSH — query/reply goes through the pty). Early calls may miss the probe
  *  reply — call lazily (e.g. in an event handler) if SSH detection matters. */
 export function isXtermJs(): boolean {
-  if (process.env.TERM_PROGRAM === 'vscode') return true;
-  return xtversionName?.startsWith('xterm.js') ?? false;
+  if (process.env.TERM_PROGRAM === "vscode") return true;
+  return xtversionName?.startsWith("xterm.js") ?? false;
 }
 
 // Terminals known to correctly implement the Kitty keyboard protocol
@@ -150,18 +150,18 @@ export function isXtermJs(): boolean {
 // accepts modifyOtherKeys and doesn't forward the kitty sequence to the outer
 // terminal.
 const EXTENDED_KEYS_TERMINALS = [
-  'iTerm.app',
-  'kitty',
-  'WezTerm',
-  'ghostty',
-  'tmux',
-  'windows-terminal',
+  "iTerm.app",
+  "kitty",
+  "WezTerm",
+  "ghostty",
+  "tmux",
+  "windows-terminal",
 ];
 
 /** True if this terminal correctly handles extended key reporting
  *  (Kitty keyboard protocol + xterm modifyOtherKeys). */
 export function supportsExtendedKeys(): boolean {
-  return EXTENDED_KEYS_TERMINALS.includes(env.terminal ?? '');
+  return EXTENDED_KEYS_TERMINALS.includes(env.terminal ?? "");
 }
 
 /** True if the terminal scrolls the viewport when it receives cursor-up
@@ -171,7 +171,7 @@ export function supportsExtendedKeys(): boolean {
  *  mid-stream. WT_SESSION catches WSL-in-Windows-Terminal where platform
  *  is linux but output still routes through conhost. */
 export function hasCursorUpViewportYankBug(): boolean {
-  return process.platform === 'win32' || !!process.env.WT_SESSION;
+  return process.platform === "win32" || !!process.env.WT_SESSION;
 }
 
 // Computed once at module load — terminal capabilities don't change mid-session.
@@ -195,40 +195,40 @@ export function writeDiffToTerminal(terminal: Terminal, diff: Diff, skipSyncMark
   const useSync = !skipSyncMarkers;
 
   // Buffer all writes into a single string to avoid multiple write calls
-  let buffer = useSync ? BSU : '';
+  let buffer = useSync ? BSU : "";
 
   for (const patch of diff) {
     switch (patch.type) {
-      case 'stdout':
+      case "stdout":
         buffer += patch.content;
         break;
-      case 'clear':
+      case "clear":
         if (patch.count > 0) {
           buffer += eraseLines(patch.count);
         }
         break;
-      case 'clearTerminal':
+      case "clearTerminal":
         buffer += getClearTerminalSequence();
         break;
-      case 'cursorHide':
+      case "cursorHide":
         buffer += HIDE_CURSOR;
         break;
-      case 'cursorShow':
+      case "cursorShow":
         buffer += SHOW_CURSOR;
         break;
-      case 'cursorMove':
+      case "cursorMove":
         buffer += cursorMove(patch.x, patch.y);
         break;
-      case 'cursorTo':
+      case "cursorTo":
         buffer += cursorTo(patch.col);
         break;
-      case 'carriageReturn':
-        buffer += '\r';
+      case "carriageReturn":
+        buffer += "\r";
         break;
-      case 'hyperlink':
+      case "hyperlink":
         buffer += link(patch.uri);
         break;
-      case 'styleStr':
+      case "styleStr":
         buffer += patch.str;
         break;
     }

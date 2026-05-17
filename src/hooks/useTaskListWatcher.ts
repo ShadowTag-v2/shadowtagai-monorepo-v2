@@ -1,6 +1,6 @@
-import { type FSWatcher, watch } from 'node:fs';
-import { useEffect, useRef } from 'react';
-import { logForDebugging } from '../utils/debug.js';
+import { type FSWatcher, watch } from "node:fs";
+import { useEffect, useRef } from "react";
+import { logForDebugging } from "../utils/debug.js";
 import {
   claimTask,
   DEFAULT_TASKS_MODE_TASK_LIST_ID,
@@ -9,7 +9,7 @@ import {
   listTasks,
   type Task,
   updateTask,
-} from '../utils/tasks.js';
+} from "../utils/tasks.js";
 
 const DEBOUNCE_MS = 1000;
 
@@ -68,7 +68,7 @@ export function useTaskListWatcher({ taskListId, isLoading, onSubmitTask }: Prop
     // If we have a current task, check if it's been resolved
     if (currentTaskRef.current !== null) {
       const currentTask = tasks.find((t) => t.id === currentTaskRef.current);
-      if (!currentTask || currentTask.status === 'completed') {
+      if (!currentTask || currentTask.status === "completed") {
         logForDebugging(
           `[TaskListWatcher] Task #${currentTaskRef.current} is marked complete, ready for next task`,
         );
@@ -189,10 +189,10 @@ export function useTaskListWatcher({ taskListId, isLoading, onSubmitTask }: Prop
  * - Not blocked by any unresolved tasks
  */
 function findAvailableTask(tasks: Task[]): Task | undefined {
-  const unresolvedTaskIds = new Set(tasks.filter((t) => t.status !== 'completed').map((t) => t.id));
+  const unresolvedTaskIds = new Set(tasks.filter((t) => t.status !== "completed").map((t) => t.id));
 
   return tasks.find((task) => {
-    if (task.status !== 'pending') return false;
+    if (task.status !== "pending") return false;
     if (task.owner) return false;
     // Check all blockers are completed
     return task.blockedBy.every((id) => !unresolvedTaskIds.has(id));

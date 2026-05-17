@@ -1,10 +1,10 @@
-import type * as React from 'react';
-import { useEffect, useMemo } from 'react';
-import { Box, Text } from 'src/ink.js';
-import { getDynamicConfig_CACHED_MAY_BE_STALE } from 'src/services/analytics/growthbook.js';
-import { getGlobalConfig, saveGlobalConfig } from 'src/utils/config.js';
+import type * as React from "react";
+import { useEffect, useMemo } from "react";
+import { Box, Text } from "src/ink.js";
+import { getDynamicConfig_CACHED_MAY_BE_STALE } from "src/services/analytics/growthbook.js";
+import { getGlobalConfig, saveGlobalConfig } from "src/utils/config.js";
 
-const CONFIG_NAME = 'tengu-top-of-feed-tip';
+const CONFIG_NAME = "tengu-top-of-feed-tip";
 export function EmergencyTip(): React.ReactNode {
   const tip = useMemo(getTipOfFeed, []);
   // Memoize to prevent re-reads after we save - we want the value at mount time
@@ -31,13 +31,13 @@ export function EmergencyTip(): React.ReactNode {
   return (
     <Box paddingLeft={2} flexDirection="column">
       <Text
-        {...(tip.color === 'warning'
+        {...(tip.color === "warning"
           ? {
-              color: 'warning',
+              color: "warning",
             }
-          : tip.color === 'error'
+          : tip.color === "error"
             ? {
-                color: 'error',
+                color: "error",
               }
             : {
                 dimColor: true,
@@ -50,11 +50,11 @@ export function EmergencyTip(): React.ReactNode {
 }
 type TipOfFeed = {
   tip: string;
-  color?: 'dim' | 'warning' | 'error';
+  color?: "dim" | "warning" | "error";
 };
 const DEFAULT_TIP: TipOfFeed = {
-  tip: '',
-  color: 'dim',
+  tip: "",
+  color: "dim",
 };
 
 /**
