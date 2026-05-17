@@ -17,7 +17,7 @@ class TestPromptCache(unittest.TestCase):
     changes = cm.detect_break(tools, system, 0)
     self.assertEqual(changes, [])
 
-    # Test break — tool changed
+    # Test break — mutate a tool, expect it in changes list
     tools["bash"]["type"] = "tool"
     changes = cm.detect_break(tools, system, 0)
     self.assertIn("bash", changes)

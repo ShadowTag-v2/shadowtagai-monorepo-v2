@@ -13,13 +13,15 @@ from __future__ import annotations
 import sys
 import os
 
-# Add aiyou-fastapi-services to path
-sys.path.insert(
-  0,
-  os.path.join(
-    os.path.dirname(__file__), "..", "apps", "aiyou_stack", "aiyou-fastapi-services"
-  ),
+# Add aiyou-fastapi-services to path for modules that live there
+# (ane_bridge, zero_cpu_router, vector_db, etc.) but DO NOT let it
+# shadow the root `app` package.  We append instead of insert-at-0
+# so that the monorepo-root `app/` always wins for `app.*` imports.
+_aiyou_services_dir = os.path.join(
+  os.path.dirname(__file__), "..", "apps", "aiyou_stack", "aiyou-fastapi-services"
 )
+if _aiyou_services_dir not in sys.path:
+  sys.path.append(_aiyou_services_dir)
 
 
 def test_ane_bridge():
@@ -30,6 +32,15 @@ def test_ane_bridge():
 
     result = init_bridge()
     print(f"  init_bridge(): {result}")
+
+    # get_compile_count is optional — may not be implemented
+    try:
+      from ane_bridge import get_compile_count
+
+      print(f"  compile_count: {get_compile_count()}")
+    except ImportError:
+      print("  compile_count: not implemented (skipped)")
+
     assert result is True, "ANE bridge init failed"
     print("  ✅ PASS")
   except Exception as e:
