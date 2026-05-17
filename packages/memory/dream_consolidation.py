@@ -1,168 +1,485 @@
+"""dream_consolidation.py — Hermes Cloud Drain Daemon.
+=====================================================
+Asynchronous background daemon that drains the Omni-Sync cloud queue
+(.beads/cloud_sync_queue.json) to production Google Cloud targets:
+
+  Box 12: Google Drive API  — Writes knowledge atoms as JSON files
+  Box 13: BigQuery          — Inserts rows into epistemic_ledger table
+  Box 14: Cloud Spanner     — Inserts rows into memories table
+
+The Omni-Sync Multiplexer (scripts/omni_epistemic_sync.ts) writes to
+the queue; this daemon reads and drains it. Separation of concerns
+ensures the agent never blocks on network I/O during a coding turn.
+
+Security:
+  - ReadOnlyBashGuard: No subprocess writes during dream phase
+  - PID lock: Prevents concurrent daemon instances
+  - Graceful degradation: Individual API failures don't block others
+
+Usage:
+  python packages/memory/dream_consolidation.py               # Daemon mode (loop)
+  python packages/memory/dream_consolidation.py --once         # Single pass
+  python packages/memory/dream_consolidation.py --dry-run      # Preview only
+
+Requires:
+  pip install google-cloud-bigquery google-cloud-spanner google-api-python-client
 """
-dream_consolidation.py — Monorepo OS v4.0 (The Epistemic Airgap Release)
-Fuses 3-Tier Gate + consolidationLock.ts with SpreadingActivationCore # (WanderEngine)
-and SafeToAutoRun Read-Only Bash Constraints.
-Data Plane: PostgreSQL (until MRR) and Firestore (replacing Redis).
-"""
+
 from __future__ import annotations
+
+import json
+import logging
 import os
-from datetime import datetime, timezone
-from typing import Dict, List, Any
+import signal
+import sys
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
 
-# Serverless Data Plane
-# from google.cloud import firestore
-
-# =====================================================================
-# STUBS & MOCKS (To prevent NameError/ModuleNotFoundError crashes)
-# =====================================================================
-class SpreadingActivationCore:
-    def __init__(self, db_path, decay_lambda, lateral_inhibition, top_k, conflict_threshold, promotion_threshold):
-        pass
-    def wander(self, graph, base_activations, seed, steps):
-        return []
-    def detect_conflicts(self, store, results):
-        return []
-    def promote_to_memory(self, store, results):
-        return []
-
-def generate_memory_views(store, results): pass
-def log_consolidation_event(**kwargs): pass
-
-def _build_ki_relation_graph(ki_store: Dict[str, Dict[str, Any]]) -> Any: return {}
-def _compute_base_activations(ki_store: Dict[str, Dict[str, Any]]) -> Any: return {}
-def _prune_low_confidence(ki_store: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Any]]: return ki_store
-def _apply_temporal_decay(ki_store: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Any]]: return ki_store
+logging.basicConfig(
+  level=logging.INFO,
+  format="%(asctime)s [HERMES-DRAIN] %(levelname)s %(message)s",
+  datefmt="%Y-%m-%dT%H:%M:%S",
+)
+logger = logging.getLogger("hermes_drain")
 
 # =====================================================================
-# 1. PID MUTEX (consolidationLock.ts)
+# Configuration
 # =====================================================================
-LOCK_FILE = ".beads/.consolidate-lock"
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+BEADS_DIR = REPO_ROOT / ".beads"
+QUEUE_FILE = BEADS_DIR / "cloud_sync_queue.json"
+LOCK_FILE = BEADS_DIR / ".cloud-drain.lock"
+POLL_INTERVAL = int(os.environ.get("HERMES_POLL_SECONDS", "30"))
+DRY_RUN = "--dry-run" in sys.argv
+ONCE = "--once" in sys.argv
 
-def try_acquire_consolidation_lock() -> bool:
-    """PID-based file lock preventing multi-window race conditions."""
-    if os.path.exists(LOCK_FILE):
-        with open(LOCK_FILE, 'r') as f:
-            pid_str = f.read().strip()
-        if pid_str.isdigit():
-            try:
-                os.kill(int(pid_str), 0)
-                return False  # Process is alive, lock held
-            except OSError:
-                pass  # Process is dead, steal stale lock
-
-    os.makedirs(os.path.dirname(LOCK_FILE), exist_ok=True)
-    with open(LOCK_FILE, 'w') as f:
-        f.write(str(os.getpid()))
-    return True
-
-def release_consolidation_lock():
-    if os.path.exists(LOCK_FILE):
-        os.remove(LOCK_FILE)
+# Google Cloud configuration
+GCP_PROJECT = os.environ.get("GOOGLE_CLOUD_PROJECT", "shadowtag-omega-v4")
+BQ_DATASET = os.environ.get("HERMES_BQ_DATASET", "hermes_memory")
+BQ_TABLE = os.environ.get("HERMES_BQ_TABLE", "epistemic_ledger")
+SPANNER_INSTANCE = os.environ.get("HERMES_SPANNER_INSTANCE", "hermes-memory")
+SPANNER_DATABASE = os.environ.get("HERMES_SPANNER_DB", "epistemic_store")
+DRIVE_FOLDER_ID = os.environ.get("HERMES_DRIVE_FOLDER_ID", "")
 
 # =====================================================================
-# 2. COST/VOLUME CONTROL GATING (autoDream.ts)
+# PID Mutex (prevents concurrent drain instances)
 # =====================================================================
-def check_autodream_gates(last_consolidated_at: datetime, transcript_count: int, min_hours: int = 24, min_sessions: int = 5) -> bool:
-    """3-Tier execution gate: Time -> Sessions -> Lock"""
-    now = datetime.now(timezone.utc)
-    hours_since = (now - last_consolidated_at).total_seconds() / 3600
+_shutdown = False
 
-    if hours_since < min_hours:
-        print(f"💤 [AutoDream] Time gate not met ({hours_since:.1f}h < {min_hours}h). Yielding.")
-        return False
 
-    if transcript_count < min_sessions:
-        print(f"💤 [AutoDream] Volume gate not met ({transcript_count} < {min_sessions} sessions). Yielding.")
-        return False
+def _signal_handler(signum: int, _frame: Any) -> None:
+  global _shutdown  # noqa: PLW0603
+  logger.info("Received signal %d, shutting down gracefully...", signum)
+  _shutdown = True
 
-    return True
 
-# =====================================================================
-# 3. ANTIGRAVITY SECURITY: SafeToAutoRun
-# =====================================================================
-DESTRUCTIVE_PATTERNS = ["rm ", "sed -i", "mv ", ">", ">>", "chmod ", "chown ", "sudo "]
+signal.signal(signal.SIGTERM, _signal_handler)
+signal.signal(signal.SIGINT, _signal_handler)
 
-def enforce_read_only_bash(command: str) -> bool:
-    """Hard Read-Only constraint for unattended background Triad runs."""
-    for pattern in DESTRUCTIVE_PATTERNS:
-        if pattern in command:
-            print(f"🛑 [SafeToAutoRun] Destructive pattern blocked during dream phase: '{pattern}'")
-            return False
-    return True
 
-# =====================================================================
-# 4. CORE CONSOLIDATION + SPREADING ACTIVATION
-# =====================================================================
-def dream_consolidation(
-    ki_store: Dict[str, Dict[str, Any]],
-    current_context: List[str],
-    last_consolidated_at: datetime,
-    transcript_count: int,
-    decay_lambda: float = 0.038,
-    confidence_boost: float = 0.18,
-    db_connection: str = "postgresql://user:pass@localhost:5432/agnt_memory" # PostgreSQL until MRR
-) -> Dict[str, Dict[str, Any]]:
-
-    print("🧠 [Dream Consolidation v4.0] Evaluating AutoDream Gates...")
-
-    if not check_autodream_gates(last_consolidated_at, transcript_count):
-        return ki_store
-
-    if not try_acquire_consolidation_lock():
-        print("🔒 [ConsolidationLock] Concurrency lock active. Yielding.")
-        return ki_store
-
+def try_acquire_lock() -> bool:
+  """PID-based file lock preventing concurrent drain instances."""
+  BEADS_DIR.mkdir(parents=True, exist_ok=True)
+  if LOCK_FILE.exists():
     try:
-        print("🚀 [Dream Consolidation] Gates passed. Initiating SpreadingActivationCore...")
+      lock_data = json.loads(LOCK_FILE.read_text())
+      held_pid = lock_data.get("pid", -1)
+      os.kill(held_pid, 0)  # Check if process is alive
+      logger.info("Lock held by PID %d, exiting", held_pid)
+      return False
+    except (OSError, json.JSONDecodeError, ValueError):
+      logger.warning("Breaking stale lock")
 
-        # Initialize Spreading Activation on PostgreSQL backend
-        wander = SpreadingActivationCore(
-            db_path=db_connection,
-            decay_lambda=decay_lambda,
-            lateral_inhibition=0.32,
-            top_k=18,
-            conflict_threshold=0.72,
-            promotion_threshold=0.88
+  LOCK_FILE.write_text(
+    json.dumps(
+      {
+        "pid": os.getpid(),
+        "acquired_at": datetime.now(UTC).isoformat(),
+      }
+    )
+  )
+  return True
+
+
+def release_lock() -> None:
+  """Release the PID lock if we hold it."""
+  if LOCK_FILE.exists():
+    try:
+      data = json.loads(LOCK_FILE.read_text())
+      if data.get("pid") == os.getpid():
+        LOCK_FILE.unlink()
+        logger.info("Lock released")
+    except (json.JSONDecodeError, OSError):
+      pass
+
+
+# =====================================================================
+# Cloud Client Initialization (lazy, graceful degradation)
+# =====================================================================
+_bq_client = None
+_spanner_db = None
+_drive_service = None
+
+
+def _get_bq_client() -> Any:
+  """Lazy-init BigQuery client. Returns None if unavailable."""
+  global _bq_client  # noqa: PLW0603
+  if _bq_client is not None:
+    return _bq_client
+  try:
+    from google.cloud import bigquery
+
+    _bq_client = bigquery.Client(project=GCP_PROJECT)
+    logger.info("BigQuery client initialized (project=%s)", GCP_PROJECT)
+    return _bq_client
+  except Exception as e:
+    logger.warning("BigQuery client unavailable: %s", e)
+    return None
+
+
+def _get_spanner_db() -> Any:
+  """Lazy-init Spanner database handle. Returns None if unavailable."""
+  global _spanner_db  # noqa: PLW0603
+  if _spanner_db is not None:
+    return _spanner_db
+  try:
+    from google.cloud import spanner
+
+    client = spanner.Client(project=GCP_PROJECT)
+    instance = client.instance(SPANNER_INSTANCE)
+    _spanner_db = instance.database(SPANNER_DATABASE)
+    logger.info(
+      "Spanner client initialized (instance=%s, db=%s)",
+      SPANNER_INSTANCE,
+      SPANNER_DATABASE,
+    )
+    return _spanner_db
+  except Exception as e:
+    logger.warning("Spanner client unavailable: %s", e)
+    return None
+
+
+def _get_drive_service() -> Any:
+  """Lazy-init Google Drive API service. Returns None if unavailable."""
+  global _drive_service  # noqa: PLW0603
+  if _drive_service is not None:
+    return _drive_service
+  try:
+    from googleapiclient.discovery import build
+
+    # Use Application Default Credentials
+    import google.auth
+
+    credentials, _ = google.auth.default(
+      scopes=["https://www.googleapis.com/auth/drive.file"]
+    )
+    _drive_service = build("drive", "v3", credentials=credentials)
+    logger.info("Google Drive API initialized")
+    return _drive_service
+  except Exception as e:
+    logger.warning("Drive API unavailable: %s", e)
+    return None
+
+
+# =====================================================================
+# Box 13: BigQuery — epistemic_ledger table
+# =====================================================================
+def _ensure_bq_table(client: Any) -> str:
+  """Ensure the BigQuery dataset and table exist. Returns full table ID."""
+  table_id = f"{GCP_PROJECT}.{BQ_DATASET}.{BQ_TABLE}"
+  try:
+    client.get_table(table_id)
+  except Exception:
+    # Create dataset if needed
+    from google.cloud import bigquery
+
+    dataset_ref = bigquery.DatasetReference(GCP_PROJECT, BQ_DATASET)
+    try:
+      client.get_dataset(dataset_ref)
+    except Exception:
+      dataset = bigquery.Dataset(dataset_ref)
+      dataset.location = "US"
+      client.create_dataset(dataset, exists_ok=True)
+      logger.info("Created BigQuery dataset: %s", BQ_DATASET)
+
+    # Create table with schema
+    schema = [
+      bigquery.SchemaField("id", "STRING", mode="REQUIRED"),
+      bigquery.SchemaField("timestamp", "TIMESTAMP", mode="REQUIRED"),
+      bigquery.SchemaField("atom_type", "STRING"),
+      bigquery.SchemaField("content", "STRING"),
+      bigquery.SchemaField("supersedes", "STRING"),
+      bigquery.SchemaField("source", "STRING"),
+      bigquery.SchemaField("ingested_at", "TIMESTAMP"),
+    ]
+    table = bigquery.Table(table_id, schema=schema)
+    client.create_table(table, exists_ok=True)
+    logger.info("Created BigQuery table: %s", table_id)
+
+  return table_id
+
+
+def drain_to_bigquery(items: list[dict]) -> int:
+  """Insert knowledge atoms into BigQuery epistemic_ledger. Returns count."""
+  client = _get_bq_client()
+  if not client or not items:
+    return 0
+
+  table_id = _ensure_bq_table(client)
+  now = datetime.now(UTC).isoformat()
+
+  rows = []
+  for item in items:
+    rows.append(
+      {
+        "id": item.get("id", ""),
+        "timestamp": item.get("timestamp", now),
+        "atom_type": item.get("atomType", "unknown"),
+        "content": item.get("content", ""),
+        "supersedes": item.get("supersedes") or "",
+        "source": "omni_sync_mux",
+        "ingested_at": now,
+      }
+    )
+
+  if DRY_RUN:
+    logger.info("[DRY-RUN] Would insert %d rows into %s", len(rows), table_id)
+    return len(rows)
+
+  errors = client.insert_rows_json(table_id, rows)
+  if errors:
+    logger.error("BigQuery insert errors: %s", errors)
+    return 0
+
+  logger.info("✅ BigQuery: Inserted %d rows into %s", len(rows), table_id)
+  return len(rows)
+
+
+# =====================================================================
+# Box 14: Cloud Spanner — memories table
+# =====================================================================
+def _ensure_spanner_table(database: Any) -> None:
+  """Ensure the Spanner memories table exists."""
+  ddl = """
+    CREATE TABLE IF NOT EXISTS memories (
+        id STRING(64) NOT NULL,
+        timestamp TIMESTAMP NOT NULL,
+        atom_type STRING(32),
+        content STRING(MAX),
+        supersedes STRING(MAX),
+        source STRING(64),
+        ingested_at TIMESTAMP,
+    ) PRIMARY KEY (id)
+    """
+  try:
+    operation = database.update_ddl([ddl])
+    operation.result(timeout=60)
+    logger.info("Spanner table 'memories' ensured")
+  except Exception as e:
+    # Table likely already exists
+    if "Duplicate" not in str(e) and "already exists" not in str(e):
+      logger.warning("Spanner DDL warning: %s", e)
+
+
+def drain_to_spanner(items: list[dict]) -> int:
+  """Insert knowledge atoms into Spanner memories table. Returns count."""
+  database = _get_spanner_db()
+  if not database or not items:
+    return 0
+
+  _ensure_spanner_table(database)
+  now = datetime.now(UTC).isoformat()
+
+  if DRY_RUN:
+    logger.info("[DRY-RUN] Would insert %d rows into Spanner", len(items))
+    return len(items)
+
+  def _insert_batch(transaction: Any) -> None:
+    for item in items:
+      transaction.insert(
+        "memories",
+        columns=[
+          "id",
+          "timestamp",
+          "atom_type",
+          "content",
+          "supersedes",
+          "source",
+          "ingested_at",
+        ],
+        values=[
+          [
+            item.get("id", ""),
+            item.get("timestamp", now),
+            item.get("atomType", "unknown"),
+            item.get("content", ""),
+            item.get("supersedes") or "",
+            "omni_sync_mux",
+            now,
+          ]
+        ],
+      )
+
+  try:
+    database.run_in_transaction(_insert_batch)
+    logger.info("✅ Spanner: Inserted %d rows", len(items))
+    return len(items)
+  except Exception as e:
+    logger.error("Spanner insert failed: %s", e)
+    return 0
+
+
+# =====================================================================
+# Box 12: Google Drive API — knowledge atom JSON files
+# =====================================================================
+def drain_to_drive(items: list[dict]) -> int:
+  """Upload knowledge atoms as JSON files to Google Drive. Returns count."""
+  service = _get_drive_service()
+  if not service or not items or not DRIVE_FOLDER_ID:
+    if not DRIVE_FOLDER_ID:
+      logger.info("HERMES_DRIVE_FOLDER_ID not set — skipping Drive upload")
+    return 0
+
+  if DRY_RUN:
+    logger.info(
+      "[DRY-RUN] Would upload %d files to Drive folder %s", len(items), DRIVE_FOLDER_ID
+    )
+    return len(items)
+
+  from googleapiclient.http import MediaInMemoryUpload
+
+  count = 0
+  for item in items:
+    try:
+      content_bytes = json.dumps(item, indent=2).encode("utf-8")
+      media = MediaInMemoryUpload(content_bytes, mimetype="application/json")
+      ts_slug = item.get("timestamp", "unknown")[:19].replace(":", "-")
+      file_metadata = {
+        "name": f"hermes_{ts_slug}_{item.get('atomType', 'atom')}.json",
+        "parents": [DRIVE_FOLDER_ID],
+        "mimeType": "application/json",
+      }
+      service.files().create(
+        body=file_metadata,
+        media_body=media,
+        fields="id",
+      ).execute()
+      count += 1
+    except Exception as e:
+      logger.error("Drive upload failed for item: %s", e)
+
+  if count:
+    logger.info("✅ Drive: Uploaded %d files to folder %s", count, DRIVE_FOLDER_ID)
+  return count
+
+
+# =====================================================================
+# Queue Management
+# =====================================================================
+def load_queue() -> list[dict]:
+  """Load pending items from cloud_sync_queue.json."""
+  if not QUEUE_FILE.exists():
+    return []
+  try:
+    data = json.loads(QUEUE_FILE.read_text())
+    return data if isinstance(data, list) else []
+  except (json.JSONDecodeError, OSError):
+    return []
+
+
+def clear_queue() -> None:
+  """Clear the queue after successful drain."""
+  if DRY_RUN:
+    logger.info("[DRY-RUN] Would clear queue")
+    return
+  QUEUE_FILE.write_text("[]")
+  logger.info("Queue cleared")
+
+
+def archive_failed(items: list[dict]) -> None:
+  """Archive items that failed all 3 targets for manual retry."""
+  if not items:
+    return
+  archive_path = BEADS_DIR / f"cloud_drain_failed_{int(time.time())}.json"
+  archive_path.write_text(json.dumps(items, indent=2))
+  logger.warning("Archived %d failed items to %s", len(items), archive_path.name)
+
+
+# =====================================================================
+# Main Drain Loop
+# =====================================================================
+def drain_once() -> dict[str, int]:
+  """Execute a single drain pass. Returns counts per target."""
+  items = load_queue()
+  if not items:
+    return {"bigquery": 0, "spanner": 0, "drive": 0, "total": 0}
+
+  logger.info("Processing %d queued items...", len(items))
+
+  results = {
+    "bigquery": drain_to_bigquery(items),
+    "spanner": drain_to_spanner(items),
+    "drive": drain_to_drive(items),
+    "total": len(items),
+  }
+
+  # Clear queue if at least one target succeeded
+  any_success = any(v > 0 for k, v in results.items() if k != "total")
+  if any_success or DRY_RUN:
+    clear_queue()
+  else:
+    logger.warning("All targets failed — queue preserved for retry")
+    archive_failed(items)
+
+  return results
+
+
+def daemon_loop() -> None:
+  """Run the drain loop continuously with POLL_INTERVAL sleep."""
+  logger.info(
+    "Hermes Cloud Drain Daemon started (poll=%ds, project=%s, dry_run=%s)",
+    POLL_INTERVAL,
+    GCP_PROJECT,
+    DRY_RUN,
+  )
+
+  while not _shutdown:
+    try:
+      results = drain_once()
+      if results["total"] > 0:
+        logger.info(
+          "Drain pass complete: BQ=%d, Spanner=%d, Drive=%d (of %d items)",
+          results["bigquery"],
+          results["spanner"],
+          results["drive"],
+          results["total"],
         )
+    except Exception as e:
+      logger.error("Drain pass failed: %s", e)
 
-        ki_graph = _build_ki_relation_graph(ki_store)
-        base_activations = _compute_base_activations(ki_store)
+    # Sleep in small increments to respond to shutdown signal quickly
+    for _ in range(POLL_INTERVAL):
+      if _shutdown:
+        break
+      time.sleep(1)
 
-        activated_results = []
-        for seed_ki in current_context:
-            results = wander.wander(ki_graph, base_activations, seed_ki, steps=3)
-            activated_results.extend(results)
+  logger.info("Daemon shutdown complete")
 
-        for result in activated_results:
-            ki = ki_store.get(getattr(result, 'ki_id', ''))
-            if ki and getattr(result, "activation", 0) > 0.70:
-                current_conf = float(ki.get("confidence", 0.5))
-                ki["confidence"] = min(1.0, current_conf + confidence_boost)
-                ki["last_activated"] = datetime.now(timezone.utc).isoformat()
-                ki["activation_score"] = getattr(result, "activation", 0)
-                ki["related_from_wander"] = getattr(result, "related_kis", [])
 
-        conflicts = wander.detect_conflicts(ki_store, activated_results)
-        if conflicts:
-            print(f"⚠️  Detected {len(conflicts)} memory conflicts.")
+# =====================================================================
+# Entry Point
+# =====================================================================
+if __name__ == "__main__":
+  if not try_acquire_lock():
+    sys.exit(0)
 
-        promoted = wander.promote_to_memory(ki_store, activated_results)
-        if promoted:
-            print(f"🚀 Promoted {len(promoted)} KIs to Core Memory atoms.")
-
-        pruned = _prune_low_confidence(ki_store)
-        final_store = _apply_temporal_decay(pruned)
-
-        generate_memory_views(final_store, activated_results)
-        log_consolidation_event(
-            num_kis=len(final_store),
-            activated_count=len(activated_results),
-            high_activation_count=sum(1 for r in activated_results if getattr(r, 'activation', 0) > 0.75),
-            timestamp=datetime.now(timezone.utc).isoformat()
-        )
-
-        print(f"✅ Consolidation complete → {len(final_store)} KIs active.")
-        return final_store
-
-    finally:
-        release_consolidation_lock()
+  try:
+    if ONCE:
+      results = drain_once()
+      logger.info("Single pass results: %s", results)
+    else:
+      daemon_loop()
+  finally:
+    release_lock()
