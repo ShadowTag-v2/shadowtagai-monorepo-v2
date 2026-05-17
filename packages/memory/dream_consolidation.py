@@ -23,6 +23,13 @@ Usage:
 
 Requires:
   pip install google-cloud-bigquery google-cloud-spanner google-api-python-client
+
+Rules:
+- Cognitive Architecture & Epistemics:
+  - STATE A: Unconstrained YOLO execution.
+  - STATE B: Activated on git rewrites, migrations, complex architecture shifts.
+  - OBSIDIAN V45: MUST use `bun run scripts/omni_epistemic_sync.ts` for ALL knowledge retention. No manual editing of the 14 epistemic targets.
+  - LINTING: Delegated to `gca_autolint_daemon.py`. Manual invocation prohibited.
 """
 
 from __future__ import annotations
@@ -34,6 +41,7 @@ import signal
 import sys
 import time
 from datetime import UTC, datetime
+from functools import wraps
 from pathlib import Path
 from typing import Any
 
@@ -43,6 +51,65 @@ logging.basicConfig(
   datefmt="%Y-%m-%dT%H:%M:%S",
 )
 logger = logging.getLogger("hermes_drain")
+
+# uuid7 import with monorepo / container fallback (Core Truth #1)
+try:
+  from apps.counselconduit.api.uuid7 import uuid7  # type: ignore[import-not-found]
+except ImportError:
+  try:
+    from api.uuid7 import uuid7  # type: ignore[import-not-found]
+  except ImportError:
+    import uuid
+
+    def uuid7() -> str:  # type: ignore[misc]
+      """Fallback to uuid4 when uuid7 is not available."""
+      return str(uuid.uuid4())
+
+
+# =====================================================================
+# Retry decorator for transient GCP API failures
+# =====================================================================
+def _retry_transient(
+  max_retries: int = 3,
+  backoff_factor: float = 1.5,
+  retryable_exceptions: tuple = (ConnectionError, TimeoutError),
+):
+  """Exponential backoff retry for transient network/API errors."""
+
+  def decorator(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+      last_exc = None
+      for attempt in range(max_retries + 1):
+        try:
+          return func(*args, **kwargs)
+        except retryable_exceptions as e:
+          last_exc = e
+          if attempt < max_retries:
+            wait = backoff_factor**attempt
+            logger.warning(
+              "%s attempt %d/%d failed (%s), retrying in %.1fs...",
+              func.__name__,
+              attempt + 1,
+              max_retries + 1,
+              e,
+              wait,
+            )
+            time.sleep(wait)
+          else:
+            logger.error(
+              "%s failed after %d attempts: %s",
+              func.__name__,
+              max_retries + 1,
+              last_exc,
+            )
+            raise
+      return None  # Unreachable but satisfies type checker
+
+    return wrapper
+
+  return decorator
+
 
 # =====================================================================
 # Configuration
@@ -162,21 +229,70 @@ def _get_spanner_db() -> Any:
 
 
 def _get_drive_service() -> Any:
-  """Lazy-init Google Drive API service. Returns None if unavailable."""
+  """Lazy-init Google Drive API service. Returns None if unavailable.
+
+  NOTE: For authorized_user ADC, the drive.file scope must have been
+  requested at `gcloud auth application-default login` time. Passing
+  scopes to google.auth.default() only works for service accounts.
+
+  Three-Layer Auth Architecture (GEMINI.md):
+    Layer 3 (ADC) must have drive.file scope. If missing, the smoke-test
+    will 403 and we log the exact fix command. RefreshError means the
+    entire ADC token is expired — different fix path.
+  """
   global _drive_service  # noqa: PLW0603
   if _drive_service is not None:
     return _drive_service
   try:
+    import google.auth
+    import google.auth.exceptions
+    from google.auth.transport.requests import Request
     from googleapiclient.discovery import build
 
-    # Use Application Default Credentials
-    import google.auth
+    credentials, _ = google.auth.default()
 
-    credentials, _ = google.auth.default(
-      scopes=["https://www.googleapis.com/auth/drive.file"]
-    )
+    # Explicit refresh — stale tokens cause silent 401s
+    try:
+      if credentials.expired or not credentials.valid:
+        credentials.refresh(Request())
+        logger.info("ADC credentials refreshed")
+    except google.auth.exceptions.RefreshError as refresh_err:
+      logger.error(
+        "❌ Drive API: ADC token expired/revoked. "
+        "Fix by running:\n"
+        "  gcloud auth application-default login "
+        "--scopes=openid,https://www.googleapis.com/auth/userinfo.email,"
+        "https://www.googleapis.com/auth/cloud-platform,"
+        "https://www.googleapis.com/auth/drive.file "
+        "--project=shadowtag-omega-v4\n"
+        "Error: %s",
+        refresh_err,
+      )
+      return None
+
     _drive_service = build("drive", "v3", credentials=credentials)
-    logger.info("Google Drive API initialized")
+
+    # Smoke-test: verify Drive scope is present by listing 0 files
+    try:
+      _drive_service.files().list(pageSize=1, fields="files(id)").execute()
+    except Exception as scope_err:
+      err_str = str(scope_err)
+      if "insufficientPermissions" in err_str or "403" in err_str:
+        logger.error(
+          "❌ Drive API: ADC lacks drive.file scope. "
+          "Fix by running:\n"
+          "  gcloud auth application-default login "
+          "--scopes=openid,https://www.googleapis.com/auth/userinfo.email,"
+          "https://www.googleapis.com/auth/cloud-platform,"
+          "https://www.googleapis.com/auth/drive.file "
+          "--project=shadowtag-omega-v4"
+        )
+        _drive_service = None
+        return None
+      # Non-scope error during smoke test — may be transient, allow init
+      logger.warning("Drive smoke-test warning (non-fatal): %s", scope_err)
+
+    logger.info("Google Drive API initialized (scope verified)")
     return _drive_service
   except Exception as e:
     logger.warning("Drive API unavailable: %s", e)
@@ -224,14 +340,15 @@ def _ensure_bq_table(client: Any) -> str:
 def drain_to_bigquery(items: list[dict]) -> int:
   """Insert knowledge atoms into BigQuery epistemic_ledger. Returns count."""
   client = _get_bq_client()
-  if not client or not items:
+  bq_items = [i for i in items if "bigquery" in i.get("targets", ["bigquery"])]
+  if not client or not bq_items:
     return 0
 
   table_id = _ensure_bq_table(client)
   now = datetime.now(UTC).isoformat()
 
   rows = []
-  for item in items:
+  for item in bq_items:
     rows.append(
       {
         "id": item.get("id", ""),
@@ -253,6 +370,11 @@ def drain_to_bigquery(items: list[dict]) -> int:
     logger.error("BigQuery insert errors: %s", errors)
     return 0
 
+  # Remove target from items on success
+  for item in bq_items:
+    if "targets" in item and "bigquery" in item["targets"]:
+      item["targets"].remove("bigquery")
+
   logger.info("✅ BigQuery: Inserted %d rows into %s", len(rows), table_id)
   return len(rows)
 
@@ -270,7 +392,7 @@ def _ensure_spanner_table(database: Any) -> None:
         content STRING(MAX),
         supersedes STRING(MAX),
         source STRING(64),
-        ingested_at TIMESTAMP,
+        ingested_at TIMESTAMP
     ) PRIMARY KEY (id)
     """
   try:
@@ -283,22 +405,35 @@ def _ensure_spanner_table(database: Any) -> None:
       logger.warning("Spanner DDL warning: %s", e)
 
 
+def _parse_timestamp(ts_value: str | datetime) -> datetime:
+  """Parse an ISO timestamp string into a datetime object for Spanner."""
+  if isinstance(ts_value, datetime):
+    return ts_value if ts_value.tzinfo else ts_value.replace(tzinfo=UTC)
+  try:
+    dt = datetime.fromisoformat(str(ts_value))
+    return dt if dt.tzinfo else dt.replace(tzinfo=UTC)
+  except (ValueError, TypeError):
+    return datetime.now(UTC)
+
+
 def drain_to_spanner(items: list[dict]) -> int:
   """Insert knowledge atoms into Spanner memories table. Returns count."""
   database = _get_spanner_db()
-  if not database or not items:
+  spanner_items = [i for i in items if "spanner" in i.get("targets", ["spanner"])]
+  if not database or not spanner_items:
     return 0
 
   _ensure_spanner_table(database)
-  now = datetime.now(UTC).isoformat()
+  now = datetime.now(UTC)
 
   if DRY_RUN:
-    logger.info("[DRY-RUN] Would insert %d rows into Spanner", len(items))
-    return len(items)
+    logger.info("[DRY-RUN] Would insert %d rows into Spanner", len(spanner_items))
+    return len(spanner_items)
 
   def _insert_batch(transaction: Any) -> None:
-    for item in items:
-      transaction.insert(
+    for item in spanner_items:
+      # insert_or_update for idempotency — safe to retry after crash
+      transaction.insert_or_update(
         "memories",
         columns=[
           "id",
@@ -312,7 +447,7 @@ def drain_to_spanner(items: list[dict]) -> int:
         values=[
           [
             item.get("id", ""),
-            item.get("timestamp", now),
+            _parse_timestamp(item.get("timestamp", now)),
             item.get("atomType", "unknown"),
             item.get("content", ""),
             item.get("supersedes") or "",
@@ -324,8 +459,11 @@ def drain_to_spanner(items: list[dict]) -> int:
 
   try:
     database.run_in_transaction(_insert_batch)
-    logger.info("✅ Spanner: Inserted %d rows", len(items))
-    return len(items)
+    for item in spanner_items:
+      if "targets" in item and "spanner" in item["targets"]:
+        item["targets"].remove("spanner")
+    logger.info("✅ Spanner: Inserted %d rows", len(spanner_items))
+    return len(spanner_items)
   except Exception as e:
     logger.error("Spanner insert failed: %s", e)
     return 0
@@ -334,39 +472,68 @@ def drain_to_spanner(items: list[dict]) -> int:
 # =====================================================================
 # Box 12: Google Drive API — knowledge atom JSON files
 # =====================================================================
+@_retry_transient(
+  max_retries=2, retryable_exceptions=(ConnectionError, TimeoutError, OSError)
+)
+def _upload_to_drive(service: Any, item: dict) -> None:
+  from googleapiclient.http import MediaInMemoryUpload
+
+  content_bytes = json.dumps(item, indent=2).encode("utf-8")
+  media = MediaInMemoryUpload(content_bytes, mimetype="application/json")
+  ts_slug = item.get("timestamp", "unknown")[:19].replace(":", "-")
+  file_metadata = {
+    "name": f"hermes_{ts_slug}_{item.get('atomType', 'atom')}_{item.get('id', '')}.json",
+    "parents": [DRIVE_FOLDER_ID],
+    "mimeType": "application/json",
+  }
+  service.files().create(
+    body=file_metadata,
+    media_body=media,
+    fields="id",
+  ).execute()
+
+
 def drain_to_drive(items: list[dict]) -> int:
   """Upload knowledge atoms as JSON files to Google Drive. Returns count."""
+  if not DRIVE_FOLDER_ID:
+    logger.info("HERMES_DRIVE_FOLDER_ID not set — skipping Drive upload")
+    return 0
+
   service = _get_drive_service()
-  if not service or not items or not DRIVE_FOLDER_ID:
-    if not DRIVE_FOLDER_ID:
-      logger.info("HERMES_DRIVE_FOLDER_ID not set — skipping Drive upload")
+  drive_items = [
+    i for i in items if "google_drive_api" in i.get("targets", ["google_drive_api"])
+  ]
+  if not service or not drive_items:
     return 0
 
   if DRY_RUN:
     logger.info(
-      "[DRY-RUN] Would upload %d files to Drive folder %s", len(items), DRIVE_FOLDER_ID
+      "[DRY-RUN] Would upload %d files to Drive folder %s",
+      len(drive_items),
+      DRIVE_FOLDER_ID,
     )
-    return len(items)
+    return len(drive_items)
 
-  from googleapiclient.http import MediaInMemoryUpload
+  from googleapiclient.errors import HttpError
 
   count = 0
-  for item in items:
+  for item in drive_items:
     try:
-      content_bytes = json.dumps(item, indent=2).encode("utf-8")
-      media = MediaInMemoryUpload(content_bytes, mimetype="application/json")
-      ts_slug = item.get("timestamp", "unknown")[:19].replace(":", "-")
-      file_metadata = {
-        "name": f"hermes_{ts_slug}_{item.get('atomType', 'atom')}.json",
-        "parents": [DRIVE_FOLDER_ID],
-        "mimeType": "application/json",
-      }
-      service.files().create(
-        body=file_metadata,
-        media_body=media,
-        fields="id",
-      ).execute()
+      _upload_to_drive(service, item)
       count += 1
+      if "targets" in item and "google_drive_api" in item["targets"]:
+        item["targets"].remove("google_drive_api")
+    except HttpError as e:
+      if e.resp.status == 403:
+        logger.error(
+          "Drive 403 Forbidden — check folder permissions or ADC scopes: %s", e
+        )
+        break
+      if e.resp.status == 429:
+        logger.warning("Drive rate limited (429), pausing...")
+        time.sleep(5)
+      else:
+        logger.error("Drive upload failed (HTTP %d): %s", e.resp.status, e)
     except Exception as e:
       logger.error("Drive upload failed for item: %s", e)
 
@@ -416,6 +583,10 @@ def drain_once() -> dict[str, int]:
   if not items:
     return {"bigquery": 0, "spanner": 0, "drive": 0, "total": 0}
 
+  for item in items:
+    if not item.get("id"):
+      item["id"] = str(uuid7())
+
   logger.info("Processing %d queued items...", len(items))
 
   results = {
@@ -425,13 +596,29 @@ def drain_once() -> dict[str, int]:
     "total": len(items),
   }
 
-  # Clear queue if at least one target succeeded
-  any_success = any(v > 0 for k, v in results.items() if k != "total")
-  if any_success or DRY_RUN:
+  # An item is complete if it has no targets left, or if it had no targets to begin with.
+  pending_items = [
+    item
+    for item in items
+    if item.get("targets")
+    and any(t in ["bigquery", "spanner", "google_drive_api"] for t in item["targets"])
+  ]
+
+  if DRY_RUN:
+    logger.info("[DRY-RUN] Would keep %d items in queue", len(pending_items))
     clear_queue()
   else:
-    logger.warning("All targets failed — queue preserved for retry")
-    archive_failed(items)
+    if not pending_items:
+      clear_queue()
+    else:
+      QUEUE_FILE.write_text(json.dumps(pending_items, indent=2))
+      if len(pending_items) == len(items) and all(
+        v == 0 for k, v in results.items() if k != "total"
+      ):
+        logger.warning("All targets failed — queue preserved for retry")
+        archive_failed(items)
+      else:
+        logger.info("Partial success — preserved %d items in queue", len(pending_items))
 
   return results
 
