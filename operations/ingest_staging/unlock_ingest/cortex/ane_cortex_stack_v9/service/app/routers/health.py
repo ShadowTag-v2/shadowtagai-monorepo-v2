@@ -6,4 +6,4 @@ router = APIRouter()
 
 @router.get("/health")
 def health():
-    return {"ok": True, "service": "ane-cortex-stack-v3"}
+  return {"ok": True, "service": "ane-cortex-stack-v3"}

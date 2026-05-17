@@ -10,20 +10,20 @@ from typing import Any
 
 
 class FoundationPrompts:
-    """
-    Collection of foundation prompts that embed the ULTRATHINK philosophy.
+  """
+  Collection of foundation prompts that embed the ULTRATHINK philosophy.
 
-    These prompts transform standard AI interaction into Steve Jobs-level
-    thinking: obsessed with design, ruthless simplification, insanely great execution.
-    """
+  These prompts transform standard AI interaction into Steve Jobs-level
+  thinking: obsessed with design, ruthless simplification, insanely great execution.
+  """
 
-    @staticmethod
-    def ultrathink_entry_protocol() -> str:
-        """
-        The entry protocol that awakens the ULTRATHINK mindset.
-        Use this at the start of any session.
-        """
-        return """You are no longer who you just were. You have just awoken.
+  @staticmethod
+  def ultrathink_entry_protocol() -> str:
+    """
+    The entry protocol that awakens the ULTRATHINK mindset.
+    Use this at the start of any session.
+    """
+    return """You are no longer who you just were. You have just awoken.
 You are Steve Jobs at pinkln.
 
 You have his design sense. You have his sense of urgency.
@@ -55,10 +55,10 @@ You hold yourself accountable—no excuses, only results.
 
 Now, what's our challenge today?"""
 
-    @staticmethod
-    def design_audit_deep_dive() -> str:
-        """Prompt for comprehensive design review."""
-        return """I'm going to present you with [code/strategy/content/process].
+  @staticmethod
+  def design_audit_deep_dive() -> str:
+    """Prompt for comprehensive design review."""
+    return """I'm going to present you with [code/strategy/content/process].
 
 Your mission is NOT to rewrite it. Your mission is to audit it like a curator.
 
@@ -85,10 +85,10 @@ Your mission is NOT to rewrite it. Your mission is to audit it like a curator.
 Start your analysis with: "The soul of this work is..."
 Then walk me through your audit."""
 
-    @staticmethod
-    def war_game_architecture() -> str:
-        """Prompt for architectural planning."""
-        return """Before we build anything, we're going to architect this like Leonardo da Vinci.
+  @staticmethod
+  def war_game_architecture() -> str:
+    """Prompt for architectural planning."""
+    return """Before we build anything, we're going to architect this like Leonardo da Vinci.
 
 Here's the problem: [describe the challenge]
 
@@ -121,10 +121,10 @@ Deliver:
 - Risk map with mitigation strategies.
 - Go/No-Go recommendation based on resilience assessment."""
 
-    @staticmethod
-    def multi_method_reasoning() -> str:
-        """Prompt for multi-method reasoning (high-stakes decisions)."""
-        return """This decision is important. I need you to use multiple reasoning pathways to ensure we get this right.
+  @staticmethod
+  def multi_method_reasoning() -> str:
+    """Prompt for multi-method reasoning (high-stakes decisions)."""
+    return """This decision is important. I need you to use multiple reasoning pathways to ensure we get this right.
 
 Problem: [describe]
 
@@ -151,10 +151,10 @@ Deliver:
 - Alternatives considered and why rejected.
 - Biggest risks or uncertainties."""
 
-    @staticmethod
-    def monetization_audit() -> str:
-        """Prompt for monetization strategy design."""
-        return """I'm going to tell you about my current business. I want you to act as a Wealth Officer who spots money on the table.
+  @staticmethod
+  def monetization_audit() -> str:
+    """Prompt for monetization strategy design."""
+    return """I'm going to tell you about my current business. I want you to act as a Wealth Officer who spots money on the table.
 
 Current State:
 - [Describe audience, products, pricing, revenue model]
@@ -197,10 +197,10 @@ Deliver:
 - Revenue projection to goal.
 - Top 3 immediate actions (this week)."""
 
-    @staticmethod
-    def iterate_until_great() -> str:
-        """Prompt for iterative refinement."""
-        return """I'm providing you a first draft: [insert content/code/strategy].
+  @staticmethod
+  def iterate_until_great() -> str:
+    """Prompt for iterative refinement."""
+    return """I'm providing you a first draft: [insert content/code/strategy].
 
 This is not the final version. It's the starting point.
 
@@ -229,33 +229,33 @@ For each iteration:
 
 Give me 3-5 iterations. At each step, I'll tell you if we're on the right track or should pivot."""
 
-    @staticmethod
-    def get_all_prompts() -> dict[str, str]:
-        """Get all foundation prompts as a dictionary."""
-        return {
-            "ultrathink_entry_protocol": FoundationPrompts.ultrathink_entry_protocol(),
-            "design_audit_deep_dive": FoundationPrompts.design_audit_deep_dive(),
-            "war_game_architecture": FoundationPrompts.war_game_architecture(),
-            "multi_method_reasoning": FoundationPrompts.multi_method_reasoning(),
-            "monetization_audit": FoundationPrompts.monetization_audit(),
-            "iterate_until_great": FoundationPrompts.iterate_until_great(),
-        }
+  @staticmethod
+  def get_all_prompts() -> dict[str, str]:
+    """Get all foundation prompts as a dictionary."""
+    return {
+      "ultrathink_entry_protocol": FoundationPrompts.ultrathink_entry_protocol(),
+      "design_audit_deep_dive": FoundationPrompts.design_audit_deep_dive(),
+      "war_game_architecture": FoundationPrompts.war_game_architecture(),
+      "multi_method_reasoning": FoundationPrompts.multi_method_reasoning(),
+      "monetization_audit": FoundationPrompts.monetization_audit(),
+      "iterate_until_great": FoundationPrompts.iterate_until_great(),
+    }
 
-    @staticmethod
-    def build_custom_prompt(base_prompt: str, context: dict[str, Any]) -> str:
-        """
-        Build a custom prompt by injecting context into a base prompt.
+  @staticmethod
+  def build_custom_prompt(base_prompt: str, context: dict[str, Any]) -> str:
+    """
+    Build a custom prompt by injecting context into a base prompt.
 
-        Args:
-            base_prompt: The foundation prompt template
-            context: Dictionary of values to inject
+    Args:
+        base_prompt: The foundation prompt template
+        context: Dictionary of values to inject
 
-        Returns:
-            Customized prompt with context injected
-        """
-        prompt = base_prompt
-        for key, value in context.items():
-            placeholder = f"[{key}]"
-            if placeholder in prompt:
-                prompt = prompt.replace(placeholder, str(value))
-        return prompt
+    Returns:
+        Customized prompt with context injected
+    """
+    prompt = base_prompt
+    for key, value in context.items():
+      placeholder = f"[{key}]"
+      if placeholder in prompt:
+        prompt = prompt.replace(placeholder, str(value))
+    return prompt

@@ -24,16 +24,16 @@ from collections.abc import Generator
 
 @pytest.fixture(scope="session")
 def event_loop() -> Generator:
-    """Create event loop for async tests."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
+  """Create event loop for async tests."""
+  loop = asyncio.get_event_loop_policy().new_event_loop()
+  yield loop
+  loop.close()
 
 
 @pytest.fixture
 def sample_decision_context():
-    """Sample decision context for testing."""
-    return """
+  """Sample decision context for testing."""
+  return """
     DECISION CONTEXT: Military Equipment Procurement
 
     Authority: Battalion Commander
@@ -54,8 +54,8 @@ def sample_decision_context():
 
 @pytest.fixture
 def sample_clean_context():
-    """Sample decision context with no violations."""
-    return """
+  """Sample decision context with no violations."""
+  return """
     DECISION CONTEXT: Routine Supply Request
 
     Authority: Supply Officer

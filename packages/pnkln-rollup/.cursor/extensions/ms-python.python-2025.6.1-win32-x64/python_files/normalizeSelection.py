@@ -145,7 +145,11 @@ def check_end_with_return_dict(code):
 
 
 def check_exact_exist(top_level_nodes, start_line, end_line):
-    return [node for node in top_level_nodes if node.lineno == start_line and node.end_lineno == end_line]
+    return [
+        node
+        for node in top_level_nodes
+        if node.lineno == start_line and node.end_lineno == end_line
+    ]
 
 
 def traverse_file(whole_file_content, start_line, end_line, was_highlighted):  # noqa: ARG001
@@ -287,7 +291,9 @@ if __name__ == "__main__":
         normalized = result["normalized_smart_result"]
         which_line_next = result["which_line_next"]
         if normalized == "deprecated":
-            data = json.dumps({"normalized": normalized, "attach_bracket_paste": attach_bracket_paste})
+            data = json.dumps(
+                {"normalized": normalized, "attach_bracket_paste": attach_bracket_paste}
+            )
         else:
             data = json.dumps(
                 {

@@ -330,8 +330,8 @@ async def health():
 
 @app.get("/healthz")
 async def healthz():
-    """Kubernetes/Cloud Run standard health probe alias."""
-    return await health()
+  """Kubernetes/Cloud Run standard health probe alias."""
+  return await health()
 
 
 @app.post("/heartbeat")

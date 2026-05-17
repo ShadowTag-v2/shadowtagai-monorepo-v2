@@ -95,14 +95,18 @@ def pytest_load_initial_conftests(early_config, parser, args):  # noqa: ARG001
         if "--rootdir=" in arg:
             rootdir = pathlib.Path(arg.split("--rootdir=")[1])
             if not rootdir.exists():
-                raise VSCodePytestError(f"The path set in the argument --rootdir={rootdir} does not exist.")
+                raise VSCodePytestError(
+                    f"The path set in the argument --rootdir={rootdir} does not exist."
+                )
 
             # Check if the rootdir is a symlink or a child of a symlink to the current cwd.
             is_symlink = False
 
             if rootdir.is_symlink():
                 is_symlink = True
-                print(f"Plugin info[vscode-pytest]: rootdir argument, {rootdir}, is identified as a symlink.")
+                print(
+                    f"Plugin info[vscode-pytest]: rootdir argument, {rootdir}, is identified as a symlink."
+                )
             elif rootdir.resolve() != rootdir:
                 print("Plugin info[vscode-pytest]: Checking if rootdir is a child of a symlink.")
                 is_symlink = has_symlink_parent(rootdir)
@@ -406,7 +410,9 @@ def pytest_sessionfinish(session, exitstatus):
                 )
             send_discovery_message(os.fsdecode(cwd), session_node)
         except Exception as e:
-            ERRORS.append(f"Error Occurred, traceback: {(traceback.format_exc() if e.__traceback__ else '')}")
+            ERRORS.append(
+                f"Error Occurred, traceback: {(traceback.format_exc() if e.__traceback__ else '')}"
+            )
             error_node: TestNode = {
                 "name": "",
                 "path": cwd,
@@ -419,7 +425,9 @@ def pytest_sessionfinish(session, exitstatus):
         if exitstatus == 0 or exitstatus == 1:
             exitstatus_bool = "success"
         else:
-            ERRORS.append(f"Pytest exited with error status: {exitstatus}, {ERROR_MESSAGE_CONST[exitstatus]}")
+            ERRORS.append(
+                f"Pytest exited with error status: {exitstatus}, {ERROR_MESSAGE_CONST[exitstatus]}"
+            )
             exitstatus_bool = "error"
 
             send_execution_message(
@@ -478,14 +486,20 @@ def pytest_sessionfinish(session, exitstatus):
 
                 if INCLUDE_BRANCHES:
                     branch_stats: dict[int, tuple[int, int]] = cov.branch_stats(file)
-                    total_file_branches = sum([total_exits for total_exits, _ in branch_stats.values()])
-                    taken_file_branches = sum([taken_exits for _, taken_exits in branch_stats.values()])
+                    total_file_branches = sum(
+                        [total_exits for total_exits, _ in branch_stats.values()]
+                    )
+                    taken_file_branches = sum(
+                        [taken_exits for _, taken_exits in branch_stats.values()]
+                    )
 
             except NoSource:
                 # as per issue 24308 this best way to handle this edge case
                 continue
             except Exception as e:
-                print(f"Plugin error[vscode-pytest]: Skipping analysis of file: {file} due to error: {e}")
+                print(
+                    f"Plugin error[vscode-pytest]: Skipping analysis of file: {file} due to error: {e}"
+                )
                 continue
             lines_executable = {int(line_no) for line_no in analysis[1]}
             lines_missed = {int(line_no) for line_no in analysis[3]}
@@ -535,8 +549,12 @@ def build_test_tree(session: pytest.Session) -> TestNode:
             parent_part, parameterized_section = test_node["name"].split("[", 1)
             test_node["name"] = "[" + parameterized_section
 
-            first_split = test_case.nodeid.rsplit("::", 1)  # splits the parameterized test name from the rest of the nodeid
-            second_split = first_split[0].rsplit(".py", 1)  # splits the file path from the rest of the nodeid
+            first_split = test_case.nodeid.rsplit(
+                "::", 1
+            )  # splits the parameterized test name from the rest of the nodeid
+            second_split = first_split[0].rsplit(
+                ".py", 1
+            )  # splits the file path from the rest of the nodeid
 
             class_and_method = second_split[1] + "::"  # This has "::" separator at both ends
             # construct the parent id, so it is absolute path :: any class and method :: parent_part
@@ -548,10 +566,16 @@ def build_test_tree(session: pytest.Session) -> TestNode:
                 function_name = test_case.originalname  # type: ignore
                 function_test_node = function_nodes_dict[parent_id]
             except AttributeError:  # actual error has occurred
-                ERRORS.append(f"unable to find original name for {test_case.name} with parameterization detected.")
-                raise VSCodePytestError("Unable to find original name for parameterized test case") from None
+                ERRORS.append(
+                    f"unable to find original name for {test_case.name} with parameterization detected."
+                )
+                raise VSCodePytestError(
+                    "Unable to find original name for parameterized test case"
+                ) from None
             except KeyError:
-                function_test_node: TestNode = create_parameterized_function_node(function_name, get_node_path(test_case), parent_id)
+                function_test_node: TestNode = create_parameterized_function_node(
+                    function_name, get_node_path(test_case), parent_id
+                )
                 function_nodes_dict[parent_id] = function_test_node
             if test_node not in function_test_node["children"]:
                 function_test_node["children"].append(test_node)
@@ -568,11 +592,15 @@ def build_test_tree(session: pytest.Session) -> TestNode:
                     parent_test_case["children"].append(function_test_node)
             # If the parent is not a file, it is a class, add the function node as the test node to handle subsequent nesting.
             test_node = function_test_node
-        if isinstance(test_case.parent, pytest.Class) or (USES_PYTEST_DESCRIBE and isinstance(test_case.parent, DescribeBlock)):
+        if isinstance(test_case.parent, pytest.Class) or (
+            USES_PYTEST_DESCRIBE and isinstance(test_case.parent, DescribeBlock)
+        ):
             case_iter = test_case.parent
             node_child_iter = test_node
             test_class_node: TestNode | None = None
-            while isinstance(case_iter, pytest.Class) or (USES_PYTEST_DESCRIBE and isinstance(case_iter, DescribeBlock)):
+            while isinstance(case_iter, pytest.Class) or (
+                USES_PYTEST_DESCRIBE and isinstance(case_iter, DescribeBlock)
+            ):
                 # While the given node is a class, create a class and nest the previous node as a child.
                 try:
                     test_class_node = class_nodes_dict[case_iter.nodeid]
@@ -615,17 +643,23 @@ def build_test_tree(session: pytest.Session) -> TestNode:
         # Iterate through all the files that exist and construct them into nested folders.
         root_folder_node: TestNode
         try:
-            root_folder_node: TestNode = build_nested_folders(file_node, created_files_folders_dict, session_node)
+            root_folder_node: TestNode = build_nested_folders(
+                file_node, created_files_folders_dict, session_node
+            )
         except ValueError:
             # This exception is raised when the session node is not a parent of the file node.
-            print("[vscode-pytest]: Session path not a parent of test paths, adjusting session node to common parent.")
+            print(
+                "[vscode-pytest]: Session path not a parent of test paths, adjusting session node to common parent."
+            )
             common_parent = os.path.commonpath([file_node["path"], get_node_path(session)])
             common_parent_path = pathlib.Path(common_parent)
             print("[vscode-pytest]: Session node now set to: ", common_parent)
             session_node["path"] = common_parent_path  # pathlib.Path
             session_node["id_"] = common_parent  # str
             session_node["name"] = common_parent_path.name  # str
-            root_folder_node = build_nested_folders(file_node, created_files_folders_dict, session_node)
+            root_folder_node = build_nested_folders(
+                file_node, created_files_folders_dict, session_node
+            )
         # The final folder we get to is the highest folder in the path
         # and therefore we add this as a child to the session.
         root_id = root_folder_node.get("id_")
@@ -695,7 +729,9 @@ def create_test_node(
     Keyword arguments:
     test_case -- the pytest test case.
     """
-    test_case_loc: str = str(test_case.location[1] + 1) if (test_case.location[1] is not None) else ""
+    test_case_loc: str = (
+        str(test_case.location[1] + 1) if (test_case.location[1] is not None) else ""
+    )
     absolute_test_id = get_absolute_test_id(test_case.nodeid, get_node_path(test_case))
     return {
         "name": test_case.name,
@@ -738,7 +774,9 @@ def create_class_node(class_module: pytest.Class | DescribeBlock) -> TestNode:
     }
 
 
-def create_parameterized_function_node(function_name: str, test_path: pathlib.Path, function_id: str) -> TestNode:
+def create_parameterized_function_node(
+    function_name: str, test_path: pathlib.Path, function_id: str
+) -> TestNode:
     """Creates a function node to be the parent for the parameterized test nodes.
 
     Keyword arguments:
@@ -823,7 +861,9 @@ def get_node_path(node: Any) -> pathlib.Path:
     node_path = getattr(node, "path", None) or pathlib.Path(node.fspath)
 
     if not node_path:
-        raise VSCodePytestError(f"Unable to find path for node: {node}, node.path: {node.path}, node.fspath: {node.fspath}")
+        raise VSCodePytestError(
+            f"Unable to find path for node: {node}, node.path: {node.path}, node.fspath: {node.fspath}"
+        )
 
     # Check for the session node since it has the symlink already.
     if SYMLINK_PATH and not isinstance(node, pytest.Session):
@@ -852,7 +892,9 @@ __writer = None
 atexit.register(lambda: __writer.close() if __writer else None)
 
 
-def send_execution_message(cwd: str, status: Literal["success", "error"], tests: TestRunResultDict | None):
+def send_execution_message(
+    cwd: str, status: Literal["success", "error"], tests: TestRunResultDict | None
+):
     """Sends message execution payload details.
 
     Args:
@@ -860,7 +902,9 @@ def send_execution_message(cwd: str, status: Literal["success", "error"], tests:
         status (Literal["success", "error"]): Execution status indicating success or error.
         tests (Union[testRunResultDict, None]): Test run results, if available.
     """
-    payload: ExecutionPayloadDict = ExecutionPayloadDict(cwd=cwd, status=status, result=tests, not_found=None, error=None)
+    payload: ExecutionPayloadDict = ExecutionPayloadDict(
+        cwd=cwd, status=status, result=tests, not_found=None, error=None
+    )
     if ERRORS:
         payload["error"] = ERRORS
     send_message(payload)
@@ -939,7 +983,9 @@ def send_message(
     data = json.dumps(rpc, cls=cls_encoder)
     try:
         if __writer:
-            request = f"""content-length: {len(data)}\r\ncontent-type: application/json\r\n\r\n{data}"""
+            request = (
+                f"""content-length: {len(data)}\r\ncontent-type: application/json\r\n\r\n{data}"""
+            )
             size = 4096
             encoded = request.encode("utf-8")
             bytes_written = 0
@@ -961,7 +1007,9 @@ def send_message(
 
 class DeferPlugin:
     @pytest.hookimpl(hookwrapper=True)
-    def pytest_xdist_auto_num_workers(self, config: pytest.Config) -> Generator[None, Result[int], None]:
+    def pytest_xdist_auto_num_workers(
+        self, config: pytest.Config
+    ) -> Generator[None, Result[int], None]:
         """Determine how many workers to use based on how many tests were selected in the test explorer."""
         outcome = yield
         result = min(outcome.get_result(), len(config.option.file_or_dir))

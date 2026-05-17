@@ -71,9 +71,9 @@ Plain text answers are FORBIDDEN except as the output of a tool.
 
 
 def get_welcome_message():
-    from chatbot.data_loader import available_categories
+  from chatbot.data_loader import available_categories
 
-    return f"""Welcome to our Online Grocery Store Chat Assistant!
+  return f"""Welcome to our Online Grocery Store Chat Assistant!
 
 I can help you:
 - Browse product categories

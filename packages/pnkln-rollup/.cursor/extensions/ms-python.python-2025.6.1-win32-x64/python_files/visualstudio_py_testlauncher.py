@@ -239,7 +239,9 @@ def main():
         help="specifies a test to run",
     )
     parser.add_option("--testFile", type="str", help="Fully qualitified path to file name")
-    parser.add_option("-c", "--coverage", type="str", help="enable code coverage and specify filename")
+    parser.add_option(
+        "-c", "--coverage", type="str", help="enable code coverage and specify filename"
+    )
     parser.add_option(
         "-r",
         "--result-port",
@@ -270,7 +272,9 @@ def main():
         except Exception:
             with contextlib.suppress(Exception):
                 signal.signal(signal.SIGTERM, signal_handler)
-        _channel = _IpcChannel(socket.create_connection(("127.0.0.1", opts.result_port)), stop_tests)
+        _channel = _IpcChannel(
+            socket.create_connection(("127.0.0.1", opts.result_port)), stop_tests
+        )
         sys.stdout = _TestOutput(sys.stdout, is_stdout=True)
         sys.stderr = _TestOutput(sys.stderr, is_stdout=False)
 
@@ -351,7 +355,9 @@ def main():
         if opts.uvInt is None:
             opts.uvInt = 0
         if opts.uf is not None:
-            runner = unittest.TextTestRunner(verbosity=opts.uvInt, resultclass=VsTestResult, failfast=True)
+            runner = unittest.TextTestRunner(
+                verbosity=opts.uvInt, resultclass=VsTestResult, failfast=True
+            )
         else:
             runner = unittest.TextTestRunner(verbosity=opts.uvInt, resultclass=VsTestResult)
         result = runner.run(tests)

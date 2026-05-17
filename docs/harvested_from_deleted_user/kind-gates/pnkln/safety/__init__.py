@@ -15,19 +15,19 @@ Components:
 """
 
 from .training_data_indexer import (
-    TrainingDataIndexer,
-    SafetyCategory,
-    SafetyHit,
-    SafetyScanResult,
-    SafetyLexicon,
-    SafetyGate,
+  TrainingDataIndexer,
+  SafetyCategory,
+  SafetyHit,
+  SafetyScanResult,
+  SafetyLexicon,
+  SafetyGate,
 )
 
 __all__ = [
-    "TrainingDataIndexer",
-    "SafetyCategory",
-    "SafetyHit",
-    "SafetyScanResult",
-    "SafetyLexicon",
-    "SafetyGate",
+  "TrainingDataIndexer",
+  "SafetyCategory",
+  "SafetyHit",
+  "SafetyScanResult",
+  "SafetyLexicon",
+  "SafetyGate",
 ]

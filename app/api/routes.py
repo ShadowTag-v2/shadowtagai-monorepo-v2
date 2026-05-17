@@ -10,7 +10,9 @@ from app.api.endpoints import orchestration, search, reasoning, safety, dataops
 api_router = APIRouter()
 
 # Include endpoint routers
-api_router.include_router(orchestration.router, prefix="/orchestration", tags=["orchestration"])
+api_router.include_router(
+  orchestration.router, prefix="/orchestration", tags=["orchestration"]
+)
 
 api_router.include_router(search.router, prefix="/search", tags=["search"])
 

@@ -24,11 +24,11 @@
 # 2. Press [Cmd/Ctrl + I] to Edit
 # 3. Try asking Continue to "make this more readable"
 def sorting_algorithm(x):
-    for i in range(len(x)):
-        for j in range(len(x) - 1):
-            if x[j] > x[j + 1]:
-                x[j], x[j + 1] = x[j + 1], x[j]
-    return x
+  for i in range(len(x)):
+    for j in range(len(x) - 1):
+      if x[j] > x[j + 1]:
+        x[j], x[j + 1] = x[j + 1], x[j]
+  return x
 
 
 # —————————————————————————————————————————————————     Chat      ————————————————————————————————————————————————— #
@@ -39,11 +39,11 @@ def sorting_algorithm(x):
 # 2. Press [Cmd/Ctrl + L] to add to Chat
 # 3. Try asking Continue "what sorting algorithm is this?"
 def sorting_algorithm2(x):
-    for i in range(len(x)):
-        for j in range(len(x) - 1):
-            if x[j] > x[j + 1]:
-                x[j], x[j + 1] = x[j + 1], x[j]
-    return x
+  for i in range(len(x)):
+    for j in range(len(x) - 1):
+      if x[j] > x[j + 1]:
+        x[j], x[j + 1] = x[j + 1], x[j]
+  return x
 
 
 # —————————————————————————————————————————————————     Agent      ————————————————————————————————————————————————— #

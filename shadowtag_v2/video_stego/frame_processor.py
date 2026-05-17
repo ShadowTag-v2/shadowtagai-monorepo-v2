@@ -10,219 +10,237 @@ from enum import Enum
 
 
 class ColorChannel(Enum):
-    """Color channels for RGB frames"""
+  """Color channels for RGB frames"""
 
-    RED = 0
-    GREEN = 1
-    BLUE = 2
-    ALL = 3
+  RED = 0
+  GREEN = 1
+  BLUE = 2
+  ALL = 3
 
 
 class FrameProcessor:
+  """
+  Low-level frame processing for steganographic embedding and extraction.
+
+  Provides utilities for:
+  - LSB manipulation in video frames
+  - Frame-level bit operations
+  - Spatial domain processing
+  """
+
+  @staticmethod
+  def embed_bits_lsb(
+    frame: np.ndarray,
+    bits: list[int],
+    bits_per_channel: int = 2,
+    channels: ColorChannel = ColorChannel.ALL,
+  ) -> np.ndarray:
     """
-    Low-level frame processing for steganographic embedding and extraction.
+    Embed bits into frame using LSB substitution.
 
-    Provides utilities for:
-    - LSB manipulation in video frames
-    - Frame-level bit operations
-    - Spatial domain processing
+    Args:
+        frame: Input frame as numpy array (H, W, C)
+        bits: List of bits to embed (0 or 1)
+        bits_per_channel: Number of LSBs to use per channel
+        channels: Which color channels to use
+
+    Returns:
+        Modified frame with embedded bits
+
+    Raises:
+        ValueError: If bits don't fit in frame capacity
     """
+    if not 1 <= bits_per_channel <= 4:
+      raise ValueError("bits_per_channel must be between 1 and 4")
 
-    @staticmethod
-    def embed_bits_lsb(frame: np.ndarray, bits: list[int], bits_per_channel: int = 2, channels: ColorChannel = ColorChannel.ALL) -> np.ndarray:
-        """
-        Embed bits into frame using LSB substitution.
+    modified_frame = frame.copy()
+    bit_mask = (1 << bits_per_channel) - 1  # Mask for LSBs
+    clear_mask = ~bit_mask & 0xFF  # Mask to clear LSBs
 
-        Args:
-            frame: Input frame as numpy array (H, W, C)
-            bits: List of bits to embed (0 or 1)
-            bits_per_channel: Number of LSBs to use per channel
-            channels: Which color channels to use
+    # Calculate capacity
+    capacity = FrameProcessor.calculate_frame_capacity(
+      frame.shape, bits_per_channel, channels
+    )
 
-        Returns:
-            Modified frame with embedded bits
+    if len(bits) > capacity:
+      raise ValueError(
+        f"Cannot embed {len(bits)} bits in frame with capacity {capacity}"
+      )
 
-        Raises:
-            ValueError: If bits don't fit in frame capacity
-        """
-        if not 1 <= bits_per_channel <= 4:
-            raise ValueError("bits_per_channel must be between 1 and 4")
+    # Determine which channels to use
+    channel_indices = FrameProcessor._get_channel_indices(channels)
 
-        modified_frame = frame.copy()
-        bit_mask = (1 << bits_per_channel) - 1  # Mask for LSBs
-        clear_mask = ~bit_mask & 0xFF  # Mask to clear LSBs
+    # Embed bits
+    bit_index = 0
+    for y in range(frame.shape[0]):
+      for x in range(frame.shape[1]):
+        for c in channel_indices:
+          if bit_index >= len(bits):
+            return modified_frame
 
-        # Calculate capacity
-        capacity = FrameProcessor.calculate_frame_capacity(frame.shape, bits_per_channel, channels)
+          # Extract bits_per_channel bits from bit stream
+          value = 0
+          for i in range(bits_per_channel):
+            if bit_index < len(bits):
+              value |= bits[bit_index] << i
+              bit_index += 1
 
-        if len(bits) > capacity:
-            raise ValueError(f"Cannot embed {len(bits)} bits in frame with capacity {capacity}")
+          # Clear LSBs and embed new value
+          pixel_value = modified_frame[y, x, c]
+          pixel_value = (pixel_value & clear_mask) | value
+          modified_frame[y, x, c] = pixel_value
 
-        # Determine which channels to use
-        channel_indices = FrameProcessor._get_channel_indices(channels)
+    return modified_frame
 
-        # Embed bits
-        bit_index = 0
-        for y in range(frame.shape[0]):
-            for x in range(frame.shape[1]):
-                for c in channel_indices:
-                    if bit_index >= len(bits):
-                        return modified_frame
+  @staticmethod
+  def extract_bits_lsb(
+    frame: np.ndarray,
+    num_bits: int,
+    bits_per_channel: int = 2,
+    channels: ColorChannel = ColorChannel.ALL,
+  ) -> list[int]:
+    """
+    Extract bits from frame using LSB extraction.
 
-                    # Extract bits_per_channel bits from bit stream
-                    value = 0
-                    for i in range(bits_per_channel):
-                        if bit_index < len(bits):
-                            value |= bits[bit_index] << i
-                            bit_index += 1
+    Args:
+        frame: Input frame as numpy array (H, W, C)
+        num_bits: Number of bits to extract
+        bits_per_channel: Number of LSBs used per channel
+        channels: Which color channels were used
 
-                    # Clear LSBs and embed new value
-                    pixel_value = modified_frame[y, x, c]
-                    pixel_value = (pixel_value & clear_mask) | value
-                    modified_frame[y, x, c] = pixel_value
+    Returns:
+        List of extracted bits (0 or 1)
+    """
+    if not 1 <= bits_per_channel <= 4:
+      raise ValueError("bits_per_channel must be between 1 and 4")
 
-        return modified_frame
+    bit_mask = (1 << bits_per_channel) - 1
+    channel_indices = FrameProcessor._get_channel_indices(channels)
 
-    @staticmethod
-    def extract_bits_lsb(frame: np.ndarray, num_bits: int, bits_per_channel: int = 2, channels: ColorChannel = ColorChannel.ALL) -> list[int]:
-        """
-        Extract bits from frame using LSB extraction.
+    bits = []
+    bit_index = 0
 
-        Args:
-            frame: Input frame as numpy array (H, W, C)
-            num_bits: Number of bits to extract
-            bits_per_channel: Number of LSBs used per channel
-            channels: Which color channels were used
+    for y in range(frame.shape[0]):
+      for x in range(frame.shape[1]):
+        for c in channel_indices:
+          if bit_index >= num_bits:
+            return bits
 
-        Returns:
-            List of extracted bits (0 or 1)
-        """
-        if not 1 <= bits_per_channel <= 4:
-            raise ValueError("bits_per_channel must be between 1 and 4")
+          # Extract LSBs
+          pixel_value = frame[y, x, c]
+          embedded_value = pixel_value & bit_mask
 
-        bit_mask = (1 << bits_per_channel) - 1
-        channel_indices = FrameProcessor._get_channel_indices(channels)
+          # Convert to individual bits
+          for i in range(bits_per_channel):
+            if bit_index < num_bits:
+              bit = (embedded_value >> i) & 1
+              bits.append(bit)
+              bit_index += 1
 
-        bits = []
-        bit_index = 0
+    return bits
 
-        for y in range(frame.shape[0]):
-            for x in range(frame.shape[1]):
-                for c in channel_indices:
-                    if bit_index >= num_bits:
-                        return bits
+  @staticmethod
+  def calculate_frame_capacity(
+    frame_shape: tuple[int, int, int],
+    bits_per_channel: int = 2,
+    channels: ColorChannel = ColorChannel.ALL,
+  ) -> int:
+    """
+    Calculate the bit capacity of a single frame.
 
-                    # Extract LSBs
-                    pixel_value = frame[y, x, c]
-                    embedded_value = pixel_value & bit_mask
+    Args:
+        frame_shape: Shape tuple (height, width, channels)
+        bits_per_channel: Number of LSBs to use
+        channels: Which color channels to use
 
-                    # Convert to individual bits
-                    for i in range(bits_per_channel):
-                        if bit_index < num_bits:
-                            bit = (embedded_value >> i) & 1
-                            bits.append(bit)
-                            bit_index += 1
+    Returns:
+        Capacity in bits
+    """
+    height, width, num_channels = frame_shape
+    channel_count = len(FrameProcessor._get_channel_indices(channels))
 
-        return bits
+    return height * width * channel_count * bits_per_channel
 
-    @staticmethod
-    def calculate_frame_capacity(frame_shape: tuple[int, int, int], bits_per_channel: int = 2, channels: ColorChannel = ColorChannel.ALL) -> int:
-        """
-        Calculate the bit capacity of a single frame.
+  @staticmethod
+  def _get_channel_indices(channels: ColorChannel) -> list[int]:
+    """
+    Get list of channel indices to process.
 
-        Args:
-            frame_shape: Shape tuple (height, width, channels)
-            bits_per_channel: Number of LSBs to use
-            channels: Which color channels to use
+    Args:
+        channels: Channel selection
 
-        Returns:
-            Capacity in bits
-        """
-        height, width, num_channels = frame_shape
-        channel_count = len(FrameProcessor._get_channel_indices(channels))
+    Returns:
+        List of channel indices (0-2 for RGB)
+    """
+    if channels == ColorChannel.ALL:
+      return [0, 1, 2]
+    elif channels == ColorChannel.RED:
+      return [0]
+    elif channels == ColorChannel.GREEN:
+      return [1]
+    elif channels == ColorChannel.BLUE:
+      return [2]
+    else:
+      raise ValueError(f"Unknown channel type: {channels}")
 
-        return height * width * channel_count * bits_per_channel
+  @staticmethod
+  def bytes_to_bits(data: bytes) -> list[int]:
+    """
+    Convert bytes to list of bits.
 
-    @staticmethod
-    def _get_channel_indices(channels: ColorChannel) -> list[int]:
-        """
-        Get list of channel indices to process.
+    Args:
+        data: Input bytes
 
-        Args:
-            channels: Channel selection
+    Returns:
+        List of bits (0 or 1)
+    """
+    bits = []
+    for byte in data:
+      for i in range(8):
+        bits.append((byte >> i) & 1)
+    return bits
 
-        Returns:
-            List of channel indices (0-2 for RGB)
-        """
-        if channels == ColorChannel.ALL:
-            return [0, 1, 2]
-        elif channels == ColorChannel.RED:
-            return [0]
-        elif channels == ColorChannel.GREEN:
-            return [1]
-        elif channels == ColorChannel.BLUE:
-            return [2]
-        else:
-            raise ValueError(f"Unknown channel type: {channels}")
+  @staticmethod
+  def bits_to_bytes(bits: list[int]) -> bytes:
+    """
+    Convert list of bits to bytes.
 
-    @staticmethod
-    def bytes_to_bits(data: bytes) -> list[int]:
-        """
-        Convert bytes to list of bits.
+    Args:
+        bits: List of bits (0 or 1)
 
-        Args:
-            data: Input bytes
+    Returns:
+        Bytes object
+    """
+    # Pad bits to multiple of 8
+    padded_bits = bits + [0] * (8 - len(bits) % 8 if len(bits) % 8 != 0 else 0)
 
-        Returns:
-            List of bits (0 or 1)
-        """
-        bits = []
-        for byte in data:
-            for i in range(8):
-                bits.append((byte >> i) & 1)
-        return bits
+    byte_array = []
+    for i in range(0, len(padded_bits), 8):
+      byte_value = 0
+      for j in range(8):
+        byte_value |= padded_bits[i + j] << j
+      byte_array.append(byte_value)
 
-    @staticmethod
-    def bits_to_bytes(bits: list[int]) -> bytes:
-        """
-        Convert list of bits to bytes.
+    return bytes(byte_array)
 
-        Args:
-            bits: List of bits (0 or 1)
+  @staticmethod
+  def calculate_psnr(original: np.ndarray, modified: np.ndarray) -> float:
+    """
+    Calculate Peak Signal-to-Noise Ratio between original and modified frames.
 
-        Returns:
-            Bytes object
-        """
-        # Pad bits to multiple of 8
-        padded_bits = bits + [0] * (8 - len(bits) % 8 if len(bits) % 8 != 0 else 0)
+    Args:
+        original: Original frame
+        modified: Modified frame
 
-        byte_array = []
-        for i in range(0, len(padded_bits), 8):
-            byte_value = 0
-            for j in range(8):
-                byte_value |= padded_bits[i + j] << j
-            byte_array.append(byte_value)
+    Returns:
+        PSNR value in dB
+    """
+    mse = np.mean((original.astype(float) - modified.astype(float)) ** 2)
 
-        return bytes(byte_array)
+    if mse == 0:
+      return float("inf")
 
-    @staticmethod
-    def calculate_psnr(original: np.ndarray, modified: np.ndarray) -> float:
-        """
-        Calculate Peak Signal-to-Noise Ratio between original and modified frames.
+    max_pixel = 255.0
+    psnr = 20 * np.log10(max_pixel / np.sqrt(mse))
 
-        Args:
-            original: Original frame
-            modified: Modified frame
-
-        Returns:
-            PSNR value in dB
-        """
-        mse = np.mean((original.astype(float) - modified.astype(float)) ** 2)
-
-        if mse == 0:
-            return float("inf")
-
-        max_pixel = 255.0
-        psnr = 20 * np.log10(max_pixel / np.sqrt(mse))
-
-        return psnr
+    return psnr

@@ -3,6 +3,20 @@
 PNKLN Intelligence Pipeline - Data Models
 """
 
-from .intelligence_item import IntelligenceItem, IntelligenceSource, IntelligenceTier, JRScore, TierClassification, CorSynthesis
+from .intelligence_item import (
+  IntelligenceItem,
+  IntelligenceSource,
+  IntelligenceTier,
+  JRScore,
+  TierClassification,
+  CorSynthesis,
+)
 
-__all__ = ["IntelligenceItem", "IntelligenceSource", "IntelligenceTier", "JRScore", "TierClassification", "CorSynthesis"]
+__all__ = [
+  "IntelligenceItem",
+  "IntelligenceSource",
+  "IntelligenceTier",
+  "JRScore",
+  "TierClassification",
+  "CorSynthesis",
+]

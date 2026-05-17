@@ -12,38 +12,41 @@ from app.api.routes import conversations, memories, search, projects
 from app.services import embedding_service
 
 # Configure logging
-logging.basicConfig(level=settings.log_level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+  level=settings.log_level,
+  format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
 
 logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Lifespan context manager for startup and shutdown events."""
-    # Startup
-    logger.info("Starting up Claude Memory & Search Service...")
+  """Lifespan context manager for startup and shutdown events."""
+  # Startup
+  logger.info("Starting up Claude Memory & Search Service...")
 
-    # Initialize database
-    logger.info("Initializing database...")
-    await init_db()
+  # Initialize database
+  logger.info("Initializing database...")
+  await init_db()
 
-    # Initialize embedding service
-    logger.info("Initializing embedding service...")
-    await embedding_service.initialize()
+  # Initialize embedding service
+  logger.info("Initializing embedding service...")
+  await embedding_service.initialize()
 
-    logger.info("Startup complete!")
+  logger.info("Startup complete!")
 
-    yield
+  yield
 
-    # Shutdown
-    logger.info("Shutting down...")
+  # Shutdown
+  logger.info("Shutting down...")
 
 
 # Create FastAPI app
 app = FastAPI(
-    title=settings.app_name,
-    version=settings.app_version,
-    description="""
+  title=settings.app_name,
+  version=settings.app_version,
+  description="""
     A comprehensive implementation of Claude's chat search and memory features.
 
     ## Features
@@ -63,18 +66,18 @@ app = FastAPI(
     * **Search**: Semantic search across conversations and memories
     * **Projects**: Organize conversations and memories by project
     """,
-    lifespan=lifespan,
-    docs_url="/docs",
-    redoc_url="/redoc",
+  lifespan=lifespan,
+  docs_url="/docs",
+  redoc_url="/redoc",
 )
 
 # CORS middleware
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+  CORSMiddleware,
+  allow_origins=["*"],  # Configure appropriately for production
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
 )
 
 # Include routers
@@ -86,29 +89,36 @@ app.include_router(projects.router, prefix=settings.api_prefix)
 
 @app.get("/")
 async def root():
-    """Root endpoint."""
-    return {
-        "name": settings.app_name,
-        "version": settings.app_version,
-        "status": "running",
-        "docs": "/docs",
-        "features": [
-            "Semantic conversation search",
-            "Memory management",
-            "Project-based isolation",
-            "Automatic summarization",
-            "Incognito mode",
-        ],
-    }
+  """Root endpoint."""
+  return {
+    "name": settings.app_name,
+    "version": settings.app_version,
+    "status": "running",
+    "docs": "/docs",
+    "features": [
+      "Semantic conversation search",
+      "Memory management",
+      "Project-based isolation",
+      "Automatic summarization",
+      "Incognito mode",
+    ],
+  }
 
 
 @app.get("/health")
+@app.get("/healthz")
 async def health_check():
-    """Health check endpoint."""
-    return {"status": "healthy"}
+  """Health check endpoint for Cloud Run liveness/readiness probes."""
+  return {"status": "healthy", "service": "counselconduit"}
 
 
 if __name__ == "__main__":
-    import uvicorn
+  import uvicorn
 
-    uvicorn.run("app.main:app", host=settings.host, port=settings.port, reload=settings.reload, log_level=settings.log_level.lower())
+  uvicorn.run(
+    "app.main:app",
+    host=settings.host,
+    port=settings.port,
+    reload=settings.reload,
+    log_level=settings.log_level.lower(),
+  )

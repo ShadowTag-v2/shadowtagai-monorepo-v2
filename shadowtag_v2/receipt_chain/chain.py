@@ -18,287 +18,293 @@ from .block import Block
 
 @dataclass
 class Receipt:
-    """
-    Receipt for a steganographic operation.
+  """
+  Receipt for a steganographic operation.
 
-    Contains metadata and verification information for tracking
-    encoding/decoding operations.
-    """
+  Contains metadata and verification information for tracking
+  encoding/decoding operations.
+  """
 
-    operation_id: str  # Unique operation identifier
-    operation_type: str  # encode, decode, verify
-    timestamp: str  # ISO 8601 timestamp
-    media_type: str  # video, audio, image
-    method: str  # Steganography method used
-    payload_hash: str  # SHA-256 hash of payload
-    media_hash: str  # SHA-256 hash of media file
-    metadata: dict[str, Any] = field(default_factory=dict)
-    signature: str | None = None  # Optional digital signature
+  operation_id: str  # Unique operation identifier
+  operation_type: str  # encode, decode, verify
+  timestamp: str  # ISO 8601 timestamp
+  media_type: str  # video, audio, image
+  method: str  # Steganography method used
+  payload_hash: str  # SHA-256 hash of payload
+  media_hash: str  # SHA-256 hash of media file
+  metadata: dict[str, Any] = field(default_factory=dict)
+  signature: str | None = None  # Optional digital signature
 
-    def to_dict(self) -> dict[str, Any]:
-        """Convert receipt to dictionary"""
-        return asdict(self)
+  def to_dict(self) -> dict[str, Any]:
+    """Convert receipt to dictionary"""
+    return asdict(self)
 
-    def to_json(self) -> str:
-        """Convert receipt to JSON string"""
-        return json.dumps(self.to_dict(), sort_keys=True)
+  def to_json(self) -> str:
+    """Convert receipt to JSON string"""
+    return json.dumps(self.to_dict(), sort_keys=True)
 
-    def hash(self) -> str:
-        """Calculate SHA-256 hash of receipt"""
-        return hashlib.sha256(self.to_json().encode()).hexdigest()
+  def hash(self) -> str:
+    """Calculate SHA-256 hash of receipt"""
+    return hashlib.sha256(self.to_json().encode()).hexdigest()
 
-    @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "Receipt":
-        """Create receipt from dictionary"""
-        return cls(**data)
+  @classmethod
+  def from_dict(cls, data: dict[str, Any]) -> "Receipt":
+    """Create receipt from dictionary"""
+    return cls(**data)
 
 
 class ReceiptChain:
+  """
+  Blockchain-inspired chain of receipts for steganographic operations.
+
+  Provides:
+  - Immutable audit trail
+  - Cryptographic verification
+  - Operation provenance tracking
+  - Tamper detection
+  """
+
+  def __init__(self, chain_id: str | None = None):
     """
-    Blockchain-inspired chain of receipts for steganographic operations.
+    Initialize a new receipt chain.
 
-    Provides:
-    - Immutable audit trail
-    - Cryptographic verification
-    - Operation provenance tracking
-    - Tamper detection
+    Args:
+        chain_id: Unique identifier for this chain. Auto-generated if None.
     """
+    self.chain_id = chain_id or self._generate_chain_id()
+    self.blocks: list[Block] = []
+    self._create_genesis_block()
 
-    def __init__(self, chain_id: str | None = None):
-        """
-        Initialize a new receipt chain.
+  def _generate_chain_id(self) -> str:
+    """Generate a unique chain ID"""
+    timestamp = datetime.now(timezone.utc).isoformat()
+    data = f"chain_{timestamp}".encode()
+    return hashlib.sha256(data).hexdigest()[:16]
 
-        Args:
-            chain_id: Unique identifier for this chain. Auto-generated if None.
-        """
-        self.chain_id = chain_id or self._generate_chain_id()
-        self.blocks: list[Block] = []
-        self._create_genesis_block()
+  def _create_genesis_block(self) -> None:
+    """Create the genesis (first) block in the chain"""
+    genesis_receipt = Receipt(
+      operation_id="genesis",
+      operation_type="init",
+      timestamp=datetime.now(timezone.utc).isoformat(),
+      media_type="none",
+      method="none",
+      payload_hash="0" * 64,
+      media_hash="0" * 64,
+      metadata={"chain_id": self.chain_id, "version": "2.0"},
+    )
 
-    def _generate_chain_id(self) -> str:
-        """Generate a unique chain ID"""
-        timestamp = datetime.now(timezone.utc).isoformat()
-        data = f"chain_{timestamp}".encode()
-        return hashlib.sha256(data).hexdigest()[:16]
+    genesis_block = Block.create_genesis(genesis_receipt)
+    self.blocks.append(genesis_block)
 
-    def _create_genesis_block(self) -> None:
-        """Create the genesis (first) block in the chain"""
-        genesis_receipt = Receipt(
-            operation_id="genesis",
-            operation_type="init",
-            timestamp=datetime.now(timezone.utc).isoformat(),
-            media_type="none",
-            method="none",
-            payload_hash="0" * 64,
-            media_hash="0" * 64,
-            metadata={"chain_id": self.chain_id, "version": "2.0"},
-        )
+  def add_receipt(self, receipt: Receipt) -> Block:
+    """
+    Add a new receipt to the chain.
 
-        genesis_block = Block.create_genesis(genesis_receipt)
-        self.blocks.append(genesis_block)
+    Args:
+        receipt: Receipt to add
 
-    def add_receipt(self, receipt: Receipt) -> Block:
-        """
-        Add a new receipt to the chain.
+    Returns:
+        The newly created block
 
-        Args:
-            receipt: Receipt to add
+    Raises:
+        ValueError: If chain is in invalid state
+    """
+    if not self.blocks:
+      raise ValueError("Chain has no genesis block")
 
-        Returns:
-            The newly created block
+    # Get previous block
+    previous_block = self.blocks[-1]
 
-        Raises:
-            ValueError: If chain is in invalid state
-        """
-        if not self.blocks:
-            raise ValueError("Chain has no genesis block")
+    # Create new block
+    index = len(self.blocks)
+    block = Block.create_next(receipt, previous_block, index)
 
-        # Get previous block
-        previous_block = self.blocks[-1]
+    # Add to chain
+    self.blocks.append(block)
 
-        # Create new block
-        index = len(self.blocks)
-        block = Block.create_next(receipt, previous_block, index)
+    return block
 
-        # Add to chain
-        self.blocks.append(block)
+  def verify_chain(self) -> bool:
+    """
+    Verify the integrity of the entire chain.
 
-        return block
+    Returns:
+        True if chain is valid, False otherwise
+    """
+    if not self.blocks:
+      return False
 
-    def verify_chain(self) -> bool:
-        """
-        Verify the integrity of the entire chain.
+    # Verify genesis block
+    if not self.blocks[0].verify():
+      return False
 
-        Returns:
-            True if chain is valid, False otherwise
-        """
-        if not self.blocks:
-            return False
+    # Verify each subsequent block
+    for i in range(1, len(self.blocks)):
+      current_block = self.blocks[i]
+      previous_block = self.blocks[i - 1]
 
-        # Verify genesis block
-        if not self.blocks[0].verify():
-            return False
+      # Verify block itself
+      if not current_block.verify():
+        return False
 
-        # Verify each subsequent block
-        for i in range(1, len(self.blocks)):
-            current_block = self.blocks[i]
-            previous_block = self.blocks[i - 1]
+      # Verify chain linkage
+      if current_block.header.previous_hash != previous_block.hash():
+        return False
 
-            # Verify block itself
-            if not current_block.verify():
-                return False
+      # Verify index sequence
+      if current_block.header.index != i:
+        return False
 
-            # Verify chain linkage
-            if current_block.header.previous_hash != previous_block.hash():
-                return False
+    return True
 
-            # Verify index sequence
-            if current_block.header.index != i:
-                return False
+  def get_receipt(self, operation_id: str) -> Receipt | None:
+    """
+    Retrieve a receipt by operation ID.
 
-        return True
+    Args:
+        operation_id: Operation ID to search for
 
-    def get_receipt(self, operation_id: str) -> Receipt | None:
-        """
-        Retrieve a receipt by operation ID.
+    Returns:
+        Receipt if found, None otherwise
+    """
+    for block in self.blocks:
+      if block.receipt.operation_id == operation_id:
+        return block.receipt
+    return None
 
-        Args:
-            operation_id: Operation ID to search for
+  def get_receipts_by_type(self, operation_type: str) -> list[Receipt]:
+    """
+    Get all receipts of a specific operation type.
 
-        Returns:
-            Receipt if found, None otherwise
-        """
-        for block in self.blocks:
-            if block.receipt.operation_id == operation_id:
-                return block.receipt
-        return None
+    Args:
+        operation_type: Type to filter by
 
-    def get_receipts_by_type(self, operation_type: str) -> list[Receipt]:
-        """
-        Get all receipts of a specific operation type.
+    Returns:
+        List of matching receipts
+    """
+    return [
+      block.receipt
+      for block in self.blocks
+      if block.receipt.operation_type == operation_type
+    ]
 
-        Args:
-            operation_type: Type to filter by
+  def get_receipts_by_media_type(self, media_type: str) -> list[Receipt]:
+    """
+    Get all receipts for a specific media type.
 
-        Returns:
-            List of matching receipts
-        """
-        return [block.receipt for block in self.blocks if block.receipt.operation_type == operation_type]
+    Args:
+        media_type: Media type to filter by
 
-    def get_receipts_by_media_type(self, media_type: str) -> list[Receipt]:
-        """
-        Get all receipts for a specific media type.
+    Returns:
+        List of matching receipts
+    """
+    return [
+      block.receipt for block in self.blocks if block.receipt.media_type == media_type
+    ]
 
-        Args:
-            media_type: Media type to filter by
+  def get_chain_summary(self) -> dict[str, Any]:
+    """
+    Get summary statistics for the chain.
 
-        Returns:
-            List of matching receipts
-        """
-        return [block.receipt for block in self.blocks if block.receipt.media_type == media_type]
+    Returns:
+        Dictionary with chain statistics
+    """
+    if not self.blocks:
+      return {"error": "Empty chain"}
 
-    def get_chain_summary(self) -> dict[str, Any]:
-        """
-        Get summary statistics for the chain.
+    operation_types = {}
+    media_types = {}
 
-        Returns:
-            Dictionary with chain statistics
-        """
-        if not self.blocks:
-            return {"error": "Empty chain"}
+    for block in self.blocks[1:]:  # Skip genesis
+      op_type = block.receipt.operation_type
+      media_type = block.receipt.media_type
 
-        operation_types = {}
-        media_types = {}
+      operation_types[op_type] = operation_types.get(op_type, 0) + 1
+      media_types[media_type] = media_types.get(media_type, 0) + 1
 
-        for block in self.blocks[1:]:  # Skip genesis
-            op_type = block.receipt.operation_type
-            media_type = block.receipt.media_type
+    return {
+      "chain_id": self.chain_id,
+      "total_blocks": len(self.blocks),
+      "total_receipts": len(self.blocks) - 1,  # Exclude genesis
+      "operation_types": operation_types,
+      "media_types": media_types,
+      "is_valid": self.verify_chain(),
+      "created": self.blocks[0].header.timestamp,
+      "last_updated": self.blocks[-1].header.timestamp if self.blocks else None,
+    }
 
-            operation_types[op_type] = operation_types.get(op_type, 0) + 1
-            media_types[media_type] = media_types.get(media_type, 0) + 1
+  def export_to_dict(self) -> dict[str, Any]:
+    """
+    Export chain to dictionary.
 
-        return {
-            "chain_id": self.chain_id,
-            "total_blocks": len(self.blocks),
-            "total_receipts": len(self.blocks) - 1,  # Exclude genesis
-            "operation_types": operation_types,
-            "media_types": media_types,
-            "is_valid": self.verify_chain(),
-            "created": self.blocks[0].header.timestamp,
-            "last_updated": self.blocks[-1].header.timestamp if self.blocks else None,
-        }
+    Returns:
+        Dictionary representation of chain
+    """
+    return {
+      "chain_id": self.chain_id,
+      "blocks": [block.to_dict() for block in self.blocks],
+    }
 
-    def export_to_dict(self) -> dict[str, Any]:
-        """
-        Export chain to dictionary.
+  def export_to_json(self, filepath: Path | None = None) -> str:
+    """
+    Export chain to JSON.
 
-        Returns:
-            Dictionary representation of chain
-        """
-        return {
-            "chain_id": self.chain_id,
-            "blocks": [block.to_dict() for block in self.blocks],
-        }
+    Args:
+        filepath: Optional path to save JSON file
 
-    def export_to_json(self, filepath: Path | None = None) -> str:
-        """
-        Export chain to JSON.
+    Returns:
+        JSON string representation
+    """
+    json_str = json.dumps(self.export_to_dict(), indent=2)
 
-        Args:
-            filepath: Optional path to save JSON file
+    if filepath:
+      filepath.write_text(json_str)
 
-        Returns:
-            JSON string representation
-        """
-        json_str = json.dumps(self.export_to_dict(), indent=2)
+    return json_str
 
-        if filepath:
-            filepath.write_text(json_str)
+  @classmethod
+  def import_from_dict(cls, data: dict[str, Any]) -> "ReceiptChain":
+    """
+    Import chain from dictionary.
 
-        return json_str
+    Args:
+        data: Dictionary representation
 
-    @classmethod
-    def import_from_dict(cls, data: dict[str, Any]) -> "ReceiptChain":
-        """
-        Import chain from dictionary.
+    Returns:
+        Reconstructed ReceiptChain
 
-        Args:
-            data: Dictionary representation
+    Raises:
+        ValueError: If data is invalid
+    """
+    chain = cls.__new__(cls)  # Create without calling __init__
+    chain.chain_id = data["chain_id"]
+    chain.blocks = [Block.from_dict(block_data) for block_data in data["blocks"]]
 
-        Returns:
-            Reconstructed ReceiptChain
+    # Verify imported chain
+    if not chain.verify_chain():
+      raise ValueError("Imported chain is invalid")
 
-        Raises:
-            ValueError: If data is invalid
-        """
-        chain = cls.__new__(cls)  # Create without calling __init__
-        chain.chain_id = data["chain_id"]
-        chain.blocks = [Block.from_dict(block_data) for block_data in data["blocks"]]
+    return chain
 
-        # Verify imported chain
-        if not chain.verify_chain():
-            raise ValueError("Imported chain is invalid")
+  @classmethod
+  def import_from_json(cls, json_str: str) -> "ReceiptChain":
+    """
+    Import chain from JSON string.
 
-        return chain
+    Args:
+        json_str: JSON string representation
 
-    @classmethod
-    def import_from_json(cls, json_str: str) -> "ReceiptChain":
-        """
-        Import chain from JSON string.
+    Returns:
+        Reconstructed ReceiptChain
+    """
+    data = json.loads(json_str)
+    return cls.import_from_dict(data)
 
-        Args:
-            json_str: JSON string representation
+  def __len__(self) -> int:
+    """Return number of blocks in chain"""
+    return len(self.blocks)
 
-        Returns:
-            Reconstructed ReceiptChain
-        """
-        data = json.loads(json_str)
-        return cls.import_from_dict(data)
-
-    def __len__(self) -> int:
-        """Return number of blocks in chain"""
-        return len(self.blocks)
-
-    def __getitem__(self, index: int) -> Block:
-        """Get block by index"""
-        return self.blocks[index]
+  def __getitem__(self, index: int) -> Block:
+    """Get block by index"""
+    return self.blocks[index]

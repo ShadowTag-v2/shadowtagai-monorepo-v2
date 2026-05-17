@@ -9,30 +9,38 @@ from app.db.base import Base
 
 
 class Project(Base):
-    """Project model for isolating memory contexts."""
+  """Project model for isolating memory contexts."""
 
-    __tablename__ = "projects"
+  __tablename__ = "projects"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    name = Column(String, nullable=False)
-    description = Column(Text, nullable=True)
+  id = Column(Integer, primary_key=True, index=True)
+  user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+  name = Column(String, nullable=False)
+  description = Column(Text, nullable=True)
 
-    # Project-specific memory settings
-    memory_enabled = Column(Boolean, default=True)
+  # Project-specific memory settings
+  memory_enabled = Column(Boolean, default=True)
 
-    # Project summary (synthesized from all conversations in this project)
-    summary = Column(Text, nullable=True)
-    last_synthesis_at = Column(DateTime, nullable=True)
+  # Project summary (synthesized from all conversations in this project)
+  summary = Column(Text, nullable=True)
+  last_synthesis_at = Column(DateTime, nullable=True)
 
-    # Timestamps
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+  # Timestamps
+  created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+  updated_at = Column(
+    DateTime,
+    default=lambda: datetime.now(timezone.utc),
+    onupdate=lambda: datetime.now(timezone.utc),
+  )
 
-    # Relationships
-    user = relationship("User", back_populates="projects")
-    conversations = relationship("Conversation", back_populates="project", cascade="all, delete-orphan")
-    memories = relationship("Memory", back_populates="project", cascade="all, delete-orphan")
+  # Relationships
+  user = relationship("User", back_populates="projects")
+  conversations = relationship(
+    "Conversation", back_populates="project", cascade="all, delete-orphan"
+  )
+  memories = relationship(
+    "Memory", back_populates="project", cascade="all, delete-orphan"
+  )
 
-    def __repr__(self) -> str:
-        return f"<Project(id={self.id}, name={self.name})>"
+  def __repr__(self) -> str:
+    return f"<Project(id={self.id}, name={self.name})>"

@@ -109,7 +109,9 @@ class SafeRepr(object):  # noqa: UP004
             item_suffix,
         ) in self.dict_types:
             if isinstance(obj, t) and has_obj_repr(t):
-                return self._repr_dict(obj, level, prefix, suffix, item_prefix, item_sep, item_suffix)
+                return self._repr_dict(
+                    obj, level, prefix, suffix, item_prefix, item_sep, item_suffix
+                )
 
         for t in self.string_types:
             if isinstance(obj, t) and has_obj_repr(t):
@@ -174,7 +176,10 @@ class SafeRepr(object):  # noqa: UP004
                 if size is not None and size > self.maxcollection[level]:
                     return True
                 return any(self._is_long_iter(item, level + 1) for item in obj)
-            return any(i > self.maxcollection[level] or self._is_long_iter(item, level + 1) for i, item in enumerate(obj))
+            return any(
+                i > self.maxcollection[level] or self._is_long_iter(item, level + 1)
+                for i, item in enumerate(obj)
+            )
 
         except Exception:
             # If anything breaks, assume the worst case.
@@ -482,7 +487,8 @@ def getVariableDescriptions():  # noqa: N802
             "language": "python",
         }
         for varName in globals()
-        if type(globals()[varName]).__name__ not in types_to_exclude and not varName.startswith("__")
+        if type(globals()[varName]).__name__ not in types_to_exclude
+        and not varName.startswith("__")
     ]
 
 

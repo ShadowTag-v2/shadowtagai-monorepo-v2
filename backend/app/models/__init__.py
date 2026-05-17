@@ -2,21 +2,21 @@
 """Database models."""
 
 from app.models.release import (
-    Release,
-    Deployment,
-    FeatureFlag,
-    DeploymentMetrics,
-    DeploymentStatus,
-    DeploymentStrategy,
-    FeatureFlagStatus,
+  Release,
+  Deployment,
+  FeatureFlag,
+  DeploymentMetrics,
+  DeploymentStatus,
+  DeploymentStrategy,
+  FeatureFlagStatus,
 )
 
 __all__ = [
-    "Release",
-    "Deployment",
-    "FeatureFlag",
-    "DeploymentMetrics",
-    "DeploymentStatus",
-    "DeploymentStrategy",
-    "FeatureFlagStatus",
+  "Release",
+  "Deployment",
+  "FeatureFlag",
+  "DeploymentMetrics",
+  "DeploymentStatus",
+  "DeploymentStrategy",
+  "FeatureFlagStatus",
 ]

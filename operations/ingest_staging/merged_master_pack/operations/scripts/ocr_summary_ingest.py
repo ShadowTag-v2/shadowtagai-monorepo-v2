@@ -9,10 +9,10 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "ocr"
 OUT.mkdir(parents=True, exist_ok=True)
 summary = {
-    "status": "ok",
-    "system": "ocr-summary-ingest",
-    "sources": [],
-    "note": "attach OCR/image summaries here and feed them through intake triage",
+  "status": "ok",
+  "system": "ocr-summary-ingest",
+  "sources": [],
+  "note": "attach OCR/image summaries here and feed them through intake triage",
 }
 (OUT / "latest.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
 print(json.dumps(summary))

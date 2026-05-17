@@ -22,23 +22,26 @@ governance_tools → pnkln.core.judge_six_pipeline (missing module).
 """
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
-    "shadowtag_embed_video": ("pnkln.tools.shadowtag_tools", "shadowtag_embed_video"),
-    "shadowtag_embed_audio": ("pnkln.tools.shadowtag_tools", "shadowtag_embed_audio"),
-    "shadowtag_verify": ("pnkln.tools.shadowtag_tools", "shadowtag_verify"),
-    "governance_validate": ("pnkln.tools.governance_tools", "governance_validate"),
-    "risk_assess_monte_carlo": ("pnkln.tools.governance_tools", "risk_assess_monte_carlo"),
+  "shadowtag_embed_video": ("pnkln.tools.shadowtag_tools", "shadowtag_embed_video"),
+  "shadowtag_embed_audio": ("pnkln.tools.shadowtag_tools", "shadowtag_embed_audio"),
+  "shadowtag_verify": ("pnkln.tools.shadowtag_tools", "shadowtag_verify"),
+  "governance_validate": ("pnkln.tools.governance_tools", "governance_validate"),
+  "risk_assess_monte_carlo": (
+    "pnkln.tools.governance_tools",
+    "risk_assess_monte_carlo",
+  ),
 }
 
 
 def __getattr__(name: str):
-    """Lazy import all public symbols to avoid cascade import failures."""
-    if name in _LAZY_IMPORTS:
-        module_path, attr = _LAZY_IMPORTS[name]
-        import importlib
-        mod = importlib.import_module(module_path)
-        return getattr(mod, attr)
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+  """Lazy import all public symbols to avoid cascade import failures."""
+  if name in _LAZY_IMPORTS:
+    module_path, attr = _LAZY_IMPORTS[name]
+    import importlib
+
+    mod = importlib.import_module(module_path)
+    return getattr(mod, attr)
+  raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 __all__ = list(_LAZY_IMPORTS.keys())
-

@@ -84,7 +84,11 @@ def is_file(path: Union[str, pathlib.PurePath]) -> bool:
 
 
 def venv_exists(name: str) -> bool:
-    return (CWD / name).exists() and (CWD / name / "pyvenv.cfg").exists() and file_exists(get_venv_path(name))
+    return (
+        (CWD / name).exists()
+        and (CWD / name / "pyvenv.cfg").exists()
+        and file_exists(get_venv_path(name))
+    )
 
 
 def run_process(args: Sequence[str], error_message: str) -> None:

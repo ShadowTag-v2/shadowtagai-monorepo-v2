@@ -40,6 +40,7 @@ def patch_sys_path():
   # Import base pnkln, then extend its __path__ so governance is findable.
   # Also patch __spec__.submodule_search_locations for importlib mode.
   import pnkln
+
   apps_pnkln = str(PNKLN_ROOT / "pnkln")
   if apps_pnkln not in pnkln.__path__:
     pnkln.__path__.insert(0, apps_pnkln)

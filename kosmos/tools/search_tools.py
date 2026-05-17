@@ -10,18 +10,18 @@ from typing import Any
 
 
 def google_search(query: str, limit: int = 10) -> str:
-    """
-    Search Google/Google Scholar for papers and articles.
+  """
+  Search Google/Google Scholar for papers and articles.
 
-    Args:
-        query: Search query string
-        limit: Maximum number of results
+  Args:
+      query: Search query string
+      limit: Maximum number of results
 
-    Returns:
-        Search results as formatted string
-    """
-    # Example implementation - replace with actual Google Scholar API
-    return f"""
+  Returns:
+      Search results as formatted string
+  """
+  # Example implementation - replace with actual Google Scholar API
+  return f"""
 Search results for: "{query}"
 
 1. [Paper] "Deep Learning for Autonomous Agents" - Smith et al. (2023)
@@ -41,18 +41,18 @@ Search results for: "{query}"
 
 
 def arxiv_search(query: str, max_results: int = 10) -> str:
-    """
-    Search arXiv for academic papers.
+  """
+  Search arXiv for academic papers.
 
-    Args:
-        query: Search query string
-        max_results: Maximum number of results
+  Args:
+      query: Search query string
+      max_results: Maximum number of results
 
-    Returns:
-        Search results as formatted string
-    """
-    # Example implementation - replace with actual arXiv API
-    return f"""
+  Returns:
+      Search results as formatted string
+  """
+  # Example implementation - replace with actual arXiv API
+  return f"""
 arXiv search results for: "{query}"
 
 ID: 2210.03629
@@ -74,27 +74,27 @@ Categories: cs.AI, cs.LG
 
 
 def semantic_scholar_search(query: str, limit: int = 10) -> dict[str, Any]:
-    """
-    Search Semantic Scholar API for papers.
+  """
+  Search Semantic Scholar API for papers.
 
-    Args:
-        query: Search query
-        limit: Maximum results
+  Args:
+      query: Search query
+      limit: Maximum results
 
-    Returns:
-        Dictionary with search results
-    """
-    # Example implementation - replace with actual Semantic Scholar API
-    return {
-        "total": limit,
-        "results": [
-            {
-                "paperId": "abc123",
-                "title": "Example Paper on Autonomous Agents",
-                "authors": ["Author A", "Author B"],
-                "year": 2023,
-                "citationCount": 42,
-                "abstract": "This paper explores...",
-            }
-        ],
-    }
+  Returns:
+      Dictionary with search results
+  """
+  # Example implementation - replace with actual Semantic Scholar API
+  return {
+    "total": limit,
+    "results": [
+      {
+        "paperId": "abc123",
+        "title": "Example Paper on Autonomous Agents",
+        "authors": ["Author A", "Author B"],
+        "year": 2023,
+        "citationCount": 42,
+        "abstract": "This paper explores...",
+      }
+    ],
+  }

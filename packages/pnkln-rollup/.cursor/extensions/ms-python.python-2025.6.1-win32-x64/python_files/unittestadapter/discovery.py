@@ -122,7 +122,9 @@ if __name__ == "__main__":
 
     if manage_py_path := os.environ.get("MANAGE_PY_PATH"):
         # Django configuration requires manage.py path to enable.
-        print(f"MANAGE_PY_PATH is set, running Django discovery with path to manage.py as: ${manage_py_path}")
+        print(
+            f"MANAGE_PY_PATH is set, running Django discovery with path to manage.py as: ${manage_py_path}"
+        )
         try:
             # collect args for Django discovery runner.
             args = argv[index + 1 :] or []

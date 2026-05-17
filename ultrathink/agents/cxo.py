@@ -6,13 +6,19 @@ Iterates relentlessly. Takes screenshots, compares, refines. First version is ne
 """
 
 from ..core.base_agent import BaseAgent
-from ..core.types import AgentContext, AgentResponse, AgentRole, ReasoningMethod, UltrathinkConfig
+from ..core.types import (
+  AgentContext,
+  AgentResponse,
+  AgentRole,
+  ReasoningMethod,
+  UltrathinkConfig,
+)
 
 
 class ChiefExperienceOfficer(BaseAgent):
-    """Chief Experience Officer - Iteration and refinement specialist."""
+  """Chief Experience Officer - Iteration and refinement specialist."""
 
-    SYSTEM_PROMPT = """You are the Chief Experience Officer of pinkln. Your mandate:
+  SYSTEM_PROMPT = """You are the Chief Experience Officer of pinkln. Your mandate:
 
 - Perfect is the enemy of great, but great is achievable through iteration.
 - Take the current state as a baseline, not a destination.
@@ -25,28 +31,32 @@ Share your process so the user sees the craft behind the polish.
 
 You are the guardian of "insanely great." You don't ship until it's right."""
 
-    def __init__(self, config: UltrathinkConfig | None = None):
-        super().__init__(role=AgentRole.CXO, system_prompt=self.SYSTEM_PROMPT, config=config)
+  def __init__(self, config: UltrathinkConfig | None = None):
+    super().__init__(
+      role=AgentRole.CXO, system_prompt=self.SYSTEM_PROMPT, config=config
+    )
 
-    async def execute(self, context: AgentContext) -> AgentResponse:
-        """Execute iterative refinement."""
-        if not self.validate_security(context):
-            return AgentResponse(role=self.role, content="SECURITY VALIDATION FAILED.", confidence=0.0)
+  async def execute(self, context: AgentContext) -> AgentResponse:
+    """Execute iterative refinement."""
+    if not self.validate_security(context):
+      return AgentResponse(
+        role=self.role, content="SECURITY VALIDATION FAILED.", confidence=0.0
+      )
 
-        reasoning = self.create_reasoning_path(
-            method=ReasoningMethod.CHAIN_OF_THOUGHT,
-            steps=[
-                "1. Captured current state baseline",
-                "2. Assessed against elegance criteria",
-                "3. Identified friction points",
-                "4. Applied surgical improvements (3 iterations)",
-                "5. Validated functionality preserved",
-                "6. Built evolution changelog",
-            ],
-            confidence=0.88,
-        )
+    reasoning = self.create_reasoning_path(
+      method=ReasoningMethod.CHAIN_OF_THOUGHT,
+      steps=[
+        "1. Captured current state baseline",
+        "2. Assessed against elegance criteria",
+        "3. Identified friction points",
+        "4. Applied surgical improvements (3 iterations)",
+        "5. Validated functionality preserved",
+        "6. Built evolution changelog",
+      ],
+      confidence=0.88,
+    )
 
-        content = f"""# Chief Experience Officer Report
+    content = f"""# Chief Experience Officer Report
 
 ## Iteration Journey
 
@@ -88,14 +98,18 @@ Current state captured. Friction points identified.
 *Iterated with care. Shipped with confidence.*
 """
 
-        response = AgentResponse(
-            role=self.role,
-            content=content,
-            reasoning_path=reasoning,
-            confidence=reasoning.confidence,
-            recommendations=["Ship current version", "Monitor user feedback", "Prepare for next iteration cycle"],
-            next_steps=["Deploy to production", "Set up monitoring", "Gather user insights"],
-        )
+    response = AgentResponse(
+      role=self.role,
+      content=content,
+      reasoning_path=reasoning,
+      confidence=reasoning.confidence,
+      recommendations=[
+        "Ship current version",
+        "Monitor user feedback",
+        "Prepare for next iteration cycle",
+      ],
+      next_steps=["Deploy to production", "Set up monitoring", "Gather user insights"],
+    )
 
-        self.record_execution(response)
-        return response
+    self.record_execution(response)
+    return response

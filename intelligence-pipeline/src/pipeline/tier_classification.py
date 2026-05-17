@@ -16,140 +16,154 @@ import json
 import logging
 from datetime import datetime
 
-from ..models.intelligence_item import IntelligenceItem, IntelligenceTier, TierClassification
+from ..models.intelligence_item import (
+  IntelligenceItem,
+  IntelligenceTier,
+  TierClassification,
+)
 
 logger = logging.getLogger(__name__)
 
 
 class TierClassificationEngine:
+  """
+  Tier classification engine using Claude API
+  """
+
+  # Score thresholds
+  TIER_1_THRESHOLD = 0.7
+  TIER_2_THRESHOLD = 0.4
+
+  def __init__(self, api_key: str | None = None):
     """
-    Tier classification engine using Claude API
+    Initialize tier classification engine
+
+    Args:
+        api_key: Anthropic API key (defaults to env var)
     """
+    self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
+    if not self.api_key:
+      raise ValueError("ANTHROPIC_API_KEY not set")
 
-    # Score thresholds
-    TIER_1_THRESHOLD = 0.7
-    TIER_2_THRESHOLD = 0.4
+    self.client = anthropic.Anthropic(api_key=self.api_key)
+    logger.info("TierClassificationEngine initialized")
 
-    def __init__(self, api_key: str | None = None):
-        """
-        Initialize tier classification engine
+  async def classify_items(
+    self, items: list[IntelligenceItem]
+  ) -> list[IntelligenceItem]:
+    """
+    Classify all intelligence items into tiers
 
-        Args:
-            api_key: Anthropic API key (defaults to env var)
-        """
-        self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
-        if not self.api_key:
-            raise ValueError("ANTHROPIC_API_KEY not set")
+    Args:
+        items: List of scored intelligence items
 
-        self.client = anthropic.Anthropic(api_key=self.api_key)
-        logger.info("TierClassificationEngine initialized")
+    Returns:
+        Same list with tier and tier_reasoning populated
+    """
+    logger.info(f"=== Tier Classification for {len(items)} items ===")
+    start_time = datetime.now()
 
-    async def classify_items(self, items: list[IntelligenceItem]) -> list[IntelligenceItem]:
-        """
-        Classify all intelligence items into tiers
+    tier_counts = {
+      IntelligenceTier.TIER_1: 0,
+      IntelligenceTier.TIER_2: 0,
+      IntelligenceTier.TIER_3: 0,
+    }
 
-        Args:
-            items: List of scored intelligence items
+    for i, item in enumerate(items):
+      try:
+        classification = await self.classify_item(item)
+        item.tier = classification.tier
+        item.tier_reasoning = classification.reasoning
 
-        Returns:
-            Same list with tier and tier_reasoning populated
-        """
-        logger.info(f"=== Tier Classification for {len(items)} items ===")
-        start_time = datetime.now()
+        tier_counts[classification.tier] += 1
 
-        tier_counts = {IntelligenceTier.TIER_1: 0, IntelligenceTier.TIER_2: 0, IntelligenceTier.TIER_3: 0}
-
-        for i, item in enumerate(items):
-            try:
-                classification = await self.classify_item(item)
-                item.tier = classification.tier
-                item.tier_reasoning = classification.reasoning
-
-                tier_counts[classification.tier] += 1
-
-                logger.info(f"[{i + 1}/{len(items)}] {item.title[:50]}... → {classification.tier.value.upper()} (score: {item.jr_score:.2f})")
-
-            except Exception as e:
-                logger.error(f"Error classifying item {item.id}: {e}")
-                # Default to Tier 3 on error
-                item.tier = IntelligenceTier.TIER_3
-                item.tier_reasoning = f"Classification failed: {str(e)}"
-                tier_counts[IntelligenceTier.TIER_3] += 1
-
-        duration = (datetime.now() - start_time).total_seconds()
         logger.info(
-            f"✓ Classification complete in {duration:.1f}s\n"
-            f"  Tier 1: {tier_counts[IntelligenceTier.TIER_1]} items\n"
-            f"  Tier 2: {tier_counts[IntelligenceTier.TIER_2]} items\n"
-            f"  Tier 3: {tier_counts[IntelligenceTier.TIER_3]} items"
+          f"[{i + 1}/{len(items)}] {item.title[:50]}... → {classification.tier.value.upper()} (score: {item.jr_score:.2f})"
         )
 
-        return items
+      except Exception as e:
+        logger.error(f"Error classifying item {item.id}: {e}")
+        # Default to Tier 3 on error
+        item.tier = IntelligenceTier.TIER_3
+        item.tier_reasoning = f"Classification failed: {str(e)}"
+        tier_counts[IntelligenceTier.TIER_3] += 1
 
-    async def classify_item(self, item: IntelligenceItem) -> TierClassification:
-        """
-        Classify a single intelligence item
+    duration = (datetime.now() - start_time).total_seconds()
+    logger.info(
+      f"✓ Classification complete in {duration:.1f}s\n"
+      f"  Tier 1: {tier_counts[IntelligenceTier.TIER_1]} items\n"
+      f"  Tier 2: {tier_counts[IntelligenceTier.TIER_2]} items\n"
+      f"  Tier 3: {tier_counts[IntelligenceTier.TIER_3]} items"
+    )
 
-        Args:
-            item: Scored intelligence item
+    return items
 
-        Returns:
-            TierClassification with tier and reasoning
-        """
-        # Initial classification based on score thresholds
-        if item.jr_score >= self.TIER_1_THRESHOLD:
-            initial_tier = IntelligenceTier.TIER_1
-        elif item.jr_score >= self.TIER_2_THRESHOLD:
-            initial_tier = IntelligenceTier.TIER_2
-        else:
-            initial_tier = IntelligenceTier.TIER_3
+  async def classify_item(self, item: IntelligenceItem) -> TierClassification:
+    """
+    Classify a single intelligence item
 
-        # Use Claude for nuanced classification and action recommendations
-        prompt = self._build_classification_prompt(item, initial_tier)
+    Args:
+        item: Scored intelligence item
 
-        try:
-            message = self.client.messages.create(
-                model="claude-3-5-haiku-20241022",  # Cost-efficient
-                max_tokens=512,
-                temperature=0.3,
-                messages=[{"role": "user", "content": prompt}],
-            )
+    Returns:
+        TierClassification with tier and reasoning
+    """
+    # Initial classification based on score thresholds
+    if item.jr_score >= self.TIER_1_THRESHOLD:
+      initial_tier = IntelligenceTier.TIER_1
+    elif item.jr_score >= self.TIER_2_THRESHOLD:
+      initial_tier = IntelligenceTier.TIER_2
+    else:
+      initial_tier = IntelligenceTier.TIER_3
 
-            response_text = message.content[0].text
-            classification_data = json.loads(response_text)
+    # Use Claude for nuanced classification and action recommendations
+    prompt = self._build_classification_prompt(item, initial_tier)
 
-            # Use Claude's tier recommendation or fall back to score-based
-            tier_str = classification_data.get("tier", initial_tier.value)
-            tier = IntelligenceTier(tier_str)
+    try:
+      message = self.client.messages.create(
+        model="claude-3-5-haiku-20241022",  # Cost-efficient
+        max_tokens=512,
+        temperature=0.3,
+        messages=[{"role": "user", "content": prompt}],
+      )
 
-            return TierClassification(
-                tier=tier,
-                reasoning=classification_data["reasoning"],
-                confidence=classification_data["confidence"],
-                action_recommendation=classification_data["action_recommendation"],
-            )
+      response_text = message.content[0].text
+      classification_data = json.loads(response_text)
 
-        except (json.JSONDecodeError, KeyError, ValueError) as e:
-            logger.warning(f"Failed to parse classification response, using score-based: {e}")
-            return TierClassification(
-                tier=initial_tier,
-                reasoning=f"Score-based classification: {item.jr_reasoning}",
-                confidence=0.6,
-                action_recommendation="Review manually",
-            )
+      # Use Claude's tier recommendation or fall back to score-based
+      tier_str = classification_data.get("tier", initial_tier.value)
+      tier = IntelligenceTier(tier_str)
 
-    def _build_classification_prompt(self, item: IntelligenceItem, initial_tier: IntelligenceTier) -> str:
-        """
-        Build classification prompt for Claude
+      return TierClassification(
+        tier=tier,
+        reasoning=classification_data["reasoning"],
+        confidence=classification_data["confidence"],
+        action_recommendation=classification_data["action_recommendation"],
+      )
 
-        Args:
-            item: Intelligence item
-            initial_tier: Initial score-based tier
+    except (json.JSONDecodeError, KeyError, ValueError) as e:
+      logger.warning(f"Failed to parse classification response, using score-based: {e}")
+      return TierClassification(
+        tier=initial_tier,
+        reasoning=f"Score-based classification: {item.jr_reasoning}",
+        confidence=0.6,
+        action_recommendation="Review manually",
+      )
 
-        Returns:
-            Prompt string
-        """
-        return f"""You are a tier classification specialist for PNKLN's intelligence pipeline.
+  def _build_classification_prompt(
+    self, item: IntelligenceItem, initial_tier: IntelligenceTier
+  ) -> str:
+    """
+    Build classification prompt for Claude
+
+    Args:
+        item: Intelligence item
+        initial_tier: Initial score-based tier
+
+    Returns:
+        Prompt string
+    """
+    return f"""You are a tier classification specialist for PNKLN's intelligence pipeline.
 
 INTELLIGENCE ITEM:
 - Title: {item.title}
@@ -182,32 +196,34 @@ Provide ONLY the JSON response, no other text.
 
 
 async def main():
-    """
-    Main tier classification entry point
-    """
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+  """
+  Main tier classification entry point
+  """
+  logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  )
 
-    # Load scored items
-    input_file = "/tmp/intelligence_items_scored.json"
-    with open(input_file) as f:
-        items_data = json.load(f)
+  # Load scored items
+  input_file = "/tmp/intelligence_items_scored.json"
+  with open(input_file) as f:
+    items_data = json.load(f)
 
-    items = [IntelligenceItem.from_dict(item_data) for item_data in items_data]
+  items = [IntelligenceItem.from_dict(item_data) for item_data in items_data]
 
-    # Classify items
-    engine = TierClassificationEngine()
-    classified_items = await engine.classify_items(items)
+  # Classify items
+  engine = TierClassificationEngine()
+  classified_items = await engine.classify_items(items)
 
-    # Save classified items
-    output_file = "/tmp/intelligence_items_classified.json"
-    with open(output_file, "w") as f:
-        json.dump([item.to_dict() for item in classified_items], f, indent=2, default=str)
+  # Save classified items
+  output_file = "/tmp/intelligence_items_classified.json"
+  with open(output_file, "w") as f:
+    json.dump([item.to_dict() for item in classified_items], f, indent=2, default=str)
 
-    print(f"✓ Classified {len(classified_items)} items")
-    print(f"✓ Saved to {output_file}")
+  print(f"✓ Classified {len(classified_items)} items")
+  print(f"✓ Saved to {output_file}")
 
 
 if __name__ == "__main__":
-    import asyncio
+  import asyncio
 
-    asyncio.run(main())
+  asyncio.run(main())

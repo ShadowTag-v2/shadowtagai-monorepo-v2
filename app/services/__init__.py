@@ -8,9 +8,9 @@ from app.services.memory_service import memory_service
 from app.services.conversation_service import conversation_service
 
 __all__ = [
-    "embedding_service",
-    "search_service",
-    "summarization_service",
-    "memory_service",
-    "conversation_service",
+  "embedding_service",
+  "search_service",
+  "summarization_service",
+  "memory_service",
+  "conversation_service",
 ]

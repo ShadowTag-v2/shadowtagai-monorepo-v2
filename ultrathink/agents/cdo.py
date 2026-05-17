@@ -6,22 +6,28 @@ Embodies Steve Jobs' eye for design. Questions every assumption, polishes until 
 """
 
 from ..core.base_agent import BaseAgent
-from ..core.types import AgentContext, AgentResponse, AgentRole, ReasoningMethod, UltrathinkConfig
+from ..core.types import (
+  AgentContext,
+  AgentResponse,
+  AgentRole,
+  ReasoningMethod,
+  UltrathinkConfig,
+)
 
 
 class ChiefDesignOfficer(BaseAgent):
-    """
-    Chief Design Officer (CDO)
+  """
+  Chief Design Officer (CDO)
 
-    Core Identity: Design-first thinking, ruthless simplification, insanely great execution.
+  Core Identity: Design-first thinking, ruthless simplification, insanely great execution.
 
-    Capabilities:
-    - Design audits of processes, code, strategies, content
-    - Refinement suggestions backed by elegance principles
-    - Before/After narratives showing craft
-    """
+  Capabilities:
+  - Design audits of processes, code, strategies, content
+  - Refinement suggestions backed by elegance principles
+  - Before/After narratives showing craft
+  """
 
-    SYSTEM_PROMPT = """You are the Chief Design Officer of pinkln. Your mandate:
+  SYSTEM_PROMPT = """You are the Chief Design Officer of pinkln. Your mandate:
 
 - Every deliverable must be beautiful FIRST, functional second.
 - Challenge assumptions ruthlessly: "Why must it work this way?"
@@ -40,60 +46,64 @@ Core Principles:
 
 You are Steve Jobs reviewing an iPhone prototype. Every pixel matters."""
 
-    def __init__(self, config: UltrathinkConfig | None = None):
-        super().__init__(role=AgentRole.CDO, system_prompt=self.SYSTEM_PROMPT, config=config)
+  def __init__(self, config: UltrathinkConfig | None = None):
+    super().__init__(
+      role=AgentRole.CDO, system_prompt=self.SYSTEM_PROMPT, config=config
+    )
 
-    async def execute(self, context: AgentContext) -> AgentResponse:
-        """
-        Execute design review and refinement.
+  async def execute(self, context: AgentContext) -> AgentResponse:
+    """
+    Execute design review and refinement.
 
-        Process:
-        1. Security validation
-        2. Assumption interrogation
-        3. Design audit (use Design Audit Skill)
-        4. Elegance assessment
-        5. Recommendations
-        6. Self-reflection
-        """
-        # Security checkpoint
-        if not self.validate_security(context):
-            return AgentResponse(
-                role=self.role,
-                content="SECURITY VALIDATION FAILED. This is now the only priority.",
-                confidence=0.0,
-                recommendations=["Fix security issues before proceeding"],
-            )
+    Process:
+    1. Security validation
+    2. Assumption interrogation
+    3. Design audit (use Design Audit Skill)
+    4. Elegance assessment
+    5. Recommendations
+    6. Self-reflection
+    """
+    # Security checkpoint
+    if not self.validate_security(context):
+      return AgentResponse(
+        role=self.role,
+        content="SECURITY VALIDATION FAILED. This is now the only priority.",
+        confidence=0.0,
+        recommendations=["Fix security issues before proceeding"],
+      )
 
-        # Interrogate assumptions
-        assumptions = self.interrogate_assumptions(context.task)
+    # Interrogate assumptions
+    assumptions = self.interrogate_assumptions(context.task)
 
-        # Assess current elegance
-        elegance_assessment = self.assess_elegance(context.task)
+    # Assess current elegance
+    elegance_assessment = self.assess_elegance(context.task)
 
-        # Apply Boy Scout Rule thinking
-        self.apply_boy_scout_rule(context.task)
+    # Apply Boy Scout Rule thinking
+    self.apply_boy_scout_rule(context.task)
 
-        # Create reasoning path
-        reasoning = self.create_reasoning_path(
-            method=ReasoningMethod.CHAIN_OF_THOUGHT,
-            steps=[
-                "1. Validated security constraints",
-                "2. Questioned core assumptions about the design",
-                "3. Assessed elegance against pinkln criteria",
-                "4. Identified simplification opportunities",
-                "5. Applied Boy Scout Rule improvements",
-            ],
-            confidence=0.85,
-        )
+    # Create reasoning path
+    reasoning = self.create_reasoning_path(
+      method=ReasoningMethod.CHAIN_OF_THOUGHT,
+      steps=[
+        "1. Validated security constraints",
+        "2. Questioned core assumptions about the design",
+        "3. Assessed elegance against pinkln criteria",
+        "4. Identified simplification opportunities",
+        "5. Applied Boy Scout Rule improvements",
+      ],
+      confidence=0.85,
+    )
 
-        # Generate recommendations
-        recommendations = self._generate_design_recommendations(context.task, assumptions, elegance_assessment)
+    # Generate recommendations
+    recommendations = self._generate_design_recommendations(
+      context.task, assumptions, elegance_assessment
+    )
 
-        # Self-reflection
-        reflection = self.self_reflect()
+    # Self-reflection
+    reflection = self.self_reflect()
 
-        # Build response
-        content = f"""# Chief Design Officer Analysis
+    # Build response
+    content = f"""# Chief Design Officer Analysis
 
 ## Design Philosophy Applied
 
@@ -123,25 +133,35 @@ Each recommendation represents the ONLY elegant path forward.
 *Designed with Steve Jobs-level attention to detail.*
 """
 
-        response = AgentResponse(
-            role=self.role,
-            content=content,
-            reasoning_path=reasoning,
-            confidence=reasoning.confidence,
-            recommendations=recommendations,
-            next_steps=["Implement design improvements", "Iterate until insanely great", "Validate with users"],
-            metadata={"assumptions_challenged": len(assumptions), "elegance_criteria_assessed": len(elegance_assessment), "reflection": reflection},
-        )
+    response = AgentResponse(
+      role=self.role,
+      content=content,
+      reasoning_path=reasoning,
+      confidence=reasoning.confidence,
+      recommendations=recommendations,
+      next_steps=[
+        "Implement design improvements",
+        "Iterate until insanely great",
+        "Validate with users",
+      ],
+      metadata={
+        "assumptions_challenged": len(assumptions),
+        "elegance_criteria_assessed": len(elegance_assessment),
+        "reflection": reflection,
+      },
+    )
 
-        self.record_execution(response)
-        return response
+    self.record_execution(response)
+    return response
 
-    def _generate_design_recommendations(self, task: str, assumptions: list, elegance_assessment: dict) -> list:
-        """Generate specific design recommendations."""
-        return [
-            "Simplify the user interface by removing unnecessary elements",
-            "Consolidate related functionality into unified flows",
-            "Improve naming to reveal intent without documentation",
-            "Align visual hierarchy with functional importance",
-            "Remove friction from critical user paths",
-        ]
+  def _generate_design_recommendations(
+    self, task: str, assumptions: list, elegance_assessment: dict
+  ) -> list:
+    """Generate specific design recommendations."""
+    return [
+      "Simplify the user interface by removing unnecessary elements",
+      "Consolidate related functionality into unified flows",
+      "Improve naming to reveal intent without documentation",
+      "Align visual hierarchy with functional importance",
+      "Remove friction from critical user paths",
+    ]

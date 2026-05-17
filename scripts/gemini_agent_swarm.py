@@ -36,7 +36,9 @@ sys.path.insert(0, str(REPO_ROOT))
 from core.aegaeon import SwarmRouter, SwarmTask, SwarmTier
 from core.rag_evolve import search_corpus  # type: ignore[import]
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logging.basicConfig(
+  level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 logger = logging.getLogger("gemini_agent_swarm")
 
 # ── Agent role prompts ──────────────────────────────────────────────────────
@@ -100,105 +102,112 @@ Output a JSON object with keys:
 
 
 async def run_swarm(query: str) -> dict:
-    router = SwarmRouter()
+  router = SwarmRouter()
 
-    # Phase 1 — Research (Fast Path): pull corpus hits
-    hits = search_corpus(query, top_k=8)
-    corpus_text = "\n".join(f"[{h.get('class', '?')}] {h.get('name', '?')}: {h.get('text', '')[:300]}" for h in hits)
+  # Phase 1 — Research (Fast Path): pull corpus hits
+  hits = search_corpus(query, top_k=8)
+  corpus_text = "\n".join(
+    f"[{h.get('class', '?')}] {h.get('name', '?')}: {h.get('text', '')[:300]}"
+    for h in hits
+  )
 
-    research_task = SwarmTask(
-        "research",
-        _RESEARCH_TMPL.format(query=query, corpus_hits=corpus_text or "(no hits)"),
-        tier=SwarmTier.FAST,
-    )
-    [research_result] = await router.dispatch([research_task])
-    research_data = _safe_json(research_result.text)
-    evidence_str = json.dumps(research_data.get("evidence", []), indent=2)
+  research_task = SwarmTask(
+    "research",
+    _RESEARCH_TMPL.format(query=query, corpus_hits=corpus_text or "(no hits)"),
+    tier=SwarmTier.FAST,
+  )
+  [research_result] = await router.dispatch([research_task])
+  research_data = _safe_json(research_result.text)
+  evidence_str = json.dumps(research_data.get("evidence", []), indent=2)
 
-    # Phase 2 — Synthesize (Fast Path) + Critique (Heavy Lift): parallel
-    synth_task = SwarmTask(
-        "synthesize",
-        _SYNTHESIZE_TMPL.format(query=query, evidence=evidence_str),
-        tier=SwarmTier.FAST,
-    )
-    crit_task = SwarmTask(
-        "critique_preliminary",
-        _CRITIQUE_TMPL.format(recommendation=evidence_str),
-        tier=SwarmTier.HEAVY,
-    )
-    synth_result, _ = await router.dispatch([synth_task, crit_task])
-    synth_data = _safe_json(synth_result.text)
-    recommendation = synth_data.get("recommendation", synth_result.text[:500])
+  # Phase 2 — Synthesize (Fast Path) + Critique (Heavy Lift): parallel
+  synth_task = SwarmTask(
+    "synthesize",
+    _SYNTHESIZE_TMPL.format(query=query, evidence=evidence_str),
+    tier=SwarmTier.FAST,
+  )
+  crit_task = SwarmTask(
+    "critique_preliminary",
+    _CRITIQUE_TMPL.format(recommendation=evidence_str),
+    tier=SwarmTier.HEAVY,
+  )
+  synth_result, _ = await router.dispatch([synth_task, crit_task])
+  synth_data = _safe_json(synth_result.text)
+  recommendation = synth_data.get("recommendation", synth_result.text[:500])
 
-    # Phase 3 — Final critique + architect directive: parallel
-    final_crit_task = SwarmTask(
-        "critique_final",
-        _CRITIQUE_TMPL.format(recommendation=recommendation),
-        tier=SwarmTier.HEAVY,
-    )
-    [crit_result] = await router.dispatch([final_crit_task])
-    crit_data = _safe_json(crit_result.text)
+  # Phase 3 — Final critique + architect directive: parallel
+  final_crit_task = SwarmTask(
+    "critique_final",
+    _CRITIQUE_TMPL.format(recommendation=recommendation),
+    tier=SwarmTier.HEAVY,
+  )
+  [crit_result] = await router.dispatch([final_crit_task])
+  crit_data = _safe_json(crit_result.text)
 
-    arch_task = SwarmTask(
-        "architect",
-        _ARCHITECT_TMPL.format(
-            recommendation=recommendation,
-            verdict=crit_data.get("verdict", "unknown"),
-        ),
-        tier=SwarmTier.HEAVY,
-    )
-    [arch_result] = await router.dispatch([arch_task])
-    arch_data = _safe_json(arch_result.text)
+  arch_task = SwarmTask(
+    "architect",
+    _ARCHITECT_TMPL.format(
+      recommendation=recommendation,
+      verdict=crit_data.get("verdict", "unknown"),
+    ),
+    tier=SwarmTier.HEAVY,
+  )
+  [arch_result] = await router.dispatch([arch_task])
+  arch_data = _safe_json(arch_result.text)
 
-    output = {
-        "query": query,
-        "research": research_data,
-        "synthesis": synth_data,
-        "critique": crit_data,
-        "architect_directive": arch_data,
-    }
-    logger.info("Swarm complete. Judge6 gate: %s", arch_data.get("judge6_gate", "?"))
-    return output
+  output = {
+    "query": query,
+    "research": research_data,
+    "synthesis": synth_data,
+    "critique": crit_data,
+    "architect_directive": arch_data,
+  }
+  logger.info("Swarm complete. Judge6 gate: %s", arch_data.get("judge6_gate", "?"))
+  return output
 
 
 def _safe_json(text: str) -> dict:
-    try:
-        start = text.find("{")
-        end = text.rfind("}") + 1
-        if start >= 0 and end > start:
-            return json.loads(text[start:end])
-    except json.JSONDecodeError:
-        pass
-    return {"raw": text}
+  try:
+    start = text.find("{")
+    end = text.rfind("}") + 1
+    if start >= 0 and end > start:
+      return json.loads(text[start:end])
+  except json.JSONDecodeError:
+    pass
+  return {"raw": text}
 
 
 async def _loop(query: str, interval: int) -> None:
-    logger.info("Starting continuous swarm loop (interval=%ds)", interval)
-    while True:
-        try:
-            result = await run_swarm(query)
-            directive = result.get("architect_directive", {}).get("summary", "")
-            logger.info("Loop result: %s", directive)
-        except Exception as exc:
-            logger.error("Swarm iteration failed: %s", exc)
-        await asyncio.sleep(interval)
+  logger.info("Starting continuous swarm loop (interval=%ds)", interval)
+  while True:
+    try:
+      result = await run_swarm(query)
+      directive = result.get("architect_directive", {}).get("summary", "")
+      logger.info("Loop result: %s", directive)
+    except Exception as exc:
+      logger.error("Swarm iteration failed: %s", exc)
+    await asyncio.sleep(interval)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Gemini Agent Swarm")
-    parser.add_argument("--query", default="improve Antigravity tech stack and biz plan alignment")
-    parser.add_argument("--loop", action="store_true", help="Run continuously")
-    parser.add_argument("--interval", type=int, default=3600, help="Loop interval in seconds")
-    parser.add_argument("--out", help="Write JSON result to file")
-    args = parser.parse_args()
+  parser = argparse.ArgumentParser(description="Gemini Agent Swarm")
+  parser.add_argument(
+    "--query", default="improve Antigravity tech stack and biz plan alignment"
+  )
+  parser.add_argument("--loop", action="store_true", help="Run continuously")
+  parser.add_argument(
+    "--interval", type=int, default=3600, help="Loop interval in seconds"
+  )
+  parser.add_argument("--out", help="Write JSON result to file")
+  args = parser.parse_args()
 
-    if args.loop:
-        asyncio.run(_loop(args.query, args.interval))
+  if args.loop:
+    asyncio.run(_loop(args.query, args.interval))
+  else:
+    result = asyncio.run(run_swarm(args.query))
+    output = json.dumps(result, indent=2)
+    if args.out:
+      Path(args.out).write_text(output)
+      logger.info("Result written to %s", args.out)
     else:
-        result = asyncio.run(run_swarm(args.query))
-        output = json.dumps(result, indent=2)
-        if args.out:
-            Path(args.out).write_text(output)
-            logger.info("Result written to %s", args.out)
-        else:
-            print(output)
+      print(output)

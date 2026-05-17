@@ -17,268 +17,296 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class HNStory:
-    """Represents a Hacker News story"""
+  """Represents a Hacker News story"""
 
-    object_id: str
-    title: str
-    url: str | None
-    author: str
-    points: int
-    num_comments: int
-    created_at: datetime
-    created_at_i: int
-    story_text: str | None = None
-    tags: list[str] = None
+  object_id: str
+  title: str
+  url: str | None
+  author: str
+  points: int
+  num_comments: int
+  created_at: datetime
+  created_at_i: int
+  story_text: str | None = None
+  tags: list[str] = None
 
 
 class HackerNewsAggregator:
+  """
+  Aggregates AI/ML related stories from Hacker News
+
+  Uses Algolia HN Search API for efficient filtering and searching.
+  Supports:
+  - Keyword-based searches
+  - Time-range filtering
+  - Point/comment thresholds
+  - Story type filtering
+  """
+
+  def __init__(self, settings: HackerNewsSettings | None = None):
+    self.settings = settings or HackerNewsSettings()
+    self.base_url = self.settings.api_base_url
+    self.client = httpx.AsyncClient(timeout=30.0)
+
+  async def search_stories(
+    self,
+    query: str,
+    tags: str = "story",
+    numeric_filters: str | None = None,
+    max_results: int = 100,
+  ) -> list[HNStory]:
     """
-    Aggregates AI/ML related stories from Hacker News
+    Search for stories using Algolia API
 
-    Uses Algolia HN Search API for efficient filtering and searching.
-    Supports:
-    - Keyword-based searches
-    - Time-range filtering
-    - Point/comment thresholds
-    - Story type filtering
+    Args:
+        query: Search query string
+        tags: Filter by tags (e.g., "story", "comment")
+        numeric_filters: Numeric filters (e.g., "points>10")
+        max_results: Maximum number of results
+
+    Returns:
+        List of HNStory objects
     """
+    url = f"{self.base_url}/search"
+    params = {"query": query, "tags": tags, "hitsPerPage": min(max_results, 1000)}
 
-    def __init__(self, settings: HackerNewsSettings | None = None):
-        self.settings = settings or HackerNewsSettings()
-        self.base_url = self.settings.api_base_url
-        self.client = httpx.AsyncClient(timeout=30.0)
+    if numeric_filters:
+      params["numericFilters"] = numeric_filters
 
-    async def search_stories(self, query: str, tags: str = "story", numeric_filters: str | None = None, max_results: int = 100) -> list[HNStory]:
-        """
-        Search for stories using Algolia API
+    try:
+      response = await self.client.get(url, params=params)
+      response.raise_for_status()
+      data = response.json()
 
-        Args:
-            query: Search query string
-            tags: Filter by tags (e.g., "story", "comment")
-            numeric_filters: Numeric filters (e.g., "points>10")
-            max_results: Maximum number of results
+      stories = []
+      for hit in data.get("hits", []):
+        story = HNStory(
+          object_id=hit.get("objectID"),
+          title=hit.get("title", ""),
+          url=hit.get("url"),
+          author=hit.get("author", ""),
+          points=hit.get("points", 0),
+          num_comments=hit.get("num_comments", 0),
+          created_at=datetime.fromtimestamp(hit.get("created_at_i", 0)),
+          created_at_i=hit.get("created_at_i", 0),
+          story_text=hit.get("story_text"),
+          tags=hit.get("_tags", []),
+        )
+        stories.append(story)
 
-        Returns:
-            List of HNStory objects
-        """
-        url = f"{self.base_url}/search"
-        params = {"query": query, "tags": tags, "hitsPerPage": min(max_results, 1000)}
+      logger.info(f"Retrieved {len(stories)} HN stories for query: {query}")
+      return stories
 
-        if numeric_filters:
-            params["numericFilters"] = numeric_filters
+    except Exception as e:
+      logger.error(f"Error searching HN: {e}", exc_info=True)
+      raise
 
-        try:
-            response = await self.client.get(url, params=params)
-            response.raise_for_status()
-            data = response.json()
+  async def search_by_date(
+    self,
+    query: str,
+    tags: str = "story",
+    start_timestamp: int | None = None,
+    end_timestamp: int | None = None,
+    max_results: int = 100,
+  ) -> list[HNStory]:
+    """
+    Search stories by date range using search_by_date endpoint
 
-            stories = []
-            for hit in data.get("hits", []):
-                story = HNStory(
-                    object_id=hit.get("objectID"),
-                    title=hit.get("title", ""),
-                    url=hit.get("url"),
-                    author=hit.get("author", ""),
-                    points=hit.get("points", 0),
-                    num_comments=hit.get("num_comments", 0),
-                    created_at=datetime.fromtimestamp(hit.get("created_at_i", 0)),
-                    created_at_i=hit.get("created_at_i", 0),
-                    story_text=hit.get("story_text"),
-                    tags=hit.get("_tags", []),
-                )
-                stories.append(story)
+    Args:
+        query: Search query
+        tags: Filter by tags
+        start_timestamp: Start timestamp (Unix)
+        end_timestamp: End timestamp (Unix)
+        max_results: Maximum results
 
-            logger.info(f"Retrieved {len(stories)} HN stories for query: {query}")
-            return stories
+    Returns:
+        List of HNStory objects
+    """
+    url = f"{self.base_url}/search_by_date"
+    params = {"query": query, "tags": tags, "hitsPerPage": min(max_results, 1000)}
 
-        except Exception as e:
-            logger.error(f"Error searching HN: {e}", exc_info=True)
-            raise
+    # Build numeric filters for time range
+    filters = []
+    if start_timestamp:
+      filters.append(f"created_at_i>{start_timestamp}")
+    if end_timestamp:
+      filters.append(f"created_at_i<{end_timestamp}")
 
-    async def search_by_date(
-        self, query: str, tags: str = "story", start_timestamp: int | None = None, end_timestamp: int | None = None, max_results: int = 100
-    ) -> list[HNStory]:
-        """
-        Search stories by date range using search_by_date endpoint
+    if filters:
+      params["numericFilters"] = ",".join(filters)
 
-        Args:
-            query: Search query
-            tags: Filter by tags
-            start_timestamp: Start timestamp (Unix)
-            end_timestamp: End timestamp (Unix)
-            max_results: Maximum results
+    try:
+      response = await self.client.get(url, params=params)
+      response.raise_for_status()
+      data = response.json()
 
-        Returns:
-            List of HNStory objects
-        """
-        url = f"{self.base_url}/search_by_date"
-        params = {"query": query, "tags": tags, "hitsPerPage": min(max_results, 1000)}
+      stories = []
+      for hit in data.get("hits", []):
+        story = HNStory(
+          object_id=hit.get("objectID"),
+          title=hit.get("title", ""),
+          url=hit.get("url"),
+          author=hit.get("author", ""),
+          points=hit.get("points", 0),
+          num_comments=hit.get("num_comments", 0),
+          created_at=datetime.fromtimestamp(hit.get("created_at_i", 0)),
+          created_at_i=hit.get("created_at_i", 0),
+          story_text=hit.get("story_text"),
+          tags=hit.get("_tags", []),
+        )
+        stories.append(story)
 
-        # Build numeric filters for time range
-        filters = []
-        if start_timestamp:
-            filters.append(f"created_at_i>{start_timestamp}")
-        if end_timestamp:
-            filters.append(f"created_at_i<{end_timestamp}")
+      logger.info(f"Retrieved {len(stories)} HN stories by date for query: {query}")
+      return stories
 
-        if filters:
-            params["numericFilters"] = ",".join(filters)
+    except Exception as e:
+      logger.error(f"Error searching HN by date: {e}", exc_info=True)
+      raise
 
-        try:
-            response = await self.client.get(url, params=params)
-            response.raise_for_status()
-            data = response.json()
+  async def aggregate_ai_ml_stories(
+    self, days_back: int = 7, min_points: int | None = None
+  ) -> list[dict[str, Any]]:
+    """
+    Aggregate AI/ML related stories from the last N days
 
-            stories = []
-            for hit in data.get("hits", []):
-                story = HNStory(
-                    object_id=hit.get("objectID"),
-                    title=hit.get("title", ""),
-                    url=hit.get("url"),
-                    author=hit.get("author", ""),
-                    points=hit.get("points", 0),
-                    num_comments=hit.get("num_comments", 0),
-                    created_at=datetime.fromtimestamp(hit.get("created_at_i", 0)),
-                    created_at_i=hit.get("created_at_i", 0),
-                    story_text=hit.get("story_text"),
-                    tags=hit.get("_tags", []),
-                )
-                stories.append(story)
+    Args:
+        days_back: Number of days to look back
+        min_points: Minimum points threshold
 
-            logger.info(f"Retrieved {len(stories)} HN stories by date for query: {query}")
-            return stories
+    Returns:
+        List of story dictionaries
+    """
+    min_points = min_points or self.settings.min_points
+    end_time = datetime.now()
+    start_time = end_time - timedelta(days=days_back)
 
-        except Exception as e:
-            logger.error(f"Error searching HN by date: {e}", exc_info=True)
-            raise
+    start_timestamp = int(start_time.timestamp())
+    end_timestamp = int(end_time.timestamp())
 
-    async def aggregate_ai_ml_stories(self, days_back: int = 7, min_points: int | None = None) -> list[dict[str, Any]]:
-        """
-        Aggregate AI/ML related stories from the last N days
+    all_stories = []
+    for keyword in self.settings.search_keywords:
+      stories = await self.search_by_date(
+        query=keyword,
+        tags="story",
+        start_timestamp=start_timestamp,
+        end_timestamp=end_timestamp,
+        max_results=self.settings.max_results,
+      )
 
-        Args:
-            days_back: Number of days to look back
-            min_points: Minimum points threshold
+      # Filter by points
+      filtered_stories = [s for s in stories if s.points >= min_points]
+      all_stories.extend(filtered_stories)
 
-        Returns:
-            List of story dictionaries
-        """
-        min_points = min_points or self.settings.min_points
-        end_time = datetime.now()
-        start_time = end_time - timedelta(days=days_back)
+    # Deduplicate by object_id
+    unique_stories = {s.object_id: s for s in all_stories}
+    stories_list = list(unique_stories.values())
 
-        start_timestamp = int(start_time.timestamp())
-        end_timestamp = int(end_time.timestamp())
+    # Sort by points descending
+    stories_list.sort(key=lambda x: x.points, reverse=True)
 
-        all_stories = []
-        for keyword in self.settings.search_keywords:
-            stories = await self.search_by_date(
-                query=keyword, tags="story", start_timestamp=start_timestamp, end_timestamp=end_timestamp, max_results=self.settings.max_results
-            )
+    results = []
+    for story in stories_list:
+      results.append(
+        {
+          "object_id": story.object_id,
+          "title": story.title,
+          "url": story.url,
+          "author": story.author,
+          "points": story.points,
+          "num_comments": story.num_comments,
+          "created_at": story.created_at.isoformat(),
+          "story_text": story.story_text,
+          "tags": story.tags,
+          "hn_url": f"https://news.ycombinator.com/item?id={story.object_id}",
+        }
+      )
 
-            # Filter by points
-            filtered_stories = [s for s in stories if s.points >= min_points]
-            all_stories.extend(filtered_stories)
+    logger.info(f"Aggregated {len(results)} unique AI/ML stories from HN")
+    return results
 
-        # Deduplicate by object_id
-        unique_stories = {s.object_id: s for s in all_stories}
-        stories_list = list(unique_stories.values())
+  async def get_top_stories(
+    self, keyword: str, max_results: int = 25, min_points: int = 10
+  ) -> list[HNStory]:
+    """
+    Get top stories for a specific keyword
 
-        # Sort by points descending
-        stories_list.sort(key=lambda x: x.points, reverse=True)
+    Args:
+        keyword: Search keyword
+        max_results: Maximum results
+        min_points: Minimum points threshold
 
-        results = []
-        for story in stories_list:
-            results.append(
-                {
-                    "object_id": story.object_id,
-                    "title": story.title,
-                    "url": story.url,
-                    "author": story.author,
-                    "points": story.points,
-                    "num_comments": story.num_comments,
-                    "created_at": story.created_at.isoformat(),
-                    "story_text": story.story_text,
-                    "tags": story.tags,
-                    "hn_url": f"https://news.ycombinator.com/item?id={story.object_id}",
-                }
-            )
+    Returns:
+        List of HNStory objects
+    """
+    numeric_filters = f"points>{min_points}"
+    stories = await self.search_stories(
+      query=keyword,
+      tags="story",
+      numeric_filters=numeric_filters,
+      max_results=max_results,
+    )
 
-        logger.info(f"Aggregated {len(results)} unique AI/ML stories from HN")
-        return results
+    # Sort by points
+    stories.sort(key=lambda x: x.points, reverse=True)
+    return stories
 
-    async def get_top_stories(self, keyword: str, max_results: int = 25, min_points: int = 10) -> list[HNStory]:
-        """
-        Get top stories for a specific keyword
+  async def aggregate_trending_topics(
+    self, days_back: int = 1
+  ) -> dict[str, list[dict[str, Any]]]:
+    """
+    Aggregate trending topics across all keywords
 
-        Args:
-            keyword: Search keyword
-            max_results: Maximum results
-            min_points: Minimum points threshold
+    Args:
+        days_back: Number of days to look back
 
-        Returns:
-            List of HNStory objects
-        """
-        numeric_filters = f"points>{min_points}"
-        stories = await self.search_stories(query=keyword, tags="story", numeric_filters=numeric_filters, max_results=max_results)
+    Returns:
+        Dictionary mapping keywords to stories
+    """
+    results = {}
+    for keyword in self.settings.search_keywords:
+      stories = await self.get_top_stories(
+        keyword=keyword, max_results=25, min_points=self.settings.min_points
+      )
 
-        # Sort by points
-        stories.sort(key=lambda x: x.points, reverse=True)
-        return stories
+      results[keyword] = [
+        {
+          "object_id": s.object_id,
+          "title": s.title,
+          "url": s.url,
+          "author": s.author,
+          "points": s.points,
+          "num_comments": s.num_comments,
+          "created_at": s.created_at.isoformat(),
+          "hn_url": f"https://news.ycombinator.com/item?id={s.object_id}",
+        }
+        for s in stories
+      ]
 
-    async def aggregate_trending_topics(self, days_back: int = 1) -> dict[str, list[dict[str, Any]]]:
-        """
-        Aggregate trending topics across all keywords
+    return results
 
-        Args:
-            days_back: Number of days to look back
-
-        Returns:
-            Dictionary mapping keywords to stories
-        """
-        results = {}
-        for keyword in self.settings.search_keywords:
-            stories = await self.get_top_stories(keyword=keyword, max_results=25, min_points=self.settings.min_points)
-
-            results[keyword] = [
-                {
-                    "object_id": s.object_id,
-                    "title": s.title,
-                    "url": s.url,
-                    "author": s.author,
-                    "points": s.points,
-                    "num_comments": s.num_comments,
-                    "created_at": s.created_at.isoformat(),
-                    "hn_url": f"https://news.ycombinator.com/item?id={s.object_id}",
-                }
-                for s in stories
-            ]
-
-        return results
-
-    async def close(self):
-        """Close HTTP client"""
-        await self.client.aclose()
+  async def close(self):
+    """Close HTTP client"""
+    await self.client.aclose()
 
 
 # Example usage
 if __name__ == "__main__":
-    import asyncio
+  import asyncio
 
-    async def main():
-        aggregator = HackerNewsAggregator()
+  async def main():
+    aggregator = HackerNewsAggregator()
 
-        try:
-            # Get recent AI/ML stories
-            stories = await aggregator.aggregate_ai_ml_stories(days_back=7, min_points=10)
-            print(f"\nFound {len(stories)} AI/ML stories from the last 7 days")
+    try:
+      # Get recent AI/ML stories
+      stories = await aggregator.aggregate_ai_ml_stories(days_back=7, min_points=10)
+      print(f"\nFound {len(stories)} AI/ML stories from the last 7 days")
 
-            for story in stories[:5]:
-                print(f"\n{story['title']}")
-                print(f"Points: {story['points']} | Comments: {story['num_comments']}")
-                print(f"URL: {story['hn_url']}")
+      for story in stories[:5]:
+        print(f"\n{story['title']}")
+        print(f"Points: {story['points']} | Comments: {story['num_comments']}")
+        print(f"URL: {story['hn_url']}")
 
-        finally:
-            await aggregator.close()
+    finally:
+      await aggregator.close()
 
-    asyncio.run(main())
+  asyncio.run(main())

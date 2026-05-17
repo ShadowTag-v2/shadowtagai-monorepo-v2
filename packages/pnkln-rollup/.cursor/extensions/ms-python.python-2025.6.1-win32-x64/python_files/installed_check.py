@@ -26,7 +26,9 @@ except ValueError:
 def parse_args(argv: Optional[Sequence[str]] = None):
     if argv is None:
         argv = sys.argv[1:]
-    parser = argparse.ArgumentParser(description="Check for installed packages against requirements")
+    parser = argparse.ArgumentParser(
+        description="Check for installed packages against requirements"
+    )
     parser.add_argument("FILEPATH", type=str, help="Path to requirements.[txt, in]")
 
     return parser.parse_args(argv)

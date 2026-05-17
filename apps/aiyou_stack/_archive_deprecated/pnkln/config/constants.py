@@ -17,18 +17,18 @@ GEMINI_LIMITATION = "tools + grounding = mutually exclusive (unverified)"
 # ARCHITECTURE OPTIONS
 # ============================================================================
 class ArchitectureOption:
-    SEQUENTIAL_ORCHESTRATION = "sequential_orchestration"  # Best long-term
-    PARALLEL_EXECUTION = "parallel_execution"  # Rejected (cost)
-    CUSTOM_SEARCH_TOOL = "custom_search_tool"  # Ship now
+  SEQUENTIAL_ORCHESTRATION = "sequential_orchestration"  # Best long-term
+  PARALLEL_EXECUTION = "parallel_execution"  # Rejected (cost)
+  CUSTOM_SEARCH_TOOL = "custom_search_tool"  # Ship now
 
 
 # ============================================================================
 # IMPLEMENTATION TARGETS
 # ============================================================================
 class SearchProvider:
-    BRAVE = "brave_search_api"
-    SERPER = "serper_api"
-    TAVILY = "tavily_api"
+  BRAVE = "brave_search_api"
+  SERPER = "serper_api"
+  TAVILY = "tavily_api"
 
 
 DEFAULT_SEARCH_PROVIDER = SearchProvider.BRAVE
@@ -49,15 +49,15 @@ TARGET_SEARCH_COST_PER_QUERY = 0.01  # $0.01
 # REVENUE TIERS
 # ============================================================================
 class RevenueTier:
-    FREE = "single_mode_selection"  # User picks internal OR web
-    PRO = "automatic_hybrid_routing"  # Auto-detect, seamless blend
-    ENTERPRISE = "custom_tool_chains"  # Full customization
+  FREE = "single_mode_selection"  # User picks internal OR web
+  PRO = "automatic_hybrid_routing"  # Auto-detect, seamless blend
+  ENTERPRISE = "custom_tool_chains"  # Full customization
 
 
 TIER_PRICING = {
-    RevenueTier.FREE: 0.00,
-    RevenueTier.PRO: 19.99,  # Monthly - TBD
-    RevenueTier.ENTERPRISE: 500.00,  # Monthly minimum
+  RevenueTier.FREE: 0.00,
+  RevenueTier.PRO: 19.99,  # Monthly - TBD
+  RevenueTier.ENTERPRISE: 500.00,  # Monthly minimum
 }
 
 # ============================================================================
@@ -72,9 +72,9 @@ MIN_FEATURE_QUALITY = 0.90  # 90% search quality parity
 # QUERY ROUTING CATEGORIES
 # ============================================================================
 class QueryIntent:
-    INTERNAL = "internal"  # Files/docs/repos only
-    WEB = "web"  # Current events/URLs/external
-    HYBRID = "both"  # Company context + external validation
+  INTERNAL = "internal"  # Files/docs/repos only
+  WEB = "web"  # Current events/URLs/external
+  HYBRID = "both"  # Company context + external validation
 
 
 # Intent classification confidence threshold
@@ -84,10 +84,10 @@ INTENT_CONFIDENCE_THRESHOLD = 0.80
 # SEARCH CONFIGURATION
 # ============================================================================
 BRAVE_API_CONFIG = {
-    "free_tier_limit": 2000,  # Queries per month
-    "endpoint": "https://api.search.brave.com/res/v1/web/search",
-    "snippet_count": 5,
-    "max_snippet_length": 300,
+  "free_tier_limit": 2000,  # Queries per month
+  "endpoint": "https://api.search.brave.com/res/v1/web/search",
+  "snippet_count": 5,
+  "max_snippet_length": 300,
 }
 
 
@@ -95,17 +95,17 @@ BRAVE_API_CONFIG = {
 # MONITORING & METRICS
 # ============================================================================
 class MetricKey:
-    SEARCH_QUALITY = "search_quality_score"
-    INTENT_ACCURACY = "intent_classification_accuracy"
-    LATENCY_P99 = "latency_p99_ms"
-    COST_PER_QUERY = "cost_per_query_usd"
-    SYNTHESIS_HALLUCINATION = "synthesis_hallucination_rate"
+  SEARCH_QUALITY = "search_quality_score"
+  INTENT_ACCURACY = "intent_classification_accuracy"
+  LATENCY_P99 = "latency_p99_ms"
+  COST_PER_QUERY = "cost_per_query_usd"
+  SYNTHESIS_HALLUCINATION = "synthesis_hallucination_rate"
 
 
 SUCCESS_THRESHOLDS = {
-    MetricKey.SEARCH_QUALITY: 0.90,  # 90% vs Google Grounding
-    MetricKey.INTENT_ACCURACY: 0.80,  # 80% classification accuracy
-    MetricKey.LATENCY_P99: P99_LATENCY_MS,
-    MetricKey.COST_PER_QUERY: 0.02,  # <2¢ including search API
-    MetricKey.SYNTHESIS_HALLUCINATION: 0.05,  # <5% hallucination rate
+  MetricKey.SEARCH_QUALITY: 0.90,  # 90% vs Google Grounding
+  MetricKey.INTENT_ACCURACY: 0.80,  # 80% classification accuracy
+  MetricKey.LATENCY_P99: P99_LATENCY_MS,
+  MetricKey.COST_PER_QUERY: 0.02,  # <2¢ including search API
+  MetricKey.SYNTHESIS_HALLUCINATION: 0.05,  # <5% hallucination rate
 }
