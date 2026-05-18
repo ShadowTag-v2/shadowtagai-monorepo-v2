@@ -3,5 +3,25 @@
   "editor.formatOnSave": true,
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-  "telemetry.telemetryLevel": "off"
+  "telemetry.telemetryLevel": "off",
+  "python.defaultInterpreterPath": "/Users/pikeymickey/.local/share/uv/python/cpython-3.14.3-macos-aarch64-none/bin/python3.14",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "ty.interpreter": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14"
+  ],
+  "ty.python.pythonPath": "${workspaceFolder}/.venv/bin/python",
+  "ty.python.searchPaths": [
+    "${workspaceFolder}/src",
+    "${workspaceFolder}/packages",
+    "${workspaceFolder}/app",
+    "${workspaceFolder}/packages/shadowtag_os",
+    "${workspaceFolder}/packages/agnt_tools",
+    "${workspaceFolder}/packages/tool_gateway"
+  ],
+  "ty.analysis.typeCheckingMode": "basic",
+  "ty.analysis.reportMissingImports": true,
+  "ty.analysis.reportUnusedImports": true,
+  "ty.analysis.reportUnusedVariables": true
 }
