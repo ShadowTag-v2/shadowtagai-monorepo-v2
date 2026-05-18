@@ -68,8 +68,19 @@ jobs:
           flags: '--no-traffic --tag=canary'
       - name: Canary Health Check
         run: |
-          sleep 30
-          curl -sf "https://canary---counselconduit-6byqzjbd7a-uc.a.run.app/health"
+          for i in $(seq 1 12); do
+            HTTP_CODE=$(curl -s -o /tmp/readyz_body -w "%{http_code}" \
+              "https://canary---counselconduit-6byqzjbd7a-uc.a.run.app/readyz")
+            BODY=$(cat /tmp/readyz_body)
+            echo "Attempt $i: HTTP $HTTP_CODE"
+            if [ "$HTTP_CODE" = "200" ] && echo "$BODY" | grep -q '"healthy"'; then
+              echo "✅ Canary verified: $BODY"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "❌ Canary health check failed after 60s"
+          exit 1
       - name: Promote Canary
         run: |
           gcloud run services update-traffic counselconduit \
