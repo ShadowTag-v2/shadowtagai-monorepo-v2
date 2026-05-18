@@ -24,7 +24,7 @@ google-api-python-client>=2.150.0
 google-auth>=2.36.0
 
 # Security
-PyJWT[crypto]>=2.10.0  # Replaces python-jose (ecdsa CVE-2024-23342)
+PyJWT[crypto]>=2.12.1  # Replaces python-jose (ecdsa CVE-2024-23342)
 passlib[bcrypt]>=1.7.4
 python-multipart>=0.0.12
 
