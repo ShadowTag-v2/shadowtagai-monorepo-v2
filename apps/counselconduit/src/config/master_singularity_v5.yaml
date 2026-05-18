@@ -1,0 +1,30 @@
+version: "5.0"
+date: "2026-05-18"
+codename: "Singularity"
+identity:
+  service: "CounselConduit"
+  description: "Shopify for Legal AI"
+  compliance_case: "Heppner v. Doe (S.D.N.Y. 2026)"
+  project_id: "shadowtag-omega-v4"
+model_routing:
+  primary:
+    model: "gemini-3.1-pro"
+    provider: "vertex-ai"
+    location: "us-central1"
+  fallback:
+    model: "gemini-3.1-flash-lite-preview-thinking"
+    provider: "vertex-ai"
+  banned_models: ["gpt-4", "gpt-4-turbo", "claude-3-opus", "claude-4-sonnet"]
+privilege_boundaries:
+  attorney_client_privilege: {enforce: true, retention: "7_years"}
+  zero_data_retention: {enforce: true, session_ttl_minutes: 60}
+safety_envelope:
+  judge6_enabled: true
+  blocked_actions: ["rm_rf", "sudo", "force_push_main", "drop_database"]
+billing:
+  stripe_account: "acct_1Syh9JEHnWpykeMi"
+  x402_micropayments: {enabled: true, min_cents: 1, max_cents: 500}
+scholar_eval:
+  enabled: true
+  hallucination_threshold: 0.05
+  confidence_minimum: 0.85
