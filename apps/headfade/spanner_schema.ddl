@@ -114,3 +114,25 @@ CREATE TABLE cdc_watermarks (
   row_count     INT64 NOT NULL DEFAULT (0),
   updated_at    TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp = true),
 ) PRIMARY KEY (source_table);
+
+-- ============================================================================
+-- API KEYS (Consumer API access management)
+-- Rate-limited, scoped, with automatic expiration
+-- ============================================================================
+CREATE TABLE api_keys (
+  key_id        STRING(36) NOT NULL,       -- UUID v4
+  user_id       STRING(128) NOT NULL,      -- Owner (maps to Firestore users.uid)
+  key_hash      STRING(64) NOT NULL,       -- SHA-256 of the actual API key
+  key_prefix    STRING(8) NOT NULL,        -- First 8 chars for display (e.g., "hf_live_")
+  display_name  STRING(128),               -- Human-friendly label
+  scopes        ARRAY<STRING(32)>,         -- ["forensic:read", "embed:write", etc.]
+  rate_limit    INT64 NOT NULL DEFAULT (1000),  -- Requests per hour
+  is_active     BOOL NOT NULL DEFAULT (true),
+  last_used_at  TIMESTAMP,
+  expires_at    TIMESTAMP,                 -- NULL = never expires
+  created_at    TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp = true),
+) PRIMARY KEY (key_id);
+
+CREATE INDEX idx_apikeys_by_user ON api_keys(user_id);
+CREATE INDEX idx_apikeys_by_hash ON api_keys(key_hash);
+CREATE UNIQUE INDEX idx_apikeys_unique_hash ON api_keys(key_hash);

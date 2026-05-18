@@ -1,5 +1,6 @@
 # apps/counselconduit/cloudbuild-staging.yaml
-# Auto-deploy CounselConduit STAGING on push to staging branch.
+# PR-based preview deployment to Cloud Run staging service.
+# Triggered by Cloud Build GitHub trigger on pull_request events.
 
 steps:
   # Step 1: Run tests
@@ -13,39 +14,61 @@ steps:
         pip install pytest -q
         python -m pytest tests/ -x --tb=short -q
 
-  # Step 2: Deploy to staging Cloud Run service
+  # Step 2: Deploy to Cloud Run staging (ephemeral per-PR service)
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gcloud run deploy counselconduit-staging \
+        PR_NUM="${_PR_NUMBER:-preview}"
+        SERVICE_NAME="counselconduit-pr-${PR_NUM}"
+        echo "Deploying staging service: $SERVICE_NAME"
+        gcloud run deploy "$SERVICE_NAME" \
           --source=apps/counselconduit \
           --region=us-central1 \
           --project=$PROJECT_ID \
-          --service-account=counselconduit-staging-sa@$PROJECT_ID.iam.gserviceaccount.com \
+          --service-account=counselconduit-sa@$PROJECT_ID.iam.gserviceaccount.com \
           --memory=256Mi \
           --cpu=1 \
           --min-instances=0 \
-          --max-instances=3 \
+          --max-instances=2 \
           --concurrency=80 \
           --port=8080 \
-          --set-env-vars="GCP_PROJECT_ID=$PROJECT_ID,ENVIRONMENT=staging,OTEL_TRACE_SAMPLING_RATE=1.0" \
-          --labels="managed_by=cloudbuild,environment=staging" \
+          --set-env-vars="GCP_PROJECT_ID=$PROJECT_ID,APP_ENV=staging" \
+          --labels="managed_by=cloudbuild,environment=staging,pr=${PR_NUM}" \
+          --tag="pr-${PR_NUM}" \
+          --no-traffic \
           --quiet
 
-  # Step 3: Health check
+  # Step 3: Verify staging health
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        URL=$(gcloud run services describe counselconduit-staging --region=us-central1 --project=$PROJECT_ID --format='value(status.url)')
-        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL/enclave/v1/health")
-        echo "Staging health: $HTTP_CODE"
-        [ "$HTTP_CODE" = "200" ] && echo "✅ Staging deploy verified" || echo "⚠️ Staging health check: $HTTP_CODE"
+        PR_NUM="${_PR_NUMBER:-preview}"
+        SERVICE_NAME="counselconduit-pr-${PR_NUM}"
+        URL=$(gcloud run services describe "$SERVICE_NAME" --region=us-central1 --project=$PROJECT_ID --format='value(status.url)')
+        echo "Verifying staging at $URL/readyz..."
+        for i in $(seq 1 6); do
+          HTTP_CODE=$(curl -s -o /tmp/readyz_body -w "%{http_code}" "$URL/readyz")
+          BODY=$(cat /tmp/readyz_body)
+          echo "Attempt $i: HTTP $HTTP_CODE"
+          if [ "$HTTP_CODE" = "200" ] && echo "$BODY" | grep -q '"healthy"'; then
+            echo "✅ Staging verified: $BODY"
+            echo "Preview URL: $URL"
+            exit 0
+          fi
+          sleep 5
+        done
+        echo "WARNING: Staging health check inconclusive (non-blocking)"
 
 options:
   logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_MEDIUM'
 
 timeout: '600s'
+
+substitutions:
+  _PR_NUMBER: 'preview'
+  _DEPLOY_REGION: 'us-central1'
