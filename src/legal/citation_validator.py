@@ -21,6 +21,18 @@ import re
 from dataclasses import dataclass, field
 from enum import Enum
 
+try:
+  from apps.counselconduit.api.uuid7 import uuid7_str
+except ImportError:
+  try:
+    from api.uuid7 import uuid7_str  # type: ignore[no-redef]
+  except ImportError:
+    import uuid
+
+    def uuid7_str() -> str:  # type: ignore[misc]
+      """Fallback to uuid4 when uuid7 is not available."""
+      return str(uuid.uuid4())
+
 logger = logging.getLogger(__name__)
 
 
@@ -73,6 +85,7 @@ class ValidationResult:
   """Result of validating a citation.
 
   Attributes:
+      id: Unique identifier for this validation result (uuid7).
       citation: The parsed citation.
       status: Validation outcome.
       confidence: Confidence score (0.0-1.0).
@@ -82,6 +95,7 @@ class ValidationResult:
 
   citation: Citation
   status: ValidationStatus
+  id: str = field(default_factory=uuid7_str)
   confidence: float = 0.0
   reason: str = ""
   suggestions: list[str] = field(default_factory=list)
