@@ -6,7 +6,7 @@
     "browser_interaction": "chrome-devtools-mcp",
     "ui_design": "StitchMCP",
     "architecture_reasoning": "sequential-thinking",
-    "gcloud_cli_operations": "gcloud",
+    "gcloud_cli_operations": "gcloud-mcp-server",
     "cloud_logging_monitoring": "observability",
     "cloud_run_deployment": "cloudrun",
     "cloud_storage_operations": "storage",

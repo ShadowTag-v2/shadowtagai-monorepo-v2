@@ -748,7 +748,7 @@
 - `apps/slides_agent_demo/.venv/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `apps/slides_agent_demo/.venv/lib/python3.13/site-packages/litellm/proxy/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `apps/stitch-skills/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
-- `apps/thermal-ride/TsubameViewer/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
+- ~~`apps/thermal-ride/TsubameViewer/.gitignore`~~ → **DELETED** (TsubameViewer Xbox simulator purged 2026-05-18)
 - `apps/thermal-ride/servers/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `apps/thermal-ride/servers/src/git/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `apps/thumbly/.gitignore` → **needs classification: necessary local override vs redundant vs stale**

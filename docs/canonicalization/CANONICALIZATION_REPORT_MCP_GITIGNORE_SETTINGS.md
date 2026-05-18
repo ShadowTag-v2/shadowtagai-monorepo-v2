@@ -778,7 +778,7 @@
 - `apps/slides_agent_demo/.venv/.gitignore` → **needs-classification**
 - `apps/slides_agent_demo/.venv/lib/python3.13/site-packages/litellm/proxy/.gitignore` → **needs-classification**
 - `apps/stitch-skills/.gitignore` → **needs-classification**
-- `apps/thermal-ride/TsubameViewer/.gitignore` → **needs-classification**
+- ~~`apps/thermal-ride/TsubameViewer/.gitignore`~~ → **DELETED** (TsubameViewer Xbox simulator purged 2026-05-18)
 - `apps/thermal-ride/servers/.gitignore` → **needs-classification**
 - `apps/thermal-ride/servers/src/git/.gitignore` → **needs-classification**
 - `apps/thumbly/.gitignore` → **needs-classification**
