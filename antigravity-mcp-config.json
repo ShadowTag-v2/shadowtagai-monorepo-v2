@@ -1,5 +1,58 @@
 {
   "version": "3.0",
+  "mcpServers": {
+    "StitchMCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://stitch.googleapis.com/mcp",
+        "--header",
+        "X-Goog-Api-Key: ${STITCH_API_KEY}"
+      ]
+    },
+    "chrome-devtools-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--browser-url=http://127.0.0.1:9222",
+        "--no-usage-statistics"
+      ]
+    },
+    "cloudrun": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@google-cloud/cloud-run-mcp"
+      ]
+    },
+    "firebase-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firebase-tools@latest",
+        "mcp"
+      ]
+    },
+    "google-developer-knowledge": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://developerknowledge.googleapis.com/mcp",
+        "--header",
+        "X-Goog-Api-Key: ${DEVELOPER_KNOWLEDGE_API_KEY}"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    }
+  },
   "routing_rules": {
     "google_api_docs": "google-developer-knowledge | fallback: firebase-mcp-server.developerknowledge_search_documents",
     "firebase_operations": "firebase-mcp-server",
@@ -69,8 +122,8 @@
     "current_usage": 100,
     "headroom": 0,
     "removed_servers": {
-      "gemini-web-fetcher": "Python server misconfigured as Node.js — module path dist/index.js does not exist",
-      "notebooklm-mcp": "39 tools exceeded 100-tool limit — available on Cline tactical plane instead"
+      "gemini-web-fetcher": "Python server misconfigured as Node.js \u2014 module path dist/index.js does not exist",
+      "notebooklm-mcp": "39 tools exceeded 100-tool limit \u2014 available on Cline tactical plane instead"
     }
   }
 }
