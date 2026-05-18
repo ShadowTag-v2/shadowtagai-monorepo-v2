@@ -14,7 +14,7 @@
 
 // =============================================================================
 // ShadowTag Semantic Kernel Process — Consolidated Judge 6 + CSRMC Pipeline
-// Target: .NET 11.0 (net11.0)
+// Target: .NET 10.0 (net10.0) — upgrade to net11.0 when .NET 11 Preview SDK is installed
 // SK Process.Core: v1.21.0-alpha | SemanticKernel: v1.74.0
 // CRITICAL: OnExternalEvent is the CORRECT API per AGENTS.md Core Technical Truth #3.
 //           Do NOT apply the OnInputEvent rename until Process.Core >= v1.30+.

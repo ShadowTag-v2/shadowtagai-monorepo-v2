@@ -20,18 +20,18 @@ description: Sets the comprehensive environment variables and paths for "God Mod
    // turbo-all
 
 ```bash
-export BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/0f155a4e-36e6-4528-a693-619a039e50"
+export BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/888134be-c1c6-4483-8121-b472c9918516"
 export GCP_PROJECT_ID="shadowtag-omega-v4"
-export AGENT_TOOLBELT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/docs/toolbelt.md"
-export AGENT_LAWS="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/rules/shadowtag-laws.md"
-export AGENT_LIVE_ENGINE="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/workflows/live-engine.md"
+export AGENT_TOOLBELT="/Users/pikeymickey/.gemini/antigravity/shadowtagai-monorepo-v2/.agent/docs/toolbelt.md"
+export AGENT_LAWS="/Users/pikeymickey/.gemini/antigravity/shadowtagai-monorepo-v2/.agent/rules/shadowtag-laws.md"
+export AGENT_LIVE_ENGINE="/Users/pikeymickey/.gemini/antigravity/shadowtagai-monorepo-v2/.agent/workflows/live-engine.md"
 
 # AiYou RAG + Sovereign Memory
 export VITE_API_URL="http://localhost:8000"
 export VITE_GCP_PROJECT="shadowtag-omega-v4"
 export KVCACHED_PORT="12346"
 export KVCACHED_MODEL="meta-llama/Llama-3.2-1B-Instruct"
-export SOVEREIGN_MEMORY_LINK="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/Strategic_Intelligence/SOVEREIGN_MEMORY_LINK.md"
+export SOVEREIGN_MEMORY_LINK="/Users/pikeymickey/.gemini/antigravity/shadowtagai-monorepo-v2/docs/Strategic_Intelligence/SOVEREIGN_MEMORY_LINK.md"
 ```
 
 ## Session Start: Sovereign Memory Sync
@@ -39,8 +39,8 @@ export SOVEREIGN_MEMORY_LINK="/Users/pikeymickey/.gemini/antigravity/Monorepo-Up
 Run on every session open (async, non-blocking):
 
 ```bash
-cd /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball && \
-  .venv/bin/python reference/public-demos/ShadowTag-v2/bin/ingest_memory_snapshots.py &
+cd /Users/pikeymickey/.gemini/antigravity/shadowtagai-monorepo-v2 && \
+  python3 reference/public-demos/ShadowTag-v2/bin/ingest_memory_snapshots.py &
 ```
 
 After sync, memory is at `docs/Strategic_Intelligence/SOVEREIGN_MEMORY_LINK.md` (118 conversations, 32 snapshots).
