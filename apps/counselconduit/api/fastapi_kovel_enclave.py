@@ -340,7 +340,7 @@ async def root():
   """Root endpoint — API discovery."""
   return {
     "service": "CounselConduit",
-    "version": "3.3.2",
+    "version": "3.4.0",
     "status": "operational",
     "docs": "/docs" if os.getenv("APP_ENV") == "development" else "disabled",
   }

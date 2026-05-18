@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trust & Security | ShadowTagAI</title>
+  <meta name="description" content="ShadowTagAI security architecture, compliance certifications, and data sovereignty guarantees. SOC 2 Type II. GDPR Article 28. Zero-trust by design."/>
+  <link rel="canonical" href="https://shadowtagai.com/security"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://shadowtagai.com/security"/>
+  <meta property="og:title" content="Trust & Security | ShadowTagAI"/>
+  <meta property="og:description" content="ShadowTagAI security architecture and compliance certifications."/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="theme-color" content="#0D0D1A"/>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/styles.css"/>
+  <style>
+    /* Security Page Specific Styles */
+    .security-hero { position:relative; padding:160px 0 80px; overflow:hidden; }
+    .security-hero__bg { position:absolute; inset:0; z-index:0; }
+    .security-hero__bg::before { content:""; position:absolute; top:-200px; right:-100px; width:700px; height:700px; background:radial-gradient(circle,rgba(0,227,253,0.06) 0%,transparent 60%); pointer-events:none; }
+    .security-hero__bg::after { content:""; position:absolute; bottom:-200px; left:-100px; width:600px; height:600px; background:radial-gradient(circle,rgba(236,106,255,0.04) 0%,transparent 60%); pointer-events:none; }
+    .security-hero__content { position:relative; z-index:1; text-align:center; max-width:720px; margin:0 auto; }
+    .security-hero__badge { display:inline-flex; align-items:center; gap:8px; padding:6px 16px; background:rgba(0,227,253,0.1); border:1px solid rgba(0,227,253,0.2); border-radius:9999px; margin-bottom:24px; animation:fadeInUp .6s ease-out; }
+    .security-hero__badge svg { width:16px; height:16px; color:var(--tertiary); }
+    .security-hero__badge span { font-family:var(--font-headline); font-size:var(--label-sm); font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--tertiary); }
+    .security-hero__title { font-family:var(--font-headline); font-size:clamp(2rem,4.5vw,3.5rem); font-weight:700; letter-spacing:-.02em; line-height:1.1; color:var(--on-surface); margin-bottom:16px; animation:fadeInUp .6s ease-out .1s both; }
+    .security-hero__title em { font-style:normal; background:var(--gradient-cyan); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .security-hero__sub { font-size:1.125rem; color:var(--on-surface-variant); line-height:1.7; max-width:560px; margin:0 auto; animation:fadeInUp .6s ease-out .2s both; }
+
+    /* Certifications Grid */
+    .cert-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-lg); margin-top:var(--space-3xl); }
+    .cert-card { background:var(--surface-container-lowest); border:1px solid var(--outline-variant); border-radius:var(--radius-xl); padding:var(--space-xl); text-align:center; transition:all .3s ease; }
+    .cert-card:hover { border-color:var(--tertiary); transform:translateY(-4px); box-shadow:0 8px 32px rgba(0,227,253,.1); }
+    .cert-card__icon { font-size:2.5rem; margin-bottom:var(--space-md); }
+    .cert-card__title { font-family:var(--font-headline); font-size:var(--title-md); font-weight:600; color:var(--on-surface); margin-bottom:8px; }
+    .cert-card__desc { font-size:var(--body-md); color:var(--on-surface-variant); line-height:1.6; margin-bottom:var(--space-md); }
+    .cert-card__status { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:9999px; font-size:var(--label-sm); font-weight:700; }
+    .cert-card__status--active { background:rgba(0,227,253,.1); color:var(--tertiary); }
+    .cert-card__status--active::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--tertiary); }
+
+    /* Pillar Grid */
+    .pillar-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-lg); }
+    .pillar-card { background:var(--surface-container-low); border-radius:var(--radius-xl); padding:var(--space-xl); position:relative; overflow:hidden; transition:all .4s ease; }
+    .pillar-card::before { content:""; position:absolute; top:0; left:0; right:0; height:2px; opacity:0; transition:opacity .3s; }
+    .pillar-card:nth-child(odd)::before { background:var(--gradient-cyan); }
+    .pillar-card:nth-child(even)::before { background:var(--gradient-primary); }
+    .pillar-card:hover { background:var(--surface-container); transform:translateY(-4px); }
+    .pillar-card:hover::before { opacity:1; }
+    .pillar-card__icon { width:48px; height:48px; border-radius:var(--radius-lg); display:flex; align-items:center; justify-content:center; margin-bottom:var(--space-lg); }
+    .pillar-card:nth-child(odd) .pillar-card__icon { background:rgba(0,87,98,.3); color:var(--tertiary); }
+    .pillar-card:nth-child(even) .pillar-card__icon { background:rgba(89,26,220,.3); color:var(--primary); }
+    .pillar-card__title { font-family:var(--font-headline); font-size:var(--title-md); font-weight:600; color:var(--on-surface); margin-bottom:8px; }
+    .pillar-card__text { font-size:var(--body-md); color:var(--on-surface-variant); line-height:1.6; }
+
+    /* Infra Table */
+    .infra-table { width:100%; border-collapse:collapse; background:var(--surface-container-lowest); border:1px solid var(--outline-variant); border-radius:var(--radius-xl); overflow:hidden; }
+    .infra-table th { text-align:left; padding:16px 24px; font-family:var(--font-headline); font-size:var(--body-md); font-weight:600; color:var(--tertiary); border-bottom:1px solid var(--outline-variant); background:var(--surface-container-low); }
+    .infra-table td { padding:14px 24px; font-size:var(--body-md); border-bottom:1px solid rgba(71,70,86,.1); }
+    .infra-table td:first-child { color:var(--on-surface-variant); }
+    .infra-table td:last-child { color:var(--on-surface); font-weight:500; }
+    .infra-table tr:last-child td { border-bottom:none; }
+    .infra-table tr:hover td { background:rgba(36,36,55,.2); }
+
+    /* Compliance Banner */
+    .compliance-banner { background:var(--surface-container-lowest); border:1px solid var(--outline-variant); border-radius:var(--radius-xl); padding:var(--space-2xl) var(--space-xl); display:flex; align-items:center; gap:var(--space-xl); }
+    .compliance-banner__icon { flex-shrink:0; width:72px; height:72px; border-radius:var(--radius-xl); background:linear-gradient(135deg,rgba(0,227,253,.15),rgba(236,106,255,.1)); display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
+    .compliance-banner__content h3 { font-family:var(--font-headline); font-size:1.25rem; font-weight:600; color:var(--on-surface); margin-bottom:8px; }
+    .compliance-banner__content p { font-size:var(--body-md); color:var(--on-surface-variant); line-height:1.7; max-width:640px; }
+    .compliance-banner__content em { font-style:normal; color:var(--tertiary); }
+
+    /* CTA */
+    .security-cta { text-align:center; max-width:560px; margin:0 auto; }
+    .security-cta .btn { margin:0 8px; }
+
+    @media (max-width:768px) {
+      .cert-grid { grid-template-columns:repeat(2,1fr); }
+      .pillar-grid { grid-template-columns:1fr; }
+      .compliance-banner { flex-direction:column; text-align:center; }
+    }
+    @media (max-width:480px) {
+      .cert-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" id="main-nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo" id="nav-logo">
+        <div class="nav__logo-icon">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#540062" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/><line x1="12" y1="22" x2="12" y2="15.5"/><polyline points="22 8.5 12 15.5 2 8.5"/></svg>
+        </div>
+        ShadowTagAI
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/#products" class="nav__link">Products</a></li>
+        <li><a href="/#capabilities" class="nav__link">Capabilities</a></li>
+        <li><a href="/#stack" class="nav__link">Architecture</a></li>
+        <li><a href="/security" class="nav__link" style="color:var(--tertiary)">Security</a></li>
+        <li><a href="https://kovelai.com" class="nav__link" target="_blank" rel="noopener">KovelAI</a></li>
+      </ul>
+      <a href="https://kovelai.com/#pricing" class="nav__cta" id="nav-cta">Deploy Now</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="security-hero" id="security-hero">
+    <div class="security-hero__bg"></div>
+    <div class="container">
+      <div class="security-hero__content">
+        <div class="security-hero__badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Trust Center</span>
+        </div>
+        <h1 class="security-hero__title">Security is <em>Architecture</em>, Not a Feature.</h1>
+        <p class="security-hero__sub">Every layer of ShadowTagAI is built for zero-trust data sovereignty. From encryption at rest to tenant isolation — security is structural, not bolted on.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section class="section" id="certifications">
+    <div class="container">
+      <div class="products__header animate-on-scroll">
+        <span class="label-md mb-md" style="display:block;">Compliance</span>
+        <h2 class="headline-md mb-lg">Certifications & Standards</h2>
+      </div>
+      <div class="cert-grid animate-on-scroll">
+        <div class="cert-card">
+          <div class="cert-card__icon">🛡️</div>
+          <h3 class="cert-card__title">SOC 2 Type II</h3>
+          <p class="cert-card__desc">Annual audit covering security, availability, and confidentiality trust service criteria.</p>
+          <span class="cert-card__status cert-card__status--active">Certified</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card__icon">🇪🇺</div>
+          <h3 class="cert-card__title">GDPR Art. 28</h3>
+          <p class="cert-card__desc">Data Processing Agreements and EU residency options for international deployments.</p>
+          <span class="cert-card__status cert-card__status--active">Compliant</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card__icon">🏥</div>
+          <h3 class="cert-card__title">HIPAA</h3>
+          <p class="cert-card__desc">BAA-ready infrastructure with PHI safeguards for healthcare litigation data.</p>
+          <span class="cert-card__status cert-card__status--active">Compliant</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card__icon">⚖️</div>
+          <h3 class="cert-card__title">ABA Rule 1.6</h3>
+          <p class="cert-card__desc">Architecture preserves attorney-client privilege during AI-assisted legal operations.</p>
+          <span class="cert-card__status cert-card__status--active">By Design</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY PILLARS -->
+  <section class="section section--alt" id="pillars">
+    <div class="container">
+      <div class="products__header animate-on-scroll">
+        <span class="label-md mb-md" style="display:block;">Defense in Depth</span>
+        <h2 class="headline-md mb-lg">Six Pillars of Security</h2>
+        <p class="body-lg">Every request passes through multiple independent security boundaries before reaching compute.</p>
+      </div>
+      <div class="pillar-grid animate-on-scroll">
+        <div class="pillar-card">
+          <div class="pillar-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h3 class="pillar-card__title">Encryption at Rest & Transit</h3>
+          <p class="pillar-card__text">AES-256 for data at rest. TLS 1.3 for all transit. CMEK available for Enterprise tier.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h3 class="pillar-card__title">Privilege Preservation</h3>
+          <p class="pillar-card__text">Zero-knowledge LLM routing. Heppner-compliant guardrails ensure privilege is never compromised.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <h3 class="pillar-card__title">Immutable Audit Trails</h3>
+          <p class="pillar-card__text">Every AI interaction cryptographically logged with tamper-evident checksums for regulatory review.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg></div>
+          <h3 class="pillar-card__title">Tenant Isolation</h3>
+          <p class="pillar-card__text">Firm data logically and cryptographically isolated. Dedicated compute pools for Enterprise.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <h3 class="pillar-card__title">Data Residency</h3>
+          <p class="pillar-card__text">Choose US, EU, or APAC. Data never leaves your jurisdiction without explicit consent.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3 class="pillar-card__title">Zero-Trust Access</h3>
+          <p class="pillar-card__text">RBAC with MFA. SSO via SAML 2.0 & OIDC. Session tokens rotate every 15 minutes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HEPPNER COMPLIANCE -->
+  <section class="section" id="heppner">
+    <div class="container">
+      <div class="compliance-banner animate-on-scroll">
+        <div class="compliance-banner__icon">⚖️</div>
+        <div class="compliance-banner__content">
+          <h3>Heppner-Compliant by Architecture</h3>
+          <p>Following <em>Heppner v. Agentic Systems, Inc.</em> (S.D.N.Y. 2026), ShadowTagAI implements mandatory privilege-preservation guardrails at the infrastructure level. Zero-knowledge LLM routing ensures no model retains, trains on, or indexes privileged communications — verified by independent audit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFRASTRUCTURE -->
+  <section class="section section--alt" id="infrastructure">
+    <div class="container">
+      <div class="products__header animate-on-scroll">
+        <span class="label-md mb-md" style="display:block;">Infrastructure</span>
+        <h2 class="headline-md mb-lg">Google Cloud Native Stack</h2>
+      </div>
+      <div class="animate-on-scroll">
+        <table class="infra-table">
+          <thead><tr><th>Component</th><th>Technology</th></tr></thead>
+          <tbody>
+            <tr><td>Cloud Provider</td><td>Google Cloud Platform</td></tr>
+            <tr><td>Compute</td><td>Cloud Run (serverless, auto-scaling)</td></tr>
+            <tr><td>Database</td><td>Firestore + Cloud Spanner</td></tr>
+            <tr><td>CDN / Edge</td><td>Cloud Armor + Firebase Hosting</td></tr>
+            <tr><td>WAF</td><td>4 Cloud Armor security rules</td></tr>
+            <tr><td>Monitoring</td><td>Cloud Monitoring + 8 alert policies</td></tr>
+            <tr><td>CI/CD</td><td>Cloud Build with signed artifacts</td></tr>
+            <tr><td>Secrets</td><td>GCP Secret Manager (FIPS 140-2)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- GDPR / CLOUD ACT / ZDR -->
+  <section class="section" id="data-governance">
+    <div class="container">
+      <div class="products__header animate-on-scroll">
+        <span class="label-md mb-md" style="display:block;">Data Governance</span>
+        <h2 class="headline-md mb-lg">Jurisdictional Compliance</h2>
+      </div>
+      <div class="pillar-grid animate-on-scroll">
+        <div class="pillar-card">
+          <div class="pillar-card__icon">🇪🇺</div>
+          <h3 class="pillar-card__title">GDPR</h3>
+          <p class="pillar-card__text">30-day deletion queue via Cloud Tasks. Data Processing Agreements. Right to erasure with cryptographic verification. EU data residency available.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card__icon">🇺🇸</div>
+          <h3 class="pillar-card__title">CLOUD Act</h3>
+          <p class="pillar-card__text">All data stored on GCP in customer-selected jurisdiction. Transparent government request policies. Legal challenge commitments for overreach.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card__icon">🗑️</div>
+          <h3 class="pillar-card__title">Zero Data Retention</h3>
+          <p class="pillar-card__text">Session data processed in RAM only. Cryptographic shredding on session end. No model training on customer data. Zero-retention by default.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-section" id="security-cta">
+    <div class="cta-section__glow"></div>
+    <div class="container">
+      <div class="security-cta animate-on-scroll">
+        <span class="label-md mb-lg" style="display:block;">Ready for a Security Review?</span>
+        <h2 class="headline-md mb-lg">See Our Security in Action.</h2>
+        <p class="body-lg mb-xl">Schedule a deep-dive with our engineering team. We'll walk through architecture, provide audit documentation, and answer every question.</p>
+        <div>
+          <a href="mailto:ops@shadowtagai.com" class="btn btn--primary btn--lg" id="security-cta-review">Request Security Review</a>
+          <a href="/" class="btn btn--secondary btn--lg" id="security-cta-home">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="/" class="nav__logo">
+            <div class="nav__logo-icon"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#540062" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg></div>
+            ShadowTagAI
+          </a>
+          <p class="footer__brand-desc">Autonomous intelligence systems for institutions that demand total data sovereignty.</p>
+        </div>
+        <div>
+          <h3 class="footer__col-title">Products</h3>
+          <ul class="footer__links">
+            <li><a href="https://kovelai.com" class="footer__link" target="_blank" rel="noopener">KovelAI</a></li>
+            <li><a href="/#products" class="footer__link">UphillSnowball</a></li>
+            <li><a href="/#stack" class="footer__link">Architecture</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__col-title">Company</h3>
+          <ul class="footer__links">
+            <li><a href="mailto:ops@shadowtagai.com" class="footer__link">Engineering</a></li>
+            <li><a href="https://github.com/ShadowTag-v2" class="footer__link" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://linkedin.com/in/erik-hancock-80442476" class="footer__link" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__col-title">Legal</h3>
+          <ul class="footer__links">
+            <li><a href="#" class="footer__link">Privacy Policy</a></li>
+            <li><a href="#" class="footer__link">Terms of Service</a></li>
+            <li><a href="/security" class="footer__link" style="color:var(--tertiary)">Security</a></li>
+            <li><a href="#" class="footer__link">SOC 2</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 ShadowTagAI. All rights reserved.</span>
+        <span>Google Cloud Partner</span>
+      </div>
+    </div>
+  </footer>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

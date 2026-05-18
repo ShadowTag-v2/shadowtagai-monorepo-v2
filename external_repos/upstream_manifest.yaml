@@ -153,3 +153,99 @@ groups:
 
   cline:
     - cline/prompts
+
+  google_adk:
+    - google/adk-js
+    - google/adk-python
+    - google/A2UI
+    - google/zx
+    - google/skills
+    - google/styleguide
+    - google/web-starter-kit
+    - google/open-location-code
+
+  google_gemini:
+    - google-gemini/gemini-cli
+    - google-gemini/gemini-skills
+    - google-labs-code/design.md
+
+  googleapis_mcp:
+    - googleapis/gcloud-mcp
+    - googleapis/genai-toolbox
+    - googleapis/mcp-toolbox
+    - googleapis/mcp-toolbox-sdk-python
+    - googleapis/python-genai
+    - googleapis/google-api-nodejs-client
+    - googleapis/nodejs-firestore
+    - googleapis/langchain-google-firestore-python
+    - googleapis/python-bigquery
+
+  firebase_extras:
+    - firebase/snippets-web
+    - firebase/firestore-bundle-builder
+    - firebase-studio/templates
+    - devoteamgcloud/firebase-demo
+
+  gcp_cicd:
+    - google-github-actions/deploy-cloudrun
+    - GoogleCloudPlatform/bigquery-utils
+
+  editor_tooling:
+    - ast-grep/ast-grep-mcp
+    - ast-grep/ast-grep-vscode
+    - neoclide/coc.nvim
+    - neovim/nvim-lspconfig
+    - dense-analysis/ale
+    - graphql/graphiql
+    - LSPosed/LSPosed
+
+  ml_research:
+    - google-research/timesfm
+    - karpathy/autoresearch
+    - sharpner/turboquant-mlx
+
+  community_tools:
+    - abdulrahman-aboutabl/Antigravity-AutoBot
+    - rominirani/google-mcp-servers
+    - hitmux/HitCC
+    - its-dart/dart-mcp-server
+    - jamiewilson/form-to-google-sheets
+    - jinrunsen/claude-code-sourcemap
+    - material-components/material-web
+
+  oven_sh:
+    - oven-sh/bun
+    - oven-sh/awesome-bun
+    - oven-sh/homebrew-bun
+    - oven-sh/mimalloc
+    - oven-sh/libuv
+    - oven-sh/zig
+
+  kriasoft:
+    - kriasoft/react-starter-kit
+    - kriasoft/react-firebase-starter
+    - kriasoft/graphql-starter-kit
+
+  vercel:
+    - vercel-labs/skills
+
+  sheet_tools:
+    - SheetJS/sheetjs
+
+  archon:
+    - coleam00/Archon
+
+  mcp_reference:
+    - modelcontextprotocol/servers
+
+  legal:
+    - freelawproject/eyecite
+
+  litellm:
+    - BerriAI/litellm
+
+  notebooklm:
+    - jacob-bd/notebooklm-mcp-cli
+
+  pyrex:
+    - pyrex41/flpomp-team
