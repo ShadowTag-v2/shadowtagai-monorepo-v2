@@ -86,7 +86,7 @@ Full doctrine: `skills/firebase-mcp-deploy-doctrine/SKILL.md`
 - `GEMINI.md` defines operator invariants, NOT capability ownership or routing.
 - Capability ownership, precedence, conflict denial, and fallback behavior live ONLY in `antigravity-mcp-config.json`.
 - If a verification task and a debugging tool both appear able to perform the work, MCP truth decides the owner.
-- All 5 MCP servers MUST be used: Firebase, Chrome DevTools, Stitch, Developer Knowledge, Sequential Thinking.
+- All V30 Bicameral OS Fleet: Plane 1 = 6 Antigravity servers (StitchMCP, chrome-devtools-mcp, cloudrun, firebase-mcp-server, google-developer-knowledge, sequential-thinking) + gemini-graph-memory extension. Plane 2 = 17 Cline servers (observability, storage-cdn, stripe-governor, notebooklm-mcp, jules-delegation, semantic-scalpel, pomelli-swarm, workspace-intake, bigquery-mcp-server, maps-grounding-lite-mcp, container-mcp-server, compute-mcp-server, gemini-graph-memory, gemini-github-mcp, gemini-web-fetcher, dart-mcp, spanner-mcp). Total: 23 servers. Anti-Duplication Law enforced. MUST be used: Firebase, Chrome DevTools, Stitch, Developer Knowledge, Sequential Thinking.
 - If an operation CAN be performed by an MCP server, it MUST be. No terminal fallbacks for MCP-capable operations.
 
 ### Anti-Patterns (PROHIBITED)

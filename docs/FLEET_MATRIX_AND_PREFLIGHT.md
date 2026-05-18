@@ -1,67 +1,72 @@
-# V29 PINNACLE SINGULARITY: THE BICAMERAL FLEET MATRIX
+---
+version: "V30"
+status: LOCKED
+date: 2026-05-18
+---
 
-**Temporal Anchor:** Friday, May 16, 2026
-**Target Project:** `shadowtag-omega-v4`
+# Bicameral OS Fleet Matrix — V30
 
-## 1. THE FLEET MATRIX (EXHAUSTIVE CENSUS)
-
-The OS operates across two distinct hemispheres to protect Antigravity's strict **100-tool cognitive limit**. Do not attempt to invoke tools assigned to the IDE Tactician.
-
-### HEMISPHERE A: ANTIGRAVITY (TERMINAL ENGINE)
-*Tool Count: 99/100 (Safe). Role: Lightning-fast terminal operator, infrastructure architect, and epistemic synthesizer.*
-
-**Native Platform Servers (Injected automatically by Google — NOT in mcp_config.json):**
-
-| # | Server | Tools | Domain |
-|---|--------|-------|--------|
-| 1 | `StitchMCP` | 14 | Design systems, UI variants, M3 token math |
-| 2 | `chrome-devtools-mcp` | 29 | DOM inspection, Lighthouse P100 audits |
-| 3 | `cloudrun` | 8 | Direct compute deployment |
-| 4 | `firebase-mcp-server` | 36 | State, Auth, Firestore, Firebase Hosting |
-| 5 | `google-developer-knowledge` | 3 | Grounded API documentation |
-| 6 | `bigquery` | 2 | BigQuery SQL queries |
-| 7 | `gcloud` | 1 | gcloud CLI commands |
-| 8 | `gemini-memory` | 3 | Memory store/recall/list |
-| 9 | `genkit` | 2 | Genkit CLI operations |
-| | **Subtotal** | **98** | |
-
-**User Config Server (`~/.gemini/antigravity/mcp_config.json`):**
-
-| # | Server | Tools | Domain |
-|---|--------|-------|--------|
-| 10 | `sequential-thinking` | 1 | Deep reasoning loop isolation |
-| | **Subtotal** | **1** | |
-
-**TOTAL ANTIGRAVITY TOOLS: 99/100** ✅
+> **Anti-Duplication Law:** If Antigravity provides a capability (Plane 1), Cline MUST NOT instantiate a local server for the same capability. Drift detection runs on every boot. Flutter development is handled natively by `dart-mcp`; a separate Flutter server is explicitly prohibited.
 
 ---
 
-### HEMISPHERE B: CLINE (IDE TACTICIAN)
-*Role: Heavy IDE cruiser. Visual codebase management, AST-surgery, Swarm logic, and PR management.*
-*Config: `cline_mcp_settings.json` (repo root)*
+### Plane 1 — Antigravity Internal Host (6 Servers, 91 Tools)
 
-| # | Server | Domain |
-|---|--------|--------|
-| 1 | `observability` (13 tools) | OpenTelemetry, Cloud Logging, traces |
-| 2 | `storage` (15 tools) | GCS bucket operations |
-| 3 | `mcp-toolbox-spanner` (4 tools) | Spanner database healing |
-| 4 | `stripe` (31 tools) | Payment operations |
-| 5 | `stripe-governor` (31 tools) | Financial ROI validation |
-| 6 | `notebooklm-mcp` (39 tools) | 1M-token epistemic memory (uvx) |
-| 7 | `antigravity-notebooklm-mcp` | NotebookLM via npx |
-| 8 | `jules-mcp-server` (3 tools) | Cloud CI/CD DevOps Commander |
-| 9 | `cloud-run` | Cloud Run (Cline duplicate) |
-| 10 | `gcloud` | gcloud CLI (Cline instance) |
-| 11 | `genkitx` | Genkit extensions (disabled) |
+| # | Server | Tools | Domain |
+|---|--------|-------|--------|
+| 1 | `StitchMCP` | 14 | Generative UI, design systems, screen generation |
+| 2 | `chrome-devtools-mcp` | 29 | Browser sensorium — DOM, screenshots, Lighthouse, perf |
+| 3 | `cloudrun` | 8 | Compute deployment — containers, folders, file contents |
+| 4 | `firebase-mcp-server` | 36 | Firestore, Auth, Hosting, Functions, Storage |
+| 5 | `google-developer-knowledge` | 3 | Google developer docs search, retrieval, answers |
+| 6 | `sequential-thinking` | 1 | Multi-step reasoning, hypothesis verification |
+
+> **Note:** `gemini-graph-memory` (9 tools) is platform-injected but listed separately as a Plane 1 extension. The canonical count is **6 core + 1 extension = 7 platform servers**.
 
 ---
 
-## 2. THE 100-TOOL BUDGET RULE
+### Plane 2 — Cline Tactical Local (17 Servers)
 
-Antigravity has a **hard limit of 100 enabled tools**. If adding a server causes cumulative tool count to exceed 100, it shows red with: `Error: adding this instance with N enabled tools would exceed max limit of 100`.
+| # | Server | Purpose |
+|---|--------|---------|
+| 1 | `observability` | Cloud Logging query + error triage |
+| 2 | `storage-cdn` | Cloud Storage for WASM Edge/CDN delivery |
+| 3 | `stripe-governor` | FinOps governor — reads products, revenue, subscriptions |
+| 4 | `notebooklm-mcp` | Epistemic memory via `uvx` CLI (notebooklm-py v0.3.4) |
+| 5 | `jules-delegation` | Local tunnel for dispatching async cloud delegation to Jules |
+| 6 | `semantic-scalpel` | AST-Grep wrapper for structural codebase mutations |
+| 7 | `pomelli-swarm` | A/B testing and UI optimization fleet control |
+| 8 | `workspace-intake` | Actively polls Google Drive for PRDs |
+| 9 | `bigquery-mcp-server` | Financial ledger and ROI analytics |
+| 10 | `maps-grounding-lite-mcp` | Geo-grounding for location intelligence |
+| 11 | `container-mcp-server` | Docker/container management |
+| 12 | `compute-mcp-server` | GCE compute instance management |
+| 13 | `gemini-graph-memory` | Sovereign memory — graph-based knowledge persistence |
+| 14 | `gemini-github-mcp` | GitHub API operations via Gemini |
+| 15 | `gemini-web-fetcher` | Web content extraction and scraping |
+| 16 | `dart-mcp` | Dart language server (`dart language-server --protocol=lsp`) — handles Flutter natively |
+| 17 | `spanner-mcp` | Global Spanner DDL, live mutation capture |
 
-**Rule:** Only `sequential-thinking` goes in `mcp_config.json`. Everything else either:
-- Is platform-injected (servers 1–9), or
-- Lives in `cline_mcp_settings.json` (Hemisphere B)
+---
 
-**Previous error (Codex session 2026-05-15):** 17 servers were crammed into `mcp_config.json`, causing 11 servers to fail with tool-limit overflow. Fixed by stripping to 1 user-config server.
+### Preflight Integrity Check
+
+On every session boot, verify:
+
+```bash
+# Plane 1 — Antigravity (platform-managed, no manual check needed)
+# Plane 2 — Cline tactical
+jq '.mcpServers | keys | length' "$HOME/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json"
+# Expected: 17
+```
+
+### Drift Detection Rules
+
+1. If a server appears in Cline but NOT in this manifest → FLAG as unauthorized
+2. If a server appears in Antigravity AND Cline → VIOLATION of Anti-Duplication Law
+3. If tool count exceeds 100 on Plane 1 → Move lowest-priority server to Plane 2
+4. `gemini-graph-memory` is the ONLY server permitted on BOTH planes (Plane 1 extension + Plane 2 tactical)
+
+---
+
+*V30 Census locked 2026-05-18T12:25 PDT. 23 total servers across both planes.*
