@@ -199,3 +199,7 @@ To check whether embeddings exist, inspect `.gitnexus/meta.json` — the `stats.
 <!-- gitnexus:end -->
 
 - [2026-05-18T08:02:54.598Z] [SESSION_EVENT] Python environment initialized and Untitled-1.py created.
+
+- [2026-05-18T17:46:47.746Z] [OPERATOR-INVARIANTS] 14-point Omni-Sync mandate acknowledged. On every iteration moving forward, use omni_epistemic_sync.ts to freeze state across the entire OS.
+
+- [2026-05-18T17:46:52.423Z] [CONSTRAINT] If Antigravity provides a capability (Plane 1), Cline MUST NOT instantiate a local server for the same capability. Flutter development is handled natively by dart-mcp; a separate Flutter server is explicitly prohibited.

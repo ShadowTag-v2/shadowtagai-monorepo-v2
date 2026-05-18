@@ -1,525 +1,288 @@
-[RULE 1 VIOLATION] Orphaned MCP File Detected: mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: cline_mcp_settings.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .roo/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: operations/workspace-mcp-config.json
 [RULE 1 VIOLATION] Orphaned MCP File Detected: .vscode/cline_mcp_settings.json
 [RULE 1 VIOLATION] Orphaned MCP File Detected: .vscode/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/mcp_config.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.cursor/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/nascent-apollo/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/ide_tooling/mcp_config.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.vscode/cline_mcp_settings.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/vendor/higress/plugins/golang-filter/mcp-server/servers/higress/nginx-migration/mcp-tools.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/vendor/higress/istio/istio/tests/testdata/mcp_bootstrap_tmpl.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/nascent-apollo/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/antigravity-workspace-template/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/customer-support/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/design/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/enterprise-search/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/sales/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/bio-research/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/human-resources/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/operations/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/product-management/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/marketing/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/finance/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/legal/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/data/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/engineering/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/productivity/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/brand-voice/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/apollo/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/slack/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/common-room/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/knowledge-work-plugins/cowork-plugin-management/skills/cowork-plugin-customizer/examples/customized-mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/playgrounds/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/external_sdks/mcp-servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/apps/external_sdks/servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/antigravity-blender-mcp/mcp-config.example.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/antigravity-workspace-template/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/agentic-config/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/packages/pnkln-stack-rollup/.cursor/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/antigravity-workspace-template/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/Skill_Seekers/example-mcp-config.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/mount_example.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/screenshot.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/memory.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/atproto_mcp/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/fastmcp_config/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/fastmcp_config/full_example.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/fastmcp_config/simple.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/fastmcp_config_demo/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/smart_home/hub.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/examples/smart_home/lights.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/fastmcp/docs/public/schemas/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge/imported/ehanc69/Skill_Seekers/.claude/mcp_config.example.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/customer-support/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/design/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/enterprise-search/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/sales/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/bio-research/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/human-resources/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/operations/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/product-management/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/marketing/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/finance/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/legal/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/data/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/engineering/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/productivity/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/partner-built/brand-voice/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/partner-built/apollo/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/partner-built/slack/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/partner-built/common-room/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/knowledge-work-plugins/cowork-plugin-management/skills/cowork-plugin-customizer/examples/customized-mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/customer-support/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/enterprise-search/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/sales/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/bio-research/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/product-management/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/marketing/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/finance/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/legal/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/data/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/productivity/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/knowledge-work-plugins/cowork-plugin-management/skills/cowork-plugin-customizer/examples/customized-mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/maxun/server/tsconfig.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/playwright/examples/todomvc/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/libs/external/playwright/examples/todomvc/.vscode/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/extracted_payloads/browser-use_browser_use_mcp_manifest.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/extracted_payloads/kosmos_kosmos-reference_kosmos-claude-skills-mcp_config.example.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/extracted_payloads/kosmos_kosmos-reference_kosmos-claude-skills-mcp_glama.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/extracted_payloads/images_uphillsnowball_dna_injection_antigravity-workspace-template_mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/nascent-apollo/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/quantum-whirlpool/mcp-servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/antigravity-workspace-template/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/customer-support/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/design/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/enterprise-search/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/sales/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/bio-research/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/human-resources/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/operations/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/product-management/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/marketing/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/finance/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/legal/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/data/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/engineering/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/productivity/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/brand-voice/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/apollo/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/slack/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/common-room/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/knowledge-work-plugins/cowork-plugin-management/skills/cowork-plugin-customizer/examples/customized-mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/docs/agent_archives/playground/thermal-ride/servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_support/public/inspector/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_support/public/servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_support/public/playwright/examples/todomvc/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_support/public/playwright/examples/todomvc/.vscode/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/doctrinal_manuals/github-mcp-integration-plan_1_memory.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/gitlab/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/context7/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/linear/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/greptile/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/serena/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/playwright/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/supabase/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/firebase/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/github/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/laravel-boost/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/slack/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/asana/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/external_plugins/stripe/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/.beads/plugins/marketplaces/claude-plugins-official/plugins/example-plugin/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/ingested_data/urls/developers_googleblog_com_introducing-the-developer-knowledge-api-and-mcp-server_.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/ingested_data/urls/firebase_google_com_docs_ai-assistance_mcp-server.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/ingested_data/urls/discuss_google_dev_t_where-is-the-mcp-server-deploy-your-agent-with-cloud-api-registry-on-vertex-ai-.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/ingested_data/urls/github_com_ChromeDevTools_chrome-devtools-mcp_issues_385.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/infra-legacy/pnkln-stack-fastapi-services/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/infra-legacy/pnkln-stack-rollup/.cursor/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks.bak/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/memory/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/chrome-devtools-mcp/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity-workspace-template/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/mcp_servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/mcp_tools/chrome-devtools-mcp/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity-kit/.agent/mcp_config.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/vscode-copilot-chat/.vscode/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/vscode-copilot-chat/src/extension/mcp/test/vscode-node/fixtures/snapshots/pip-mcp-server-fetch.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/vscode-copilot-chat/src/extension/mcp/test/vscode-node/fixtures/snapshots/docker-mcp-node-code-sandbox.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/customer-support/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/enterprise-search/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/sales/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/bio-research/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/product-management/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/marketing/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/finance/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/legal/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/data/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/productivity/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/knowledge-work-plugins/cowork-plugin-management/skills/cowork-plugin-customizer/examples/customized-mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/nascent-apollo/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/quantum-whirlpool/mcp-servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/antigravity-workspace-template/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/customer-support/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/design/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/enterprise-search/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/sales/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/bio-research/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/human-resources/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/operations/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/product-management/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/marketing/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/finance/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/legal/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/data/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/engineering/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/productivity/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/brand-voice/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/apollo/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/slack/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/partner-built/common-room/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/knowledge-work-plugins/cowork-plugin-management/skills/cowork-plugin-customizer/examples/customized-mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/molten-universe/heavy_lift/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/thermal-ride/servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/ide_tooling/mcp_config.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/vendor/higress/plugins/golang-filter/mcp-server/servers/higress/nginx-migration/mcp-tools.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/vendor/higress/istio/istio/tests/testdata/mcp_bootstrap_tmpl.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/antigravity-blender-mcp/mcp-config.example.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/antigravity-workspace-template/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/agentic-config/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/external_memory/repos/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/antigravity-workspace-template/mcp_servers.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/Skill_Seekers/example-mcp-config.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/mount_example.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/screenshot.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/memory.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/atproto_mcp/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/fastmcp_config/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/fastmcp_config/full_example.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/fastmcp_config/simple.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/fastmcp_config_demo/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/smart_home/hub.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/examples/smart_home/lights.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/fastmcp/docs/public/schemas/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/knowledge/imported/ehanc69/Skill_Seekers/.claude/mcp_config.example.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/repos/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/antigravity_playground/ultraviolet-zodiac/pnkln-stack-fastapi-services/repos/pnkln-stack-rollup/.cursor/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/vi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ja/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/it/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ca/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ru/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-CN/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/zh-TW/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/pt-BR/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/nl/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/hi/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/de/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/ko/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/id/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/fr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/es/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/en/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/external_sdks/AliFullStack/Roo-Code/webview-ui/src/i18n/locales/tr/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/repos/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: reference/public-demos/ShadowTag-v2/repos/pnkln-stack-rollup/.cursor/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/Skill_Seekers/example-mcp-config.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/langchain/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/inspector/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/mem-layer/mcp-config-example.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/mcp_agent_mail/cursor.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/mcp_agent_mail/codex.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/mcp_agent_mail/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/mcp_agent_mail/gemini.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/pnkln-stack-fastapi-services/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/graphiti/mcp_server/config/mcp_config_stdio_example.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/mount_example.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/screenshot.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/memory.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/atproto_mcp/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/fastmcp_config/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/fastmcp_config/full_example.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/fastmcp_config/simple.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/fastmcp_config_demo/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/smart_home/hub.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/examples/smart_home/lights.fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/fastmcp/docs/public/schemas/fastmcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/pnkln-stack_stack/Skill_Seekers/.claude/mcp_config.example.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: .agent/incoming_repos/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: .agent/incoming_repos/pnkln-stack-rollup/.cursor/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: packages/pnkln-stack-rollup/.cursor/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/supabase/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/GitNexus/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/servers/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/vscode-copilot-chat/.vscode/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/vscode-copilot-chat/src/extension/mcp/test/vscode-node/fixtures/snapshots/pip-mcp-server-fetch.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/vscode-copilot-chat/src/extension/mcp/test/vscode-node/fixtures/snapshots/docker-mcp-node-code-sandbox.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/ruflo/.claude/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/GitNexus/gitnexus-claude-plugin/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/GitNexus/gitnexus-claude-plugin/skills/gitnexus-refactoring/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/GitNexus/gitnexus-claude-plugin/skills/gitnexus-debugging/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/GitNexus/gitnexus-claude-plugin/skills/gitnexus-exploring/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/GitNexus/gitnexus-claude-plugin/skills/gitnexus-guide/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/GitNexus/gitnexus-claude-plugin/skills/gitnexus-cli/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: libs/GitNexus/gitnexus-claude-plugin/skills/gitnexus-impact-analysis/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/nascent-apollo/mcp_servers.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/litellm/mcp_servers.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/GitNexus/.mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/GitNexus/gitnexus-claude-plugin/.mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/GitNexus/gitnexus-claude-plugin/skills/gitnexus-refactoring/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/GitNexus/gitnexus-claude-plugin/skills/gitnexus-debugging/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/GitNexus/gitnexus-claude-plugin/skills/gitnexus-exploring/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/GitNexus/gitnexus-claude-plugin/skills/gitnexus-guide/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/GitNexus/gitnexus-claude-plugin/skills/gitnexus-cli/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/GitNexus/gitnexus-claude-plugin/skills/gitnexus-impact-analysis/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/command_deck/ag-ui/.mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/command_deck/table/examples/angular/custom-plugin/.vscode/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/mcp/servers/.mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/repowise/plugins/claude-code/.mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/memory/ruler/tests/integration/fixtures/unified/.ruler/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/memory/ruler/test-qa/.ruler/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/react-starter-kit/.vscode/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/GitNexus/.mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/nx/.nx/nx-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/GitNexus/gitnexus-claude-plugin/.mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/GitNexus/gitnexus-claude-plugin/skills/gitnexus-refactoring/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/GitNexus/gitnexus-claude-plugin/skills/gitnexus-debugging/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/GitNexus/gitnexus-claude-plugin/skills/gitnexus-exploring/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/GitNexus/gitnexus-claude-plugin/skills/gitnexus-guide/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/GitNexus/gitnexus-claude-plugin/skills/gitnexus-cli/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/GitNexus/gitnexus-claude-plugin/skills/gitnexus-impact-analysis/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/upstream/monorepo/repowise/plugins/claude-code/.mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: external_repos/litellm/litellm/proxy/mcp_registry.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: control/rules_packs/merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/aiyou_stack/mcp_memory_config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: apps/thermal-ride/servers/.mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: packages/pnkln-rollup/.cursor/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_request_mcp_server_tool_configuration_param.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_request_mcp_server_url_definition_param.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_result_block.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_use_block_param.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_default_config_param.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_default_config_param.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_use_block_param.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_request_mcp_server_url_definition_param.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_result_block.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_request_mcp_server_tool_configuration_param.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_use_block.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_toolset_param.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_request_mcp_tool_result_block_param.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_config_param.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_toolset_param.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_config_param.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_request_mcp_tool_result_block_param.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/anthropic/types/beta/beta_mcp_tool_use_block.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_mcp_utils.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_mcp_utils.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_interactions/types/mcp_server_tool_call_content_param.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_interactions/types/mcp_server_tool_result_content.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_interactions/types/mcp_server_tool_result_content.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_interactions/types/mcp_server_tool_call_content_param.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_interactions/types/mcp_server_tool_result_content_param.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_interactions/types/mcp_server_tool_call_content.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_interactions/types/mcp_server_tool_call_content.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/google/genai/_interactions/types/mcp_server_tool_result_content_param.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/huggingface_hub/inference/_mcp/mcp_client.data.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: .mypy_cache/3.14/huggingface_hub/inference/_mcp/mcp_client.meta.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: operations/ingest_staging/merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: operations/ingest_staging/unlock_ingest/merged/merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: operations/ingest_staging/unlock_ingest/pnkln/merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: docs/bundles/merged_master_rules_pack/merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: docs/bundles/pnkln_master_rules_pack_v2/merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/downloads_ingest/merged_master_rules_pack/merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/downloads_ingest/pnkln_master_rules_pack_v2/merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/Skill_Seekers/example-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/antigravity-workspace-template/mcp_servers.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/mount_example.fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/screenshot.fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/memory.fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/atproto_mcp/fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/fastmcp_config/fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/fastmcp_config/full_example.fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/fastmcp_config/simple.fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/fastmcp_config_demo/fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/smart_home/hub.fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/examples/smart_home/lights.fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/fastmcp/docs/public/schemas/fastmcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/legacy_workspaces/Skill_Seekers/.claude/mcp_config.example.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/control/rules_packs/merged_master_pack/operations/workspace-mcp-config.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-refactoring/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-debugging/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-exploring/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-guide/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-cli/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-impact-analysis/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: archive/old_artifacts_phase0/tools/cloner-engine/template/docs/research/design_mcp_schemas.json
 [RULE 1 VIOLATION] Orphaned MCP File Detected: memory/erik-hancock-llm-memory/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: tools/external_sdks/chrome-devtools-mcp/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: external_sdks/GitNexus/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: external_sdks/GitNexus/gitnexus-claude-plugin/.mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: external_sdks/GitNexus/gitnexus-claude-plugin/skills/gitnexus-refactoring/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: external_sdks/GitNexus/gitnexus-claude-plugin/skills/gitnexus-debugging/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: external_sdks/GitNexus/gitnexus-claude-plugin/skills/gitnexus-exploring/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: external_sdks/GitNexus/gitnexus-claude-plugin/skills/gitnexus-guide/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: external_sdks/GitNexus/gitnexus-claude-plugin/skills/gitnexus-cli/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: external_sdks/GitNexus/gitnexus-claude-plugin/skills/gitnexus-impact-analysis/mcp.json
-[RULE 1 VIOLATION] Orphaned MCP File Detected: external_sdks/brew/.vscode/mcp.json
-[DRIFT DETECTED] Stale project 'shadowtag-omega-v2' found in scripts/fold_in_repo_checklist.py (Expected: shadowtag-omega-v4)
-[DRIFT DETECTED] Stale model 'gemini-2.0' found in scripts/stage3_drift_audit.py (Expected: gemini-3.1-family)
+[RULE 1 VIOLATION] Orphaned MCP File Detected: tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-refactoring/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-debugging/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-exploring/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-guide/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-cli/mcp.json
+[RULE 1 VIOLATION] Orphaned MCP File Detected: tools/GitNexus/gitnexus-claude-plugin/skills/gitnexus-impact-analysis/mcp.json
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/cloud_armor_policy.yaml (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/docker-compose.dev.yml (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/core/task_queue.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/deploy/service-per-tenant.yaml (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/tests/test_dispatch_router.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/tests/test_gdpr.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/sandbox/runner.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/secret_client.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/auth.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/cloud_tasks_gdpr.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/firestore_client.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/monitoring.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/gdpr.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/token_meter.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/cloud_tasks_gdpr_handler.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/dispatch_router.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/model_router.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/session_pin_monitor.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/gemini_rag.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/functions/docket_watch.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/functions/main.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/monitoring/alert_5xx.json (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/services/cloud_tasks_handler.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/services/__pycache__/cloud_tasks_handler.cpython-314.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/__pycache__/gdpr.cpython-314.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/__pycache__/auth.cpython-314.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/__pycache__/dispatch_router.cpython-314.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/__pycache__/token_meter.cpython-314.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/__pycache__/monitoring.cpython-314.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/api/__pycache__/model_router.cpython-314.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/sandbox/__pycache__/runner.cpython-314.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/tests/__pycache__/test_dispatch_router.cpython-314-pytest-9.0.2.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/tests/__pycache__/test_dispatch_router.cpython-314-pytest-9.0.3.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/tests/__pycache__/test_gdpr.cpython-314-pytest-9.0.2.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in apps/counselconduit/tests/__pycache__/test_gdpr.cpython-314-pytest-9.0.3.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/server.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/ANE_COMPUTE_OPERATING_DOCTRINE.md (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/UPHILL_SNOWBALL_MVP_SPEC.md (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/product-pitch-site/README.md (Expected: shadowtag-omega-v4)
+[RULE 2 VIOLATION] Inline secret detected in labs/uphillsnowball/tests/test_gauntlet.py
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/agent/memory.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/agent/swarm_orchestrator.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/media-mcp-server/README.md (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/media-mcp-server/media_mcp_server.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/cinematic-scroll/gcs_frame_cdn.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/src/contracts/constitution.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/src/delivery/splinter_engine.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/media-mcp-server/tests/test_media_mcp.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/gideon-os/src/daemon/kairos_ultraplan.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/gideon_os/genesis_bootstrapper/README.md (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/gideon_os/shield1_ingress_go/README.md (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/legal-swarm/agents/judge_human/worker.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/product-pitch-site/site/index.html (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in labs/uphillsnowball/product-pitch-site/site/main.js (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/github-app-mcp-wrapper.mjs (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/setup_wif.ts (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/source_pre_commit.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/verify_pagerduty.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/FINAL_JULES_DEPLOYMENT_TRIGGER.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/antigravity_doctor.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/audit_mcp_surfaces.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/final_drift_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/final_drift_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/final_drift_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/final_drift_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/firebase_auth_health_check.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/startup_relock.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/deploy_bravo.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/vertex_bootstrap.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/firebase_m2m_deploy.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/setup_claude_github_secrets.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/deploy_sovereign_os.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/veo_generate.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/canary_analysis.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/provision_data_plane.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_fedramp_enforcer.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_fedramp_enforcer.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_fedramp_enforcer.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_fedramp_enforcer.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/run_codepmcs_scan.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/apply_pnkln_pack.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/alert_circuit_breaker.json (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/memory_lock_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/memory_lock_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/memory_lock_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/memory_lock_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/do_all_22_tasks.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/veo_hero_gen.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/omega_sync.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/provision_data_plane.ts (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/setup_monitoring.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/adapter_only_hardening_audit.sh (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/adapter_only_hardening_audit.sh (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/adapter_only_hardening_audit.sh (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/adapter_only_hardening_audit.sh (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/adapter_only_hardening_audit.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/migrate_env_to_secret_manager.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/firestore_backup_drill.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/omega_auth_daemon.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/deploy-both-sites.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/live_engine_boot.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/setup_wif.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/firestore_ttl_policy.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/remaining-tasks-execution.md (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/audit_truth_surfaces.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/kairos_daemon.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/FINAL_JULES_DEPLOYMENT_PROMPT.md (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/remediate_repo_drift.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/remediate_repo_drift.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/remediate_repo_drift.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/remediate_repo_drift.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/stripe_reconciliation.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/trigger-jules-deployment.js (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/canary_deploy.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/one_click_full_launch.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/p1_push_notify.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/deploy_hero_videos.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/fold_in_repo_checklist.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/fold_in_repo_checklist.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/fold_in_repo_checklist.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/fold_in_repo_checklist.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/fold_in_repo_checklist.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/omega-loop.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/update_manifest.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/alert_uptime.json (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/vertex_veo_config.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/connect-jules.js (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/gca_autolint_daemon.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/deploy_kovelai_hero_video.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/dlp_circuit_breaker.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/apply_latest_pack_2.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/extract_frames.ts (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/upload_did_keys.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/veo_pipeline.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/gcloud_auth_solver.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/kairos_launcher.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/deploy_shield.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/verify_cdc_e2e.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/god_mode_admin.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/seed_firestore_videos.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/omni_sdk_dispatch.ts (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/upload_secrets_to_gcp.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/apply_latest_pack.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/bootstrap_pnkln_pack_v3.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/gcp_scalpel.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/headless_auth_daemon.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/notebooklm-setup.sh (Expected: shadowtag-omega-v4)
 [DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_drift_audit.py (Expected: gemini-3.1-family)
-[DRIFT DETECTED] Stale model 'gpt-4' found in scripts/stage3_drift_audit.py (Expected: gemini-3.1-family)
-[DRIFT DETECTED] Stale model 'claude-3' found in scripts/stage3_drift_audit.py (Expected: gemini-3.1-family)
-[DRIFT DETECTED] Stale project 'shadowtag-omega-v2' found in scripts/stage3_drift_audit.py (Expected: shadowtag-omega-v4)
-[DRIFT DETECTED] Stale project 'shadowtag-omega-v2' found in scripts/__pycache__/fold_in_repo_checklist.cpython-311.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_drift_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_drift_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_drift_audit.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/stage3_drift_audit.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/create_gdpr_alert_policies.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/ingest_drive_docs.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/provision_cdc_datastream.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/deploy-hardened.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/pnkln_lancedb.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/REAL_MAY12_PUBLIC_LAUNCH.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/generate-three-repos.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_drift_patch.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_drift_patch.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_drift_patch.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/stage3_drift_patch.py (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/stage3_drift_patch.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/promote_to_production.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/load_mcp_secrets.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/m2m_deploy.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/veo_frame_extract.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/fix_canonicalization_surfaces.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/sovereign_egress_daemon.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/alert_fallback_saturation.json (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/__pycache__/memory_lock_audit.cpython-314.pyc (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/__pycache__/memory_lock_audit.cpython-314.pyc (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/__pycache__/memory_lock_audit.cpython-314.pyc (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale model 'gemini-3.1-family' found in scripts/__pycache__/memory_lock_audit.cpython-314.pyc (Expected: gemini-3.1-family)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/__pycache__/kairos_daemon.cpython-314.pyc (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/intelligence_pipeline/codebase_embedder.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/intelligence_pipeline/drive_embedder.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/intelligence_pipeline/domain_tagger.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/intelligence_pipeline/cross_domain_matcher.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/intelligence_pipeline/synthesis_report.py (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/aiyou-stack-scripts/startup_relock.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/aiyou-stack-scripts/audit_truth_surfaces.sh (Expected: shadowtag-omega-v4)
+[DRIFT DETECTED] Stale project 'shadowtag-omega-v4' found in scripts/vault/secret_manager_util.py (Expected: shadowtag-omega-v4)

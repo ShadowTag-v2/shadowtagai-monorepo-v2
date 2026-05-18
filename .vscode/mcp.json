@@ -1,6 +1,0 @@
-{
-  "// NOTE": "This file configures MCP servers for VS Code Copilot Chat.",
-  "// IMPORTANT": "Antigravity MCP servers are platform-injected, NOT configured here.",
-  "// SEE": "antigravity-mcp-config.json (repo root) for canonical reference.",
-  "servers": {}
-}
