@@ -9,14 +9,23 @@
   "python.analysis.autoImportCompletions": true,
   "python.analysis.diagnosticMode": "openFilesOnly",
   "python.analysis.exclude": [
-    "**/external_repos/**", "**/archive/**", "**/_archive*/**",
-    "**/node_modules/**", "**/.venv/**", "**/control/**",
-    "**/*legacy*/**", "**/third_party/**", "**/vendor/**"
+    "**/external_repos/**",
+    "**/archive/**",
+    "**/_archive*/**",
+    "**/node_modules/**",
+    "**/.venv/**",
+    "**/control/**",
+    "**/*legacy*/**",
+    "**/third_party/**",
+    "**/vendor/**"
   ],
-  "ty.interpreter": ["/opt/homebrew/opt/python@3.14/bin/python3.14"],
+  "ty.interpreter": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14"
+  ],
   "ty.python.pythonPath": "/.venv/bin/python",
   "ty.python.searchPaths": [
-    "/src", "/packages",
+    "/src",
+    "/packages",
     "/app"
   ],
   "ty.analysis.typeCheckingMode": "basic",
@@ -33,12 +42,30 @@
     "**/__pycache__/**": true
   },
   "search.exclude": {
-    "**/external_repos/**": true, "**/archive/**": true,
-    "**/_archive*/**": true, "**/node_modules/**": true,
-    "**/.venv/**": true, "**/third_party/**": true,
-    "**/*.lock": true, "**/coverage.xml": true
+    "**/external_repos/**": true,
+    "**/archive/**": true,
+    "**/_archive*/**": true,
+    "**/node_modules/**": true,
+    "**/.venv/**": true,
+    "**/third_party/**": true,
+    "**/*.lock": true,
+    "**/coverage.xml": true
   },
   "dart.analysisExcludedFolders": [
-    "external_repos", "archive", "node_modules", ".venv", "build", "third_party"
-  ]
+    "external_repos",
+    "archive",
+    "node_modules",
+    ".venv",
+    "build",
+    "third_party"
+  ],
+  "cmake.configureOnOpen": false,
+  "cmake.autoSelectActiveFolder": false,
+  "makefile.configureOnOpen": false,
+  "java.configuration.checkProjectSettingsExclusions": false,
+  "python.venvPath": "${workspaceFolder}",
+  "python.venvFolders": [
+    ".venv"
+  ],
+  "python-envs.defaultInterpreterPath": "/opt/homebrew/bin/python3.14"
 }
