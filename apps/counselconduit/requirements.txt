@@ -3,7 +3,7 @@
 fastapi>=0.115.0
 uvicorn[standard]>=0.34.0
 pydantic>=2.10.0
-python-dotenv>=1.2.2  # CVE-2026-28684 fix (transitive dep)
+python-dotenv>=1.0.1  # transitive dep; litellm pins ==1.0.1
 
 # Google Cloud
 google-genai>=2.4.0

@@ -112,8 +112,12 @@ try:
   from apps.counselconduit.api.vent_mode import router as vent_router
 
   # ScholarEval + X402 micropayment wiring
-  from src.api.evaluate import router as evaluate_router
-  from src.payments.x402_protocol import X402Middleware, X402PaymentVerifier
+  try:
+    from src.api.evaluate import router as evaluate_router
+    from src.payments.x402_protocol import X402Middleware, X402PaymentVerifier
+    _X402_AVAILABLE = True
+  except ImportError:
+    _X402_AVAILABLE = False
 except ImportError:
   from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
   from api.auth import verify_firebase_token  # type: ignore[no-redef]
@@ -138,8 +142,12 @@ except ImportError:
   from api.vent_mode import router as vent_router  # type: ignore[no-redef]
 
   # ScholarEval + X402 micropayment wiring (Docker context)
-  from src.api.evaluate import router as evaluate_router  # type: ignore[no-redef]
-  from src.payments.x402_protocol import X402Middleware, X402PaymentVerifier  # type: ignore[no-redef]
+  try:
+    from src.api.evaluate import router as evaluate_router  # type: ignore[no-redef]
+    from src.payments.x402_protocol import X402Middleware, X402PaymentVerifier  # type: ignore[no-redef]
+    _X402_AVAILABLE = True
+  except ImportError:
+    _X402_AVAILABLE = False
 
 # ── Structured Logging ─────────────────────────────────────────────────────
 
@@ -220,14 +228,15 @@ _ALLOWED_ORIGINS = os.getenv(
 ).split(",")
 
 # X402: USDC micropayment enforcement on priced endpoints (/api/v1/evaluate, etc.)
-_x402_secret = os.getenv("X402_HMAC_SECRET", "dev-x402-secret")
-app.add_middleware(
-  X402Middleware,
-  verifier=X402PaymentVerifier(
-    recipient=os.getenv("X402_RECIPIENT", "0x0000000000000000000000000000000000000000"),
-    secret=_x402_secret,
-  ),
-)
+if _X402_AVAILABLE:
+  _x402_secret = os.getenv("X402_HMAC_SECRET", "dev-x402-secret")
+  app.add_middleware(
+    X402Middleware,
+    verifier=X402PaymentVerifier(
+      recipient=os.getenv("X402_RECIPIENT", "0x0000000000000000000000000000000000000000"),
+      secret=_x402_secret,
+    ),
+  )
 
 # Cor.30 R31: Security headers on every response
 app.add_middleware(SecurityHeadersMiddleware)
@@ -290,7 +299,8 @@ app.include_router(dispatch_router)
 app.include_router(token_meter_router)
 app.include_router(provider_health_router)
 app.include_router(pr_review_router)
-app.include_router(evaluate_router)  # ScholarEval: POST /api/v1/evaluate
+if _X402_AVAILABLE:
+  app.include_router(evaluate_router)  # ScholarEval: POST /api/v1/evaluate
 
 # ── Static Files (admin dashboard) ────────────────────────────────────────
 import pathlib as _pathlib  # noqa: E402
