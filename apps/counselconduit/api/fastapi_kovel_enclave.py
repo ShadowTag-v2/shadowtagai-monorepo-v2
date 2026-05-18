@@ -1,5 +1,5 @@
 # apps/counselconduit/api/fastapi_kovel_enclave.py
-"""CounselConduit: Kovel Enclave v3.0
+"""CounselConduit: Kovel Enclave v3.4
 
 Production API for KovelAI — Privileged Legal AI under the Kovel Doctrine.
 
@@ -17,6 +17,12 @@ Architecture:
     POST /vent                       → Vent Mode SSE streaming
     POST /webhooks/github/pr-review  → Sovereign PR Review (M1 Max Swarm)
     GET  /pr-review/status/{pr}      → Check review status
+    POST /api/v1/evaluate            → ScholarEval 8-dimension research quality scoring
+    GET  /api/v1/evaluate/health     → ScholarEval health check
+
+X402 Protocol:
+    Priced endpoints return HTTP 402 with USDC/Base L2 payment challenge.
+    Client submits X-Payment header with signed proof to access.
 
 Per U.S. v. Heppner (S.D.N.Y., Feb 2026):
     - All client queries are ephemeral (RAM-only)
@@ -104,6 +110,10 @@ try:
   )
   from apps.counselconduit.api.token_meter import router as token_meter_router
   from apps.counselconduit.api.vent_mode import router as vent_router
+
+  # ScholarEval + X402 micropayment wiring
+  from src.api.evaluate import router as evaluate_router
+  from src.payments.x402_protocol import X402Middleware, X402PaymentVerifier
 except ImportError:
   from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
   from api.auth import verify_firebase_token  # type: ignore[no-redef]
@@ -127,6 +137,10 @@ except ImportError:
   from api.token_meter import router as token_meter_router  # type: ignore[no-redef]
   from api.vent_mode import router as vent_router  # type: ignore[no-redef]
 
+  # ScholarEval + X402 micropayment wiring (Docker context)
+  from src.api.evaluate import router as evaluate_router  # type: ignore[no-redef]
+  from src.payments.x402_protocol import X402Middleware, X402PaymentVerifier  # type: ignore[no-redef]
+
 # ── Structured Logging ─────────────────────────────────────────────────────
 
 structlog.configure(
@@ -147,7 +161,7 @@ logger = structlog.get_logger("counselconduit")
 
 app = FastAPI(
   title="CounselConduit: Kovel Enclave",
-  version="3.3.2",
+  version="3.4.0",
   description="Privileged Legal AI under the Kovel Doctrine. Zero-retention architecture.",
   docs_url="/docs",  # OpenAPI/Swagger enabled — API documentation
   redoc_url="/redoc",
@@ -170,6 +184,14 @@ app = FastAPI(
     {
       "name": "BYOK",
       "description": "Bring Your Own Key — customer-managed LLM API keys",
+    },
+    {
+      "name": "research",
+      "description": "ScholarEval — 8-dimension research quality framework",
+    },
+    {
+      "name": "X402",
+      "description": "USDC micropayments on Base L2 via HTTP 402 protocol",
     },
     {
       "name": "dispatch",
@@ -196,6 +218,16 @@ _ALLOWED_ORIGINS = os.getenv(
   "CORS_ORIGINS",
   "https://kovelai.web.app,https://kovelai.com,https://shadowtagai.web.app,http://localhost:4000,http://localhost:5173",
 ).split(",")
+
+# X402: USDC micropayment enforcement on priced endpoints (/api/v1/evaluate, etc.)
+_x402_secret = os.getenv("X402_HMAC_SECRET", "dev-x402-secret")
+app.add_middleware(
+  X402Middleware,
+  verifier=X402PaymentVerifier(
+    recipient=os.getenv("X402_RECIPIENT", "0x0000000000000000000000000000000000000000"),
+    secret=_x402_secret,
+  ),
+)
 
 # Cor.30 R31: Security headers on every response
 app.add_middleware(SecurityHeadersMiddleware)
@@ -258,6 +290,7 @@ app.include_router(dispatch_router)
 app.include_router(token_meter_router)
 app.include_router(provider_health_router)
 app.include_router(pr_review_router)
+app.include_router(evaluate_router)  # ScholarEval: POST /api/v1/evaluate
 
 # ── Static Files (admin dashboard) ────────────────────────────────────────
 import pathlib as _pathlib  # noqa: E402
@@ -312,7 +345,7 @@ async def health():
   health_data = {
     "status": "healthy",
     "service": "counselconduit",
-    "version": "3.1.0",
+    "version": "3.4.0",
     "firestore": "unknown",
   }
   try:
@@ -460,7 +493,7 @@ async def enclave_health():
   return {
     "status": "operational",
     "service": "CounselConduit Kovel Enclave",
-    "version": "3.3.2",
+    "version": "3.4.0",
     "timestamp": time.time(),
   }
 
@@ -475,7 +508,7 @@ async def oracle_health():
   health_data = {
     "status": "healthy",
     "service": "oracle-studio",
-    "version": "3.3.2",
+    "version": "3.4.0",
     "pipeline_stages": 7,
     "firestore": "unknown",
     "timestamp": time.time(),
@@ -494,7 +527,7 @@ async def oracle_health():
 
 @app.on_event("startup")
 async def startup():
-  logger.info("counselconduit_started", version="3.3.2")
+  logger.info("counselconduit_started", version="3.4.0")
 
 
 @app.on_event("shutdown")

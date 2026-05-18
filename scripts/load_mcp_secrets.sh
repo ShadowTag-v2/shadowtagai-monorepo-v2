@@ -42,6 +42,12 @@ export VERTEX_LOCATION="us-central1"
 export DISABLE_TELEMETRY="1"
 export DISABLE_ERROR_REPORTING="1"
 
+# Hermes Drive folder (Box 12)
+export HERMES_DRIVE_FOLDER_ID="1PNsL-B15paqx6UN7Tnmw7Vi6IBKSH_Mh"
+
+# X402 USDC micropayment HMAC secret (dev mode — production via Secret Manager)
+export X402_HMAC_SECRET="${X402_HMAC_SECRET:-dev-x402-secret}"
+
 # HeadFade PWA public config
 export NEXT_PUBLIC_STRIPE_HEADFADE_PRO_LINK="https://buy.stripe.com/<your-payment-link-id>"
 export NEXT_PUBLIC_API_URL="https://headfade-api.run.app"
