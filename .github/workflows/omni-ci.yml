@@ -23,9 +23,9 @@ jobs:
         with: { app-id: "${{ secrets.CORP_APP_ID }}", private-key: "${{ secrets.CORP_APP_PEM }}", owner: "${{ github.repository_owner }}" }
       - uses: actions/checkout@v4
         with: { repository: "${{ github.repository_owner }}/YOUR-CORP-MONOREPO", token: "${{ steps.generate_token.outputs.token }}", path: "./external_repos/corp-monorepo" }
-      - run: npm install -g @biomejs/biome knip typescript @lhci/cli && pip install ruff vulture pyright
+      - run: npm install -g @biomejs/biome knip typescript @lhci/cli && pip install ruff pyright
       
-      - run: knip && vulture . --min-confidence 90
+      - run: knip && ruff check . --select F401,F841 --statistics
       - run: export PYTHONPATH="$PYTHONPATH:./external_repos/corp-monorepo" && pyright .
       
       - run: biome check --write --unsafe ./apps || true

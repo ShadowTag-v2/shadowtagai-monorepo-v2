@@ -294,20 +294,46 @@ class CitationValidator:
       )
 
   def validate_text(self, text: str) -> list[ValidationResult]:
-    """Extract and validate all citations in a text block."""
+    """Extract and validate all citations in a text block.
+
+    Uses eyecite as the primary citation extractor when available,
+    falling back to built-in regex patterns otherwise.
+    """
     results = []
 
-    # Find case citations
+    # Primary path: eyecite (gold-standard legal citation extraction)
+    try:
+      from src.legal.eyecite_parser import extract_citations as eyecite_extract
+
+      eyecite_results = eyecite_extract(text)
+      if eyecite_results:
+        for ec in eyecite_results:
+          citation = Citation(
+            raw=ec.raw_text or ec.matched_text,
+            citation_type=CitationType.CASE
+            if ec.citation_type in ("full", "short")
+            else CitationType.UNKNOWN,
+            volume=ec.volume,
+            reporter=ec.reporter,
+            page=ec.page,
+            year=ec.year,
+            court=ec.court,
+          )
+          results.append(self.validate_citation(citation))
+        logger.info("eyecite extracted %d citations", len(results))
+        return results
+    except (ImportError, Exception) as exc:
+      logger.debug("eyecite unavailable, falling back to regex: %s", exc)
+
+    # Fallback path: built-in regex patterns
     for m in CASE_PATTERN.finditer(text):
       citation = self.parse_citation(m.group(0))
       results.append(self.validate_citation(citation))
 
-    # Find statute citations
     for m in STATUTE_PATTERN.finditer(text):
       citation = self.parse_citation(m.group(0))
       results.append(self.validate_citation(citation))
 
-    # Find CFR citations
     for m in CFR_PATTERN.finditer(text):
       citation = self.parse_citation(m.group(0))
       results.append(self.validate_citation(citation))

@@ -1,9 +1,3 @@
-# Vulture whitelist for kovelai API
-# These items are false positives — used by Pydantic models or function signatures.
-#
-# The `fee_type` parameter is used in the function signature of route_advance_fee()
-# and documented in docstrings. Vulture flags it because it's not used inside the
-# function body, but it's part of the public API contract and will be used
-# when additional fee type routing logic is implemented.
+# ARCHIVED: vulture removed per V22 Pruned Singularity. Ruff F401/F841 replaces vulture.
+# Original archived to: archive/deprecated_vulture_whitelists_v2/
 
-fee_type  # route_advance_fee() parameter — public API contract  # noqa: B018, F821

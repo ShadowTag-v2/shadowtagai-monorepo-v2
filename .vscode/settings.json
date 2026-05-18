@@ -4,24 +4,41 @@
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "telemetry.telemetryLevel": "off",
-  "python.defaultInterpreterPath": "/Users/pikeymickey/.local/share/uv/python/cpython-3.14.3-macos-aarch64-none/bin/python3.14",
+  "python.defaultInterpreterPath": "/opt/homebrew/bin/python3.14",
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.autoImportCompletions": true,
-  "python.analysis.diagnosticMode": "workspace",
-  "ty.interpreter": [
-    "/opt/homebrew/opt/python@3.14/bin/python3.14"
+  "python.analysis.diagnosticMode": "openFilesOnly",
+  "python.analysis.exclude": [
+    "**/external_repos/**", "**/archive/**", "**/_archive*/**",
+    "**/node_modules/**", "**/.venv/**", "**/control/**",
+    "**/*legacy*/**", "**/third_party/**", "**/vendor/**"
   ],
-  "ty.python.pythonPath": "${workspaceFolder}/.venv/bin/python",
+  "ty.interpreter": ["/opt/homebrew/opt/python@3.14/bin/python3.14"],
+  "ty.python.pythonPath": "/.venv/bin/python",
   "ty.python.searchPaths": [
-    "${workspaceFolder}/src",
-    "${workspaceFolder}/packages",
-    "${workspaceFolder}/app",
-    "${workspaceFolder}/packages/shadowtag_os",
-    "${workspaceFolder}/packages/agnt_tools",
-    "${workspaceFolder}/packages/tool_gateway"
+    "/src", "/packages",
+    "/app"
   ],
   "ty.analysis.typeCheckingMode": "basic",
   "ty.analysis.reportMissingImports": true,
   "ty.analysis.reportUnusedImports": true,
-  "ty.analysis.reportUnusedVariables": true
+  "ty.analysis.reportUnusedVariables": true,
+  "files.exclude": {
+    "**/external_repos/**": true,
+    "**/_archive*/**": true,
+    "**/.hypothesis/**": true,
+    "**/.mypy_cache/**": true,
+    "**/.ruff_cache/**": true,
+    "**/.pytest_cache/**": true,
+    "**/__pycache__/**": true
+  },
+  "search.exclude": {
+    "**/external_repos/**": true, "**/archive/**": true,
+    "**/_archive*/**": true, "**/node_modules/**": true,
+    "**/.venv/**": true, "**/third_party/**": true,
+    "**/*.lock": true, "**/coverage.xml": true
+  },
+  "dart.analysisExcludedFolders": [
+    "external_repos", "archive", "node_modules", ".venv", "build", "third_party"
+  ]
 }
