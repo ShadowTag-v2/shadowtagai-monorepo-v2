@@ -1,16 +1,27 @@
-# ty.toml — Configuration for the ty type checker (Astral)
-# These settings were previously in .vscode/settings.json as ty.analysis.*
-# which ty rejected as "Received unknown options"
+# ty.toml — Configuration for the ty type checker (Astral, v0.0.35)
+# Valid sections: environment, src, rules, terminal, analysis, overrides
+# Validated via: ty check --config-file ty.toml
 
 [environment]
 python = "/opt/homebrew/bin/python3.14"
+python-version = "3.14"
 python-platform = "darwin"
-
-[src]
-# Additional source roots for import resolution
-root = "."
 extra-paths = ["src", "packages", "apps"]
 
-[rules]
-# Equivalent to the old ty.analysis.reportMissingImports, etc.
-# ty uses its own rule system, not Pyright-style keys
+[src]
+exclude = [
+    "external_repos/",
+    "archive/",
+    "_archive*/",
+    "node_modules/",
+    ".venv/",
+    "third_party/",
+    "vendor/",
+    "build/",
+    "target/",
+    ".mypy_cache/",
+    ".ruff_cache/",
+    ".pytest_cache/",
+    "__pycache__/",
+    "control/",
+]
