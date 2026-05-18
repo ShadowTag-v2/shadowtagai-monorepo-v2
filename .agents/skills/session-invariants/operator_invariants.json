@@ -5,5 +5,12 @@
     "knowledge": "V30 Bicameral OS Fleet: Plane 1 = 6 Antigravity servers (StitchMCP, chrome-devtools-mcp, cloudrun, firebase-mcp-server, google-developer-knowledge, sequential-thinking) + gemini-graph-memory extension. Plane 2 = 17 Cline servers (observability, storage-cdn, stripe-governor, notebooklm-mcp, jules-delegation, semantic-scalpel, pomelli-swarm, workspace-intake, bigquery-mcp-server, maps-grounding-lite-mcp, container-mcp-server, compute-mcp-server, gemini-graph-memory, gemini-github-mcp, gemini-web-fetcher, dart-mcp, spanner-mcp). Total: 23 servers. Anti-Duplication Law enforced.",
     "supersedes": "5 MCP servers",
     "timestamp": "2026-05-18T19:27:20.406Z"
+  },
+  {
+    "beadId": "bead_1779132895863",
+    "atomType": "correction",
+    "knowledge": "Plane 1 (Antigravity) has EXACTLY 6 servers (91 tools): StitchMCP(14), chrome-devtools-mcp(29), cloudrun(8), firebase-mcp-server(36), google-developer-knowledge(3), sequential-thinking(1). gemini-graph-memory is a Plane 2 (Cline) server ONLY — it is NOT a native Antigravity platform server.",
+    "supersedes": "6 core + 1 extension = 7 platform servers",
+    "timestamp": "2026-05-18T19:34:55.863Z"
   }
 ]

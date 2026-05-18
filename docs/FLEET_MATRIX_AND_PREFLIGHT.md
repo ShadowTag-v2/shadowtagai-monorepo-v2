@@ -21,8 +21,6 @@ date: 2026-05-18
 | 5 | `google-developer-knowledge` | 3 | Google developer docs search, retrieval, answers |
 | 6 | `sequential-thinking` | 1 | Multi-step reasoning, hypothesis verification |
 
-> **Note:** `gemini-graph-memory` (9 tools) is platform-injected but listed separately as a Plane 1 extension. The canonical count is **6 core + 1 extension = 7 platform servers**.
-
 ---
 
 ### Plane 2 — Cline Tactical Local (17 Servers)
@@ -65,7 +63,7 @@ jq '.mcpServers | keys | length' "$HOME/Library/Application Support/Code/User/gl
 1. If a server appears in Cline but NOT in this manifest → FLAG as unauthorized
 2. If a server appears in Antigravity AND Cline → VIOLATION of Anti-Duplication Law
 3. If tool count exceeds 100 on Plane 1 → Move lowest-priority server to Plane 2
-4. `gemini-graph-memory` is the ONLY server permitted on BOTH planes (Plane 1 extension + Plane 2 tactical)
+4. `gemini-graph-memory` is a Plane 2 (Cline) server ONLY. It is NOT a native Antigravity platform server.
 
 ---
 

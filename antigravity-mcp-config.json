@@ -26,13 +26,13 @@
   ],
   "fleet_manifest": {
     "antigravity_platform": {
-      "total": 7,
-      "tool_budget": "100/100",
+      "total": 6,
+      "version": "V30",
+      "tool_budget": "91/100",
       "servers": [
         "firebase-mcp-server (36)",
         "chrome-devtools-mcp (29)",
         "StitchMCP (14)",
-        "gemini-graph-memory (9)",
         "cloudrun (8)",
         "google-developer-knowledge (3)",
         "sequential-thinking (1)"
