@@ -115,6 +115,7 @@ try:
   try:
     from src.api.evaluate import router as evaluate_router
     from src.payments.x402_protocol import X402Middleware, X402PaymentVerifier
+
     _X402_AVAILABLE = True
   except ImportError:
     _X402_AVAILABLE = False
@@ -145,6 +146,7 @@ except ImportError:
   try:
     from src.api.evaluate import router as evaluate_router  # type: ignore[no-redef]
     from src.payments.x402_protocol import X402Middleware, X402PaymentVerifier  # type: ignore[no-redef]
+
     _X402_AVAILABLE = True
   except ImportError:
     _X402_AVAILABLE = False
@@ -233,7 +235,9 @@ if _X402_AVAILABLE:
   app.add_middleware(
     X402Middleware,
     verifier=X402PaymentVerifier(
-      recipient=os.getenv("X402_RECIPIENT", "0x0000000000000000000000000000000000000000"),
+      recipient=os.getenv(
+        "X402_RECIPIENT", "0x0000000000000000000000000000000000000000"
+      ),
       secret=_x402_secret,
     ),
   )
@@ -374,6 +378,12 @@ async def health():
 @app.get("/healthz")
 async def healthz():
   """Kubernetes/Cloud Run standard health probe alias."""
+  return await health()
+
+
+@app.get("/readyz")
+async def readyz():
+  """Readiness probe — bypasses Cloud Run GFE /healthz interception."""
   return await health()
 
 
