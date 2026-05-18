@@ -14,7 +14,7 @@ firebase-admin>=6.6.0
 redis>=5.0.0
 
 # LiteLLM — multi-model routing
-litellm>=1.60.0
+litellm>=1.83.7
 
 # Stripe billing
 stripe>=12.0.0
