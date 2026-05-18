@@ -1,28 +1,49 @@
-version: '3.8'
+# AlloyDB Omni + Redis Local Development Stack
+# Replaces legacy Celery/BullMQ architecture with Cloud Tasks-native design.
+#
+# Usage:
+#   docker compose up -d
+#   docker compose logs -f alloydb
+#
+# Architecture:
+#   - AlloyDB Omni: PostgreSQL 15 with pgvector for vector search
+#   - Redis: Memorystore emulation for session state + cache
+#   - FastAPI app: CounselConduit API with Cloud Tasks broker
+#   - No Celery workers — Cloud Tasks handles async job dispatch
+#
+# Notes:
+#   - .env files are BANNED (see secrets_manager_doctrine)
+#   - Use `source scripts/load_mcp_secrets.sh` for local secrets
+#   - Production uses GCP Secret Manager exclusively
 
 services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_USER: claude
-      POSTGRES_PASSWORD: claude_password
-      POSTGRES_DB: claude_memory
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  # AlloyDB Omni (PostgreSQL 15 + pgvector)
+  alloydb:
+    image: google/alloydbomni:latest
+    container_name: shadowtag-alloydb
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_USER: shadowtag
+      POSTGRES_PASSWORD: shadowtag_local_dev
+      POSTGRES_DB: counselconduit
+    volumes:
+      - alloydb_data:/var/lib/postgresql/data
+      - ./infra/sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U claude"]
+      test: ["CMD-SHELL", "pg_isready -U shadowtag"]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
-  # Redis
+  # Redis (Cloud Memorystore emulation)
   redis:
     image: redis:7-alpine
+    container_name: shadowtag-redis
     ports:
       - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
       - redis_data:/data
     healthcheck:
@@ -30,21 +51,21 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
-  # FastAPI Application
+  # FastAPI Application (CounselConduit)
   app:
     build: .
+    container_name: shadowtag-api
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql+asyncpg://claude:claude_password@postgres:5432/claude_memory
+      - DATABASE_URL=postgresql+asyncpg://shadowtag:shadowtag_local_dev@alloydb:5432/counselconduit
       - REDIS_URL=redis://redis:6379/0
-      - CELERY_BROKER_URL=redis://redis:6379/1
-      - CELERY_RESULT_BACKEND=redis://redis:6379/2
-    env_file:
-      - .env
+      - GCP_PROJECT=shadowtag-omega-v4
+      - CLOUD_TASKS_LOCATION=us-central1
     depends_on:
-      postgres:
+      alloydb:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -52,40 +73,8 @@ services:
       - ./app:/app/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
-  # Celery Worker
-  celery_worker:
-    build: .
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://claude:claude_password@postgres:5432/claude_memory
-      - REDIS_URL=redis://redis:6379/0
-      - CELERY_BROKER_URL=redis://redis:6379/1
-      - CELERY_RESULT_BACKEND=redis://redis:6379/2
-    env_file:
-      - .env
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    command: celery -A app.tasks.background_tasks worker --loglevel=info
-
-  # Celery Beat (Periodic Tasks)
-  celery_beat:
-    build: .
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://claude:claude_password@postgres:5432/claude_memory
-      - REDIS_URL=redis://redis:6379/0
-      - CELERY_BROKER_URL=redis://redis:6379/1
-      - CELERY_RESULT_BACKEND=redis://redis:6379/2
-    env_file:
-      - .env
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    command: celery -A app.tasks.background_tasks beat --loglevel=info
-
 volumes:
-  postgres_data:
+  alloydb_data:
+    driver: local
   redis_data:
+    driver: local
