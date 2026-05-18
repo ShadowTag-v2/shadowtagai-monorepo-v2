@@ -88,11 +88,30 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
   Cor.30 R14-R15: Rate limit by IP + route. Stricter for auth/payment/export.
   """
 
+  # Paths exempt from rate limiting (health probes, k8s/Cloud Run readiness)
+  _EXEMPT_PATHS: frozenset[str] = frozenset(
+    {
+      "/readyz",
+      "/health",
+      "/healthz",
+      "/livez",
+      "/startup",
+      "/_ah/health",
+      "/favicon.ico",
+      "/robots.txt",
+    }
+  )
+
   async def dispatch(
     self, request: Request, call_next: RequestResponseEndpoint
   ) -> Response:
-    client_ip = _get_client_ip(request)
     path = request.url.path
+
+    # Skip rate limiting for health probes and static assets
+    if path in self._EXEMPT_PATHS:
+      return await call_next(request)
+
+    client_ip = _get_client_ip(request)
     max_requests, window_seconds = _match_route_limit(path)
 
     # Create a key combining IP and route category

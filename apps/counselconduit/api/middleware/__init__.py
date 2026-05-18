@@ -31,7 +31,27 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     self.rpm = requests_per_minute
     self._windows: dict[str, list[float]] = {}
 
+  # Health probes exempt from rate limiting
+  _EXEMPT_PATHS = frozenset(
+    {
+      "/readyz",
+      "/health",
+      "/healthz",
+      "/livez",
+      "/startup",
+      "/_ah/health",
+      "/favicon.ico",
+      "/robots.txt",
+    }
+  )
+
   async def dispatch(self, request: Request, call_next):
+    path = request.url.path
+
+    # Skip rate limiting for health probes
+    if path in self._EXEMPT_PATHS:
+      return await call_next(request)
+
     client_ip = request.client.host if request.client else "unknown"
     now = time.time()
 
