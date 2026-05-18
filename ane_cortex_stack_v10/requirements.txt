@@ -1,9 +1,9 @@
-fastapi>=0.115.0
-uvicorn>=0.30.0
-psycopg2-binary>=2.9.9
-pydantic>=2.8.0
-pyyaml>=6.0.2
+fastapi>=0.136.1
+uvicorn>=0.47.0
+psycopg2-binary>=2.9.12
+pydantic>=2.13.4
+pyyaml>=6.0.3
 lancedb>=0.17.0
 pyarrow>=17.0.0
 orjson>=3.11.9
-requests>=2.32.0
+requests>=2.34.2

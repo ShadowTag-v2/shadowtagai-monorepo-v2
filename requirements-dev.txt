@@ -9,7 +9,7 @@ pytest-cov>=6.0.0
 coverage>=7.6.0
 
 # Linting & Formatting
-ruff>=0.14.0
+ruff>=0.15.13
 
 # Type checking
 mypy>=1.13.0
