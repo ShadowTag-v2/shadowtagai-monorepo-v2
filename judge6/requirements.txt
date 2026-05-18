@@ -34,7 +34,7 @@ python-jose[cryptography]==3.5.0
 python-multipart==0.0.29
 
 # Billing
-stripe==7.8.0
+stripe==15.1.0
 
 # Monitoring & Logging
 prometheus-client==0.25.0
