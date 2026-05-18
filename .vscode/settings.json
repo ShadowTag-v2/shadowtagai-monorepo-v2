@@ -19,19 +19,7 @@
     "**/third_party/**",
     "**/vendor/**"
   ],
-  "ty.interpreter": [
-    "/opt/homebrew/opt/python@3.14/bin/python3.14"
-  ],
-  "ty.python.pythonPath": "/.venv/bin/python",
-  "ty.python.searchPaths": [
-    "/src",
-    "/packages",
-    "/app"
-  ],
-  "ty.analysis.typeCheckingMode": "basic",
-  "ty.analysis.reportMissingImports": true,
-  "ty.analysis.reportUnusedImports": true,
-  "ty.analysis.reportUnusedVariables": true,
+  "ty.interpreterPath": "/opt/homebrew/bin/python3.14",
   "files.exclude": {
     "**/external_repos/**": true,
     "**/_archive*/**": true,
