@@ -249,3 +249,101 @@ groups:
 
   pyrex:
     - pyrex41/flpomp-team
+
+  bigquery_analytics:
+    - GoogleCloudPlatform/BigQuery-Agent-Analytics-SDK
+    - GoogleCloudPlatform/bigquery-oreilly-book
+    - GoogleCloudPlatform/cloud-bigtable-examples
+    - GoogleCloudPlatform/cloud-composer-mssql-dataflow-bigquery
+    - GoogleCloudPlatform/cloud-spanner-samples
+    - GoogleCloudPlatform/cloud-workstations-custom-image-examples
+    - GoogleCloudPlatform/devrel-demos
+    - GoogleCloudDataproc/spark-bigquery-connector
+    - lancedb/vectordb-recipes
+
+  gcp_infrastructure:
+    - GoogleCloudPlatform/cloud-run-button
+    - terraform-google-modules/terraform-google-gcloud
+    - terraform-google-modules/terraform-google-github-actions-runners
+    - opentofu/opentofu
+    - shuaibiyy/awesome-tf
+
+  agent_frameworks:
+    - openai/swarm
+    - MadcowD/ell
+    - 567-labs/instructor
+    - langchain-ai/deep-agents-ui
+    - lavague-ai/LaVague
+    - Skyvern-AI/skyvern
+    - nanobrowser/nanobrowser
+    - pathwaycom/llm-app
+    - pydantic/pydantic-ai
+
+  antigravity_community:
+    - rominirani/antigravity-skills
+    - sickn33/antigravity-awesome-skills
+    - wjgoarxiv/antigravity-swarm
+    - wusimpl/AntigravityQuotaWatcher
+    - nhonn/antigravity-switcher
+    - lbjlaq/Antigravity-Manager
+    - vudovn/antigravity-kit
+    - sheikhlimon/antigravity-pkg
+    - study8677/antigravity-workspace-template
+    - liuw1535/antigravity2api-nodejs
+    - jackc1111/antigravity-notebooklm-mcp
+
+  security_extended:
+    - PyCQA/bandit
+    - gitleaks/gitleaks-action
+    - mazen160/secrets-patterns-db
+    - betterleaks/betterleaks
+    - Piebald-AI/claude-code-system-prompts
+    - jujumilk3/leaked-system-prompts
+
+  claude_code_research:
+    - leeyeel/claude-code-sourcemap
+    - ghuntley/claude-code-source-code-deobfuscation
+    - N1-AI/claude-hidden-toolkit
+    - Yuyz0112/claude-code-reverse
+    - oboard/claude-code-rev
+    - repowise-dev/claude-code-prompts
+    - thtskaran/claude-code-analysis
+    - roger2ai/Claude-Code-Compiled
+
+  vibe_coding:
+    - filipecalegario/awesome-vibe-coding
+    - andreskull/spec-driven-ai-coding
+    - shareAI-lab/learn-claude-code
+    - obra/superpowers
+    - paoloanzn/free-code
+
+  mlx_local:
+    - lmstudio-ai/mlx-engine
+    - tonbistudio/turboquant-pytorch
+    - rasbt/mlxtend
+    - unslothai/unsloth
+    - vllm-project/vllm
+    - ollama/ollama
+    - ollama/ollama-python
+
+  notebooklm_extended:
+    - teng-lin/notebooklm-py
+    - serenakeyitan/awesome-notebookLM-prompts
+
+  obsidian_extended:
+    - zsviczian/obsidian-excalidraw-plugin
+    - obsidianmd/obsidian-sample-plugin
+
+  skills_ecosystem:
+    - shawn-maybush/google_style_guide_agent_skills
+    - nextlevelbuilder/ui-ux-pro-max-skill
+    - majiayu000/claude-skill-registry
+    - mvanhorn/last30days-skill
+    - kk-r/skillify-skill
+    - Leonxlnx/taste-skill
+    - zubair-trabzada/geo-seo-claude
+    - AgriciDaniel/claude-seo
+
+  rich_hickey_knowledge:
+    - tallesl/Rich-Hickey-fanclub
+    - matthiasn/talk-transcripts

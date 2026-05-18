@@ -41,6 +41,12 @@
   },
   "contextFileName": "AGENTS.md",
   "mcpServers": {
+    "google-developer-knowledge": {
+      "httpUrl": "https://developerknowledge.googleapis.com/mcp",
+      "headers": {
+        "X-Goog-Api-Key": "AIzaSyAPuEp7eHmTvrO5ioZNhHmT0A9nk7pqpbQ"
+      }
+    },
     "sequential-thinking": {
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
       "args": [
