@@ -171,6 +171,9 @@ DANGEROUS_BASH_PATTERNS = frozenset(
     "aws",
     "gcloud",
     "gsutil",
+    # Foreign agent control commands (never execute)
+    "fa run",
+    "coo",
   }
 )
 

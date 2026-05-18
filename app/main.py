@@ -106,11 +106,21 @@ async def root():
   }
 
 
-@app.get("/health")
-@app.get("/healthz")
-async def health_check():
-  """Health check for Cloud Run liveness/readiness probes."""
+async def _health_response():
+  """Shared health check response."""
   return {"status": "healthy", "service": "counselconduit", "version": "3.4.0"}
+
+
+@app.get("/health")
+async def health_check():
+  """Health check endpoint."""
+  return await _health_response()
+
+
+@app.get("/healthz")
+async def healthz_check():
+  """Health check endpoint (K8s-style alias for /health)."""
+  return await _health_response()
 
 
 if __name__ == "__main__":
