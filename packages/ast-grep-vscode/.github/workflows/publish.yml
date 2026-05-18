@@ -1,0 +1,52 @@
+name: Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - '[0-9]+.*'
+
+jobs:
+  release-extension:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v6
+      - name: Install deps
+        run: npm install
+      - name: Install vsce
+        run: npm install vsce -g
+      - name: Compile
+        run: npm run compile
+      - name: Package VSCE
+        run: vsce package -o ast-grep-vscode.vsix
+      - name: Create GH Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ast-grep-vscode.vsix
+      - name: Publish extension
+        run: vsce publish -p ${{ secrets.VSCE_TOKEN }}
+
+  release-open-vsx:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install ovsx (Open VSX CLI)
+        run: npm install -g ovsx
+
+      - name: Publish to Open VSX
+        run: |
+          npx ovsx publish -p ${{ secrets.OVSX_TOKEN }}

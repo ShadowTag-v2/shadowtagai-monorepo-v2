@@ -1,0 +1,98 @@
+{
+  "name": "root",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "yarn@4.5.1",
+  "workspaces": [
+    "app",
+    "db",
+    "scripts",
+    "server"
+  ],
+  "scripts": {
+    "postinstall": "node ./scripts/post-install.js",
+    "start": "yarn workspaces foreach -ip -j unlimited run start",
+    "build": "yarn workspaces foreach -p -j unlimited run build",
+    "setup": "node ./scripts/setup.js",
+    "lint": "eslint --cache --report-unused-disable-directives .",
+    "test": "pnpify vitest",
+    "tf": "node --no-warnings ./scripts/tf.js",
+    "g:lint": "yarn lint \"$INIT_CWD\"",
+    "db": "tsx ./db/cli.ts"
+  },
+  "devDependencies": {
+    "@emotion/babel-plugin": "^11.11.0",
+    "@emotion/eslint-plugin": "^11.11.0",
+    "@emotion/react": "^11.11.3",
+    "@eslint-react/eslint-plugin": "^1.16.1",
+    "@eslint/js": "^9.14.0",
+    "@types/node": "^22.9.0",
+    "@typescript-eslint/parser": "^8.13.0",
+    "@yarnpkg/pnpify": "^4.0.1",
+    "envars": "^1.0.2",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.12.0",
+    "graphql": "^16.8.1",
+    "graphql-config": "^5.0.3",
+    "happy-dom": "^13.3.8",
+    "husky": "^9.0.10",
+    "prettier": "^3.3.3",
+    "react": "^18.2.0",
+    "relay-config": "^12.0.1",
+    "tsx": "~4.19.2",
+    "typescript": "~5.6.3",
+    "typescript-eslint": "^8.13.0",
+    "vitest": "~2.1.4",
+    "wrangler": "^3.27.0",
+    "zx": "^8.2.1"
+  },
+  "resolutions": {
+    "graphql": "^16.8.1",
+    "vite": "~5.4.10"
+  },
+  "envars": {
+    "cwd": "./env"
+  },
+  "graphql": {
+    "projects": {
+      "api": {
+        "schema": "api/schema.graphql",
+        "documents": "api/**/*.ts",
+        "extensions": {
+          "endpoints": {
+            "default": "http://localhost:8080/api"
+          }
+        }
+      },
+      "web": {
+        "schema": [
+          "api/schema.graphql",
+          "api/schema.relay.graphql",
+          "web/schema.graphql"
+        ],
+        "documents": "web/**/*.{ts,tsx}",
+        "extensions": {
+          "endpoints": {
+            "default": "http://localhost:5173/api"
+          }
+        }
+      }
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": false,
+    "quoteProps": "as-needed",
+    "jsxSingleQuote": false,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "endOfLine": "lf"
+  }
+}

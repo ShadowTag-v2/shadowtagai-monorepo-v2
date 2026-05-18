@@ -1,0 +1,47 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  typecheck:
+    name: Static Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 8
+      - name: Install deps
+        run: pnpm install
+      - name: Style Check
+        run: pnpm run format:check
+      - name: Lint Check
+        run: pnpm run lint
+      - name: Type Check
+        run: pnpm run typecheck
+  test:
+    name: VSCode Test
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 8
+      - name: Install sg
+        run: pnpm install -g @ast-grep/cli
+      - name: Install deps
+        run: pnpm install
+      - name: Compile
+        run: pnpm run compile
+      - name: Run headless test
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: pnpm test

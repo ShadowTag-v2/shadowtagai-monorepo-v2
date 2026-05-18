@@ -1,0 +1,3 @@
+#!/bin/bash
+# TEMPORAL SYNC MARKER: Auto-tag every commit for instant rollback
+git tag -f latest-stable >/dev/null 2>&1 || true

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "target": "es2020",
+    "lib": ["es2020", "DOM"],
+    "outDir": "out",
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "strict": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "types": ["mocha"],
+    "jsx": "react-jsx"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", ".vscode-test"]
+}

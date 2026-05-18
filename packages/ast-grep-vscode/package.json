@@ -1,0 +1,213 @@
+{
+  "name": "ast-grep-vscode",
+  "version": "0.1.21",
+  "description": "ast-grep VSCode is a structural search and replace extension for many languages.",
+  "keywords": [
+    "ast",
+    "ast-grep",
+    "code search",
+    "language-server",
+    "lint",
+    "multiline search",
+    "refactor",
+    "rewrite",
+    "search and replace",
+    "structural replace",
+    "structural search",
+    "structural",
+    "syntax",
+    "vscode",
+    "extension"
+  ],
+  "publisher": "ast-grep",
+  "preview": false,
+  "displayName": "ast-grep VSCode: Structural Search, Replace and more",
+  "homepage": "https://ast-grep.github.io",
+  "repository": "https://github.com/ast-grep/ast-grep-vscode",
+  "author": "Herrington Darkholme",
+  "license": "MIT",
+  "main": "./out/extension.js",
+  "engines": {
+    "vscode": "^1.103.0"
+  },
+  "icon": "media/favicon.png",
+  "categories": ["Linters", "Programming Languages", "Other"],
+  "activationEvents": ["onStartupFinished"],
+  "contributes": {
+    "commands": [
+      {
+        "command": "ast-grep.executeAutofix",
+        "title": "Fix all auto-fixable Problems",
+        "category": "ast-grep"
+      },
+      {
+        "command": "ast-grep.restartLanguageServer",
+        "title": "Restart Language Server",
+        "category": "ast-grep"
+      },
+      {
+        "command": "ast-grep.searchInFolder",
+        "title": "ast-grep: Find pattern in this folder"
+      },
+      {
+        "command": "ast-grep.clearSearchResults",
+        "title": "Clear Search Results",
+        "icon": {
+          "light": "media/clear-light.svg",
+          "dark": "media/clear-dark.svg"
+        }
+      },
+      {
+        "command": "ast-grep.refreshSearch",
+        "title": "Refresh Search",
+        "icon": {
+          "light": "media/refresh-light.svg",
+          "dark": "media/refresh-dark.svg"
+        }
+      },
+      {
+        "command": "ast-grep.collapseAll",
+        "title": "Collapse All",
+        "icon": {
+          "light": "media/collapse-light.svg",
+          "dark": "media/collapse-dark.svg"
+        }
+      },
+      {
+        "command": "ast-grep.expandAll",
+        "title": "Expand All",
+        "icon": {
+          "light": "media/expand-light.svg",
+          "dark": "media/expand-dark.svg"
+        }
+      },
+      {
+        "command": "ast-grep.searchByCode",
+        "title": "ast-grep: Search by Code"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "ast-grep.searchInFolder",
+          "group": "4_search",
+          "when": "explorerResourceIsFolder"
+        }
+      ],
+
+      "editor/context": [
+        {
+          "command": "ast-grep.searchByCode",
+          "when": "editorHasSelection",
+          "group": "navigation"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "ast-grep.collapseAll",
+          "when": "view == ast-grep.search.input && !ast-grep.searchDefaultCollapse",
+          "group": "navigation"
+        },
+        {
+          "command": "ast-grep.expandAll",
+          "when": "view == ast-grep.search.input && ast-grep.searchDefaultCollapse",
+          "group": "navigation"
+        },
+        {
+          "command": "ast-grep.clearSearchResults",
+          "when": "view == ast-grep.search.input",
+          "group": "navigation"
+        },
+        {
+          "command": "ast-grep.refreshSearch",
+          "when": "view == ast-grep.search.input",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "ast-grep",
+      "properties": {
+        "astGrep.serverPath": {
+          "scope": "window",
+          "type": "string",
+          "description": "Specify the language server binary path. It can be a relative path to workspace root or an absolute path."
+        },
+        "astGrep.configPath": {
+          "scope": "resource",
+          "type": "string",
+          "description": "Customize ast-grep config file path relative. Default is `sgconfig.yml`."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ast-grep-sidebar-view",
+          "title": "ast-grep",
+          "icon": "media/favicon.svg"
+        }
+      ]
+    },
+    "views": {
+      "ast-grep-sidebar-view": [
+        {
+          "type": "webview",
+          "id": "ast-grep.search.input",
+          "name": "Structural Search"
+        }
+      ]
+    }
+  },
+  "qna": "https://github.com/ast-grep/ast-grep/discussions",
+  "sponsor": {
+    "url": "https://github.com/sponsors/HerringtonDarkholme"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "pretest": "npm run compile",
+    "test": "node ./scripts/test/runTest.mjs",
+    "compile": "node ./scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint",
+    "format:check": "dprint check",
+    "watch": "node ./scripts/build.mjs --watch",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*": "dprint fmt",
+    "*.{ts, js}": "oxlint"
+  },
+  "devDependencies": {
+    "oxlint": "1.58.0",
+    "dprint": "0.53.2",
+    "@stylexjs/esbuild-plugin": "0.11.1",
+    "@stylexjs/stylex": "0.18.2",
+    "@types/glob": "9.0.0",
+    "@types/mocha": "10.0.10",
+    "@types/node": "24.12.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@types/vscode": "1.103.0",
+    "@vscode/test-electron": "2.5.2",
+    "@vscode/webview-ui-toolkit": "1.4.0",
+    "babel-plugin-syntax-hermes-parser": "0.34.0",
+    "esbuild": "0.28.0",
+    "glob": "13.0.6",
+    "nano-spawn": "2.1.0",
+    "husky": "9.1.7",
+    "lint-staged": "16.4.0",
+    "mocha": "11.7.5",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-icons": "5.6.0",
+    "react-use": "17.6.0",
+    "react-virtuoso": "4.18.4",
+    "tslib": "2.8.1",
+    "tsx": "4.21.0",
+    "typescript": "6.0.2",
+    "unport": "0.7.1",
+    "vscode-languageclient": "9.0.1"
+  }
+}
