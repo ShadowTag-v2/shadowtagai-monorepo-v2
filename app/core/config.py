@@ -7,7 +7,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
   """Application settings."""
 
-  model_config = SettingsConfigDict(env_file=".env", case_sensitive=False)
+  # No .env file — secrets come from GCP Secret Manager (prod) or
+  # source scripts/load_mcp_secrets.sh (local dev)
+  model_config = SettingsConfigDict(case_sensitive=False)
 
   # Application
   app_name: str = "Claude Memory & Search Service"

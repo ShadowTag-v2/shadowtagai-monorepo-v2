@@ -1,15 +1,21 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-"""Main FastAPI application."""
+"""Main FastAPI application — Cloud Run compatible.
+
+All heavy imports (DB, embedding, routes) are deferred to lifespan()
+to prevent import-time crashes in containers without full env vars.
+"""
+
+from __future__ import annotations
 
 import logging
+import os
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# Light config import only (no I/O at import time)
 from app.core.config import settings
-from app.db.base import init_db
-from app.api.routes import conversations, memories, search, projects
-from app.services import embedding_service
 
 # Configure logging
 logging.basicConfig(
@@ -23,93 +29,88 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
   """Lifespan context manager for startup and shutdown events."""
-  # Startup
-  logger.info("Starting up Claude Memory & Search Service...")
+  logger.info("Starting up CounselConduit service...")
 
-  # Initialize database
-  logger.info("Initializing database...")
-  await init_db()
+  # Lazy-import DB and services only during startup
+  db_ready = False
+  try:
+    from app.db.base import init_db
 
-  # Initialize embedding service
-  logger.info("Initializing embedding service...")
-  await embedding_service.initialize()
+    logger.info("Initializing database...")
+    await init_db()
+    db_ready = True
+  except Exception as exc:
+    logger.warning("Database init skipped (non-fatal): %s", exc)
 
-  logger.info("Startup complete!")
+  embedding_ready = False
+  try:
+    from app.services import embedding_service
+
+    logger.info("Initializing embedding service...")
+    await embedding_service.initialize()
+    embedding_ready = True
+  except Exception as exc:
+    logger.warning("Embedding service init skipped (non-fatal): %s", exc)
+
+  # Lazy-import and register routes
+  try:
+    from app.api.routes import conversations, memories, projects, search
+
+    app.include_router(conversations.router, prefix=settings.api_prefix)
+    app.include_router(memories.router, prefix=settings.api_prefix)
+    app.include_router(search.router, prefix=settings.api_prefix)
+    app.include_router(projects.router, prefix=settings.api_prefix)
+  except Exception as exc:
+    logger.warning("Route registration partial: %s", exc)
+
+  logger.info(
+    "Startup complete! DB=%s, Embeddings=%s",
+    "ready" if db_ready else "skipped",
+    "ready" if embedding_ready else "skipped",
+  )
 
   yield
 
   # Shutdown
-  logger.info("Shutting down...")
+  logger.info("Shutting down CounselConduit...")
 
 
 # Create FastAPI app
 app = FastAPI(
-  title=settings.app_name,
-  version=settings.app_version,
-  description="""
-    A comprehensive implementation of Claude's chat search and memory features.
-
-    ## Features
-
-    * **Semantic Search**: Search through conversations and memories using natural language
-    * **Memory Management**: Store and retrieve key insights from conversations
-    * **Project-based Isolation**: Separate memory contexts for different projects
-    * **Automatic Summarization**: Auto-generate conversation summaries and extract memories
-    * **Incognito Mode**: Private conversations that aren't saved to memory
-    * **Memory Synthesis**: Automatic synthesis of memories updated every 24 hours
-
-    ## Core Endpoints
-
-    * **Conversations**: Create and manage chat conversations
-    * **Messages**: Add messages to conversations with automatic embedding generation
-    * **Memories**: Store, retrieve, and search through memories
-    * **Search**: Semantic search across conversations and memories
-    * **Projects**: Organize conversations and memories by project
-    """,
+  title="CounselConduit",
+  version="3.4.0",
+  description="Privilege-preserving legal AI routing for law firms.",
   lifespan=lifespan,
-  docs_url="/docs",
-  redoc_url="/redoc",
+  docs_url=None if os.getenv("DISABLE_DOCS") else "/docs",
+  redoc_url=None,
 )
 
 # CORS middleware
 app.add_middleware(
   CORSMiddleware,
-  allow_origins=["*"],  # Configure appropriately for production
+  allow_origins=["*"],  # Tighten for production
   allow_credentials=True,
   allow_methods=["*"],
   allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(conversations.router, prefix=settings.api_prefix)
-app.include_router(memories.router, prefix=settings.api_prefix)
-app.include_router(search.router, prefix=settings.api_prefix)
-app.include_router(projects.router, prefix=settings.api_prefix)
-
 
 @app.get("/")
 async def root():
-  """Root endpoint."""
+  """Root endpoint — service identity."""
   return {
-    "name": settings.app_name,
-    "version": settings.app_version,
-    "status": "running",
-    "docs": "/docs",
-    "features": [
-      "Semantic conversation search",
-      "Memory management",
-      "Project-based isolation",
-      "Automatic summarization",
-      "Incognito mode",
-    ],
+    "service": "CounselConduit",
+    "version": "3.4.0",
+    "status": "operational",
+    "docs": "disabled" if os.getenv("DISABLE_DOCS") else "/docs",
   }
 
 
 @app.get("/health")
 @app.get("/healthz")
 async def health_check():
-  """Health check endpoint for Cloud Run liveness/readiness probes."""
-  return {"status": "healthy", "service": "counselconduit"}
+  """Health check for Cloud Run liveness/readiness probes."""
+  return {"status": "healthy", "service": "counselconduit", "version": "3.4.0"}
 
 
 if __name__ == "__main__":
