@@ -1,54 +1,23 @@
-# Prevent uploading the entire monorepo as Cloud Build context
-# This file prevents the 2GB tarball problem
-
-# Version control
+# Cloud Build ignore (reduce upload from 472K+ files)
 .git/
-.gitignore
-
-# Virtual environments
 .venv/
-.venv-*/
 node_modules/
-
-# Reference repos (2.2 GB)
-reference_architectures/
-
-# Archives & legacy
 archive/
-control/
-external_repos/
-external_sdks/
-
-# Build artifacts
-build/
-dist/
-*.egg-info/
-__pycache__/
-.pytest_cache/
-.ruff_cache/
-.mypy_cache/
-
-# IDE
-.vscode/
-.idea/
-
-# Large assets (use GCS/CDN instead)
-*.mp4
-*.mov
-*.avi
-*.mkv
-*.zip
-*.tar.gz
-*.tgz
-
-# Databases
-*.db
-*.sqlite
-.lancedb/
-.lancedb_vault/
-.chroma_db/
-
-# Tools
-tools/
-third_party/
+labs/
+target/
 bazel-*/
+.dart_tool/
+agnt-os-infrastructure-repos/
+.archive_untracked_*/
+apps/aiyou_stack/_archive_deprecated/
+external_repos/
+third_party/ANE/
+docs/
+ultrathink/
+*.dylib
+*.whl
+*.tar.gz
+__pycache__/
+*.pyc
+bazel-*
+bazel-shadowtagai-monorepo-v2
