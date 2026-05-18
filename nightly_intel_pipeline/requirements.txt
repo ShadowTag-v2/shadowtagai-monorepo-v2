@@ -2,44 +2,44 @@
 # ATP 5-19 compliant ethical scraping and intelligence gathering
 
 # Web scraping and HTTP
-aiohttp==3.9.1
+aiohttp==3.13.5
 robotexclusionrulesparser==1.7.1
-requests==2.31.0
-beautifulsoup4==4.12.2
+requests==2.34.2
+beautifulsoup4==4.14.3
 lxml==4.9.3
 
 # Rate limiting and async
-aiolimiter==1.1.0
+aiolimiter==1.2.1
 tenacity==8.2.3
 
 # GitHub API
-PyGithub==2.1.1
-gitpython==3.1.40
+PyGithub==2.9.1
+gitpython==3.1.50
 
 # arXiv crawling
 arxiv==2.1.0
-feedparser==6.0.10
+feedparser==6.0.12
 
 # Data processing
 pandas==2.1.4
 numpy==1.26.2
 
 # Storage (local alternatives to BigQuery/GCS)
-sqlalchemy==2.0.23
+sqlalchemy==2.0.49
 sqlite3worker==1.1.7
 
 # Configuration
-pyyaml==6.0.1
-python-dotenv==1.0.0
+pyyaml==6.0.3
+python-dotenv==1.2.2
 
 # Logging and monitoring
 structlog==23.2.0
-colorlog==6.8.0
+colorlog==6.10.1
 
 # JR Engine / AI scoring
 openai==1.6.1
-anthropic==0.7.8
+anthropic==0.102.0
 
 # Utilities
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
 pytz==2023.3
