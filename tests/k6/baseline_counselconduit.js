@@ -21,14 +21,14 @@ export const options = {
 const BASE_URL = 'https://counselconduit-767252945109.us-central1.run.app';
 
 export default function () {
-  // Healthz probe
-  const healthz = http.get(`${BASE_URL}/healthz`, {
+  // Health probe (using /health — /healthz is intercepted by Google frontend)
+  const health = http.get(`${BASE_URL}/health`, {
     tags: { name: 'healthz' },
   });
 
-  check(healthz, {
-    'healthz returns 200': (r) => r.status === 200,
-    'healthz returns healthy': (r) => {
+  check(health, {
+    'health returns 200': (r) => r.status === 200,
+    'health returns healthy': (r) => {
       try {
         const body = JSON.parse(r.body);
         return body.status === 'healthy';
@@ -38,8 +38,8 @@ export default function () {
     },
   });
 
-  p99Latency.add(healthz.timings.duration);
-  healthzSuccess.add(healthz.status === 200);
+  p99Latency.add(health.timings.duration);
+  healthzSuccess.add(health.status === 200);
 
   // Root endpoint
   const root = http.get(`${BASE_URL}/`, {
