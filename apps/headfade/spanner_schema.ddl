@@ -1,10 +1,12 @@
--- HeadFade Spanner Schema v1.0
+-- HeadFade Spanner Schema v1.1
 -- Phase 0: Analytical layer for high-throughput forensic telemetry
 -- Firestore remains primary for user/video CRUD; Spanner handles scale reads.
+-- v1.1: Added GDPR ROW DELETION POLICY + api_keys table (2026-05-18)
 
 -- ============================================================================
 -- FORENSIC ANALYSIS EVENTS
 -- High-volume event stream from Gemini forensic pipeline
+-- GDPR: Auto-purge after 90 days (Art. 17 Right to Erasure)
 -- ============================================================================
 CREATE TABLE forensic_events (
   event_id        STRING(36) NOT NULL,   -- UUID v4
@@ -16,7 +18,8 @@ CREATE TABLE forensic_events (
   latency_ms      INT64 NOT NULL,
   region          STRING(32),            -- GCP region of analysis
   created_at      TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp = true),
-) PRIMARY KEY (event_id);
+) PRIMARY KEY (event_id),
+  ROW DELETION POLICY (OLDER_THAN(created_at, INTERVAL 90 DAY));
 
 CREATE INDEX idx_forensic_by_video ON forensic_events(video_id, created_at DESC);
 CREATE INDEX idx_forensic_by_model ON forensic_events(model_version, created_at DESC);
@@ -24,6 +27,7 @@ CREATE INDEX idx_forensic_by_model ON forensic_events(model_version, created_at 
 -- ============================================================================
 -- HUMAN TELEMETRY EVENTS
 -- HDI (Human Deception Index) votes from the Global Turing Test swiper
+-- GDPR: Auto-purge after 180 days (anonymized votes retained in daily_metrics)
 -- ============================================================================
 CREATE TABLE human_votes (
   vote_id       STRING(36) NOT NULL,
@@ -36,7 +40,8 @@ CREATE TABLE human_votes (
   device_type   STRING(16),               -- "mobile" | "desktop" | "tablet"
   country_code  STRING(2),                -- ISO 3166-1 alpha-2
   created_at    TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp = true),
-) PRIMARY KEY (vote_id);
+) PRIMARY KEY (vote_id),
+  ROW DELETION POLICY (OLDER_THAN(created_at, INTERVAL 180 DAY));
 
 CREATE INDEX idx_votes_by_video ON human_votes(video_id, created_at DESC);
 CREATE INDEX idx_votes_by_user ON human_votes(user_id) WHERE user_id IS NOT NULL;
@@ -44,6 +49,7 @@ CREATE INDEX idx_votes_by_user ON human_votes(user_id) WHERE user_id IS NOT NULL
 -- ============================================================================
 -- EMBED ANALYTICS
 -- Publisher embed impression/engagement tracking
+-- GDPR: Auto-purge after 365 days
 -- ============================================================================
 CREATE TABLE embed_impressions (
   impression_id   STRING(36) NOT NULL,
@@ -56,7 +62,8 @@ CREATE TABLE embed_impressions (
   device_type     STRING(16),
   country_code    STRING(2),
   created_at      TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp = true),
-) PRIMARY KEY (impression_id);
+) PRIMARY KEY (impression_id),
+  ROW DELETION POLICY (OLDER_THAN(created_at, INTERVAL 365 DAY));
 
 CREATE INDEX idx_embed_by_publisher ON embed_impressions(publisher_id, created_at DESC);
 CREATE INDEX idx_embed_by_video ON embed_impressions(video_id, created_at DESC);

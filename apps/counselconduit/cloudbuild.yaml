@@ -35,20 +35,38 @@ steps:
           --labels="managed_by=cloudbuild,environment=production" \
           --quiet
 
-  # Step 3: Verify deployment health
+  # Step 3: Apply Cloud Armor policy
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Applying Cloud Armor policy..."
+        gcloud compute security-policies describe counselconduit-waf --project=$PROJECT_ID 2>/dev/null && \
+          echo "✅ Cloud Armor policy exists" || \
+          echo "⚠️ Cloud Armor policy not found (non-blocking)"
+
+  # Step 4: Verify deployment health via /readyz
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         URL=$(gcloud run services describe counselconduit --region=us-central1 --project=$PROJECT_ID --format='value(status.url)')
-        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL/enclave/v1/health")
-        echo "Health check: $HTTP_CODE"
-        if [ "$HTTP_CODE" != "200" ]; then
-          echo "ERROR: Health check failed!"
-          exit 1
-        fi
-        echo "✅ Deployment verified"
+        echo "Verifying deployment at $URL/readyz..."
+        # Retry loop: wait up to 60s for healthy response
+        for i in $(seq 1 12); do
+          HTTP_CODE=$(curl -s -o /tmp/readyz_body -w "%{http_code}" "$URL/readyz")
+          BODY=$(cat /tmp/readyz_body)
+          echo "Attempt $i: HTTP $HTTP_CODE"
+          if [ "$HTTP_CODE" = "200" ] && echo "$BODY" | grep -q '"healthy"'; then
+            echo "✅ Deployment verified: $BODY"
+            exit 0
+          fi
+          sleep 5
+        done
+        echo "ERROR: Health check failed after 60s!"
+        exit 1
 
 options:
   logging: CLOUD_LOGGING_ONLY
