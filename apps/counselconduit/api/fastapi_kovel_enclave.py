@@ -1,5 +1,5 @@
 # apps/counselconduit/api/fastapi_kovel_enclave.py
-"""CounselConduit: Kovel Enclave v3.4
+"""CounselConduit: Kovel Enclave v3.4.1
 
 Production API for KovelAI — Privileged Legal AI under the Kovel Doctrine.
 
@@ -169,7 +169,7 @@ logger = structlog.get_logger("counselconduit")
 
 app = FastAPI(
   title="CounselConduit: Kovel Enclave",
-  version="3.4.0",
+  version="3.4.1",
   description="Privileged Legal AI under the Kovel Doctrine. Zero-retention architecture.",
   docs_url="/docs",  # OpenAPI/Swagger enabled — API documentation
   redoc_url="/redoc",
@@ -340,7 +340,7 @@ async def root():
   """Root endpoint — API discovery."""
   return {
     "service": "CounselConduit",
-    "version": "3.4.0",
+    "version": "3.4.1",
     "status": "operational",
     "docs": "/docs" if os.getenv("APP_ENV") == "development" else "disabled",
   }
@@ -355,7 +355,7 @@ async def health():
   health_data = {
     "status": "healthy",
     "service": "counselconduit",
-    "version": "3.4.0",
+    "version": "3.4.1",
     "firestore": "unknown",
   }
   try:
@@ -503,7 +503,7 @@ async def enclave_health():
   return {
     "status": "operational",
     "service": "CounselConduit Kovel Enclave",
-    "version": "3.4.0",
+    "version": "3.4.1",
     "timestamp": time.time(),
   }
 
@@ -518,7 +518,7 @@ async def oracle_health():
   health_data = {
     "status": "healthy",
     "service": "oracle-studio",
-    "version": "3.4.0",
+    "version": "3.4.1",
     "pipeline_stages": 7,
     "firestore": "unknown",
     "timestamp": time.time(),
@@ -537,7 +537,7 @@ async def oracle_health():
 
 @app.on_event("startup")
 async def startup():
-  logger.info("counselconduit_started", version="3.4.0")
+  logger.info("counselconduit_started", version="3.4.1")
 
 
 @app.on_event("shutdown")

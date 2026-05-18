@@ -14,7 +14,7 @@ FROM python:3.14-slim AS runtime
 # OCI image labels
 LABEL org.opencontainers.image.title="CounselConduit" \
       org.opencontainers.image.description="Privileged Legal AI — Kovel Enclave" \
-      org.opencontainers.image.version="3.4.0" \
+      org.opencontainers.image.version="3.4.1" \
       org.opencontainers.image.vendor="ShadowTagAI" \
       org.opencontainers.image.source="https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball" \
       org.opencontainers.image.licenses="PROPRIETARY"
