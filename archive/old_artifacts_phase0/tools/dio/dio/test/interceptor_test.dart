@@ -13,7 +13,7 @@ class MyInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     requestCount++;
-    return super.onRequest(options, handler);
+    super.onRequest(options, handler);
   }
 }
 
@@ -406,9 +406,7 @@ void main() {
       const errorMsg = 'interceptor error';
       dio.interceptors.add(
         InterceptorsWrapper(
-          // TODO(EVERYONE): Remove the ignorance once we migrated to a higher version of Dart.
-          // ignore: void_checks
-          onRequest: (response, handler) {
+          onRequest: (options, handler) {
             throw UnsupportedError(errorMsg);
           },
         ),

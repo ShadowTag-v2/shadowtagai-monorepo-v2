@@ -1,0 +1,9 @@
+name: OpenTofu CI
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mise-action/mise-action@v2
+      - run: mise install && pre-commit run --all-files

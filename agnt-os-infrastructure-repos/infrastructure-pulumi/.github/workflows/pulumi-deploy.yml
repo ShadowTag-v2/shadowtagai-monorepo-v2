@@ -1,0 +1,14 @@
+name: Pulumi Deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.stack }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pulumi/actions@v6
+        with:
+          command: up
+          stack-name: ${{ matrix.stack }}
