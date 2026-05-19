@@ -92,12 +92,12 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
     response.headers["Content-Security-Policy"] = (
       "default-src 'self'; "
-      "script-src 'self' https://js.stripe.com; "
+      "script-src 'self' https://js.stripe.com https://cdn.jsdelivr.net; "
       "frame-src https://js.stripe.com; "
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; "
       "font-src 'self' https://fonts.gstatic.com; "
       "connect-src 'self' https://api.stripe.com https://counselconduit-*.run.app; "
-      "img-src 'self' data:; "
+      "img-src 'self' data: https://fastapi.tiangolo.com; "
     )
     # HSTS (only in production)
     import os

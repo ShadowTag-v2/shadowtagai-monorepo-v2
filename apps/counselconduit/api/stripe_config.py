@@ -21,9 +21,16 @@ COUPON_BETA_50 = "3wseBY7Z"  # 50% off, 3 months, max 100 redemptions
 # ── Customer Portal ──
 PORTAL_CONFIG_ID = "bpc_1TNKSjEHnWpykeMi0qQPoaHm"
 
-# ── Webhook Endpoint ──
+# ── Webhook Endpoints ──
+# CounselConduit billing webhook
 WEBHOOK_ENDPOINT_ID = "we_1TNKSjEHnWpykeMiQZqmpy3X"
-WEBHOOK_URL = "https://counselconduit-api.run.app/webhooks/stripe"
+WEBHOOK_URL = "https://counselconduit-767252945109.us-central1.run.app/webhooks/stripe"
+
+# HeadFade platform webhook (same handler, different Stripe endpoint ID)
+HEADFADE_WEBHOOK_ENDPOINT_ID = "we_1TYc2sEHnWpykeMiSiNzWQvk"
+HEADFADE_WEBHOOK_URL = (
+  "https://counselconduit-767252945109.us-central1.run.app/webhooks/stripe"
+)
 
 # ── Tier → Price Mapping ──
 TIER_PRICES = {
