@@ -352,9 +352,10 @@ async def root():
 
 @app.get("/health")
 async def health():
-  """Health check for Cloud Run / load balancer probes.
+  """Deep health check — includes Firestore connectivity verification.
 
-  Includes Firestore connectivity verification.
+  Use /health or /healthz for diagnostic checks.
+  Do NOT use for Cloud Run liveness/readiness probes (use /readyz instead).
   """
   health_data = {
     "status": "healthy",
@@ -383,8 +384,12 @@ async def healthz():
 
 @app.get("/readyz")
 async def readyz():
-  """Readiness probe — bypasses Cloud Run GFE /healthz interception."""
-  return await health()
+  """Readiness probe — lightweight, no I/O.
+
+  Returns immediately without Firestore or external calls.
+  Designed for Cloud Run liveness/readiness probes at high frequency.
+  """
+  return {"status": "healthy", "service": "counselconduit", "version": "3.4.1"}
 
 
 @app.post("/heartbeat")
