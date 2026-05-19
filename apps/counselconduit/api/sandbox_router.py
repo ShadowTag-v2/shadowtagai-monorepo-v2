@@ -104,7 +104,22 @@ def extract_tenant_context(request: Request) -> TenantContext | None:
   Returns None for public endpoints that don't require tenant context.
   """
   # Skip non-tenant endpoints
-  if request.url.path in ("/health", "/docs", "/openapi.json", "/redoc"):
+  _EXEMPT_PATHS = frozenset(
+    {
+      "/health",
+      "/healthz",
+      "/readyz",
+      "/livez",
+      "/startup",
+      "/_ah/health",
+      "/docs",
+      "/openapi.json",
+      "/redoc",
+      "/favicon.ico",
+      "/robots.txt",
+    }
+  )
+  if request.url.path in _EXEMPT_PATHS:
     return None
 
   # Extract from JWT claims (set by auth middleware)
