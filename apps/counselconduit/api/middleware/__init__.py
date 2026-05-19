@@ -75,6 +75,30 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
   """Adds security headers to all responses (Cor.30 R31)."""
 
+  # Paths that need relaxed CSP for Swagger UI inline scripts
+  _SWAGGER_PATHS = frozenset({"/docs", "/redoc", "/openapi.json"})
+
+  # Strict CSP for API endpoints
+  _STRICT_CSP = (
+    "default-src 'self'; "
+    "script-src 'self' https://js.stripe.com; "
+    "frame-src https://js.stripe.com; "
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+    "font-src 'self' https://fonts.gstatic.com; "
+    "connect-src 'self' https://api.stripe.com; "
+    "img-src 'self' data:; "
+  )
+
+  # Relaxed CSP for Swagger UI (needs unsafe-inline for init script + CDN)
+  _SWAGGER_CSP = (
+    "default-src 'self'; "
+    "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+    "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+    "font-src 'self' https://fonts.gstatic.com; "
+    "connect-src 'self'; "
+    "img-src 'self' data: https://fastapi.tiangolo.com; "
+  )
+
   async def dispatch(self, request: Request, call_next):
     response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"
@@ -90,15 +114,12 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     # ZAP WARN-90004: Cross-Origin isolation headers
     response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
     response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
-    response.headers["Content-Security-Policy"] = (
-      "default-src 'self'; "
-      "script-src 'self' https://js.stripe.com https://cdn.jsdelivr.net; "
-      "frame-src https://js.stripe.com; "
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; "
-      "font-src 'self' https://fonts.gstatic.com; "
-      "connect-src 'self' https://api.stripe.com https://counselconduit-*.run.app; "
-      "img-src 'self' data: https://fastapi.tiangolo.com; "
-    )
+    # Path-aware CSP: relaxed for Swagger UI, strict for API
+    path = request.url.path
+    if path in self._SWAGGER_PATHS:
+      response.headers["Content-Security-Policy"] = self._SWAGGER_CSP
+    else:
+      response.headers["Content-Security-Policy"] = self._STRICT_CSP
     # HSTS (only in production)
     import os
 
