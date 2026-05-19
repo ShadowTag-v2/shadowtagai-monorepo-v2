@@ -97,6 +97,7 @@ try:
   )
   from apps.counselconduit.api.middleware.prompt_guard import PromptGuardMiddleware
   from apps.counselconduit.api.middleware.token_budget import TokenBudgetMiddleware
+  from apps.counselconduit.api.cloud_tasks_bq_ingest import router as bq_ingest_router
   from apps.counselconduit.api.pr_review_webhook import router as pr_review_router
   from apps.counselconduit.api.provider_health import router as provider_health_router
   from apps.counselconduit.api.resend_webhook import router as resend_router
@@ -123,6 +124,7 @@ except ImportError:
   from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
   from api.auth import verify_firebase_token  # type: ignore[no-redef]
   from api.byok import router as byok_router  # type: ignore[no-redef]
+  from api.cloud_tasks_bq_ingest import router as bq_ingest_router  # type: ignore[no-redef]
   from api.cloud_tasks_gdpr import router as tasks_router  # type: ignore[no-redef]
   from api.cloud_tasks_gdpr_handler import router as gdpr_handler_router  # type: ignore[no-redef]
   from api.deprecation_middleware import DeprecationMiddleware  # type: ignore[no-redef]
@@ -303,6 +305,7 @@ app.include_router(dispatch_router)
 app.include_router(token_meter_router)
 app.include_router(provider_health_router)
 app.include_router(pr_review_router)
+app.include_router(bq_ingest_router)  # Cloud Tasks: POST /tasks/bq-ingest
 if _X402_AVAILABLE:
   app.include_router(evaluate_router)  # ScholarEval: POST /api/v1/evaluate
 
@@ -364,9 +367,9 @@ async def health():
     "firestore": "unknown",
   }
   try:
-    from google.cloud import firestore as _fs
+    from api._firestore_pool import get_async_client
 
-    db = _fs.AsyncClient()
+    db = get_async_client()
     # Lightweight read to verify connectivity
     await db.collection("_health").document("ping").get()
     health_data["firestore"] = "connected"
