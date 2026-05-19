@@ -20,9 +20,9 @@ jobs:
         with: { ref: "${{ github.head_ref }}" }
       - id: generate_token
         uses: actions/create-github-app-token@v1
-        with: { app-id: "${{ secrets.CORP_APP_ID }}", private-key: "${{ secrets.CORP_APP_PEM }}", owner: "${{ github.repository_owner }}" }
+        with: { app-id: "${{ vars.SHADOWTAG_APP_ID }}", private-key: "${{ secrets.SHADOWTAG_APP_PEM }}", owner: "${{ github.repository_owner }}" }
       - uses: actions/checkout@v4
-        with: { repository: "${{ github.repository_owner }}/YOUR-CORP-MONOREPO", token: "${{ steps.generate_token.outputs.token }}", path: "./external_repos/corp-monorepo" }
+        with: { repository: "${{ github.repository_owner }}/Monorepo-Uphillsnowball", token: "${{ steps.generate_token.outputs.token }}", path: "./external_repos/corp-monorepo" }
       - run: npm install -g @biomejs/biome knip typescript @lhci/cli && pip install ruff pyright
       
       - run: knip && ruff check . --select F401,F841 --statistics
